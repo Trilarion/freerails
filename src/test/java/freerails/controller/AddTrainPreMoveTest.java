@@ -28,10 +28,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
     StationBuilder stationBuilder;
 
     FreerailsPrincipal principal;
-
-    private ImPoint stationA;
-
     ImmutableSchedule defaultSchedule;
+    private ImPoint stationA;
 
     @Override
     protected void setupWorld() {

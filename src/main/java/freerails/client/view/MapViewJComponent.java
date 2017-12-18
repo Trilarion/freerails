@@ -102,11 +102,11 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         return getMapSizeInPixels();
     }
 
-    void setMapView(MapRenderer mapView) {
-        this.mapView = mapView;
-    }
-
     MapRenderer getMapView() {
         return mapView;
+    }
+
+    void setMapView(MapRenderer mapView) {
+        this.mapView = mapView;
     }
 }

@@ -30,13 +30,11 @@ import java.beans.PropertyChangeListener;
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 
-    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr,
-                              MapViewJComponent mapView) {
-        StationPlacementCursor spc = new StationPlacementCursor(actionRoot,
-                srr, mapView);
-        spc.init();
-    }
-
+    private final MapViewJComponent mapView;
+    private final float scale;
+    private final StationBuildModel stationBuildModel;
+    private final StationRadiusRenderer stationRadiusRenderer;
+    private boolean buildEnabled;
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
         public void propertyChange(PropertyChangeEvent e) {
             if (e.getPropertyName().equals(
@@ -78,16 +76,6 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     };
 
-    private boolean buildEnabled;
-
-    private final MapViewJComponent mapView;
-
-    private final float scale;
-
-    private final StationBuildModel stationBuildModel;
-
-    private final StationRadiusRenderer stationRadiusRenderer;
-
     private StationPlacementCursor(ActionRoot actionRoot,
                                    StationRadiusRenderer srr, MapViewJComponent mapView) {
         scale = mapView.getScale();
@@ -96,6 +84,13 @@ public class StationPlacementCursor extends MouseInputAdapter {
         stationRadiusRenderer = srr;
         buildEnabled = stationBuildModel.getStationBuildAction().isEnabled();
 
+    }
+
+    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr,
+                              MapViewJComponent mapView) {
+        StationPlacementCursor spc = new StationPlacementCursor(actionRoot,
+                srr, mapView);
+        spc.init();
     }
 
     private void init() {

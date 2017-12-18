@@ -48,6 +48,35 @@ public class StationInfoJPanel extends JPanel implements View,
      * The index of the cargoBundle associated with this station.
      */
     private int cargoBundleIndex;
+    private FreerailsSerializable lastCargoBundle = null;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton close;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton nextStation;
+    private javax.swing.JButton previousStation;
+    private final ComponentAdapter componentListener = new ComponentAdapter() {
+        @Override
+        public void componentHidden(ComponentEvent e) {
+
+        }
+
+        @Override
+        public void componentShown(ComponentEvent e) {
+
+            int i = wi.getIndex();
+            wi.reset();
+            if (i != WorldIterator.BEFORE_FIRST) {
+                try {
+                    wi.gotoIndex(i);
+                } catch (NoSuchElementException ex) {
+                    logger
+                            .info("Exception ignored in StationInfoJPanel (NoSuchElement).");
+                    return; // ignore silently
+                }
+            }
+            display();
+        }
+    };
 
     public StationInfoJPanel() {
         initComponents();
@@ -259,32 +288,6 @@ public class StationInfoJPanel extends JPanel implements View,
         this.repaint();
     }
 
-    private final ComponentAdapter componentListener = new ComponentAdapter() {
-        @Override
-        public void componentHidden(ComponentEvent e) {
-
-        }
-
-        @Override
-        public void componentShown(ComponentEvent e) {
-
-            int i = wi.getIndex();
-            wi.reset();
-            if (i != WorldIterator.BEFORE_FIRST) {
-                try {
-                    wi.gotoIndex(i);
-                } catch (NoSuchElementException ex) {
-                    logger
-                            .info("Exception ignored in StationInfoJPanel (NoSuchElement).");
-                    return; // ignore silently
-                }
-            }
-            display();
-        }
-    };
-
-    private FreerailsSerializable lastCargoBundle = null;
-
     @Override
     protected void paintComponent(Graphics g) {
         /* We need to update if the cargo bundle has changed. */
@@ -316,7 +319,6 @@ public class StationInfoJPanel extends JPanel implements View,
             if (changedIndex == cargoBundleIndex) {
                 /* update our cargo bundle */
                 display();
-                return;
             }
         } else if (key == KEY.STATIONS) {
             wi.reset();
@@ -359,15 +361,6 @@ public class StationInfoJPanel extends JPanel implements View,
     void removeCloseButton() {
         this.remove(close);
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton close;
-
-    private javax.swing.JLabel jLabel1;
-
-    private javax.swing.JButton nextStation;
-
-    private javax.swing.JButton previousStation;
     // End of variables declaration//GEN-END:variables
 
 }

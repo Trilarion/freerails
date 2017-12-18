@@ -22,24 +22,31 @@ import java.util.LinkedList;
  */
 public class SoundManager implements ModelRootListener, LineListener {
 
-    /**
-     * Stores the audio data and properties of a sample.
-     */
-    private static class Sample {
-
-        byte[] audio;
-
-        AudioFormat format;
-
-        DataLine.Info info;
-
-        int size;
-    }
-
     private static final Logger logger = Logger.getLogger(SoundManager.class
             .getName());
-
     private static final SoundManager soundManager = new SoundManager();
+    private final HashMap<String, Sample> samples = new HashMap<>();
+    private final LinkedList<Clip> voices = new LinkedList<>();
+    private int maxLines;
+    private Mixer mixer;
+    private boolean playSounds = true;
+
+    private SoundManager() {
+        AudioFormat format2 = new AudioFormat(8000f, 16, 1, true, false);
+        DataLine.Info info2 = new DataLine.Info(null, format2, 0);
+        for (Mixer.Info mo : AudioSystem.getMixerInfo()) {
+
+            mixer = AudioSystem.getMixer(mo);
+            maxLines = mixer.getMaxLines(info2);
+            if (maxLines >= 32)
+                break; // Java Sound Audio Engine, version 1.0 satisfies this.
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + "("
+                    + maxLines + " voices).");
+        }
+
+    }
 
     public static SoundManager getSoundManager() {
         return soundManager;
@@ -57,33 +64,6 @@ public class SoundManager implements ModelRootListener, LineListener {
                 e.printStackTrace();
             }
         }
-    }
-
-    private int maxLines;
-
-    private Mixer mixer;
-
-    private boolean playSounds = true;
-
-    private final HashMap<String, Sample> samples = new HashMap<>();
-
-    private final LinkedList<Clip> voices = new LinkedList<>();
-
-    private SoundManager() {
-        AudioFormat format2 = new AudioFormat(8000f, 16, 1, true, false);
-        DataLine.Info info2 = new DataLine.Info(null, format2, 0);
-        for (Mixer.Info mo : AudioSystem.getMixerInfo()) {
-
-            mixer = AudioSystem.getMixer(mo);
-            maxLines = mixer.getMaxLines(info2);
-            if (maxLines >= 32)
-                break; // Java Sound Audio Engine, version 1.0 satisfies this.
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + "("
-                    + maxLines + " voices).");
-        }
-
     }
 
     public void addClip(String s) throws IOException,
@@ -156,13 +136,26 @@ public class SoundManager implements ModelRootListener, LineListener {
 
     public void propertyChange(ModelRoot.Property p, Object before, Object after) {
         if (p.equals(ModelRoot.Property.PLAY_SOUNDS)) {
-            Boolean b = (Boolean) after;
-            playSounds = b;
+            playSounds = (Boolean) after;
         }
     }
 
     public void update(LineEvent event) {
         // TODO free up resources when we have finished playing a clip.
+    }
+
+    /**
+     * Stores the audio data and properties of a sample.
+     */
+    private static class Sample {
+
+        byte[] audio;
+
+        AudioFormat format;
+
+        DataLine.Info info;
+
+        int size;
     }
 
 }

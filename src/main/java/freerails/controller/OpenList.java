@@ -12,59 +12,7 @@ import java.util.PriorityQueue;
 class OpenList implements Serializable {
 
     private static final long serialVersionUID = 3257282539419611442L;
-
-    static class OpenListEntry implements Comparable<OpenListEntry>,
-            Serializable {
-        private static final long serialVersionUID = -4873508719707382681L;
-
-        final int f;
-
-        final int node;
-
-        OpenListEntry(int _f, int _node) {
-            this.f = _f;
-            this.node = _node;
-        }
-
-        public int compareTo(OpenListEntry o) {
-            // XXX Work around for JDK Bug ID: 6207984
-            if (f == o.f) {
-                return node - o.node;
-            }
-            return f - o.f;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof OpenListEntry))
-                return false;
-
-            final OpenListEntry openListEntry = (OpenListEntry) o;
-
-            if (f != openListEntry.f)
-                return false;
-            return node == openListEntry.node;
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            result = f;
-            result = 29 * result + node;
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "OpenListEntry{node=" + node + ", f=" + f + "}";
-        }
-
-    }
-
     private final HashMap<Integer, OpenListEntry> map = new HashMap<>();
-
     private final PriorityQueue<OpenListEntry> queue = new PriorityQueue<>();
 
     public OpenList() {
@@ -117,6 +65,56 @@ class OpenList implements Serializable {
 
     int size() {
         return queue.size();
+    }
+
+    static class OpenListEntry implements Comparable<OpenListEntry>,
+            Serializable {
+        private static final long serialVersionUID = -4873508719707382681L;
+
+        final int f;
+
+        final int node;
+
+        OpenListEntry(int _f, int _node) {
+            this.f = _f;
+            this.node = _node;
+        }
+
+        public int compareTo(OpenListEntry o) {
+            // XXX Work around for JDK Bug ID: 6207984
+            if (f == o.f) {
+                return node - o.node;
+            }
+            return f - o.f;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof OpenListEntry))
+                return false;
+
+            final OpenListEntry openListEntry = (OpenListEntry) o;
+
+            if (f != openListEntry.f)
+                return false;
+            return node == openListEntry.node;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            result = f;
+            result = 29 * result + node;
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "OpenListEntry{node=" + node + ", f=" + f + "}";
+        }
+
     }
 
 }

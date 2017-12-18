@@ -38,16 +38,14 @@ public abstract class GrowableBase implements Serializable {
      * Default initial array size.
      */
     public static final int DEFAULT_SIZE = 8;
-
-    /**
-     * Size of the current array.
-     */
-    protected int countLimit;
-
     /**
      * Maximum size increment for growing array.
      */
     protected final int maximumGrowth;
+    /**
+     * Size of the current array.
+     */
+    protected int countLimit;
 
     /**
      * Constructor with full specification.

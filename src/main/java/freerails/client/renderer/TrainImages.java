@@ -18,18 +18,22 @@ import java.io.IOException;
  */
 public class TrainImages {
 
+    public final String sideOnFileName;
     private final Image sideOnImage;
-
     private final Image[] overheadImages = new Image[8];
 
-    public final String sideOnFileName;
+    public TrainImages(ImageManager imageManager, String name)
+            throws IOException {
+        sideOnFileName = TrainImages.generateSideOnFilename(name);
+        sideOnImage = imageManager.getImage(sideOnFileName);
 
-    public Image getSideOnImage() {
-        return sideOnImage;
-    }
+        for (int direction = 0; direction < 8; direction++) {
+            String overheadOnFileName = TrainImages.generateOverheadFilename(
+                    name, direction);
+            overheadImages[direction] = imageManager
+                    .getImage(overheadOnFileName);
+        }
 
-    public Image getOverheadImage(int direction) {
-        return overheadImages[direction];
     }
 
     public static String generateOverheadFilename(String name, int i) {
@@ -44,18 +48,12 @@ public class TrainImages {
                 + ".png";
     }
 
-    public TrainImages(ImageManager imageManager, String name)
-            throws IOException {
-        sideOnFileName = TrainImages.generateSideOnFilename(name);
-        sideOnImage = imageManager.getImage(sideOnFileName);
+    public Image getSideOnImage() {
+        return sideOnImage;
+    }
 
-        for (int direction = 0; direction < 8; direction++) {
-            String overheadOnFileName = TrainImages.generateOverheadFilename(
-                    name, direction);
-            overheadImages[direction] = imageManager
-                    .getImage(overheadOnFileName);
-        }
-
+    public Image getOverheadImage(int direction) {
+        return overheadImages[direction];
     }
 
 }

@@ -31,6 +31,16 @@ import java.util.Vector;
 public class TrainUpdater implements ServerAutomaton {
 
     private static final long serialVersionUID = 3258410646839243577L;
+    private transient MoveReceiver moveReceiver;
+
+    public TrainUpdater(MoveReceiver mr) {
+        moveReceiver = mr;
+
+        if (null == mr) {
+            throw new NullPointerException();
+        }
+
+    }
 
     /**
      * @return a move that initialises the trains schedule.
@@ -79,17 +89,6 @@ public class TrainUpdater implements ServerAutomaton {
         }
 
         return returnValue;
-    }
-
-    private transient MoveReceiver moveReceiver;
-
-    public TrainUpdater(MoveReceiver mr) {
-        moveReceiver = mr;
-
-        if (null == mr) {
-            throw new NullPointerException();
-        }
-
     }
 
     public void buildTrain(int engineTypeId, ImInts wagons, ImPoint p,

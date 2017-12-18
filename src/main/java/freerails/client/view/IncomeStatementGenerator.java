@@ -22,16 +22,11 @@ import freerails.world.top.SKEY;
  * @author Luke
  */
 public class IncomeStatementGenerator {
-    GameTime from;
-
-    GameTime to;
-
+    public final String year;
     final ReadOnlyWorld w;
-
     final FreerailsPrincipal principal;
-
     private final GameCalendar cal;
-
+    private final int startyear;
     public Money mailTotal;
 
     public Money passengersTotal;
@@ -71,10 +66,8 @@ public class IncomeStatementGenerator {
     public Money stationMaintenanceYtd;
 
     public Money profitYtd;
-
-    public final String year;
-
-    private final int startyear;
+    GameTime from;
+    GameTime to;
 
     IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;

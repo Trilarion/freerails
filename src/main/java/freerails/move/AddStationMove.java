@@ -26,12 +26,6 @@ public class AddStationMove extends CompositeMove {
         super(moves);
     }
 
-    public StationModel getNewStation() {
-        AddItemToListMove addStation = (AddItemToListMove) super.getMove(2);
-
-        return (StationModel) addStation.getAfter();
-    }
-
     public static AddStationMove generateMove(ReadOnlyWorld w,
                                               String stationName, ImPoint p,
                                               ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
@@ -52,5 +46,11 @@ public class AddStationMove extends CompositeMove {
     public static AddStationMove upgradeStation(
             ChangeTrackPieceMove upgradeTrackMove) {
         return new AddStationMove(new Move[]{upgradeTrackMove});
+    }
+
+    public StationModel getNewStation() {
+        AddItemToListMove addStation = (AddItemToListMove) super.getMove(2);
+
+        return (StationModel) addStation.getAfter();
     }
 }

@@ -25,6 +25,138 @@ import java.util.Enumeration;
  */
 public class ServerControlModel implements ModelRootListener {
 
+    private final Action loadGameAction = new LoadGameAction();
+    private final Action newGameAction = new NewGameAction(null);
+    private final Action saveGameAction = new SaveGameAction();
+    private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[]{
+            new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),
+            new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),
+            new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
+            new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3),};
+    private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(
+            speedActions, 0);
+    private ModelRootImpl modelRoot;
+    private ActionAdapter selectMapActions;
+    private DialogueBoxController dbc;
+
+    public ServerControlModel(ModelRootImpl mr) {
+        this.modelRoot = mr;
+
+        mr.addPropertyChangeListener(this);
+        setServerControlInterface();
+
+    }
+
+    /**
+     * Returns human readable string description of <code>tickPerSecond</code>
+     * number. Looks for <code>tickPerSecond</code> in
+     * <code>targetTicksPerSecondActions</code>. If appropriate action is not
+     * found returns first greater value or the greatest value.
+     *
+     * @param tickPerSecond int
+     * @return String human readable description
+     */
+    public String getGameSpeedDesc(int tickPerSecond) {
+        SetTargetTicksPerSecondAction action = null;
+
+        for (SetTargetTicksPerSecondAction speedAction : speedActions) {
+            action = speedAction;
+
+            if (action.speed >= tickPerSecond)
+                break;
+        }
+
+        return (String) action.getValue(Action.NAME);
+    }
+
+    /**
+     * @return an action to load a game.
+     */
+    public Action getLoadGameAction() {
+        return loadGameAction;
+    }
+
+    /**
+     * @return an ActionAdapter representing a list of actions representing
+     * valid map names.
+     */
+    public ActionAdapter getMapNames() {
+        return selectMapActions;
+    }
+
+    /**
+     * When calling this action, set the action command string to the desired
+     * map name, or call the appropriate selectMapAction.
+     *
+     * @return an action to start a new game
+     */
+    public Action getNewGameAction() {
+        return newGameAction;
+    }
+
+    /**
+     * @return an action to save a game TODO The action produces a file selector
+     * dialog to save the game
+     */
+    public Action getSaveGameAction() {
+        return saveGameAction;
+    }
+
+    /**
+     * @return an action adapter to set the target ticks per second
+     */
+    public ActionAdapter getSetTargetTickPerSecondActions() {
+        return targetTicksPerSecondActions;
+    }
+
+    public int getTargetTicksPerSecond() {
+        ReadOnlyWorld world = modelRoot.getWorld();
+        return ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+    }
+
+    public void propertyChange(Property p, Object oldValue, Object newValue) {
+        // switch (p) {
+        // case SAVED_GAMES_LIST:
+        // updateLoadGameAction();
+        // break;
+        //
+        // default:
+        // break;
+        // }
+
+    }
+
+    public void setup(ModelRootImpl modelRoot, DialogueBoxController dbc) {
+        this.modelRoot = modelRoot;
+        this.dbc = dbc;
+        modelRoot.addPropertyChangeListener(this);
+    }
+
+    public void setServerControlInterface() {
+        // Check that there is a file to load..
+        saveGameAction.setEnabled(true);
+
+        Enumeration<Action> e = targetTicksPerSecondActions.getActions();
+        targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
+
+        while (e.hasMoreElements()) {
+            e.nextElement().setEnabled(true);
+        }
+
+        String[] mapNames = NewGameMessage2Server.getMapNames();
+        Action[] actions = new Action[mapNames.length];
+
+        for (int j = 0; j < actions.length; j++) {
+            actions[j] = new NewGameAction(mapNames[j]);
+            actions[j].setEnabled(true);
+        }
+
+        selectMapActions = new ActionAdapter(actions);
+
+        newGameAction.setEnabled(true);
+
+    }
+
     private class LoadGameAction extends AbstractAction {
         private static final long serialVersionUID = 3616451215278682931L;
 
@@ -141,145 +273,6 @@ public class ServerControlModel implements ModelRootListener {
             modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(),
                     new GameSpeed(speed2set)));
         }
-    }
-
-    private final Action loadGameAction = new LoadGameAction();
-
-    private ModelRootImpl modelRoot;
-
-    private final Action newGameAction = new NewGameAction(null);
-
-    private final Action saveGameAction = new SaveGameAction();
-
-    private ActionAdapter selectMapActions;
-
-    private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[]{
-            new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),
-            new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),
-            new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
-            new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3),};
-
-    private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(
-            speedActions, 0);
-
-    private DialogueBoxController dbc;
-
-    public ServerControlModel(ModelRootImpl mr) {
-        this.modelRoot = mr;
-
-        mr.addPropertyChangeListener(this);
-        setServerControlInterface();
-
-    }
-
-    /**
-     * Returns human readable string description of <code>tickPerSecond</code>
-     * number. Looks for <code>tickPerSecond</code> in
-     * <code>targetTicksPerSecondActions</code>. If appropriate action is not
-     * found returns first greater value or the greatest value.
-     *
-     * @param tickPerSecond int
-     * @return String human readable description
-     */
-    public String getGameSpeedDesc(int tickPerSecond) {
-        SetTargetTicksPerSecondAction action = null;
-
-        for (SetTargetTicksPerSecondAction speedAction : speedActions) {
-            action = speedAction;
-
-            if (action.speed >= tickPerSecond)
-                break;
-        }
-
-        return (String) action.getValue(Action.NAME);
-    }
-
-    /**
-     * @return an action to load a game.
-     */
-    public Action getLoadGameAction() {
-        return loadGameAction;
-    }
-
-    /**
-     * @return an ActionAdapter representing a list of actions representing
-     * valid map names.
-     */
-    public ActionAdapter getMapNames() {
-        return selectMapActions;
-    }
-
-    /**
-     * When calling this action, set the action command string to the desired
-     * map name, or call the appropriate selectMapAction.
-     *
-     * @return an action to start a new game
-     */
-    public Action getNewGameAction() {
-        return newGameAction;
-    }
-
-    /**
-     * @return an action to save a game TODO The action produces a file selector
-     * dialog to save the game
-     */
-    public Action getSaveGameAction() {
-        return saveGameAction;
-    }
-
-    /**
-     * @return an action adapter to set the target ticks per second
-     */
-    public ActionAdapter getSetTargetTickPerSecondActions() {
-        return targetTicksPerSecondActions;
-    }
-
-    public int getTargetTicksPerSecond() {
-        ReadOnlyWorld world = modelRoot.getWorld();
-        return ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
-    }
-
-    public void propertyChange(Property p, Object oldValue, Object newValue) {
-        // switch (p) {
-        // case SAVED_GAMES_LIST:
-        // updateLoadGameAction();
-        // break;
-        //                
-        // default:
-        // break;
-        // }
-
-    }
-
-    public void setup(ModelRootImpl modelRoot, DialogueBoxController dbc) {
-        this.modelRoot = modelRoot;
-        this.dbc = dbc;
-        modelRoot.addPropertyChangeListener(this);
-    }
-
-    public void setServerControlInterface() {
-        // Check that there is a file to load..
-        saveGameAction.setEnabled(true);
-
-        Enumeration<Action> e = targetTicksPerSecondActions.getActions();
-        targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
-
-        while (e.hasMoreElements()) {
-            e.nextElement().setEnabled(true);
-        }
-
-        String[] mapNames = NewGameMessage2Server.getMapNames();
-        Action[] actions = new Action[mapNames.length];
-
-        for (int j = 0; j < actions.length; j++) {
-            actions[j] = new NewGameAction(mapNames[j]);
-            actions[j].setEnabled(true);
-        }
-
-        selectMapActions = new ActionAdapter(actions);
-
-        newGameAction.setEnabled(true);
-
     }
 
 }

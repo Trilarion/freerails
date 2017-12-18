@@ -26,16 +26,23 @@ import junit.framework.TestCase;
  * @author Luke Lindsay
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
-    private World w;
-
     private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, 0, 0,
             0, 2);
-
     private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, 0, 0,
             0, 2);
-
     private final CargoBatch cargoType0FromStation0 = new CargoBatch(0, 0, 0,
             0, 0);
+    private World w;
+
+    public static void main(java.lang.String[] args) {
+        junit.textui.TestRunner.run(suite());
+    }
+
+    private static junit.framework.Test suite() {
+
+        return new junit.framework.TestSuite(
+                DropOffAndPickupCargoMoveGeneratorTest.class);
+    }
 
     @Override
     protected void setUp() throws Exception {
@@ -365,15 +372,5 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         bundle.setAmount(cb, amount);
         w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train
                 .getCargoBundleID(), bundle.toImmutableCargoBundle());
-    }
-
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    private static junit.framework.Test suite() {
-
-        return new junit.framework.TestSuite(
-                DropOffAndPickupCargoMoveGeneratorTest.class);
     }
 }

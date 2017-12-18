@@ -20,30 +20,11 @@ import java.util.Random;
  * @author Luke
  */
 class CityEconomicModel {
-    /**
-     * Stores a tile type and its location.
-     */
-    private class Tile {
-        final Point p;
-
-        final TerrainType type;
-
-        public Tile(final Point p, final TerrainType type) {
-            this.p = p;
-            this.type = type;
-        }
-    }
-
     final ArrayList<Tile> urbanTiles = new ArrayList<>();
-
     final ArrayList<Tile> industryTiles = new ArrayList<>();
-
     final ArrayList<TerrainType> industriesNotAtCity = new ArrayList<>();
-
     final ArrayList<Tile> resourceTiles = new ArrayList<>();
-
     final ArrayList<Point> clearTiles = new ArrayList<>();
-
     /**
      * The number of stations within this city's bounds.
      */
@@ -161,5 +142,19 @@ class CityEconomicModel {
         FreerailsTile fTile = (FreerailsTile) w.getTile(x, y);
         fTile = FreerailsTile.getInstance(type, fTile.getTrackPiece());
         w.setTile(x, y, fTile);
+    }
+
+    /**
+     * Stores a tile type and its location.
+     */
+    private class Tile {
+        final Point p;
+
+        final TerrainType type;
+
+        public Tile(final Point p, final TerrainType type) {
+            this.p = p;
+            this.type = type;
+        }
     }
 }

@@ -54,19 +54,12 @@ import java.util.TreeMap;
  */
 public class WorldDiffs extends WorldImpl {
 
-    public enum LISTID {
-        ACTIVITY_LISTS, BANK_ACCOUNTS, CURRENT_BALANCE, ITEMS, LISTS, PLAYERS, SHARED_LISTS
-    }
-
     private static final long serialVersionUID = -5993786533926919956L;
-
     private final SortedMap<ListKey, Object> listDiff;
-
     /**
      * Stores the differences on the map, ImPoint are used as keys.
      */
     private final HashMap<ImPoint, Object> mapDiff;
-
     private final WorldImpl underlying;
 
     public WorldDiffs(ReadOnlyWorld row) {
@@ -175,6 +168,10 @@ public class WorldDiffs extends WorldImpl {
 
     public ReadOnlyWorld getUnderlying() {
         return underlying;
+    }
+
+    public enum LISTID {
+        ACTIVITY_LISTS, BANK_ACCOUNTS, CURRENT_BALANCE, ITEMS, LISTS, PLAYERS, SHARED_LISTS
     }
 
 }

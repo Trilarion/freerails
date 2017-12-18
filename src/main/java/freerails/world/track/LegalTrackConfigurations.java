@@ -42,6 +42,29 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
         legalConfigs = new ImHashSet<>(temp);
     }
 
+    static private void processTemplate(String trackTemplateString,
+                                        HashSet<TrackConfiguration> temp) {
+        int trackTemplate = Integer.parseInt(trackTemplateString, 2);
+
+        // Check for invalid parameters.
+        if ((trackTemplate > 511) || (trackTemplate < 0)) {
+            throw new IllegalArgumentException("trackTemplate = "
+                    + trackTemplate + ", it should be in the range 0-511");
+        }
+
+        int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer
+                .getRotations(trackTemplate);
+
+        for (int i : rotationsOfTrackTemplate) {
+            TrackConfiguration trackConfiguration = TrackConfiguration
+                    .from9bitTemplate(i);
+
+            if (!temp.contains(trackConfiguration)) {
+                temp.add(trackConfiguration);
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof LegalTrackConfigurations) {
@@ -70,29 +93,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
                 + (legalConfigs != null ? legalConfigs.hashCode() : 0);
 
         return result;
-    }
-
-    static private void processTemplate(String trackTemplateString,
-                                        HashSet<TrackConfiguration> temp) {
-        int trackTemplate = Integer.parseInt(trackTemplateString, 2);
-
-        // Check for invalid parameters.
-        if ((trackTemplate > 511) || (trackTemplate < 0)) {
-            throw new IllegalArgumentException("trackTemplate = "
-                    + trackTemplate + ", it should be in the range 0-511");
-        }
-
-        int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer
-                .getRotations(trackTemplate);
-
-        for (int i : rotationsOfTrackTemplate) {
-            TrackConfiguration trackConfiguration = TrackConfiguration
-                    .from9bitTemplate(i);
-
-            if (!temp.contains(trackConfiguration)) {
-                temp.add(trackConfiguration);
-            }
-        }
     }
 
     public boolean trackConfigurationIsLegal(

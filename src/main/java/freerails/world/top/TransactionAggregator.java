@@ -20,15 +20,16 @@ public abstract class TransactionAggregator {
     protected final ReadOnlyWorld w;
 
     protected final FreerailsPrincipal principal;
-
-    protected Money[] monetaryTotals;
-
-    protected int runningTotal = 0;
-
     private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{
             GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
-
+    protected Money[] monetaryTotals;
+    protected int runningTotal = 0;
     private GameTime[] timeValues = DEFAULT_INTERVAL;
+
+    public TransactionAggregator(ReadOnlyWorld w, FreerailsPrincipal principal) {
+        this.w = w;
+        this.principal = principal;
+    }
 
     public GameTime[] getTimes() {
         // return defensive copy.
@@ -53,11 +54,6 @@ public abstract class TransactionAggregator {
 
             timeValues[i] = times[i];
         }
-    }
-
-    public TransactionAggregator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        this.w = w;
-        this.principal = principal;
     }
 
     /**

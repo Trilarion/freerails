@@ -17,15 +17,6 @@ public class AnimationExpt extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        long l = System.currentTimeMillis();
-        String str = String.valueOf(l);
-        g.drawString(str, 100, 100);
-    }
-
     public static void main(String[] args) {
         System.setProperty("SHOWFPS", "true");
 
@@ -40,5 +31,14 @@ public class AnimationExpt extends JComponent {
         GameLoop gameLoop = new GameLoop(screenHandler);
         Thread t = new Thread(gameLoop);
         t.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        long l = System.currentTimeMillis();
+        String str = String.valueOf(l);
+        g.drawString(str, 100, 100);
     }
 }

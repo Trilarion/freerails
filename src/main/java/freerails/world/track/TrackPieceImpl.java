@@ -16,6 +16,14 @@ final public class TrackPieceImpl implements TrackPiece {
 
     private final int ruleNumber;
 
+    public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner,
+                          int rule) {
+        configuration = c;
+        trackType = type;
+        ownerID = owner;
+        ruleNumber = rule;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -42,14 +50,6 @@ final public class TrackPieceImpl implements TrackPiece {
         result = 29 * result + ownerID;
         result = 29 * result + ruleNumber;
         return result;
-    }
-
-    public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner,
-                          int rule) {
-        configuration = c;
-        trackType = type;
-        ownerID = owner;
-        ruleNumber = rule;
     }
 
     public int getTrackGraphicID() {

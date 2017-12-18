@@ -25,26 +25,17 @@ import java.util.NoSuchElementException;
 public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration
             .getFlatInstance("000010000");
-
-    private boolean beforeFirst = true;
-
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
             0, Step.NORTH);
-
     final private PositionOnTrack currentPosition = PositionOnTrack
             .createComingFrom(0, 0, Step.NORTH);
-
-    private int directionInt = 0;
-
     private final ImPoint target;
-
-    private BuildTrackStrategy buildTrackStrategy;
-
-    private boolean usingExistingTrack = false;
-
     private final ReadOnlyWorld world;
-
     private final FreerailsPrincipal principle;
+    private boolean beforeFirst = true;
+    private int directionInt = 0;
+    private BuildTrackStrategy buildTrackStrategy;
+    private boolean usingExistingTrack = false;
 
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
         this(w, principle, null, new ImPoint(0, 0));
@@ -270,6 +261,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         return currentPosition.toInt();
     }
 
+    public void setPosition(int vertex) {
+        currentPosition.setValuesFromInt(vertex);
+        directionInt = 0;
+    }
+
     public int getVertexConnectedByEdge() {
         if (beforeFirst) {
             throw new IllegalStateException();
@@ -309,11 +305,6 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         directionInt++;
         beforeFirst = false;
-    }
-
-    public void setPosition(int vertex) {
-        currentPosition.setValuesFromInt(vertex);
-        directionInt = 0;
     }
 
     public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {

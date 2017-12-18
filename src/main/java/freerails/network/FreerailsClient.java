@@ -26,13 +26,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         UntriedMoveReceiver, ServerCommandReceiver {
     private static final Logger logger = Logger.getLogger(FreerailsClient.class
             .getName());
-
-    protected Connection2Server connection2Server;
-
     private final HashMap<String, Serializable> properties = new HashMap<>();
-
     private final MoveChainFork moveFork;
-
+    protected Connection2Server connection2Server;
     private World world;
 
     private MovePrecommitter committer;

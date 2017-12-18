@@ -21,6 +21,15 @@ import java.awt.event.ActionListener;
 public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 4031907071040752589L;
+    ModelRoot modelRoot;
+    ActionListener close;
+
+    // </editor-fold>//GEN-END:initComponents
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JButton cancelButton;
+    javax.swing.JTextField fileNameTextField;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JButton oKButton;
 
     /**
      * Creates new form SaveGameJPanel
@@ -98,8 +107,6 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    // </editor-fold>//GEN-END:initComponents
-
     private void oKButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_oKButtonActionPerformed
 
         String filename = fileNameTextField.getText();
@@ -125,15 +132,6 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
         this.close = closeAction;
         this.modelRoot = m;
     }
-
-    ModelRoot modelRoot;
-    ActionListener close;
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JButton cancelButton;
-    javax.swing.JTextField fileNameTextField;
-    javax.swing.JLabel jLabel1;
-    javax.swing.JButton oKButton;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -11,10 +11,6 @@ import freerails.world.common.Money;
  */
 public interface TerrainType extends FreerailsSerializable {
 
-    enum Category implements FreerailsSerializable {
-        Urban, River, Ocean, Hill, Country, Special, Industry, Resource
-    }
-
     String getTerrainTypeName();
 
     Category getCategory();
@@ -32,4 +28,8 @@ public interface TerrainType extends FreerailsSerializable {
     ImList<Conversion> getConversion();
 
     String getDisplayName();
+
+    enum Category implements FreerailsSerializable {
+        Urban, River, Ocean, Hill, Country, Special, Industry, Resource
+    }
 }

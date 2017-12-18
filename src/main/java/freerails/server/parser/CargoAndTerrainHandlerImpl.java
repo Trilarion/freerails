@@ -22,28 +22,18 @@ import java.util.HashSet;
  * @see CargoAndTerrainParser
  */
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
-    private final World world;
-
     final HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<>();
-
     final HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
-
+    final ArrayList<Consumption> typeConsumes = new ArrayList<>();
+    final ArrayList<Production> typeProduces = new ArrayList<>();
+    final ArrayList<Conversion> typeConverts = new ArrayList<>();
+    private final World world;
     // Parsing variables for Tile
     String tileID;
-
     TerrainType.Category tileCategory;
-
     int tileRGB;
-
     int tileROW;
-
     int tileBuildCost;
-
-    final ArrayList<Consumption> typeConsumes = new ArrayList<>();
-
-    final ArrayList<Production> typeProduces = new ArrayList<>();
-
-    final ArrayList<Conversion> typeConverts = new ArrayList<>();
 
     public CargoAndTerrainHandlerImpl(World w) {
         world = w;
@@ -189,9 +179,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
      */
     private int string2CargoID(String cargoName) throws SAXException {
         if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
-            Integer integer = cargoName2cargoTypeNumber.get(cargoName);
 
-            return integer;
+            return cargoName2cargoTypeNumber.get(cargoName);
         }
         throw new SAXException("Unknown cargo type: " + cargoName);
     }

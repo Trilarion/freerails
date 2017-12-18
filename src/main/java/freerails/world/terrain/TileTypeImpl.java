@@ -23,6 +23,48 @@ final public class TileTypeImpl implements TerrainType {
     private final ImList<Production> production;
 
     private final int rgb;
+    private final int rightOfWay;
+    private final TerrainType.Category terrainCategory;
+    private final String terrainType;
+    /**
+     * Cost to build a tile of this terrain type or null if this type is not
+     * buildable.
+     */
+    private final Money tileBuildCost;
+
+    public TileTypeImpl(int rgb, TerrainType.Category terrainCategory,
+                        String terrainType, int rightOfWay, Production[] production,
+                        Consumption[] consumption, Conversion[] conversion,
+                        int tileBuildCost) {
+        this.terrainType = terrainType;
+        this.terrainCategory = terrainCategory;
+        this.rgb = rgb;
+        this.rightOfWay = rightOfWay;
+        this.production = new ImList<>(production);
+        this.consumption = new ImList<>(consumption);
+        this.conversion = new ImList<>(conversion);
+
+        if (tileBuildCost > 0) {
+            this.tileBuildCost = new Money(tileBuildCost);
+        } else {
+            this.tileBuildCost = null;
+        }
+    }
+
+    /**
+     * Lets unit tests create terrain types without bothering with all the
+     * details.
+     */
+    public TileTypeImpl(TerrainType.Category terrainCategory, String terrainType) {
+        this.terrainType = terrainType;
+        this.terrainCategory = terrainCategory;
+        this.rgb = 0;
+        this.rightOfWay = 0;
+        this.production = new ImList<>();
+        this.consumption = new ImList<>();
+        this.conversion = new ImList<>();
+        this.tileBuildCost = null;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,52 +106,6 @@ final public class TileTypeImpl implements TerrainType {
         result = 29 * result
                 + (tileBuildCost != null ? tileBuildCost.hashCode() : 0);
         return result;
-    }
-
-    private final int rightOfWay;
-
-    private final TerrainType.Category terrainCategory;
-
-    private final String terrainType;
-
-    /**
-     * Cost to build a tile of this terrain type or null if this type is not
-     * buildable.
-     */
-    private final Money tileBuildCost;
-
-    public TileTypeImpl(int rgb, TerrainType.Category terrainCategory,
-                        String terrainType, int rightOfWay, Production[] production,
-                        Consumption[] consumption, Conversion[] conversion,
-                        int tileBuildCost) {
-        this.terrainType = terrainType;
-        this.terrainCategory = terrainCategory;
-        this.rgb = rgb;
-        this.rightOfWay = rightOfWay;
-        this.production = new ImList<>(production);
-        this.consumption = new ImList<>(consumption);
-        this.conversion = new ImList<>(conversion);
-
-        if (tileBuildCost > 0) {
-            this.tileBuildCost = new Money(tileBuildCost);
-        } else {
-            this.tileBuildCost = null;
-        }
-    }
-
-    /**
-     * Lets unit tests create terrain types without bothering with all the
-     * details.
-     */
-    public TileTypeImpl(TerrainType.Category terrainCategory, String terrainType) {
-        this.terrainType = terrainType;
-        this.terrainCategory = terrainCategory;
-        this.rgb = 0;
-        this.rightOfWay = 0;
-        this.production = new ImList<>();
-        this.consumption = new ImList<>();
-        this.conversion = new ImList<>();
-        this.tileBuildCost = null;
     }
 
     public Money getBuildCost() {

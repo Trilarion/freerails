@@ -8,6 +8,7 @@ import java.util.SortedMap;
 
 public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
 
+    private static final long serialVersionUID = 4323585276281406244L;
     private final List2D<T> underlyingList;
 
     public List2DDiff(SortedMap<ListKey, Object> diffs, List2D<T> list,
@@ -15,8 +16,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
         super(diffs, listID);
         underlyingList = list;
     }
-
-    private static final long serialVersionUID = 4323585276281406244L;
 
     public int sizeD1() {
         return super.size();

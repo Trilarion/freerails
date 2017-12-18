@@ -35,12 +35,19 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     StationBuilder stationBuilder;
 
     FreerailsPrincipal principal;
-
+    ImmutableSchedule defaultSchedule;
     private ImPoint station1Location;
-
     private ImPoint station2Location;
 
-    ImmutableSchedule defaultSchedule;
+    static void incrTime(World w, FreerailsPrincipal p) {
+        ActivityIterator ai = w.getActivities(p, 0);
+        while (ai.hasNext())
+            ai.nextActivity();
+
+        double finishTime = ai.getFinishTime();
+        GameTime newTime = new GameTime((int) Math.floor(finishTime));
+        w.setTime(newTime);
+    }
 
     @Override
     /*
@@ -437,16 +444,6 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MoveStatus ms = m.doMove(world, principal);
         assertTrue(ms.message, ms.ok);
         assertFalse(preMove.isUpdateDue(world));
-    }
-
-    static void incrTime(World w, FreerailsPrincipal p) {
-        ActivityIterator ai = w.getActivities(p, 0);
-        while (ai.hasNext())
-            ai.nextActivity();
-
-        double finishTime = ai.getFinishTime();
-        GameTime newTime = new GameTime((int) Math.floor(finishTime));
-        w.setTime(newTime);
     }
 
     /**

@@ -12,15 +12,16 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class GameRules implements FreerailsSerializable {
+    public static final GameRules DEFAULT_RULES = new GameRules(true, false);
+    public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);
     private static final long serialVersionUID = 3258125847557978416L;
-
     private final boolean canConnect2OtherRRTrack;
-
     private final boolean mustConnect2ExistingTrack;
 
-    public static final GameRules DEFAULT_RULES = new GameRules(true, false);
-
-    public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);
+    private GameRules(boolean mustConnect, boolean canConnect2others) {
+        canConnect2OtherRRTrack = canConnect2others;
+        mustConnect2ExistingTrack = mustConnect;
+    }
 
     @Override
     public int hashCode() {
@@ -29,11 +30,6 @@ public class GameRules implements FreerailsSerializable {
         result = 29 * result + (mustConnect2ExistingTrack ? 1 : 0);
 
         return result;
-    }
-
-    private GameRules(boolean mustConnect, boolean canConnect2others) {
-        canConnect2OtherRRTrack = canConnect2others;
-        mustConnect2ExistingTrack = mustConnect;
     }
 
     public synchronized boolean isCanConnect2OtherRRTrack() {

@@ -22,15 +22,12 @@ import java.util.HashMap;
  */
 public class QuickRGBTileRendererList implements TileRendererList {
 
-    private final Image[] images;
-
-    private final HashMap<Integer, Integer> rgb2index = new HashMap<>();
-
-    private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
-
     private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
+    private final Image[] images;
+    private final HashMap<Integer, Integer> rgb2index = new HashMap<>();
+    private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
 
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
         int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);

@@ -13,14 +13,10 @@ import freerails.world.common.PositionOnTrack;
  */
 public class TrainPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256999977816502584L;
-
-    private final FreerailsIntIterator intIterator;
-
-    private final PositionOnTrack p1 = new PositionOnTrack();
-
-    private final PositionOnTrack p2 = new PositionOnTrack();
-
     private static final int tileSize = Constants.TILE_SIZE;
+    private final FreerailsIntIterator intIterator;
+    private final PositionOnTrack p1 = new PositionOnTrack();
+    private final PositionOnTrack p2 = new PositionOnTrack();
 
     public TrainPathIterator(FreerailsIntIterator i) {
         intIterator = i;

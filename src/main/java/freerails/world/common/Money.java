@@ -9,13 +9,15 @@ import java.text.DecimalFormat;
  */
 final public class Money implements FreerailsSerializable {
 
-    private static final long serialVersionUID = 3258697615163338805L;
-
     public static final Money ZERO = new Money(0);
-
+    private static final long serialVersionUID = 3258697615163338805L;
     private static final DecimalFormat df = new DecimalFormat("#,###");
 
     private final long amount;
+
+    public Money(long amount) {
+        this.amount = amount;
+    }
 
     public long getAmount() {
         return amount;
@@ -29,10 +31,6 @@ final public class Money implements FreerailsSerializable {
     @Override
     public String toString() {
         return df.format(amount);
-    }
-
-    public Money(long amount) {
-        this.amount = amount;
     }
 
     public Money changeSign() {

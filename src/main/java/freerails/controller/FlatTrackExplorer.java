@@ -21,28 +21,72 @@ import java.util.NoSuchElementException;
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
     private static final long serialVersionUID = 3834311713465185081L;
-
-    private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(
-            0, 0, Step.NORTH);
-
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
             0, Step.NORTH);
-
+    private final ReadOnlyWorld w;
+    private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(
+            0, 0, Step.NORTH);
     private boolean beforeFirst = true;
 
-    private final ReadOnlyWorld w;
+    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
+            throws NoTrackException {
+        w = world;
+        FreerailsTile tile = (FreerailsTile) world.getTile(p.getX(), p.getY());
+        if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+            throw new NoTrackException(p.toString());
+        }
+
+        this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p
+                .getY(), p.cameFrom());
+    }
+
+    /**
+     * @param p location of track to consider.
+     * @return an array of PositionOnTrack objects describing the set of
+     * possible orientations at this position (heading towards the
+     * center of the tile)
+     */
+    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
+                                                         ImPoint p) {
+        TrackPiece tp = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
+        TrackConfiguration conf = tp.getTrackConfiguration();
+        Step[] vectors = Step.getList();
+
+        // Count the number of possible positions.
+        int n = 0;
+
+        for (Step vector1 : vectors) {
+            if (conf.contains(vector1.get9bitTemplate())) {
+                n++;
+            }
+        }
+
+        PositionOnTrack[] possiblePositions = new PositionOnTrack[n];
+
+        n = 0;
+
+        for (Step vector : vectors) {
+            if (conf.contains(vector.get9bitTemplate())) {
+                possiblePositions[n] = PositionOnTrack.createComingFrom(p.x,
+                        p.y, vector.getOpposite());
+                n++;
+            }
+        }
+
+        return possiblePositions;
+    }
 
     public ReadOnlyWorld getWorld() {
         return w;
     }
 
+    public int getPosition() {
+        return this.currentPosition.toInt();
+    }
+
     public void setPosition(int i) {
         beforeFirst = true;
         currentPosition.setValuesFromInt(i);
-    }
-
-    public int getPosition() {
-        return this.currentPosition.toInt();
     }
 
     public void moveForward() {
@@ -115,54 +159,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         return oppositeToCurrentDirection.getID() != currentBranchDirection
                 .getID();
-    }
-
-    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
-            throws NoTrackException {
-        w = world;
-        FreerailsTile tile = (FreerailsTile) world.getTile(p.getX(), p.getY());
-        if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-            throw new NoTrackException(p.toString());
-        }
-
-        this.currentPosition = PositionOnTrack.createComingFrom(p.getX(), p
-                .getY(), p.cameFrom());
-    }
-
-    /**
-     * @param p location of track to consider.
-     * @return an array of PositionOnTrack objects describing the set of
-     * possible orientations at this position (heading towards the
-     * center of the tile)
-     */
-    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
-                                                         ImPoint p) {
-        TrackPiece tp = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
-        TrackConfiguration conf = tp.getTrackConfiguration();
-        Step[] vectors = Step.getList();
-
-        // Count the number of possible positions.
-        int n = 0;
-
-        for (Step vector1 : vectors) {
-            if (conf.contains(vector1.get9bitTemplate())) {
-                n++;
-            }
-        }
-
-        PositionOnTrack[] possiblePositions = new PositionOnTrack[n];
-
-        n = 0;
-
-        for (Step vector : vectors) {
-            if (conf.contains(vector.get9bitTemplate())) {
-                possiblePositions[n] = PositionOnTrack.createComingFrom(p.x,
-                        p.y, vector.getOpposite());
-                n++;
-            }
-        }
-
-        return possiblePositions;
     }
 
     Step getFirstVectorToTry() {

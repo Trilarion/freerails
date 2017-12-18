@@ -23,6 +23,15 @@ public class AddPlayerMove implements Move, ServerMove {
         player2add = p;
     }
 
+    public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
+        /*
+          create a new player with a corresponding Principal
+         */
+        Player player2add = new Player(player.getName(), w.getNumberOfPlayers());
+
+        return new AddPlayerMove(player2add);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -38,15 +47,6 @@ public class AddPlayerMove implements Move, ServerMove {
     @Override
     public int hashCode() {
         return player2add.hashCode();
-    }
-
-    public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
-        /*
-          create a new player with a corresponding Principal
-         */
-        Player player2add = new Player(player.getName(), w.getNumberOfPlayers());
-
-        return new AddPlayerMove(player2add);
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

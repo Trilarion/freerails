@@ -11,11 +11,9 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public abstract class AbstractEchoGameServerTestCase extends TestCase {
-    InetConnectionAccepter server;
-
-    EchoGameServer echoGameServer;
-
     final String ipAddress = "127.0.0.1";
+    InetConnectionAccepter server;
+    EchoGameServer echoGameServer;
 
     @Override
     protected synchronized void setUp() throws Exception {

@@ -10,14 +10,10 @@ import freerails.world.common.ImInts;
  */
 public class TrainModel implements FreerailsSerializable {
     public static final int WAGON_LENGTH = 24;
-
-    private static final long serialVersionUID = 3545235825756812339L;
-
     public static final int MAX_NUMBER_OF_WAGONS = 6;
-
     public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS)
             * WAGON_LENGTH;
-
+    private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
 
     private final int engineTypeId;
@@ -25,21 +21,6 @@ public class TrainModel implements FreerailsSerializable {
     private final ImInts wagonTypes;
 
     private final int cargoBundleId;
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = scheduleId;
-        result = 29 * result + engineTypeId;
-        result = 29 * result + cargoBundleId;
-
-        return result;
-    }
-
-    public TrainModel getNewInstance(int newEngine, ImInts newWagons) {
-        return new TrainModel(newEngine, newWagons, this.getScheduleID(), this
-                .getCargoBundleID());
-    }
 
     public TrainModel(int engine, ImInts wagons, int scheduleID, int BundleId) {
         engineTypeId = engine;
@@ -67,6 +48,21 @@ public class TrainModel implements FreerailsSerializable {
         wagonTypes = new ImInts(0, 1, 2);
         scheduleId = 0;
         cargoBundleId = 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = scheduleId;
+        result = 29 * result + engineTypeId;
+        result = 29 * result + cargoBundleId;
+
+        return result;
+    }
+
+    public TrainModel getNewInstance(int newEngine, ImInts newWagons) {
+        return new TrainModel(newEngine, newWagons, this.getScheduleID(), this
+                .getCargoBundleID());
     }
 
     public int getLength() {

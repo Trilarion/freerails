@@ -20,6 +20,9 @@ final public class SynchronizedEventQueue extends EventQueue {
     private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
 
     private static boolean alreadyInUse = false;
+    private final LinkedHashMap<AWTEvent, Throwable> list;
+    private int count;
+    private long last;
 
     /**
      * Enforce singleton property.
@@ -38,9 +41,9 @@ final public class SynchronizedEventQueue extends EventQueue {
         }
     }
 
-    private int count;
-    private long last;
-    private final LinkedHashMap<AWTEvent, Throwable> list;
+    public static SynchronizedEventQueue getInstance() {
+        return instance;
+    }
 
     public void postEvent(AWTEvent aEvent) {
         synchronized (list) {
@@ -84,9 +87,5 @@ final public class SynchronizedEventQueue extends EventQueue {
                 ReportBugTextGenerator.unexpectedException(e);
             }
         }
-    }
-
-    public static SynchronizedEventQueue getInstance() {
-        return instance;
     }
 }

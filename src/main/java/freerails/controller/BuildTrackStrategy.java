@@ -23,6 +23,13 @@ public class BuildTrackStrategy {
 
     private final int[] rules;
 
+    /**
+     * Creates a new instance of BuildTrackStrategy
+     */
+    private BuildTrackStrategy(int[] r) {
+        rules = r;
+    }
+
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID,
                                                            ReadOnlyWorld w) {
         int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
@@ -89,13 +96,6 @@ public class BuildTrackStrategy {
 
         }
         return newRules;
-    }
-
-    /**
-     * Creates a new instance of BuildTrackStrategy
-     */
-    private BuildTrackStrategy(int[] r) {
-        rules = r;
     }
 
     public int getRule(int terrainType) {

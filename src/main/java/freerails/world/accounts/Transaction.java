@@ -14,10 +14,6 @@ import freerails.world.common.Money;
  */
 public interface Transaction extends FreerailsSerializable {
 
-    enum Category {
-        BOND, BRIDGES, CARGO_DELIVERY, INDUSTRIES, INTEREST_CHARGE, ISSUE_STOCK, MISC_INCOME, STATION_MAINTENANCE, STATIONS, TRACK, TRACK_MAINTENANCE, TRAIN, TRAIN_MAINTENANCE, TRANSFER_STOCK
-    }
-
     Money deltaAssets();
 
     /**
@@ -26,4 +22,8 @@ public interface Transaction extends FreerailsSerializable {
     Money deltaCash();
 
     Category getCategory();
+
+    enum Category {
+        BOND, BRIDGES, CARGO_DELIVERY, INDUSTRIES, INTEREST_CHARGE, ISSUE_STOCK, MISC_INCOME, STATION_MAINTENANCE, STATIONS, TRACK, TRACK_MAINTENANCE, TRAIN, TRAIN_MAINTENANCE, TRANSFER_STOCK
+    }
 }

@@ -17,6 +17,18 @@ public class TimeTickMove implements Move {
 
     private final GameTime newTime;
 
+    public TimeTickMove(GameTime oldTime, GameTime newTime) {
+        this.oldTime = oldTime;
+        this.newTime = newTime;
+    }
+
+    public static TimeTickMove getMove(ReadOnlyWorld w) {
+        GameTime oldTime = w.currentTime();
+        GameTime newTime = new GameTime(oldTime.getTicks() + 1);
+
+        return new TimeTickMove(oldTime, newTime);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -37,18 +49,6 @@ public class TimeTickMove implements Move {
         result = oldTime.hashCode();
         result = 29 * result + newTime.hashCode();
         return result;
-    }
-
-    public static TimeTickMove getMove(ReadOnlyWorld w) {
-        GameTime oldTime = w.currentTime();
-        GameTime newTime = new GameTime(oldTime.getTicks() + 1);
-
-        return new TimeTickMove(oldTime, newTime);
-    }
-
-    public TimeTickMove(GameTime oldTime, GameTime newTime) {
-        this.oldTime = oldTime;
-        this.newTime = newTime;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

@@ -25,59 +25,21 @@ import java.security.NoSuchAlgorithmException;
  * @author rtuck99@users.sourceforge.net
  */
 public class Player implements FreerailsSerializable {
-    private static final long serialVersionUID = 1;
-
-    /**
-     * A FreerailsPrincipal that is not a player.
-     */
-    private static class WorldPrincipal extends FreerailsPrincipal {
-        private static final long serialVersionUID = 1;
-
-        private final String principalName;
-
-        public WorldPrincipal(String name) {
-            super(-1);
-            this.principalName = name;
-        }
-
-        public String getName() {
-            return principalName;
-        }
-
-        @Override
-        public String toString() {
-            return principalName;
-        }
-
-        @Override
-        public int hashCode() {
-            return principalName.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return o instanceof WorldPrincipal && (principalName.equals(((WorldPrincipal) o).principalName));
-
-        }
-    }
-
-    private FreerailsPrincipal principal;
-
     /**
      * This Principal can be granted all permissions.
      */
     public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal(
             "Authoritative Server");
-
     /**
      * This Principal has no permissions.
      */
     public static final FreerailsPrincipal NOBODY = new WorldPrincipal("Nobody");
-
+    private static final long serialVersionUID = 1;
     /**
      * Name of the player.
      */
     private final String name;
+    private FreerailsPrincipal principal;
 
     /**
      * Used by the client to generate a player with a particular name.
@@ -156,5 +118,39 @@ public class Player implements FreerailsSerializable {
 
     public FreerailsPrincipal getPrincipal() {
         return principal;
+    }
+
+    /**
+     * A FreerailsPrincipal that is not a player.
+     */
+    private static class WorldPrincipal extends FreerailsPrincipal {
+        private static final long serialVersionUID = 1;
+
+        private final String principalName;
+
+        public WorldPrincipal(String name) {
+            super(-1);
+            this.principalName = name;
+        }
+
+        public String getName() {
+            return principalName;
+        }
+
+        @Override
+        public String toString() {
+            return principalName;
+        }
+
+        @Override
+        public int hashCode() {
+            return principalName.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof WorldPrincipal && (principalName.equals(((WorldPrincipal) o).principalName));
+
+        }
     }
 }

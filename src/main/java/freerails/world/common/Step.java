@@ -17,53 +17,42 @@ import java.io.ObjectStreamException;
  */
 @freerails.util.InstanceControlled
 final public class Step implements FlatTrackTemplate {
-    private static final long serialVersionUID = 3256444698640921912L;
-
     public static final int TILE_DIAMETER = Constants.TILE_SIZE;
-
     public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER,
             TILE_DIAMETER);
-
     /**
      * North.
      */
     public static final Step NORTH;
-
     /**
      * West.
      */
     public static final Step WEST;
-
     /**
      * South East.
      */
     public static final Step SOUTH_EAST;
-
     /**
      * North-East.
      */
     public static final Step NORTH_EAST;
-
     /**
      * East.
      */
     public static final Step EAST;
-
     /**
      * South.
      */
     public static final Step SOUTH;
-
     /**
      * South West.
      */
     public static final Step SOUTH_WEST;
-
     /**
      * North West.
      */
     public static final Step NORTH_WEST;
-
+    private static final long serialVersionUID = 3256444698640921912L;
     /**
      * A 3x3 array of OneTileMoveVectors, representing vectors to eight adjacent
      * tiles plus a zero-distance vector.
@@ -100,6 +89,34 @@ final public class Step implements FlatTrackTemplate {
         list[7] = NORTH_WEST;
     }
 
+    /**
+     * The X and Y components of the vector.
+     */
+    public final int deltaX;
+    /**
+     * The X and Y components of the vector.
+     */
+    public final int deltaY;
+    private final int flatTrackTemplate;
+    private final double length;
+
+    /**
+     * Create a new OneTileMoveVector. N.B Private constuctor to enforce enum
+     * property, use getInstance(x,y) instead. Pass values for delta X and Y:
+     * they must be in the range -1 to 1 and cannot both be equal to 0.
+     *
+     * @param x Tile coordinate.
+     * @param y Tile coordinate
+     * @param t an integer representing the track template this vector
+     *          corresponds to.
+     */
+    private Step(int x, int y, int t) {
+        deltaX = x;
+        deltaY = y;
+        flatTrackTemplate = t;
+        length = (x * y) == 0 ? TILE_DIAMETER : TILE_DIAGONAL;
+    }
+
     private static Step[][] setupVectors() {
         int t = 1;
         Step[][] tvectors = new Step[3][3];
@@ -127,19 +144,96 @@ final public class Step implements FlatTrackTemplate {
         return new ImPoint(x, y);
     }
 
-    /**
-     * The X and Y components of the vector.
-     */
-    public final int deltaX;
+    public static Step getInstance(int number) {
+        return list[number];
+    }
+
+    public static boolean checkValidity(ImPoint a, ImPoint b) {
+        int dx = b.x - a.x;
+        int dy = b.y - a.y;
+        return checkValidity(dx, dy);
+    }
+
+    public static Step getInstance(int dx, int dy) {
+        if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1)))
+                || ((dx == 0) && (dy == 0))) {
+            throw new IllegalArgumentException(
+                    dx
+                            + " and "
+                            + dy
+                            + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
+        }
+        return vectors[dx + 1][dy + 1];
+    }
 
     /**
-     * The X and Y components of the vector.
+     * Returns true if the values passed could be used to create a valid vector.
      */
-    public final int deltaY;
+    public static boolean checkValidity(int x, int y) {
+        return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1)))
+                && ((x != 0) || (y != 0));
+    }
 
-    private final int flatTrackTemplate;
+    /**
+     * @return a copy of the list of 8 OneTileMoveVectors going clockwise from
+     * North.
+     */
+    public static Step[] getList() {
+        return list.clone(); // defensive copy.
+    }
 
-    private final double length;
+    /**
+     * @return the OneTileMoveVector nearest in orientation to the specified dx,
+     * dy
+     */
+    public static Step getNearestVector(int dx, int dy) {
+        if (0 == dx * dy) {
+            if (dx > 0) {
+                return EAST;
+            } else if (dx != 0) {
+                return WEST;
+            } else if (dy > 0) {
+                return SOUTH;
+            } else {
+                return NORTH;
+            }
+        }
+
+        double gradient = dy;
+        gradient = gradient / dx;
+
+        double B = 2;
+        double A = 0.5;
+        double C = -2;
+        double D = -0.5;
+
+        if (gradient > B) {
+            if (dy < 0) {
+                return NORTH;
+            }
+            return SOUTH;
+        } else if (gradient > A) {
+            if (dy > 0) {
+                return SOUTH_EAST;
+            }
+            return NORTH_WEST;
+        } else if (gradient > D) {
+            if (dx > 0) {
+                return EAST;
+            }
+            return WEST;
+        } else if (gradient > C) {
+            if (dx < 0) {
+                return SOUTH_WEST;
+            }
+            return NORTH_EAST;
+        } else {
+            if (dy > 0) {
+                return SOUTH;
+            }
+            return NORTH;
+        }
+    }
 
     /**
      * Returns the X component of the vector.
@@ -247,53 +341,6 @@ final public class Step implements FlatTrackTemplate {
         return name;
     }
 
-    /**
-     * Create a new OneTileMoveVector. N.B Private constuctor to enforce enum
-     * property, use getInstance(x,y) instead. Pass values for delta X and Y:
-     * they must be in the range -1 to 1 and cannot both be equal to 0.
-     *
-     * @param x Tile coordinate.
-     * @param y Tile coordinate
-     * @param t an integer representing the track template this vector
-     *          corresponds to.
-     */
-    private Step(int x, int y, int t) {
-        deltaX = x;
-        deltaY = y;
-        flatTrackTemplate = t;
-        length = (x * y) == 0 ? TILE_DIAMETER : TILE_DIAGONAL;
-    }
-
-    public static Step getInstance(int number) {
-        return list[number];
-    }
-
-    public static boolean checkValidity(ImPoint a, ImPoint b) {
-        int dx = b.x - a.x;
-        int dy = b.y - a.y;
-        return checkValidity(dx, dy);
-    }
-
-    public static Step getInstance(int dx, int dy) {
-        if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1)))
-                || ((dx == 0) && (dy == 0))) {
-            throw new IllegalArgumentException(
-                    dx
-                            + " and "
-                            + dy
-                            + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
-        }
-        return vectors[dx + 1][dy + 1];
-    }
-
-    /**
-     * Returns true if the values passed could be used to create a valid vector.
-     */
-    public static boolean checkValidity(int x, int y) {
-        return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1)))
-                && ((x != 0) || (y != 0));
-    }
-
     public ImPoint createRelocatedPoint(ImPoint from) {
         return new ImPoint(from.x + deltaX, from.y + deltaY);
     }
@@ -304,14 +351,6 @@ final public class Step implements FlatTrackTemplate {
 
     public int get9bitTemplate() {
         return flatTrackTemplate;
-    }
-
-    /**
-     * @return a copy of the list of 8 OneTileMoveVectors going clockwise from
-     * North.
-     */
-    public static Step[] getList() {
-        return list.clone(); // defensive copy.
     }
 
     /**
@@ -347,59 +386,6 @@ final public class Step implements FlatTrackTemplate {
 
     private Object readResolve() throws ObjectStreamException {
         return Step.getInstance(this.deltaX, this.deltaY);
-    }
-
-    /**
-     * @return the OneTileMoveVector nearest in orientation to the specified dx,
-     * dy
-     */
-    public static Step getNearestVector(int dx, int dy) {
-        if (0 == dx * dy) {
-            if (dx > 0) {
-                return EAST;
-            } else if (dx != 0) {
-                return WEST;
-            } else if (dy > 0) {
-                return SOUTH;
-            } else {
-                return NORTH;
-            }
-        }
-
-        double gradient = dy;
-        gradient = gradient / dx;
-
-        double B = 2;
-        double A = 0.5;
-        double C = -2;
-        double D = -0.5;
-
-        if (gradient > B) {
-            if (dy < 0) {
-                return NORTH;
-            }
-            return SOUTH;
-        } else if (gradient > A) {
-            if (dy > 0) {
-                return SOUTH_EAST;
-            }
-            return NORTH_WEST;
-        } else if (gradient > D) {
-            if (dx > 0) {
-                return EAST;
-            }
-            return WEST;
-        } else if (gradient > C) {
-            if (dx < 0) {
-                return SOUTH_WEST;
-            }
-            return NORTH_EAST;
-        } else {
-            if (dy > 0) {
-                return SOUTH;
-            }
-            return NORTH;
-        }
     }
 
     public boolean isDiagonal() {

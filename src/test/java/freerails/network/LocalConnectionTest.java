@@ -16,41 +16,8 @@ import java.util.Arrays;
  * @author Luke
  */
 public class LocalConnectionTest extends TestCase {
-    private static class Server implements Runnable {
-        private boolean keepGoing = true;
-
-        private final LocalConnection connection;
-
-        public Server(LocalConnection l) {
-            connection = l;
-        }
-
-        public void run() {
-            try {
-                while (isKeepGoing()) {
-                    FreerailsSerializable fs = connection
-                            .waitForObjectFromClient();
-                    connection.writeToClient(fs);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail();
-            }
-        }
-
-        private synchronized boolean isKeepGoing() {
-            return keepGoing;
-        }
-
-        public synchronized void stop() {
-            this.keepGoing = false;
-        }
-    }
-
-    private LocalConnection localConnection;
-
     private final FreerailsSerializable[] EmptyArray = new FreerailsSerializable[0];
-
+    private LocalConnection localConnection;
     private Server server;
 
     /**
@@ -140,5 +107,35 @@ public class LocalConnectionTest extends TestCase {
         // TODO Auto-generated method stub
         super.tearDown();
         server.stop(); // Stop the server thread.
+    }
+
+    private static class Server implements Runnable {
+        private final LocalConnection connection;
+        private boolean keepGoing = true;
+
+        public Server(LocalConnection l) {
+            connection = l;
+        }
+
+        public void run() {
+            try {
+                while (isKeepGoing()) {
+                    FreerailsSerializable fs = connection
+                            .waitForObjectFromClient();
+                    connection.writeToClient(fs);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                fail();
+            }
+        }
+
+        private synchronized boolean isKeepGoing() {
+            return keepGoing;
+        }
+
+        public synchronized void stop() {
+            this.keepGoing = false;
+        }
     }
 }

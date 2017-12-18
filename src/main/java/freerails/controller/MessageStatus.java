@@ -17,6 +17,20 @@ public class MessageStatus implements FreerailsSerializable {
     private static final long serialVersionUID = 3257285842216103987L;
 
     private final int id;
+    private final String reason;
+    private final boolean successful;
+
+    public MessageStatus(int id, boolean successful, String reason) {
+        this.id = id;
+        this.reason = reason;
+        this.successful = successful;
+    }
+
+    public MessageStatus(int id, boolean successful) {
+        this.id = id;
+        this.reason = null;
+        this.successful = successful;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -41,22 +55,6 @@ public class MessageStatus implements FreerailsSerializable {
         result = 29 * result + (reason != null ? reason.hashCode() : 0);
         result = 29 * result + (successful ? 1 : 0);
         return result;
-    }
-
-    private final String reason;
-
-    private final boolean successful;
-
-    public MessageStatus(int id, boolean successful, String reason) {
-        this.id = id;
-        this.reason = reason;
-        this.successful = successful;
-    }
-
-    public MessageStatus(int id, boolean successful) {
-        this.id = id;
-        this.reason = null;
-        this.successful = successful;
     }
 
     /**

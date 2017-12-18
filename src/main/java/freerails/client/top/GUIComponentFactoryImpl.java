@@ -60,42 +60,25 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private final DateJLabel datejLabel;
 
     private final DialogueBoxController dialogueBoxController;
-
-    private boolean isSetup = false;
-
-    private DetailMapRenderer mainMap;
-
     private final JScrollPane mainMapScrollPane1;
-
     private final MapViewJComponentConcrete mapViewJComponent;
-
     private final ModelRootImpl modelRoot;
-
-    private MapRenderer overviewMap;
-
     private final JPanel overviewMapContainer;
-
-    private ServerControlModel sc;
-
-    private ActionAdapter speedActions;
-
-    private JMenuItem stationInfoJMenuItem;
-
     private final StationTypesPopup stationTypesPopup;
-
-    private JMenuItem trainListJMenuItem;
-
-    private JMenuItem trainOrdersJMenuItem;
-
     /**
      * This is the panel at the bottom right of the screen.
      */
     private final RHSJTabPane trainsJTabPane;
-
     private final UserInputOnMapController userInputOnMapController;
-
     private final UserMessageGenerator userMessageGenerator;
-
+    private boolean isSetup = false;
+    private DetailMapRenderer mainMap;
+    private MapRenderer overviewMap;
+    private ServerControlModel sc;
+    private ActionAdapter speedActions;
+    private JMenuItem stationInfoJMenuItem;
+    private JMenuItem trainListJMenuItem;
+    private JMenuItem trainOrdersJMenuItem;
     private ReadOnlyWorld world;
 
     public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {
@@ -578,7 +561,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                         .getProperty(ModelRoot.Property.CURSOR_POSITION);
             }
         }
-        RenderersRoot renderers = vl;
         world = w;
         modelRoot.addMapListener(this);
         modelRoot.addListListener(this);
@@ -590,7 +572,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         }
 
         // create the main and overview maps
-        mainMap = new DetailMapRenderer(world, renderers, modelRoot);
+        mainMap = new DetailMapRenderer(world, vl, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);
         overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
@@ -598,7 +580,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         stationTypesPopup.setup(modelRoot, actionRoot, mainMap
                 .getStationRadius());
 
-        mapViewJComponent.setup(mainMap, modelRoot, renderers);
+        mapViewJComponent.setup(mainMap, modelRoot, vl);
 
         // setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);

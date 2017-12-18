@@ -16,17 +16,20 @@ import java.util.ArrayList;
  * @author Luke Lindsay
  */
 public class TransferCargoAtStationMove extends CompositeMove {
-    private static final long serialVersionUID = 3257291318215456563L;
-
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
-
     public static final int CHANGE_AT_STATION_INDEX = 0;
-
+    private static final long serialVersionUID = 3257291318215456563L;
     private final boolean waitingForFullLoad;
 
     private TransferCargoAtStationMove(Move[] moves, boolean waiting) {
         super(moves);
         waitingForFullLoad = waiting;
+    }
+
+    public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
+                                      boolean waiting) {
+        super(movesArrayList);
+        this.waitingForFullLoad = waiting;
     }
 
     public static TransferCargoAtStationMove generateMove(
@@ -98,12 +101,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
         }
 
         return Player.NOBODY;
-    }
-
-    public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
-                                      boolean waiting) {
-        super(movesArrayList);
-        this.waitingForFullLoad = waiting;
     }
 
     public boolean isWaitingForFullLoad() {

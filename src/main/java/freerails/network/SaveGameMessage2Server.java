@@ -16,6 +16,12 @@ public class SaveGameMessage2Server implements Message2Server {
     private static final long serialVersionUID = 3257281452725777209L;
 
     private final int id;
+    private final String filename;
+
+    public SaveGameMessage2Server(int id, String s) {
+        this.id = id;
+        this.filename = s;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -37,13 +43,6 @@ public class SaveGameMessage2Server implements Message2Server {
         result = id;
         result = 29 * result + filename.hashCode();
         return result;
-    }
-
-    private final String filename;
-
-    public SaveGameMessage2Server(int id, String s) {
-        this.id = id;
-        this.filename = s;
     }
 
     public int getID() {

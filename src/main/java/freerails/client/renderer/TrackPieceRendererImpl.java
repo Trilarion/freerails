@@ -21,6 +21,29 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
     private final String typeName;
 
+    public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
+                                  int typeNumber) throws IOException {
+        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, typeNumber);
+        this.typeName = trackRule.getTypeName();
+
+        for (int i = 0; i < 512; i++) {
+            if (trackRule.testTrackPieceLegality(i)) {
+                String fileName = generateFilename(i, getTrackTypeName());
+                trackPieceIcons[i] = imageManager.getImage(fileName);
+            }
+        }
+    }
+
+    public static String generateFilename(int i, String trackTypeName) {
+        String relativeFileNameBase = "track" + File.separator + trackTypeName;
+        int newTemplate = TrackConfiguration.from9bitTemplate(i)
+                .get8bitTemplate();
+
+        return relativeFileNameBase + "_"
+                + BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)
+                + ".png";
+    }
+
     public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g,
                                    int x, int y, java.awt.Dimension tileSize) {
         if ((trackTemplate > 511) || (trackTemplate < 0)) {
@@ -32,19 +55,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
             int drawX = x * tileSize.width - tileSize.width / 2;
             int drawY = y * tileSize.height - tileSize.height / 2;
             g.drawImage(trackPieceIcons[trackTemplate], drawX, drawY, null);
-        }
-    }
-
-    public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
-                                  int typeNumber) throws IOException {
-        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, typeNumber);
-        this.typeName = trackRule.getTypeName();
-
-        for (int i = 0; i < 512; i++) {
-            if (trackRule.testTrackPieceLegality(i)) {
-                String fileName = generateFilename(i, getTrackTypeName());
-                trackPieceIcons[i] = imageManager.getImage(fileName);
-            }
         }
     }
 
@@ -64,16 +74,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
                 imageManager.setImage(fileName, trackPieceIcons[i]);
             }
         }
-    }
-
-    public static String generateFilename(int i, String trackTypeName) {
-        String relativeFileNameBase = "track" + File.separator + trackTypeName;
-        int newTemplate = TrackConfiguration.from9bitTemplate(i)
-                .get8bitTemplate();
-
-        return relativeFileNameBase + "_"
-                + BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)
-                + ".png";
     }
 
     private String getTrackTypeName() {

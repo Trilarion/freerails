@@ -26,64 +26,24 @@ import java.util.LinkedList;
  * @author Luke
  */
 public class MovePrecommitter {
-    private static class PreMoveAndMove implements FreerailsSerializable {
-        private static final long serialVersionUID = 3256443607635342897L;
-
-        final Move m;
-
-        final PreMove pm;
-
-        PreMoveAndMove(PreMove preMove, Move move) {
-            m = move;
-            pm = preMove;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof PreMoveAndMove))
-                return false;
-
-            final PreMoveAndMove preMoveAndMove = (PreMoveAndMove) o;
-
-            if (m != null ? !m.equals(preMoveAndMove.m)
-                    : preMoveAndMove.m != null)
-                return false;
-            return pm != null ? pm.equals(preMoveAndMove.pm) : preMoveAndMove.pm == null;
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            result = (m != null ? m.hashCode() : 0);
-            result = 29 * result + (pm != null ? pm.hashCode() : 0);
-            return result;
-        }
-    }
-
     private static final Logger logger = Logger
             .getLogger(MovePrecommitter.class.getName());
-
-    /**
-     * Whether the first move on the uncommitted list failed to go through on
-     * the last try.
-     */
-    boolean blocked = false;
-
     /**
      * List of moves and premoves that have been sent to the server and executed
      * on the local world object.
      */
     final LinkedList<FreerailsSerializable> precomitted = new LinkedList<>();
-
     /**
      * List of moves and premoves that have been sent to the server but not
      * executed on the local world object.
      */
     final LinkedList<FreerailsSerializable> uncomitted = new LinkedList<>();
-
     private final World w;
+    /**
+     * Whether the first move on the uncommitted list failed to go through on
+     * the last try.
+     */
+    boolean blocked = false;
 
     MovePrecommitter(World w) {
         this.w = w;
@@ -242,5 +202,41 @@ public class MovePrecommitter {
         PreMoveAndMove pmam = (PreMoveAndMove) precomitted.getLast();
 
         return pmam.m;
+    }
+
+    private static class PreMoveAndMove implements FreerailsSerializable {
+        private static final long serialVersionUID = 3256443607635342897L;
+
+        final Move m;
+
+        final PreMove pm;
+
+        PreMoveAndMove(PreMove preMove, Move move) {
+            m = move;
+            pm = preMove;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof PreMoveAndMove))
+                return false;
+
+            final PreMoveAndMove preMoveAndMove = (PreMoveAndMove) o;
+
+            if (m != null ? !m.equals(preMoveAndMove.m)
+                    : preMoveAndMove.m != null)
+                return false;
+            return pm != null ? pm.equals(preMoveAndMove.pm) : preMoveAndMove.pm == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            result = (m != null ? m.hashCode() : 0);
+            result = 29 * result + (pm != null ? pm.hashCode() : 0);
+            return result;
+        }
     }
 }

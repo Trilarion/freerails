@@ -23,6 +23,13 @@ public class AddItemToSharedListMove implements Move {
 
     private final FreerailsSerializable item;
 
+    protected AddItemToSharedListMove(SKEY key, int i,
+                                      FreerailsSerializable item) {
+        this.listKey = key;
+        this.index = i;
+        this.item = item;
+    }
+
     public int getIndex() {
         return index;
     }
@@ -39,13 +46,6 @@ public class AddItemToSharedListMove implements Move {
 
     public SKEY getKey() {
         return listKey;
-    }
-
-    protected AddItemToSharedListMove(SKEY key, int i,
-                                      FreerailsSerializable item) {
-        this.listKey = key;
-        this.index = i;
-        this.item = item;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -118,13 +118,12 @@ public class AddItemToSharedListMove implements Move {
 
     @Override
     public String toString() {
-        String sb = this.getClass().getName() + "\nlist=" +
+
+        return this.getClass().getName() + "\nlist=" +
                 listKey.toString() +
                 "\n index =" +
                 this.index +
                 "\n item =" +
                 this.item.toString();
-
-        return sb;
     }
 }

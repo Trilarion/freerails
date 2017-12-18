@@ -30,12 +30,53 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
     private static final Logger logger = Logger
             .getLogger(ClientOptionsJPanel.class.getName());
-
+    private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
-
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.ButtonGroup buttonGroup1;
+    javax.swing.JRadioButton fixedSizeButton;
+    javax.swing.JRadioButton fullScreenButton;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JLabel jLabel2;
+    javax.swing.JLabel jLabel3;
+    javax.swing.JList jList1;
+    javax.swing.JPanel jPanel1;
+    javax.swing.JPanel jPanel2;
+    javax.swing.JPanel jPanel3;
+    javax.swing.JPanel jPanel4;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JTextField playerName;
+    javax.swing.JComboBox playerNames;
+    javax.swing.JTextField remoteIP;
+    javax.swing.JTextField remotePort;
+    javax.swing.JPanel spacer;
+    javax.swing.JRadioButton windowedButton;
     private String[] names;
 
-    private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
+    public ClientOptionsJPanel(LauncherInterface owner) {
+        this.owner = owner;
+        initComponents();
+        validateInput();
+        // Listen for changes in the server port text box.
+        DocumentListener documentListener = new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                validateInput();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                validateInput();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                validateInput();
+            }
+
+        };
+        remotePort.getDocument().addDocumentListener(documentListener);
+        remoteIP.getDocument().addDocumentListener(documentListener);
+        playerName.getDocument().addDocumentListener(documentListener);
+
+    }
 
     /**
      * If the user has opted to load a game, we need to limit the list of
@@ -193,31 +234,6 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
     void setRemoteServerPanelVisible(boolean b) {
         this.jPanel4.setVisible(b);
-    }
-
-    public ClientOptionsJPanel(LauncherInterface owner) {
-        this.owner = owner;
-        initComponents();
-        validateInput();
-        // Listen for changes in the server port text box.
-        DocumentListener documentListener = new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) {
-                validateInput();
-            }
-
-            public void removeUpdate(DocumentEvent e) {
-                validateInput();
-            }
-
-            public void changedUpdate(DocumentEvent e) {
-                validateInput();
-            }
-
-        };
-        remotePort.getDocument().addDocumentListener(documentListener);
-        remoteIP.getDocument().addDocumentListener(documentListener);
-        playerName.getDocument().addDocumentListener(documentListener);
-
     }
 
     /**
@@ -423,43 +439,6 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         jList1.setEnabled(fullScreenButton.isSelected());
         validateInput();
     }// GEN-LAST:event_fullScreenButtonStateChanged
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.ButtonGroup buttonGroup1;
-
-    javax.swing.JRadioButton fixedSizeButton;
-
-    javax.swing.JRadioButton fullScreenButton;
-
-    javax.swing.JLabel jLabel1;
-
-    javax.swing.JLabel jLabel2;
-
-    javax.swing.JLabel jLabel3;
-
-    javax.swing.JList jList1;
-
-    javax.swing.JPanel jPanel1;
-
-    javax.swing.JPanel jPanel2;
-
-    javax.swing.JPanel jPanel3;
-
-    javax.swing.JPanel jPanel4;
-
-    javax.swing.JScrollPane jScrollPane1;
-
-    javax.swing.JTextField playerName;
-
-    javax.swing.JComboBox playerNames;
-
-    javax.swing.JTextField remoteIP;
-
-    javax.swing.JTextField remotePort;
-
-    javax.swing.JPanel spacer;
-
-    javax.swing.JRadioButton windowedButton;
     // End of variables declaration//GEN-END:variables
 
 }

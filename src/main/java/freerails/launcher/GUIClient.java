@@ -41,28 +41,12 @@ import java.io.Serializable;
 public class GUIClient extends FreerailsClient implements
         FreerailsProgressMonitor {
 
-    public static void main(String[] args) {
-        try {
-            GUIClient client = new GUIClient("Test", null,
-                    ScreenHandler.WINDOWED_MODE, null);
-            client.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private final ActionRoot actionRoot;
-
     private final GUIComponentFactoryImpl factory;
-
     private final ModelRootImpl modelRoot;
-
     private final FreerailsProgressMonitor monitor;
-
     private final String name;
-
     private final ScreenHandler screenHandler;
-
     private RenderersRoot vl;
 
     public GUIClient(String name, FreerailsProgressMonitor fm, int screenMode,
@@ -83,6 +67,16 @@ public class GUIClient extends FreerailsClient implements
 
         screenHandler = new ScreenHandler(createClientJFrame, screenMode, dm);
 
+    }
+
+    public static void main(String[] args) {
+        try {
+            GUIClient client = new GUIClient("Test", null,
+                    ScreenHandler.WINDOWED_MODE, null);
+            client.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

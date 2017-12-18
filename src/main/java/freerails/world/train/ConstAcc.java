@@ -10,9 +10,16 @@ import freerails.world.common.FreerailsSerializable;
 strictfp public class ConstAcc implements FreerailsSerializable,
         SpeedAgainstTime {
 
-    private static final long serialVersionUID = -2180666310811530761L;
-
     public static final ConstAcc STOPPED = new ConstAcc(0, 0, 0, 0);
+    private static final long serialVersionUID = -2180666310811530761L;
+    private final double u, a, finalS, finalT;
+
+    private ConstAcc(double a, double t, double u, double s) {
+        this.a = a;
+        this.finalT = t;
+        this.u = u;
+        this.finalS = s;
+    }
 
     public static ConstAcc uas(double u, double a, double s) {
         double t = calcT(u, a, s);
@@ -27,15 +34,6 @@ strictfp public class ConstAcc implements FreerailsSerializable,
     public static ConstAcc uat(double u, double a, double t) {
         double s = u * t + a * t * t / 2;
         return new ConstAcc(a, t, u, s);
-    }
-
-    private final double u, a, finalS, finalT;
-
-    private ConstAcc(double a, double t, double u, double s) {
-        this.a = a;
-        this.finalT = t;
-        this.u = u;
-        this.finalS = s;
     }
 
     public double calcS(double t) {

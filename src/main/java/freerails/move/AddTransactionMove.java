@@ -26,20 +26,6 @@ public class AddTransactionMove implements Move {
      */
     private final boolean constrained;
 
-    public Transaction getTransaction() {
-        return transaction;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = transaction.hashCode();
-        result = 29 * result + principal.hashCode();
-        result = 29 * result + (constrained ? 1 : 0);
-
-        return result;
-    }
-
     public AddTransactionMove(FreerailsPrincipal account, Transaction t) {
         if (null == t) {
             throw new NullPointerException();
@@ -59,6 +45,20 @@ public class AddTransactionMove implements Move {
         if (null == t) {
             throw new NullPointerException();
         }
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = transaction.hashCode();
+        result = 29 * result + principal.hashCode();
+        result = 29 * result + (constrained ? 1 : 0);
+
+        return result;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

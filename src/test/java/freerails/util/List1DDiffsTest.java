@@ -16,10 +16,6 @@ public class List1DDiffsTest extends TestCase {
     private List1DDiff<Object> diffs;
     private SortedMap<ListKey, Object> map;
 
-    enum test {
-        test
-    }
-
     @Override
     protected void setUp() throws Exception {
         list = new List1DImpl<>();
@@ -135,6 +131,10 @@ public class List1DDiffsTest extends TestCase {
         assertFalse(map.containsKey(elementKey2));
         assertTrue(map.containsKey(elementKey1));
         assertTrue(map.containsKey(elementKey3));
+    }
+
+    enum test {
+        test
     }
 
 }

@@ -6,9 +6,8 @@ package freerails.controller;
  * @author Scott Bennett Date: 14 May 2003
  */
 public class CargoElementObject {
-    private int rate;
-
     private final int type;
+    private int rate;
 
     public CargoElementObject(int rate, int type) {
         this.rate = rate;

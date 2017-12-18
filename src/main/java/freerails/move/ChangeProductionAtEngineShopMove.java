@@ -28,6 +28,14 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     private final FreerailsPrincipal principal;
 
+    public ChangeProductionAtEngineShopMove(ImList<PlannedTrain> b,
+                                            ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
+        this.before = b;
+        this.after = a;
+        this.stationNumber = station;
+        this.principal = p;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -58,14 +66,6 @@ public class ChangeProductionAtEngineShopMove implements Move {
         result = 29 * result + stationNumber;
         result = 29 * result + principal.hashCode();
         return result;
-    }
-
-    public ChangeProductionAtEngineShopMove(ImList<PlannedTrain> b,
-                                            ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
-        this.before = b;
-        this.after = a;
-        this.stationNumber = station;
-        this.principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

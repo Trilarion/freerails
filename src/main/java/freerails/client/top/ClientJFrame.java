@@ -24,6 +24,10 @@ public class ClientJFrame extends javax.swing.JFrame {
         setup(gcf);
     }
 
+    public static void main(String args[]) {
+        new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
+    }
+
     private void setup(GUIComponentFactory gcf) {
         this.gUIComponentFactory = gcf;
         initComponents();
@@ -142,10 +146,6 @@ public class ClientJFrame extends javax.swing.JFrame {
     private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
         System.exit(0);
     }// GEN-LAST:event_exitForm
-
-    public static void main(String args[]) {
-        new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
-    }
 
     // End of variables declaration//GEN-END:variables
 

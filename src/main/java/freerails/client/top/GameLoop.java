@@ -19,11 +19,8 @@ final public class GameLoop implements Runnable {
             .getName());
 
     private final static boolean LIMIT_FRAME_RATE = false;
-
-    private final ScreenHandler screenHandler;
-
     private final static int TARGET_FPS = 40;
-
+    private final ScreenHandler screenHandler;
     private final GameModel[] model;
 
     public GameLoop(ScreenHandler s) {

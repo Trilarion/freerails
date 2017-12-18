@@ -25,6 +25,15 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
 
     final private TileRenderer parentTileView;
 
+    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
+                               TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
+            throws IOException {
+        super(tileModel, rgbValues, w);
+        this.setTileIcons(new Image[1]);
+        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
+        this.parentTileView = parentTileView;
+    }
+
     @Override
     public void renderTile(java.awt.Graphics g, int renderX, int renderY,
                            int mapX, int mapY, ReadOnlyWorld w) {
@@ -46,15 +55,6 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     @Override
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
         return 0;
-    }
-
-    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
-                               TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
-            throws IOException {
-        super(tileModel, rgbValues, w);
-        this.setTileIcons(new Image[1]);
-        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
-        this.parentTileView = parentTileView;
     }
 
     @Override

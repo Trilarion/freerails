@@ -52,6 +52,9 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     private boolean needsUpdating = true;
 
     private FreerailsPrincipal principal;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private freerails.client.view.CargoWaitingAndDemandedJPanel cargoWaitingAndDemandedJPanel1;
+    private javax.swing.JLabel jLabel1;
 
     public SelectStationJPanel() {
         initComponents();
@@ -341,11 +344,6 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         schedule.setOrder(selectedOrderNumber, newOrders);
         return schedule;
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private freerails.client.view.CargoWaitingAndDemandedJPanel cargoWaitingAndDemandedJPanel1;
-
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -18,11 +18,6 @@ import java.io.IOException;
  * @author Luke Lindsay
  */
 final public class ChequeredTileRenderer extends AbstractTileRenderer {
-    @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
-        return (x + y) % 2;
-    }
-
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
                                  TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
@@ -31,6 +26,11 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
                 .getImage(generateRelativeFileName(0));
         this.getTileIcons()[1] = imageManager
                 .getImage(generateRelativeFileName(1));
+    }
+
+    @Override
+    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+        return (x + y) % 2;
     }
 
     @Override

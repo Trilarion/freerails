@@ -15,27 +15,14 @@ import javax.swing.*;
  * @author rtuck99@users.sourceforge.net
  */
 final class LauncherPanel1 extends javax.swing.JPanel {
-    private static final long serialVersionUID = 3257850965422913590L;
-
     static final int MODE_SINGLE_PLAYER = 0;
-
     static final int MODE_START_NETWORK_GAME = 1;
-
     static final int MODE_JOIN_NETWORK_GAME = 2;
-
     static final int MODE_SERVER_ONLY = 3;
-
+    private static final long serialVersionUID = 3257850965422913590L;
     private final ButtonModel[] buttonModels = new ButtonModel[4];
-
-    int getMode() {
-        for (int i = 0; i < buttonModels.length; i++) {
-            if (buttonGroup1.getSelection() == buttonModels[i]) {
-                return i;
-            }
-        }
-        assert false;
-        return 0;
-    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.ButtonGroup buttonGroup1;
 
     /*
      * private void validateSettings() { boolean isValid = false; String
@@ -49,6 +36,11 @@ final class LauncherPanel1 extends javax.swing.JPanel {
      * owner.setInfoText(infoText, LauncherInterface.WARNING);
      * owner.setNextEnabled(isValid); }
      */
+    javax.swing.JRadioButton joinNetworkButton;
+    javax.swing.JPanel paddingJPanel;
+    javax.swing.JRadioButton serverOnlyButton;
+    javax.swing.JRadioButton singlePlayerButton;
+    javax.swing.JRadioButton startNetworkButton;
 
     public LauncherPanel1(LauncherInterface owner) {
         initComponents();
@@ -56,6 +48,16 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         buttonModels[MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
         buttonModels[MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
         buttonModels[MODE_SERVER_ONLY] = serverOnlyButton.getModel();
+    }
+
+    int getMode() {
+        for (int i = 0; i < buttonModels.length; i++) {
+            if (buttonGroup1.getSelection() == buttonModels[i]) {
+                return i;
+            }
+        }
+        assert false;
+        return 0;
     }
 
     /**
@@ -118,19 +120,6 @@ final class LauncherPanel1 extends javax.swing.JPanel {
         add(paddingJPanel, gridBagConstraints);
 
     }// GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.ButtonGroup buttonGroup1;
-
-    javax.swing.JRadioButton joinNetworkButton;
-
-    javax.swing.JPanel paddingJPanel;
-
-    javax.swing.JRadioButton serverOnlyButton;
-
-    javax.swing.JRadioButton singlePlayerButton;
-
-    javax.swing.JRadioButton startNetworkButton;
     // End of variables declaration//GEN-END:variables
 
 }

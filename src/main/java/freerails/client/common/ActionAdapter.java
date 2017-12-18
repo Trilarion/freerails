@@ -24,15 +24,12 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * The set of actions which each button / menu item correspond to.
      */
     private final Action[] actions;
-
-    private boolean initialised = false;
-
-    private boolean performActionOnSetSelectedItem = true;
-
     /**
      * The set of MappedButtonModels corresponding to the actions.
      */
     private final Vector<MappedButtonModel> buttonModels;
+    private boolean initialised = false;
+    private boolean performActionOnSetSelectedItem = true;
 
     /**
      * An array of the actions to be used. The ComboBoxModel objects are taken
@@ -125,6 +122,11 @@ public class ActionAdapter extends DefaultComboBoxModel {
         }
     }
 
+    public void setPerformActionOnSetSelectedItem(
+            boolean performActionOnSetSelectedItem) {
+        this.performActionOnSetSelectedItem = performActionOnSetSelectedItem;
+    }
+
     public class MappedButtonModel extends JToggleButton.ToggleButtonModel
             implements PropertyChangeListener {
         private static final long serialVersionUID = 3834589889856353845L;
@@ -154,10 +156,5 @@ public class ActionAdapter extends DefaultComboBoxModel {
         public void propertyChange(PropertyChangeEvent e) {
             setEnabled(((Action) e.getSource()).isEnabled());
         }
-    }
-
-    public void setPerformActionOnSetSelectedItem(
-            boolean performActionOnSetSelectedItem) {
-        this.performActionOnSetSelectedItem = performActionOnSetSelectedItem;
     }
 }

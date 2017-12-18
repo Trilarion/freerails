@@ -50,25 +50,154 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             .getName());
 
     private final Component[] wizardPages = new Component[4];
-
-    private int currentPage = 0;
-
-    private FreerailsGameServer server;
-
-    private GUIClient client;
-
-    private Properties props;
-
     private final ImageIcon errorIcon = new javax.swing.ImageIcon(getClass()
             .getResource(ClientConfig.ICON_ERROR));
-
     private final ImageIcon warningIcon = new javax.swing.ImageIcon(getClass()
             .getResource(ClientConfig.ICON_WARNING));
-
     private final ImageIcon infoIcon = new javax.swing.ImageIcon(getClass()
             .getResource(ClientConfig.ICON_INFO));
-
     private final ProgressJPanel progressPanel = new ProgressJPanel(this);
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JLabel infoLabel;
+    javax.swing.JPanel jPanel1;
+    javax.swing.JButton nextButton;
+    javax.swing.JButton prevButton;
+    private int currentPage = 0;
+    private FreerailsGameServer server;
+    private GUIClient client;
+    private Properties props;
+    private boolean nextIsStart = false;
+
+    public Launcher(boolean quickstart) {
+        loadProps();
+        initComponents();
+
+        wizardPages[0] = new LauncherPanel1(this);
+        wizardPages[1] = new SelectMapJPanel(this);
+        wizardPages[2] = new ClientOptionsJPanel(this);
+        wizardPages[3] = new ConnectedPlayersJPanel();
+
+        if (!quickstart) {
+            jPanel1.add(wizardPages[0], "0");
+            jPanel1.add(wizardPages[1], "1");
+            jPanel1.add(wizardPages[2], "2");
+            jPanel1.add(wizardPages[3], "3");
+            jPanel1.add(progressPanel, "4");
+            pack();
+        } else {
+            prevButton.setVisible(false);
+            nextButton.setVisible(false);
+            pack();
+        }
+        hideAllMessages();
+    }
+
+    /**
+     * Starts the client and server in the same thread.
+     */
+    private static void startThread(final FreerailsGameServer server,
+                                    final GUIClient client) {
+        startThread(server);
+        try {
+            Runnable run = new Runnable() {
+
+                public void run() {
+                    while (null == client.getWorld()) {
+                        client.update();
+                        server.update();
+                    }
+
+                    GameModel[] models = new GameModel[]{client};
+                    ScreenHandler screenHandler = client.getScreenHandler();
+                    GameLoop gameLoop = new GameLoop(screenHandler, models);
+                    // screenHandler.apply();
+                    gameLoop.run();
+                }
+
+            };
+
+            Thread t = new Thread(run, "Client main loop");
+            t.start();
+        } catch (Exception e) {
+            exit(e);
+        }
+    }
+
+    /**
+     * Starts the server in a new thread.
+     */
+    private static void startThread(final FreerailsGameServer server) {
+        try {
+            Runnable r = new Runnable() {
+
+                public void run() {
+
+                    // TODO do this without while(true)
+                    while (true) {
+                        long startTime = System.currentTimeMillis();
+                        server.update();
+                        long deltatime = System.currentTimeMillis() - startTime;
+                        if (deltatime < SERVERUPDATE) {
+                            try {
+                                Thread.sleep(SERVERUPDATE - deltatime);
+                            } catch (InterruptedException e) {
+                                // do nothing.
+                            }
+                        }
+                    }
+
+                }
+
+            };
+
+            Thread t = new Thread(r, "FreerailsGameServer");
+            t.start();
+        } catch (Exception e) {
+            exit(e);
+        }
+    }
+
+    /**
+     * Runs the game.
+     */
+    public static void main(String args[]) {
+
+        // SynchronizedEventQueue.use();
+
+        // Let the user know if we are using a custom logging config.
+
+        try {
+            PatternLayout patternLayout = new PatternLayout(
+                    "%r [%t] %-5p %m -- at %l%n");
+            SimpleLayout layout = new SimpleLayout();
+            ConsoleAppender consoleAppender = new ConsoleAppender(patternLayout);
+            Logger rootLogger = LogManager.getRootLogger();
+            rootLogger.addAppender(consoleAppender);
+            rootLogger.setLevel(Level.INFO);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return;
+        }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Started launcher.");
+        }
+        boolean quickstart = false;
+        if (args.length > 0) {
+            for (String arg : args) {
+                String QUICKSTART = "-quickstart";
+                if (QUICKSTART.equals(arg))
+                    quickstart = true;
+            }
+
+        }
+        Launcher launcher = new Launcher(quickstart);
+        launcher.start(quickstart);
+    }
+
+    private static void exit(Exception e) {
+        ReportBugTextGenerator.unexpectedException(e);
+    }
 
     public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
@@ -78,8 +207,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             nextButton.setText("Next...");
         }
     }
-
-    private boolean nextIsStart = false;
 
     private void startGame() {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
@@ -235,37 +362,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     /**
-     * Starts the client and server in the same thread.
-     */
-    private static void startThread(final FreerailsGameServer server,
-                                    final GUIClient client) {
-        startThread(server);
-        try {
-            Runnable run = new Runnable() {
-
-                public void run() {
-                    while (null == client.getWorld()) {
-                        client.update();
-                        server.update();
-                    }
-
-                    GameModel[] models = new GameModel[]{client};
-                    ScreenHandler screenHandler = client.getScreenHandler();
-                    GameLoop gameLoop = new GameLoop(screenHandler, models);
-                    // screenHandler.apply();
-                    gameLoop.run();
-                }
-
-            };
-
-            Thread t = new Thread(run, "Client main loop");
-            t.start();
-        } catch (Exception e) {
-            exit(e);
-        }
-    }
-
-    /**
      * Starts the client in a new thread.
      */
     private void startThread(final GUIClient guiClient) {
@@ -296,39 +392,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }
 
-    /**
-     * Starts the server in a new thread.
-     */
-    private static void startThread(final FreerailsGameServer server) {
-        try {
-            Runnable r = new Runnable() {
-
-                public void run() {
-
-                    while (true) {
-                        long startTime = System.currentTimeMillis();
-                        server.update();
-                        long deltatime = System.currentTimeMillis() - startTime;
-                        if (deltatime < SERVERUPDATE) {
-                            try {
-                                Thread.sleep(SERVERUPDATE - deltatime);
-                            } catch (InterruptedException e) {
-                                // do nothing.
-                            }
-                        }
-                    }
-
-                }
-
-            };
-
-            Thread t = new Thread(r, "FreerailsGameServer");
-            t.start();
-        } catch (Exception e) {
-            exit(e);
-        }
-    }
-
     private void initServer() {
         SavedGamesManager gamesManager = new SavedGamesManagerImpl();
         server = new FreerailsGameServer(gamesManager);
@@ -343,44 +406,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         cp.server = server;
         server.addPropertyChangeListener(cp);
         cp.updateListOfPlayers();
-    }
-
-    /**
-     * Runs the game.
-     */
-    public static void main(String args[]) {
-
-        // SynchronizedEventQueue.use();
-
-        // Let the user know if we are using a custom logging config.
-
-        try {
-            PatternLayout patternLayout = new PatternLayout(
-                    "%r [%t] %-5p %m -- at %l%n");
-            SimpleLayout layout = new SimpleLayout();
-            ConsoleAppender consoleAppender = new ConsoleAppender(patternLayout);
-            Logger rootLogger = LogManager.getRootLogger();
-            rootLogger.addAppender(consoleAppender);
-            rootLogger.setLevel(Level.INFO);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return;
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Started launcher.");
-        }
-        boolean quickstart = false;
-        if (args.length > 0) {
-            for (String arg : args) {
-                String QUICKSTART = "-quickstart";
-                if (QUICKSTART.equals(arg))
-                    quickstart = true;
-            }
-
-        }
-        Launcher launcher = new Launcher(quickstart);
-        launcher.start(quickstart);
     }
 
     /**
@@ -416,30 +441,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "3");
         currentPage = 3;
-    }
-
-    public Launcher(boolean quickstart) {
-        loadProps();
-        initComponents();
-
-        wizardPages[0] = new LauncherPanel1(this);
-        wizardPages[1] = new SelectMapJPanel(this);
-        wizardPages[2] = new ClientOptionsJPanel(this);
-        wizardPages[3] = new ConnectedPlayersJPanel();
-
-        if (!quickstart) {
-            jPanel1.add(wizardPages[0], "0");
-            jPanel1.add(wizardPages[1], "1");
-            jPanel1.add(wizardPages[2], "2");
-            jPanel1.add(wizardPages[3], "3");
-            jPanel1.add(progressPanel, "4");
-            pack();
-        } else {
-            prevButton.setVisible(false);
-            nextButton.setVisible(false);
-            pack();
-        }
-        hideAllMessages();
     }
 
     /**
@@ -682,25 +683,12 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }
     }// GEN-LAST:event_nextButtonActionPerformed
 
-    private static void exit(Exception e) {
-        ReportBugTextGenerator.unexpectedException(e);
-    }
-
     /**
      * Exit the Application.
      */
     private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
         System.exit(0);
     }// GEN-LAST:event_exitForm
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JLabel infoLabel;
-
-    javax.swing.JPanel jPanel1;
-
-    javax.swing.JButton nextButton;
-
-    javax.swing.JButton prevButton;
 
     // End of variables declaration//GEN-END:variables
 

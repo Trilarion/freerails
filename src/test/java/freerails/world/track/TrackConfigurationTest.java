@@ -21,6 +21,10 @@ import java.util.HashSet;
  */
 public class TrackConfigurationTest extends TestCase {
 
+    public TrackConfigurationTest(java.lang.String testName) {
+        super(testName);
+    }
+
     public static void main(java.lang.String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -28,10 +32,6 @@ public class TrackConfigurationTest extends TestCase {
     public static Test suite() {
 
         return new TestSuite(TrackConfigurationTest.class);
-    }
-
-    public TrackConfigurationTest(java.lang.String testName) {
-        super(testName);
     }
 
     public void testAdd() {

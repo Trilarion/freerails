@@ -30,6 +30,18 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
 
     private static final Logger logger = Logger.getLogger(BrokerJFrame.class
             .getName());
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JMenu bonds;
+    javax.swing.JMenuBar brokerMenu;
+    javax.swing.JButton done;
+    javax.swing.JLabel htmlJLabel;
+    javax.swing.JMenuItem issueBond;
+    javax.swing.JPanel jPanel1;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JMenuItem repayBond;
+    javax.swing.JMenu stocks;
+
+    // </editor-fold>//GEN-END:initComponents
 
     /**
      * Creates new form BrokerJFrame
@@ -175,19 +187,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
 
         pack();
     }
-
-    // </editor-fold>//GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JMenu bonds;
-    javax.swing.JMenuBar brokerMenu;
-    javax.swing.JButton done;
-    javax.swing.JLabel htmlJLabel;
-    javax.swing.JMenuItem issueBond;
-    javax.swing.JPanel jPanel1;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JMenuItem repayBond;
-    javax.swing.JMenu stocks;
     // End of variables declaration//GEN-END:variables
 
 }

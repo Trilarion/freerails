@@ -78,6 +78,12 @@ public class CalcCargoSupplyRateAtStation {
         this(world, X, Y, findTrackRule(X, Y, world));
     }
 
+    private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
+        FreerailsTile tile = (FreerailsTile) w.getTile(xx, yy);
+
+        return tile.getTrackPiece().getTrackTypeID();
+    }
+
     public ConvertedAtStation getConversion() {
         return new ConvertedAtStation(this.converts);
     }
@@ -181,12 +187,6 @@ public class CalcCargoSupplyRateAtStation {
 
         // return the supplied cargo rates
         return supplies;
-    }
-
-    private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
-        FreerailsTile tile = (FreerailsTile) w.getTile(xx, yy);
-
-        return tile.getTrackPiece().getTrackTypeID();
     }
 
     private void updateSupplyRate(int type, int rate) {

@@ -19,23 +19,16 @@ import freerails.world.top.WorldDiffs;
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
     private static final long serialVersionUID = 3256446893302559280L;
-
-    private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-
-    private final TrainStopsHandler stopsHandler;
-
-    private final FlatTrackExplorer trackExplorer;
-
-    private transient MoveReceiver mr = null;
-
     final ReadOnlyWorld w;
+    private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
+    private final TrainStopsHandler stopsHandler;
+    private final FlatTrackExplorer trackExplorer;
+    private transient MoveReceiver mr = null;
 
     public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
                            int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
         this.trackExplorer = tx;
-        int trainId = trainNumber;
-        FreerailsPrincipal principal = p;
-        stopsHandler = new TrainStopsHandler(trainId, principal,
+        stopsHandler = new TrainStopsHandler(trainNumber, p,
                 new WorldDiffs(w));
         this.mr = newMr;
         this.w = w;

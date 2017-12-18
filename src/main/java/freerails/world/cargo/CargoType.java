@@ -9,44 +9,18 @@ import freerails.world.common.FreerailsSerializable;
  */
 final public class CargoType implements FreerailsSerializable {
     private static final long serialVersionUID = 3834874680581369912L;
-
-    public enum Categories {
-        Mail(0), Passengers(1), Fast_Freight(2), Slow_Freight(3), Bulk_Freight(
-                4);
-        private final int nr;
-
-        Categories(int nr) {
-            this.nr = nr;
-        }
-
-        public int getNumber() {
-            return nr;
-        }
-
-        public static Categories getCategory(String cat) {
-            for (Categories cmp : values()) {
-                if (cmp.toString().equals(cat)) {
-                    return cmp;
-                }
-            }
-            throw new IllegalArgumentException("Category:" + cat + " unknown.");
-        }
-    }
-
-    public static int getNumberOfCategories() {
-        return Categories.values().length;
-    }
-
     private final Categories category;
-
     private final String name;
-
     private final int unitWeight;
 
     public CargoType(int weight, String s, Categories cat) {
         unitWeight = weight;
         category = cat;
         name = s;
+    }
+
+    public static int getNumberOfCategories() {
+        return Categories.values().length;
     }
 
     @Override
@@ -91,5 +65,28 @@ final public class CargoType implements FreerailsSerializable {
     @Override
     public String toString() {
         return name;
+    }
+
+    public enum Categories {
+        Mail(0), Passengers(1), Fast_Freight(2), Slow_Freight(3), Bulk_Freight(
+                4);
+        private final int nr;
+
+        Categories(int nr) {
+            this.nr = nr;
+        }
+
+        public static Categories getCategory(String cat) {
+            for (Categories cmp : values()) {
+                if (cmp.toString().equals(cat)) {
+                    return cmp;
+                }
+            }
+            throw new IllegalArgumentException("Category:" + cat + " unknown.");
+        }
+
+        public int getNumber() {
+            return nr;
+        }
     }
 }

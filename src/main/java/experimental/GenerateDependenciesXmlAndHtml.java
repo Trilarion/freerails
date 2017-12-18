@@ -24,28 +24,12 @@ import java.util.Date;
 public class GenerateDependenciesXmlAndHtml {
     private static final Logger logger = Logger
             .getLogger(GenerateDependenciesXmlAndHtml.class.getName());
-
-    private PrintWriter xmlWriter;
-
-    private PrintWriter htmlWriter;
-
     private final ArrayList<String> packages = new ArrayList<>();
-
-    private boolean started = false;
-
-    private boolean startedBlock = false;
-
     private final String sig;
-
-    public static void main(String[] args) {
-        try {
-            new GenerateDependenciesXmlAndHtml("checkdep.xml", "src"
-                    + File.separator + "docs" + File.separator
-                    + "dependencies.html");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    private PrintWriter xmlWriter;
+    private PrintWriter htmlWriter;
+    private boolean started = false;
+    private boolean startedBlock = false;
 
     private GenerateDependenciesXmlAndHtml(String xmlFilename,
                                            String htmlFilename) throws FileNotFoundException {
@@ -117,6 +101,21 @@ public class GenerateDependenciesXmlAndHtml {
         logger.info(sig);
         logger.info("Wrote " + xmlFile);
         logger.info("Wrote " + htmlFile);
+    }
+
+    public static void main(String[] args) {
+        try {
+            new GenerateDependenciesXmlAndHtml("checkdep.xml", "src"
+                    + File.separator + "docs" + File.separator
+                    + "dependencies.html");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static boolean isPackageNameOk(String s) {
+        return s.matches("(([a-zA-Z]*)/)*\\*")
+                || s.matches("(([a-zA-Z]*)/)*\\*\\*/\\*");
     }
 
     private void start() {
@@ -274,11 +273,6 @@ public class GenerateDependenciesXmlAndHtml {
         packagesString = packagesString.substring(0,
                 packagesString.length() - 2);
         return packagesString;
-    }
-
-    static boolean isPackageNameOk(String s) {
-        return s.matches("(([a-zA-Z]*)/)*\\*")
-                || s.matches("(([a-zA-Z]*)/)*\\*\\*/\\*");
     }
 
     private void finish() {

@@ -39,6 +39,51 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         context = new java.util.Stack<>();
     }
 
+    /**
+     * The recognizer entry method taking an Inputsource.
+     *
+     * @param input InputSource to be parsed.
+     * @throws java.io.IOException                            on I/O error.
+     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     *                                                        created.
+     */
+    public static void parse(final InputSource input,
+                             final Track_TilesHandler handler) throws SAXException,
+            ParserConfigurationException, IOException {
+        parse(input, new Track_TilesParser(handler));
+    }
+
+    /**
+     * The recognizer entry method taking a URL.
+     *
+     * @param url URL source to be parsed.
+     * @throws java.io.IOException                            on I/O error.
+     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     *                                                        created.
+     */
+    public static void parse(final java.net.URL url,
+                             final Track_TilesHandler handler) throws SAXException,
+            ParserConfigurationException, IOException {
+        parse(new InputSource(url.toExternalForm()), handler);
+    }
+
+    private static void parse(final InputSource input,
+                              final Track_TilesParser recognizer) throws SAXException,
+            ParserConfigurationException, IOException {
+        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
+                .newInstance();
+        factory.setValidating(true); // the code was generated according DTD
+        factory.setNamespaceAware(false); // the code was generated according
+        // DTD
+
+        org.xml.sax.XMLReader parser = factory.newSAXParser().getXMLReader();
+        parser.setContentHandler(recognizer);
+        parser.setErrorHandler(recognizer.getDefaultErrorHandler());
+        parser.parse(input);
+    }
+
     public void setDocumentLocator(org.xml.sax.Locator locator) {
     }
 
@@ -152,51 +197,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
 
         buffer.delete(0, buffer.length());
-    }
-
-    /**
-     * The recognizer entry method taking an Inputsource.
-     *
-     * @param input InputSource to be parsed.
-     * @throws java.io.IOException                            on I/O error.
-     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
-     *                                                        created.
-     */
-    public static void parse(final InputSource input,
-                             final Track_TilesHandler handler) throws SAXException,
-            ParserConfigurationException, IOException {
-        parse(input, new Track_TilesParser(handler));
-    }
-
-    /**
-     * The recognizer entry method taking a URL.
-     *
-     * @param url URL source to be parsed.
-     * @throws java.io.IOException                            on I/O error.
-     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
-     *                                                        created.
-     */
-    public static void parse(final java.net.URL url,
-                             final Track_TilesHandler handler) throws SAXException,
-            ParserConfigurationException, IOException {
-        parse(new InputSource(url.toExternalForm()), handler);
-    }
-
-    private static void parse(final InputSource input,
-                              final Track_TilesParser recognizer) throws SAXException,
-            ParserConfigurationException, IOException {
-        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
-                .newInstance();
-        factory.setValidating(true); // the code was generated according DTD
-        factory.setNamespaceAware(false); // the code was generated according
-        // DTD
-
-        org.xml.sax.XMLReader parser = factory.newSAXParser().getXMLReader();
-        parser.setContentHandler(recognizer);
-        parser.setErrorHandler(recognizer.getDefaultErrorHandler());
-        parser.parse(input);
     }
 
     private org.xml.sax.ErrorHandler getDefaultErrorHandler() {

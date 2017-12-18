@@ -21,32 +21,48 @@ import java.util.List;
  */
 public class TrackRenderer {
 
+    final Color sleepersColor = new Color(118, 54, 36);
+    final Color railsColor = new Color(118, 118, 118);
+    final double sleeperLength = 6;
+    final float sleeperWidth = 2f;
+    final float targetSleeperGap = 2.5f;
+    final float tileWidth = 30f;
+    final float gauge = 3f;
+    final BasicStroke rail = new BasicStroke(1f);
+    final float doubleTrackGap = 4f;
     private final ImageManager imageManager = new ImageManagerImpl(
             "/freerails/client/graphics/");
-
-    final Color sleepersColor = new Color(118, 54, 36);
-
-    final Color railsColor = new Color(118, 118, 118);
-
-    final double sleeperLength = 6;
-
-    final float sleeperWidth = 2f;
-
-    final float targetSleeperGap = 2.5f;
-
-    final float tileWidth = 30f;
-
-    final float gauge = 3f;
-
-    final BasicStroke rail = new BasicStroke(1f);
-
     boolean doubleTrack = false;
-
-    final float doubleTrackGap = 4f;
-
     Image icon = null;
 
     boolean tunnel = false;
+
+    public static Line2D.Double createParallelLine(Line2D.Double line,
+                                                   double shift) {
+        Line2D.Double returnValue = new Line2D.Double(line.getP1(), line
+                .getP2());
+        double distance = line.getP1().distance(line.getP2());
+        double dRatio = shift / distance;
+        double dx = (line.x1 - line.x2) * dRatio;
+        double dy = (line.y1 - line.y2) * dRatio;
+        returnValue.x1 -= dy;
+        returnValue.y1 += dx;
+        returnValue.x2 -= dy;
+        returnValue.y2 += dx;
+        return returnValue;
+    }
+
+    public static CubicCurve2D.Double createAdjacentCurve(
+            CubicCurve2D.Double c, double shift1, double shift2) {
+        Line2D.Double line1 = new Line2D.Double(c.getX1(), c.getY1(), c
+                .getCtrlX1(), c.getCtrlY1());
+        Line2D.Double line2 = new Line2D.Double(c.getX2(), c.getY2(), c
+                .getCtrlX2(), c.getCtrlY2());
+        line1 = createParallelLine(line1, shift1);
+        line2 = createParallelLine(line2, -shift2);
+        return new CubicCurve2D.Double(line1.x1, line1.y1, line1.x2, line1.y2,
+                line2.x2, line2.y2, line2.x1, line2.y1);
+    }
 
     void paintTrackConf(Graphics2D g2, TrackConfiguration conf) {
 
@@ -201,33 +217,6 @@ public class TrackRenderer {
         float phase = sleeperWidth + (sleeperGap / 2);
         return new BasicStroke((float) sleeperLength, BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER, 10.0f, dash1, phase);
-    }
-
-    public static Line2D.Double createParallelLine(Line2D.Double line,
-                                                   double shift) {
-        Line2D.Double returnValue = new Line2D.Double(line.getP1(), line
-                .getP2());
-        double distance = line.getP1().distance(line.getP2());
-        double dRatio = shift / distance;
-        double dx = (line.x1 - line.x2) * dRatio;
-        double dy = (line.y1 - line.y2) * dRatio;
-        returnValue.x1 -= dy;
-        returnValue.y1 += dx;
-        returnValue.x2 -= dy;
-        returnValue.y2 += dx;
-        return returnValue;
-    }
-
-    public static CubicCurve2D.Double createAdjacentCurve(
-            CubicCurve2D.Double c, double shift1, double shift2) {
-        Line2D.Double line1 = new Line2D.Double(c.getX1(), c.getY1(), c
-                .getCtrlX1(), c.getCtrlY1());
-        Line2D.Double line2 = new Line2D.Double(c.getX2(), c.getY2(), c
-                .getCtrlX2(), c.getCtrlY2());
-        line1 = createParallelLine(line1, shift1);
-        line2 = createParallelLine(line2, -shift2);
-        return new CubicCurve2D.Double(line1.x1, line1.y1, line1.x2, line1.y2,
-                line2.x2, line2.y2, line2.x1, line2.y1);
     }
 
     private Point2D.Double controlPoint(Point2D.Double from) {

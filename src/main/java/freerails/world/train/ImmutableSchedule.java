@@ -19,6 +19,14 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private final ImList<TrainOrdersModel> orders;
 
     private final int nextScheduledOrder;
+    private final boolean hasPriorityOrders;
+
+    public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
+                             boolean hasPriorityOrders) {
+        this.orders = new ImList<>(orders);
+        this.nextScheduledOrder = gotoStation;
+        this.hasPriorityOrders = hasPriorityOrders;
+    }
 
     @Override
     public int hashCode() {
@@ -27,15 +35,6 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
         result = 29 * result + (hasPriorityOrders ? 1 : 0);
 
         return result;
-    }
-
-    private final boolean hasPriorityOrders;
-
-    public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
-                             boolean hasPriorityOrders) {
-        this.orders = new ImList<>(orders);
-        this.nextScheduledOrder = gotoStation;
-        this.hasPriorityOrders = hasPriorityOrders;
     }
 
     public TrainOrdersModel getOrder(int i) {

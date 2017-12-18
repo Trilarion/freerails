@@ -28,11 +28,15 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
 
     private static final Logger logger = Logger
             .getLogger(TrainDialogueJPanel.class.getName());
-
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JButton closeJButton;
+    freerails.client.view.TrainScheduleJPanel newTrainScheduleJPanel1;
+    javax.swing.JButton nextJButton;
+    javax.swing.JButton previousJButton;
+    freerails.client.view.TrainDescriptionJPanel trainDetailsJPanel1;
+    javax.swing.JButton trainListJButton;
     private WorldIterator wi;
-
     private ReadOnlyWorld w;
-
     private FreerailsPrincipal principal;
 
     public TrainDialogueJPanel() {
@@ -188,19 +192,6 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         }
         this.closeJButton.addActionListener(l);
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JButton closeJButton;
-
-    freerails.client.view.TrainScheduleJPanel newTrainScheduleJPanel1;
-
-    javax.swing.JButton nextJButton;
-
-    javax.swing.JButton previousJButton;
-
-    freerails.client.view.TrainDescriptionJPanel trainDetailsJPanel1;
-
-    javax.swing.JButton trainListJButton;
     // End of variables declaration//GEN-END:variables
 
 }

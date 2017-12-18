@@ -17,10 +17,6 @@ public class List3DDiffTest extends TestCase {
 
     List3D<Object> underlying;
 
-    enum listid {
-        test
-    }
-
     @Override
     protected void setUp() throws Exception {
         underlying = new List3DImpl<>(0, 0);
@@ -210,6 +206,10 @@ public class List3DDiffTest extends TestCase {
         underlying.addD2(0);
         underlying.addD3(0, 0, 1);
         assertEquals(1, diffs.uGet(0, 0, 0));
+    }
+
+    enum listid {
+        test
     }
 
 }

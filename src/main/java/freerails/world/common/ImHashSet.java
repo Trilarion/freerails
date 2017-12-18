@@ -23,6 +23,16 @@ public class ImHashSet<E extends FreerailsSerializable> implements
         this.hashSet = new HashSet<>(hashSet);
     }
 
+    public ImHashSet(E... values) {
+        this.hashSet = new HashSet<>();
+        Collections.addAll(hashSet, values);
+    }
+
+    public ImHashSet(List<E> values) {
+        this.hashSet = new HashSet<>();
+        hashSet.addAll(values);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -38,16 +48,6 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     @Override
     public int hashCode() {
         return hashSet.hashCode();
-    }
-
-    public ImHashSet(E... values) {
-        this.hashSet = new HashSet<>();
-        Collections.addAll(hashSet, values);
-    }
-
-    public ImHashSet(List<E> values) {
-        this.hashSet = new HashSet<>();
-        hashSet.addAll(values);
     }
 
     public boolean contains(E e) {

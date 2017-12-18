@@ -37,6 +37,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     private ReadOnlyWorld world;
 
     private FreerailsPrincipal principal;
+    private javax.swing.JList demandsJList;
+    private javax.swing.JLabel stationName;
+    private javax.swing.JTable waitingJTable;
 
     public CargoWaitingAndDemandedJPanel() {
         initComponents();
@@ -203,12 +206,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
         this.invalidate();
     }
-
-    private javax.swing.JList demandsJList;
-
-    private javax.swing.JLabel stationName;
-
-    private javax.swing.JTable waitingJTable;
     // End of variables declaration//GEN-END:variables
 
 }

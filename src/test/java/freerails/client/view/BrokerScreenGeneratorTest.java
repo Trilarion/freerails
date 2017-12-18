@@ -23,11 +23,9 @@ import junit.framework.TestCase;
 
 public class BrokerScreenGeneratorTest extends TestCase {
 
-    private World world;
-
     int playerID;
-
     FreerailsPrincipal principal;
+    private World world;
 
     @Override
     protected void setUp() throws Exception {

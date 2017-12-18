@@ -20,13 +20,12 @@ import java.util.HashSet;
  * @author Luke Lindsay
  */
 public class FlatTrackExplorerTest extends TestCase {
+    private final Player testPlayer = new Player("test", 0);
     private WorldImpl world;
 
     public FlatTrackExplorerTest(String arg0) {
         super(arg0);
     }
-
-    private final Player testPlayer = new Player("test", 0);
 
     @Override
     protected void setUp() {

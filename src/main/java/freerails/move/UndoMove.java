@@ -13,6 +13,17 @@ public class UndoMove implements Move {
 
     private Move move2undo;
 
+    /**
+     * @param move The move that was undone
+     */
+    public UndoMove(Move move) {
+        if (move instanceof UndoMove) {
+            throw new IllegalArgumentException();
+        }
+
+        move2undo = move;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -28,17 +39,6 @@ public class UndoMove implements Move {
     @Override
     public int hashCode() {
         return move2undo.hashCode();
-    }
-
-    /**
-     * @param move The move that was undone
-     */
-    public UndoMove(Move move) {
-        if (move instanceof UndoMove) {
-            throw new IllegalArgumentException();
-        }
-
-        move2undo = move;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

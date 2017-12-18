@@ -23,21 +23,15 @@ public class StationRadiusRenderer implements Painter {
      * Border colour to use when placement is not allowed.
      */
     public static final Color COLOR_CANNOT_BUILD = Color.RED;
-
+    private static final int tileSize = Constants.TILE_SIZE;
+    private final ModelRoot modelRoot;
     /**
      * Colour of the highlighted border.
      */
     private Color borderColor = COLOR_OK;
-
-    private static final int tileSize = Constants.TILE_SIZE;
-
     private int radius = 2;
-
     private int x;
-
     private int y;
-
-    private final ModelRoot modelRoot;
 
     public StationRadiusRenderer(ModelRoot mr) {
         this.modelRoot = mr;

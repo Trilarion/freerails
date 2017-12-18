@@ -23,19 +23,13 @@ import static freerails.world.accounts.Transaction.Category.*;
  */
 public class BalanceSheetGenerator {
 
-    GameTime from;
-
-    GameTime to;
-
-    final ReadOnlyWorld w;
-
-    final FreerailsPrincipal principal;
-
     public final String year;
-
     public final Stats total;
-
     public final Stats ytd;
+    final ReadOnlyWorld w;
+    final FreerailsPrincipal principal;
+    GameTime from;
+    GameTime to;
 
     public BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         this.w = w;
@@ -87,6 +81,17 @@ public class BalanceSheetGenerator {
     }
 
     public static class Stats {
+
+        public final Money operatingFunds;
+        public final Money track;
+        public final Money stations;
+        public final Money rollingStock;
+        public final Money industries;
+        public final Money loans;
+        public final Money equity;
+        public Money treasuryStock;
+        public Money otherRrStock;
+        public Money profit;
 
         public Stats(ReadOnlyWorld w, FreerailsPrincipal principal,
                      final GameTime[] totalTimeInteval) {
@@ -149,26 +154,6 @@ public class BalanceSheetGenerator {
             calProfit();
 
         }
-
-        public final Money operatingFunds;
-
-        public final Money track;
-
-        public final Money stations;
-
-        public final Money rollingStock;
-
-        public final Money industries;
-
-        public final Money loans;
-
-        public final Money equity;
-
-        public Money treasuryStock;
-
-        public Money otherRrStock;
-
-        public Money profit;
 
         private void calProfit() {
             long profitValue = operatingFunds.getAmount() + track.getAmount()

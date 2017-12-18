@@ -24,7 +24,15 @@ import java.awt.event.ActionListener;
 public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = -6810248272441137826L;
-
+    ModelRoot modelRoot;
+    ActionListener close;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JButton cancelButton;
+    javax.swing.JLabel jLabel1;
+    javax.swing.JList jList1;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JButton okButton;
+    javax.swing.JButton refreshButton;
     private ImStringList lastFiles;
 
     /**
@@ -185,17 +193,6 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         }
         super.paintComponent(g);
     }
-
-    ModelRoot modelRoot;
-    ActionListener close;
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JButton cancelButton;
-    javax.swing.JLabel jLabel1;
-    javax.swing.JList jList1;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JButton okButton;
-    javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 
 }

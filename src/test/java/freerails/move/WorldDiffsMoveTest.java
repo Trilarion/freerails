@@ -19,15 +19,11 @@ import junit.framework.TestCase;
 
 public class WorldDiffsMoveTest extends TestCase {
 
-    World world;
-
-    WorldDiffs diffs;
-
-    FreerailsPrincipal fp1;
-
     final CityModel city1 = new CityModel("City 1", 8, 4);
-
     final CityModel city2 = new CityModel("City 2", 9, 4);
+    World world;
+    WorldDiffs diffs;
+    FreerailsPrincipal fp1;
 
     @Override
     protected void setUp() throws Exception {

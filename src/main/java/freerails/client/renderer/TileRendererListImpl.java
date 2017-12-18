@@ -18,16 +18,16 @@ import java.util.ArrayList;
 final public class TileRendererListImpl implements TileRendererList {
     private final TileRenderer[] tiles;
 
-    public TileRenderer getTileViewWithNumber(int i) {
-        return tiles[i];
-    }
-
     public TileRendererListImpl(ArrayList<TileRenderer> t) {
         tiles = new TileRenderer[t.size()];
 
         for (int i = 0; i < t.size(); i++) {
             tiles[i] = t.get(i);
         }
+    }
+
+    public TileRenderer getTileViewWithNumber(int i) {
+        return tiles[i];
     }
 
     public boolean validate(ReadOnlyWorld w) {

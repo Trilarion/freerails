@@ -12,6 +12,15 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class LogOnRequest implements FreerailsSerializable {
+    private static final long serialVersionUID = 3257854263924240949L;
+    private final String username;
+    private final String password;
+
+    public LogOnRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -33,17 +42,6 @@ public class LogOnRequest implements FreerailsSerializable {
         result = (username != null ? username.hashCode() : 0);
         result = 29 * result + (password != null ? password.hashCode() : 0);
         return result;
-    }
-
-    private static final long serialVersionUID = 3257854263924240949L;
-
-    private final String username;
-
-    private final String password;
-
-    public LogOnRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
     }
 
     public String getPassword() {

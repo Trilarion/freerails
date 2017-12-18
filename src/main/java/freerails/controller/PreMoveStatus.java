@@ -9,12 +9,25 @@ import freerails.world.common.FreerailsSerializable;
  * @author lindsal
  */
 final public class PreMoveStatus implements FreerailsSerializable {
-    private static final long serialVersionUID = 3978145456646009140L;
-
     public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(
             MoveStatus.MOVE_OK);
-
+    private static final long serialVersionUID = 3978145456646009140L;
     public final MoveStatus ms;
+
+    private PreMoveStatus(MoveStatus ms) {
+        this.ms = ms;
+    }
+
+    public static PreMoveStatus failed(String reason) {
+        return new PreMoveStatus(MoveStatus.moveFailed(reason));
+    }
+
+    public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
+        if (ms.ok) {
+            return PRE_MOVE_OK;
+        }
+        return new PreMoveStatus(ms);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -41,20 +54,5 @@ final public class PreMoveStatus implements FreerailsSerializable {
             return PRE_MOVE_OK;
         }
         return this;
-    }
-
-    private PreMoveStatus(MoveStatus ms) {
-        this.ms = ms;
-    }
-
-    public static PreMoveStatus failed(String reason) {
-        return new PreMoveStatus(MoveStatus.moveFailed(reason));
-    }
-
-    public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
-        if (ms.ok) {
-            return PRE_MOVE_OK;
-        }
-        return new PreMoveStatus(ms);
     }
 }

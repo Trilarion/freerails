@@ -27,22 +27,21 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         ListCellRenderer, View {
 
     private static final long serialVersionUID = 4121133628006020919L;
-
-    private freerails.world.top.ReadOnlyWorld w;
-
-    private FreerailsPrincipal principal;
-
+    final LRUCache<String, JLabel> jLabels;
     private final TrainSummeryModel model;
-
     private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.background");
-
     private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.selectionBackground");
-
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
-
+    private freerails.world.top.ReadOnlyWorld w;
+    private FreerailsPrincipal principal;
     private TrainListCellRenderer trainListCellRenderer1;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel headingLabel;
+    private javax.swing.JLabel trainIncomeLabel;
+    private javax.swing.JLabel trainMaintenanceCostLabel;
+    private javax.swing.JLabel trainNumLabel;
 
     /**
      * Creates new form TrainSummaryJPanel
@@ -65,13 +64,10 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         return model.getStationName(trainNum);
     }
 
-
     private String findTrainIncome(int trainNum) {
         Money m = model.findTrainIncome(trainNum);
         return "$" + m.toString();
     }
-
-    final LRUCache<String, JLabel> jLabels;
 
     public java.awt.Component getListCellRendererComponent(
             javax.swing.JList list, Object value, int index,
@@ -192,15 +188,6 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         add(trainIncomeLabel, gridBagConstraints);
 
     }// GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel headingLabel;
-
-    private javax.swing.JLabel trainIncomeLabel;
-
-    private javax.swing.JLabel trainMaintenanceCostLabel;
-
-    private javax.swing.JLabel trainNumLabel;
     // End of variables declaration//GEN-END:variables
 
 }

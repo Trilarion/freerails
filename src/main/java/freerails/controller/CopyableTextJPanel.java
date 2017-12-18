@@ -17,6 +17,14 @@ import javax.swing.*;
 public class CopyableTextJPanel extends javax.swing.JPanel {
 
     private static final long serialVersionUID = 4076159955353400345L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JMenuItem copyItem;
+    javax.swing.JPopupMenu jPopupMenu1;
+    javax.swing.JScrollPane jScrollPane1;
+
+    // </editor-fold>//GEN-END:initComponents
+    javax.swing.JTextArea jTextArea1;
+    javax.swing.JMenuItem selectAllItem;
 
     /**
      * Creates new form CopyableTextJPanel
@@ -96,8 +104,6 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
 
     }
 
-    // </editor-fold>//GEN-END:initComponents
-
     private void selectAllItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_selectAllItemActionPerformed
         jTextArea1.selectAll();
     }// GEN-LAST:event_selectAllItemActionPerformed
@@ -111,13 +117,6 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
             jPopupMenu1.show(jTextArea1, evt.getX(), evt.getY());
         }
     }// GEN-LAST:event_jTextArea1MouseClicked
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JMenuItem copyItem;
-    javax.swing.JPopupMenu jPopupMenu1;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JTextArea jTextArea1;
-    javax.swing.JMenuItem selectAllItem;
     // End of variables declaration//GEN-END:variables
 
 }

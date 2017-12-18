@@ -119,13 +119,13 @@ class Map implements GraphExplorer {
 
     private int branch = -1;
 
+    public int getPosition() {
+        return this.position;
+    }
+
     public void setPosition(int i) {
         this.position = i;
         this.branch = -1;
-    }
-
-    public int getPosition() {
-        return this.position;
     }
 
     public void nextEdge() {

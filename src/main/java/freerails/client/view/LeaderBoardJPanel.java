@@ -30,12 +30,9 @@ import java.util.Random;
 public class LeaderBoardJPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3258131375298066229L;
-
-    private JList playersList = null;
-
-    private ActionListener submitButtonCallBack = null;
-
     private final List<PlayerDetails> values;
+    private JList playersList = null;
+    private ActionListener submitButtonCallBack = null;
 
     /**
      * This method initializes
@@ -130,13 +127,12 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
         @Override
         public String toString() {
-            String sb = name +
+            return name +
                     ", " +
                     networth.toString() +
                     " net worth, " +
                     stations +
                     "  stations.";
-            return sb;
         }
 
         public int compareTo(PlayerDetails test) {

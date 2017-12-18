@@ -23,6 +23,10 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
     private static final long serialVersionUID = 4049080453489111344L;
 
     FreerailsGameServer server = null;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JList jList1;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JLabel title;
 
     /**
      * Creates new form ConnectedPlayersJPanel
@@ -104,13 +108,6 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
             }
         }
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JList jList1;
-
-    javax.swing.JScrollPane jScrollPane1;
-
-    javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 
 }

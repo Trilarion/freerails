@@ -42,11 +42,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             .getPrincipal();
 
     private final DialogueBoxController dialogueBoxController;
-
-    private RenderersRoot vl;
-
     private final ModelRootImpl modelRoot;
-
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
         private static final long serialVersionUID = 1L;
 
@@ -54,8 +50,25 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             dialogueBoxController.closeContent();
         }
     };
-
     private final TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JLabel jLabel1;
+    javax.swing.JMenuBar jMenuBar1;
+    javax.swing.JMenuItem showBrokerScreen;
+    javax.swing.JMenuItem selectEngine;
+    javax.swing.JMenuItem selectTrainOrders;
+    javax.swing.JMenuItem selectWagons;
+    javax.swing.JMenu show;
+    javax.swing.JMenuItem showCargoWaitingAndDemand;
+    javax.swing.JMenuItem showControls;
+    javax.swing.JMenuItem showJavaSystemProperties;
+    javax.swing.JMenuItem showNetworthGraph;
+    javax.swing.JMenuItem showStationInfo;
+    javax.swing.JMenuItem showTerrainInfo;
+    javax.swing.JMenuItem showTrainList;
+    javax.swing.JMenuItem showReportBug;
+    javax.swing.JMenuItem throwException;
+    private RenderersRoot vl;
 
     /**
      * Creates new form TestGlassPanelMethod.
@@ -155,6 +168,11 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         this.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
         this.setSize(640, 480);
 
+    }
+
+    public static void main(String args[]) {
+        DialogueBoxTester test = new DialogueBoxTester();
+        test.setVisible(true);
     }
 
     /**
@@ -407,44 +425,6 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
         System.exit(0);
     }// GEN-LAST:event_exitForm
-
-    public static void main(String args[]) {
-        DialogueBoxTester test = new DialogueBoxTester();
-        test.setVisible(true);
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JLabel jLabel1;
-
-    javax.swing.JMenuBar jMenuBar1;
-
-    javax.swing.JMenuItem showBrokerScreen;
-
-    javax.swing.JMenuItem selectEngine;
-
-    javax.swing.JMenuItem selectTrainOrders;
-
-    javax.swing.JMenuItem selectWagons;
-
-    javax.swing.JMenu show;
-
-    javax.swing.JMenuItem showCargoWaitingAndDemand;
-
-    javax.swing.JMenuItem showControls;
-
-    javax.swing.JMenuItem showJavaSystemProperties;
-
-    javax.swing.JMenuItem showNetworthGraph;
-
-    javax.swing.JMenuItem showStationInfo;
-
-    javax.swing.JMenuItem showTerrainInfo;
-
-    javax.swing.JMenuItem showTrainList;
-
-    javax.swing.JMenuItem showReportBug;
-
-    javax.swing.JMenuItem throwException;
     // End of variables declaration//GEN-END:variables
 
 }

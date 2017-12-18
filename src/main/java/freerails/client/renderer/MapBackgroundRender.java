@@ -54,6 +54,57 @@ final public class MapBackgroundRender implements MapLayerRenderer {
      */
     private Rectangle clipRectangle = new Rectangle();
 
+    public MapBackgroundRender(ReadOnlyWorld w, RenderersRoot rr,
+                               ModelRoot modelRoot) {
+        trackLayer = new TrackLayer(w, rr);
+        terrainLayer = new TerrainLayer(w, rr);
+        mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
+        cityNames = new CityNamesRenderer(w);
+        stationNames = new StationNamesRenderer(w, modelRoot);
+    }
+
+    public void paintTile(Graphics g, int x, int y) {
+        terrainLayer.paintTile(g, x, y);
+        trackLayer.paintTile(g, x, y);
+        cityNames.paint((Graphics2D) g, null);
+        stationNames.paint((Graphics2D) g, null);
+    }
+
+    public void paintRect(Graphics g, Rectangle visibleRect) {
+        int tileWidth = Constants.TILE_SIZE;
+        int tileHeight = Constants.TILE_SIZE;
+
+        clipRectangle = g.getClipBounds(clipRectangle);
+
+        int x = clipRectangle.x / tileWidth;
+        int y = clipRectangle.y / tileHeight;
+        int width = (clipRectangle.width / tileWidth) + 2;
+        int height = (clipRectangle.height) / tileHeight + 2;
+
+        paintRectangleOfTiles(g, x, y, width, height);
+        cityNames.paint((Graphics2D) g, visibleRect);
+        stationNames.paint((Graphics2D) g, visibleRect);
+    }
+
+    private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
+                                       int height) {
+        terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
+        trackLayer.paintRectangleOfTiles(g, x, y, width, height);
+        Rectangle visibleRectangle = new Rectangle(x * Constants.TILE_SIZE, y
+                * Constants.TILE_SIZE, width * Constants.TILE_SIZE, height
+                * Constants.TILE_SIZE);
+        cityNames.paint((Graphics2D) g, visibleRectangle);
+        stationNames.paint((Graphics2D) g, visibleRectangle);
+    }
+
+    public void refreshTile(int x, int y) {
+        // Do nothing
+    }
+
+    public void refreshAll() {
+        // Do nothing
+    }
+
     /**
      * This innner class represents a view of the track on the map.
      *
@@ -63,6 +114,11 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         private final ReadOnlyWorld w;
 
         private final RenderersRoot rr;
+
+        public TrackLayer(ReadOnlyWorld world, RenderersRoot trackPieceViewList) {
+            this.rr = trackPieceViewList;
+            this.w = world;
+        }
 
         /**
          * Paints a rectangle of tiles onto the supplied graphics context.
@@ -127,11 +183,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
                     "Method not yet implemented.");
         }
 
-        public TrackLayer(ReadOnlyWorld world, RenderersRoot trackPieceViewList) {
-            this.rr = trackPieceViewList;
-            this.w = world;
-        }
-
         public void refreshAll() {
         }
     }
@@ -145,6 +196,11 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         private final TileRendererList tiles;
 
         private final ReadOnlyWorld w;
+
+        public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
+            this.w = world;
+            this.tiles = tiles;
+        }
 
         public void paintTile(Graphics g, Point tile) {
             int screenX = tileSize.width * tile.x;
@@ -198,63 +254,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         public void refreshTile(int x, int y) {
         }
 
-        public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
-            this.w = world;
-            this.tiles = tiles;
-        }
-
         public void refreshAll() {
         }
-    }
-
-    public MapBackgroundRender(ReadOnlyWorld w, RenderersRoot rr,
-                               ModelRoot modelRoot) {
-        trackLayer = new TrackLayer(w, rr);
-        terrainLayer = new TerrainLayer(w, rr);
-        mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
-        cityNames = new CityNamesRenderer(w);
-        stationNames = new StationNamesRenderer(w, modelRoot);
-    }
-
-    public void paintTile(Graphics g, int x, int y) {
-        terrainLayer.paintTile(g, x, y);
-        trackLayer.paintTile(g, x, y);
-        cityNames.paint((Graphics2D) g, null);
-        stationNames.paint((Graphics2D) g, null);
-    }
-
-    public void paintRect(Graphics g, Rectangle visibleRect) {
-        int tileWidth = Constants.TILE_SIZE;
-        int tileHeight = Constants.TILE_SIZE;
-
-        clipRectangle = g.getClipBounds(clipRectangle);
-
-        int x = clipRectangle.x / tileWidth;
-        int y = clipRectangle.y / tileHeight;
-        int width = (clipRectangle.width / tileWidth) + 2;
-        int height = (clipRectangle.height) / tileHeight + 2;
-
-        paintRectangleOfTiles(g, x, y, width, height);
-        cityNames.paint((Graphics2D) g, visibleRect);
-        stationNames.paint((Graphics2D) g, visibleRect);
-    }
-
-    private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-                                       int height) {
-        terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
-        trackLayer.paintRectangleOfTiles(g, x, y, width, height);
-        Rectangle visibleRectangle = new Rectangle(x * Constants.TILE_SIZE, y
-                * Constants.TILE_SIZE, width * Constants.TILE_SIZE, height
-                * Constants.TILE_SIZE);
-        cityNames.paint((Graphics2D) g, visibleRectangle);
-        stationNames.paint((Graphics2D) g, visibleRectangle);
-    }
-
-    public void refreshTile(int x, int y) {
-        // Do nothing
-    }
-
-    public void refreshAll() {
-        // Do nothing
     }
 }

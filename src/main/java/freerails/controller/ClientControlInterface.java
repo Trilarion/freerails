@@ -16,10 +16,6 @@ import java.io.Serializable;
  */
 public interface ClientControlInterface {
 
-    enum ClientProperty {
-        CONNECTED_CLIENTS, MAPS_AVAILABLE, SAVED_GAMES
-    }
-
     /**
      * Called when a new game is started or a game is loaded.
      */
@@ -29,4 +25,8 @@ public interface ClientControlInterface {
      * Sets a property, for example, the list of saved games.
      */
     void setProperty(ClientProperty propertyName, Serializable value);
+
+    enum ClientProperty {
+        CONNECTED_CLIENTS, MAPS_AVAILABLE, SAVED_GAMES
+    }
 }

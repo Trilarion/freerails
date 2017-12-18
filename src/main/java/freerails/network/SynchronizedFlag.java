@@ -11,11 +11,11 @@ package freerails.network;
  * @author Luke
  */
 class SynchronizedFlag {
+    private boolean isOpen = true;
+
     SynchronizedFlag(boolean b) {
         this.isOpen = b;
     }
-
-    private boolean isOpen = true;
 
     public synchronized boolean isOpen() {
         return isOpen;

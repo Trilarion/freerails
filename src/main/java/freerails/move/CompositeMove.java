@@ -23,6 +23,15 @@ public class CompositeMove implements Move {
 
     private final ImList<Move> moves;
 
+    public CompositeMove(List<Move> movesArrayList) {
+
+        moves = new ImList<>(movesArrayList);
+    }
+
+    public CompositeMove(Move... moves) {
+        this.moves = new ImList<>(moves);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -50,15 +59,6 @@ public class CompositeMove implements Move {
 
     public final ImList<Move> getMoves() {
         return moves;
-    }
-
-    public CompositeMove(List<Move> movesArrayList) {
-
-        moves = new ImList<>(movesArrayList);
-    }
-
-    public CompositeMove(Move... moves) {
-        this.moves = new ImList<>(moves);
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

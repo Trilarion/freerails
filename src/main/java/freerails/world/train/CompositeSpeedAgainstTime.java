@@ -161,6 +161,12 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         throw new IllegalStateException(String.valueOf(t));
     }
 
+    void checkT(double t) {
+        if (t < 0d || t > finalT)
+            throw new IllegalArgumentException("t=" + t + ", but duration="
+                    + finalT);
+    }
+
     /**
      * Used to enable 2 values to be returned from the method getIndex(double t)
      */
@@ -174,12 +180,6 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
             this.offset = t;
         }
 
-    }
-
-    void checkT(double t) {
-        if (t < 0d || t > finalT)
-            throw new IllegalArgumentException("t=" + t + ", but duration="
-                    + finalT);
     }
 
 }

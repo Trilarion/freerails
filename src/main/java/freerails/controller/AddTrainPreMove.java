@@ -28,6 +28,26 @@ public class AddTrainPreMove implements PreMove {
     private final int engineTypeId;
 
     private final ImInts wagons;
+    private final ImPoint point;
+    private final FreerailsPrincipal principal;
+    private final ImmutableSchedule schedule;
+
+    public AddTrainPreMove(int e, ImInts wags, ImPoint p,
+                           FreerailsPrincipal fp, ImmutableSchedule s) {
+        engineTypeId = e;
+        wagons = wags;
+        point = p;
+        principal = fp;
+        schedule = s;
+        if (null == wags)
+            throw new NullPointerException();
+        if (null == p)
+            throw new NullPointerException();
+        if (null == fp)
+            throw new NullPointerException();
+        if (null == s)
+            throw new NullPointerException();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -57,29 +77,6 @@ public class AddTrainPreMove implements PreMove {
         result = 29 * result + principal.hashCode();
         result = 29 * result + schedule.hashCode();
         return result;
-    }
-
-    private final ImPoint point;
-
-    private final FreerailsPrincipal principal;
-
-    private final ImmutableSchedule schedule;
-
-    public AddTrainPreMove(int e, ImInts wags, ImPoint p,
-                           FreerailsPrincipal fp, ImmutableSchedule s) {
-        engineTypeId = e;
-        wagons = wags;
-        point = p;
-        principal = fp;
-        schedule = s;
-        if (null == wags)
-            throw new NullPointerException();
-        if (null == p)
-            throw new NullPointerException();
-        if (null == fp)
-            throw new NullPointerException();
-        if (null == s)
-            throw new NullPointerException();
     }
 
     PathOnTiles initPositionStep1(ReadOnlyWorld w) {

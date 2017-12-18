@@ -36,16 +36,11 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     private final TrainListJPanel trainListPanel;
 
     private final BuildTrackJPanel buildTrackPanel;
-
-    private ReadOnlyWorld world;
-
-    private ModelRoot modelRoot;
-
     private final int terrainInfoIndex;
-
     private final int trainListIndex;
-
     private final int stationInfoIndex;
+    private ReadOnlyWorld world;
+    private ModelRoot modelRoot;
 
     public RHSJTabPane() {
         /*

@@ -16,14 +16,9 @@ import java.util.NoSuchElementException;
  */
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     private static final long serialVersionUID = 3258411750679720758L;
-
-    public static FreerailsPathIterator forwardsIterator(List<Point> l) {
-        return new FreerailsPathIteratorImpl(l, true);
-    }
-
-    public static FreerailsPathIterator backwardsIterator(List<Point> l) {
-        return new FreerailsPathIteratorImpl(l, false);
-    }
+    private final boolean forwards;
+    private final List<Point> points;
+    private int position;
 
     /**
      * Creates new FreerailsPathIteratorImpl
@@ -40,11 +35,13 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
         }
     }
 
-    private final boolean forwards;
+    public static FreerailsPathIterator forwardsIterator(List<Point> l) {
+        return new FreerailsPathIteratorImpl(l, true);
+    }
 
-    private int position;
-
-    private final List<Point> points;
+    public static FreerailsPathIterator backwardsIterator(List<Point> l) {
+        return new FreerailsPathIteratorImpl(l, false);
+    }
 
     public boolean hasNext() {
         if (forwards) {

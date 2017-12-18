@@ -24,6 +24,14 @@ public class NewGameMessage2Server implements Message2Server {
         this.mapName = s;
     }
 
+    /**
+     * TODO This would be better implemented in a config file, or better still
+     * dynamically determined by scanning the directory.
+     */
+    public static String[] getMapNames() {
+        return new String[]{"South America", "Small South America"};
+    }
+
     public int getID() {
         return id;
     }
@@ -36,14 +44,6 @@ public class NewGameMessage2Server implements Message2Server {
         } catch (Exception e) {
             return new MessageStatus(id, false, e.getMessage());
         }
-    }
-
-    /**
-     * TODO This would be better implemented in a config file, or better still
-     * dynamically determined by scanning the directory.
-     */
-    public static String[] getMapNames() {
-        return new String[]{"South America", "Small South America"};
     }
 
     @Override

@@ -18,6 +18,17 @@ import java.net.Socket;
 public class InetConnectionAccepter implements Runnable {
     private static final Logger logger = Logger
             .getLogger(InetConnectionAccepter.class.getName());
+    private final GameServer gameServer;
+    private final SynchronizedFlag keepRunning = new SynchronizedFlag(true);
+    private final ServerSocket serverSocket;
+
+    public InetConnectionAccepter(int port, GameServer gameServer)
+            throws IOException {
+        if (null == gameServer)
+            throw new NullPointerException();
+        this.gameServer = gameServer;
+        serverSocket = new ServerSocket(port);
+    }
 
     public static void main(String[] args) {
         try {
@@ -29,20 +40,6 @@ public class InetConnectionAccepter implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private final GameServer gameServer;
-
-    private final SynchronizedFlag keepRunning = new SynchronizedFlag(true);
-
-    private final ServerSocket serverSocket;
-
-    public InetConnectionAccepter(int port, GameServer gameServer)
-            throws IOException {
-        if (null == gameServer)
-            throw new NullPointerException();
-        this.gameServer = gameServer;
-        serverSocket = new ServerSocket(port);
     }
 
     public void run() {

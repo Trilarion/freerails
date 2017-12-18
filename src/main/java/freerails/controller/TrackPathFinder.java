@@ -32,10 +32,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
 
     private final ReadOnlyWorld world;
-
-    private ImPoint startPoint;
-
     private final FreerailsPrincipal principal;
+    private ImPoint startPoint;
 
     public TrackPathFinder(ReadOnlyWorld world, FreerailsPrincipal principal) {
         this.world = world;

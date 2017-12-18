@@ -14,12 +14,11 @@ import java.io.ObjectStreamException;
 public class NullTerrainType implements TerrainType {
 
     public static final TerrainType INSTANCE = new NullTerrainType();
+    private static final long serialVersionUID = 3834874680581369912L;
 
     private NullTerrainType() {
 
     }
-
-    private static final long serialVersionUID = 3834874680581369912L;
 
     public ImList<Production> getProduction() {
         return new ImList<>();

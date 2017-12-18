@@ -20,9 +20,8 @@ import java.util.List;
  * @author Luke
  */
 public class TrackPathFinderTest extends TestCase {
-    private WorldImpl world;
-
     private final Player testPlayer = new Player("test", 0);
+    private WorldImpl world;
 
     @Override
     protected void setUp() throws Exception {

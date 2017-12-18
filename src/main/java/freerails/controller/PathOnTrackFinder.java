@@ -23,10 +23,8 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
             .getLogger(IncrementalPathFinder.class.getName());
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-
-    private ImPoint startPoint;
-
     private final ReadOnlyWorld world;
+    private ImPoint startPoint;
 
     public PathOnTrackFinder(ReadOnlyWorld world) {
         this.world = world;

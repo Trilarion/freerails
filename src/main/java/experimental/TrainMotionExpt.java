@@ -40,6 +40,48 @@ public class TrainMotionExpt extends JComponent {
 
     private long startTime;
 
+    public TrainMotionExpt() {
+        world = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(world, 0);
+        principal = me.getPrincipal();
+        ModelRoot mr = new ModelRootImpl();
+        TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
+        Step[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+                NORTH_WEST, NORTH, NORTH_EAST};
+        ImPoint from = new ImPoint(5, 5);
+        MoveStatus ms = producer.buildTrack(from, trackPath);
+        if (!ms.ok)
+            throw new IllegalStateException(ms.message);
+
+        TrainOrdersModel[] orders = {};
+        ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
+                principal, is);
+
+        Move m = addTrain.generateMove(world);
+        ms = m.doMove(world, principal);
+        if (!ms.ok)
+            throw new IllegalStateException(ms.message);
+
+        startTime = System.currentTimeMillis();
+    }
+
+    public static void main(String[] args) {
+        System.setProperty("SHOWFPS", "true");
+
+        JFrame f = new JFrame();
+        f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        f.getContentPane().add(new TrainMotionExpt());
+
+        ScreenHandler screenHandler = new ScreenHandler(f,
+                ScreenHandler.WINDOWED_MODE);
+        screenHandler.apply();
+
+        GameLoop gameLoop = new GameLoop(screenHandler);
+        Thread t = new Thread(gameLoop);
+        t.start();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -139,47 +181,5 @@ public class TrainMotionExpt extends JComponent {
             ai.nextActivity();
             finishTime = ai.getFinishTime();
         }
-    }
-
-    public TrainMotionExpt() {
-        world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        principal = me.getPrincipal();
-        ModelRoot mr = new ModelRootImpl();
-        TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        Step[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
-                NORTH_WEST, NORTH, NORTH_EAST};
-        ImPoint from = new ImPoint(5, 5);
-        MoveStatus ms = producer.buildTrack(from, trackPath);
-        if (!ms.ok)
-            throw new IllegalStateException(ms.message);
-
-        TrainOrdersModel[] orders = {};
-        ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
-                principal, is);
-
-        Move m = addTrain.generateMove(world);
-        ms = m.doMove(world, principal);
-        if (!ms.ok)
-            throw new IllegalStateException(ms.message);
-
-        startTime = System.currentTimeMillis();
-    }
-
-    public static void main(String[] args) {
-        System.setProperty("SHOWFPS", "true");
-
-        JFrame f = new JFrame();
-        f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        f.getContentPane().add(new TrainMotionExpt());
-
-        ScreenHandler screenHandler = new ScreenHandler(f,
-                ScreenHandler.WINDOWED_MODE);
-        screenHandler.apply();
-
-        GameLoop gameLoop = new GameLoop(screenHandler);
-        Thread t = new Thread(gameLoop);
-        t.start();
     }
 }

@@ -19,10 +19,6 @@ public class List2DDiffTest extends TestCase {
 
     SortedMap<ListKey, Object> map;
 
-    enum listid {
-        test
-    }
-
     @Override
     protected void setUp() throws Exception {
         underlying = new List2DImpl<>(0);
@@ -285,6 +281,10 @@ public class List2DDiffTest extends TestCase {
         diffs.set(0, 1, null);
         assertEquals(null, diffs.get(0, 1));
 
+    }
+
+    enum listid {
+        test
     }
 
 }

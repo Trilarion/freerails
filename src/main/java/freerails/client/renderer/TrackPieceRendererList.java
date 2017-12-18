@@ -29,13 +29,6 @@ final public class TrackPieceRendererList {
 
     private final TrackPieceRenderer[] trackPieceViewArray;
 
-    public TrackPieceRenderer getTrackPieceView(int i) {
-        if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
-            return NullTrackPieceRenderer.instance;
-        }
-        return trackPieceViewArray[i];
-    }
-
     public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
                                   FreerailsProgressMonitor pm) throws IOException {
         // Setup progress monitor..
@@ -53,6 +46,13 @@ final public class TrackPieceRendererList {
                     imageManager, i);
             pm.setValue(++progress);
         }
+    }
+
+    public TrackPieceRenderer getTrackPieceView(int i) {
+        if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
+            return NullTrackPieceRenderer.instance;
+        }
+        return trackPieceViewArray[i];
     }
 
     public boolean validate(ReadOnlyWorld w) {

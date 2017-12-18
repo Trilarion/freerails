@@ -24,6 +24,76 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     private final ImPoint location;
 
+    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, ImPoint p) {
+        trackPieceBefore = before;
+        trackPieceAfter = after;
+        location = p;
+    }
+
+    protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
+        GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
+
+        return rules.isCanConnect2OtherRRTrack();
+    }
+
+    /**
+     * This method may be called under 3 possible conditions: (1) when a station
+     * is getting built, (2) when a station is getting upgraded, (3) when a
+     * staton is getting removed.
+     */
+    protected static MoveStatus check4overlap(World w, ImPoint location,
+                                              TrackPiece trackPiece) {
+        /*
+         * Fix for 915945 (Stations should not overlap) Check that there is not
+         * another station whose radius overlaps with the one we are building.
+         */
+        TrackRule thisStationType = trackPiece.getTrackRule();
+        assert thisStationType.isStation();
+
+        for (int player = 0; player < w.getNumberOfPlayers(); player++) {
+            FreerailsPrincipal principal = w.getPlayer(player).getPrincipal();
+            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+
+            while (wi.next()) {
+                StationModel station = (StationModel) wi.getElement();
+
+                /*
+                 * Fix for bug 948675 - Can't upgrade station types If locations
+                 * are the same, then we are upgrading a station so it doesn't
+                 * matter if the radii overlap.
+                 */
+
+                if (location.x == station.x && location.y == station.y) {
+                    continue;
+                }
+
+                FreerailsTile tile = (FreerailsTile) w.getTile(station.x,
+                        station.y);
+                TrackRule otherStationType = tile.getTrackPiece()
+                        .getTrackRule();
+                assert otherStationType.isStation();
+
+                int sumOfRadii = otherStationType.getStationRadius()
+                        + thisStationType.getStationRadius();
+                int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
+                int xDistance = station.x - location.x;
+                int yDistance = station.y - location.y;
+
+                // Do radii overlap?
+                boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);
+                boolean yOverlap = sumOfRadiiSquared >= (yDistance * yDistance);
+
+                if (xOverlap && yOverlap) {
+                    String message = "Too close to " + station.getStationName();
+
+                    return MoveStatus.moveFailed(message);
+                }
+            }
+        }
+
+        return MoveStatus.MOVE_OK;
+    }
+
     public ImPoint getLocation() {
         return location;
     }
@@ -45,12 +115,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     public TrackPiece getNewTrackPiece() {
         return trackPieceAfter;
-    }
-
-    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, ImPoint p) {
-        trackPieceBefore = before;
-        trackPieceAfter = after;
-        location = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -282,69 +346,5 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
                     && fieldnewTrackPieceEqual;
         }
         return false;
-    }
-
-    protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
-        GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
-
-        return rules.isCanConnect2OtherRRTrack();
-    }
-
-    /**
-     * This method may be called under 3 possible conditions: (1) when a station
-     * is getting built, (2) when a station is getting upgraded, (3) when a
-     * staton is getting removed.
-     */
-    protected static MoveStatus check4overlap(World w, ImPoint location,
-                                              TrackPiece trackPiece) {
-        /*
-         * Fix for 915945 (Stations should not overlap) Check that there is not
-         * another station whose radius overlaps with the one we are building.
-         */
-        TrackRule thisStationType = trackPiece.getTrackRule();
-        assert thisStationType.isStation();
-
-        for (int player = 0; player < w.getNumberOfPlayers(); player++) {
-            FreerailsPrincipal principal = w.getPlayer(player).getPrincipal();
-            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
-
-            while (wi.next()) {
-                StationModel station = (StationModel) wi.getElement();
-
-                /*
-                 * Fix for bug 948675 - Can't upgrade station types If locations
-                 * are the same, then we are upgrading a station so it doesn't
-                 * matter if the radii overlap.
-                 */
-
-                if (location.x == station.x && location.y == station.y) {
-                    continue;
-                }
-
-                FreerailsTile tile = (FreerailsTile) w.getTile(station.x,
-                        station.y);
-                TrackRule otherStationType = tile.getTrackPiece()
-                        .getTrackRule();
-                assert otherStationType.isStation();
-
-                int sumOfRadii = otherStationType.getStationRadius()
-                        + thisStationType.getStationRadius();
-                int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                int xDistance = station.x - location.x;
-                int yDistance = station.y - location.y;
-
-                // Do radii overlap?
-                boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);
-                boolean yOverlap = sumOfRadiiSquared >= (yDistance * yDistance);
-
-                if (xOverlap && yOverlap) {
-                    String message = "Too close to " + station.getStationName();
-
-                    return MoveStatus.moveFailed(message);
-                }
-            }
-        }
-
-        return MoveStatus.MOVE_OK;
     }
 }

@@ -10,37 +10,6 @@ import java.util.Random;
 
 public class ConstAccTest extends TestCase {
 
-    public void testTandS() {
-        SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 5);
-        double s = acc1.getS();
-        SpeedAgainstTime acc2 = ConstAcc.uas(0, 10, s);
-        assertEquals(acc1, acc2);
-
-        acc1 = ConstAcc.uat(10, 0, 5);
-        assertEquals(50, acc1.getS(), 0.00001);
-        acc2 = ConstAcc.uas(10, 0, acc1.getS());
-        assertEquals(acc1, acc2);
-
-    }
-
-    public void testEquals() {
-        SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 4);
-        SpeedAgainstTime acc2 = ConstAcc.uat(0, 10, 4);
-        assertEquals(acc1, acc2);
-    }
-
-    public void testContract() {
-        Random r = new Random(88);
-        for (int i = 0; i < 1000; i++) {
-            ConstAcc acc1 = ConstAcc.uat(r.nextDouble(), r.nextDouble(), r
-                    .nextDouble());
-            checkContract(acc1);
-            ConstAcc acc2 = ConstAcc.uas(r.nextDouble(), r.nextDouble(), r
-                    .nextDouble());
-            checkContract(acc2);
-        }
-    }
-
     /**
      * Checks the specified object satisfies the contract defined by the
      * interface SpeedAgainstTime.
@@ -115,6 +84,37 @@ public class ConstAccTest extends TestCase {
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);
+        }
+    }
+
+    public void testTandS() {
+        SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 5);
+        double s = acc1.getS();
+        SpeedAgainstTime acc2 = ConstAcc.uas(0, 10, s);
+        assertEquals(acc1, acc2);
+
+        acc1 = ConstAcc.uat(10, 0, 5);
+        assertEquals(50, acc1.getS(), 0.00001);
+        acc2 = ConstAcc.uas(10, 0, acc1.getS());
+        assertEquals(acc1, acc2);
+
+    }
+
+    public void testEquals() {
+        SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 4);
+        SpeedAgainstTime acc2 = ConstAcc.uat(0, 10, 4);
+        assertEquals(acc1, acc2);
+    }
+
+    public void testContract() {
+        Random r = new Random(88);
+        for (int i = 0; i < 1000; i++) {
+            ConstAcc acc1 = ConstAcc.uat(r.nextDouble(), r.nextDouble(), r
+                    .nextDouble());
+            checkContract(acc1);
+            ConstAcc acc2 = ConstAcc.uas(r.nextDouble(), r.nextDouble(), r
+                    .nextDouble());
+            checkContract(acc2);
         }
     }
 

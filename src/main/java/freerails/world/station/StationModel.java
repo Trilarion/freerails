@@ -14,69 +14,15 @@ public class StationModel implements FreerailsSerializable {
     public final int x;
 
     public final int y;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof StationModel))
-            return false;
-
-        final StationModel stationModel = (StationModel) o;
-
-        if (cargoBundleNumber != stationModel.cargoBundleNumber)
-            return false;
-        if (x != stationModel.x)
-            return false;
-        if (y != stationModel.y)
-            return false;
-        if (converted != null ? !converted.equals(stationModel.converted)
-                : stationModel.converted != null)
-            return false;
-        if (demand != null ? !demand.equals(stationModel.demand)
-                : stationModel.demand != null)
-            return false;
-        if (!name.equals(stationModel.name))
-            return false;
-        if (production != null ? !production.equals(stationModel.production)
-                : stationModel.production != null)
-            return false;
-        return supply != null ? supply.equals(stationModel.supply) : stationModel.supply == null;
-    }
-
     private final String name;
-
     private final SupplyAtStation supply;
-
     private final Demand4Cargo demand;
-
     private final ConvertedAtStation converted;
-
     private final int cargoBundleNumber;
-
     /**
      * What this station is building.
      */
     private final ImList<PlannedTrain> production;
-
-    public ConvertedAtStation getConverted() {
-        return converted;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = x;
-        result = 29 * result + y;
-        result = 29 * result + (name != null ? name.hashCode() : 0);
-        result = 29 * result + (supply != null ? supply.hashCode() : 0);
-        result = 29 * result + (demand != null ? demand.hashCode() : 0);
-        result = 29 * result + (converted != null ? converted.hashCode() : 0);
-        result = 29 * result + cargoBundleNumber;
-        result = 29 * result + production.size();
-
-        return result;
-    }
 
     public StationModel(StationModel s, ConvertedAtStation converted) {
         this.converted = converted;
@@ -115,22 +61,6 @@ public class StationModel implements FreerailsSerializable {
         this.cargoBundleNumber = 0;
     }
 
-    public String getStationName() {
-        return name;
-    }
-
-    public int getStationX() {
-        return x;
-    }
-
-    public int getStationY() {
-        return y;
-    }
-
-    public ImList<PlannedTrain> getProduction() {
-        return production;
-    }
-
     public StationModel(StationModel s, ImList<PlannedTrain> production) {
         this.production = production;
         this.demand = s.demand;
@@ -140,14 +70,6 @@ public class StationModel implements FreerailsSerializable {
         this.supply = s.supply;
         this.x = s.x;
         this.y = s.y;
-    }
-
-    public Demand4Cargo getDemand() {
-        return demand;
-    }
-
-    public SupplyAtStation getSupply() {
-        return supply;
     }
 
     public StationModel(StationModel s, Demand4Cargo demand) {
@@ -173,6 +95,78 @@ public class StationModel implements FreerailsSerializable {
         this.production = s.production;
         this.x = s.x;
         this.y = s.y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof StationModel))
+            return false;
+
+        final StationModel stationModel = (StationModel) o;
+
+        if (cargoBundleNumber != stationModel.cargoBundleNumber)
+            return false;
+        if (x != stationModel.x)
+            return false;
+        if (y != stationModel.y)
+            return false;
+        if (converted != null ? !converted.equals(stationModel.converted)
+                : stationModel.converted != null)
+            return false;
+        if (demand != null ? !demand.equals(stationModel.demand)
+                : stationModel.demand != null)
+            return false;
+        if (!name.equals(stationModel.name))
+            return false;
+        if (production != null ? !production.equals(stationModel.production)
+                : stationModel.production != null)
+            return false;
+        return supply != null ? supply.equals(stationModel.supply) : stationModel.supply == null;
+    }
+
+    public ConvertedAtStation getConverted() {
+        return converted;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = x;
+        result = 29 * result + y;
+        result = 29 * result + (name != null ? name.hashCode() : 0);
+        result = 29 * result + (supply != null ? supply.hashCode() : 0);
+        result = 29 * result + (demand != null ? demand.hashCode() : 0);
+        result = 29 * result + (converted != null ? converted.hashCode() : 0);
+        result = 29 * result + cargoBundleNumber;
+        result = 29 * result + production.size();
+
+        return result;
+    }
+
+    public String getStationName() {
+        return name;
+    }
+
+    public int getStationX() {
+        return x;
+    }
+
+    public int getStationY() {
+        return y;
+    }
+
+    public ImList<PlannedTrain> getProduction() {
+        return production;
+    }
+
+    public Demand4Cargo getDemand() {
+        return demand;
+    }
+
+    public SupplyAtStation getSupply() {
+        return supply;
     }
 
     public int getCargoBundleID() {

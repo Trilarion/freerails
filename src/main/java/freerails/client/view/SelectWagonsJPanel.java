@@ -34,6 +34,9 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     private int engineType = 0;
 
     private RenderersRoot rr;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton okjButton;
+    private javax.swing.JList wagonTypesJList;
 
     public SelectWagonsJPanel() {
         initComponents();
@@ -241,17 +244,33 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         this.paintChildren(g);
     }
 
-    private javax.swing.JLabel jLabel1;
+    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+        World2ListModelAdapter w2lma = new World2ListModelAdapter(
+                mr.getWorld(), SKEY.CARGO_TYPES);
+        this.wagonTypesJList.setModel(w2lma);
+        this.rr = vl;
+        WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rr);
+        this.wagonTypesJList.setCellRenderer(wagonCellRenderer);
+        this.okjButton.addActionListener(closeAction);
+    }
 
-    private javax.swing.JButton okjButton;
+    public int[] getWagons() {
+        int[] wagonsArray = new int[wagons.size()];
+        for (int i = 0; i < wagons.size(); i++) {
+            Integer type = wagons.get(i);
+            wagonsArray[i] = type;
+        }
+        return wagonsArray;
+    }
 
-    private javax.swing.JList wagonTypesJList;
+    public void setEngineType(int engineType) {
+        this.engineType = engineType;
+    }
 
     // End of variables declaration//GEN-END:variables
     final private class WagonCellRenderer implements ListCellRenderer {
-        private final Component[] labels;
-
         final RenderersRoot rr;
+        private final Component[] labels;
 
         public WagonCellRenderer(World2ListModelAdapter w2lma, RenderersRoot s) {
             rr = s;
@@ -297,29 +316,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
             }
             return null;
         }
-    }
-
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
-        World2ListModelAdapter w2lma = new World2ListModelAdapter(
-                mr.getWorld(), SKEY.CARGO_TYPES);
-        this.wagonTypesJList.setModel(w2lma);
-        this.rr = vl;
-        WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rr);
-        this.wagonTypesJList.setCellRenderer(wagonCellRenderer);
-        this.okjButton.addActionListener(closeAction);
-    }
-
-    public int[] getWagons() {
-        int[] wagonsArray = new int[wagons.size()];
-        for (int i = 0; i < wagons.size(); i++) {
-            Integer type = wagons.get(i);
-            wagonsArray[i] = type;
-        }
-        return wagonsArray;
-    }
-
-    public void setEngineType(int engineType) {
-        this.engineType = engineType;
     }
 
 }

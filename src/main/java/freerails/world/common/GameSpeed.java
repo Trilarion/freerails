@@ -18,13 +18,13 @@ public class GameSpeed implements FreerailsSerializable {
 
     private final int speed;
 
+    public GameSpeed(int speed) {
+        this.speed = speed;
+    }
+
     @Override
     public String toString() {
         return "GameSpeed:" + String.valueOf(speed);
-    }
-
-    public GameSpeed(int speed) {
-        this.speed = speed;
     }
 
     public int getSpeed() {

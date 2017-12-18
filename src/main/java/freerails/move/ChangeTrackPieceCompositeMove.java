@@ -157,10 +157,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 ruleNumber);
     }
 
-    public Rectangle getUpdatedTiles() {
-        return new Rectangle(x, y, w, h);
-    }
-
     public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             if (w.getPlayer(i).getPrincipal().equals(p)) {
@@ -189,6 +185,20 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         return rules.isMustConnect2ExistingTrack();
     }
 
+    public static int findRuleID(TrackRule r, ReadOnlyWorld w) {
+        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
+            Object o = w.get(SKEY.TRACK_RULES, i);
+            if (r.equals(o)) {
+                return i;
+            }
+        }
+        throw new IllegalStateException();
+    }
+
+    public Rectangle getUpdatedTiles() {
+        return new Rectangle(x, y, w, h);
+    }
+
     @Override
     protected MoveStatus compositeTest(World world, FreerailsPrincipal p) {
         if (mustConnectToExistingTrack(world)) {
@@ -215,16 +225,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         }
 
         return MoveStatus.MOVE_OK;
-    }
-
-    public static int findRuleID(TrackRule r, ReadOnlyWorld w) {
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            Object o = w.get(SKEY.TRACK_RULES, i);
-            if (r.equals(o)) {
-                return i;
-            }
-        }
-        throw new IllegalStateException();
     }
 
     @Override

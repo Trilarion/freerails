@@ -28,6 +28,25 @@ public class IntLine implements Serializable {
 
     public int y2;
 
+    /**
+     * @param xx1 x of the first point
+     * @param yy1 y of the first point
+     * @param xx2 x of the second point
+     * @param yy2 y of the second point
+     */
+    public IntLine(int xx1, int yy1, int xx2, int yy2) {
+        x1 = xx1;
+        y1 = yy1;
+        x2 = xx2;
+        y2 = yy2;
+    }
+
+    /**
+     * Default constructor - defines a dot at 0,0.
+     */
+    public IntLine() {
+    }
+
     @Override
     public int hashCode() {
         int result;
@@ -48,25 +67,6 @@ public class IntLine implements Serializable {
             return squareRoots[sumOfSquares];
         }
         return Math.sqrt(sumOfSquares);
-    }
-
-    /**
-     * @param xx1 x of the first point
-     * @param yy1 y of the first point
-     * @param xx2 x of the second point
-     * @param yy2 y of the second point
-     */
-    public IntLine(int xx1, int yy1, int xx2, int yy2) {
-        x1 = xx1;
-        y1 = yy1;
-        x2 = xx2;
-        y2 = yy2;
-    }
-
-    /**
-     * Default constructor - defines a dot at 0,0.
-     */
-    public IntLine() {
     }
 
     @Override

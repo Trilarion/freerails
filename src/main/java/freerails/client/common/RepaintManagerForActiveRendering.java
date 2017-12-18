@@ -30,14 +30,25 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
 
     private static long numRepaintRequests = 0;
+    private static long numDirtyRequests;
+
+    private RepaintManagerForActiveRendering() {
+    }
 
     public static void setAsCurrentManager() {
         RepaintManager.setCurrentManager(instance);
     }
 
-    private static long numDirtyRequests;
+    public static synchronized void addJFrame(JFrame f) {
+        activelyRendereredComponents.add(f);
+    }
 
-    private RepaintManagerForActiveRendering() {
+    public static long getNumRepaintRequests() {
+        return numRepaintRequests;
+    }
+
+    public static long getNumDirtyRequests() {
+        return numDirtyRequests;
     }
 
     @Override
@@ -54,10 +65,6 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         } else {
             numRepaintRequests++;
         }
-    }
-
-    public static synchronized void addJFrame(JFrame f) {
-        activelyRendereredComponents.add(f);
     }
 
     @Override
@@ -95,13 +102,5 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 
         return null != topLevelAncestor
                 && !activelyRendereredComponents.contains(topLevelAncestor);
-    }
-
-    public static long getNumRepaintRequests() {
-        return numRepaintRequests;
-    }
-
-    public static long getNumDirtyRequests() {
-        return numDirtyRequests;
     }
 }

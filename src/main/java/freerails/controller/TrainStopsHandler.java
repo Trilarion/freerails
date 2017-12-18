@@ -33,6 +33,16 @@ public class TrainStopsHandler implements Serializable {
     private static final int NOT_AT_STATION = -1;
 
     private static final long serialVersionUID = 3257567287094882872L;
+    private final FreerailsPrincipal principal;
+    private final int trainId;
+    private final WorldDiffs worldDiffs;
+    private GameTime timeLoadingFinished = new GameTime(0);
+
+    public TrainStopsHandler(int id, FreerailsPrincipal p, WorldDiffs w) {
+        trainId = id;
+        principal = p;
+        worldDiffs = w;
+    }
 
     /**
      * If wagons are added to a train, we need to increase its length.
@@ -73,20 +83,6 @@ public class TrainStopsHandler implements Serializable {
         ImPoint newStart = new ImPoint(nextPot.getX(), nextPot.getY());
         path = new PathOnTiles(newStart, steps);
         return path;
-    }
-
-    private final FreerailsPrincipal principal;
-
-    private GameTime timeLoadingFinished = new GameTime(0);
-
-    private final int trainId;
-
-    private final WorldDiffs worldDiffs;
-
-    public TrainStopsHandler(int id, FreerailsPrincipal p, WorldDiffs w) {
-        trainId = id;
-        principal = p;
-        worldDiffs = w;
     }
 
     public ImPoint arrivesAtPoint(int x, int y) {

@@ -64,6 +64,22 @@ public class NonNullElements implements WorldIterator {
         }
     }
 
+    public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p,
+                                int row) {
+        int count = 0;
+        for (int i = 0; i < w.size(p, key); i++) {
+
+            if (w.get(p, key, i) != null) {
+                if (count == row) {
+                    return i;
+                }
+                count++;
+            }
+        }
+
+        throw new NoSuchElementException(String.valueOf(row));
+    }
+
     public boolean next() {
         int nextIndex = index; // this is used to look ahead.
 
@@ -194,21 +210,5 @@ public class NonNullElements implements WorldIterator {
             }
 
         }
-    }
-
-    public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p,
-                                int row) {
-        int count = 0;
-        for (int i = 0; i < w.size(p, key); i++) {
-
-            if (w.get(p, key, i) != null) {
-                if (count == row) {
-                    return i;
-                }
-                count++;
-            }
-        }
-
-        throw new NoSuchElementException(String.valueOf(row));
     }
 }

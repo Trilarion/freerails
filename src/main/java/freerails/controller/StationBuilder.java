@@ -22,10 +22,8 @@ import java.util.NoSuchElementException;
 public class StationBuilder {
     private static final Logger logger = Logger.getLogger(StationBuilder.class
             .getName());
-
-    private int ruleNumber;
-
     private final MoveExecutor executor;
+    private int ruleNumber;
 
     public StationBuilder(MoveExecutor executor) {
         this.executor = executor;

@@ -18,15 +18,15 @@ public class ChangeGameSpeedMove implements Move {
 
     private final GameSpeed newSpeed;
 
+    private ChangeGameSpeedMove(GameSpeed before, GameSpeed after) {
+        oldSpeed = before;
+        newSpeed = after;
+    }
+
     public static ChangeGameSpeedMove getMove(ReadOnlyWorld w,
                                               GameSpeed newGameSpeed) {
         return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED),
                 newGameSpeed);
-    }
-
-    private ChangeGameSpeedMove(GameSpeed before, GameSpeed after) {
-        oldSpeed = before;
-        newSpeed = after;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

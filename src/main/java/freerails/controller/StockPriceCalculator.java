@@ -24,33 +24,19 @@ import static freerails.world.accounts.StockTransaction.STOCK_BUNDLE_SIZE;
  * @author Luke
  */
 public class StockPriceCalculator {
-    public static class StockPrice {
-
-        public StockPrice(long netWorth, long profitLastyear, int publicShares,
-                          int otherRRShares) {
-            currentPrice = calStockPrice(netWorth, profitLastyear,
-                    publicShares, otherRRShares);
-            sellPrice = calStockPrice(netWorth, profitLastyear, publicShares
-                    + STOCK_BUNDLE_SIZE, otherRRShares - STOCK_BUNDLE_SIZE);
-            buyPrice = calStockPrice(netWorth, profitLastyear, publicShares
-                    - STOCK_BUNDLE_SIZE, otherRRShares + STOCK_BUNDLE_SIZE);
-            treasurySellPrice = calStockPrice(netWorth, profitLastyear,
-                    publicShares + STOCK_BUNDLE_SIZE, otherRRShares);
-            treasuryBuyPrice = calStockPrice(netWorth, profitLastyear,
-                    publicShares - STOCK_BUNDLE_SIZE, otherRRShares);
-        }
-
-        public final Money currentPrice;
-        public final Money sellPrice;
-        public final Money buyPrice;
-        public final Money treasuryBuyPrice;
-        public final Money treasurySellPrice;
-    }
-
     private final ReadOnlyWorld w;
 
     public StockPriceCalculator(ReadOnlyWorld w) {
         this.w = w;
+    }
+
+    static Money calStockPrice(long netWorth, long profitLastyear,
+                               int publicShares, int otherRRShares) {
+        if ((publicShares + otherRRShares) == 0)
+            return new Money(Long.MAX_VALUE);
+        long price = 2 * (5 * profitLastyear + netWorth)
+                / (2 * publicShares + otherRRShares);
+        return new Money(price);
     }
 
     public StockPrice[] calculate() {
@@ -147,13 +133,27 @@ public class StockPriceCalculator {
         return total;
     }
 
-    static Money calStockPrice(long netWorth, long profitLastyear,
-                               int publicShares, int otherRRShares) {
-        if ((publicShares + otherRRShares) == 0)
-            return new Money(Long.MAX_VALUE);
-        long price = 2 * (5 * profitLastyear + netWorth)
-                / (2 * publicShares + otherRRShares);
-        return new Money(price);
+    public static class StockPrice {
+
+        public final Money currentPrice;
+        public final Money sellPrice;
+        public final Money buyPrice;
+        public final Money treasuryBuyPrice;
+        public final Money treasurySellPrice;
+
+        public StockPrice(long netWorth, long profitLastyear, int publicShares,
+                          int otherRRShares) {
+            currentPrice = calStockPrice(netWorth, profitLastyear,
+                    publicShares, otherRRShares);
+            sellPrice = calStockPrice(netWorth, profitLastyear, publicShares
+                    + STOCK_BUNDLE_SIZE, otherRRShares - STOCK_BUNDLE_SIZE);
+            buyPrice = calStockPrice(netWorth, profitLastyear, publicShares
+                    - STOCK_BUNDLE_SIZE, otherRRShares + STOCK_BUNDLE_SIZE);
+            treasurySellPrice = calStockPrice(netWorth, profitLastyear,
+                    publicShares + STOCK_BUNDLE_SIZE, otherRRShares);
+            treasuryBuyPrice = calStockPrice(netWorth, profitLastyear,
+                    publicShares - STOCK_BUNDLE_SIZE, otherRRShares);
+        }
     }
 
 }

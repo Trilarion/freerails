@@ -25,9 +25,8 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public abstract class AbstractMoveTestCase extends TestCase {
-    private boolean hasSetupBeenCalled = false;
-
     protected World world;
+    private boolean hasSetupBeenCalled = false;
 
     protected AbstractMoveTestCase() {
     }
@@ -204,6 +203,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
         return world;
     }
 
+    void setWorld(World world) {
+        this.world = world;
+    }
+
     protected boolean hasSetupBeenCalled() {
         return hasSetupBeenCalled;
     }
@@ -223,10 +226,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
         // Set the time..
         getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
-    }
-
-    void setWorld(World world) {
-        this.world = world;
     }
 
     public void testMove() {

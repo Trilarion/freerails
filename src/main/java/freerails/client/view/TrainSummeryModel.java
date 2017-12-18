@@ -32,14 +32,13 @@ import java.util.Map;
 public class TrainSummeryModel {
 
     private static final long MINIMUM_WAIT_TIME = 250;
+    private final Map<Integer, Money> lastTrainIncome;
+    private final Map<Integer, String> lastStations;
     private ReadOnlyWorld world = null;
     private int lastNrOfTransactions = 0;
-    private final Map<Integer, Money> lastTrainIncome;
     private FreerailsPrincipal principal = null;
     private int maxTrainNum = 0;
-
     private long lastUpdate;
-    private final Map<Integer, String> lastStations;
     private long lastStationUpdate;
 
     public TrainSummeryModel() {

@@ -32,6 +32,9 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     private static final Logger logger = Logger.getLogger(HtmlJPanel.class
             .getName());
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton done;
+    private javax.swing.JLabel htmlJLabel;
 
     HtmlJPanel() {
         initComponents();
@@ -52,6 +55,43 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     public HtmlJPanel(String html) {
         initComponents();
         setHtml(html);
+    }
+
+    static String populateTokens(String template, Object context) {
+        StringTokenizer tokenizer = new StringTokenizer(template, "$");
+        String output = "";
+
+        while (tokenizer.hasMoreTokens()) {
+
+            output += tokenizer.nextToken();
+
+            if (tokenizer.hasMoreTokens()) {
+                String token = tokenizer.nextToken();
+                String value;
+                if (context instanceof HashMap) {
+                    value = (String) ((HashMap) context).get(token);
+                } else {
+                    try {
+                        StringTokenizer t2 = new StringTokenizer(token, ".");
+                        value = null;
+                        Object o = context;
+                        while (t2.hasMoreTokens()) {
+                            String subToken = t2.nextToken();
+                            Field field = o.getClass().getField(subToken);
+                            o = field.get(o);
+                        }
+                        value = o.toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new NoSuchElementException(token);
+                    }
+
+                }
+                output += value;
+            }
+        }
+
+        return output;
     }
 
     /**
@@ -129,48 +169,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
     void setHtml(String s) {
         htmlJLabel.setText(s);
     }
-
-    static String populateTokens(String template, Object context) {
-        StringTokenizer tokenizer = new StringTokenizer(template, "$");
-        String output = "";
-
-        while (tokenizer.hasMoreTokens()) {
-
-            output += tokenizer.nextToken();
-
-            if (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                String value;
-                if (context instanceof HashMap) {
-                    value = (String) ((HashMap) context).get(token);
-                } else {
-                    try {
-                        StringTokenizer t2 = new StringTokenizer(token, ".");
-                        value = null;
-                        Object o = context;
-                        while (t2.hasMoreTokens()) {
-                            String subToken = t2.nextToken();
-                            Field field = o.getClass().getField(subToken);
-                            o = field.get(o);
-                        }
-                        value = o.toString();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new NoSuchElementException(token);
-                    }
-
-                }
-                output += value;
-            }
-        }
-
-        return output;
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton done;
-
-    private javax.swing.JLabel htmlJLabel;
 
     // End of variables declaration//GEN-END:variables
 

@@ -23,15 +23,11 @@ import java.awt.event.ActionListener;
  */
 public class SimpleComponentFactoryImpl2 implements
         freerails.client.top.GUIComponentFactory {
-    private OverviewMapJComponent overviewMap;
-
-    private JScrollPane mainMapScrollPane1;
-
-    private MapViewJComponentConcrete mainMap;
-
-    private MainMapAndOverviewMapMediator mediator;
-
     private final Rectangle r = new Rectangle();
+    private OverviewMapJComponent overviewMap;
+    private JScrollPane mainMapScrollPane1;
+    private MapViewJComponentConcrete mainMap;
+    private MainMapAndOverviewMapMediator mediator;
 
     /**
      * Creates new SimpleComponentFactoryImpl

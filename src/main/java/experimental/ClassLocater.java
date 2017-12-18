@@ -53,6 +53,18 @@ public class ClassLocater {
     protected final LinkedList<String> skipPrefixes = new LinkedList<>();
 
     /**
+     * Automatically adds sun's classes, the java library classes, and the
+     * Apache log4j classes (a lib used by ClassLocater!) to the skip list; it's
+     * very unlikely that you're trying to locate any of these!
+     */
+    public ClassLocater() {
+        addSkipPrefix("org.apache.log4j.");
+        addSkipPrefix("com.sun.");
+        addSkipPrefix("java");
+        addSkipPrefix("junit");
+    }
+
+    /**
      * Finds all classes that implement or extend a given class name, and
      * instantiates precisely one copy of each
      *
@@ -105,18 +117,6 @@ public class ClassLocater {
         }
 
         return instances;
-    }
-
-    /**
-     * Automatically adds sun's classes, the java library classes, and the
-     * Apache log4j classes (a lib used by ClassLocater!) to the skip list; it's
-     * very unlikely that you're trying to locate any of these!
-     */
-    public ClassLocater() {
-        addSkipPrefix("org.apache.log4j.");
-        addSkipPrefix("com.sun.");
-        addSkipPrefix("java");
-        addSkipPrefix("junit");
     }
 
     /**

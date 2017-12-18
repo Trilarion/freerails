@@ -20,15 +20,18 @@ import freerails.world.top.TransactionAggregator;
  * @author smackay
  */
 public class FinancialDataGatherer extends TransactionAggregator {
-    private int totalShares = 100000;
-
     private final int playerID;
-
-    private int bonds;
-
     private final int[] stockInRRs;
-
+    private int totalShares = 100000;
+    private int bonds;
     private int[] stockInThisRRs;
+
+    public FinancialDataGatherer(ReadOnlyWorld w, FreerailsPrincipal principal) {
+        super(w, principal);
+        stockInRRs = new int[w.getNumberOfPlayers()];
+        calculateValues();
+        this.playerID = w.getID(principal);
+    }
 
     @Override
     protected void incrementRunningTotal(int transactionID) {
@@ -67,13 +70,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     protected void storeRunningTotal(int timeIndex) {
         // TODO Auto-generated method stub
         super.storeRunningTotal(timeIndex);
-    }
-
-    public FinancialDataGatherer(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        super(w, principal);
-        stockInRRs = new int[w.getNumberOfPlayers()];
-        calculateValues();
-        this.playerID = w.getID(principal);
     }
 
     public void changeTreasuryStock(int deltaStock) {

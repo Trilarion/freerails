@@ -34,6 +34,23 @@ public class AddStationPreMove implements PreMove {
 
     private final FreerailsPrincipal principal;
 
+    private AddStationPreMove(ImPoint p, int trackRule,
+                              FreerailsPrincipal principal) {
+        this.p = p;
+        this.ruleNumber = trackRule;
+        this.principal = principal;
+    }
+
+    public static AddStationPreMove newStation(ImPoint p, int trackRule,
+                                               FreerailsPrincipal principal) {
+        return new AddStationPreMove(p, trackRule, principal);
+    }
+
+    public static AddStationPreMove upgradeStation(ImPoint p, int trackRule,
+                                                   FreerailsPrincipal principal) {
+        return new AddStationPreMove(p, trackRule, principal);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -57,23 +74,6 @@ public class AddStationPreMove implements PreMove {
         result = 29 * result + ruleNumber;
         result = 29 * result + principal.hashCode();
         return result;
-    }
-
-    private AddStationPreMove(ImPoint p, int trackRule,
-                              FreerailsPrincipal principal) {
-        this.p = p;
-        this.ruleNumber = trackRule;
-        this.principal = principal;
-    }
-
-    public static AddStationPreMove newStation(ImPoint p, int trackRule,
-                                               FreerailsPrincipal principal) {
-        return new AddStationPreMove(p, trackRule, principal);
-    }
-
-    public static AddStationPreMove upgradeStation(ImPoint p, int trackRule,
-                                                   FreerailsPrincipal principal) {
-        return new AddStationPreMove(p, trackRule, principal);
     }
 
     public Move generateMove(ReadOnlyWorld world) {

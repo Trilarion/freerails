@@ -23,31 +23,13 @@ import java.util.List;
 public class TrackTilesGenerator extends JPanel {
 
     private static final long serialVersionUID = 3618982273966487859L;
-
-    public static void main(String[] args) {
-
-        JFrame frame = new JFrame();
-        JScrollPane scrollPane = new JScrollPane();
-        frame.add(scrollPane);
-        TrackTilesGenerator trackTilesGenerator = new TrackTilesGenerator();
-        trackTilesGenerator.setPreferredSize(trackTilesGenerator
-                .getSize4Panel());
-        scrollPane.setViewportView(trackTilesGenerator);
-        frame.setSize(500, 500);
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-    }
-
+    final CubicCurve2D.Double[] track;
     private final ImageManagerImpl imageManager = new ImageManagerImpl(
             "/experimental/", "/experimental/");
 
     private final List<TrackRule> rules;
 
     private final TrackRenderer tr;
-
-    final CubicCurve2D.Double[] track;
 
     public TrackTilesGenerator() {
         Point2D.Double start, end, one, two;
@@ -69,6 +51,22 @@ public class TrackTilesGenerator extends JPanel {
                 track_xml_url);
         rules = trackSetFactory.getRuleList();
         generateTiles();
+
+    }
+
+    public static void main(String[] args) {
+
+        JFrame frame = new JFrame();
+        JScrollPane scrollPane = new JScrollPane();
+        frame.add(scrollPane);
+        TrackTilesGenerator trackTilesGenerator = new TrackTilesGenerator();
+        trackTilesGenerator.setPreferredSize(trackTilesGenerator
+                .getSize4Panel());
+        scrollPane.setViewportView(trackTilesGenerator);
+        frame.setSize(500, 500);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
 
     }
 

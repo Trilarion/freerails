@@ -21,30 +21,10 @@ import java.awt.event.KeyEvent;
  */
 public class ActionRoot {
 
-    private class BuildTrainDialogAction extends AbstractAction {
-        private static final long serialVersionUID = 3257853173002416948L;
-
-        public BuildTrainDialogAction() {
-            super("Build Train");
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
-            putValue(SHORT_DESCRIPTION, "Build a new train");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (dialogueBoxController != null) {
-                dialogueBoxController.showSelectEngine();
-            }
-        }
-    }
-
     private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
-
-    private DialogueBoxController dialogueBoxController = null;
-
     private final ServerControlModel serverControls;
-
+    private DialogueBoxController dialogueBoxController = null;
     private StationBuildModel stationBuildModel;
-
     private TrackMoveProducer trackMoveProducer;
 
     public ActionRoot(ModelRootImpl mr) {
@@ -59,6 +39,11 @@ public class ActionRoot {
         return dialogueBoxController;
     }
 
+    public void setDialogueBoxController(
+            DialogueBoxController dialogueBoxController) {
+        this.dialogueBoxController = dialogueBoxController;
+    }
+
     public ServerControlModel getServerControls() {
         return serverControls;
     }
@@ -69,11 +54,6 @@ public class ActionRoot {
 
     public TrackMoveProducer getTrackMoveProducer() {
         return trackMoveProducer;
-    }
-
-    public void setDialogueBoxController(
-            DialogueBoxController dialogueBoxController) {
-        this.dialogueBoxController = dialogueBoxController;
     }
 
     /**
@@ -90,6 +70,22 @@ public class ActionRoot {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
             stationBuildModel = new StationBuildModel(new StationBuilder(
                     modelRoot), vl, modelRoot);
+        }
+    }
+
+    private class BuildTrainDialogAction extends AbstractAction {
+        private static final long serialVersionUID = 3257853173002416948L;
+
+        public BuildTrainDialogAction() {
+            super("Build Train");
+            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+            putValue(SHORT_DESCRIPTION, "Build a new train");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (dialogueBoxController != null) {
+                dialogueBoxController.showSelectEngine();
+            }
         }
     }
 

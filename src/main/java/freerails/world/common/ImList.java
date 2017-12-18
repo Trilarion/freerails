@@ -22,23 +22,6 @@ public final class ImList<E extends FreerailsSerializable> implements
 
     private final E[] elementData;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof ImList))
-            return false;
-
-        final ImList imList = (ImList) o;
-
-        return Arrays.equals(elementData, imList.elementData);
-    }
-
-    @Override
-    public int hashCode() {
-        return elementData.length;
-    }
-
     @SuppressWarnings("unchecked")
     public ImList(E... items) {
         elementData = items.clone();
@@ -55,6 +38,23 @@ public final class ImList<E extends FreerailsSerializable> implements
 //        for (int i = 0; i < list.size(); i++) {
 //            elementData[i] = list.get(i);
 //        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof ImList))
+            return false;
+
+        final ImList imList = (ImList) o;
+
+        return Arrays.equals(elementData, imList.elementData);
+    }
+
+    @Override
+    public int hashCode() {
+        return elementData.length;
     }
 
     public void checkForNulls() throws NullPointerException {

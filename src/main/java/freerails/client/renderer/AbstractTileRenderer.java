@@ -20,13 +20,10 @@ import java.io.File;
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
     private final int[] typeNumbers;
-
-    private Image[] tileIcons;
-
     private final int mapWidth;
     private final int mapHeight;
-
     private final TerrainType tileModel;
+    private Image[] tileIcons;
 
     AbstractTileRenderer(TerrainType t, int[] rgbValues, ReadOnlyWorld w) {
         mapWidth = w.getMapWidth();
@@ -111,11 +108,11 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     protected abstract String generateFileNameNumber(int i);
 
-    void setTileIcons(Image[] tileIcons) {
-        this.tileIcons = tileIcons;
-    }
-
     Image[] getTileIcons() {
         return tileIcons;
+    }
+
+    void setTileIcons(Image[] tileIcons) {
+        this.tileIcons = tileIcons;
     }
 }

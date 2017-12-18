@@ -39,50 +39,18 @@ public class DropOffAndPickupCargoMoveGenerator {
     private final TrainAccessor train;
 
     private final int trainId;
-
-    private int trainBundleId;
-
     private final int stationId;
-
-    private int stationBundleId;
-
-    private MutableCargoBundle stationAfter;
-
-    private MutableCargoBundle stationBefore;
-
-    private MutableCargoBundle trainAfter;
-
-    private MutableCargoBundle trainBefore;
-
-    private ArrayList<Move> moves;
-
     private final FreerailsPrincipal principal;
-
     private final boolean waitingForFullLoad;
-
     private final boolean autoConsist;
-
+    private int trainBundleId;
+    private int stationBundleId;
+    private MutableCargoBundle stationAfter;
+    private MutableCargoBundle stationBefore;
+    private MutableCargoBundle trainAfter;
+    private MutableCargoBundle trainBefore;
+    private ArrayList<Move> moves;
     private ImInts consist = new ImInts();
-
-    /**
-     * Stores the type and quanity of cargo in a wagon.
-     *
-     * @author Luke
-     */
-    private static class WagonLoad implements Comparable<WagonLoad> {
-        final int quantity;
-
-        final int cargoType;
-
-        public int compareTo(WagonLoad test) {
-            return quantity - test.quantity;
-        }
-
-        WagonLoad(int q, int t) {
-            quantity = q;
-            cargoType = t;
-        }
-    }
 
     /**
      * Contructor.
@@ -153,6 +121,41 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         processStationBundle(); // ie. load train / pickup cargo
+    }
+
+    /**
+     * Move the specified quantity of the specifed cargotype from one bundle to
+     * another.
+     */
+    private static void transferCargo(int cargoTypeToTransfer,
+                                      int amountToTransfer, MutableCargoBundle from, MutableCargoBundle to) {
+        if (0 == amountToTransfer) {
+            return;
+        }
+        Iterator<CargoBatch> batches = from.toImmutableCargoBundle()
+                .cargoBatchIterator();
+        int amountTransferedSoFar = 0;
+
+        while (batches.hasNext() && amountTransferedSoFar < amountToTransfer) {
+            CargoBatch cb = batches.next();
+
+            if (cb.getCargoType() == cargoTypeToTransfer) {
+                int amount = from.getAmount(cb);
+                int amountOfThisBatchToTransfer;
+
+                if (amount < amountToTransfer - amountTransferedSoFar) {
+                    amountOfThisBatchToTransfer = amount;
+                    from.setAmount(cb, 0);
+                } else {
+                    amountOfThisBatchToTransfer = amountToTransfer
+                            - amountTransferedSoFar;
+                    from.addCargo(cb, -amountOfThisBatchToTransfer);
+                }
+
+                to.addCargo(cb, amountOfThisBatchToTransfer);
+                amountTransferedSoFar += amountOfThisBatchToTransfer;
+            }
+        }
     }
 
     public Move generateMove() {
@@ -293,37 +296,22 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     * Move the specified quantity of the specifed cargotype from one bundle to
-     * another.
+     * Stores the type and quanity of cargo in a wagon.
+     *
+     * @author Luke
      */
-    private static void transferCargo(int cargoTypeToTransfer,
-                                      int amountToTransfer, MutableCargoBundle from, MutableCargoBundle to) {
-        if (0 == amountToTransfer) {
-            return;
+    private static class WagonLoad implements Comparable<WagonLoad> {
+        final int quantity;
+
+        final int cargoType;
+
+        WagonLoad(int q, int t) {
+            quantity = q;
+            cargoType = t;
         }
-        Iterator<CargoBatch> batches = from.toImmutableCargoBundle()
-                .cargoBatchIterator();
-        int amountTransferedSoFar = 0;
 
-        while (batches.hasNext() && amountTransferedSoFar < amountToTransfer) {
-            CargoBatch cb = batches.next();
-
-            if (cb.getCargoType() == cargoTypeToTransfer) {
-                int amount = from.getAmount(cb);
-                int amountOfThisBatchToTransfer;
-
-                if (amount < amountToTransfer - amountTransferedSoFar) {
-                    amountOfThisBatchToTransfer = amount;
-                    from.setAmount(cb, 0);
-                } else {
-                    amountOfThisBatchToTransfer = amountToTransfer
-                            - amountTransferedSoFar;
-                    from.addCargo(cb, -amountOfThisBatchToTransfer);
-                }
-
-                to.addCargo(cb, amountOfThisBatchToTransfer);
-                amountTransferedSoFar += amountOfThisBatchToTransfer;
-            }
+        public int compareTo(WagonLoad test) {
+            return quantity - test.quantity;
         }
     }
 }

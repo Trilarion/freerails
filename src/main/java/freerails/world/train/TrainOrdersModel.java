@@ -26,6 +26,18 @@ public class TrainOrdersModel implements FreerailsSerializable {
      * The wagon types to add; if null, then no change.
      */
     public final ImInts consist;
+    public final int stationId; // The number of the station to goto.
+
+    public TrainOrdersModel(int station, ImInts newConsist, boolean wait,
+                            boolean auto) {
+        // If there are no wagons, set wait = false.
+        wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
+
+        this.waitUntilFull = wait;
+        this.consist = newConsist;
+        this.stationId = station;
+        this.autoConsist = auto;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -53,19 +65,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
         result = 29 * result + (consist != null ? consist.hashCode() : 0);
         result = 29 * result + stationId;
         return result;
-    }
-
-    public final int stationId; // The number of the station to goto.
-
-    public TrainOrdersModel(int station, ImInts newConsist, boolean wait,
-                            boolean auto) {
-        // If there are no wagons, set wait = false.
-        wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
-
-        this.waitUntilFull = wait;
-        this.consist = newConsist;
-        this.stationId = station;
-        this.autoConsist = auto;
     }
 
     /**

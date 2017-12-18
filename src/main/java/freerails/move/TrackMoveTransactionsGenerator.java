@@ -29,29 +29,23 @@ import static freerails.world.accounts.Transaction.Category.*;
  * @author Luke Lindsay
  */
 public class TrackMoveTransactionsGenerator {
-    /**
-     * Number of each of the track types added.
-     */
-    private int[] trackAdded;
-
-    private long fixedCostsStations = 0;
-
-    private long fixedCostsBridges = 0;
-
-    /**
-     * Number of each of the track types removed.
-     */
-    private int[] trackRemoved;
-
     private final FreerailsPrincipal principal;
-
     /*
      * Note, trackAdded and trackRemoved cannot be combined, since it may cost
      * more to added a unit of track than is refunded when you removed it.
      */
     private final ArrayList<Transaction> transactions = new ArrayList<>();
-
     private final ReadOnlyWorld w;
+    /**
+     * Number of each of the track types added.
+     */
+    private int[] trackAdded;
+    private long fixedCostsStations = 0;
+    private long fixedCostsBridges = 0;
+    /**
+     * Number of each of the track types removed.
+     */
+    private int[] trackRemoved;
 
     /**
      * @param p the Principal on behalf of which this object generates

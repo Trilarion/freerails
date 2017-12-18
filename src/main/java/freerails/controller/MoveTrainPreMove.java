@@ -43,6 +43,16 @@ public class MoveTrainPreMove implements PreMove {
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
+    final FreerailsPrincipal principal;
+    private final int trainID;
+    private final OccupiedTracks occupiedTracks;
+
+    public MoveTrainPreMove(int id, FreerailsPrincipal p,
+                            OccupiedTracks occupiedTracks) {
+        trainID = id;
+        principal = p;
+        this.occupiedTracks = occupiedTracks;
+    }
 
     /**
      * Uses static method to make testing easier.
@@ -96,16 +106,11 @@ public class MoveTrainPreMove implements PreMove {
 
     }
 
-    final FreerailsPrincipal principal;
-
-    private final int trainID;
-    private final OccupiedTracks occupiedTracks;
-
-    public MoveTrainPreMove(int id, FreerailsPrincipal p,
-                            OccupiedTracks occupiedTracks) {
-        trainID = id;
-        principal = p;
-        this.occupiedTracks = occupiedTracks;
+    public static void clearCache() {
+        pathCache.clear();
+        cacheCleared++;
+        // System.out.println("CH:"+cacheHit+" CM:"+cacheMiss+"
+        // CC:"+cacheCleared);
     }
 
     double acceleration(int wagons) {
@@ -371,12 +376,5 @@ public class MoveTrainPreMove implements PreMove {
 
     double topSpeed(int wagons) {
         return 10 / (wagons + 1);
-    }
-
-    public static void clearCache() {
-        pathCache.clear();
-        cacheCleared++;
-        // System.out.println("CH:"+cacheHit+" CM:"+cacheMiss+"
-        // CC:"+cacheCleared);
     }
 }

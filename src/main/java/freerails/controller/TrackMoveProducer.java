@@ -23,19 +23,40 @@ final public class TrackMoveProducer {
     private final ModelRoot mr;
 
     private final MoveExecutor executor;
-
-    public enum BuildMode {
-        BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION
-    }
-
     private final Stack<Move> moveStack = new Stack<>();
-
-    private GameTime lastMoveTime = GameTime.BIG_BANG;
-
     /**
      * This generates the transactions - the charge - for the track being built.
      */
     private final TrackMoveTransactionsGenerator transactionsGenerator;
+    private GameTime lastMoveTime = GameTime.BIG_BANG;
+
+    public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world,
+                             ModelRoot mr) {
+        if (null == mr)
+            throw new NullPointerException();
+        this.executor = executor;
+        this.mr = mr;
+        FreerailsPrincipal principal = executor.getPrincipal();
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
+                principal);
+        setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
+
+    }
+
+    public TrackMoveProducer(ModelRoot mr) {
+        this.executor = mr;
+        if (null == mr)
+            throw new NullPointerException();
+        this.mr = mr;
+
+        ReadOnlyWorld world = executor.getWorld();
+
+        FreerailsPrincipal principal = executor.getPrincipal();
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
+                principal);
+        setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
+
+    }
 
     public MoveStatus buildTrack(ImPoint from, Step[] path) {
         MoveStatus returnValue = MoveStatus.MOVE_OK;
@@ -159,38 +180,6 @@ final public class TrackMoveProducer {
                 "Track builder not set to upgrade track!");
     }
 
-    public void setTrackBuilderMode(BuildMode i) {
-        setBuildMode(i);
-    }
-
-    public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world,
-                             ModelRoot mr) {
-        if (null == mr)
-            throw new NullPointerException();
-        this.executor = executor;
-        this.mr = mr;
-        FreerailsPrincipal principal = executor.getPrincipal();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
-                principal);
-        setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
-
-    }
-
-    public TrackMoveProducer(ModelRoot mr) {
-        this.executor = mr;
-        if (null == mr)
-            throw new NullPointerException();
-        this.mr = mr;
-
-        ReadOnlyWorld world = executor.getWorld();
-
-        FreerailsPrincipal principal = executor.getPrincipal();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world,
-                principal);
-        setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
-
-    }
-
     private MoveStatus upgradeTrack(ImPoint point, int trackRuleID) {
         ReadOnlyWorld w = executor.getWorld();
         TrackPiece before = ((FreerailsTile) w.getTile(point.x, point.y))
@@ -253,6 +242,10 @@ final public class TrackMoveProducer {
         return getBuildMode();
     }
 
+    public void setTrackBuilderMode(BuildMode i) {
+        setBuildMode(i);
+    }
+
     private MoveStatus sendMove(Move m) {
         MoveStatus ms = executor.doMove(m);
 
@@ -264,6 +257,12 @@ final public class TrackMoveProducer {
         return ms;
     }
 
+    private boolean isStationHere(ImPoint p) {
+        ReadOnlyWorld w = executor.getWorld();
+        FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
+        return tile.getTrackPiece().getTrackRule().isStation();
+    }
+
     // public BuildTrackStrategy getBuildTrackStrategy() {
     // return buildTrackStrategy;
     // }
@@ -273,10 +272,9 @@ final public class TrackMoveProducer {
     // this.buildTrackStrategy = buildTrackStrategy;
     // }
 
-    private boolean isStationHere(ImPoint p) {
-        ReadOnlyWorld w = executor.getWorld();
-        FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
-        return tile.getTrackPiece().getTrackRule().isStation();
+    public BuildTrackStrategy getBuildTrackStrategy() {
+        return (BuildTrackStrategy) mr
+                .getProperty(Property.BUILD_TRACK_STRATEGY);
     }
 
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
@@ -284,17 +282,16 @@ final public class TrackMoveProducer {
         mr.setProperty(Property.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
-    public BuildTrackStrategy getBuildTrackStrategy() {
-        return (BuildTrackStrategy) mr
-                .getProperty(Property.BUILD_TRACK_STRATEGY);
+    public BuildMode getBuildMode() {
+        return (BuildMode) mr.getProperty(Property.TRACK_BUILDER_MODE);
     }
 
     public void setBuildMode(BuildMode buildMode) {
         mr.setProperty(Property.TRACK_BUILDER_MODE, buildMode);
     }
 
-    public BuildMode getBuildMode() {
-        return (BuildMode) mr.getProperty(Property.TRACK_BUILDER_MODE);
+    public enum BuildMode {
+        BUILD_TRACK, REMOVE_TRACK, UPGRADE_TRACK, IGNORE_TRACK, BUILD_STATION
     }
 
 }

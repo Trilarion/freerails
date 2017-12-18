@@ -82,6 +82,143 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     private final SpeedTimeAndStatus.TrainActivity activity;
 
     private boolean crashSite = false;
+    private int frameCt = 1;
+    private int frame = 0;
+
+    public TrainPositionOnMap(ImInts xs, ImInts ys) {
+        this.xpoints = xs;
+        this.ypoints = ys;
+        this.acceleration = 0d;
+        this.speed = 0d;
+        this.activity = SpeedTimeAndStatus.TrainActivity.READY;
+
+    }
+
+    private TrainPositionOnMap(int[] xs, int[] ys, double speed,
+                               double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
+        if (xs.length != ys.length) {
+            throw new IllegalArgumentException();
+        }
+
+        xpoints = new ImInts(xs);
+        ypoints = new ImInts(ys);
+        this.acceleration = acceleration;
+        this.speed = speed;
+        this.activity = activity;
+    }
+
+    public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
+        return new TrainPositionOnMap(xpoints, ypoints, 0d, 0d,
+                SpeedTimeAndStatus.TrainActivity.READY);
+    }
+
+    public static TrainPositionOnMap createInSameDirectionAsPath(
+            FreerailsPathIterator path) {
+        return createInSameDirectionAsPath(path, 0d, 0d,
+                SpeedTimeAndStatus.TrainActivity.READY);
+    }
+
+    public static TrainPositionOnMap createInSameDirectionAsPathReversed(
+            Pair<FreerailsPathIterator, Integer> path, double speed,
+            double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
+
+        IntLine line = new IntLine();
+
+        FreerailsPathIterator pathIt = path.getA();
+        int pathSize = path.getB();
+
+        if (pathSize > 10000) {
+            throw new IllegalStateException(
+                    "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
+        }
+        int[] xPoints = new int[pathSize];
+        int[] yPoints = new int[pathSize];
+
+        for (int i = pathSize - 1; i > 0; i--) {
+            if (!pathIt.hasNext()) {
+                throw new IllegalStateException("Programming error at:" + i
+                        + " from:" + pathSize);
+            }
+            pathIt.nextSegment(line);
+            xPoints[i] = line.x1;
+            yPoints[i] = line.y1;
+        }
+
+        xPoints[0] = line.x2;
+        yPoints[0] = line.y2;
+
+        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
+                activity);
+    }
+
+    public static TrainPositionOnMap createInSameDirectionAsPath(
+            FreerailsPathIterator path, double speed, double acceleration,
+            SpeedTimeAndStatus.TrainActivity activity) {
+        IntArray xPointsIntArray = new IntArray();
+        IntArray yPointsIntArray = new IntArray();
+        IntLine line = new IntLine();
+        int i = 0;
+
+        while (path.hasNext()) {
+            path.nextSegment(line);
+            xPointsIntArray.add(i, line.x1);
+            yPointsIntArray.add(i, line.y1);
+            i++;
+
+            if (i > 10000) {
+                throw new IllegalStateException(
+                        "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
+            }
+        }
+
+        xPointsIntArray.add(i, line.x2);
+        yPointsIntArray.add(i, line.y2);
+
+        int[] xPoints;
+        int[] yPoints;
+
+        xPoints = xPointsIntArray.toArray();
+        yPoints = yPointsIntArray.toArray();
+
+        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
+                activity);
+    }
+
+    public static boolean headsAreEqual(TrainPositionOnMap a,
+                                        TrainPositionOnMap b) {
+        int aHeadX = a.getX(0);
+        int aHeadY = a.getY(0);
+        int bHeadX = b.getX(0);
+        int bHeadY = b.getY(0);
+
+        return aHeadX == bHeadX && aHeadY == bHeadY;
+    }
+
+    public static boolean tailsAreEqual(TrainPositionOnMap a,
+                                        TrainPositionOnMap b) {
+        int aTailX = a.getX(a.getLength() - 1);
+        int aTailY = a.getY(a.getLength() - 1);
+        int bTailX = b.getX(b.getLength() - 1);
+        int bTailY = b.getY(b.getLength() - 1);
+
+        return aTailX == bTailX && aTailY == bTailY;
+    }
+
+    public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
+                                           TrainPositionOnMap b) {
+        int aHeadX = a.getX(0);
+        int aHeadY = a.getY(0);
+
+        int bTailX = b.getX(b.getLength() - 1);
+        int bTailY = b.getY(b.getLength() - 1);
+
+        return aHeadX == bTailX && aHeadY == bTailY;
+    }
+
+    public static boolean bHeadEqualsATail(TrainPositionOnMap a,
+                                           TrainPositionOnMap b) {
+        return aHeadEqualsBTail(b, a);
+    }
 
     public boolean isCrashSite() {
         return crashSite;
@@ -90,10 +227,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     public void setCrashSite(boolean isCrash) {
         crashSite = isCrash;
     }
-
-    private int frameCt = 1;
-
-    private int frame = 0;
 
     public int getFrameCt() {
         return frameCt;
@@ -234,33 +367,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
 
         return new TrainPositionOnMap(reversed_xpoints, reversed_ypoints,
                 speed, acceleration, activity);
-    }
-
-    public TrainPositionOnMap(ImInts xs, ImInts ys) {
-        this.xpoints = xs;
-        this.ypoints = ys;
-        this.acceleration = 0d;
-        this.speed = 0d;
-        this.activity = SpeedTimeAndStatus.TrainActivity.READY;
-
-    }
-
-    private TrainPositionOnMap(int[] xs, int[] ys, double speed,
-                               double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
-        if (xs.length != ys.length) {
-            throw new IllegalArgumentException();
-        }
-
-        xpoints = new ImInts(xs);
-        ypoints = new ImInts(ys);
-        this.acceleration = acceleration;
-        this.speed = speed;
-        this.activity = activity;
-    }
-
-    public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
-        return new TrainPositionOnMap(xpoints, ypoints, 0d, 0d,
-                SpeedTimeAndStatus.TrainActivity.READY);
     }
 
     public TrainPositionOnMap addToHead(TrainPositionOnMap b) {
@@ -404,114 +510,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
             return true;
         }
         return false;
-    }
-
-    public static TrainPositionOnMap createInSameDirectionAsPath(
-            FreerailsPathIterator path) {
-        return createInSameDirectionAsPath(path, 0d, 0d,
-                SpeedTimeAndStatus.TrainActivity.READY);
-    }
-
-    public static TrainPositionOnMap createInSameDirectionAsPathReversed(
-            Pair<FreerailsPathIterator, Integer> path, double speed,
-            double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
-
-        IntLine line = new IntLine();
-
-        FreerailsPathIterator pathIt = path.getA();
-        int pathSize = path.getB();
-
-        if (pathSize > 10000) {
-            throw new IllegalStateException(
-                    "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
-        }
-        int[] xPoints = new int[pathSize];
-        int[] yPoints = new int[pathSize];
-
-        for (int i = pathSize - 1; i > 0; i--) {
-            if (!pathIt.hasNext()) {
-                throw new IllegalStateException("Programming error at:" + i
-                        + " from:" + pathSize);
-            }
-            pathIt.nextSegment(line);
-            xPoints[i] = line.x1;
-            yPoints[i] = line.y1;
-        }
-
-        xPoints[0] = line.x2;
-        yPoints[0] = line.y2;
-
-        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
-                activity);
-    }
-
-    public static TrainPositionOnMap createInSameDirectionAsPath(
-            FreerailsPathIterator path, double speed, double acceleration,
-            SpeedTimeAndStatus.TrainActivity activity) {
-        IntArray xPointsIntArray = new IntArray();
-        IntArray yPointsIntArray = new IntArray();
-        IntLine line = new IntLine();
-        int i = 0;
-
-        while (path.hasNext()) {
-            path.nextSegment(line);
-            xPointsIntArray.add(i, line.x1);
-            yPointsIntArray.add(i, line.y1);
-            i++;
-
-            if (i > 10000) {
-                throw new IllegalStateException(
-                        "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
-            }
-        }
-
-        xPointsIntArray.add(i, line.x2);
-        yPointsIntArray.add(i, line.y2);
-
-        int[] xPoints;
-        int[] yPoints;
-
-        xPoints = xPointsIntArray.toArray();
-        yPoints = yPointsIntArray.toArray();
-
-        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
-                activity);
-    }
-
-    public static boolean headsAreEqual(TrainPositionOnMap a,
-                                        TrainPositionOnMap b) {
-        int aHeadX = a.getX(0);
-        int aHeadY = a.getY(0);
-        int bHeadX = b.getX(0);
-        int bHeadY = b.getY(0);
-
-        return aHeadX == bHeadX && aHeadY == bHeadY;
-    }
-
-    public static boolean tailsAreEqual(TrainPositionOnMap a,
-                                        TrainPositionOnMap b) {
-        int aTailX = a.getX(a.getLength() - 1);
-        int aTailY = a.getY(a.getLength() - 1);
-        int bTailX = b.getX(b.getLength() - 1);
-        int bTailY = b.getY(b.getLength() - 1);
-
-        return aTailX == bTailX && aTailY == bTailY;
-    }
-
-    public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
-                                           TrainPositionOnMap b) {
-        int aHeadX = a.getX(0);
-        int aHeadY = a.getY(0);
-
-        int bTailX = b.getX(b.getLength() - 1);
-        int bTailY = b.getY(b.getLength() - 1);
-
-        return aHeadX == bTailX && aHeadY == bTailY;
-    }
-
-    public static boolean bHeadEqualsATail(TrainPositionOnMap a,
-                                           TrainPositionOnMap b) {
-        return aHeadEqualsBTail(b, a);
     }
 
     @Override

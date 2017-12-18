@@ -28,12 +28,12 @@ final public class MoveChainFork implements MoveReceiver {
 
     private long lastTickTime = System.currentTimeMillis();
 
-    public long getLastTickTime() {
-        return lastTickTime;
-    }
-
     public MoveChainFork() {
         // do nothing
+    }
+
+    public long getLastTickTime() {
+        return lastTickTime;
     }
 
     public void addMapListener(WorldMapListener l) {

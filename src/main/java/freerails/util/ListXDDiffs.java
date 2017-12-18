@@ -10,6 +10,13 @@ import java.util.SortedMap;
 public abstract class ListXDDiffs<T> implements Serializable {
 
     private static final long serialVersionUID = 127789045793369316L;
+    private final SortedMap<ListKey, Object> diffs;
+    private final Enum listID;
+
+    public ListXDDiffs(SortedMap<ListKey, Object> diffs, Enum listID) {
+        this.diffs = diffs;
+        this.listID = listID;
+    }
 
     static int[] add2Array(int[] dim, int last) {
         int[] array = new int[dim.length + 1];
@@ -22,15 +29,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
         int[] array = new int[dim.length - 1];
         System.arraycopy(dim, 0, array, 0, dim.length - 1);
         return array;
-    }
-
-    private final SortedMap<ListKey, Object> diffs;
-
-    private final Enum listID;
-
-    public ListXDDiffs(SortedMap<ListKey, Object> diffs, Enum listID) {
-        this.diffs = diffs;
-        this.listID = listID;
     }
 
     public int addDimension(int... dim) {
@@ -155,8 +153,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
     public int size(int... i) {
         ListKey sizeKey = new ListKey(ListKey.Type.EndPoint, listID, i);
         if (diffs.containsKey(sizeKey)) {
-            Integer size = (Integer) diffs.get(sizeKey);
-            return size;
+            return (Integer) diffs.get(sizeKey);
         }
         return getUnderlyingSize(i);
     }

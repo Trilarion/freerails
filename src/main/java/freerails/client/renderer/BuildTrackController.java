@@ -38,34 +38,20 @@ public class BuildTrackController implements GameModel {
 
     private static final Logger LOGGER = Logger
             .getLogger(BuildTrackController.class.getName());
-
-    private boolean buildNewTrack = true;
-
-    private List<ImPoint> builtTrack = new ArrayList<>();
-
-    private boolean isBuildTrackSuccessful = false;
-
     private final ModelRoot modelRoot;
-
-    private Step[] path;
-
     private final TrackPathFinder path4newTrackFinder;
-
     private final PathOnTrackFinder pathOnExistingTrackFinder;
-
     private final FreerailsPrincipal principal;
-
     private final ReadOnlyWorld realWorld;
-
     private final SoundManager soundManager = SoundManager.getSoundManager();
-
-    private ImPoint startPoint;
-
-    private ImPoint targetPoint;
-
-    private boolean visible = false;
-
     private final WorldDiffs worldDiffs;
+    private boolean buildNewTrack = true;
+    private List<ImPoint> builtTrack = new ArrayList<>();
+    private boolean isBuildTrackSuccessful = false;
+    private Step[] path;
+    private ImPoint startPoint;
+    private ImPoint targetPoint;
+    private boolean visible = false;
 
     /**
      * BuildTrackRenderer

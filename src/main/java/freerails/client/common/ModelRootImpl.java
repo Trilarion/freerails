@@ -25,10 +25,10 @@ import java.util.HashMap;
  * @author Rob
  */
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
+    private final HashMap<Property, Object> properties = new HashMap<>();
+    private final ArrayList<ModelRootListener> listeners = new ArrayList<>();
     public boolean hasBeenSetup = false;
-
     private MoveChainFork moveFork = new MoveChainFork();
-
     private UntriedMoveReceiver moveReceiver = new UntriedMoveReceiver() {
         public void processMove(Move Move) {
         }
@@ -40,16 +40,9 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
             return MoveStatus.moveFailed("No move receiver set on model root!");
         }
     };
-
     private FreerailsPrincipal playerPrincipal;
-
-    private final HashMap<Property, Object> properties = new HashMap<>();
-
     private ServerCommandReceiver serverCommandReceiver;
-
     private ReadOnlyWorld world;
-
-    private final ArrayList<ModelRootListener> listeners = new ArrayList<>();
 
     public ModelRootImpl() {
         properties.put(Property.CURSOR_POSITION, new ImPoint());

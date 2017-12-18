@@ -19,6 +19,14 @@ final public class SquareTileBackgroundRenderer extends
         BufferedTiledBackgroundRenderer {
     private final MapLayerRenderer mapView;
 
+    public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
+        if (null == mv) {
+            throw new NullPointerException();
+        }
+
+        this.mapView = mv;
+    }
+
     @Override
     protected void paintBufferRectangle(int x, int y, int width, int height) {
         // Fix for bug [ 1303162 ]
@@ -30,14 +38,6 @@ final public class SquareTileBackgroundRenderer extends
             mapView.paintRect(gg, bufferRect);
             gg.dispose();
         }
-    }
-
-    public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
-        if (null == mv) {
-            throw new NullPointerException();
-        }
-
-        this.mapView = mv;
     }
 
     public void paintTile(Graphics g, int tileX, int tileY) {

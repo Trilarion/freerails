@@ -26,12 +26,19 @@ public abstract class BufferedTiledBackgroundRenderer implements
     protected final GraphicsConfiguration defaultConfig = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
-
+    /**
+     * The bounds and location of the map region that is stored in the offscreen
+     * Image backgraoundBuffer.
+     */
+    final Rectangle bufferRect = new Rectangle();
     /**
      * Used to draw on the backbuffer.
      */
     Graphics bg;
-
+    /**
+     * An offscreen image storing the background of a region of the map.
+     */
+    VolatileImage backgroundBuffer;
     /**
      * Used to draw on the backbuffer. It is translated so that to its users, it
      * appears they are drawing on the actual map, not a buffered region of the
@@ -40,17 +47,6 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
      */
     private Graphics translatedBg;
-
-    /**
-     * The bounds and location of the map region that is stored in the offscreen
-     * Image backgraoundBuffer.
-     */
-    final Rectangle bufferRect = new Rectangle();
-
-    /**
-     * An offscreen image storing the background of a region of the map.
-     */
-    VolatileImage backgroundBuffer;
 
     /**
      * Updates the backbuffer as necessary, then draws it on to the Graphics

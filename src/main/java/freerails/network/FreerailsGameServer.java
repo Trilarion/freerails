@@ -40,6 +40,34 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     private static final Logger logger = Logger
             .getLogger(FreerailsGameServer.class.getName());
+    private final HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<>();
+    /**
+     * The players who have confirmed that they have received the last copy of
+     * the world object sent.
+     */
+    private final HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
+    /* Contains the user names of the players who are currently logged on. */
+    private final HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
+            this);
+    private final SavedGamesManager savedGamesManager;
+    private final SynchronizedFlag status = new SynchronizedFlag(false);
+    private int commandID = 0;
+    /**
+     * ID of the last SetWorldMessage2Client sent out. Used to keep track of
+     * which clients have updated their world object to the current version.
+     */
+    private int confirmationID = Integer.MIN_VALUE; /*
+     * Don't default 0 to avoid
+     * mistaken confirmations.
+     */
+    private boolean newPlayersAllowed = true;
+    private ArrayList<NameAndPassword> players = new ArrayList<>();
+    private ServerGameModel serverGameModel = new SimpleServerGameModel();
+
+    public FreerailsGameServer(SavedGamesManager gamesManager) {
+        this.savedGamesManager = gamesManager;
+    }
 
     public static FreerailsGameServer startServer(SavedGamesManager gamesManager) {
         FreerailsGameServer server = new FreerailsGameServer(gamesManager);
@@ -57,45 +85,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             e.printStackTrace();
             throw new IllegalStateException();
         }
-    }
-
-    private final HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<>();
-
-    private int commandID = 0;
-
-    /**
-     * ID of the last SetWorldMessage2Client sent out. Used to keep track of
-     * which clients have updated their world object to the current version.
-     */
-    private int confirmationID = Integer.MIN_VALUE; /*
-     * Don't default 0 to avoid
-     * mistaken confirmations.
-     */
-
-    /**
-     * The players who have confirmed that they have received the last copy of
-     * the world object sent.
-     */
-    private final HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
-
-    /* Contains the user names of the players who are currently logged on. */
-    private final HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
-
-    private boolean newPlayersAllowed = true;
-
-    private ArrayList<NameAndPassword> players = new ArrayList<>();
-
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
-            this);
-
-    private final SavedGamesManager savedGamesManager;
-
-    private ServerGameModel serverGameModel = new SimpleServerGameModel();
-
-    private final SynchronizedFlag status = new SynchronizedFlag(false);
-
-    public FreerailsGameServer(SavedGamesManager gamesManager) {
-        this.savedGamesManager = gamesManager;
     }
 
     public synchronized void addConnection(Connection2Client connection) {
@@ -223,6 +212,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     public boolean isNewPlayersAllowed() {
         return newPlayersAllowed;
+    }
+
+    public void setNewPlayersAllowed(boolean newPlayersAllowed) {
+        this.newPlayersAllowed = newPlayersAllowed;
     }
 
     private boolean isPlayer(String username) {
@@ -436,10 +429,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 confirmationID, getWorld());
 
         send2All(command);
-    }
-
-    public void setNewPlayersAllowed(boolean newPlayersAllowed) {
-        this.newPlayersAllowed = newPlayersAllowed;
     }
 
     public void setServerGameModel(ServerGameModel serverGameModel) {

@@ -19,20 +19,18 @@ import java.util.Iterator;
  * @author lindsal
  */
 final public class NullTrackType implements TrackRule {
-    private static final long serialVersionUID = 3257849891614306614L;
-
     public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
-
+    private static final long serialVersionUID = 3257849891614306614L;
     private static final NullTrackType nullTrackType = new NullTrackType();
 
     private NullTrackType() {
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    public static NullTrackType getInstance() {
         return nullTrackType;
     }
 
-    public static NullTrackType getInstance() {
+    private Object readResolve() throws ObjectStreamException {
         return nullTrackType;
     }
 

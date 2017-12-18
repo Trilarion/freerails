@@ -14,8 +14,8 @@ import freerails.world.common.Money;
  * @author smackay
  */
 public class StockTransaction extends AddItemTransaction {
-    private static final long serialVersionUID = 3256441412924224824L;
     public static final int STOCK_BUNDLE_SIZE = 10000;
+    private static final long serialVersionUID = 3256441412924224824L;
 
     private StockTransaction(Category category, int playerId, int quantity,
                              Money amount) {
@@ -23,6 +23,10 @@ public class StockTransaction extends AddItemTransaction {
         super(category, playerId, quantity, amount);
         if (playerId < 0)
             throw new IllegalArgumentException();
+    }
+
+    private StockTransaction(int quantity, Money amount) {
+        super(Transaction.Category.ISSUE_STOCK, -1, quantity, amount);
     }
 
     public static StockTransaction issueStock(int playerId, int quantity,
@@ -47,9 +51,5 @@ public class StockTransaction extends AddItemTransaction {
         Money amount = new Money(pricePerShare * quantity);
 
         return new StockTransaction(quantity, amount);
-    }
-
-    private StockTransaction(int quantity, Money amount) {
-        super(Transaction.Category.ISSUE_STOCK, -1, quantity, amount);
     }
 }

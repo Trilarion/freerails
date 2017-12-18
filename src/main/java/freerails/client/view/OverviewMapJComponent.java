@@ -14,10 +14,8 @@ import java.awt.*;
  */
 public class OverviewMapJComponent extends JPanel {
     private static final long serialVersionUID = 3258697585148376888L;
-
-    private MapRenderer mapView = new BlankMapRenderer(0.4F);
-
     private final Rectangle mainMapVisRect;
+    private MapRenderer mapView = new BlankMapRenderer(0.4F);
 
     public OverviewMapJComponent(Rectangle r) {
         this.setPreferredSize(mapView.getMapSizeInPixels());

@@ -35,23 +35,13 @@ public class ImageManagerImpl implements ImageManager {
             .getLogger(ImageManagerImpl.class.getName());
 
     private static final Pattern pattern = Pattern.compile(A_REGEX);
-
-    public static boolean isValid(String s) {
-        Matcher m = pattern.matcher(s);
-        return m.matches();
-    }
-
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
-
     private final HashMap<String, Image> imageHashMap = new HashMap<>();
-
-    private String pathToReadFrom;
-
     private final RenderingHints renderingHints;
-
     private final HashMap<String, Image> scaledImagesHashMap = new HashMap<>();
+    private String pathToReadFrom;
 
     public ImageManagerImpl(String readpath) {
         pathToReadFrom = readpath;
@@ -63,6 +53,11 @@ public class ImageManagerImpl implements ImageManager {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         renderingHints.put(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+    }
+
+    public static boolean isValid(String s) {
+        Matcher m = pattern.matcher(s);
+        return m.matches();
     }
 
     public boolean contains(String relativeFilename) {

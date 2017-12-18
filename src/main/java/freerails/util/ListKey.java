@@ -10,15 +10,8 @@ import java.util.Arrays;
 public class ListKey implements Comparable<ListKey>, Serializable {
 
     private static final long serialVersionUID = -4939641035786937927L;
-
-    public enum Type {
-        Element, EndPoint
-    }
-
     private final Type type;
-
     private final int[] index;
-
     private final Enum listID;
 
     public ListKey(Type t, Enum listID, int... i) {
@@ -95,6 +88,10 @@ public class ListKey implements Comparable<ListKey>, Serializable {
 
     public Enum getListID() {
         return listID;
+    }
+
+    public enum Type {
+        Element, EndPoint
     }
 
 }

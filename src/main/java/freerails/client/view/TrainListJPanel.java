@@ -40,6 +40,18 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     // rhsjTabPane then use the original
     // renderer, if not use the
     // trainsummaryjpanel
+    private ActionListener showTrainDetails = new ActionListener() {
+        public void actionPerformed(ActionEvent arg0) {
+
+        }
+    };
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton closeJButton;
+    private javax.swing.JList jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton showDetails;
+    private freerails.client.view.TrainSummaryJPanel trainSummaryJPanel1;
+    private int trainViewHeight = 50;
 
     /**
      * Creates new form TrainListJPanel.
@@ -218,12 +230,6 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    private ActionListener showTrainDetails = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-
-        }
-    };
-
     int getSelectedTrainID() {
         /*
          * Note, the selected index is not the train id since trains that have
@@ -232,6 +238,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         int row = jList1.getSelectedIndex();
         return NonNullElements.row2index(world, KEY.TRAINS, principal, row);
     }
+
+    // End of variables declaration//GEN-END:variables
 
     /**
      * When the train list is shown on a tab we don't want the buttons.
@@ -248,21 +256,6 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         add(jScrollPane1, gridBagConstraints);
 
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeJButton;
-
-    private javax.swing.JList jList1;
-
-    private javax.swing.JScrollPane jScrollPane1;
-
-    private javax.swing.JButton showDetails;
-
-    private freerails.client.view.TrainSummaryJPanel trainSummaryJPanel1;
-
-    // End of variables declaration//GEN-END:variables
-
-    private int trainViewHeight = 50;
 
     @Override
     public void setVisible(boolean aFlag) {

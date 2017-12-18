@@ -25,6 +25,14 @@ public class AddItemToListMove implements ListMove {
 
     private final FreerailsSerializable item;
 
+    public AddItemToListMove(KEY key, int i, FreerailsSerializable item,
+                             FreerailsPrincipal p) {
+        this.listKey = key;
+        this.index = i;
+        this.item = item;
+        this.principal = p;
+    }
+
     public int getIndex() {
         return index;
     }
@@ -42,14 +50,6 @@ public class AddItemToListMove implements ListMove {
 
     public KEY getKey() {
         return listKey;
-    }
-
-    public AddItemToListMove(KEY key, int i, FreerailsSerializable item,
-                             FreerailsPrincipal p) {
-        this.listKey = key;
-        this.index = i;
-        this.item = item;
-        this.principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
@@ -126,14 +126,13 @@ public class AddItemToListMove implements ListMove {
 
     @Override
     public String toString() {
-        String sb = this.getClass().getName() + "\n list=" +
+
+        return this.getClass().getName() + "\n list=" +
                 listKey.toString() +
                 "\n index =" +
                 index +
                 "\n item =" +
                 item;
-
-        return sb;
     }
 
     public FreerailsPrincipal getPrincipal() {

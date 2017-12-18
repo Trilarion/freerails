@@ -84,7 +84,7 @@ public class AddItemTransaction implements Transaction {
 
     @Override
     public String toString() {
-        String sb = "AddItemTransaction " +
+        return "AddItemTransaction " +
                 category +
                 ", type " +
                 type +
@@ -92,6 +92,5 @@ public class AddItemTransaction implements Transaction {
                 quantity +
                 ", amount " +
                 amount;
-        return sb;
     }
 }

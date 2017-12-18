@@ -24,17 +24,7 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     private final ImHashSet<TerrainType.Category> terrainTypes;// = new
 
     // HashSet<TerrainType.Category>();
-
-    public enum PlacementRule {
-        ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
-    }
-
     private final PlacementRule placementRule;
-
-    @Override
-    public int hashCode() {
-        return (placementRule != null ? placementRule.hashCode() : 0);
-    }
 
     public LegalTrackPlacement(HashSet<TerrainType.Category> types,
                                PlacementRule placementRule) {
@@ -47,6 +37,11 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
             temp.add(iterator.next());
         }
         terrainTypes = new ImHashSet<>(temp);
+    }
+
+    @Override
+    public int hashCode() {
+        return (placementRule != null ? placementRule.hashCode() : 0);
     }
 
     public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
@@ -69,5 +64,9 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
 
     public PlacementRule getPlacementRule() {
         return placementRule;
+    }
+
+    public enum PlacementRule {
+        ONLY_ON_THESE, ANYWHERE_EXCEPT_ON_THESE
     }
 }

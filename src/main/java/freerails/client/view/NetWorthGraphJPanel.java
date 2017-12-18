@@ -34,64 +34,18 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     private static final Logger logger = Logger
             .getLogger(NetWorthGraphJPanel.class.getName());
-
-    private JLabel yAxisLabel1 = null;
-
-    private JLabel yAxisLabel3 = null;
-
-    private JLabel yAxisLabel4 = null;
-
-    private JLabel yAxisLabel2 = null;
-
-    private JLabel xAxisLabel3 = null;
-
-    private JLabel xAxisLabel2 = null;
-
-    private JLabel xAxisLabel1 = null;
-
     private final Font FONT;
-
-    private ArrayList<CompanyDetails> companies = new ArrayList<>();
-
-    private long scaleMax;
-
     private final Rectangle graphRect = new Rectangle(44, 50, 380, 245);
-
     ActionListener submitButtonCallBack = null;
-
-    /**
-     * Stores the company details that are used to draw a line and title on the
-     * graph.
-     *
-     * @author Luke
-     */
-    static class CompanyDetails {
-
-        /**
-         * The company's net worth at the end of each year.
-         */
-        final long[] value = new long[100];
-
-        /**
-         * The colour for the line on the graph.
-         */
-        final Color color;
-
-        /**
-         * The company's name.
-         */
-        final String name;
-
-        CompanyDetails(String n, Color c) {
-
-            color = c;
-            name = n;
-            for (int i = 0; i < 100; i++) {
-                value[i] = Integer.MIN_VALUE;
-            }
-
-        }
-    }
+    private JLabel yAxisLabel1 = null;
+    private JLabel yAxisLabel3 = null;
+    private JLabel yAxisLabel4 = null;
+    private JLabel yAxisLabel2 = null;
+    private JLabel xAxisLabel3 = null;
+    private JLabel xAxisLabel2 = null;
+    private JLabel xAxisLabel1 = null;
+    private ArrayList<CompanyDetails> companies = new ArrayList<>();
+    private long scaleMax;
 
     /**
      * This method initializes
@@ -108,7 +62,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         // CompanyDetails cd = (CompanyDetails)companies.get(i);
         // cd.fillWithRnadomData();
         // }
-        //        
+        //
         // setAppropriateScale();
     }
 
@@ -393,6 +347,40 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
         setAppropriateScale();
 
+    }
+
+    /**
+     * Stores the company details that are used to draw a line and title on the
+     * graph.
+     *
+     * @author Luke
+     */
+    static class CompanyDetails {
+
+        /**
+         * The company's net worth at the end of each year.
+         */
+        final long[] value = new long[100];
+
+        /**
+         * The colour for the line on the graph.
+         */
+        final Color color;
+
+        /**
+         * The company's name.
+         */
+        final String name;
+
+        CompanyDetails(String n, Color c) {
+
+            color = c;
+            name = n;
+            for (int i = 0; i < 100; i++) {
+                value[i] = Integer.MIN_VALUE;
+            }
+
+        }
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

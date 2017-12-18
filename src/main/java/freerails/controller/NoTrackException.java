@@ -36,7 +36,7 @@ public class NoTrackException extends RuntimeException {
 
     /**
      * @param message message
-     * @param cause cause
+     * @param cause   cause
      */
     public NoTrackException(String message, Throwable cause) {
         super(message, cause);

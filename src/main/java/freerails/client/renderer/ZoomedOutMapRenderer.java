@@ -45,19 +45,30 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     private final int mapY;
 
     private final ReadOnlyWorld w;
-
-    private BufferedImage one2oneImage;
-
-    private BufferedImage mapImage;
-
     private final AffineTransform affineTransform;
-
     // private Graphics2D mapGraphics;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
-
+    private BufferedImage one2oneImage;
+    private BufferedImage mapImage;
     private boolean isDirty = true;
+
+    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
+                                 int mapX, int mapY, int mapWidth, int mapHeight) {
+        w = world;
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
+        imageHeight = height;
+        imageWidth = width;
+
+        double scalingFactor = ((double) imageHeight) / mapHeight;
+        affineTransform = AffineTransform.getScaleInstance(scalingFactor,
+                scalingFactor);
+        this.mapX = mapX;
+        this.mapY = mapY;
+        refresh();
+    }
 
     public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
                                                    Dimension maxSize) {
@@ -77,22 +88,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
 
         return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0,
                 world.getMapWidth(), world.getMapHeight());
-    }
-
-    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
-                                 int mapX, int mapY, int mapWidth, int mapHeight) {
-        w = world;
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
-        imageHeight = height;
-        imageWidth = width;
-
-        double scalingFactor = ((double) imageHeight) / mapHeight;
-        affineTransform = AffineTransform.getScaleInstance(scalingFactor,
-                scalingFactor);
-        this.mapX = mapX;
-        this.mapY = mapY;
-        refresh();
     }
 
     public float getScale() {

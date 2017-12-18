@@ -14,37 +14,21 @@ import java.util.HashMap;
  * @author Luke
  */
 public class FreerailsTile implements TerrainTile, FreerailsSerializable {
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-
-        final FreerailsTile that = (FreerailsTile) o;
-
-        if (terrainType != that.terrainType)
-            return false;
-        return trackPiece != null ? trackPiece.equals(that.trackPiece) : that.trackPiece == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = (trackPiece != null ? trackPiece.hashCode() : 0);
-        result = 29 * result + terrainType;
-        return result;
-    }
-
-    private static final long serialVersionUID = 3617574907538847544L;
-
     public static final FreerailsTile NULL = new FreerailsTile(0);
-
+    private static final long serialVersionUID = 3617574907538847544L;
+    private static final HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
     private final TrackPiece trackPiece;
-
     private final int terrainType;
 
-    private static final HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
+    private FreerailsTile(int terrainType) {
+        this.terrainType = terrainType;
+        this.trackPiece = NullTrackPiece.getInstance();
+    }
+
+    private FreerailsTile(int terrainType, TrackPiece trackPiece) {
+        this.terrainType = terrainType;
+        this.trackPiece = trackPiece;
+    }
 
     public static FreerailsTile getInstance(int terrainType) {
         FreerailsTile tile = new FreerailsTile(terrainType);
@@ -70,6 +54,28 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
         return tile;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        final FreerailsTile that = (FreerailsTile) o;
+
+        if (terrainType != that.terrainType)
+            return false;
+        return trackPiece != null ? trackPiece.equals(that.trackPiece) : that.trackPiece == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = (trackPiece != null ? trackPiece.hashCode() : 0);
+        result = 29 * result + terrainType;
+        return result;
+    }
+
     private Object readResolve() throws ObjectStreamException {
         FreerailsTile storedTile = instances.get(this);
         if (storedTile != null) {
@@ -77,16 +83,6 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
         }
         instances.put(this, this);
         return this;
-    }
-
-    private FreerailsTile(int terrainType) {
-        this.terrainType = terrainType;
-        this.trackPiece = NullTrackPiece.getInstance();
-    }
-
-    private FreerailsTile(int terrainType, TrackPiece trackPiece) {
-        this.terrainType = terrainType;
-        this.trackPiece = trackPiece;
     }
 
     public int getTerrainTypeID() {

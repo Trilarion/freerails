@@ -20,10 +20,10 @@ import java.awt.event.ActionListener;
  */
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = 3258410638366946868L;
-
-    private ActionListener callBack;
-
     private final Image pieceOfNewspaper;
+    private ActionListener callBack;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel headline;
 
     public NewsPaperJPanel() {
         initComponents();
@@ -113,9 +113,6 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
         this.callBack = closeAction;
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel headline;
 
     // End of variables declaration//GEN-END:variables
 }

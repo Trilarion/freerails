@@ -33,30 +33,20 @@ import java.net.URL;
 public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
-
-    private final String template;
-
-    private ModelRoot modelRoot;
-
     public static BrokerScreenGenerator brokerScreenGenerator;
+    private final String template;
+    private ModelRoot modelRoot;
+    private final Action repayBondAction = new AbstractAction("Repay bond") {
+        private static final long serialVersionUID = 1L;
 
+        public void actionPerformed(ActionEvent arg0) {
+
+            Move bondTransaction = new AddTransactionMove(modelRoot
+                    .getPrincipal(), BondTransaction.repayBond(5));
+            modelRoot.doMove(bondTransaction);
+        }
+    };
     private FinancialDataGatherer financialDataGatherer;
-
-    private Action[] buyStock, sellStock;
-
-    /**
-     * Creates a new instance of BrokerScreenHtmlJPanel
-     */
-    public BrokerScreenHtmlJFrame() {
-        super();
-
-        URL url = BrokerScreenHtmlJFrame.class
-                .getResource(ClientConfig.VIEW_BROKER);
-        template = loadText(url);
-        this.setSize(550, 300);
-
-    }
-
     private final Action issueBondAction = new AbstractAction("Issue bond") {
         private static final long serialVersionUID = 1L;
 
@@ -71,17 +61,20 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
             }
         }
     };
+    private Action[] buyStock, sellStock;
 
-    private final Action repayBondAction = new AbstractAction("Repay bond") {
-        private static final long serialVersionUID = 1L;
+    /**
+     * Creates a new instance of BrokerScreenHtmlJPanel
+     */
+    public BrokerScreenHtmlJFrame() {
+        super();
 
-        public void actionPerformed(ActionEvent arg0) {
+        URL url = BrokerScreenHtmlJFrame.class
+                .getResource(ClientConfig.VIEW_BROKER);
+        template = loadText(url);
+        this.setSize(550, 300);
 
-            Move bondTransaction = new AddTransactionMove(modelRoot
-                    .getPrincipal(), BondTransaction.repayBond(5));
-            modelRoot.doMove(bondTransaction);
-        }
-    };
+    }
 
     @Override
     public void setup(final ModelRoot modelRoot, RenderersRoot vl,

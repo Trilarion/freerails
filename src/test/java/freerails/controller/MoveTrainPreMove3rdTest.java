@@ -22,17 +22,13 @@ import static freerails.world.common.Step.*;
  */
 public class MoveTrainPreMove3rdTest extends TestCase {
 
-    TrackMoveProducer trackBuilder;
-
-    StationBuilder stationBuilder;
-
-    FreerailsPrincipal principal;
-
-    World world;
-
     final Step[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
     final Step[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
     final Step[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
+    TrackMoveProducer trackBuilder;
+    StationBuilder stationBuilder;
+    FreerailsPrincipal principal;
+    World world;
 
     @Override
     protected void setUp() throws Exception {

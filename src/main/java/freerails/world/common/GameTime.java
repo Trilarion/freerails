@@ -10,20 +10,21 @@ package freerails.world.common;
  * @author Luke
  */
 public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
-    private static final long serialVersionUID = 3691035461301055541L;
-
     /**
      * The first possible time.
      */
     public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
-
     /**
      * The last possible time.
      */
     public static final GameTime END_OF_THE_WORLD = new GameTime(
             Integer.MAX_VALUE);
-
+    private static final long serialVersionUID = 3691035461301055541L;
     private final int ticks;
+
+    public GameTime(int l) {
+        this.ticks = l;
+    }
 
     @Override
     public String toString() {
@@ -33,10 +34,6 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
     @Override
     public int hashCode() {
         return ticks;
-    }
-
-    public GameTime(int l) {
-        this.ticks = l;
     }
 
     public GameTime nextTick() {

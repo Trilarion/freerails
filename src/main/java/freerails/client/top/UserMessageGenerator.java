@@ -32,13 +32,10 @@ import java.util.ArrayList;
  * @author Luke
  */
 public class UserMessageGenerator implements MoveReceiver {
-    private ModelRoot modelRoot;
-
-    private ActionRoot actionRoot;
-
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
-
     private final SoundManager soundManager = SoundManager.getSoundManager();
+    private ModelRoot modelRoot;
+    private ActionRoot actionRoot;
 
     public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
         if (null == mr || null == actionRoot) {

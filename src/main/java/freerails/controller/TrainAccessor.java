@@ -41,6 +41,27 @@ public class TrainAccessor {
         this.id = id;
     }
 
+    public static ImInts spaceAvailable2(ReadOnlyWorld row,
+                                         ImmutableCargoBundle onTrain, ImInts consist) {
+        // This array will store the amount of space available on the train for
+        // each cargo type.
+        final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);
+        int[] spaceAvailable = new int[NUM_CARGO_TYPES];
+
+        // First calculate the train's total capacity.
+        for (int j = 0; j < consist.size(); j++) {
+            int cargoType = consist.get(j);
+            spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
+        }
+
+        for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
+            spaceAvailable[cargoType] = spaceAvailable[cargoType]
+                    - onTrain.getAmount(cargoType);
+        }
+        return new ImInts(spaceAvailable);
+
+    }
+
     public int getId() {
         return id;
     }
@@ -211,27 +232,6 @@ public class TrainAccessor {
         ImmutableCargoBundle bundleOnTrain = (ImmutableCargoBundle) w.get(p,
                 KEY.CARGO_BUNDLES, train.getCargoBundleID());
         return spaceAvailable2(w, bundleOnTrain, train.getConsist());
-
-    }
-
-    public static ImInts spaceAvailable2(ReadOnlyWorld row,
-                                         ImmutableCargoBundle onTrain, ImInts consist) {
-        // This array will store the amount of space available on the train for
-        // each cargo type.
-        final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);
-        int[] spaceAvailable = new int[NUM_CARGO_TYPES];
-
-        // First calculate the train's total capacity.
-        for (int j = 0; j < consist.size(); j++) {
-            int cargoType = consist.get(j);
-            spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
-        }
-
-        for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
-            spaceAvailable[cargoType] = spaceAvailable[cargoType]
-                    - onTrain.getAmount(cargoType);
-        }
-        return new ImInts(spaceAvailable);
 
     }
 

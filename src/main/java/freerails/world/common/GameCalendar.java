@@ -17,6 +17,11 @@ final public class GameCalendar implements FreerailsSerializable {
 
     private final int startYear;
 
+    public GameCalendar(int ticksPerYear, int startYear) {
+        this.ticksPerYear = ticksPerYear;
+        this.startYear = startYear;
+    }
+
     @Override
     public int hashCode() {
         int result;
@@ -150,11 +155,6 @@ final public class GameCalendar implements FreerailsSerializable {
         int ticksPerMonth = ticksPerYear / 12;
 
         return (i % ticksPerYear) / ticksPerMonth;
-    }
-
-    public GameCalendar(int ticksPerYear, int startYear) {
-        this.ticksPerYear = ticksPerYear;
-        this.startYear = startYear;
     }
 
     @Override

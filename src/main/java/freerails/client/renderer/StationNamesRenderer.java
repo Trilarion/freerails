@@ -25,21 +25,14 @@ import java.awt.geom.RoundRectangle2D;
  * @author Luke Lindsay
  */
 public class StationNamesRenderer implements Painter {
-    private final ReadOnlyWorld w;
-
-    private final ModelRoot modelRoot;
-
-    private final int fontSize;
-
-    private final Color bgColor;
-
-    private final Color textColor;
-
     final static float[] dash1 = {5.0f};
-
     final static BasicStroke dashed = new BasicStroke(1.0f,
             BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-
+    private final ReadOnlyWorld w;
+    private final ModelRoot modelRoot;
+    private final int fontSize;
+    private final Color bgColor;
+    private final Color textColor;
     private final Font font;
 
     public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {

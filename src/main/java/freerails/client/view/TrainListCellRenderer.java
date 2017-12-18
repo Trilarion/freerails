@@ -29,44 +29,30 @@ import java.io.IOException;
 public class TrainListCellRenderer extends JPanel implements View,
         ListCellRenderer, WorldListListener {
     private static final long serialVersionUID = 3546076964969591093L;
-
+    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
+            .getDefaults().get("List.background");
+    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
+            .getDefaults().get("List.selectionBackground");
+    private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private ReadOnlyWorld w;
-
     private RenderersRoot vl;
-
     private int trainNumber = -1;
-
     private int scheduleOrderNumber;
-
     private int scheduleID = -1;
-
     private int height = 100;
-
     private FreerailsPrincipal principal;
-
     private Image[] images = new Image[0];
-
     /**
      * Whether this JPanel should one of the trains orders from the schedule
      * instead of the trains current formation.
      */
     private boolean showingOrder = false;
-
     /**
      * If true, the train is drawn in the center to the JPanel; if false, the
      * train is drawn left aligned.
      */
     private boolean centerTrain = false;
-
     private int trainWidth = 0;
-
-    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
-            .getDefaults().get("List.background");
-
-    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
-            .getDefaults().get("List.selectionBackground");
-
-    private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
 
     public TrainListCellRenderer() {
         this.setOpaque(false);
@@ -164,9 +150,7 @@ public class TrainListCellRenderer extends JPanel implements View,
                 .row2index(w, KEY.TRAINS, principal, index);
         display(trainID);
 
-        boolean selected = isSelected;
-
-        if (selected) {
+        if (isSelected) {
             if (list.isFocusOwner()) {
                 setBackground(selectedColor);
             } else {

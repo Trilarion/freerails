@@ -10,24 +10,15 @@ import freerails.world.common.FreerailsSerializable;
  * @author Luke
  */
 public class WagonType implements FreerailsSerializable {
-    private static final long serialVersionUID = 3906368233710826292L;
-
     public static final int BULK_FREIGHT = 4;
-
     public static final int ENGINE = 5;
-
     public static final int FAST_FREIGHT = 2;
-
     public static final int MAIL = 0;
-
     public static final int NUMBER_OF_CATEGORIES = 6;
-
     public static final int PASSENGER = 1;
-
     public static final int SLOW_FREIGHT = 3;
-
     public static final int UNITS_OF_CARGO_PER_WAGON = 40;
-
+    private static final long serialVersionUID = 3906368233710826292L;
     private final int typeCategory;
 
     private final String typeName;

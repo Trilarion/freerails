@@ -101,9 +101,8 @@ public class MutableCargoBundle implements CargoBundle {
 
     public int getAmount(CargoBatch cb) {
         if (contains(cb)) {
-            Integer i = sortedMap.get(cb);
 
-            return i;
+            return sortedMap.get(cb);
         }
         return 0;
     }

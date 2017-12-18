@@ -10,12 +10,12 @@ package freerails.controller;
  * @author Luke Lindsay
  */
 public interface GraphExplorer {
-    void setPosition(int vertex);
-
     /**
      * Return the current edge.
      */
     int getPosition();
+
+    void setPosition(int vertex);
 
     /**
      * Sets the current edge to the current vertex's next edge. Throws a

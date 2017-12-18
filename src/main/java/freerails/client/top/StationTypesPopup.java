@@ -47,15 +47,6 @@ public class StationTypesPopup extends JPopupMenu {
         return tile.hasTrack();
     }
 
-    private class StationBuildMenuItem extends JMenuItem {
-        private static final long serialVersionUID = 3256721792751120946L;
-
-        @Override
-        public void configurePropertiesFromAction(Action a) {
-            super.configurePropertiesFromAction(a);
-        }
-    }
-
     public void setup(ModelRoot mr, ActionRoot actionRoot,
                       StationRadiusRenderer srr) {
         modelRoot = mr;
@@ -147,5 +138,14 @@ public class StationTypesPopup extends JPopupMenu {
         // follow the mouse.
         stationBuildModel.setPositionFollowsMouse(!b);
         super.setVisible(b);
+    }
+
+    private class StationBuildMenuItem extends JMenuItem {
+        private static final long serialVersionUID = 3256721792751120946L;
+
+        @Override
+        public void configurePropertiesFromAction(Action a) {
+            super.configurePropertiesFromAction(a);
+        }
     }
 }

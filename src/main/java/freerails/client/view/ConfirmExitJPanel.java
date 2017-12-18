@@ -20,6 +20,8 @@ import javax.swing.*;
 public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3256728398394110517L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton closeJButton;
 
     /**
      * Creates new form ConfirmExitJPanel.
@@ -83,9 +85,6 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
         closeJButton.setAction(closeAction);
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton closeJButton;
 
     // End of variables declaration//GEN-END:variables
 

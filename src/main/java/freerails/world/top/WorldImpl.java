@@ -20,148 +20,27 @@ import java.util.NoSuchElementException;
  */
 public class WorldImpl implements World {
 
-    public class ActivityIteratorImpl implements ActivityIterator {
-
-        public int activityIndex = 0;
-
-        private ActivityAndTime ant;
-
-        private final List<ActivityAndTime> currentList;
-
-        public final int size;
-
-        public ActivityIteratorImpl(int playerIndex, int index) {
-            currentList = activityLists.get(playerIndex, index);
-            size = currentList.size();
-            ant = currentList.get(activityIndex);
-        }
-
-        public double absolute2relativeTime(double t) {
-            double dt = t - ant.startTime;
-            dt = Math.min(dt, ant.act.duration());
-            return dt;
-        }
-
-        public Activity getActivity() {
-            return ant.act;
-        }
-
-        public double getDuration() {
-            return ant.act.duration();
-        }
-
-        public double getFinishTime() {
-            return ant.startTime + ant.act.duration();
-        }
-
-        public double getStartTime() {
-            return ant.startTime;
-        }
-
-        public FreerailsSerializable getState(double t) {
-            double dt = absolute2relativeTime(t);
-            return ant.act.getState(dt);
-        }
-
-        public boolean hasNext() {
-            return (activityIndex + 1) < size;
-        }
-
-        public void nextActivity() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            activityIndex++;
-            ant = currentList.get(activityIndex);
-        }
-
-        public void gotoLastActivity() {
-            activityIndex = size - 1;
-            ant = currentList.get(activityIndex);
-        }
-
-        public boolean hasPrevious() {
-            return activityIndex >= 1;
-        }
-
-        public void previousActivity() throws NoSuchElementException {
-            if (!hasPrevious()) {
-                throw new NoSuchElementException();
-            }
-            activityIndex--;
-            ant = currentList.get(activityIndex);
-
-        }
-
-    }
-
-    public static class ActivityAndTime implements FreerailsSerializable {
-
-        private static final long serialVersionUID = -5149207279086814649L;
-
-        public final Activity act;
-
-        public final double startTime;
-
-        ActivityAndTime(Activity act, double time) {
-            this.act = act;
-            startTime = time;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof ActivityAndTime))
-                return false;
-
-            final ActivityAndTime activityAndTime = (ActivityAndTime) o;
-
-            if (!act.equals(activityAndTime.act))
-                return false;
-            return !(startTime != activityAndTime.startTime);
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            result = act.hashCode();
-            result = 29 * result + (int) startTime;
-            return result;
-        }
-
-    }
-
     private static final long serialVersionUID = 3544393612684505393L;
-
     /**
      * A 3D list: D1 is player, D2 is train id, D3 is train position.
      */
     List3D<ActivityAndTime> activityLists;
-
     /**
      * A 2D list: D1 is player, D2 is transaction.
      */
     List2D<TransactionAndTimeStamp> bankAccounts;
-
     List1D<Money> currentBalance;
-
     List1D<FreerailsSerializable> items;
-
     /**
      * A 3D list: D1 is player, D2 is type, D3 is element.
      */
     List3D<FreerailsSerializable> lists;
-
     FreerailsSerializable[][] map;
-
     List1D<Player> players;
-
     /**
      * A 2D list: D1 is type, D2 is element.
      */
     List2D<FreerailsSerializable> sharedLists;
-
     GameTime time = GameTime.BIG_BANG;
 
     public WorldImpl() {
@@ -520,5 +399,114 @@ public class WorldImpl implements World {
     public int getNumberOfActiveEntities(FreerailsPrincipal p) {
         int playerIndex = p.getWorldIndex();
         return activityLists.sizeD2(playerIndex);
+    }
+
+    public static class ActivityAndTime implements FreerailsSerializable {
+
+        private static final long serialVersionUID = -5149207279086814649L;
+
+        public final Activity act;
+
+        public final double startTime;
+
+        ActivityAndTime(Activity act, double time) {
+            this.act = act;
+            startTime = time;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof ActivityAndTime))
+                return false;
+
+            final ActivityAndTime activityAndTime = (ActivityAndTime) o;
+
+            if (!act.equals(activityAndTime.act))
+                return false;
+            return !(startTime != activityAndTime.startTime);
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            result = act.hashCode();
+            result = 29 * result + (int) startTime;
+            return result;
+        }
+
+    }
+
+    public class ActivityIteratorImpl implements ActivityIterator {
+
+        public final int size;
+        private final List<ActivityAndTime> currentList;
+        public int activityIndex = 0;
+        private ActivityAndTime ant;
+
+        public ActivityIteratorImpl(int playerIndex, int index) {
+            currentList = activityLists.get(playerIndex, index);
+            size = currentList.size();
+            ant = currentList.get(activityIndex);
+        }
+
+        public double absolute2relativeTime(double t) {
+            double dt = t - ant.startTime;
+            dt = Math.min(dt, ant.act.duration());
+            return dt;
+        }
+
+        public Activity getActivity() {
+            return ant.act;
+        }
+
+        public double getDuration() {
+            return ant.act.duration();
+        }
+
+        public double getFinishTime() {
+            return ant.startTime + ant.act.duration();
+        }
+
+        public double getStartTime() {
+            return ant.startTime;
+        }
+
+        public FreerailsSerializable getState(double t) {
+            double dt = absolute2relativeTime(t);
+            return ant.act.getState(dt);
+        }
+
+        public boolean hasNext() {
+            return (activityIndex + 1) < size;
+        }
+
+        public void nextActivity() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            activityIndex++;
+            ant = currentList.get(activityIndex);
+        }
+
+        public void gotoLastActivity() {
+            activityIndex = size - 1;
+            ant = currentList.get(activityIndex);
+        }
+
+        public boolean hasPrevious() {
+            return activityIndex >= 1;
+        }
+
+        public void previousActivity() throws NoSuchElementException {
+            if (!hasPrevious()) {
+                throw new NoSuchElementException();
+            }
+            activityIndex--;
+            ant = currentList.get(activityIndex);
+
+        }
+
     }
 }

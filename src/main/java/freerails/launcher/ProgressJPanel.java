@@ -17,12 +17,21 @@ public class ProgressJPanel extends javax.swing.JPanel implements
         FreerailsProgressMonitor {
 
     private static final long serialVersionUID = 3256445798203273776L;
-
-    int step, stepSize;
-
     final int numSteps = 5;
-
     final LauncherInterface owner;
+    int step, stepSize;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JProgressBar progressBar;
+    javax.swing.JLabel splashImage;
+
+    /**
+     * Creates new form ProgressJPanel
+     */
+    public ProgressJPanel(LauncherInterface owner) {
+        this.owner = owner;
+        initComponents();
+        progressBar.setMaximum(numSteps * 100);
+    }
 
     public void setValue(int i) {
         int value = i * 100 / stepSize;
@@ -42,20 +51,13 @@ public class ProgressJPanel extends javax.swing.JPanel implements
             throw new IllegalStateException();
     }
 
+    // </editor-fold>//GEN-END:initComponents
+
     public void finished() {
         if (numSteps - 1 != step)
             throw new IllegalStateException(numSteps + "!=" + step);
 
         getTopLevelAncestor().setVisible(false);
-    }
-
-    /**
-     * Creates new form ProgressJPanel
-     */
-    public ProgressJPanel(LauncherInterface owner) {
-        this.owner = owner;
-        initComponents();
-        progressBar.setMaximum(numSteps * 100);
     }
 
     /**
@@ -86,12 +88,6 @@ public class ProgressJPanel extends javax.swing.JPanel implements
         add(splashImage, new java.awt.GridBagConstraints());
 
     }
-
-    // </editor-fold>//GEN-END:initComponents
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JProgressBar progressBar;
-    javax.swing.JLabel splashImage;
     // End of variables declaration//GEN-END:variables
 
 }

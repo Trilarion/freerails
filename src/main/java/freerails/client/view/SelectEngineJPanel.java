@@ -25,6 +25,10 @@ import java.util.Map;
 public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 4122537730158179638L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton canceljButton;
+    private javax.swing.JList jList1;
+    private javax.swing.JButton okjButton;
 
     public SelectEngineJPanel() {
         initComponents();
@@ -96,14 +100,34 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         }
     } // GEN-LAST:event_jList1ValueChanged
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton canceljButton;
-
-    private javax.swing.JList jList1;
-
-    private javax.swing.JButton okjButton;
-
     // End of variables declaration//GEN-END:variables
+
+    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+
+        jList1.setModel(new World2ListModelAdapter(mr.getWorld(),
+                SKEY.ENGINE_TYPES));
+        jList1.setCellRenderer(new TrainCellRenderer(vl));
+        okjButton.addActionListener(closeAction);
+    }
+
+    /**
+     * Removes any existing ActionListener listeners from the cancel button,
+     * then adds the specifed one.
+     */
+    void setCancelButtonActionListener(ActionListener l) {
+        ActionListener[] oldListeners = canceljButton.getActionListeners();
+        for (ActionListener oldListener : oldListeners) {
+            canceljButton.removeActionListener(oldListener);
+        }
+        this.canceljButton.addActionListener(l);
+    }
+
+    /**
+     * Returns the number of the currently selected engine type.
+     */
+    public int getEngineType() {
+        return jList1.getSelectedIndex();
+    }
 
     final private class TrainCellRenderer implements ListCellRenderer {
 
@@ -145,32 +169,5 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
             }
             return label;
         }
-    }
-
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
-
-        jList1.setModel(new World2ListModelAdapter(mr.getWorld(),
-                SKEY.ENGINE_TYPES));
-        jList1.setCellRenderer(new TrainCellRenderer(vl));
-        okjButton.addActionListener(closeAction);
-    }
-
-    /**
-     * Removes any existing ActionListener listeners from the cancel button,
-     * then adds the specifed one.
-     */
-    void setCancelButtonActionListener(ActionListener l) {
-        ActionListener[] oldListeners = canceljButton.getActionListeners();
-        for (ActionListener oldListener : oldListeners) {
-            canceljButton.removeActionListener(oldListener);
-        }
-        this.canceljButton.addActionListener(l);
-    }
-
-    /**
-     * Returns the number of the currently selected engine type.
-     */
-    public int getEngineType() {
-        return jList1.getSelectedIndex();
     }
 }

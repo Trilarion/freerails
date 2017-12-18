@@ -27,14 +27,10 @@ import java.awt.event.MouseEvent;
  * @version 1.0
  */
 public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
-    private JComponent overviewMapJPanel;
-
-    private JComponent mainMap;
-
-    private Rectangle currentVisRect;
-
     private final Point lastMouseLocation = new Point();
-
+    private JComponent overviewMapJPanel;
+    private JComponent mainMap;
+    private Rectangle currentVisRect;
     private boolean inside = false;
 
     private boolean draggingAndStartedInside = false;
@@ -51,12 +47,11 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         currentVisRect = rect;
 
         overviewMapJPanel = omv;
-        JViewport viewport = v;
         mainMap = mm;
 
         overviewMapJPanel.addMouseMotionListener(this);
         overviewMapJPanel.addMouseListener(this);
-        viewport.addChangeListener(new javax.swing.event.ChangeListener() {
+        v.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 updateObservedRect();
             }

@@ -16,11 +16,27 @@ import java.util.Iterator;
  * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
-    private static final long serialVersionUID = 3618695301330974512L;
-
-    private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
-
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
+    private static final long serialVersionUID = 3618695301330974512L;
+    private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
+    private final int length;
+    private final int configuration;
+
+    private TrackConfiguration(int configuration) {
+        this.configuration = configuration;
+
+        // Calculate length.
+        int tempLength = 0;
+        Step[] vectors = Step.getList();
+
+        for (Step vector : vectors) {
+            if (this.contains(vector.get9bitTemplate())) {
+                tempLength += vector.getLength();
+            }
+        }
+
+        length = tempLength;
+    }
 
     /**
      * @return the superposition of two track templates
@@ -86,26 +102,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
 
         return from9bitTemplate(newTemplate);
-    }
-
-    private final int length;
-
-    private final int configuration;
-
-    private TrackConfiguration(int configuration) {
-        this.configuration = configuration;
-
-        // Calculate length.
-        int tempLength = 0;
-        Step[] vectors = Step.getList();
-
-        for (Step vector : vectors) {
-            if (this.contains(vector.get9bitTemplate())) {
-                tempLength += vector.getLength();
-            }
-        }
-
-        length = tempLength;
     }
 
     public boolean contains(FlatTrackTemplate ftt) {

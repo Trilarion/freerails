@@ -12,12 +12,33 @@ package freerails.controller;
 public class UnexpectedExceptionForm extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -4348641764811196495L;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JButton closebutton;
+    freerails.controller.CopyableTextJPanel copyableTextJPanel1;
 
     /**
      * Creates new form UnexpectedExceptionForm
      */
     public UnexpectedExceptionForm() {
         initComponents();
+    }
+
+    // </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm();
+                Exception e = new Exception("Oh No..");
+                String str = ReportBugTextGenerator.genText(e);
+                unexpectedExceptionForm.setText(str);
+                unexpectedExceptionForm.setVisible(true);
+                e.printStackTrace();
+            }
+        });
     }
 
     public void setText(String s) {
@@ -63,31 +84,9 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
         pack();
     }
 
-    // </editor-fold>//GEN-END:initComponents
-
     private void closebuttonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_closebuttonActionPerformed
         System.exit(1);
     }// GEN-LAST:event_closebuttonActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                UnexpectedExceptionForm unexpectedExceptionForm = new UnexpectedExceptionForm();
-                Exception e = new Exception("Oh No..");
-                String str = ReportBugTextGenerator.genText(e);
-                unexpectedExceptionForm.setText(str);
-                unexpectedExceptionForm.setVisible(true);
-                e.printStackTrace();
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JButton closebutton;
-    freerails.controller.CopyableTextJPanel copyableTextJPanel1;
     // End of variables declaration//GEN-END:variables
 
 }

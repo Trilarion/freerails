@@ -101,6 +101,17 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         sanityCheck();
     }
 
+    public TrainMotion(PathOnTiles path, int trainLength, double duration,
+                       SpeedTimeAndStatus.TrainActivity act) {
+        this.path = path;
+        this.trainLength = trainLength;
+        this.activity = act;
+        this.distanceEngineWillTravel = 0;
+        this.initialPosition = path.getTotalDistance();
+        this.speeds = ConstAcc.STOPPED;
+        this.duration = duration;
+    }
+
     /**
      * Checks we are not creating an object with an inconsistent state. That is,
      * at the time stored in the field duration, the engine must not have gone
@@ -113,17 +124,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         if (totalLength < offset + trainLengthDouble)
             throw new IllegalStateException(offset + " + " + trainLengthDouble
                     + " > " + totalLength);
-    }
-
-    public TrainMotion(PathOnTiles path, int trainLength, double duration,
-                       SpeedTimeAndStatus.TrainActivity act) {
-        this.path = path;
-        this.trainLength = trainLength;
-        this.activity = act;
-        this.distanceEngineWillTravel = 0;
-        this.initialPosition = path.getTotalDistance();
-        this.speeds = ConstAcc.STOPPED;
-        this.duration = duration;
     }
 
     private double calcOffSet(double t) {

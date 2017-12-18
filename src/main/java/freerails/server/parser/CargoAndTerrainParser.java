@@ -49,6 +49,56 @@ public class CargoAndTerrainParser implements ContentHandler {
     }
 
     /**
+     * The recognizer entry method taking an Inputsource.
+     *
+     * @param input InputSource to be parsed.
+     * @throws java.io.IOException                            on I/O error.
+     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     *                                                        created.
+     */
+    public static void parse(final InputSource input,
+                             final CargoAndTerrainHandler handler) throws SAXException,
+            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+        parse(input, new CargoAndTerrainParser(handler, null));
+    }
+
+    /**
+     * The recognizer entry method taking a URL.
+     *
+     * @param url URL source to be parsed.
+     * @throws java.io.IOException                            on I/O error.
+     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     *                                                        created.
+     */
+    public static void parse(final java.net.URL url,
+                             final CargoAndTerrainHandler handler) throws SAXException,
+            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+        parse(new InputSource(url.toExternalForm()), handler);
+    }
+
+    private static void parse(final InputSource input,
+                              final CargoAndTerrainParser recognizer) throws SAXException,
+            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
+                .newInstance();
+        factory.setValidating(true); // the code was generated according DTD
+        factory.setNamespaceAware(true); // the code was generated according
+        // DTD
+
+        XMLReader parser = factory.newSAXParser().getXMLReader();
+        parser.setContentHandler(recognizer);
+        parser.setErrorHandler(recognizer.getDefaultErrorHandler());
+
+        if (recognizer.resolver != null) {
+            parser.setEntityResolver(recognizer.resolver);
+        }
+
+        parser.parse(input);
+    }
+
+    /**
      * This SAX interface method is implemented by the parser.
      */
     public final void setDocumentLocator(Locator locator) {
@@ -175,56 +225,6 @@ public class CargoAndTerrainParser implements ContentHandler {
         }
 
         buffer.delete(0, buffer.length());
-    }
-
-    /**
-     * The recognizer entry method taking an Inputsource.
-     *
-     * @param input InputSource to be parsed.
-     * @throws java.io.IOException                            on I/O error.
-     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
-     *                                                        created.
-     */
-    public static void parse(final InputSource input,
-                             final CargoAndTerrainHandler handler) throws SAXException,
-            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
-        parse(input, new CargoAndTerrainParser(handler, null));
-    }
-
-    /**
-     * The recognizer entry method taking a URL.
-     *
-     * @param url URL source to be parsed.
-     * @throws java.io.IOException                            on I/O error.
-     * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
-     *                                                        created.
-     */
-    public static void parse(final java.net.URL url,
-                             final CargoAndTerrainHandler handler) throws SAXException,
-            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
-        parse(new InputSource(url.toExternalForm()), handler);
-    }
-
-    private static void parse(final InputSource input,
-                              final CargoAndTerrainParser recognizer) throws SAXException,
-            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
-        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
-                .newInstance();
-        factory.setValidating(true); // the code was generated according DTD
-        factory.setNamespaceAware(true); // the code was generated according
-        // DTD
-
-        XMLReader parser = factory.newSAXParser().getXMLReader();
-        parser.setContentHandler(recognizer);
-        parser.setErrorHandler(recognizer.getDefaultErrorHandler());
-
-        if (recognizer.resolver != null) {
-            parser.setEntityResolver(recognizer.resolver);
-        }
-
-        parser.parse(input);
     }
 
     /**

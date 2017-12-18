@@ -20,10 +20,6 @@ public interface LauncherInterface {
 
     String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
 
-    enum MSG_TYPE {
-        INFO, WARNING, ERROR
-    }
-
     void setInfoText(String text, MSG_TYPE status);
 
     void setNextEnabled(boolean enabled);
@@ -37,5 +33,9 @@ public interface LauncherInterface {
     String getProperty(String key);
 
     void saveProps();
+
+    enum MSG_TYPE {
+        INFO, WARNING, ERROR
+    }
 
 }

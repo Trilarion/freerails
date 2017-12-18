@@ -48,21 +48,15 @@ public class StationBuildModel {
      * be built
      */
     private final List<Action> stationChooseActions = new ArrayList<>();
-
+    private final StationBuildAction stationBuildAction = new StationBuildAction();
+    private final StationCancelAction stationCancelAction = new StationCancelAction();
+    private final StationBuilder stationBuilder;
+    private final ModelRoot modelRoot;
+    private final HashMap<Integer, Action> id2Action = new HashMap<>();
     /**
      * Whether the station's position can should change when the mouse moves.
      */
     private boolean positionFollowsMouse = true;
-
-    private final StationBuildAction stationBuildAction = new StationBuildAction();
-
-    private final StationCancelAction stationCancelAction = new StationCancelAction();
-
-    private final StationBuilder stationBuilder;
-
-    private final ModelRoot modelRoot;
-
-    private final HashMap<Integer, Action> id2Action = new HashMap<>();
 
     public StationBuildModel(StationBuilder sb, RenderersRoot rr, ModelRoot mr) {
         stationBuilder = sb;
@@ -98,6 +92,29 @@ public class StationBuildModel {
     public Action[] getStationChooseActions() {
         return stationChooseActions.toArray(new Action[stationChooseActions
                 .size()]);
+    }
+
+    public boolean canBuildStationHere() {
+        Point p = (Point) stationBuildAction
+                .getValue(StationBuildAction.STATION_POSITION_KEY);
+
+        return stationBuilder.tryBuildingStation(new ImPoint(p.x, p.y)).ok;
+    }
+
+    public Action getStationCancelAction() {
+        return stationCancelAction;
+    }
+
+    public StationBuildAction getStationBuildAction() {
+        return stationBuildAction;
+    }
+
+    public boolean isPositionFollowsMouse() {
+        return positionFollowsMouse;
+    }
+
+    public void setPositionFollowsMouse(boolean positionFollowsMouse) {
+        this.positionFollowsMouse = positionFollowsMouse;
     }
 
     private class StationChooseAction extends AbstractAction {
@@ -137,19 +154,17 @@ public class StationBuildModel {
      * This action builds the station.
      */
     public class StationBuildAction extends AbstractAction {
-        private static final long serialVersionUID = 3905236827739926833L;
-
         /**
          * This key can be used to set the position where the station is to be
          * built as a Point object.
          */
         public final static String STATION_POSITION_KEY = "STATION_POSITION_KEY";
-
         /**
          * This key can be used to retrieve the radius of the currently selected
          * station as an Integer value. Don't bother writing to it!
          */
         public final static String STATION_RADIUS_KEY = "STATION_RADIUS_KEY";
+        private static final long serialVersionUID = 3905236827739926833L;
 
         StationBuildAction() {
             setEnabled(false);
@@ -171,28 +186,5 @@ public class StationBuildModel {
             modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, message);
 
         }
-    }
-
-    public boolean canBuildStationHere() {
-        Point p = (Point) stationBuildAction
-                .getValue(StationBuildAction.STATION_POSITION_KEY);
-
-        return stationBuilder.tryBuildingStation(new ImPoint(p.x, p.y)).ok;
-    }
-
-    public Action getStationCancelAction() {
-        return stationCancelAction;
-    }
-
-    public StationBuildAction getStationBuildAction() {
-        return stationBuildAction;
-    }
-
-    public boolean isPositionFollowsMouse() {
-        return positionFollowsMouse;
-    }
-
-    public void setPositionFollowsMouse(boolean positionFollowsMouse) {
-        this.positionFollowsMouse = positionFollowsMouse;
     }
 }

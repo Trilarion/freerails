@@ -34,69 +34,12 @@ import static freerails.util.ListKey.Type.EndPoint;
  */
 public class WorldDiffMove implements Move, MapUpdateMove {
 
-    public enum Cause {
-        TrainArrives, Other, YearEnd
-    }
-
-    private final Cause cause;
-
     private static final Logger logger = Logger.getLogger(WorldDiffMove.class
             .getName());
-
-    public static class MapDiff implements FreerailsSerializable {
-        private static final long serialVersionUID = -5935670372745313360L;
-
-        final FreerailsSerializable before, after;
-
-        public final int x, y;
-
-        MapDiff(FreerailsSerializable before, FreerailsSerializable after,
-                ImPoint p) {
-            this.after = after;
-            this.before = before;
-            this.x = p.x;
-            this.y = p.y;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof MapDiff))
-                return false;
-
-            final MapDiff diff = (MapDiff) o;
-
-            if (x != diff.x)
-                return false;
-            if (y != diff.y)
-                return false;
-            if (!after.equals(diff.after))
-                return false;
-            return before.equals(diff.before);
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            result = x;
-            result = 29 * result + y;
-            result = 29 * result + before.hashCode();
-            result = 29 * result + after.hashCode();
-            return result;
-        }
-    }
-
     private static final long serialVersionUID = 3905245632406239544L;
-
-    public static WorldDiffMove generate(WorldDiffs diffs, Cause cause) {
-        return new WorldDiffMove(diffs.getUnderlying(), diffs, cause);
-    }
-
+    private final Cause cause;
     private final ImList<MapDiff> diffs;
-
     private final CompositeMove listChanges;
-
     private final int x, y, w, h;
 
     public WorldDiffMove(ReadOnlyWorld world, WorldDiffs worldDiffs, Cause cause)
@@ -268,6 +211,10 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         listChanges = new CompositeMove(tempList);
     }
 
+    public static WorldDiffMove generate(WorldDiffs diffs, Cause cause) {
+        return new WorldDiffMove(diffs.getUnderlying(), diffs, cause);
+    }
+
     private void doMove(World world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
@@ -385,5 +332,51 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public ImList<MapDiff> getDiffs() {
         return diffs;
+    }
+
+    public enum Cause {
+        TrainArrives, Other, YearEnd
+    }
+
+    public static class MapDiff implements FreerailsSerializable {
+        private static final long serialVersionUID = -5935670372745313360L;
+        public final int x, y;
+        final FreerailsSerializable before, after;
+
+        MapDiff(FreerailsSerializable before, FreerailsSerializable after,
+                ImPoint p) {
+            this.after = after;
+            this.before = before;
+            this.x = p.x;
+            this.y = p.y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            if (!(o instanceof MapDiff))
+                return false;
+
+            final MapDiff diff = (MapDiff) o;
+
+            if (x != diff.x)
+                return false;
+            if (y != diff.y)
+                return false;
+            if (!after.equals(diff.after))
+                return false;
+            return before.equals(diff.before);
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            result = x;
+            result = 29 * result + y;
+            result = 29 * result + before.hashCode();
+            result = 29 * result + after.hashCode();
+            return result;
+        }
     }
 }

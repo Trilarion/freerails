@@ -52,6 +52,17 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private TrackMoveProducer trackMoveProducer;
 
     private StationBuildModel stationBuildModel;
+    private javax.swing.JToggleButton addTrack;
+    private javax.swing.ButtonGroup bridgeButtonGroup;
+    private javax.swing.JPanel bridgesJPanel;
+    private javax.swing.ButtonGroup buildModeButtonGroup;
+    private javax.swing.ButtonGroup stationButtonGroup;
+    private javax.swing.JPanel stationsJPanel;
+    private javax.swing.ButtonGroup trackButtonGroup;
+    private javax.swing.JPanel trackJPanel;
+    private javax.swing.ButtonGroup tunnelButtonGroup;
+    private javax.swing.JPanel tunnelsJPanel;
+    private javax.swing.JToggleButton viewMode;
 
     /**
      * Creates new form BuildTrackJPanel
@@ -199,10 +210,10 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         // viewMode.doClick();
         // }
         // public void keyReleased(KeyEvent e){
-        //                
+        //
         // }
         // public void keyTyped(KeyEvent e){
-        //                
+        //
         // }
         // });
     }
@@ -527,28 +538,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         trackMoveProducer.setTrackBuilderMode(mode);
         modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
     }
-
-    private javax.swing.JToggleButton addTrack;
-
-    private javax.swing.ButtonGroup bridgeButtonGroup;
-
-    private javax.swing.JPanel bridgesJPanel;
-
-    private javax.swing.ButtonGroup buildModeButtonGroup;
-
-    private javax.swing.ButtonGroup stationButtonGroup;
-
-    private javax.swing.JPanel stationsJPanel;
-
-    private javax.swing.ButtonGroup trackButtonGroup;
-
-    private javax.swing.JPanel trackJPanel;
-
-    private javax.swing.ButtonGroup tunnelButtonGroup;
-
-    private javax.swing.JPanel tunnelsJPanel;
-
-    private javax.swing.JToggleButton viewMode;
 
     // End of variables declaration//GEN-END:variables
 

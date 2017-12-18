@@ -14,18 +14,12 @@ public class FPScounter {
     private static final int MAX_FPS_VALUES = 100;
 
     private final LinkedList<Double> fpsValues;
-
-    private int newFrameCount = 0;
-
-    private long lastFrameTime;
-
     private final int fontSize;
-
     private final Color bgColor;
-
-    private double mean;
-
     private final String[] newFPSstr;
+    private int newFrameCount = 0;
+    private long lastFrameTime;
+    private double mean;
 
     FPScounter() {
         fpsValues = new LinkedList<>();

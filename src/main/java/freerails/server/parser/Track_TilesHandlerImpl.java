@@ -28,19 +28,21 @@ import java.util.List;
  * @see Track_TilesParser
  */
 public class Track_TilesHandlerImpl implements Track_TilesHandler {
+    protected List<TrackRule> ruleList;
+    protected freerails.world.track.TrackRuleProperties trackRuleProperties;
+    protected freerails.world.track.LegalTrackConfigurations legalTrackConfigurations;
+    protected ArrayList<String> legalTemplates;
+    protected HashSet<TerrainType.Category> terrainTypes;
+    protected LegalTrackPlacement legalTrackPlacement;
     int maxConsequ;
 
-    protected List<TrackRule> ruleList;
-
-    protected freerails.world.track.TrackRuleProperties trackRuleProperties;
-
-    protected freerails.world.track.LegalTrackConfigurations legalTrackConfigurations;
-
-    protected ArrayList<String> legalTemplates;
-
-    protected HashSet<TerrainType.Category> terrainTypes;
-
-    protected LegalTrackPlacement legalTrackPlacement;
+    public Track_TilesHandlerImpl(java.net.URL trackXmlUrl) {
+        try {
+            Track_TilesParser.parse(trackXmlUrl, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta)
             throws SAXException {
@@ -174,14 +176,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_TrackSet() throws SAXException {
-    }
-
-    public Track_TilesHandlerImpl(java.net.URL trackXmlUrl) {
-        try {
-            Track_TilesParser.parse(trackXmlUrl, this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void addTrackRules(World w) {

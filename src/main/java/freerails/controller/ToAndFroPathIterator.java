@@ -16,12 +16,9 @@ import java.util.NoSuchElementException;
  */
 public class ToAndFroPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256442525337202993L;
-
-    private FreerailsPathIterator path;
-
-    private boolean forwards = true;
-
     private final List<Point> list;
+    private FreerailsPathIterator path;
+    private boolean forwards = true;
 
     public ToAndFroPathIterator(List<Point> l) {
         list = l;

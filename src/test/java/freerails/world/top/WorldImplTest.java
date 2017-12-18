@@ -124,6 +124,38 @@ public class WorldImplTest extends TestCase {
 
     }
 
+    public void testBoundsContain() {
+        World w = new WorldImpl();
+        assertFalse(w.boundsContain(1, 1));
+        assertFalse(w.boundsContain(0, 0));
+        assertFalse(w.boundsContain(-1, -1));
+        w = new WorldImpl(5, 10);
+        assertTrue(w.boundsContain(0, 0));
+        assertTrue(w.boundsContain(4, 9));
+        assertFalse(w.boundsContain(-1, -1));
+        assertFalse(w.boundsContain(5, 10));
+    }
+
+    public void testBankAccount() {
+        WorldImpl world = new WorldImpl();
+        Player p = new Player("Test", 0);
+        int playerID = world.addPlayer(p);
+        assertEquals(0, playerID);
+        FreerailsPrincipal fp = world.getPlayer(playerID).getPrincipal();
+        Transaction t = new AddItemTransaction(Category.BOND, 1, 2, new Money(
+                100));
+        assertEquals(new Money(0), world.getCurrentBalance(fp));
+        world.addTransaction(fp, t);
+        assertEquals(1, world.getNumberOfTransactions(fp));
+        assertEquals(new Money(100), world.getCurrentBalance(fp));
+        Transaction t2 = world.getTransaction(fp, 0);
+        assertEquals(t, t2);
+        Transaction t3 = world.removeLastTransaction(fp);
+        assertEquals(t, t3);
+        assertEquals(new Money(0), world.getCurrentBalance(fp));
+
+    }
+
     public static class TestState implements FreerailsSerializable {
 
         private static final long serialVersionUID = 5122023949873919060L;
@@ -159,6 +191,10 @@ public class WorldImplTest extends TestCase {
 
         private final double duration;
 
+        public TestActivity(int duration) {
+            this.duration = duration;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o)
@@ -176,10 +212,6 @@ public class WorldImplTest extends TestCase {
             return (int) duration;
         }
 
-        public TestActivity(int duration) {
-            this.duration = duration;
-        }
-
         public double duration() {
             return duration;
         }
@@ -192,38 +224,6 @@ public class WorldImplTest extends TestCase {
         public String toString() {
             return getClass().getName() + "{" + duration + "}";
         }
-
-    }
-
-    public void testBoundsContain() {
-        World w = new WorldImpl();
-        assertFalse(w.boundsContain(1, 1));
-        assertFalse(w.boundsContain(0, 0));
-        assertFalse(w.boundsContain(-1, -1));
-        w = new WorldImpl(5, 10);
-        assertTrue(w.boundsContain(0, 0));
-        assertTrue(w.boundsContain(4, 9));
-        assertFalse(w.boundsContain(-1, -1));
-        assertFalse(w.boundsContain(5, 10));
-    }
-
-    public void testBankAccount() {
-        WorldImpl world = new WorldImpl();
-        Player p = new Player("Test", 0);
-        int playerID = world.addPlayer(p);
-        assertEquals(0, playerID);
-        FreerailsPrincipal fp = world.getPlayer(playerID).getPrincipal();
-        Transaction t = new AddItemTransaction(Category.BOND, 1, 2, new Money(
-                100));
-        assertEquals(new Money(0), world.getCurrentBalance(fp));
-        world.addTransaction(fp, t);
-        assertEquals(1, world.getNumberOfTransactions(fp));
-        assertEquals(new Money(100), world.getCurrentBalance(fp));
-        Transaction t2 = world.getTransaction(fp, 0);
-        assertEquals(t, t2);
-        Transaction t3 = world.removeLastTransaction(fp);
-        assertEquals(t, t3);
-        assertEquals(new Money(0), world.getCurrentBalance(fp));
 
     }
 }

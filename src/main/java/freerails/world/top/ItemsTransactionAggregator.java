@@ -24,17 +24,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     private int quantityRunningTotal;
 
-    /**
-     * Stores the quantities and monetary values of a series of items.
-     *
-     * @author Luke
-     */
-    public static class QuantitiesAndValues {
-        public int[] quantities;
-
-        public Money[] values;
-    }
-
     public ItemsTransactionAggregator(ReadOnlyWorld w,
                                       FreerailsPrincipal principal) {
         super(w, principal);
@@ -115,5 +104,16 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    /**
+     * Stores the quantities and monetary values of a series of items.
+     *
+     * @author Luke
+     */
+    public static class QuantitiesAndValues {
+        public int[] quantities;
+
+        public Money[] values;
     }
 }

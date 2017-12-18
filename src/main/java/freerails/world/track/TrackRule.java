@@ -14,10 +14,6 @@ import java.util.Iterator;
  */
 public interface TrackRule extends FreerailsSerializable, Comparable<TrackRule> {
 
-    enum TrackCategories {
-        track, bridge, tunnel, station, non
-    }
-
     TrackCategories getCategory();
 
     boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
@@ -45,4 +41,8 @@ public interface TrackRule extends FreerailsSerializable, Comparable<TrackRule> 
     Step[] getLegalRoutes(Step directionComingFrom);
 
     Iterator<TrackConfiguration> getLegalConfigurationsIterator();
+
+    enum TrackCategories {
+        track, bridge, tunnel, station, non
+    }
 }

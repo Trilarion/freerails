@@ -27,20 +27,14 @@ import java.util.Vector;
  */
 public class ServerGameModelImpl implements ServerGameModel {
     private static final long serialVersionUID = 3978144352788820021L;
-
-    public World world;
-
-    private transient CalcSupplyAtStations calcSupplyAtStations;
-
-    private TrainUpdater tb;
-
-    private String[] passwords;
-
     /**
      * List of the ServerAutomaton objects connected to this game.
      */
     private final Vector<ServerAutomaton> serverAutomata;
-
+    public World world;
+    private transient CalcSupplyAtStations calcSupplyAtStations;
+    private TrainUpdater tb;
+    private String[] passwords;
     /**
      * Number of ticks since the last time we did an infrequent update.
      */

@@ -25,6 +25,14 @@ public class RemoveItemFromListMove implements ListMove {
 
     private final FreerailsPrincipal principal;
 
+    RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
+                           FreerailsPrincipal p) {
+        this.item = item;
+        this.listKey = k;
+        this.index = i;
+        this.principal = p;
+    }
+
     public int getIndex() {
         return index;
     }
@@ -42,14 +50,6 @@ public class RemoveItemFromListMove implements ListMove {
 
     public KEY getKey() {
         return listKey;
-    }
-
-    RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
-                           FreerailsPrincipal p) {
-        this.item = item;
-        this.listKey = k;
-        this.index = i;
-        this.principal = p;
     }
 
     public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {

@@ -15,28 +15,26 @@ public class EconomicClimate implements FreerailsSerializable {
     private static final long serialVersionUID = 3834025840475321136L;
 
     private static int i = 2;
-
-    private final String name;
-
     public static final EconomicClimate BOOM = new EconomicClimate(i++, "BOOM");
-
     public static final EconomicClimate PROSPERITY = new EconomicClimate(i++,
             "PROSPERITY");
-
     public static final EconomicClimate MODERATION = new EconomicClimate(i++,
             "MODERATION");
-
     public static final EconomicClimate RECESSION = new EconomicClimate(i++,
             "RECESSION");
-
     public static final EconomicClimate PANIC = new EconomicClimate(i++,
             "PANIC");
+    private final String name;
+    private final int baseInterestRate;
+
+    private EconomicClimate(int r, String s) {
+        baseInterestRate = r;
+        name = s;
+    }
 
     public int getBaseInterestRate() {
         return baseInterestRate;
     }
-
-    private final int baseInterestRate;
 
     @Override
     public boolean equals(Object o) {
@@ -64,10 +62,5 @@ public class EconomicClimate implements FreerailsSerializable {
         result = 29 * result + baseInterestRate;
 
         return result;
-    }
-
-    private EconomicClimate(int r, String s) {
-        baseInterestRate = r;
-        name = s;
     }
 }

@@ -10,16 +10,29 @@ import freerails.world.common.FreerailsSerializable;
  */
 @Immutable
 final public class MoveStatus implements FreerailsSerializable {
-    private static final long serialVersionUID = 3258129171879309624L;
-
     public static final MoveStatus MOVE_OK = new MoveStatus(true,
             "Move accepted");
-
+    private static final long serialVersionUID = 3258129171879309624L;
     public final boolean ok;
 
     public final String message;
 
     private final Throwable t;
+
+    private MoveStatus(boolean ok, String mess) {
+        if (ok) {
+            t = null;
+        } else {
+            t = new Throwable();
+            t.fillInStackTrace();
+        }
+        this.ok = ok;
+        this.message = mess;
+    }
+
+    public static MoveStatus moveFailed(String reason) {
+        return new MoveStatus(false, reason);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -51,21 +64,6 @@ final public class MoveStatus implements FreerailsSerializable {
             return MOVE_OK;
         }
         return this;
-    }
-
-    private MoveStatus(boolean ok, String mess) {
-        if (ok) {
-            t = null;
-        } else {
-            t = new Throwable();
-            t.fillInStackTrace();
-        }
-        this.ok = ok;
-        this.message = mess;
-    }
-
-    public static MoveStatus moveFailed(String reason) {
-        return new MoveStatus(false, reason);
     }
 
     public boolean isOk() {

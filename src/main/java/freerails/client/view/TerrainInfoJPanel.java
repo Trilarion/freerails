@@ -31,6 +31,10 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
     private RenderersRoot rr;
 
     private ReadOnlyWorld w;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel terrainDescription;
+    private javax.swing.JLabel terrainImage;
+    private javax.swing.JLabel terrainName;
 
     public TerrainInfoJPanel() {
         initComponents();
@@ -146,13 +150,6 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
         repaint();
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel terrainDescription;
-
-    private javax.swing.JLabel terrainImage;
-
-    private javax.swing.JLabel terrainName;
     // End of variables declaration//GEN-END:variables
 
 }

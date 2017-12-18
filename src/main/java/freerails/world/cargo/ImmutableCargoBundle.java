@@ -42,24 +42,7 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     public static final ImmutableCargoBundle EMPTY_BUNDLE = new ImmutableCargoBundle();
 
     private static final long serialVersionUID = 3257566187666814009L;
-
-    public static boolean equals(CargoBundle a, CargoBundle b) {
-        Iterator<CargoBatch> it = a.cargoBatchIterator();
-        if (a.size() != b.size())
-            return false;
-        while (it.hasNext()) {
-            CargoBatch batch = it.next();
-
-            if (a.getAmount(batch) != b.getAmount(batch)) {
-                return false;
-            }
-        }
-        return true;
-
-    }
-
     private final ImInts amounts;
-
     private final ImList<CargoBatch> batches;
 
     private ImmutableCargoBundle() {
@@ -80,6 +63,21 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
 
         batches = new ImList<>(batchesArray);
         amounts = new ImInts(amountsArray);
+    }
+
+    public static boolean equals(CargoBundle a, CargoBundle b) {
+        Iterator<CargoBatch> it = a.cargoBatchIterator();
+        if (a.size() != b.size())
+            return false;
+        while (it.hasNext()) {
+            CargoBatch batch = it.next();
+
+            if (a.getAmount(batch) != b.getAmount(batch)) {
+                return false;
+            }
+        }
+        return true;
+
     }
 
     public Iterator<CargoBatch> cargoBatchIterator() {

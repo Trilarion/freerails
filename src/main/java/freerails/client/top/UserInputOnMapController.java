@@ -39,23 +39,14 @@ public class UserInputOnMapController extends KeyAdapter {
     private final ModelRoot modelRoot;
 
     private final ActionRoot actionRoot;
-
-    private MapViewJComponent mapView;
-
-    private StationTypesPopup stationTypesPopup;
-
     private final BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
-
-    private TrackMoveProducer trackBuilder;
-
-    private DialogueBoxController dialogueBoxController;
-
-    private BuildTrackController buildTrack;
-
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
-
     private final SoundManager soundManager = SoundManager.getSoundManager();
-
+    private MapViewJComponent mapView;
+    private StationTypesPopup stationTypesPopup;
+    private TrackMoveProducer trackBuilder;
+    private DialogueBoxController dialogueBoxController;
+    private BuildTrackController buildTrack;
     /**
      * Ignores the dragging action for efficiency I think.
      * Ignores mostly for right mouse button.
@@ -380,15 +371,13 @@ public class UserInputOnMapController extends KeyAdapter {
         modelRoot.setProperty(Property.CURSOR_MESSAGE, s);
     }
 
+    private boolean isIgnoreKeyEvents() {
+        return (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
+    }
+
     private void setIgnoreKeyEvents(boolean ignoreKeyEvents) {
         modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, ignoreKeyEvents);
     }
-
-    private boolean isIgnoreKeyEvents() {
-        Boolean b = (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
-        return b;
-    }
-
 
     private class CursorMouseAdapter extends MouseInputAdapter {
 

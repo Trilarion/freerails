@@ -38,6 +38,9 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
     private int trainNumber = -1;
 
     private FreerailsSerializable lastTrain, lastCargoBundle;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private freerails.client.view.TrainListCellRenderer trainViewJPanel1;
 
     public TrainDescriptionJPanel() {
         initComponents();
@@ -153,11 +156,6 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
         this.lastCargoBundle = cb;
         this.lastTrain = train;
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-
-    private freerails.client.view.TrainListCellRenderer trainViewJPanel1;
     // End of variables declaration//GEN-END:variables
 
 }

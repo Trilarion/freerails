@@ -12,9 +12,8 @@ import junit.framework.TestCase;
  * @author Luke
  */
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
-    private InetConnectionAccepter connectionAccepter;
-
     FreerailsGameServer server;
+    private InetConnectionAccepter connectionAccepter;
 
     @Override
     protected synchronized void setUp() throws Exception {
@@ -36,7 +35,6 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     }
 
     String getIpAddress() {
-        String ipAddress = "127.0.0.1";
-        return ipAddress;
+        return "127.0.0.1";
     }
 }

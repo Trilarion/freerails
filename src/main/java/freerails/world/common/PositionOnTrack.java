@@ -19,6 +19,34 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
 
     private static final long serialVersionUID = 3257853198755707184L;
+    /**
+     * The direction from which we entered the tile.
+     */
+    private Step cameFrom = Step.NORTH;
+    private int x = 0;
+    private int y = 0;
+
+    public PositionOnTrack() {
+    }
+
+    public PositionOnTrack(int i) {
+        this.setValuesFromInt(i);
+    }
+
+    private PositionOnTrack(int x, int y, Step direction) {
+        if (x > MAX_COORDINATE || x < 0) {
+            throw new IllegalArgumentException("x=" + x);
+        }
+
+        if (y > MAX_COORDINATE || y < 0) {
+            throw new IllegalArgumentException("y=" + y);
+        }
+
+        this.x = x;
+        this.y = y;
+
+        this.cameFrom = direction;
+    }
 
     public static PositionOnTrack createComingFrom(int x, int y, Step direction) {
         return new PositionOnTrack(x, y, direction);
@@ -45,35 +73,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return returnValue;
     }
 
-    /**
-     * The direction from which we entered the tile.
-     */
-    private Step cameFrom = Step.NORTH;
-
-    private int x = 0;
-
-    private int y = 0;
-
-    public PositionOnTrack() {
-    }
-
-    public PositionOnTrack(int i) {
-        this.setValuesFromInt(i);
-    }
-
-    private PositionOnTrack(int x, int y, Step direction) {
-        if (x > MAX_COORDINATE || x < 0) {
-            throw new IllegalArgumentException("x=" + x);
-        }
-
-        if (y > MAX_COORDINATE || y < 0) {
-            throw new IllegalArgumentException("y=" + y);
-        }
-
-        this.x = x;
-        this.y = y;
-
-        this.cameFrom = direction;
+    public static int toInt(int x, int y) {
+        return x | (y << BITS_FOR_COORDINATE);
     }
 
     /**
@@ -121,8 +122,16 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     @Override
@@ -154,14 +163,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         cameFrom = Step.getInstance(directionAsInt);
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public void move(Step step) {
         this.x += step.deltaX;
         this.y += step.deltaY;
@@ -179,10 +180,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         i = i | shiftedDirection;
 
         return i;
-    }
-
-    public static int toInt(int x, int y) {
-        return x | (y << BITS_FOR_COORDINATE);
     }
 
     @Override

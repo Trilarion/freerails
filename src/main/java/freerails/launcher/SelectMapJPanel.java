@@ -27,34 +27,19 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
 
     private final LauncherInterface owner;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JPanel jPanel1;
+    javax.swing.JPanel jPanel2;
+    javax.swing.JPanel jPanel3;
+    javax.swing.JPanel jPanel4;
+    javax.swing.JScrollPane jScrollPane1;
+    javax.swing.JScrollPane jScrollPane2;
+    javax.swing.JList newmapsJList;
+    javax.swing.JLabel portLabel;
+    javax.swing.JList savedmapsJList;
 
-    public enum Selection {
-        NONE, NEW_GAME, LOAD_GAME
-    }
-
-    Selection getSelection() {
-        if (newmapsJList.getSelectedIndex() != -1) {
-            savedmapsJList.setSelectedIndex(-1);
-            return Selection.NEW_GAME;
-        }
-
-        if (savedmapsJList.getSelectedIndex() != -1) {
-            return Selection.LOAD_GAME;
-        }
-        return Selection.NONE;
-    }
-
-    void setServerPortPanelVisible(boolean b) {
-        this.jPanel3.setVisible(b);
-    }
-
-    public String getNewMapName() {
-        return (String) newmapsJList.getSelectedValue();
-    }
-
-    public String getSaveGameName() {
-        return (String) savedmapsJList.getSelectedValue();
-    }
+    // </editor-fold>//GEN-END:initComponents
+    javax.swing.JTextField serverPort;
 
     SelectMapJPanel(LauncherInterface owner) {
         this.owner = owner;
@@ -88,6 +73,30 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
             }
 
         });
+    }
+
+    Selection getSelection() {
+        if (newmapsJList.getSelectedIndex() != -1) {
+            savedmapsJList.setSelectedIndex(-1);
+            return Selection.NEW_GAME;
+        }
+
+        if (savedmapsJList.getSelectedIndex() != -1) {
+            return Selection.LOAD_GAME;
+        }
+        return Selection.NONE;
+    }
+
+    void setServerPortPanelVisible(boolean b) {
+        this.jPanel3.setVisible(b);
+    }
+
+    public String getNewMapName() {
+        return (String) newmapsJList.getSelectedValue();
+    }
+
+    public String getSaveGameName() {
+        return (String) savedmapsJList.getSelectedValue();
     }
 
     int getServerPort() {
@@ -233,8 +242,6 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
     }
 
-    // </editor-fold>//GEN-END:initComponents
-
     private void savedmapsJListValueChanged(
             javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_savedmapsJListValueChanged
         if (savedmapsJList.getSelectedIndex() != -1)
@@ -252,17 +259,9 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
     }// GEN-LAST:event_newmapsJListValueChanged
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JPanel jPanel1;
-    javax.swing.JPanel jPanel2;
-    javax.swing.JPanel jPanel3;
-    javax.swing.JPanel jPanel4;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JScrollPane jScrollPane2;
-    javax.swing.JList newmapsJList;
-    javax.swing.JLabel portLabel;
-    javax.swing.JList savedmapsJList;
-    javax.swing.JTextField serverPort;
+    public enum Selection {
+        NONE, NEW_GAME, LOAD_GAME
+    }
     // End of variables declaration//GEN-END:variables
 
 }

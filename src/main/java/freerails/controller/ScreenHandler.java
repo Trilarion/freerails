@@ -14,32 +14,27 @@ import java.awt.image.BufferStrategy;
  * @author Luke
  */
 final public class ScreenHandler {
+    public static final int FULL_SCREEN = 0;
+    public static final int WINDOWED_MODE = 1;
+    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
+    static final GraphicsDevice device = GraphicsEnvironment
+            .getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static final Logger logger = Logger.getLogger(ScreenHandler.class
             .getName());
-
-    public static final int FULL_SCREEN = 0;
-
-    public static final int WINDOWED_MODE = 1;
-
-    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
-
+    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{
+            new DisplayMode(640, 400, 8, 60),
+            new DisplayMode(800, 600, 16, 60),
+            new DisplayMode(1024, 768, 8, 60),
+            new DisplayMode(1024, 768, 16, 60),};
     public final JFrame frame;
-
-    private BufferStrategy bufferStrategy;
-
-    private DisplayMode displayMode;
-
     private final int mode;
-
+    private BufferStrategy bufferStrategy;
+    private DisplayMode displayMode;
     private boolean isInUse = false;
-
     /**
      * Whether the window is minimised.
      */
     private boolean isMinimised = false;
-
-    static final GraphicsDevice device = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
     public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
         this.displayMode = displayMode;
@@ -79,6 +74,53 @@ final public class ScreenHandler {
         }
 
         frame.validate();
+    }
+
+    private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
+        c.setIgnoreRepaint(true);
+
+        // Since we are using a buffer strategy we don't want Swing
+        // to double buffer any JComponents.
+        if (c instanceof JComponent) {
+            JComponent jComponent = (JComponent) c;
+            jComponent.setDoubleBuffered(false);
+        }
+
+        if (c instanceof java.awt.Container) {
+            Component[] children = ((Container) c).getComponents();
+
+            for (Component aChildren : children) {
+                setRepaintOffAndDisableDoubleBuffering(aChildren);
+            }
+        }
+    }
+
+    private static DisplayMode getBestDisplayMode() {
+        for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
+            DisplayMode[] modes = device.getDisplayModes();
+
+            for (DisplayMode mode1 : modes) {
+                if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth()
+                        && mode1.getHeight() == BEST_DISPLAY_MODE
+                        .getHeight()
+                        && mode1.getBitDepth() == BEST_DISPLAY_MODE
+                        .getBitDepth()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Best display mode is "
+                                + (new MyDisplayMode(BEST_DISPLAY_MODE))
+                                .toString());
+                    }
+
+                    return BEST_DISPLAY_MODE;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public synchronized static void exitFullScreenMode() {
+        device.setFullScreenWindow(null);
     }
 
     public synchronized void apply() {
@@ -167,65 +209,12 @@ final public class ScreenHandler {
         }
     }
 
-    private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
-        c.setIgnoreRepaint(true);
-
-        // Since we are using a buffer strategy we don't want Swing
-        // to double buffer any JComponents.
-        if (c instanceof JComponent) {
-            JComponent jComponent = (JComponent) c;
-            jComponent.setDoubleBuffered(false);
-        }
-
-        if (c instanceof java.awt.Container) {
-            Component[] children = ((Container) c).getComponents();
-
-            for (Component aChildren : children) {
-                setRepaintOffAndDisableDoubleBuffering(aChildren);
-            }
-        }
-    }
-
-    private static DisplayMode getBestDisplayMode() {
-        for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
-            DisplayMode[] modes = device.getDisplayModes();
-
-            for (DisplayMode mode1 : modes) {
-                if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth()
-                        && mode1.getHeight() == BEST_DISPLAY_MODE
-                        .getHeight()
-                        && mode1.getBitDepth() == BEST_DISPLAY_MODE
-                        .getBitDepth()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Best display mode is "
-                                + (new MyDisplayMode(BEST_DISPLAY_MODE))
-                                .toString());
-                    }
-
-                    return BEST_DISPLAY_MODE;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{
-            new DisplayMode(640, 400, 8, 60),
-            new DisplayMode(800, 600, 16, 60),
-            new DisplayMode(1024, 768, 8, 60),
-            new DisplayMode(1024, 768, 16, 60),};
-
     public synchronized boolean isMinimised() {
         return isMinimised;
     }
 
     public synchronized boolean isInUse() {
         return isInUse;
-    }
-
-    public synchronized static void exitFullScreenMode() {
-        device.setFullScreenWindow(null);
     }
 
     public boolean contentsRestored() {

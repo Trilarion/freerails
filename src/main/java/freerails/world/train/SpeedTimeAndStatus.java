@@ -14,18 +14,22 @@ import freerails.world.common.FreerailsSerializable;
 public class SpeedTimeAndStatus implements FreerailsSerializable {
 
     private static final long serialVersionUID = 1L;
-
-    public enum TrainActivity {
-        STOPPED_AT_STATION, READY, WAITING_FOR_FULL_LOAD, STOPPED_AT_SIGNAL, CRASHED, NEEDS_UPDATING
-    }
-
     public final double dt;
-
     public final double speed;
-
     public final double acceleration;
-
     public final double s;
+    private final TrainActivity activity;
+
+    SpeedTimeAndStatus(double acceleration, TrainActivity activity, double dt,
+                       double s, double speed) {
+        if (dt < 0)
+            throw new IllegalArgumentException(String.valueOf(dt));
+        this.acceleration = acceleration;
+        this.activity = activity;
+        this.dt = dt;
+        this.s = s;
+        this.speed = speed;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,21 +68,12 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
         return result;
     }
 
-    private final TrainActivity activity;
-
-    SpeedTimeAndStatus(double acceleration, TrainActivity activity, double dt,
-                       double s, double speed) {
-        if (dt < 0)
-            throw new IllegalArgumentException(String.valueOf(dt));
-        this.acceleration = acceleration;
-        this.activity = activity;
-        this.dt = dt;
-        this.s = s;
-        this.speed = speed;
-    }
-
     public TrainActivity getActivity() {
         return activity;
+    }
+
+    public enum TrainActivity {
+        STOPPED_AT_STATION, READY, WAITING_FOR_FULL_LOAD, STOPPED_AT_SIGNAL, CRASHED, NEEDS_UPDATING
     }
 
 }
