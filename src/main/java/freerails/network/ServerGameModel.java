@@ -15,7 +15,6 @@ import java.io.Serializable;
  * Defines methods on a GameModel that let the server load and initiate, and
  * save it.
  *
- * @author Luke
  */
 public interface ServerGameModel extends GameModel, Serializable {
 

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 /**
  * A list of TileRenderers stored in an array and created from an ArrayList.
  *
- * @author Luke Lindsay 09 October 2001
  */
 final public class TileRendererListImpl implements TileRendererList {
     private final TileRenderer[] tiles;

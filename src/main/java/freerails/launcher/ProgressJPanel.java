@@ -11,7 +11,6 @@ import freerails.util.FreerailsProgressMonitor;
 /**
  * A JPanel that displays a splash screen and a progress bar.
  *
- * @author Luke
  */
 public class ProgressJPanel extends javax.swing.JPanel implements
         FreerailsProgressMonitor {

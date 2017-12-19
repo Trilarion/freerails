@@ -4,10 +4,11 @@
  */
 package freerails.world.common;
 
+import freerails.world.FreerailsSerializable;
+
 /**
  * This class represents a specific instant in time during a game.
  *
- * @author Luke
  */
 public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
     /**

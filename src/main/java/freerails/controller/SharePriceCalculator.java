@@ -5,7 +5,6 @@
 package freerails.controller;
 
 /**
- * @author Luke
  */
 public class SharePriceCalculator {
 

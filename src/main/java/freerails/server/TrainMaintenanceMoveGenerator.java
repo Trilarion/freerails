@@ -19,7 +19,6 @@ import freerails.world.top.World;
  * This class iterates over the entries in the BankAccount and counts the number
  * of trains, then calculates the cost of maintenance.
  *
- * @author Luke Lindsay
  */
 public class TrainMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;

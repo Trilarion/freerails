@@ -18,7 +18,6 @@ import java.util.LinkedList;
  * into a byte arrays so that they don't need to be loaded from disk each time
  * they are played.
  *
- * @author Luke
  */
 public class SoundManager implements ModelRootListener, LineListener {
 

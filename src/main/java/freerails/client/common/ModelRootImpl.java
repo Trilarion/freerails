@@ -21,8 +21,6 @@ import java.util.HashMap;
  * Provides access to the World object and other data that is shared by GUI
  * components (for instance the cursor's position).
  *
- * @author Luke
- * @author Rob
  */
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final HashMap<Property, Object> properties = new HashMap<>();
@@ -167,7 +165,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      *
      * @param c
      */
-    public void sendCommand(Message2Server c) {
+    public void sendCommand(MessageToServer c) {
         if (null != serverCommandReceiver) {
             serverCommandReceiver.sendCommand(c);
         } else {

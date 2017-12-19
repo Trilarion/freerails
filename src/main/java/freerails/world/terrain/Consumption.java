@@ -1,19 +1,14 @@
-/*
- * Created on 27-Apr-2003
- *
- */
 package freerails.world.terrain;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * This class represents the demand for a certain cargo for consumption.
  *
- * @author Luke
  */
 public class Consumption implements FreerailsSerializable {
-    private static final long serialVersionUID = 3258133565631051064L;
 
+    private static final long serialVersionUID = 3258133565631051064L;
     private final int cargoType;
 
     /**

@@ -10,7 +10,7 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
@@ -28,7 +28,6 @@ import java.util.NoSuchElementException;
 /**
  * This JPanel displays the supply and demand at a station.
  *
- * @author Luke
  */
 public class StationInfoJPanel extends JPanel implements View,
         WorldListListener {

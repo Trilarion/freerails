@@ -16,7 +16,6 @@ import static freerails.world.accounts.Transaction.Category.TRACK;
 
 /**
  *
- * @author jkeller1
  */
 public class ItemsTransactionAggregatorTest extends TestCase {
 

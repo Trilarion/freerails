@@ -17,7 +17,6 @@ import java.util.HashSet;
 /**
  * JUnit test.
  *
- * @author lindsal
  */
 public class TrackConfigurationTest extends TestCase {
 

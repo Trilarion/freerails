@@ -16,8 +16,6 @@ import freerails.world.top.TransactionAggregator;
 /**
  * Gathers the financial data for a company.
  *
- * @author Luke
- * @author smackay
  */
 public class FinancialDataGatherer extends TransactionAggregator {
     private final int playerID;

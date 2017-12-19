@@ -17,7 +17,6 @@ import java.io.IOException;
  * Looks to see whether the tiles to the left and right of the same type when
  * deciding which tile icon to use.
  *
- * @author Luke Lindsay
  */
 final public class ForestStyleTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {

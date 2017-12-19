@@ -21,7 +21,6 @@ import java.util.Iterator;
 /**
  * A list of TrackPieceRenderers.
  *
- * @author Luke
  */
 final public class TrackPieceRendererList {
     private static final Logger logger = Logger

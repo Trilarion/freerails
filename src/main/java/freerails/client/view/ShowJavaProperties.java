@@ -1,6 +1,3 @@
-/*
- * Created on Mar 14, 2004
- */
 package freerails.client.view;
 
 import org.apache.log4j.Logger;
@@ -13,7 +10,6 @@ import java.util.Properties;
 /**
  * This class returns the Java System Properties as an HTML table.
  *
- * @author Luke
  */
 public class ShowJavaProperties {
 

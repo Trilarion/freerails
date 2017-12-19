@@ -11,7 +11,6 @@ import java.util.TreeMap;
 
 /**
  *
- * @author jkeller1
  */
 public class List3DDiffTest extends TestCase {
 

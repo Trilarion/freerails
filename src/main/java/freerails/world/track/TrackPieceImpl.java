@@ -3,7 +3,6 @@ package freerails.world.track;
 /**
  * Represents the track on a tile.
  *
- * @author Luke
  */
 final public class TrackPieceImpl implements TrackPiece {
     private static final long serialVersionUID = 4049080423458027569L;

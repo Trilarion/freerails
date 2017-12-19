@@ -10,11 +10,11 @@ import java.io.Serializable;
  * clients of the ServerGameEngine and need to be initialised with a connection
  * to the game when deserialized.
  *
- * @author rob
  */
 public interface ServerAutomaton extends Serializable {
     /**
      * Initializes the automaton with a connection to the MoveExecuter.
+     *
      * @param mr
      */
     void initAutomaton(MoveReceiver mr);

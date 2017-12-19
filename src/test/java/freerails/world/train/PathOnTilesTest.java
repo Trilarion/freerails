@@ -18,7 +18,6 @@ import static freerails.world.common.Step.*;
 /**
  * JUnit test for PathOnTiles.
  *
- * @author Luke
  */
 public class PathOnTilesTest extends TestCase {
 

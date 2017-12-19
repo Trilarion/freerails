@@ -2,22 +2,18 @@ package experimental;
 
 import org.apache.log4j.Logger;
 
-/*
- * Created on 30-May-2004
- */
 
 /**
- * <p>
- * Used to test the logging configuration.
- * </p>
- * <p>
- * Usage:{@code java -Djava.util.logging.config.file=logging.properties experimental.TestLogging}
- * </p>
- * <p>
- * Make sure {@code logging.properties} is in the working directory.
- * </p>
  *
- * @author Luke
+ * Used to test the logging configuration.
+ *
+ *
+ * Usage:{@code java -Djava.util.logging.config.file=logging.properties experimental.TestLogging}
+ *
+ *
+ * Make sure {@code logging.properties} is in the working directory.
+ *
+ *
  */
 public class TestLogging {
 

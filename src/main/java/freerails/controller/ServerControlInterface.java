@@ -1,16 +1,12 @@
-/*
- * Created on Apr 14, 2004
- */
 package freerails.controller;
 
 import java.io.IOException;
 
 /**
  * Defines the methods that a client can call on the server using a
- * Message2Server.
+ * MessageToServer.
  *
- * @author Luke
- * @see Message2Server
+ * @see MessageToServer
  */
 public interface ServerControlInterface {
 

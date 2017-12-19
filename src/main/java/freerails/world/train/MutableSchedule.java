@@ -13,7 +13,6 @@ import java.util.Vector;
  * This class represents a train's schedule. That is, which stations that the
  * train should visit and what wagons the engine should pull.
  *
- * @author lindsal
  */
 public class MutableSchedule implements Schedule {
     /**

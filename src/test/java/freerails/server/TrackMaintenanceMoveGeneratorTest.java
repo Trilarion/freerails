@@ -18,7 +18,6 @@ import java.util.Arrays;
 /**
  * JUnit test for TrackMaintenanceMoveGenerator.
  *
- * @author Luke Lindsay
  */
 public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     private World w;

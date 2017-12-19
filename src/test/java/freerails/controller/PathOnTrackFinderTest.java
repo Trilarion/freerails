@@ -16,7 +16,6 @@ import java.util.Arrays;
 import static freerails.world.common.Step.*;
 
 /**
- * @author Luke
  */
 public class PathOnTrackFinderTest extends TestCase {
 

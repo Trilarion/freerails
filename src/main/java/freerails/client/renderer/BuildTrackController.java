@@ -28,11 +28,9 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
 /**
  * This class provides methods to change the proposed track and save it to the
  * real world.
- * <p>
+ *
  * TODO freerails.client.renderer is not the most logical place for this class.
  *
- * @author MystiqueAgent
- * @author Luke
  */
 public class BuildTrackController implements GameModel {
 

@@ -20,7 +20,6 @@ import java.beans.PropertyChangeListener;
  * This JPopupMenu displays the list of station types that are available and
  * builds the type that is selected.
  *
- * @author Luke Lindsay 08-Nov-2002
  */
 public class StationTypesPopup extends JPopupMenu {
     private static final long serialVersionUID = 3258415040658093364L;

@@ -3,10 +3,10 @@ package freerails.client.view;
 import freerails.client.common.ActionAdapter;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeGameSpeedMove;
-import freerails.network.NewGameMessage2Server;
+import freerails.network.NewGameMessageToServer;
 import freerails.world.common.GameSpeed;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
@@ -19,9 +19,6 @@ import java.util.Enumeration;
 /**
  * Exposes the ServerControlInterface to client UI implementations.
  *
- * @author rob
- * @author Luke
- * @author MystiqueAgent
  */
 public class ServerControlModel implements ModelRootListener {
 
@@ -165,7 +162,7 @@ public class ServerControlModel implements ModelRootListener {
             e.nextElement().setEnabled(true);
         }
 
-        String[] mapNames = NewGameMessage2Server.getMapNames();
+        String[] mapNames = NewGameMessageToServer.getMapNames();
         Action[] actions = new Action[mapNames.length];
 
         for (int j = 0; j < actions.length; j++) {
@@ -200,7 +197,7 @@ public class ServerControlModel implements ModelRootListener {
              * Games:", "Select game to load", JOptionPane.INFORMATION_MESSAGE,
              * null, saves, saves[0]); String filename =
              * showInputDialog.toString(); // Load the game chosen
-             * Message2Server message2 = new LoadGameMessage2Server(1,
+             * MessageToServer message2 = new LoadGameMessageToServer(1,
              * filename); modelRoot.sendCommand(message2); } catch (Exception
              * exept) { // <Hack> // When no saved game is selected, or one that
              * doesnt exist, // nothing changes // </.Hack> }
@@ -225,7 +222,7 @@ public class ServerControlModel implements ModelRootListener {
             String mapName = e.getActionCommand();
 
             if (mapName != null) {
-                Message2Server message2 = new NewGameMessage2Server(1, mapName);
+                MessageToServer message2 = new NewGameMessageToServer(1, mapName);
                 modelRoot.sendCommand(message2);
             }
 
@@ -250,8 +247,8 @@ public class ServerControlModel implements ModelRootListener {
              * modelRoot.getPrincipal().getName()).toString(); // Save the
              * current game using the string
              * modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game " +
-             * filename); Message2Server message2 = new
-             * SaveGameMessage2Server(1, filename + ".sav");
+             * filename); MessageToServer message2 = new
+             * SaveGameMessageToServer(1, filename + ".sav");
              *
              * modelRoot.sendCommand(message2); loadGameAction.setEnabled(true); }
              * catch (Exception except) {

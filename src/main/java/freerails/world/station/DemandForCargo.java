@@ -1,14 +1,13 @@
 package freerails.world.station;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 
 /**
  * This class represents the demand for cargo at a station.
  *
- * @author Luke
  */
-public class Demand4Cargo implements FreerailsSerializable {
+public class DemandForCargo implements FreerailsSerializable {
     private static final long serialVersionUID = 3257565088071038009L;
 
     private final ImInts demand;
@@ -17,7 +16,7 @@ public class Demand4Cargo implements FreerailsSerializable {
      *
      * @param demandArray
      */
-    public Demand4Cargo(boolean[] demandArray) {
+    public DemandForCargo(boolean[] demandArray) {
         demand = ImInts.fromBoolean(demandArray);
     }
 
@@ -25,10 +24,10 @@ public class Demand4Cargo implements FreerailsSerializable {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Demand4Cargo))
+        if (!(o instanceof DemandForCargo))
             return false;
 
-        final Demand4Cargo demandAtStation = (Demand4Cargo) o;
+        final DemandForCargo demandAtStation = (DemandForCargo) o;
 
         return demand.equals(demandAtStation.demand);
     }

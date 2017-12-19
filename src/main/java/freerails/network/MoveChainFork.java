@@ -14,8 +14,6 @@ import java.util.ArrayList;
  * A central point at which a client may register to receive moves which have
  * been committed.
  *
- * @author Luke
- * @author rob
  */
 final public class MoveChainFork implements MoveReceiver {
     private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<>();

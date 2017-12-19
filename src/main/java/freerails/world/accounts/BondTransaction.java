@@ -1,6 +1,3 @@
-/*
- * Created on Mar 29, 2004
- */
 package freerails.world.accounts;
 
 import freerails.world.common.Money;
@@ -8,7 +5,6 @@ import freerails.world.common.Money;
 /**
  * A Transaction that adds or removes a Bond.
  *
- * @author Luke
  */
 public class BondTransaction extends AddItemTransaction {
 

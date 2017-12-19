@@ -1,6 +1,3 @@
-/*
- * Created on Mar 28, 2004
- */
 package freerails.client.view;
 
 import freerails.util.Pair;
@@ -19,7 +16,6 @@ import freerails.world.top.SKEY;
  * Generates the income statement- note, its fields are read using reflection so
  * don't change their names.
  *
- * @author Luke
  */
 public class IncomeStatementGenerator {
 

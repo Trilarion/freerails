@@ -17,7 +17,6 @@ import static freerails.world.common.Step.EAST;
 /**
  * A Junit test.
  *
- * @author Luke Lindsay
  */
 public class StationBuilderTest extends TestCase {
 

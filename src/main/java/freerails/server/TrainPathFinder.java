@@ -14,7 +14,6 @@ import freerails.world.top.WorldDiffs;
  * PositionOnTrack objects encoded as ints, it also deals with stops at
  * stations.
  *
- * @author Luke Lindsay 28-Nov-2002
  */
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 

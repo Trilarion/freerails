@@ -17,7 +17,6 @@ import java.util.List;
 /**
  * JUnit test for TrackPathFinder.
  *
- * @author Luke
  */
 public class TrackPathFinderTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);

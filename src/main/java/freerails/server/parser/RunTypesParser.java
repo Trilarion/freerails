@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
  * and terrain types xml file - use it to test the parser and xml file work
  * together.
  *
- * @author Luke
  */
 public class RunTypesParser {
     private static final Logger logger = Logger.getLogger(RunTypesParser.class

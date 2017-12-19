@@ -1,6 +1,6 @@
 package freerails.move;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 
@@ -8,7 +8,6 @@ import freerails.world.top.KEY;
  * This interface provides information about changes to the lists in the World
  * database.
  *
- * @author rob?
  */
 public interface ListMove extends Move {
     /**

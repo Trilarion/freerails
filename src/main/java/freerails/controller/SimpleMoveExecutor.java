@@ -11,7 +11,6 @@ import freerails.world.top.World;
  * A MoveExecutor that executes moves on the world object passed to its
  * constructor.
  *
- * @author Luke
  */
 public class SimpleMoveExecutor implements MoveExecutor {
 

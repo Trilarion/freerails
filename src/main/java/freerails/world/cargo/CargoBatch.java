@@ -1,15 +1,13 @@
 package freerails.world.cargo;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * This class represents a cargo batch (cargo of the same batch is cargo of the
  * same type that was produced at the same location at the same time).
  *
- * @author Luke
  */
-public class CargoBatch implements FreerailsSerializable,
-        Comparable<CargoBatch> {
+public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch> {
     private static final long serialVersionUID = 3257006557605540149L;
 
     private final int cargoType;

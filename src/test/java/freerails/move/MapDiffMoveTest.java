@@ -7,7 +7,6 @@ import freerails.world.track.FreerailsTile;
 /**
  * JUnit test for MapDiffMove.
  *
- * @author Luke
  */
 public class MapDiffMoveTest extends AbstractMoveTestCase {
 

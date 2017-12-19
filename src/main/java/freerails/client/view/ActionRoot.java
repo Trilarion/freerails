@@ -1,6 +1,3 @@
-/*
- * Created on Apr 10, 2004
- */
 package freerails.client.view;
 
 import freerails.client.common.ModelRootImpl;
@@ -17,7 +14,6 @@ import java.awt.event.KeyEvent;
 /**
  * Provides access to Actions change the game state and the GUI.
  *
- * @author Luke
  */
 public class ActionRoot {
 

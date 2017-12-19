@@ -1,6 +1,3 @@
-/*
- * Created on Dec 13, 2003
- */
 package freerails.world.accounts;
 
 import freerails.world.cargo.CargoBatch;
@@ -9,7 +6,6 @@ import freerails.world.common.Money;
 /**
  * A credit for delivering cargo.
  *
- * @author Luke
  */
 public class DeliverCargoReceipt extends Receipt {
     private static final long serialVersionUID = 3257009851963160372L;

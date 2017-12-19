@@ -1,12 +1,11 @@
 package freerails.move;
 
 import freerails.util.Immutable;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Records the success or failure of an attempt to execute a move.
  *
- * @author lindsal
  */
 @Immutable
 final public class MoveStatus implements FreerailsSerializable {

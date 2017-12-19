@@ -1,6 +1,5 @@
 package freerails.server;
 
-import freerails.server.common.TileSetFactory;
 import freerails.server.parser.Track_TilesHandlerImpl;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.common.GameCalendar;
@@ -14,7 +13,6 @@ import java.net.URL;
 /**
  * This class sets up a World object.
  *
- * @author luke
  */
 public class OldWorldImpl {
     /**

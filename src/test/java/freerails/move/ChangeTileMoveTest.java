@@ -12,7 +12,6 @@ import java.awt.*;
 
 /**
  *
- * @author jkeller1
  */
 public class ChangeTileMoveTest extends AbstractMoveTestCase {
 

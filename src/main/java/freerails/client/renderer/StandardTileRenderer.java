@@ -16,7 +16,6 @@ import java.io.IOException;
 /**
  * Paints a tile for which there only one tile icon.
  *
- * @author Luke Lindsay
  */
 final public class StandardTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {

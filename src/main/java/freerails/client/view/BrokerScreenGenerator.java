@@ -22,8 +22,6 @@ import java.text.DecimalFormat;
 import static freerails.world.accounts.Transaction.Category.BOND;
 
 /**
- * @author smackay
- * @author Luke
  */
 
 public class BrokerScreenGenerator {

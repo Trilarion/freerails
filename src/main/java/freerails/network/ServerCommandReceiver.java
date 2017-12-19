@@ -4,12 +4,11 @@
  */
 package freerails.network;
 
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 
 /**
  * Defines a method that accepts a command to be sent to the server.
  *
- * @author Luke
  */
 public interface ServerCommandReceiver {
 
@@ -17,5 +16,5 @@ public interface ServerCommandReceiver {
      *
      * @param c
      */
-    void sendCommand(Message2Server c);
+    void sendCommand(MessageToServer c);
 }

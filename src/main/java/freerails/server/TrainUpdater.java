@@ -3,7 +3,7 @@ package freerails.server;
 import freerails.controller.*;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.ImInts;
 import freerails.world.common.ImList;
@@ -26,7 +26,6 @@ import java.util.Vector;
  * class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
  *
- * @author Luke Lindsay 13-Oct-2002
  */
 public class TrainUpdater implements ServerAutomaton {
 

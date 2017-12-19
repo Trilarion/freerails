@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 /**
  *
- * @author jkeller1
  */
 public interface CargoBundle {
 

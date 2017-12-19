@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
  * class contains the code that generates and dispatches a ChangeTileMove when
  * the player clicks on the menu.
  *
- * @author Luke
  */
 public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
     private static final long serialVersionUID = 3689636912575165749L;

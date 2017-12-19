@@ -8,7 +8,6 @@ package freerails.client.common;
 /**
  * Used to generate file names for track and terrain images.
  *
- * @author Luke
  */
 public class BinaryNumberFormatter {
 

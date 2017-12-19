@@ -1,11 +1,10 @@
 package freerails.world.cargo;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Represents a type of cargo.
  *
- * @author luke
  */
 final public class CargoType implements FreerailsSerializable {
     private static final long serialVersionUID = 3834874680581369912L;

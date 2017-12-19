@@ -12,19 +12,18 @@ import freerails.world.common.Activity;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.CityModel;
+import freerails.world.terrain.City;
 import freerails.world.top.*;
 import freerails.world.top.WorldImplTest.TestActivity;
 import junit.framework.TestCase;
 
 /**
  *
- * @author jkeller1
  */
 public class WorldDiffsMoveTest extends TestCase {
 
-    final CityModel city1 = new CityModel("City 1", 8, 4);
-    final CityModel city2 = new CityModel("City 2", 9, 4);
+    final City city1 = new City("City 1", 8, 4);
+    final City city2 = new City("City 2", 9, 4);
     World world;
     WorldDiffs diffs;
     FreerailsPrincipal fp1;

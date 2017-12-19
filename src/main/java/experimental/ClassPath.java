@@ -15,10 +15,9 @@ import java.util.zip.ZipFile;
 /**
  * ClassPath finds and records the fully qualified name of every Class on the
  * classpath via the system property "java.class.path".
- * <p>
+ *
  * Based on original prototype by duncanIdaho for javagaming.org.
  *
- * @author adam@jgf
  */
 public class ClassPath {
 

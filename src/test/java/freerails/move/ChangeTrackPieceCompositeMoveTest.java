@@ -17,7 +17,6 @@ import junit.framework.TestSuite;
 /**
  * JUnit test.
  *
- * @author Luke
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     final Step southeast = Step.SOUTH_EAST;

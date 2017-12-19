@@ -2,29 +2,27 @@ package freerails.world.top;
 
 import freerails.world.accounts.Transaction;
 import freerails.world.common.Activity;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 
 /**
- * <p>
+ *
  * This class implements methods which can be used to alter the world. Notice
  * that incontrast to, say, {@code java.util.List} there is no remove()
  * method that shifts any subsequent elements to the left (subtracts one from
  * their indices). This means that an elements' position in a list can be used
  * as an address space independent way to reference the element. If you want to
  * remove an element from a list, you should set it to null, e.g.
- * </p>
- * <p>
- * {@code world.set(KEY.TRAINS, 5, null, player);}
- * </P>
- * <p>
- * Code that loops through lists should handle null values gracefully
- * </p>
  *
- * @author Luke
- * @author rob
+ *
+ * {@code world.set(KEY.TRAINS, 5, null, player);}
+ *
+ *
+ * Code that loops through lists should handle null values gracefully
+ *
+ *
  */
 public interface World extends ReadOnlyWorld {
 

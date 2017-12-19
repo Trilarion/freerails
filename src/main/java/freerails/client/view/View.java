@@ -13,7 +13,6 @@ import javax.swing.*;
  * Defines a standard method to initiate GUI components that need access to the
  * ModelRoot.
  *
- * @author Luke
  */
 public interface View {
 

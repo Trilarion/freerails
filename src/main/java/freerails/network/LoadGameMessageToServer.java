@@ -1,19 +1,15 @@
-/*
- * Created on Apr 18, 2004
- */
 package freerails.network;
 
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.MessageStatus;
 import freerails.controller.ServerControlInterface;
 
 /**
- * A request to save the game.
+ * Request to load a game.
  *
- * @author Luke
  */
-public class SaveGameMessage2Server implements Message2Server {
-    private static final long serialVersionUID = 3257281452725777209L;
+public class LoadGameMessageToServer implements MessageToServer {
+    private static final long serialVersionUID = 3256726186552930869L;
 
     private final int id;
     private final String filename;
@@ -23,7 +19,7 @@ public class SaveGameMessage2Server implements Message2Server {
      * @param id
      * @param s
      */
-    public SaveGameMessage2Server(int id, String s) {
+    public LoadGameMessageToServer(int id, String s) {
         this.id = id;
         this.filename = s;
     }
@@ -32,14 +28,14 @@ public class SaveGameMessage2Server implements Message2Server {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof SaveGameMessage2Server))
+        if (!(o instanceof LoadGameMessageToServer))
             return false;
 
-        final SaveGameMessage2Server saveGameMessage2Server = (SaveGameMessage2Server) o;
+        final LoadGameMessageToServer loadGameMessageToServer = (LoadGameMessageToServer) o;
 
-        if (id != saveGameMessage2Server.id)
+        if (id != loadGameMessageToServer.id)
             return false;
-        return filename.equals(saveGameMessage2Server.filename);
+        return filename.equals(loadGameMessageToServer.filename);
     }
 
     @Override
@@ -65,10 +61,12 @@ public class SaveGameMessage2Server implements Message2Server {
      */
     public MessageStatus execute(ServerControlInterface server) {
         try {
-            server.savegame(filename);
+            server.loadgame(filename);
 
             return new MessageStatus(id, true);
         } catch (Exception e) {
+            e.printStackTrace();
+
             return new MessageStatus(id, false, e.getMessage());
         }
     }

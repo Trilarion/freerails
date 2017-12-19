@@ -1,6 +1,3 @@
-/*
- * Created on Mar 18, 2004
- */
 package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
@@ -16,7 +13,6 @@ import java.net.URL;
 /**
  * A HtmlJPanel that displays the income statement.
  *
- * @author Luke
  */
 public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
     private static final long serialVersionUID = 3257846588885120057L;

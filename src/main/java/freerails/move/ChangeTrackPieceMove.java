@@ -13,7 +13,6 @@ import java.awt.*;
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
  *
- * @author Luke
  */
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private static final long serialVersionUID = 4120849958418591801L;

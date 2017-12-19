@@ -16,7 +16,6 @@ import java.io.File;
 /**
  * This class encapsulates the visible properties of a tile.
  *
- * @author Luke Lindsay
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
     private final int[] typeNumbers;

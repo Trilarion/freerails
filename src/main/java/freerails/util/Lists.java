@@ -6,7 +6,6 @@ package freerails.util;
 
 /**
  *
- * @author jkeller1
  */
 public class Lists {
 

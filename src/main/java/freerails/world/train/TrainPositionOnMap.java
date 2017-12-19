@@ -3,7 +3,7 @@ package freerails.world.train;
 import freerails.util.IntArray;
 import freerails.util.Pair;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 import freerails.world.common.IntLine;
 
@@ -12,15 +12,15 @@ import freerails.world.common.IntLine;
  * of points. There must be at least two points. The first point is the position
  * of the front of the train; the last point is the position of the end of the
  * train. Any intermediate points are positions of 'kinks' in the track.
- * <p>
+ *
  * Coordinates are expressed in display coordinates relative to the map origin
  * (as opposed to map squares).
- * <p>
- * <p>
- * <p>
+ *
+ *
+ *
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)
- * </p>
+ *
  * <table width="100%" border="0">
  * <tr>
  * <td>if</td>
@@ -66,7 +66,6 @@ import freerails.world.common.IntLine;
  * </tr>
  * </table>
  *
- * @author Luke Lindsay 26-Oct-2002
  */
 public class TrainPositionOnMap implements FreerailsSerializable {
 

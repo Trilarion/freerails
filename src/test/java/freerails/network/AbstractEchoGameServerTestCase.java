@@ -1,6 +1,3 @@
-/*
- * Created on Apr 13, 2004
- */
 package freerails.network;
 
 import junit.framework.TestCase;
@@ -8,7 +5,6 @@ import junit.framework.TestCase;
 /**
  * Test cases that use EchoGameServer should extend this class.
  *
- * @author Luke
  */
 public abstract class AbstractEchoGameServerTestCase extends TestCase {
     final String ipAddress = "127.0.0.1";

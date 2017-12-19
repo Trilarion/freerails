@@ -1,9 +1,6 @@
-/*
- * Created on Apr 11, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.Money;
 import junit.framework.TestCase;
 
@@ -13,7 +10,6 @@ import java.util.Arrays;
 /**
  * JUnit test for NewLocalConnection.
  *
- * @author Luke
  */
 public class LocalConnectionTest extends TestCase {
     private final FreerailsSerializable[] EmptyArray = new FreerailsSerializable[0];

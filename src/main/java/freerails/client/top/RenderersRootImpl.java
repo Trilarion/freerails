@@ -23,7 +23,6 @@ import java.util.ArrayList;
  * Implementation of RenderersRoot whose constructor loads graphics and provides
  * feed back using a FreerailsProgressMonitor.
  *
- * @author Luke
  */
 public class RenderersRootImpl implements RenderersRoot {
     private static final Logger logger = Logger

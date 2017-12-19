@@ -7,7 +7,7 @@ package freerails.client.top;
 import freerails.client.common.ImageManager;
 import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
@@ -18,7 +18,6 @@ import java.util.HashMap;
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
  *
- * @author Luke
  */
 public class QuickRGBTileRendererList implements TileRendererList {
 

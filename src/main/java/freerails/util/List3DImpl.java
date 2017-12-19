@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public class List3DImpl<T> implements List3D<T> {

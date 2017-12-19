@@ -11,7 +11,6 @@ import java.awt.image.BufferStrategy;
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.
  *
- * @author Luke
  */
 final public class ScreenHandler {
 

@@ -14,9 +14,7 @@ import java.util.LinkedList;
  * by another station. If the name has been used, a minor alteration in the name
  * is required, by adding perhaps "Junction" or "Siding" to the name.
  *
- * @author Scott Bennett
- * <p>
- * Date: 12th April 2003
+ *
  */
 public class VerifyStationName {
     private final ReadOnlyWorld w;

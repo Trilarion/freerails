@@ -17,7 +17,6 @@ import freerails.world.top.SKEY;
  * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
  * list.
  *
- * @author Luke
  */
 public class AddStationMove extends CompositeMove {
     private static final long serialVersionUID = 3256728398461089080L;

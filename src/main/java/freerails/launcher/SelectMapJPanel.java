@@ -16,7 +16,6 @@ import javax.swing.event.DocumentListener;
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
  *
- * @author Luke
  */
 public class SelectMapJPanel extends javax.swing.JPanel implements
         LauncherPanel {

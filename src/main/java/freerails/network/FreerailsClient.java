@@ -1,6 +1,3 @@
-/*
- * Created on Apr 17, 2004
- */
 package freerails.network;
 
 import freerails.controller.*;
@@ -8,7 +5,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.GameModel;
 import freerails.world.common.FreerailsMutableSerializable;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.player.Player;
 import freerails.world.top.World;
 import org.apache.log4j.Logger;
@@ -20,7 +17,6 @@ import java.util.HashMap;
 /**
  * A client for FreerailsGameServer.
  *
- * @author Luke
  */
 public class FreerailsClient implements ClientControlInterface, GameModel,
         UntriedMoveReceiver, ServerCommandReceiver {
@@ -32,7 +28,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      *
      */
-    protected Connection2Server connection2Server;
+    protected ConnectionToServer connectionToServer;
     private World world;
 
     private MovePrecommitter committer;
@@ -67,21 +63,21 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         }
 
         try {
-            connection2Server = new InetConnection2Server(address, port);
+            connectionToServer = new InetConnectionToServer(address, port);
         } catch (IOException e) {
             return LogOnResponse.rejected(e.getMessage());
         }
 
         try {
             LogOnRequest request = new LogOnRequest(username, password);
-            connection2Server.writeToServer(request);
-            connection2Server.flush();
+            connectionToServer.writeToServer(request);
+            connectionToServer.flush();
 
-            return (LogOnResponse) connection2Server
+            return (LogOnResponse) connectionToServer
                     .waitForObjectFromServer();
         } catch (Exception e) {
             try {
-                connection2Server.disconnect();
+                connectionToServer.disconnect();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -101,15 +97,15 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
                                        String password) {
         try {
             LogOnRequest request = new LogOnRequest(username, password);
-            connection2Server = new LocalConnection();
-            connection2Server.writeToServer(request);
-            server.addConnection((LocalConnection) connection2Server);
+            connectionToServer = new LocalConnection();
+            connectionToServer.writeToServer(request);
+            server.addConnection((LocalConnection) connectionToServer);
 
-            return (LogOnResponse) connection2Server
+            return (LogOnResponse) connectionToServer
                     .waitForObjectFromServer();
         } catch (Exception e) {
             try {
-                connection2Server.disconnect();
+                connectionToServer.disconnect();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -123,7 +119,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      */
     public final void disconnect() {
         try {
-            connection2Server.disconnect();
+            connectionToServer.disconnect();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -167,7 +163,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     final FreerailsSerializable read() {
         try {
-            return this.connection2Server.waitForObjectFromServer();
+            return this.connectionToServer.waitForObjectFromServer();
         } catch (IOException | InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -178,7 +174,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     final void write(FreerailsSerializable fs) {
         try {
-            connection2Server.writeToServer(fs);
+            connectionToServer.writeToServer(fs);
         } catch (IOException e) {
             e.printStackTrace();
             throw new IllegalStateException();
@@ -190,14 +186,14 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      */
     final public void update() {
         try {
-            FreerailsSerializable[] messages = connection2Server
+            FreerailsSerializable[] messages = connectionToServer
                     .readFromServer();
 
             for (FreerailsSerializable message : messages) {
                 processMessage(message);
             }
 
-            connection2Server.flush();
+            connectionToServer.flush();
             clientUpdates();
         } catch (IOException e) {
             ReportBugTextGenerator.unexpectedException(e);
@@ -216,13 +212,13 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      * Processes a message received from the server.
      */
     final void processMessage(FreerailsSerializable message) throws IOException {
-        if (message instanceof Message2Client) {
-            Message2Client request = (Message2Client) message;
+        if (message instanceof MessageToClient) {
+            MessageToClient request = (MessageToClient) message;
             MessageStatus status = request.execute(this);
             if (logger.isDebugEnabled()) {
                 logger.debug(request.toString());
             }
-            connection2Server.writeToServer(status);
+            connectionToServer.writeToServer(status);
         } else if (message instanceof Move) {
             Move m = (Move) message;
             committer.fromServer(m);
@@ -275,7 +271,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      *
      * @param c
      */
-    public void sendCommand(Message2Server c) {
+    public void sendCommand(MessageToServer c) {
         write(c);
     }
 

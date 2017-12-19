@@ -2,7 +2,7 @@ package freerails.client.renderer;
 
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -16,7 +16,6 @@ import java.io.IOException;
 /**
  * Renders box showing the cargo waiting at a station.
  *
- * @author Luke
  */
 public class StationBoxRenderer implements Painter {
 

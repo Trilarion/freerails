@@ -19,7 +19,6 @@ import java.util.Date;
  * package. If the packaged depends on classes other than those contained in the
  * packages it is allowed to depend on, the compile will fail.
  *
- * @author Luke
  */
 public class GenerateDependenciesXmlAndHtml {
     private static final Logger logger = Logger

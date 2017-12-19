@@ -14,7 +14,6 @@ import freerails.world.top.World;
  * may be continually changing. An example is a train - it is an active entity
  * since while it is moving its position is continually changing.
  *
- * @author Luke
  * @see NextActivityMove
  */
 

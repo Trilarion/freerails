@@ -23,7 +23,6 @@ import java.awt.event.KeyEvent;
  * JPanel that displays a list of trains, used for the train list window and the
  * train roaster tab.
  *
- * @author Luke
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
 
@@ -210,7 +209,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         trainSummaryJPanel1.setup(mr, vl, null);
 
         if (rhsjTabPane) {
-            jList1.setModel(new World2ListModelAdapter(mr.getWorld(),
+            jList1.setModel(new WorldToListModelAdapter(mr.getWorld(),
                     KEY.TRAINS, mr.getPrincipal()));
             TrainListCellRenderer trainView = new TrainListCellRenderer(mr, vl);
             jList1.setCellRenderer(trainView);
@@ -260,7 +259,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     @Override
     public void setVisible(boolean aFlag) {
         if (aFlag && null != world) {
-            // jList1.setModel(new World2ListModelAdapter(world,
+            // jList1.setModel(new WorldToListModelAdapter(world,
             // KEY.TRAINS,principal));
         }
         super.setVisible(aFlag);
@@ -281,7 +280,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
                     principal);
             int newNumberOfTrains = trains.size();
             if (newNumberOfTrains != this.lastNumberOfTrains) {
-                jList1.setModel(new World2ListModelAdapter(world, KEY.TRAINS,
+                jList1.setModel(new WorldToListModelAdapter(world, KEY.TRAINS,
                         principal));
                 if (newNumberOfTrains > 0) {
                     jList1.setSelectedIndex(0);

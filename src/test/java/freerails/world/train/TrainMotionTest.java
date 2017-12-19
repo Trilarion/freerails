@@ -10,7 +10,6 @@ import junit.framework.TestCase;
 
 /**
  *
- * @author jkeller1
  */
 public class TrainMotionTest extends TestCase {
     /*

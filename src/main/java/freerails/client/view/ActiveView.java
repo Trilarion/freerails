@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
  * Defines a standard method to initiate GUI components that need access to the
  * ModelRoot <b> and </b> the ActionRoot.
  *
- * @author Luke
  */
 public interface ActiveView {
 

@@ -23,7 +23,6 @@ import java.util.Vector;
 /**
  * A ServerGameModel that contains the automations used in the actual game.
  *
- * @author Luke
  */
 public class ServerGameModelImpl implements ServerGameModel {
     private static final long serialVersionUID = 3978144352788820021L;

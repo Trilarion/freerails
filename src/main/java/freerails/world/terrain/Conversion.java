@@ -1,21 +1,15 @@
-/*
- * Created on 27-Apr-2003
- *
- */
 package freerails.world.terrain;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * This class represents the conversion of one cargo type to another one a tile.
  *
- * @author Luke
  */
 public class Conversion implements FreerailsSerializable {
+
     private static final long serialVersionUID = 3546356219414853689L;
-
     private final int input;
-
     private final int output;
 
     /**

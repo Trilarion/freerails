@@ -24,7 +24,6 @@ import java.util.StringTokenizer;
 /**
  * This JPanel displays a HTML document read from a URL.
  *
- * @author Luke
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
 

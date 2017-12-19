@@ -10,7 +10,6 @@ import java.awt.*;
 
 /**
  *
- * @author jkeller1
  */
 public class SquareTileBackgroundRendererTest extends TestCase {
 

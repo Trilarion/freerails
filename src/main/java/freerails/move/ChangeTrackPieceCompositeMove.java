@@ -18,7 +18,6 @@ import java.awt.*;
 /**
  * This Move changes adds, removes, or upgrades the track between two tiles.
  *
- * @author lindsal
  */
 public final class ChangeTrackPieceCompositeMove extends CompositeMove
         implements TrackMove, MapUpdateMove {

@@ -13,7 +13,6 @@ import java.util.HashSet;
 /**
  * This class is used to generate fixtures for Junit tests.
  *
- * @author Luke
  */
 public class MapFixtureFactory {
     /**

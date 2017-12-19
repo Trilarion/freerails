@@ -2,7 +2,7 @@ package freerails.controller;
 
 import freerails.world.common.ImList;
 import freerails.world.station.ConvertedAtStation;
-import freerails.world.station.Demand4Cargo;
+import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
 import freerails.world.station.SupplyAtStation;
 import freerails.world.terrain.Consumption;
@@ -22,8 +22,6 @@ import java.util.Vector;
  * This class probes the tiles adjacent to a station for what cargo they supply,
  * demand, and convert and then returns a vector of these rates.
  *
- * @author Scott Bennett
- * @author Luke Created: 9th May 2003
  */
 public class CalcCargoSupplyRateAtStation {
     private static final Logger logger = Logger
@@ -102,7 +100,7 @@ public class CalcCargoSupplyRateAtStation {
      *
      * @return
      */
-    public Demand4Cargo getDemand() {
+    public DemandForCargo getDemand() {
         boolean[] demandboolean = new boolean[w.size(SKEY.CARGO_TYPES)];
 
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
@@ -111,7 +109,7 @@ public class CalcCargoSupplyRateAtStation {
             }
         }
 
-        return new Demand4Cargo(demandboolean);
+        return new DemandForCargo(demandboolean);
     }
 
     private void incrementSupplyAndDemand(int i, int j) {

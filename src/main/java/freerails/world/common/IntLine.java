@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * This class defines a straight line between two points. Units are arbitrary.
  *
- * @author Luke
  */
 public class IntLine implements Serializable {
 

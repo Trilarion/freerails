@@ -26,7 +26,6 @@ import java.beans.PropertyChangeListener;
  * regular cursor type. TODO scroll the area when the mouse hovers at the edge
  * of the map.
  *
- * @author rob
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 

@@ -4,7 +4,7 @@
  */
 package freerails.world.top;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 import java.util.NoSuchElementException;
 
@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
  * This interface lets the caller access the results of a search in the
  * gameworld. It is similar in concept to {@code java.sql.ResultSet}.
  *
- * @author Luke
  */
 public interface WorldIterator {
 

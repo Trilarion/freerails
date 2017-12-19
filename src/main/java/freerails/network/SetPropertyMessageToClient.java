@@ -1,21 +1,17 @@
-/*
- * Created on Apr 18, 2004
- */
 package freerails.network;
 
 import freerails.controller.ClientControlInterface;
 import freerails.controller.ClientControlInterface.ClientProperty;
-import freerails.controller.Message2Client;
+import freerails.controller.MessageToClient;
 import freerails.controller.MessageStatus;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
- * A Message2Client that lets the server set a property (for example, the list
+ * A MessageToClient that lets the server set a property (for example, the list
  * of saved games available) on a client.
  *
- * @author Luke
  */
-public class SetPropertyMessage2Client implements Message2Client {
+public class SetPropertyMessageToClient implements MessageToClient {
     private static final long serialVersionUID = 3544392521746034740L;
 
     private final int id;
@@ -30,8 +26,8 @@ public class SetPropertyMessage2Client implements Message2Client {
      * @param key
      * @param value
      */
-    public SetPropertyMessage2Client(int id, ClientProperty key,
-                                     FreerailsSerializable value) {
+    public SetPropertyMessageToClient(int id, ClientProperty key,
+                                      FreerailsSerializable value) {
         if (null == key || null == value)
             throw new NullPointerException();
         this.id = id;
@@ -43,16 +39,16 @@ public class SetPropertyMessage2Client implements Message2Client {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof SetPropertyMessage2Client))
+        if (!(o instanceof SetPropertyMessageToClient))
             return false;
 
-        final SetPropertyMessage2Client setPropertyMessage2Client = (SetPropertyMessage2Client) o;
+        final SetPropertyMessageToClient setPropertyMessageToClient = (SetPropertyMessageToClient) o;
 
-        if (id != setPropertyMessage2Client.id)
+        if (id != setPropertyMessageToClient.id)
             return false;
-        if (!key.equals(setPropertyMessage2Client.key))
+        if (!key.equals(setPropertyMessageToClient.key))
             return false;
-        return value.equals(setPropertyMessage2Client.value);
+        return value.equals(setPropertyMessageToClient.value);
     }
 
     public MessageStatus execute(ClientControlInterface client) {

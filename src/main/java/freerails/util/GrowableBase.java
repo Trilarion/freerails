@@ -30,7 +30,6 @@ import java.lang.reflect.Array;
  * time more space is required, up to an optional maximum growth increment
  * specified by the user.
  *
- * @author Dennis M. Sosnoski
  */
 public abstract class GrowableBase implements Serializable {
     /**

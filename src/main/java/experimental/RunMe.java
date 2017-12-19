@@ -13,7 +13,6 @@ import javax.swing.*;
 /**
  * Tests that ClientJFrame and ScreenHandler work together.
  *
- * @author Luke Lindsay
  */
 public class RunMe {
 

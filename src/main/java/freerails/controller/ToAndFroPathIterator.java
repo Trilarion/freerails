@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
  * Returns a path that goes forwards and backwards along the path passed to its
  * constructor.
  *
- * @author Luke Lindsay 30-Oct-2002
  */
 public class ToAndFroPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256442525337202993L;

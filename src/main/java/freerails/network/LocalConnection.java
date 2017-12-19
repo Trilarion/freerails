@@ -1,18 +1,14 @@
-/*
- * Created on Apr 11, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 import java.io.IOException;
 
 /**
  * A connection between the a client and server in the same JVM.
  *
- * @author Luke
  */
-public class LocalConnection implements Connection2Client, Connection2Server {
+public class LocalConnection implements ConnectionToClient, ConnectionToServer {
 
     /**
      *

@@ -15,7 +15,6 @@ import java.util.Iterator;
  * ComboBoxModel that provides access to the screen resolutions and bit depths
  * available.
  *
- * @author Luke Lindsay
  */
 public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
 

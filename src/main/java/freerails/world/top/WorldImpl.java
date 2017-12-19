@@ -1,6 +1,7 @@
 package freerails.world.top;
 
 import freerails.util.*;
+import freerails.world.FreerailsSerializable;
 import freerails.world.accounts.EconomicClimate;
 import freerails.world.accounts.Transaction;
 import freerails.world.accounts.TransactionAndTimeStamp;
@@ -16,7 +17,6 @@ import java.util.NoSuchElementException;
  * An implementation of World that uses standard java.util collections
  * internally.
  *
- * @author Luke
  */
 public class WorldImpl implements World {
 
@@ -338,7 +338,7 @@ public class WorldImpl implements World {
     public Transaction getTransaction(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
-        return tats.getT();
+        return tats.getTransaction();
     }
 
     /**
@@ -350,7 +350,7 @@ public class WorldImpl implements World {
     public GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
-        return tats.getTimeStamp();
+        return tats.getTimestamp();
     }
 
     /**
@@ -363,7 +363,7 @@ public class WorldImpl implements World {
             FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionAndTimeStamp tats = bankAccounts.get(playerIndex, i);
-        return new Pair<>(tats.getT(), tats.getTimeStamp());
+        return new Pair<>(tats.getTransaction(), tats.getTimestamp());
     }
 
     @Override
@@ -445,9 +445,9 @@ public class WorldImpl implements World {
         TransactionAndTimeStamp tats = bankAccounts.removeLastD2(playerIndex);
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = new Money(oldBalance.getAmount()
-                - tats.getT().deltaCash().getAmount());
+                - tats.getTransaction().deltaCash().getAmount());
         currentBalance.set(playerIndex, newBalance);
-        return tats.getT();
+        return tats.getTransaction();
     }
 
     public void set(FreerailsPrincipal p, KEY key, int index,

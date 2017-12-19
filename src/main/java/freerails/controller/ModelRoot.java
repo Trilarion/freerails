@@ -7,7 +7,6 @@ package freerails.controller;
 /**
  * Defines methods and constants that GUI classes can use to access shared data.
  *
- * @author Luke
  */
 public interface ModelRoot extends MoveExecutor {
 
@@ -15,7 +14,7 @@ public interface ModelRoot extends MoveExecutor {
      *
      * @param c
      */
-    void sendCommand(Message2Server c);
+    void sendCommand(MessageToServer c);
 
     /**
      *

@@ -5,7 +5,7 @@
 package freerails.server;
 
 import freerails.controller.ServerControlInterface;
-import freerails.network.NewGameMessage2Server;
+import freerails.network.NewGameMessageToServer;
 import freerails.network.SavedGamesManager;
 import freerails.util.FreerailsProgressMonitor;
 import org.apache.log4j.Logger;
@@ -18,7 +18,6 @@ import java.util.zip.GZIPOutputStream;
  * A SavedGamesManager reads and writes gzipped saved games to the working
  * directory.
  *
- * @author Luke
  */
 class SavFileFilter implements FilenameFilter {
     public boolean accept(File dir, String name) {
@@ -28,7 +27,6 @@ class SavFileFilter implements FilenameFilter {
 
 /**
  *
- * @author jkeller1
  */
 public class SavedGamesManagerImpl implements SavedGamesManager {
     private static final Logger logger = Logger
@@ -49,7 +47,7 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
      * @return
      */
     public String[] getNewMapNames() {
-        return NewGameMessage2Server.getMapNames();
+        return NewGameMessageToServer.getMapNames();
     }
 
     /**

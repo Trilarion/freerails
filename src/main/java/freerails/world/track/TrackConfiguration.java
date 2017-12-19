@@ -13,7 +13,6 @@ import java.util.Iterator;
  * Instances of this class cannot be created and must be obtained via the static
  * methods herein.
  *
- * @author Luke
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
 

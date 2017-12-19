@@ -8,7 +8,6 @@ import java.util.SortedMap;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {

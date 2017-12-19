@@ -8,7 +8,6 @@ import freerails.world.common.FreerailsPathIterator;
  * whose length the caller specifies. E.g. it could be used to get the sub
  * section of a path that a train travels during an given time inteval.
  *
- * @author Luke
  */
 public interface PathWalker extends FreerailsPathIterator,
         FreerailsMutableSerializable {

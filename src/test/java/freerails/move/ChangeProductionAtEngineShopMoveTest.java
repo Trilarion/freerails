@@ -14,7 +14,6 @@ import freerails.world.top.WagonAndEngineTypesFactory;
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
  *
- * @author Luke
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 

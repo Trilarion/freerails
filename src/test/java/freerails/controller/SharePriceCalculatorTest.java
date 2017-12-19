@@ -7,7 +7,6 @@ package freerails.controller;
 import junit.framework.TestCase;
 
 /**
- * @author Luke
  */
 public class SharePriceCalculatorTest extends TestCase {
 

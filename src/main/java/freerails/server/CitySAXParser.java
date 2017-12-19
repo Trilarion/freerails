@@ -1,6 +1,6 @@
 package freerails.server;
 
-import freerails.world.terrain.CityModel;
+import freerails.world.terrain.City;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import org.xml.sax.Attributes;
@@ -13,10 +13,9 @@ import java.util.Vector;
  * Class to parse an xml file that contains city names and co-ords. Upon reading
  * in the data, its stored in KEY.CITIES.
  *
- * @author Scott Bennett Date: 31st March 2003
  */
 public class CitySAXParser extends DefaultHandler {
-    private final Vector<CityModel> cities;
+    private final Vector<City> cities;
 
     private final World world;
 
@@ -33,8 +32,8 @@ public class CitySAXParser extends DefaultHandler {
     @Override
     public void endDocument() throws SAXException {
         for (int i = 0; i < cities.size(); i++) {
-            CityModel tempCity = cities.elementAt(i);
-            world.add(SKEY.CITIES, new CityModel(tempCity.getCityName(),
+            City tempCity = cities.elementAt(i);
+            world.add(SKEY.CITIES, new City(tempCity.getCityName(),
                     tempCity.getCityX(), tempCity.getCityY()));
         }
     }
@@ -55,7 +54,7 @@ public class CitySAXParser extends DefaultHandler {
                     aName = attrs.getQName(i);
                 }
 
-                // put values in CityModel obj
+                // put values in City obj
                 if (aName.equals("name")) {
                     cityName = attrs.getValue(i);
                 }
@@ -67,7 +66,7 @@ public class CitySAXParser extends DefaultHandler {
                 if (aName.equals("y")) {
                     y = Integer.parseInt(attrs.getValue(i));
 
-                    CityModel city = new CityModel(cityName, x, y);
+                    City city = new City(cityName, x, y);
                     cities.addElement(city);
                 }
             }

@@ -12,7 +12,6 @@ import java.util.Random;
  * directly to the world object, so if the game has already started, use
  * WorldDifferences and MapDiffMove to pass changes to the clients.
  *
- * @author Luke
  */
 public class CityTilePositioner {
     final Random random = new Random();

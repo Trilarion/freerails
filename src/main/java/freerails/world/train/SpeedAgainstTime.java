@@ -4,11 +4,10 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  *
- * @author jkeller1
  */
 public interface SpeedAgainstTime extends FreerailsSerializable {
 

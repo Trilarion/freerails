@@ -16,17 +16,18 @@ import java.util.HashSet;
  * Processes CargoAndTerrainHandler events and adds terrain and cargo types to
  * the world object.
  *
- * @author Luke
  * @see CargoAndTerrainHandler
  * @see CargoAndTerrainParser
  */
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
+
     final HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<>();
     final HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
     final ArrayList<Consumption> typeConsumes = new ArrayList<>();
     final ArrayList<Production> typeProduces = new ArrayList<>();
     final ArrayList<Conversion> typeConverts = new ArrayList<>();
     private final World world;
+
     // Parsing variables for Tile
     String tileID;
     TerrainType.Category tileCategory;
@@ -36,10 +37,10 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     /**
      *
-     * @param w
+     * @param world
      */
-    public CargoAndTerrainHandlerImpl(World w) {
-        world = w;
+    public CargoAndTerrainHandlerImpl(World world) {
+        this.world = world;
     }
 
     public void handle_Converts(final Attributes meta) throws SAXException {
@@ -182,7 +183,6 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
      */
     private int string2CargoID(String cargoName) throws SAXException {
         if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
-
             return cargoName2cargoTypeNumber.get(cargoName);
         }
         throw new SAXException("Unknown cargo type: " + cargoName);

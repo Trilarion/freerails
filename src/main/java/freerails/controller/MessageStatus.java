@@ -1,17 +1,13 @@
-/*
- * Created on Apr 14, 2004
- */
 package freerails.controller;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * An instance of this class is returned to the client (the server) when a
- * Message2Server (Message2Client) is executed by the server (the client).
+ * MessageToServer (MessageToClient) is executed by the server (the client).
  *
- * @author Luke
- * @see Message2Client
- * @see Message2Server
+ * @see MessageToClient
+ * @see MessageToServer
  */
 public class MessageStatus implements FreerailsSerializable {
     private static final long serialVersionUID = 3257285842216103987L;

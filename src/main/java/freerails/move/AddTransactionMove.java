@@ -12,7 +12,6 @@ import freerails.world.top.World;
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
  * {@link World} object.
  *
- * @author Luke Lindsay
  */
 public class AddTransactionMove implements Move {
     private static final long serialVersionUID = 3976738055925019701L;

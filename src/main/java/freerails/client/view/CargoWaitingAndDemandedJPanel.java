@@ -27,7 +27,6 @@ import java.util.List;
  * A JPanel that displays the cargo waiting and demanded at a station - used on
  * the select station popup window.
  *
- * @author Luke
  */
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         View {

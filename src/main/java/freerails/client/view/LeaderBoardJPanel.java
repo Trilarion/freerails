@@ -25,7 +25,6 @@ import java.util.Random;
 /**
  * A JPanel that displays the details of the players ordered by net worth.
  *
- * @author Luke
  */
 public class LeaderBoardJPanel extends JPanel implements View {
 
@@ -121,8 +120,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     /**
      * Stores the details a player that are shown on the leaderboard.
      *
-     * @author Luke
-     */
+         */
     static class PlayerDetails implements Comparable<PlayerDetails> {
 
         String name = "player";

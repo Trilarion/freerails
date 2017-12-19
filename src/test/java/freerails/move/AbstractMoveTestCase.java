@@ -5,7 +5,7 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 /**
  * All TestCases for moves should extend this class.
  *
- * @author Luke
  */
 public abstract class AbstractMoveTestCase extends TestCase {
 

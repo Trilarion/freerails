@@ -6,7 +6,7 @@ package experimental;
 
 import freerails.util.Immutable;
 import freerails.util.InstanceControlled;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;

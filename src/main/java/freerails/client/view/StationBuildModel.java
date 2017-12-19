@@ -34,7 +34,6 @@ import java.util.List;
  * <li> alternatively, call actionPerformed on the cancel Action
  * </ol>
  *
- * @author rob
  */
 public class StationBuildModel {
     /*

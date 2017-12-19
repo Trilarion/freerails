@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * Generates track graphic image files.
  *
- * @author Luke
  */
 public class TrackTilesGenerator extends JPanel {
 

@@ -24,7 +24,6 @@ import java.io.IOException;
 /**
  * This JPanel displays an engine and a number of wagons.
  *
- * @author Luke Lindsay
  */
 public class TrainListCellRenderer extends JPanel implements View,
         ListCellRenderer, WorldListListener {

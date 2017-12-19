@@ -1,9 +1,6 @@
-/*
- * Created on Jul 9, 2004
- */
 package freerails.server;
 
-import freerails.world.terrain.CityModel;
+import freerails.world.terrain.City;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
@@ -17,7 +14,6 @@ import java.util.Random;
 /**
  * This class is lets the server analyse and alter cities.
  *
- * @author Luke
  */
 class CityEconomicModel {
     final ArrayList<Tile> urbanTiles = new ArrayList<>();
@@ -75,7 +71,7 @@ class CityEconomicModel {
         /* Identify city's bounds. */
         Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w
                 .getMapHeight());
-        CityModel city = (CityModel) w.get(SKEY.CITIES, cityID);
+        City city = (City) w.get(SKEY.CITIES, cityID);
         Rectangle cityArea = new Rectangle(city.getCityX() - 3,
                 city.getCityY() - 3, 7, 7);
         cityArea = cityArea.intersection(mapRect);

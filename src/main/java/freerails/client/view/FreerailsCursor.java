@@ -1,6 +1,3 @@
-/*
-  Created on 01 August 2001, 06:02
- */
 package freerails.client.view;
 
 import freerails.client.renderer.BuildTrackRenderer;
@@ -18,7 +15,6 @@ import java.io.IOException;
  * Paints the cursor on the map, note the cursor's position is stored on the
  * ModelRoot under the key CURSOR_POSITION.
  *
- * @author Luke
  */
 final public class FreerailsCursor {
     private final Image buildTrack, upgradeTrack, removeTrack, infoMode;

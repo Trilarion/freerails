@@ -12,7 +12,6 @@ import freerails.world.top.World;
 /**
  * Adds a player to the world.
  *
- * @author Luke
  */
 public class AddPlayerMove implements Move, ServerMove {
     private static final long serialVersionUID = 3977580277537322804L;

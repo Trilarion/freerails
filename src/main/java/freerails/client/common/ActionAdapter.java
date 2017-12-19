@@ -15,7 +15,6 @@ import java.util.Vector;
  * any events from UI components, although UI components may call setAction() in
  * order to receive property change updates and to set icons etc.
  *
- * @author Rob
  */
 public class ActionAdapter extends DefaultComboBoxModel {
     private static final long serialVersionUID = 3546920294666351415L;

@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 /**
  * JUnit test for SimpleAStarPathFinder. 27-Nov-2002
  *
- * @author Luke Lindsay
  */
 public class SimpleAStarPathFinderTest extends TestCase {
     private Map map;

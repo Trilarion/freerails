@@ -17,7 +17,6 @@ import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
- * @author Luke
  */
 public class MovePrecommitterTest extends TestCase {
     private World w;

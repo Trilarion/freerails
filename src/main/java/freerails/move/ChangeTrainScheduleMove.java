@@ -1,6 +1,3 @@
-/*
- * Created on 25-Aug-2003
- */
 package freerails.move;
 
 import freerails.world.player.FreerailsPrincipal;
@@ -10,7 +7,6 @@ import freerails.world.train.ImmutableSchedule;
 /**
  * This Move changes a train's schedule.
  *
- * @author Luke Lindsay
  */
 public class ChangeTrainScheduleMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3691043187930052149L;

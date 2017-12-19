@@ -21,7 +21,6 @@ import java.util.Map;
 /**
  * ListCellRenderer that displays a train order.
  *
- * @author Luke Lindsay
  */
 public class TrainOrderJPanel implements View, ListCellRenderer {
 

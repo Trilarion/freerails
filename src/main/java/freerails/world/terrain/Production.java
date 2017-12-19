@@ -1,19 +1,14 @@
-/*
- * Created on 27-Apr-2003
- *
- */
 package freerails.world.terrain;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * This class represents the production of a raw material on a tile.
  *
- * @author Luke
  */
 public class Production implements FreerailsSerializable {
-    private static final long serialVersionUID = 3258125847641536052L;
 
+    private static final long serialVersionUID = 3258125847641536052L;
     private final int cargoType;
 
     /**

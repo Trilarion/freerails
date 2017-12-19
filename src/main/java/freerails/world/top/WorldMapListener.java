@@ -1,6 +1,3 @@
-/*
- * Created on Apr 11, 2004
- */
 package freerails.world.top;
 
 import java.awt.*;
@@ -9,7 +6,6 @@ import java.awt.*;
  * Classes that need to be notified of changes to the map on the world object
  * should implement this interface.
  *
- * @author Luke Lindsay
  */
 public interface WorldMapListener {
     /**

@@ -1,12 +1,13 @@
 package freerails.world.common;
 
+import freerails.world.FreerailsSerializable;
+
 import java.text.DecimalFormat;
 
 /**
  * This class converts time measured in ticks since the game began into time
  * represented as <i>Month, Year</i> and <i>hour:minute</i>.
  *
- * @author Luke
  */
 final public class GameCalendar implements FreerailsSerializable {
     private static final long serialVersionUID = 3257568421033226805L;

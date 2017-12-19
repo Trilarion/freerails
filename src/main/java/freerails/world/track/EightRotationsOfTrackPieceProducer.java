@@ -12,7 +12,6 @@ import java.awt.*;
  * E.g. if the teamplate is: 010 010 110 it returns: 010 001 100 010 110 111 110
  * 100 000 etc.
  *
- * @author Luke Lindsay
  */
 public class EightRotationsOfTrackPieceProducer {
     /**

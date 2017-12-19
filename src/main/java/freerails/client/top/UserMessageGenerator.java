@@ -1,6 +1,3 @@
-/*
- * Created on Dec 13, 2003
- */
 package freerails.client.top;
 
 import freerails.client.common.SoundManager;
@@ -29,7 +26,6 @@ import java.util.ArrayList;
  * This class inspects incoming moves and generates a user message if
  * appropriate. It is also used to trigger sounds.
  *
- * @author Luke
  */
 public class UserMessageGenerator implements MoveReceiver {
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");

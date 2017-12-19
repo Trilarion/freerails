@@ -1,11 +1,10 @@
 package freerails.world.track;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Defines methods to access the properties of the track on a tile.
  *
- * @author Luke
  */
 public interface TrackPiece extends FreerailsSerializable {
 

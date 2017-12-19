@@ -1,5 +1,4 @@
 /*
- * Date:           21 January 2002  18:00
  *
  */
 package freerails.server.parser;
@@ -23,7 +22,6 @@ import java.util.List;
  * Processes Track_TilesHandle events, generates track rules, and provides a
  * methods to add the track rules to the world object.
  *
- * @author lindsal
  * @see Track_TilesParser
  */
 public class Track_TilesHandlerImpl implements Track_TilesHandler {

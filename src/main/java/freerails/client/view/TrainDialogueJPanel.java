@@ -19,7 +19,6 @@ import java.awt.event.ActionListener;
  * JPanel that displays info on a train; it is composed of a
  * {@link TrainScheduleJPanel} and {@link TrainDescriptionJPanel}.
  *
- * @author Luke Lindsay
  */
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         WorldListListener {

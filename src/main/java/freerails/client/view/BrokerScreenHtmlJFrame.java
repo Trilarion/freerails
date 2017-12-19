@@ -27,8 +27,6 @@ import java.awt.event.ActionEvent;
 import java.net.URL;
 
 /**
- * @author smackay
- * @author Luke
  */
 public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 

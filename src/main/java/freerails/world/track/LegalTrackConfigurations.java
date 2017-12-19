@@ -1,6 +1,6 @@
 package freerails.world.track;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImHashSet;
 
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import java.util.Iterator;
 /**
  * Stores the legal track configurations for a type of track.
  *
- * @author Luke.
  */
 final public class LegalTrackConfigurations implements FreerailsSerializable {
 

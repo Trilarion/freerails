@@ -19,7 +19,6 @@ import javax.swing.*;
  * AbstractListModel used by {@link TrainScheduleJPanel} to display the orders
  * making up a train schedule.
  *
- * @author Luke Lindsay
  */
 public class TrainOrdersListModel extends AbstractListModel {
 

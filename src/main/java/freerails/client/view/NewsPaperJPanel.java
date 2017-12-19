@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 /**
  * A JPanel that displays a newspaper headline.
  *
- * @author lindsal8
  */
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = 3258410638366946868L;

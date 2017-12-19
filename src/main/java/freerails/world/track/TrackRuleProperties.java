@@ -1,12 +1,11 @@
 package freerails.world.track;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.Money;
 
 /**
  * Stores some of the properties of a track type.
  *
- * @author Luke
  */
 final public class TrackRuleProperties implements FreerailsSerializable {
     private static final long serialVersionUID = 3618704101752387641L;

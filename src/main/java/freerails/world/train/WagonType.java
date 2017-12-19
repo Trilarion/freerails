@@ -1,13 +1,12 @@
 package freerails.world.train;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * This class represents a wagon type, for example 'goods wagon'. It
  * encapsulates the properties of a wagon that are common to all wagons of the
  * same type.
  *
- * @author Luke
  */
 public class WagonType implements FreerailsSerializable {
 

@@ -5,13 +5,13 @@
 package freerails.world.common;
 
 import freerails.util.Immutable;
+import freerails.world.FreerailsSerializable;
 
 import java.util.Arrays;
 
 /**
  * An immutable list of ints.
  *
- * @author Luke
  */
 @Immutable
 public class ImInts implements FreerailsSerializable {

@@ -1,6 +1,3 @@
-/*
- * Created on Apr 13, 2004
- */
 package freerails.network;
 
 import org.apache.log4j.Logger;
@@ -13,7 +10,6 @@ import java.net.Socket;
  * When this class is run in a thread it accepts new connections to its Server
  * Socket and adds them to the NewGameServer that was passed to its constructor.
  *
- * @author Luke
  */
 public class InetConnectionAccepter implements Runnable {
     private static final Logger logger = Logger
@@ -71,7 +67,7 @@ public class InetConnectionAccepter implements Runnable {
 
                 synchronized (this) {
                     synchronized (gameServer) {
-                        InetConnection2Client connection = new InetConnection2Client(
+                        InetConnectionToClient connection = new InetConnectionToClient(
                                 socket);
                         gameServer.addConnection(connection);
                     }

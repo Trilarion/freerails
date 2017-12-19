@@ -1,32 +1,25 @@
-/*
- * Created on 22-Jul-2005
- *
- */
 package freerails.world.accounts;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.GameTime;
 
 /**
  *
- * @author jkeller1
  */
 public class TransactionAndTimeStamp implements FreerailsSerializable {
 
     private static final long serialVersionUID = 1540065347606694456L;
-
-    private final Transaction t;
-
-    private final GameTime timeStamp;
+    private final Transaction transaction;
+    private final GameTime timestamp;
 
     /**
      *
-     * @param t
-     * @param stamp
+     * @param transaction
+     * @param time
      */
-    public TransactionAndTimeStamp(Transaction t, GameTime stamp) {
-        this.t = t;
-        timeStamp = stamp;
+    public TransactionAndTimeStamp(Transaction transaction, GameTime time) {
+        this.transaction = transaction;
+        timestamp = time;
     }
 
     @Override
@@ -38,16 +31,16 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
 
         final TransactionAndTimeStamp transactionAndTimeStamp = (TransactionAndTimeStamp) o;
 
-        if (!t.equals(transactionAndTimeStamp.t))
+        if (!transaction.equals(transactionAndTimeStamp.transaction))
             return false;
-        return timeStamp.equals(transactionAndTimeStamp.timeStamp);
+        return timestamp.equals(transactionAndTimeStamp.timestamp);
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = t.hashCode();
-        result = 29 * result + timeStamp.hashCode();
+        result = transaction.hashCode();
+        result = 29 * result + timestamp.hashCode();
         return result;
     }
 
@@ -55,15 +48,15 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
      *
      * @return
      */
-    public Transaction getT() {
-        return t;
+    public Transaction getTransaction() {
+        return transaction;
     }
 
     /**
      *
      * @return
      */
-    public GameTime getTimeStamp() {
-        return timeStamp;
+    public GameTime getTimestamp() {
+        return timestamp;
     }
 }

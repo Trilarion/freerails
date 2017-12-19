@@ -13,7 +13,6 @@ import java.awt.*;
 /**
  * This class draws a train from an overhead view.
  *
- * @author Luke Lindsay 13-Oct-2002
  */
 public class TrainRenderer {
     private final RenderersRoot rr;

@@ -1,16 +1,13 @@
-/*
- * Created on May 23, 2004
- */
 package freerails.world.top;
 
 import freerails.util.ListKey;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImPoint;
 import freerails.world.player.Player;
 import freerails.world.station.StationModel;
-import freerails.world.terrain.CityModel;
+import freerails.world.terrain.City;
 import freerails.world.track.FreerailsTile;
 import junit.framework.TestCase;
 
@@ -22,7 +19,6 @@ import static freerails.world.top.WorldDiffs.LISTID.SHARED_LISTS;
 /**
  * JUnit test for WorldDifferences.
  *
- * @author Luke
  */
 public class WorldDiffsTest extends TestCase {
     final Player player0 = new Player("player0", 0);
@@ -239,7 +235,7 @@ public class WorldDiffsTest extends TestCase {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
         WorldDiffs diffs = new WorldDiffs(underlyingWorld);
-        CityModel city = new CityModel("Bristol", 10, 4);
+        City city = new City("Bristol", 10, 4);
         diffs.add(SKEY.CITIES, city);
 
         Iterator<ListKey> it = diffs.getListDiffs();

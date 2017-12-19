@@ -21,7 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author cphillips
  */
 public class TrainSummaryJPanel extends javax.swing.JPanel implements
         ListCellRenderer, View {

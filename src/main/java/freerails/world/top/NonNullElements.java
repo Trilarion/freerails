@@ -4,7 +4,7 @@
  */
 package freerails.world.top;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.util.NoSuchElementException;
@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
  * Iterates over one of the lists on the world object only returning non null
  * elements.
  *
- * @author Luke
  */
 public class NonNullElements implements WorldIterator {
     private final KEY key;

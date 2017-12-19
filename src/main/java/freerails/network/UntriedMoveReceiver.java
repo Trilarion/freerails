@@ -7,7 +7,6 @@ import freerails.move.MoveStatus;
 /**
  * Lets the caller test moves.
  *
- * @author rob
  */
 public interface UntriedMoveReceiver extends MoveReceiver {
 

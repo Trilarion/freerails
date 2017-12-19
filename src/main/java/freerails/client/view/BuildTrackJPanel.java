@@ -36,7 +36,6 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
  * mode (build track, upgrade track, build station, bulldoze, and info mode) and
  * select the track/bridge/station type to use.
  *
- * @author Luke
  */
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 

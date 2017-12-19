@@ -1,9 +1,10 @@
 package freerails.world.common;
 
+import freerails.world.FreerailsSerializable;
+
 /**
  * Defines methods that encode a track configuration as an int.
  *
- * @author Luke
  */
 public interface FlatTrackTemplate extends FreerailsSerializable {
     /**

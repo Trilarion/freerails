@@ -18,7 +18,6 @@ import java.util.Iterator;
  * maximum number of consecutive nodes of this type (used for bridges and
  * tunnels).
  *
- * @author Luke Lindsay 09 October 2001
  */
 final public class TrackRuleImpl implements TrackRule {
     private static final long serialVersionUID = 3257281414171801401L;

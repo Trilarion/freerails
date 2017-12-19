@@ -11,7 +11,6 @@ import freerails.world.top.World;
 
 /**
  *
- * @author jkeller1
  */
 public class NextActivityMove implements Move {
 

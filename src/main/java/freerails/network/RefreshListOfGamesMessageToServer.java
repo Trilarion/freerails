@@ -4,7 +4,7 @@
  */
 package freerails.network;
 
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.MessageStatus;
 import freerails.controller.ServerControlInterface;
 
@@ -12,9 +12,8 @@ import freerails.controller.ServerControlInterface;
  * Tells the server to check the filesystem for changes to the available new
  * maps and saved games.
  *
- * @author Luke
  */
-public class RefreshListOfGamesMessage2Server implements Message2Server {
+public class RefreshListOfGamesMessageToServer implements MessageToServer {
 
     private static final long serialVersionUID = -8745171955732354168L;
     private final int id;
@@ -23,7 +22,7 @@ public class RefreshListOfGamesMessage2Server implements Message2Server {
      *
      * @param id
      */
-    public RefreshListOfGamesMessage2Server(final int id) {
+    public RefreshListOfGamesMessageToServer(final int id) {
         super();
         this.id = id;
     }
@@ -62,7 +61,7 @@ public class RefreshListOfGamesMessage2Server implements Message2Server {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final RefreshListOfGamesMessage2Server other = (RefreshListOfGamesMessage2Server) obj;
+        final RefreshListOfGamesMessageToServer other = (RefreshListOfGamesMessageToServer) obj;
         return id == other.id;
     }
 

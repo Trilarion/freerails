@@ -5,13 +5,13 @@
 package freerails.world.common;
 
 import freerails.util.Immutable;
+import freerails.world.FreerailsSerializable;
 
 import java.awt.*;
 
 /**
  * An immutable point.
  *
- * @author Luke
  */
 @Immutable
 public final class ImPoint implements FreerailsSerializable,

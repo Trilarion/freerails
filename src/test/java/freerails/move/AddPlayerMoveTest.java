@@ -9,7 +9,6 @@ import freerails.world.player.Player;
 
 /**
  *
- * @author jkeller1
  */
 public class AddPlayerMoveTest extends AbstractMoveTestCase {
 

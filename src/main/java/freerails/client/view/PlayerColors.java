@@ -9,7 +9,6 @@ import java.awt.*;
 /**
  * Stores a list of colours to use to represent different players.
  *
- * @author Luke
  */
 public class PlayerColors {
 

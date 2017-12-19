@@ -11,7 +11,6 @@ import java.awt.*;
  * Stores a DisplayMode and provides a customised implementation of toString
  * that can be used in menus.
  *
- * @author Luke Lindsay
  */
 public class MyDisplayMode {
 

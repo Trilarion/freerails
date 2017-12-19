@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 /**
  * Lets the caller access a series of Points as a series of IntLines.
  *
- * @author Luke Lindsay
  */
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     private static final long serialVersionUID = 3258411750679720758L;

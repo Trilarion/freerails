@@ -1,6 +1,3 @@
-/*
- * Created on Apr 17, 2004
- */
 package freerails.network;
 
 import junit.framework.TestCase;
@@ -8,7 +5,6 @@ import junit.framework.TestCase;
 /**
  * Junit test for FreerailsGameServer - tests logging on.
  *
- * @author Luke
  */
 public class FreerailsGameServerTest extends TestCase {
     private FreerailsGameServer server;

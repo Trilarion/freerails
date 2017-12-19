@@ -11,7 +11,6 @@ import javax.swing.*;
  * Implementation of GUIComponentFactory that returns 'blank' components - used
  * for testing the layout of ClientJFrame.
  *
- * @author Luke
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     private final JLabel datejLabel;

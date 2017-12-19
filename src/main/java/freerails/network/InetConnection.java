@@ -1,9 +1,6 @@
-/*
- * Created on Apr 13, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 import java.io.*;
 import java.net.Socket;
@@ -12,7 +9,6 @@ import java.net.Socket;
  * Provides methods send objects over the Internet, and connect and disconnect
  * gracefully.
  *
- * @author Luke
  */
 class InetConnection {
     private static final String CONNECTION_OPEN = "CONNECTION_OPEN";

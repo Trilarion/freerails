@@ -9,7 +9,6 @@ import freerails.world.common.ImInts;
 /**
  * Defines methods to access a train's schedule.
  *
- * @author Luke Lindsay
  */
 public interface Schedule {
 

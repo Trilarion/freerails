@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
 /**
  * This junit TestCase tests NonNullElements.
  *
- * @author Luke
  */
 public class NonNullElementsTest extends TestCase {
     World w;

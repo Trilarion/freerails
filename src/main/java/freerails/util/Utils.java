@@ -1,6 +1,3 @@
-/*
- * Created on Jun 26, 2004
- */
 package freerails.util;
 
 import java.io.*;
@@ -11,7 +8,6 @@ import java.util.StringTokenizer;
 /**
  * A bunch of static methods.
  *
- * @author Luke
  */
 strictfp public class Utils {
 

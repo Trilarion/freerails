@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 /**
  *
- * @author jkeller1
  */
 public class ListKey implements Comparable<ListKey>, Serializable {
 

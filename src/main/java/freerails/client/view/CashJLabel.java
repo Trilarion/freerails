@@ -16,7 +16,6 @@ import java.awt.*;
 /**
  * This JLabel shows the amount of cash available.
  *
- * @author Luke
  */
 public class CashJLabel extends JLabel implements View {
     private static final long serialVersionUID = 3257853181542412341L;

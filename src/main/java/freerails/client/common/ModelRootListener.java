@@ -7,7 +7,6 @@ package freerails.client.common;
 import freerails.controller.ModelRoot;
 
 /**
- * @author Luke
  */
 public interface ModelRootListener {
 

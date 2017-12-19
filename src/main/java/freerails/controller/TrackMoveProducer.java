@@ -16,7 +16,6 @@ import java.util.Stack;
 /**
  * Provides methods that generate moves that build, upgrade, and remove track.
  *
- * @author Luke
  */
 final public class TrackMoveProducer {
 

@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 /**
  * Exposes a path stored as an array of x points and an array of y points.
  *
- * @author Luke
  */
 public class SimplePathIteratorImpl implements FreerailsPathIterator {
     private static final long serialVersionUID = 3618420406261003576L;

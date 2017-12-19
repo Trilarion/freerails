@@ -1,18 +1,14 @@
-/*
- * Created on Apr 11, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 import java.io.IOException;
 
 /**
  * Defines the methods the server can use to send messages to the client.
  *
- * @author Luke
  */
-public interface Connection2Client {
+public interface ConnectionToClient {
     /**
      * Returns true if this connection is open.
      * @return 
@@ -55,7 +51,7 @@ public interface Connection2Client {
     /**
      * Disconnect from the client. When this method returns, calling isOpen() on
      * this object returns false <b>and</b> calling isOpen() on the
-     * corresponding Connection2Server held by the client also returns false.
+     * corresponding ConnectionToServer held by the client also returns false.
      *
      * @throws IOException if
      */

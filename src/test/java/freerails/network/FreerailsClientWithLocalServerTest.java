@@ -1,6 +1,3 @@
-/*
- * Created on Apr 18, 2004
- */
 package freerails.network;
 
 import freerails.controller.*;
@@ -10,7 +7,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.world.accounts.Receipt;
 import freerails.world.accounts.Transaction;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImStringList;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
@@ -22,7 +19,6 @@ import junit.framework.TestCase;
  * This test uses clients connected to a local server. This means anything sent
  * to the server arrives instantly, which makes writing the test easier.
  *
- * @author Luke
  * @see FreerailsClientTest
  */
 public class FreerailsClientWithLocalServerTest extends TestCase {
@@ -112,7 +108,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
                 .getProperty(ClientProperty.MAPS_AVAILABLE);
 
         final int commandID = 66;
-        Message2Server message2 = new NewGameMessage2Server(commandID, mapNames
+        MessageToServer message2 = new NewGameMessageToServer(commandID, mapNames
                 .get(0));
         client0.write(message2);
         assertTrue(server.isNewPlayersAllowed());
@@ -125,7 +121,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
          * gets called.
          */
         FreerailsSerializable obj = client0.read();
-        Message2Client cc = (Message2Client) obj;
+        MessageToClient cc = (MessageToClient) obj;
         client0.write(cc.execute(client0));
 
         obj = client0.read();
@@ -194,7 +190,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             ImStringList mapNames = (ImStringList) client0
                     .getProperty(ClientProperty.MAPS_AVAILABLE);
-            Message2Server message2 = new NewGameMessage2Server(99, mapNames
+            MessageToServer message2 = new NewGameMessageToServer(99, mapNames
                     .get(0));
             client0.write(message2);
             server.update();
@@ -272,7 +268,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             ImStringList mapNames = (ImStringList) client0
                     .getProperty(ClientProperty.MAPS_AVAILABLE);
-            Message2Server message2 = new NewGameMessage2Server(99, mapNames
+            MessageToServer message2 = new NewGameMessageToServer(99, mapNames
                     .get(0));
             client0.write(message2);
             server.update();
@@ -326,14 +322,14 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             // Start game
             ImStringList mapNames = (ImStringList) client0
                     .getProperty(ClientProperty.MAPS_AVAILABLE);
-            Message2Server newGameMessage2 = new NewGameMessage2Server(
+            MessageToServer newGameMessage2 = new NewGameMessageToServer(
                     commandID++, mapNames.get(0));
             MessageStatus cm = newGameMessage2.execute(server);
             assertTrue(cm.isSuccessful());
 
             // Save game and stop server
             String savedGameName = "game1";
-            Message2Server saveGameMessage2 = new SaveGameMessage2Server(
+            MessageToServer saveGameMessage2 = new SaveGameMessageToServer(
                     commandID++, savedGameName);
             cm = saveGameMessage2.execute(server);
             assertTrue(cm.isSuccessful());

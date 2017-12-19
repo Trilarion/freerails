@@ -18,7 +18,6 @@ import static freerails.world.common.Step.*;
 
 /**
  *
- * @author jkeller1
  */
 public class TrackBuildingTest extends TestCase {
 

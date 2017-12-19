@@ -8,7 +8,7 @@
  * <p>(1) The classes need to be serializable so that the game state can be sent
  * over a network from the server to the client when the game starts and so that
  * game states can be loaded and saved to disk. To achieve this, they should implement
- * <code>freerails.world.common.FreerailsSerializable.</code></p>
+ * <code>freerails.world.FreerailsSerializable.</code></p>
  * <p>(2) The classes should override the equals method to test for logical equality.
  * (Two objects are logical equal if their fields have the same values.) Logical
  * equality should survive serialization: i.e. if object A is serialized and then
@@ -34,6 +34,6 @@
  * parts. See Bloch, <em>Effective Java</em>, item 13 or <a
  * href="http://courses.dce.harvard.edu/%7Ecscie160/EffectiveJava.htm" target="_blank">this
  * page</a>.<br>
- * </p>
+ *
  */
 package freerails.world;

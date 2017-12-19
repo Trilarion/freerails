@@ -23,7 +23,6 @@ import java.util.List;
 /**
  * Finds the best route to build track between two points.
  *
- * @author Luke
  */
 public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class

@@ -1,18 +1,14 @@
-/*
- * Created on Apr 18, 2004
- */
 package freerails.network;
 
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.MessageStatus;
 import freerails.controller.ServerControlInterface;
 
 /**
  * Request to start a game on a new map.
  *
- * @author Luke
  */
-public class NewGameMessage2Server implements Message2Server {
+public class NewGameMessageToServer implements MessageToServer {
     private static final long serialVersionUID = 3256723961743422513L;
 
     private final int id;
@@ -24,7 +20,7 @@ public class NewGameMessage2Server implements Message2Server {
      * @param id
      * @param s
      */
-    public NewGameMessage2Server(int id, String s) {
+    public NewGameMessageToServer(int id, String s) {
         this.id = id;
         this.mapName = s;
     }
@@ -65,14 +61,14 @@ public class NewGameMessage2Server implements Message2Server {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof NewGameMessage2Server))
+        if (!(o instanceof NewGameMessageToServer))
             return false;
 
-        final NewGameMessage2Server newGameMessage2Server = (NewGameMessage2Server) o;
+        final NewGameMessageToServer newGameMessageToServer = (NewGameMessageToServer) o;
 
-        if (id != newGameMessage2Server.id)
+        if (id != newGameMessageToServer.id)
             return false;
-        return mapName.equals(newGameMessage2Server.mapName);
+        return mapName.equals(newGameMessageToServer.mapName);
     }
 
     @Override

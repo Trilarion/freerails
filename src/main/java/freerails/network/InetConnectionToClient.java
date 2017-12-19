@@ -1,6 +1,6 @@
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -8,17 +8,16 @@ import java.net.Socket;
 /**
  * Lets the server send messages to a client over the Internet.
  *
- * @author Luke
  */
-public class InetConnection2Client extends AbstractInetConnection implements
-        Connection2Client {
+public class InetConnectionToClient extends AbstractInetConnection implements
+        ConnectionToClient {
 
     /**
      *
      * @param s
      * @throws IOException
      */
-    public InetConnection2Client(Socket s) throws IOException {
+    public InetConnectionToClient(Socket s) throws IOException {
         super(s);
     }
 
@@ -37,6 +36,6 @@ public class InetConnection2Client extends AbstractInetConnection implements
 
     @Override
     String getThreadName() {
-        return "InetConnection2Client";
+        return "InetConnectionToClient";
     }
 }

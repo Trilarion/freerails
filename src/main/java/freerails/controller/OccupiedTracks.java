@@ -30,7 +30,6 @@ import java.util.*;
 
 /**
  *
- * @author jkeller1
  */
 public class OccupiedTracks {
 

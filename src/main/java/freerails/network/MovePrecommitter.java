@@ -8,7 +8,7 @@ import freerails.controller.PreMove;
 import freerails.controller.PreMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.player.Player;
 import freerails.world.top.World;
 import org.apache.log4j.Logger;
@@ -23,7 +23,6 @@ import java.util.LinkedList;
  * {@code fromServer(.)} when a Move or MoveStatus has been received from
  * the server.
  *
- * @author Luke
  */
 public class MovePrecommitter {
     private static final Logger logger = Logger

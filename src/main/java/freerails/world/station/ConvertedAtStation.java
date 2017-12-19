@@ -1,12 +1,11 @@
 package freerails.world.station;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 
 /**
  * Records which cargos are converted to other cargos at a station.
  *
- * @author Luke
  */
 public class ConvertedAtStation implements FreerailsSerializable {
     private static final long serialVersionUID = 3690754012076978231L;

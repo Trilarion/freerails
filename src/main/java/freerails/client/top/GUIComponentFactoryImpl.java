@@ -36,7 +36,6 @@ import java.util.Random;
 /**
  * Creates and wires up the GUI components.
  *
- * @author Luke
  */
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
         WorldMapListener, WorldListListener {
@@ -620,11 +619,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     /**
      * Called when a new game is started or a game is loaded.
-     * <p>
+     *
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
-     * </p>
+     *
      * @param vl
      * @param w
      * @throws java.io.IOException

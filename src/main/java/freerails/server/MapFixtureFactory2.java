@@ -2,7 +2,6 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
-import freerails.server.common.TileSetFactory;
 import freerails.server.parser.Track_TilesHandlerImpl;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameSpeed;
@@ -17,7 +16,6 @@ import java.net.URL;
 /**
  * Stores a static world object and provides copies to clients.
  *
- * @author Luke Lindsay
  */
 public class MapFixtureFactory2 {
 

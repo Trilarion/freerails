@@ -10,17 +10,15 @@ import java.io.IOException;
 /**
  * The class reads XML documents according to specified DTD and translates all
  * related events into Track_TilesHandler events.
- * <p>
+ *
  * Usage sample:
- * <p>
+ *
  * <pre>
  *      Track_TilesParser parser = new Track_TilesParser(...);
  *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
- * <p>
- * Date: 21 January 2002 18:00
  *
- * @author lindsal
+ *
  */
 final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private static final Logger logger = Logger

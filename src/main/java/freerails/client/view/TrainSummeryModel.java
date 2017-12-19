@@ -31,7 +31,6 @@ import java.util.Map;
 
 /**
  *
- * @author jkeller1
  */
 public class TrainSummeryModel {
 

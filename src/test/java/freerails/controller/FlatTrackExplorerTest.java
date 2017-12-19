@@ -14,10 +14,9 @@ import java.util.HashSet;
 
 /**
  * JUnit test for FlatTrackExplorer.
- * <p>
+ *
  * 24-Nov-2002
  *
- * @author Luke Lindsay
  */
 public class FlatTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);

@@ -11,7 +11,6 @@ import freerails.world.top.ReadOnlyWorld;
 /**
  * Not yet implemented
  *
- * @author Luke
  */
 public class FinancialMoveProducer {
 

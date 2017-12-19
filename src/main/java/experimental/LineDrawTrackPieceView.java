@@ -13,7 +13,6 @@ import java.awt.*;
  * This TrackPieceRenderer renders track pieces by drawing lines so avoids the
  * need to load images.
  *
- * @author Luke Lindsay
  */
 public class LineDrawTrackPieceView implements
         freerails.client.renderer.TrackPieceRenderer {

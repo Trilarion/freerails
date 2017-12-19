@@ -12,7 +12,6 @@ import java.awt.*;
  * This class implements the TrackPieceView interface, but intentionally does
  * nothing. Its methods are called when drawing tiles with no track.
  *
- * @author Luke
  */
 final public class NullTrackPieceRenderer implements TrackPieceRenderer {
 

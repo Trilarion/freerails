@@ -11,7 +11,6 @@ import junit.framework.TestCase;
 import static freerails.server.MapFixtureFactory2.getCopy;
 
 /**
- * @author Luke Lindsay
  */
 public class MapFixtureFactory2Test extends TestCase {
     World w1;

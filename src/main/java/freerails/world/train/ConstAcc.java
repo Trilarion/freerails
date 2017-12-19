@@ -5,11 +5,10 @@
 package freerails.world.train;
 
 import freerails.util.Utils;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  *
- * @author jkeller1
  */
 strictfp public class ConstAcc implements FreerailsSerializable,
         SpeedAgainstTime {

@@ -9,10 +9,9 @@ import java.util.Map;
 /**
  * This event queue is synchronized on the MUTEX. This lets one control when
  * events can be dispatched.
- * <p>
+ *
  * Note, changed to be a singleton to get it working on pre 1.4.2 VMs.
  *
- * @author Luke
  */
 final public class SynchronizedEventQueue extends EventQueue {
 

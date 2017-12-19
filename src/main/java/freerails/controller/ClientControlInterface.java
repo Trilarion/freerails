@@ -1,6 +1,3 @@
-/*
- * Created on Apr 14, 2004
- */
 package freerails.controller;
 
 import freerails.world.common.FreerailsMutableSerializable;
@@ -9,10 +6,9 @@ import java.io.Serializable;
 
 /**
  * Defines the methods that the server can call on a client using a
- * Message2Client.
+ * MessageToClient.
  *
- * @author Luke
- * @see Message2Client
+ * @see MessageToClient
  */
 public interface ClientControlInterface {
 

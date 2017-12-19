@@ -3,7 +3,7 @@ package freerails.client.view;
 import freerails.client.common.Painter;
 import freerails.client.renderer.*;
 import freerails.controller.ModelRoot;
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.top.ReadOnlyWorld;
 
 import java.awt.*;
@@ -11,7 +11,6 @@ import java.awt.*;
 /**
  * Draws the main map, that is the terrain, track, trains, station names etc.
  *
- * @author Luke
  */
 public class DetailMapRenderer implements MapRenderer {
     private static final boolean OSXWorkaround = (System

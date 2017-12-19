@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public interface List3D<T> extends Serializable {

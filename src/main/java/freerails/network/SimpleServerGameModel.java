@@ -14,7 +14,6 @@ import java.io.ObjectOutputStream;
 /**
  * A ServerGameModel that has a world object but no automation.
  *
- * @author Luke
  */
 public class SimpleServerGameModel implements ServerGameModel {
     private static final long serialVersionUID = 3546074757457131826L;

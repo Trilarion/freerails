@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public class List1DImpl<T> implements List1D<T> {

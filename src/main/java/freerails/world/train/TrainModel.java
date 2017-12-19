@@ -1,12 +1,11 @@
 package freerails.world.train;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 
 /**
  * Represents a train.
  *
- * @author Luke
  */
 public class TrainModel implements FreerailsSerializable {
 

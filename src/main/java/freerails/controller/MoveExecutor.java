@@ -1,6 +1,3 @@
-/*
- * Created on Apr 10, 2004
- */
 package freerails.controller;
 
 import freerails.move.Move;
@@ -11,7 +8,6 @@ import freerails.world.top.ReadOnlyWorld;
 /**
  * Lets the caller try and execute Moves.
  *
- * @author Luke
  */
 public interface MoveExecutor {
 

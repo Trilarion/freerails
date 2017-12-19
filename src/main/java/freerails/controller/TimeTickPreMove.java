@@ -13,7 +13,6 @@ import java.io.ObjectStreamException;
 /**
  * Generates a TimeTickMove.
  *
- * @author Luke
  */
 @freerails.util.InstanceControlled
 public class TimeTickPreMove implements PreMove {

@@ -1,9 +1,6 @@
-/*
- * Created on Apr 13, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
 import java.io.EOFException;
@@ -14,7 +11,6 @@ import java.net.Socket;
  * This class has the code that is shared by the client and server versions of
  * InetConnection.
  *
- * @author Luke
  */
 abstract class AbstractInetConnection implements Runnable {
     private static final Logger logger = Logger

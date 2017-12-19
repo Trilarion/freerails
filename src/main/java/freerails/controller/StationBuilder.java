@@ -15,8 +15,7 @@ import java.util.NoSuchElementException;
  * Class to build a station at a given point, names station after nearest city.
  * If that name is taken then a "Junction" or "Siding" is added to the name.
  *
- * @author Luke Lindsay 08-Nov-2002
- * <p>
+ *
  * Updated 12th April 2003 by Scott Bennett to include nearest city names.
  */
 public class StationBuilder {

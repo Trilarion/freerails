@@ -3,7 +3,7 @@ package freerails.move;
 import freerails.util.ListKey;
 import freerails.world.accounts.Transaction;
 import freerails.world.common.Activity;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImList;
 import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
@@ -25,12 +25,11 @@ import static freerails.util.ListKey.Type.EndPoint;
 
 /**
  * A move that makes a number of changes to the map and to the lists.
- * <p>
+ *
  * WARNING: This class currently only handles the most common cases. A
  * UnsupportedOperationException is thrown if an appropriate move cannot be
  * generated.
  *
- * @author Luke
  */
 public class WorldDiffMove implements Move, MapUpdateMove {
 

@@ -17,7 +17,6 @@ import java.util.ArrayList;
  * A BuildTrackStrategy determines which track types to build (or upgrade to) on
  * different terrains.
  *
- * @author Luke
  */
 public class BuildTrackStrategy {
 

@@ -3,7 +3,6 @@ package freerails.server;
 /**
  * Stores a location and terrain type.
  *
- * @author Scott?
  */
 public class RandomTerrainValue {
     private final int x;

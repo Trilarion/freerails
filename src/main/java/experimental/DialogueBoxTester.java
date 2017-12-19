@@ -9,14 +9,14 @@ import freerails.controller.JFrameMinimumSizeEnforcer;
 import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
 import freerails.server.TileSetFactoryImpl;
-import freerails.server.common.TileSetFactory;
+import freerails.server.TileSetFactory;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBundle;
 import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.station.Demand4Cargo;
+import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
 import freerails.world.top.*;
 import freerails.world.train.MutableSchedule;
@@ -30,7 +30,6 @@ import java.io.IOException;
 /**
  * This class lets you test dialogue boxes without running the whole game.
  *
- * @author lindsal8
  */
 public class DialogueBoxTester extends javax.swing.JFrame {
 
@@ -111,7 +110,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             demandArray[i] = true;
         }
 
-        Demand4Cargo demand = new Demand4Cargo(demandArray);
+        DemandForCargo demand = new DemandForCargo(demandArray);
         bristol = new StationModel(bristol, demand);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(50, 100, "Bath",

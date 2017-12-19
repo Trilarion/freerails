@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Provides methods that render track pieces.
  *
- * @author Luke Lindsay
  * @see experimental.TrackTilesGenerator
  */
 public class TrackRenderer {

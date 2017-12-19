@@ -1,27 +1,20 @@
-/*
-  @author Scott Bennett
- * Date 31st March 2003
- * <p>
- * Class for a city. Simply storing the city name and x & y co-ords.
- * Possible potential for expansion?? Initial size of city, growth rate etc.???
- */
 package freerails.world.terrain;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * A city.
  *
- * @author Luke
+ * Simply storing the city name and x & y co-ords.
+ * Possible potential for expansion?? Initial size of city, growth rate etc.???
  */
-public class CityModel implements FreerailsSerializable {
+public class City implements FreerailsSerializable {
+
     private static final long serialVersionUID = 3256720697500709428L;
-
     private final String name;
-
     private final int x;
-
     private final int y;
+    // TODO replace x, y by Pair<> or Point2D<>
 
     /**
      *
@@ -29,7 +22,7 @@ public class CityModel implements FreerailsSerializable {
      * @param xx
      * @param yy
      */
-    public CityModel(String s, int xx, int yy) {
+    public City(String s, int xx, int yy) {
         name = s;
         x = xx;
         y = yy;
@@ -39,16 +32,16 @@ public class CityModel implements FreerailsSerializable {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof CityModel))
+        if (!(o instanceof City))
             return false;
 
-        final CityModel cityModel = (CityModel) o;
+        final City city = (City) o;
 
-        if (x != cityModel.x)
+        if (x != city.x)
             return false;
-        if (y != cityModel.y)
+        if (y != city.y)
             return false;
-        return name.equals(cityModel.name);
+        return name.equals(city.name);
     }
 
     @Override

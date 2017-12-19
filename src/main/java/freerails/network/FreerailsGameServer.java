@@ -1,13 +1,10 @@
-/*
- * Created on Apr 17, 2004
- */
 package freerails.network;
 
 import freerails.controller.*;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImStringList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -27,9 +24,8 @@ import java.util.Iterator;
  * moves and commands received from connected clients; sends moves and commands
  * to connected clients.
  *
- * @author Luke
  * @see InetConnectionAccepter
- * @see Connection2Client
+ * @see ConnectionToClient
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer,
         Runnable {
@@ -40,7 +36,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     private static final Logger logger = Logger
             .getLogger(FreerailsGameServer.class.getName());
-    private final HashMap<NameAndPassword, Connection2Client> acceptedConnections = new HashMap<>();
+    private final HashMap<NameAndPassword, ConnectionToClient> acceptedConnections = new HashMap<>();
     /**
      * The players who have confirmed that they have received the last copy of
      * the world object sent.
@@ -54,7 +50,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private int commandID = 0;
     /**
-     * ID of the last SetWorldMessage2Client sent out. Used to keep track of
+     * ID of the last SetWorldMessageToClient sent out. Used to keep track of
      * which clients have updated their world object to the current version.
      */
     private int confirmationID = Integer.MIN_VALUE; /*
@@ -100,7 +96,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      *
      * @param connection
      */
-    public synchronized void addConnection(Connection2Client connection) {
+    public synchronized void addConnection(ConnectionToClient connection) {
         String[] before = getPlayerNames();
         if (logger.isDebugEnabled()) {
             logger.debug("Adding connection..");
@@ -133,13 +129,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 }
 
                 /* Just send to the new client. */
-                Message2Client setMaps = new SetPropertyMessage2Client(
+                MessageToClient setMaps = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
                         new ImStringList(savedGamesManager.getNewMapNames()));
                 ImStringList savedGameNames = new ImStringList(
                         savedGamesManager.getSaveGameNames());
-                Message2Client setSaveGames = new SetPropertyMessage2Client(
+                MessageToClient setSaveGames = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.SAVED_GAMES,
                         savedGameNames);
@@ -154,7 +150,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                  * copy of the world object.
                  */
                 if (null != serverGameModel && null != getWorld()) {
-                    SetWorldMessage2Client command = new SetWorldMessage2Client(
+                    SetWorldMessageToClient command = new SetWorldMessageToClient(
                             confirmationID, getWorld());
                     connection.writeToClient(command);
                 }
@@ -191,7 +187,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         int numConnections = 0;
 
         while (it.hasNext()) {
-            Connection2Client connection = acceptedConnections.get(it.next());
+            ConnectionToClient connection = acceptedConnections.get(it.next());
 
             if (connection.isOpen()) {
                 numConnections++;
@@ -390,7 +386,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     private void removeConnection(NameAndPassword p) throws IOException {
         String[] before = getPlayerNames();
-        Connection2Client connection = acceptedConnections.get(p);
+        ConnectionToClient connection = acceptedConnections.get(p);
 
         /*
          * Fix for bug 1047439 Shutting down remote client crashes server We get
@@ -430,7 +426,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         try {
             savedGamesManager.saveGame(serverGameModel, saveGameName);
             String[] saves = savedGamesManager.getSaveGameNames();
-            Message2Client request = new SetPropertyMessage2Client(
+            MessageToClient request = new SetPropertyMessageToClient(
                     getNextClientCommandId(),
                     ClientControlInterface.ClientProperty.SAVED_GAMES,
                     new ImStringList(saves));
@@ -448,11 +444,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     /**
      * Sends the specified message to all connections except the specified one.
      */
-    private void send2AllExcept(Connection2Client dontSend2,
+    private void send2AllExcept(ConnectionToClient dontSend2,
                                 FreerailsSerializable message) {
 
         for (NameAndPassword p : acceptedConnections.keySet()) {
-            Connection2Client connection = acceptedConnections.get(p);
+            ConnectionToClient connection = acceptedConnections.get(p);
 
             if (dontSend2 != connection) {
                 try {
@@ -477,7 +473,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         /* Send the client the list of players. */
         String[] playerNames = getPlayerNames();
 
-        Message2Client request = new SetPropertyMessage2Client(
+        MessageToClient request = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.CONNECTED_CLIENTS,
                 new ImStringList(playerNames));
@@ -489,7 +485,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         /* Send the world to the clients. */
         confirmationID = getNextClientCommandId();
 
-        SetWorldMessage2Client command = new SetWorldMessage2Client(
+        SetWorldMessageToClient command = new SetWorldMessageToClient(
                 confirmationID, getWorld());
 
         send2All(command);
@@ -543,15 +539,15 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
         try {
             for (NameAndPassword player : acceptedConnections.keySet()) {
-                Connection2Client connection = acceptedConnections.get(player);
+                ConnectionToClient connection = acceptedConnections.get(player);
 
                 if (connection.isOpen()) {
                     FreerailsSerializable[] messages = connection
                             .readFromClient();
 
                     for (FreerailsSerializable message : messages) {
-                        if (message instanceof Message2Server) {
-                            Message2Server message2 = (Message2Server) message;
+                        if (message instanceof MessageToServer) {
+                            MessageToServer message2 = (MessageToServer) message;
                             MessageStatus cStatus = message2.execute(this);
                             if (logger.isDebugEnabled()) {
                                 logger.debug(message2.toString());
@@ -633,13 +629,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      *
      */
     public void refreshSavedGames() {
-        Message2Client setMaps = new SetPropertyMessage2Client(
+        MessageToClient setMaps = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
                 new ImStringList(savedGamesManager.getNewMapNames()));
         ImStringList savedGameNames = new ImStringList(savedGamesManager
                 .getSaveGameNames());
-        Message2Client setSaveGames = new SetPropertyMessage2Client(
+        MessageToClient setSaveGames = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.SAVED_GAMES,
                 savedGameNames);

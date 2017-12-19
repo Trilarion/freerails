@@ -1,15 +1,11 @@
-/*
- * Created on Apr 17, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * A client sends an instance of this class to the server when it wishes to log
  * on.
  *
- * @author Luke
  */
 public class LogOnRequest implements FreerailsSerializable {
     private static final long serialVersionUID = 3257854263924240949L;

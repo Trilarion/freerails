@@ -1,16 +1,13 @@
-package freerails.world.common;
+package freerails.world;
 
 import java.io.Serializable;
 
 /**
  * This interface tags classes that can be sent between the client and the
  * server.
- * <p>
- * <b>
- * <p>
- * Every class that implements this interface should be immutable. </b>
  *
- * @author Luke
+ * <b>Every class that implements this interface should be immutable.</b>
+ *
  */
 public interface FreerailsSerializable extends Serializable {
 

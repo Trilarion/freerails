@@ -29,7 +29,6 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
  * Handles key presses and mouse movements on the map - responsible for moving
  * the cursor etc.
  *
- * @author Luke
  */
 public class UserInputOnMapController extends KeyAdapter {
 

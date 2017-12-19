@@ -13,7 +13,7 @@ import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
 import freerails.world.common.ImInts;
 import freerails.world.player.Player;
-import freerails.world.station.Demand4Cargo;
+import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
 import freerails.world.top.*;
 import freerails.world.train.TrainModel;
@@ -23,7 +23,6 @@ import junit.framework.TestCase;
  * This Junit TestCase tests whether a train picks up and drops off the right
  * cargo at a station.
  *
- * @author Luke Lindsay
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, 0, 0,
@@ -194,7 +193,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set the station to demand cargo type 0.
         StationModel station = (StationModel) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
-        Demand4Cargo demand = new Demand4Cargo(new boolean[]{true, false,
+        DemandForCargo demand = new DemandForCargo(new boolean[]{true, false,
                 false, false});
         station = new StationModel(station, demand);
         w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
@@ -295,7 +294,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set station to demand cargo 0.
         StationModel station = (StationModel) w.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
-        Demand4Cargo demand = new Demand4Cargo(new boolean[]{true, false,
+        DemandForCargo demand = new DemandForCargo(new boolean[]{true, false,
                 false, false});
         station = new StationModel(station, demand);
         w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);

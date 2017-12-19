@@ -1,7 +1,3 @@
-/*
- * Created on 02-Aug-2003
- *
- */
 package freerails.world.accounts;
 
 import freerails.world.common.Money;
@@ -9,24 +5,19 @@ import freerails.world.common.Money;
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
  *
- * @author Luke Lindsay
  */
 public class AddItemTransaction implements Transaction {
 
     private static final long serialVersionUID = 3690471411852326457L;
-
     private final Money amount;
-
     /**
      * For example track.
      */
     private final Category category;
-
     /**
      * For example, 4 tiles.
      */
     private final int quantity;
-
     /**
      * For example, standard track.
      */
@@ -39,8 +30,7 @@ public class AddItemTransaction implements Transaction {
      * @param quantity
      * @param amount
      */
-    public AddItemTransaction(Category category, int type, int quantity,
-                              Money amount) {
+    public AddItemTransaction(Category category, int type, int quantity, Money amount) {
         this.category = category;
         this.type = type;
         this.quantity = quantity;

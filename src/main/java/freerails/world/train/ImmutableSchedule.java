@@ -4,14 +4,13 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 import freerails.world.common.ImList;
 
 /**
  * A Schedule that is immutable.
  *
- * @author Luke Lindsay
  */
 public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private static final long serialVersionUID = 3977858458324318264L;

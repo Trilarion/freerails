@@ -9,7 +9,6 @@ import freerails.world.common.Money;
 /**
  * A credit.
  *
- * @author Luke Lindsay
  */
 public class Receipt implements Transaction {
     private static final long serialVersionUID = 3617576007066924596L;

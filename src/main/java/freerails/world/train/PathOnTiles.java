@@ -5,6 +5,7 @@
 package freerails.world.train;
 
 import freerails.util.Pair;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.*;
 
 import java.util.Iterator;
@@ -17,7 +18,6 @@ import static freerails.world.common.Step.TILE_DIAMETER;
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
  *
- * @author Luke
  */
 strictfp public class PathOnTiles implements FreerailsSerializable {
 

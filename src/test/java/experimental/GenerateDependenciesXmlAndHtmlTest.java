@@ -1,6 +1,3 @@
-/*
- * Created on Feb 20, 2004
- */
 package experimental;
 
 import junit.framework.TestCase;
@@ -8,7 +5,6 @@ import junit.framework.TestCase;
 /**
  * JUnit test for GenerateDependenciesXmlAndHtml.
  *
- * @author Luke
  */
 public class GenerateDependenciesXmlAndHtmlTest extends TestCase {
 

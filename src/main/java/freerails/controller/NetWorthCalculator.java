@@ -10,7 +10,6 @@ import freerails.world.top.TransactionAggregator;
  * A TransactionAggregator that calculates the networth of a player by totalling
  * the value of their assets.
  *
- * @author Luke
  */
 public class NetWorthCalculator extends TransactionAggregator {
 

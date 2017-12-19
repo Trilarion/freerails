@@ -1,18 +1,16 @@
-/*
- * Created on 04-Jul-2005
- *
- */
 package freerails.world.common;
 
 import freerails.util.Immutable;
+import freerails.world.FreerailsSerializable;
 
 import java.util.Arrays;
 import java.util.List;
 
+// TODO replace this with Javas Collections.unmodifiableList
+
 /**
  * An immutable List
  *
- * @author Luke
  * @param <E>
  */
 @Immutable

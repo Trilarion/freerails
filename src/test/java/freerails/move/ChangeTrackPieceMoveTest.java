@@ -14,7 +14,6 @@ import freerails.world.track.*;
 /**
  * JUnit test.
  *
- * @author Luke
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 

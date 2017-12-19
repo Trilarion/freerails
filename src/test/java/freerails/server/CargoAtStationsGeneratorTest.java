@@ -1,6 +1,3 @@
-/*
- * Created on Mar 14, 2004
- */
 package freerails.server;
 
 import junit.framework.TestCase;
@@ -8,7 +5,6 @@ import junit.framework.TestCase;
 /**
  * JUnit test for CargoAtStationsGenerator.
  *
- * @author Luke
  */
 public class CargoAtStationsGeneratorTest extends TestCase {
 

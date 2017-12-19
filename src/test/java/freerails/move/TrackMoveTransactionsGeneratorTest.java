@@ -16,7 +16,6 @@ import junit.framework.TestCase;
 /**
  * JUnit test case for TrackMoveTransactionsGenerator.
  *
- * @author Luke Lindsay
  */
 public class TrackMoveTransactionsGeneratorTest extends TestCase {
     private World world;

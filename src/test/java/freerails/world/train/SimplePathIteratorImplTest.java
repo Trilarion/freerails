@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 /**
  * Junit test.
  *
- * @author Luke
  */
 public class SimplePathIteratorImplTest extends TestCase {
 

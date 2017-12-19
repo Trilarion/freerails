@@ -1,6 +1,6 @@
 package freerails.world.track;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.terrain.TerrainTile;
 
 import java.io.ObjectStreamException;
@@ -8,10 +8,9 @@ import java.util.HashMap;
 
 /**
  * A tile on the map.
- * <p>
+ *
  * Instances are stored in a HashMap to avoid creating 100,000s of objects.
  *
- * @author Luke
  */
 public class FreerailsTile implements TerrainTile, FreerailsSerializable {
 

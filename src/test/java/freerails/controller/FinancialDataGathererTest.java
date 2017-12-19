@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 /**
  * JUnit test for FinancialDataGatherer.
  *
- * @author Luke
  */
 public class FinancialDataGathererTest extends TestCase {
     World w;

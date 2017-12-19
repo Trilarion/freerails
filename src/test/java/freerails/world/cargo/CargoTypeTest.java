@@ -1,6 +1,3 @@
-/*
- * Created on Mar 28, 2004
- */
 package freerails.world.cargo;
 
 import freerails.world.cargo.CargoType.Categories;
@@ -9,7 +6,6 @@ import junit.framework.TestCase;
 /**
  * JUnit test for CargoType.
  *
- * @author Luke
  */
 public class CargoTypeTest extends TestCase {
 

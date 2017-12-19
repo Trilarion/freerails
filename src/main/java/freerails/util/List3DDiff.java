@@ -10,7 +10,6 @@ import java.util.SortedMap;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {

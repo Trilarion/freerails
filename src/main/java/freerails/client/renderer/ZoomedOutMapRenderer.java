@@ -28,8 +28,6 @@ import java.awt.image.BufferedImage;
 /**
  * This class draws the overview map.
  *
- * @author Luke Lindsay
- * @author Robert Tuck
  */
 final public class ZoomedOutMapRenderer implements MapRenderer {
     private final int imageWidth;

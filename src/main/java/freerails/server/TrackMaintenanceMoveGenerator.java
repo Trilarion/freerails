@@ -23,7 +23,6 @@ import static freerails.world.accounts.Transaction.Category.*;
  * This class iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
  *
- * @author Luke Lindsay
  */
 public class TrackMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;

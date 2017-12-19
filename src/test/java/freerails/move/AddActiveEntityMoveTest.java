@@ -10,7 +10,6 @@ import freerails.world.top.WorldImplTest;
 
 /**
  *
- * @author jkeller1
  */
 public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
 

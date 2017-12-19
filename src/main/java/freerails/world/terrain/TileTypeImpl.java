@@ -1,8 +1,3 @@
-/*
- *  Tile.java
- *
- *  Created on 04 July 2001, 06:42
- */
 package freerails.world.terrain;
 
 import freerails.world.common.ImList;
@@ -11,17 +6,13 @@ import freerails.world.common.Money;
 /**
  * Represents a type of terrain.
  *
- * @author Luke Lindsay 16 August 2001
  */
 final public class TileTypeImpl implements TerrainType {
     private static final long serialVersionUID = 4049919380945253945L;
 
     private final ImList<Consumption> consumption;
-
     private final ImList<Conversion> conversion;
-
     private final ImList<Production> production;
-
     private final int rgb;
     private final int rightOfWay;
     private final TerrainType.Category terrainCategory;

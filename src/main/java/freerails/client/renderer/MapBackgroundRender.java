@@ -7,7 +7,7 @@ package freerails.client.renderer;
 
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.FreerailsTile;
@@ -22,7 +22,6 @@ import java.awt.*;
  * the map view. At present it is composed of two layers: the terrain layer and
  * the track layer.
  *
- * @author Luke Lindsay 21 September 2001
  */
 final public class MapBackgroundRender implements MapLayerRenderer {
     private static final Logger logger = Logger
@@ -132,8 +131,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     /**
      * This innner class represents a view of the track on the map.
      *
-     * @author Luke Lindsay 21 September 2001
-     */
+         */
     final public class TrackLayer implements MapLayerRenderer {
         private final ReadOnlyWorld w;
 
@@ -238,8 +236,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     /**
      * This inner class represents the terrain of the map.
      *
-     * @author Luke Lindsay 21 September 2001
-     */
+         */
     final public class TerrainLayer implements MapLayerRenderer {
         private final TileRendererList tiles;
 

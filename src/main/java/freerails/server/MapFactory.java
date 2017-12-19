@@ -20,9 +20,7 @@ import java.util.Vector;
 /**
  * This class has a static method that converts an image file into a map.
  *
- * @author Luke
- * @author Scott Bennett (Updated 23rd Jan 2004)
- * <p>
+ *
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.
  */

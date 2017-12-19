@@ -22,7 +22,6 @@ import java.util.NoSuchElementException;
 /**
  * Generates a move that adds or upgrades a station.
  *
- * @author Luke
  */
 public class AddStationPreMove implements PreMove {
 

@@ -9,7 +9,6 @@ import freerails.world.common.ImList;
 
 /**
  *
- * @author jkeller1
  */
 public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         SpeedAgainstTime {
@@ -105,7 +104,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         }
         SpeedAgainstTime acc = values.get(tai.i);
         if (tai.offset >= acc.getT()) {
-            // Note, it is possible for tai.offset > acc.getT()
+            // Note, it is possible for tai.offset > acc.getTransaction()
             // even though we called checkT(t) above
             s += acc.getS();
         } else {

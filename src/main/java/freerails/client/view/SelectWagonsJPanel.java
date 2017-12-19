@@ -21,7 +21,6 @@ import java.util.ArrayList;
 /**
  * This JPanel lets the user add wagons to a train.
  *
- * @author lindsal8
  */
 public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
@@ -257,7 +256,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
-        World2ListModelAdapter w2lma = new World2ListModelAdapter(
+        WorldToListModelAdapter w2lma = new WorldToListModelAdapter(
                 mr.getWorld(), SKEY.CARGO_TYPES);
         this.wagonTypesJList.setModel(w2lma);
         this.rr = vl;
@@ -292,7 +291,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         final RenderersRoot rr;
         private final Component[] labels;
 
-        public WagonCellRenderer(World2ListModelAdapter w2lma, RenderersRoot s) {
+        public WagonCellRenderer(WorldToListModelAdapter w2lma, RenderersRoot s) {
             rr = s;
 
             labels = new Component[w2lma.getSize()];

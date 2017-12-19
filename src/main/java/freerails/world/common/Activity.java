@@ -4,9 +4,10 @@
  */
 package freerails.world.common;
 
+import freerails.world.FreerailsSerializable;
+
 /**
  *
- * @author jkeller1
  * @param <E>
  */
 public interface Activity<E extends FreerailsSerializable> extends

@@ -10,7 +10,6 @@ import java.util.Random;
 
 /**
  *
- * @author jkeller1
  */
 public class ConstAccTest extends TestCase {
 

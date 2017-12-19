@@ -21,7 +21,6 @@ import static freerails.world.accounts.StockTransaction.STOCK_BUNDLE_SIZE;
  * 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other
  * players] Let profit last year = 100,000 in the first year.
  *
- * @author Luke
  */
 public class StockPriceCalculator {
     private final ReadOnlyWorld w;

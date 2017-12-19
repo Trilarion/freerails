@@ -7,16 +7,15 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.network.SaveGameMessage2Server;
+import freerails.network.SaveGameMessageToServer;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
 /**
- * @author Luke
  */
 public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
@@ -112,7 +111,7 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
         String filename = fileNameTextField.getText();
         // Save the current game using the string
         modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game " + filename);
-        Message2Server message2 = new SaveGameMessage2Server(1, filename
+        MessageToServer message2 = new SaveGameMessageToServer(1, filename
                 + ".sav");
 
         modelRoot.sendCommand(message2);

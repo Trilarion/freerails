@@ -19,7 +19,6 @@ import java.awt.event.ActionListener;
  * This GUIComponentFactory creates simple components that can be used to test
  * the layout of the client jFrame without running the whole game.
  *
- * @author Luke Lindsay
  */
 public class SimpleComponentFactoryImpl2 implements
         freerails.client.top.GUIComponentFactory {

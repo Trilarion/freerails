@@ -1,12 +1,11 @@
 package freerails.world.station;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 
 /**
  * This class represents the supply at a station.
  *
- * @author Luke
  */
 public class SupplyAtStation implements FreerailsSerializable {
     private static final long serialVersionUID = 4049918272826847286L;

@@ -10,7 +10,6 @@ import java.awt.*;
  * JPanel that displays the overview map and a rectangle showing the region of
  * the map currently displayed on the main view.
  *
- * @author Luke
  */
 public class OverviewMapJComponent extends JPanel {
     private static final long serialVersionUID = 3258697585148376888L;

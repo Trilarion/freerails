@@ -21,7 +21,6 @@ import static freerails.world.common.Step.*;
 /**
  * JUnit test for MoveTrainPreMove, tests moving round a loop of track.
  *
- * @author Luke
  */
 public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 

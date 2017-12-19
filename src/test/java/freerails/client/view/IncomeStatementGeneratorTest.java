@@ -1,6 +1,3 @@
-/*
- * Created on Mar 28, 2004
- */
 package freerails.client.view;
 
 import freerails.world.accounts.DeliverCargoReceipt;
@@ -17,7 +14,6 @@ import junit.framework.TestCase;
 /**
  * JUnit tsst for IncomeStatementGenerator.
  *
- * @author Luke
  */
 public class IncomeStatementGeneratorTest extends TestCase {
     World w;

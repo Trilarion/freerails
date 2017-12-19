@@ -11,7 +11,6 @@ import java.util.HashSet;
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
  * object creation and garbage collection. 26-Nov-2002
  *
- * @author Luke Lindsay
  */
 public class SimpleAStarPathFinder implements Serializable,
         IncrementalPathFinder {

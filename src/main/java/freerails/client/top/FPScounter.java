@@ -7,7 +7,6 @@ import java.util.LinkedList;
  * Provides a method that draws a String showing the average FPS over the last
  * complete 5000ms interval.
  *
- * @author Luke
  */
 public class FPScounter {
 

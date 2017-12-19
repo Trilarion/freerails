@@ -12,7 +12,6 @@ import java.lang.reflect.Modifier;
 /**
  * JUnit test.
  *
- * @author Luke
  */
 public class SKEYTest extends TestCase {
 

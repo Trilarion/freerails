@@ -4,12 +4,11 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Stores the speed and status of a train immediately after an instant of time.
  *
- * @author Luke
  */
 public class SpeedTimeAndStatus implements FreerailsSerializable {
 

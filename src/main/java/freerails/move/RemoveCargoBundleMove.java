@@ -11,7 +11,6 @@ import freerails.world.top.KEY;
 /**
  * This move removes a cargo bundle from the cargo bundle list.
  *
- * @author Luke
  */
 public class RemoveCargoBundleMove extends RemoveItemFromListMove {
     private static final long serialVersionUID = 3762247522239723316L;

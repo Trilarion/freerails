@@ -1,13 +1,12 @@
 package freerails.world.track;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 
 /**
  * Represents the track connecting two adjacent tiles.
  *
- * @author Luke
  */
 public class TrackSection implements FreerailsSerializable {
 

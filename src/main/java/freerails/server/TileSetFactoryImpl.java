@@ -4,7 +4,6 @@
  */
 package freerails.server;
 
-import freerails.server.common.TileSetFactory;
 import freerails.server.parser.CargoAndTerrainHandlerImpl;
 import freerails.server.parser.CargoAndTerrainParser;
 import freerails.server.parser.RunTypesParser;
@@ -14,7 +13,6 @@ import freerails.world.top.World;
  * This class adds cargo and terrain types defined in an XML file to a World
  * object.
  *
- * @author Luke
  */
 public class TileSetFactoryImpl implements TileSetFactory {
 

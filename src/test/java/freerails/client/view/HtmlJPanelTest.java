@@ -1,6 +1,3 @@
-/*
- * Created on Mar 29, 2004
- */
 package freerails.client.view;
 
 import junit.framework.TestCase;
@@ -10,7 +7,6 @@ import java.util.HashMap;
 /**
  * Tests the populateTokens method on HtmlJPanel.
  *
- * @author Luke
  */
 public class HtmlJPanelTest extends TestCase {
 

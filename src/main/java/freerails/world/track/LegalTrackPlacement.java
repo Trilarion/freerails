@@ -5,7 +5,7 @@
  */
 package freerails.world.track;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImHashSet;
 import freerails.world.terrain.TerrainType;
 
@@ -16,7 +16,6 @@ import java.util.Iterator;
  * This class encapsulates the rules governing where, that is, on what terrain,
  * track of a given type can be built.
  *
- * @author lindsal
  */
 public final class LegalTrackPlacement implements FreerailsSerializable {
     private static final long serialVersionUID = 3616445687756437049L;

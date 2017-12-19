@@ -22,8 +22,6 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
- * @author smackay
- * @author Luke
  */
 public class BrokerJFrame extends javax.swing.JInternalFrame {
     private static final long serialVersionUID = 4121409622587815475L;

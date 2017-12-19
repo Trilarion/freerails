@@ -7,7 +7,6 @@ import java.awt.*;
 /**
  * Draws an icon to represent a track piece.
  *
- * @author Luke Lindsay 09 October 2001
  */
 public interface TrackPieceRenderer {
 

@@ -11,7 +11,6 @@ import java.awt.*;
  * All it does is display the current time in ms and display the number of
  * frames per second.
  *
- * @author Luke Lindsay
  */
 public class AnimationExpt extends JComponent {
 

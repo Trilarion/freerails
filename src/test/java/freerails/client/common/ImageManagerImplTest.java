@@ -4,7 +4,6 @@ package freerails.client.common;
 import junit.framework.TestCase;
 
 /**
- * @author Luke
  */
 public class ImageManagerImplTest extends TestCase {
 

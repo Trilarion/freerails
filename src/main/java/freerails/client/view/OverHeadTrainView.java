@@ -19,7 +19,6 @@ import java.awt.*;
 /**
  * Draws the trains on the main map.
  *
- * @author Luke
  */
 public class OverHeadTrainView implements Painter {
     private final TrainRenderer trainPainter;

@@ -2,7 +2,7 @@ package freerails.client.renderer;
 
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.common.ImPoint;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldDiffs;
@@ -15,8 +15,6 @@ import java.util.Iterator;
 /**
  * This class draws the track being build.
  *
- * @author MystiqueAgent
- * @author Luke
  */
 public class BuildTrackRenderer implements Painter {
 

@@ -17,7 +17,6 @@ import java.io.IOException;
  * Selects a tile icon to use based on the type of the tiles to the North, East,
  * South and West.
  *
- * @author Luke Lindsay
  */
 final public class RiverStyleTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {

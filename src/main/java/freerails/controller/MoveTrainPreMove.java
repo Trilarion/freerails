@@ -29,7 +29,6 @@ import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR
 /**
  * Generates moves for changes in train position and stops at stations.
  *
- * @author Luke
  */
 public class MoveTrainPreMove implements PreMove {
     private static final long serialVersionUID = 3545516188269491250L;

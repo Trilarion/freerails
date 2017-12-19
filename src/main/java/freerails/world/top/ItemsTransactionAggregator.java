@@ -1,6 +1,3 @@
-/*
- * Created on Mar 30, 2004
- */
 package freerails.world.top;
 
 import freerails.world.accounts.AddItemTransaction;
@@ -11,7 +8,6 @@ import freerails.world.player.FreerailsPrincipal;
 /**
  * Adds up the number of assets.
  *
- * @author Luke
  */
 public class ItemsTransactionAggregator extends TransactionAggregator {
 
@@ -148,8 +144,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     /**
      * Stores the quantities and monetary values of a series of items.
      *
-     * @author Luke
-     */
+         */
     public static class QuantitiesAndValues {
 
         /**

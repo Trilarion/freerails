@@ -10,12 +10,12 @@ import freerails.world.common.*;
 import java.util.ArrayList;
 
 /**
- * <p>
+ *
  * This immutable class provides methods that return a train's position and
  * speed at any time within an interval. An instance of this class will be
  * stored on the world object for each train rather the train's position. The
  * reasons for this are as follows.
- * <p>
+ *
  * <ol type="i">
  * <li> It decouples the number of game updates per second and number of frames
  * per second shown by the client. If the train's position were stored on the
@@ -24,12 +24,11 @@ import java.util.ArrayList;
  * displaying 50 FPS, the train's motion would still appear jerky since its
  * position would only change 10 times per second. </li>
  * <li>
- * <p>
+ *
  * It makes supporting low bandwidth networks easier since it allows the server
  * to send updates less frequently. </li>
- * </p>
  *
- * @author Luke
+ *
  * @see freerails.world.train.PathOnTiles
  * @see freerails.world.train.CompositeSpeedAgainstTime
  */

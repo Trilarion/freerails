@@ -9,9 +9,8 @@ import java.util.NoSuchElementException;
 /**
  * Maps keys to OneTileMoveVectors.
  *
- * @author Luke
  */
-public class KeyCode2OneTileMoveVector {
+public class KeyCodeToOneTileMoveVector {
 
     private static final HashMap<Integer, Step> keycode2vector = new HashMap<>();
 

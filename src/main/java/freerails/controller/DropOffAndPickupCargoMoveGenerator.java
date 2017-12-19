@@ -7,11 +7,11 @@ import freerails.move.TransferCargoAtStationMove;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.ConvertedAtStation;
-import freerails.world.station.Demand4Cargo;
+import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
@@ -30,8 +30,6 @@ import java.util.Iterator;
  * it stops at - it also handles cargo conversions that occur when cargo is
  * dropped off.
  *
- * @author Scott Bennett
- * @author Luke Lindsay Date Created: 4 June 2003
  */
 public class DropOffAndPickupCargoMoveGenerator {
     private final ReadOnlyWorld w;
@@ -90,7 +88,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             StationModel stationModel = (StationModel) w.get(principal,
                     KEY.STATIONS, nextStationId);
-            Demand4Cargo demand = stationModel.getDemand();
+            DemandForCargo demand = stationModel.getDemand();
 
             for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
                 // If this cargo is demanded at the next scheduled station.
@@ -234,7 +232,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             // if the cargo is demanded and its not from this station
             // originally...
-            Demand4Cargo demand = station.getDemand();
+            DemandForCargo demand = station.getDemand();
             int cargoType = cb.getCargoType();
 
             if ((demand.isCargoDemanded(cargoType))
@@ -309,8 +307,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     /**
      * Stores the type and quanity of cargo in a wagon.
      *
-     * @author Luke
-     */
+         */
     private static class WagonLoad implements Comparable<WagonLoad> {
         final int quantity;
 

@@ -31,11 +31,9 @@ import java.util.Properties;
 
 /**
  * Launcher GUI for both the server and/or client.
- * <p>
+ *
  * TODO The code in the switch statements needs reviewing.
  *
- * @author rtuck99@users.sourceforge.net
- * @author Luke
  */
 public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 

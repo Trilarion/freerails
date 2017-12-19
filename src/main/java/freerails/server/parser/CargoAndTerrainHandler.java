@@ -6,11 +6,11 @@ import org.xml.sax.SAXException;
 /**
  * Defines methods to handle parsing the cargo and terrain types XML.
  *
- * @author Luke
  */
 public interface CargoAndTerrainHandler {
     /**
      * An empty element event handling method.
+     *
      * @param meta
      * @throws org.xml.sax.SAXException
      */
@@ -26,12 +26,14 @@ public interface CargoAndTerrainHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_Tile() throws SAXException;
 
     /**
      * An empty element event handling method.
+     *
      * @param meta
      * @throws org.xml.sax.SAXException
      */
@@ -47,6 +49,7 @@ public interface CargoAndTerrainHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_Cargo_Types() throws SAXException;
@@ -61,6 +64,7 @@ public interface CargoAndTerrainHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_Terrain_Types() throws SAXException;
@@ -75,12 +79,14 @@ public interface CargoAndTerrainHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_Types() throws SAXException;
 
     /**
      * An empty element event handling method.
+     *
      * @param meta
      * @throws org.xml.sax.SAXException
      */
@@ -88,6 +94,7 @@ public interface CargoAndTerrainHandler {
 
     /**
      * An empty element event handling method.
+     *
      * @param meta
      * @throws org.xml.sax.SAXException
      */

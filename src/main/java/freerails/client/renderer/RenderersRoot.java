@@ -8,7 +8,6 @@ import java.io.IOException;
 /**
  * Provides access to the objects that render terrain, track, and trains.
  *
- * @author Luke
  */
 public interface RenderersRoot extends TileRendererList {
 

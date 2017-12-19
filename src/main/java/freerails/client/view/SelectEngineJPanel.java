@@ -20,7 +20,6 @@ import java.util.Map;
 /**
  * This JPanel lets the user select an engine from a list.
  *
- * @author lindsal8
  */
 public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
@@ -111,7 +110,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
 
-        jList1.setModel(new World2ListModelAdapter(mr.getWorld(),
+        jList1.setModel(new WorldToListModelAdapter(mr.getWorld(),
                 SKEY.ENGINE_TYPES));
         jList1.setCellRenderer(new TrainCellRenderer(vl));
         okjButton.addActionListener(closeAction);

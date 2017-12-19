@@ -17,12 +17,11 @@
   Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-package freerails.world;
+package freerails.client;
 
 /**
  * game constants
  *
- * @author Roland Spatzenegger
  */
 public final class Constants {
     /**

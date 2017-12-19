@@ -12,7 +12,6 @@ import javax.swing.*;
  * Displays text that can be selected with the mouse and copied to the
  * clipboard.
  *
- * @author Luke
  */
 public class CopyableTextJPanel extends javax.swing.JPanel {
 

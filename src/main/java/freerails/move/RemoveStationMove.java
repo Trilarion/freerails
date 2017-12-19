@@ -19,7 +19,6 @@ import java.util.ArrayList;
 /**
  * This Move removes a station from the station list and from the map.
  *
- * @author Luke
  */
 public class RemoveStationMove extends CompositeMove implements TrackMove {
     private static final long serialVersionUID = 3760847865429702969L;

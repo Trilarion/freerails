@@ -1,23 +1,22 @@
 package freerails.world.top;
 
 import freerails.util.Utils;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 import java.io.ObjectStreamException;
 
 /**
- * <p>
+ *
  * This class provides a set of keys to access the items of which there can only
  * be one instance in the game world in the game world (for example, the current
  * time).
- * </P>
- * <p>
- * <p>
+ *
+ *
+ *
  * It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
- * </p>
  *
- * @author Luke
+ *
  */
 @freerails.util.InstanceControlled
 public class ITEM implements FreerailsSerializable {

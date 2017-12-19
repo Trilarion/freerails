@@ -23,7 +23,6 @@ import java.awt.event.MouseEvent;
  * (4) Changes the mouse cursor to indicate that the rectangle on the overview
  * map is draggable when the mouse moves into the rectangle.
  *
- * @author Luke Lindsay
  */
 public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
     private final Point lastMouseLocation = new Point();

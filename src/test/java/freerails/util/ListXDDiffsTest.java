@@ -9,7 +9,6 @@ import java.util.TreeMap;
 
 /**
  *
- * @author jkeller1
  */
 public class ListXDDiffsTest extends ListXDTest {
 

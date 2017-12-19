@@ -15,7 +15,6 @@ import java.beans.PropertyChangeListener;
 /**
  * A JPanel that shows the players currently logged in to the server.
  *
- * @author Luke
  */
 public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
         PropertyChangeListener {

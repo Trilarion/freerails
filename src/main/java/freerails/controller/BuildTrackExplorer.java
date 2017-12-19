@@ -20,7 +20,6 @@ import java.util.NoSuchElementException;
  * GraphExplorer that explorers possible track placements, the ints it returns
  * are encoded PositionOnTrack objects.
  *
- * @author Luke
  */
 public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration
@@ -73,12 +72,12 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     * <p>
+     *
      * Tests whether we can build track in the direction specified by
      * m_direction.
-     * </p>
-     * <p>
-     * <p>
+     *
+     *
+     *
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
      * track can only be built on certain terrain types. (2) The direction we
@@ -86,7 +85,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * limits possible track configurations. (4) The terrain type of the current
      * tile - terrain type determines which track types and hence which track
      * configurations can be built.
-     * </p>
+     *
      */
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 /**
  * JUnit test.
  *
- * @author Luke
  */
 public class PathWalkerImplTest extends TestCase {
     FreerailsPathIterator it;

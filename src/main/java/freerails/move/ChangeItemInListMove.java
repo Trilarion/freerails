@@ -5,7 +5,7 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.World;
@@ -14,7 +14,6 @@ import freerails.world.top.World;
  * All Moves that replace an item in a list with another should extend this
  * class.
  *
- * @author Luke
  */
 public class ChangeItemInListMove implements ListMove {
     private static final long serialVersionUID = -4457694821370844051L;

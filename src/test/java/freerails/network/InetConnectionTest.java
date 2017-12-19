@@ -1,12 +1,8 @@
-/*
- * Created on Apr 16, 2004
- */
 package freerails.network;
 
 /**
  * Junit test for NewInetConnection.
  *
- * @author Luke
  */
 public class InetConnectionTest extends AbstractEchoGameServerTestCase {
 

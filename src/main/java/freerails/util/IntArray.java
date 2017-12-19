@@ -31,7 +31,6 @@ import java.io.Serializable;
  * instances are modified in a multithreaded environment. See the base classes
  * for other details of the implementation.
  *
- * @author Dennis M. Sosnoski
  */
 public class IntArray extends ArrayBase implements Serializable {
     private static final long serialVersionUID = 3258408426391418681L;

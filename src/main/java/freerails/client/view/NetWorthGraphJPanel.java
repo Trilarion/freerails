@@ -26,7 +26,6 @@ import java.util.ArrayList;
  * A JPanel that displays a graph of the net worth of each of the players
  * against time.
  *
- * @author Luke
  */
 public class NetWorthGraphJPanel extends JPanel implements View {
 
@@ -214,24 +213,24 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     }
 
     /**
-     * <p>
+     *
      * Sets the value of scaleMax subject to the following constraints.
-     * </P>
-     * <p>
+     *
+     *
      * (1) scaleMax >= max, where max is the max net worth value.
-     * </p>
-     * <p>
+     *
+     *
      * (2) (scaleMax % 4) == 0
-     * </p>
-     * <p>
+     *
+     *
      * (3) if max >= 1,000, then (scaleMax % 4,000) == 0
-     * </p>
-     * <p>
+     *
+     *
      * (4) if max >= 1,000,000, then (scaleMax % 4,000,000) == 0
-     * </p>
-     * <p>
+     *
+     *
      * (5) if max >= 1,000,000,000, then (scaleMax % 4,000,000,000) == 0
-     * </p>
+     *
      */
     private void setAppropriateScale() {
 
@@ -359,8 +358,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
      * Stores the company details that are used to draw a line and title on the
      * graph.
      *
-     * @author Luke
-     */
+         */
     static class CompanyDetails {
 
         /**

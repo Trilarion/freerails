@@ -10,7 +10,7 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
@@ -25,7 +25,6 @@ import java.awt.*;
  * This JPanel displays a side-on view of a train and a summary of the cargo
  * that it is carrying.
  *
- * @author Luke Lindsay
  */
 public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
 

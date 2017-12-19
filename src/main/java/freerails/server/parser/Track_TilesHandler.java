@@ -6,7 +6,6 @@ import org.xml.sax.SAXException;
 /**
  * Defines methods to handle parsing the track types XML.
  *
- * @author lindsal
  */
 public interface Track_TilesHandler {
     /**
@@ -20,6 +19,7 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_CanOnlyBuildOnTheseTerrainTypes() throws SAXException;
@@ -35,6 +35,7 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_ListOfTrackPieceTemplates() throws SAXException;
@@ -50,12 +51,14 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_ListOfLegalRoutesAcrossNode() throws SAXException;
 
     /**
      * An empty element event handling method.
+     *
      * @param meta
      * @throws org.xml.sax.SAXException
      */
@@ -72,6 +75,7 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_CannotBuildOnTheseTerrainTypes() throws SAXException;
@@ -86,12 +90,14 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_TrackType() throws SAXException;
 
     /**
      * An empty element event handling method.
+     *
      * @param meta
      * @throws org.xml.sax.SAXException
      */
@@ -121,6 +127,7 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_TrackPieceTemplate() throws SAXException;
@@ -135,6 +142,7 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_TrackSet() throws SAXException;

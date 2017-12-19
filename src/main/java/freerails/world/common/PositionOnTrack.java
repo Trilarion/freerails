@@ -7,7 +7,6 @@ package freerails.world.common;
  * came from), it provides methods to encode and decode its field values to and
  * from a single int.
  *
- * @author Luke
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
 

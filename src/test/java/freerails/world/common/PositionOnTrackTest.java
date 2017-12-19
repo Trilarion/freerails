@@ -5,7 +5,6 @@ import junit.framework.TestCase;
 /**
  * Junit test for PositionOnTrack.
  *
- * @author Luke Lindsay
  */
 public class PositionOnTrackTest extends TestCase {
     /**

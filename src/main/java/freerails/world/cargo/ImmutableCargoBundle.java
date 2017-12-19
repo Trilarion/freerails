@@ -1,6 +1,6 @@
 package freerails.world.cargo;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 import freerails.world.common.ImList;
 
@@ -10,9 +10,9 @@ import java.util.SortedMap;
 /**
  * This class represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
- * <p>
+ *
  * For example:
- * </p>
+ *
  * <table width="75%" border="0">
  * <tr>
  * <td><strong>Cargo Batch</strong></td>
@@ -36,7 +36,6 @@ import java.util.SortedMap;
  * </tr>
  * </table>
  *
- * @author Luke
  */
 public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable {
 

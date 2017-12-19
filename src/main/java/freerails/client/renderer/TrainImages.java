@@ -14,7 +14,6 @@ import java.io.IOException;
 /**
  * Stores side-on and over-head images of a particular wagon or engine type.
  *
- * @author Luke
  */
 public class TrainImages {
 

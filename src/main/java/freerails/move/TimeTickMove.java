@@ -8,7 +8,6 @@ import freerails.world.top.World;
 /**
  * Changes the time item on the world object.
  *
- * @author rob
  */
 public class TimeTickMove implements Move {
     private static final long serialVersionUID = 3257290240212153393L;

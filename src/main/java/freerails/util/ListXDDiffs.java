@@ -9,7 +9,6 @@ import java.util.SortedMap;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public abstract class ListXDDiffs<T> implements Serializable {

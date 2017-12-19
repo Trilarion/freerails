@@ -11,7 +11,6 @@ import java.util.Properties;
 
 /**
  *
- * @author jkeller1
  */
 
 

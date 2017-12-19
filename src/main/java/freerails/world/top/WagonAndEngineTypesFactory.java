@@ -13,7 +13,6 @@ import freerails.world.train.WagonType;
  * wagon and engine types will be defined in an xml file, but this will do for
  * now.
  *
- * @author Luke
  */
 public class WagonAndEngineTypesFactory {
 

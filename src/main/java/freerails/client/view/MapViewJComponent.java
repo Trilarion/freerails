@@ -14,7 +14,6 @@ import java.awt.*;
 /**
  * JPanel that displays the map and provides methods to handle scrolling.
  *
- * @author Luke Lindsay 01 November 2001
  */
 public abstract class MapViewJComponent extends JPanel implements Scrollable,
         MapRenderer {

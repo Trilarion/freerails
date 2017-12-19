@@ -1,10 +1,7 @@
-/*
- * Created on Apr 17, 2004
- */
 package freerails.network;
 
 import freerails.controller.ClientControlInterface.ClientProperty;
-import freerails.controller.Message2Client;
+import freerails.controller.MessageToClient;
 import freerails.world.common.ImStringList;
 
 import java.io.IOException;
@@ -12,7 +9,6 @@ import java.io.IOException;
 /**
  * Tests FreerailsClient with a network server.
  *
- * @author Luke
  */
 public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
@@ -68,8 +64,8 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     private void assertConnectClientsEquals(FreerailsClient client,
                                             ImStringList expectedPlayerNames) throws IOException,
             InterruptedException {
-        Message2Client message2Client = (Message2Client) client.read();
-        message2Client.execute(client);
+        MessageToClient messageToClient = (MessageToClient) client.read();
+        messageToClient.execute(client);
 
         ImStringList actualPlayerNames = (ImStringList) client
                 .getProperty(ClientProperty.CONNECTED_CLIENTS);
@@ -80,10 +76,10 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     private void assertMapsAndSaveGamesReceived(FreerailsClient client)
             throws IOException, InterruptedException {
         // 2 commands to read.
-        Message2Client message2Client = (Message2Client) client.read();
-        message2Client.execute(client);
-        message2Client = (Message2Client) client.read();
-        message2Client.execute(client);
+        MessageToClient messageToClient = (MessageToClient) client.read();
+        messageToClient.execute(client);
+        messageToClient = (MessageToClient) client.read();
+        messageToClient.execute(client);
 
         Object maps = client.getProperty(ClientProperty.MAPS_AVAILABLE);
         assertNotNull(maps);

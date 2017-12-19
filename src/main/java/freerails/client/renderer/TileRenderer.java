@@ -8,7 +8,6 @@ import java.awt.*;
 /**
  * Draws an icon to represent a tile.
  *
- * @author Luke Lindsay
  */
 public interface TileRenderer {
 

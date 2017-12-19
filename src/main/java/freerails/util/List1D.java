@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 /**
  *
- * @author jkeller1
  * @param <T>
  */
 public interface List1D<T> extends Serializable {

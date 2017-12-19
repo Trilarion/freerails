@@ -14,7 +14,6 @@ import java.io.IOException;
 /**
  * This class renders a track piece.
  *
- * @author Luke Lindsay 09 October 2001
  */
 final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     private final Image[] trackPieceIcons = new Image[512];

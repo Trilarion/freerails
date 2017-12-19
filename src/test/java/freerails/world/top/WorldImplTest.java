@@ -10,7 +10,7 @@ import freerails.world.accounts.Receipt;
 import freerails.world.accounts.Transaction;
 import freerails.world.accounts.Transaction.Category;
 import freerails.world.common.Activity;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -19,7 +19,6 @@ import junit.framework.TestCase;
 /**
  * Junit test.
  *
- * @author Luke
  */
 public class WorldImplTest extends TestCase {
     private final FreerailsSerializable fs = new TestState(1);

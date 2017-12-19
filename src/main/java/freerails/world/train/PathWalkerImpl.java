@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 /**
  * PathWalker that walks the path exposed by a FreerailsPathIterator.
  *
- * @author Luke
  */
 public class PathWalkerImpl implements PathWalker {
     private static final long serialVersionUID = 4050204158701155639L;

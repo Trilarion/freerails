@@ -7,7 +7,6 @@ import junit.framework.TestCase;
 /**
  * Junit test.
  *
- * @author Luke Lindsay 26-Oct-2002
  */
 public class TrainPositionOnMapTest extends TestCase {
 

@@ -13,7 +13,6 @@ import java.awt.*;
  * This CompositeMove changes the track type at a point on the map and charges
  * the players account for the cost of the change.
  *
- * @author Luke Lindsay
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
     private static final long serialVersionUID = 3907215961470875442L;

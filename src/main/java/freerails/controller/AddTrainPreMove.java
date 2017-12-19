@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Luke
  */
 public class AddTrainPreMove implements PreMove {
 

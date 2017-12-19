@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 /**
  * JUnit test for BuildTrackExplorer.
  *
- * @author Luke
  */
 public class BuildTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);

@@ -7,11 +7,11 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.network.LoadGameMessage2Server;
-import freerails.network.RefreshListOfGamesMessage2Server;
+import freerails.network.LoadGameMessageToServer;
+import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.world.common.ImStringList;
 
 import javax.swing.*;
@@ -19,7 +19,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * @author Luke
  */
 public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
@@ -140,7 +139,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     }// </editor-fold>//GEN-END:initComponents
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshButtonActionPerformed
-        Message2Server refreshGames = new RefreshListOfGamesMessage2Server(2);
+        MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
         modelRoot.sendCommand(refreshGames);
     }// GEN-LAST:event_refreshButtonActionPerformed
 
@@ -155,7 +154,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
         String filename = (String) jList1.getSelectedValue();
-        Message2Server message2 = new LoadGameMessage2Server(1, filename);
+        MessageToServer message2 = new LoadGameMessageToServer(1, filename);
         modelRoot.sendCommand(message2);
 
         if (null != close)

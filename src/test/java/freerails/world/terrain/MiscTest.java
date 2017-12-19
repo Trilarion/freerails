@@ -12,7 +12,6 @@ import java.io.Serializable;
 
 /**
  *
- * @author jkeller1
  */
 public class MiscTest extends TestCase {
 
@@ -20,8 +19,8 @@ public class MiscTest extends TestCase {
      *
      */
     public void testCityModel() {
-        CityModel cm1 = new CityModel("London", 20, 70);
-        CityModel cm2 = new CityModel("Cardiff", 20, 70);
+        City cm1 = new City("London", 20, 70);
+        City cm2 = new City("Cardiff", 20, 70);
         testHashCodeAndEquals(cm1);
         testHashCodeAndEquals(cm2);
         assertDifferent(cm1, cm2);

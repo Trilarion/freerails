@@ -2,7 +2,6 @@ package freerails.util;
 
 /**
  *
- * @author FreeRails team
  * @param <A>
  * @param <B>
  */

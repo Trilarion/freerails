@@ -13,7 +13,6 @@ import java.util.TreeMap;
  * This CargoBundle implementation uses a {@code java.util.SortedMap} to
  * map quantities to cargo batches.
  *
- * @author Luke
  */
 public class MutableCargoBundle implements CargoBundle {
 

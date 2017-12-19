@@ -6,7 +6,6 @@ package freerails.world.common;
  * be retrieved without revealing the underlying objects that represent the
  * track.
  *
- * @author luke
  */
 public interface FreerailsPathIterator extends FreerailsMutableSerializable {
     /**

@@ -4,12 +4,11 @@
  */
 package freerails.world.accounts;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Represents the state of the economy.
  *
- * @author Luke
  */
 public class EconomicClimate implements FreerailsSerializable {
     private static final long serialVersionUID = 3834025840475321136L;

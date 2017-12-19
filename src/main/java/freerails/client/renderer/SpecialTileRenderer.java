@@ -17,7 +17,6 @@ import java.io.IOException;
 /**
  * A special tile's icon gets drawn over the icon of a normal tile.
  *
- * @author Luke Lindsay
  */
 final public class SpecialTileRenderer extends AbstractTileRenderer {
     private static final Logger logger = Logger

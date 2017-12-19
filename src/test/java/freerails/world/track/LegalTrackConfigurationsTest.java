@@ -19,7 +19,6 @@ import java.util.ArrayList;
 /**
  * JUnit test.
  *
- * @author lindsal
  */
 public class LegalTrackConfigurationsTest extends TestCase {
 

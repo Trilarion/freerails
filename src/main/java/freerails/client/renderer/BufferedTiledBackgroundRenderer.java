@@ -13,7 +13,6 @@ import java.awt.image.VolatileImage;
  * rectangle of the map. Code that is independent of how tiles are represented,
  * e.g. whether they are square or isometric, should go here.
  *
- * @author Luke Lindsay 06 October 2001
  */
 public abstract class BufferedTiledBackgroundRenderer implements
         MapLayerRenderer {
@@ -42,7 +41,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * Used to draw on the backbuffer. It is translated so that to its users, it
      * appears they are drawing on the actual map, not a buffered region of the
      * map.
-     * <p>
+     *
      * translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
      */
     private Graphics translatedBg;

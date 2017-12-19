@@ -1,10 +1,7 @@
-/*
- * Created on Apr 18, 2004
- */
 package freerails.network;
 
 import freerails.controller.ClientControlInterface;
-import freerails.controller.Message2Client;
+import freerails.controller.MessageToClient;
 import freerails.controller.MessageStatus;
 import freerails.util.Immutable;
 import freerails.world.top.World;
@@ -13,10 +10,9 @@ import freerails.world.top.World;
  * Sent from the server to the client when (i) a new game is started, (ii) a
  * game is loaded, or (iii) the client connects to a game in progress.
  *
- * @author Luke
  */
 @Immutable
-public class SetWorldMessage2Client implements Message2Client {
+public class SetWorldMessageToClient implements MessageToClient {
     private static final long serialVersionUID = 3257570619972269362L;
 
     private final int id;
@@ -28,7 +24,7 @@ public class SetWorldMessage2Client implements Message2Client {
      * @param id
      * @param world
      */
-    public SetWorldMessage2Client(int id, World world) {
+    public SetWorldMessageToClient(int id, World world) {
         this.id = id;
         this.world = world.defensiveCopy();
     }
@@ -47,14 +43,14 @@ public class SetWorldMessage2Client implements Message2Client {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof SetWorldMessage2Client))
+        if (!(o instanceof SetWorldMessageToClient))
             return false;
 
-        final SetWorldMessage2Client setWorldMessage2Client = (SetWorldMessage2Client) o;
+        final SetWorldMessageToClient setWorldMessageToClient = (SetWorldMessageToClient) o;
 
-        if (id != setWorldMessage2Client.id)
+        if (id != setWorldMessageToClient.id)
             return false;
-        return world.equals(setWorldMessage2Client.world);
+        return world.equals(setWorldMessageToClient.world);
     }
 
     @Override

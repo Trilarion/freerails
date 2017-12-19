@@ -5,7 +5,6 @@ import javax.swing.*;
 /**
  * Defines methods that create the GUI components used by the game.
  *
- * @author Luke
  */
 public interface GUIComponentFactory {
 

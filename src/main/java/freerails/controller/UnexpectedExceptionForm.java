@@ -7,7 +7,6 @@
 package freerails.controller;
 
 /**
- * @author Luke
  */
 public class UnexpectedExceptionForm extends javax.swing.JFrame {
 

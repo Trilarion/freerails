@@ -5,7 +5,7 @@
  */
 package freerails.world.common;
 
-import freerails.world.Constants;
+import freerails.client.Constants;
 
 import java.io.ObjectStreamException;
 
@@ -13,7 +13,6 @@ import java.io.ObjectStreamException;
  * This class represents a movement from a tile to any one of the surrounding
  * eight tiles.
  *
- * @author Luke
  */
 @freerails.util.InstanceControlled
 final public class Step implements FlatTrackTemplate {

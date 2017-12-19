@@ -1,15 +1,11 @@
-/*
- * Created on Mar 2, 2004
- */
 package freerails.world.top;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Stores rules governing what players are allowed to do, for example whether
  * they can connect their track to the track of other players.
  *
- * @author Luke
  */
 public class GameRules implements FreerailsSerializable {
 

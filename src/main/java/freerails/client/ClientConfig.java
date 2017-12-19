@@ -2,7 +2,6 @@ package freerails.client;
 
 /**
  *
- * @author jkeller1
  */
 public class ClientConfig {
 

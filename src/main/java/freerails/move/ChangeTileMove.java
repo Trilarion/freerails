@@ -16,7 +16,6 @@ import java.awt.*;
 /**
  * Move that changes a single tile.
  *
- * @author Luke
  */
 public class ChangeTileMove implements Move, MapUpdateMove {
     private static final long serialVersionUID = 3256726169272662320L;

@@ -5,13 +5,12 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 
 /**
  * This class encapsulates the orders for a train.
  *
- * @author Luke
  */
 public class TrainOrdersModel implements FreerailsSerializable {
     private static final long serialVersionUID = 3616453397155559472L;

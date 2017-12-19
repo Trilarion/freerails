@@ -1,12 +1,11 @@
 package freerails.world.station;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImList;
 
 /**
  * This class represents a station.
  *
- * @author Luke
  */
 public class StationModel implements FreerailsSerializable {
     private static final long serialVersionUID = 3256442503979874355L;
@@ -22,7 +21,7 @@ public class StationModel implements FreerailsSerializable {
     public final int y;
     private final String name;
     private final SupplyAtStation supply;
-    private final Demand4Cargo demand;
+    private final DemandForCargo demand;
     private final ConvertedAtStation converted;
     private final int cargoBundleNumber;
     /**
@@ -64,7 +63,7 @@ public class StationModel implements FreerailsSerializable {
         production = new ImList<>();
 
         supply = new SupplyAtStation(new int[numberOfCargoTypes]);
-        demand = new Demand4Cargo(new boolean[numberOfCargoTypes]);
+        demand = new DemandForCargo(new boolean[numberOfCargoTypes]);
         converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
         cargoBundleNumber = cargoBundle;
     }
@@ -76,7 +75,7 @@ public class StationModel implements FreerailsSerializable {
         this.name = "No name";
         x = 0;
         y = 0;
-        this.demand = new Demand4Cargo(new boolean[0]);
+        this.demand = new DemandForCargo(new boolean[0]);
         this.supply = new SupplyAtStation(new int[0]);
         this.converted = new ConvertedAtStation(new int[0]);
         production = new ImList<>();
@@ -104,7 +103,7 @@ public class StationModel implements FreerailsSerializable {
      * @param s
      * @param demand
      */
-    public StationModel(StationModel s, Demand4Cargo demand) {
+    public StationModel(StationModel s, DemandForCargo demand) {
         this.demand = demand;
 
         this.cargoBundleNumber = s.cargoBundleNumber;
@@ -222,7 +221,7 @@ public class StationModel implements FreerailsSerializable {
      *
      * @return
      */
-    public Demand4Cargo getDemand() {
+    public DemandForCargo getDemand() {
         return demand;
     }
 

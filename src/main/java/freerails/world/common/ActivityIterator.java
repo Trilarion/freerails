@@ -4,11 +4,12 @@
  */
 package freerails.world.common;
 
+import freerails.world.FreerailsSerializable;
+
 import java.util.NoSuchElementException;
 
 /**
  *
- * @author jkeller1
  */
 public interface ActivityIterator {
 

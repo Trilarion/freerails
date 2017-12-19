@@ -4,14 +4,13 @@ import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ModelRoot.Value;
-import freerails.world.Constants;
+import freerails.client.Constants;
 
 import java.awt.*;
 
 /**
  * This class draws the radius of a station on the map.
  *
- * @author Luke
  */
 public class StationRadiusRenderer implements Painter {
     /**

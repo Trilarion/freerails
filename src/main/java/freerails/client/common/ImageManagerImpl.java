@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
  * TRANSLUCENT, the scaled images it returns are rendered with renderingHints
  * set for quality.
  *
- * @author Luke
  */
 public class ImageManagerImpl implements ImageManager {
     /**

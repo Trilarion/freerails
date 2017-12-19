@@ -22,11 +22,10 @@ import static freerails.world.common.Step.*;
 
 /**
  * This class is a visual test for the train movement code.
- * <p>
+ *
  * TODO: Update the trains position when necessary. Make the train stop at
  * intevals, and slowly accelerate.
  *
- * @author Luke Lindsay
  */
 public class TrainMotionExpt extends JComponent {
 

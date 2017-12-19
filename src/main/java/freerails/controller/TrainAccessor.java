@@ -24,7 +24,6 @@ import static freerails.world.common.Step.TILE_DIAMETER;
  * Provides convenience methods to access the properties of a train from the
  * world object.
  *
- * @author Luke
  */
 public class TrainAccessor {
 

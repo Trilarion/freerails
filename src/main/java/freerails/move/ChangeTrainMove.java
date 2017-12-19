@@ -4,7 +4,7 @@
  */
 package freerails.move;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
@@ -13,7 +13,6 @@ import freerails.world.train.TrainModel;
 /**
  * This Move can change a train's engine and wagons.
  *
- * @author Luke Lindsay
  */
 public class ChangeTrainMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3257854272514242873L;

@@ -1,6 +1,3 @@
-/*
- * Created on Mar 18, 2004
- */
 package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
@@ -17,7 +14,6 @@ import java.net.URL;
 /**
  * A HtmlJPanel that displays the balance sheet.
  *
- * @author Luke
  */
 public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
 

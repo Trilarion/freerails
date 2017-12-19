@@ -1,6 +1,3 @@
-/*
- * Created on Feb 6, 2004
- */
 package freerails.client.view;
 
 import freerails.world.common.Step;
@@ -14,7 +11,6 @@ import freerails.world.top.ReadOnlyWorld;
  * Provides methods that find the nearest station in a given direction, used by
  * the select station popup window.
  *
- * @author Luke
  */
 public class NearestStationFinder {
 

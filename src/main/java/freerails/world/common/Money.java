@@ -1,11 +1,12 @@
 package freerails.world.common;
 
+import freerails.world.FreerailsSerializable;
+
 import java.text.DecimalFormat;
 
 /**
  * Represents an amount of Money.
  *
- * @author Luke
  */
 final public class Money implements FreerailsSerializable {
 

@@ -1,6 +1,3 @@
-/*
- * Created on Apr 14, 2004
- */
 package freerails.network;
 
 /**
@@ -8,7 +5,6 @@ package freerails.network;
  * Note, thought about using volatile keyword but wasn't sure if it is
  * implemented on all JVMs
  *
- * @author Luke
  */
 class SynchronizedFlag {
     private boolean isOpen = true;

@@ -18,9 +18,8 @@ import javax.swing.event.ListDataListener;
  * that can be used by JLists. Currently, change notification is <b>not</b>
  * implemented (null elements are skipped).
  *
- * @author Luke
  */
-public class World2ListModelAdapter implements ListModel {
+public class WorldToListModelAdapter implements ListModel {
 
     private final ReadOnlyWorld w;
 
@@ -31,7 +30,7 @@ public class World2ListModelAdapter implements ListModel {
      * @param world
      * @param key
      */
-    public World2ListModelAdapter(ReadOnlyWorld world, SKEY key) {
+    public WorldToListModelAdapter(ReadOnlyWorld world, SKEY key) {
 
         this.w = world;
 
@@ -50,8 +49,8 @@ public class World2ListModelAdapter implements ListModel {
      * @param key
      * @param p
      */
-    public World2ListModelAdapter(ReadOnlyWorld world, KEY key,
-                                  FreerailsPrincipal p) {
+    public WorldToListModelAdapter(ReadOnlyWorld world, KEY key,
+                                   FreerailsPrincipal p) {
 
         this.w = world;
 

@@ -13,7 +13,6 @@ import freerails.world.top.WorldImplTest;
 
 /**
  *
- * @author jkeller1
  */
 public class NextActivityMoveTest extends AbstractMoveTestCase {
 

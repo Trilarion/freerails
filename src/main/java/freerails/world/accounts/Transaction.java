@@ -1,16 +1,11 @@
-/*
- * Created on 21-Jun-2003
- *
- */
 package freerails.world.accounts;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.common.Money;
 
 /**
  * A Transaction is a change in a player's bank balance and/or assets.
  *
- * @author Luke Lindsay
  */
 public interface Transaction extends FreerailsSerializable {
 
@@ -22,6 +17,7 @@ public interface Transaction extends FreerailsSerializable {
 
     /**
      * Positive means credit.
+     *
      * @return 
      */
     Money deltaCash();

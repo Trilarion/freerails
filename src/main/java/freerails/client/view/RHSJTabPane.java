@@ -20,7 +20,6 @@ import java.net.URL;
 /**
  * The tabbed panel that sits in the lower right hand corner of the screen.
  *
- * @author rob
  */
 public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 

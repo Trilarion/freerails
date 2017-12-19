@@ -29,14 +29,14 @@ import java.io.Serializable;
  * provided by {@code GrowableBase}, specializing it for usage as a
  * growable array. See the base class description for details of the
  * implementation.
- * <p>
- * <p>
+ *
+ *
  * Growable arrays based on this class are unsynchronized in order to provide
  * the best possible performance for typical usage scenarios, so explicit
  * synchronization must be implemented by the subclass or the application in
  * cases where they are to be modified in a multithreaded environment.
- * <p>
- * <p>
+ *
+ *
  * Subclasses need to implement the abstract methods defined by the base class
  * for working with the data array, as well as the actual data access methods
  * (at least the basic {@code add()}, <code>get()</code>,

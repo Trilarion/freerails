@@ -1,12 +1,11 @@
 package freerails.controller;
 
 import freerails.move.MoveStatus;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Records the success or failure of an attempt to execute a move.
  *
- * @author lindsal
  */
 final public class PreMoveStatus implements FreerailsSerializable {
 

@@ -13,7 +13,6 @@ import static freerails.util.ListKey.Type.EndPoint;
 
 /**
  *
- * @author jkeller1
  */
 public class List2DDiffTest extends TestCase {
 

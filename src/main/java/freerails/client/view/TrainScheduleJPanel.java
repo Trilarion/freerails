@@ -21,7 +21,6 @@ import java.util.NoSuchElementException;
  * This JPanel displays a train's schedule and provides controls that let you
  * edit it.
  *
- * @author Luke Lindsay
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         WorldListListener {

@@ -11,12 +11,12 @@ import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.ClientConfig;
 import freerails.controller.CopyableTextJPanel;
-import freerails.controller.Message2Server;
+import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ReportBugTextGenerator;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
-import freerails.network.RefreshListOfGamesMessage2Server;
+import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.world.common.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
@@ -40,8 +40,6 @@ import java.util.NoSuchElementException;
  * layer of the main JFrames LayerPlane. This allows dialogue boxes with
  * transparent regions to be used.
  *
- * @author lindsal8
- * @author smackay
  */
 public class DialogueBoxController implements WorldListListener {
     private static final Logger logger = Logger
@@ -185,11 +183,11 @@ public class DialogueBoxController implements WorldListListener {
 
     /**
      * Called when a new game is started or a game is loaded.
-     * <p>
+     *
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
-     * </p>
+     *
      * @param mr
      * @param vl
      */
@@ -257,7 +255,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectSavedGame2Load() {
-        Message2Server refreshGames = new RefreshListOfGamesMessage2Server(2);
+        MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
         modelRoot.sendCommand(refreshGames);
         LoadGameJPanel loadGameJPane = new LoadGameJPanel();
         loadGameJPane.setup(modelRoot, vl, this.closeCurrentDialogue);
@@ -342,7 +340,7 @@ public class DialogueBoxController implements WorldListListener {
         showContent(brokerScreenHtmlJFrame);
     }
 
-    // Shows the Exit Dialog -- @author SonnyZ
+    // Shows the Exit Dialog
 
     /**
      *

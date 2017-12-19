@@ -10,7 +10,6 @@ import freerails.world.track.TrackRule;
 
 /**
  *
- * @author jkeller1
  */
 public class StationHelper {
 

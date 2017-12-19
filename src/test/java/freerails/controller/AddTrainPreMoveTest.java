@@ -19,7 +19,6 @@ import static freerails.world.common.Step.*;
 /**
  * Junit test for AddTrainPreMove.
  *
- * @author Luke
  */
 public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 

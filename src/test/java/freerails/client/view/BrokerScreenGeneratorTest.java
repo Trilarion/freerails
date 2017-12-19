@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 
 /**
  *
- * @author jkeller1
  */
 public class BrokerScreenGeneratorTest extends TestCase {
 

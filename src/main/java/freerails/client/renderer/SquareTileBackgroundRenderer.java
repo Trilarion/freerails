@@ -12,7 +12,6 @@ import java.awt.*;
  * visible rectangle of the map. It is responsible of painting these layers and
  * updating the buffer when the map scrolls or tiles are updated.
  *
- * @author Luke Lindsay 01 November 2001
  */
 final public class SquareTileBackgroundRenderer extends
         BufferedTiledBackgroundRenderer {

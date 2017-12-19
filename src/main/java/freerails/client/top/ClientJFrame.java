@@ -9,7 +9,6 @@ package freerails.client.top;
 /**
  * The JFrame that you see while you are playing the game.
  *
- * @author Luke
  */
 public class ClientJFrame extends javax.swing.JFrame {
 

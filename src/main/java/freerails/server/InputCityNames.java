@@ -15,7 +15,6 @@ import java.net.URL;
  * Class that calls the object to input the City names and co-ords from an xml
  * file.
  *
- * @author Scott Bennett Date: 31st March 2003
  */
 public class InputCityNames {
 

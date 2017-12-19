@@ -19,7 +19,6 @@ import java.util.HashSet;
  * component to the parent window, so are not painted when paintCompoments is
  * called from the game loop.
  *
- * @author Luke
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
     /**

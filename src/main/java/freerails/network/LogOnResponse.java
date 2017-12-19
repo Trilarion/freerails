@@ -1,14 +1,10 @@
-/*
- * Created on Apr 17, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 
 /**
  * Stores the result of a request to log onto the server.
  *
- * @author Luke
  */
 public class LogOnResponse implements FreerailsSerializable {
     private static final long serialVersionUID = 3690479099844311344L;

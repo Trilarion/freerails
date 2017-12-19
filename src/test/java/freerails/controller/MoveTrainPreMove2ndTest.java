@@ -15,7 +15,7 @@ import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
 import freerails.world.common.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Demand4Cargo;
+import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
 import freerails.world.top.SKEY;
@@ -411,7 +411,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Make station2 demand cargo #0;
         boolean[] boolArray = new boolean[world.size(SKEY.CARGO_TYPES)];
         boolArray[0] = true;
-        Demand4Cargo demand = new Demand4Cargo(boolArray);
+        DemandForCargo demand = new DemandForCargo(boolArray);
         StationModel station2 = (StationModel) world.get(principal,
                 KEY.STATIONS, 2);
         StationModel stationWithNewDemand = new StationModel(station2, demand);

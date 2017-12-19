@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
  * This JPanel lets the user select a station from a map and add it to a train
  * schedule.
  *
- * @author Luke
  */
 public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
@@ -140,7 +139,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_formKeyPressed
         try {
-            Step v = KeyCode2OneTileMoveVector.getInstanceMappedToKey(evt
+            Step v = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt
                     .getKeyCode());
             // now find nearest station in direction of the vector.
             NearestStationFinder stationFinder = new NearestStationFinder(

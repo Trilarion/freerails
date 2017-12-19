@@ -11,7 +11,6 @@ import java.awt.*;
 /**
  * This thread updates the GUI Client window.
  *
- * @author Luke
  */
 final public class GameLoop implements Runnable {
 

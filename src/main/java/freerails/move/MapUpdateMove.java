@@ -7,7 +7,6 @@ import java.awt.*;
  * which tiles have been updated. It is used by the map-view classes to
  * determine which tiles need repainting.
  *
- * @author Luke
  */
 public interface MapUpdateMove extends Move {
 

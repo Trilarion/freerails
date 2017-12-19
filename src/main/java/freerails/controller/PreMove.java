@@ -5,7 +5,7 @@
 package freerails.controller;
 
 import freerails.move.Move;
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import freerails.world.top.ReadOnlyWorld;
 
 /**
@@ -13,7 +13,6 @@ import freerails.world.top.ReadOnlyWorld;
  * object. The state of a move is often a function of the state of the world
  * object and some other input.
  *
- * @author Luke
  */
 public interface PreMove extends FreerailsSerializable {
 

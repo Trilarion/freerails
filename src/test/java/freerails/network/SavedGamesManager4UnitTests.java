@@ -1,6 +1,3 @@
-/*
- * Created on Jun 26, 2004
- */
 package freerails.network;
 
 import freerails.util.Utils;
@@ -13,7 +10,6 @@ import java.util.HashMap;
 /**
  * Stores saved games in memory rather than on disk.
  *
- * @author Luke
  */
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
     private final String[] mapsAvailable = {"map1", "map2"};

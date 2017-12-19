@@ -1,9 +1,6 @@
-/*
- * Created on Apr 13, 2004
- */
 package freerails.network;
 
-import freerails.world.common.FreerailsSerializable;
+import freerails.world.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -15,13 +12,12 @@ import java.util.Vector;
 /**
  * Implementation of GameServer that simply echoes whatever clients send it.
  *
- * @author Luke
  */
 public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class
             .getName());
 
-    private final Vector<Connection2Client> connections = new Vector<>();
+    private final Vector<ConnectionToClient> connections = new Vector<>();
 
     private final SynchronizedFlag status = new SynchronizedFlag(false);
 
@@ -57,7 +53,7 @@ public class EchoGameServer implements GameServer, Runnable {
      *
      * @param connection
      */
-    public synchronized void addConnection(Connection2Client connection) {
+    public synchronized void addConnection(ConnectionToClient connection) {
         if (null == connection) {
             throw new NullPointerException();
         }
@@ -74,10 +70,10 @@ public class EchoGameServer implements GameServer, Runnable {
      * @return
      */
     public synchronized int countOpenConnections() {
-        Iterator<Connection2Client> it = connections.iterator();
+        Iterator<ConnectionToClient> it = connections.iterator();
 
         while (it.hasNext()) {
-            Connection2Client connection = it.next();
+            ConnectionToClient connection = it.next();
 
             if (!connection.isOpen()) {
                 it.remove();
@@ -93,7 +89,7 @@ public class EchoGameServer implements GameServer, Runnable {
     public synchronized void stop() {
         status.close();
 
-        for (Connection2Client connection1 : connections) {
+        for (ConnectionToClient connection1 : connections) {
             AbstractInetConnection connection = (AbstractInetConnection) connection1;
 
             if (connection.isOpen()) {
@@ -123,7 +119,7 @@ public class EchoGameServer implements GameServer, Runnable {
 
     synchronized void sendMessage(FreerailsSerializable m) {
         /* Send messages. */
-        for (Connection2Client connection : connections) {
+        for (ConnectionToClient connection : connections) {
             try {
                 connection.writeToClient(m);
                 connection.flush();
@@ -149,7 +145,7 @@ public class EchoGameServer implements GameServer, Runnable {
     public void update() {
         synchronized (this) {
             /* Read messages. */
-            for (Connection2Client connection : connections) {
+            for (ConnectionToClient connection : connections) {
                 try {
                     FreerailsSerializable[] messages = connection
                             .readFromClient();

@@ -16,7 +16,6 @@ import java.util.List;
  * number of methods which may not be subclassed - all changes must be
  * encapsulated as sub-moves of this move.
  *
- * @author Luke
  */
 public class CompositeMove implements Move {
     private static final long serialVersionUID = 3257289149391517489L;

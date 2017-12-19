@@ -17,7 +17,6 @@ import java.util.NoSuchElementException;
  * GraphExplorer that explorers track, the ints it returns are encoded
  * PositionOnTrack objects.
  *
- * @author Luke
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
     private static final long serialVersionUID = 3834311713465185081L;

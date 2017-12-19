@@ -16,7 +16,6 @@ import java.io.ObjectOutputStream;
  * Experiment to try out reading and writing to a buffer to test serialization
  * code.
  *
- * @author Luke
  */
 public class ExptWriteToBuffer {
     private static final Logger logger = Logger

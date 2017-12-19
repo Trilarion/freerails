@@ -36,7 +36,6 @@ import java.io.Serializable;
 /**
  * A swing freerails client.
  *
- * @author Luke
  */
 public class GUIClient extends FreerailsClient implements
         FreerailsProgressMonitor {
@@ -151,7 +150,7 @@ public class GUIClient extends FreerailsClient implements
                 }
             }
 
-            modelRoot.setProperty(ModelRoot.Property.SERVER, connection2Server
+            modelRoot.setProperty(ModelRoot.Property.SERVER, connectionToServer
                     .getServerDetails());
             actionRoot.setup(modelRoot, vl);
 

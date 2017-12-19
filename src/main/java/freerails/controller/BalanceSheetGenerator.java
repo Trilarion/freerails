@@ -1,6 +1,3 @@
-/*
- * Created on Mar 28, 2004
- */
 package freerails.controller;
 
 import freerails.controller.StockPriceCalculator.StockPrice;
@@ -19,7 +16,6 @@ import static freerails.world.accounts.Transaction.Category.*;
  * Generates the balance sheet - note, its fields are read using reflection so
  * don't change their names.
  *
- * @author Luke
  */
 public class BalanceSheetGenerator {
 

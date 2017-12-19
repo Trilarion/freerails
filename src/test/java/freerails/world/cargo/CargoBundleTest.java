@@ -11,7 +11,6 @@ import java.io.Serializable;
 
 /**
  *
- * @author jkeller1
  */
 public class CargoBundleTest extends TestCase {
 

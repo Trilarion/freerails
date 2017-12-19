@@ -5,6 +5,7 @@
 package freerails.world.common;
 
 import freerails.util.Immutable;
+import freerails.world.FreerailsSerializable;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +14,6 @@ import java.util.List;
 
 /**
  *
- * @author jkeller1
  * @param <E>
  */
 @Immutable

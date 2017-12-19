@@ -5,7 +5,6 @@ import java.awt.*;
 /**
  * Used for testing the Map view components without setting up any map data.
  *
- * @author Luke
  */
 public class BlankMapRenderer implements MapRenderer {
     private final float scale;

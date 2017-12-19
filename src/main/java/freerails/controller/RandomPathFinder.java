@@ -1,6 +1,6 @@
 package freerails.controller;
 
-import freerails.world.Constants;
+import freerails.client.Constants;
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.IntLine;
 import freerails.world.common.PositionOnTrack;
@@ -8,7 +8,6 @@ import freerails.world.common.PositionOnTrack;
 /**
  * Returns a random path along the track.
  *
- * @author Luke Lindsay 13-Oct-2002
  */
 public class RandomPathFinder implements FreerailsPathIterator {
     private static final long serialVersionUID = 3832906571880608313L;

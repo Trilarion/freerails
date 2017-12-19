@@ -1,6 +1,3 @@
-/*
- * Created on Mar 29, 2004
- */
 package freerails.world.top;
 
 import freerails.world.accounts.Transaction;
@@ -14,7 +11,6 @@ import freerails.world.player.FreerailsPrincipal;
  * {@code condition(int)}; subclasses that aggregate a non-monetary sum
  * should override all 4 protected methods.
  *
- * @author Luke
  */
 public abstract class TransactionAggregator {
 

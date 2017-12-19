@@ -23,7 +23,6 @@ import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_
 import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
 /**
- * @author Luke
  */
 public class TrainStopsHandler implements Serializable {
 
