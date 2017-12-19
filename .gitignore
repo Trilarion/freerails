@@ -1,14 +1,14 @@
 # gradle
 /build
 /.gradle
-logging.log
+/logging.log
 
 # idea
 /.idea
-*.iml
+/*.iml
 
 # netbeans
-/.nb-gradle/
+/.nb-gradle
 
 # freerails
 freerails.properties

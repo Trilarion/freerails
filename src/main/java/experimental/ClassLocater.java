@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * An essential part of Java - locates any Class, anywhere.
- * </P>
+ * <p>
  * This class should have been part of the JDK for the last 7 years, but Sun
  * hasn't added it, so we did it instead :).
  * <p>

@@ -245,28 +245,33 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
      * @param after
      * @param before
      */
+    @Override
     public void propertyChange(ModelRoot.Property p, Object before, Object after) {
 
-        if (p.equals(ModelRoot.Property.CURSOR_POSITION)) {
-            ImPoint newPoint = (ImPoint) after;
-            ImPoint oldPoint = (ImPoint) before;
+        switch (p) {
+            case CURSOR_POSITION:
+                ImPoint newPoint = (ImPoint) after;
+                ImPoint oldPoint = (ImPoint) before;
 
-            if (null == oldPoint) {
-                oldPoint = new ImPoint();
-            }
+                if (null == oldPoint) {
+                    oldPoint = new ImPoint();
+                }
 
-            react2curorMove(newPoint, oldPoint);
-        } else if (p.equals(ModelRoot.Property.QUICK_MESSAGE)) {
-            String newMessage = (String) after;
+                react2curorMove(newPoint, oldPoint);
+                break;
+            case QUICK_MESSAGE:
+                String newMessage = (String) after;
 
-            if (null != newMessage) {
-                println(newMessage);
-            } else {
-                // Its null, so stop displaying whatever we where displaying.
-                displayMessageUntil = Long.MIN_VALUE;
-            }
-        } else if (p.equals(ModelRoot.Property.PERMANENT_MESSAGE)) {
-            message = (String) after;
+                if (null != newMessage) {
+                    println(newMessage);
+                } else {
+                    // Its null, so stop displaying whatever we where displaying.
+                    displayMessageUntil = Long.MIN_VALUE;
+                }
+                break;
+            case PERMANENT_MESSAGE:
+                message = (String) after;
+                break;
         }
     }
 
