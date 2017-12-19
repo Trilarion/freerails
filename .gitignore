@@ -3,6 +3,9 @@
 /.gradle
 /logging.log
 
+# sphinx (documentation)
+/docs/_build
+
 # idea
 /.idea
 /*.iml
