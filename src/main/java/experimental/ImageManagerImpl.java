@@ -221,13 +221,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     * @param s
-     */
-    public void setPathToWriteTo(String s) {
-        pathToWriteTo = s;
-    }
-
-    /**
      * @throws IOException
      */
     public void writeAllImages() throws IOException {

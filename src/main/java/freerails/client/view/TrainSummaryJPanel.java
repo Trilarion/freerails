@@ -27,13 +27,9 @@ package freerails.client.view;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.LRUCache;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
+import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ITEM;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +47,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
     private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
-    private freerails.world.top.ReadOnlyWorld w;
+    private ReadOnlyWorld w;
     private FreerailsPrincipal principal;
     private TrainListCellRenderer trainListCellRenderer1;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -90,7 +86,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
             javax.swing.JList list, Object value, int index,
             boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElements
+        int trainID = NonNullElementWorldIterator
                 .row2index(w, KEY.TRAINS, principal, index);
         String trainNumText = "#" + (trainID + 1);
 

@@ -25,12 +25,12 @@ package freerails.client.view;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TransactionAggregator;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.TransactionAggregator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -120,7 +120,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
             PlayerDetails details = new PlayerDetails();
             FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();
             details.name = principle.getName();
-            NonNullElements stations = new NonNullElements(KEY.STATIONS, w,
+            NonNullElementWorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, w,
                     principle);
             details.stations = stations.size();
             TransactionAggregator networth = new NetWorthCalculator(w,

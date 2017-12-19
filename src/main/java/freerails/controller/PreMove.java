@@ -23,7 +23,7 @@
 package freerails.controller;
 
 import freerails.move.Move;
-import freerails.world.top.ReadOnlyWorld;
+import freerails.world.ReadOnlyWorld;
 
 import java.io.Serializable;
 

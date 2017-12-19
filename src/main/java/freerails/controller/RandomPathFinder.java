@@ -18,17 +18,17 @@
 
 package freerails.controller;
 
-import freerails.client.Constants;
+import freerails.client.ClientConstants;
 import freerails.util.IntLine;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.PositionOnTrack;
+import freerails.world.FreerailsPathIterator;
+import freerails.world.PositionOnTrack;
 
 /**
  * Returns a random path along the track.
  */
 public class RandomPathFinder implements FreerailsPathIterator {
     private static final long serialVersionUID = 3832906571880608313L;
-    private static final int tileSize = Constants.TILE_SIZE;
+    private static final int tileSize = ClientConstants.TILE_SIZE;
     private final FlatTrackExplorer trackExplorer;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();

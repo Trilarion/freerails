@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 final public class CargoType implements Serializable {
     private static final long serialVersionUID = 3834874680581369912L;
-    private final Categories category;
+    private final CargoCategory category;
     private final String name;
     private final int unitWeight;
 
@@ -34,17 +34,10 @@ final public class CargoType implements Serializable {
      * @param s
      * @param cat
      */
-    public CargoType(int weight, String s, Categories cat) {
+    public CargoType(int weight, String s, CargoCategory cat) {
         unitWeight = weight;
         category = cat;
         name = s;
-    }
-
-    /**
-     * @return
-     */
-    public static int getNumberOfCategories() {
-        return Categories.values().length;
     }
 
     @Override
@@ -59,7 +52,7 @@ final public class CargoType implements Serializable {
     /**
      * @return
      */
-    public Categories getCategory() {
+    public CargoCategory getCategory() {
         return category;
     }
 
@@ -102,60 +95,4 @@ final public class CargoType implements Serializable {
         return name;
     }
 
-    /**
-     *
-     */
-    public enum Categories {
-
-        /**
-         *
-         */
-        Mail(0),
-
-        /**
-         *
-         */
-        Passengers(1),
-
-        /**
-         *
-         */
-        Fast_Freight(2),
-
-        /**
-         *
-         */
-        Slow_Freight(3),
-
-        /**
-         *
-         */
-        Bulk_Freight(
-                4);
-        private final int nr;
-
-        Categories(int nr) {
-            this.nr = nr;
-        }
-
-        /**
-         * @param cat
-         * @return
-         */
-        public static Categories getCategory(String cat) {
-            for (Categories cmp : values()) {
-                if (cmp.toString().equals(cat)) {
-                    return cmp;
-                }
-            }
-            throw new IllegalArgumentException("Category:" + cat + " unknown.");
-        }
-
-        /**
-         * @return
-         */
-        public int getNumber() {
-            return nr;
-        }
-    }
 }

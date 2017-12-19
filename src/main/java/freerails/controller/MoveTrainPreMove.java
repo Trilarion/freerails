@@ -27,17 +27,11 @@ import freerails.move.Move;
 import freerails.move.NextActivityMove;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
+import freerails.world.*;
 import freerails.world.cargo.CargoBundle;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.GameTime;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldDiffs;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
@@ -60,7 +54,7 @@ public class MoveTrainPreMove implements PreMove {
      * 666 Performance cache must be cleared if track on map is build ! make a
      * change listener!
      */
-    private static final HashMap<Integer, HashMap<Integer, Step>> pathCache = new HashMap<>();
+    private static final HashMap<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
@@ -89,18 +83,18 @@ public class MoveTrainPreMove implements PreMove {
      * @return
      * @throws NoTrackException if no track
      */
-    public static Step findNextStep(ReadOnlyWorld world,
-                                    PositionOnTrack currentPosition, ImPoint target) {
+    public static TileTransition findNextStep(ReadOnlyWorld world,
+                                              PositionOnTrack currentPosition, ImPoint target) {
         int startPos = PositionOnTrack.toInt(currentPosition.getX(),
                 currentPosition.getY());
         int endPos = PositionOnTrack.toInt(target.x, target.y);
-        HashMap<Integer, Step> destPaths = pathCache.get(endPos);
-        Step nextStep = null;
+        HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
+        TileTransition nextTileTransition = null;
         if (destPaths != null) {
-            nextStep = destPaths.get(startPos);
-            if (nextStep != null) {
+            nextTileTransition = destPaths.get(startPos);
+            if (nextTileTransition != null) {
                 cacheHit++;
-                return nextStep;
+                return nextTileTransition;
             }
         } else {
             destPaths = new HashMap<>();
@@ -114,15 +108,15 @@ public class MoveTrainPreMove implements PreMove {
                     currentPosition.getY());
             pathFinder.setupSearch(location, target);
             pathFinder.search(-1);
-            Step[] pathAsVectors = pathFinder.pathAsVectors();
+            TileTransition[] pathAsVectors = pathFinder.pathAsVectors();
             int[] pathAsInts = pathFinder.pathAsInts();
             for (int i = 0; i < pathAsInts.length - 1; i++) {
                 int calcPos = pathAsInts[i]
                         & (PositionOnTrack.MAX_COORDINATE | (PositionOnTrack.MAX_COORDINATE << PositionOnTrack.BITS_FOR_COORDINATE));
                 destPaths.put(calcPos, pathAsVectors[i + 1]);
             }
-            nextStep = pathAsVectors[0];
-            return nextStep;
+            nextTileTransition = pathAsVectors[0];
+            return nextTileTransition;
         } catch (PathNotFoundException e) {
             // The pathfinder couldn't find a path so we
             // go in any legal direction.
@@ -326,7 +320,7 @@ public class MoveTrainPreMove implements PreMove {
 
     private Move moveTrain(ReadOnlyWorld w, OccupiedTracks occupiedTracks) {
         // Find the next vector.
-        Step nextVector = nextStep(w);
+        TileTransition nextVector = nextStep(w);
 
         TrainMotion motion = lastMotion(w);
         PositionOnTrack pot = motion.getFinalPosition();
@@ -359,7 +353,7 @@ public class MoveTrainPreMove implements PreMove {
 
     }
 
-    TrainMotion nextMotion(ReadOnlyWorld w, Step v) {
+    TrainMotion nextMotion(ReadOnlyWorld w, TileTransition v) {
         TrainMotion motion = lastMotion(w);
 
         SpeedAgainstTime speeds = nextSpeeds(w, v);
@@ -370,7 +364,7 @@ public class MoveTrainPreMove implements PreMove {
                 .getTrainLength(), speeds);
     }
 
-    SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, Step v) {
+    SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, TileTransition v) {
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         TrainMotion lastMotion = lastMotion(w);
 
@@ -397,7 +391,7 @@ public class MoveTrainPreMove implements PreMove {
         return newSpeeds;
     }
 
-    Step nextStep(ReadOnlyWorld w) {
+    TileTransition nextStep(ReadOnlyWorld w) {
         // Find current position.
         TrainMotion currentMotion = lastMotion(w);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();

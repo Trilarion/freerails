@@ -36,11 +36,11 @@ import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.util.ImList;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.*;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -123,7 +123,7 @@ public class DialogueBoxController implements WorldListListener {
         private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
-            WorldIterator wi = new NonNullElements(KEY.STATIONS, modelRoot
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
                     .getWorld(), modelRoot.getPrincipal());
 
             if (wi.next()) {
@@ -282,7 +282,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElements(KEY.TRAINS, world, modelRoot
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.TRAINS, world, modelRoot
                 .getPrincipal());
 
         if (!wi.next()) {
@@ -298,7 +298,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, world, modelRoot
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, modelRoot
                 .getPrincipal());
 
         if (!wi.next()) {

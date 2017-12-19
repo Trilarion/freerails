@@ -26,11 +26,11 @@ package freerails.client.view;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImInts;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldListListener;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldListListener;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
@@ -182,7 +182,7 @@ public class TrainListCellRenderer extends JPanel implements View,
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElements
+        int trainID = NonNullElementWorldIterator
                 .row2index(w, KEY.TRAINS, principal, index);
         display(trainID);
 

@@ -30,6 +30,7 @@ import java.lang.reflect.Array;
  * time more space is required, up to an optional maximum growth increment
  * specified by the user.
  */
+// TODO this is surely also part of Java by now
 public abstract class GrowableBase implements Serializable {
     /**
      * Default initial array size.

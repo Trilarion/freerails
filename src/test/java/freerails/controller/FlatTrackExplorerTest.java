@@ -21,10 +21,9 @@ package freerails.controller;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.*;
 import freerails.world.player.Player;
-import freerails.world.top.*;
+import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
@@ -58,7 +57,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 
-        Step[] vectors = {Step.WEST, Step.EAST, Step.NORTH_EAST};
+        TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
         ImPoint p = new ImPoint(10, 10);
         ImPoint[] points = {p, p, p};
 
@@ -78,10 +77,10 @@ public class FlatTrackExplorerTest extends TestCase {
         setUp();
 
         PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10,
-                Step.SOUTH_WEST);
+                TileTransition.SOUTH_WEST);
         FlatTrackExplorer fte = new FlatTrackExplorer(world, p);
-        Step v = fte.getFirstVectorToTry();
-        assertEquals(Step.EAST, v);
+        TileTransition v = fte.getFirstVectorToTry();
+        assertEquals(TileTransition.EAST, v);
     }
 
     /**
@@ -96,24 +95,24 @@ public class FlatTrackExplorerTest extends TestCase {
         FlatTrackExplorer fte;
 
         PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10,
-                Step.SOUTH_WEST);
+                TileTransition.SOUTH_WEST);
         fte = new FlatTrackExplorer(world, p);
 
         // There should be 3 branches.
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         p.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(Step.EAST, p.cameFrom());
+        assertEquals(TileTransition.EAST, p.cameFrom());
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
 
         p.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(Step.WEST, p.cameFrom());
+        assertEquals(TileTransition.WEST, p.cameFrom());
 
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         p.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(Step.NORTH_EAST, p.cameFrom());
+        assertEquals(TileTransition.NORTH_EAST, p.cameFrom());
         assertTrue(!fte.hasNextEdge());
     }
 
@@ -128,7 +127,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10, Step.EAST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(10, 10, TileTransition.EAST);
         fte = new FlatTrackExplorer(world, p);
 
         PositionOnTrack pos = new PositionOnTrack(fte.getPosition());
@@ -137,7 +136,7 @@ public class FlatTrackExplorerTest extends TestCase {
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
         pos.setValuesFromInt(fte.getVertexConnectedByEdge());
-        assertEquals(Step.NORTH_EAST, pos.cameFrom());
+        assertEquals(TileTransition.NORTH_EAST, pos.cameFrom());
         assertEquals(11, pos.getX());
         assertEquals(9, pos.getY());
 
@@ -151,7 +150,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         assertTrue(fte.hasNextEdge());
         fte.nextEdge();
-        assertEquals(Step.SOUTH_WEST, fte.currentBranch.cameFrom());
+        assertEquals(TileTransition.SOUTH_WEST, fte.currentBranch.cameFrom());
         assertTrue(!fte.hasNextEdge());
         fte.moveForward();
         pos.setValuesFromInt(fte.getPosition());
@@ -166,7 +165,7 @@ public class FlatTrackExplorerTest extends TestCase {
         setUp();
 
         FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                PositionOnTrack.createComingFrom(10, 10, Step.EAST));
+                PositionOnTrack.createComingFrom(10, 10, TileTransition.EAST));
         assertTrue(explorer.hasNextEdge());
     }
 
@@ -178,7 +177,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         try {
             FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                    PositionOnTrack.createComingFrom(4, 7, Step.EAST));
+                    PositionOnTrack.createComingFrom(4, 7, TileTransition.EAST));
             fail("Expected an Exception");
         } catch (NoTrackException e) {
             // ignore
@@ -196,12 +195,12 @@ public class FlatTrackExplorerTest extends TestCase {
         assertNotNull(positions);
         assertEquals(3, positions.length);
 
-        HashSet<Step> directions = new HashSet<>();
-        directions.add(Step.WEST);
-        directions.add(Step.EAST);
-        directions.add(Step.SOUTH_WEST);
+        HashSet<TileTransition> directions = new HashSet<>();
+        directions.add(TileTransition.WEST);
+        directions.add(TileTransition.EAST);
+        directions.add(TileTransition.SOUTH_WEST);
 
-        HashSet<Step> directions2 = new HashSet<>();
+        HashSet<TileTransition> directions2 = new HashSet<>();
 
         for (PositionOnTrack position : positions) {
             directions2.add(position.cameFrom());

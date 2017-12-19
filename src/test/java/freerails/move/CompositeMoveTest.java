@@ -22,8 +22,8 @@
  */
 package freerails.move;
 
+import freerails.world.KEY;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
 import freerails.world.top.MapFixtureFactory;
 
 /**

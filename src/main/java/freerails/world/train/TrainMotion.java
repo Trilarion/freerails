@@ -24,10 +24,10 @@ package freerails.world.train;
 
 import freerails.util.ImPoint;
 import freerails.util.Pair;
-import freerails.world.common.Activity;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.Activity;
+import freerails.world.FreerailsPathIterator;
+import freerails.world.PositionOnTrack;
+import freerails.world.TileTransition;
 
 import java.util.ArrayList;
 
@@ -246,7 +246,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         t = Math.min(t, speeds.getT());
         double start = calcOffSet(t);
         double end = start + trainLength;
-        ArrayList<Step> steps = new ArrayList<>();
+        ArrayList<TileTransition> tileTransitions = new ArrayList<>();
         double distanceSoFar = 0;
 
         int stepsBeforeStart = 0;
@@ -256,8 +256,8 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
             if (distanceSoFar > end)
                 stepsAfterEnd++;
 
-            Step step = path.getStep(i);
-            distanceSoFar += step.getLength();
+            TileTransition tileTransition = path.getStep(i);
+            distanceSoFar += tileTransition.getLength();
 
             if (distanceSoFar < start)
                 stepsBeforeStart++;
@@ -272,21 +272,21 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
         }
         int lastStep = path.steps() - stepsAfterEnd;
         for (int i = stepsBeforeStart; i < lastStep; i++) {
-            steps.add(path.getStep(i));
+            tileTransitions.add(path.getStep(i));
         }
 
         ImPoint p = path.getStart();
         int x = p.x;
         int y = p.y;
         for (int i = 0; i < stepsBeforeStart; i++) {
-            Step step = path.getStep(i);
-            x += step.deltaX;
-            y += step.deltaY;
+            TileTransition tileTransition = path.getStep(i);
+            x += tileTransition.deltaX;
+            y += tileTransition.deltaY;
         }
 
         ImPoint startPoint = new ImPoint(x, y);
 
-        return new PathOnTiles(startPoint, steps);
+        return new PathOnTiles(startPoint, tileTransitions);
     }
 
     /**

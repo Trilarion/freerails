@@ -19,10 +19,10 @@
 package freerails.controller;
 
 import freerails.util.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.PositionOnTrack;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TileTransition;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
@@ -38,10 +38,10 @@ import java.util.NoSuchElementException;
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
     private static final long serialVersionUID = 3834311713465185081L;
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
-            0, Step.NORTH);
+            0, TileTransition.NORTH);
     private final ReadOnlyWorld w;
     private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(
-            0, 0, Step.NORTH);
+            0, 0, TileTransition.NORTH);
     private boolean beforeFirst = true;
 
     /**
@@ -72,12 +72,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
                                                          ImPoint p) {
         TrackPiece tp = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
-        Step[] vectors = Step.getList();
+        TileTransition[] vectors = TileTransition.getList();
 
         // Count the number of possible positions.
         int n = 0;
 
-        for (Step vector1 : vectors) {
+        for (TileTransition vector1 : vectors) {
             if (conf.contains(vector1.get9bitTemplate())) {
                 n++;
             }
@@ -87,7 +87,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         n = 0;
 
-        for (Step vector : vectors) {
+        for (TileTransition vector : vectors) {
             if (conf.contains(vector.get9bitTemplate())) {
                 possiblePositions[n] = PositionOnTrack.createComingFrom(p.x,
                         p.y, vector.getOpposite());
@@ -128,12 +128,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         if (!hasNextEdge()) {
             throw new NoSuchElementException();
         }
-        Step v = this.getFirstVectorToTry();
+        TileTransition v = this.getFirstVectorToTry();
         Point p = new Point(currentPosition.getX(), currentPosition.getY());
         FreerailsTile ft = (FreerailsTile) w.getTile(p.x, p.y);
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
-        Step[] vectors = Step.getList();
+        TileTransition[] vectors = TileTransition.getList();
 
         int i = v.getID();
 
@@ -151,7 +151,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             }
         }
 
-        Step branchDirection = Step.getInstance(i);
+        TileTransition branchDirection = TileTransition.getInstance(i);
         this.currentBranch.setCameFrom(branchDirection);
 
         int x = this.currentPosition.getX() + branchDirection.deltaX;
@@ -184,35 +184,35 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         // Since we can always go back the way we have come, if the direction of
         // current branch is not equal to the opposite of the current direction,
         // there must be another branch.
-        Step currentBranchDirection = this.currentBranch.cameFrom();
-        Step oppositeToCurrentDirection = this.currentPosition.cameFrom()
+        TileTransition currentBranchDirection = this.currentBranch.cameFrom();
+        TileTransition oppositeToCurrentDirection = this.currentPosition.cameFrom()
                 .getOpposite();
 
         return oppositeToCurrentDirection.getID() != currentBranchDirection
                 .getID();
     }
 
-    Step getFirstVectorToTry() {
+    TileTransition getFirstVectorToTry() {
         if (beforeFirst) {
             // Return the vector that is 45 degrees clockwise from the oppposite
             // of the current position.
-            Step v = this.currentPosition.cameFrom();
+            TileTransition v = this.currentPosition.cameFrom();
             v = v.getOpposite();
 
             int i = v.getID();
             i++;
             i = i % 8;
-            v = Step.getInstance(i);
+            v = TileTransition.getInstance(i);
 
             return v;
         }
         // Return the vector that is 45 degrees clockwise from the direction
         // of the current branch.
-        Step v = this.currentBranch.cameFrom();
+        TileTransition v = this.currentBranch.cameFrom();
         int i = v.getID();
         i++;
         i = i % 8;
-        v = Step.getInstance(i);
+        v = TileTransition.getInstance(i);
 
         return v;
     }

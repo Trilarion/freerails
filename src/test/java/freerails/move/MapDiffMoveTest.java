@@ -18,9 +18,9 @@
 
 package freerails.move;
 
+import freerails.world.World;
+import freerails.world.WorldDiffs;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.World;
-import freerails.world.top.WorldDiffs;
 
 /**
  * JUnit test for MapDiffMove.

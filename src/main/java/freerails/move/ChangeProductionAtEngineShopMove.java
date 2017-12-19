@@ -23,11 +23,11 @@
 package freerails.move;
 
 import freerails.util.ImList;
+import freerails.world.KEY;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.World;
 
 /**
  * This Move changes what is being built at an engine shop - when a client wants
@@ -35,13 +35,9 @@ import freerails.world.top.World;
  */
 public class ChangeProductionAtEngineShopMove implements Move {
     private static final long serialVersionUID = 3905519384997737520L;
-
     private final ImList<PlannedTrain> before;
-
     private final ImList<PlannedTrain> after;
-
     private final int stationNumber;
-
     private final FreerailsPrincipal principal;
 
     /**
@@ -90,8 +86,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, before);
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        return tryMove(world, before);
     }
 
     private MoveStatus tryMove(World w, ImList<PlannedTrain> stateA) {
@@ -121,34 +117,31 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return MoveStatus.moveFailed(this.stationNumber + " " + principal);
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, after);
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        return tryMove(world, after);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus status = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus status = tryDoMove(world, principal);
 
         if (status.isOk()) {
-            StationModel station = (StationModel) w.get(principal,
+            StationModel station = (StationModel) world.get(this.principal,
                     KEY.STATIONS, stationNumber);
             station = new StationModel(station, this.after);
-            w.set(principal, KEY.STATIONS, stationNumber, station);
+            world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
-
         return status;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus status = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus status = tryUndoMove(world, principal);
 
         if (status.isOk()) {
-            StationModel station = (StationModel) w.get(principal,
+            StationModel station = (StationModel) world.get(this.principal,
                     KEY.STATIONS, stationNumber);
             station = new StationModel(station, this.before);
-            w.set(principal, KEY.STATIONS, stationNumber, station);
+            world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
-
         return status;
     }
-
 }

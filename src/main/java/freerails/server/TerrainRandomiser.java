@@ -34,9 +34,10 @@ import java.util.Vector;
  * 17) Landing (River) 18) Terminal (Special) 19) Jungle (Country) 20)
  * Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
  */
+// TODO only used by MapFactory, should go there
 public class TerrainRandomiser {
-    private final Vector<Integer> terrainTypes;
 
+    private final Vector<Integer> terrainTypes;
     private final Vector<Integer> non_terrainTypes;
 
     // clear (on avg.)

@@ -18,12 +18,12 @@
 
 package freerails.client.view;
 
-import freerails.world.common.Step;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
 
 /**
  * Provides methods that find the nearest station in a given direction, used by
@@ -58,7 +58,7 @@ public class NearestStationFinder {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
         int nearestStation = NOT_FOUND;
 
         while (it.next()) {
@@ -85,9 +85,9 @@ public class NearestStationFinder {
      * @param direction
      * @return
      */
-    public int findNearestStationInDirection(int startStation, Step direction) {
+    public int findNearestStationInDirection(int startStation, TileTransition direction) {
         int distanceToClosestSquared = Integer.MAX_VALUE;
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
         StationModel currentStation = (StationModel) world.get(principal,
                 KEY.STATIONS, startStation);
@@ -117,7 +117,7 @@ public class NearestStationFinder {
      * Returns true if the angle between direction and the vector (deltaX,
      * deltaY) is less than 45 degrees.
      */
-    private boolean isInRightDirection(Step direction, int deltaX, int deltaY) {
+    private boolean isInRightDirection(TileTransition direction, int deltaX, int deltaY) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
         boolean sameXDirection = (direction.deltaX * deltaX) > 0;
         boolean sameYDirection = (direction.deltaY * deltaY > 0);

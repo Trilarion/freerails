@@ -18,9 +18,9 @@
 
 package freerails.move;
 
+import freerails.world.KEY;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
 
 /**
  * This Move changes the properties of a station.

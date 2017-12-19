@@ -19,7 +19,7 @@
 package freerails.world.train;
 
 import freerails.util.IntLine;
-import freerails.world.common.FreerailsPathIterator;
+import freerails.world.FreerailsPathIterator;
 import junit.framework.TestCase;
 
 /**

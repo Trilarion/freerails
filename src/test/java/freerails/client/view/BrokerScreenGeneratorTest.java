@@ -28,15 +28,12 @@ import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.common.GameCalendar;
+import freerails.world.*;
 import freerails.world.finances.Money;
-import freerails.world.finances.StockTransaction;
+import freerails.world.finances.StockItemTransaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.top.ITEM;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
@@ -76,8 +73,8 @@ public class BrokerScreenGeneratorTest extends TestCase {
         for (int i = 0; i < 9; i++) {
             StockPrice stockPrice = new StockPriceCalculator(world).calculate()[playerID];
             Money sharePrice = stockPrice.treasuryBuyPrice;
-            StockTransaction t = StockTransaction.buyOrSellStock(playerID,
-                    StockTransaction.STOCK_BUNDLE_SIZE, sharePrice);
+            StockItemTransaction t = StockItemTransaction.buyOrSellStock(playerID,
+                    WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
             Move move = new AddTransactionMove(principal, t);
             MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(ms.isOk());

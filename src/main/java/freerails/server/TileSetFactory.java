@@ -18,7 +18,7 @@
 
 package freerails.server;
 
-import freerails.world.top.World;
+import freerails.world.World;
 
 /**
  * This interface defines a method to add the terrain types to the world.
@@ -26,7 +26,7 @@ import freerails.world.top.World;
 public interface TileSetFactory {
 
     /**
-     * @param w
+     * @param world
      */
-    void addTerrainTileTypesList(World w);
+    void addTerrainTileTypesList(World world);
 }

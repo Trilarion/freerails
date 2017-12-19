@@ -22,9 +22,9 @@
  */
 package freerails.move;
 
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 
 import java.io.Serializable;
 
@@ -33,11 +33,8 @@ import java.io.Serializable;
  */
 public class AddItemToSharedListMove implements Move {
     private static final long serialVersionUID = 3762256352759722807L;
-
     private final SKEY listKey;
-
     private final int index;
-
     private final Serializable item;
 
     /**
@@ -76,43 +73,43 @@ public class AddItemToSharedListMove implements Move {
         return listKey;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.size(listKey) != index) {
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        if (world.size(listKey) != index) {
             return MoveStatus.moveFailed("Expected size of "
                     + listKey.toString() + " list is " + index
-                    + " but actual size is " + w.size(listKey));
+                    + " but actual size is " + world.size(listKey));
         }
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
         int expectListSize = index + 1;
 
-        if (w.size(listKey) != expectListSize) {
+        if (world.size(listKey) != expectListSize) {
             return MoveStatus.moveFailed("Expected size of "
                     + listKey.toString() + " list is " + expectListSize
-                    + " but actual size is " + w.size(listKey));
+                    + " but actual size is " + world.size(listKey));
         }
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryDoMove(world, principal);
 
         if (ms.isOk()) {
-            w.add(listKey, this.item);
+            world.add(listKey, this.item);
         }
 
         return ms;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryUndoMove(world, principal);
 
         if (ms.isOk()) {
-            w.removeLast(listKey);
+            world.removeLast(listKey);
         }
 
         return ms;

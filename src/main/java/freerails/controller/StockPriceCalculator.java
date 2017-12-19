@@ -22,17 +22,13 @@
  */
 package freerails.controller;
 
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.*;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ITEM;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.TransactionAggregator;
 
-import static freerails.world.finances.StockTransaction.STOCK_BUNDLE_SIZE;
+import static freerails.world.WorldConstants.STOCK_BUNDLE_SIZE;
 
 /**
  * Calculates the stock price for each of the players. Stock price = [Net worth +
@@ -129,7 +125,7 @@ public class StockPriceCalculator {
             protected boolean condition(int transactionID) {
                 Transaction t = super.w.getTransaction(super.principal,
                         transactionID);
-                return !(t instanceof AddItemTransaction);
+                return !(t instanceof ItemTransaction);
             }
         };
         aggregator.setTimes(inteval);

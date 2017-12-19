@@ -22,12 +22,12 @@
  */
 package freerails.move;
 
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldIterator;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.MutableSchedule;
 
@@ -46,7 +46,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
 
     static RemoveStationMove getInstance(ReadOnlyWorld w,
                                          ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
         int stationIndex = -1;
 
         while (wi.next()) {
@@ -75,7 +75,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
                 station2remove, principal));
 
         // Now update any train schedules that include this station.
-        WorldIterator schedules = new NonNullElements(KEY.TRAIN_SCHEDULES, w,
+        WorldIterator schedules = new NonNullElementWorldIterator(KEY.TRAIN_SCHEDULES, w,
                 principal);
 
         while (schedules.next()) {

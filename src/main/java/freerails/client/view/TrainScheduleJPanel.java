@@ -23,9 +23,9 @@ import freerails.controller.ModelRoot;
 import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.Move;
 import freerails.util.ImInts;
+import freerails.world.*;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.*;
 import freerails.world.train.*;
 import org.apache.log4j.Logger;
 
@@ -557,7 +557,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
      * exists: this method returns the id of the first station that exists.
      */
     private int getFirstStationID() {
-        NonNullElements stations = new NonNullElements(KEY.STATIONS, modelRoot
+        NonNullElementWorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
                 .getWorld(), modelRoot.getPrincipal());
         if (stations.next()) {
             return stations.getIndex();
@@ -567,7 +567,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); // Remove existing menu items.
-        NonNullElements cargoTypes = new NonNullElements(SKEY.CARGO_TYPES,
+        NonNullElementWorldIterator cargoTypes = new NonNullElementWorldIterator(SKEY.CARGO_TYPES,
                 modelRoot.getWorld());
 
         while (cargoTypes.next()) {

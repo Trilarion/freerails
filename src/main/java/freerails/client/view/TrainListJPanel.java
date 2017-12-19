@@ -26,10 +26,10 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
 
 import javax.swing.*;
 import java.awt.*;
@@ -252,7 +252,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
          * been removed are not shown on the list.
          */
         int row = jList1.getSelectedIndex();
-        return NonNullElements.row2index(world, KEY.TRAINS, principal, row);
+        return NonNullElementWorldIterator.row2index(world, KEY.TRAINS, principal, row);
     }
 
     // End of variables declaration//GEN-END:variables
@@ -292,7 +292,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     @Override
     public void paint(Graphics g) {
         if (null != world) {
-            NonNullElements trains = new NonNullElements(KEY.TRAINS, world,
+            NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, world,
                     principal);
             int newNumberOfTrains = trains.size();
             if (newNumberOfTrains != this.lastNumberOfTrains) {

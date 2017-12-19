@@ -21,13 +21,13 @@ package freerails.controller;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.util.ImPoint;
-import freerails.world.common.GameTime;
-import freerails.world.common.Step;
+import freerails.world.GameTime;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
+import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
@@ -91,11 +91,11 @@ final public class TrackMoveProducer {
      * @param path
      * @return
      */
-    public MoveStatus buildTrack(ImPoint from, Step[] path) {
+    public MoveStatus buildTrack(ImPoint from, TileTransition[] path) {
         MoveStatus returnValue = MoveStatus.MOVE_OK;
         int x = from.x;
         int y = from.y;
-        for (Step aPath : path) {
+        for (TileTransition aPath : path) {
 
             returnValue = buildTrack(new ImPoint(x, y), aPath);
             x += aPath.deltaX;
@@ -112,7 +112,7 @@ final public class TrackMoveProducer {
      * @param trackVector
      * @return
      */
-    public MoveStatus buildTrack(ImPoint from, Step trackVector) {
+    public MoveStatus buildTrack(ImPoint from, TileTransition trackVector) {
 
         ReadOnlyWorld w = executor.getWorld();
         FreerailsPrincipal principal = executor.getPrincipal();

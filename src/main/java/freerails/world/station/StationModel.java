@@ -39,8 +39,8 @@ public class StationModel implements Serializable {
     public final int y;
     private final String name;
     private final SupplyAtStation supply;
-    private final DemandForCargo demand;
-    private final ConvertedAtStation converted;
+    private final DemandForCargoAtStation demand;
+    private final CargoConversionAtStation converted;
     private final int cargoBundleNumber;
     /**
      * What this station is building.
@@ -51,7 +51,7 @@ public class StationModel implements Serializable {
      * @param s
      * @param converted
      */
-    public StationModel(StationModel s, ConvertedAtStation converted) {
+    public StationModel(StationModel s, CargoConversionAtStation converted) {
         this.converted = converted;
 
         this.cargoBundleNumber = s.cargoBundleNumber;
@@ -79,8 +79,8 @@ public class StationModel implements Serializable {
         production = new ImList<>();
 
         supply = new SupplyAtStation(new int[numberOfCargoTypes]);
-        demand = new DemandForCargo(new boolean[numberOfCargoTypes]);
-        converted = ConvertedAtStation.emptyInstance(numberOfCargoTypes);
+        demand = new DemandForCargoAtStation(new boolean[numberOfCargoTypes]);
+        converted = CargoConversionAtStation.emptyInstance(numberOfCargoTypes);
         cargoBundleNumber = cargoBundle;
     }
 
@@ -91,9 +91,9 @@ public class StationModel implements Serializable {
         this.name = "No name";
         x = 0;
         y = 0;
-        this.demand = new DemandForCargo(new boolean[0]);
+        this.demand = new DemandForCargoAtStation(new boolean[0]);
         this.supply = new SupplyAtStation(new int[0]);
-        this.converted = new ConvertedAtStation(new int[0]);
+        this.converted = new CargoConversionAtStation(new int[0]);
         production = new ImList<>();
         this.cargoBundleNumber = 0;
     }
@@ -117,7 +117,7 @@ public class StationModel implements Serializable {
      * @param s
      * @param demand
      */
-    public StationModel(StationModel s, DemandForCargo demand) {
+    public StationModel(StationModel s, DemandForCargoAtStation demand) {
         this.demand = demand;
 
         this.cargoBundleNumber = s.cargoBundleNumber;
@@ -178,7 +178,7 @@ public class StationModel implements Serializable {
     /**
      * @return
      */
-    public ConvertedAtStation getConverted() {
+    public CargoConversionAtStation getConverted() {
         return converted;
     }
 
@@ -228,7 +228,7 @@ public class StationModel implements Serializable {
     /**
      * @return
      */
-    public DemandForCargo getDemand() {
+    public DemandForCargoAtStation getDemand() {
         return demand;
     }
 

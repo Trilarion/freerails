@@ -20,7 +20,7 @@ package experimental;
 
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 import freerails.world.track.TrackConfiguration;
 
 import java.awt.*;
@@ -105,7 +105,7 @@ public class TrackRenderer {
         //
         // g.drawString(title, 10, 10);
 
-        Step[] directions = Step.getList();
+        TileTransition[] directions = TileTransition.getList();
         List<CubicCurve2D.Double> sections = new ArrayList<>();
         int matches = 0;
         for (int i = 0; i < directions.length - 2; i++) {
@@ -135,7 +135,7 @@ public class TrackRenderer {
             }
         }
         if (matches == 0) {
-            for (Step direction : directions) {
+            for (TileTransition direction : directions) {
 
                 if (conf.contains(direction)) {
                     Double toCurve = toCurve(direction);
@@ -154,7 +154,7 @@ public class TrackRenderer {
 
     }
 
-    CubicCurve2D.Double toCurve(Step a) {
+    CubicCurve2D.Double toCurve(TileTransition a) {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one;
         start = new Point2D.Double();
@@ -167,7 +167,7 @@ public class TrackRenderer {
         return returnValue;
     }
 
-    CubicCurve2D.Double toCurve(Step a, Step b) {
+    CubicCurve2D.Double toCurve(TileTransition a, TileTransition b) {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one, two;
         start = new Point2D.Double();

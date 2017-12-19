@@ -23,9 +23,9 @@
 package freerails.move;
 
 import freerails.util.Utils;
+import freerails.world.KEY;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.World;
 
 import java.io.Serializable;
 
@@ -35,15 +35,10 @@ import java.io.Serializable;
  */
 public class ChangeItemInListMove implements ListMove {
     private static final long serialVersionUID = -4457694821370844051L;
-
     private final KEY listKey;
-
     private final int index;
-
     private final Serializable before;
-
     private final Serializable after;
-
     private final FreerailsPrincipal principal;
 
     /**
@@ -69,8 +64,8 @@ public class ChangeItemInListMove implements ListMove {
         return Utils.equal(this.before, this.after);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        return move(after, before, w);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        return move(after, before, world);
     }
 
     @Override
@@ -156,8 +151,8 @@ public class ChangeItemInListMove implements ListMove {
                 after.toString();
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(after, before, w);
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        return tryMove(after, before, world);
     }
 
     /**
@@ -189,11 +184,11 @@ public class ChangeItemInListMove implements ListMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(before, after, w);
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        return tryMove(before, after, world);
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        return move(before, after, w);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        return move(before, after, world);
     }
 }

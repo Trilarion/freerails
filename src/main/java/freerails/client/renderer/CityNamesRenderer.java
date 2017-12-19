@@ -23,11 +23,11 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.Constants;
+import freerails.client.ClientConstants;
 import freerails.client.common.Painter;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.terrain.City;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 
 import java.awt.*;
 
@@ -56,10 +56,10 @@ public class CityNamesRenderer implements Painter {
         int size = w.size(SKEY.CITIES);
         for (int i = 0; i < size; i++) {
             City tempCity = (City) w.get(SKEY.CITIES, i);
-            final int xpos = tempCity.getCityX() * Constants.TILE_SIZE;
-            final int ypos = tempCity.getCityY() * Constants.TILE_SIZE + 10;
+            final int xpos = tempCity.getCityX() * ClientConstants.TILE_SIZE;
+            final int ypos = tempCity.getCityY() * ClientConstants.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos,
-                    Constants.TILE_SIZE * 8, 20);
+                    ClientConstants.TILE_SIZE * 8, 20);
             if (newVisibleRectectangle != null
                     && !newVisibleRectectangle.intersects(cityNameBox)) {
                 continue;

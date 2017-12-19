@@ -18,21 +18,17 @@
 
 package freerails.server;
 
-import freerails.client.Constants;
+import freerails.client.ClientConstants;
 import freerails.controller.*;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
 import freerails.util.ImInts;
 import freerails.util.ImList;
 import freerails.util.ImPoint;
-import freerails.world.common.FreerailsPathIterator;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldIterator;
 import freerails.world.train.*;
 
 import java.util.ArrayList;
@@ -109,7 +105,7 @@ public class TrainUpdater implements ServerAutomaton {
      */
     public static ImPoint[] trainPos2Tiles(TrainPositionOnMap pos) {
         ImPoint[] returnValue = new ImPoint[pos.getLength()];
-        final int TILE_WIDTH = Constants.TILE_SIZE;
+        final int TILE_WIDTH = ClientConstants.TILE_SIZE;
         for (int i = 0; i < returnValue.length; i++) {
             returnValue[i] = new ImPoint(pos.getX(i) / TILE_WIDTH, pos.getY(i)
                     / TILE_WIDTH);
@@ -138,7 +134,7 @@ public class TrainUpdater implements ServerAutomaton {
                 principal, is);
 
         Move m = addTrain.generateMove(world);
-        moveReceiver.processMove(m);
+        moveReceiver.process(m);
 
     }
 
@@ -205,8 +201,8 @@ public class TrainUpdater implements ServerAutomaton {
     // addCargoBundleMove, addTrainMove, setupScheduleMove });
     //
     // /* Execute the move. */
-    // moveReceiver.processMove(compositeMove);
-    // moveReceiver.processMove(positionMove);
+    // moveReceiver.process(compositeMove);
+    // moveReceiver.process(positionMove);
     //
     // /* Create a TrainMover to update the train's position. */
     // TrainPathFinder tpf = getPathToFollow(p, world, trainId, principal);
@@ -254,7 +250,7 @@ public class TrainUpdater implements ServerAutomaton {
                         ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(
                                 production, new ImList<>(), i,
                                 principal);
-                        moveReceiver.processMove(move);
+                        moveReceiver.process(move);
                     }
                 }
             }
@@ -264,7 +260,7 @@ public class TrainUpdater implements ServerAutomaton {
     private ImmutableSchedule generateInitialSchedule(
             FreerailsPrincipal principal, ReadOnlyWorld world,
             boolean autoSchedule) {
-        WorldIterator wi = new NonNullElements(KEY.STATIONS, world, principal);
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
         MutableSchedule s = new MutableSchedule();
 
@@ -324,11 +320,11 @@ public class TrainUpdater implements ServerAutomaton {
                     continue; // user deleted track, continue and ignore
                     // train!
                 }
-                moveReceiver.processMove(m);
+                moveReceiver.process(m);
             }
             for (MoveTrainPreMove preMove : stoppedTrains) {
                 Move m = preMove.generateMove(world);
-                moveReceiver.processMove(m);
+                moveReceiver.process(m);
             }
         }
 

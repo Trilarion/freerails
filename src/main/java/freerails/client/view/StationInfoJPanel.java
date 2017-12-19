@@ -27,12 +27,12 @@ package freerails.client.view;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
+import freerails.world.*;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.*;
 import freerails.world.train.WagonType;
 import org.apache.log4j.Logger;
 
@@ -208,7 +208,7 @@ public class StationInfoJPanel extends JPanel implements View,
     } // GEN-LAST:event_nextStationActionPerformed
 
     public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
-        this.wi = new NonNullElements(KEY.STATIONS, mr.getWorld(), mr
+        this.wi = new NonNullElementWorldIterator(KEY.STATIONS, mr.getWorld(), mr
                 .getPrincipal());
         addComponentListener(componentListener);
         this.w = mr.getWorld();

@@ -22,6 +22,7 @@
  */
 package freerails.world.top;
 
+import freerails.world.KEY;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;

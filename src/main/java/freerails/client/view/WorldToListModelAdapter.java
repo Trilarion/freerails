@@ -22,11 +22,11 @@
  */
 package freerails.client.view;
 
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
@@ -40,7 +40,7 @@ public class WorldToListModelAdapter implements ListModel {
 
     private final ReadOnlyWorld w;
 
-    private final NonNullElements elements;
+    private final NonNullElementWorldIterator elements;
 
     /**
      * @param world
@@ -56,7 +56,7 @@ public class WorldToListModelAdapter implements ListModel {
         if (null == w)
             throw new NullPointerException();
 
-        elements = new NonNullElements(key, world);
+        elements = new NonNullElementWorldIterator(key, world);
     }
 
     /**
@@ -82,7 +82,7 @@ public class WorldToListModelAdapter implements ListModel {
         if (!world.isPlayer(p))
             throw new IllegalArgumentException(p.getName());
 
-        elements = new NonNullElements(key, world, p);
+        elements = new NonNullElementWorldIterator(key, world, p);
     }
 
     public int getSize() {

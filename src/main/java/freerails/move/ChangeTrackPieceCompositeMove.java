@@ -25,11 +25,10 @@ package freerails.move;
 
 import freerails.controller.PathCacheController;
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
-import freerails.world.finances.Transaction;
+import freerails.world.*;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.*;
 import freerails.world.track.*;
 
 import java.awt.*;
@@ -40,9 +39,7 @@ import java.awt.*;
 public final class ChangeTrackPieceCompositeMove extends CompositeMove
         implements TrackMove, MapUpdateMove {
     private static final long serialVersionUID = 3616443518780978743L;
-
     private final int x, y, w, h;
-
     private final FreerailsPrincipal builder;
 
     private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b,
@@ -66,7 +63,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
      * @return
      */
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
-            ImPoint from, Step direction, TrackRule ruleA, TrackRule ruleB,
+            ImPoint from, TileTransition direction, TrackRule ruleA, TrackRule ruleB,
             ReadOnlyWorld w, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a;
         ChangeTrackPieceMove b;
@@ -88,7 +85,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
      * @throws Exception
      */
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
-            ImPoint from, Step direction, ReadOnlyWorld w,
+            ImPoint from, TileTransition direction, ReadOnlyWorld w,
             FreerailsPrincipal principal) throws Exception {
         TrackMove a;
         TrackMove b;
@@ -103,7 +100,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     // utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(
-            ImPoint p, Step direction, TrackRule trackRule, ReadOnlyWorld w,
+            ImPoint p, TileTransition direction, TrackRule trackRule, ReadOnlyWorld w,
             FreerailsPrincipal principle) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
@@ -135,7 +132,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     // utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(ImPoint p,
-                                                                Step direction, ReadOnlyWorld w, FreerailsPrincipal principal)
+                                                                TileTransition direction, ReadOnlyWorld w, FreerailsPrincipal principal)
             throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
@@ -181,7 +178,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(
-            Step direction, TrackRule trackRule, int owner, int ruleNumber) {
+            TileTransition direction, TrackRule trackRule, int owner, int ruleNumber) {
         TrackConfiguration simplestConfig = TrackConfiguration
                 .getFlatInstance("000010000");
         TrackConfiguration trackConfiguration = TrackConfiguration.add(
@@ -213,7 +210,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                                         FreerailsPrincipal principal) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 world, principal);
-        aggregator.setCategory(Transaction.Category.TRACK);
+        aggregator.setCategory(TransactionCategory.TRACK);
 
         return aggregator.calculateQuantity() > 0;
     }
@@ -275,14 +272,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     @Override
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         PathCacheController.clearTrackCache();
-        return super.doMove(w, p);
+        return super.doMove(world, principal);
     }
 
     @Override
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         PathCacheController.clearTrackCache();
-        return super.undoMove(w, p);
+        return super.undoMove(world, principal);
     }
 }

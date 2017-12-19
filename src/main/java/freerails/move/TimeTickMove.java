@@ -18,10 +18,10 @@
 
 package freerails.move;
 
-import freerails.world.common.GameTime;
+import freerails.world.GameTime;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.World;
 
 /**
  * Changes the time item on the world object.
@@ -75,18 +75,18 @@ public class TimeTickMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.currentTime().equals(oldTime)) {
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        if (world.currentTime().equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         }
         String string = "oldTime = " + oldTime.getTicks() + " <=> "
-                + "currentTime " + (w.currentTime()).getTicks();
+                + "currentTime " + (world.currentTime()).getTicks();
 
         return MoveStatus.moveFailed(string);
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        GameTime time = w.currentTime();
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        GameTime time = world.currentTime();
 
         if (time.equals(newTime)) {
             return MoveStatus.MOVE_OK;
@@ -94,21 +94,21 @@ public class TimeTickMove implements Move {
         return MoveStatus.moveFailed("Expected " + newTime + ", found " + time);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus status = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus status = tryDoMove(world, principal);
 
         if (status.ok) {
-            w.setTime(newTime);
+            world.setTime(newTime);
         }
 
         return status;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus status = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus status = tryUndoMove(world, principal);
 
         if (status.isOk()) {
-            w.setTime(oldTime);
+            world.setTime(oldTime);
         }
 
         return status;

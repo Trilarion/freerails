@@ -24,12 +24,12 @@ package freerails.controller;
 
 import freerails.util.ImPoint;
 import freerails.util.IntArray;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.PositionOnTrack;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
+import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
@@ -101,10 +101,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
                     ruleNumber);
 
             /* Count number of possible directions. */
-            ArrayList<Step> possibleDirections = new ArrayList<>();
+            ArrayList<TileTransition> possibleDirections = new ArrayList<>();
 
             for (int i = 0; i < 8; i++) {
-                Step direction = Step.getInstance(i);
+                TileTransition direction = TileTransition.getInstance(i);
                 TrackConfiguration config = trackPiece.getTrackConfiguration();
                 TrackConfiguration testConfig = TrackConfiguration.add(config,
                         direction);
@@ -118,7 +118,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetInts = new int[possibleDirections.size()];
 
             for (int i = 0; i < targetInts.length; i++) {
-                Step direction = possibleDirections.get(i);
+                TileTransition direction = possibleDirections.get(i);
                 PositionOnTrack targetPot = PositionOnTrack.createFacing(
                         targetPoint.x, targetPoint.y, direction);
                 targetInts[i] = targetPot.toInt();
@@ -129,7 +129,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
             for (int i = 0; i < 8; i++) {
                 PositionOnTrack targetPot = PositionOnTrack.createComingFrom(
-                        targetPoint.x, targetPoint.y, Step.getInstance(i));
+                        targetPoint.x, targetPoint.y, TileTransition.getInstance(i));
                 targetInts[i] = targetPot.toInt();
             }
         }
@@ -173,10 +173,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @return
      */
-    public Step[] pathAsVectors() {
+    public TileTransition[] pathAsVectors() {
         IntArray path = pathFinder.retrievePath();
         int size = path.size();
-        Step[] vectors = new Step[size];
+        TileTransition[] vectors = new TileTransition[size];
         PositionOnTrack progress = new PositionOnTrack();
 
         int x = startPoint.x;
@@ -185,7 +185,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             progress.setValuesFromInt(path.get(i));
             int x2 = progress.getX();
             int y2 = progress.getY();
-            vectors[i] = Step.getInstance(x2 - x, y2 - y);
+            vectors[i] = TileTransition.getInstance(x2 - x, y2 - y);
             x = x2;
             y = y2;
         }

@@ -22,9 +22,9 @@
  */
 package freerails.controller;
 
+import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.EconomicClimate;
 import freerails.world.finances.Money;
-import freerails.world.top.ReadOnlyWorld;
 
 /**
  * Not yet implemented

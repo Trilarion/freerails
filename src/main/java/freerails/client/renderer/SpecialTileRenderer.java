@@ -24,8 +24,8 @@
 package freerails.client.renderer;
 
 import freerails.client.common.ImageManager;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

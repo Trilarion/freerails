@@ -26,23 +26,23 @@ import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.PositionOnTrack;
+import freerails.world.TileTransition;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.World;
 import junit.framework.TestCase;
 
-import static freerails.world.common.Step.*;
+import static freerails.world.TileTransition.*;
 
 /**
  * Unit test for MoveTrainPreMove, tests pathfinding.
  */
 public class MoveTrainPreMove3rdTest extends TestCase {
 
-    final Step[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
-    final Step[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
-    final Step[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
+    final TileTransition[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
+    final TileTransition[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
+    final TileTransition[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
     TrackMoveProducer trackBuilder;
     StationBuilder stationBuilder;
     FreerailsPrincipal principal;
@@ -83,14 +83,14 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         findPath2Target(new ImPoint(9, 13), line2);
     }
 
-    private void findPath2Target(ImPoint target1, Step[] expectedPath) {
+    private void findPath2Target(ImPoint target1, TileTransition[] expectedPath) {
         FreerailsTile tile = (FreerailsTile) world
                 .getTile(target1.x, target1.y);
         assertTrue(tile.hasTrack());
         PositionOnTrack pot = PositionOnTrack.createFacing(10, 10, EAST);
         for (int i = 0; i < expectedPath.length; i++) {
-            Step expected = expectedPath[i];
-            Step actual = MoveTrainPreMove.findNextStep(world, pot, target1);
+            TileTransition expected = expectedPath[i];
+            TileTransition actual = MoveTrainPreMove.findNextStep(world, pot, target1);
             assertEquals(String.valueOf(i), expected, actual);
             pot.move(expected);
         }

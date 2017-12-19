@@ -26,16 +26,12 @@ import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
 import freerails.util.ImList;
+import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
-import freerails.world.common.GameSpeed;
 import freerails.world.finances.DeliverCargoReceipt;
 import freerails.world.finances.Transaction;
 import freerails.world.station.StationModel;
-import freerails.world.top.ITEM;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -66,12 +62,12 @@ public class UserMessageGenerator implements MoveReceiver {
     /**
      * @param move
      */
-    public void processMove(Move move) {
+    public void process(Move move) {
         if (move instanceof CompositeMove) {
             ImList<Move> moves = ((CompositeMove) move).getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
-                processMove(moves.get(i));
+                process(moves.get(i));
             }
         }
 

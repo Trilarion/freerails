@@ -28,13 +28,9 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     private static final long serialVersionUID = 3257006557605540149L;
 
     private final int cargoType;
-
     private final int sourceX;
-
     private final int sourceY;
-
     private final int stationOfOrigin;
-
     private final long timeCreated;
 
     /**

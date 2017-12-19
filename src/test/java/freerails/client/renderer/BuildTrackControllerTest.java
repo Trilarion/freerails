@@ -31,10 +31,10 @@ import freerails.controller.TrackMoveProducer;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 

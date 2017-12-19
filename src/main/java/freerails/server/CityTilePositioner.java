@@ -18,9 +18,9 @@
 
 package freerails.server;
 
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,6 +30,7 @@ import java.util.Random;
  * directly to the world object, so if the game has already started, use
  * WorldDifferences and MapDiffMove to pass changes to the clients.
  */
+// TODO what is random used for? Seed of random generator?
 public class CityTilePositioner {
     final Random random = new Random();
 
@@ -39,17 +40,17 @@ public class CityTilePositioner {
 
     final ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
-    final World w;
+    final World world;
 
     /**
-     * @param w
+     * @param world
      */
-    public CityTilePositioner(World w) {
-        this.w = w;
+    public CityTilePositioner(World world) {
+        this.world = world;
 
         // get the different types of Urban/Industry/Resource terrain
-        for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
-            TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
+        for (int i = 0; i < world.size(SKEY.TERRAIN_TYPES); i++) {
+            TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
             switch (type.getCategory().ordinal()) {
                 case 0:
                     urbanTerrainTypes.add(type);
@@ -65,12 +66,12 @@ public class CityTilePositioner {
     }
 
     void initCities() {
-        final int numCities = w.size(SKEY.CITIES);
-        CityEconomicModel[] cities = new CityEconomicModel[numCities];
+        final int numCities = world.size(SKEY.CITIES);
+        CityModel[] cities = new CityModel[numCities];
 
         for (int cityId = 0; cityId < numCities; cityId++) {
-            CityEconomicModel city = new CityEconomicModel();
-            city.loadFromMap(w, cityId);
+            CityModel city = new CityModel();
+            city.loadFromMap(world, cityId);
 
             final int urbanTiles = 2 + random.nextInt(3);
 
@@ -90,18 +91,18 @@ public class CityTilePositioner {
                 addResourceTile(city);
             }
 
-            city.write2map(w);
+            city.writeToMap(world);
             cities[cityId] = city;
         }
     }
 
-    private void addResourceTile(CityEconomicModel city) {
+    private void addResourceTile(CityModel city) {
         int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
         TerrainType type = resourceTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 
-    private void addIndustryTile(CityEconomicModel city) {
+    private void addIndustryTile(CityModel city) {
         int size = city.industriesNotAtCity.size();
 
         if (size > 0) {
@@ -111,14 +112,14 @@ public class CityTilePositioner {
         }
     }
 
-    private void addUrbanTile(CityEconomicModel city) {
+    private void addUrbanTile(CityModel city) {
         int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
         TerrainType type = urbanTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 
     void growCities() {
-        final int numCities = w.size(SKEY.CITIES);
+        final int numCities = world.size(SKEY.CITIES);
 
         /*
          * At some stage this will be refined to take into account how much
@@ -126,8 +127,8 @@ public class CityTilePositioner {
          * already present.
          */
         for (int cityId = 0; cityId < numCities; cityId++) {
-            CityEconomicModel city = new CityEconomicModel();
-            city.loadFromMap(w, cityId);
+            CityModel city = new CityModel();
+            city.loadFromMap(world, cityId);
 
             // Only increase cities with stations and less than 16 tiles
             if (city.size() < 16 && city.stations > 0) {
@@ -156,7 +157,7 @@ public class CityTilePositioner {
                         break;
                 }
 
-                city.write2map(w);
+                city.writeToMap(world);
             }
         }
     }

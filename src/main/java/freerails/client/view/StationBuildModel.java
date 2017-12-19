@@ -28,9 +28,9 @@ import freerails.controller.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
 import freerails.util.Utils;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.finances.Money;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 

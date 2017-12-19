@@ -22,6 +22,7 @@
  */
 package freerails.world.common;
 
+import freerails.world.GameCalendar;
 import junit.framework.TestCase;
 
 /**

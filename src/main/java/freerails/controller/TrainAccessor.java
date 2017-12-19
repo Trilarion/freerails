@@ -24,15 +24,10 @@ package freerails.controller;
 
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
+import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
 import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
@@ -40,7 +35,7 @@ import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
 import java.awt.*;
 import java.util.HashSet;
 
-import static freerails.world.common.Step.TILE_DIAMETER;
+import static freerails.world.TileTransition.TILE_DIAMETER;
 
 /**
  * Provides convenience methods to access the properties of a train from the
@@ -271,7 +266,7 @@ public class TrainAccessor {
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {
-            Step s = path.getStep(i);
+            TileTransition s = path.getStep(i);
             ImPoint tile = new ImPoint(x, y);
             x += s.deltaX;
             y += s.deltaY;

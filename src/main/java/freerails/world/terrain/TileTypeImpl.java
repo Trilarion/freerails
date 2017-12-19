@@ -25,6 +25,8 @@ import freerails.world.finances.Money;
  * Represents a type of terrain.
  */
 final public class TileTypeImpl implements TerrainType {
+
+    // TODO why is TerrainType and TerrainTypeImplementation separate?
     private static final long serialVersionUID = 4049919380945253945L;
 
     private final ImList<Consumption> consumption;
@@ -32,7 +34,7 @@ final public class TileTypeImpl implements TerrainType {
     private final ImList<Production> production;
     private final int rgb;
     private final int rightOfWay;
-    private final TerrainType.Category terrainCategory;
+    private final TerrainCategory terrainCategory;
     private final String terrainType;
     /**
      * Cost to build a tile of this terrain type or null if this type is not
@@ -50,7 +52,7 @@ final public class TileTypeImpl implements TerrainType {
      * @param conversion
      * @param tileBuildCost
      */
-    public TileTypeImpl(int rgb, TerrainType.Category terrainCategory,
+    public TileTypeImpl(int rgb, TerrainCategory terrainCategory,
                         String terrainType, int rightOfWay, Production[] production,
                         Consumption[] consumption, Conversion[] conversion,
                         int tileBuildCost) {
@@ -76,7 +78,7 @@ final public class TileTypeImpl implements TerrainType {
      * @param terrainCategory
      * @param terrainType
      */
-    public TileTypeImpl(TerrainType.Category terrainCategory, String terrainType) {
+    public TileTypeImpl(TerrainCategory terrainCategory, String terrainType) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = 0;
@@ -139,7 +141,7 @@ final public class TileTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public Category getCategory() {
+    public TerrainCategory getCategory() {
         return terrainCategory;
     }
 

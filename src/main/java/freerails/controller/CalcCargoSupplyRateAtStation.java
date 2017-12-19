@@ -19,13 +19,13 @@
 package freerails.controller;
 
 import freerails.util.ImList;
-import freerails.world.station.ConvertedAtStation;
-import freerails.world.station.DemandForCargo;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
+import freerails.world.station.CargoConversionAtStation;
+import freerails.world.station.DemandForCargoAtStation;
 import freerails.world.station.StationModel;
 import freerails.world.station.SupplyAtStation;
 import freerails.world.terrain.*;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackRule;
 import org.apache.log4j.Logger;
 
@@ -82,7 +82,7 @@ public class CalcCargoSupplyRateAtStation {
 
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         demand = new int[numCargoTypes];
-        converts = ConvertedAtStation.emptyConversionArray(numCargoTypes);
+        converts = CargoConversionAtStation.emptyConversionArray(numCargoTypes);
     }
 
     /**
@@ -105,14 +105,14 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * @return
      */
-    public ConvertedAtStation getConversion() {
-        return new ConvertedAtStation(this.converts);
+    public CargoConversionAtStation getConversion() {
+        return new CargoConversionAtStation(this.converts);
     }
 
     /**
      * @return
      */
-    public DemandForCargo getDemand() {
+    public DemandForCargoAtStation getDemand() {
         boolean[] demandboolean = new boolean[w.size(SKEY.CARGO_TYPES)];
 
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
@@ -121,7 +121,7 @@ public class CalcCargoSupplyRateAtStation {
             }
         }
 
-        return new DemandForCargo(demandboolean);
+        return new DemandForCargoAtStation(demandboolean);
     }
 
     private void incrementSupplyAndDemand(int i, int j) {

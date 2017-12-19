@@ -23,11 +23,11 @@
 package freerails.controller;
 
 import freerails.util.ImPoint;
+import freerails.world.GameRules;
+import freerails.world.ITEM;
+import freerails.world.WorldImpl;
 import freerails.world.player.Player;
-import freerails.world.top.GameRules;
-import freerails.world.top.ITEM;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 import java.util.List;

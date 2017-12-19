@@ -29,14 +29,14 @@ import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.ActivityIterator;
+import freerails.world.PositionOnTrack;
+import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.train.*;
 
-import static freerails.world.common.Step.*;
+import static freerails.world.TileTransition.*;
 
 /**
  * Junit test for AddTrainPreMove.
@@ -66,7 +66,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
-        Step[] track = {EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST};
+        TileTransition[] track = {EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST};
         stationA = new ImPoint(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.ok);
@@ -152,7 +152,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        Step[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+        TileTransition[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
                 NORTH_WEST, NORTH, NORTH_EAST};
         ImPoint from = new ImPoint(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);

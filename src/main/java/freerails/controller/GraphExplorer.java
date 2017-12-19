@@ -20,10 +20,8 @@ package freerails.controller;
 
 /**
  * This interface lets the caller explorer a graph while hiding the way the
- * graph is stored. Vertices are packed into single ints to avoid the cost of
+ * graph is stored. Vertices are packed into single int values to avoid the cost of
  * object creation and garbage collection.
- * <p>
- * 24-Nov-2002
  */
 public interface GraphExplorer {
     /**

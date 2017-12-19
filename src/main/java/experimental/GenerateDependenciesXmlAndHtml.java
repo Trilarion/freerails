@@ -70,7 +70,7 @@ public class GenerateDependenciesXmlAndHtml {
         add("freerails/controller/*");
         add("freerails/network/*");
         add(new String[]{"freerails/server/**/*", "freerails/client/**/*"});
-        add("freerails/launcher/**/*");
+        add("freerails/client/launcher/**/*");
         add("freerails/experimental/**/*");
 
         endBlock();

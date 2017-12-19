@@ -28,6 +28,7 @@ import java.io.Serializable;
  * clients of the ServerGameEngine and need to be initialised with a connection
  * to the game when deserialized.
  */
+// TODO where are they really used?
 public interface ServerAutomaton extends Serializable {
     /**
      * Initializes the automaton with a connection to the MoveExecuter.

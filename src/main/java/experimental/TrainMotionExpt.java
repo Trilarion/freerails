@@ -27,12 +27,12 @@ import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.util.IntLine;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.Step;
+import freerails.world.ActivityIterator;
+import freerails.world.FreerailsPathIterator;
+import freerails.world.TileTransition;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.World;
 import freerails.world.track.NullTrackType;
 import freerails.world.train.*;
 
@@ -41,7 +41,7 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.Random;
 
-import static freerails.world.common.Step.*;
+import static freerails.world.TileTransition.*;
 
 /**
  * This class is a visual test for the train movement code.
@@ -70,7 +70,7 @@ public class TrainMotionExpt extends JComponent {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        Step[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
+        TileTransition[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
                 NORTH_WEST, NORTH, NORTH_EAST};
         ImPoint from = new ImPoint(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
@@ -119,8 +119,8 @@ public class TrainMotionExpt extends JComponent {
             for (int y = 0; y < world.getMapHeight(); y++) {
                 FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                    g.drawRect(x * Step.TILE_DIAMETER, y * Step.TILE_DIAMETER,
-                            Step.TILE_DIAMETER, Step.TILE_DIAMETER);
+                    g.drawRect(x * TileTransition.TILE_DIAMETER, y * TileTransition.TILE_DIAMETER,
+                            TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER);
 
                 }
             }
@@ -151,10 +151,10 @@ public class TrainMotionExpt extends JComponent {
         Iterator<ImPoint> it = pathOT.tiles();
         while (it.hasNext()) {
             ImPoint tile = it.next();
-            int x = tile.x * Step.TILE_DIAMETER;
-            int y = tile.y * Step.TILE_DIAMETER;
-            int w = Step.TILE_DIAMETER;
-            int h = Step.TILE_DIAMETER;
+            int x = tile.x * TileTransition.TILE_DIAMETER;
+            int y = tile.y * TileTransition.TILE_DIAMETER;
+            int w = TileTransition.TILE_DIAMETER;
+            int h = TileTransition.TILE_DIAMETER;
             g.setColor(Color.WHITE);
             g.fillRect(x, y, w, h);
             g.setColor(Color.DARK_GRAY);
@@ -165,10 +165,10 @@ public class TrainMotionExpt extends JComponent {
         it = pathOT.tiles();
         while (it.hasNext()) {
             ImPoint tile = it.next();
-            int x = tile.x * Step.TILE_DIAMETER;
-            int y = tile.y * Step.TILE_DIAMETER;
-            int w = Step.TILE_DIAMETER;
-            int h = Step.TILE_DIAMETER;
+            int x = tile.x * TileTransition.TILE_DIAMETER;
+            int y = tile.y * TileTransition.TILE_DIAMETER;
+            int w = TileTransition.TILE_DIAMETER;
+            int h = TileTransition.TILE_DIAMETER;
             g.setColor(Color.LIGHT_GRAY);
             g.fillRect(x, y, w, h);
             g.setColor(Color.DARK_GRAY);

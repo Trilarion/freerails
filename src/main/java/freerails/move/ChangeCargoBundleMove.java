@@ -22,9 +22,9 @@
  */
 package freerails.move;
 
+import freerails.world.KEY;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
 
 /**
  * This {@link Move} changes a cargo bundle (cargo bundles are used to represent

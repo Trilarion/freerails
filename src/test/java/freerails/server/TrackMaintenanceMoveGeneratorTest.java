@@ -22,13 +22,13 @@
  */
 package freerails.server;
 
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.ItemsTransactionAggregator;
+import freerails.world.World;
+import freerails.world.WorldImpl;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
-import freerails.world.finances.Transaction;
-import freerails.world.top.ItemsTransactionAggregator;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -58,7 +58,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         actual = calNumOfEachTrackType();
 
         /*
-         * actual = ItemsTransactionAggregator.calulateNumberOfEachTrackType(w,
+         * actual = ItemsTransactionAggregator.calulateNumberOfEachTrackType(world,
          * MapFixtureFactory.TEST_PRINCIPAL, 0);
          */
         expected = new int[]{0, 0, 0}; // No track has been built yet.
@@ -97,8 +97,8 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
      * type.
      */
     private void addTrack(int trackType, int quantity) {
-        AddItemTransaction t = new AddItemTransaction(
-                Transaction.Category.TRACK, trackType, quantity, new Money(
+        ItemTransaction t = new ItemTransaction(
+                TransactionCategory.TRACK, trackType, quantity, new Money(
                 trackType));
         w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, t);
     }

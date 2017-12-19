@@ -26,8 +26,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.*;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -161,7 +161,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
     }
 
     public void display(int trainNumber) {
-        wi = new NonNullElements(KEY.TRAINS, w, principal);
+        wi = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
         wi.gotoIndex(trainNumber);
         if (wi.getRowID() > 0) {
             this.previousJButton.setEnabled(true);

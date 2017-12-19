@@ -33,10 +33,10 @@
  */
 package freerails.client.renderer;
 
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.NullTrackPiece;
 
 import java.awt.*;

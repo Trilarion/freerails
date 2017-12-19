@@ -23,12 +23,12 @@
 package freerails.move;
 
 import freerails.util.ImPoint;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 
 /**
  * This {@link CompositeMove}adds a station to the station list and adds a

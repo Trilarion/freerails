@@ -18,12 +18,12 @@
 
 package freerails.controller;
 
-import freerails.util.FreerailsIntIterator;
+import freerails.util.IntIterator;
 
 /**
- * FlatTrackExplorer to FreerailsIntIterator adapter.
+ * FlatTrackExplorer to IntIterator adapter.
  */
-public class TrainPathIntIterator implements FreerailsIntIterator {
+public class TrainPathIntIterator implements IntIterator {
     private final FlatTrackExplorer trackExplorer;
 
     /**

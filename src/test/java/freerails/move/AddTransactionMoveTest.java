@@ -22,10 +22,7 @@
  */
 package freerails.move;
 
-import freerails.world.finances.Bill;
-import freerails.world.finances.Money;
-import freerails.world.finances.Receipt;
-import freerails.world.finances.Transaction;
+import freerails.world.finances.*;
 import freerails.world.player.Player;
 import freerails.world.top.MapFixtureFactory;
 
@@ -43,8 +40,8 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new Receipt(new Money(100),
-                Transaction.Category.MISC_INCOME);
+        Transaction t = new MoneyTransaction2(new Money(100),
+                TransactionCategory.MISC_INCOME);
         Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t);
         assertTryMoveIsOk(m);
         assertTryUndoMoveFails(m);
@@ -73,8 +70,8 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new Bill(new Money(100),
-                Transaction.Category.MISC_INCOME);
+        Transaction t = new MoneyTransaction(new Money(100),
+                TransactionCategory.MISC_INCOME);
         Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t,
                 true);
 

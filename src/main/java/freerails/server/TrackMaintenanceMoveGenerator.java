@@ -25,23 +25,25 @@ package freerails.server;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
-import freerails.world.finances.Bill;
+import freerails.world.ItemsTransactionAggregator;
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.finances.Money;
+import freerails.world.finances.MoneyTransaction;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ItemsTransactionAggregator;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
-import static freerails.world.finances.Transaction.Category.*;
+import static freerails.world.finances.TransactionCategory.*;
 
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
  */
 public class TrackMaintenanceMoveGenerator {
+
     private final MoveReceiver moveReceiver;
 
     /**
@@ -52,25 +54,25 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     /**
-     * @param w
+     * @param world
      * @param principal
      * @param category
      * @return
      */
-    public static AddTransactionMove generateMove(World w,
-                                                  FreerailsPrincipal principal, Transaction.Category category) {
+    public static AddTransactionMove generateMove(World world,
+                                                  FreerailsPrincipal principal, TransactionCategory category) {
         if (TRACK_MAINTENANCE != category && STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                w, principal);
+                world, principal);
         aggregator.setCategory(TRACK);
 
         long amount = 0;
 
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
             // Is the track type the category we are interested in?
@@ -84,7 +86,7 @@ public class TrackMaintenanceMoveGenerator {
             }
         }
 
-        Transaction t = new Bill(new Money(amount), category);
+        Transaction t = new MoneyTransaction(new Money(amount), category);
 
         return new AddTransactionMove(principal, t);
     }
@@ -96,10 +98,10 @@ public class TrackMaintenanceMoveGenerator {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
             Move m = generateMove(w, principal, TRACK_MAINTENANCE);
-            moveReceiver.processMove(m);
+            moveReceiver.process(m);
 
             m = generateMove(w, principal, STATION_MAINTENANCE);
-            moveReceiver.processMove(m);
+            moveReceiver.process(m);
         }
     }
 }

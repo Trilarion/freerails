@@ -18,26 +18,26 @@
 
 package freerails.world.train;
 
-import freerails.client.Constants;
-import freerails.util.FreerailsIntIterator;
+import freerails.client.ClientConstants;
+import freerails.util.IntIterator;
 import freerails.util.IntLine;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.PositionOnTrack;
+import freerails.world.FreerailsPathIterator;
+import freerails.world.PositionOnTrack;
 
 /**
  * Exposes the path of a train. TODO needs better comment
  */
 public class TrainPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256999977816502584L;
-    private static final int tileSize = Constants.TILE_SIZE;
-    private final FreerailsIntIterator intIterator;
+    private static final int tileSize = ClientConstants.TILE_SIZE;
+    private final IntIterator intIterator;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();
 
     /**
      * @param i
      */
-    public TrainPathIterator(FreerailsIntIterator i) {
+    public TrainPathIterator(IntIterator i) {
         intIterator = i;
         p2.setValuesFromInt(intIterator.nextInt());
     }

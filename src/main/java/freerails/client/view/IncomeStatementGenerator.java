@@ -19,16 +19,12 @@
 package freerails.client.view;
 
 import freerails.util.Pair;
+import freerails.world.*;
 import freerails.world.cargo.CargoType;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
 import freerails.world.finances.DeliverCargoReceipt;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ITEM;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 
 /**
  * Generates the income statement- note, its fields are read using reflection so

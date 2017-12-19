@@ -26,11 +26,11 @@ import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
-import freerails.world.top.World;
+import freerails.world.TileTransition;
+import freerails.world.World;
 import junit.framework.TestCase;
 
-import static freerails.world.common.Step.EAST;
+import static freerails.world.TileTransition.EAST;
 
 /**
  * A Junit test.
@@ -69,7 +69,7 @@ public class StationBuilderTest extends TestCase {
     public void testBuildStation() {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
-        Step[] track = {EAST, EAST, EAST};
+        TileTransition[] track = {EAST, EAST, EAST};
         MoveStatus ms = trackBuilder.buildTrack(new ImPoint(10, 10), track);
         assertTrue(ms.ok);
         assertTrue(stationBuilder.tryBuildingStation(new ImPoint(10, 10)).ok);

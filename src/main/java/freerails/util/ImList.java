@@ -29,6 +29,7 @@ import java.util.List;
  *
  * @param <E>
  */
+// TODO replace by standard Java stuff
 @Immutable
 public final class ImList<E extends Serializable> implements
         Serializable {

@@ -24,12 +24,13 @@ import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImStringList;
+import freerails.world.World;
 import freerails.world.finances.Money;
-import freerails.world.finances.Receipt;
+import freerails.world.finances.MoneyTransaction2;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.top.World;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -218,8 +219,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             World world = client0.getWorld();
             Player player0 = world.getPlayer(0);
             FreerailsPrincipal principal0 = player0.getPrincipal();
-            Transaction t = new Receipt(new Money(100),
-                    Transaction.Category.MISC_INCOME);
+            Transaction t = new MoneyTransaction2(new Money(100),
+                    TransactionCategory.MISC_INCOME);
             Move move = new AddTransactionMove(principal0, t);
             World copyOfWorld = world.defensiveCopy();
             assertEquals(copyOfWorld, world);
@@ -229,7 +230,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             assertTrue(status.isOk());
 
             // client0.write(move);
-            client0.processMove(move);
+            client0.process(move);
             server.update();
 
             MoveStatus reply = (MoveStatus) client0.read();
@@ -249,7 +250,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             /* Test disconnecting and reconnecting during play. */
             client0.disconnect();
-            client1.processMove(move);
+            client1.process(move);
             // client1.write(move);
             move.doMove(client1.getWorld(), principal0);
 

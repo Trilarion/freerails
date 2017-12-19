@@ -21,10 +21,10 @@ package freerails.network;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.util.GameModel;
-import freerails.world.common.FreerailsMutableSerializable;
+import freerails.world.FreerailsMutableSerializable;
+import freerails.world.GameModel;
+import freerails.world.World;
 import freerails.world.player.Player;
-import freerails.world.top.World;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -235,14 +235,14 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         } else if (message instanceof Move) {
             Move m = (Move) message;
             committer.fromServer(m);
-            moveFork.processMove(m);
+            moveFork.process(m);
         } else if (message instanceof MoveStatus) {
             MoveStatus ms = (MoveStatus) message;
             committer.fromServer(ms);
         } else if (message instanceof PreMove) {
             PreMove pm = (PreMove) message;
             Move m = committer.fromServer(pm);
-            moveFork.processMove(m);
+            moveFork.process(m);
         } else if (message instanceof PreMoveStatus) {
             PreMoveStatus pms = (PreMoveStatus) message;
             committer.fromServer(pms);
@@ -265,9 +265,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      *
      * @param move
      */
-    final public void processMove(Move move) {
+    final public void process(Move move) {
         committer.toServer(move);
-        moveFork.processMove(move);
+        moveFork.process(move);
         write(move);
     }
 
@@ -293,7 +293,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      */
     public void processPreMove(PreMove pm) {
         Move m = committer.toServer(pm);
-        moveFork.processMove(m);
+        moveFork.process(m);
         write(pm);
     }
 

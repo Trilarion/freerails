@@ -22,13 +22,13 @@
  */
 package freerails.controller;
 
-import freerails.world.common.GameTime;
+import freerails.world.GameTime;
+import freerails.world.ITEM;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TransactionAggregator;
 import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.top.ITEM;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.TransactionAggregator;
 
 /**
  * Gathers the financial data for a company.
@@ -58,22 +58,22 @@ public class FinancialDataGatherer extends TransactionAggregator {
     protected void incrementRunningTotal(int transactionID) {
         Transaction t = super.w.getTransaction(super.principal, transactionID);
 
-        if (t instanceof AddItemTransaction) {
-            AddItemTransaction ait = (AddItemTransaction) t;
+        if (t instanceof ItemTransaction) {
+            ItemTransaction ait = (ItemTransaction) t;
 
-            if (t instanceof StockTransaction
-                    && ait.getCategory() == Transaction.Category.ISSUE_STOCK
+            if (t instanceof StockItemTransaction
+                    && ait.getCategory() == TransactionCategory.ISSUE_STOCK
                     && ait.getType() == -1) {
                 // If it is a change in the total number of shares issued.
-                StockTransaction ist = (StockTransaction) t;
+                StockItemTransaction ist = (StockItemTransaction) t;
                 totalShares += ist.getQuantity();
 
-            } else if (t instanceof StockTransaction
-                    && ait.getCategory() == Transaction.Category.TRANSFER_STOCK) {
+            } else if (t instanceof StockItemTransaction
+                    && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
                 //
                 stockInRRs[ait.getType()] += ait.getQuantity();
 
-            } else if (t instanceof BondTransaction) {
+            } else if (t instanceof BondItemTransaction) {
                 bonds += ait.getQuantity();
             }
         } else {
@@ -178,7 +178,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     public Money netWorth() {
         NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
-        GameTime[] times = {GameTime.BIG_BANG, GameTime.END_OF_THE_WORLD};
+        GameTime[] times = {GameTime.BIG_BANG, GameTime.DOOMSDAY};
         nwc.setTimes(times);
         return nwc.calculateValue();
     }

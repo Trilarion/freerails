@@ -23,10 +23,10 @@
 package freerails.controller;
 
 import freerails.util.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.PositionOnTrack;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TileTransition;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 /**
@@ -66,14 +66,14 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     /**
      * @return
      */
-    public Step[] pathAsVectors() {
+    public TileTransition[] pathAsVectors() {
         int[] pathAsInts = pathFinder.retrievePath().toArray();
-        Step[] vectors = new Step[pathAsInts.length];
+        TileTransition[] vectors = new TileTransition[pathAsInts.length];
         int x = startPoint.x;
         int y = startPoint.y;
         for (int i = 0; i < pathAsInts.length; i++) {
             PositionOnTrack p2 = new PositionOnTrack(pathAsInts[i]);
-            vectors[i] = Step.getInstance(p2.getX() - x, p2.getY() - y);
+            vectors[i] = TileTransition.getInstance(p2.getX() - x, p2.getY() - y);
             x = p2.getX();
             y = p2.getY();
         }

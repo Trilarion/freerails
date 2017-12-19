@@ -18,9 +18,9 @@
 
 package freerails.server;
 
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.terrain.City;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -32,8 +32,8 @@ import java.util.Vector;
  * in the data, its stored in KEY.CITIES.
  */
 public class CitySAXParser extends DefaultHandler {
-    private final Vector<City> cities;
 
+    private final Vector<City> cities;
     private final World world;
 
     /**

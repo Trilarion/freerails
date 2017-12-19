@@ -20,19 +20,19 @@ package freerails.server;
 
 import freerails.controller.*;
 import freerails.network.MoveReceiver;
-import freerails.util.FreerailsIntIterator;
 import freerails.util.ImPoint;
-import freerails.world.common.PositionOnTrack;
+import freerails.util.IntIterator;
+import freerails.world.PositionOnTrack;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldDiffs;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldDiffs;
 
 /**
  * This class provides methods that generate a path to a target as a series of
  * PositionOnTrack objects encoded as ints, it also deals with stops at
  * stations.
  */
-public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
+public class TrainPathFinder implements IntIterator, ServerAutomaton {
 
     private static final long serialVersionUID = 3256446893302559280L;
     final ReadOnlyWorld w;
@@ -67,7 +67,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         if (moving) {
             return trackExplorer.hasNextEdge();
         }
-        mr.processMove(stopsHandler.getMoves());
+        mr.process(stopsHandler.getMoves());
         return false;
     }
 
@@ -79,7 +79,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
         boolean moving = stopsHandler.isTrainMoving();
 
-        mr.processMove(stopsHandler.getMoves());
+        mr.process(stopsHandler.getMoves());
         return moving;
     }
 
@@ -129,7 +129,7 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
         int nextPosition = tempP.toInt();
         trackExplorer.setPosition(nextPosition);
 
-        mr.processMove(stopsHandler.getMoves());
+        mr.process(stopsHandler.getMoves());
         return nextPosition;
     }
 }

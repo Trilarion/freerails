@@ -27,17 +27,13 @@ package freerails.client.view;
 import freerails.controller.FinancialDataGatherer;
 import freerails.controller.StockPriceCalculator;
 import freerails.controller.StockPriceCalculator.StockPrice;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
+import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ITEM;
-import freerails.world.top.ItemsTransactionAggregator;
-import freerails.world.top.ReadOnlyWorld;
 
 import java.text.DecimalFormat;
 
-import static freerails.world.finances.Transaction.Category.BOND;
+import static freerails.world.finances.TransactionCategory.BOND;
 
 /**
  */

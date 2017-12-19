@@ -18,10 +18,10 @@
 
 package freerails.controller;
 
-import freerails.world.common.GameTime;
+import freerails.world.GameTime;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.TrackSection;
 import freerails.world.train.TrainModel;
 

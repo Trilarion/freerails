@@ -22,13 +22,13 @@
  */
 package freerails.client.top;
 
-import freerails.client.Constants;
+import freerails.client.ClientConstants;
 import freerails.client.common.ImageManager;
 import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -67,11 +67,11 @@ public class QuickRGBTileRendererList implements TileRendererList {
      */
     public static Image createImageFor(TerrainType t) {
         Image image = defaultConfiguration.createCompatibleImage(
-                Constants.TILE_SIZE, Constants.TILE_SIZE);
+                ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
         Color c = new Color(t.getRGB());
         Graphics g = image.getGraphics();
         g.setColor(c);
-        g.fillRect(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+        g.fillRect(0, 0, ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
         g.dispose();
 
         return image;

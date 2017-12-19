@@ -25,14 +25,14 @@ package freerails.controller;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.finances.BondTransaction;
+import freerails.world.World;
+import freerails.world.WorldImpl;
+import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
-import freerails.world.finances.StockTransaction;
+import freerails.world.finances.StockItemTransaction;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
@@ -77,7 +77,7 @@ public class FinancialDataGathererTest extends TestCase {
      */
     private boolean addBond() {
         FinancialDataGatherer fdg;
-        w.addTransaction(player.getPrincipal(), BondTransaction.issueBond(5));
+        w.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
         fdg = new FinancialDataGatherer(w, player.getPrincipal());
 
         return fdg.canIssueBond();
@@ -90,7 +90,7 @@ public class FinancialDataGathererTest extends TestCase {
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
                 .getPrincipal());
         assertEquals(5, fdg.nextBondInterestRate());
-        w.addTransaction(player.getPrincipal(), BondTransaction.issueBond(5));
+        w.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
         fdg = new FinancialDataGatherer(w, player.getPrincipal());
         assertEquals(6, fdg.nextBondInterestRate());
     }
@@ -106,7 +106,7 @@ public class FinancialDataGathererTest extends TestCase {
         int treasuryStock = 10000;
         int totalStock = FinancialMoveProducer.IPO_SIZE;
         int publicStock = totalStock - treasuryStock;
-        Transaction t = StockTransaction.buyOrSellStock(0, treasuryStock,
+        Transaction t = StockItemTransaction.buyOrSellStock(0, treasuryStock,
                 new Money(5));
         w.addTransaction(principal, t);
         fdg = new FinancialDataGatherer(w, principal);
@@ -130,7 +130,7 @@ public class FinancialDataGathererTest extends TestCase {
 
         // Make player #0 buy stock in player #1
         int quantity = 10000;
-        Transaction t = StockTransaction.buyOrSellStock(1, quantity, new Money(
+        Transaction t = StockItemTransaction.buyOrSellStock(1, quantity, new Money(
                 5));
         w.addTransaction(players[0].getPrincipal(), t);
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, players[0]

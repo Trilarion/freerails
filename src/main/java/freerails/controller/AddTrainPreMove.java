@@ -25,16 +25,13 @@ package freerails.controller;
 import freerails.move.*;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
+import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.train.*;
 
 import java.util.ArrayList;
@@ -116,7 +113,7 @@ public class AddTrainPreMove implements PreMove {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
 
-        List<Step> steps = new ArrayList<>();
+        List<TileTransition> tileTransitions = new ArrayList<>();
         int length = calTrainLength();
         int distanceTravelled = 0;
         PositionOnTrack p = new PositionOnTrack();
@@ -124,12 +121,12 @@ public class AddTrainPreMove implements PreMove {
             fte.nextEdge();
             fte.moveForward();
             p.setValuesFromInt(fte.getPosition());
-            Step v = p.cameFrom();
+            TileTransition v = p.cameFrom();
             distanceTravelled += v.getLength();
-            steps.add(v);
+            tileTransitions.add(v);
 
         }
-        return new PathOnTiles(point, steps);
+        return new PathOnTiles(point, tileTransitions);
     }
 
     private int calTrainLength() {
@@ -181,8 +178,8 @@ public class AddTrainPreMove implements PreMove {
         EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES,
                 engineTypeId);
         Money price = engineType.getPrice();
-        Transaction transaction = new AddItemTransaction(
-                Transaction.Category.TRAIN, engineTypeId, quantity, new Money(
+        Transaction transaction = new ItemTransaction(
+                TransactionCategory.TRAIN, engineTypeId, quantity, new Money(
                 -price.getAmount()));
         AddTransactionMove transactionMove = new AddTransactionMove(principal,
                 transaction);

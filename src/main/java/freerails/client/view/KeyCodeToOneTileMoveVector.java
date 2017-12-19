@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -29,29 +29,29 @@ import java.util.NoSuchElementException;
  */
 public class KeyCodeToOneTileMoveVector {
 
-    private static final HashMap<Integer, Step> keycode2vector = new HashMap<>();
+    private static final HashMap<Integer, TileTransition> keycode2vector = new HashMap<>();
 
     static {
         // Set up key mappings...
         // Num pad with num lock on
-        keycode2vector.put(KeyEvent.VK_NUMPAD1, Step.SOUTH_WEST);
-        keycode2vector.put(KeyEvent.VK_NUMPAD2, Step.SOUTH);
-        keycode2vector.put(KeyEvent.VK_NUMPAD3, Step.SOUTH_EAST);
-        keycode2vector.put(KeyEvent.VK_NUMPAD4, Step.WEST);
-        keycode2vector.put(KeyEvent.VK_NUMPAD6, Step.EAST);
-        keycode2vector.put(KeyEvent.VK_NUMPAD7, Step.NORTH_WEST);
-        keycode2vector.put(KeyEvent.VK_NUMPAD8, Step.NORTH);
-        keycode2vector.put(KeyEvent.VK_NUMPAD9, Step.NORTH_EAST);
+        keycode2vector.put(KeyEvent.VK_NUMPAD1, TileTransition.SOUTH_WEST);
+        keycode2vector.put(KeyEvent.VK_NUMPAD2, TileTransition.SOUTH);
+        keycode2vector.put(KeyEvent.VK_NUMPAD3, TileTransition.SOUTH_EAST);
+        keycode2vector.put(KeyEvent.VK_NUMPAD4, TileTransition.WEST);
+        keycode2vector.put(KeyEvent.VK_NUMPAD6, TileTransition.EAST);
+        keycode2vector.put(KeyEvent.VK_NUMPAD7, TileTransition.NORTH_WEST);
+        keycode2vector.put(KeyEvent.VK_NUMPAD8, TileTransition.NORTH);
+        keycode2vector.put(KeyEvent.VK_NUMPAD9, TileTransition.NORTH_EAST);
 
         // Num pad with num lock off
-        keycode2vector.put(KeyEvent.VK_END, Step.SOUTH_WEST);
-        keycode2vector.put(KeyEvent.VK_DOWN, Step.SOUTH);
-        keycode2vector.put(KeyEvent.VK_PAGE_DOWN, Step.SOUTH_EAST);
-        keycode2vector.put(KeyEvent.VK_LEFT, Step.WEST);
-        keycode2vector.put(KeyEvent.VK_RIGHT, Step.EAST);
-        keycode2vector.put(KeyEvent.VK_HOME, Step.NORTH_WEST);
-        keycode2vector.put(KeyEvent.VK_UP, Step.NORTH);
-        keycode2vector.put(KeyEvent.VK_PAGE_UP, Step.NORTH_EAST);
+        keycode2vector.put(KeyEvent.VK_END, TileTransition.SOUTH_WEST);
+        keycode2vector.put(KeyEvent.VK_DOWN, TileTransition.SOUTH);
+        keycode2vector.put(KeyEvent.VK_PAGE_DOWN, TileTransition.SOUTH_EAST);
+        keycode2vector.put(KeyEvent.VK_LEFT, TileTransition.WEST);
+        keycode2vector.put(KeyEvent.VK_RIGHT, TileTransition.EAST);
+        keycode2vector.put(KeyEvent.VK_HOME, TileTransition.NORTH_WEST);
+        keycode2vector.put(KeyEvent.VK_UP, TileTransition.NORTH);
+        keycode2vector.put(KeyEvent.VK_PAGE_UP, TileTransition.NORTH_EAST);
 
     }
 
@@ -61,7 +61,7 @@ public class KeyCodeToOneTileMoveVector {
      * @param keycode
      * @return
      */
-    public static Step getInstanceMappedToKey(int keycode)
+    public static TileTransition getInstanceMappedToKey(int keycode)
             throws NoSuchElementException {
         Integer integer = keycode;
 

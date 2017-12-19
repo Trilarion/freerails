@@ -26,13 +26,13 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.train.TrainModel;
 
 import javax.swing.*;
@@ -134,7 +134,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
 
     public void displayTrain(int newTrainNumber) {
 
-        NonNullElements it = new NonNullElements(KEY.TRAINS, w, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
         it.gotoIndex(newTrainNumber);
 
         this.trainNumber = newTrainNumber;

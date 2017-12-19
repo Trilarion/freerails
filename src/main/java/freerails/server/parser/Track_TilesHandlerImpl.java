@@ -21,9 +21,9 @@
  */
 package freerails.server.parser;
 
-import freerails.world.terrain.TerrainType;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.terrain.TerrainCategory;
 import freerails.world.track.LegalTrackPlacement;
 import freerails.world.track.TrackRule;
 import freerails.world.track.TrackRuleImpl;
@@ -42,6 +42,7 @@ import java.util.List;
  *
  * @see Track_TilesParser
  */
+// TODO difference between interface and implementation
 public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     /**
@@ -67,7 +68,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     /**
      *
      */
-    protected HashSet<TerrainType.Category> terrainTypes;
+    protected HashSet<TerrainCategory> terrainTypes;
 
     /**
      *
@@ -190,7 +191,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void handle_TerrainType(final Attributes meta) throws SAXException {
-        TerrainType.Category cat = TerrainType.Category.valueOf(meta
+        TerrainCategory cat = TerrainCategory.valueOf(meta
                 .getValue("name"));
         terrainTypes.add(cat);
     }

@@ -21,26 +21,24 @@ package freerails.server;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.server.parser.Track_TilesHandlerImpl;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameSpeed;
-import freerails.world.common.GameTime;
+import freerails.world.*;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.*;
 
 import java.net.URL;
 
 /**
  * Stores a static world object and provides copies to clients.
  */
+// TODO what is this good for?
 public class MapFixtureFactory2 {
 
     private static World w;
 
     /**
      * Returns a world object with a map of size 50*50, 4 players, and track,
-     * terrain and cargo types as specifed in the xml files used by the actual
+     * terrain and cargo types as specified in the xml files used by the actual
      * game.
      *
      * @return

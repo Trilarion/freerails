@@ -18,7 +18,6 @@
 
 package freerails.world.cargo;
 
-import freerails.world.cargo.CargoType.Categories;
 import junit.framework.TestCase;
 
 /**
@@ -32,14 +31,14 @@ public class CargoTypeTest extends TestCase {
     public void testCargoType() {
         // Test that invalid categories get rejected.
         try {
-            new CargoType(10, "Test", Categories
-                    .getCategory("Non valid catgeory"));
+            new CargoType(10, "Test", CargoCategory
+                    .getCategoryByName("Non valid catgeory"));
             fail();
         } catch (Exception e) {
         }
 
         try {
-            new CargoType(10, "Test", Categories.Mail);
+            new CargoType(10, "Test", CargoCategory.Mail);
         } catch (Exception e) {
             fail();
         }

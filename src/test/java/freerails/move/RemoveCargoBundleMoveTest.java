@@ -22,9 +22,9 @@
  */
 package freerails.move;
 
+import freerails.world.KEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.top.KEY;
 import freerails.world.top.MapFixtureFactory;
 
 /**

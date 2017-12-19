@@ -25,13 +25,13 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
-import freerails.world.top.World;
+import freerails.world.TileTransition;
+import freerails.world.World;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
 
-import static freerails.world.common.Step.*;
+import static freerails.world.TileTransition.*;
 
 /**
  */
@@ -74,16 +74,16 @@ public class PathOnTrackFinderTest extends TestCase {
      *
      */
     public void testPathAsVectors1() {
-        Step[] path = {EAST, EAST, SOUTH_EAST};
+        TileTransition[] path = {EAST, EAST, SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
-        ImPoint end = Step.move(start, path);
+        ImPoint end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
             pathFinder.search(-1);
             assertEquals(IncrementalPathFinder.PATH_FOUND, pathFinder
                     .getStatus());
-            Step[] pathFound = pathFinder.pathAsVectors();
+            TileTransition[] pathFound = pathFinder.pathAsVectors();
             assertTrue(Arrays.equals(path, pathFound));
         } catch (PathNotFoundException e) {
             fail();
@@ -94,16 +94,16 @@ public class PathOnTrackFinderTest extends TestCase {
      *
      */
     public void testPathAsVectors2() {
-        Step[] path = {EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST};
+        TileTransition[] path = {EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST};
         ImPoint start = new ImPoint(5, 5);
-        ImPoint end = Step.move(start, path);
+        ImPoint end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
             pathFinder.search(-1);
             assertEquals(IncrementalPathFinder.PATH_FOUND, pathFinder
                     .getStatus());
-            Step[] pathFound = pathFinder.pathAsVectors();
+            TileTransition[] pathFound = pathFinder.pathAsVectors();
             assertTrue(Arrays.equals(path, pathFound));
         } catch (PathNotFoundException e) {
             fail();
@@ -114,9 +114,9 @@ public class PathOnTrackFinderTest extends TestCase {
      *
      */
     public void testSetupSearch() {
-        Step[] path = {EAST, EAST, SOUTH_EAST};
+        TileTransition[] path = {EAST, EAST, SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
-        ImPoint end = Step.move(start, path);
+        ImPoint end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);

@@ -28,10 +28,10 @@ import freerails.controller.TimeTickPreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.TimeTickMove;
-import freerails.world.common.GameTime;
+import freerails.world.GameTime;
+import freerails.world.World;
+import freerails.world.WorldImpl;
 import freerails.world.player.Player;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
@@ -55,7 +55,7 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void test1() {
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         Move m = new TimeTickMove(oldtime, newTime);
@@ -84,7 +84,7 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void test2() {
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         Move m = new TimeTickMove(oldtime, newTime);
@@ -133,7 +133,7 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void test3() {
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         Move m = new TimeTickMove(oldtime, newTime);
@@ -162,7 +162,7 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void test4() {
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         /* the following move should fail! */
@@ -187,7 +187,7 @@ public class MovePrecommitterTest extends TestCase {
     public void testPreMoves1() {
         PreMove pm = TimeTickPreMove.INSTANCE;
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
         committer.fromServer(pm);
         assertEquals(newTime, getTime());
     }
@@ -198,7 +198,7 @@ public class MovePrecommitterTest extends TestCase {
     public void testPreMoves2() {
         PreMove pm = TimeTickPreMove.INSTANCE;
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
 
         // Send a premove to the server.
         committer.toServer(pm);
@@ -219,7 +219,7 @@ public class MovePrecommitterTest extends TestCase {
     public void testPreMoves3() {
         PreMove pm = TimeTickPreMove.INSTANCE;
         GameTime oldtime = getTime();
-        GameTime newTime = oldtime.nextTick();
+        GameTime newTime = oldtime.advancedTime();
 
         // Send a premove to the server.
         committer.toServer(pm);

@@ -27,10 +27,10 @@ import freerails.network.ServerCommandReceiver;
 import freerails.network.UntriedMoveReceiver;
 import freerails.util.ImPoint;
 import freerails.util.ImStringList;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldListListener;
+import freerails.world.WorldMapListener;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldListListener;
-import freerails.world.top.WorldMapListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +49,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     public boolean hasBeenSetup = false;
     private MoveChainFork moveFork = new MoveChainFork();
     private UntriedMoveReceiver moveReceiver = new UntriedMoveReceiver() {
-        public void processMove(Move Move) {
+        public void process(Move Move) {
         }
 
         public void processPreMove(PreMove pm) {
@@ -125,7 +125,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      */
     public MoveStatus doMove(Move m) {
         MoveStatus ms = this.moveReceiver.tryDoMove(m);
-        this.moveReceiver.processMove(m);
+        this.moveReceiver.process(m);
 
         return ms;
     }

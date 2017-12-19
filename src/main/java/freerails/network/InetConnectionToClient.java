@@ -25,8 +25,7 @@ import java.net.Socket;
 /**
  * Lets the server send messages to a client over the Internet.
  */
-public class InetConnectionToClient extends AbstractInetConnection implements
-        ConnectionToClient {
+public class InetConnectionToClient extends AbstractInetConnection implements ConnectionToClient {
 
     /**
      * @param s

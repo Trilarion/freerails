@@ -26,14 +26,10 @@ import freerails.controller.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
-import freerails.world.finances.BondTransaction;
+import freerails.world.*;
+import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.player.Player;
-import freerails.world.top.ITEM;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
@@ -52,7 +48,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
                 player.getPrincipal());
-        Money expectedBondValue = new Money(BondTransaction.BOND_VALUE_ISSUE
+        Money expectedBondValue = new Money(BondItemTransaction.BOND_VALUE_ISSUE
                 .getAmount());
         assertEquals(expectedBondValue.changeSign(), generator.total.loans);
         assertEquals(expectedBondValue.changeSign(), generator.ytd.loans);

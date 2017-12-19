@@ -23,15 +23,14 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.common.Activity;
-import freerails.world.common.GameCalendar;
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.*;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
-import freerails.world.finances.Transaction.Category;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.City;
-import freerails.world.top.*;
+import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.WorldImplTest.TestActivity;
 import junit.framework.TestCase;
 
@@ -113,11 +112,11 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testAddingTransaction() {
-        Transaction t1 = new AddItemTransaction(Category.BOND, 1, 1, new Money(
+        Transaction t1 = new ItemTransaction(TransactionCategory.BOND, 1, 1, new Money(
                 100));
-        Transaction t2 = new AddItemTransaction(Category.BOND, 2, 2, new Money(
+        Transaction t2 = new ItemTransaction(TransactionCategory.BOND, 2, 2, new Money(
                 1000));
-        Transaction t3 = new AddItemTransaction(Category.BOND, 3, 3, new Money(
+        Transaction t3 = new ItemTransaction(TransactionCategory.BOND, 3, 3, new Money(
                 10000));
         world.addTransaction(fp1, t1);
         diffs.addTransaction(fp1, t2);
@@ -171,8 +170,6 @@ public class WorldDiffsMoveTest extends TestCase {
         assertEquals(worldCopy, world);
         MoveStatus ms = move.tryDoMove(worldCopy, fp1);
 
-        if (!ms.ok)
-            ms.printStackTrack();
         assertTrue(ms.message, ms.ok);
 
         ms = move.doMove(worldCopy, fp1);

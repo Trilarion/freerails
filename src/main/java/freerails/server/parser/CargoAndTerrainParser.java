@@ -34,6 +34,7 @@ import org.xml.sax.*;
  * <p>
  * <b>Warning:</b> the class is machine generated. DO NOT MODIFY!
  */
+// TODO where is the DTD, how to find it?
 public class CargoAndTerrainParser implements ContentHandler {
     private static final Logger logger = Logger
             .getLogger(CargoAndTerrainParser.class.getName());

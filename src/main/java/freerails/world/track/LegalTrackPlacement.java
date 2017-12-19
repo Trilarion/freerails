@@ -24,7 +24,7 @@
 package freerails.world.track;
 
 import freerails.util.ImHashSet;
-import freerails.world.terrain.TerrainType;
+import freerails.world.terrain.TerrainCategory;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ import java.util.Iterator;
 public final class LegalTrackPlacement implements Serializable {
     private static final long serialVersionUID = 3616445687756437049L;
 
-    private final ImHashSet<TerrainType.Category> terrainTypes;// = new
+    private final ImHashSet<TerrainCategory> terrainTypes;// = new
 
     // HashSet<TerrainType.Category>();
     private final PlacementRule placementRule;
@@ -46,13 +46,13 @@ public final class LegalTrackPlacement implements Serializable {
      * @param types
      * @param placementRule
      */
-    public LegalTrackPlacement(HashSet<TerrainType.Category> types,
+    public LegalTrackPlacement(HashSet<TerrainCategory> types,
                                PlacementRule placementRule) {
         this.placementRule = placementRule;
 
-        Iterator<TerrainType.Category> iterator = types.iterator();
+        Iterator<TerrainCategory> iterator = types.iterator();
 
-        HashSet<TerrainType.Category> temp = new HashSet<>();
+        HashSet<TerrainCategory> temp = new HashSet<>();
         while (iterator.hasNext()) {
             temp.add(iterator.next());
         }
@@ -68,7 +68,7 @@ public final class LegalTrackPlacement implements Serializable {
      * @param terrainType
      * @return
      */
-    public boolean canBuildOnThisTerrain(TerrainType.Category terrainType) {
+    public boolean canBuildOnThisTerrain(TerrainCategory terrainType) {
         if (PlacementRule.ONLY_ON_THESE == placementRule) {
             return terrainTypes.contains(terrainType);
         }

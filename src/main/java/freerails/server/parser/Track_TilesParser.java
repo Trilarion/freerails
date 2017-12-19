@@ -37,8 +37,7 @@ import java.io.IOException;
  * </pre>
  */
 final public class Track_TilesParser implements org.xml.sax.ContentHandler {
-    private static final Logger logger = Logger
-            .getLogger(Track_TilesParser.class.getName());
+    private static final Logger logger = Logger.getLogger(Track_TilesParser.class.getName());
 
     private final java.lang.StringBuffer buffer;
 

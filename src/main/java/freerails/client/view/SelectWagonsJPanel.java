@@ -26,8 +26,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
-import freerails.world.top.SKEY;
 import freerails.world.train.TrainModel;
 
 import javax.swing.*;

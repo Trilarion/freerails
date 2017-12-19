@@ -26,8 +26,8 @@ import freerails.controller.PreMove;
 import freerails.controller.PreMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.world.World;
 import freerails.world.player.Player;
-import freerails.world.top.World;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;

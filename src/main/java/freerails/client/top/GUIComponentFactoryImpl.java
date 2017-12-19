@@ -34,11 +34,10 @@ import freerails.network.LocalConnection;
 import freerails.network.MoveReceiver;
 import freerails.util.ImList;
 import freerails.util.ImPoint;
-import freerails.world.common.GameSpeed;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.top.*;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -127,7 +126,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         actionRoot.setDialogueBoxController(dialogueBoxController);
 
         modelRoot.addSplitMoveReceiver(new MoveReceiver() {
-            public void processMove(Move move) {
+            public void process(Move move) {
                 if (move instanceof ChangeGameSpeedMove) {
                     ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
@@ -154,7 +153,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     private void countStations() {
-        NonNullElements stations = new NonNullElements(KEY.STATIONS, modelRoot
+        NonNullElementWorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
                 .getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
@@ -165,7 +164,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     private void countTrains() {
-        NonNullElements trains = new NonNullElements(KEY.TRAINS, modelRoot
+        NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, modelRoot
                 .getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
@@ -406,7 +405,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
             /* For testing. */
             final ActionListener build200trains = new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
-                    WorldIterator wi = new NonNullElements(KEY.STATIONS,
+                    WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS,
                             modelRoot.getWorld(), modelRoot.getPrincipal());
 
                     if (wi.next()) {

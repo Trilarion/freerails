@@ -24,9 +24,9 @@ package freerails.world.track;
 
 import freerails.server.MapFixtureFactory2;
 import freerails.util.Utils;
-import freerails.world.common.Step;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
+import freerails.world.SKEY;
+import freerails.world.TileTransition;
+import freerails.world.World;
 import junit.framework.TestCase;
 
 /**
@@ -48,7 +48,7 @@ public class TrackPieceImplTest extends TestCase {
      *
      */
     public void testEqualsObject() {
-        TrackConfiguration tc1 = TrackConfiguration.getFlatInstance(Step.NORTH);
+        TrackConfiguration tc1 = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
 
         TrackRule rule0 = (TrackRule) w.get(SKEY.TRACK_RULES, 0);
         TrackRule rule4 = (TrackRule) w.get(SKEY.TRACK_RULES, 4);

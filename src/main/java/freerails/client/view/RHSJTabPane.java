@@ -25,8 +25,8 @@ import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

@@ -36,7 +36,7 @@ public interface TerrainType extends Serializable {
     /**
      * @return
      */
-    Category getCategory();
+    TerrainCategory getCategory();
 
     /**
      * @return
@@ -73,49 +73,4 @@ public interface TerrainType extends Serializable {
      */
     String getDisplayName();
 
-    /**
-     *
-     */
-    enum Category implements Serializable {
-
-        /**
-         *
-         */
-        Urban,
-
-        /**
-         *
-         */
-        River,
-
-        /**
-         *
-         */
-        Ocean,
-
-        /**
-         *
-         */
-        Hill,
-
-        /**
-         *
-         */
-        Country,
-
-        /**
-         *
-         */
-        Special,
-
-        /**
-         *
-         */
-        Industry,
-
-        /**
-         *
-         */
-        Resource
-    }
 }

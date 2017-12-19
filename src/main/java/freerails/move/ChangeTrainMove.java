@@ -23,8 +23,8 @@
 package freerails.move;
 
 import freerails.util.ImInts;
+import freerails.world.KEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
 import freerails.world.train.TrainModel;
 
 import java.io.Serializable;

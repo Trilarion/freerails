@@ -23,16 +23,16 @@ import freerails.move.ChangeTrainMove;
 import freerails.move.Move;
 import freerails.move.TransferCargoAtStationMove;
 import freerails.util.ImInts;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.ConvertedAtStation;
-import freerails.world.station.DemandForCargo;
+import freerails.world.station.CargoConversionAtStation;
+import freerails.world.station.DemandForCargoAtStation;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
@@ -105,7 +105,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             StationModel stationModel = (StationModel) w.get(principal,
                     KEY.STATIONS, nextStationId);
-            DemandForCargo demand = stationModel.getDemand();
+            DemandForCargoAtStation demand = stationModel.getDemand();
 
             for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
                 // If this cargo is demanded at the next scheduled station.
@@ -248,7 +248,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             // if the cargo is demanded and its not from this station
             // originally...
-            DemandForCargo demand = station.getDemand();
+            DemandForCargoAtStation demand = station.getDemand();
             int cargoType = cb.getCargoType();
 
             if ((demand.isCargoDemanded(cargoType))
@@ -257,7 +257,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 cargoDroppedOff.addCargo(cb, amount);
 
                 // Now perform any conversions..
-                ConvertedAtStation converted = station.getConverted();
+                CargoConversionAtStation converted = station.getConverted();
 
                 if (converted.isCargoConverted(cargoType)) {
                     int newCargoType = converted.getConversion(cargoType);

@@ -22,17 +22,17 @@ import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.World;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
 
-import static freerails.world.common.Step.*;
+import static freerails.world.TileTransition.*;
 
 /**
  *
@@ -84,10 +84,10 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.search(-1);
             assertEquals(pathFinder.getStatus(),
                     IncrementalPathFinder.PATH_FOUND);
-            Step[] path = pathFinder.pathAsVectors();
+            TileTransition[] path = pathFinder.pathAsVectors();
             assertEquals(path.length, 5);
             for (int i = 0; i < 5; i++) {
-                assertEquals(Step.EAST, path[i]);
+                assertEquals(TileTransition.EAST, path[i]);
             }
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.message, ms.ok);
@@ -125,10 +125,10 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.search(-1);
             assertEquals(pathFinder.getStatus(),
                     IncrementalPathFinder.PATH_FOUND);
-            Step[] path = pathFinder.pathAsVectors();
+            TileTransition[] path = pathFinder.pathAsVectors();
             assertEquals(path.length, 1);
 
-            assertEquals(Step.EAST, path[0]);
+            assertEquals(TileTransition.EAST, path[0]);
 
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.message, ms.ok);
@@ -152,7 +152,7 @@ public class TrackBuildingTest extends TestCase {
     public void testTerminalProblem() {
         try {
             ImPoint from = new ImPoint(5, 5);
-            Step[] path = {EAST, EAST, EAST};
+            TileTransition[] path = {EAST, EAST, EAST};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
@@ -163,7 +163,7 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
-            Step[] expectedPath = {EAST, EAST};
+            TileTransition[] expectedPath = {EAST, EAST};
             assertTrue(Arrays.equals(expectedPath, path));
         } catch (PathNotFoundException e) {
             fail();
@@ -188,8 +188,8 @@ public class TrackBuildingTest extends TestCase {
 
             pathFinder.setupSearch(a, b, bts);
             pathFinder.search(-1);
-            Step[] path = pathFinder.pathAsVectors();
-            Step[] expectedPath = {EAST};
+            TileTransition[] path = pathFinder.pathAsVectors();
+            TileTransition[] expectedPath = {EAST};
             assertTrue(Arrays.equals(expectedPath, path));
             MoveStatus ms = producer.buildTrack(a, path);
             assertTrue(ms.ok);
@@ -204,7 +204,7 @@ public class TrackBuildingTest extends TestCase {
             path = pathFinder.pathAsVectors();
             assertEquals(1, path.length);
 
-            expectedPath = new Step[]{SOUTH_EAST};
+            expectedPath = new TileTransition[]{SOUTH_EAST};
             assertTrue(Arrays.equals(expectedPath, path));
         } catch (PathNotFoundException e) {
             fail();
@@ -218,7 +218,7 @@ public class TrackBuildingTest extends TestCase {
     public void testStartSearchOnSharpCurve() {
         try {
             ImPoint from = new ImPoint(5, 5);
-            Step[] path = {EAST, SOUTH};
+            TileTransition[] path = {EAST, SOUTH};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             pathFinder.setupSearch(new ImPoint(6, 5), new ImPoint(6, 7), bts);

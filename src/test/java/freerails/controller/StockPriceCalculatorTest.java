@@ -23,15 +23,15 @@
 package freerails.controller;
 
 import freerails.server.MapFixtureFactory2;
+import freerails.world.GameCalendar;
+import freerails.world.GameTime;
+import freerails.world.ITEM;
+import freerails.world.World;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
 import freerails.world.finances.DeliverCargoReceipt;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ITEM;
-import freerails.world.top.World;
 import junit.framework.TestCase;
 
 /**

@@ -25,7 +25,7 @@
  */
 package freerails.world.track;
 
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -64,7 +64,7 @@ public class TrackConfigurationTest extends TestCase {
      */
     public void testAdd() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
-        TrackConfiguration b = TrackConfiguration.add(a, Step.NORTH_WEST);
+        TrackConfiguration b = TrackConfiguration.add(a, TileTransition.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("100010000"), b);
         assertEquals(false, a == b);
     }
@@ -77,7 +77,7 @@ public class TrackConfigurationTest extends TestCase {
             TrackConfiguration tc = TrackConfiguration.from9bitTemplate(i);
             assertEquals(i, tc.get9bitTemplate());
         }
-        for (Step v : Step.getList()) {
+        for (TileTransition v : TileTransition.getList()) {
             TrackConfiguration tc = TrackConfiguration.getFlatInstance(v);
             assertEquals(v.get9bitTemplate(), tc.get9bitTemplate());
             assertEquals(v.get8bitTemplate(), tc.get8bitTemplate());
@@ -103,7 +103,7 @@ public class TrackConfigurationTest extends TestCase {
      */
     public void testSubtract() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
-        TrackConfiguration b = TrackConfiguration.subtract(a, Step.NORTH_WEST);
+        TrackConfiguration b = TrackConfiguration.subtract(a, TileTransition.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("000010000"), b);
     }
 
@@ -113,7 +113,7 @@ public class TrackConfigurationTest extends TestCase {
     public void testToString() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
         assertEquals("tile center, north west", a.toString());
-        a = TrackConfiguration.getFlatInstance(Step.NORTH_WEST);
+        a = TrackConfiguration.getFlatInstance(TileTransition.NORTH_WEST);
         assertEquals("no tile center, north west", a.toString());
         a = TrackConfiguration.getFlatInstance("000010000");
         assertEquals("tile center", a.toString());

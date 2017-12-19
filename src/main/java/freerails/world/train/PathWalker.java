@@ -18,8 +18,8 @@
 
 package freerails.world.train;
 
-import freerails.world.common.FreerailsMutableSerializable;
-import freerails.world.common.FreerailsPathIterator;
+import freerails.world.FreerailsMutableSerializable;
+import freerails.world.FreerailsPathIterator;
 
 /**
  * This interface lets the caller retrieve a path broken into a series of steps,

@@ -21,9 +21,9 @@ package freerails.controller;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackRule;
 import org.apache.log4j.Logger;
 

@@ -18,12 +18,15 @@
 
 package freerails.world.top;
 
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.WorldImpl;
+import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.CargoType.Categories;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.terrain.TerrainType;
+import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TileTypeImpl;
 import freerails.world.track.*;
 
@@ -75,8 +78,8 @@ public class MapFixtureFactory {
         TrackRuleProperties[] trackRuleProperties = new TrackRuleProperties[3];
         LegalTrackConfigurations[] legalTrackConfigurations = new LegalTrackConfigurations[3];
         LegalTrackPlacement[] legalTrackPlacement = new LegalTrackPlacement[3];
-        HashSet<TerrainType.Category> cannotBuildOnTheseTerrainTypes = new HashSet<>();
-        cannotBuildOnTheseTerrainTypes.add(TerrainType.Category.Ocean);
+        HashSet<TerrainCategory> cannotBuildOnTheseTerrainTypes = new HashSet<>();
+        cannotBuildOnTheseTerrainTypes.add(TerrainCategory.Ocean);
 
         // 1st track type..
         String[] trackTemplates0 = {"000010000", "010010000", "010010010",
@@ -135,15 +138,15 @@ public class MapFixtureFactory {
      * @param world
      */
     public static void generateCargoTypesList(World world) {
-        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", Categories.Mail));
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", CargoCategory.Mail));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers",
-                Categories.Passengers));
+                CargoCategory.Passengers));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods",
-                Categories.Fast_Freight));
+                CargoCategory.Fast_Freight));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Steel",
-                Categories.Slow_Freight));
+                CargoCategory.Slow_Freight));
         world.add(SKEY.CARGO_TYPES, new CargoType(0, "Coal",
-                Categories.Bulk_Freight));
+                CargoCategory.Bulk_Freight));
     }
 
     /**
@@ -151,14 +154,14 @@ public class MapFixtureFactory {
      */
     private static void generateTerrainTypesList(World world) {
         world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
-                TerrainType.Category.Country, "Grassland"));
+                TerrainCategory.Country, "Grassland"));
         world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
-                TerrainType.Category.Urban, "City"));
+                TerrainCategory.Urban, "City"));
         world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
-                TerrainType.Category.Resource, "Mine"));
+                TerrainCategory.Resource, "Mine"));
         world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
-                TerrainType.Category.Industry, "Factory"));
+                TerrainCategory.Industry, "Factory"));
         world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
-                TerrainType.Category.Ocean, "Ocean"));
+                TerrainCategory.Ocean, "Ocean"));
     }
 }

@@ -18,15 +18,15 @@
 
 package freerails.client.view;
 
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.WorldImpl;
 import freerails.world.cargo.CargoBatch;
+import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.CargoType.Categories;
 import freerails.world.finances.DeliverCargoReceipt;
 import freerails.world.finances.Money;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import junit.framework.TestCase;
 
 /**
@@ -46,17 +46,17 @@ public class IncomeStatementGeneratorTest extends TestCase {
         assertEquals(0, m.getAmount());
 
         CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, 0);
-        assertEquals(Categories.Mail, ct.getCategory());
+        assertEquals(CargoCategory.Mail, ct.getCategory());
 
         Money amount = new Money(100);
-        addTrans(Categories.Mail, amount);
-        addTrans(Categories.Passengers, amount);
+        addTrans(CargoCategory.Mail, amount);
+        addTrans(CargoCategory.Passengers, amount);
         balanceSheetGenerator.calculateAll();
         m = balanceSheetGenerator.mailTotal;
         assertEquals(amount, m);
     }
 
-    private void addTrans(Categories category, Money amount) {
+    private void addTrans(CargoCategory category, Money amount) {
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
             CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
 

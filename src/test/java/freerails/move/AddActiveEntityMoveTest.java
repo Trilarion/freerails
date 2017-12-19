@@ -22,7 +22,7 @@
  */
 package freerails.move;
 
-import freerails.world.common.Activity;
+import freerails.world.Activity;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.WorldImplTest;
 

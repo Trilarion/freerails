@@ -19,7 +19,7 @@
 package freerails.world.track;
 
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 
 import java.io.Serializable;
 
@@ -29,20 +29,20 @@ import java.io.Serializable;
 public class TrackSection implements Serializable {
 
     private static final long serialVersionUID = -3776624056097990938L;
-    private final Step step;
+    private final TileTransition tileTransition;
     private final ImPoint tile;
 
     /**
-     * @param step
+     * @param tileTransition
      * @param tile
      */
-    public TrackSection(final Step step, final ImPoint tile) {
-        ImPoint otherTile = Step.move(tile, step);
+    public TrackSection(final TileTransition tileTransition, final ImPoint tile) {
+        ImPoint otherTile = TileTransition.move(tile, tileTransition);
         if (tile.compareTo(otherTile) > 0) {
-            this.step = step.getOpposite();
+            this.tileTransition = tileTransition.getOpposite();
             this.tile = otherTile;
         } else {
-            this.step = step;
+            this.tileTransition = tileTransition;
             this.tile = tile;
         }
     }
@@ -51,7 +51,7 @@ public class TrackSection implements Serializable {
     public int hashCode() {
         final int PRIME = 31;
         int result = 1;
-        result = PRIME * result + ((step == null) ? 0 : step.hashCode());
+        result = PRIME * result + ((tileTransition == null) ? 0 : tileTransition.hashCode());
         result = PRIME * result + ((tile == null) ? 0 : tile.hashCode());
         return result;
     }
@@ -65,10 +65,10 @@ public class TrackSection implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         final TrackSection other = (TrackSection) obj;
-        if (step == null) {
-            if (other.step != null)
+        if (tileTransition == null) {
+            if (other.tileTransition != null)
                 return false;
-        } else if (!step.equals(other.step))
+        } else if (!tileTransition.equals(other.tileTransition))
             return false;
         if (tile == null) {
             return other.tile == null;
@@ -77,7 +77,7 @@ public class TrackSection implements Serializable {
 
     @Override
     public String toString() {
-        return tile.toString() + " " + step.toString();
+        return tile.toString() + " " + tileTransition.toString();
     }
 
     /**
@@ -91,7 +91,7 @@ public class TrackSection implements Serializable {
      * @return
      */
     public ImPoint tileB() {
-        return Step.move(tile, step);
+        return TileTransition.move(tile, tileTransition);
     }
 
 }

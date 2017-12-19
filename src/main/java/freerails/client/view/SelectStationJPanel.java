@@ -26,13 +26,13 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.common.Step;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainOrdersModel;
@@ -156,7 +156,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_formKeyPressed
         try {
-            Step v = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt
+            TileTransition v = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt
                     .getKeyCode());
             // now find nearest station in direction of the vector.
             NearestStationFinder stationFinder = new NearestStationFinder(
@@ -233,7 +233,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         int bottomRightX = Integer.MIN_VALUE;
         int bottomRightY = Integer.MIN_VALUE;
 
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world,
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world,
                 this.principal);
         while (it.next()) {
             StationModel station = (StationModel) it.getElement();
@@ -274,7 +274,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        NonNullElements it = new NonNullElements(KEY.STATIONS, world,
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world,
                 this.principal);
 
         // Draw track

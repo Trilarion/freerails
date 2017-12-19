@@ -18,9 +18,9 @@
 
 package freerails.world.track;
 
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 import freerails.world.finances.Money;
-import freerails.world.terrain.TerrainType;
+import freerails.world.terrain.TerrainCategory;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -39,7 +39,7 @@ public interface TrackRule extends Serializable, Comparable<TrackRule> {
      * @param TerrainType
      * @return
      */
-    boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType);
+    boolean canBuildOnThisTerrainType(TerrainCategory TerrainType);
 
     /**
      * @return
@@ -97,7 +97,7 @@ public interface TrackRule extends Serializable, Comparable<TrackRule> {
      * @param directionComingFrom
      * @return
      */
-    Step[] getLegalRoutes(Step directionComingFrom);
+    TileTransition[] getLegalRoutes(TileTransition directionComingFrom);
 
     /**
      * @return

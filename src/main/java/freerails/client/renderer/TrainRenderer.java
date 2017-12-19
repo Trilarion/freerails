@@ -19,8 +19,8 @@
 package freerails.client.renderer;
 
 import freerails.util.IntLine;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.Step;
+import freerails.world.FreerailsPathIterator;
+import freerails.world.TileTransition;
 import freerails.world.train.PathWalker;
 import freerails.world.train.PathWalkerImpl;
 import freerails.world.train.TrainModel;
@@ -122,7 +122,7 @@ public class TrainRenderer {
         wagon.x2 = line.x2;
         wagon.y2 = line.y2;
 
-        Step v = Step
+        TileTransition v = TileTransition
                 .getNearestVector(wagon.x2 - wagon.x1, wagon.y2 - wagon.y1);
         Point p = new Point((wagon.x2 + wagon.x1) / 2,
                 (wagon.y2 + wagon.y1) / 2);

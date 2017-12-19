@@ -23,9 +23,9 @@ import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImStringList;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.top.World;
 import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
@@ -496,7 +496,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         this.serverGameModel = serverGameModel;
 
         MoveReceiver moveExecuter = new MoveReceiver() {
-            public void processMove(Move move) {
+            public void process(Move move) {
                 MoveStatus ms = move.doMove(getWorld(), Player.AUTHORITATIVE);
 
                 if (ms.ok) {

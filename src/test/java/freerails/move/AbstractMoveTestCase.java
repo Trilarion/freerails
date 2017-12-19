@@ -24,15 +24,11 @@ package freerails.move;
 
 import freerails.util.ImPoint;
 import freerails.util.Utils;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.Step;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ITEM;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.World;
-import freerails.world.top.WorldImpl;
 import freerails.world.train.PathOnTiles;
 import junit.framework.TestCase;
 
@@ -322,9 +318,9 @@ public abstract class AbstractMoveTestCase extends TestCase {
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {
             assertTrackHere(x, y);
-            Step step = path.getStep(i);
-            x += step.deltaX;
-            y += step.deltaY;
+            TileTransition tileTransition = path.getStep(i);
+            x += tileTransition.deltaX;
+            y += tileTransition.deltaY;
             assertTrackHere(x, y);
         }
     }

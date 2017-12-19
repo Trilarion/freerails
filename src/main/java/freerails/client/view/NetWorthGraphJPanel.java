@@ -25,13 +25,9 @@ package freerails.client.view;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
+import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.player.Player;
-import freerails.world.top.ITEM;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.TransactionAggregator;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

@@ -35,7 +35,7 @@ abstract class AbstractInetConnection implements Runnable {
 
     private final SychronizedQueue inbound = new SychronizedQueue();
 
-    private final InetConnection inetConnection;
+    private final Connection inetConnection;
 
     private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(
             false);
@@ -45,12 +45,12 @@ abstract class AbstractInetConnection implements Runnable {
     private int timeout = 1000 * 5; // 5 seconds.
 
     public AbstractInetConnection(Socket s) throws IOException {
-        inetConnection = new InetConnection(s);
+        inetConnection = new Connection(s);
         open();
     }
 
     public AbstractInetConnection(String ip, int port) throws IOException {
-        inetConnection = new InetConnection(ip, port);
+        inetConnection = new Connection(ip, port);
         open();
     }
 

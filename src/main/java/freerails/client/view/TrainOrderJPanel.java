@@ -27,9 +27,10 @@ package freerails.client.view;
 import freerails.client.ClientConfig;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +55,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             .getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private final Map<TrainOrderModel, TrainOrderJPanelSingle> lines;
-    private freerails.world.top.ReadOnlyWorld w;
+    private ReadOnlyWorld w;
     private FreerailsPrincipal principal;
     private Action closeAction;
     private RenderersRoot vl;

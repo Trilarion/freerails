@@ -25,10 +25,10 @@
 package freerails.move;
 
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
+import freerails.world.*;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.*;
+import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.*;
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -37,15 +37,15 @@ import junit.framework.TestSuite;
  * JUnit test.
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
-    final Step southeast = Step.SOUTH_EAST;
+    final TileTransition southeast = TileTransition.SOUTH_EAST;
 
-    final Step east = Step.EAST;
+    final TileTransition east = TileTransition.EAST;
 
-    final Step northeast = Step.NORTH_EAST;
+    final TileTransition northeast = TileTransition.NORTH_EAST;
 
-    final Step south = Step.SOUTH;
+    final TileTransition south = TileTransition.SOUTH;
 
-    final Step west = Step.WEST;
+    final TileTransition west = TileTransition.WEST;
 
     TrackMoveTransactionsGenerator transactionsGenerator;
 
@@ -214,7 +214,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 (TrackRule) getWorld().get(SKEY.TRACK_RULES, 1));
     }
 
-    private void assertBuildTrackFails(ImPoint p, Step v, TrackRule rule) {
+    private void assertBuildTrackFails(ImPoint p, TileTransition v, TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(p, v, rule, rule, getWorld(),
                         MapFixtureFactory.TEST_PRINCIPAL);
@@ -222,7 +222,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertEquals(false, status.isOk());
     }
 
-    private void assertBuildTrackSuceeds(ImPoint p, Step v, TrackRule rule) {
+    private void assertBuildTrackSuceeds(ImPoint p, TileTransition v, TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(p, v, rule, rule, getWorld(),
                         MapFixtureFactory.TEST_PRINCIPAL);
@@ -233,7 +233,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertEquals(true, status.isOk());
     }
 
-    private void assertRemoveTrackSuceeds(ImPoint p, Step v) {
+    private void assertRemoveTrackSuceeds(ImPoint p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateRemoveTrackMove(p, v, getWorld(),

@@ -29,8 +29,8 @@ import freerails.controller.TrackMoveProducer;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
-import freerails.world.top.ReadOnlyWorld;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TileTransition;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -128,55 +128,55 @@ public class UserInputOnMapController extends KeyAdapter {
         switch (keyCode) {
 
             case KeyEvent.VK_NUMPAD1:
-                moveCursorOneTile(Step.SOUTH_WEST);
+                moveCursorOneTile(TileTransition.SOUTH_WEST);
                 break;
 
             case KeyEvent.VK_NUMPAD2:
-                moveCursorOneTile(Step.SOUTH);
+                moveCursorOneTile(TileTransition.SOUTH);
                 break;
 
             case KeyEvent.VK_DOWN:
                 if (e.getModifiers() == 2)
-                    moveCursorOneTile(Step.SOUTH);
+                    moveCursorOneTile(TileTransition.SOUTH);
                 break;
 
             case KeyEvent.VK_NUMPAD3:
-                moveCursorOneTile(Step.SOUTH_EAST);
+                moveCursorOneTile(TileTransition.SOUTH_EAST);
                 break;
 
             case KeyEvent.VK_NUMPAD4:
-                moveCursorOneTile(Step.WEST);
+                moveCursorOneTile(TileTransition.WEST);
                 break;
 
             case KeyEvent.VK_LEFT:
                 if (e.getModifiers() == 2)
-                    moveCursorOneTile(Step.WEST);
+                    moveCursorOneTile(TileTransition.WEST);
                 break;
 
             case KeyEvent.VK_NUMPAD6:
-                moveCursorOneTile(Step.EAST);
+                moveCursorOneTile(TileTransition.EAST);
                 break;
 
             case KeyEvent.VK_RIGHT:
                 if (e.getModifiers() == 2)
-                    moveCursorOneTile(Step.EAST);
+                    moveCursorOneTile(TileTransition.EAST);
                 break;
 
             case KeyEvent.VK_NUMPAD7:
-                moveCursorOneTile(Step.NORTH_WEST);
+                moveCursorOneTile(TileTransition.NORTH_WEST);
                 break;
 
             case KeyEvent.VK_NUMPAD8:
-                moveCursorOneTile(Step.NORTH);
+                moveCursorOneTile(TileTransition.NORTH);
                 break;
 
             case KeyEvent.VK_UP:
                 if (e.getModifiers() == 2)
-                    moveCursorOneTile(Step.NORTH);
+                    moveCursorOneTile(TileTransition.NORTH);
                 break;
 
             case KeyEvent.VK_NUMPAD9:
-                moveCursorOneTile(Step.NORTH_EAST);
+                moveCursorOneTile(TileTransition.NORTH_EAST);
                 break;
 
             case KeyEvent.VK_F8: {
@@ -278,7 +278,7 @@ public class UserInputOnMapController extends KeyAdapter {
 
     }
 
-    private void cursorOneTileMove(ImPoint oldPosition, Step vector) {
+    private void cursorOneTileMove(ImPoint oldPosition, TileTransition vector) {
         boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 
         if (null != trackBuilder && b) {
@@ -322,7 +322,7 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
-    private void moveCursorOneTile(Step v) {
+    private void moveCursorOneTile(TileTransition v) {
         setCursorMessage(null);
 
         ImPoint cursorMapPosition = this.getCursorPosition();

@@ -28,15 +28,15 @@ import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
 import freerails.server.TileSetFactory;
 import freerails.server.TileSetFactoryImpl;
-import freerails.util.FreerailsProgressMonitor;
 import freerails.util.ImInts;
+import freerails.util.ProgressMonitor;
+import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.station.DemandForCargo;
+import freerails.world.station.DemandForCargoAtStation;
 import freerails.world.station.StationModel;
-import freerails.world.top.*;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
@@ -105,7 +105,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         w.addPlayer(TEST_PLAYER);
         try {
             vl = new RenderersRootImpl(w,
-                    FreerailsProgressMonitor.NULL_INSTANCE);
+                    ProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {
         }
         modelRoot.setup(w, TEST_PLAYER.getPrincipal());
@@ -125,7 +125,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             demandArray[i] = true;
         }
 
-        DemandForCargo demand = new DemandForCargo(demandArray);
+        DemandForCargoAtStation demand = new DemandForCargoAtStation(demandArray);
         bristol = new StationModel(bristol, demand);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(50, 100, "Bath",

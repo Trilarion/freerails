@@ -25,9 +25,9 @@ import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.NewGameMessageToServer;
-import freerails.world.common.GameSpeed;
-import freerails.world.top.ITEM;
-import freerails.world.top.ReadOnlyWorld;
+import freerails.world.GameSpeed;
+import freerails.world.ITEM;
+import freerails.world.ReadOnlyWorld;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

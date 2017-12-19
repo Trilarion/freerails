@@ -23,11 +23,12 @@ import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.*;
-import freerails.util.FreerailsProgressMonitor;
+import freerails.util.ProgressMonitor;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
+import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.train.EngineType;
 import org.apache.log4j.Logger;
 
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 
 /**
  * Implementation of RenderersRoot whose constructor loads graphics and provides
- * feed back using a FreerailsProgressMonitor.
+ * feed back using a ProgressMonitor.
  */
 public class RenderersRootImpl implements RenderersRoot {
     private static final Logger logger = Logger
@@ -60,7 +61,7 @@ public class RenderersRootImpl implements RenderersRoot {
      * @param pm
      * @throws IOException
      */
-    public RenderersRootImpl(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+    public RenderersRootImpl(ReadOnlyWorld w, ProgressMonitor pm)
             throws IOException {
         imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
         tiles = loadNewTileViewList(w, pm);
@@ -72,7 +73,7 @@ public class RenderersRootImpl implements RenderersRoot {
         preloadSounds(pm);
     }
 
-    private void loadTrainImages(ReadOnlyWorld w, FreerailsProgressMonitor pm)
+    private void loadTrainImages(ReadOnlyWorld w, ProgressMonitor pm)
             throws IOException {
         // Setup progress monitor..
         final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
@@ -101,7 +102,7 @@ public class RenderersRootImpl implements RenderersRoot {
 
     }
 
-    private void preloadSounds(FreerailsProgressMonitor pm) {
+    private void preloadSounds(ProgressMonitor pm) {
         // Pre-load sounds..
         String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK,
                 ClientConfig.SOUND_CASH,
@@ -120,12 +121,12 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
-                                                  FreerailsProgressMonitor pm) throws IOException {
+                                                  ProgressMonitor pm) throws IOException {
         return new TrackPieceRendererList(w, imageManager, pm);
     }
 
     private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
-                                                 FreerailsProgressMonitor pm) throws IOException {
+                                                 ProgressMonitor pm) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
         // Setup progress monitor..
@@ -146,20 +147,20 @@ public class RenderersRootImpl implements RenderersRoot {
             try {
                 // XXX hack to make rivers flow into ocean and habours & occean
                 // treate habours as the same type.
-                TerrainType.Category thisTerrainCategory = t.getCategory();
+                TerrainCategory thisTerrainCategory = t.getCategory();
 
-                if (thisTerrainCategory.equals(TerrainType.Category.River)
+                if (thisTerrainCategory.equals(TerrainCategory.River)
                         || thisTerrainCategory
-                        .equals(TerrainType.Category.Ocean)) {
+                        .equals(TerrainCategory.Ocean)) {
                     // Count number of types with category "water"
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
                         TerrainType t2 = (TerrainType) w.get(
                                 SKEY.TERRAIN_TYPES, j);
-                        TerrainType.Category terrainCategory = t2.getCategory();
+                        TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory.equals(TerrainType.Category.Ocean)
+                        if (terrainCategory.equals(TerrainCategory.Ocean)
                                 || terrainCategory.equals(thisTerrainCategory)) {
                             count++;
                         }
@@ -171,9 +172,9 @@ public class RenderersRootImpl implements RenderersRoot {
                     for (int j = 0; j < numberOfTypes; j++) {
                         TerrainType t2 = (TerrainType) w.get(
                                 SKEY.TERRAIN_TYPES, j);
-                        TerrainType.Category terrainCategory = t2.getCategory();
+                        TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory.equals(TerrainType.Category.Ocean)
+                        if (terrainCategory.equals(TerrainCategory.Ocean)
                                 || terrainCategory.equals(thisTerrainCategory)) {
                             typesTreatedAsTheSame[count] = j;
                             count++;

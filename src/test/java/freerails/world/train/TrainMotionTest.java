@@ -23,7 +23,7 @@
 package freerails.world.train;
 
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 import junit.framework.TestCase;
 
 /**
@@ -36,9 +36,9 @@ public class TrainMotionTest extends TestCase {
      * (id=107) name= "READY" ordinal= 1 distanceEngineWillTravel= 30.0
      * duration= 3.9936298481613424 initialPosition= 42.42640687119285 path=
      * PathOnTiles (id=48) start= ImPoint (id=73) x= 14 y= 5 vectors= ImList<E>
-     * (id=75) elementData= FreerailsSerializable[2] (id=77) [0]= Step (id=79)
+     * (id=75) elementData= FreerailsSerializable[2] (id=77) [0]= TileTransition (id=79)
      * deltaX= 1 deltaY= 1 flatTrackTemplate= 256 length= 42.42640687119285 [1]=
-     * Step (id=82) deltaX= 1 deltaY= 0 flatTrackTemplate= 32 length= 30.0
+     * TileTransition (id=82) deltaX= 1 deltaY= 0 flatTrackTemplate= 32 length= 30.0
      * speeds= CompositeSpeedAgainstTime (id=111) duration= 10.972888751347389
      * totalDistance= 97.57359312880715 values= ImList<E> (id=114) elementData=
      * FreerailsSerializable[2] (id=118) [0]= ConstAcc (id=119) a= 0.5 dt=
@@ -57,7 +57,7 @@ public class TrainMotionTest extends TestCase {
     public void test4Bug1266695() {
         // The figures are copied from the debugger.
         ImPoint start = new ImPoint(14, 5);
-        Step[] vectors = {Step.getInstance(1, 1), Step.getInstance(1, 0)};
+        TileTransition[] vectors = {TileTransition.getInstance(1, 1), TileTransition.getInstance(1, 0)};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         ConstAcc constAcc0 = ConstAcc.uat(6.5135556243263055d, 0.5d,

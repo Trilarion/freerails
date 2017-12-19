@@ -23,9 +23,9 @@
  */
 package freerails.world.track;
 
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 import freerails.world.finances.Money;
-import freerails.world.terrain.TerrainType;
+import freerails.world.terrain.TerrainCategory;
 
 import java.util.Iterator;
 
@@ -71,7 +71,7 @@ final public class TrackRuleImpl implements TrackRule {
      * @param TerrainType
      * @return
      */
-    public boolean canBuildOnThisTerrainType(TerrainType.Category TerrainType) {
+    public boolean canBuildOnThisTerrainType(TerrainCategory TerrainType) {
         return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
 
@@ -135,7 +135,7 @@ final public class TrackRuleImpl implements TrackRule {
      * @param directionComingFrom
      * @return
      */
-    public Step[] getLegalRoutes(Step directionComingFrom) {
+    public TileTransition[] getLegalRoutes(TileTransition directionComingFrom) {
         // TODO add code..
         return null;
     }

@@ -22,27 +22,25 @@
  */
 package freerails.move;
 
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 
 import java.awt.*;
 
 /**
  * Move that changes a single tile.
  */
+// TODO what if there is now water on the tile, should this not destroy tracks, cities?
 public class ChangeTileMove implements Move, MapUpdateMove {
     private static final long serialVersionUID = 3256726169272662320L;
-
     private final int x;
-
     private final int y;
-
     private final FreerailsTile before;
-
     private final FreerailsTile after;
 
     /**
@@ -86,12 +84,12 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         return result;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        FreerailsTile actual = (FreerailsTile) w.getTile(x, y);
-        TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, actual
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        FreerailsTile actual = (FreerailsTile) world.getTile(x, y);
+        TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, actual
                 .getTerrainTypeID());
 
-        if (!type.getCategory().equals(TerrainType.Category.Country)) {
+        if (!type.getCategory().equals(TerrainCategory.Country)) {
             return MoveStatus.moveFailed("Can only build on clear terrain.");
         }
 
@@ -102,8 +100,8 @@ public class ChangeTileMove implements Move, MapUpdateMove {
                 + actual);
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        FreerailsTile actual = (FreerailsTile) w.getTile(x, y);
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        FreerailsTile actual = (FreerailsTile) world.getTile(x, y);
 
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;
@@ -112,21 +110,21 @@ public class ChangeTileMove implements Move, MapUpdateMove {
                 + actual);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryDoMove(world, principal);
 
         if (ms.isOk()) {
-            w.setTile(x, y, after);
+            world.setTile(x, y, after);
         }
 
         return ms;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryUndoMove(world, principal);
 
         if (ms.isOk()) {
-            w.setTile(x, y, before);
+            world.setTile(x, y, before);
         }
 
         return ms;

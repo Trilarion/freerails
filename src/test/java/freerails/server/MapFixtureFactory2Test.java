@@ -18,12 +18,13 @@
 
 package freerails.server;
 
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 import junit.framework.TestCase;
 
 import static freerails.server.MapFixtureFactory2.getCopy;
@@ -88,8 +89,8 @@ public class MapFixtureFactory2Test extends TestCase {
         assertTrue(numberOfTransactions > 0);
         for (int i = 0; i < numberOfTransactions; i++) {
             Transaction t = w1.getTransaction(p, i);
-            if (t.getCategory().equals(Transaction.Category.ISSUE_STOCK)) {
-                AddItemTransaction ait = (AddItemTransaction) t;
+            if (t.getCategory().equals(TransactionCategory.ISSUE_STOCK)) {
+                ItemTransaction ait = (ItemTransaction) t;
                 stock += ait.getQuantity();
             }
         }

@@ -19,11 +19,8 @@
 package freerails.server;
 
 import freerails.server.parser.Track_TilesHandlerImpl;
-import freerails.util.FreerailsProgressMonitor;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameSpeed;
-import freerails.world.common.GameTime;
-import freerails.world.top.*;
+import freerails.util.ProgressMonitor;
+import freerails.world.*;
 import org.xml.sax.SAXException;
 
 import java.net.URL;
@@ -31,6 +28,7 @@ import java.net.URL;
 /**
  * This class sets up a World object.
  */
+// TODO difference to world.WorldImpl?
 public class OldWorldImpl {
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
@@ -41,7 +39,7 @@ public class OldWorldImpl {
      * @return
      */
     public static World createWorldFromMapFile(String mapName,
-                                               FreerailsProgressMonitor pm) {
+                                               ProgressMonitor pm) {
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
@@ -85,7 +83,7 @@ public class OldWorldImpl {
                 + mapName + "_cities.xml");
 
         try {
-            InputCityNames.readCityNames(w, cities_xml_url);
+            CityNamesSAXParser.readCityNames(w, cities_xml_url);
         } catch (SAXException e) {
         }
 

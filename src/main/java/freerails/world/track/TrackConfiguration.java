@@ -18,8 +18,8 @@
 
 package freerails.world.track;
 
-import freerails.world.common.FlatTrackTemplate;
-import freerails.world.common.Step;
+import freerails.world.FlatTrackTemplate;
+import freerails.world.TileTransition;
 
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
@@ -47,9 +47,9 @@ final public class TrackConfiguration implements FlatTrackTemplate {
 
         // Calculate length.
         int tempLength = 0;
-        Step[] vectors = Step.getList();
+        TileTransition[] vectors = TileTransition.getList();
 
-        for (Step vector : vectors) {
+        for (TileTransition vector : vectors) {
             if (this.contains(vector.get9bitTemplate())) {
                 tempLength += vector.getLength();
             }
@@ -87,7 +87,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
      * @param v
      * @return
      */
-    public static TrackConfiguration getFlatInstance(Step v) {
+    public static TrackConfiguration getFlatInstance(TileTransition v) {
         return from9bitTemplate(v.get9bitTemplate());
     }
 
@@ -163,9 +163,9 @@ final public class TrackConfiguration implements FlatTrackTemplate {
      */
     public int get8bitTemplate() {
         int newTemplate = 0;
-        Step[] vectors = Step.getList();
+        TileTransition[] vectors = TileTransition.getList();
 
-        for (Step vector : vectors) {
+        for (TileTransition vector : vectors) {
             if (this.contains(vector)) {
                 newTemplate = newTemplate | vector.get8bitTemplate();
             }
@@ -242,7 +242,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         }
 
         for (int i = 0; i < 8; i++) {
-            Step v = Step.getInstance(i);
+            TileTransition v = TileTransition.getInstance(i);
 
             if (contains(v)) {
                 sb.append(",");

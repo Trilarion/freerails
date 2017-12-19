@@ -25,15 +25,10 @@ package freerails.controller;
 import freerails.move.*;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
-import freerails.world.common.GameTime;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldDiffs;
 import freerails.world.train.*;
 import org.apache.log4j.Logger;
 
@@ -78,11 +73,11 @@ public class TrainStopsHandler implements Serializable {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
-        List<Step> steps = new ArrayList<>();
+        List<TileTransition> tileTransitions = new ArrayList<>();
         ImPoint start = path.getStart();
-        Step firstStep = path.getStep(0);
+        TileTransition firstTileTransition = path.getStep(0);
         PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x,
-                start.y, firstStep);
+                start.y, firstTileTransition);
 
         while (extraDistanceNeeded > 0) {
 
@@ -94,20 +89,20 @@ public class TrainStopsHandler implements Serializable {
             }
             fte.nextEdge();
             nextPot.setValuesFromInt(fte.getVertexConnectedByEdge());
-            Step cameFrom = nextPot.facing();
-            steps.add(0, cameFrom);
+            TileTransition cameFrom = nextPot.facing();
+            tileTransitions.add(0, cameFrom);
             extraDistanceNeeded -= cameFrom.getLength();
 
         }
 
-        // Add existing steps
+        // Add existing tileTransitions
         for (int i = 0; i < path.steps(); i++) {
-            Step step = path.getStep(i);
-            steps.add(step);
+            TileTransition tileTransition = path.getStep(i);
+            tileTransitions.add(tileTransition);
         }
 
         ImPoint newStart = new ImPoint(nextPot.getX(), nextPot.getY());
-        path = new PathOnTiles(newStart, steps);
+        path = new PathOnTiles(newStart, tileTransitions);
         return path;
     }
 

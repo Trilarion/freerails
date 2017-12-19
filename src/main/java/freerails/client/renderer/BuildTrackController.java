@@ -25,14 +25,10 @@ import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.UpgradeTrackMove;
-import freerails.util.GameModel;
 import freerails.util.ImPoint;
-import freerails.world.common.Step;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldDiffs;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
@@ -63,7 +59,7 @@ public class BuildTrackController implements GameModel {
     private boolean buildNewTrack = true;
     private List<ImPoint> builtTrack = new ArrayList<>();
     private boolean isBuildTrackSuccessful = false;
-    private Step[] path;
+    private TileTransition[] path;
     private ImPoint startPoint;
     private ImPoint targetPoint;
     private boolean visible = false;
@@ -160,7 +156,7 @@ public class BuildTrackController implements GameModel {
                                            TrackMoveProducer trackBuilder) {
         ImPoint oldPosition = getCursorPosition();
 
-        if (!Step.checkValidity(oldPosition, track.get(0))) {
+        if (!TileTransition.checkValidity(oldPosition, track.get(0))) {
             throw new IllegalStateException(oldPosition.toString() + " and "
                     + track.get(0).toString());
         }
@@ -182,7 +178,7 @@ public class BuildTrackController implements GameModel {
                 continue;
             }
 
-            Step vector = Step.getInstance(point.x - oldPosition.x, point.y
+            TileTransition vector = TileTransition.getInstance(point.x - oldPosition.x, point.y
                     - oldPosition.y);
 
             // If there is already track between the two tiles, do nothing
@@ -239,7 +235,7 @@ public class BuildTrackController implements GameModel {
      * Attempts to building track from the specified point in the specified
      * direction on the worldDiff object.
      */
-    private MoveStatus planBuildingTrack(ImPoint point, Step vector) {
+    private MoveStatus planBuildingTrack(ImPoint point, TileTransition vector) {
         FreerailsTile tileA = (FreerailsTile) worldDiffs.getTile(point.x,
                 point.y);
         BuildTrackStrategy bts = getBts();
@@ -427,7 +423,7 @@ public class BuildTrackController implements GameModel {
                 int locationX = startPoint.x;
                 int locationY = startPoint.y;
                 FreerailsPrincipal fp = modelRoot.getPrincipal();
-                for (Step v : path) {
+                for (TileTransition v : path) {
                     Move move;
                     attemptMove:
                     {

@@ -19,21 +19,20 @@
 package freerails.controller;
 
 import freerails.controller.StockPriceCalculator.StockPrice;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameTime;
+import freerails.world.*;
 import freerails.world.finances.Money;
-import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.*;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
-import static freerails.world.finances.Transaction.Category.*;
+import static freerails.world.finances.TransactionCategory.*;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so
  * don't change their names.
  */
+// TODO Do not use reflection here.
 public class BalanceSheetGenerator {
 
     /**
@@ -70,12 +69,12 @@ public class BalanceSheetGenerator {
         GameTime startOfYear = new GameTime(cal.getTicks(startyear));
 
         GameTime[] totalTimeInteval = new GameTime[]{GameTime.BIG_BANG,
-                GameTime.END_OF_THE_WORLD};
+                GameTime.DOOMSDAY};
 
         total = new Stats(w, principal, totalTimeInteval);
 
         GameTime[] ytdTimeInteval = new GameTime[]{startOfYear,
-                GameTime.END_OF_THE_WORLD};
+                GameTime.DOOMSDAY};
         ytd = new Stats(w, principal, ytdTimeInteval);
 
     }
@@ -87,7 +86,7 @@ public class BalanceSheetGenerator {
      * @param startTime
      * @return
      */
-    public static Money calTrackTotal(Transaction.Category category,
+    public static Money calTrackTotal(TransactionCategory category,
                                       ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
@@ -100,7 +99,7 @@ public class BalanceSheetGenerator {
             long trackValue = trackRule.getPrice().getAmount();
 
             GameTime[] times = new GameTime[]{startTime,
-                    GameTime.END_OF_THE_WORLD};
+                    GameTime.DOOMSDAY};
 
             aggregator.setType(i);
             aggregator.setTimes(times);

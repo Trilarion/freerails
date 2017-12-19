@@ -22,15 +22,18 @@
  */
 package freerails.world.top;
 
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.ItemsTransactionAggregator;
+import freerails.world.World;
+import freerails.world.WorldImpl;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
-import freerails.world.finances.Transaction.Category;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 
-import static freerails.world.finances.Transaction.Category.TRACK;
+import static freerails.world.finances.TransactionCategory.TRACK;
 
 /**
  *
@@ -50,13 +53,13 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         aggregator.setCategory(TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
-        Transaction t = new AddItemTransaction(Category.TRACK, 10, 5,
+        Transaction t = new ItemTransaction(TransactionCategory.TRACK, 10, 5,
                 new Money(100));
         w.addTransaction(fp, t);
 
         quant = aggregator.calculateQuantity();
         assertEquals(5, quant);
-        t = new AddItemTransaction(Category.TRACK, 10, 11, new Money(200));
+        t = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
         w.addTransaction(fp, t);
 
     }

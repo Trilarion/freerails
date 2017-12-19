@@ -23,7 +23,7 @@
 package freerails.world.train;
 
 import freerails.util.ImList;
-import freerails.world.common.Activity;
+import freerails.world.Activity;
 
 /**
  *

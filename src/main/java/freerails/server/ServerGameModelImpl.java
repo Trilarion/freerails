@@ -26,13 +26,8 @@ import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
 import freerails.network.ServerGameModel;
-import freerails.world.common.GameCalendar;
-import freerails.world.common.GameSpeed;
-import freerails.world.common.GameTime;
+import freerails.world.*;
 import freerails.world.player.Player;
-import freerails.world.top.ITEM;
-import freerails.world.top.World;
-import freerails.world.top.WorldDiffs;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -52,7 +47,7 @@ public class ServerGameModelImpl implements ServerGameModel {
      *
      */
     public World world;
-    private transient CalcSupplyAtStations calcSupplyAtStations;
+    private transient SupplyAtStationsUpdater supplyAtStationsUpdater;
     private TrainUpdater tb;
     private String[] passwords;
     /**
@@ -94,9 +89,9 @@ public class ServerGameModelImpl implements ServerGameModel {
                 moveExecuter);
         trainMaintenanceMoveGenerator.update(world);
 
-        InterestChargeMoveGenerator interestChargeMoveGenerator = new InterestChargeMoveGenerator(
+        BondInterestMoveGenerator bondInterestMoveGenerator = new BondInterestMoveGenerator(
                 moveExecuter);
-        interestChargeMoveGenerator.update(world);
+        bondInterestMoveGenerator.update(world);
 
         // Grow cities.
         WorldDiffs wd = new WorldDiffs(world);
@@ -105,21 +100,21 @@ public class ServerGameModelImpl implements ServerGameModel {
 
         WorldDiffMove move = new WorldDiffMove(world, wd,
                 WorldDiffMove.Cause.YearEnd);
-        moveExecuter.processMove(move);
+        moveExecuter.process(move);
     }
 
     /**
      * This is called at the start of each new month.
      */
     private void monthEnd() {
-        calcSupplyAtStations.doProcessing();
+        supplyAtStationsUpdater.update();
 
-        CargoAtStationsGenerator cargoAtStationsGenerator = new CargoAtStationsGenerator();
-        cargoAtStationsGenerator.update(world, moveExecuter);
+        CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
+        cargoAtStationsUpdater.update(world, moveExecuter);
     }
 
     private void updateGameTime() {
-        moveExecuter.processMove(TimeTickMove.getMove(world));
+        moveExecuter.process(TimeTickMove.getMove(world));
     }
 
     /**
@@ -221,7 +216,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     public void init(MoveReceiver newMoveExecuter) {
         this.moveExecuter = newMoveExecuter;
         tb = new TrainUpdater(newMoveExecuter);
-        calcSupplyAtStations = new CalcSupplyAtStations(world, newMoveExecuter);
+        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, newMoveExecuter);
 
         for (ServerAutomaton aServerAutomata : serverAutomata) {
             aServerAutomata.initAutomaton(newMoveExecuter);
@@ -239,11 +234,11 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     * @param w
+     * @param world
      * @param passwords
      */
-    public void setWorld(World w, String[] passwords) {
-        this.world = w;
+    public void setWorld(World world, String[] passwords) {
+        this.world = world;
         this.serverAutomata.clear();
         this.passwords = passwords.clone();
     }

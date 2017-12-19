@@ -22,7 +22,7 @@ import freerails.controller.ClientControlInterface;
 import freerails.controller.MessageStatus;
 import freerails.controller.MessageToClient;
 import freerails.util.Immutable;
-import freerails.world.top.World;
+import freerails.world.World;
 
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a

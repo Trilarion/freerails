@@ -26,8 +26,8 @@ import freerails.controller.PreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.network.UntriedMoveReceiver;
+import freerails.world.World;
 import freerails.world.player.Player;
-import freerails.world.top.World;
 
 /**
  * An UntriedMoveReceiver that executes moves on the world object passed to its
@@ -56,7 +56,7 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
     /**
      * @param move
      */
-    public void processMove(Move move) {
+    public void process(Move move) {
         move.doMove(w, Player.AUTHORITATIVE);
     }
 
@@ -64,6 +64,6 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
      * @param pm
      */
     public void processPreMove(PreMove pm) {
-        processMove(pm.generateMove(w));
+        process(pm.generateMove(w));
     }
 }

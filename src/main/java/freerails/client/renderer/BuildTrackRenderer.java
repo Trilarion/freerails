@@ -18,13 +18,13 @@
 
 package freerails.client.renderer;
 
-import freerails.client.Constants;
+import freerails.client.ClientConstants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldDiffs;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.WorldDiffs;
 import freerails.world.track.TrackPiece;
 
 import java.awt.*;
@@ -47,8 +47,8 @@ public class BuildTrackRenderer implements Painter {
 
     private final ModelRoot modelRoot;
 
-    private final Dimension tileSize = new Dimension(Constants.TILE_SIZE,
-            Constants.TILE_SIZE);
+    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE,
+            ClientConstants.TILE_SIZE);
 
     private final RenderersRoot rr;
 

@@ -22,10 +22,10 @@
  */
 package freerails.move;
 
-import freerails.world.common.Activity;
-import freerails.world.common.ActivityIterator;
+import freerails.world.Activity;
+import freerails.world.ActivityIterator;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.World;
 
 /**
  *
@@ -33,11 +33,8 @@ import freerails.world.top.World;
 public class NextActivityMove implements Move {
 
     private static final long serialVersionUID = -1783556069173689661L;
-
     private final Activity activity;
-
     private final FreerailsPrincipal principal;
-
     private final int index;
 
     /**
@@ -79,17 +76,17 @@ public class NextActivityMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         // Check that active entity exists.
-        if (w.size(principal) <= index)
+        if (world.size(this.principal) <= index)
             return MoveStatus.moveFailed("Index out of range. "
-                    + w.size(principal) + "<= " + index);
+                    + world.size(this.principal) + "<= " + index);
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        ActivityIterator ai = w.getActivities(principal, index);
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        ActivityIterator ai = world.getActivities(this.principal, index);
         ai.gotoLastActivity();
 
         Activity act = ai.getActivity();
@@ -100,18 +97,17 @@ public class NextActivityMove implements Move {
                 + act);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryDoMove(world, principal);
         if (ms.ok)
-            w.add(principal, index, activity);
+            world.add(this.principal, index, activity);
         return ms;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryUndoMove(world, principal);
         if (ms.ok)
-            w.removeLastActivity(principal, index);
+            world.removeLastActivity(this.principal, index);
         return ms;
     }
-
 }

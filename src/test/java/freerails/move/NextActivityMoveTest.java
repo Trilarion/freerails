@@ -22,11 +22,11 @@
  */
 package freerails.move;
 
-import freerails.world.common.Activity;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.GameTime;
+import freerails.world.Activity;
+import freerails.world.ActivityIterator;
+import freerails.world.GameTime;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.World;
 import freerails.world.top.WorldImplTest;
 
 /**

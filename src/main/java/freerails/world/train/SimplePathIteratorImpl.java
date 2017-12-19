@@ -20,7 +20,7 @@ package freerails.world.train;
 
 import freerails.util.ImInts;
 import freerails.util.IntLine;
-import freerails.world.common.FreerailsPathIterator;
+import freerails.world.FreerailsPathIterator;
 
 import java.util.NoSuchElementException;
 

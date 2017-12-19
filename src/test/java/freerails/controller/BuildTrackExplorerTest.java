@@ -25,14 +25,13 @@ package freerails.controller;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.terrain.TerrainType;
+import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TileTypeImpl;
-import freerails.world.top.*;
+import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
@@ -64,33 +63,33 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         // Test starting in the middle of the map.
-        start = PositionOnTrack.createComingFrom(10, 10, Step.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 10, TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
         explorer.setPosition(start.toInt());
-        assertNextVertexIs(Step.NORTH, 10, 9, explorer);
-        assertNextVertexIs(Step.NORTH_EAST, 11, 9, explorer);
-        assertNextVertexIs(Step.EAST, 11, 10, explorer);
+        assertNextVertexIs(TileTransition.NORTH, 10, 9, explorer);
+        assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
+        assertNextVertexIs(TileTransition.EAST, 11, 10, explorer);
         // We miss out SW, S, and SE since we don't want to double back on
         // ourselves.
-        assertNextVertexIs(Step.WEST, 9, 10, explorer);
-        assertNextVertexIs(Step.NORTH_WEST, 9, 9, explorer);
+        assertNextVertexIs(TileTransition.WEST, 9, 10, explorer);
+        assertNextVertexIs(TileTransition.NORTH_WEST, 9, 9, explorer);
         assertFalse(explorer.hasNextEdge());
 
         // Test starting in the top left of the map.
-        start = PositionOnTrack.createComingFrom(0, 0, Step.SOUTH_EAST);
+        start = PositionOnTrack.createComingFrom(0, 0, TileTransition.SOUTH_EAST);
         explorer.setPosition(start.toInt());
-        assertNextVertexIs(Step.EAST, 1, 0, explorer);
-        assertNextVertexIs(Step.SOUTH_EAST, 1, 1, explorer);
-        assertNextVertexIs(Step.SOUTH, 0, 1, explorer);
+        assertNextVertexIs(TileTransition.EAST, 1, 0, explorer);
+        assertNextVertexIs(TileTransition.SOUTH_EAST, 1, 1, explorer);
+        assertNextVertexIs(TileTransition.SOUTH, 0, 1, explorer);
         assertFalse(explorer.hasNextEdge());
 
         // Test starting in the bottom right of the map.
-        start = PositionOnTrack.createComingFrom(19, 19, Step.NORTH_WEST);
+        start = PositionOnTrack.createComingFrom(19, 19, TileTransition.NORTH_WEST);
         explorer.setPosition(start.toInt());
-        assertNextVertexIs(Step.NORTH, 19, 18, explorer);
-        assertNextVertexIs(Step.WEST, 18, 19, explorer);
-        assertNextVertexIs(Step.NORTH_WEST, 18, 18, explorer);
+        assertNextVertexIs(TileTransition.NORTH, 19, 18, explorer);
+        assertNextVertexIs(TileTransition.WEST, 18, 19, explorer);
+        assertNextVertexIs(TileTransition.NORTH_WEST, 18, 18, explorer);
         assertFalse(explorer.hasNextEdge());
     }
 
@@ -102,7 +101,7 @@ public class BuildTrackExplorerTest extends TestCase {
         int occeanTypeNumber = 4;
         TileTypeImpl ocean = (TileTypeImpl) world.get(SKEY.TERRAIN_TYPES,
                 occeanTypeNumber);
-        assertEquals(TerrainType.Category.Ocean, ocean.getCategory());
+        assertEquals(TerrainCategory.Ocean, ocean.getCategory());
 
         // Check that track cannot be built on ocean.
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
@@ -118,15 +117,15 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         // Test starting in the middle of the map.
-        start = PositionOnTrack.createComingFrom(10, 10, Step.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 10, TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
         explorer.setPosition(start.toInt());
-        assertNextVertexIs(Step.NORTH_EAST, 11, 9, explorer);
+        assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
         // We miss out SW, S, and SE since we don't want to double back on
         // ourselves.
-        assertNextVertexIs(Step.WEST, 9, 10, explorer);
-        assertNextVertexIs(Step.NORTH_WEST, 9, 9, explorer);
+        assertNextVertexIs(TileTransition.WEST, 9, 10, explorer);
+        assertNextVertexIs(TileTransition.NORTH_WEST, 9, 9, explorer);
         assertFalse(explorer.hasNextEdge());
     }
 
@@ -139,7 +138,7 @@ public class BuildTrackExplorerTest extends TestCase {
         int x = 10;
 
         for (int i = 0; i < 4; i++) {
-            Step v = Step.SOUTH_EAST;
+            TileTransition v = TileTransition.SOUTH_EAST;
             buildTrack(x, y, v);
             x += v.deltaX;
             y += v.deltaY;
@@ -148,37 +147,37 @@ public class BuildTrackExplorerTest extends TestCase {
         // If we enter 10, 10 from the south, we should be able to build track S
         // & SW.
         PositionOnTrack start = PositionOnTrack.createComingFrom(10, 10,
-                Step.SOUTH);
+                TileTransition.SOUTH);
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
         explorer.setPosition(start.toInt());
         // SE is going along existing track
-        assertNextVertexIs(Step.SOUTH_EAST, 11, 11, explorer);
+        assertNextVertexIs(TileTransition.SOUTH_EAST, 11, 11, explorer);
         // S is building new track.
-        assertNextVertexIs(Step.SOUTH, 10, 11, explorer);
+        assertNextVertexIs(TileTransition.SOUTH, 10, 11, explorer);
         assertFalse(explorer.hasNextEdge());
 
         // If we enter 10, 11 from the north, we should be able to build track
         // N, E, W, & NW.
-        start = PositionOnTrack.createComingFrom(10, 11, Step.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 11, TileTransition.NORTH);
         explorer.setPosition(start.toInt());
-        assertNextVertexIs(Step.NORTH, 10, 10, explorer);
-        assertNextVertexIs(Step.EAST, 11, 11, explorer);
-        assertNextVertexIs(Step.WEST, 9, 11, explorer);
-        assertNextVertexIs(Step.NORTH_WEST, 9, 10, explorer);
+        assertNextVertexIs(TileTransition.NORTH, 10, 10, explorer);
+        assertNextVertexIs(TileTransition.EAST, 11, 11, explorer);
+        assertNextVertexIs(TileTransition.WEST, 9, 11, explorer);
+        assertNextVertexIs(TileTransition.NORTH_WEST, 9, 10, explorer);
         assertFalse(explorer.hasNextEdge());
 
         // If we enter 10, 12 from the north, we also should be able to build
         // track N, E, W, & NW.
-        start = PositionOnTrack.createComingFrom(10, 12, Step.NORTH);
+        start = PositionOnTrack.createComingFrom(10, 12, TileTransition.NORTH);
         explorer.setPosition(start.toInt());
-        assertNextVertexIs(Step.NORTH, 10, 11, explorer);
-        assertNextVertexIs(Step.EAST, 11, 12, explorer);
-        assertNextVertexIs(Step.WEST, 9, 12, explorer);
-        assertNextVertexIs(Step.NORTH_WEST, 9, 11, explorer);
+        assertNextVertexIs(TileTransition.NORTH, 10, 11, explorer);
+        assertNextVertexIs(TileTransition.EAST, 11, 12, explorer);
+        assertNextVertexIs(TileTransition.WEST, 9, 12, explorer);
+        assertNextVertexIs(TileTransition.NORTH_WEST, 9, 11, explorer);
         assertFalse(explorer.hasNextEdge());
     }
 
-    private void assertNextVertexIs(Step oneTileMoveVector, int x, int y,
+    private void assertNextVertexIs(TileTransition oneTileMoveVector, int x, int y,
                                     BuildTrackExplorer explorer) {
         assertTrue(explorer.hasNextEdge());
         explorer.nextEdge();
@@ -189,7 +188,7 @@ public class BuildTrackExplorerTest extends TestCase {
                 pos);
     }
 
-    private void buildTrack(int x, int y, Step direction) {
+    private void buildTrack(int x, int y, TileTransition direction) {
         TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(new ImPoint(x, y), direction, rule,

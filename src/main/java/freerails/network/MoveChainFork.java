@@ -20,10 +20,10 @@ package freerails.network;
 
 import freerails.move.*;
 import freerails.util.ImList;
+import freerails.world.KEY;
+import freerails.world.WorldListListener;
+import freerails.world.WorldMapListener;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.WorldListListener;
-import freerails.world.top.WorldMapListener;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -118,9 +118,9 @@ final public class MoveChainFork implements MoveReceiver {
     /**
      * @param move
      */
-    public void processMove(Move move) {
+    public void process(Move move) {
         for (MoveReceiver m : moveReceivers) {
-            m.processMove(move);
+            m.process(move);
         }
 
         splitMove(move);
@@ -140,7 +140,7 @@ final public class MoveChainFork implements MoveReceiver {
             }
         } else {
             for (MoveReceiver m : splitMoveReceivers) {
-                m.processMove(move);
+                m.process(move);
             }
 
             if (move instanceof AddItemToListMove) {

@@ -24,9 +24,9 @@
 
 package freerails.controller;
 
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackRule;
 
 import java.util.ArrayList;

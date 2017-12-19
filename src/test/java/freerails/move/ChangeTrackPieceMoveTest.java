@@ -25,9 +25,13 @@
 package freerails.move;
 
 import freerails.util.ImPoint;
+import freerails.world.GameRules;
+import freerails.world.ITEM;
+import freerails.world.SKEY;
+import freerails.world.WorldImpl;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.*;
+import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;

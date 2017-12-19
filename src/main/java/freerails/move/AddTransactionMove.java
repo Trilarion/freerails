@@ -22,9 +22,9 @@
  */
 package freerails.move;
 
+import freerails.world.World;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.World;
 
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
@@ -32,15 +32,13 @@ import freerails.world.top.World;
  */
 public class AddTransactionMove implements Move {
     private static final long serialVersionUID = 3976738055925019701L;
-
     private final Transaction transaction;
-
     private final FreerailsPrincipal principal;
 
     /**
      * Whether the move fails if there is not enough cash.
      */
-    private final boolean constrained;
+    private final boolean cashConstrained;
 
     /**
      * @param account
@@ -53,7 +51,7 @@ public class AddTransactionMove implements Move {
 
         principal = account;
         transaction = t;
-        constrained = false;
+        cashConstrained = false;
     }
 
     /**
@@ -65,7 +63,7 @@ public class AddTransactionMove implements Move {
                               boolean constrain) {
         principal = account;
         transaction = t;
-        constrained = constrain;
+        cashConstrained = constrain;
 
         if (null == t) {
             throw new NullPointerException();
@@ -84,15 +82,15 @@ public class AddTransactionMove implements Move {
         int result;
         result = transaction.hashCode();
         result = 29 * result + principal.hashCode();
-        result = 29 * result + (constrained ? 1 : 0);
+        result = 29 * result + (cashConstrained ? 1 : 0);
 
         return result;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (w.isPlayer(principal)) {
-            if (this.constrained) {
-                long bankBalance = w.getCurrentBalance(principal).getAmount();
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        if (world.isPlayer(this.principal)) {
+            if (this.cashConstrained) {
+                long bankBalance = world.getCurrentBalance(this.principal).getAmount();
                 long transactionAmount = this.transaction.deltaCash()
                         .getAmount();
                 long balanceAfter = bankBalance + transactionAmount;
@@ -104,18 +102,18 @@ public class AddTransactionMove implements Move {
 
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed(p.getName()
+        return MoveStatus.moveFailed(principal.getName()
                 + " does not have a bank account.");
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        int size = w.getNumberOfTransactions(this.principal);
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        int size = world.getNumberOfTransactions(this.principal);
 
         if (0 == size) {
             return MoveStatus.moveFailed("No transactions to remove!");
         }
 
-        Transaction lastTransaction = w
+        Transaction lastTransaction = world
                 .getTransaction(this.principal, size - 1);
 
         if (lastTransaction.equals(this.transaction)) {
@@ -125,21 +123,21 @@ public class AddTransactionMove implements Move {
                 + "but found " + lastTransaction);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryDoMove(world, principal);
 
         if (ms.ok) {
-            w.addTransaction(this.principal, this.transaction);
+            world.addTransaction(this.principal, this.transaction);
         }
 
         return ms;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryUndoMove(world, principal);
 
         if (ms.ok) {
-            w.removeLastTransaction(this.principal);
+            world.removeLastTransaction(this.principal);
         }
 
         return ms;

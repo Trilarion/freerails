@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.util.Utils;
-import freerails.world.top.WorldImpl;
+import freerails.world.WorldImpl;
 
 import java.io.IOException;
 import java.io.Serializable;

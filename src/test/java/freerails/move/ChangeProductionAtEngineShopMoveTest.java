@@ -23,11 +23,11 @@
 package freerails.move;
 
 import freerails.util.ImList;
+import freerails.world.KEY;
+import freerails.world.WagonAndEngineTypesFactory;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.WagonAndEngineTypesFactory;
 
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.

@@ -24,9 +24,9 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
 
 import javax.swing.*;
 import java.awt.*;

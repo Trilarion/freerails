@@ -22,9 +22,9 @@
  */
 package freerails.move;
 
+import freerails.world.KEY;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
 
 /**
  * This move removes a cargo bundle from the cargo bundle list.

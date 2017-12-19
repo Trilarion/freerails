@@ -23,7 +23,7 @@
 package freerails.client.renderer;
 
 import freerails.client.common.ImageManager;
-import freerails.world.common.Step;
+import freerails.world.TileTransition;
 
 import java.awt.*;
 import java.io.File;
@@ -66,7 +66,7 @@ public class TrainImages {
      * @return
      */
     public static String generateOverheadFilename(String name, int i) {
-        Step[] vectors = Step.getList();
+        TileTransition[] vectors = TileTransition.getList();
 
         return "trains" + File.separator + "overhead" + File.separator + name
                 + "_" + vectors[i].toAbrvString() + ".png";

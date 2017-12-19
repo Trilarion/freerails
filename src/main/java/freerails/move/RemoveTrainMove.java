@@ -22,10 +22,10 @@
  */
 package freerails.move;
 
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.TrainModel;
 

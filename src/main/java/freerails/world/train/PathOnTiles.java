@@ -26,9 +26,9 @@ import freerails.util.ImList;
 import freerails.util.ImPoint;
 import freerails.util.IntLine;
 import freerails.util.Pair;
-import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
+import freerails.world.FreerailsPathIterator;
+import freerails.world.PositionOnTrack;
+import freerails.world.TileTransition;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static freerails.world.common.Step.TILE_DIAMETER;
+import static freerails.world.TileTransition.TILE_DIAMETER;
 
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
@@ -47,7 +47,7 @@ strictfp public class PathOnTiles implements Serializable {
 
     private final ImPoint start;
 
-    private final ImList<Step> vectors;
+    private final ImList<TileTransition> vectors;
 
     /**
      * @param start
@@ -56,7 +56,7 @@ strictfp public class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectorsList
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
-    public PathOnTiles(ImPoint start, List<Step> vectorsList) {
+    public PathOnTiles(ImPoint start, List<TileTransition> vectorsList) {
         if (null == start)
             throw new NullPointerException();
         vectors = new ImList<>(vectorsList);
@@ -71,7 +71,7 @@ strictfp public class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectors
      * @throws NullPointerException if null == vectors[i] for any i;
      */
-    public PathOnTiles(ImPoint start, Step... vectors) {
+    public PathOnTiles(ImPoint start, TileTransition... vectors) {
         if (null == start)
             throw new NullPointerException();
         this.vectors = new ImList<>(vectors);
@@ -110,7 +110,7 @@ strictfp public class PathOnTiles implements Serializable {
     public double getDistance(int steps) {
         double distanceSoFar = 0;
         for (int i = 0; i < steps; i++) {
-            Step v = vectors.get(i);
+            TileTransition v = vectors.get(i);
             distanceSoFar += v.getLength();
         }
         return distanceSoFar;
@@ -133,7 +133,7 @@ strictfp public class PathOnTiles implements Serializable {
         int y = start.y;
         double distanceSoFar = 0;
         for (int i = 0; i < vectors.size(); i++) {
-            Step v = vectors.get(i);
+            TileTransition v = vectors.get(i);
             distanceSoFar += v.getLength();
             x += v.deltaX;
             y += v.deltaY;
@@ -183,7 +183,7 @@ strictfp public class PathOnTiles implements Serializable {
         double distanceSoFar = 0;
         ImPoint firstPoint = null;
         int i;
-        Step v = null;
+        TileTransition v = null;
         final int vectorsSize = vectors.size();
         for (i = 0; i < vectorsSize; i++) {
             v = vectors.get(i);
@@ -264,7 +264,7 @@ strictfp public class PathOnTiles implements Serializable {
      * @param i
      * @return
      */
-    public Step getStep(int i) {
+    public TileTransition getStep(int i) {
         return vectors.get(i);
     }
 
@@ -275,13 +275,13 @@ strictfp public class PathOnTiles implements Serializable {
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < vectors.size(); i++) {
-            Step v = vectors.get(i);
+            TileTransition v = vectors.get(i);
             x += v.deltaX;
             y += v.deltaY;
         }
         int i = vectors.size() - 1;
-        Step finalStep = vectors.get(i);
-        return PositionOnTrack.createFacing(x, y, finalStep);
+        TileTransition finalTileTransition = vectors.get(i);
+        return PositionOnTrack.createFacing(x, y, finalTileTransition);
     }
 
     /**
@@ -298,7 +298,7 @@ strictfp public class PathOnTiles implements Serializable {
             throw new IllegalArgumentException("distance < 0");
         int distanceSoFar = 0;
         for (int i = 0; i < vectors.size(); i++) {
-            Step v = vectors.get(i);
+            TileTransition v = vectors.get(i);
             distanceSoFar += v.getLength();
             if (distanceSoFar >= distance)
                 return i;
@@ -319,16 +319,16 @@ strictfp public class PathOnTiles implements Serializable {
     }
 
     /**
-     * @param newSteps
+     * @param newTileTransitions
      * @return
      */
-    public PathOnTiles addSteps(Step... newSteps) {
+    public PathOnTiles addSteps(TileTransition... newTileTransitions) {
         int oldLength = vectors.size();
-        Step[] newPath = new Step[oldLength + newSteps.length];
+        TileTransition[] newPath = new TileTransition[oldLength + newTileTransitions.length];
         for (int i = 0; i < oldLength; i++) {
             newPath[i] = vectors.get(i);
         }
-        System.arraycopy(newSteps, 0, newPath, oldLength, newSteps.length);
+        System.arraycopy(newTileTransitions, 0, newPath, oldLength, newTileTransitions.length);
         return new PathOnTiles(start, newPath);
     }
 
@@ -369,7 +369,7 @@ strictfp public class PathOnTiles implements Serializable {
                 points.add(new ImPoint(x, y));
             }
 
-            Step v = vectors.get(i);
+            TileTransition v = vectors.get(i);
             tileX += v.deltaX;
             tileY += v.deltaY;
             distanceSoFar += v.getLength();
@@ -441,7 +441,7 @@ strictfp public class PathOnTiles implements Serializable {
                 int x = next.x;
                 int y = next.y;
                 if (index < vectors.size()) {
-                    Step s = vectors.get(index);
+                    TileTransition s = vectors.get(index);
                     x += s.deltaX;
                     y += s.deltaY;
                     next = new ImPoint(x, y);

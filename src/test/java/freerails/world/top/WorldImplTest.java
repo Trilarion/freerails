@@ -23,12 +23,11 @@
 package freerails.world.top;
 
 import freerails.util.Utils;
-import freerails.world.common.Activity;
-import freerails.world.finances.AddItemTransaction;
-import freerails.world.finances.Money;
-import freerails.world.finances.Receipt;
-import freerails.world.finances.Transaction;
-import freerails.world.finances.Transaction.Category;
+import freerails.world.Activity;
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.WorldImpl;
+import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
@@ -97,8 +96,8 @@ public class WorldImplTest extends TestCase {
 
         assertTrue(Utils.equalsBySerialization(original, copy));
 
-        Transaction t = new Receipt(new Money(100),
-                Transaction.Category.MISC_INCOME);
+        Transaction t = new MoneyTransaction2(new Money(100),
+                TransactionCategory.MISC_INCOME);
         copy.addTransaction(player.getPrincipal(), t);
         assertEquals(new Money(100), copy.getCurrentBalance(player
                 .getPrincipal()));
@@ -180,7 +179,7 @@ public class WorldImplTest extends TestCase {
         int playerID = world.addPlayer(p);
         assertEquals(0, playerID);
         FreerailsPrincipal fp = world.getPlayer(playerID).getPrincipal();
-        Transaction t = new AddItemTransaction(Category.BOND, 1, 2, new Money(
+        Transaction t = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(
                 100));
         assertEquals(new Money(0), world.getCurrentBalance(fp));
         world.addTransaction(fp, t);

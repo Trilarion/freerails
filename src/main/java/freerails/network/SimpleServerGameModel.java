@@ -22,9 +22,9 @@
  */
 package freerails.network;
 
+import freerails.world.KEY;
+import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.World;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -40,11 +40,11 @@ public class SimpleServerGameModel implements ServerGameModel {
     private String[] passwords;
 
     /**
-     * @param w
+     * @param world
      * @param passwords
      */
-    public void setWorld(World w, String[] passwords) {
-        this.w = w;
+    public void setWorld(World world, String[] passwords) {
+        this.w = world;
         this.passwords = passwords.clone();
     }
 

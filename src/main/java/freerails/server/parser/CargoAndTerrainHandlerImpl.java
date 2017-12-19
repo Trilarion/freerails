@@ -18,11 +18,11 @@
 
 package freerails.server.parser;
 
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.CargoType.Categories;
 import freerails.world.terrain.*;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -37,9 +37,10 @@ import java.util.HashSet;
  * @see CargoAndTerrainHandler
  * @see CargoAndTerrainParser
  */
+// TODO difference between interface and implementation?
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
-    final HashMap<String, Integer> cargoName2cargoTypeNumber = new HashMap<>();
+    final HashMap<String, Integer> cargoNameTocargoTypeNumber = new HashMap<>();
     final HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
     final ArrayList<Consumption> typeConsumes = new ArrayList<>();
     final ArrayList<Production> typeProduces = new ArrayList<>();
@@ -48,7 +49,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     // Parsing variables for Tile
     String tileID;
-    TerrainType.Category tileCategory;
+    TerrainCategory tileCategory;
     int tileRGB;
     int tileROW;
     int tileBuildCost;
@@ -76,7 +77,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         typeConverts.clear();
 
         tileID = meta.getValue("id");
-        tileCategory = TerrainType.Category.valueOf(meta.getValue("Category"));
+        tileCategory = TerrainCategory.valueOf(meta.getValue("Category"));
 
         String rgbString = meta.getValue("rgb");
         tileRGB = string2RGBValue(rgbString);
@@ -131,11 +132,11 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         String cargoID = meta.getValue("id");
         String cargoCategory = meta.getValue("Category");
         int unitWeight = Integer.parseInt(meta.getValue("unitWeight"));
-        CargoType cargoType = new CargoType(unitWeight, cargoID, Categories
-                .getCategory(cargoCategory));
+        CargoType cargoType = new CargoType(unitWeight, cargoID, CargoCategory
+                .getCategoryByName(cargoCategory));
 
         int cargoNumber = world.size(SKEY.CARGO_TYPES);
-        cargoName2cargoTypeNumber.put(cargoID, cargoNumber);
+        cargoNameTocargoTypeNumber.put(cargoID, cargoNumber);
         world.add(SKEY.CARGO_TYPES, cargoType);
     }
 
@@ -199,8 +200,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
      * Returns the index number of the cargo with the specified name.
      */
     private int string2CargoID(String cargoName) throws SAXException {
-        if (cargoName2cargoTypeNumber.containsKey(cargoName)) {
-            return cargoName2cargoTypeNumber.get(cargoName);
+        if (cargoNameTocargoTypeNumber.containsKey(cargoName)) {
+            return cargoNameTocargoTypeNumber.get(cargoName);
         }
         throw new SAXException("Unknown cargo type: " + cargoName);
     }

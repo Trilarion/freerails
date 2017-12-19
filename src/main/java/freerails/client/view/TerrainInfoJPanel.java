@@ -25,13 +25,13 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.Consumption;
 import freerails.world.terrain.Conversion;
 import freerails.world.terrain.Production;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.train.WagonType;
 
 import javax.swing.*;

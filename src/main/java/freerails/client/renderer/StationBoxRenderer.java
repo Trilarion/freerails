@@ -18,14 +18,15 @@
 
 package freerails.client.renderer;
 
-import freerails.client.Constants;
+import freerails.client.ClientConstants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
+import freerails.world.*;
+import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.*;
 import freerails.world.train.WagonType;
 
 import java.awt.*;
@@ -90,14 +91,14 @@ public class StationBoxRenderer implements Painter {
         if (showCargoWaiting) {
             /* We only show the station boxes for the current player. */
             FreerailsPrincipal principal = modelRoot.getPrincipal();
-            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (wi.next()) { // loop over non null stations
                 StationModel station = (StationModel) wi.getElement();
-                int positionX = (station.getStationX() * Constants.TILE_SIZE)
-                        + Constants.TILE_SIZE / 2;
-                int positionY = (station.getStationY() * Constants.TILE_SIZE)
-                        + Constants.TILE_SIZE * 2;
+                int positionX = (station.getStationX() * ClientConstants.TILE_SIZE)
+                        + ClientConstants.TILE_SIZE / 2;
+                int positionY = (station.getStationY() * ClientConstants.TILE_SIZE)
+                        + ClientConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH,
                         MAX_HEIGHT);
                 if (newVisibleRectectangle.intersects(r)) {
@@ -111,7 +112,7 @@ public class StationBoxRenderer implements Painter {
                             principal, KEY.CARGO_BUNDLES, station
                                     .getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cb);
-                    for (int category = 0; category < CargoType
+                    for (int category = 0; category < CargoCategory
                             .getNumberOfCategories(); category++) {
                         int alternateWidth = (MAX_WIDTH - 2 * SPACING)
                                 / (carsLoads[category].length + 1);
@@ -139,7 +140,7 @@ public class StationBoxRenderer implements Painter {
      * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
      */
     private int[][] calculateCarLoads(ImmutableCargoBundle cb) {
-        int categories = CargoType.getNumberOfCategories();
+        int categories = CargoCategory.getNumberOfCategories();
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         int[] numberOfCarLoads = new int[categories];
         int[][] cars = new int[categories][numCargoTypes];
@@ -147,8 +148,8 @@ public class StationBoxRenderer implements Painter {
             CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
             int carsOfThisCargo = cb.getAmount(i)
                     / WagonType.UNITS_OF_CARGO_PER_WAGON;
-            numberOfCarLoads[ct.getCategory().getNumber()] += carsOfThisCargo;
-            cars[ct.getCategory().getNumber()][i] += carsOfThisCargo;
+            numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
+            cars[ct.getCategory().getID()][i] += carsOfThisCargo;
         }
 
         int[][] returnMatrix = new int[categories][];

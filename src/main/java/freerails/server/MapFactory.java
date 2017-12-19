@@ -22,11 +22,12 @@
  */
 package freerails.server;
 
-import freerails.util.FreerailsProgressMonitor;
+import freerails.util.ProgressMonitor;
+import freerails.world.SKEY;
+import freerails.world.WorldImpl;
 import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.SKEY;
-import freerails.world.top.WorldImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,11 +39,10 @@ import java.util.Vector;
 /**
  * This class has a static method that converts an image file into a map.
  * <p>
- * <p>
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.
  */
-public class MapFactory {
+public final class MapFactory {
     /*
      * create a vector to keep track of what terrain types to 'clump'
      */
@@ -52,13 +52,15 @@ public class MapFactory {
 
     private static WorldImpl world;
 
+    private MapFactory() {
+    }
+
     /**
      * @param map_url
      * @param w
      * @param pm
      */
-    public static void setupMap(URL map_url, WorldImpl w,
-                                FreerailsProgressMonitor pm) {
+    public static void setupMap(URL map_url, WorldImpl w, ProgressMonitor pm) {
         // Setup progress monitor..
         pm.setValue(0);
 
@@ -88,18 +90,18 @@ public class MapFactory {
             terrainTypeTile = (TerrainType) w.get(SKEY.TERRAIN_TYPES, c);
 
             if (terrainTypeTile.getCategory().equals(
-                    TerrainType.Category.Country)) {
+                    TerrainCategory.Country)) {
                 if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
                     countryTypes.add(c);
                 }
             }
 
             if (terrainTypeTile.getCategory()
-                    .equals(TerrainType.Category.Ocean)
+                    .equals(TerrainCategory.Ocean)
                     || terrainTypeTile.getCategory().equals(
-                    TerrainType.Category.River)
+                    TerrainCategory.River)
                     || terrainTypeTile.getCategory().equals(
-                    TerrainType.Category.Hill)) {
+                    TerrainCategory.Hill)) {
                 non_countryTypes.add(c);
             }
         }
@@ -110,7 +112,7 @@ public class MapFactory {
         /*
          * create vector to keep track of terrain randomisation 'clumping'
          */
-        Vector<RandomTerrainValue> locations = new Vector<>();
+        Vector<TerrainAtLocation> locations = new Vector<>();
 
         for (int x = 0; x < mapRect.width; x++) {
             pm.setValue(x);
@@ -130,7 +132,7 @@ public class MapFactory {
                         .getNewType(type));
 
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
-                    locations.add(new RandomTerrainValue(x, y, tile
+                    locations.add(new TerrainAtLocation(x, y, tile
                             .getTerrainTypeID()));
                 }
 
@@ -139,7 +141,7 @@ public class MapFactory {
         }
 
         for (int i = 0; i < locations.size(); i++) {
-            RandomTerrainValue rtv = locations.elementAt(i);
+            TerrainAtLocation rtv = locations.elementAt(i);
             FreerailsTile tile = FreerailsTile.getInstance(rtv.getType());
 
             int x = rtv.getX();

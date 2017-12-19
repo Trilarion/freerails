@@ -19,11 +19,11 @@
 package freerails.client.common;
 
 import freerails.controller.ModelRoot;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.track.TrackRule;
 
 /**

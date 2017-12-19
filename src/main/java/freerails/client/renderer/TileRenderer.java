@@ -19,7 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.client.common.ImageManager;
-import freerails.world.top.ReadOnlyWorld;
+import freerails.world.ReadOnlyWorld;
 
 import java.awt.*;
 

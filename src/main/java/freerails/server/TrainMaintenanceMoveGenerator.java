@@ -25,13 +25,14 @@ package freerails.server;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
-import freerails.world.finances.Bill;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.World;
 import freerails.world.finances.Money;
+import freerails.world.finances.MoneyTransaction;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.World;
 
 /**
  * This class iterates over the entries in the BankAccount and counts the number
@@ -49,11 +50,11 @@ public class TrainMaintenanceMoveGenerator {
 
     private static AddTransactionMove generateMove(World w,
                                                    FreerailsPrincipal principal) {
-        NonNullElements trains = new NonNullElements(KEY.TRAINS, w, principal);
+        NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
         int numberOfTrains = trains.size();
         long amount = numberOfTrains * 5000;
-        Transaction t = new Bill(new Money(amount),
-                Transaction.Category.TRAIN_MAINTENANCE);
+        Transaction t = new MoneyTransaction(new Money(amount),
+                TransactionCategory.TRAIN_MAINTENANCE);
 
         return new AddTransactionMove(principal, t);
     }
@@ -65,7 +66,7 @@ public class TrainMaintenanceMoveGenerator {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
             Move m = generateMove(w, principal);
-            moveReceiver.processMove(m);
+            moveReceiver.process(m);
         }
     }
 }

@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.world.common.FreerailsMutableSerializable;
+import freerails.world.FreerailsMutableSerializable;
 
 import java.io.Serializable;
 

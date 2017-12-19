@@ -26,13 +26,12 @@ import java.io.Serializable;
  * Records the success or failure of an attempt to execute a move.
  */
 @Immutable
-final public class MoveStatus implements Serializable {
+public final class MoveStatus implements Serializable {
 
     /**
      *
      */
-    public static final MoveStatus MOVE_OK = new MoveStatus(true,
-            "Move accepted");
+    public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
     private static final long serialVersionUID = 3258129171879309624L;
 
     /**
@@ -47,7 +46,7 @@ final public class MoveStatus implements Serializable {
 
     private final Throwable t;
 
-    private MoveStatus(boolean ok, String mess) {
+    private MoveStatus(boolean ok, String message) {
         if (ok) {
             t = null;
         } else {
@@ -55,7 +54,7 @@ final public class MoveStatus implements Serializable {
             t.fillInStackTrace();
         }
         this.ok = ok;
-        this.message = mess;
+        this.message = message;
     }
 
     /**
@@ -103,14 +102,6 @@ final public class MoveStatus implements Serializable {
      */
     public boolean isOk() {
         return ok;
-    }
-
-    /**
-     *
-     */
-    public void printStackTrack() {
-        if (null != t)
-            t.printStackTrace();
     }
 
     @Override

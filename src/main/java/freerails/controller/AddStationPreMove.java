@@ -25,12 +25,12 @@ package freerails.controller;
 import freerails.move.*;
 import freerails.util.ImList;
 import freerails.util.ImPoint;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.SKEY;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
@@ -133,7 +133,7 @@ public class AddStationPreMove implements PreMove {
             // There isn't already a station here, we need to pick a name and
             // add an entry
             // to the station list.
-            CalcNearestCity cNC = new CalcNearestCity(world, p.x, p.y);
+            NearestCityFinder cNC = new NearestCityFinder(world, p.x, p.y);
             try {
                 cityName = cNC.findNearestCity();
 

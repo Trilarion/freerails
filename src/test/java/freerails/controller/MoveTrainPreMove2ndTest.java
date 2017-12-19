@@ -29,23 +29,17 @@ import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
+import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoBundle;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.common.ActivityIterator;
-import freerails.world.common.GameTime;
-import freerails.world.common.PositionOnTrack;
-import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.DemandForCargo;
+import freerails.world.station.DemandForCargoAtStation;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.SKEY;
-import freerails.world.top.World;
 import freerails.world.train.*;
 
-import static freerails.world.common.Step.EAST;
+import static freerails.world.TileTransition.EAST;
 import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.*;
 
 /**
@@ -97,7 +91,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
-        Step[] track = new Step[20];
+        TileTransition[] track = new TileTransition[20];
         for (int i = 0; i < track.length; i++) {
             track[i] = EAST;
         }
@@ -135,8 +129,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
      */
     public void testPathFinding() {
         // setTargetAsStation2();
-        Step step = nextStep();
-        assertEquals(EAST, step);
+        TileTransition tileTransition = nextStep();
+        assertEquals(EAST, tileTransition);
         moveTrain();
         assertEquals(EAST, nextStep());
         moveTrain();
@@ -144,7 +138,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     }
 
-    private Step nextStep() {
+    private TileTransition nextStep() {
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
                 new OccupiedTracks(principal, world));
         return preMove.nextStep(world);
@@ -433,7 +427,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Make station2 demand cargo #0;
         boolean[] boolArray = new boolean[world.size(SKEY.CARGO_TYPES)];
         boolArray[0] = true;
-        DemandForCargo demand = new DemandForCargo(boolArray);
+        DemandForCargoAtStation demand = new DemandForCargoAtStation(boolArray);
         StationModel station2 = (StationModel) world.get(principal,
                 KEY.STATIONS, 2);
         StationModel stationWithNewDemand = new StationModel(station2, demand);

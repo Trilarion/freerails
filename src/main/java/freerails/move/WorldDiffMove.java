@@ -21,15 +21,11 @@ package freerails.move;
 import freerails.util.ImList;
 import freerails.util.ImPoint;
 import freerails.util.ListKey;
-import freerails.world.common.Activity;
+import freerails.world.*;
+import freerails.world.WorldDiffs.LISTID;
+import freerails.world.WorldImpl.ActivityAndTime;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.World;
-import freerails.world.top.WorldDiffs;
-import freerails.world.top.WorldDiffs.LISTID;
-import freerails.world.top.WorldImpl.ActivityAndTime;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -250,12 +246,12 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         }
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal p) {
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryMapChanges(world, false);
         if (!ms.ok)
             return ms;
 
-        ms = listChanges.doMove(world, p);
+        ms = listChanges.doMove(world, principal);
 
         if (ms.isOk()) {
             doMove(world, false);
@@ -302,13 +298,13 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal p) {
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
 
         MoveStatus ms = tryMapChanges(world, false);
         if (!ms.ok)
             return ms;
 
-        return ms = listChanges.tryDoMove(world, p);
+        return ms = listChanges.tryDoMove(world, principal);
     }
 
     private MoveStatus tryMapChanges(World world, boolean undo) {
@@ -325,13 +321,13 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal p) {
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
 
         MoveStatus ms = tryMapChanges(world, true);
         if (!ms.ok)
             return ms;
 
-        return ms = listChanges.tryUndoMove(world, p);
+        return ms = listChanges.tryUndoMove(world, principal);
     }
 
     /**
@@ -341,12 +337,12 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return listChanges.size();
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal p) {
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryMapChanges(world, true);
         if (!ms.ok)
             return ms;
 
-        ms = listChanges.undoMove(world, p);
+        ms = listChanges.undoMove(world, principal);
 
         if (ms.isOk()) {
             doMove(world, true);

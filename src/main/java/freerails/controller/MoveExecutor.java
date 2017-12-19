@@ -20,8 +20,8 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
 
 /**
  * Lets the caller try and execute Moves.

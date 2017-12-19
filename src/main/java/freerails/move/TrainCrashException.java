@@ -28,25 +28,22 @@ package freerails.move;
  */
 public class TrainCrashException extends Exception {
     private static final long serialVersionUID = 3978710596948342065L;
-
     private int trainA;
-
     private int trainB;
 
     /**
      *
      */
     public TrainCrashException() {
-
     }
 
     /**
-     * @param aTrain
-     * @param bTrain
+     * @param trainA
+     * @param trainB
      */
-    public TrainCrashException(int aTrain, int bTrain) {
-        trainA = aTrain;
-        trainB = bTrain;
+    public TrainCrashException(int trainA, int trainB) {
+        this.trainA = trainA;
+        this.trainB = trainB;
     }
 
     /**

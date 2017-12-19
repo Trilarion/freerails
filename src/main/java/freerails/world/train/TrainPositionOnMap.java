@@ -22,7 +22,7 @@ import freerails.util.ImInts;
 import freerails.util.IntArray;
 import freerails.util.IntLine;
 import freerails.util.Pair;
-import freerails.world.common.FreerailsPathIterator;
+import freerails.world.FreerailsPathIterator;
 
 import java.io.Serializable;
 

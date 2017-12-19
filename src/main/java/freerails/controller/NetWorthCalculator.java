@@ -18,11 +18,12 @@
 
 package freerails.controller;
 
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TransactionAggregator;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.TransactionAggregator;
 
 /**
  * A TransactionAggregator that calculates the networth of a player by totalling
@@ -42,8 +43,8 @@ public class NetWorthCalculator extends TransactionAggregator {
     protected boolean condition(int transactionID) {
         Transaction t = super.w.getTransaction(super.principal, transactionID);
 
-        if (t instanceof AddItemTransaction) {
-            return t.getCategory().equals(Transaction.Category.ISSUE_STOCK);
+        if (t instanceof ItemTransaction) {
+            return t.getCategory().equals(TransactionCategory.ISSUE_STOCK);
             // Since buying something is just converting one asset type to
             // another.
         }

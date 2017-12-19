@@ -20,8 +20,9 @@ package freerails.world.top;
 
 import freerails.util.ImPoint;
 import freerails.util.ListKey;
+import freerails.world.*;
+import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.CargoType.Categories;
 import freerails.world.player.Player;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.City;
@@ -32,7 +33,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import static freerails.util.ListKey.Type.Element;
-import static freerails.world.top.WorldDiffs.LISTID.SHARED_LISTS;
+import static freerails.world.WorldDiffs.LISTID.SHARED_LISTS;
 
 /**
  * JUnit test for WorldDifferences.
@@ -47,9 +48,9 @@ public class WorldDiffsTest extends TestCase {
      */
     public void testSharedLists() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
-        CargoType mailCT = new CargoType(10, "Mail", Categories.Mail);
+        CargoType mailCT = new CargoType(10, "Mail", CargoCategory.Mail);
         CargoType passengersCT = new CargoType(10, "Passengers",
-                Categories.Passengers);
+                CargoCategory.Passengers);
         underlyingWorld.add(SKEY.CARGO_TYPES, mailCT);
 
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
@@ -260,8 +261,7 @@ public class WorldDiffsTest extends TestCase {
         ListKey lk1 = it.next();
         ListKey lk2 = it.next();
         assertFalse(it.hasNext());
-        ListKey expected = new ListKey(Element, SHARED_LISTS, SKEY.CITIES
-                .getKeyID(), 0);
+        ListKey expected = new ListKey(Element, SHARED_LISTS, SKEY.CITIES.getKeyID(), 0);
         assertEquals(expected, lk2);
 
     }

@@ -26,12 +26,13 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.client.view.View;
 import freerails.controller.ModelRoot;
 import freerails.move.*;
-import freerails.world.finances.AddItemTransaction;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.SKEY;
+import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.NonNullElements;
-import freerails.world.top.SKEY;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,7 +66,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
                       Action closeAction) {
         this.removeAll();
 
-        final NonNullElements it = new NonNullElements(SKEY.TERRAIN_TYPES,
+        final NonNullElementWorldIterator it = new NonNullElementWorldIterator(SKEY.TERRAIN_TYPES,
                 modelRoot.getWorld());
 
         while (it.next()) {
@@ -81,8 +82,8 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
                     public void actionPerformed(ActionEvent arg0) {
                         Move m1 = new ChangeTileMove(modelRoot.getWorld(),
                                 cursorLocation, terrainType);
-                        Transaction t = new AddItemTransaction(
-                                Transaction.Category.INDUSTRIES, terrainType,
+                        Transaction t = new ItemTransaction(
+                                TransactionCategory.INDUSTRIES, terrainType,
                                 1, price.changeSign());
                         Move m2 = new AddTransactionMove(modelRoot
                                 .getPrincipal(), t);

@@ -18,37 +18,36 @@
 
 package freerails.move;
 
-import freerails.world.finances.BondTransaction;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.World;
+import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
-import freerails.world.finances.StockTransaction;
+import freerails.world.finances.StockItemTransaction;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.top.ReadOnlyWorld;
-import freerails.world.top.World;
 
 /**
  * Adds a player to the world.
  */
-public class AddPlayerMove implements Move, ServerMove {
+public class AddPlayerMove implements Move {
     private static final long serialVersionUID = 3977580277537322804L;
+    private final Player playerToAdd;
 
-    private final Player player2add;
-
-    private AddPlayerMove(Player p) {
-        player2add = p;
+    private AddPlayerMove(Player player) {
+        playerToAdd = player;
     }
 
     /**
-     * @param w
+     * @param world
      * @param player
      * @return
      */
-    public static AddPlayerMove generateMove(ReadOnlyWorld w, Player player) {
+    public static AddPlayerMove generateMove(ReadOnlyWorld world, Player player) {
         /*
           create a new player with a corresponding Principal
          */
-        Player player2add = new Player(player.getName(), w.getNumberOfPlayers());
+        Player player2add = new Player(player.getName(), world.getNumberOfPlayers());
 
         return new AddPlayerMove(player2add);
     }
@@ -62,64 +61,64 @@ public class AddPlayerMove implements Move, ServerMove {
 
         final AddPlayerMove addPlayerMove = (AddPlayerMove) o;
 
-        return player2add.equals(addPlayerMove.player2add);
+        return playerToAdd.equals(addPlayerMove.playerToAdd);
     }
 
     @Override
     public int hashCode() {
-        return player2add.hashCode();
+        return playerToAdd.hashCode();
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        if (isAlreadyASimilarPlayer(w))
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        if (isAlreadyASimilarPlayer(world))
             return MoveStatus
                     .moveFailed("There is already a player with the same name.");
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        int numPlayers = w.getNumberOfPlayers();
-        Player pp = w.getPlayer(numPlayers - 1);
-        if (pp.equals(player2add)) {
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        int numPlayers = world.getNumberOfPlayers();
+        Player pp = world.getPlayer(numPlayers - 1);
+        if (pp.equals(playerToAdd)) {
             return MoveStatus.MOVE_OK;
         }
         return MoveStatus.moveFailed("The last player is " + pp.getName()
-                + "not " + player2add.getName());
+                + "not " + playerToAdd.getName());
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryDoMove(w, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal p) {
+        MoveStatus ms = tryDoMove(world, p);
         if (!ms.ok)
             return ms;
-        int playerId = w.addPlayer(this.player2add);
+        int playerId = world.addPlayer(this.playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
-        FreerailsPrincipal principal = player2add.getPrincipal();
-        w.addTransaction(principal, BondTransaction.issueBond(5));
+        FreerailsPrincipal principal = playerToAdd.getPrincipal();
+        world.addTransaction(principal, BondItemTransaction.issueBond(5));
         // Issue stock
         Money initialStockPrice = new Money(5);
-        Transaction t = StockTransaction.issueStock(playerId, 100000,
+        Transaction t = StockItemTransaction.issueStock(playerId, 100000,
                 initialStockPrice);
-        w.addTransaction(principal, t);
+        world.addTransaction(principal, t);
         return ms;
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
-        MoveStatus ms = tryUndoMove(w, p);
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        MoveStatus ms = tryUndoMove(world, principal);
         if (!ms.ok)
             return ms;
 
-        w.removeLastTransaction(player2add.getPrincipal());
-        w.removeLastTransaction(player2add.getPrincipal());
-        w.removeLastPlayer();
+        world.removeLastTransaction(playerToAdd.getPrincipal());
+        world.removeLastTransaction(playerToAdd.getPrincipal());
+        world.removeLastPlayer();
 
         return ms;
     }
 
-    private boolean isAlreadyASimilarPlayer(World w) {
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            Player pp = w.getPlayer(i);
-            if (pp.getName().equalsIgnoreCase(this.player2add.getName())) {
+    private boolean isAlreadyASimilarPlayer(World world) {
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            Player pp = world.getPlayer(i);
+            if (pp.getName().equalsIgnoreCase(this.playerToAdd.getName())) {
                 return true;
             }
         }

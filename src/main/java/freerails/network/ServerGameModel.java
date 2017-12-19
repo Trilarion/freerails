@@ -22,8 +22,8 @@
  */
 package freerails.network;
 
-import freerails.util.GameModel;
-import freerails.world.top.World;
+import freerails.world.GameModel;
+import freerails.world.World;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -36,10 +36,10 @@ import java.io.Serializable;
 public interface ServerGameModel extends GameModel, Serializable {
 
     /**
-     * @param w
+     * @param world
      * @param passwords
      */
-    void setWorld(World w, String[] passwords);
+    void setWorld(World world, String[] passwords);
 
     /**
      * @return

@@ -25,23 +25,24 @@ package freerails.server;
 import freerails.server.parser.CargoAndTerrainHandlerImpl;
 import freerails.server.parser.CargoAndTerrainParser;
 import freerails.server.parser.RunTypesParser;
-import freerails.world.top.World;
+import freerails.world.World;
 
 /**
  * This class adds cargo and terrain types defined in an XML file to a World
  * object.
  */
+// TODO difference interface and implementation
 public class TileSetFactoryImpl implements TileSetFactory {
 
     /**
-     * @param w
+     * @param world
      */
-    public void addTerrainTileTypesList(World w) {
+    public void addTerrainTileTypesList(World world) {
         try {
             java.net.URL url = RunTypesParser.class
                     .getResource("/freerails/data/cargo_and_terrain.xml");
 
-            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(w));
+            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(world));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

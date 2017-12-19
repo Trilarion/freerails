@@ -20,11 +20,11 @@ package freerails.move;
 
 import freerails.controller.PathCacheController;
 import freerails.util.ImPoint;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
-import freerails.world.top.*;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
@@ -86,7 +86,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         for (int player = 0; player < w.getNumberOfPlayers(); player++) {
             FreerailsPrincipal principal = w.getPlayer(player).getPrincipal();
-            WorldIterator wi = new NonNullElements(KEY.STATIONS, w, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (wi.next()) {
                 StationModel station = (StationModel) wi.getElement();
@@ -160,8 +160,8 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return trackPieceAfter;
     }
 
-    public MoveStatus tryDoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, this.trackPieceBefore, this.trackPieceAfter);
+    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+        return tryMove(world, this.trackPieceBefore, this.trackPieceAfter);
     }
 
     private MoveStatus tryMove(World w, TrackPiece oldTrackPiece,
@@ -261,18 +261,18 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World w, FreerailsPrincipal p) {
-        return tryMove(w, this.trackPieceAfter, this.trackPieceBefore);
+    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+        return tryMove(world, this.trackPieceAfter, this.trackPieceBefore);
     }
 
-    public MoveStatus doMove(World w, FreerailsPrincipal p) {
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         PathCacheController.clearTrackCache();
-        MoveStatus moveStatus = tryDoMove(w, p);
+        MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (!moveStatus.isOk()) {
             return moveStatus;
         }
-        move(w, this.trackPieceBefore, this.trackPieceAfter);
+        move(world, this.trackPieceBefore, this.trackPieceAfter);
 
         return moveStatus;
     }
@@ -288,14 +288,14 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         w.setTile(location.x, location.y, newTile);
     }
 
-    public MoveStatus undoMove(World w, FreerailsPrincipal p) {
+    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         PathCacheController.clearTrackCache();
-        MoveStatus moveStatus = tryUndoMove(w, p);
+        MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (!moveStatus.isOk()) {
             return moveStatus;
         }
-        move(w, this.trackPieceAfter, this.trackPieceBefore);
+        move(world, this.trackPieceAfter, this.trackPieceBefore);
 
         return moveStatus;
     }

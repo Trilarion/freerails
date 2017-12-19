@@ -18,8 +18,8 @@
 
 package freerails.move;
 
+import freerails.world.KEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
 
 import java.io.Serializable;
 

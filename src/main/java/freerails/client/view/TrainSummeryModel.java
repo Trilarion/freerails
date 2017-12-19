@@ -18,11 +18,11 @@
 package freerails.client.view;
 
 import freerails.client.view.TrainOrdersListModel.TrainOrdersListElement;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.train.TrainOrdersModel;
 
 import java.util.HashMap;

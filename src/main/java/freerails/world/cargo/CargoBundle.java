@@ -32,7 +32,7 @@ public interface CargoBundle {
     /**
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBundle has changed since the
-     * iterator was aquired.
+     * iterator was acquired.
      *
      * @return
      */

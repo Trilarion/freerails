@@ -23,9 +23,9 @@
  */
 package freerails.client.view;
 
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.KEY;
-import freerails.world.top.ReadOnlyWorld;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
