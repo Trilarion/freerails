@@ -25,7 +25,7 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.top.World;
 import junit.framework.TestCase;
@@ -34,7 +34,6 @@ import static freerails.world.common.Step.EAST;
 
 /**
  * A Junit test.
- *
  */
 public class StationBuilderTest extends TestCase {
 
@@ -45,7 +44,6 @@ public class StationBuilderTest extends TestCase {
     StationBuilder stationBuilder;
 
     /**
-     *
      * @throws Exception
      */
     @Override

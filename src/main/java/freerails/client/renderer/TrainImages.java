@@ -31,7 +31,6 @@ import java.io.IOException;
 
 /**
  * Stores side-on and over-head images of a particular wagon or engine type.
- *
  */
 public class TrainImages {
 
@@ -43,7 +42,6 @@ public class TrainImages {
     private final Image[] overheadImages = new Image[8];
 
     /**
-     *
      * @param imageManager
      * @param name
      * @throws IOException
@@ -63,7 +61,6 @@ public class TrainImages {
     }
 
     /**
-     *
      * @param name
      * @param i
      * @return
@@ -76,7 +73,6 @@ public class TrainImages {
     }
 
     /**
-     *
      * @param name
      * @return
      */
@@ -86,7 +82,6 @@ public class TrainImages {
     }
 
     /**
-     *
      * @return
      */
     public Image getSideOnImage() {
@@ -94,7 +89,6 @@ public class TrainImages {
     }
 
     /**
-     *
      * @param direction
      * @return
      */

@@ -18,18 +18,16 @@
 
 package freerails.world.train;
 
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 /**
  * Junit test.
- *
  */
 public class TrainPositionOnMapTest extends TestCase {
 
     /**
-     *
      * @param arg0
      */
     public TrainPositionOnMapTest(String arg0) {

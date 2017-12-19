@@ -23,19 +23,18 @@
  */
 package freerails.world.track;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImHashSet;
+import freerails.util.ImHashSet;
 import freerails.world.terrain.TerrainType;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 
 /**
  * This class encapsulates the rules governing where, that is, on what terrain,
  * track of a given type can be built.
- *
  */
-public final class LegalTrackPlacement implements FreerailsSerializable {
+public final class LegalTrackPlacement implements Serializable {
     private static final long serialVersionUID = 3616445687756437049L;
 
     private final ImHashSet<TerrainType.Category> terrainTypes;// = new
@@ -44,7 +43,6 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     private final PlacementRule placementRule;
 
     /**
-     *
      * @param types
      * @param placementRule
      */
@@ -67,7 +65,6 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param terrainType
      * @return
      */
@@ -90,7 +87,6 @@ public final class LegalTrackPlacement implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public PlacementRule getPlacementRule() {

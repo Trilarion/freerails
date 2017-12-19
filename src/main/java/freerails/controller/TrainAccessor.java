@@ -22,8 +22,12 @@
  */
 package freerails.controller;
 
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.*;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -41,7 +45,6 @@ import static freerails.world.common.Step.TILE_DIAMETER;
 /**
  * Provides convenience methods to access the properties of a train from the
  * world object.
- *
  */
 public class TrainAccessor {
 
@@ -52,7 +55,6 @@ public class TrainAccessor {
     private final int id;
 
     /**
-     *
      * @param w
      * @param p
      * @param id
@@ -65,7 +67,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @param row
      * @param onTrain
      * @param consist
@@ -93,7 +94,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @return
      */
     public int getId() {
@@ -101,7 +101,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @param time
      * @return
      */
@@ -137,7 +136,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @param time
      * @param view
      * @return
@@ -172,7 +170,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @param time
      * @return
      */
@@ -186,7 +183,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @return
      */
     public TrainModel getTrain() {
@@ -194,7 +190,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @return
      */
     public ImmutableSchedule getSchedule() {
@@ -204,7 +199,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @return
      */
     public ImmutableCargoBundle getCargoBundle() {
@@ -222,7 +216,8 @@ public class TrainAccessor {
      * <li>The current train order specifies a consist that matches the train's
      * current consist.</li>
      * </ol>
-     * @return 
+     *
+     * @return
      */
     public boolean keepWaiting() {
         double time = w.currentTime().getTicks();
@@ -265,7 +260,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @param time
      * @return
      */
@@ -287,7 +281,6 @@ public class TrainAccessor {
     }
 
     /**
-     *
      * @param time
      * @return
      */
@@ -299,7 +292,8 @@ public class TrainAccessor {
 
     /**
      * The space available on the train measured in cargo units.
-     * @return 
+     *
+     * @return
      */
     public ImInts spaceAvailable() {
 

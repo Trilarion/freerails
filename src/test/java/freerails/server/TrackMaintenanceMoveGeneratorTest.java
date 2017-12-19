@@ -22,9 +22,9 @@
  */
 package freerails.server;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.top.ItemsTransactionAggregator;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.World;
@@ -35,13 +35,11 @@ import java.util.Arrays;
 
 /**
  * JUnit test for TrackMaintenanceMoveGenerator.
- *
  */
 public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     private World w;
 
     /**
-     *
      * @throws Exception
      */
     @Override

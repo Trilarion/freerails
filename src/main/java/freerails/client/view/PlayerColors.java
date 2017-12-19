@@ -26,7 +26,6 @@ import java.awt.*;
 
 /**
  * Stores a list of colours to use to represent different players.
- *
  */
 public class PlayerColors {
 
@@ -45,7 +44,6 @@ public class PlayerColors {
     // attention!
 
     /**
-     *
      * @param playerNumber
      * @return
      */

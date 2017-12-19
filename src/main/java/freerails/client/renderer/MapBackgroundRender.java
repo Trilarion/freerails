@@ -23,12 +23,12 @@
  */
 package freerails.client.renderer;
 
+import freerails.client.Constants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.client.Constants;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.top.ReadOnlyWorld;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 import org.apache.log4j.Logger;
@@ -39,7 +39,6 @@ import java.awt.*;
  * This class encapsulates the objects that make-up and paint the background of
  * the map view. At present it is composed of two layers: the terrain layer and
  * the track layer.
- *
  */
 final public class MapBackgroundRender implements MapLayerRenderer {
     private static final Logger logger = Logger
@@ -71,7 +70,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     private Rectangle clipRectangle = new Rectangle();
 
     /**
-     *
      * @param w
      * @param rr
      * @param modelRoot
@@ -86,7 +84,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     /**
-     *
      * @param g
      * @param x
      * @param y
@@ -99,7 +96,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     /**
-     *
      * @param g
      * @param visibleRect
      */
@@ -131,7 +127,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -148,15 +143,13 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
     /**
      * This innner class represents a view of the track on the map.
-     *
-         */
+     */
     final public class TrackLayer implements MapLayerRenderer {
         private final ReadOnlyWorld w;
 
         private final RenderersRoot rr;
 
         /**
-         *
          * @param world
          * @param trackPieceViewList
          */
@@ -207,7 +200,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param g
          * @param tileX
          * @param tileY
@@ -227,7 +219,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param x
          * @param y
          */
@@ -235,7 +226,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param g
          * @param visibleRect
          */
@@ -253,15 +243,13 @@ final public class MapBackgroundRender implements MapLayerRenderer {
 
     /**
      * This inner class represents the terrain of the map.
-     *
-         */
+     */
     final public class TerrainLayer implements MapLayerRenderer {
         private final TileRendererList tiles;
 
         private final ReadOnlyWorld w;
 
         /**
-         *
          * @param world
          * @param tiles
          */
@@ -271,7 +259,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param g
          * @param tile
          */
@@ -311,7 +298,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param g
          * @param visibleRect
          */
@@ -321,7 +307,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param g
          * @param tileX
          * @param tileY
@@ -336,7 +321,6 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         *
          * @param x
          * @param y
          */

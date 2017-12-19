@@ -24,8 +24,8 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
 import freerails.client.ClientConfig;
+import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
@@ -38,7 +38,6 @@ import java.util.Map;
 
 /**
  * ListCellRenderer that displays a train order.
- *
  */
 public class TrainOrderJPanel implements View, ListCellRenderer {
 
@@ -70,7 +69,6 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     }
 
     /**
-     *
      * @param mr
      * @param vl
      * @param closeAction

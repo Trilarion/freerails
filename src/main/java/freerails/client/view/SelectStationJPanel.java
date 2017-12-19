@@ -29,10 +29,10 @@ import freerails.controller.ModelRoot;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
 import freerails.world.top.ReadOnlyWorld;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainOrdersModel;
@@ -46,7 +46,6 @@ import java.util.NoSuchElementException;
 /**
  * This JPanel lets the user select a station from a map and add it to a train
  * schedule.
- *
  */
 public class SelectStationJPanel extends javax.swing.JPanel implements View {
 

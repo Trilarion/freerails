@@ -29,7 +29,6 @@ import javax.swing.*;
 /**
  * The first launcher panel, lets you choose 'single player', 'start network
  * game' etc.
- *
  */
 final class LauncherPanel1 extends javax.swing.JPanel {
     static final int MODE_SINGLE_PLAYER = 0;

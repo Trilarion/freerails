@@ -22,14 +22,13 @@
  */
 package freerails.network;
 
-import freerails.controller.MessageToServer;
 import freerails.controller.MessageStatus;
+import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**
  * Tells the server to check the filesystem for changes to the available new
  * maps and saved games.
- *
  */
 public class RefreshListOfGamesMessageToServer implements MessageToServer {
 
@@ -37,7 +36,6 @@ public class RefreshListOfGamesMessageToServer implements MessageToServer {
     private final int id;
 
     /**
-     *
      * @param id
      */
     public RefreshListOfGamesMessageToServer(final int id) {
@@ -46,7 +44,6 @@ public class RefreshListOfGamesMessageToServer implements MessageToServer {
     }
 
     /**
-     *
      * @param server
      * @return
      */
@@ -56,7 +53,6 @@ public class RefreshListOfGamesMessageToServer implements MessageToServer {
     }
 
     /**
-     *
      * @return
      */
     public int getID() {

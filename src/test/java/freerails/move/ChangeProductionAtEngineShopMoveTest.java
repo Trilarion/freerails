@@ -22,7 +22,7 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImList;
+import freerails.util.ImList;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -31,7 +31,6 @@ import freerails.world.top.WagonAndEngineTypesFactory;
 
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
- *
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
@@ -42,7 +41,6 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     private int[] wagons;
 
     /**
-     *
      * @throws Exception
      */
     @Override

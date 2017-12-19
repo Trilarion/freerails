@@ -31,7 +31,6 @@ import java.util.NoSuchElementException;
 
 /**
  * This junit TestCase tests NonNullElements.
- *
  */
 public class NonNullElementsTest extends TestCase {
     World w;
@@ -43,7 +42,6 @@ public class NonNullElementsTest extends TestCase {
     StationModel station3;
 
     /**
-     *
      * @param args
      */
     public static void main(java.lang.String[] args) {
@@ -51,7 +49,6 @@ public class NonNullElementsTest extends TestCase {
     }
 
     /**
-     *
      * @return
      */
     public static Test suite() {

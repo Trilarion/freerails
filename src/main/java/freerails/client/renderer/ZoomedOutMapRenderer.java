@@ -33,10 +33,10 @@
  */
 package freerails.client.renderer;
 
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackPiece;
 
 import java.awt.*;
@@ -45,7 +45,6 @@ import java.awt.image.BufferedImage;
 
 /**
  * This class draws the overview map.
- *
  */
 final public class ZoomedOutMapRenderer implements MapRenderer {
     private final int imageWidth;
@@ -87,7 +86,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param world
      * @param maxSize
      * @return
@@ -113,7 +111,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public float getScale() {
@@ -121,7 +118,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param g
      * @param visibleRect
      */
@@ -222,7 +218,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
      */
 
     /**
-     *
      * @return
      */
 
@@ -231,7 +226,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param g
      * @param tileX
      * @param tileY
@@ -241,7 +235,6 @@ final public class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param x
      * @param y
      */

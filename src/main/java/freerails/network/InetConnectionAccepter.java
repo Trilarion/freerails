@@ -27,7 +27,6 @@ import java.net.Socket;
 /**
  * When this class is run in a thread it accepts new connections to its Server
  * Socket and adds them to the NewGameServer that was passed to its constructor.
- *
  */
 public class InetConnectionAccepter implements Runnable {
     private static final Logger logger = Logger
@@ -37,7 +36,6 @@ public class InetConnectionAccepter implements Runnable {
     private final ServerSocket serverSocket;
 
     /**
-     *
      * @param port
      * @param gameServer
      * @throws IOException
@@ -51,7 +49,6 @@ public class InetConnectionAccepter implements Runnable {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -62,7 +59,6 @@ public class InetConnectionAccepter implements Runnable {
             Thread t = new Thread(accepter);
             t.start();
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -102,7 +98,6 @@ public class InetConnectionAccepter implements Runnable {
     }
 
     /**
-     *
      * @throws IOException
      */
     public synchronized void stop() throws IOException {
@@ -119,7 +114,6 @@ public class InetConnectionAccepter implements Runnable {
     }
 
     /**
-     *
      * @return
      */
     public int getLocalPort() {

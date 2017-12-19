@@ -23,14 +23,13 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
 
 import java.util.Vector;
 
 /**
  * This class represents a train's schedule. That is, which stations that the
  * train should visit and what wagons the engine should pull.
- *
  */
 public class MutableSchedule implements Schedule {
     /**
@@ -53,7 +52,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param s
      */
     public MutableSchedule(ImmutableSchedule s) {
@@ -66,7 +64,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @return
      */
     public ImmutableSchedule toImmutableSchedule() {
@@ -81,7 +78,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param order
      */
     public void setPriorityOrders(TrainOrdersModel order) {
@@ -98,6 +94,7 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Removes the order at the specified position.
+     *
      * @param orderNumber
      */
     public void removeOrder(int orderNumber) {
@@ -136,6 +133,7 @@ public class MutableSchedule implements Schedule {
     /**
      * Inserts an order at the specified position. Note you must call
      * setPriorityOrders() to set the priority orders.
+     *
      * @param orderNumber
      * @param order
      */
@@ -152,7 +150,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param order
      * @return
      */
@@ -168,7 +165,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param orderNumber
      * @param order
      */
@@ -181,7 +177,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -191,14 +186,14 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Returns the number of the order the train is currently carry out.
-     * @return 
+     *
+     * @return
      */
     public int getOrderToGoto() {
         return nextScheduledOrder;
     }
 
     /**
-     *
      * @param i
      */
     public void setOrderToGoto(int i) {
@@ -212,7 +207,8 @@ public class MutableSchedule implements Schedule {
     /**
      * Returns the station number of the next station the train is scheduled to
      * stop at.
-     * @return 
+     *
+     * @return
      */
     public int getStationToGoto() {
         return orders.get(nextScheduledOrder).getStationID();
@@ -220,7 +216,8 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Returns the wagons to add at the next scheduled stop.
-     * @return 
+     *
+     * @return
      */
     public ImInts getWagonsToAdd() {
         return orders.get(nextScheduledOrder).getConsist();
@@ -249,7 +246,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasPriorityOrders() {
@@ -266,7 +262,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param orderNumber
      * @return
      */
@@ -278,7 +273,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param orderNumber
      * @return
      */
@@ -290,7 +284,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param orderNumber
      */
     public void pullUp(int orderNumber) {
@@ -309,7 +302,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param orderNumber
      */
     public void pushDown(int orderNumber) {
@@ -328,7 +320,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @return
      */
     public boolean canAddOrder() {
@@ -339,7 +330,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param orderNumber
      * @return
      */
@@ -348,7 +338,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @return
      */
     public int getNextScheduledOrder() {
@@ -356,7 +345,6 @@ public class MutableSchedule implements Schedule {
     }
 
     /**
-     *
      * @param stationNumber
      */
     public void removeAllStopsAtStation(int stationNumber) {

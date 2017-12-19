@@ -22,13 +22,12 @@
  */
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Stores the speed and status of a train immediately after an instant of time.
- *
  */
-public class SpeedTimeAndStatus implements FreerailsSerializable {
+public class SpeedTimeAndStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -102,7 +101,6 @@ public class SpeedTimeAndStatus implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public TrainActivity getActivity() {

@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * Junit test for PositionOnTrack.
- *
  */
 public class PositionOnTrackTest extends TestCase {
     /**

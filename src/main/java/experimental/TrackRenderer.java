@@ -55,7 +55,6 @@ public class TrackRenderer {
     boolean tunnel = false;
 
     /**
-     *
      * @param line
      * @param shift
      * @return
@@ -76,7 +75,6 @@ public class TrackRenderer {
     }
 
     /**
-     *
      * @param c
      * @param shift1
      * @param shift2
@@ -220,8 +218,9 @@ public class TrackRenderer {
     /**
      * Generates the Stroke used to draw the sleepers for track section
      * represented by the specified curve.
+     *
      * @param curve
-     * @return 
+     * @return
      */
     public BasicStroke getStroke4Curve(CubicCurve2D.Double curve) {
         PathIterator fpt = curve.getPathIterator(new AffineTransform(), 0.01);
@@ -267,7 +266,6 @@ public class TrackRenderer {
 
             icon = imageManager.getImage(relativeFileName);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalStateException(e);
         }
     }

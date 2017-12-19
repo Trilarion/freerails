@@ -24,7 +24,6 @@ import java.util.HashMap;
 
 /**
  * Tests the populateTokens method on HtmlJPanel.
- *
  */
 public class HtmlJPanelTest extends TestCase {
 
@@ -87,7 +86,6 @@ public class HtmlJPanelTest extends TestCase {
         public final String name;
 
         /**
-         *
          * @param name
          */
         public Person(String name) {

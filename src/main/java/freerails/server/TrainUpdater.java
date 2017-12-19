@@ -18,14 +18,14 @@
 
 package freerails.server;
 
+import freerails.client.Constants;
 import freerails.controller.*;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
-import freerails.client.Constants;
+import freerails.util.ImInts;
+import freerails.util.ImList;
+import freerails.util.ImPoint;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImList;
-import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
@@ -43,7 +43,6 @@ import java.util.Vector;
  * trains, and handle stops at stations. Note, the client should not use this
  * class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
- *
  */
 public class TrainUpdater implements ServerAutomaton {
 
@@ -51,7 +50,6 @@ public class TrainUpdater implements ServerAutomaton {
     private transient MoveReceiver moveReceiver;
 
     /**
-     *
      * @param mr
      */
     public TrainUpdater(MoveReceiver mr) {
@@ -106,7 +104,6 @@ public class TrainUpdater implements ServerAutomaton {
     }
 
     /**
-     *
      * @param pos
      * @return
      */
@@ -122,7 +119,6 @@ public class TrainUpdater implements ServerAutomaton {
     }
 
     /**
-     *
      * @param engineTypeId
      * @param wagons
      * @param p

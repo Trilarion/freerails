@@ -32,7 +32,6 @@ import freerails.world.train.TrainModel;
 /**
  * This Move removes a train from the list of trains, and the corresponding
  * CargoBundle and Schedule.
- *
  */
 public class RemoveTrainMove extends CompositeMove {
     private static final long serialVersionUID = 3979265867567544114L;
@@ -42,7 +41,6 @@ public class RemoveTrainMove extends CompositeMove {
     }
 
     /**
-     *
      * @param index
      * @param p
      * @param world

@@ -32,9 +32,9 @@ import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.LocalConnection;
 import freerails.network.MoveReceiver;
+import freerails.util.ImList;
+import freerails.util.ImPoint;
 import freerails.world.common.GameSpeed;
-import freerails.world.common.ImList;
-import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
@@ -53,7 +53,6 @@ import java.util.Random;
 
 /**
  * Creates and wires up the GUI components.
- *
  */
 public class GUIComponentFactoryImpl implements GUIComponentFactory,
         WorldMapListener, WorldListListener {
@@ -99,7 +98,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     private ReadOnlyWorld world;
 
     /**
-     *
      * @param mr
      * @param ar
      */
@@ -179,7 +177,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JMenu createBuildMenu() {
@@ -187,7 +184,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JLabel createCashJLabel() {
@@ -195,7 +191,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @param title
      * @return
      */
@@ -206,7 +201,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JLabel createDateJLabel() {
@@ -214,7 +208,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JMenu createBrokerMenu() {
@@ -233,7 +226,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JMenu createDisplayMenu() {
@@ -327,7 +319,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JMenu createGameMenu() {
@@ -458,7 +449,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JMenu createHelpMenu() {
@@ -510,7 +500,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JScrollPane createMainMap() {
@@ -518,7 +507,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JPanel createOverviewMap() {
@@ -526,7 +514,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JMenu createReportsMenu() {
@@ -568,7 +555,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public JTabbedPane createTrainsJTabPane() {
@@ -576,7 +562,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public BuildTrackController getBuildTrackController() {
@@ -584,7 +569,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @return
      */
     public boolean isSetup() {
@@ -592,7 +576,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -609,7 +592,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -619,7 +601,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -637,7 +618,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     /**
      * Called when a new game is started or a game is loaded.
-     *
+     * <p>
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>

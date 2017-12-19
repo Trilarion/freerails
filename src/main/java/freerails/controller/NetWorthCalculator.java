@@ -18,8 +18,8 @@
 
 package freerails.controller;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.TransactionAggregator;
@@ -27,12 +27,10 @@ import freerails.world.top.TransactionAggregator;
 /**
  * A TransactionAggregator that calculates the networth of a player by totalling
  * the value of their assets.
- *
  */
 public class NetWorthCalculator extends TransactionAggregator {
 
     /**
-     *
      * @param w
      * @param principal
      */

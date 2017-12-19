@@ -33,7 +33,6 @@ import javax.swing.event.DocumentListener;
 /**
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
- *
  */
 public class SelectMapJPanel extends javax.swing.JPanel implements
         LauncherPanel {
@@ -109,7 +108,6 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     }
 
     /**
-     *
      * @return
      */
     public String getNewMapName() {
@@ -117,7 +115,6 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     }
 
     /**
-     *
      * @return
      */
     public String getSaveGameName() {
@@ -130,7 +127,6 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     }
 
     /**
-     *
      * @return
      */
     public boolean validateInput() {

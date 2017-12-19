@@ -18,11 +18,10 @@
 
 package freerails.world.player;
 
-import freerails.world.FreerailsSerializable;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
@@ -33,15 +32,14 @@ import java.security.NoSuchAlgorithmException;
  * still active. The server can then save the list of players and be stopped and
  * restarted again, the clients can then authenticate themselves to the server
  * and continue their sessions where they left off.
- *
+ * <p>
  * XXX the player is only authenticated when the connection is opened, and
  * subsequent exchanges are not authenticated.
- *
+ * <p>
  * TODO implement a more complete authentication system using certificates
  * rather than public keys.
- *
  */
-public class Player implements FreerailsSerializable {
+public class Player implements Serializable {
     /**
      * This Principal can be granted all permissions.
      */
@@ -60,6 +58,7 @@ public class Player implements FreerailsSerializable {
 
     /**
      * Used by the client to generate a player with a particular name.
+     *
      * @param name
      */
     public Player(String name) {
@@ -79,6 +78,7 @@ public class Player implements FreerailsSerializable {
     /**
      * Used by the server to generate a player with a particular name and public
      * key.
+     *
      * @param name
      * @param id
      */
@@ -114,7 +114,6 @@ public class Player implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getName() {
@@ -124,6 +123,7 @@ public class Player implements FreerailsSerializable {
     /**
      * TODO save this player's private data so that they can be re-connected to
      * the server at a later point in time.
+     *
      * @param out
      * @throws java.io.IOException
      */
@@ -133,6 +133,7 @@ public class Player implements FreerailsSerializable {
 
     /**
      * Called by the client to reconstitute the data from a saved game.
+     *
      * @param in
      * @throws java.io.IOException
      */
@@ -145,7 +146,6 @@ public class Player implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {

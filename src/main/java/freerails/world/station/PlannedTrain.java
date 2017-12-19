@@ -22,14 +22,14 @@
  */
 package freerails.world.station;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
+
+import java.io.Serializable;
 
 /**
  * This class represents the blue print for what an engine shop is producing.
- *
  */
-public class PlannedTrain implements FreerailsSerializable {
+public class PlannedTrain implements Serializable {
     private static final long serialVersionUID = 3545515106038592057L;
 
     private final int engineType;
@@ -37,7 +37,6 @@ public class PlannedTrain implements FreerailsSerializable {
     private final ImInts wagonTypes;
 
     /**
-     *
      * @param e
      * @param wagons
      */
@@ -66,7 +65,6 @@ public class PlannedTrain implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getEngineType() {
@@ -74,7 +72,6 @@ public class PlannedTrain implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImInts getWagonTypes() {

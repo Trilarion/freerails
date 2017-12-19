@@ -24,7 +24,6 @@ package freerails.world.common;
  * direction the entity as just been moving - the opposite to the direction it
  * came from), it provides methods to encode and decode its field values to and
  * from a single int.
- *
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
 
@@ -63,7 +62,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param i
      */
     public PositionOnTrack(int i) {
@@ -86,7 +84,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param direction
@@ -97,7 +94,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param direction
@@ -108,7 +104,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param ints
      * @return
      */
@@ -122,7 +117,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param pos
      * @return
      */
@@ -135,7 +129,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -186,7 +179,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getX() {
@@ -194,7 +186,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param x
      */
     public void setX(int x) {
@@ -202,7 +193,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getY() {
@@ -210,7 +200,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param y
      */
     public void setY(int y) {
@@ -228,7 +217,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param v
      */
     public void setCameFrom(Step v) {
@@ -236,7 +224,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param v
      */
     public void setFacing(Step v) {
@@ -244,7 +231,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param i
      */
     public void setValuesFromInt(int i) {
@@ -259,7 +245,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     *
      * @param step
      */
     public void move(Step step) {

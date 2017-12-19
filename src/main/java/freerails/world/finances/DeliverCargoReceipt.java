@@ -16,14 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.accounts;
+package freerails.world.finances;
 
 import freerails.world.cargo.CargoBatch;
-import freerails.world.common.Money;
 
 /**
  * A credit for delivering cargo.
- *
  */
 public class DeliverCargoReceipt extends Receipt {
     private static final long serialVersionUID = 3257009851963160372L;
@@ -37,7 +35,6 @@ public class DeliverCargoReceipt extends Receipt {
     private final int trainId;
 
     /**
-     *
      * @param m
      * @param quantity
      * @param stationId
@@ -54,7 +51,6 @@ public class DeliverCargoReceipt extends Receipt {
     }
 
     /**
-     *
      * @return
      */
     public int getTrainId() {
@@ -62,7 +58,6 @@ public class DeliverCargoReceipt extends Receipt {
     }
 
     /**
-     *
      * @return
      */
     public CargoBatch getCb() {
@@ -70,7 +65,6 @@ public class DeliverCargoReceipt extends Receipt {
     }
 
     /**
-     *
      * @return
      */
     public int getQuantity() {
@@ -78,7 +72,6 @@ public class DeliverCargoReceipt extends Receipt {
     }
 
     /**
-     *
      * @return
      */
     public int getStationId() {

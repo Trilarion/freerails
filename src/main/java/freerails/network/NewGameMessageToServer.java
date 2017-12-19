@@ -18,13 +18,12 @@
 
 package freerails.network;
 
-import freerails.controller.MessageToServer;
 import freerails.controller.MessageStatus;
+import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**
  * Request to start a game on a new map.
- *
  */
 public class NewGameMessageToServer implements MessageToServer {
     private static final long serialVersionUID = 3256723961743422513L;
@@ -34,7 +33,6 @@ public class NewGameMessageToServer implements MessageToServer {
     private final String mapName;
 
     /**
-     *
      * @param id
      * @param s
      */
@@ -46,14 +44,14 @@ public class NewGameMessageToServer implements MessageToServer {
     /**
      * TODO This would be better implemented in a config file, or better still
      * dynamically determined by scanning the directory.
-     * @return 
+     *
+     * @return
      */
     public static String[] getMapNames() {
         return new String[]{"South America", "Small South America"};
     }
 
     /**
-     *
      * @return
      */
     public int getID() {
@@ -61,7 +59,6 @@ public class NewGameMessageToServer implements MessageToServer {
     }
 
     /**
-     *
      * @param server
      * @return
      */

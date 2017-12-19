@@ -18,12 +18,12 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
+
+import java.io.Serializable;
 
 /**
  * JUnit test for EchoGameServer.
- *
  */
 public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
     /**
@@ -42,10 +42,9 @@ public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
             con1.writeToServer(new Money(99));
             con1.flush();
 
-            FreerailsSerializable fs = con2.waitForObject();
+            Serializable fs = con2.waitForObject();
             assertEquals(new Money(99), fs);
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
     }

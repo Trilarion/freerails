@@ -23,7 +23,6 @@ import freerails.world.top.World;
 
 /**
  * Undoes the Move passed to its constructor.
- *
  */
 public class UndoMove implements Move {
     private static final long serialVersionUID = 3977582498051929144L;
@@ -75,7 +74,6 @@ public class UndoMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public Move getUndoneMove() {

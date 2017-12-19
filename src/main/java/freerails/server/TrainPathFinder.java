@@ -21,7 +21,7 @@ package freerails.server;
 import freerails.controller.*;
 import freerails.network.MoveReceiver;
 import freerails.util.FreerailsIntIterator;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
@@ -31,7 +31,6 @@ import freerails.world.top.WorldDiffs;
  * This class provides methods that generate a path to a target as a series of
  * PositionOnTrack objects encoded as ints, it also deals with stops at
  * stations.
- *
  */
 public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
 
@@ -43,7 +42,6 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     private transient MoveReceiver mr = null;
 
     /**
-     *
      * @param tx
      * @param w
      * @param trainNumber
@@ -60,7 +58,6 @@ public class TrainPathFinder implements FreerailsIntIterator, ServerAutomaton {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasNextInt() {

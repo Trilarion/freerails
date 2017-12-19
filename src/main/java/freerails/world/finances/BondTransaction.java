@@ -16,13 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.accounts;
-
-import freerails.world.common.Money;
+package freerails.world.finances;
 
 /**
  * A Transaction that adds or removes a Bond.
- *
  */
 public class BondTransaction extends AddItemTransaction {
 
@@ -43,7 +40,6 @@ public class BondTransaction extends AddItemTransaction {
     }
 
     /**
-     *
      * @param interestRate
      * @return
      */
@@ -53,7 +49,6 @@ public class BondTransaction extends AddItemTransaction {
     }
 
     /**
-     *
      * @param interestRate
      * @return
      */

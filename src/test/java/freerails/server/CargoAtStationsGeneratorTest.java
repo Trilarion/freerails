@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for CargoAtStationsGenerator.
- *
  */
 public class CargoAtStationsGeneratorTest extends TestCase {
 

@@ -25,10 +25,10 @@ package freerails.controller;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.accounts.BondTransaction;
-import freerails.world.accounts.StockTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.BondTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.StockTransaction;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.World;
@@ -37,7 +37,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for FinancialDataGatherer.
- *
  */
 public class FinancialDataGathererTest extends TestCase {
     World w;
@@ -45,7 +44,6 @@ public class FinancialDataGathererTest extends TestCase {
     Player player;
 
     /**
-     *
      * @throws Exception
      */
     @Override

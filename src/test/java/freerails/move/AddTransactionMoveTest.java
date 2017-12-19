@@ -22,16 +22,15 @@
  */
 package freerails.move;
 
-import freerails.world.accounts.Bill;
-import freerails.world.accounts.Receipt;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.Bill;
+import freerails.world.finances.Money;
+import freerails.world.finances.Receipt;
+import freerails.world.finances.Transaction;
 import freerails.world.player.Player;
 import freerails.world.top.MapFixtureFactory;
 
 /**
  * JUnit test.
- *
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
 

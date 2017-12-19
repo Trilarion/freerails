@@ -25,7 +25,7 @@ package freerails.client.view;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
@@ -42,7 +42,6 @@ import java.util.Random;
 
 /**
  * A JPanel that displays the details of the players ordered by net worth.
- *
  */
 public class LeaderBoardJPanel extends JPanel implements View {
 
@@ -109,7 +108,6 @@ public class LeaderBoardJPanel extends JPanel implements View {
     }
 
     /**
-     *
      * @param modelRoot
      * @param vl
      * @param closeAction
@@ -137,8 +135,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
 
     /**
      * Stores the details a player that are shown on the leaderboard.
-     *
-         */
+     */
     static class PlayerDetails implements Comparable<PlayerDetails> {
 
         String name = "player";

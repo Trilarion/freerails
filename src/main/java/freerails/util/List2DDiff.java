@@ -25,7 +25,6 @@ package freerails.util;
 import java.util.SortedMap;
 
 /**
- *
  * @param <T>
  */
 public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
@@ -34,7 +33,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     private final List2D<T> underlyingList;
 
     /**
-     *
      * @param diffs
      * @param list
      * @param listID
@@ -46,7 +44,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int sizeD1() {
@@ -54,7 +51,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @return
      */
@@ -63,7 +59,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -73,7 +68,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @return
      */
@@ -82,7 +76,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int removeLastD1() {
@@ -90,7 +83,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int addD1() {
@@ -98,7 +90,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param element
      * @return
@@ -108,7 +99,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @param element

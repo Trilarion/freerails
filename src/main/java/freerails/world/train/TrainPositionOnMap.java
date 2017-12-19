@@ -18,27 +18,28 @@
 
 package freerails.world.train;
 
+import freerails.util.ImInts;
 import freerails.util.IntArray;
+import freerails.util.IntLine;
 import freerails.util.Pair;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
-import freerails.world.common.IntLine;
+
+import java.io.Serializable;
 
 /**
  * This <b>immutable</b> class represents the position of a train as a String
  * of points. There must be at least two points. The first point is the position
  * of the front of the train; the last point is the position of the end of the
  * train. Any intermediate points are positions of 'kinks' in the track.
- *
+ * <p>
  * Coordinates are expressed in display coordinates relative to the map origin
  * (as opposed to map squares).
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)
- *
+ * <p>
  * <table width="100%" border="0">
  * <tr>
  * <td>if</td>
@@ -83,9 +84,8 @@ import freerails.world.common.IntLine;
  * <td>{@code {(10, 10), (20,20), (30,30), (40,40) }}</td>
  * </tr>
  * </table>
- *
  */
-public class TrainPositionOnMap implements FreerailsSerializable {
+public class TrainPositionOnMap implements Serializable {
 
     /**
      *
@@ -107,7 +107,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     private int frame = 0;
 
     /**
-     *
      * @param xs
      * @param ys
      */
@@ -134,7 +133,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param xpoints
      * @param ypoints
      * @return
@@ -145,7 +143,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param path
      * @return
      */
@@ -156,7 +153,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param path
      * @param speed
      * @param acceleration
@@ -197,7 +193,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param path
      * @param speed
      * @param acceleration
@@ -238,7 +233,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -254,7 +248,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -270,7 +263,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -287,7 +279,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -298,7 +289,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isCrashSite() {
@@ -306,7 +296,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param isCrash
      */
     public void setCrashSite(boolean isCrash) {
@@ -314,7 +303,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getFrameCt() {
@@ -398,7 +386,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public double calulateDistance() {
@@ -418,7 +405,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getLength() {
@@ -426,7 +412,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImInts getXPoints() {
@@ -434,7 +419,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImInts getYPoints() {
@@ -442,7 +426,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param position
      * @return
      */
@@ -451,7 +434,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param position
      * @return
      */
@@ -460,7 +442,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPathIterator path() {
@@ -468,7 +449,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPathIterator reversePath() {
@@ -485,7 +465,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public TrainPositionOnMap reverse() {
@@ -503,7 +482,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -544,7 +522,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -553,7 +530,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param a
      * @return
      */
@@ -564,7 +540,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -573,7 +548,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -606,7 +580,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -632,7 +605,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -660,7 +632,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param b
      * @return
      */
@@ -704,7 +675,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public double getAcceleration() {
@@ -712,7 +682,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public SpeedTimeAndStatus.TrainActivity getActivity() {
@@ -720,7 +689,6 @@ public class TrainPositionOnMap implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public double getSpeed() {

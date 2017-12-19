@@ -30,13 +30,11 @@ import java.util.ArrayList;
 
 /**
  * A list of TileRenderers stored in an array and created from an ArrayList.
- *
  */
 final public class TileRendererListImpl implements TileRendererList {
     private final TileRenderer[] tiles;
 
     /**
-     *
      * @param t
      */
     public TileRendererListImpl(ArrayList<TileRenderer> t) {
@@ -48,7 +46,6 @@ final public class TileRendererListImpl implements TileRendererList {
     }
 
     /**
-     *
      * @param i
      * @return
      */

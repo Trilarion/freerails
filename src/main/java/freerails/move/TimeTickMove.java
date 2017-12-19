@@ -25,7 +25,6 @@ import freerails.world.top.World;
 
 /**
  * Changes the time item on the world object.
- *
  */
 public class TimeTickMove implements Move {
     private static final long serialVersionUID = 3257290240212153393L;
@@ -35,7 +34,6 @@ public class TimeTickMove implements Move {
     private final GameTime newTime;
 
     /**
-     *
      * @param oldTime
      * @param newTime
      */
@@ -45,7 +43,6 @@ public class TimeTickMove implements Move {
     }
 
     /**
-     *
      * @param w
      * @return
      */

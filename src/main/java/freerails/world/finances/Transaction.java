@@ -16,19 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.accounts;
+package freerails.world.finances;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.Money;
+import java.io.Serializable;
 
 /**
  * A Transaction is a change in a player's bank balance and/or assets.
- *
  */
-public interface Transaction extends FreerailsSerializable {
+public interface Transaction extends Serializable {
 
     /**
-     *
      * @return
      */
     Money deltaAssets();
@@ -36,12 +33,11 @@ public interface Transaction extends FreerailsSerializable {
     /**
      * Positive means credit.
      *
-     * @return 
+     * @return
      */
     Money deltaCash();
 
     /**
-     *
      * @return
      */
     Category getCategory();

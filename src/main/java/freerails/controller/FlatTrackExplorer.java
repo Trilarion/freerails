@@ -18,11 +18,11 @@
 
 package freerails.controller;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
@@ -34,7 +34,6 @@ import java.util.NoSuchElementException;
 /**
  * GraphExplorer that explorers track, the ints it returns are encoded
  * PositionOnTrack objects.
- *
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
     private static final long serialVersionUID = 3834311713465185081L;
@@ -46,7 +45,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     private boolean beforeFirst = true;
 
     /**
-     *
      * @param world
      * @param p
      * @throws NoTrackException
@@ -101,7 +99,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     *
      * @return
      */
     public ReadOnlyWorld getWorld() {
@@ -113,7 +110,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     *
      * @param i
      */
     public void setPosition(int i) {
@@ -176,7 +172,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasNextEdge() {
@@ -223,7 +218,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     *
      * @return
      */
     public int getH() {

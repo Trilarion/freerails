@@ -23,7 +23,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Defines methods to handle parsing the track types XML.
- *
  */
 public interface Track_TilesHandler {
     /**
@@ -131,6 +130,7 @@ public interface Track_TilesHandler {
 
     /**
      * A container element end event handling method.
+     *
      * @throws org.xml.sax.SAXException
      */
     void end_Tiles() throws SAXException;

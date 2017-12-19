@@ -18,9 +18,9 @@
 
 package freerails.world.top;
 
-import freerails.world.accounts.Transaction;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
@@ -28,7 +28,6 @@ import freerails.world.player.FreerailsPrincipal;
  * Subclasses that aggregate a monetary sum should only override the method
  * {@code condition(int)}; subclasses that aggregate a non-monetary sum
  * should override all 4 protected methods.
- *
  */
 public abstract class TransactionAggregator {
 
@@ -56,7 +55,6 @@ public abstract class TransactionAggregator {
     private GameTime[] timeValues = DEFAULT_INTERVAL;
 
     /**
-     *
      * @param w
      * @param principal
      */
@@ -66,7 +64,6 @@ public abstract class TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public GameTime[] getTimes() {
@@ -75,7 +72,6 @@ public abstract class TransactionAggregator {
     }
 
     /**
-     *
      * @param times
      */
     public void setTimes(GameTime[] times) {
@@ -100,7 +96,8 @@ public abstract class TransactionAggregator {
 
     /**
      * Returns the sum of the appropriate transactions. Do not override.
-     * @return 
+     *
+     * @return
      */
     final public Money calculateValue() {
         Money[] values = calculateValues();
@@ -111,7 +108,8 @@ public abstract class TransactionAggregator {
     /**
      * Returns the sum of the appropriate transactions up to (inclusive) each of
      * the specified times. Do not override.
-     * @return 
+     *
+     * @return
      */
     final public Money[] calculateValues() {
         setTotalsArrayLength(timeValues.length - 1);
@@ -164,6 +162,7 @@ public abstract class TransactionAggregator {
      * Creates a new array with the specified length to store monetary totals
      * and sets the running total to zero. Subclasses that aggregate other
      * quantities should override this method and create the appropriate arrays.
+     *
      * @param length
      */
     protected void setTotalsArrayLength(int length) {
@@ -172,7 +171,6 @@ public abstract class TransactionAggregator {
     }
 
     /**
-     *
      * @param transactionID
      */
     protected void incrementRunningTotal(int transactionID) {
@@ -183,6 +181,7 @@ public abstract class TransactionAggregator {
     /**
      * Stores the current running total in the totals array at the specified
      * position.
+     *
      * @param timeIndex
      */
     protected void storeRunningTotal(int timeIndex) {
@@ -191,8 +190,9 @@ public abstract class TransactionAggregator {
 
     /**
      * Returns true if we should count the specified transactions.
+     *
      * @param transactionID
-     * @return 
+     * @return
      */
     abstract protected boolean condition(int transactionID);
 }

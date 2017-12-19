@@ -22,13 +22,12 @@
  */
 package freerails.controller;
 
-import freerails.world.accounts.EconomicClimate;
-import freerails.world.common.Money;
+import freerails.world.finances.EconomicClimate;
+import freerails.world.finances.Money;
 import freerails.world.top.ReadOnlyWorld;
 
 /**
  * Not yet implemented
- *
  */
 public class FinancialMoveProducer {
 

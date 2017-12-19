@@ -22,14 +22,14 @@
  */
 package freerails.move;
 
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.World;
 
+import java.io.Serializable;
+
 /**
  * All moves that add an item to a list should extend this class.
- *
  */
 public class AddItemToListMove implements ListMove {
     private static final long serialVersionUID = 3256721779916747824L;
@@ -40,16 +40,15 @@ public class AddItemToListMove implements ListMove {
 
     private final FreerailsPrincipal principal;
 
-    private final FreerailsSerializable item;
+    private final Serializable item;
 
     /**
-     *
      * @param key
      * @param i
      * @param item
      * @param p
      */
-    public AddItemToListMove(KEY key, int i, FreerailsSerializable item,
+    public AddItemToListMove(KEY key, int i, Serializable item,
                              FreerailsPrincipal p) {
         this.listKey = key;
         this.index = i;
@@ -140,11 +139,11 @@ public class AddItemToListMove implements ListMove {
         return false;
     }
 
-    public FreerailsSerializable getBefore() {
+    public Serializable getBefore() {
         return null;
     }
 
-    public FreerailsSerializable getAfter() {
+    public Serializable getAfter() {
         return item;
     }
 
@@ -160,7 +159,6 @@ public class AddItemToListMove implements ListMove {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {

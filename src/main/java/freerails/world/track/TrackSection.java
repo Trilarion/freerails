@@ -18,22 +18,21 @@
 
 package freerails.world.track;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
+
+import java.io.Serializable;
 
 /**
  * Represents the track connecting two adjacent tiles.
- *
  */
-public class TrackSection implements FreerailsSerializable {
+public class TrackSection implements Serializable {
 
     private static final long serialVersionUID = -3776624056097990938L;
     private final Step step;
     private final ImPoint tile;
 
     /**
-     *
      * @param step
      * @param tile
      */
@@ -82,7 +81,6 @@ public class TrackSection implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImPoint tileA() {
@@ -90,7 +88,6 @@ public class TrackSection implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImPoint tileB() {

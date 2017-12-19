@@ -19,14 +19,14 @@
 package freerails.move;
 
 import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
+
+import java.io.Serializable;
 
 /**
  * Records the success or failure of an attempt to execute a move.
- *
  */
 @Immutable
-final public class MoveStatus implements FreerailsSerializable {
+final public class MoveStatus implements Serializable {
 
     /**
      *
@@ -59,7 +59,6 @@ final public class MoveStatus implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param reason
      * @return
      */
@@ -100,7 +99,6 @@ final public class MoveStatus implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isOk() {

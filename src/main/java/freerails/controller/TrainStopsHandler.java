@@ -23,7 +23,11 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.world.common.*;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
+import freerails.world.common.GameTime;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.StationModel;
@@ -56,7 +60,6 @@ public class TrainStopsHandler implements Serializable {
     private GameTime timeLoadingFinished = new GameTime(0);
 
     /**
-     *
      * @param id
      * @param p
      * @param w
@@ -109,7 +112,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -132,7 +134,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public Move getMoves() {
@@ -166,7 +167,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public int getTrainLength() {
@@ -175,7 +175,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isTrainFull() {
@@ -185,7 +184,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isTrainMoving() {
@@ -198,7 +196,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isWaiting4FullLoad() {
@@ -235,7 +232,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean refreshWaitingForFullLoad() {

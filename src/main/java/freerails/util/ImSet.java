@@ -20,11 +20,9 @@
  * Created on 04-Jul-2005
  *
  */
-package freerails.world.common;
+package freerails.util;
 
-import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,15 +32,14 @@ import java.util.Set;
  * @param <E>
  */
 @Immutable
-public final class ImSet<E extends FreerailsSerializable> implements
-        FreerailsSerializable {
+public final class ImSet<E extends Serializable> implements
+        Serializable {
 
     private static final long serialVersionUID = -8075637749158447780L;
 
     private final HashSet<E> hashSet;
 
     /**
-     *
      * @param data
      */
     public ImSet(Set<E> data) {
@@ -67,7 +64,6 @@ public final class ImSet<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @param element
      * @return
      */

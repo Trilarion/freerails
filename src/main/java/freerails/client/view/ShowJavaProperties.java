@@ -27,7 +27,6 @@ import java.util.Properties;
 
 /**
  * This class returns the Java System Properties as an HTML table.
- *
  */
 public class ShowJavaProperties {
 
@@ -40,7 +39,6 @@ public class ShowJavaProperties {
             .getLogger(ShowJavaProperties.class.getName());
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -48,7 +46,6 @@ public class ShowJavaProperties {
     }
 
     /**
-     *
      * @return
      */
     public static String getPropertiesHtmlString() {

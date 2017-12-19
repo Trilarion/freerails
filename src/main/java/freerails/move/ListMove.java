@@ -18,14 +18,14 @@
 
 package freerails.move;
 
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
+
+import java.io.Serializable;
 
 /**
  * This interface provides information about changes to the lists in the World
  * database.
- *
  */
 public interface ListMove extends Move {
     /**
@@ -36,12 +36,12 @@ public interface ListMove extends Move {
     /**
      * @return the old item or null if not any.
      */
-    FreerailsSerializable getBefore();
+    Serializable getBefore();
 
     /**
      * @return the new item or null if not any.
      */
-    FreerailsSerializable getAfter();
+    Serializable getAfter();
 
     /**
      * @return the index of the item which changed.
@@ -49,7 +49,6 @@ public interface ListMove extends Move {
     int getIndex();
 
     /**
-     *
      * @return
      */
     FreerailsPrincipal getPrincipal();

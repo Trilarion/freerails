@@ -33,9 +33,8 @@ import java.util.zip.ZipFile;
 /**
  * ClassPath finds and records the fully qualified name of every Class on the
  * classpath via the system property "java.class.path".
- *
+ * <p>
  * Based on original prototype by duncanIdaho for javagaming.org.
- *
  */
 public class ClassPath {
 
@@ -61,7 +60,6 @@ public class ClassPath {
     }
 
     /**
-     *
      * @return
      */
     public List getAllClassNames() {
@@ -96,8 +94,9 @@ public class ClassPath {
 
     /**
      * Clones the supplied list, then goes through it processing every element.
+     *
      * @param pathElement
-     * @return 
+     * @return
      */
     protected LinkedList<String> processPendingElement(String pathElement) {
         LinkedList<String> discoveredClasses = new LinkedList<>();
@@ -167,7 +166,6 @@ public class ClassPath {
             pathElementsThatHaveAlreadyBeenProcessed.add(elementName);
 
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return discoveredClasses;
@@ -175,7 +173,7 @@ public class ClassPath {
 
     /**
      * @param classFile a class file listed on the classpath itself.
-     * @return 
+     * @return
      */
     protected String convertToClass(File classFile) {
         return getClassNameFrom(classFile.getName());
@@ -199,10 +197,10 @@ public class ClassPath {
     /**
      * Finds all path elements in the supplied JAR and returns them as a list
      *
-     * @param man the manifest of the given jar
-     * @param jar the jar associated with the given manifest.
+     * @param man     the manifest of the given jar
+     * @param jar     the jar associated with the given manifest.
      * @param jarFile
-     * @return 
+     * @return
      */
     protected LinkedList<String> findPathElementsInJar(Manifest man,
                                                        JarFile jar, File jarFile) {
@@ -240,7 +238,7 @@ public class ClassPath {
      * Adds all class names found in the zip mentioned
      *
      * @param zipFile zip file
-     * @return 
+     * @return
      */
     protected LinkedList<String> getZipContents(File zipFile) {
         LinkedList<String> result = new LinkedList<>();
@@ -267,7 +265,7 @@ public class ClassPath {
      * This method takes a top level classpath dir i.e. 'classes' or bin
      *
      * @param dir directory
-     * @return 
+     * @return
      */
     protected LinkedList<String> getDirectoryContents(File dir) {
         LinkedList<String> result = new LinkedList<>();
@@ -297,7 +295,7 @@ public class ClassPath {
      *
      * @param pathTo the preceding path to this directory
      * @param dir    a directory to search for class files
-     * @return 
+     * @return
      */
     protected LinkedList<String> getDirectoryContents(String pathTo, File dir) {
         LinkedList<String> result = new LinkedList<>();

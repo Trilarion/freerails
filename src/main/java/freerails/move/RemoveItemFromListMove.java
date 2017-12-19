@@ -22,19 +22,19 @@
  */
 package freerails.move;
 
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.World;
 
+import java.io.Serializable;
+
 /**
  * All moves that remove an item from a list should extend this class.
- *
  */
 public class RemoveItemFromListMove implements ListMove {
     private static final long serialVersionUID = 3906091169698953521L;
 
-    private final FreerailsSerializable item;
+    private final Serializable item;
 
     private final KEY listKey;
 
@@ -42,7 +42,7 @@ public class RemoveItemFromListMove implements ListMove {
 
     private final FreerailsPrincipal principal;
 
-    RemoveItemFromListMove(KEY k, int i, FreerailsSerializable item,
+    RemoveItemFromListMove(KEY k, int i, Serializable item,
                            FreerailsPrincipal p) {
         this.item = item;
         this.listKey = k;
@@ -75,7 +75,7 @@ public class RemoveItemFromListMove implements ListMove {
                     + w.size(principal, listKey) + " but index =" + index);
         }
 
-        FreerailsSerializable item2remove = w.get(principal, listKey, index);
+        Serializable item2remove = w.get(principal, listKey, index);
 
         if (null == item2remove) {
             return MoveStatus.moveFailed("The item at position " + index
@@ -146,16 +146,15 @@ public class RemoveItemFromListMove implements ListMove {
         return false;
     }
 
-    public FreerailsSerializable getBefore() {
+    public Serializable getBefore() {
         return item;
     }
 
-    public FreerailsSerializable getAfter() {
+    public Serializable getAfter() {
         return null;
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {

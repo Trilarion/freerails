@@ -28,7 +28,6 @@ import java.util.HashSet;
 /**
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
  * object creation and garbage collection. 26-Nov-2002
- *
  */
 public class SimpleAStarPathFinder implements Serializable,
         IncrementalPathFinder {
@@ -61,7 +60,6 @@ public class SimpleAStarPathFinder implements Serializable,
     private long searchStartTime = 0;
 
     /**
-     *
      * @return
      */
     public int getStatus() {
@@ -69,7 +67,6 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     /**
-     *
      * @return
      */
     public IntArray retrievePath() {
@@ -77,7 +74,6 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     /**
-     *
      * @param currentPosition
      * @param targets
      * @param tempExplorer
@@ -94,7 +90,6 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     /**
-     *
      * @param currentPosition
      * @param targets
      * @param e
@@ -116,7 +111,6 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     /**
-     *
      * @param maxDuration
      * @throws PathNotFoundException
      */
@@ -242,7 +236,6 @@ public class SimpleAStarPathFinder implements Serializable,
     }
 
     /**
-     *
      * @param currentPosition
      * @param targets
      * @param e

@@ -36,7 +36,6 @@ import java.util.HashSet;
  * outside the bounds of their parent window, they have a different top level
  * component to the parent window, so are not painted when paintCompoments is
  * called from the game loop.
- *
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
     /**
@@ -60,7 +59,6 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     }
 
     /**
-     *
      * @param f
      */
     public static synchronized void addJFrame(JFrame f) {
@@ -68,7 +66,6 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     }
 
     /**
-     *
      * @return
      */
     public static long getNumRepaintRequests() {
@@ -76,7 +73,6 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     }
 
     /**
-     *
      * @return
      */
     public static long getNumDirtyRequests() {

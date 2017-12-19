@@ -28,7 +28,6 @@ package freerails.util;
 public class Lists {
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -45,7 +44,6 @@ public class Lists {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -66,7 +64,6 @@ public class Lists {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return

@@ -31,7 +31,6 @@ import java.io.ObjectOutputStream;
 
 /**
  * A ServerGameModel that has a world object but no automation.
- *
  */
 public class SimpleServerGameModel implements ServerGameModel {
     private static final long serialVersionUID = 3546074757457131826L;
@@ -41,7 +40,6 @@ public class SimpleServerGameModel implements ServerGameModel {
     private String[] passwords;
 
     /**
-     *
      * @param w
      * @param passwords
      */
@@ -51,7 +49,6 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     *
      * @return
      */
     public World getWorld() {
@@ -59,14 +56,12 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     *
      * @param moveExecuter
      */
     public void init(MoveReceiver moveExecuter) {
     }
 
     /**
-     *
      * @param objectOut
      * @throws IOException
      */
@@ -80,7 +75,6 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -89,7 +83,6 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -98,7 +91,6 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -107,7 +99,6 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     *
      * @return
      */
     public String[] getPasswords() {

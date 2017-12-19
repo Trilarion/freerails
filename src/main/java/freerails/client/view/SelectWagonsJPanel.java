@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 /**
  * This JPanel lets the user add wagons to a train.
- *
  */
 public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
@@ -268,7 +267,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     *
      * @param mr
      * @param vl
      * @param closeAction
@@ -284,7 +282,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     *
      * @return
      */
     public int[] getWagons() {
@@ -297,7 +294,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     *
      * @param engineType
      */
     public void setEngineType(int engineType) {

@@ -39,14 +39,12 @@ public interface ServerControlInterface {
     String VERSION = "CVS";
 
     /**
-     *
      * @param saveGameName
      * @throws IOException
      */
     void loadgame(String saveGameName) throws IOException;
 
     /**
-     *
      * @param saveGameName
      */
     void savegame(String saveGameName);
@@ -62,7 +60,6 @@ public interface ServerControlInterface {
     void refreshSavedGames();
 
     /**
-     *
      * @param mapName
      */
     void newGame(String mapName);

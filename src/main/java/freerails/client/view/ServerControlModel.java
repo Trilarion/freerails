@@ -36,7 +36,6 @@ import java.util.Enumeration;
 
 /**
  * Exposes the ServerControlInterface to client UI implementations.
- *
  */
 public class ServerControlModel implements ModelRootListener {
 
@@ -55,7 +54,6 @@ public class ServerControlModel implements ModelRootListener {
     private DialogueBoxController dbc;
 
     /**
-     *
      * @param mr
      */
     public ServerControlModel(ModelRootImpl mr) {
@@ -129,7 +127,6 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     *
      * @return
      */
     public int getTargetTicksPerSecond() {
@@ -138,7 +135,6 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     *
      * @param p
      * @param oldValue
      * @param newValue
@@ -156,7 +152,6 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     *
      * @param modelRoot
      * @param dbc
      */

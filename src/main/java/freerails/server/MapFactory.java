@@ -23,10 +23,10 @@
 package freerails.server;
 
 import freerails.util.FreerailsProgressMonitor;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.SKEY;
 import freerails.world.top.WorldImpl;
-import freerails.world.track.FreerailsTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +37,8 @@ import java.util.Vector;
 
 /**
  * This class has a static method that converts an image file into a map.
- *
- *
+ * <p>
+ * <p>
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.
  */
@@ -53,7 +53,6 @@ public class MapFactory {
     private static WorldImpl world;
 
     /**
-     *
      * @param map_url
      * @param w
      * @param pm

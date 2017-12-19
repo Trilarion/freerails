@@ -24,7 +24,6 @@ import java.util.PriorityQueue;
 
 /**
  * An OpenList for SimpleAStarPathFinder.
- *
  */
 class OpenList implements Serializable {
 

@@ -22,17 +22,16 @@
  */
 package freerails.controller;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
-import freerails.world.track.FreerailsTile;
 import org.apache.log4j.Logger;
 
 /**
  * Finds a path along existing track. Used for upgrading or removing track
  * between two points on the track.
- *
  */
 public class PathOnTrackFinder implements IncrementalPathFinder {
 
@@ -44,7 +43,6 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     private ImPoint startPoint;
 
     /**
-     *
      * @param world
      */
     public PathOnTrackFinder(ReadOnlyWorld world) {
@@ -59,7 +57,6 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @return
      */
     public int getStatus() {
@@ -67,7 +64,6 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @return
      */
     public Step[] pathAsVectors() {
@@ -85,7 +81,6 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @return
      */
     public int[] pathAsInts() {
@@ -93,7 +88,6 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @param maxDuration
      * @throws PathNotFoundException
      */
@@ -102,7 +96,6 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @param from
      * @param target
      * @throws PathNotFoundException

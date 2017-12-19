@@ -25,12 +25,10 @@ package freerails.client.common;
 
 /**
  * Used to generate file names for track and terrain images.
- *
  */
 public class BinaryNumberFormatter {
 
     /**
-     *
      * @param i
      * @param bits
      * @return
@@ -55,7 +53,6 @@ public class BinaryNumberFormatter {
     }
 
     /**
-     *
      * @param i
      * @param bits
      * @return

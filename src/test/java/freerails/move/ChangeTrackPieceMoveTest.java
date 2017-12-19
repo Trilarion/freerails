@@ -24,19 +24,21 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.player.Player;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.*;
-import freerails.world.track.*;
+import freerails.world.track.TrackConfiguration;
+import freerails.world.track.TrackPiece;
+import freerails.world.track.TrackPieceImpl;
+import freerails.world.track.TrackRule;
 
 /**
  * JUnit test.
- *
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
     /**
-     *
      * @param testName
      */
     public ChangeTrackPieceMoveTest(String testName) {
@@ -44,7 +46,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(java.lang.String[] args) {
@@ -52,7 +53,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
      * @return
      */
     public static junit.framework.Test suite() {
@@ -162,7 +162,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
      * @param oldTrackPiece
      * @param newTrackPiece
      */

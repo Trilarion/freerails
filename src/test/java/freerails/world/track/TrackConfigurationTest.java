@@ -34,12 +34,10 @@ import java.util.HashSet;
 
 /**
  * JUnit test.
- *
  */
 public class TrackConfigurationTest extends TestCase {
 
     /**
-     *
      * @param testName
      */
     public TrackConfigurationTest(java.lang.String testName) {
@@ -47,7 +45,6 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(java.lang.String[] args) {
@@ -55,7 +52,6 @@ public class TrackConfigurationTest extends TestCase {
     }
 
     /**
-     *
      * @return
      */
     public static Test suite() {

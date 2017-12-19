@@ -31,7 +31,6 @@ import java.io.IOException;
 
 /**
  * This class renders a track piece.
- *
  */
 final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     private final Image[] trackPieceIcons = new Image[512];
@@ -39,7 +38,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     private final String typeName;
 
     /**
-     *
      * @param w
      * @param imageManager
      * @param typeNumber
@@ -59,7 +57,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     *
      * @param i
      * @param trackTypeName
      * @return
@@ -75,7 +72,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     *
      * @param trackTemplate
      * @param g
      * @param x
@@ -97,7 +93,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     *
      * @param trackTemplate
      * @return
      */

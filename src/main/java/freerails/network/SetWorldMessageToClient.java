@@ -19,15 +19,14 @@
 package freerails.network;
 
 import freerails.controller.ClientControlInterface;
-import freerails.controller.MessageToClient;
 import freerails.controller.MessageStatus;
+import freerails.controller.MessageToClient;
 import freerails.util.Immutable;
 import freerails.world.top.World;
 
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a
  * game is loaded, or (iii) the client connects to a game in progress.
- *
  */
 @Immutable
 public class SetWorldMessageToClient implements MessageToClient {
@@ -39,6 +38,7 @@ public class SetWorldMessageToClient implements MessageToClient {
 
     /**
      * Note, makes a defensive copy of the world object passed to it.
+     *
      * @param id
      * @param world
      */

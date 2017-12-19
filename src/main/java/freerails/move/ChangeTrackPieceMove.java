@@ -19,18 +19,21 @@
 package freerails.move;
 
 import freerails.controller.PathCacheController;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.*;
-import freerails.world.track.*;
+import freerails.world.track.NullTrackType;
+import freerails.world.track.TrackConfiguration;
+import freerails.world.track.TrackPiece;
+import freerails.world.track.TrackRule;
 
 import java.awt.*;
 
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
- *
  */
 final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private static final long serialVersionUID = 4120849958418591801L;
@@ -42,7 +45,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private final ImPoint location;
 
     /**
-     *
      * @param before
      * @param after
      * @param p
@@ -54,7 +56,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     /**
-     *
      * @param world
      * @return
      */
@@ -68,10 +69,11 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * This method may be called under 3 possible conditions: (1) when a station
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * staton is getting removed.
+     *
      * @param w
      * @param location
      * @param trackPiece
-     * @return 
+     * @return
      */
     protected static MoveStatus check4overlap(World w, ImPoint location,
                                               TrackPiece trackPiece) {
@@ -127,7 +129,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public ImPoint getLocation() {
@@ -146,7 +147,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public TrackPiece getOldTrackPiece() {
@@ -154,7 +154,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public TrackPiece getNewTrackPiece() {
@@ -344,7 +343,6 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public Rectangle getUpdatedTiles() {

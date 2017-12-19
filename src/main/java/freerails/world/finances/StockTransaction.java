@@ -20,14 +20,11 @@
  * Created on 04-Oct-2004
  *
  */
-package freerails.world.accounts;
-
-import freerails.world.common.Money;
+package freerails.world.finances;
 
 /**
  * A transaction that occurs when a new company is founded or when a company
  * issues additional shares.
- *
  */
 public class StockTransaction extends AddItemTransaction {
 
@@ -50,7 +47,6 @@ public class StockTransaction extends AddItemTransaction {
     }
 
     /**
-     *
      * @param playerId
      * @param quantity
      * @param pricePerShare
@@ -67,7 +63,6 @@ public class StockTransaction extends AddItemTransaction {
     }
 
     /**
-     *
      * @param playerId
      * @param quantity
      * @param stockPrice
@@ -82,7 +77,6 @@ public class StockTransaction extends AddItemTransaction {
     }
 
     /**
-     *
      * @param quantity
      * @param pricePerShare
      * @return

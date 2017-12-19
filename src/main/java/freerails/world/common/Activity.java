@@ -22,23 +22,20 @@
  */
 package freerails.world.common;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
- *
  * @param <E>
  */
-public interface Activity<E extends FreerailsSerializable> extends
-        FreerailsSerializable {
+public interface Activity<E extends Serializable> extends
+        Serializable {
 
     /**
-     *
      * @return
      */
     double duration();
 
     /**
-     *
      * @param dt
      * @return
      */

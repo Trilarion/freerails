@@ -33,7 +33,6 @@ import java.awt.event.ActionListener;
 
 /**
  * A JPanel that displays a newspaper headline.
- *
  */
 public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     private static final long serialVersionUID = 3258410638366946868L;
@@ -127,7 +126,6 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     *
      * @param s
      */
     public void setHeadline(String s) {
@@ -135,7 +133,6 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     *
      * @param mr
      * @param vl
      * @param closeAction

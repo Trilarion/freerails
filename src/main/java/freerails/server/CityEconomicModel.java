@@ -19,11 +19,11 @@
 package freerails.server;
 
 import freerails.world.terrain.City;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -31,7 +31,6 @@ import java.util.Random;
 
 /**
  * This class is lets the server analyse and alter cities.
- *
  */
 class CityEconomicModel {
     final ArrayList<Tile> urbanTiles = new ArrayList<>();

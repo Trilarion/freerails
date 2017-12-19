@@ -18,15 +18,12 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-
 import java.io.*;
 import java.net.Socket;
 
 /**
  * Provides methods send objects over the Internet, and connect and disconnect
  * gracefully.
- *
  */
 class InetConnection {
     private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
@@ -75,20 +72,19 @@ class InetConnection {
                 throw new IllegalStateException(s);
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             throw new IOException(e.getMessage());
         }
     }
 
-    synchronized void send(FreerailsSerializable object) throws IOException {
+    synchronized void send(Serializable object) throws IOException {
         objectOutputStream.writeObject(object);
         flush();
     }
 
-    FreerailsSerializable receive() throws IOException, ClassNotFoundException {
+    Serializable receive() throws IOException, ClassNotFoundException {
         Object object = objectInputStream.readObject();
 
-        return (FreerailsSerializable) object;
+        return (Serializable) object;
     }
 
     synchronized boolean isOpen() {

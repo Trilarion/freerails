@@ -22,18 +22,21 @@
  */
 package freerails.world.train;
 
+import freerails.util.ImPoint;
 import freerails.util.Pair;
-import freerails.world.common.*;
+import freerails.world.common.Activity;
+import freerails.world.common.FreerailsPathIterator;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 
 import java.util.ArrayList;
 
 /**
- *
  * This immutable class provides methods that return a train's position and
  * speed at any time within an interval. An instance of this class will be
  * stored on the world object for each train rather the train's position. The
  * reasons for this are as follows.
- *
+ * <p>
  * <ol type="i">
  * <li> It decouples the number of game updates per second and number of frames
  * per second shown by the client. If the train's position were stored on the
@@ -42,10 +45,9 @@ import java.util.ArrayList;
  * displaying 50 FPS, the train's motion would still appear jerky since its
  * position would only change 10 times per second. </li>
  * <li>
- *
+ * <p>
  * It makes supporting low bandwidth networks easier since it allows the server
  * to send updates less frequently. </li>
- *
  *
  * @see freerails.world.train.PathOnTiles
  * @see freerails.world.train.CompositeSpeedAgainstTime
@@ -120,7 +122,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @param path
      * @param trainLength
      * @param duration
@@ -162,7 +163,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public double duration() {
@@ -200,7 +200,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public PositionOnTrack getFinalPosition() {
@@ -208,7 +207,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public double getSpeedAtEnd() {
@@ -292,7 +290,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public int getTrainLength() {
@@ -309,7 +306,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public PathOnTiles getPath() {
@@ -317,7 +313,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public SpeedTimeAndStatus.TrainActivity getActivity() {
@@ -325,7 +320,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     /**
-     *
      * @return
      */
     public double getInitialPosition() {

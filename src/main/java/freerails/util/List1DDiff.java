@@ -25,7 +25,6 @@ package freerails.util;
 import java.util.SortedMap;
 
 /**
- *
  * @param <T>
  */
 public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
@@ -35,7 +34,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     private final List1D<T> underlyingList;
 
     /**
-     *
      * @param diffs
      * @param list
      * @param listID
@@ -47,7 +45,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -61,7 +58,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int size() {
@@ -76,7 +72,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param element
      * @return
      */
@@ -85,7 +80,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     }
 
     /**
-     *
      * @return
      */
     public T removeLast() {
@@ -93,7 +87,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param i
      * @param element
      */

@@ -41,7 +41,6 @@ public class List2DDiffTest extends TestCase {
     SortedMap<ListKey, Object> map;
 
     /**
-     *
      * @throws Exception
      */
     @Override

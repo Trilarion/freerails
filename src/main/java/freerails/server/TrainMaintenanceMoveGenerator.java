@@ -25,9 +25,9 @@ package freerails.server;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
-import freerails.world.accounts.Bill;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.Bill;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
@@ -36,13 +36,11 @@ import freerails.world.top.World;
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of trains, then calculates the cost of maintenance.
- *
  */
 public class TrainMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
 
     /**
-     *
      * @param mr
      */
     public TrainMaintenanceMoveGenerator(MoveReceiver mr) {
@@ -61,7 +59,6 @@ public class TrainMaintenanceMoveGenerator {
     }
 
     /**
-     *
      * @param w
      */
     public void update(World w) {

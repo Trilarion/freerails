@@ -25,18 +25,15 @@ import java.awt.*;
 
 /**
  * Draws an icon to represent a tile.
- *
  */
 public interface TileRenderer {
 
     /**
-     *
      * @return
      */
     Image getDefaultIcon();
 
     /**
-     *
      * @param g
      * @param renderX
      * @param renderY
@@ -49,6 +46,7 @@ public interface TileRenderer {
 
     /**
      * Adds the images this TileRenderer uses to the specified ImageManager.
+     *
      * @param imageManager
      */
     void dumpImages(ImageManager imageManager);

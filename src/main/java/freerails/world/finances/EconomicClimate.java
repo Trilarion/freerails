@@ -20,15 +20,14 @@
  * Created on 04-Oct-2004
  *
  */
-package freerails.world.accounts;
+package freerails.world.finances;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Represents the state of the economy.
- *
  */
-public class EconomicClimate implements FreerailsSerializable {
+public class EconomicClimate implements Serializable {
     private static final long serialVersionUID = 3834025840475321136L;
 
     private static int i = 2;
@@ -70,7 +69,6 @@ public class EconomicClimate implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getBaseInterestRate() {

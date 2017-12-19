@@ -19,21 +19,20 @@
 package freerails.controller;
 
 import freerails.controller.StockPriceCalculator.StockPrice;
-import freerails.world.accounts.Transaction;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.*;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
-import static freerails.world.accounts.Transaction.Category.*;
+import static freerails.world.finances.Transaction.Category.*;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so
  * don't change their names.
- *
  */
 public class BalanceSheetGenerator {
 
@@ -57,7 +56,6 @@ public class BalanceSheetGenerator {
     GameTime to;
 
     /**
-     *
      * @param w
      * @param principal
      */
@@ -83,7 +81,6 @@ public class BalanceSheetGenerator {
     }
 
     /**
-     *
      * @param category
      * @param w
      * @param principal
@@ -174,7 +171,6 @@ public class BalanceSheetGenerator {
         public Money profit;
 
         /**
-         *
          * @param w
          * @param principal
          * @param totalTimeInteval

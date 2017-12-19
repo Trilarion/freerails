@@ -20,26 +20,22 @@
  * Created on 07-Jul-2005
  *
  */
-package freerails.world.common;
+package freerails.util;
 
-import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * An immutable list of Strings.
- *
  */
 @Immutable
-public class ImStringList implements FreerailsSerializable {
+public class ImStringList implements Serializable {
 
     private static final long serialVersionUID = 5211786598838212188L;
 
     private final String[] strings;
 
     /**
-     *
      * @param strings
      */
     public ImStringList(String... strings) {
@@ -47,7 +43,6 @@ public class ImStringList implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -56,7 +51,6 @@ public class ImStringList implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int size() {

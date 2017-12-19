@@ -22,12 +22,10 @@ import freerails.world.top.ReadOnlyWorld;
 
 /**
  * A list of TileRenderers.
- *
  */
 public interface TileRendererList {
 
     /**
-     *
      * @param i
      * @return
      */
@@ -36,8 +34,9 @@ public interface TileRendererList {
     /**
      * Checks whether this tile view list has tile views for all the terrain
      * types in the specifed list.
+     *
      * @param world
-     * @return 
+     * @return
      */
     boolean validate(ReadOnlyWorld world);
 }

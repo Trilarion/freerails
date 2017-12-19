@@ -36,7 +36,6 @@ import javax.swing.*;
 /**
  * AbstractListModel used by {@link TrainScheduleJPanel} to display the orders
  * making up a train schedule.
- *
  */
 public class TrainOrdersListModel extends AbstractListModel {
 
@@ -60,7 +59,6 @@ public class TrainOrdersListModel extends AbstractListModel {
     private final FreerailsPrincipal principal;
 
     /**
-     *
      * @param w
      * @param trainNumber
      * @param p
@@ -154,7 +152,6 @@ public class TrainOrdersListModel extends AbstractListModel {
         public final int trainNumber;
 
         /**
-         *
          * @param isPriorityOrder
          * @param gotoStatus
          * @param order

@@ -16,11 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.common;
+package freerails.util;
 
-import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,15 +30,14 @@ import java.util.List;
  * @param <E>
  */
 @Immutable
-public final class ImList<E extends FreerailsSerializable> implements
-        FreerailsSerializable {
+public final class ImList<E extends Serializable> implements
+        Serializable {
 
     private static final long serialVersionUID = 2669191159273299313L;
 
     private final E[] elementData;
 
     /**
-     *
      * @param items
      */
     @SuppressWarnings("unchecked")
@@ -53,12 +50,11 @@ public final class ImList<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @param list
      */
     @SuppressWarnings("unchecked")
     public ImList(List<E> list) {
-        elementData = list.toArray((E[]) new FreerailsSerializable[list.size()]);
+        elementData = list.toArray((E[]) new Serializable[list.size()]);
 //        elementData = (E[]) new FreerailsSerializable[list.size()];
 //        for (int i = 0; i < list.size(); i++) {
 //            elementData[i] = list.get(i);
@@ -83,7 +79,6 @@ public final class ImList<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @throws NullPointerException
      */
     public void checkForNulls() throws NullPointerException {
@@ -94,7 +89,6 @@ public final class ImList<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @return
      */
     public int size() {
@@ -102,7 +96,6 @@ public final class ImList<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @param i
      * @return
      */

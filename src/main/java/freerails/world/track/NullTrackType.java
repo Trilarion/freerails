@@ -23,8 +23,8 @@
  */
 package freerails.world.track;
 
-import freerails.world.common.Money;
 import freerails.world.common.Step;
+import freerails.world.finances.Money;
 import freerails.world.terrain.TerrainType;
 
 import java.io.ObjectStreamException;
@@ -32,8 +32,7 @@ import java.util.Iterator;
 
 /**
  * The type of a Null track piece. TODO maybe it would be simplier to get rid of
- * this and jsut check against null!
- *
+ * this and just check against null!
  */
 final public class NullTrackType implements TrackRule {
 
@@ -48,7 +47,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public static NullTrackType getInstance() {
@@ -60,7 +58,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @param TerrainType
      * @return
      */
@@ -69,7 +66,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @param directionComingFrom
      * @return
      */
@@ -79,7 +75,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public int getMaximumConsecutivePieces() {
@@ -87,7 +82,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public String getTypeName() {
@@ -95,7 +89,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @param trackTemplateToTest
      * @return
      */
@@ -104,7 +97,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @param config
      * @return
      */
@@ -113,7 +105,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
@@ -121,7 +112,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @param config
      * @param owner
      * @return
@@ -131,7 +121,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public boolean isStation() {
@@ -149,7 +138,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public int getStationRadius() {
@@ -157,7 +145,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Money getPrice() {
@@ -165,7 +152,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Money getMaintenanceCost() {
@@ -173,7 +159,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public TrackCategories getCategory() {
@@ -186,7 +171,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public boolean isDouble() {
@@ -195,7 +179,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Money getFixedCost() {

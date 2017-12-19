@@ -21,11 +21,11 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 import junit.framework.TestCase;
@@ -50,7 +50,6 @@ public class TrackBuildingTest extends TestCase {
     BuildTrackStrategy bts;
 
     /**
-     *
      * @throws Exception
      */
     @Override

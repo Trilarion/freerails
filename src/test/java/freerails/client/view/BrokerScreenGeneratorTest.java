@@ -28,9 +28,9 @@ import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.accounts.StockTransaction;
 import freerails.world.common.GameCalendar;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
+import freerails.world.finances.StockTransaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.ITEM;
@@ -49,7 +49,6 @@ public class BrokerScreenGeneratorTest extends TestCase {
     private World world;
 
     /**
-     *
      * @throws Exception
      */
     @Override

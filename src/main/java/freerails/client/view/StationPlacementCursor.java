@@ -43,7 +43,6 @@ import java.beans.PropertyChangeListener;
  * When the StationBuildAction is no longer enabled, the owner reverts to the
  * regular cursor type. TODO scroll the area when the mouse hovers at the edge
  * of the map.
- *
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 
@@ -104,7 +103,6 @@ public class StationPlacementCursor extends MouseInputAdapter {
     }
 
     /**
-     *
      * @param actionRoot
      * @param srr
      * @param mapView

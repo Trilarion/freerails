@@ -24,18 +24,15 @@ package freerails.controller;
 
 /**
  * Defines methods and constants that GUI classes can use to access shared data.
- *
  */
 public interface ModelRoot extends MoveExecutor {
 
     /**
-     *
      * @param c
      */
     void sendCommand(MessageToServer c);
 
     /**
-     *
      * @param property
      * @param newValue
      */
@@ -43,14 +40,14 @@ public interface ModelRoot extends MoveExecutor {
 
     /**
      * Tests whether the specified property has the specified value.
+     *
      * @param property
      * @param value
-     * @return 
+     * @return
      */
     boolean is(Property property, Object value);
 
     /**
-     *
      * @param property
      * @return
      */

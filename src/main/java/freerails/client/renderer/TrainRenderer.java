@@ -18,8 +18,8 @@
 
 package freerails.client.renderer;
 
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.IntLine;
 import freerails.world.common.Step;
 import freerails.world.train.PathWalker;
 import freerails.world.train.PathWalkerImpl;
@@ -30,13 +30,11 @@ import java.awt.*;
 
 /**
  * This class draws a train from an overhead view.
- *
  */
 public class TrainRenderer {
     private final RenderersRoot rr;
 
     /**
-     *
      * @param trainImages
      */
     public TrainRenderer(RenderersRoot trainImages) {
@@ -44,7 +42,6 @@ public class TrainRenderer {
     }
 
     /**
-     *
      * @param g
      * @param train
      * @param s
@@ -82,7 +79,6 @@ public class TrainRenderer {
     // map
 
     /**
-     *
      * @param g
      * @param s
      */

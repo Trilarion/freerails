@@ -20,26 +20,22 @@
  * Created on 04-Jul-2005
  *
  */
-package freerails.world.common;
+package freerails.util;
 
-import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * An immutable list of ints.
- *
  */
 @Immutable
-public class ImInts implements FreerailsSerializable {
+public class ImInts implements Serializable {
 
     private static final long serialVersionUID = -7171552118713000676L;
 
     private final int ints[];
 
     /**
-     *
      * @param i
      */
     public ImInts(int... i) {
@@ -47,7 +43,6 @@ public class ImInts implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -60,7 +55,6 @@ public class ImInts implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int size() {
@@ -85,7 +79,6 @@ public class ImInts implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -94,7 +87,6 @@ public class ImInts implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImInts removeLast() {
@@ -104,7 +96,6 @@ public class ImInts implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param extra
      * @return
      */
@@ -130,7 +121,8 @@ public class ImInts implements FreerailsSerializable {
 
     /**
      * Returns the sum of the ints stored in the list.
-     * @return 
+     *
+     * @return
      */
     public int sum() {
         int sum = 0;

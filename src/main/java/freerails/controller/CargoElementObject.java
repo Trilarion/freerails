@@ -20,14 +20,12 @@ package freerails.controller;
 
 /**
  * Small data object to store the rate of supply of a cargo.
- *
  */
 public class CargoElementObject {
     private final int type;
     private int rate;
 
     /**
-     *
      * @param rate
      * @param type
      */
@@ -37,7 +35,6 @@ public class CargoElementObject {
     }
 
     /**
-     *
      * @return
      */
     public int getRate() {
@@ -45,7 +42,6 @@ public class CargoElementObject {
     }
 
     /**
-     *
      * @param rate
      */
     public void setRate(int rate) {
@@ -53,7 +49,6 @@ public class CargoElementObject {
     }
 
     /**
-     *
      * @return
      */
     public int getType() {

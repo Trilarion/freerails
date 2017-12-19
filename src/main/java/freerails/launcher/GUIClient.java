@@ -53,7 +53,6 @@ import java.io.Serializable;
 
 /**
  * A swing freerails client.
- *
  */
 public class GUIClient extends FreerailsClient implements
         FreerailsProgressMonitor {
@@ -67,7 +66,6 @@ public class GUIClient extends FreerailsClient implements
     private RenderersRoot vl;
 
     /**
-     *
      * @param name
      * @param fm
      * @param screenMode
@@ -95,7 +93,6 @@ public class GUIClient extends FreerailsClient implements
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -104,7 +101,6 @@ public class GUIClient extends FreerailsClient implements
                     ScreenHandler.WINDOWED_MODE, null);
             client.start();
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -139,7 +135,6 @@ public class GUIClient extends FreerailsClient implements
     }
 
     /**
-     *
      * @return
      */
     public ScreenHandler getScreenHandler() {
@@ -155,7 +150,6 @@ public class GUIClient extends FreerailsClient implements
                     monitor.finished();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
             }
 
@@ -179,7 +173,6 @@ public class GUIClient extends FreerailsClient implements
     }
 
     /**
-     *
      * @param max
      */
     public void nextStep(int max) {
@@ -187,7 +180,6 @@ public class GUIClient extends FreerailsClient implements
     }
 
     /**
-     *
      * @param s
      */
     public void setMessage(String s) {
@@ -195,7 +187,6 @@ public class GUIClient extends FreerailsClient implements
     }
 
     /**
-     *
      * @param i
      */
     public void setValue(int i) {

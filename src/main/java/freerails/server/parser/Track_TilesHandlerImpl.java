@@ -76,14 +76,12 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     int maxConsequ;
 
     /**
-     *
      * @param trackXmlUrl
      */
     public Track_TilesHandlerImpl(java.net.URL trackXmlUrl) {
         try {
             Track_TilesParser.parse(trackXmlUrl, this);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -222,7 +220,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     /**
-     *
      * @param w
      */
     public void addTrackRules(World w) {
@@ -232,7 +229,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     /**
-     *
      * @return
      */
     public List<TrackRule> getRuleList() {

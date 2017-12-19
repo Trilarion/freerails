@@ -32,7 +32,6 @@ import javax.swing.*;
 /**
  * JPanel that didplays confirmation of exiting, used when the exit menu item is
  * selected or x is pressed.
- *
  */
 public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 

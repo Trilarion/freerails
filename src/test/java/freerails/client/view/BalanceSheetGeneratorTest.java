@@ -26,10 +26,10 @@ import freerails.controller.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.accounts.BondTransaction;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.BondTransaction;
+import freerails.world.finances.Money;
 import freerails.world.player.Player;
 import freerails.world.top.ITEM;
 import freerails.world.top.World;
@@ -38,7 +38,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for BalanceSheetGenerator.
- *
  */
 public class BalanceSheetGeneratorTest extends TestCase {
 
@@ -74,7 +73,6 @@ public class BalanceSheetGeneratorTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

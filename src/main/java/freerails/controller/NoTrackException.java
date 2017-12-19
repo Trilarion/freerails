@@ -20,7 +20,6 @@ package freerails.controller;
 
 /**
  * throw this exception if a track is expected, but none was laid on the tile
- *
  */
 public class NoTrackException extends RuntimeException {
 

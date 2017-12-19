@@ -18,12 +18,11 @@
 
 package freerails.world.terrain;
 
-import freerails.world.common.ImList;
-import freerails.world.common.Money;
+import freerails.util.ImList;
+import freerails.world.finances.Money;
 
 /**
  * Represents a type of terrain.
- *
  */
 final public class TileTypeImpl implements TerrainType {
     private static final long serialVersionUID = 4049919380945253945L;
@@ -42,7 +41,6 @@ final public class TileTypeImpl implements TerrainType {
     private final Money tileBuildCost;
 
     /**
-     *
      * @param rgb
      * @param terrainCategory
      * @param terrainType
@@ -74,6 +72,7 @@ final public class TileTypeImpl implements TerrainType {
     /**
      * Lets unit tests create terrain types without bothering with all the
      * details.
+     *
      * @param terrainCategory
      * @param terrainType
      */
@@ -131,7 +130,6 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /**
-     *
      * @return
      */
     public Money getBuildCost() {
@@ -139,7 +137,6 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /**
-     *
      * @return
      */
     public Category getCategory() {
@@ -147,7 +144,6 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /**
-     *
      * @return
      */
     public ImList<Consumption> getConsumption() {
@@ -155,7 +151,6 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /**
-     *
      * @return
      */
     public ImList<Conversion> getConversion() {
@@ -164,14 +159,14 @@ final public class TileTypeImpl implements TerrainType {
 
     /**
      * Returns the name, replacing any underscores with spaces.
-     * @return 
+     *
+     * @return
      */
     public String getDisplayName() {
         return terrainType.replace('_', ' ');
     }
 
     /**
-     *
      * @return
      */
     public ImList<Production> getProduction() {
@@ -186,7 +181,6 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /**
-     *
      * @return
      */
     public int getRightOfWay() {
@@ -194,7 +188,6 @@ final public class TileTypeImpl implements TerrainType {
     }
 
     /**
-     *
      * @return
      */
     public String getTerrainTypeName() {

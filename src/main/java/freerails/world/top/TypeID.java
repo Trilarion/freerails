@@ -25,7 +25,6 @@ package freerails.world.top;
 
 /**
  * This class stores an SKEY and an item index.
- *
  */
 public class TypeID {
     private final int id;
@@ -33,7 +32,6 @@ public class TypeID {
     private final SKEY key;
 
     /**
-     *
      * @param id
      * @param key
      */
@@ -43,7 +41,6 @@ public class TypeID {
     }
 
     /**
-     *
      * @return
      */
     public SKEY getKey() {
@@ -51,7 +48,6 @@ public class TypeID {
     }
 
     /**
-     *
      * @return
      */
     public int getID() {

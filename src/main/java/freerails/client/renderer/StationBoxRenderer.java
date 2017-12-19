@@ -18,9 +18,9 @@
 
 package freerails.client.renderer;
 
+import freerails.client.Constants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.client.Constants;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -33,7 +33,6 @@ import java.io.IOException;
 
 /**
  * Renders box showing the cargo waiting at a station.
- *
  */
 public class StationBoxRenderer implements Painter {
 
@@ -50,7 +49,6 @@ public class StationBoxRenderer implements Painter {
     private final Image[] cargoImages;
 
     /**
-     *
      * @param world
      * @param vl
      * @param modelRoot
@@ -82,7 +80,6 @@ public class StationBoxRenderer implements Painter {
     }
 
     /**
-     *
      * @param g
      * @param newVisibleRectectangle
      */

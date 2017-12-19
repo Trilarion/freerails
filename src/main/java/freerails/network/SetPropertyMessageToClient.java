@@ -20,14 +20,14 @@ package freerails.network;
 
 import freerails.controller.ClientControlInterface;
 import freerails.controller.ClientControlInterface.ClientProperty;
-import freerails.controller.MessageToClient;
 import freerails.controller.MessageStatus;
-import freerails.world.FreerailsSerializable;
+import freerails.controller.MessageToClient;
+
+import java.io.Serializable;
 
 /**
  * A MessageToClient that lets the server set a property (for example, the list
  * of saved games available) on a client.
- *
  */
 public class SetPropertyMessageToClient implements MessageToClient {
     private static final long serialVersionUID = 3544392521746034740L;
@@ -36,16 +36,15 @@ public class SetPropertyMessageToClient implements MessageToClient {
 
     private final ClientProperty key;
 
-    private final FreerailsSerializable value;
+    private final Serializable value;
 
     /**
-     *
      * @param id
      * @param key
      * @param value
      */
     public SetPropertyMessageToClient(int id, ClientProperty key,
-                                      FreerailsSerializable value) {
+                                      Serializable value) {
         if (null == key || null == value)
             throw new NullPointerException();
         this.id = id;

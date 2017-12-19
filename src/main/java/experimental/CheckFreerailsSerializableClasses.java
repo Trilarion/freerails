@@ -24,9 +24,9 @@ package experimental;
 
 import freerails.util.Immutable;
 import freerails.util.InstanceControlled;
-import freerails.world.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -42,11 +42,9 @@ public class CheckFreerailsSerializableClasses {
 
     static final HashSet<Class> mutableTypes = new HashSet<>();
 
-    static final Logger logger = Logger
-            .getLogger(CheckFreerailsSerializableClasses.class.getName());
+    static final Logger logger = Logger.getLogger(CheckFreerailsSerializableClasses.class.getName());
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -95,7 +93,7 @@ public class CheckFreerailsSerializableClasses {
             // private!");
             // okSoFar = false;
             // }
-            if (!FreerailsSerializable.class.isAssignableFrom(type)
+            if (!Serializable.class.isAssignableFrom(type)
                     && !assertImmutable) {
                 if (!immutableTypes.contains(type) && !type.isEnum()
                         && !type.isAnnotationPresent(Immutable.class)) {
@@ -114,7 +112,7 @@ public class CheckFreerailsSerializableClasses {
     @SuppressWarnings("unchecked")
     static void testAllClasses() {
         ClassLocater locater = new ClassLocater();
-        Class[] classes = locater.getSubclassesOf(FreerailsSerializable.class);
+        Class[] classes = locater.getSubclassesOf(Serializable.class);
         int classesWithProblems = 0;
         for (Class clazz : classes) {
             if (clazz.isInterface()) {
@@ -170,10 +168,8 @@ public class CheckFreerailsSerializableClasses {
             }
             return okSoFar;
         } catch (SecurityException | NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return false;
         }
-        return false;
-    }
 
+    }
 }

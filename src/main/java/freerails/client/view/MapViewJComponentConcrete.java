@@ -23,13 +23,13 @@
  */
 package freerails.client.view;
 
+import freerails.client.Constants;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
-import freerails.client.Constants;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -41,7 +41,6 @@ import java.util.StringTokenizer;
 /**
  * Displays the map, the cursor, and user messages (which are stored on the
  * ModelRoot under the keys QUICK_MESSAGE and PERMANENT_MESSAGE).
- *
  */
 final public class MapViewJComponentConcrete extends MapViewJComponent
         implements ModelRootListener {
@@ -65,9 +64,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     /**
      * Affects scroll direction and scroll speed relative to the cursor.
      * Examples:
-     *
+     * <p>
      * 1 := grab map, move 1:1
-     *
+     * <p>
      * -2 := invert mouse, scroll twice as fast
      */
     private final int LINEAR_ACCEL = -1;
@@ -136,7 +135,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     *
      * @param mv
      * @param mr
      * @param rr
@@ -155,7 +153,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     *
      * @param mv
      */
     public void setup(MapRenderer mv) {
@@ -187,7 +184,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     *
      * @param g
      * @param tileX
      * @param tileY
@@ -197,7 +193,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -213,7 +208,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     *
      * @param g
      * @param visibleRect
      */
@@ -222,7 +216,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     *
      * @return
      */
     public FreerailsCursor getMapCursor() {
@@ -247,14 +240,14 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     /**
      * Checks what triggered the specfied PropertyChangeEvent and reacts as
      * follows.
-     *
+     * <p>
      * (1) If it was ModelRoot.CURSOR_POSITION, scrolls the map if necessary.
-     *
-     *
+     * <p>
+     * <p>
      * (2) If it was ModelRoot.QUICK_MESSAGE, display or hide the message as
      * appropriate.
-     *
-     *
+     * <p>
+     * <p>
      * (3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as
      * appropriate.
      *
@@ -295,7 +288,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     /**
      * Implements a MouseListener for FreerailsCursor-movement (left mouse
      * button) and a MouseMotionListener for map-scrolling (right mouse button).
-     *
+     * <p>
      * Possible enhancements: setCursor(blankCursor),
      * g.draw(cursorimage,lastMouseLocation.x,lastMouseLocation.y,null)
      */

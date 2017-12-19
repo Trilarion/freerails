@@ -18,15 +18,14 @@
 
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents a wagon type, for example 'goods wagon'. It
  * encapsulates the properties of a wagon that are common to all wagons of the
  * same type.
- *
  */
-public class WagonType implements FreerailsSerializable {
+public class WagonType implements Serializable {
 
     /**
      *
@@ -73,7 +72,6 @@ public class WagonType implements FreerailsSerializable {
     private final String typeName;
 
     /**
-     *
      * @param name
      * @param category
      */
@@ -92,7 +90,6 @@ public class WagonType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCategory() {
@@ -100,7 +97,6 @@ public class WagonType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getName() {

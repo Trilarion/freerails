@@ -37,7 +37,6 @@ public class ReportBugTextGenerator {
     private static final String TRACKER_URL = "http://sourceforge.net/tracker/?func=add&group_id=209321&atid=1009246";
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -54,7 +53,6 @@ public class ReportBugTextGenerator {
     }
 
     /**
-     *
      * @return
      */
     public static String genText() {
@@ -81,7 +79,6 @@ public class ReportBugTextGenerator {
     }
 
     /**
-     *
      * @param e
      * @return
      */
@@ -164,7 +161,6 @@ public class ReportBugTextGenerator {
     }
 
     /**
-     *
      * @param e
      */
     @SuppressWarnings("deprecation")

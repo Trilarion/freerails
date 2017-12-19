@@ -28,7 +28,6 @@ import java.awt.image.BufferStrategy;
 
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.
- *
  */
 final public class ScreenHandler {
 
@@ -70,7 +69,6 @@ final public class ScreenHandler {
     private boolean isMinimised = false;
 
     /**
-     *
      * @param f
      * @param mode
      * @param displayMode
@@ -82,7 +80,6 @@ final public class ScreenHandler {
     }
 
     /**
-     *
      * @param f
      * @param mode
      */
@@ -250,7 +247,6 @@ final public class ScreenHandler {
     }
 
     /**
-     *
      * @return
      */
     public synchronized Graphics getDrawGraphics() {
@@ -267,7 +263,6 @@ final public class ScreenHandler {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isMinimised() {
@@ -275,7 +270,6 @@ final public class ScreenHandler {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isInUse() {
@@ -283,7 +277,6 @@ final public class ScreenHandler {
     }
 
     /**
-     *
      * @return
      */
     public boolean contentsRestored() {

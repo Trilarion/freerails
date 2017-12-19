@@ -31,7 +31,6 @@ import java.awt.event.KeyEvent;
 
 /**
  * Provides access to Actions change the game state and the GUI.
- *
  */
 public class ActionRoot {
 
@@ -42,7 +41,6 @@ public class ActionRoot {
     private TrackMoveProducer trackMoveProducer;
 
     /**
-     *
      * @param mr
      */
     public ActionRoot(ModelRootImpl mr) {
@@ -50,7 +48,6 @@ public class ActionRoot {
     }
 
     /**
-     *
      * @return
      */
     public Action getBuildTrainDialogAction() {
@@ -58,7 +55,6 @@ public class ActionRoot {
     }
 
     /**
-     *
      * @return
      */
     public DialogueBoxController getDialogueBoxController() {
@@ -66,7 +62,6 @@ public class ActionRoot {
     }
 
     /**
-     *
      * @param dialogueBoxController
      */
     public void setDialogueBoxController(
@@ -75,7 +70,6 @@ public class ActionRoot {
     }
 
     /**
-     *
      * @return
      */
     public ServerControlModel getServerControls() {
@@ -83,7 +77,6 @@ public class ActionRoot {
     }
 
     /**
-     *
      * @return
      */
     public StationBuildModel getStationBuildModel() {
@@ -91,7 +84,6 @@ public class ActionRoot {
     }
 
     /**
-     *
      * @return
      */
     public TrackMoveProducer getTrackMoveProducer() {
@@ -100,6 +92,7 @@ public class ActionRoot {
 
     /**
      * Call this method when a new game is started or a game is loaded.
+     *
      * @param modelRoot
      * @param vl
      */

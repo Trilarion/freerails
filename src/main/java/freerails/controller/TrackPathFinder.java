@@ -22,14 +22,14 @@
  */
 package freerails.controller;
 
+import freerails.util.ImPoint;
 import freerails.util.IntArray;
-import freerails.world.common.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
@@ -40,7 +40,6 @@ import java.util.List;
 
 /**
  * Finds the best route to build track between two points.
- *
  */
 public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class
@@ -53,7 +52,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private ImPoint startPoint;
 
     /**
-     *
      * @param world
      * @param principal
      */
@@ -140,7 +138,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @param start
      * @param targetPoint
      * @param bts
@@ -158,7 +155,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @return
      */
     public int getStatus() {
@@ -166,7 +162,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @return
      */
     public List<ImPoint> pathAsPoints() {
@@ -176,7 +171,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @return
      */
     public Step[] pathAsVectors() {
@@ -200,7 +194,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @param maxDuration
      * @throws PathNotFoundException
      */
@@ -209,7 +202,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     /**
-     *
      * @param startPoint
      * @param targetPoint
      * @param bts

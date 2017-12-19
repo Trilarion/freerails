@@ -25,7 +25,6 @@ package freerails.util;
 import java.util.ArrayList;
 
 /**
- *
  * @param <T>
  */
 public class List2DImpl<T> implements List2D<T> {
@@ -34,7 +33,6 @@ public class List2DImpl<T> implements List2D<T> {
     private final ArrayList<ArrayList<T>> elementData = new ArrayList<>();
 
     /**
-     *
      * @param d1
      */
     public List2DImpl(int d1) {
@@ -44,7 +42,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int sizeD1() {
@@ -52,7 +49,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @return
      */
@@ -61,7 +57,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -71,7 +66,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @return
      */
@@ -84,7 +78,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int removeLastD1() {
@@ -96,7 +89,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int addD1() {
@@ -105,7 +97,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param element
      * @return
@@ -118,7 +109,6 @@ public class List2DImpl<T> implements List2D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @param element

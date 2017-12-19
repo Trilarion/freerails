@@ -24,16 +24,15 @@ import org.xml.sax.*;
 /**
  * The class reads XML documents according to specified DTD and translates all
  * related events into CargoAndTerrainHandler events.
- *
+ * <p>
  * Usage sample:
- *
+ * <p>
  * <pre>
  *      RulesParser parser = new RulesParser(...);
  *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
- *
+ * <p>
  * <b>Warning:</b> the class is machine generated. DO NOT MODIFY!
- *
  */
 public class CargoAndTerrainParser implements ContentHandler {
     private static final Logger logger = Logger
@@ -66,7 +65,7 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * The recognizer entry method taking an Inputsource.
      *
-     * @param input InputSource to be parsed.
+     * @param input   InputSource to be parsed.
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
@@ -82,7 +81,7 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * The recognizer entry method taking a URL.
      *
-     * @param url URL source to be parsed.
+     * @param url     URL source to be parsed.
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
@@ -135,6 +134,7 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     *
      * @param ns
      * @param name
      * @param qname
@@ -176,6 +176,7 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     *
      * @param ns
      * @param name
      * @param qname
@@ -203,6 +204,7 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     *
      * @param chars
      * @param len
      */
@@ -213,6 +215,7 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
+     *
      * @param chars
      * @param len
      */

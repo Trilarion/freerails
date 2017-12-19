@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * Junit test for FreerailsGameServer - tests logging on.
- *
  */
 public class FreerailsGameServerTest extends TestCase {
     private FreerailsGameServer server;
@@ -79,7 +78,6 @@ public class FreerailsGameServerTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

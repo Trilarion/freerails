@@ -23,10 +23,14 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.*;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
@@ -50,7 +54,6 @@ public class AddTrainPreMove implements PreMove {
     private final ImmutableSchedule schedule;
 
     /**
-     *
      * @param e
      * @param wags
      * @param p
@@ -149,8 +152,9 @@ public class AddTrainPreMove implements PreMove {
      * <li>Adds transaction to pay for the train</li>
      * <li>Init. the trains position and motion</li>
      * </ol>
+     *
      * @param w
-     * @return 
+     * @return
      */
     public Move generateMove(ReadOnlyWorld w) {
         // Add cargo bundle.

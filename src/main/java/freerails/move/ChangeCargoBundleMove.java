@@ -29,13 +29,11 @@ import freerails.world.top.KEY;
 /**
  * This {@link Move} changes a cargo bundle (cargo bundles are used to represent
  * the cargo carried by trains and the cargo waiting at stations).
- *
  */
 public class ChangeCargoBundleMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3258126960072143408L;
 
     /**
-     *
      * @param before
      * @param after
      * @param bundleNumber

@@ -28,12 +28,10 @@ import java.io.IOException;
 /**
  * This interface defines methods for loading and producing
  * scaled images whose quality may be controlled.
- *
  */
 public interface ImageManager {
 
     /**
-     *
      * @param height
      * @param width
      * @return
@@ -41,13 +39,11 @@ public interface ImageManager {
     Image newBlankImage(int height, int width);
 
     /**
-     *
      * @param s
      */
     void setPathToReadFrom(String s);
 
     /**
-     *
      * @param relativeFilename
      * @return
      * @throws IOException
@@ -55,21 +51,18 @@ public interface ImageManager {
     Image getImage(String relativeFilename) throws IOException;
 
     /**
-     *
      * @param relativeFilename
      * @return
      */
     boolean contains(String relativeFilename);
 
     /**
-     *
      * @param relativeFilename
      * @param i
      */
     void setImage(String relativeFilename, Image i);
 
     /**
-     *
      * @param relativeFilename
      * @param height
      * @return

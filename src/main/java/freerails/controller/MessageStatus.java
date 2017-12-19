@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * An instance of this class is returned to the client (the server) when a
@@ -27,7 +27,7 @@ import freerails.world.FreerailsSerializable;
  * @see MessageToClient
  * @see MessageToServer
  */
-public class MessageStatus implements FreerailsSerializable {
+public class MessageStatus implements Serializable {
     private static final long serialVersionUID = 3257285842216103987L;
 
     private final int id;
@@ -35,7 +35,6 @@ public class MessageStatus implements FreerailsSerializable {
     private final boolean successful;
 
     /**
-     *
      * @param id
      * @param successful
      * @param reason
@@ -47,7 +46,6 @@ public class MessageStatus implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param id
      * @param successful
      */
@@ -84,7 +82,8 @@ public class MessageStatus implements FreerailsSerializable {
 
     /**
      * Returns the id of the command whose status this object stores.
-     * @return 
+     *
+     * @return
      */
     public int getId() {
         return id;
@@ -92,7 +91,8 @@ public class MessageStatus implements FreerailsSerializable {
 
     /**
      * Returns the reason the command failed, may be null.
-     * @return 
+     *
+     * @return
      */
     public String getReason() {
         return reason;
@@ -100,7 +100,8 @@ public class MessageStatus implements FreerailsSerializable {
 
     /**
      * True if the command was successfully executed.
-     * @return 
+     *
+     * @return
      */
     public boolean isSuccessful() {
         return successful;

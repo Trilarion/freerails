@@ -20,13 +20,10 @@
  * Created on 21-Jun-2003
  *
  */
-package freerails.world.accounts;
-
-import freerails.world.common.Money;
+package freerails.world.finances;
 
 /**
  * A credit.
- *
  */
 public class Receipt implements Transaction {
     private static final long serialVersionUID = 3617576007066924596L;
@@ -36,7 +33,6 @@ public class Receipt implements Transaction {
     private final Category category;
 
     /**
-     *
      * @param m
      * @param category
      */
@@ -46,7 +42,6 @@ public class Receipt implements Transaction {
     }
 
     /**
-     *
      * @return
      */
     public Money deltaAssets() {
@@ -68,7 +63,6 @@ public class Receipt implements Transaction {
     }
 
     /**
-     *
      * @return
      */
     public Category getCategory() {

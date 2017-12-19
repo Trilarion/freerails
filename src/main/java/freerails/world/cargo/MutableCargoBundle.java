@@ -30,7 +30,6 @@ import java.util.TreeMap;
 /**
  * This CargoBundle implementation uses a {@code java.util.SortedMap} to
  * map quantities to cargo batches.
- *
  */
 public class MutableCargoBundle implements CargoBundle {
 
@@ -46,7 +45,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @param imcb
      */
     public MutableCargoBundle(ImmutableCargoBundle imcb) {
@@ -61,7 +59,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @param cb
      * @param amount
      */
@@ -75,7 +72,8 @@ public class MutableCargoBundle implements CargoBundle {
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBundle has changed since the
      * iterator was aquired.
-     * @return 
+     *
+     * @return
      */
     public Iterator<CargoBatch> cargoBatchIterator() {
         final Iterator<CargoBatch> it = sortedMap.keySet().iterator();
@@ -116,7 +114,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @param cb
      * @return
      */
@@ -135,7 +132,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @param cb
      * @return
      */
@@ -148,7 +144,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @param cargoType
      * @return
      */
@@ -173,7 +168,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @param cb
      * @param amount
      */
@@ -188,7 +182,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @return
      */
     public int size() {
@@ -196,7 +189,6 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     *
      * @return
      */
     public ImmutableCargoBundle toImmutableCargoBundle() {

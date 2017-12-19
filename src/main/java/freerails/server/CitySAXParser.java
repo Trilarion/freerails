@@ -30,7 +30,6 @@ import java.util.Vector;
 /**
  * Class to parse an xml file that contains city names and co-ords. Upon reading
  * in the data, its stored in KEY.CITIES.
- *
  */
 public class CitySAXParser extends DefaultHandler {
     private final Vector<City> cities;
@@ -38,7 +37,6 @@ public class CitySAXParser extends DefaultHandler {
     private final World world;
 
     /**
-     *
      * @param w
      * @throws SAXException
      */

@@ -22,29 +22,27 @@
  */
 package freerails.controller;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.TransactionAggregator;
 
-import static freerails.world.accounts.StockTransaction.STOCK_BUNDLE_SIZE;
+import static freerails.world.finances.StockTransaction.STOCK_BUNDLE_SIZE;
 
 /**
  * Calculates the stock price for each of the players. Stock price = [Net worth +
  * 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other
  * players] Let profit last year = 100,000 in the first year.
- *
  */
 public class StockPriceCalculator {
     private final ReadOnlyWorld w;
 
     /**
-     *
      * @param w
      */
     public StockPriceCalculator(ReadOnlyWorld w) {
@@ -61,7 +59,6 @@ public class StockPriceCalculator {
     }
 
     /**
-     *
      * @return
      */
     public StockPrice[] calculate() {
@@ -189,7 +186,6 @@ public class StockPriceCalculator {
         public final Money treasurySellPrice;
 
         /**
-         *
          * @param netWorth
          * @param profitLastyear
          * @param publicShares

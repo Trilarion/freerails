@@ -23,12 +23,13 @@
 package freerails.world.train;
 
 import freerails.util.Utils;
-import freerails.world.FreerailsSerializable;
+
+import java.io.Serializable;
 
 /**
  *
  */
-strictfp public class ConstAcc implements FreerailsSerializable,
+strictfp public class ConstAcc implements Serializable,
         SpeedAgainstTime {
 
     /**
@@ -46,7 +47,6 @@ strictfp public class ConstAcc implements FreerailsSerializable,
     }
 
     /**
-     *
      * @param u
      * @param a
      * @param s
@@ -63,7 +63,6 @@ strictfp public class ConstAcc implements FreerailsSerializable,
     }
 
     /**
-     *
      * @param u
      * @param a
      * @param t

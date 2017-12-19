@@ -18,16 +18,14 @@
 
 package freerails.world.common;
 
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
  * This class converts time measured in ticks since the game began into time
  * represented as <i>Month, Year</i> and <i>hour:minute</i>.
- *
  */
-final public class GameCalendar implements FreerailsSerializable {
+final public class GameCalendar implements Serializable {
     private static final long serialVersionUID = 3257568421033226805L;
 
     private static final DecimalFormat decimalFormat = new DecimalFormat("00");
@@ -37,7 +35,6 @@ final public class GameCalendar implements FreerailsSerializable {
     private final int startYear;
 
     /**
-     *
      * @param ticksPerYear
      * @param startYear
      */
@@ -56,7 +53,6 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param t
      * @return
      */
@@ -68,7 +64,6 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param ticks
      * @return
      */
@@ -79,7 +74,6 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param ticks
      * @return
      */
@@ -88,7 +82,6 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param year
      * @return
      */
@@ -101,8 +94,9 @@ final public class GameCalendar implements FreerailsSerializable {
     /**
      * Returns the time of day as a string, note that a year is made up of a
      * representative day, so 1st June is equilavent to 12 noon.
+     *
      * @param i
-     * @return 
+     * @return
      */
     public String getTimeOfDay(int i) {
         int ticksPerHour = ticksPerYear / 24;
@@ -114,7 +108,6 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -201,8 +194,9 @@ final public class GameCalendar implements FreerailsSerializable {
 
     /**
      * Returns the month, 0=Jan, 1=Feb, etc.
+     *
      * @param i
-     * @return 
+     * @return
      */
     public int getMonth(int i) {
         int ticksPerMonth = ticksPerYear / 12;
@@ -222,7 +216,6 @@ final public class GameCalendar implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getTicksPerYear() {

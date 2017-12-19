@@ -16,22 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.accounts;
+package freerails.world.finances;
 
-import freerails.world.FreerailsSerializable;
 import freerails.world.common.GameTime;
+
+import java.io.Serializable;
 
 /**
  *
  */
-public class TransactionAndTimeStamp implements FreerailsSerializable {
+public class TransactionAndTimeStamp implements Serializable {
 
     private static final long serialVersionUID = 1540065347606694456L;
     private final Transaction transaction;
     private final GameTime timestamp;
 
     /**
-     *
      * @param transaction
      * @param time
      */
@@ -63,7 +63,6 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Transaction getTransaction() {
@@ -71,7 +70,6 @@ public class TransactionAndTimeStamp implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public GameTime getTimestamp() {

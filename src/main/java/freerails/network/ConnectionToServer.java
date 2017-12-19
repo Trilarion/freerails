@@ -18,18 +18,17 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Defines the methods a client can use to send messages to the server.
- *
  */
 public interface ConnectionToServer {
     /**
      * Returns true if this connection is open.
-     * @return 
+     *
+     * @return
      */
     boolean isOpen();
 
@@ -38,27 +37,30 @@ public interface ConnectionToServer {
      * the last time this method or waitForObjectFromServer() was called, if no
      * objects have been received, it returns an empty array rather than
      * blocking.
-     * @return 
+     *
+     * @return
      * @throws java.io.IOException
      */
-    FreerailsSerializable[] readFromServer() throws IOException;
+    Serializable[] readFromServer() throws IOException;
 
     /**
      * Returns the next object read from the server, blocking if non is
      * available.
-     * @return 
+     *
+     * @return
      * @throws java.io.IOException
      * @throws java.lang.InterruptedException
      */
-    FreerailsSerializable waitForObjectFromServer() throws IOException,
+    Serializable waitForObjectFromServer() throws IOException,
             InterruptedException;
 
     /**
      * Sends the specified object to the server.
+     *
      * @param object
      * @throws java.io.IOException
      */
-    void writeToServer(FreerailsSerializable object) throws IOException;
+    void writeToServer(Serializable object) throws IOException;
 
     /**
      * Disconnect from the server. When this method returns, calling isOpen() on
@@ -71,12 +73,12 @@ public interface ConnectionToServer {
 
     /**
      * Flush the underlying stream.
+     *
      * @throws java.io.IOException
      */
     void flush() throws IOException;
 
     /**
-     *
      * @return
      */
     String getServerDetails();

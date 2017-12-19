@@ -23,19 +23,18 @@
 package freerails.controller;
 
 import freerails.move.Move;
-import freerails.world.FreerailsSerializable;
 import freerails.world.top.ReadOnlyWorld;
+
+import java.io.Serializable;
 
 /**
  * Defines a method that generates a move based on the state of the world
  * object. The state of a move is often a function of the state of the world
  * object and some other input.
- *
  */
-public interface PreMove extends FreerailsSerializable {
+public interface PreMove extends Serializable {
 
     /**
-     *
      * @param w
      * @return
      */

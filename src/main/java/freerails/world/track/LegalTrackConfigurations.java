@@ -18,18 +18,17 @@
 
 package freerails.world.track;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImHashSet;
+import freerails.util.ImHashSet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
 /**
  * Stores the legal track configurations for a type of track.
- *
  */
-final public class LegalTrackConfigurations implements FreerailsSerializable {
+final public class LegalTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
 
@@ -39,7 +38,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     private final int maximumConsecutivePieces;
 
     /**
-     *
      * @param max
      * @param legalTrackTemplatesArrayList
      */
@@ -56,7 +54,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param max
      * @param legalTrackTemplatesArray
      */
@@ -105,7 +102,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
@@ -113,7 +109,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getMaximumConsecutivePieces() {
@@ -131,7 +126,6 @@ final public class LegalTrackConfigurations implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param trackConfiguration
      * @return
      */

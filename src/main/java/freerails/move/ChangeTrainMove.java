@@ -22,26 +22,25 @@
  */
 package freerails.move;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.train.TrainModel;
 
+import java.io.Serializable;
+
 /**
  * This Move can change a train's engine and wagons.
- *
  */
 public class ChangeTrainMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3257854272514242873L;
 
-    private ChangeTrainMove(int index, FreerailsSerializable before,
-                            FreerailsSerializable after, FreerailsPrincipal p) {
+    private ChangeTrainMove(int index, Serializable before,
+                            Serializable after, FreerailsPrincipal p) {
         super(KEY.TRAINS, index, before, after, p);
     }
 
     /**
-     *
      * @param id
      * @param before
      * @param newEngine

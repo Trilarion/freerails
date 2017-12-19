@@ -29,7 +29,6 @@ import java.lang.reflect.Array;
  * arrays. The underlying array used for storage of items doubles in size each
  * time more space is required, up to an optional maximum growth increment
  * specified by the user.
- *
  */
 public abstract class GrowableBase implements Serializable {
     /**
@@ -92,6 +91,7 @@ public abstract class GrowableBase implements Serializable {
      * Set the backing array. This method is used by the type-agnostic base
      * class code to set the array used for type-specific storage by the child
      * class.
+     *
      * @param array
      */
     protected abstract void setArray(Object array);

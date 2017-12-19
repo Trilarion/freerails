@@ -16,17 +16,17 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!--
-    Typical usage:
+        <!--
+            Typical usage:
 
-    <?xml version="1.0"?>
+            <?xml version="1.0"?>
 
-    <!DOCTYPE Tiles SYSTEM "Track_Tiles.dtd">
+            <!DOCTYPE Tiles SYSTEM "Track_Tiles.dtd">
 
-    <Tiles>
-    ...
-    </Tiles>
--->
+            <Tiles>
+            ...
+            </Tiles>
+        -->
 
         <!ELEMENT CanOnlyBuildOnTheseTerrainTypes (TerrainType)*>
 

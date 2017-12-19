@@ -28,7 +28,6 @@ import java.awt.*;
 /**
  * Stores a DisplayMode and provides a customised implementation of toString
  * that can be used in menus.
- *
  */
 public class MyDisplayMode {
 
@@ -38,7 +37,6 @@ public class MyDisplayMode {
     public final DisplayMode displayMode;
 
     /**
-     *
      * @param displayMode
      */
     public MyDisplayMode(DisplayMode displayMode) {

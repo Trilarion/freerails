@@ -27,7 +27,6 @@ import freerails.client.view.ActionRoot;
 
 /**
  * The menu that lets you select a track type.
- *
  */
 final public class BuildMenu extends javax.swing.JMenu {
     private static final long serialVersionUID = 3617850859305055542L;
@@ -40,7 +39,6 @@ final public class BuildMenu extends javax.swing.JMenu {
     }
 
     /**
-     *
      * @param actionRoot
      */
     public void setup(ActionRoot actionRoot) {

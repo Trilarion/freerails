@@ -22,7 +22,7 @@ import freerails.client.renderer.BuildTrackRenderer;
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -32,7 +32,6 @@ import java.io.IOException;
 /**
  * Paints the cursor on the map, note the cursor's position is stored on the
  * ModelRoot under the key CURSOR_POSITION.
- *
  */
 final public class FreerailsCursor {
     private final Image buildTrack, upgradeTrack, removeTrack, infoMode;

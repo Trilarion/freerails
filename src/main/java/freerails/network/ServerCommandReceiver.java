@@ -26,12 +26,10 @@ import freerails.controller.MessageToServer;
 
 /**
  * Defines a method that accepts a command to be sent to the server.
- *
  */
 public interface ServerCommandReceiver {
 
     /**
-     *
      * @param c
      */
     void sendCommand(MessageToServer c);

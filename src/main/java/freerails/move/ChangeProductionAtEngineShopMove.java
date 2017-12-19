@@ -22,7 +22,7 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImList;
+import freerails.util.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
@@ -32,7 +32,6 @@ import freerails.world.top.World;
 /**
  * This Move changes what is being built at an engine shop - when a client wants
  * to build a train, it should send an instance of this class to the server.
- *
  */
 public class ChangeProductionAtEngineShopMove implements Move {
     private static final long serialVersionUID = 3905519384997737520L;
@@ -46,7 +45,6 @@ public class ChangeProductionAtEngineShopMove implements Move {
     private final FreerailsPrincipal principal;
 
     /**
-     *
      * @param b
      * @param a
      * @param station

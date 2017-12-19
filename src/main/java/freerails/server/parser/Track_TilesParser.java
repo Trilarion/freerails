@@ -28,15 +28,13 @@ import java.io.IOException;
 /**
  * The class reads XML documents according to specified DTD and translates all
  * related events into Track_TilesHandler events.
- *
+ * <p>
  * Usage sample:
- *
+ * <p>
  * <pre>
  *      Track_TilesParser parser = new Track_TilesParser(...);
  *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
- *
- *
  */
 final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private static final Logger logger = Logger
@@ -49,7 +47,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     private final java.util.Stack<Object[]> context;
 
     /**
-     *
      * @param handler
      */
     public Track_TilesParser(final Track_TilesHandler handler) {
@@ -61,7 +58,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     /**
      * The recognizer entry method taking an Inputsource.
      *
-     * @param input InputSource to be parsed.
+     * @param input   InputSource to be parsed.
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
@@ -77,7 +74,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     /**
      * The recognizer entry method taking a URL.
      *
-     * @param url URL source to be parsed.
+     * @param url     URL source to be parsed.
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.

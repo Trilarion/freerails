@@ -27,12 +27,10 @@ import freerails.world.player.FreerailsPrincipal;
 /**
  * Classes that need to be notified of changes to the lists on the world object
  * should implement this interface.
- *
  */
 public interface WorldListListener {
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -40,7 +38,6 @@ public interface WorldListListener {
     void listUpdated(KEY key, int index, FreerailsPrincipal principal);
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -48,7 +45,6 @@ public interface WorldListListener {
     void itemAdded(KEY key, int index, FreerailsPrincipal principal);
 
     /**
-     *
      * @param key
      * @param index
      * @param principal

@@ -18,14 +18,14 @@
 
 package freerails.world.track;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
+
+import java.io.Serializable;
 
 /**
  * Stores some of the properties of a track type.
- *
  */
-final public class TrackRuleProperties implements FreerailsSerializable {
+final public class TrackRuleProperties implements Serializable {
     private static final long serialVersionUID = 3618704101752387641L;
 
     private final boolean enableDoubleTrack;
@@ -45,7 +45,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     private final String typeName;
 
     /**
-     *
      * @param rgb
      * @param doubleTrack
      * @param name
@@ -83,7 +82,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Money getMaintenanceCost() {
@@ -91,7 +89,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Money getPrice() {
@@ -103,7 +100,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getStationRadius() {
@@ -111,7 +107,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getTypeName() {
@@ -134,7 +129,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isEnableDoubleTrack() {
@@ -142,7 +136,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isStation() {
@@ -150,7 +143,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public TrackRule.TrackCategories getCategory() {
@@ -158,7 +150,6 @@ final public class TrackRuleProperties implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Money getFixedCost() {

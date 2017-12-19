@@ -30,7 +30,6 @@ import java.awt.*;
 /**
  * This TrackPieceRenderer renders track pieces by drawing lines so avoids the
  * need to load images.
- *
  */
 public class LineDrawTrackPieceView implements
         freerails.client.renderer.TrackPieceRenderer {
@@ -39,7 +38,6 @@ public class LineDrawTrackPieceView implements
     private final int[] yy = {-1, -1, -1, 0, 0, 0, 1, 1, 1};
 
     /**
-     *
      * @param trackTemplate
      * @return
      */
@@ -48,7 +46,6 @@ public class LineDrawTrackPieceView implements
     }
 
     /**
-     *
      * @param trackTemplate
      * @param g
      * @param x

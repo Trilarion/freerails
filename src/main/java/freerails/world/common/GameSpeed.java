@@ -22,23 +22,21 @@
  */
 package freerails.world.common;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents actual game speed. If the game speed {@code speed}
  * is lesser then zero, game is paused. After unpausing, the speed should be
  * {@code -speed}.
- *
+ * <p>
  * I.e. pausing/unpausing is equal to multiply the speed by -1.
- *
  */
-public class GameSpeed implements FreerailsSerializable {
+public class GameSpeed implements Serializable {
     private static final long serialVersionUID = 3257562901983081783L;
 
     private final int speed;
 
     /**
-     *
      * @param speed
      */
     public GameSpeed(int speed) {
@@ -51,7 +49,6 @@ public class GameSpeed implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getSpeed() {
@@ -59,7 +56,6 @@ public class GameSpeed implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isPaused() {

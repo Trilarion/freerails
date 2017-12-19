@@ -36,7 +36,6 @@ import java.awt.event.ActionListener;
 /**
  * This GUIComponentFactory creates simple components that can be used to test
  * the layout of the client jFrame without running the whole game.
- *
  */
 public class SimpleComponentFactoryImpl2 implements
         freerails.client.top.GUIComponentFactory {
@@ -53,7 +52,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JMenu createBuildMenu() {
@@ -61,7 +59,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JMenu createGameMenu() {
@@ -69,7 +66,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JMenu createDisplayMenu() {
@@ -85,7 +81,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JMenu createBrokerMenu() {
@@ -140,7 +135,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JScrollPane createMainMap() {
@@ -156,7 +150,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JPanel createOverviewMap() {
@@ -181,7 +174,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JLabel createCashJLabel() {
@@ -189,7 +181,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JLabel createDateJLabel() {
@@ -197,7 +188,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JMenu createHelpMenu() {
@@ -205,7 +195,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JTabbedPane createTrainsJTabPane() {
@@ -213,7 +202,6 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     /**
-     *
      * @return
      */
     public JMenu createReportsMenu() {

@@ -27,7 +27,6 @@ import java.util.NoSuchElementException;
 /**
  * Class to find the nearest city and return that name, so that a station can be
  * named appropriately. Date: 12th April 2003
- *
  */
 public class CalcNearestCity {
     private final int x;
@@ -37,7 +36,6 @@ public class CalcNearestCity {
     private final ReadOnlyWorld w;
 
     /**
-     *
      * @param world
      * @param x
      * @param y
@@ -49,7 +47,6 @@ public class CalcNearestCity {
     }
 
     /**
-     *
      * @return
      */
     public String findNearestCity() {

@@ -41,7 +41,6 @@ public class NextActivityMove implements Move {
     private final int index;
 
     /**
-     *
      * @param activity
      * @param index
      * @param principal

@@ -26,7 +26,6 @@ import freerails.world.top.World;
 
 /**
  * Changes the game speed item on the world object.
- *
  */
 public class ChangeGameSpeedMove implements Move {
     private static final long serialVersionUID = 3545794368956086071L;
@@ -41,7 +40,6 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     /**
-     *
      * @param w
      * @param newGameSpeed
      * @return
@@ -116,7 +114,6 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public int getNewSpeed() {

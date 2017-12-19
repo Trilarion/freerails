@@ -19,7 +19,6 @@
 package freerails.util;
 
 /**
- *
  * @param <A>
  * @param <B>
  */
@@ -29,7 +28,6 @@ public class Pair<A, B> {
     private final B b;
 
     /**
-     *
      * @param a
      * @param b
      */
@@ -39,7 +37,6 @@ public class Pair<A, B> {
     }
 
     /**
-     *
      * @param other
      * @return
      */
@@ -52,7 +49,6 @@ public class Pair<A, B> {
     }
 
     /**
-     *
      * @return
      */
     public A getA() {
@@ -60,7 +56,6 @@ public class Pair<A, B> {
     }
 
     /**
-     *
      * @return
      */
     public B getB() {

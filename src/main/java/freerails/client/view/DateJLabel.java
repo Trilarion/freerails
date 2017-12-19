@@ -34,7 +34,6 @@ import java.awt.*;
 
 /**
  * This JLabel shows the current date.
- *
  */
 public class DateJLabel extends JLabel implements View {
     private static final long serialVersionUID = 3689348840578757942L;
@@ -61,7 +60,6 @@ public class DateJLabel extends JLabel implements View {
     }
 
     /**
-     *
      * @param model
      * @param vl
      * @param closeAction

@@ -24,7 +24,6 @@ package freerails.controller;
 
 /**
  * Thrown when a path cannot be found.
- *
  */
 public class PathNotFoundException extends Exception {
     private static final long serialVersionUID = 4121409601112717368L;
@@ -52,7 +51,6 @@ public class PathNotFoundException extends Exception {
     }
 
     /**
-     *
      * @param arg0
      */
     public PathNotFoundException(String arg0) {

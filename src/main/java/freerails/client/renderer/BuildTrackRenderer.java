@@ -18,13 +18,13 @@
 
 package freerails.client.renderer;
 
+import freerails.client.Constants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.client.Constants;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldDiffs;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 
 import java.awt.*;
@@ -32,7 +32,6 @@ import java.util.Iterator;
 
 /**
  * This class draws the track being build.
- *
  */
 public class BuildTrackRenderer implements Painter {
 
@@ -54,7 +53,6 @@ public class BuildTrackRenderer implements Painter {
     private final RenderersRoot rr;
 
     /**
-     *
      * @param trackPieceViewList
      * @param modelRoot
      */
@@ -76,6 +74,7 @@ public class BuildTrackRenderer implements Painter {
     /**
      * Paints the proposed track and dots to distinguish the proposed track from
      * any existing track.
+     *
      * @param g
      * @param newVisibleRectectangle
      */

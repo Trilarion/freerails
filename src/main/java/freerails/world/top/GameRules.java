@@ -18,14 +18,13 @@
 
 package freerails.world.top;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Stores rules governing what players are allowed to do, for example whether
  * they can connect their track to the track of other players.
- *
  */
-public class GameRules implements FreerailsSerializable {
+public class GameRules implements Serializable {
 
     /**
      *
@@ -55,7 +54,6 @@ public class GameRules implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isCanConnect2OtherRRTrack() {
@@ -63,7 +61,6 @@ public class GameRules implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isMustConnect2ExistingTrack() {

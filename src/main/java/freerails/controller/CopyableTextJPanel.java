@@ -29,7 +29,6 @@ import javax.swing.*;
 /**
  * Displays text that can be selected with the mouse and copied to the
  * clipboard.
- *
  */
 public class CopyableTextJPanel extends javax.swing.JPanel {
 
@@ -51,7 +50,6 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
     }
 
     /**
-     *
      * @param s
      */
     public void setText(String s) {

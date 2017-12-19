@@ -34,7 +34,6 @@ import java.io.IOException;
 
 /**
  * A special tile's icon gets drawn over the icon of a normal tile.
- *
  */
 final public class SpecialTileRenderer extends AbstractTileRenderer {
     private static final Logger logger = Logger
@@ -43,7 +42,6 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     final private TileRenderer parentTileView;
 
     /**
-     *
      * @param imageManager
      * @param rgbValues
      * @param tileModel
@@ -61,7 +59,6 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     *
      * @param g
      * @param renderX
      * @param renderY
@@ -88,7 +85,6 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param w
@@ -109,7 +105,6 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     *
      * @param i
      * @return
      */

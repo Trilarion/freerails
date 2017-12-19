@@ -18,17 +18,16 @@
 
 package freerails.client.renderer;
 
+import freerails.client.Constants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ModelRoot.Value;
-import freerails.client.Constants;
 
 import java.awt.*;
 
 /**
  * This class draws the radius of a station on the map.
- *
  */
 public class StationRadiusRenderer implements Painter {
     /**
@@ -51,7 +50,6 @@ public class StationRadiusRenderer implements Painter {
     private int y;
 
     /**
-     *
      * @param mr
      */
     public StationRadiusRenderer(ModelRoot mr) {
@@ -59,7 +57,6 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     *
      * @param c
      */
     public void setBorderColor(Color c) {
@@ -67,7 +64,6 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -77,7 +73,6 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     *
      * @param radius
      */
     public void setRadius(int radius) {
@@ -113,7 +108,6 @@ public class StationRadiusRenderer implements Painter {
     }
 
     /**
-     *
      * @param g
      * @param newVisibleRectectangle
      */

@@ -19,12 +19,12 @@
 package freerails.client.view;
 
 import freerails.util.Pair;
-import freerails.world.accounts.DeliverCargoReceipt;
-import freerails.world.accounts.Transaction;
 import freerails.world.cargo.CargoType;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
@@ -33,7 +33,6 @@ import freerails.world.top.SKEY;
 /**
  * Generates the income statement- note, its fields are read using reflection so
  * don't change their names.
- *
  */
 public class IncomeStatementGenerator {
 
@@ -316,7 +315,6 @@ public class IncomeStatementGenerator {
     // 666 save old values -> if numberOfTransactions not changed -> do nothing
 
     /**
-     *
      * @param trainId
      * @return
      */

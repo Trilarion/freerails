@@ -22,10 +22,10 @@
  */
 package freerails.client.top;
 
+import freerails.client.Constants;
 import freerails.client.common.ImageManager;
 import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
-import freerails.client.Constants;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
@@ -35,7 +35,6 @@ import java.util.HashMap;
 
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
- *
  */
 public class QuickRGBTileRendererList implements TileRendererList {
 
@@ -47,7 +46,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
     private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
 
     /**
-     *
      * @param w
      */
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
@@ -64,7 +62,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     /**
-     *
      * @param t
      * @return
      */
@@ -81,7 +78,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -90,7 +86,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     /**
-     *
      * @param rgb
      * @return
      */

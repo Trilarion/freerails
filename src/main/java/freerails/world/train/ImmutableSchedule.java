@@ -22,15 +22,15 @@
  */
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImList;
+import freerails.util.ImInts;
+import freerails.util.ImList;
+
+import java.io.Serializable;
 
 /**
  * A Schedule that is immutable.
- *
  */
-public class ImmutableSchedule implements Schedule, FreerailsSerializable {
+public class ImmutableSchedule implements Schedule, Serializable {
     private static final long serialVersionUID = 3977858458324318264L;
 
     private final ImList<TrainOrdersModel> orders;
@@ -39,7 +39,6 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     private final boolean hasPriorityOrders;
 
     /**
-     *
      * @param orders
      * @param gotoStation
      * @param hasPriorityOrders
@@ -61,7 +60,6 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -89,7 +87,6 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasPriorityOrders() {
@@ -101,7 +98,6 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getNextScheduledOrder() {
@@ -109,7 +105,6 @@ public class ImmutableSchedule implements Schedule, FreerailsSerializable {
     }
 
     /**
-     *
      * @param stationNumber
      * @return
      */

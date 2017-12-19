@@ -23,4 +23,5 @@
  * in objects referred to as <em>moves</em>. See the package <a
  * href="freerails/move/package-summary.html">freerails.move</a>
  * for more details.
-*/ package freerails.controller;
+ */
+package freerails.controller;

@@ -20,30 +20,26 @@
  * Created on 12-Jul-2005
  *
  */
-package freerails.world.common;
+package freerails.util;
 
-import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 /**
- *
  * @param <E>
  */
 @Immutable
-public class ImHashSet<E extends FreerailsSerializable> implements
-        FreerailsSerializable {
+public class ImHashSet<E extends Serializable> implements
+        Serializable {
 
     private static final long serialVersionUID = -4098862905501171517L;
 
     private final HashSet<E> hashSet;
 
     /**
-     *
      * @param hashSet
      */
     public ImHashSet(HashSet<E> hashSet) {
@@ -51,7 +47,6 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @param values
      */
     public ImHashSet(E... values) {
@@ -60,7 +55,6 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @param values
      */
     public ImHashSet(List<E> values) {
@@ -86,7 +80,6 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @param e
      * @return
      */
@@ -95,7 +88,6 @@ public class ImHashSet<E extends FreerailsSerializable> implements
     }
 
     /**
-     *
      * @return
      */
     public Iterator<E> iterator() {

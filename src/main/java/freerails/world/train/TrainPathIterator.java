@@ -18,15 +18,14 @@
 
 package freerails.world.train;
 
-import freerails.util.FreerailsIntIterator;
 import freerails.client.Constants;
+import freerails.util.FreerailsIntIterator;
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.IntLine;
 import freerails.world.common.PositionOnTrack;
 
 /**
  * Exposes the path of a train. TODO needs better comment
- *
  */
 public class TrainPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256999977816502584L;
@@ -36,7 +35,6 @@ public class TrainPathIterator implements FreerailsPathIterator {
     private final PositionOnTrack p2 = new PositionOnTrack();
 
     /**
-     *
      * @param i
      */
     public TrainPathIterator(FreerailsIntIterator i) {

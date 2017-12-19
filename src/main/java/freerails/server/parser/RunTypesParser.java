@@ -30,14 +30,12 @@ import org.apache.log4j.Logger;
  * The main method on this class uses CargoAndTerrainParser to the parse cargo
  * and terrain types xml file - use it to test the parser and xml file work
  * together.
- *
  */
 public class RunTypesParser {
     private static final Logger logger = Logger.getLogger(RunTypesParser.class
             .getName());
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -48,7 +46,6 @@ public class RunTypesParser {
                     new WorldImpl()));
             logger.info("It worked");
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

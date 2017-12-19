@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for CargoType.
- *
  */
 public class CargoTypeTest extends TestCase {
 

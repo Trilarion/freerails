@@ -18,14 +18,14 @@
 
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
+
+import java.io.Serializable;
 
 /**
  * Represents a train.
- *
  */
-public class TrainModel implements FreerailsSerializable {
+public class TrainModel implements Serializable {
 
     /**
      *
@@ -52,7 +52,6 @@ public class TrainModel implements FreerailsSerializable {
     private final int cargoBundleId;
 
     /**
-     *
      * @param engine
      * @param wagons
      * @param scheduleID
@@ -66,7 +65,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param wagons
      * @param BundleId
      */
@@ -78,7 +76,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param engine
      * @param wagons
      * @param scheduleID
@@ -91,7 +88,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param engine
      */
     public TrainModel(int engine) {
@@ -112,7 +108,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param newEngine
      * @param newWagons
      * @return
@@ -123,7 +118,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getLength() {
@@ -131,7 +125,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean canAddWagon() {
@@ -139,7 +132,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getNumberOfWagons() {
@@ -147,7 +139,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -156,7 +147,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getEngineType() {
@@ -164,7 +154,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCargoBundleID() {
@@ -172,7 +161,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getScheduleID() {
@@ -180,7 +168,6 @@ public class TrainModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImInts getConsist() {

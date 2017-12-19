@@ -18,20 +18,18 @@
 
 package freerails.world.cargo;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Represents a type of cargo.
- *
  */
-final public class CargoType implements FreerailsSerializable {
+final public class CargoType implements Serializable {
     private static final long serialVersionUID = 3834874680581369912L;
     private final Categories category;
     private final String name;
     private final int unitWeight;
 
     /**
-     *
      * @param weight
      * @param s
      * @param cat
@@ -43,7 +41,6 @@ final public class CargoType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public static int getNumberOfCategories() {
@@ -60,7 +57,6 @@ final public class CargoType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Categories getCategory() {
@@ -69,14 +65,14 @@ final public class CargoType implements FreerailsSerializable {
 
     /**
      * Returns the name, replacing any underscores with spaces.
-     * @return 
+     *
+     * @return
      */
     public String getDisplayName() {
         return this.name.replace('_', ' ');
     }
 
     /**
-     *
      * @return
      */
     public String getName() {
@@ -84,7 +80,6 @@ final public class CargoType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getUnitWeight() {
@@ -144,7 +139,6 @@ final public class CargoType implements FreerailsSerializable {
         }
 
         /**
-         *
          * @param cat
          * @return
          */
@@ -158,7 +152,6 @@ final public class CargoType implements FreerailsSerializable {
         }
 
         /**
-         *
          * @return
          */
         public int getNumber() {

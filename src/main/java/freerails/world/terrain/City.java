@@ -18,15 +18,15 @@
 
 package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * A city.
- *
+ * <p>
  * Simply storing the city name and x & y co-ords.
  * Possible potential for expansion?? Initial size of city, growth rate etc.???
  */
-public class City implements FreerailsSerializable {
+public class City implements Serializable {
 
     private static final long serialVersionUID = 3256720697500709428L;
     private final String name;
@@ -35,7 +35,6 @@ public class City implements FreerailsSerializable {
     // TODO replace x, y by Pair<> or Point2D<>
 
     /**
-     *
      * @param s
      * @param xx
      * @param yy
@@ -72,7 +71,6 @@ public class City implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getCityName() {
@@ -80,7 +78,6 @@ public class City implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCityX() {
@@ -88,7 +85,6 @@ public class City implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCityY() {

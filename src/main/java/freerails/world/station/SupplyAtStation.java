@@ -18,20 +18,19 @@
 
 package freerails.world.station;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
+
+import java.io.Serializable;
 
 /**
  * This class represents the supply at a station.
- *
  */
-public class SupplyAtStation implements FreerailsSerializable {
+public class SupplyAtStation implements Serializable {
     private static final long serialVersionUID = 4049918272826847286L;
 
     private final ImInts supply;
 
     /**
-     *
      * @param cargoWaiting
      */
     public SupplyAtStation(int[] cargoWaiting) {
@@ -41,8 +40,9 @@ public class SupplyAtStation implements FreerailsSerializable {
     /**
      * Returns the number of car loads of the specified cargo that the station
      * supplies per year.
+     *
      * @param cargoType
-     * @return 
+     * @return
      */
     public int getSupply(int cargoType) {
         return supply.get(cargoType);

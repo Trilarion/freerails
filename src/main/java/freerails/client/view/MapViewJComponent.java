@@ -31,7 +31,6 @@ import java.awt.*;
 
 /**
  * JPanel that displays the map and provides methods to handle scrolling.
- *
  */
 public abstract class MapViewJComponent extends JPanel implements Scrollable,
         MapRenderer {
@@ -45,7 +44,6 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     }
 
     /**
-     *
      * @return
      */
     public float getScale() {
@@ -110,7 +108,6 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     }
 
     /**
-     *
      * @param tile
      */
     public void centerOnTile(Point tile) {
@@ -122,7 +119,6 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     }
 
     /**
-     *
      * @return
      */
     public Dimension getMapSizeInPixels() {

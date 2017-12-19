@@ -27,7 +27,11 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.*;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.train.*;
@@ -36,7 +40,6 @@ import static freerails.world.common.Step.*;
 
 /**
  * Junit test for AddTrainPreMove.
- *
  */
 public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 

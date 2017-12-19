@@ -22,7 +22,7 @@
  */
 package freerails.world.top;
 
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.train.EngineType;
 import freerails.world.train.WagonType;
 
@@ -30,12 +30,10 @@ import freerails.world.train.WagonType;
  * This class adds hard coded wagon and engine types to the World. Later the
  * wagon and engine types will be defined in an xml file, but this will do for
  * now.
- *
  */
 public class WagonAndEngineTypesFactory {
 
     /**
-     *
      * @param w
      */
     public void addTypesToWorld(World w) {

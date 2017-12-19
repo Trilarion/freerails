@@ -18,13 +18,12 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Stores the result of a request to log onto the server.
- *
  */
-public class LogOnResponse implements FreerailsSerializable {
+public class LogOnResponse implements Serializable {
     private static final long serialVersionUID = 3690479099844311344L;
 
     private final boolean successful;
@@ -40,7 +39,6 @@ public class LogOnResponse implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param playerNumber
      * @return
      */
@@ -49,7 +47,6 @@ public class LogOnResponse implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param reason
      * @return
      */
@@ -83,7 +80,6 @@ public class LogOnResponse implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getPlayerID() {
@@ -91,7 +87,6 @@ public class LogOnResponse implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getMessage() {
@@ -99,7 +94,6 @@ public class LogOnResponse implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isSuccessful() {

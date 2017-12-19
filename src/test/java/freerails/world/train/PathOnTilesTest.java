@@ -22,10 +22,10 @@
  */
 package freerails.world.train;
 
+import freerails.util.ImPoint;
+import freerails.util.IntLine;
 import freerails.util.Pair;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.ImPoint;
-import freerails.world.common.IntLine;
 import freerails.world.common.Step;
 import junit.framework.TestCase;
 
@@ -35,7 +35,6 @@ import static freerails.world.common.Step.*;
 
 /**
  * JUnit test for PathOnTiles.
- *
  */
 public class PathOnTilesTest extends TestCase {
 

@@ -28,14 +28,12 @@ import java.awt.*;
  * This class tests that the game loop and screen handler are working correctly.
  * All it does is display the current time in ms and display the number of
  * frames per second.
- *
  */
 public class AnimationExpt extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -45,8 +43,7 @@ public class AnimationExpt extends JComponent {
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         f.getContentPane().add(new AnimationExpt());
 
-        ScreenHandler screenHandler = new ScreenHandler(f,
-                ScreenHandler.WINDOWED_MODE);
+        ScreenHandler screenHandler = new ScreenHandler(f, ScreenHandler.WINDOWED_MODE);
         screenHandler.apply();
 
         GameLoop gameLoop = new GameLoop(screenHandler);

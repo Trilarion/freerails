@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.move.*;
-import freerails.world.common.ImList;
+import freerails.util.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.WorldListListener;
@@ -31,7 +31,6 @@ import java.util.ArrayList;
 /**
  * A central point at which a client may register to receive moves which have
  * been committed.
- *
  */
 final public class MoveChainFork implements MoveReceiver {
     private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<>();
@@ -52,7 +51,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @return
      */
     public long getLastTickTime() {
@@ -60,7 +58,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param l
      */
     public void addMapListener(WorldMapListener l) {
@@ -68,7 +65,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param l
      */
     public void removeMapListener(WorldMapListener l) {
@@ -76,7 +72,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param moveReceiver
      */
     public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
@@ -88,7 +83,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param moveReceiver
      */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
@@ -100,7 +94,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param moveReceiver
      */
     public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
@@ -112,7 +105,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param listener
      */
     public void addListListener(WorldListListener listener) {
@@ -124,7 +116,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     *
      * @param move
      */
     public void processMove(Move move) {

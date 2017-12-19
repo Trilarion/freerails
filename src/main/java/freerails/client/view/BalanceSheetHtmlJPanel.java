@@ -18,8 +18,8 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
 import freerails.client.ClientConfig;
+import freerails.client.renderer.RenderersRoot;
 import freerails.controller.BalanceSheetGenerator;
 import freerails.controller.ModelRoot;
 import freerails.world.player.FreerailsPrincipal;
@@ -31,7 +31,6 @@ import java.net.URL;
 
 /**
  * A HtmlJPanel that displays the balance sheet.
- *
  */
 public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
 
@@ -53,7 +52,6 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
     }
 
     /**
-     *
      * @param modelRoot
      * @param vl
      * @param closeAction

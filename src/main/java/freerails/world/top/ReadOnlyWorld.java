@@ -19,18 +19,21 @@
 package freerails.world.top;
 
 import freerails.util.Pair;
-import freerails.world.FreerailsSerializable;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.*;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.FreerailsMutableSerializable;
+import freerails.world.common.GameTime;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 
+import java.io.Serializable;
+
 /**
- *
  * This interface defines a unified set of methods to access the elements that
  * make up the game world. The game world is composed of the following
  * specific-purpose collections into which one can put game world elements.
- *
+ * <p>
  * <ul>
  * A list of players.
  * </ul>
@@ -50,26 +53,23 @@ import freerails.world.player.Player;
  * <ul>
  * A list of financial transactions for each of the players
  * </ul>
- *
+ * <p>
  * Example: the following code gets player1's train #5.
- *
- *
+ * <p>
+ * <p>
  * {@code TrainModel t = (TrainModel)world.get(KEY.TRAINS, 5, player1);}
- *
- *
+ * <p>
+ * <p>
  * The motivation for accessing lists using keys is that one does not need to
  * add a new class or change the interface of the World class when a new list is
  * added. Instead one can just add a new entry to the class KEY.
- *
- *
+ * <p>
+ * <p>
  * Code that loops through lists should handle null values gracefully
- *
- *
  */
 public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -77,7 +77,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     boolean boundsContain(int x, int y);
 
     /**
-     *
      * @param p
      * @param k
      * @param index
@@ -86,7 +85,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     boolean boundsContain(FreerailsPrincipal p, KEY k, int index);
 
     /**
-     *
      * @param k
      * @param index
      * @return
@@ -94,40 +92,41 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     boolean boundsContain(SKEY k, int index);
 
     /**
-     *
      * @return
      */
     GameTime currentTime();
 
     /**
      * Returns the element mapped to the specified item.
+     *
      * @param item
-     * @return 
+     * @return
      */
 
-    FreerailsSerializable get(ITEM item);
+    Serializable get(ITEM item);
 
     /**
      * Returns the element at the specified position in the specified list.
+     *
      * @param p
      * @param key
      * @param index
-     * @return 
+     * @return
      */
 
-    FreerailsSerializable get(FreerailsPrincipal p, KEY key, int index);
+    Serializable get(FreerailsPrincipal p, KEY key, int index);
 
     /**
      * Returns the element at the specified position in the specified list.
+     *
      * @param key
      * @param index
-     * @return 
+     * @return
      */
 
-    FreerailsSerializable get(SKEY key, int index);
+    Serializable get(SKEY key, int index);
 
     /**
-     *
      * @param p
      * @param index
      * @return
@@ -135,14 +134,12 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     ActivityIterator getActivities(FreerailsPrincipal p, int index);
 
     /**
-     *
      * @param p
      * @return
      */
     Money getCurrentBalance(FreerailsPrincipal p);
 
     /**
-     *
      * @param p
      * @return
      */
@@ -150,38 +147,36 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the height of the map in tiles.
-     * @return 
+     *
+     * @return
      */
     int getMapHeight();
 
     /**
      * Returns the width of the map in tiles.
-     * @return 
+     *
+     * @return
      */
     int getMapWidth();
 
     /**
-     *
      * @return
      */
     int getNumberOfPlayers();
 
     /**
-     *
      * @param p
      * @return
      */
     int getNumberOfTransactions(FreerailsPrincipal p);
 
     /**
-     *
      * @param p
      * @return
      */
     int getNumberOfActiveEntities(FreerailsPrincipal p);
 
     /**
-     *
      * @param i
      * @return
      */
@@ -189,14 +184,14 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the tile at the specified position on the map.
+     *
      * @param x
      * @param y
-     * @return 
+     * @return
      */
-    FreerailsSerializable getTile(int x, int y);
+    Serializable getTile(int x, int y);
 
     /**
-     *
      * @param p
      * @param i
      * @return
@@ -204,7 +199,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     Transaction getTransaction(FreerailsPrincipal p, int i);
 
     /**
-     *
      * @param p
      * @param i
      * @return
@@ -212,7 +206,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i);
 
     /**
-     *
      * @param p
      * @param i
      * @return
@@ -221,7 +214,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
             FreerailsPrincipal p, int i);
 
     /**
-     *
      * @param p
      * @return
      */
@@ -229,23 +221,26 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the number of elements in the specified list.
+     *
      * @param p
      * @param key
-     * @return 
+     * @return
      */
     int size(FreerailsPrincipal p, KEY key);
 
     /**
      * Returns the number of elements in the specified list.
+     *
      * @param key
-     * @return 
+     * @return
      */
     int size(SKEY key);
 
     /**
      * Returns number of active entities belonging to the specified principal.
+     *
      * @param p
-     * @return 
+     * @return
      */
     int size(FreerailsPrincipal p);
 }

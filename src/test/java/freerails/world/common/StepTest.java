@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for OneTileMoveVector.
- *
  */
 public class StepTest extends TestCase {
     final Step n = Step.NORTH;
@@ -42,7 +41,6 @@ public class StepTest extends TestCase {
     final Step nw = Step.NORTH_WEST;
 
     /**
-     *
      * @param arg0
      */
     public StepTest(String arg0) {

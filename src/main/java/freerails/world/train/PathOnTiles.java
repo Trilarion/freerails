@@ -22,10 +22,15 @@
  */
 package freerails.world.train;
 
+import freerails.util.ImList;
+import freerails.util.ImPoint;
+import freerails.util.IntLine;
 import freerails.util.Pair;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.*;
+import freerails.world.common.FreerailsPathIterator;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,9 +40,8 @@ import static freerails.world.common.Step.TILE_DIAMETER;
 
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
- *
  */
-strictfp public class PathOnTiles implements FreerailsSerializable {
+strictfp public class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
 
@@ -92,14 +96,14 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     /**
      * Returns the distance you would travel if you walked the all the way along
      * the path.
-     * @return 
+     *
+     * @return
      */
     public double getTotalDistance() {
         return getDistance(vectors.size());
     }
 
     /**
-     *
      * @param steps
      * @return
      */
@@ -117,7 +121,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      * walked the specified distance along the path from the start point.
      *
      * @param distance
-     * @return 
+     * @return
      * @throws IllegalArgumentException if distance < 0
      * @throws IllegalArgumentException if distance > getLength()
      */
@@ -156,7 +160,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      *
      * @param firstdistance
      * @param lastdistance
-     * @return 
+     * @return
      * @throws IllegalArgumentException if distance < 0
      * @throws IllegalArgumentException if distance > getLength()
      */
@@ -250,7 +254,6 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImPoint getStart() {
@@ -258,7 +261,6 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -267,7 +269,6 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public PositionOnTrack getFinalPosition() {
@@ -288,7 +289,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      * specified distance.
      *
      * @param distance
-     * @return 
+     * @return
      * @throws IllegalArgumentException if distance < 0
      * @throws IllegalArgumentException if distance > getLength()
      */
@@ -311,7 +312,6 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int steps() {
@@ -319,7 +319,6 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param newSteps
      * @return
      */
@@ -339,7 +338,7 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
      *
      * @param offset
      * @param length
-     * @return 
+     * @return
      * @throws IllegalArgumentException if offset < 0
      * @throws IllegalArgumentException if length <= 0
      * @throws IllegalArgumentException if offset + length > getLength()
@@ -422,7 +421,6 @@ strictfp public class PathOnTiles implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Iterator<ImPoint> tiles() {

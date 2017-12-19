@@ -30,7 +30,6 @@ import java.util.Iterator;
  * in a map square - the combinations of directions in which track can be laid.
  * Instances of this class cannot be created and must be obtained via the static
  * methods herein.
- *
  */
 final public class TrackConfiguration implements FlatTrackTemplate {
 
@@ -77,7 +76,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -86,7 +84,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param v
      * @return
      */
@@ -95,7 +92,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param trackTemplate
      * @return
      */
@@ -117,7 +113,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param templateString
      * @return
      */
@@ -156,7 +151,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param trackTemplate
      * @return
      */
@@ -165,7 +159,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @return
      */
     public int get8bitTemplate() {
@@ -191,14 +184,14 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     /**
      * Returns the length of track used in this configuration. Used to calculate
      * the cost of building track.
-     * @return 
+     *
+     * @return
      */
     public int getLength() {
         return length;
     }
 
     /**
-     *
      * @return
      */
     public Iterator getPossibleConfigurationsIterator() {
@@ -206,7 +199,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @return
      */
     public int getTrackGraphicsID() {

@@ -22,13 +22,11 @@ import freerails.util.FreerailsIntIterator;
 
 /**
  * FlatTrackExplorer to FreerailsIntIterator adapter.
- *
  */
 public class TrainPathIntIterator implements FreerailsIntIterator {
     private final FlatTrackExplorer trackExplorer;
 
     /**
-     *
      * @param t
      */
     public TrainPathIntIterator(FlatTrackExplorer t) {
@@ -36,7 +34,6 @@ public class TrainPathIntIterator implements FreerailsIntIterator {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasNextInt() {
@@ -44,7 +41,6 @@ public class TrainPathIntIterator implements FreerailsIntIterator {
     }
 
     /**
-     *
      * @return
      */
     public int nextInt() {

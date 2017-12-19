@@ -26,7 +26,6 @@ import java.util.NoSuchElementException;
 
 /**
  * Maps keys to OneTileMoveVectors.
- *
  */
 public class KeyCodeToOneTileMoveVector {
 
@@ -58,8 +57,9 @@ public class KeyCodeToOneTileMoveVector {
 
     /**
      * Returns the OneTileMoveVector that is mapped to the specified keycode.
+     *
      * @param keycode
-     * @return 
+     * @return
      */
     public static Step getInstanceMappedToKey(int keycode)
             throws NoSuchElementException {

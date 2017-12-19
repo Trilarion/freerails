@@ -24,21 +24,20 @@ package freerails.controller;
 
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.terrain.TileTypeImpl;
 import freerails.world.top.*;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
 /**
  * JUnit test for BuildTrackExplorer.
- *
  */
 public class BuildTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
@@ -46,7 +45,6 @@ public class BuildTrackExplorerTest extends TestCase {
     private FreerailsPrincipal principle;
 
     /**
-     *
      * @throws Exception
      */
     @Override

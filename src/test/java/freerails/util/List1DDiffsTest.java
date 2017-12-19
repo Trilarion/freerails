@@ -38,7 +38,6 @@ public class List1DDiffsTest extends TestCase {
     private SortedMap<ListKey, Object> map;
 
     /**
-     *
      * @throws Exception
      */
     @Override

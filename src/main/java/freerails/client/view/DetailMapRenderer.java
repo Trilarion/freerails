@@ -18,17 +18,16 @@
 
 package freerails.client.view;
 
+import freerails.client.Constants;
 import freerails.client.common.Painter;
 import freerails.client.renderer.*;
 import freerails.controller.ModelRoot;
-import freerails.client.Constants;
 import freerails.world.top.ReadOnlyWorld;
 
 import java.awt.*;
 
 /**
  * Draws the main map, that is the terrain, track, trains, station names etc.
- *
  */
 public class DetailMapRenderer implements MapRenderer {
     private static final boolean OSXWorkaround = (System
@@ -49,7 +48,6 @@ public class DetailMapRenderer implements MapRenderer {
     private final Painter stationBoxes;
 
     /**
-     *
      * @param world
      * @param rr
      * @param modelRoot
@@ -79,7 +77,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public StationRadiusRenderer getStationRadius() {
@@ -87,7 +84,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public BuildTrackController getBuildTrackController() {
@@ -95,7 +91,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public float getScale() {
@@ -103,7 +98,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public Dimension getMapSizeInPixels() {
@@ -111,7 +105,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param g
      * @param tileX
      * @param tileY
@@ -126,7 +119,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -135,7 +127,6 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param g
      * @param visibleRect
      */

@@ -23,14 +23,14 @@
  */
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
+
+import java.io.Serializable;
 
 /**
  * This class encapsulates the orders for a train.
- *
  */
-public class TrainOrdersModel implements FreerailsSerializable {
+public class TrainOrdersModel implements Serializable {
     private static final long serialVersionUID = 3616453397155559472L;
 
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
@@ -56,7 +56,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     public final int stationId; // The number of the station to goto.
 
     /**
-     *
      * @param station
      * @param newConsist
      * @param wait
@@ -110,7 +109,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getStationID() {
@@ -118,7 +116,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isNoConsistChange() {
@@ -126,7 +123,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean getWaitUntilFull() {
@@ -134,7 +130,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean orderHasWagons() {
@@ -142,7 +137,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasLessThanMaxiumNumberOfWagons() {
@@ -150,7 +144,6 @@ public class TrainOrdersModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isAutoConsist() {

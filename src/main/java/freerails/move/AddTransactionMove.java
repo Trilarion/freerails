@@ -22,14 +22,13 @@
  */
 package freerails.move;
 
-import freerails.world.accounts.Transaction;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
  * {@link World} object.
- *
  */
 public class AddTransactionMove implements Move {
     private static final long serialVersionUID = 3976738055925019701L;
@@ -44,7 +43,6 @@ public class AddTransactionMove implements Move {
     private final boolean constrained;
 
     /**
-     *
      * @param account
      * @param t
      */
@@ -59,7 +57,6 @@ public class AddTransactionMove implements Move {
     }
 
     /**
-     *
      * @param account
      * @param t
      * @param constrain
@@ -76,7 +73,6 @@ public class AddTransactionMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public Transaction getTransaction() {
@@ -161,7 +157,6 @@ public class AddTransactionMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {

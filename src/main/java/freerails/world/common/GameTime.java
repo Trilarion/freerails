@@ -22,13 +22,12 @@
  */
 package freerails.world.common;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents a specific instant in time during a game.
- *
  */
-public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
+public class GameTime implements Serializable, Comparable<GameTime> {
     /**
      * The first possible time.
      */
@@ -42,7 +41,6 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
     private final int ticks;
 
     /**
-     *
      * @param l
      */
     public GameTime(int l) {
@@ -60,7 +58,6 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
     }
 
     /**
-     *
      * @return
      */
     public GameTime nextTick() {
@@ -68,7 +65,6 @@ public class GameTime implements FreerailsSerializable, Comparable<GameTime> {
     }
 
     /**
-     *
      * @return
      */
     public int getTicks() {

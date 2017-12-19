@@ -23,17 +23,16 @@
 package freerails.move;
 
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
 
 import java.awt.*;
 
 /**
  * Move that changes a single tile.
- *
  */
 public class ChangeTileMove implements Move, MapUpdateMove {
     private static final long serialVersionUID = 3256726169272662320L;
@@ -47,7 +46,6 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     private final FreerailsTile after;
 
     /**
-     *
      * @param w
      * @param p
      * @param terrainTypeAfter
@@ -135,7 +133,6 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public Rectangle getUpdatedTiles() {

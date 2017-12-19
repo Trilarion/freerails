@@ -22,15 +22,14 @@
  */
 package freerails.world.top;
 
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /**
  * Iterates over one of the lists on the world object only returning non null
  * elements.
- *
  */
 public class NonNullElements implements WorldIterator {
     private final KEY key;
@@ -48,7 +47,6 @@ public class NonNullElements implements WorldIterator {
     private int size = -1;
 
     /**
-     *
      * @param k
      * @param world
      */
@@ -68,7 +66,6 @@ public class NonNullElements implements WorldIterator {
     }
 
     /**
-     *
      * @param k
      * @param world
      * @param p
@@ -93,7 +90,6 @@ public class NonNullElements implements WorldIterator {
     }
 
     /**
-     *
      * @param w
      * @param key
      * @param p
@@ -139,11 +135,11 @@ public class NonNullElements implements WorldIterator {
         size = -1;
     }
 
-    public FreerailsSerializable getElement() {
+    public Serializable getElement() {
         return listGet(index);
     }
 
-    private FreerailsSerializable listGet(int i) {
+    private Serializable listGet(int i) {
         if (null == this.skey) {
             return w.get(principal, key, i);
         }
@@ -202,6 +198,7 @@ public class NonNullElements implements WorldIterator {
 
     /**
      * Moves the cursor to the specified index.
+     *
      * @param i
      */
     public void gotoIndex(int i) {
@@ -226,7 +223,6 @@ public class NonNullElements implements WorldIterator {
     }
 
     /**
-     *
      * @param i
      * @return
      */

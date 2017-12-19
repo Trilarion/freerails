@@ -20,7 +20,6 @@ package freerails.network;
 
 /**
  * Junit test for NewInetConnection.
- *
  */
 public class InetConnectionTest extends AbstractEchoGameServerTestCase {
 
@@ -41,7 +40,6 @@ public class InetConnectionTest extends AbstractEchoGameServerTestCase {
             connection2.open();
             assertEquals(2, echoGameServer.countOpenConnections());
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
     }

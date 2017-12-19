@@ -18,10 +18,10 @@
 
 package freerails.move;
 
-import freerails.world.accounts.DeliverCargoReceipt;
+import freerails.util.ImList;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.common.ImList;
-import freerails.world.common.Money;
+import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 
@@ -30,7 +30,6 @@ import java.util.ArrayList;
 /**
  * This {@link CompositeMove} transfers cargo from a train to a station and
  * vice-versa.
- *
  */
 public class TransferCargoAtStationMove extends CompositeMove {
 
@@ -52,7 +51,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @param movesArrayList
      * @param waiting
      */
@@ -63,7 +61,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @param changeAtStation
      * @param changeOnTrain
      * @param payment
@@ -79,7 +76,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @return
      */
     public ChangeCargoBundleMove getChangeAtStation() {
@@ -88,7 +84,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @return
      */
     public ChangeCargoBundleMove getChangeOnTrain() {
@@ -97,7 +92,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @return
      */
     public Money getRevenue() {
@@ -117,7 +111,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @param cargoType
      * @return
      */
@@ -143,7 +136,8 @@ public class TransferCargoAtStationMove extends CompositeMove {
 
     /**
      * The player who is getting paid for the delivery.
-     * @return 
+     *
+     * @return
      */
     public FreerailsPrincipal getPrincipal() {
         ImList<Move> moves = super.getMoves();
@@ -160,7 +154,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @return
      */
     public boolean isWaitingForFullLoad() {

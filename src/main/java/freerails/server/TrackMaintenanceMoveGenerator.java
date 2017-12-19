@@ -25,9 +25,9 @@ package freerails.server;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
-import freerails.world.accounts.Bill;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.Bill;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ItemsTransactionAggregator;
 import freerails.world.top.SKEY;
@@ -35,18 +35,16 @@ import freerails.world.top.World;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
-import static freerails.world.accounts.Transaction.Category.*;
+import static freerails.world.finances.Transaction.Category.*;
 
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
- *
  */
 public class TrackMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
 
     /**
-     *
      * @param mr
      */
     public TrackMaintenanceMoveGenerator(MoveReceiver mr) {
@@ -54,7 +52,6 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     /**
-     *
      * @param w
      * @param principal
      * @param category
@@ -93,7 +90,6 @@ public class TrackMaintenanceMoveGenerator {
     }
 
     /**
-     *
      * @param w
      */
     public void update(World w) {

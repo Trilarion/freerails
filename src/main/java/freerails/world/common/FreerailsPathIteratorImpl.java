@@ -23,13 +23,14 @@
  */
 package freerails.world.common;
 
+import freerails.util.IntLine;
+
 import java.awt.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Lets the caller access a series of Points as a series of IntLines.
- *
  */
 public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     private static final long serialVersionUID = 3258411750679720758L;
@@ -39,6 +40,7 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
 
     /**
      * Creates new FreerailsPathIteratorImpl
+     *
      * @param l
      * @param f
      */
@@ -55,7 +57,6 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     }
 
     /**
-     *
      * @param l
      * @return
      */
@@ -64,7 +65,6 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
     }
 
     /**
-     *
      * @param l
      * @return
      */

@@ -35,7 +35,6 @@ import java.util.List;
 
 /**
  * Generates track graphic image files.
- *
  */
 public class TrackTilesGenerator extends JPanel {
 
@@ -75,7 +74,6 @@ public class TrackTilesGenerator extends JPanel {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -145,7 +143,6 @@ public class TrackTilesGenerator extends JPanel {
             imageManager.writeAllImages();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
@@ -189,7 +186,6 @@ public class TrackTilesGenerator extends JPanel {
                         g2.translate(60, 0);
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
-                        e.printStackTrace();
                     }
 
                 }

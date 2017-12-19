@@ -26,7 +26,6 @@ import java.io.Serializable;
 
 /**
  * Used by the server to store a player's username and password.
- *
  */
 public class NameAndPassword implements Serializable {
     private static final long serialVersionUID = 3258409551740155956L;
@@ -42,7 +41,6 @@ public class NameAndPassword implements Serializable {
     public final String username;
 
     /**
-     *
      * @param u
      * @param p
      */

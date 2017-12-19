@@ -25,7 +25,6 @@ package freerails.util;
 import java.util.ArrayList;
 
 /**
- *
  * @param <T>
  */
 public class List1DImpl<T> implements List1D<T> {
@@ -41,7 +40,6 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param initialSize
      */
     public List1DImpl(int initialSize) {
@@ -52,7 +50,6 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int size() {
@@ -70,7 +67,6 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -79,7 +75,6 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
-     *
      * @return
      */
     public T removeLast() {
@@ -88,7 +83,6 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param element
      * @return
      */
@@ -98,7 +92,6 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
-     *
      * @param i
      * @param element
      */

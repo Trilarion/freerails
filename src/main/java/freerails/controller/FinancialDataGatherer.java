@@ -22,9 +22,8 @@
  */
 package freerails.controller;
 
-import freerails.world.accounts.*;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.ITEM;
@@ -33,7 +32,6 @@ import freerails.world.top.TransactionAggregator;
 
 /**
  * Gathers the financial data for a company.
- *
  */
 public class FinancialDataGatherer extends TransactionAggregator {
     private final int playerID;
@@ -43,7 +41,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     private int[] stockInThisRRs;
 
     /**
-     *
      * @param w
      * @param principal
      */
@@ -55,7 +52,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @param transactionID
      */
     @Override
@@ -98,14 +94,12 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @param deltaStock
      */
     public void changeTreasuryStock(int deltaStock) {
     }
 
     /**
-     *
      * @param stakeHolder
      * @param deltaStock
      */
@@ -113,7 +107,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public boolean canIssueBond() {
@@ -121,7 +114,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public boolean canBuyStock() {
@@ -129,7 +121,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int nextBondInterestRate() {
@@ -138,7 +129,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int[] bondInterestRates() {
@@ -147,7 +137,8 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     /**
      * Returns the number of stock in the Treasury
-     * @return 
+     *
+     * @return
      */
     public int treasuryStock() {
         return stockInRRs[playerID];
@@ -155,14 +146,14 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     /**
      * Returns The number of open Shares
-     * @return 
+     *
+     * @return
      */
     public int totalShares() {
         return totalShares;
     }
 
     /**
-     *
      * @return
      */
     public int sharesHeldByPublic() {
@@ -175,7 +166,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @param otherReId
      * @return
      */
@@ -184,7 +174,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public Money netWorth() {
@@ -201,7 +190,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int[] getStockInThisRRs() {
@@ -219,7 +207,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int[] getStockInRRs() {
@@ -227,7 +214,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int getBonds() {

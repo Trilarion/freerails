@@ -9,6 +9,7 @@
 # idea
 /.idea
 /*.iml
+/out
 
 # netbeans
 /.nb-gradle

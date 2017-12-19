@@ -25,26 +25,22 @@ package freerails.util;
 import java.io.Serializable;
 
 /**
- *
  * @param <T>
  */
 public interface List2D<T> extends Serializable {
 
     /**
-     *
      * @return
      */
     int sizeD1();
 
     /**
-     *
      * @param d1
      * @return
      */
     int sizeD2(int d1);
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -52,26 +48,22 @@ public interface List2D<T> extends Serializable {
     T get(int d1, int d2);
 
     /**
-     *
      * @param d1
      * @return
      */
     T removeLastD2(int d1);
 
     /**
-     *
      * @return
      */
     int removeLastD1();
 
     /**
-     *
      * @return
      */
     int addD1();
 
     /**
-     *
      * @param d1
      * @param element
      * @return
@@ -79,7 +71,6 @@ public interface List2D<T> extends Serializable {
     int addD2(int d1, T element);
 
     /**
-     *
      * @param d1
      * @param d2
      * @param element

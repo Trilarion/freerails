@@ -22,14 +22,14 @@
  */
 package freerails.move;
 
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
 
+import java.io.Serializable;
+
 /**
  * All moves that add an item to a shared list should extend this class.
- *
  */
 public class AddItemToSharedListMove implements Move {
     private static final long serialVersionUID = 3762256352759722807L;
@@ -38,23 +38,21 @@ public class AddItemToSharedListMove implements Move {
 
     private final int index;
 
-    private final FreerailsSerializable item;
+    private final Serializable item;
 
     /**
-     *
      * @param key
      * @param i
      * @param item
      */
     protected AddItemToSharedListMove(SKEY key, int i,
-                                      FreerailsSerializable item) {
+                                      Serializable item) {
         this.listKey = key;
         this.index = i;
         this.item = item;
     }
 
     /**
-     *
      * @return
      */
     public int getIndex() {
@@ -72,7 +70,6 @@ public class AddItemToSharedListMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public SKEY getKey() {
@@ -140,18 +137,16 @@ public class AddItemToSharedListMove implements Move {
     }
 
     /**
-     *
      * @return
      */
-    public FreerailsSerializable getBefore() {
+    public Serializable getBefore() {
         return null;
     }
 
     /**
-     *
      * @return
      */
-    public FreerailsSerializable getAfter() {
+    public Serializable getAfter() {
         return item;
     }
 

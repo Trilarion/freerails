@@ -18,20 +18,18 @@
 
 package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents the conversion of one cargo type to another one a tile.
- *
  */
-public class Conversion implements FreerailsSerializable {
+public class Conversion implements Serializable {
 
     private static final long serialVersionUID = 3546356219414853689L;
     private final int input;
     private final int output;
 
     /**
-     *
      * @param in
      * @param out
      */
@@ -41,7 +39,6 @@ public class Conversion implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getInput() {
@@ -71,7 +68,6 @@ public class Conversion implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getOutput() {

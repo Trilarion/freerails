@@ -62,7 +62,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     }
 
     /**
-     *
      * @param url
      */
     public BrokerJFrame(URL url) {
@@ -71,7 +70,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     }
 
     /**
-     *
      * @param url
      * @param context
      */
@@ -83,7 +81,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     }
 
     /**
-     *
      * @param html
      */
     public BrokerJFrame(String html) {
@@ -92,7 +89,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     }
 
     /**
-     *
      * @param m
      * @param vl
      * @param closeAction
@@ -116,7 +112,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
             }
             return text;
         } catch (Exception e) {
-            e.printStackTrace();
             logger.warn(htmlUrl.toString());
             return "Couldn't read: " + htmlUrl;
         }
@@ -127,7 +122,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     }
 
     /**
-     *
      * @param template
      * @param context
      * @return
@@ -148,7 +142,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
                         Field field = context.getClass().getField(token);
                         value = field.get(context).toString();
                     } catch (Exception e) {
-                        e.printStackTrace();
                         throw new NoSuchElementException(token);
                     }
                 }

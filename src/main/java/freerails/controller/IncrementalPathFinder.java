@@ -25,7 +25,6 @@ package freerails.controller;
 /**
  * Defines part of the contract for a pathfinder whose search can be completed
  * in several steps.
- *
  */
 public interface IncrementalPathFinder {
 
@@ -52,13 +51,11 @@ public interface IncrementalPathFinder {
     int SEARCH_NOT_STARTED = Integer.MIN_VALUE + 3;
 
     /**
-     *
      * @return
      */
     int getStatus();
 
     /**
-     *
      * @param maxDuration
      * @throws PathNotFoundException
      */

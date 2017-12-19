@@ -25,39 +25,33 @@ package freerails.util;
 import java.io.Serializable;
 
 /**
- *
  * @param <T>
  */
 public interface List1D<T> extends Serializable {
 
     /**
-     *
      * @return
      */
     int size();
 
     /**
-     *
      * @param i
      * @return
      */
     T get(int i);
 
     /**
-     *
      * @return
      */
     T removeLast();
 
     /**
-     *
      * @param element
      * @return
      */
     int add(T element);
 
     /**
-     *
      * @param i
      * @param element
      */

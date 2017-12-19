@@ -39,7 +39,6 @@ import java.awt.*;
 
 /**
  * This JPanel shows information on a terrain type.
- *
  */
 public class TerrainInfoJPanel extends javax.swing.JPanel {
 

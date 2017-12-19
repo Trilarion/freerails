@@ -24,17 +24,17 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
 import freerails.client.ClientConfig;
+import freerails.client.renderer.RenderersRoot;
 import freerails.controller.FinancialDataGatherer;
 import freerails.controller.ModelRoot;
 import freerails.controller.StockPriceCalculator;
 import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.world.accounts.BondTransaction;
-import freerails.world.accounts.StockTransaction;
-import freerails.world.common.Money;
+import freerails.world.finances.BondTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.StockTransaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.ReadOnlyWorld;
@@ -97,7 +97,6 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     }
 
     /**
-     *
      * @param modelRoot
      * @param vl
      * @param closeAction

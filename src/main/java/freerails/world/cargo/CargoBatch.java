@@ -18,14 +18,13 @@
 
 package freerails.world.cargo;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents a cargo batch (cargo of the same batch is cargo of the
  * same type that was produced at the same location at the same time).
- *
  */
-public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch> {
+public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     private static final long serialVersionUID = 3257006557605540149L;
 
     private final int cargoType;
@@ -39,7 +38,6 @@ public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch>
     private final long timeCreated;
 
     /**
-     *
      * @param type
      * @param x
      * @param y
@@ -55,7 +53,6 @@ public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch>
     }
 
     /**
-     *
      * @return
      */
     public int getStationOfOrigin() {
@@ -63,7 +60,6 @@ public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch>
     }
 
     /**
-     *
      * @return
      */
     public int getCargoType() {
@@ -71,7 +67,6 @@ public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch>
     }
 
     /**
-     *
      * @return
      */
     public int getSourceX() {
@@ -79,7 +74,6 @@ public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch>
     }
 
     /**
-     *
      * @return
      */
     public int getSourceY() {
@@ -87,7 +81,6 @@ public class CargoBatch implements FreerailsSerializable, Comparable<CargoBatch>
     }
 
     /**
-     *
      * @return
      */
     public long getTimeCreated() {

@@ -41,7 +41,6 @@ import java.util.regex.Pattern;
  * the current graphics configuration and whose transparency is set to
  * TRANSLUCENT, the scaled images it returns are rendered with renderingHints
  * set for quality.
- *
  */
 public class ImageManagerImpl implements ImageManager {
     /**
@@ -65,7 +64,6 @@ public class ImageManagerImpl implements ImageManager {
     private String pathToWriteTo;
 
     /**
-     *
      * @param readpath
      */
     public ImageManagerImpl(String readpath) {
@@ -73,7 +71,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param readpath
      * @param writePath
      */
@@ -91,7 +88,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param s
      * @return
      */
@@ -101,7 +97,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @return
      */
@@ -117,7 +112,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @return
      * @throws IOException
@@ -161,9 +155,10 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
+     *
      * @param relativeFilename
      * @param height
-     * @return 
+     * @return
      * @throws java.io.IOException
      */
     public Image getScaledImage(String relativeFilename, int height)
@@ -195,7 +190,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param height
      * @param width
      * @return
@@ -206,7 +200,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @param i
      */
@@ -221,7 +214,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param s
      */
     public void setPathToReadFrom(String s) {
@@ -229,7 +221,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param s
      */
     public void setPathToWriteTo(String s) {
@@ -237,7 +228,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @throws IOException
      */
     public void writeAllImages() throws IOException {
@@ -248,7 +238,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @throws IOException
      */

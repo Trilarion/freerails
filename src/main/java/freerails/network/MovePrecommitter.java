@@ -26,11 +26,11 @@ import freerails.controller.PreMove;
 import freerails.controller.PreMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.Player;
 import freerails.world.top.World;
 import org.apache.log4j.Logger;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
@@ -40,7 +40,6 @@ import java.util.LinkedList;
  * {@code toServer(.)} when a move has been sent to the server and
  * {@code fromServer(.)} when a Move or MoveStatus has been received from
  * the server.
- *
  */
 public class MovePrecommitter {
     private static final Logger logger = Logger
@@ -49,12 +48,12 @@ public class MovePrecommitter {
      * List of moves and premoves that have been sent to the server and executed
      * on the local world object.
      */
-    final LinkedList<FreerailsSerializable> precomitted = new LinkedList<>();
+    final LinkedList<Serializable> precomitted = new LinkedList<>();
     /**
      * List of moves and premoves that have been sent to the server but not
      * executed on the local world object.
      */
-    final LinkedList<FreerailsSerializable> uncomitted = new LinkedList<>();
+    final LinkedList<Serializable> uncomitted = new LinkedList<>();
     private final World w;
     /**
      * Whether the first move on the uncommitted list failed to go through on
@@ -181,7 +180,7 @@ public class MovePrecommitter {
         while (precomitted.size() > 0) {
             Object last = precomitted.removeLast();
             Move move2undo;
-            FreerailsSerializable obj2add2uncomitted;
+            Serializable obj2add2uncomitted;
 
             if (last instanceof Move) {
                 move2undo = (Move) last;
@@ -221,7 +220,7 @@ public class MovePrecommitter {
         return pmam.m;
     }
 
-    private static class PreMoveAndMove implements FreerailsSerializable {
+    private static class PreMoveAndMove implements Serializable {
         private static final long serialVersionUID = 3256443607635342897L;
 
         final Move m;

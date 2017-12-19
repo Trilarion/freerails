@@ -22,9 +22,9 @@ import java.util.Vector;
 
 /**
  * Class to randomly select a terrain type for a terrain tile.
- *
+ * <p>
  * TerrainRandomiser.java
- *
+ * <p>
  * Terrain Types are: 0) City (Urban) 1) Refinery (Industry) 2) Village
  * (Urban) 3) Factory (Industry) 4) Clear (Country) 5) Farm (Country) 6)
  * Desert (Country) 7) Ocean (Ocean) 8) Harbour (Ocean) 9) Stock-Yard
@@ -42,7 +42,6 @@ public class TerrainRandomiser {
     // clear (on avg.)
 
     /**
-     *
      * @param num
      * @param num2
      */
@@ -53,7 +52,6 @@ public class TerrainRandomiser {
     }
 
     /**
-     *
      * @param type
      * @return
      */

@@ -18,11 +18,11 @@
 
 package freerails.client.top;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.*;
-import freerails.client.ClientConfig;
 import freerails.util.FreerailsProgressMonitor;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.TerrainType;
@@ -40,7 +40,6 @@ import java.util.ArrayList;
 /**
  * Implementation of RenderersRoot whose constructor loads graphics and provides
  * feed back using a FreerailsProgressMonitor.
- *
  */
 public class RenderersRootImpl implements RenderersRoot {
     private static final Logger logger = Logger
@@ -57,7 +56,6 @@ public class RenderersRootImpl implements RenderersRoot {
     private final ArrayList<TrainImages> engineImages = new ArrayList<>();
 
     /**
-     *
      * @param w
      * @param pm
      * @throws IOException
@@ -116,7 +114,6 @@ public class RenderersRootImpl implements RenderersRoot {
                 sm.addClip(soundsFiles[i]);
             } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
             }
             pm.setValue(i + 1);
         }
@@ -268,7 +265,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @return
      */
     public TileRendererList getTileViewList() {
@@ -276,7 +272,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @return
      */
     public TrackPieceRendererList getTrackPieceViewList() {
@@ -302,7 +297,6 @@ public class RenderersRootImpl implements RenderersRoot {
     // }
 
     /**
-     *
      * @return
      */
 
@@ -311,7 +305,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @param relativeFilename
      * @return
      * @throws IOException
@@ -321,7 +314,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -330,7 +322,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -339,7 +330,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @param type
      * @return
      */
@@ -348,7 +338,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @param type
      * @return
      */
@@ -357,7 +346,6 @@ public class RenderersRootImpl implements RenderersRoot {
     }
 
     /**
-     *
      * @param relativeFilename
      * @param height
      * @return

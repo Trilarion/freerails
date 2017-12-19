@@ -22,18 +22,21 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.player.Player;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
 import freerails.world.top.WorldImpl;
-import freerails.world.track.*;
+import freerails.world.track.TrackConfiguration;
+import freerails.world.track.TrackPiece;
+import freerails.world.track.TrackPieceImpl;
+import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
 /**
  * JUnit test case for TrackMoveTransactionsGenerator.
- *
  */
 public class TrackMoveTransactionsGeneratorTest extends TestCase {
     private World world;
@@ -41,7 +44,6 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     private TrackMoveTransactionsGenerator transactionGenerator;
 
     /**
-     *
      * @throws Exception
      */
     @Override

@@ -53,13 +53,11 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
                 String str = ReportBugTextGenerator.genText(e);
                 unexpectedExceptionForm.setText(str);
                 unexpectedExceptionForm.setVisible(true);
-                e.printStackTrace();
             }
         });
     }
 
     /**
-     *
      * @param s
      */
     public void setText(String s) {

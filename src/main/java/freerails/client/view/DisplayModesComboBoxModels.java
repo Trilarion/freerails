@@ -32,7 +32,6 @@ import java.util.Iterator;
 /**
  * ComboBoxModel that provides access to the screen resolutions and bit depths
  * available.
- *
  */
 public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
 
@@ -62,6 +61,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     /**
      * Permanently removes from the list in this object any display modes with
      * width, height, or bitdepth below the specified values.
+     *
      * @param width
      * @param height
      * @param bitdepth

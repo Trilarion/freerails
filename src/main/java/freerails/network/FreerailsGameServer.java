@@ -22,8 +22,7 @@ import freerails.controller.*;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImStringList;
+import freerails.util.ImStringList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.World;
@@ -32,6 +31,7 @@ import org.apache.log4j.Logger;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,7 +80,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
 
     /**
-     *
      * @param gamesManager
      */
     public FreerailsGameServer(SavedGamesManager gamesManager) {
@@ -88,7 +87,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param gamesManager
      * @return
      */
@@ -105,13 +103,11 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
             return server;
         } catch (InterruptedException e) {
-            e.printStackTrace();
             throw new IllegalStateException();
         }
     }
 
     /**
-     *
      * @param connection
      */
     public synchronized void addConnection(ConnectionToClient connection) {
@@ -184,12 +180,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             }
         } catch (IOException | InterruptedException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
     /**
-     *
      * @param l
      */
     public void addPropertyChangeListener(PropertyChangeListener l) {
@@ -197,7 +191,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @return
      */
     public synchronized int countOpenConnections() {
@@ -224,7 +217,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @return
      */
     public String[] getPlayerNames() {
@@ -250,7 +242,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @return
      */
     public boolean isNewPlayersAllowed() {
@@ -258,7 +249,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param newPlayersAllowed
      */
     public void setNewPlayersAllowed(boolean newPlayersAllowed) {
@@ -274,7 +264,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param saveGameName
      * @throws IOException
      */
@@ -311,7 +300,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param player
      */
     public void logoff(int player) {
@@ -320,7 +308,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param lor
      * @return
      */
@@ -349,7 +336,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param mapName
      * @param numAI
      */
@@ -363,7 +349,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param mapName
      */
     public void newGame(String mapName) {
@@ -392,7 +377,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             setServerGameModel(serverGameModel);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
         sendWorldUpdatedCommand();
@@ -423,7 +407,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param l
      */
     public void removePropertyChangeListener(PropertyChangeListener l) {
@@ -436,7 +419,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param saveGameName
      */
     public void savegame(String saveGameName) {
@@ -451,11 +433,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             send2All(request);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
-    private void send2All(FreerailsSerializable message) {
+    private void send2All(Serializable message) {
         send2AllExcept(null, message);
     }
 
@@ -463,7 +444,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      * Sends the specified message to all connections except the specified one.
      */
     private void send2AllExcept(ConnectionToClient dontSend2,
-                                FreerailsSerializable message) {
+                                Serializable message) {
 
         for (NameAndPassword p : acceptedConnections.keySet()) {
             ConnectionToClient connection = acceptedConnections.get(p);
@@ -474,7 +455,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                     connection.flush();
                 } catch (Exception e) {
                     if (connection.isOpen()) {
-                        e.printStackTrace();
 
                         try {
                             removeConnection(p);
@@ -510,7 +490,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     /**
-     *
      * @param serverGameModel
      */
     public void setServerGameModel(ServerGameModel serverGameModel) {
@@ -560,10 +539,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 ConnectionToClient connection = acceptedConnections.get(player);
 
                 if (connection.isOpen()) {
-                    FreerailsSerializable[] messages = connection
+                    Serializable[] messages = connection
                             .readFromClient();
 
-                    for (FreerailsSerializable message : messages) {
+                    for (Serializable message : messages) {
                         if (message instanceof MessageToServer) {
                             MessageToServer message2 = (MessageToServer) message;
                             MessageStatus cStatus = message2.execute(this);
@@ -639,7 +618,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

@@ -18,20 +18,19 @@
 
 package freerails.world.station;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
+
+import java.io.Serializable;
 
 /**
  * This class represents the demand for cargo at a station.
- *
  */
-public class DemandForCargo implements FreerailsSerializable {
+public class DemandForCargo implements Serializable {
     private static final long serialVersionUID = 3257565088071038009L;
 
     private final ImInts demand;
 
     /**
-     *
      * @param demandArray
      */
     public DemandForCargo(boolean[] demandArray) {
@@ -62,7 +61,6 @@ public class DemandForCargo implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param cargoNumber
      * @return
      */

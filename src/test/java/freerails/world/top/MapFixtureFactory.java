@@ -22,6 +22,7 @@ import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.terrain.TileTypeImpl;
 import freerails.world.track.*;
@@ -30,7 +31,6 @@ import java.util.HashSet;
 
 /**
  * This class is used to generate fixtures for Junit tests.
- *
  */
 public class MapFixtureFactory {
     /**
@@ -47,9 +47,10 @@ public class MapFixtureFactory {
     /**
      * Returns a world object with a map of the specifed size with the terrain
      * and cargo types setup.
+     *
      * @param w
      * @param h
-     * @return 
+     * @return
      */
     public static World getWorld(int w, int h) {
         FreerailsTile tile = FreerailsTile.getInstance(0);
@@ -67,7 +68,6 @@ public class MapFixtureFactory {
     }
 
     /**
-     *
      * @param world
      */
     public static void generateTrackRuleList(World world) {
@@ -131,6 +131,7 @@ public class MapFixtureFactory {
 
     /**
      * Adds hard coded cargo types.
+     *
      * @param world
      */
     public static void generateCargoTypesList(World world) {

@@ -18,16 +18,14 @@
 
 package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Defines the interface of a terrain tile.
- *
  */
-public interface TerrainTile extends FreerailsSerializable {
+public interface TerrainTile extends Serializable {
 
     /**
-     *
      * @return
      */
     int getTerrainTypeID();

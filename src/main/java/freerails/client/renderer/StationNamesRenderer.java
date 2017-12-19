@@ -18,16 +18,16 @@
 
 package freerails.client.renderer;
 
+import freerails.client.Constants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.client.Constants;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldIterator;
-import freerails.world.track.FreerailsTile;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -38,7 +38,6 @@ import java.awt.geom.RoundRectangle2D;
  * Class to render the station names and spheres of influence on the game map.
  * Names are retrieved from the KEY.STATIONS object. Date: 14th April 2003 28
  * May 2004 updated to also show station sphere of influence.
- *
  */
 public class StationNamesRenderer implements Painter {
     final static float[] dash1 = {5.0f};
@@ -52,7 +51,6 @@ public class StationNamesRenderer implements Painter {
     private final Font font;
 
     /**
-     *
      * @param world
      * @param modelRoot
      */
@@ -66,7 +64,6 @@ public class StationNamesRenderer implements Painter {
     }
 
     /**
-     *
      * @param g
      * @param newVisibleRectectangle
      */

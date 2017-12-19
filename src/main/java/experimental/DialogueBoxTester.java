@@ -26,12 +26,12 @@ import freerails.client.view.*;
 import freerails.controller.JFrameMinimumSizeEnforcer;
 import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
-import freerails.server.TileSetFactoryImpl;
 import freerails.server.TileSetFactory;
+import freerails.server.TileSetFactoryImpl;
 import freerails.util.FreerailsProgressMonitor;
+import freerails.util.ImInts;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.DemandForCargo;
@@ -47,7 +47,6 @@ import java.io.IOException;
 
 /**
  * This class lets you test dialogue boxes without running the whole game.
- *
  */
 public class DialogueBoxTester extends javax.swing.JFrame {
 
@@ -55,8 +54,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
     private static final Player TEST_PLAYER = new Player("test player", 0);
 
-    private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
-            .getPrincipal();
+    private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
     private final DialogueBoxController dialogueBoxController;
     private final ModelRootImpl modelRoot;
@@ -109,7 +107,6 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             vl = new RenderersRootImpl(w,
                     FreerailsProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {
-            e.printStackTrace();
         }
         modelRoot.setup(w, TEST_PLAYER.getPrincipal());
         ActionRoot actionRoot = new ActionRoot(modelRoot);

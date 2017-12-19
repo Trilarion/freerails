@@ -24,15 +24,15 @@
 
 package freerails.client.view;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.renderer.RenderersRoot;
-import freerails.client.ClientConfig;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.TrackRule;
@@ -53,7 +53,6 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
  * A JPanel that presents toggle buttons that let the player select the build
  * mode (build track, upgrade track, build station, bulldoze, and info mode) and
  * select the track/bridge/station type to use.
- *
  */
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
@@ -89,7 +88,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
 
     /**
-     *
      * @param mr
      * @param ar
      * @param vl
@@ -292,7 +290,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
             Image im = imageManager.getImage(relativeFileName);
             return new ImageIcon(im);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalStateException(e);
         }
     }

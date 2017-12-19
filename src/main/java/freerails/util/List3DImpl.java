@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @param <T>
  */
 public class List3DImpl<T> implements List3D<T> {
@@ -36,7 +35,6 @@ public class List3DImpl<T> implements List3D<T> {
     private final ArrayList<ArrayList<ArrayList<T>>> elementData = new ArrayList<>();
 
     /**
-     *
      * @param d1
      * @param d2
      */
@@ -51,7 +49,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int sizeD1() {
@@ -59,7 +56,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @return
      */
@@ -68,7 +64,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -78,7 +73,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @param d3
@@ -89,7 +83,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -113,7 +106,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      */
     public void removeLastD2(int d1) {
@@ -126,7 +118,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @return
      */
     public int addD1() {
@@ -136,7 +127,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @return
      */
@@ -147,7 +137,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @param element
@@ -160,7 +149,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @param d3
@@ -182,7 +170,6 @@ public class List3DImpl<T> implements List3D<T> {
     }
 
     /**
-     *
      * @param d1
      * @param d2
      * @return

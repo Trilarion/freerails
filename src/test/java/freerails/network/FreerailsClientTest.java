@@ -20,13 +20,12 @@ package freerails.network;
 
 import freerails.controller.ClientControlInterface.ClientProperty;
 import freerails.controller.MessageToClient;
-import freerails.world.common.ImStringList;
+import freerails.util.ImStringList;
 
 import java.io.IOException;
 
 /**
  * Tests FreerailsClient with a network server.
- *
  */
 public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
@@ -74,7 +73,6 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             client.disconnect();
             assertEquals(1, server.countOpenConnections());
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
     }

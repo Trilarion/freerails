@@ -20,19 +20,16 @@
  * Created on 04-Jul-2005
  *
  */
-package freerails.world.common;
-
-import freerails.util.Immutable;
-import freerails.world.FreerailsSerializable;
+package freerails.util;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * An immutable point.
- *
  */
 @Immutable
-public final class ImPoint implements FreerailsSerializable,
+public final class ImPoint implements Serializable,
         Comparable<ImPoint> {
 
     private static final long serialVersionUID = -3053020239886388576L;
@@ -56,7 +53,6 @@ public final class ImPoint implements FreerailsSerializable,
     }
 
     /**
-     *
      * @param p
      */
     public ImPoint(Point p) {
@@ -65,7 +61,6 @@ public final class ImPoint implements FreerailsSerializable,
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -89,7 +84,6 @@ public final class ImPoint implements FreerailsSerializable,
     }
 
     /**
-     *
      * @return
      */
     public Point toPoint() {

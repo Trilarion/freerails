@@ -22,6 +22,7 @@
  */
 package freerails.world.common;
 
+import freerails.util.ImInts;
 import freerails.util.Utils;
 import junit.framework.TestCase;
 
@@ -31,7 +32,7 @@ import junit.framework.TestCase;
 public class ImIntsTest extends TestCase {
 
     /*
-     * Test method for 'freerails.world.common.ImInts.append(int...)'
+     * Test method for 'freerails.util.ImInts.append(int...)'
      */
 
     /**

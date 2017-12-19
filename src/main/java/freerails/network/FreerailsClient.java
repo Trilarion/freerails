@@ -23,7 +23,6 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.GameModel;
 import freerails.world.common.FreerailsMutableSerializable;
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.Player;
 import freerails.world.top.World;
 import org.apache.log4j.Logger;
@@ -34,7 +33,6 @@ import java.util.HashMap;
 
 /**
  * A client for FreerailsGameServer.
- *
  */
 public class FreerailsClient implements ClientControlInterface, GameModel,
         UntriedMoveReceiver, ServerCommandReceiver {
@@ -59,7 +57,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     /**
-     *
      * @return
      */
     public final MoveChainFork getMoveFork() {
@@ -68,11 +65,12 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Connects this client to a remote server.
+     *
      * @param address
      * @param port
      * @param password
      * @param username
-     * @return 
+     * @return
      */
     public final LogOnResponse connect(String address, int port,
                                        String username, String password) {
@@ -106,10 +104,11 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Connects this client to a local server.
+     *
      * @param server
      * @param username
      * @param password
-     * @return 
+     * @return
      */
     public final LogOnResponse connect(GameServer server, String username,
                                        String password) {
@@ -139,7 +138,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         try {
             connectionToServer.disconnect();
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -152,6 +150,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Subclasses should override this method if they need to respond the the
      * world being changed.
+     *
      * @param w
      */
     protected void newWorld(World w) {
@@ -162,7 +161,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     /**
-     *
      * @param propertyName
      * @return
      */
@@ -171,7 +169,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     /**
-     *
      * @param newProperties
      */
     public final void resetProperties(HashMap newProperties) {
@@ -179,22 +176,20 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         throw new UnsupportedOperationException();
     }
 
-    final FreerailsSerializable read() {
+    final Serializable read() {
         try {
             return this.connectionToServer.waitForObjectFromServer();
         } catch (IOException | InterruptedException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
         throw new IllegalStateException();
     }
 
-    final void write(FreerailsSerializable fs) {
+    final void write(Serializable fs) {
         try {
             connectionToServer.writeToServer(fs);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalStateException();
         }
     }
@@ -204,10 +199,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      */
     final public void update() {
         try {
-            FreerailsSerializable[] messages = connectionToServer
+            Serializable[] messages = connectionToServer
                     .readFromServer();
 
-            for (FreerailsSerializable message : messages) {
+            for (Serializable message : messages) {
                 processMessage(message);
             }
 
@@ -229,7 +224,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Processes a message received from the server.
      */
-    final void processMessage(FreerailsSerializable message) throws IOException {
+    final void processMessage(Serializable message) throws IOException {
         if (message instanceof MessageToClient) {
             MessageToClient request = (MessageToClient) message;
             MessageStatus status = request.execute(this);
@@ -259,7 +254,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     /**
-     *
      * @return
      */
     final public World getWorld() {
@@ -268,6 +262,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Sends move to the server.
+     *
      * @param move
      */
     final public void processMove(Move move) {
@@ -278,15 +273,15 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Tests a move before sending it to the server.
+     *
      * @param move
-     * @return 
+     * @return
      */
     final public MoveStatus tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 
     /**
-     *
      * @param c
      */
     public void sendCommand(MessageToServer c) {
@@ -294,7 +289,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     /**
-     *
      * @param pm
      */
     public void processPreMove(PreMove pm) {
@@ -304,7 +298,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     }
 
     /**
-     *
      * @return
      */
     protected long getLastTickTime() {

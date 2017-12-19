@@ -38,7 +38,6 @@ import java.util.regex.Pattern;
  * the current graphics configuration and whose transparency is set to
  * TRANSLUCENT, the scaled images it returns are rendered with renderingHints
  * set for quality.
- *
  */
 public class ImageManagerImpl implements ImageManager {
     /**
@@ -61,7 +60,6 @@ public class ImageManagerImpl implements ImageManager {
     private String pathToReadFrom;
 
     /**
-     *
      * @param readpath
      */
     public ImageManagerImpl(String readpath) {
@@ -77,7 +75,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param s
      * @return
      */
@@ -87,7 +84,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @return
      */
@@ -97,7 +93,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @return
      * @throws IOException
@@ -141,10 +136,11 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
+     *
      * @param relativeFilename
      * @param height
-     * @return 
-     * @throws java.io.IOException 
+     * @return
+     * @throws java.io.IOException
      */
     public Image getScaledImage(String relativeFilename, int height)
             throws IOException {
@@ -175,7 +171,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param height
      * @param width
      * @return
@@ -186,7 +181,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param relativeFilename
      * @param i
      */
@@ -201,7 +195,6 @@ public class ImageManagerImpl implements ImageManager {
     }
 
     /**
-     *
      * @param s
      */
     public void setPathToReadFrom(String s) {

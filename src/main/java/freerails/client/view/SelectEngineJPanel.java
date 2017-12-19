@@ -37,7 +37,6 @@ import java.util.Map;
 
 /**
  * This JPanel lets the user select an engine from a list.
- *
  */
 public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
@@ -120,7 +119,6 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
      * @param mr
      * @param vl
      * @param closeAction
@@ -148,7 +146,8 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     /**
      * Returns the number of the currently selected engine type.
-     * @return 
+     *
+     * @return
      */
     public int getEngineType() {
         return jList1.getSelectedIndex();

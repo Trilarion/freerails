@@ -24,13 +24,11 @@ import freerails.world.train.ImmutableSchedule;
 
 /**
  * This Move changes a train's schedule.
- *
  */
 public class ChangeTrainScheduleMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3691043187930052149L;
 
     /**
-     *
      * @param id
      * @param before
      * @param after

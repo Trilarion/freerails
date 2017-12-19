@@ -26,7 +26,6 @@ package freerails.client.top;
 
 /**
  * The JFrame that you see while you are playing the game.
- *
  */
 public class ClientJFrame extends javax.swing.JFrame {
 
@@ -36,6 +35,7 @@ public class ClientJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ClientJFrame.
+     *
      * @param gcf
      */
     public ClientJFrame(GUIComponentFactory gcf) {
@@ -43,7 +43,6 @@ public class ClientJFrame extends javax.swing.JFrame {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String args[]) {

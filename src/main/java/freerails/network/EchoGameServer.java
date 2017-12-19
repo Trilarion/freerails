@@ -18,10 +18,10 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -29,7 +29,6 @@ import java.util.Vector;
 
 /**
  * Implementation of GameServer that simply echoes whatever clients send it.
- *
  */
 public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class
@@ -39,7 +38,7 @@ public class EchoGameServer implements GameServer, Runnable {
 
     private final SynchronizedFlag status = new SynchronizedFlag(false);
 
-    private final LinkedList<FreerailsSerializable> messsages2send = new LinkedList<>();
+    private final LinkedList<Serializable> messsages2send = new LinkedList<>();
 
     private EchoGameServer() {
     }
@@ -47,7 +46,8 @@ public class EchoGameServer implements GameServer, Runnable {
     /**
      * Creates an EchoGameServer, starts it in a new Thread, and waits for its
      * status to change to isOpen before returning.
-     * @return 
+     *
+     * @return
      */
     public static EchoGameServer startServer() {
         EchoGameServer server = new EchoGameServer();
@@ -62,13 +62,11 @@ public class EchoGameServer implements GameServer, Runnable {
 
             return server;
         } catch (InterruptedException e) {
-            e.printStackTrace();
             throw new IllegalStateException();
         }
     }
 
     /**
-     *
      * @param connection
      */
     public synchronized void addConnection(ConnectionToClient connection) {
@@ -84,7 +82,6 @@ public class EchoGameServer implements GameServer, Runnable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized int countOpenConnections() {
@@ -135,7 +132,7 @@ public class EchoGameServer implements GameServer, Runnable {
         }
     }
 
-    synchronized void sendMessage(FreerailsSerializable m) {
+    synchronized void sendMessage(Serializable m) {
         /* Send messages. */
         for (ConnectionToClient connection : connections) {
             try {
@@ -165,7 +162,7 @@ public class EchoGameServer implements GameServer, Runnable {
             /* Read messages. */
             for (ConnectionToClient connection : connections) {
                 try {
-                    FreerailsSerializable[] messages = connection
+                    Serializable[] messages = connection
                             .readFromClient();
 
                     Collections.addAll(messsages2send, messages);
@@ -183,7 +180,7 @@ public class EchoGameServer implements GameServer, Runnable {
 
             /* Send messages. */
 
-            for (FreerailsSerializable message : messsages2send) {
+            for (Serializable message : messsages2send) {
                 sendMessage(message);
             }
         }

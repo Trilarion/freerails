@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!ELEMENT Cargo EMPTY>
+        <!ELEMENT Cargo EMPTY>
         <!ATTLIST Cargo
                 Category (Mail | Passengers | Fast_Freight  | Slow_Freight  | Bulk_Freight  ) #REQUIRED
                 id ID #REQUIRED

@@ -35,7 +35,6 @@ import javax.swing.event.ListDataListener;
  * Converts the interface of a list on the world object to a ListModel interface
  * that can be used by JLists. Currently, change notification is <b>not</b>
  * implemented (null elements are skipped).
- *
  */
 public class WorldToListModelAdapter implements ListModel {
 
@@ -44,7 +43,6 @@ public class WorldToListModelAdapter implements ListModel {
     private final NonNullElements elements;
 
     /**
-     *
      * @param world
      * @param key
      */
@@ -62,7 +60,6 @@ public class WorldToListModelAdapter implements ListModel {
     }
 
     /**
-     *
      * @param world
      * @param key
      * @param p

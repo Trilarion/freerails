@@ -35,7 +35,6 @@ import java.util.LinkedList;
  * This class is responsible for loading and playing sounds. Samples are read
  * into a byte arrays so that they don't need to be loaded from disk each time
  * they are played.
- *
  */
 public class SoundManager implements ModelRootListener, LineListener {
 
@@ -66,7 +65,6 @@ public class SoundManager implements ModelRootListener, LineListener {
     }
 
     /**
-     *
      * @return
      */
     public static SoundManager getSoundManager() {
@@ -74,7 +72,6 @@ public class SoundManager implements ModelRootListener, LineListener {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -86,13 +83,11 @@ public class SoundManager implements ModelRootListener, LineListener {
             try {
                 Thread.sleep(40);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
 
     /**
-     *
      * @param s
      * @throws IOException
      * @throws UnsupportedAudioFileException
@@ -137,7 +132,6 @@ public class SoundManager implements ModelRootListener, LineListener {
     }
 
     /**
-     *
      * @param s
      * @param loops
      */
@@ -166,13 +160,11 @@ public class SoundManager implements ModelRootListener, LineListener {
             } catch (LineUnavailableException e) {
                 logger.warn(e.getMessage());
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
 
     /**
-     *
      * @param p
      * @param before
      * @param after

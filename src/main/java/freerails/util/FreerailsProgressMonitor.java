@@ -26,7 +26,6 @@ package freerails.util;
 /**
  * This interface defines callbacks that can be used to let the user know how a
  * slow task is progressing.
- *
  */
 public interface FreerailsProgressMonitor {
 
@@ -46,13 +45,11 @@ public interface FreerailsProgressMonitor {
     };
 
     /**
-     *
      * @param i
      */
     void setValue(int i);
 
     /**
-     *
      * @param max
      */
     void nextStep(int max);

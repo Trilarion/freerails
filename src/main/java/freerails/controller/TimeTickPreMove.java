@@ -30,7 +30,6 @@ import java.io.ObjectStreamException;
 
 /**
  * Generates a TimeTickMove.
- *
  */
 @freerails.util.InstanceControlled
 public class TimeTickPreMove implements PreMove {
@@ -46,7 +45,6 @@ public class TimeTickPreMove implements PreMove {
     }
 
     /**
-     *
      * @param w
      * @return
      */

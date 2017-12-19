@@ -18,8 +18,8 @@
 
 package freerails.controller;
 
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 import java.awt.*;
@@ -28,12 +28,10 @@ import java.util.List;
 
 /**
  * JUnit test for ToAndFroPathIteratorTest.
- *
  */
 public class ToAndFroPathIteratorTest extends TestCase {
 
     /**
-     *
      * @param arg0
      */
     public ToAndFroPathIteratorTest(String arg0) {

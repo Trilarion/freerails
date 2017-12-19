@@ -25,8 +25,8 @@ import freerails.network.MoveChainFork;
 import freerails.network.MoveReceiver;
 import freerails.network.ServerCommandReceiver;
 import freerails.network.UntriedMoveReceiver;
-import freerails.world.common.ImPoint;
-import freerails.world.common.ImStringList;
+import freerails.util.ImPoint;
+import freerails.util.ImStringList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldListListener;
@@ -38,7 +38,6 @@ import java.util.HashMap;
 /**
  * Provides access to the World object and other data that is shared by GUI
  * components (for instance the cursor's position).
- *
  */
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final HashMap<Property, Object> properties = new HashMap<>();
@@ -86,7 +85,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param l
      */
     public void addCompleteMoveReceiver(MoveReceiver l) {
@@ -94,7 +92,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param listener
      */
     public void addListListener(WorldListListener listener) {
@@ -102,7 +99,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param l
      */
     public void addMapListener(WorldMapListener l) {
@@ -110,7 +106,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param l
      */
     public void addPropertyChangeListener(ModelRootListener l) {
@@ -118,7 +113,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param l
      */
     public void addSplitMoveReceiver(MoveReceiver l) {
@@ -126,7 +120,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param m
      * @return
      */
@@ -138,7 +131,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param pm
      * @return
      */
@@ -151,7 +143,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {
@@ -163,7 +154,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -172,7 +162,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @return
      */
     public ReadOnlyWorld getWorld() {
@@ -180,7 +169,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param c
      */
     public void sendCommand(MessageToServer c) {
@@ -192,7 +180,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param moveFork
      */
     public void setMoveFork(MoveChainFork moveFork) {
@@ -200,7 +187,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param moveReceiver
      */
     public void setMoveReceiver(UntriedMoveReceiver moveReceiver) {
@@ -208,7 +194,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param p
      * @param newValue
      */
@@ -222,7 +207,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param serverCommandReceiver
      */
     public void setServerCommandReceiver(
@@ -234,6 +218,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model. Call this when the world model is changed (e.g. new map is
      * loaded)
+     *
      * @param world
      * @param p
      */
@@ -255,7 +240,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     *
      * @param m
      * @return
      */

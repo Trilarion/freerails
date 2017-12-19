@@ -32,7 +32,6 @@ import java.util.Vector;
  * to a ButtonGroup. Listeners should listen for changes to the model and not to
  * any events from UI components, although UI components may call setAction() in
  * order to receive property change updates and to set icons etc.
- *
  */
 public class ActionAdapter extends DefaultComboBoxModel {
     private static final long serialVersionUID = 3546920294666351415L;
@@ -52,6 +51,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * An array of the actions to be used. The ComboBoxModel objects are taken
      * from the NAME property of the Action. The ButtonModel icons are obtained
      * from the SMALL_ICON property.
+     *
      * @param actions
      */
     public ActionAdapter(Action[] actions) {
@@ -141,7 +141,6 @@ public class ActionAdapter extends DefaultComboBoxModel {
     }
 
     /**
-     *
      * @param performActionOnSetSelectedItem
      */
     public void setPerformActionOnSetSelectedItem(
@@ -162,7 +161,6 @@ public class ActionAdapter extends DefaultComboBoxModel {
         public final String actionName;
 
         /**
-         *
          * @param action
          */
         public MappedButtonModel(Action action) {

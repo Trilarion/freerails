@@ -18,10 +18,10 @@
 
 package freerails.move;
 
-import freerails.world.accounts.BondTransaction;
-import freerails.world.accounts.StockTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.BondTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.StockTransaction;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.ReadOnlyWorld;
@@ -29,7 +29,6 @@ import freerails.world.top.World;
 
 /**
  * Adds a player to the world.
- *
  */
 public class AddPlayerMove implements Move, ServerMove {
     private static final long serialVersionUID = 3977580277537322804L;
@@ -41,7 +40,6 @@ public class AddPlayerMove implements Move, ServerMove {
     }
 
     /**
-     *
      * @param w
      * @param player
      * @return

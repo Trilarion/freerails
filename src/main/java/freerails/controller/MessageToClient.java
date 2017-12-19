@@ -18,23 +18,24 @@
 
 package freerails.controller;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Defines a command sent from the server to the client.
- *
  */
-public interface MessageToClient extends FreerailsSerializable {
+public interface MessageToClient extends Serializable {
     /**
      * Executes this command on the specified ClientControlInterface.
+     *
      * @param client
-     * @return 
+     * @return
      */
     MessageStatus execute(ClientControlInterface client);
 
     /**
      * Returns the id of this command.
-     * @return 
+     *
+     * @return
      */
     int getID();
 }

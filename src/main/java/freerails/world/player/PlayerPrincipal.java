@@ -20,7 +20,6 @@ package freerails.world.player;
 
 /**
  * FreerailsPrincipal that is a player in the game.
- *
  */
 public class PlayerPrincipal extends FreerailsPrincipal {
     private static final long serialVersionUID = 3257563997099537459L;
@@ -30,7 +29,6 @@ public class PlayerPrincipal extends FreerailsPrincipal {
     private final String name;
 
     /**
-     *
      * @param id
      * @param name
      */

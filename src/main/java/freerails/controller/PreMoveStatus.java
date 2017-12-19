@@ -19,13 +19,13 @@
 package freerails.controller;
 
 import freerails.move.MoveStatus;
-import freerails.world.FreerailsSerializable;
+
+import java.io.Serializable;
 
 /**
  * Records the success or failure of an attempt to execute a move.
- *
  */
-final public class PreMoveStatus implements FreerailsSerializable {
+final public class PreMoveStatus implements Serializable {
 
     /**
      *
@@ -44,7 +44,6 @@ final public class PreMoveStatus implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param reason
      * @return
      */
@@ -53,7 +52,6 @@ final public class PreMoveStatus implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param ms
      * @return
      */

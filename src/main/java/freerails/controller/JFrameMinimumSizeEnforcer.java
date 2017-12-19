@@ -25,7 +25,6 @@ import java.awt.event.ComponentListener;
 /**
  * Since there is no setMinimum size method on JFrame, we use an instance of
  * this class to do the job.
- *
  */
 public class JFrameMinimumSizeEnforcer implements ComponentListener {
     private final int minWidth;
@@ -33,7 +32,6 @@ public class JFrameMinimumSizeEnforcer implements ComponentListener {
     private final int minHeight;
 
     /**
-     *
      * @param w
      * @param h
      */

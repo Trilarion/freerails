@@ -34,6 +34,7 @@ public class ConstAccTest extends TestCase {
     /**
      * Checks the specified object satisfies the contract defined by the
      * interface SpeedAgainstTime.
+     *
      * @param sat
      */
     public static void checkContract(SpeedAgainstTime sat) {

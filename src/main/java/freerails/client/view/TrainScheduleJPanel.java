@@ -22,8 +22,8 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.Move;
+import freerails.util.ImInts;
 import freerails.world.cargo.CargoType;
-import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.*;
 import freerails.world.train.*;
@@ -38,7 +38,6 @@ import java.util.NoSuchElementException;
 /**
  * This JPanel displays a train's schedule and provides controls that let you
  * edit it.
- *
  */
 public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         WorldListListener {

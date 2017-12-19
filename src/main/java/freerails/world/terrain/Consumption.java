@@ -18,13 +18,12 @@
 
 package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents the demand for a certain cargo for consumption.
- *
  */
-public class Consumption implements FreerailsSerializable {
+public class Consumption implements Serializable {
 
     private static final long serialVersionUID = 3258133565631051064L;
     private final int cargoType;
@@ -36,7 +35,6 @@ public class Consumption implements FreerailsSerializable {
     private final int prerequisite;
 
     /**
-     *
      * @param ct
      * @param pq
      */
@@ -68,7 +66,6 @@ public class Consumption implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCargoType() {
@@ -76,7 +73,6 @@ public class Consumption implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getPrerequisite() {

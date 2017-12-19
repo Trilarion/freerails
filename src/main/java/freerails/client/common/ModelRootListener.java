@@ -29,7 +29,6 @@ import freerails.controller.ModelRoot;
 public interface ModelRootListener {
 
     /**
-     *
      * @param p
      * @param oldValue
      * @param newValue

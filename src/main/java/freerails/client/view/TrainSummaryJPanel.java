@@ -29,7 +29,7 @@ import freerails.controller.ModelRoot;
 import freerails.util.LRUCache;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ITEM;
 import freerails.world.top.KEY;

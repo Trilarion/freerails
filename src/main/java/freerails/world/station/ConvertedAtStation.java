@@ -18,14 +18,14 @@
 
 package freerails.world.station;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
+
+import java.io.Serializable;
 
 /**
  * Records which cargos are converted to other cargos at a station.
- *
  */
-public class ConvertedAtStation implements FreerailsSerializable {
+public class ConvertedAtStation implements Serializable {
     private static final long serialVersionUID = 3690754012076978231L;
 
     private static final int NOT_CONVERTED = Integer.MIN_VALUE;
@@ -33,7 +33,6 @@ public class ConvertedAtStation implements FreerailsSerializable {
     private final ImInts convertedTo;
 
     /**
-     *
      * @param convertedTo
      */
     public ConvertedAtStation(int[] convertedTo) {
@@ -41,7 +40,6 @@ public class ConvertedAtStation implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param numberOfCargoTypes
      * @return
      */
@@ -52,7 +50,6 @@ public class ConvertedAtStation implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param numberOfCargoTypes
      * @return
      */
@@ -67,7 +64,6 @@ public class ConvertedAtStation implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param cargoNumber
      * @return
      */
@@ -76,7 +72,6 @@ public class ConvertedAtStation implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param cargoNumber
      * @return
      */

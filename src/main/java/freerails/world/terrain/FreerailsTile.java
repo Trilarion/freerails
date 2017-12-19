@@ -16,21 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.track;
+package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.terrain.TerrainTile;
+import freerails.world.track.NullTrackPiece;
+import freerails.world.track.NullTrackType;
+import freerails.world.track.TrackPiece;
 
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * A tile on the map.
- *
+ * <p>
  * Instances are stored in a HashMap to avoid creating 100,000s of objects.
- *
  */
-public class FreerailsTile implements TerrainTile, FreerailsSerializable {
+public class FreerailsTile implements TerrainTile, Serializable {
 
     /**
      *
@@ -52,7 +53,6 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
     }
 
     /**
-     *
      * @param terrainType
      * @return
      */
@@ -68,7 +68,6 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
     }
 
     /**
-     *
      * @param terrainType
      * @param trackPiece
      * @return
@@ -118,7 +117,6 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getTerrainTypeID() {
@@ -132,7 +130,6 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public TrackPiece getTrackPiece() {
@@ -140,7 +137,6 @@ public class FreerailsTile implements TerrainTile, FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasTrack() {

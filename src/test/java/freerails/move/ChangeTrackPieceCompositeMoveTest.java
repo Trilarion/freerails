@@ -24,9 +24,10 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.Player;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.*;
 import freerails.world.track.*;
 import junit.framework.Test;
@@ -34,7 +35,6 @@ import junit.framework.TestSuite;
 
 /**
  * JUnit test.
- *
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     final Step southeast = Step.SOUTH_EAST;
@@ -50,7 +50,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     TrackMoveTransactionsGenerator transactionsGenerator;
 
     /**
-     *
      * @param testName
      */
     public ChangeTrackPieceCompositeMoveTest(java.lang.String testName) {
@@ -58,7 +57,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(java.lang.String[] args) {
@@ -66,7 +64,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
      * @return
      */
     public static Test suite() {

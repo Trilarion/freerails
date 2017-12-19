@@ -18,8 +18,8 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
 import freerails.client.ClientConfig;
+import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
@@ -30,7 +30,6 @@ import java.net.URL;
 
 /**
  * A HtmlJPanel that displays the income statement.
- *
  */
 public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
     private static final long serialVersionUID = 3257846588885120057L;
@@ -51,7 +50,6 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
     }
 
     /**
-     *
      * @param modelRoot
      * @param vl
      * @param closeAction

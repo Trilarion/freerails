@@ -40,7 +40,6 @@ import java.awt.event.KeyEvent;
 /**
  * JPanel that displays a list of trains, used for the train list window and the
  * train roaster tab.
- *
  */
 public class TrainListJPanel extends javax.swing.JPanel implements View {
 
@@ -284,7 +283,6 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     *
      * @param trainViewHeight
      */
     public void setTrainViewHeight(int trainViewHeight) {

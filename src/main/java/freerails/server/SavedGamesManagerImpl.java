@@ -35,7 +35,6 @@ import java.util.zip.GZIPOutputStream;
 /**
  * A SavedGamesManager reads and writes gzipped saved games to the working
  * directory.
- *
  */
 class SavFileFilter implements FilenameFilter {
     public boolean accept(File dir, String name) {
@@ -51,7 +50,6 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
             .getLogger(SavedGamesManagerImpl.class.getName());
 
     /**
-     *
      * @return
      */
     public String[] getSaveGameNames() {
@@ -61,7 +59,6 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
     }
 
     /**
-     *
      * @return
      */
     public String[] getNewMapNames() {
@@ -69,7 +66,6 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
     }
 
     /**
-     *
      * @param w
      * @param s
      * @throws IOException
@@ -96,7 +92,6 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
     }
 
     /**
-     *
      * @param name
      * @return
      * @throws IOException
@@ -133,16 +128,14 @@ public class SavedGamesManagerImpl implements SavedGamesManager {
 
             return game;
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
             throw new IOException(e.getMessage());
         } catch (InvalidClassException e) {
-            // e.printStackTrace();
+            //
             throw new IOException(e.getMessage());
         }
     }
 
     /**
-     *
      * @param name
      * @return
      * @throws IOException

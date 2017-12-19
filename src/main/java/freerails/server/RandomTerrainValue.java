@@ -20,7 +20,6 @@ package freerails.server;
 
 /**
  * Stores a location and terrain type.
- *
  */
 public class RandomTerrainValue {
     private final int x;
@@ -30,7 +29,6 @@ public class RandomTerrainValue {
     private final int terrainType;
 
     /**
-     *
      * @param x
      * @param y
      * @param tt
@@ -42,7 +40,6 @@ public class RandomTerrainValue {
     }
 
     /**
-     *
      * @return
      */
     public int getX() {
@@ -50,7 +47,6 @@ public class RandomTerrainValue {
     }
 
     /**
-     *
      * @return
      */
     public int getY() {
@@ -58,7 +54,6 @@ public class RandomTerrainValue {
     }
 
     /**
-     *
      * @return
      */
     public int getType() {

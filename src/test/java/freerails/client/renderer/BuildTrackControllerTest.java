@@ -30,11 +30,11 @@ import freerails.controller.SimpleMoveExecutor;
 import freerails.controller.TrackMoveProducer;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
@@ -57,7 +57,6 @@ public class BuildTrackControllerTest extends TestCase {
     int doubleTrackRuleID = -1;
 
     /**
-     *
      * @throws Exception
      */
     @Override

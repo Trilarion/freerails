@@ -28,7 +28,6 @@ import java.awt.*;
 
 /**
  * This thread updates the GUI Client window.
- *
  */
 final public class GameLoop implements Runnable {
 
@@ -41,7 +40,6 @@ final public class GameLoop implements Runnable {
     private final GameModel[] model;
 
     /**
-     *
      * @param s
      */
     public GameLoop(ScreenHandler s) {
@@ -50,7 +48,6 @@ final public class GameLoop implements Runnable {
     }
 
     /**
-     *
      * @param s
      * @param gm
      */
@@ -163,7 +160,6 @@ final public class GameLoop implements Runnable {
                             long sleeptime = (1000 / TARGET_FPS) - deltatime;
                             Thread.sleep(sleeptime);
                         } catch (Exception e) {
-                            e.printStackTrace();
                         }
 
                         deltatime = System.currentTimeMillis() - frameStartTime;

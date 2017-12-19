@@ -16,13 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.accounts;
-
-import freerails.world.common.Money;
+package freerails.world.finances;
 
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
- *
  */
 public class AddItemTransaction implements Transaction {
 
@@ -42,7 +39,6 @@ public class AddItemTransaction implements Transaction {
     private final int type;
 
     /**
-     *
      * @param category
      * @param type
      * @param quantity
@@ -56,7 +52,6 @@ public class AddItemTransaction implements Transaction {
     }
 
     /**
-     *
      * @return
      */
     public Money deltaAssets() {
@@ -79,7 +74,6 @@ public class AddItemTransaction implements Transaction {
     }
 
     /**
-     *
      * @return
      */
     public Category getCategory() {
@@ -87,7 +81,6 @@ public class AddItemTransaction implements Transaction {
     }
 
     /**
-     *
      * @return
      */
     public int getQuantity() {
@@ -95,7 +88,6 @@ public class AddItemTransaction implements Transaction {
     }
 
     /**
-     *
      * @return
      */
     public int getType() {

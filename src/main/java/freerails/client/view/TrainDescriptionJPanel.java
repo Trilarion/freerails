@@ -28,7 +28,6 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
@@ -38,11 +37,11 @@ import freerails.world.train.TrainModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * This JPanel displays a side-on view of a train and a summary of the cargo
  * that it is carrying.
- *
  */
 public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
 
@@ -54,7 +53,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
 
     private int trainNumber = -1;
 
-    private FreerailsSerializable lastTrain, lastCargoBundle;
+    private Serializable lastTrain, lastCargoBundle;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private freerails.client.view.TrainListCellRenderer trainViewJPanel1;
@@ -80,7 +79,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
             // this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
         }
         int cargoBundleID = train.getCargoBundleID();
-        FreerailsSerializable cb = w.get(principal, KEY.CARGO_BUNDLES,
+        Serializable cb = w.get(principal, KEY.CARGO_BUNDLES,
                 cargoBundleID);
 
         if (train != lastTrain || cb != lastCargoBundle)

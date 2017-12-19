@@ -22,13 +22,11 @@ import java.awt.*;
 
 /**
  * Used for testing the Map view components without setting up any map data.
- *
  */
 public class BlankMapRenderer implements MapRenderer {
     private final float scale;
 
     /**
-     *
      * @param s
      */
     public BlankMapRenderer(float s) {
@@ -36,7 +34,6 @@ public class BlankMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public float getScale() {
@@ -44,7 +41,6 @@ public class BlankMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @return
      */
     public Dimension getMapSizeInPixels() {
@@ -55,7 +51,6 @@ public class BlankMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param g
      * @param tileX
      * @param tileY
@@ -65,7 +60,6 @@ public class BlankMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -73,7 +67,6 @@ public class BlankMapRenderer implements MapRenderer {
     }
 
     /**
-     *
      * @param g
      * @param visibleRect
      */

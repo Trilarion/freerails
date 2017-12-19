@@ -30,7 +30,7 @@ import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.network.LoadGameMessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
-import freerails.world.common.ImStringList;
+import freerails.util.ImStringList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -184,7 +184,6 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     }// GEN-LAST:event_jList1ValueChanged
 
     /**
-     *
      * @param m
      * @param vl
      * @param closeAction

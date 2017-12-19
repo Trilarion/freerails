@@ -22,12 +22,10 @@ import java.awt.*;
 
 /**
  * Paints a layer of the map view.
- *
  */
 public interface Painter {
 
     /**
-     *
      * @param g
      * @param newVisibleRectectangle
      */

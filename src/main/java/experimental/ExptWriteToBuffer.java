@@ -33,14 +33,12 @@ import java.io.ObjectOutputStream;
 /**
  * Experiment to try out reading and writing to a buffer to test serialization
  * code.
- *
  */
 public class ExptWriteToBuffer {
     private static final Logger logger = Logger
             .getLogger(ExptWriteToBuffer.class.getName());
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -64,7 +62,6 @@ public class ExptWriteToBuffer {
                 logger.info("The two objects are not equal!");
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

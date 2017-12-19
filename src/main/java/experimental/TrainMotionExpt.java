@@ -24,10 +24,15 @@ import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.*;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
+import freerails.util.IntLine;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.FreerailsPathIterator;
+import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.train.*;
 
@@ -40,10 +45,9 @@ import static freerails.world.common.Step.*;
 
 /**
  * This class is a visual test for the train movement code.
- *
+ * <p>
  * TODO: Update the trains position when necessary. Make the train stop at
  * intevals, and slowly accelerate.
- *
  */
 public class TrainMotionExpt extends JComponent {
 
@@ -87,7 +91,6 @@ public class TrainMotionExpt extends JComponent {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {

@@ -27,8 +27,8 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImPoint;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
@@ -38,7 +38,6 @@ import static freerails.world.common.Step.*;
 
 /**
  * JUnit test for MoveTrainPreMove, tests moving round a loop of track.
- *
  */
 public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 

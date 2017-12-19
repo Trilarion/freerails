@@ -23,12 +23,12 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.accounts.Transaction.Category;
 import freerails.world.common.Activity;
 import freerails.world.common.GameCalendar;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
+import freerails.world.finances.Transaction.Category;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.City;
 import freerails.world.top.*;
@@ -47,7 +47,6 @@ public class WorldDiffsMoveTest extends TestCase {
     FreerailsPrincipal fp1;
 
     /**
-     *
      * @throws Exception
      */
     @Override

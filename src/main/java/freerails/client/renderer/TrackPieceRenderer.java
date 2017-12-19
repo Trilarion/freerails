@@ -24,19 +24,16 @@ import java.awt.*;
 
 /**
  * Draws an icon to represent a track piece.
- *
  */
 public interface TrackPieceRenderer {
 
     /**
-     *
      * @param trackTemplate
      * @return
      */
     Image getTrackPieceIcon(int trackTemplate);
 
     /**
-     *
      * @param trackTemplate
      * @param g
      * @param x
@@ -48,6 +45,7 @@ public interface TrackPieceRenderer {
 
     /**
      * Adds the images this TileRenderer uses to the specified ImageManager.
+     *
      * @param imageManager
      */
     void dumpImages(ImageManager imageManager);

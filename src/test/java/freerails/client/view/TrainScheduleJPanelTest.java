@@ -32,7 +32,6 @@ public class TrainScheduleJPanelTest extends TestCase {
     TrainScheduleJPanel jpanel;
 
     /**
-     *
      * @throws Exception
      */
     @Override

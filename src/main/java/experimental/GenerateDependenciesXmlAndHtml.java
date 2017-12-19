@@ -36,7 +36,6 @@ import java.util.Date;
  * depend on to a temporary directory, then compiling the contents of the
  * package. If the packaged depends on classes other than those contained in the
  * packages it is allowed to depend on, the compile will fail.
- *
  */
 public class GenerateDependenciesXmlAndHtml {
     private static final Logger logger = Logger
@@ -83,7 +82,7 @@ public class GenerateDependenciesXmlAndHtml {
                 "freerails/world/cargo/*", "freerails/world/train/*",
                 "freerails/world/station/*"});
         add("freerails/world/track/*");
-        add("freerails/world/accounts/*");
+        add("freerails/world/finances/*");
         add("freerails/world/player/*");
         add("freerails/world/top/*");
         endBlock();
@@ -121,7 +120,6 @@ public class GenerateDependenciesXmlAndHtml {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {
@@ -130,7 +128,6 @@ public class GenerateDependenciesXmlAndHtml {
                     + File.separator + "docs" + File.separator
                     + "dependencies.html");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
     }
 

@@ -20,20 +20,23 @@ package freerails.controller;
 
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
+import freerails.util.ImPoint;
 import freerails.world.common.GameTime;
-import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.track.*;
+import freerails.world.track.NullTrackType;
+import freerails.world.track.TrackPiece;
+import freerails.world.track.TrackPieceImpl;
+import freerails.world.track.TrackRule;
 
 import java.util.Stack;
 
 /**
  * Provides methods that generate moves that build, upgrade, and remove track.
- *
  */
 final public class TrackMoveProducer {
 
@@ -48,7 +51,6 @@ final public class TrackMoveProducer {
     private GameTime lastMoveTime = GameTime.BIG_BANG;
 
     /**
-     *
      * @param executor
      * @param world
      * @param mr
@@ -67,7 +69,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param mr
      */
     public TrackMoveProducer(ModelRoot mr) {
@@ -86,7 +87,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param from
      * @param path
      * @return
@@ -108,7 +108,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param from
      * @param trackVector
      * @return
@@ -209,7 +208,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param point
      * @return
      */
@@ -252,7 +250,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @return
      */
     public MoveStatus undoLastTrackMove() {
@@ -287,7 +284,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @return
      */
     public BuildMode getTrackBuilderMode() {
@@ -295,7 +291,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param i
      */
     public void setTrackBuilderMode(BuildMode i) {
@@ -329,7 +324,6 @@ final public class TrackMoveProducer {
     // }
 
     /**
-     *
      * @return
      */
 
@@ -339,7 +333,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param buildTrackStrategy
      */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
@@ -348,7 +341,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @return
      */
     public BuildMode getBuildMode() {
@@ -356,7 +348,6 @@ final public class TrackMoveProducer {
     }
 
     /**
-     *
      * @param buildMode
      */
     public void setBuildMode(BuildMode buildMode) {

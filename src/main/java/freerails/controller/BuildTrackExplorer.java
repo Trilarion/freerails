@@ -22,13 +22,13 @@
  */
 package freerails.controller;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
@@ -37,7 +37,6 @@ import java.util.NoSuchElementException;
 /**
  * GraphExplorer that explorers possible track placements, the ints it returns
  * are encoded PositionOnTrack objects.
- *
  */
 public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration
@@ -55,7 +54,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     private boolean usingExistingTrack = false;
 
     /**
-     *
      * @param w
      * @param principle
      */
@@ -64,7 +62,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     *
      * @param w
      * @param principle
      * @param start
@@ -90,12 +87,11 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     *
      * Tests whether we can build track in the direction specified by
      * m_direction.
-     *
-     *
-     *
+     * <p>
+     * <p>
+     * <p>
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
      * track can only be built on certain terrain types. (2) The direction we
@@ -103,7 +99,6 @@ public class BuildTrackExplorer implements GraphExplorer {
      * limits possible track configurations. (4) The terrain type of the current
      * tile - terrain type determines which track types and hence which track
      * configurations can be built.
-     *
      */
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.
@@ -238,7 +233,8 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * Calculates a cost figure incorporating the distance and the cost of any
      * new track.
-     * @return 
+     *
+     * @return
      */
     public int getEdgeCost() {
         if (beforeFirst) {
@@ -278,7 +274,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     *
      * @return
      */
     public int getH() {
@@ -296,7 +291,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     *
      * @param vertex
      */
     public void setPosition(int vertex) {
@@ -312,7 +306,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     *
      * @return
      */
     public boolean hasNextEdge() {
@@ -350,7 +343,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     *
      * @param trackStrategy
      */
     public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {

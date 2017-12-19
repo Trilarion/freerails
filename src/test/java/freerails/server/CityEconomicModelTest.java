@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit Test for CityEconomic.
- *
  */
 public class CityEconomicModelTest extends TestCase {
     /**

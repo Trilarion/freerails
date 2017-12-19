@@ -20,7 +20,6 @@ package freerails.client;
 
 /**
  * game constants
- *
  */
 public final class Constants {
     /**

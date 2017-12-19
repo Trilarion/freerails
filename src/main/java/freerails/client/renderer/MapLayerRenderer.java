@@ -27,12 +27,10 @@ import java.awt.*;
 
 /**
  * Paints a layer of the map which might be buffered.
- *
  */
 public interface MapLayerRenderer {
 
     /**
-     *
      * @param g
      * @param tileX
      * @param tileY
@@ -40,7 +38,6 @@ public interface MapLayerRenderer {
     void paintTile(Graphics g, int tileX, int tileY);
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -52,7 +49,6 @@ public interface MapLayerRenderer {
     void refreshAll();
 
     /**
-     *
      * @param g
      * @param visibleRect
      */

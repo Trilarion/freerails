@@ -25,14 +25,19 @@ package freerails.controller;
 import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.move.NextActivityMove;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
 import freerails.world.cargo.CargoBundle;
-import freerails.world.common.*;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.GameTime;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.WorldDiffs;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
@@ -46,7 +51,6 @@ import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR
 
 /**
  * Generates moves for changes in train position and stops at stations.
- *
  */
 public class MoveTrainPreMove implements PreMove {
     private static final long serialVersionUID = 3545516188269491250L;
@@ -65,7 +69,6 @@ public class MoveTrainPreMove implements PreMove {
     private final OccupiedTracks occupiedTracks;
 
     /**
-     *
      * @param id
      * @param p
      * @param occupiedTracks
@@ -83,7 +86,7 @@ public class MoveTrainPreMove implements PreMove {
      * @param world
      * @param currentPosition
      * @param target
-     * @return 
+     * @return
      * @throws NoTrackException if no track
      */
     public static Step findNextStep(ReadOnlyWorld world,
@@ -149,8 +152,9 @@ public class MoveTrainPreMove implements PreMove {
 
     /**
      * Returns true if an updated is due.
+     *
      * @param w
-     * @return 
+     * @return
      */
     public boolean isUpdateDue(ReadOnlyWorld w) {
         GameTime currentTime = w.currentTime();
@@ -213,7 +217,6 @@ public class MoveTrainPreMove implements PreMove {
     // 666 optimize
 
     /**
-     *
      * @param w
      * @return
      */
@@ -298,7 +301,6 @@ public class MoveTrainPreMove implements PreMove {
     }
 
     /**
-     *
      * @param w
      * @return
      */
@@ -405,7 +407,6 @@ public class MoveTrainPreMove implements PreMove {
     }
 
     /**
-     *
      * @param w
      * @return
      */

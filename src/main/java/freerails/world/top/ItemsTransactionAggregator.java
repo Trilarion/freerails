@@ -18,14 +18,13 @@
 
 package freerails.world.top;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
  * Adds up the number of assets.
- *
  */
 public class ItemsTransactionAggregator extends TransactionAggregator {
 
@@ -43,7 +42,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     private int quantityRunningTotal;
 
     /**
-     *
      * @param w
      * @param principal
      */
@@ -55,8 +53,9 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     /**
      * Returns true if the transaction with the specified ID has an acceptable
      * type and category.
+     *
      * @param transactionID
-     * @return 
+     * @return
      */
     @Override
     protected boolean condition(int transactionID) {
@@ -76,7 +75,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int calculateQuantity() {
@@ -86,7 +84,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public QuantitiesAndValues calculateQuantitiesAndValues() {
@@ -98,7 +95,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @param transactionID
      */
     @Override
@@ -128,7 +124,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public Transaction.Category getCategory() {
@@ -136,7 +131,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @param category
      */
     public void setCategory(Transaction.Category category) {
@@ -144,7 +138,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @return
      */
     public int getType() {
@@ -152,7 +145,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     *
      * @param type
      */
     public void setType(int type) {
@@ -161,8 +153,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     /**
      * Stores the quantities and monetary values of a series of items.
-     *
-         */
+     */
     public static class QuantitiesAndValues {
 
         /**

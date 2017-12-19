@@ -40,7 +40,6 @@ import java.util.Vector;
 
 /**
  * A ServerGameModel that contains the automations used in the actual game.
- *
  */
 public class ServerGameModelImpl implements ServerGameModel {
     private static final long serialVersionUID = 3978144352788820021L;
@@ -73,7 +72,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     *
      * @param w
      * @param serverAutomata
      */
@@ -200,7 +198,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     *
      * @param objectOut
      * @throws IOException
      */
@@ -219,7 +216,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     *
      * @param newMoveExecuter
      */
     public void init(MoveReceiver newMoveExecuter) {
@@ -236,7 +232,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     *
      * @return
      */
     public World getWorld() {
@@ -244,7 +239,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     *
      * @param w
      * @param passwords
      */
@@ -255,7 +249,6 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     *
      * @return
      */
     public String[] getPasswords() {

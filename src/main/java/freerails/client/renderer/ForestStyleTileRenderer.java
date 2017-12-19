@@ -34,7 +34,6 @@ import java.io.IOException;
 /**
  * Looks to see whether the tiles to the left and right of the same type when
  * deciding which tile icon to use.
- *
  */
 final public class ForestStyleTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {
@@ -43,7 +42,6 @@ final public class ForestStyleTileRenderer extends
     private static final int[] Y_LOOK_AT = {0, 0};
 
     /**
-     *
      * @param imageManager
      * @param rgbValues
      * @param tileModel
@@ -62,7 +60,6 @@ final public class ForestStyleTileRenderer extends
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param w
@@ -92,7 +89,6 @@ final public class ForestStyleTileRenderer extends
     }
 
     /**
-     *
      * @param i
      * @return
      */

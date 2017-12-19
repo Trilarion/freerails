@@ -34,7 +34,6 @@ import java.util.ArrayList;
 /**
  * A BuildTrackStrategy determines which track types to build (or upgrade to) on
  * different terrains.
- *
  */
 public class BuildTrackStrategy {
 
@@ -48,7 +47,6 @@ public class BuildTrackStrategy {
     }
 
     /**
-     *
      * @param trackTypeID
      * @param w
      * @return
@@ -66,7 +64,6 @@ public class BuildTrackStrategy {
     }
 
     /**
-     *
      * @param ruleIDs
      * @param w
      * @return
@@ -78,7 +75,6 @@ public class BuildTrackStrategy {
     }
 
     /**
-     *
      * @param w
      * @return
      */
@@ -133,7 +129,6 @@ public class BuildTrackStrategy {
     }
 
     /**
-     *
      * @param terrainType
      * @return
      */

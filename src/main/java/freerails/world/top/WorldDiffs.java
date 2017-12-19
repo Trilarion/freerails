@@ -23,9 +23,8 @@
 package freerails.world.top;
 
 import freerails.util.*;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImPoint;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.SortedMap;
@@ -37,9 +36,9 @@ import java.util.TreeMap;
  * does. The {@code key} object could be a location on the map, a
  * position in a list etc. <code><pre>
  * HashMap underlyingWorldObject;
- *
+ * <p>
  * HashMap differences;
- *
+ * <p>
  * public void put(Object key, Object value) {
  *     if (underlyingWorldObject.get(key).equals(value)) {
  *         if (differences.containsKey(key)) {
@@ -49,7 +48,7 @@ import java.util.TreeMap;
  *         differences.put(key, value);
  *     }
  * }
- *
+ * <p>
  * public Object get(Object key) {
  *     if (differences.containsKey(key)) {
  *         return differences.get(key);
@@ -58,7 +57,7 @@ import java.util.TreeMap;
  *     }
  * }
  * </code></pre>
- *
+ * <p>
  * The advantages of using an instance of this class instead of a copy of the
  * world object are:
  * <ol>
@@ -66,7 +65,6 @@ import java.util.TreeMap;
  * <li> Lets you pinpoint where differences on the map are, so you don't need to
  * check every tile. </li>
  * </ol>
- *
  */
 public class WorldDiffs extends WorldImpl {
 
@@ -79,7 +77,6 @@ public class WorldDiffs extends WorldImpl {
     private final WorldImpl underlying;
 
     /**
-     *
      * @param row
      */
     public WorldDiffs(ReadOnlyWorld row) {
@@ -110,14 +107,14 @@ public class WorldDiffs extends WorldImpl {
     /**
      * The iterator returns instances of java.awt.Point that store the
      * coordinates of tiles that are different to the underlying world object.
-     * @return 
+     *
+     * @return
      */
     public Iterator<ImPoint> getMapDiffs() {
         return mapDiff.keySet().iterator();
     }
 
     /**
-     *
      * @return
      */
     public Iterator<ListKey> getListDiffs() {
@@ -125,7 +122,6 @@ public class WorldDiffs extends WorldImpl {
     }
 
     /**
-     *
      * @param key
      * @return
      */
@@ -144,18 +140,19 @@ public class WorldDiffs extends WorldImpl {
     }
 
     @Override
-    public FreerailsSerializable getTile(int x, int y) {
+    public Serializable getTile(int x, int y) {
         ImPoint p = new ImPoint(x, y);
 
         if (this.mapDiff.containsKey(p)) {
-            return (FreerailsSerializable) this.mapDiff.get(p);
+            return (Serializable) this.mapDiff.get(p);
         }
         return underlying.getTile(x, y);
     }
 
     /**
      * Used by unit tests.
-     * @return 
+     *
+     * @return
      */
     public int numberOfMapDifferences() {
         return this.mapDiff.size();
@@ -163,7 +160,8 @@ public class WorldDiffs extends WorldImpl {
 
     /**
      * Used by unit tests.
-     * @return 
+     *
+     * @return
      */
     public int listDiffs() {
         return listDiff.size();
@@ -181,7 +179,7 @@ public class WorldDiffs extends WorldImpl {
     }
 
     @Override
-    public void setTile(int x, int y, FreerailsSerializable tile) {
+    public void setTile(int x, int y, Serializable tile) {
         ImPoint p = new ImPoint(x, y);
 
         if (Utils.equal(underlying.getTile(x, y), tile)) {
@@ -195,7 +193,6 @@ public class WorldDiffs extends WorldImpl {
     }
 
     /**
-     *
      * @return
      */
     public boolean isDifferent() {
@@ -203,7 +200,6 @@ public class WorldDiffs extends WorldImpl {
     }
 
     /**
-     *
      * @return
      */
     public ReadOnlyWorld getUnderlying() {

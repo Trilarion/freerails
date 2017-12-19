@@ -16,17 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
-
-import java.io.Serializable;
-
 /**
- * This interface tags classes that can be sent between the client and the
- * server.
- *
- * <b>Every class that implements this interface should be immutable.</b>
- *
+ * Provides classes to record a players assets (for example, real estate, miles-of-track,
+ * cash, and shares) and liabilities (for example, outstanding shares and bonds,
+ * and any overdraft). Each player has a BankAccount that stores a growing list of
+ * Transactions. Transactions are used represent bills and receipts for a player
+ * as well as record changes in a players physical assets such as miles-of-track.
+ * Totals can be calculated by adding up the relevant transactions in the players
+ * account.
  */
-public interface FreerailsSerializable extends Serializable {
-
-}
+package freerails.world.finances;

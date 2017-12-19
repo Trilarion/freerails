@@ -26,9 +26,9 @@ import freerails.client.renderer.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.StationBuilder;
 import freerails.move.MoveStatus;
+import freerails.util.ImPoint;
 import freerails.util.Utils;
-import freerails.world.common.ImPoint;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.track.TrackConfiguration;
@@ -51,7 +51,6 @@ import java.util.List;
  * <li>call actionPerformed on the build Action
  * <li> alternatively, call actionPerformed on the cancel Action
  * </ol>
- *
  */
 public class StationBuildModel {
     /*
@@ -76,7 +75,6 @@ public class StationBuildModel {
     private boolean positionFollowsMouse = true;
 
     /**
-     *
      * @param sb
      * @param rr
      * @param mr
@@ -109,7 +107,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @param ruleID
      * @return
      */
@@ -118,7 +115,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @return
      */
     public Action[] getStationChooseActions() {
@@ -127,7 +123,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @return
      */
     public boolean canBuildStationHere() {
@@ -138,7 +133,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @return
      */
     public Action getStationCancelAction() {
@@ -146,7 +140,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @return
      */
     public StationBuildAction getStationBuildAction() {
@@ -154,7 +147,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @return
      */
     public boolean isPositionFollowsMouse() {
@@ -162,7 +154,6 @@ public class StationBuildModel {
     }
 
     /**
-     *
      * @param positionFollowsMouse
      */
     public void setPositionFollowsMouse(boolean positionFollowsMouse) {

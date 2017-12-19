@@ -18,17 +18,15 @@
 
 package freerails.world.train;
 
-import freerails.world.common.IntLine;
+import freerails.util.IntLine;
 import junit.framework.TestCase;
 
 /**
  * Junit test.
- *
  */
 public class IntLineTest extends TestCase {
 
     /**
-     *
      * @param arg0
      */
     public IntLineTest(String arg0) {
@@ -36,7 +34,6 @@ public class IntLineTest extends TestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {

@@ -18,15 +18,14 @@
 
 package freerails.world.train;
 
+import freerails.util.ImInts;
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.ImInts;
-import freerails.world.common.IntLine;
 
 import java.util.NoSuchElementException;
 
 /**
  * Exposes a path stored as an array of x points and an array of y points.
- *
  */
 public class SimplePathIteratorImpl implements FreerailsPathIterator {
     private static final long serialVersionUID = 3618420406261003576L;
@@ -38,7 +37,6 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
     private int position = 0;
 
     /**
-     *
      * @param xpoints
      * @param ypoints
      */
@@ -53,7 +51,6 @@ public class SimplePathIteratorImpl implements FreerailsPathIterator {
     }
 
     /**
-     *
      * @param xpoints
      * @param ypoints
      */

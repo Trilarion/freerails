@@ -18,15 +18,15 @@
 
 package freerails.client.view;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
-import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
-import freerails.world.track.FreerailsTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -37,7 +37,6 @@ import java.net.URL;
 
 /**
  * The tabbed panel that sits in the lower right hand corner of the screen.
- *
  */
 public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
@@ -126,7 +125,6 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     /**
-     *
      * @param actionRoot
      * @param vl
      * @param modelRoot
@@ -157,6 +155,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     /**
      * Updates the Terrain Info Panel if the specfied PropertyChangeEvent was
      * triggered by the cursor moving.
+     *
      * @param prop
      * @param before
      * @param after
@@ -210,7 +209,6 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     /**
-     *
      * @param enabled
      */
     public void setTerrainTabEnabled(boolean enabled) {
@@ -218,7 +216,6 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     /**
-     *
      * @param enabled
      */
     public void setTrainTabEnabled(boolean enabled) {
@@ -228,7 +225,6 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     // FIXME surely this is something?
 
     /**
-     *
      * @param enabled
      */
     public void setStationTabEnabled(boolean enabled) {

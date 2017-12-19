@@ -24,12 +24,12 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.util.ImInts;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.common.ImInts;
 import freerails.world.player.Player;
 import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
@@ -40,7 +40,6 @@ import junit.framework.TestCase;
 /**
  * This Junit TestCase tests whether a train picks up and drops off the right
  * cargo at a station.
- *
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, 0, 0,
@@ -52,7 +51,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private World w;
 
     /**
-     *
      * @param args
      */
     public static void main(java.lang.String[] args) {
@@ -66,7 +64,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

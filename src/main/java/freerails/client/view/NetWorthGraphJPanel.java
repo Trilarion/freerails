@@ -27,7 +27,7 @@ import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.player.Player;
 import freerails.world.top.ITEM;
 import freerails.world.top.ReadOnlyWorld;
@@ -43,7 +43,6 @@ import java.util.ArrayList;
 /**
  * A JPanel that displays a graph of the net worth of each of the players
  * against time.
- *
  */
 public class NetWorthGraphJPanel extends JPanel implements View {
 
@@ -231,24 +230,22 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     }
 
     /**
-     *
      * Sets the value of scaleMax subject to the following constraints.
-     *
-     *
+     * <p>
+     * <p>
      * (1) scaleMax >= max, where max is the max net worth value.
-     *
-     *
+     * <p>
+     * <p>
      * (2) (scaleMax % 4) == 0
-     *
-     *
+     * <p>
+     * <p>
      * (3) if max >= 1,000, then (scaleMax % 4,000) == 0
-     *
-     *
+     * <p>
+     * <p>
      * (4) if max >= 1,000,000, then (scaleMax % 4,000,000) == 0
-     *
-     *
+     * <p>
+     * <p>
      * (5) if max >= 1,000,000,000, then (scaleMax % 4,000,000,000) == 0
-     *
      */
     private void setAppropriateScale() {
 
@@ -323,7 +320,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     }
 
     /**
-     *
      * @param modelRoot
      * @param vl
      * @param closeAction
@@ -375,8 +371,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     /**
      * Stores the company details that are used to draw a line and title on the
      * graph.
-     *
-         */
+     */
     static class CompanyDetails {
 
         /**

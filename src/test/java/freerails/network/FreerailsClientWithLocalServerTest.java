@@ -23,15 +23,16 @@ import freerails.controller.ClientControlInterface.ClientProperty;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.accounts.Receipt;
-import freerails.world.accounts.Transaction;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImStringList;
-import freerails.world.common.Money;
+import freerails.util.ImStringList;
+import freerails.world.finances.Money;
+import freerails.world.finances.Receipt;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.top.World;
 import junit.framework.TestCase;
+
+import java.io.Serializable;
 
 /**
  * This test uses clients connected to a local server. This means anything sent
@@ -45,7 +46,6 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
     private SavedGamesManager4UnitTests savedGamesManager;
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -94,7 +94,6 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             client.disconnect();
             assertEquals(1, server.countOpenConnections());
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
     }
@@ -138,7 +137,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
          * Note, the following would have happened anyway when client0.update();
          * gets called.
          */
-        FreerailsSerializable obj = client0.read();
+        Serializable obj = client0.read();
         MessageToClient cc = (MessageToClient) obj;
         client0.write(cc.execute(client0));
 
@@ -262,7 +261,6 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             assertTrue(response0.isSuccessful());
             assertEquals(0, response0.getPlayerID());
         } catch (Exception e) {
-            e.printStackTrace();
             fail(e.getMessage());
         }
     }
@@ -319,7 +317,6 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             assertEquals(copyOfWorld, client1.getWorld());
             assertEquals(copyOfWorld, server.getCopyOfWorld());
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
     }
@@ -373,7 +370,6 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             assertEquals(1, server.countOpenConnections());
 
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
 

@@ -20,7 +20,6 @@ package freerails.world.track;
 
 /**
  * Represents the track on a tile.
- *
  */
 final public class TrackPieceImpl implements TrackPiece {
     private static final long serialVersionUID = 4049080423458027569L;
@@ -34,7 +33,6 @@ final public class TrackPieceImpl implements TrackPiece {
     private final int ruleNumber;
 
     /**
-     *
      * @param c
      * @param type
      * @param owner
@@ -77,7 +75,6 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public int getTrackGraphicID() {
@@ -85,7 +82,6 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public TrackRule getTrackRule() {
@@ -93,7 +89,6 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public TrackConfiguration getTrackConfiguration() {
@@ -101,7 +96,6 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public int getOwnerID() {
@@ -109,7 +103,6 @@ final public class TrackPieceImpl implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public int getTrackTypeID() {

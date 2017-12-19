@@ -43,7 +43,6 @@ public class OccupiedTracks {
     public final Map<Integer, List<TrackSection>> trainToTrackList;
 
     /**
-     *
      * @param principal
      * @param w
      */
@@ -81,7 +80,6 @@ public class OccupiedTracks {
     }
 
     /**
-     *
      * @param i
      */
     public void stopTrain(int i) {

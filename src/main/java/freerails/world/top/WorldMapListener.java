@@ -23,7 +23,6 @@ import java.awt.*;
 /**
  * Classes that need to be notified of changes to the map on the world object
  * should implement this interface.
- *
  */
 public interface WorldMapListener {
     /**

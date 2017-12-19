@@ -18,19 +18,19 @@
 
 package freerails.world.cargo;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
-import freerails.world.common.ImList;
+import freerails.util.ImInts;
+import freerails.util.ImList;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.SortedMap;
 
 /**
  * This class represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
- *
+ * <p>
  * For example:
- *
+ * <p>
  * <table width="75%" border="0">
  * <tr>
  * <td><strong>Cargo Batch</strong></td>
@@ -53,9 +53,8 @@ import java.util.SortedMap;
  * <td>10</td>
  * </tr>
  * </table>
- *
  */
-public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable {
+public class ImmutableCargoBundle implements CargoBundle, Serializable {
 
     /**
      *
@@ -72,7 +71,6 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     }
 
     /**
-     *
      * @param sortedMap
      */
     public ImmutableCargoBundle(SortedMap<CargoBatch, Integer> sortedMap) {
@@ -91,7 +89,6 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -133,7 +130,6 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     }
 
     /**
-     *
      * @param cb
      * @return
      */
@@ -158,7 +154,6 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     }
 
     /**
-     *
      * @param cb
      * @return
      */
@@ -177,7 +172,6 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     // 666 use dynamic cache (growing arraylist)->breaks save games
 
     /**
-     *
      * @param cargoType
      * @return
      */
@@ -198,7 +192,6 @@ public class ImmutableCargoBundle implements CargoBundle, FreerailsSerializable 
     }
 
     /**
-     *
      * @return
      */
     public int size() {

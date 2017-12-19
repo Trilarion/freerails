@@ -18,11 +18,11 @@
 
 package freerails.client.view;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.RenderersRoot;
 import freerails.client.renderer.TrainRenderer;
-import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.TrainAccessor;
@@ -36,7 +36,6 @@ import java.awt.*;
 
 /**
  * Draws the trains on the main map.
- *
  */
 public class OverHeadTrainView implements Painter {
     private final TrainRenderer trainPainter;
@@ -48,7 +47,6 @@ public class OverHeadTrainView implements Painter {
     private final ModelRoot mr;
 
     /**
-     *
      * @param world
      * @param rr
      * @param mr
@@ -60,7 +58,6 @@ public class OverHeadTrainView implements Painter {
     }
 
     /**
-     *
      * @param g
      * @param newVisibleRectectangle
      */
@@ -91,7 +88,6 @@ public class OverHeadTrainView implements Painter {
                             soundManager.playSound(
                                     ClientConfig.SOUND_TRAIN_CRASH, 1);
                         } catch (Exception e) {
-                            e.printStackTrace();
                         }
                     }
                 } else {

@@ -30,15 +30,15 @@ import java.net.URL;
 
 /**
  * This class sets up a World object.
- *
  */
 public class OldWorldImpl {
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
      * with underscores.
+     *
      * @param mapName
      * @param pm
-     * @return 
+     * @return
      */
     public static World createWorldFromMapFile(String mapName,
                                                FreerailsProgressMonitor pm) {
@@ -100,7 +100,7 @@ public class OldWorldImpl {
         w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
         /*
-         * Note, money used to get added to player accounts here, now it is done
+         * Note, money used to get added to player finances here, now it is done
          * when players are added. See AddPlayerMove
          */
         return w;

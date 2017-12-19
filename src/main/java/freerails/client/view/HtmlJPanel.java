@@ -41,7 +41,6 @@ import java.util.StringTokenizer;
 
 /**
  * This JPanel displays a HTML document read from a URL.
- *
  */
 public class HtmlJPanel extends javax.swing.JPanel implements View {
 
@@ -99,7 +98,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
                         }
                         value = o.toString();
                     } catch (Exception e) {
-                        e.printStackTrace();
                         throw new NoSuchElementException(token);
                     }
 
@@ -177,7 +175,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
             }
             return text;
         } catch (Exception e) {
-            e.printStackTrace();
             logger.warn(htmlUrl.toString());
             return "Couldn't read: " + htmlUrl;
         }

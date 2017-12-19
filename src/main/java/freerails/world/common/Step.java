@@ -24,13 +24,13 @@
 package freerails.world.common;
 
 import freerails.client.Constants;
+import freerails.util.ImPoint;
 
 import java.io.ObjectStreamException;
 
 /**
  * This class represents a movement from a tile to any one of the surrounding
  * eight tiles.
- *
  */
 @freerails.util.InstanceControlled
 final public class Step implements FlatTrackTemplate {
@@ -160,7 +160,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param p
      * @param path
      * @return
@@ -176,7 +175,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param number
      * @return
      */
@@ -185,7 +183,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -197,7 +194,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param dx
      * @param dy
      * @return
@@ -216,9 +212,10 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns true if the values passed could be used to create a valid vector.
+     *
      * @param x
      * @param y
-     * @return 
+     * @return
      */
     public static boolean checkValidity(int x, int y) {
         return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1)))
@@ -290,7 +287,8 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns the X component of the vector.
-     * @return 
+     *
+     * @return
      */
     public int getDx() {
         return deltaX;
@@ -298,7 +296,8 @@ final public class Step implements FlatTrackTemplate {
 
     /**
      * Returns the Y component of the vector.
-     * @return 
+     *
+     * @return
      */
     public int getDy() {
         return deltaY;
@@ -359,7 +358,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @return
      */
     public String toAbrvString() {
@@ -401,7 +399,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @param from
      * @return
      */
@@ -425,7 +422,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @return
      */
     public double getDirection() {
@@ -457,7 +453,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @return
      */
     public boolean isDiagonal() {
@@ -465,7 +460,6 @@ final public class Step implements FlatTrackTemplate {
     }
 
     /**
-     *
      * @return
      */
     public int get8bitTemplate() {

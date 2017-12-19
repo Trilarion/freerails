@@ -23,14 +23,14 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.world.common.ImList;
-import freerails.world.common.ImPoint;
+import freerails.util.ImList;
+import freerails.util.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
@@ -39,7 +39,6 @@ import java.util.NoSuchElementException;
 
 /**
  * Generates a move that adds or upgrades a station.
- *
  */
 public class AddStationPreMove implements PreMove {
 
@@ -59,7 +58,6 @@ public class AddStationPreMove implements PreMove {
     }
 
     /**
-     *
      * @param p
      * @param trackRule
      * @param principal
@@ -71,7 +69,6 @@ public class AddStationPreMove implements PreMove {
     }
 
     /**
-     *
      * @param p
      * @param trackRule
      * @param principal
@@ -108,7 +105,6 @@ public class AddStationPreMove implements PreMove {
     }
 
     /**
-     *
      * @param world
      * @return
      */

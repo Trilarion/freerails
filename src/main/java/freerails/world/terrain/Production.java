@@ -18,13 +18,12 @@
 
 package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * This class represents the production of a raw material on a tile.
- *
  */
-public class Production implements FreerailsSerializable {
+public class Production implements Serializable {
 
     private static final long serialVersionUID = 3258125847641536052L;
     private final int cargoType;
@@ -35,7 +34,6 @@ public class Production implements FreerailsSerializable {
     private final int rate;
 
     /**
-     *
      * @param type
      * @param r
      */
@@ -67,7 +65,6 @@ public class Production implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCargoType() {
@@ -75,7 +72,6 @@ public class Production implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getRate() {

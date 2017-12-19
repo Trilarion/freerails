@@ -24,24 +24,20 @@ import java.io.Serializable;
 /**
  * Defines methods that let the server load and save game states, and get blank
  * maps for new games.
- *
  */
 public interface SavedGamesManager {
 
     /**
-     *
      * @return
      */
     String[] getSaveGameNames();
 
     /**
-     *
      * @return
      */
     String[] getNewMapNames();
 
     /**
-     *
      * @param w
      * @param s
      * @throws IOException
@@ -49,7 +45,6 @@ public interface SavedGamesManager {
     void saveGame(Serializable w, String s) throws IOException;
 
     /**
-     *
      * @param name
      * @return
      * @throws IOException
@@ -57,7 +52,6 @@ public interface SavedGamesManager {
     Serializable loadGame(String name) throws IOException;
 
     /**
-     *
      * @param name
      * @return
      * @throws IOException

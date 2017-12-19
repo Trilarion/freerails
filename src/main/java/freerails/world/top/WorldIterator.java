@@ -22,14 +22,12 @@
  */
 package freerails.world.top;
 
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /**
  * This interface lets the caller access the results of a search in the
  * gameworld. It is similar in concept to {@code java.sql.ResultSet}.
- *
  */
 public interface WorldIterator {
 
@@ -40,13 +38,15 @@ public interface WorldIterator {
 
     /**
      * Moves the cursor down one row from its current position.
-     * @return 
+     *
+     * @return
      */
     boolean next();
 
     /**
      * Moves the cursor up one row from its current position.
-     * @return 
+     *
+     * @return
      */
     boolean previous();
 
@@ -58,28 +58,32 @@ public interface WorldIterator {
 
     /**
      * Returns the element the curor is pointing to.
-     * @return 
+     *
+     * @return
      */
-    FreerailsSerializable getElement();
+    Serializable getElement();
 
     /**
      * Returns the index of the element the cursor is pointing to. The value
      * returned is index you would need to use in
      * {@code World.get(KEY key, int index)} to retrieve the same element
      * as is returned by {@code getElement()}
-     * @return 
+     *
+     * @return
      */
     int getIndex();
 
     /**
      * Returns the number of the row where the cursor is (the first row is 0).
-     * @return 
+     *
+     * @return
      */
     int getRowID();
 
     /**
      * Returns the number of rows.
-     * @return 
+     *
+     * @return
      */
     int size();
 
@@ -93,13 +97,15 @@ public interface WorldIterator {
 
     /**
      * Moves the cursor to the specified index.
+     *
      * @param row
      */
     void gotoRow(int row);
 
     /**
      * Returns the number of the row where the cursor is (the first row is 1).
-     * @return 
+     *
+     * @return
      */
     int getNaturalNumber();
 }

@@ -28,7 +28,6 @@ import java.io.ObjectStreamException;
 /**
  * A track piece that doesn't exist - using this avoids needing to check against
  * null before calling the methods on a track piece.
- *
  */
 final public class NullTrackPiece implements TrackPiece {
     private static final long serialVersionUID = 3258413915376268599L;
@@ -41,7 +40,6 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public static TrackPiece getInstance() {
@@ -49,7 +47,6 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public int getTrackGraphicID() {
@@ -57,7 +54,6 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public TrackRule getTrackRule() {
@@ -65,7 +61,6 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public TrackConfiguration getTrackConfiguration() {
@@ -87,7 +82,6 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public int getOwnerID() {
@@ -95,7 +89,6 @@ final public class NullTrackPiece implements TrackPiece {
     }
 
     /**
-     *
      * @return
      */
     public int getTrackTypeID() {

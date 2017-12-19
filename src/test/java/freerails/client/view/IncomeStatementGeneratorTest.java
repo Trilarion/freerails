@@ -18,11 +18,11 @@
 
 package freerails.client.view;
 
-import freerails.world.accounts.DeliverCargoReceipt;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
-import freerails.world.common.Money;
+import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.Money;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit tsst for IncomeStatementGenerator.
- *
  */
 public class IncomeStatementGeneratorTest extends TestCase {
     World w;
@@ -73,7 +72,6 @@ public class IncomeStatementGeneratorTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

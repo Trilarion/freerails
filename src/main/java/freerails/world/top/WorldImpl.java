@@ -19,22 +19,25 @@
 package freerails.world.top;
 
 import freerails.util.*;
-import freerails.world.FreerailsSerializable;
-import freerails.world.accounts.EconomicClimate;
-import freerails.world.accounts.Transaction;
-import freerails.world.accounts.TransactionAndTimeStamp;
-import freerails.world.common.*;
+import freerails.world.common.Activity;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.GameCalendar;
+import freerails.world.common.GameTime;
+import freerails.world.finances.EconomicClimate;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
+import freerails.world.finances.TransactionAndTimeStamp;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.track.FreerailsTile;
+import freerails.world.terrain.FreerailsTile;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * An implementation of World that uses standard java.util collections
  * internally.
- *
  */
 public class WorldImpl implements World {
 
@@ -48,17 +51,17 @@ public class WorldImpl implements World {
      */
     List2D<TransactionAndTimeStamp> bankAccounts;
     List1D<Money> currentBalance;
-    List1D<FreerailsSerializable> items;
+    List1D<Serializable> items;
     /**
      * A 3D list: D1 is player, D2 is type, D3 is element.
      */
-    List3D<FreerailsSerializable> lists;
-    FreerailsSerializable[][] map;
+    List3D<Serializable> lists;
+    Serializable[][] map;
     List1D<Player> players;
     /**
      * A 2D list: D1 is type, D2 is element.
      */
-    List2D<FreerailsSerializable> sharedLists;
+    List2D<Serializable> sharedLists;
     GameTime time = GameTime.BIG_BANG;
 
     /**
@@ -69,7 +72,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param mapWidth
      * @param mapHeight
      */
@@ -89,7 +91,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @param index
      * @param element
@@ -107,17 +108,16 @@ public class WorldImpl implements World {
         activityLists.addD3(playerIndex, index, ant);
     }
 
-    public int add(FreerailsPrincipal p, KEY key, FreerailsSerializable element) {
+    public int add(FreerailsPrincipal p, KEY key, Serializable element) {
         int playerIndex = p.getWorldIndex();
         return lists.addD3(playerIndex, key.getKeyID(), element);
     }
 
-    public int add(SKEY key, FreerailsSerializable element) {
+    public int add(SKEY key, Serializable element) {
         return sharedLists.addD2(key.getKeyID(), element);
     }
 
     /**
-     *
      * @param p
      * @param element
      * @return
@@ -164,7 +164,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @param k
      * @param index
@@ -177,7 +176,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -187,7 +185,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param k
      * @param index
      * @return
@@ -197,7 +194,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @return
      */
     public GameTime currentTime() {
@@ -259,21 +255,20 @@ public class WorldImpl implements World {
         return false;
     }
 
-    public FreerailsSerializable get(FreerailsPrincipal p, KEY key, int index) {
+    public Serializable get(FreerailsPrincipal p, KEY key, int index) {
         int playerIndex = p.getWorldIndex();
         return lists.get(playerIndex, key.getKeyID(), index);
     }
 
-    public FreerailsSerializable get(ITEM item) {
+    public Serializable get(ITEM item) {
         return items.get(item.getKeyID());
     }
 
-    public FreerailsSerializable get(SKEY key, int index) {
+    public Serializable get(SKEY key, int index) {
         return sharedLists.get(key.getKeyID(), index);
     }
 
     /**
-     *
      * @param p
      * @param index
      * @return
@@ -284,7 +279,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -294,7 +288,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -317,7 +310,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @return
      */
     public int getNumberOfPlayers() {
@@ -325,7 +317,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -335,7 +326,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -343,12 +333,11 @@ public class WorldImpl implements World {
         return players.get(i);
     }
 
-    public FreerailsSerializable getTile(int x, int y) {
+    public Serializable getTile(int x, int y) {
         return map[x][y];
     }
 
     /**
-     *
      * @param p
      * @param i
      * @return
@@ -360,7 +349,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @param i
      * @return
@@ -372,7 +360,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @param i
      * @return
@@ -393,7 +380,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -401,18 +387,17 @@ public class WorldImpl implements World {
         return p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size();
     }
 
-    public FreerailsSerializable removeLast(FreerailsPrincipal p, KEY key) {
+    public Serializable removeLast(FreerailsPrincipal p, KEY key) {
         int playerIndex = p.getWorldIndex();
         return lists.removeLastD3(playerIndex, key.getKeyID());
     }
 
-    public FreerailsSerializable removeLast(SKEY key) {
+    public Serializable removeLast(SKEY key) {
 
         return sharedLists.removeLastD2(key.getKeyID());
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -425,7 +410,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @param index
      * @return
@@ -469,25 +453,24 @@ public class WorldImpl implements World {
     }
 
     public void set(FreerailsPrincipal p, KEY key, int index,
-                    FreerailsSerializable element) {
+                    Serializable element) {
         int playerIndex = p.getWorldIndex();
         lists.set(playerIndex, key.getKeyID(), index, element);
     }
 
-    public void set(ITEM item, FreerailsSerializable element) {
+    public void set(ITEM item, Serializable element) {
         items.set(item.getKeyID(), element);
     }
 
-    public void set(SKEY key, int index, FreerailsSerializable element) {
+    public void set(SKEY key, int index, Serializable element) {
         sharedLists.set(key.getKeyID(), index, element);
     }
 
-    public void setTile(int x, int y, FreerailsSerializable element) {
+    public void setTile(int x, int y, Serializable element) {
         map[x][y] = element;
     }
 
     /**
-     *
      * @param t
      */
     public void setTime(GameTime t) {
@@ -502,12 +485,11 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param mapWidth
      * @param mapHeight
      */
     public void setupMap(int mapWidth, int mapHeight) {
-        map = new FreerailsSerializable[mapWidth][mapHeight];
+        map = new Serializable[mapWidth][mapHeight];
 
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
@@ -531,7 +513,6 @@ public class WorldImpl implements World {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -543,7 +524,7 @@ public class WorldImpl implements World {
     /**
      *
      */
-    public static class ActivityAndTime implements FreerailsSerializable {
+    public static class ActivityAndTime implements Serializable {
 
         private static final long serialVersionUID = -5149207279086814649L;
 
@@ -604,7 +585,6 @@ public class WorldImpl implements World {
         private ActivityAndTime ant;
 
         /**
-         *
          * @param playerIndex
          * @param index
          */
@@ -621,7 +601,6 @@ public class WorldImpl implements World {
         }
 
         /**
-         *
          * @return
          */
         public Activity getActivity() {
@@ -629,7 +608,6 @@ public class WorldImpl implements World {
         }
 
         /**
-         *
          * @return
          */
         public double getDuration() {
@@ -645,17 +623,15 @@ public class WorldImpl implements World {
         }
 
         /**
-         *
          * @param t
          * @return
          */
-        public FreerailsSerializable getState(double t) {
+        public Serializable getState(double t) {
             double dt = absolute2relativeTime(t);
             return ant.act.getState(dt);
         }
 
         /**
-         *
          * @return
          */
         public boolean hasNext() {
@@ -682,7 +658,6 @@ public class WorldImpl implements World {
         }
 
         /**
-         *
          * @return
          */
         public boolean hasPrevious() {
@@ -690,7 +665,6 @@ public class WorldImpl implements World {
         }
 
         /**
-         *
          * @throws NoSuchElementException
          */
         public void previousActivity() throws NoSuchElementException {

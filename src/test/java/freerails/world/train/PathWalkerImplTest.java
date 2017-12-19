@@ -18,9 +18,9 @@
 
 package freerails.world.train;
 
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
 import freerails.world.common.FreerailsPathIteratorImpl;
-import freerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 import java.awt.*;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 /**
  * JUnit test.
- *
  */
 public class PathWalkerImplTest extends TestCase {
     FreerailsPathIterator it;
@@ -36,7 +35,6 @@ public class PathWalkerImplTest extends TestCase {
     PathWalker pw;
 
     /**
-     *
      * @param arg0
      */
     public PathWalkerImplTest(String arg0) {
@@ -44,7 +42,6 @@ public class PathWalkerImplTest extends TestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {

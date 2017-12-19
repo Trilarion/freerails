@@ -23,8 +23,8 @@
  */
 package freerails.world.track;
 
-import freerails.world.common.Money;
 import freerails.world.common.Step;
+import freerails.world.finances.Money;
 import freerails.world.terrain.TerrainType;
 
 import java.util.Iterator;
@@ -35,7 +35,6 @@ import java.util.Iterator;
  * node's track can be doubled, on which terrain types it can be built, and the
  * maximum number of consecutive nodes of this type (used for bridges and
  * tunnels).
- *
  */
 final public class TrackRuleImpl implements TrackRule {
     private static final long serialVersionUID = 3257281414171801401L;
@@ -53,7 +52,6 @@ final public class TrackRuleImpl implements TrackRule {
      */
 
     /**
-     *
      * @param p
      * @param lc
      * @param ltp
@@ -70,7 +68,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @param TerrainType
      * @return
      */
@@ -81,6 +78,7 @@ final public class TrackRuleImpl implements TrackRule {
     /**
      * If the specified object is a track rule, comparison is by category then
      * price.
+     *
      * @param otherRule
      */
     public int compareTo(TrackRule otherRule) {
@@ -113,7 +111,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public TrackRule.TrackCategories getCategory() {
@@ -121,7 +118,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public LegalTrackConfigurations getLegalConfigurations() {
@@ -129,7 +125,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
@@ -137,7 +132,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @param directionComingFrom
      * @return
      */
@@ -147,7 +141,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public LegalTrackPlacement getLegalTrackPlacement() {
@@ -155,7 +148,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Money getMaintenanceCost() {
@@ -163,7 +155,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public int getMaximumConsecutivePieces() {
@@ -171,7 +162,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Money getPrice() {
@@ -179,7 +169,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public TrackRuleProperties getProperties() {
@@ -187,7 +176,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public int getStationRadius() {
@@ -195,7 +183,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public String getTypeName() {
@@ -213,7 +200,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public boolean isStation() {
@@ -221,7 +207,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @param trackTemplateToTest
      * @return
      */
@@ -239,7 +224,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @param config
      * @return
      */
@@ -248,7 +232,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public boolean isDouble() {
@@ -257,7 +240,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     *
      * @return
      */
     public Money getFixedCost() {

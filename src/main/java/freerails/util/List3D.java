@@ -26,26 +26,22 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- *
  * @param <T>
  */
 public interface List3D<T> extends Serializable {
 
     /**
-     *
      * @return
      */
     int sizeD1();
 
     /**
-     *
      * @param d1
      * @return
      */
     int sizeD2(int d1);
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -53,7 +49,6 @@ public interface List3D<T> extends Serializable {
     int sizeD3(int d1, int d2);
 
     /**
-     *
      * @param d1
      * @param d2
      * @param d3
@@ -62,7 +57,6 @@ public interface List3D<T> extends Serializable {
     T get(int d1, int d2, int d3);
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -70,7 +64,6 @@ public interface List3D<T> extends Serializable {
     List<T> get(int d1, int d2);
 
     /**
-     *
      * @param d1
      * @param d2
      * @return
@@ -83,26 +76,22 @@ public interface List3D<T> extends Serializable {
     void removeLastD1();
 
     /**
-     *
      * @param d1
      */
     void removeLastD2(int d1);
 
     /**
-     *
      * @return
      */
     int addD1();
 
     /**
-     *
      * @param d1
      * @return
      */
     int addD2(int d1);
 
     /**
-     *
      * @param d1
      * @param d2
      * @param element
@@ -111,7 +100,6 @@ public interface List3D<T> extends Serializable {
     int addD3(int d1, int d2, T element);
 
     /**
-     *
      * @param d1
      * @param d2
      * @param d3

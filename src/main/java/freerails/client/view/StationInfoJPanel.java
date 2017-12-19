@@ -26,14 +26,13 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
+import freerails.util.ImPoint;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.*;
-import freerails.world.track.FreerailsTile;
 import freerails.world.train.WagonType;
 import org.apache.log4j.Logger;
 
@@ -41,11 +40,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /**
  * This JPanel displays the supply and demand at a station.
- *
  */
 public class StationInfoJPanel extends JPanel implements View,
         WorldListListener {
@@ -65,7 +64,7 @@ public class StationInfoJPanel extends JPanel implements View,
      * The index of the cargoBundle associated with this station.
      */
     private int cargoBundleIndex;
-    private FreerailsSerializable lastCargoBundle = null;
+    private Serializable lastCargoBundle = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton close;
     private javax.swing.JLabel jLabel1;
@@ -316,7 +315,7 @@ public class StationInfoJPanel extends JPanel implements View,
          */
         if (w.boundsContain(playerPrincipal, KEY.CARGO_BUNDLES,
                 cargoBundleIndex)) {
-            FreerailsSerializable currentCargoBundle = w.get(playerPrincipal,
+            Serializable currentCargoBundle = w.get(playerPrincipal,
                     KEY.CARGO_BUNDLES, this.cargoBundleIndex);
             if (lastCargoBundle != currentCargoBundle) {
                 this.display();

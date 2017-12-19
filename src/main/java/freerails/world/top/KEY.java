@@ -19,24 +19,21 @@
 package freerails.world.top;
 
 import freerails.util.Utils;
-import freerails.world.FreerailsSerializable;
 
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 /**
- *
  * This class provides a set of keys to access the lists of elements in the game
  * world that are indexed by player.
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * It implements the typesafe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
- *
- *
  */
 @freerails.util.InstanceControlled
-public class KEY implements FreerailsSerializable {
+public class KEY implements Serializable {
     private static final long serialVersionUID = 3257572793275987001L;
 
     /**
@@ -98,7 +95,6 @@ public class KEY implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param keyNum
      * @return
      */

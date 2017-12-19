@@ -18,17 +18,19 @@
 
 package freerails.world.common;
 
+import freerails.util.IntLine;
+
 /**
  * This interface lets the caller retrieve a path made up of a series of
  * straight lines. E.g. it lets the path a train takes across a section of track
  * be retrieved without revealing the underlying objects that represent the
  * track.
- *
  */
 public interface FreerailsPathIterator extends FreerailsMutableSerializable {
     /**
      * Tests whether the path has another segment.
-     * @return 
+     *
+     * @return
      */
     boolean hasNext();
 

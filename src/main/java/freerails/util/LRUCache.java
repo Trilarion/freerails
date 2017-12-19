@@ -28,11 +28,12 @@ import java.util.Map;
  * This cache has a fixed maximum number of elements ({@code cacheSize}).
  * If the cache is full and another entry is added, the LRU (least recently
  * used) entry is dropped.
- *
+ * <p>
  * This class is thread-safe. All methods of this class are synchronized.<br>
  * Author: Christian d'Heureuse (<a
  * href="http://www.source-code.biz">www.source-code.biz</a>)<br>
  * License: <a href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.
+ *
  * @param <K>
  * @param <V>
  */

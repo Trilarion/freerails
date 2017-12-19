@@ -18,19 +18,18 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * JUnit test for NewLocalConnection.
- *
  */
 public class LocalConnectionTest extends TestCase {
-    private final FreerailsSerializable[] EmptyArray = new FreerailsSerializable[0];
+    private final Serializable[] EmptyArray = new Serializable[0];
     private LocalConnection localConnection;
     private Server server;
 
@@ -38,7 +37,7 @@ public class LocalConnectionTest extends TestCase {
      * sometimes it works ...
      */
     public void testReadFromClient() {
-        FreerailsSerializable[] objectsRead;
+        Serializable[] objectsRead;
 
         try {
             objectsRead = localConnection.readFromClient();
@@ -49,12 +48,11 @@ public class LocalConnectionTest extends TestCase {
             localConnection.writeToServer(m); // From the client.
             objectsRead = localConnection.readFromClient();
 
-            FreerailsSerializable[] expectedArray = {m};
+            Serializable[] expectedArray = {m};
             assertTrue(Arrays.equals(expectedArray, objectsRead));
             objectsRead = localConnection.readFromClient();
             assertTrue(Arrays.equals(EmptyArray, objectsRead));
         } catch (IOException e) {
-            e.printStackTrace();
             fail();
         }
     }
@@ -77,7 +75,6 @@ public class LocalConnectionTest extends TestCase {
 
             assertEquals(m, o);
         } catch (Exception e) {
-            e.printStackTrace();
             fail();
         }
     }
@@ -86,14 +83,13 @@ public class LocalConnectionTest extends TestCase {
      *
      */
     public void testReadFromServer() {
-        FreerailsSerializable[] objectsRead;
+        Serializable[] objectsRead;
 
         try {
             objectsRead = localConnection.readFromServer();
             assertNotNull(objectsRead);
             assertTrue(Arrays.equals(EmptyArray, objectsRead));
         } catch (IOException e) {
-            e.printStackTrace();
             fail();
         }
     }
@@ -120,7 +116,6 @@ public class LocalConnectionTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -133,7 +128,6 @@ public class LocalConnectionTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -154,12 +148,11 @@ public class LocalConnectionTest extends TestCase {
         public void run() {
             try {
                 while (isKeepGoing()) {
-                    FreerailsSerializable fs = connection
+                    Serializable fs = connection
                             .waitForObjectFromClient();
                     connection.writeToClient(fs);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 fail();
             }
         }

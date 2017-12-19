@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 
 /**
  * Junit test for GameCalendar.
- *
  */
 public class GameCalenderTest extends TestCase {
 

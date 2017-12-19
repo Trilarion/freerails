@@ -33,13 +33,11 @@ import java.io.IOException;
 
 /**
  * Paints a tile for which there only one tile icon.
- *
  */
 final public class StandardTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {
 
     /**
-     *
      * @param imageManager
      * @param rgbValues
      * @param tileModel
@@ -54,7 +52,6 @@ final public class StandardTileRenderer extends
     }
 
     /**
-     *
      * @param typeName
      * @return
      */
@@ -72,7 +69,6 @@ final public class StandardTileRenderer extends
     }
 
     /**
-     *
      * @param i
      * @return
      */

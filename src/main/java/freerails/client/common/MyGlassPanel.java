@@ -25,7 +25,6 @@ package freerails.client.common;
 
 /**
  * A transparent JPanel that catches key presses and mouse clicks.
- *
  */
 public class MyGlassPanel extends javax.swing.JPanel {
     private static final long serialVersionUID = 3976735856986239795L;

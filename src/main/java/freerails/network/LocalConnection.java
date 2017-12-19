@@ -18,13 +18,11 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * A connection between the a client and server in the same JVM.
- *
  */
 public class LocalConnection implements ConnectionToClient, ConnectionToServer {
 
@@ -39,14 +37,14 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
 
     private final SynchronizedFlag status = new SynchronizedFlag(true);
 
-    public FreerailsSerializable[] readFromClient() throws IOException {
+    public Serializable[] readFromClient() throws IOException {
         if (status.isOpen()) {
             return fromClient.read();
         }
         throw new IOException();
     }
 
-    public FreerailsSerializable waitForObjectFromClient() throws IOException,
+    public Serializable waitForObjectFromClient() throws IOException,
             InterruptedException {
         synchronized (fromClient) {
             if (fromClient.size() == 0) {
@@ -60,7 +58,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
         }
     }
 
-    public void writeToClient(FreerailsSerializable object) throws IOException {
+    public void writeToClient(Serializable object) throws IOException {
         if (status.isOpen()) {
             synchronized (fromServer) {
                 fromServer.write(object);
@@ -71,14 +69,14 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
         }
     }
 
-    public FreerailsSerializable[] readFromServer() throws IOException {
+    public Serializable[] readFromServer() throws IOException {
         if (status.isOpen()) {
             return fromServer.read();
         }
         throw new IOException();
     }
 
-    public FreerailsSerializable waitForObjectFromServer() throws IOException,
+    public Serializable waitForObjectFromServer() throws IOException,
             InterruptedException {
         if (status.isOpen()) {
             synchronized (fromServer) {
@@ -92,7 +90,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
         throw new IOException();
     }
 
-    public void writeToServer(FreerailsSerializable object) throws IOException {
+    public void writeToServer(Serializable object) throws IOException {
         if (status.isOpen()) {
             synchronized (fromClient) {
                 fromClient.write(object);
@@ -116,7 +114,6 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
     }
 
     /**
-     *
      * @return
      */
     public String getServerDetails() {

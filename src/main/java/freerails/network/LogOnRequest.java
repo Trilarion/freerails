@@ -18,20 +18,18 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * A client sends an instance of this class to the server when it wishes to log
  * on.
- *
  */
-public class LogOnRequest implements FreerailsSerializable {
+public class LogOnRequest implements Serializable {
     private static final long serialVersionUID = 3257854263924240949L;
     private final String username;
     private final String password;
 
     /**
-     *
      * @param username
      * @param password
      */
@@ -64,7 +62,6 @@ public class LogOnRequest implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getPassword() {
@@ -72,7 +69,6 @@ public class LogOnRequest implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getUsername() {

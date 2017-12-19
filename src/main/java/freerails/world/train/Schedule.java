@@ -22,11 +22,10 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
 
 /**
  * Defines methods to access a train's schedule.
- *
  */
 public interface Schedule {
 
@@ -41,7 +40,6 @@ public interface Schedule {
     int MAXIMUM_NUMBER_OF_ORDER = 6;
 
     /**
-     *
      * @param i
      * @return
      */
@@ -49,32 +47,35 @@ public interface Schedule {
 
     /**
      * Returns the number of the order the train is currently carry out.
-     * @return 
+     *
+     * @return
      */
     int getOrderToGoto();
 
     /**
      * Returns the station number of the next station the train is scheduled to
      * stop at.
-     * @return 
+     *
+     * @return
      */
     int getStationToGoto();
 
     /**
      * Returns the wagons to add at the next scheduled stop.
-     * @return 
+     *
+     * @return
      */
 
     ImInts getWagonsToAdd();
 
     /**
      * Returns the value for the autoconsist flag at the next scheduled stop.
-     * @return 
+     *
+     * @return
      */
     boolean autoConsist();
 
     /**
-     *
      * @return
      */
     boolean hasPriorityOrders();
@@ -87,7 +88,6 @@ public interface Schedule {
     int getNumOrders();
 
     /**
-     *
      * @return
      */
     int getNextScheduledOrder();

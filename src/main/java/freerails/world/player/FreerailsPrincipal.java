@@ -18,26 +18,24 @@
 
 package freerails.world.player;
 
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.security.Principal;
 
 /**
  * This interface identifies a principal. This interface may be extended in the
  * future in order to provide faster lookups, rather than using name
  * comparisons.
- *
+ * <p>
  * A principal represents an entity which can view or alter the game world. A
  * principal usually corresponds to a player's identity, but may also represent
  * an authorititative server, or a another game entity such as a corporation.
  * All entities which may own game world objects must be represented by a
  * principal.
  */
-public abstract class FreerailsPrincipal implements Principal, FreerailsSerializable {
+public abstract class FreerailsPrincipal implements Principal, Serializable {
     private final int worldIndex;
 
     /**
-     *
      * @param worldIndex
      */
     public FreerailsPrincipal(int worldIndex) {

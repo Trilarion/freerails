@@ -23,12 +23,12 @@
 package freerails.controller;
 
 import freerails.server.MapFixtureFactory2;
-import freerails.world.accounts.DeliverCargoReceipt;
-import freerails.world.accounts.Transaction;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.common.GameCalendar;
 import freerails.world.common.GameTime;
-import freerails.world.common.Money;
+import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ITEM;
 import freerails.world.top.World;
@@ -44,7 +44,6 @@ public class StockPriceCalculatorTest extends TestCase {
     StockPriceCalculator calc;
 
     /**
-     *
      * @throws Exception
      */
     @Override

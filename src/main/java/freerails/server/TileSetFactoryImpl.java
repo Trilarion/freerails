@@ -30,12 +30,10 @@ import freerails.world.top.World;
 /**
  * This class adds cargo and terrain types defined in an XML file to a World
  * object.
- *
  */
 public class TileSetFactoryImpl implements TileSetFactory {
 
     /**
-     *
      * @param w
      */
     public void addTerrainTileTypesList(World w) {

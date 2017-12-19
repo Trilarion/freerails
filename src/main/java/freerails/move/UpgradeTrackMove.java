@@ -22,7 +22,7 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.track.TrackPiece;
 
 import java.awt.*;
@@ -30,7 +30,6 @@ import java.awt.*;
 /**
  * This CompositeMove changes the track type at a point on the map and charges
  * the players account for the cost of the change.
- *
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
     private static final long serialVersionUID = 3907215961470875442L;
@@ -40,7 +39,6 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
     }
 
     /**
-     *
      * @param before
      * @param after
      * @param p
@@ -54,7 +52,6 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
     }
 
     /**
-     *
      * @return
      */
     public Rectangle getUpdatedTiles() {

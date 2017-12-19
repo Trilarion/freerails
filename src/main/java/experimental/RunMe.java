@@ -30,12 +30,10 @@ import javax.swing.*;
 
 /**
  * Tests that ClientJFrame and ScreenHandler work together.
- *
  */
 public class RunMe {
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {

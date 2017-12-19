@@ -23,8 +23,8 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.common.Painter;
 import freerails.client.Constants;
+import freerails.client.common.Painter;
 import freerails.world.terrain.City;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
@@ -33,13 +33,11 @@ import java.awt.*;
 
 /**
  * Paints the city names on the map.
- *
  */
 public class CityNamesRenderer implements Painter {
     private final ReadOnlyWorld w;
 
     /**
-     *
      * @param world
      */
     public CityNamesRenderer(ReadOnlyWorld world) {
@@ -47,7 +45,6 @@ public class CityNamesRenderer implements Painter {
     }
 
     /**
-     *
      * @param g
      * @param newVisibleRectectangle
      */

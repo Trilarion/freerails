@@ -18,14 +18,14 @@
 
 package freerails.world.station;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImList;
+import freerails.util.ImList;
+
+import java.io.Serializable;
 
 /**
  * This class represents a station.
- *
  */
-public class StationModel implements FreerailsSerializable {
+public class StationModel implements Serializable {
     private static final long serialVersionUID = 3256442503979874355L;
 
     /**
@@ -48,7 +48,6 @@ public class StationModel implements FreerailsSerializable {
     private final ImList<PlannedTrain> production;
 
     /**
-     *
      * @param s
      * @param converted
      */
@@ -66,7 +65,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param stationName
@@ -101,7 +99,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param s
      * @param production
      */
@@ -117,7 +114,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param s
      * @param demand
      */
@@ -135,7 +131,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param s
      * @param supply
      */
@@ -181,7 +176,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ConvertedAtStation getConverted() {
@@ -204,7 +198,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getStationName() {
@@ -212,7 +205,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getStationX() {
@@ -220,7 +212,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getStationY() {
@@ -228,7 +219,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public ImList<PlannedTrain> getProduction() {
@@ -236,7 +226,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public DemandForCargo getDemand() {
@@ -244,7 +233,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public SupplyAtStation getSupply() {
@@ -252,7 +240,6 @@ public class StationModel implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getCargoBundleID() {

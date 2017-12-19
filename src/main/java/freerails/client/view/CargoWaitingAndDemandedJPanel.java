@@ -44,7 +44,6 @@ import java.util.List;
 /**
  * A JPanel that displays the cargo waiting and demanded at a station - used on
  * the select station popup window.
- *
  */
 public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         View {
@@ -166,7 +165,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     }// GEN-END:initComponents
 
     /**
-     *
      * @param model
      * @param vl
      * @param closeAction
@@ -177,7 +175,6 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     }
 
     /**
-     *
      * @param newStationID
      */
     public void display(int newStationID) {

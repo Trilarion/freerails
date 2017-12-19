@@ -22,12 +22,12 @@
  */
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  *
  */
-public interface SpeedAgainstTime extends FreerailsSerializable {
+public interface SpeedAgainstTime extends Serializable {
 
     /**
      * Returns the distance travelled at time t. The returned value, s,
@@ -63,14 +63,14 @@ public interface SpeedAgainstTime extends FreerailsSerializable {
 
     /**
      * @param t
-     * @return 
+     * @return
      * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcV(double t);
 
     /**
      * @param t
-     * @return 
+     * @return
      * @throws IllegalArgumentException iff t < 0 or t > getT()
      */
     double calcA(double t);

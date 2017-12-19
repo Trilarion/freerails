@@ -41,7 +41,6 @@ public class TrainCrashException extends Exception {
     }
 
     /**
-     *
      * @param aTrain
      * @param bTrain
      */
@@ -51,7 +50,6 @@ public class TrainCrashException extends Exception {
     }
 
     /**
-     *
      * @return
      */
     public int getTrainA() {
@@ -59,7 +57,6 @@ public class TrainCrashException extends Exception {
     }
 
     /**
-     *
      * @return
      */
     public int getTrainB() {

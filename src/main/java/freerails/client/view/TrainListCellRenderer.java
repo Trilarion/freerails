@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.common.ImInts;
+import freerails.util.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.NonNullElements;
@@ -41,7 +41,6 @@ import java.io.IOException;
 
 /**
  * This JPanel displays an engine and a number of wagons.
- *
  */
 public class TrainListCellRenderer extends JPanel implements View,
         ListCellRenderer, WorldListListener {
@@ -79,7 +78,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param mr
      * @param vl
      */
@@ -89,7 +87,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param b
      */
     public void setCenterTrain(boolean b) {
@@ -97,7 +94,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param newTrainNumber
      */
     public void display(int newTrainNumber) {
@@ -118,7 +114,6 @@ public class TrainListCellRenderer extends JPanel implements View,
         try {
             images[0] = vl.getScaledImage(engineFilename, height);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IllegalArgumentException(engineFilename);
         }
         for (int i = 0; i < wagons.size(); i++) {
@@ -129,7 +124,6 @@ public class TrainListCellRenderer extends JPanel implements View,
             try {
                 images[i + 1] = vl.getScaledImage(wagonFilename, height);
             } catch (IOException e) {
-                e.printStackTrace();
                 throw new IllegalArgumentException(wagonFilename);
             }
 
@@ -137,7 +131,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param newTrainNumber
      * @param newScheduleOrderID
      */
@@ -176,7 +169,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param mr
      * @param vl
      * @param closeAction
@@ -213,7 +205,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param i
      */
     public void setHeight(int i) {
@@ -237,7 +228,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param p
@@ -255,7 +245,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param p
@@ -264,7 +253,6 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param p

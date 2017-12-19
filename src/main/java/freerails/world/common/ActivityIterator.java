@@ -22,8 +22,7 @@
  */
 package freerails.world.common;
 
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /**
@@ -32,13 +31,11 @@ import java.util.NoSuchElementException;
 public interface ActivityIterator {
 
     /**
-     *
      * @return
      */
     boolean hasNext();
 
     /**
-     *
      * @throws NoSuchElementException
      */
     void nextActivity() throws NoSuchElementException;
@@ -58,7 +55,6 @@ public interface ActivityIterator {
     double getFinishTime();
 
     /**
-     *
      * @return
      */
     double getDuration();
@@ -74,14 +70,12 @@ public interface ActivityIterator {
     double absolute2relativeTime(double absoluteTime);
 
     /**
-     *
      * @param absoluteTime
      * @return
      */
-    FreerailsSerializable getState(double absoluteTime);
+    Serializable getState(double absoluteTime);
 
     /**
-     *
      * @return
      */
     Activity getActivity();
@@ -92,13 +86,11 @@ public interface ActivityIterator {
     void gotoLastActivity();
 
     /**
-     *
      * @throws NoSuchElementException
      */
     void previousActivity() throws NoSuchElementException;
 
     /**
-     *
      * @return
      */
     boolean hasPrevious();

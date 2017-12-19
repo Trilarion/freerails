@@ -23,15 +23,15 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.FreerailsSerializable;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.World;
 
+import java.io.Serializable;
+
 /**
  * All Moves that replace an item in a list with another should extend this
  * class.
- *
  */
 public class ChangeItemInListMove implements ListMove {
     private static final long serialVersionUID = -4457694821370844051L;
@@ -40,22 +40,21 @@ public class ChangeItemInListMove implements ListMove {
 
     private final int index;
 
-    private final FreerailsSerializable before;
+    private final Serializable before;
 
-    private final FreerailsSerializable after;
+    private final Serializable after;
 
     private final FreerailsPrincipal principal;
 
     /**
-     *
      * @param k
      * @param index
      * @param before
      * @param after
      * @param p
      */
-    public ChangeItemInListMove(KEY k, int index, FreerailsSerializable before,
-                                FreerailsSerializable after, FreerailsPrincipal p) {
+    public ChangeItemInListMove(KEY k, int index, Serializable before,
+                                Serializable after, FreerailsPrincipal p) {
         this.before = before;
         this.after = after;
         this.index = index;
@@ -64,7 +63,6 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     /**
-     *
      * @return
      */
     public boolean beforeEqualsAfter() {
@@ -97,11 +95,11 @@ public class ChangeItemInListMove implements ListMove {
         return false;
     }
 
-    public FreerailsSerializable getAfter() {
+    public Serializable getAfter() {
         return after;
     }
 
-    public FreerailsSerializable getBefore() {
+    public Serializable getBefore() {
         return before;
     }
 
@@ -114,7 +112,6 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {
@@ -134,14 +131,13 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     /**
-     *
      * @param to
      * @param from
      * @param w
      * @return
      */
-    protected MoveStatus move(FreerailsSerializable to,
-                              FreerailsSerializable from, World w) {
+    protected MoveStatus move(Serializable to,
+                              Serializable from, World w) {
         MoveStatus ms = tryMove(to, from, w);
 
         if (ms.ok) {
@@ -165,20 +161,19 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     /**
-     *
      * @param to
      * @param from
      * @param w
      * @return
      */
-    protected MoveStatus tryMove(FreerailsSerializable to,
-                                 FreerailsSerializable from, World w) {
+    protected MoveStatus tryMove(Serializable to,
+                                 Serializable from, World w) {
         if (index >= w.size(principal, listKey)) {
             return MoveStatus.moveFailed("w.size(listKey) is "
                     + w.size(principal, listKey) + " but index is " + index);
         }
 
-        FreerailsSerializable item2change = w.get(principal, listKey, index);
+        Serializable item2change = w.get(principal, listKey, index);
 
         if (null == item2change) {
             if (null == from) {

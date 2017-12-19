@@ -24,12 +24,10 @@ import junit.framework.TestCase;
 /**
  * This class formats and integer as a binary number with a specified number of
  * digits.
- *
  */
 public class BinaryNumberFormatterTest extends TestCase {
 
     /**
-     *
      * @param arg0
      */
     public BinaryNumberFormatterTest(String arg0) {

@@ -37,7 +37,6 @@ public class TrackPieceImplTest extends TestCase {
     private World w;
 
     /**
-     *
      * @throws Exception
      */
     @Override

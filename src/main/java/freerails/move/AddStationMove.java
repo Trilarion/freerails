@@ -22,8 +22,8 @@
  */
 package freerails.move;
 
+import freerails.util.ImPoint;
 import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.common.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -34,7 +34,6 @@ import freerails.world.top.SKEY;
  * This {@link CompositeMove}adds a station to the station list and adds a
  * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
  * list.
- *
  */
 public class AddStationMove extends CompositeMove {
     private static final long serialVersionUID = 3256728398461089080L;
@@ -44,7 +43,6 @@ public class AddStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @param w
      * @param stationName
      * @param p
@@ -70,7 +68,6 @@ public class AddStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @param upgradeTrackMove
      * @return
      */
@@ -80,7 +77,6 @@ public class AddStationMove extends CompositeMove {
     }
 
     /**
-     *
      * @return
      */
     public StationModel getNewStation() {

@@ -18,33 +18,29 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  * Intended to let objects be safely passed between threads. 666 perhaps an
  * arrayList is better (-> profile it)
- *
  */
 public class SychronizedQueue {
-    private final LinkedList<FreerailsSerializable> queue = new LinkedList<>();
+    private final LinkedList<Serializable> queue = new LinkedList<>();
 
     /**
-     *
      * @param f
      */
-    public synchronized void write(FreerailsSerializable f) {
+    public synchronized void write(Serializable f) {
         queue.add(f);
     }
 
     /**
-     *
      * @return
      */
-    public synchronized FreerailsSerializable[] read() {
+    public synchronized Serializable[] read() {
         int length = queue.size();
-        FreerailsSerializable[] read = new FreerailsSerializable[length];
+        Serializable[] read = new Serializable[length];
 
         for (int i = 0; i < length; i++) {
             read[i] = queue.removeFirst();
@@ -54,7 +50,6 @@ public class SychronizedQueue {
     }
 
     /**
-     *
      * @return
      */
     public synchronized int size() {
@@ -62,10 +57,9 @@ public class SychronizedQueue {
     }
 
     /**
-     *
      * @return
      */
-    public synchronized FreerailsSerializable getFirst() {
+    public synchronized Serializable getFirst() {
         return queue.removeFirst();
     }
 }

@@ -22,7 +22,7 @@ import freerails.client.renderer.StationRadiusRenderer;
 import freerails.client.view.ActionRoot;
 import freerails.client.view.StationBuildModel;
 import freerails.controller.ModelRoot;
-import freerails.world.track.FreerailsTile;
+import freerails.world.terrain.FreerailsTile;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -37,7 +37,6 @@ import java.beans.PropertyChangeListener;
 /**
  * This JPopupMenu displays the list of station types that are available and
  * builds the type that is selected.
- *
  */
 public class StationTypesPopup extends JPopupMenu {
     private static final long serialVersionUID = 3258415040658093364L;
@@ -59,7 +58,6 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -73,7 +71,6 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     /**
-     *
      * @param mr
      * @param actionRoot
      * @param srr
@@ -158,7 +155,6 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     /**
-     *
      * @param invoker
      * @param x
      * @param y

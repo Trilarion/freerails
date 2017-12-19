@@ -28,7 +28,6 @@ import freerails.world.top.World;
 /**
  * A MoveExecutor that executes moves on the world object passed to its
  * constructor.
- *
  */
 public class SimpleMoveExecutor implements MoveExecutor {
 
@@ -37,7 +36,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
     private final FreerailsPrincipal p;
 
     /**
-     *
      * @param world
      * @param playerID
      */
@@ -48,7 +46,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     *
      * @param m
      * @return
      */
@@ -57,7 +54,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     *
      * @param pm
      * @return
      */
@@ -67,7 +63,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     *
      * @param m
      * @return
      */
@@ -76,7 +71,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     *
      * @return
      */
     public ReadOnlyWorld getWorld() {
@@ -84,7 +78,6 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     *
      * @return
      */
     public FreerailsPrincipal getPrincipal() {

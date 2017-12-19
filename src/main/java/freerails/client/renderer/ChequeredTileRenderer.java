@@ -32,12 +32,10 @@ import java.io.IOException;
 
 /**
  * Paints 2 variations of a tile icon a chequered pattern.
- *
  */
 final public class ChequeredTileRenderer extends AbstractTileRenderer {
 
     /**
-     *
      * @param imageManager
      * @param rgbValues
      * @param tileModel
@@ -55,7 +53,6 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @param w
@@ -75,7 +72,6 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     *
      * @param i
      * @return
      */

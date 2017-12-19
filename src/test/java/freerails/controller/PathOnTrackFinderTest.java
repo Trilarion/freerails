@@ -24,7 +24,7 @@ package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.top.World;
 import junit.framework.TestCase;
@@ -48,7 +48,6 @@ public class PathOnTrackFinderTest extends TestCase {
     BuildTrackStrategy bts;
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -64,7 +63,6 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

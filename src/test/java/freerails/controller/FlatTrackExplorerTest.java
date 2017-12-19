@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.Player;
@@ -32,16 +32,14 @@ import java.util.HashSet;
 
 /**
  * JUnit test for FlatTrackExplorer.
- *
+ * <p>
  * 24-Nov-2002
- *
  */
 public class FlatTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
     private WorldImpl world;
 
     /**
-     *
      * @param arg0
      */
     public FlatTrackExplorerTest(String arg0) {
@@ -74,7 +72,6 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     /**
-     *
      * @throws NoTrackException
      */
     public void testGetFirstVectorToTry() throws NoTrackException {
@@ -163,7 +160,6 @@ public class FlatTrackExplorerTest extends TestCase {
     }
 
     /**
-     *
      * @throws NoTrackException
      */
     public void testHasNext() throws NoTrackException {

@@ -27,7 +27,6 @@ import java.util.HashMap;
 
 /**
  * Stores saved games in memory rather than on disk.
- *
  */
 public class SavedGamesManager4UnitTests implements SavedGamesManager {
     private final String[] mapsAvailable = {"map1", "map2"};
@@ -35,7 +34,6 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
     private final HashMap<String, Serializable> savedGames = new HashMap<>();
 
     /**
-     *
      * @return
      */
     public String[] getSaveGameNames() {
@@ -51,7 +49,6 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
     }
 
     /**
-     *
      * @return
      */
     public String[] getNewMapNames() {
@@ -59,7 +56,6 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
     }
 
     /**
-     *
      * @param w
      * @param name
      * @throws IOException
@@ -71,7 +67,6 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
     }
 
     /**
-     *
      * @param name
      * @return
      * @throws IOException
@@ -83,7 +78,6 @@ public class SavedGamesManager4UnitTests implements SavedGamesManager {
     }
 
     /**
-     *
      * @param name
      * @return
      * @throws IOException

@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
@@ -32,8 +32,8 @@ import java.util.NoSuchElementException;
 /**
  * Class to build a station at a given point, names station after nearest city.
  * If that name is taken then a "Junction" or "Siding" is added to the name.
- *
- *
+ * <p>
+ * <p>
  * Updated 12th April 2003 by Scott Bennett to include nearest city names.
  */
 public class StationBuilder {
@@ -43,7 +43,6 @@ public class StationBuilder {
     private int ruleNumber;
 
     /**
-     *
      * @param executor
      */
     public StationBuilder(MoveExecutor executor) {
@@ -64,7 +63,6 @@ public class StationBuilder {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -80,7 +78,6 @@ public class StationBuilder {
     }
 
     /**
-     *
      * @param p
      * @return
      */
@@ -100,7 +97,6 @@ public class StationBuilder {
     }
 
     /**
-     *
      * @param ruleNumber
      */
     public void setStationType(int ruleNumber) {

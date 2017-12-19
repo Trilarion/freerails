@@ -32,13 +32,11 @@ import freerails.world.top.World;
 /**
  * An UntriedMoveReceiver that executes moves on the world object passed to its
  * constructor.
- *
  */
 public final class SimpleMoveReciever implements UntriedMoveReceiver {
     private final World w;
 
     /**
-     *
      * @param w
      */
     public SimpleMoveReciever(World w) {
@@ -48,7 +46,6 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
     }
 
     /**
-     *
      * @param move
      * @return
      */
@@ -57,7 +54,6 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
     }
 
     /**
-     *
      * @param move
      */
     public void processMove(Move move) {
@@ -65,7 +61,6 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
     }
 
     /**
-     *
      * @param pm
      */
     public void processPreMove(PreMove pm) {

@@ -18,17 +18,17 @@
 
 package freerails.client.top;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.BuildTrackController;
 import freerails.client.view.*;
-import freerails.client.ClientConfig;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.TrackMoveProducer;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.move.MoveStatus;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.top.ReadOnlyWorld;
 import org.apache.log4j.Logger;
@@ -46,7 +46,6 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
 /**
  * Handles key presses and mouse movements on the map - responsible for moving
  * the cursor etc.
- *
  */
 public class UserInputOnMapController extends KeyAdapter {
 
@@ -71,7 +70,6 @@ public class UserInputOnMapController extends KeyAdapter {
     private boolean ignoreDragging = false;
 
     /**
-     *
      * @param mr
      * @param ar
      */
@@ -83,7 +81,6 @@ public class UserInputOnMapController extends KeyAdapter {
     // Inner class was here...
 
     /**
-     *
      * @param mv
      * @param trackBuilder
      * @param stPopup

@@ -18,13 +18,12 @@
 
 package freerails.world.common;
 
-import freerails.world.FreerailsSerializable;
+import java.io.Serializable;
 
 /**
  * Defines methods that encode a track configuration as an int.
- *
  */
-public interface FlatTrackTemplate extends FreerailsSerializable {
+public interface FlatTrackTemplate extends Serializable {
     /**
      * @param ftt the FlatTrackTemplate which may be a subset of this
      *            FlatTrackTemplate.

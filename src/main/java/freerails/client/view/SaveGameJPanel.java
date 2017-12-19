@@ -146,7 +146,6 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
     }// GEN-LAST:event_fileNameTextFieldActionPerformed
 
     /**
-     *
      * @param m
      * @param vl
      * @param closeAction

@@ -31,8 +31,6 @@ import java.util.LinkedList;
  * Class to verify that the chosen name for a station hasn't already been taken
  * by another station. If the name has been used, a minor alteration in the name
  * is required, by adding perhaps "Junction" or "Siding" to the name.
- *
- *
  */
 public class VerifyStationName {
     private final ReadOnlyWorld w;
@@ -42,7 +40,6 @@ public class VerifyStationName {
     private final LinkedList<String> stationAlternatives;
 
     /**
-     *
      * @param world
      * @param name
      */
@@ -60,7 +57,6 @@ public class VerifyStationName {
     }
 
     /**
-     *
      * @return
      */
     public String getName() {

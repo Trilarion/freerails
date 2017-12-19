@@ -25,26 +25,22 @@ import java.io.IOException;
 
 /**
  * Provides access to the objects that render terrain, track, and trains.
- *
  */
 public interface RenderersRoot extends TileRendererList {
 
     /**
-     *
      * @param i
      * @return
      */
     TrackPieceRenderer getTrackPieceView(int i);
 
     /**
-     *
      * @param type
      * @return
      */
     TrainImages getWagonImages(int type);
 
     /**
-     *
      * @param type
      * @return
      */
@@ -55,7 +51,6 @@ public interface RenderersRoot extends TileRendererList {
     boolean validate(ReadOnlyWorld world);
 
     /**
-     *
      * @param relativeFilename
      * @return
      * @throws IOException
@@ -63,7 +58,6 @@ public interface RenderersRoot extends TileRendererList {
     Image getImage(String relativeFilename) throws IOException;
 
     /**
-     *
      * @param relativeFilename
      * @param height
      * @return

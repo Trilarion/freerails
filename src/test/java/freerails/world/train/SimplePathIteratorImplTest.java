@@ -18,18 +18,16 @@
 
 package freerails.world.train;
 
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.IntLine;
 import junit.framework.TestCase;
 
 /**
  * Junit test.
- *
  */
 public class SimplePathIteratorImplTest extends TestCase {
 
     /**
-     *
      * @param arg0
      */
     public SimplePathIteratorImplTest(String arg0) {
@@ -37,7 +35,6 @@ public class SimplePathIteratorImplTest extends TestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(String[] args) {

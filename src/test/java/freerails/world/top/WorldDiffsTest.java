@@ -18,17 +18,17 @@
 
 package freerails.world.top;
 
+import freerails.util.ImPoint;
 import freerails.util.ListKey;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.CargoType.Categories;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImPoint;
 import freerails.world.player.Player;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.City;
-import freerails.world.track.FreerailsTile;
+import freerails.world.terrain.FreerailsTile;
 import junit.framework.TestCase;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import static freerails.util.ListKey.Type.Element;
@@ -36,7 +36,6 @@ import static freerails.world.top.WorldDiffs.LISTID.SHARED_LISTS;
 
 /**
  * JUnit test for WorldDifferences.
- *
  */
 public class WorldDiffsTest extends TestCase {
     final Player player0 = new Player("player0", 0);
@@ -58,7 +57,7 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(0, worldDiff.listDiffs());
         assertEquals(1, worldDiff.size(SKEY.CARGO_TYPES));
 
-        FreerailsSerializable f = worldDiff.get(SKEY.CARGO_TYPES, 0);
+        Serializable f = worldDiff.get(SKEY.CARGO_TYPES, 0);
         assertEquals("The mail cargotype should be accessible.", mailCT, f);
         worldDiff.add(SKEY.CARGO_TYPES, passengersCT);
         assertEquals(2, worldDiff.size(SKEY.CARGO_TYPES));
@@ -120,7 +119,7 @@ public class WorldDiffsTest extends TestCase {
         // First, for an existing player
         assertEquals(1, worldDiff.size(player0.getPrincipal(), KEY.STATIONS));
 
-        FreerailsSerializable fs = worldDiff.get(player0.getPrincipal(),
+        Serializable fs = worldDiff.get(player0.getPrincipal(),
                 KEY.STATIONS, 0);
         assertEquals(station0, fs);
 

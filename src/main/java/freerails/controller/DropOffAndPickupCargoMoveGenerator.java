@@ -22,11 +22,10 @@ import freerails.move.ChangeCargoBundleMove;
 import freerails.move.ChangeTrainMove;
 import freerails.move.Move;
 import freerails.move.TransferCargoAtStationMove;
+import freerails.util.ImInts;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImInts;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.ConvertedAtStation;
 import freerails.world.station.DemandForCargo;
@@ -39,6 +38,7 @@ import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 import freerails.world.train.WagonType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -47,7 +47,6 @@ import java.util.Iterator;
  * This class generates moves that transfer cargo between train and the stations
  * it stops at - it also handles cargo conversions that occur when cargo is
  * dropped off.
- *
  */
 public class DropOffAndPickupCargoMoveGenerator {
     private final ReadOnlyWorld w;
@@ -71,9 +70,9 @@ public class DropOffAndPickupCargoMoveGenerator {
     /**
      * Contructor.
      *
-     * @param trainNo   ID of the train
-     * @param stationNo ID of the station
-     * @param world     The world object
+     * @param trainNo     ID of the train
+     * @param stationNo   ID of the station
+     * @param world       The world object
      * @param p
      * @param waiting
      * @param autoConsist
@@ -178,7 +177,6 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     *
      * @return
      */
     public Move generateMove() {
@@ -231,7 +229,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     private MutableCargoBundle getCopyOfBundle(int id) {
-        FreerailsSerializable fs = w.get(principal, KEY.CARGO_BUNDLES, id);
+        Serializable fs = w.get(principal, KEY.CARGO_BUNDLES, id);
         ImmutableCargoBundle ibundle = (ImmutableCargoBundle) fs;
 
         return new MutableCargoBundle(ibundle);
@@ -306,7 +304,6 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     *
      * @return
      */
     public boolean isCargo2Transfer() {
@@ -324,8 +321,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     /**
      * Stores the type and quanity of cargo in a wagon.
-     *
-         */
+     */
     private static class WagonLoad implements Comparable<WagonLoad> {
         final int quantity;
 

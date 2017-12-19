@@ -25,12 +25,12 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.PositionOnTrack;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.World;
-import freerails.world.track.FreerailsTile;
 import junit.framework.TestCase;
 
 import static freerails.world.common.Step.*;
@@ -49,7 +49,6 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     World world;
 
     /**
-     *
      * @throws Exception
      */
     @Override

@@ -18,66 +18,57 @@
 
 package freerails.world.terrain;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImList;
-import freerails.world.common.Money;
+import freerails.util.ImList;
+import freerails.world.finances.Money;
+
+import java.io.Serializable;
 
 /**
  * Defines the methods to access the properties of a type of terrains.
- *
  */
-public interface TerrainType extends FreerailsSerializable {
+public interface TerrainType extends Serializable {
 
     /**
-     *
      * @return
      */
     String getTerrainTypeName();
 
     /**
-     *
      * @return
      */
     Category getCategory();
 
     /**
-     *
      * @return
      */
     Money getBuildCost();
 
     /**
-     *
      * @return
      */
     int getRightOfWay();
 
     /**
-     *
      * @return
      */
     int getRGB();
 
     /**
-     *
      * @return
      */
     ImList<Production> getProduction();
 
     /**
-     *
      * @return
      */
     ImList<Consumption> getConsumption();
 
     /**
-     *
      * @return
      */
     ImList<Conversion> getConversion();
 
     /**
-     *
      * @return
      */
     String getDisplayName();
@@ -85,7 +76,7 @@ public interface TerrainType extends FreerailsSerializable {
     /**
      *
      */
-    enum Category implements FreerailsSerializable {
+    enum Category implements Serializable {
 
         /**
          *

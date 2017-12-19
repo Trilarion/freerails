@@ -18,12 +18,11 @@
 
 package freerails.move;
 
+import freerails.util.ImList;
+import freerails.util.ImPoint;
 import freerails.util.ListKey;
-import freerails.world.accounts.Transaction;
 import freerails.world.common.Activity;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.ImList;
-import freerails.world.common.ImPoint;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.KEY;
 import freerails.world.top.ReadOnlyWorld;
@@ -34,6 +33,7 @@ import freerails.world.top.WorldImpl.ActivityAndTime;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,11 +43,10 @@ import static freerails.util.ListKey.Type.EndPoint;
 
 /**
  * A move that makes a number of changes to the map and to the lists.
- *
+ * <p>
  * WARNING: This class currently only handles the most common cases. A
  * UnsupportedOperationException is thrown if an appropriate move cannot be
  * generated.
- *
  */
 public class WorldDiffMove implements Move, MapUpdateMove {
 
@@ -60,7 +59,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     private final int x, y, w, h;
 
     /**
-     *
      * @param world
      * @param worldDiffs
      * @param cause
@@ -79,8 +77,8 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             int maxy = 0;
             while (mit.hasNext()) {
                 ImPoint p = mit.next();
-                FreerailsSerializable oldTile = world.getTile(p.x, p.y);
-                FreerailsSerializable newTile = worldDiffs.getTile(p.x, p.y);
+                Serializable oldTile = world.getTile(p.x, p.y);
+                Serializable newTile = worldDiffs.getTile(p.x, p.y);
                 diffsArrayList.add(new MapDiff(oldTile, newTile, p));
                 minx = Math.min(minx, p.x);
                 miny = Math.min(miny, p.y);
@@ -118,15 +116,15 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
                         // Are we changing an element?
                         if (elementId < world.size(fp, k)) {
-                            FreerailsSerializable before = world.get(fp, k,
+                            Serializable before = world.get(fp, k,
                                     elementId);
-                            FreerailsSerializable after = worldDiffs.get(fp, k,
+                            Serializable after = worldDiffs.get(fp, k,
                                     elementId);
                             m = new ChangeItemInListMove(k, elementId, before,
                                     after, fp);
                         } else {
 
-                            FreerailsSerializable element = worldDiffs.get(fp, k,
+                            Serializable element = worldDiffs.get(fp, k,
                                     elementId);
                             m = new AddItemToListMove(k, elementId, element, fp);
                         }
@@ -236,7 +234,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @param diffs
      * @param cause
      * @return
@@ -248,7 +245,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     private void doMove(World world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
-            FreerailsSerializable tile = undo ? diff.before : diff.after;
+            Serializable tile = undo ? diff.before : diff.after;
             world.setTile(diff.x, diff.y, tile);
         }
     }
@@ -288,7 +285,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public Rectangle getUpdatedTiles() {
@@ -318,8 +314,8 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     private MoveStatus tryMapChanges(World world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
-            FreerailsSerializable actual = world.getTile(diff.x, diff.y);
-            FreerailsSerializable expected = undo ? diff.after : diff.before;
+            Serializable actual = world.getTile(diff.x, diff.y);
+            Serializable expected = undo ? diff.after : diff.before;
             if (!actual.equals(expected)) {
                 return MoveStatus.moveFailed("expected =" + expected
                         + ", actual = " + actual);
@@ -339,7 +335,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public int listDiffs() {
@@ -361,7 +356,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public Cause getCause() {
@@ -369,7 +363,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public CompositeMove getListChanges() {
@@ -377,7 +370,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     *
      * @return
      */
     public ImList<MapDiff> getDiffs() {
@@ -408,7 +400,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     /**
      *
      */
-    public static class MapDiff implements FreerailsSerializable {
+    public static class MapDiff implements Serializable {
         private static final long serialVersionUID = -5935670372745313360L;
 
         /**
@@ -420,9 +412,9 @@ public class WorldDiffMove implements Move, MapUpdateMove {
          *
          */
         y;
-        final FreerailsSerializable before, after;
+        final Serializable before, after;
 
-        MapDiff(FreerailsSerializable before, FreerailsSerializable after,
+        MapDiff(Serializable before, Serializable after,
                 ImPoint p) {
             this.after = after;
             this.before = before;

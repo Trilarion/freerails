@@ -23,11 +23,11 @@
  */
 package freerails.client.view;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RenderersRoot;
-import freerails.client.ClientConfig;
 import freerails.controller.CopyableTextJPanel;
 import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot.Property;
@@ -35,12 +35,12 @@ import freerails.controller.ReportBugTextGenerator;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.RefreshListOfGamesMessageToServer;
-import freerails.world.common.ImList;
+import freerails.util.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.*;
-import freerails.world.track.FreerailsTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -57,7 +57,6 @@ import java.util.NoSuchElementException;
  * dialogue boxes are not separate windows. Instead, they are drawn on the modal
  * layer of the main JFrames LayerPlane. This allows dialogue boxes with
  * transparent regions to be used.
- *
  */
 public class DialogueBoxController implements WorldListListener {
     private static final Logger logger = Logger
@@ -145,7 +144,6 @@ public class DialogueBoxController implements WorldListListener {
     };
 
     /**
-     *
      * @param frame
      * @param mr
      */
@@ -201,7 +199,7 @@ public class DialogueBoxController implements WorldListListener {
 
     /**
      * Called when a new game is started or a game is loaded.
-     *
+     * <p>
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
@@ -400,7 +398,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param terrainType
      */
     public void showTerrainInfo(int terrainType) {
@@ -409,7 +406,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -420,7 +416,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param stationNumber
      */
     public void showStationInfo(int stationNumber) {
@@ -433,7 +428,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param trainId
      */
     public void showTrainOrders(int trainId) {
@@ -489,7 +483,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param component
      */
     public void showContent(JComponent component) {
@@ -577,7 +570,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param defaultFocusOwner
      */
     public void setDefaultFocusOwner(Component defaultFocusOwner) {
@@ -585,7 +577,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -622,7 +613,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -632,7 +622,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal
@@ -653,7 +642,6 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     *
      * @param key
      * @param index
      * @param principal

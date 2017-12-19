@@ -18,20 +18,17 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
-
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Lets a client send messages to the server over the Internet.
- *
  */
 public class InetConnectionToServer extends AbstractInetConnection implements
         ConnectionToServer {
     final String serverDetails;
 
     /**
-     *
      * @param ip
      * @param port
      * @throws IOException
@@ -41,16 +38,16 @@ public class InetConnectionToServer extends AbstractInetConnection implements
         serverDetails = "server at " + ip + ":" + port;
     }
 
-    public FreerailsSerializable[] readFromServer() throws IOException {
+    public Serializable[] readFromServer() throws IOException {
         return read();
     }
 
-    public FreerailsSerializable waitForObjectFromServer() throws IOException,
+    public Serializable waitForObjectFromServer() throws IOException,
             InterruptedException {
         return waitForObject();
     }
 
-    public void writeToServer(FreerailsSerializable object) throws IOException {
+    public void writeToServer(Serializable object) throws IOException {
         send(object);
     }
 
@@ -60,7 +57,6 @@ public class InetConnectionToServer extends AbstractInetConnection implements
     }
 
     /**
-     *
      * @return
      */
     public String getServerDetails() {

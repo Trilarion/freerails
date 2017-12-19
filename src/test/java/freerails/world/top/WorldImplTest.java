@@ -23,23 +23,23 @@
 package freerails.world.top;
 
 import freerails.util.Utils;
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Receipt;
-import freerails.world.accounts.Transaction;
-import freerails.world.accounts.Transaction.Category;
 import freerails.world.common.Activity;
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Receipt;
+import freerails.world.finances.Transaction;
+import freerails.world.finances.Transaction.Category;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 
+import java.io.Serializable;
+
 /**
  * Junit test.
- *
  */
 public class WorldImplTest extends TestCase {
-    private final FreerailsSerializable fs = new TestState(1);
+    private final Serializable fs = new TestState(1);
 
     /**
      *
@@ -197,7 +197,7 @@ public class WorldImplTest extends TestCase {
     /**
      *
      */
-    public static class TestState implements FreerailsSerializable {
+    public static class TestState implements Serializable {
 
         private static final long serialVersionUID = 5122023949873919060L;
 
@@ -207,7 +207,6 @@ public class WorldImplTest extends TestCase {
         public final int x;
 
         /**
-         *
          * @param x
          */
         public TestState(int x) {
@@ -243,7 +242,6 @@ public class WorldImplTest extends TestCase {
         private final double duration;
 
         /**
-         *
          * @param duration
          */
         public TestActivity(int duration) {
@@ -268,7 +266,6 @@ public class WorldImplTest extends TestCase {
         }
 
         /**
-         *
          * @return
          */
         public double duration() {
@@ -276,11 +273,10 @@ public class WorldImplTest extends TestCase {
         }
 
         /**
-         *
          * @param dt
          * @return
          */
-        public FreerailsSerializable getState(double dt) {
+        public Serializable getState(double dt) {
             return new TestState((int) dt);
         }
 

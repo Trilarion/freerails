@@ -36,7 +36,6 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     private final Enum listID;
 
     /**
-     *
      * @param t
      * @param listID
      * @param i
@@ -48,7 +47,6 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     }
 
     /**
-     *
      * @return
      */
     public int[] getIndex() {
@@ -80,7 +78,6 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     }
 
     /**
-     *
      * @return
      */
     public Type getType() {
@@ -122,7 +119,6 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     }
 
     /**
-     *
      * @return
      */
     public Enum getListID() {

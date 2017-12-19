@@ -39,7 +39,6 @@ public class List3DDiffTest extends TestCase {
     List3D<Object> underlying;
 
     /**
-     *
      * @throws Exception
      */
     @Override

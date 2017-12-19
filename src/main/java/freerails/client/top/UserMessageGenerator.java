@@ -18,19 +18,19 @@
 
 package freerails.client.top;
 
+import freerails.client.ClientConfig;
 import freerails.client.common.SoundManager;
 import freerails.client.view.ActionRoot;
-import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
-import freerails.world.accounts.DeliverCargoReceipt;
-import freerails.world.accounts.Transaction;
+import freerails.util.ImList;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
 import freerails.world.common.GameSpeed;
-import freerails.world.common.ImList;
+import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.Transaction;
 import freerails.world.station.StationModel;
 import freerails.world.top.ITEM;
 import freerails.world.top.KEY;
@@ -43,7 +43,6 @@ import java.util.ArrayList;
 /**
  * This class inspects incoming moves and generates a user message if
  * appropriate. It is also used to trigger sounds.
- *
  */
 public class UserMessageGenerator implements MoveReceiver {
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
@@ -52,7 +51,6 @@ public class UserMessageGenerator implements MoveReceiver {
     private ActionRoot actionRoot;
 
     /**
-     *
      * @param mr
      * @param actionRoot
      */
@@ -66,7 +64,6 @@ public class UserMessageGenerator implements MoveReceiver {
     }
 
     /**
-     *
      * @param move
      */
     public void processMove(Move move) {
@@ -157,7 +154,6 @@ public class UserMessageGenerator implements MoveReceiver {
             try {
                 soundManager.playSound(ClientConfig.SOUND_CASH, loops);
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }

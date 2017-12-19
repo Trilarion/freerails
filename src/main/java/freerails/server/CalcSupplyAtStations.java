@@ -31,7 +31,6 @@ import freerails.world.top.World;
 /**
  * This class loops through all of the known stations and recalculates the
  * cargoes that they supply, demand, and convert.
- *
  */
 public class CalcSupplyAtStations {
     private final World w;

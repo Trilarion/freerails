@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * Test cases that use EchoGameServer should extend this class.
- *
  */
 public abstract class AbstractEchoGameServerTestCase extends TestCase {
     final String ipAddress = "127.0.0.1";
@@ -30,7 +29,6 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
     EchoGameServer echoGameServer;
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -51,7 +49,6 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

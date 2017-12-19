@@ -18,14 +18,13 @@
 
 package freerails.world.train;
 
+import freerails.util.IntLine;
 import freerails.world.common.FreerailsPathIterator;
-import freerails.world.common.IntLine;
 
 import java.util.NoSuchElementException;
 
 /**
  * PathWalker that walks the path exposed by a FreerailsPathIterator.
- *
  */
 public class PathWalkerImpl implements PathWalker {
     private static final long serialVersionUID = 4050204158701155639L;
@@ -48,7 +47,6 @@ public class PathWalkerImpl implements PathWalker {
     private int lastY;
 
     /**
-     *
      * @param i
      */
     public PathWalkerImpl(FreerailsPathIterator i) {
@@ -68,6 +66,7 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * Specify the distance this PathWalker is to progress along the current
      * step.
+     *
      * @param distance
      */
     public void stepForward(double distance) {

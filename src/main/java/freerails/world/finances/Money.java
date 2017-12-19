@@ -16,17 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.common;
+package freerails.world.finances;
 
-import freerails.world.FreerailsSerializable;
-
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
  * Represents an amount of Money.
- *
  */
-final public class Money implements FreerailsSerializable {
+final public class Money implements Serializable {
 
     /**
      *
@@ -38,7 +36,6 @@ final public class Money implements FreerailsSerializable {
     private final long amount;
 
     /**
-     *
      * @param amount
      */
     public Money(long amount) {
@@ -46,7 +43,6 @@ final public class Money implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public long getAmount() {
@@ -64,7 +60,6 @@ final public class Money implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Money changeSign() {

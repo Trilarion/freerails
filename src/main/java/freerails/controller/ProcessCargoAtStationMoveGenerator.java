@@ -24,10 +24,10 @@ package freerails.controller;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.world.accounts.DeliverCargoReceipt;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoBundle;
-import freerails.world.common.Money;
+import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -38,7 +38,6 @@ import java.util.Iterator;
 
 /**
  * This class generates Moves that pay the player for delivering the cargo.
- *
  */
 public class ProcessCargoAtStationMoveGenerator {
     /**
@@ -48,7 +47,6 @@ public class ProcessCargoAtStationMoveGenerator {
     private final static int MAGIC_NUMBER = 75;
 
     /**
-     *
      * @param w
      * @param bundle
      * @param stationID

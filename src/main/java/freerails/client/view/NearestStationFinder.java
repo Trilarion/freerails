@@ -28,7 +28,6 @@ import freerails.world.top.ReadOnlyWorld;
 /**
  * Provides methods that find the nearest station in a given direction, used by
  * the select station popup window.
- *
  */
 public class NearestStationFinder {
 
@@ -42,7 +41,6 @@ public class NearestStationFinder {
     private final FreerailsPrincipal principal;
 
     /**
-     *
      * @param w
      * @param player
      */
@@ -52,7 +50,6 @@ public class NearestStationFinder {
     }
 
     /**
-     *
      * @param x
      * @param y
      * @return
@@ -84,7 +81,6 @@ public class NearestStationFinder {
     }
 
     /**
-     *
      * @param startStation
      * @param direction
      * @return

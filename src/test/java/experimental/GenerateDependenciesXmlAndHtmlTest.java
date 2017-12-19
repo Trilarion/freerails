@@ -22,7 +22,6 @@ import junit.framework.TestCase;
 
 /**
  * JUnit test for GenerateDependenciesXmlAndHtml.
- *
  */
 public class GenerateDependenciesXmlAndHtmlTest extends TestCase {
 

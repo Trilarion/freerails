@@ -24,8 +24,8 @@
 
 package freerails.launcher;
 
-import freerails.client.top.GameLoop;
 import freerails.client.ClientConfig;
+import freerails.client.top.GameLoop;
 import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ScreenHandler;
 import freerails.controller.ServerControlInterface;
@@ -49,9 +49,8 @@ import java.util.Properties;
 
 /**
  * Launcher GUI for both the server and/or client.
- *
+ * <p>
  * TODO The code in the switch statements needs reviewing.
- *
  */
 public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
@@ -709,7 +708,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     // End of variables declaration//GEN-END:variables
 
     /**
-     *
      * @param text
      * @param status
      */
@@ -746,7 +744,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     /**
-     *
      * @param b
      */
     public void setButtonsVisible(boolean b) {
@@ -805,7 +802,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     /**
-     *
      * @param key
      * @param value
      */
@@ -814,7 +810,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     /**
-     *
      * @param key
      * @return
      */

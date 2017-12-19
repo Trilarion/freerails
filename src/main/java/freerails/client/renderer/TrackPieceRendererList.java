@@ -38,7 +38,6 @@ import java.util.Iterator;
 
 /**
  * A list of TrackPieceRenderers.
- *
  */
 final public class TrackPieceRendererList {
     private static final Logger logger = Logger
@@ -47,7 +46,6 @@ final public class TrackPieceRendererList {
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     /**
-     *
      * @param w
      * @param imageManager
      * @param pm
@@ -73,7 +71,6 @@ final public class TrackPieceRendererList {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -85,7 +82,6 @@ final public class TrackPieceRendererList {
     }
 
     /**
-     *
      * @param w
      * @return
      */

@@ -20,7 +20,6 @@ package freerails.launcher;
 
 /**
  * Exposes the methods on the Launcher that the launcher panels may call.
- *
  */
 
 public interface LauncherInterface {
@@ -56,14 +55,12 @@ public interface LauncherInterface {
     String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
 
     /**
-     *
      * @param text
      * @param status
      */
     void setInfoText(String text, MSG_TYPE status);
 
     /**
-     *
      * @param enabled
      */
     void setNextEnabled(boolean enabled);
@@ -79,14 +76,12 @@ public interface LauncherInterface {
     void hideAllMessages();
 
     /**
-     *
      * @param key
      * @param value
      */
     void setProperty(String key, String value);
 
     /**
-     *
      * @param key
      * @return
      */

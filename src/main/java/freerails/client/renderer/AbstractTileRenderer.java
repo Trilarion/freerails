@@ -33,7 +33,6 @@ import java.io.File;
 
 /**
  * This class encapsulates the visible properties of a tile.
- *
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
     private final int[] typeNumbers;
@@ -59,7 +58,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     /**
-     *
      * @param g
      * @param screenX
      * @param screenY
@@ -77,7 +75,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     /**
-     *
      * @return
      */
     public Image getDefaultIcon() {
@@ -137,7 +134,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     /**
-     *
      * @param i
      * @return
      */

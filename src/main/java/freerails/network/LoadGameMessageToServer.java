@@ -18,13 +18,12 @@
 
 package freerails.network;
 
-import freerails.controller.MessageToServer;
 import freerails.controller.MessageStatus;
+import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**
  * Request to load a game.
- *
  */
 public class LoadGameMessageToServer implements MessageToServer {
     private static final long serialVersionUID = 3256726186552930869L;
@@ -33,7 +32,6 @@ public class LoadGameMessageToServer implements MessageToServer {
     private final String filename;
 
     /**
-     *
      * @param id
      * @param s
      */
@@ -65,7 +63,6 @@ public class LoadGameMessageToServer implements MessageToServer {
     }
 
     /**
-     *
      * @return
      */
     public int getID() {
@@ -73,7 +70,6 @@ public class LoadGameMessageToServer implements MessageToServer {
     }
 
     /**
-     *
      * @param server
      * @return
      */
@@ -83,7 +79,6 @@ public class LoadGameMessageToServer implements MessageToServer {
 
             return new MessageStatus(id, true);
         } catch (Exception e) {
-            e.printStackTrace();
 
             return new MessageStatus(id, false, e.getMessage());
         }

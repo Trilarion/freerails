@@ -34,7 +34,6 @@ public class ListXDTest extends TestCase {
     List3D<Object> list3d;
 
     /**
-     *
      * @throws Exception
      */
     @Override

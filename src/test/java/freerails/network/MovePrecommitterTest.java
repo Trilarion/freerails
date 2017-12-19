@@ -42,7 +42,6 @@ public class MovePrecommitterTest extends TestCase {
     private MovePrecommitter committer;
 
     /**
-     *
      * @throws Exception
      */
     @Override

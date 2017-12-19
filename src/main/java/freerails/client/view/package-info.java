@@ -23,4 +23,5 @@
  * files for these classes have corresponding .form files. Within the java files
  * there are protected sections of code, if you edit these files, please do not
  * alter these sections by hand.</p>
-*/ package freerails.client.view;
+ */
+package freerails.client.view;

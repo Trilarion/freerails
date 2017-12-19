@@ -23,14 +23,12 @@ import junit.framework.TestCase;
 /**
  * Test cases that use FreerailsGameServer <b>and</b> connect over the Internet
  * should extend this class .
- *
  */
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
     FreerailsGameServer server;
     private InetConnectionAccepter connectionAccepter;
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -44,7 +42,6 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

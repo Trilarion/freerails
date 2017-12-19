@@ -41,7 +41,6 @@ import java.util.Iterator;
 /**
  * This class loops over the list of stations and adds cargo depending on what
  * the surrounding tiles supply.
- *
  */
 public class CargoAtStationsGenerator implements FreerailsServerSerializable {
     private static final long serialVersionUID = 3834596504072959796L;
@@ -54,6 +53,7 @@ public class CargoAtStationsGenerator implements FreerailsServerSerializable {
 
     /**
      * Call this method once a month.
+     *
      * @param w
      * @param moveReceiver
      */

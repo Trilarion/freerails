@@ -22,24 +22,24 @@
  */
 package freerails.move;
 
+import freerails.util.ImPoint;
 import freerails.util.Utils;
-import freerails.world.FreerailsSerializable;
 import freerails.world.common.GameCalendar;
-import freerails.world.common.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ITEM;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.top.World;
 import freerails.world.top.WorldImpl;
-import freerails.world.track.FreerailsTile;
 import freerails.world.train.PathOnTiles;
 import junit.framework.TestCase;
 
+import java.io.Serializable;
+
 /**
  * All TestCases for moves should extend this class.
- *
  */
 public abstract class AbstractMoveTestCase extends TestCase {
 
@@ -56,7 +56,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param str
      */
     public AbstractMoveTestCase(String str) {
@@ -64,7 +63,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertDoMoveFails(Move m) {
@@ -76,7 +74,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertDoMoveIsOk(Move m) {
@@ -88,7 +85,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
@@ -106,7 +102,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
             assertTrue(b);
             assertEquals(before, w);
         } catch (Exception e) {
-            e.printStackTrace();
             assertTrue(false);
         }
     }
@@ -119,7 +114,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      * @param m m
      */
-    protected void assertSurvivesSerialisation(FreerailsSerializable m) {
+    protected void assertSurvivesSerialisation(Serializable m) {
         assertEquals("Reflexivity violated: the move does not equal itself", m,
                 m);
 
@@ -129,13 +124,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
             assertEquals("The hashcodes should be the same!", m.hashCode(), o
                     .hashCode());
         } catch (Exception e) {
-            e.printStackTrace();
             assertTrue(false);
         }
     }
 
     /**
-     *
      * @param m
      */
     protected void assertOkAndRepeatable(Move m) {
@@ -159,6 +152,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * Generally moves should not be repeatable. For example, if we have just
      * removed a piece of track, that piece of track is gone, so we cannot
      * remove it again.
+     *
      * @param m
      */
     protected void assertOkButNotRepeatable(Move m) {
@@ -181,7 +175,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertTryMoveFails(Move m) {
@@ -193,7 +186,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertTryMoveIsOk(Move m) {
@@ -211,7 +203,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertTryUndoMoveFails(Move m) {
@@ -223,7 +214,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertTryUndoMoveIsOk(Move m) {
@@ -241,7 +231,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertUndoMoveFails(Move m) {
@@ -253,7 +242,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param m
      */
     protected void assertUndoMoveIsOk(Move m) {
@@ -277,7 +265,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @return
      */
     protected boolean hasSetupBeenCalled() {
@@ -285,7 +272,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param hasSetupBeenCalled
      */
     protected void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
@@ -293,7 +279,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override
@@ -319,7 +304,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param x
      * @param y
      */
@@ -330,7 +314,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     *
      * @param path
      */
     protected void assertTrackHere(PathOnTiles path) {

@@ -24,7 +24,6 @@ import java.awt.*;
 /**
  * This class implements the TrackPieceView interface, but intentionally does
  * nothing. Its methods are called when drawing tiles with no track.
- *
  */
 final public class NullTrackPieceRenderer implements TrackPieceRenderer {
 
@@ -41,7 +40,6 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
      */
 
     /**
-     *
      * @param trackTemplate
      * @return
      */
@@ -56,7 +54,6 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
      */
 
     /**
-     *
      * @param trackTemplate
      * @param g
      * @param x

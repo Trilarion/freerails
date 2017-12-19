@@ -22,7 +22,7 @@
  */
 package freerails.world.train;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import junit.framework.TestCase;
 

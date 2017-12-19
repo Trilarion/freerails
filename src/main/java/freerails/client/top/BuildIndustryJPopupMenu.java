@@ -26,9 +26,9 @@ import freerails.client.renderer.RenderersRoot;
 import freerails.client.view.View;
 import freerails.controller.ModelRoot;
 import freerails.move.*;
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.terrain.TerrainType;
 import freerails.world.top.NonNullElements;
 import freerails.world.top.SKEY;
@@ -42,7 +42,6 @@ import java.awt.event.ActionListener;
  * A JPopupMenu that displays the list of industries that can be built. This
  * class contains the code that generates and dispatches a ChangeTileMove when
  * the player clicks on the menu.
- *
  */
 public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
     private static final long serialVersionUID = 3689636912575165749L;
@@ -50,7 +49,6 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
     private final Point cursorLocation = new Point();
 
     /**
-     *
      * @param p
      */
     public void setCusorLocation(Point p) {
@@ -59,7 +57,6 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
     }
 
     /**
-     *
      * @param modelRoot
      * @param vl
      * @param closeAction

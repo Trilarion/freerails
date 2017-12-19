@@ -24,10 +24,11 @@
 package freerails.move;
 
 import freerails.controller.PathCacheController;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.*;
 import freerails.world.track.*;
 
@@ -35,7 +36,6 @@ import java.awt.*;
 
 /**
  * This Move changes adds, removes, or upgrades the track between two tiles.
- *
  */
 public final class ChangeTrackPieceCompositeMove extends CompositeMove
         implements TrackMove, MapUpdateMove {
@@ -57,7 +57,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     /**
-     *
      * @param from
      * @param direction
      * @param ruleA
@@ -81,7 +80,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     /**
-     *
      * @param from
      * @param direction
      * @param w
@@ -194,7 +192,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     /**
-     *
      * @param p
      * @param w
      * @return
@@ -228,7 +225,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     /**
-     *
      * @param r
      * @param w
      * @return
@@ -244,7 +240,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     /**
-     *
      * @return
      */
     public Rectangle getUpdatedTiles() {

@@ -29,7 +29,6 @@ import java.util.Random;
  * This class initialises cities and controls their growth. It makes changes to
  * directly to the world object, so if the game has already started, use
  * WorldDifferences and MapDiffMove to pass changes to the clients.
- *
  */
 public class CityTilePositioner {
     final Random random = new Random();
@@ -43,7 +42,6 @@ public class CityTilePositioner {
     final World w;
 
     /**
-     *
      * @param w
      */
     public CityTilePositioner(World w) {

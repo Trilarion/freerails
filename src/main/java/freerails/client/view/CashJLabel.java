@@ -24,7 +24,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RenderersRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.ReadOnlyWorld;
 
@@ -33,7 +33,6 @@ import java.awt.*;
 
 /**
  * This JLabel shows the amount of cash available.
- *
  */
 public class CashJLabel extends JLabel implements View {
     private static final long serialVersionUID = 3257853181542412341L;
@@ -50,7 +49,6 @@ public class CashJLabel extends JLabel implements View {
     }
 
     /**
-     *
      * @param model
      * @param vl
      * @param closeAction

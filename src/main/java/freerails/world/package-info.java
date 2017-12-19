@@ -52,6 +52,5 @@
  * parts. See Bloch, <em>Effective Java</em>, item 13 or <a
  * href="http://courses.dce.harvard.edu/%7Ecscie160/EffectiveJava.htm" target="_blank">this
  * page</a>.<br>
- *
  */
 package freerails.world;

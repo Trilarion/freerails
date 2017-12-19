@@ -57,7 +57,6 @@ public class SharePriceCalculator {
     public long stockholderEquity;
 
     /**
-     *
      * @return
      */
     public long calulatePrice() {

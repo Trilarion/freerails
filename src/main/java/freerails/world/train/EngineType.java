@@ -18,15 +18,15 @@
 
 package freerails.world.train;
 
-import freerails.world.FreerailsSerializable;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
+
+import java.io.Serializable;
 
 /**
  * This class represents an engine type, for example 'Grass Hopper'. It
  * encapsulates the properties that are common to all engines of the same type.
- *
  */
-final public class EngineType implements FreerailsSerializable {
+final public class EngineType implements Serializable {
     private static final long serialVersionUID = 3617014130905592630L;
 
     private final String engineTypeName;
@@ -40,7 +40,6 @@ final public class EngineType implements FreerailsSerializable {
     private final Money price;
 
     /**
-     *
      * @param name
      * @param power
      * @param m
@@ -55,7 +54,6 @@ final public class EngineType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @param name
      * @param power
      * @param m
@@ -84,7 +82,6 @@ final public class EngineType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public String getEngineTypeName() {
@@ -92,7 +89,6 @@ final public class EngineType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Money getMaintenance() {
@@ -100,7 +96,6 @@ final public class EngineType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getMaxSpeed() {
@@ -108,7 +103,6 @@ final public class EngineType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public int getPowerAtDrawbar() {
@@ -116,7 +110,6 @@ final public class EngineType implements FreerailsSerializable {
     }
 
     /**
-     *
      * @return
      */
     public Money getPrice() {

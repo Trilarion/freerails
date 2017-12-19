@@ -22,15 +22,15 @@
  */
 package freerails.world.top;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.accounts.Transaction.Category;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
+import freerails.world.finances.Transaction.Category;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 
-import static freerails.world.accounts.Transaction.Category.TRACK;
+import static freerails.world.finances.Transaction.Category.TRACK;
 
 /**
  *

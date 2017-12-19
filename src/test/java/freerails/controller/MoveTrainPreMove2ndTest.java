@@ -27,11 +27,16 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
+import freerails.util.ImInts;
+import freerails.util.ImPoint;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoBundle;
 import freerails.world.cargo.ImmutableCargoBundle;
 import freerails.world.cargo.MutableCargoBundle;
-import freerails.world.common.*;
+import freerails.world.common.ActivityIterator;
+import freerails.world.common.GameTime;
+import freerails.world.common.PositionOnTrack;
+import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.DemandForCargo;
 import freerails.world.station.StationModel;
@@ -68,7 +73,6 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

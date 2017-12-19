@@ -28,7 +28,6 @@ import javax.swing.*;
 /**
  * Implementation of GUIComponentFactory that returns 'blank' components - used
  * for testing the layout of ClientJFrame.
- *
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     private final JLabel datejLabel;
@@ -81,7 +80,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JMenu createReportsMenu() {
@@ -89,7 +87,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JMenu createBuildMenu() {
@@ -97,7 +94,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JLabel createCashJLabel() {
@@ -105,7 +101,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JLabel createDateJLabel() {
@@ -113,7 +108,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JMenu createDisplayMenu() {
@@ -121,7 +115,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JMenu createGameMenu() {
@@ -129,7 +122,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JMenu createHelpMenu() {
@@ -137,7 +129,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JScrollPane createMainMap() {
@@ -145,7 +136,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JPanel createOverviewMap() {
@@ -153,7 +143,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JTabbedPane createTrainsJTabPane() {
@@ -161,7 +150,6 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
     }
 
     /**
-     *
      * @return
      */
     public JMenu createBrokerMenu() {

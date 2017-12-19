@@ -25,12 +25,10 @@ import java.util.StringTokenizer;
 
 /**
  * A bunch of static methods.
- *
  */
 strictfp public class Utils {
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -48,11 +46,11 @@ strictfp public class Utils {
         }
 
         return true;
-
     }
 
     /**
      * Used when debugging.
+     *
      * @param m
      * @param fileName
      */
@@ -65,12 +63,10 @@ strictfp public class Utils {
             objectOut.flush();
             objectOut.close();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     /**
-     *
      * @param m
      * @return
      */
@@ -89,7 +85,6 @@ strictfp public class Utils {
             throw new IllegalStateException();
         } catch (IOException e) {
             // Should never happen.
-            e.printStackTrace();
             throw new IllegalStateException();
         }
 
@@ -104,7 +99,6 @@ strictfp public class Utils {
             objectOut.flush();
         } catch (IOException e) {
             // Should never happen.
-            e.printStackTrace();
             throw new IllegalStateException();
         }
 
@@ -112,7 +106,6 @@ strictfp public class Utils {
     }
 
     /**
-     *
      * @param str
      * @return
      */
@@ -129,7 +122,6 @@ strictfp public class Utils {
     }
 
     /**
-     *
      * @param o
      * @return
      */
@@ -161,7 +153,7 @@ strictfp public class Utils {
      * @param a
      * @param b
      * @param c
-     * @return 
+     * @return
      * @throws IllegalArgumentException if {@code a == 0}
      * @throws IllegalArgumentException if {@code (b * b - 4 * a * c) < 0}
      */
@@ -178,7 +170,6 @@ strictfp public class Utils {
     }
 
     /**
-     *
      * @param a
      * @param b
      * @return
@@ -192,9 +183,10 @@ strictfp public class Utils {
      * Returns true if the objects are equal or both null, otherwise returns
      * false. Does not throw null pointer exceptions when either of the objects
      * is null.
+     *
      * @param a
      * @param b
-     * @return 
+     * @return
      */
     public static boolean equal(Object a, Object b) {
         if (null == a || null == b) {

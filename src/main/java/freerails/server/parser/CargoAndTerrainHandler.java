@@ -23,7 +23,6 @@ import org.xml.sax.SAXException;
 
 /**
  * Defines methods to handle parsing the cargo and terrain types XML.
- *
  */
 public interface CargoAndTerrainHandler {
     /**

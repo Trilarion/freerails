@@ -18,7 +18,7 @@
 package freerails.client.view;
 
 import freerails.client.view.TrainOrdersListModel.TrainOrdersListElement;
-import freerails.world.common.Money;
+import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.top.KEY;
@@ -53,7 +53,6 @@ public class TrainSummeryModel {
     }
 
     /**
-     *
      * @param world
      * @param principal
      */
@@ -67,7 +66,6 @@ public class TrainSummeryModel {
     }
 
     /**
-     *
      * @param trainNum
      * @return
      */
@@ -98,7 +96,6 @@ public class TrainSummeryModel {
     }
 
     /**
-     *
      * @param trainNum
      * @return
      */

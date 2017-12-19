@@ -21,23 +21,21 @@ package freerails.server;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
-import freerails.world.accounts.Bill;
-import freerails.world.accounts.BondTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.Bill;
+import freerails.world.finances.BondTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of outstanding bonds, then calculates the interest due.
- *
  */
 public class InterestChargeMoveGenerator {
     private final MoveReceiver moveReceiver;
 
     /**
-     *
      * @param mr
      */
     public InterestChargeMoveGenerator(MoveReceiver mr) {
@@ -67,7 +65,6 @@ public class InterestChargeMoveGenerator {
     }
 
     /**
-     *
      * @param w
      */
     public void update(World w) {

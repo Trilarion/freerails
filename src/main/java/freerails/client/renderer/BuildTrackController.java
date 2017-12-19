@@ -18,21 +18,21 @@
 
 package freerails.client.renderer;
 
-import freerails.client.common.SoundManager;
 import freerails.client.ClientConfig;
+import freerails.client.common.SoundManager;
 import freerails.controller.*;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.UpgradeTrackMove;
 import freerails.util.GameModel;
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.common.Step;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FreerailsTile;
 import freerails.world.top.ReadOnlyWorld;
 import freerails.world.top.SKEY;
 import freerails.world.top.WorldDiffs;
-import freerails.world.track.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
@@ -46,9 +46,8 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
 /**
  * This class provides methods to change the proposed track and save it to the
  * real world.
- *
+ * <p>
  * TODO freerails.client.renderer is not the most logical place for this class.
- *
  */
 public class BuildTrackController implements GameModel {
 
@@ -135,7 +134,8 @@ public class BuildTrackController implements GameModel {
 
     /**
      * Returns true if all the track pieces can be successfully built.
-     * @return 
+     *
+     * @return
      */
     public boolean isBuildTrackSuccessful() {
         return isBuildTrackSuccessful;
@@ -287,6 +287,7 @@ public class BuildTrackController implements GameModel {
     /**
      * Sets the proposed track: from the current cursor position to the
      * specified point.
+     *
      * @param to
      * @param trackBuilder
      */
@@ -512,8 +513,9 @@ public class BuildTrackController implements GameModel {
 
     /**
      * Saves track into real world
+     *
      * @param trackBuilder
-     * @return 
+     * @return
      */
     public ImPoint updateWorld(TrackMoveProducer trackBuilder) {
         ImPoint actPoint = getCursorPosition();

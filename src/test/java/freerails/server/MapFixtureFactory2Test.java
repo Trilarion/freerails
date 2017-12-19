@@ -18,9 +18,9 @@
 
 package freerails.server;
 
-import freerails.world.accounts.AddItemTransaction;
-import freerails.world.accounts.Transaction;
-import freerails.world.common.Money;
+import freerails.world.finances.AddItemTransaction;
+import freerails.world.finances.Money;
+import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.SKEY;
 import freerails.world.top.World;
@@ -97,7 +97,6 @@ public class MapFixtureFactory2Test extends TestCase {
     }
 
     /**
-     *
      * @throws Exception
      */
     @Override

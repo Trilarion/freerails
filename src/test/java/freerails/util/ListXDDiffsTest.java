@@ -31,7 +31,6 @@ import java.util.TreeMap;
 public class ListXDDiffsTest extends ListXDTest {
 
     /**
-     *
      * @throws Exception
      */
     @Override

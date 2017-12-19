@@ -36,12 +36,10 @@ import java.util.ArrayList;
 
 /**
  * JUnit test.
- *
  */
 public class LegalTrackConfigurationsTest extends TestCase {
 
     /**
-     *
      * @param testName
      */
     public LegalTrackConfigurationsTest(java.lang.String testName) {
@@ -49,7 +47,6 @@ public class LegalTrackConfigurationsTest extends TestCase {
     }
 
     /**
-     *
      * @param args
      */
     public static void main(java.lang.String[] args) {
@@ -57,7 +54,6 @@ public class LegalTrackConfigurationsTest extends TestCase {
     }
 
     /**
-     *
      * @return
      */
     public static Test suite() {

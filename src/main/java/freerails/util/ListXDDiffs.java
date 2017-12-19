@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.util.SortedMap;
 
 /**
- *
  * @param <T>
  */
 public abstract class ListXDDiffs<T> implements Serializable {
@@ -36,7 +35,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     private final Enum listID;
 
     /**
-     *
      * @param diffs
      * @param listID
      */
@@ -59,7 +57,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     }
 
     /**
-     *
      * @param dim
      * @return
      */
@@ -76,7 +73,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     }
 
     /**
-     *
      * @param element
      * @param dim
      * @return
@@ -106,7 +102,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */
@@ -129,7 +124,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     abstract int getUnderlyingSize(int... dim);
 
     /**
-     *
      * @param dim
      * @return
      */
@@ -165,7 +159,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     }
 
     /**
-     *
      * @param element
      * @param i
      */
@@ -204,7 +197,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
     }
 
     /**
-     *
      * @param i
      * @return
      */

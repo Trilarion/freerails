@@ -22,7 +22,7 @@
  */
 package freerails.move;
 
-import freerails.world.common.ImList;
+import freerails.util.ImList;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.top.World;
 
@@ -33,7 +33,6 @@ import java.util.List;
  * component Moves where atomicity of the move is required. This class defines a
  * number of methods which may not be subclassed - all changes must be
  * encapsulated as sub-moves of this move.
- *
  */
 public class CompositeMove implements Move {
     private static final long serialVersionUID = 3257289149391517489L;
@@ -41,7 +40,6 @@ public class CompositeMove implements Move {
     private final ImList<Move> moves;
 
     /**
-     *
      * @param movesArrayList
      */
     public CompositeMove(List<Move> movesArrayList) {
@@ -50,7 +48,6 @@ public class CompositeMove implements Move {
     }
 
     /**
-     *
      * @param moves
      */
     public CompositeMove(Move... moves) {
@@ -83,7 +80,6 @@ public class CompositeMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public final ImList<Move> getMoves() {
@@ -184,7 +180,6 @@ public class CompositeMove implements Move {
     }
 
     /**
-     *
      * @return
      */
     public int size() {

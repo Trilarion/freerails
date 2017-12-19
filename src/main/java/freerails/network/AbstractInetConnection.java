@@ -18,17 +18,16 @@
 
 package freerails.network;
 
-import freerails.world.FreerailsSerializable;
 import org.apache.log4j.Logger;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.Socket;
 
 /**
  * This class has the code that is shared by the client and server versions of
  * InetConnection.
- *
  */
 abstract class AbstractInetConnection implements Runnable {
     private static final Logger logger = Logger
@@ -98,7 +97,7 @@ abstract class AbstractInetConnection implements Runnable {
     public void run() {
         try {
             while (true) {
-                FreerailsSerializable fs = inetConnection.receive();
+                Serializable fs = inetConnection.receive();
 
                 synchronized (inbound) {
                     inbound.write(fs);
@@ -107,7 +106,6 @@ abstract class AbstractInetConnection implements Runnable {
             }
         } catch (EOFException e) {
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
         if (logger.isDebugEnabled()) {
@@ -154,14 +152,14 @@ abstract class AbstractInetConnection implements Runnable {
 
     abstract String getThreadName();
 
-    FreerailsSerializable[] read() throws IOException {
+    Serializable[] read() throws IOException {
         if (status.isOpen()) {
             return inbound.read();
         }
         throw new IOException();
     }
 
-    void send(FreerailsSerializable object) throws IOException {
+    void send(Serializable object) throws IOException {
         inetConnection.send(object);
     }
 
@@ -169,7 +167,7 @@ abstract class AbstractInetConnection implements Runnable {
         timeout = i;
     }
 
-    FreerailsSerializable waitForObject() throws InterruptedException,
+    Serializable waitForObject() throws InterruptedException,
             IOException {
         if (status.isOpen()) {
             synchronized (inbound) {

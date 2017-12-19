@@ -22,7 +22,7 @@
  */
 package freerails.controller;
 
-import freerails.world.common.ImPoint;
+import freerails.util.ImPoint;
 import freerails.world.player.Player;
 import freerails.world.top.GameRules;
 import freerails.world.top.ITEM;
@@ -34,14 +34,12 @@ import java.util.List;
 
 /**
  * JUnit test for TrackPathFinder.
- *
  */
 public class TrackPathFinderTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
     private WorldImpl world;
 
     /**
-     *
      * @throws Exception
      */
     @Override

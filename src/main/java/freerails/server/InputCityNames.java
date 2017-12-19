@@ -32,12 +32,10 @@ import java.net.URL;
 /**
  * Class that calls the object to input the City names and co-ords from an xml
  * file.
- *
  */
 public class InputCityNames {
 
     /**
-     *
      * @param w
      * @param filename
      * @throws SAXException
@@ -52,7 +50,6 @@ public class InputCityNames {
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(is, handler);
         } catch (IOException | ParserConfigurationException e) {
-            e.printStackTrace();
         }
     }
 }
