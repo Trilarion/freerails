@@ -1,5 +1,0 @@
-UserInputOnMapController - Receives UI moves and triggers actions. UI entry point
-
-
-Movement of a cursor, setCursorPosition () including cursorPressed
-RHSJTabPane is a listener of this

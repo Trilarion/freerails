@@ -6,6 +6,8 @@ FreeRails's documentation!
    
    introduction
    tutorial
+   specification
+   coding_guidelines
    changelog
 
 * :ref:`genindex`
