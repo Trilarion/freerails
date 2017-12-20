@@ -46,9 +46,9 @@ public class CityNamesRenderer implements Painter {
 
     /**
      * @param g
-     * @param newVisibleRectectangle
+     * @param newVisibleRectangle
      */
-    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+    public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", 0, 20));
 
@@ -60,8 +60,8 @@ public class CityNamesRenderer implements Painter {
             final int ypos = tempCity.getCityY() * ClientConstants.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos,
                     ClientConstants.TILE_SIZE * 8, 20);
-            if (newVisibleRectectangle != null
-                    && !newVisibleRectectangle.intersects(cityNameBox)) {
+            if (newVisibleRectangle != null
+                    && !newVisibleRectangle.intersects(cityNameBox)) {
                 continue;
             }
             g.drawString(tempCity.getCityName(), xpos, ypos);

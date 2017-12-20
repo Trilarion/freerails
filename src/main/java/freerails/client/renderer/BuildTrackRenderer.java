@@ -50,13 +50,13 @@ public class BuildTrackRenderer implements Painter {
     private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE,
             ClientConstants.TILE_SIZE);
 
-    private final RenderersRoot rr;
+    private final RendererRoot rr;
 
     /**
      * @param trackPieceViewList
      * @param modelRoot
      */
-    public BuildTrackRenderer(RenderersRoot trackPieceViewList,
+    public BuildTrackRenderer(RendererRoot trackPieceViewList,
                               ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
         this.rr = trackPieceViewList;
@@ -76,9 +76,9 @@ public class BuildTrackRenderer implements Painter {
      * any existing track.
      *
      * @param g
-     * @param newVisibleRectectangle
+     * @param newVisibleRectangle
      */
-    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+    public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
         WorldDiffs worldDiffs = getWorldDiffs();
         if (null != worldDiffs) {

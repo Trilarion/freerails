@@ -19,7 +19,6 @@
 /*
  * GUIComponentFactoryTestImpl.java
  *
- * Created on 01 June 2003, 17:30
  */
 package freerails.client.top;
 

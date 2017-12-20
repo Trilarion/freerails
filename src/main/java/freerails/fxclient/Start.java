@@ -16,39 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
-package freerails.client.view;
+package freerails.fxclient;
 
-import java.awt.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-/**
- * Stores a list of colours to use to represent different players.
- */
-public class PlayerColors {
+public class Start extends Application {
 
-    private static final Color[] colors = new Color[]{Color.BLUE,
-            Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW};// Save
-
-    // red
-    // for
-    // when
-    // we
-    // need
-    // to
-    // grab
-    // the
-    // player's
-    // attention!
-
-    /**
-     * @param playerNumber
-     * @return
-     */
-
-    public static Color getColor(int playerNumber) {
-        return colors[playerNumber % colors.length];
+    public static void main(String[] args) {
+        launch(args);
     }
 
+    @Override
+    public void start(Stage primaryStage) {
+
+        primaryStage.setTitle("FreeRails");
+        primaryStage.show();
+
+    }
 }

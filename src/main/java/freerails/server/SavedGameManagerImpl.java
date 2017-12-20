@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 11, 2004
  *
  */
 package freerails.server;

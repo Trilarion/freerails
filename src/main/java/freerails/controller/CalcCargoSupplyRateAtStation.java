@@ -134,7 +134,7 @@ public class CalcCargoSupplyRateAtStation {
         // Calculate supply.
         ImList<Production> production = terrainType.getProduction();
 
-        // loop throught the production array and increment
+        // loop through the production array and increment
         // the supply rates for the station
         for (int m = 0; m < production.size(); m++) {
             int type = production.get(m).getCargoType();

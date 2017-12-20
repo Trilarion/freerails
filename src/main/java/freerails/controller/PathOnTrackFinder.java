@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 05-Jan-2005
  *
  */
 package freerails.controller;

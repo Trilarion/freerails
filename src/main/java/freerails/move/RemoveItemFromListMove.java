@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 13-Apr-2003
  *
  */
 package freerails.move;

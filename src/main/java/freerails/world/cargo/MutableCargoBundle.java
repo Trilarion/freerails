@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 24-May-2003
  *
  */
 package freerails.world.cargo;
@@ -71,7 +70,7 @@ public class MutableCargoBundle implements CargoBundle {
     /**
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBundle has changed since the
-     * iterator was aquired.
+     * iterator was acquired.
      *
      * @return
      */
@@ -81,9 +80,9 @@ public class MutableCargoBundle implements CargoBundle {
         /*
          * A ConcurrentModificationException used to get thrown when the amount
          * of cargo was set to 0, since this resulted in the key being removed
-         * from the hashmap. The iterator below throws a
+         * from the hash map. The iterator below throws a
          * ConcurrentModificationException whenever this CargoBundle has been
-         * changed since the iterator was aquired. This should mean that if the
+         * changed since the iterator was acquired. This should mean that if the
          * cargo bundle gets changed while the iterator is in use, you will know
          * about it straight away.
          */

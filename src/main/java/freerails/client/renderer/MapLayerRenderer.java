@@ -19,7 +19,6 @@
 /*
  * MapView.java
  *
- * Created on 01 August 2001, 06:16
  */
 package freerails.client.renderer;
 

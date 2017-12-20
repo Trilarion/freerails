@@ -19,12 +19,11 @@
 /*
  * TrainDialogueJPanel.java
  *
- * Created on 24 August 2003, 17:13
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
@@ -152,7 +151,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         }
     }// GEN-LAST:event_nextJButtonActionPerformed
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action al) {
         newTrainScheduleJPanel1.setup(mr, vl, al);
         trainDetailsJPanel1.setup(mr, vl, al);
         this.setCancelButtonActionListener(al);
@@ -199,7 +198,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
 
     /**
      * Removes any existing ActionListener listeners from the cancel button,
-     * then adds the specifed one.
+     * then adds the specified one.
      */
     void setCancelButtonActionListener(ActionListener l) {
         ActionListener[] oldListeners = closeJButton.getActionListeners();

@@ -20,7 +20,6 @@
  * ChangeTrackPieceMoveTest.java
  * JUnit based test
  *
- * Created on 24 January 2002, 23:57
  */
 package freerails.move;
 
@@ -120,7 +119,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
-        // Try buildingtrack outside the map.
+        // Try to build track outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
                 new ImPoint(100, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);

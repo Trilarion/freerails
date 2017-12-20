@@ -22,7 +22,7 @@ import freerails.client.ClientConfig;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.common.StationHelper;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
 import freerails.world.ReadOnlyWorld;
@@ -63,7 +63,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      */
     public RHSJTabPane() {
         /*
-         * Dont accept keyboard focus since we want to leave it with the main
+         * Don't accept keyboard focus since we want to leave it with the main
          * map view.
          */
         setFocusable(false);
@@ -129,7 +129,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      * @param vl
      * @param modelRoot
      */
-    public void setup(final ActionRoot actionRoot, RenderersRoot vl,
+    public void setup(final ActionRoot actionRoot, RendererRoot vl,
                       final ModelRootImpl modelRoot) {
 
         this.modelRoot = modelRoot;
@@ -153,7 +153,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     }
 
     /**
-     * Updates the Terrain Info Panel if the specfied PropertyChangeEvent was
+     * Updates the Terrain Info Panel if the specified PropertyChangeEvent was
      * triggered by the cursor moving.
      *
      * @param prop

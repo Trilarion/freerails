@@ -17,12 +17,11 @@
  */
 
 /*
- * Created on 23-Mar-2003
  *
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 
 import javax.swing.*;
@@ -38,5 +37,5 @@ public interface View {
      * @param vl
      * @param closeAction
      */
-    void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction);
+    void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction);
 }

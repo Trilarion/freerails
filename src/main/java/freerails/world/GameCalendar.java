@@ -93,7 +93,7 @@ final public class GameCalendar implements Serializable {
 
     /**
      * Returns the time of day as a string, note that a year is made up of a
-     * representative day, so 1st June is equilavent to 12 noon.
+     * representative day, so 1st June is equivalent to 12 noon.
      *
      * @param i
      * @return

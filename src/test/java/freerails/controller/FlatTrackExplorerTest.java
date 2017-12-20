@@ -31,7 +31,7 @@ import java.util.HashSet;
 
 /**
  * JUnit test for FlatTrackExplorer.
- * <p>
+ *
  * 24-Nov-2002
  */
 public class FlatTrackExplorerTest extends TestCase {

@@ -19,7 +19,6 @@
 /*
  * OneTileMoveVector.java
  *
- * Created on 11 July 2001, 12:09
  */
 package freerails.world;
 
@@ -126,7 +125,7 @@ final public class TileTransition implements FlatTrackTemplate {
     private final double length;
 
     /**
-     * Create a new OneTileMoveVector. N.B Private constuctor to enforce enum
+     * Create a new OneTileMoveVector. N.B Private constructor to enforce enum
      * property, use getInstance(x,y) instead. Pass values for delta X and Y:
      * they must be in the range -1 to 1 and cannot both be equal to 0.
      *

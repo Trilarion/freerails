@@ -24,14 +24,14 @@ import org.xml.sax.*;
 /**
  * The class reads XML documents according to specified DTD and translates all
  * related events into CargoAndTerrainHandler events.
- * <p>
+ *
  * Usage sample:
- * <p>
+ *
  * <pre>
  *      RulesParser parser = new RulesParser(...);
  *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
- * <p>
+ *
  * <b>Warning:</b> the class is machine generated. DO NOT MODIFY!
  */
 // TODO where is the DTD, how to find it?
@@ -70,7 +70,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
     public static void parse(final InputSource input,
@@ -86,7 +86,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
     public static void parse(final java.net.URL url,

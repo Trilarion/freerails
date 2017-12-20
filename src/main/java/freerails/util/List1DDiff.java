@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 27-Jul-2005
  *
  */
 package freerails.util;

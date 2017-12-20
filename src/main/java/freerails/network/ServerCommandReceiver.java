@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 12, 2004
  *
  */
 package freerails.network;

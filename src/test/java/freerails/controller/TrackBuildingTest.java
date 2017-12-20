@@ -172,7 +172,7 @@ public class TrackBuildingTest extends TestCase {
 
     /**
      * There is a bug where if you build a straight section of double track
-     * going E, then move the curor to the end and attempt to build more double
+     * going E, then move the cursor to the end and attempt to build more double
      * track going SE, the track path finder builds a loop rather than just
      * building track going SE
      */

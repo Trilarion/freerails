@@ -20,7 +20,6 @@
  * ChangeTrackPieceCompositeMoveTest.java
  * JUnit based test
  *
- * Created on 26 January 2002, 00:33
  */
 package freerails.move;
 
@@ -94,17 +93,17 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
 
-        assertBuildTrackSuceeds(new ImPoint(0, 5), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(0, 5), east, trackRule);
 
-        assertBuildTrackSuceeds(new ImPoint(0, 6), east, trackRule);
-        assertBuildTrackSuceeds(new ImPoint(1, 6), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(0, 6), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(1, 6), east, trackRule);
 
-        assertBuildTrackSuceeds(new ImPoint(0, 7), east, trackRule);
-        assertBuildTrackSuceeds(new ImPoint(1, 7), east, trackRule);
-        assertBuildTrackSuceeds(new ImPoint(2, 7), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(0, 7), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(1, 7), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(2, 7), east, trackRule);
 
         // Remove only track piece built.
-        assertRemoveTrackSuceeds(new ImPoint(0, 5), east);
+        assertRemoveTrackSucceeds(new ImPoint(0, 5), east);
         TrackConfiguration trackConfiguration = ((FreerailsTile) getWorld()
                 .getTile(0, 5)).getTrackPiece().getTrackConfiguration();
         TrackConfiguration expected = NullTrackPiece.getInstance()
@@ -130,7 +129,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         boolean hasTrackBeenBuilt = ChangeTrackPieceCompositeMove
                 .hasAnyTrackBeenBuilt(world, MapFixtureFactory.TEST_PRINCIPAL);
         assertFalse("No track has been built yet.", hasTrackBeenBuilt);
-        assertBuildTrackSuceeds(new ImPoint(0, 5), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(0, 5), east, trackRule);
 
         // Building the track should have added a transaction.
         numberOfTransactions = world
@@ -141,7 +140,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 world, MapFixtureFactory.TEST_PRINCIPAL);
         assertTrue("One track piece has been built.", hasTrackBeenBuilt);
 
-        assertBuildTrackSuceeds(new ImPoint(1, 5), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(1, 5), east, trackRule);
         assertBuildTrackFails(new ImPoint(4, 8), east, trackRule);
     }
 
@@ -155,7 +154,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES,
                 TRACK_RULE_ID);
 
-        assertBuildTrackSuceeds(new ImPoint(0, 6), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(0, 6), east, trackRule);
 
         // Now change the owner of the track piece at (1, 6);
         int anotherPlayer = 999;
@@ -169,7 +168,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         world.setTile(1, 6, newTile);
         assertBuildTrackFails(new ImPoint(1, 6), east, trackRule);
         world.setTile(1, 6, oldTile);
-        assertBuildTrackSuceeds(new ImPoint(1, 6), east, trackRule);
+        assertBuildTrackSucceeds(new ImPoint(1, 6), east, trackRule);
     }
 
     /**
@@ -183,16 +182,16 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
 
         // First track piece built
-        assertBuildTrackSuceeds(pointA, southeast, trackRule);
+        assertBuildTrackSucceeds(pointA, southeast, trackRule);
 
         // Track connected from one existing track piece
-        assertBuildTrackSuceeds(pointB, northeast, trackRule);
+        assertBuildTrackSucceeds(pointB, northeast, trackRule);
 
         // Track connected to one existing track piece
-        // This is not going through for soem reason, not sure why.
-        // assertBuildTrackSuceeds(pointC, west, trackRule);
+        // This is not going through for some reason, not sure why.
+        // assertBuildTrackSucceeds(pointC, west, trackRule);
         // Track connecting two existing track pieces.
-        assertBuildTrackSuceeds(pointA, east, trackRule);
+        assertBuildTrackSucceeds(pointA, east, trackRule);
 
         // Track off map.. should fail.
         assertBuildTrackFails(pointA, northeast, trackRule);
@@ -222,7 +221,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertEquals(false, status.isOk());
     }
 
-    private void assertBuildTrackSuceeds(ImPoint p, TileTransition v, TrackRule rule) {
+    private void assertBuildTrackSucceeds(ImPoint p, TileTransition v, TrackRule rule) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(p, v, rule, rule, getWorld(),
                         MapFixtureFactory.TEST_PRINCIPAL);
@@ -233,7 +232,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertEquals(true, status.isOk());
     }
 
-    private void assertRemoveTrackSuceeds(ImPoint p, TileTransition v) {
+    private void assertRemoveTrackSucceeds(ImPoint p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateRemoveTrackMove(p, v, getWorld(),

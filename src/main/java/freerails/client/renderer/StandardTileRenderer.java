@@ -17,9 +17,7 @@
  */
 
 /*
- * StandardTileIconSelecter.java
  *
- * Created on 07 July 2001, 12:11
  */
 package freerails.client.renderer;
 

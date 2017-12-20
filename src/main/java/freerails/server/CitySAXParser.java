@@ -28,7 +28,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.Vector;
 
 /**
- * Class to parse an xml file that contains city names and co-ords. Upon reading
+ * Class to parse an xml file that contains city names and coordinates. Upon reading
  * in the data, its stored in KEY.CITIES.
  */
 public class CitySAXParser extends DefaultHandler {

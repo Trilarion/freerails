@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 10, 2004
  *
  */
 package freerails.server;
@@ -166,7 +165,7 @@ public class ServerGameModelImpl implements ServerGameModel {
                 // int delay = (int)(nextModelUpdateDue - frameStartTime);
                 //
                 // /* wake up any waiting client threads - we could be
-                // * more agressive, and only notify them if delay > 0? */
+                // * more aggressive, and only notify them if delay > 0? */
                 // this.notifyAll();
                 //
                 // try {
@@ -211,18 +210,18 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     * @param newMoveExecuter
+     * @param moveExecutor
      */
-    public void init(MoveReceiver newMoveExecuter) {
-        this.moveExecuter = newMoveExecuter;
-        tb = new TrainUpdater(newMoveExecuter);
-        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, newMoveExecuter);
+    public void init(MoveReceiver moveExecutor) {
+        this.moveExecuter = moveExecutor;
+        tb = new TrainUpdater(moveExecutor);
+        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveExecutor);
 
         for (ServerAutomaton aServerAutomata : serverAutomata) {
-            aServerAutomata.initAutomaton(newMoveExecuter);
+            aServerAutomata.initAutomaton(moveExecutor);
         }
 
-        tb.initAutomaton(newMoveExecuter);
+        tb.initAutomaton(moveExecutor);
         nextModelUpdateDue = System.currentTimeMillis();
     }
 

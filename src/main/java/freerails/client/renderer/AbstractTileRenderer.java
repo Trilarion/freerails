@@ -19,7 +19,6 @@
 /*
  * TileView.java
  *
- * Created on 04 July 2001, 07:01
  */
 package freerails.client.renderer;
 

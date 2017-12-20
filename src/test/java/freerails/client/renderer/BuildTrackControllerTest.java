@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 15-Aug-2005
  *
  */
 package freerails.client.renderer;

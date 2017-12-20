@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 03-Aug-2005
  *
  */
 package freerails.move;
@@ -141,7 +140,7 @@ public class WorldDiffsMoveTest extends TestCase {
     /**
      *
      */
-    public void testAddingActiviteEntity() {
+    public void testAddingActiveEntity() {
         Activity act = new TestActivity(30);
         int row = world.addActiveEntity(fp1, act);
         act = new TestActivity(40);
@@ -176,7 +175,7 @@ public class WorldDiffsMoveTest extends TestCase {
         assertTrue(ms.ok);
         assertEquals(worldCopy, diffs);
 
-        // Undoing the move on the diffs should suceed.
+        // Undoing the move on the diffs should succeed.
         WorldDiffs diffsCopy = (WorldDiffs) Utils.cloneBySerialisation(diffs);
         assertEquals(diffsCopy, diffs);
         ms = move.tryUndoMove(diffsCopy, fp1);

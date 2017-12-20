@@ -19,7 +19,6 @@
 /*
  * LegalTrackPlacement.java
  *
- * Created on 22 January 2002, 10:20
  */
 package freerails.world.track;
 

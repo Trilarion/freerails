@@ -78,7 +78,7 @@ public class TrainUpdater implements ServerAutomaton {
             moves.add(move);
         }
 
-        schedule.gotoNextStaton();
+        schedule.gotoNextStation();
 
         ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
         ChangeTrainScheduleMove move = new ChangeTrainScheduleMove(scheduleID,
@@ -264,7 +264,7 @@ public class TrainUpdater implements ServerAutomaton {
 
         MutableSchedule s = new MutableSchedule();
 
-        // Add upto 4 stations to the schedule.
+        // Add up to 4 stations to the schedule.
         while (wi.next() && s.getNumOrders() < 5) {
             TrainOrdersModel orders = new TrainOrdersModel(wi.getIndex(), null,
                     false, autoSchedule);

@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 19-Aug-2005
  *
  */
 package freerails.world.track;

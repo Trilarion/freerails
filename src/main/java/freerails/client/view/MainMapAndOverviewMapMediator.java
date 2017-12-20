@@ -19,7 +19,6 @@
 /*
  * MainMapAndOverviewMapMediator.java
  *
- * Created on 24 June 2002, 21:04
  */
 package freerails.client.view;
 

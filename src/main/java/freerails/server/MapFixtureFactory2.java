@@ -60,8 +60,7 @@ public class MapFixtureFactory2 {
 
         tileFactory.addTerrainTileTypesList(world);
 
-        URL track_xml_url = OldWorldImpl.class
-                .getResource("/freerails/data/track_tiles.xml");
+        URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
 
         Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
                 track_xml_url);

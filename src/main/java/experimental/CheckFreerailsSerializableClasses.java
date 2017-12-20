@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 03-Jul-2005
  *
  */
 package experimental;
@@ -117,7 +116,7 @@ public class CheckFreerailsSerializableClasses {
         for (Class clazz : classes) {
             if (clazz.isInterface()) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Skipping inferface " + clazz.getName());
+                    logger.debug("Skipping interface " + clazz.getName());
                 }
                 continue;
             }

@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Class that calls the object to input the City names and co-ords from an xml
+ * Class that calls the object to input the City names and coordinates from an xml
  * file.
  */
 public class CityNamesSAXParser {

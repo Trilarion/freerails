@@ -19,13 +19,12 @@
 /*
  * BrokerScreenHtmlJFrame.java
  *
- * Created on January 26, 2005, 1:34 PM
  */
 
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.FinancialDataGatherer;
 import freerails.controller.ModelRoot;
 import freerails.controller.StockPriceCalculator;
@@ -103,7 +102,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
      * @param closeAction
      */
     @Override
-    public void setup(final ModelRoot modelRoot, RenderersRoot vl,
+    public void setup(final ModelRoot modelRoot, RendererRoot vl,
                       Action closeAction) {
         super.setup(modelRoot, vl, closeAction);
         financialDataGatherer = new FinancialDataGatherer(modelRoot.getWorld(),
@@ -214,7 +213,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
             }
         }
 
-        // Enable and diable bond actions.
+        // Enable and disable bond actions.
         int outstandingBonds = thisDataGatherer.getBonds();
         repayBondAction.setEnabled(outstandingBonds > 0);
         issueBondAction.setEnabled(outstandingBonds < 4);

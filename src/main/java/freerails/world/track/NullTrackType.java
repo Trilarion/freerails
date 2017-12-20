@@ -19,7 +19,6 @@
 /*
  * NullTrackType.java
  *
- * Created on 23 January 2002, 23:13
  */
 package freerails.world.track;
 
@@ -31,7 +30,7 @@ import java.io.ObjectStreamException;
 import java.util.Iterator;
 
 /**
- * The type of a Null track piece. TODO maybe it would be simplier to get rid of
+ * The type of a Null track piece. TODO maybe it would be simpler to get rid of
  * this and just check against null!
  */
 final public class NullTrackType implements TrackRule {

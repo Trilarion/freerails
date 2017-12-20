@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 12, 2004
  *
  */
 package freerails.network;
@@ -56,9 +55,9 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @param moveExecuter
+     * @param moveExecutor
      */
-    public void init(MoveReceiver moveExecuter) {
+    public void init(MoveReceiver moveExecutor) {
     }
 
     /**

@@ -19,11 +19,10 @@
 /*
  * NewsPaperJPanel.java
  *
- * Created on 21 December 2002, 18:38
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 
 import javax.swing.*;
@@ -137,7 +136,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         this.callBack = closeAction;
     }
 

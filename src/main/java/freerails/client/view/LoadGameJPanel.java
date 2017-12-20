@@ -19,12 +19,11 @@
 /*
  * LoadGameJPanel.java
  *
- * Created on 30 August 2005, 21:48
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
@@ -188,7 +187,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot m, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
         this.close = closeAction;
         modelRoot = m;
         updateListOfFiles();

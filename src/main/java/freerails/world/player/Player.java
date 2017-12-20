@@ -32,10 +32,10 @@ import java.security.NoSuchAlgorithmException;
  * still active. The server can then save the list of players and be stopped and
  * restarted again, the clients can then authenticate themselves to the server
  * and continue their sessions where they left off.
- * <p>
+ *
  * XXX the player is only authenticated when the connection is opened, and
  * subsequent exchanges are not authenticated.
- * <p>
+ *
  * TODO implement a more complete authentication system using certificates
  * rather than public keys.
  */

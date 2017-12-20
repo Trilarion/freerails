@@ -66,7 +66,7 @@ and the starting point was the Railz 0.3.3 release. Again the Java code base was
 
 ## FreeRails3 (2016)
 
-On 2016-12-24, LukeYJ created the [FreeRails3](https://sourceforge.net/projects/freerails3/) project on Sourcefore as
+On 2016-12-24, LukeYJ created the [FreeRails3](https://sourceforge.net/projects/freerails3/) project on Sourceforge as
 a fork from the inactive Freerails2 project. The code was stored in a [GIT repository](https://sourceforge.net/p/freerails3/code/ci/master/tree/)
 and the history FreeRails2 was imported. Within a few weeks some issues were fixed and a new release was made
 with the version number 0.0.4 (smaller than the version of FreeRails before). Finally the code was also placed on [Github](https://github.com/lukeyj13/freerails3).

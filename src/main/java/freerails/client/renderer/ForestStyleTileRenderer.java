@@ -19,7 +19,6 @@
 /*
  * ForestStyleTileView.java
  *
- * Created on 07 July 2001, 14:36
  */
 package freerails.client.renderer;
 

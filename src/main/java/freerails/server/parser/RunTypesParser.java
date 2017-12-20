@@ -19,7 +19,6 @@
 /*
  * RunTypesParser.java
  *
- * Created on 27 April 2003, 18:40
  */
 package freerails.server.parser;
 

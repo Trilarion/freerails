@@ -19,7 +19,6 @@
 /*
  * BuildMenu.java
  *
- * Created on 30 July 2001, 06:49
  */
 package freerails.client.top;
 

@@ -19,7 +19,6 @@
 /*
  * TrackPieceViewList.java
  *
- * Created on 21 July 2001, 01:04
  */
 package freerails.client.renderer;
 
@@ -37,7 +36,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 /**
- * A list of TrackPieceRenderers.
+ * A list of TrackPieceRenderer.
  */
 final public class TrackPieceRendererList {
     private static final Logger logger = Logger

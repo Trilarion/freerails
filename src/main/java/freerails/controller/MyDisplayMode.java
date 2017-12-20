@@ -19,7 +19,6 @@
 /*
  * MyDisplayMode.java
  *
- * Created on 31 August 2003, 00:03
  */
 package freerails.controller;
 

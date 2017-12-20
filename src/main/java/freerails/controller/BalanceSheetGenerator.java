@@ -68,14 +68,14 @@ public class BalanceSheetGenerator {
         year = String.valueOf(startyear);
         GameTime startOfYear = new GameTime(cal.getTicks(startyear));
 
-        GameTime[] totalTimeInteval = new GameTime[]{GameTime.BIG_BANG,
+        GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG,
                 GameTime.DOOMSDAY};
 
-        total = new Stats(w, principal, totalTimeInteval);
+        total = new Stats(w, principal, totalTimeInterval);
 
-        GameTime[] ytdTimeInteval = new GameTime[]{startOfYear,
+        GameTime[] ytdTimeInterval = new GameTime[]{startOfYear,
                 GameTime.DOOMSDAY};
-        ytd = new Stats(w, principal, ytdTimeInteval);
+        ytd = new Stats(w, principal, ytdTimeInterval);
 
     }
 
@@ -170,32 +170,32 @@ public class BalanceSheetGenerator {
         public Money profit;
 
         /**
-         * @param w
+         * @param world
          * @param principal
-         * @param totalTimeInteval
+         * @param totalTimeInterval
          */
-        public Stats(ReadOnlyWorld w, FreerailsPrincipal principal,
-                     final GameTime[] totalTimeInteval) {
+        public Stats(ReadOnlyWorld world, FreerailsPrincipal principal,
+                     final GameTime[] totalTimeInterval) {
             TransactionAggregator operatingFundsAggregator = new TransactionAggregator(
-                    w, principal) {
+                    world, principal) {
                 @Override
                 protected boolean condition(int i) {
                     int transactionTicks = w.getTransactionTimeStamp(principal,
                             i).getTicks();
 
-                    int from = totalTimeInteval[0].getTicks();
-                    int to = totalTimeInteval[1].getTicks();
+                    int from = totalTimeInterval[0].getTicks();
+                    int to = totalTimeInterval[1].getTicks();
                     return transactionTicks >= from && transactionTicks <= to;
                 }
             };
 
             operatingFunds = operatingFundsAggregator.calculateValue();
 
-            track = calTrackTotal(TRACK, w, principal, totalTimeInteval[0]);
+            track = calTrackTotal(TRACK, world, principal, totalTimeInterval[0]);
 
             ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                    w, principal);
-            aggregator.setTimes(totalTimeInteval);
+                    world, principal);
+            aggregator.setTimes(totalTimeInterval);
 
             aggregator.setCategory(STATIONS);
             stations = aggregator.calculateValue();
@@ -214,11 +214,11 @@ public class BalanceSheetGenerator {
             // we get a NPE when we don't own any stock in others RRs
             otherRrStock = new Money(0);
 
-            int thisPlayerId = w.getID(principal);
+            int thisPlayerId = world.getID(principal);
 
-            StockPrice[] stockPrices = (new StockPriceCalculator(w))
+            StockPrice[] stockPrices = (new StockPriceCalculator(world))
                     .calculate();
-            for (int playerId = 0; playerId < w.getNumberOfPlayers(); playerId++) {
+            for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
 
                 aggregator.setCategory(TRANSFER_STOCK);
                 aggregator.setType(thisPlayerId);

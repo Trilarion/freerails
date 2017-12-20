@@ -30,7 +30,7 @@ import freerails.world.top.MapFixtureFactory;
 import junit.framework.TestCase;
 
 /**
- * JUnit tsst for IncomeStatementGenerator.
+ * JUnit test for IncomeStatementGenerator.
  */
 public class IncomeStatementGeneratorTest extends TestCase {
     World w;

@@ -19,7 +19,6 @@
 /*
  * UnexpectedExceptionForm.java
  *
- * Created on 09 September 2005, 21:44
  */
 
 package freerails.controller;

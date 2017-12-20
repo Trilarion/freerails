@@ -19,12 +19,11 @@
 /*
  * TerrainInfoJPanel.java
  *
- * Created on 04 May 2003, 17:47
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
@@ -44,7 +43,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
     private static final long serialVersionUID = 3258131375164045363L;
 
-    private RenderersRoot rr;
+    private RendererRoot rr;
 
     private ReadOnlyWorld w;
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -88,7 +87,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
         terrainDescription.setFont(new java.awt.Font("Dialog", 0, 12));
         terrainDescription
-                .setText("<html>\n<p>Right-of-Way costs X per mile. </p>\n<table width=\"75%\" >\n  <tr> \n    <td><strong>Supplies:</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail </td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td>Passangers</td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td> <strong>Demands</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td><strong>Converts</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Livestock to Food</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Steel to Goods</td>\n    <td>&nbsp;</td>\n  </tr>\n</table>\n</html>");
+                .setText("<html>\n<p>Right-of-Way costs X per mile. </p>\n<table width=\"75%\" >\n  <tr> \n    <td><strong>Supplies:</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail </td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td> <strong>Demands</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td><strong>Converts</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Livestock to Food</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Steel to Goods</td>\n    <td>&nbsp;</td>\n  </tr>\n</table>\n</html>");
         terrainDescription.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -102,7 +101,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
 
     }// GEN-END:initComponents
 
-    public void setup(ReadOnlyWorld w, RenderersRoot vl) {
+    public void setup(ReadOnlyWorld w, RendererRoot vl) {
         this.w = w;
         this.rr = vl;
     }

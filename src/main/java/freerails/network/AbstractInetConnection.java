@@ -109,7 +109,7 @@ abstract class AbstractInetConnection implements Runnable {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug(this + "Recipricating shutdown..");
+            logger.debug(this + "Reciprocating shutdown..");
         }
         shutDownInput();
         readerThreadStatus.close();

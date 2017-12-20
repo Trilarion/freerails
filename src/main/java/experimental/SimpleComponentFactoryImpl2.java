@@ -19,7 +19,6 @@
 /*
  * SimpleComponentFactoryImpl2.java
  *
- * Created on 23 June 2002, 02:36
  */
 package experimental;
 

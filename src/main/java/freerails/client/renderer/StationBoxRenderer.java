@@ -54,7 +54,7 @@ public class StationBoxRenderer implements Painter {
      * @param vl
      * @param modelRoot
      */
-    public StationBoxRenderer(ReadOnlyWorld world, RenderersRoot vl,
+    public StationBoxRenderer(ReadOnlyWorld world, RendererRoot vl,
                               ModelRoot modelRoot) {
         this.w = world;
         this.bgColor = new Color(0, 0, 200, 60);
@@ -82,9 +82,9 @@ public class StationBoxRenderer implements Painter {
 
     /**
      * @param g
-     * @param newVisibleRectectangle
+     * @param newVisibleRectangle
      */
-    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+    public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         Boolean showCargoWaiting = (Boolean) modelRoot
                 .getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
 
@@ -101,7 +101,7 @@ public class StationBoxRenderer implements Painter {
                         + ClientConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH,
                         MAX_HEIGHT);
-                if (newVisibleRectectangle.intersects(r)) {
+                if (newVisibleRectangle.intersects(r)) {
                     g.setColor(bgColor);
                     g.fillRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
                     g.setColor(Color.WHITE);

@@ -19,7 +19,6 @@
 /*
  * DisplayModesComboBoxModel.java
  *
- * Created on 30 August 2003, 23:39
  */
 package freerails.client.view;
 
@@ -64,9 +63,9 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
      *
      * @param width
      * @param height
-     * @param bitdepth
+     * @param bitDepth
      */
-    public void removeDisplayModesBelow(int width, int height, int bitdepth) {
+    public void removeDisplayModesBelow(int width, int height, int bitDepth) {
         Iterator<MyDisplayMode> it = modes.iterator();
         while (it.hasNext()) {
             MyDisplayMode mode = it.next();
@@ -77,7 +76,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
              * Note, displayMode.getBitDepth() may return
              * DisplayMode.BIT_DEPTH_MULTI, which is -1.
              */
-            final boolean tooFewColours = (displayMode.getBitDepth() < bitdepth)
+            final boolean tooFewColours = (displayMode.getBitDepth() < bitDepth)
                     && (displayMode.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI);
             if (tooNarrow || tooShort || tooFewColours) {
                 it.remove();

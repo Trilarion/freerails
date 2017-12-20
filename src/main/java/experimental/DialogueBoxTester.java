@@ -20,8 +20,8 @@ package experimental;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
-import freerails.client.renderer.RenderersRoot;
-import freerails.client.top.RenderersRootImpl;
+import freerails.client.renderer.RendererRoot;
+import freerails.client.top.RendererRootImpl;
 import freerails.client.view.*;
 import freerails.controller.JFrameMinimumSizeEnforcer;
 import freerails.network.MoveChainFork;
@@ -83,7 +83,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     javax.swing.JMenuItem showTrainList;
     javax.swing.JMenuItem showReportBug;
     javax.swing.JMenuItem throwException;
-    private RenderersRoot vl;
+    private RendererRoot vl;
 
     /**
      * Creates new form TestGlassPanelMethod.
@@ -104,7 +104,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         wetf.addTypesToWorld(w);
         w.addPlayer(TEST_PLAYER);
         try {
-            vl = new RenderersRootImpl(w,
+            vl = new RendererRootImpl(w,
                     ProgressMonitor.NULL_INSTANCE);
         } catch (IOException e) {
         }
@@ -333,7 +333,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         show.add(showJavaSystemProperties);
 
-        showNetworthGraph.setText("Show networth graph");
+        showNetworthGraph.setText("Show net worth graph");
         showNetworthGraph
                 .addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {

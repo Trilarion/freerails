@@ -19,7 +19,6 @@
 /*
  * MyGlassPanel.java
  *
- * Created on 21 December 2002, 22:19
  */
 package freerails.client.common;
 

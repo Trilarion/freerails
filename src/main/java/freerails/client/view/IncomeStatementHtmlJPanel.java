@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
@@ -55,7 +55,7 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
      * @param closeAction
      */
     @Override
-    public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         super.setup(modelRoot, vl, closeAction);
         this.modelRoot = modelRoot;
         updateHtml();

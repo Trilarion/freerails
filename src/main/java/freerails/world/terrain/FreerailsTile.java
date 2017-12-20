@@ -28,7 +28,7 @@ import java.util.HashMap;
 
 /**
  * A tile on the map.
- * <p>
+ *
  * Instances are stored in a HashMap to avoid creating 100,000s of objects.
  */
 // TODO find better name for what it really is

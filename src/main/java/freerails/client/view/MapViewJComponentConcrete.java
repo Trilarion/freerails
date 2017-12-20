@@ -19,7 +19,6 @@
 /*
  * MapViewJComponent.java
  *
- * Created on 31 July 2001, 13:56
  */
 package freerails.client.view;
 
@@ -27,7 +26,7 @@ import freerails.client.ClientConstants;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
 
@@ -64,9 +63,9 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     /**
      * Affects scroll direction and scroll speed relative to the cursor.
      * Examples:
-     * <p>
+     *
      * 1 := grab map, move 1:1
-     * <p>
+     *
      * -2 := invert mouse, scroll twice as fast
      */
     private final int LINEAR_ACCEL = -1;
@@ -140,7 +139,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
      * @param rr
      * @throws IOException
      */
-    public void setup(MapRenderer mv, ModelRootImpl mr, RenderersRoot rr)
+    public void setup(MapRenderer mv, ModelRootImpl mr, RendererRoot rr)
             throws IOException {
         super.setMapView(mv);
 
@@ -238,16 +237,16 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     }
 
     /**
-     * Checks what triggered the specfied PropertyChangeEvent and reacts as
+     * Checks what triggered the specified PropertyChangeEvent and reacts as
      * follows.
-     * <p>
+     *
      * (1) If it was ModelRoot.CURSOR_POSITION, scrolls the map if necessary.
-     * <p>
-     * <p>
+     *
+     *
      * (2) If it was ModelRoot.QUICK_MESSAGE, display or hide the message as
      * appropriate.
-     * <p>
-     * <p>
+     *
+     *
      * (3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as
      * appropriate.
      *
@@ -288,7 +287,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     /**
      * Implements a MouseListener for FreerailsCursor-movement (left mouse
      * button) and a MouseMotionListener for map-scrolling (right mouse button).
-     * <p>
+     *
      * Possible enhancements: setCursor(blankCursor),
      * g.draw(cursorimage,lastMouseLocation.x,lastMouseLocation.y,null)
      */

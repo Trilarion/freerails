@@ -19,7 +19,6 @@
 /*
  * BuildTrackStrategy.java
  *
- * Created on 13 December 2004, 22:24
  */
 
 package freerails.controller;

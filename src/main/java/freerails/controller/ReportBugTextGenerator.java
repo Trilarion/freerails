@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /*
- * Created on 09-Sep-2005
  *
  */
 

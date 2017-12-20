@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 21-Apr-2003
  *
  */
 package experimental;

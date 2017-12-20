@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 22-Mar-2003
  *
  */
 package freerails.server;
@@ -38,7 +37,7 @@ import java.util.Vector;
 
 /**
  * This class has a static method that converts an image file into a map.
- * <p>
+ *
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.
  */

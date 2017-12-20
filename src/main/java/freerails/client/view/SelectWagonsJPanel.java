@@ -19,12 +19,11 @@
 /*
  * SelectWagonsJPanel.java
  *
- * Created on 29 December 2002, 16:54
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
@@ -49,7 +48,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     private int engineType = 0;
 
-    private RenderersRoot rr;
+    private RendererRoot rr;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton okjButton;
     private javax.swing.JList wagonTypesJList;
@@ -271,7 +270,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         WorldToListModelAdapter w2lma = new WorldToListModelAdapter(
                 mr.getWorld(), SKEY.CARGO_TYPES);
         this.wagonTypesJList.setModel(w2lma);
@@ -302,10 +301,10 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     // End of variables declaration                   
     final private class WagonCellRenderer implements ListCellRenderer {
-        final RenderersRoot rr;
+        final RendererRoot rr;
         private final Component[] labels;
 
-        public WagonCellRenderer(WorldToListModelAdapter w2lma, RenderersRoot s) {
+        public WagonCellRenderer(WorldToListModelAdapter w2lma, RendererRoot s) {
             rr = s;
 
             labels = new Component[w2lma.getSize()];
@@ -341,7 +340,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
                         : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
                  * padding to stop
                  * word wrap due to
-                 * greater wodth of
+                 * greater width of
                  * strong font
                  */) + "</body></html>";
                 ((JLabel) labels[index]).setText(text);

@@ -21,7 +21,7 @@ package freerails.client.renderer;
 import freerails.world.ReadOnlyWorld;
 
 /**
- * A list of TileRenderers.
+ * A list of TileRenderer.
  */
 public interface TileRendererList {
 
@@ -33,7 +33,7 @@ public interface TileRendererList {
 
     /**
      * Checks whether this tile view list has tile views for all the terrain
-     * types in the specifed list.
+     * types in the specified list.
      *
      * @param world
      * @return

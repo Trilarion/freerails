@@ -17,12 +17,11 @@
  */
 
 /*
- * Created on 01-Jun-2003
  *
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
@@ -53,7 +52,7 @@ public class CashJLabel extends JLabel implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
         this.w = model.getWorld();
         principal = model.getPrincipal();
     }

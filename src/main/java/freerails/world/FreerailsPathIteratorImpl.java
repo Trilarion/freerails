@@ -19,7 +19,6 @@
 /*
  * FreerailsPathIteratorImpl.java
  *
- * Created on 23 September 2002, 20:41
  */
 package freerails.world;
 

@@ -19,7 +19,6 @@
 /*
  * SpecialTileView.java
  *
- * Created on 20 August 2001, 15:41
  */
 package freerails.client.renderer;
 

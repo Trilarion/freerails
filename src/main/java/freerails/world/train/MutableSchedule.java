@@ -19,7 +19,6 @@
 /*
  * Schedule.java
  *
- * Created on 22 January 2002, 20:14
  */
 package freerails.world.train;
 
@@ -103,7 +102,7 @@ public class MutableSchedule implements Schedule {
             hasPriorityOrders = false;
         }
         if (orderNumber >= orders.size()) {
-            // cannot remove an order thats already removed!
+            // cannot remove an order that's already removed!
             return;
         }
         orders.remove(orderNumber);
@@ -229,7 +228,7 @@ public class MutableSchedule implements Schedule {
      * station in the list. If priority orders are set, the priority orders
      * orders are removed from the schedule and the goto station is not changed.
      */
-    public void gotoNextStaton() {
+    public void gotoNextStation() {
         if (hasPriorityOrders) {
             if (nextScheduledOrder != PRIORITY_ORDERS) {
                 removeOrder(PRIORITY_ORDERS);

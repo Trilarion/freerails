@@ -19,12 +19,11 @@
 /*
  * StationInfoJPanel.java
  *
- * Created on 04 May 2003, 18:56
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
 import freerails.world.*;
@@ -207,7 +206,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
     } // GEN-LAST:event_nextStationActionPerformed
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action al) {
         this.wi = new NonNullElementWorldIterator(KEY.STATIONS, mr.getWorld(), mr
                 .getPrincipal());
         addComponentListener(componentListener);

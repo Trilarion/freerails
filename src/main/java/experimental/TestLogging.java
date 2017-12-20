@@ -23,11 +23,11 @@ import org.apache.log4j.Logger;
 
 /**
  * Used to test the logging configuration.
- * <p>
- * <p>
+ *
+ *
  * Usage:{@code java -Djava.util.logging.config.file=logging.properties experimental.TestLogging}
- * <p>
- * <p>
+ *
+ *
  * Make sure {@code logging.properties} is in the working directory.
  */
 public class TestLogging {

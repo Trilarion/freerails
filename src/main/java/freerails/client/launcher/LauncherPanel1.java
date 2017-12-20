@@ -19,7 +19,6 @@
 /*
  * LauncherPanel1.java
  *
- * Created on 20 December 2003, 14:58
  */
 
 package freerails.client.launcher;

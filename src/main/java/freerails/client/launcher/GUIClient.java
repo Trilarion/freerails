@@ -17,16 +17,15 @@
  */
 
 /*
- * Created on Sep 11, 2004
  *
  */
 package freerails.client.launcher;
 
 import freerails.client.common.ModelRootImpl;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.client.top.GUIComponentFactoryImpl;
 import freerails.client.top.GameLoop;
-import freerails.client.top.RenderersRootImpl;
+import freerails.client.top.RendererRootImpl;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
@@ -58,7 +57,7 @@ public class GUIClient extends FreerailsClient implements
     private final ProgressMonitor monitor;
     private final String name;
     private final ScreenHandler screenHandler;
-    private RenderersRoot vl;
+    private RendererRoot vl;
 
     /**
      * @param name
@@ -141,7 +140,7 @@ public class GUIClient extends FreerailsClient implements
         try {
             if (null == vl || !vl.validate(w)) {
                 try {
-                    vl = new RenderersRootImpl(w, monitor);
+                    vl = new RendererRootImpl(w, monitor);
                     monitor.finished();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block

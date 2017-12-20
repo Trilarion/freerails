@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.client.common.ModelRootImpl;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.StationBuilder;
 import freerails.controller.TrackMoveProducer;
 import freerails.world.ReadOnlyWorld;
@@ -96,7 +96,7 @@ public class ActionRoot {
      * @param modelRoot
      * @param vl
      */
-    public void setup(ModelRootImpl modelRoot, RenderersRoot vl) {
+    public void setup(ModelRootImpl modelRoot, RendererRoot vl) {
         serverControls.setup(modelRoot, dialogueBoxController);
         if (!modelRoot.hasBeenSetup)
             throw new IllegalStateException();

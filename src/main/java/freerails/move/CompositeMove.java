@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 26-May-2003
  *
  */
 package freerails.move;
@@ -88,9 +87,9 @@ public class CompositeMove implements Move {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         // Since whether a move later in the list goes through could
-        // depend on whether an ealier move has been executed, we need
+        // depend on whether an earlier move has been executed, we need
         // actually execute moves, then undo them to test whether the
-        // array of moves can be excuted ok.
+        // array of moves can be executed ok.
         MoveStatus ms = doMove(world, principal);
 
         if (ms.ok) {

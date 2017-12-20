@@ -19,7 +19,6 @@
 /*
  * ProgressMonitor.java
  *
- * Created on 08 September 2003, 21:56
  */
 package freerails.util;
 

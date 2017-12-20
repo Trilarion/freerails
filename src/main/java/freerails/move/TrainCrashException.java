@@ -19,7 +19,6 @@
 /*
  * TrainCrashException.java
  *
- * Created on January 25, 2005, 2:32 PM
  */
 
 package freerails.move;

@@ -19,7 +19,6 @@
 /*
  * ChangeTrackPieceCompositeMove.java
  *
- * Created on 25 January 2002, 23:49
  */
 package freerails.move;
 
@@ -157,7 +156,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 }
             } else {
                 // There is no track to remove.
-                // Fix for bug [ 948670 ] Removing non-existant track
+                // Fix for bug [ 948670 ] Removing non-existent track
                 throw new Exception();
             }
         } else {
@@ -169,7 +168,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
                 newTrackPiece, p);
 
         // If we are removing a station, we also need to remove the station from
-        // the staiton list.
+        // the station list.
         if (oldTrackPiece.getTrackRule().isStation()
                 && !newTrackPiece.getTrackRule().isStation()) {
             return RemoveStationMove.getInstance(w, m, principal);

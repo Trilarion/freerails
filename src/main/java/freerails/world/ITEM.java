@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * This class provides a set of keys to access the items of which there can only
  * be one instance in the game world (for example, the current time).
- * <p>
+ *
  * It implements the type-safe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
  */

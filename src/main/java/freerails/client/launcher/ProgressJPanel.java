@@ -19,7 +19,6 @@
 /*
  * ProgressJPanel.java
  *
- * Created on 31 August 2005
  */
 
 package freerails.client.launcher;

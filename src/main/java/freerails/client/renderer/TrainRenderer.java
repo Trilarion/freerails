@@ -32,12 +32,12 @@ import java.awt.*;
  * This class draws a train from an overhead view.
  */
 public class TrainRenderer {
-    private final RenderersRoot rr;
+    private final RendererRoot rr;
 
     /**
      * @param trainImages
      */
-    public TrainRenderer(RenderersRoot trainImages) {
+    public TrainRenderer(RendererRoot trainImages) {
         this.rr = trainImages;
     }
 

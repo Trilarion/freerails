@@ -19,7 +19,6 @@
 /*
  * BuildTrackJPanel.java
  *
- * Created on 23 November 2004, 18:01
  */
 
 package freerails.client.view;
@@ -27,7 +26,7 @@ package freerails.client.view;
 import freerails.client.ClientConfig;
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
@@ -93,7 +92,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
      * @param vl
      * @param al
      */
-    public void setup(ModelRoot mr, ActionRoot ar, RenderersRoot vl,
+    public void setup(ModelRoot mr, ActionRoot ar, RendererRoot vl,
                       ActionListener al) {
 
         modelRoot = mr;

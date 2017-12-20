@@ -463,7 +463,7 @@ public class UserInputOnMapController extends KeyAdapter {
                         && buildTrack.isBuildTrackSuccessful()) {
 
                     // Fix for bug [ 997088 ]
-                    // Is current posisition different from original position?
+                    // Is current position different from original position?
                     float scale = mapView.getScale();
                     Dimension tileSize = new Dimension((int) scale, (int) scale);
                     int tileX = evt.getX() / tileSize.width;

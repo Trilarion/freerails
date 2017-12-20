@@ -19,7 +19,6 @@
 /*
  * CopyableTextJPanel.java
  *
- * Created on 09 September 2005, 17:58
  */
 
 package freerails.controller;
@@ -100,6 +99,7 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(500, 300));
         jTextArea1.setEditable(false);
+        // TODO do we need to set this text?
         jTextArea1
                 .setText("dsfasd\n\nsad\nf\nasd\nfa\nsdf\nas\ndf\nas\ndf\nads\nf\nasd\nf\nads\nf\ndsa\nf\ndsa\nf\ndasf\na\ndsf\nads\nf\nasd\nf\nasd\nf\n\nasdf");
         jTextArea1.setWrapStyleWord(true);

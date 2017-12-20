@@ -68,7 +68,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     /**
      * This method may be called under 3 possible conditions: (1) when a station
      * is getting built, (2) when a station is getting upgraded, (3) when a
-     * staton is getting removed.
+     * station is getting removed.
      *
      * @param w
      * @param location

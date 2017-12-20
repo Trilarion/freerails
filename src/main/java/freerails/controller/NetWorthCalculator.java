@@ -26,7 +26,7 @@ import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
- * A TransactionAggregator that calculates the networth of a player by totalling
+ * A TransactionAggregator that calculates the net worth of a player by totalling
  * the value of their assets.
  */
 public class NetWorthCalculator extends TransactionAggregator {

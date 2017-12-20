@@ -17,12 +17,11 @@
  */
 
 /*
- * Created on Sep 9, 2004
  *
  */
 package freerails.client.top;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.client.view.View;
 import freerails.controller.ModelRoot;
 import freerails.move.*;
@@ -62,7 +61,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(final ModelRoot modelRoot, RenderersRoot vl,
+    public void setup(final ModelRoot modelRoot, RendererRoot vl,
                       Action closeAction) {
         this.removeAll();
 

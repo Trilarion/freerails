@@ -56,16 +56,16 @@ final public class EngineType implements Serializable {
     /**
      * @param name
      * @param power
-     * @param m
+     * @param price
      * @param speed
-     * @param maint
+     * @param maintenance
      */
-    public EngineType(String name, int power, Money m, int speed, Money maint) {
+    public EngineType(String name, int power, Money price, int speed, Money maintenance) {
         engineTypeName = name;
         powerAtDrawbar = power;
-        price = m;
+        this.price = price;
         maxSpeed = speed;
-        maintenance = maint;
+        this.maintenance = maintenance;
     }
 
     @Override

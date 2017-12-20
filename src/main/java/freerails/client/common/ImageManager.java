@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 30-Apr-2003
  *
  */
 package freerails.client.common;

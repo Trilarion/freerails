@@ -132,7 +132,7 @@ final public class TrackMoveProducer {
                     return sendMove(moveAndTransaction);
                 } catch (Exception e) {
                     // thrown when there is no track to remove.
-                    // Fix for bug [ 948670 ] Removing non-existant track
+                    // Fix for bug [ 948670 ] Removing non-existent track
                     return MoveStatus.moveFailed("No track to remove.");
                 }
             }

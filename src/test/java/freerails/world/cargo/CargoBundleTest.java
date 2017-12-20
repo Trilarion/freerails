@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 12-Aug-2005
  *
  */
 package freerails.world.cargo;

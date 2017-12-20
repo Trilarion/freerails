@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 11, 2004
  *
  */
 package freerails.network;
@@ -52,9 +51,9 @@ public interface ServerGameModel extends GameModel, Serializable {
     String[] getPasswords();
 
     /**
-     * @param moveExecuter
+     * @param moveExecutor
      */
-    void init(MoveReceiver moveExecuter);
+    void init(MoveReceiver moveExecutor);
 
     /**
      * @param objectOut

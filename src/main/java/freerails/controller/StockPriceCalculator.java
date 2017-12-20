@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 19-Sep-2005
  *
  */
 package freerails.controller;
@@ -96,7 +95,7 @@ public class StockPriceCalculator {
         FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
         NetWorthCalculator nwc = new NetWorthCalculator(w, pr);
 
-        // Set the inteval to beginning of time to start of this year.
+        // Set the interval to beginning of time to start of this year.
         GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
         GameTime currentTime = w.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
@@ -117,7 +116,7 @@ public class StockPriceCalculator {
         int lastyear = currentYear - 1;
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
         int ticksAtStartOfLastYear = calendar.getTicks(lastyear);
-        GameTime[] inteval = {new GameTime(ticksAtStartOfLastYear),
+        GameTime[] interval = {new GameTime(ticksAtStartOfLastYear),
                 new GameTime(ticksAtStartOfyear)};
 
         TransactionAggregator aggregator = new TransactionAggregator(w, pr) {
@@ -128,7 +127,7 @@ public class StockPriceCalculator {
                 return !(t instanceof ItemTransaction);
             }
         };
-        aggregator.setTimes(inteval);
+        aggregator.setTimes(interval);
         return aggregator.calculateValue().getAmount();
     }
 
@@ -183,21 +182,21 @@ public class StockPriceCalculator {
 
         /**
          * @param netWorth
-         * @param profitLastyear
+         * @param profitLastYear
          * @param publicShares
          * @param otherRRShares
          */
-        public StockPrice(long netWorth, long profitLastyear, int publicShares,
+        public StockPrice(long netWorth, long profitLastYear, int publicShares,
                           int otherRRShares) {
-            currentPrice = calStockPrice(netWorth, profitLastyear,
+            currentPrice = calStockPrice(netWorth, profitLastYear,
                     publicShares, otherRRShares);
-            sellPrice = calStockPrice(netWorth, profitLastyear, publicShares
+            sellPrice = calStockPrice(netWorth, profitLastYear, publicShares
                     + STOCK_BUNDLE_SIZE, otherRRShares - STOCK_BUNDLE_SIZE);
-            buyPrice = calStockPrice(netWorth, profitLastyear, publicShares
+            buyPrice = calStockPrice(netWorth, profitLastYear, publicShares
                     - STOCK_BUNDLE_SIZE, otherRRShares + STOCK_BUNDLE_SIZE);
-            treasurySellPrice = calStockPrice(netWorth, profitLastyear,
+            treasurySellPrice = calStockPrice(netWorth, profitLastYear,
                     publicShares + STOCK_BUNDLE_SIZE, otherRRShares);
-            treasuryBuyPrice = calStockPrice(netWorth, profitLastyear,
+            treasuryBuyPrice = calStockPrice(netWorth, profitLastYear,
                     publicShares - STOCK_BUNDLE_SIZE, otherRRShares);
         }
     }

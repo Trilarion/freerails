@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 04-Mar-2005
  *
  */
 package freerails.controller;
@@ -116,9 +115,7 @@ public class TrainAccessor {
         int x = pot.getX();
         int y = pot.getY();
 
-        // loop thru the station list to check if train is at the same Point
-        // as
-        // a station
+        // loop through the station list to check if train is at the same Point as a station
         for (int i = 0; i < w.size(p, KEY.STATIONS); i++) {
             StationModel tempPoint = (StationModel) w.get(p, KEY.STATIONS, i);
 

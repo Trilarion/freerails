@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.client.common.SoundManager;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
@@ -51,7 +51,7 @@ public class OverHeadTrainView implements Painter {
      * @param rr
      * @param mr
      */
-    public OverHeadTrainView(ReadOnlyWorld world, RenderersRoot rr, ModelRoot mr) {
+    public OverHeadTrainView(ReadOnlyWorld world, RendererRoot rr, ModelRoot mr) {
         this.w = world;
         trainPainter = new TrainRenderer(rr);
         this.mr = mr;
@@ -59,9 +59,9 @@ public class OverHeadTrainView implements Painter {
 
     /**
      * @param g
-     * @param newVisibleRectectangle
+     * @param newVisibleRectangle
      */
-    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+    public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke(10));
 
@@ -77,7 +77,7 @@ public class OverHeadTrainView implements Painter {
                 // principal, KEY.TRAIN_POSITIONS, i);
                 TrainAccessor ta = new TrainAccessor(w, principal, i);
                 TrainPositionOnMap pos = ta.findPosition(time,
-                        newVisibleRectectangle);
+                        newVisibleRectangle);
                 if (pos == null)
                     continue;
                 if (pos.isCrashSite()

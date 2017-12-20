@@ -19,7 +19,6 @@
 /*
  * NullTrackPiece.java
  *
- * Created on 23 January 2002, 21:31
  */
 package freerails.world.track;
 

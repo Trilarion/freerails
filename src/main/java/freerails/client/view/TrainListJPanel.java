@@ -19,12 +19,11 @@
 /*
  * TrainListJPanel.java
  *
- * Created on 18 February 2004, 23:13
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
@@ -221,7 +220,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }// GEN-LAST:event_jList1KeyPressed
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         world = mr.getWorld();
         trainSummaryJPanel1.setup(mr, vl, null);
 

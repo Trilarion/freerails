@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 17-Oct-2004
  *
  */
 package freerails.client.launcher;

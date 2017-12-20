@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 11-Aug-2003
  *
  */
 package freerails.server;
@@ -58,7 +57,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         actual = calNumOfEachTrackType();
 
         /*
-         * actual = ItemsTransactionAggregator.calulateNumberOfEachTrackType(world,
+         * actual = ItemsTransactionAggregator.calculateNumberOfEachTrackType(world,
          * MapFixtureFactory.TEST_PRINCIPAL, 0);
          */
         expected = new int[]{0, 0, 0}; // No track has been built yet.
@@ -93,7 +92,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     }
 
     /**
-     * Utility method to add the specifed number of units of the specified track
+     * Utility method to add the specified number of units of the specified track
      * type.
      */
     private void addTrack(int trackType, int quantity) {

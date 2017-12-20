@@ -19,7 +19,6 @@
 /*
  * SelectMapJPanel.java
  *
- * Created on 31 August 2005, 00:19
  */
 
 package freerails.client.launcher;

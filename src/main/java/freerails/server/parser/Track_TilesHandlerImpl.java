@@ -148,6 +148,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         boolean enableDoubleTrack = Boolean.valueOf(
                 meta.getValue("doubleTrack"));
         String typeName = meta.getValue("type");
+        // TODO correct this meta value (probably needs to change somewhere else too)
         maxConsequ = Integer.parseInt(meta.getValue("maxConsecuativePieces"));
 
         String stationRadiusString = meta.getValue("stationRadius");

@@ -65,9 +65,9 @@ public class StationNamesRenderer implements Painter {
 
     /**
      * @param g
-     * @param newVisibleRectectangle
+     * @param newVisibleRectangle
      */
-    public void paint(Graphics2D g, Rectangle newVisibleRectectangle) {
+    public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         int rectWidth;
         int rectHeight;
         int rectX;
@@ -105,8 +105,8 @@ public class StationNamesRenderer implements Painter {
                 Rectangle stationBox = new Rectangle(xdisp
                         - ClientConstants.TILE_SIZE * 3, ydisp - ClientConstants.TILE_SIZE
                         * 3, ClientConstants.TILE_SIZE * 7, ClientConstants.TILE_SIZE * 7);
-                if (newVisibleRectectangle != null
-                        && !newVisibleRectectangle.intersects(stationBox)) {
+                if (newVisibleRectangle != null
+                        && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
                 }
                 // First draw station sphere of influence

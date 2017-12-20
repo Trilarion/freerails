@@ -19,12 +19,11 @@
 /*
  * CargoWaitingAndDemandedJPanel.java
  *
- * Created on 07 February 2004, 12:24
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -169,7 +168,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
         this.world = model.getWorld();
         this.principal = model.getPrincipal();
     }

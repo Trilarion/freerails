@@ -48,7 +48,7 @@ public class MapFixtureFactory {
             .getPrincipal();
 
     /**
-     * Returns a world object with a map of the specifed size with the terrain
+     * Returns a world object with a map of the specified size with the terrain
      * and cargo types setup.
      *
      * @param w
@@ -126,7 +126,7 @@ public class MapFixtureFactory {
             world.add(SKEY.TRACK_RULES, aTrackRulesArray);
         }
 
-        // Add the terrain types if neccesary.
+        // Add the terrain types if necessary.
         if (world.size(SKEY.TERRAIN_TYPES) == 0) {
             generateTerrainTypesList(world);
         }

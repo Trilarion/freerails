@@ -17,12 +17,11 @@
  */
 
 /*
- * Created on 15-Dec-2004
  *
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 
 import java.awt.event.ActionListener;
@@ -39,6 +38,6 @@ public interface ActiveView {
      * @param vl
      * @param submitButtonCallBack
      */
-    void setup(ModelRoot modelRoot, ActionRoot ar, RenderersRoot vl,
+    void setup(ModelRoot modelRoot, ActionRoot ar, RendererRoot vl,
                ActionListener submitButtonCallBack);
 }

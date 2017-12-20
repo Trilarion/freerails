@@ -19,7 +19,6 @@
 /*
  * TrainOrders.java
  *
- * Created on 31 March 2003, 23:17
  */
 package freerails.world.train;
 

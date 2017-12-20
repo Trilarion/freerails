@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 21-Jun-2003
  *
  */
 package freerails.world.finances;

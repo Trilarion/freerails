@@ -17,12 +17,11 @@
  */
 
 /*
- * Created on Sep 8, 2004
  *
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
 import freerails.world.KEY;
@@ -112,7 +111,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         ReadOnlyWorld w = modelRoot.getWorld();
         values.clear();
         this.submitButtonCallBack = closeAction;
@@ -134,7 +133,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     }
 
     /**
-     * Stores the details a player that are shown on the leaderboard.
+     * Stores the details a player that are shown on the leader board.
      */
     static class PlayerDetails implements Comparable<PlayerDetails> {
 

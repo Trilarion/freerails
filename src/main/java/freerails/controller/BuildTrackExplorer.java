@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Aug 22, 2004
  *
  */
 package freerails.controller;
@@ -89,9 +88,9 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * Tests whether we can build track in the direction specified by
      * m_direction.
-     * <p>
-     * <p>
-     * <p>
+     *
+     *
+     *
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
      * track can only be built on certain terrain types. (2) The direction we

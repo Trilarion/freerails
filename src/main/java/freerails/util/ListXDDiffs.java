@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 24-Jul-2005
  *
  */
 package freerails.util;
@@ -87,7 +86,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
             if (getUnderlyingSize(dim) > sizeBefore) {
                 T uElement = uGet(index);
                 if (Utils.equal(uElement, element)) {
-                    // We are readding an element that was removed, in which
+                    // We are reading an element that was removed, in which
                     // case we don't store a diff.
                     break setElementDiff;
                 }

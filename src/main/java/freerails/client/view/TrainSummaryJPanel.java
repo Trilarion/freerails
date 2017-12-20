@@ -19,12 +19,11 @@
 /*
  * TrainSummaryJPanel.java
  *
- * Created on January 24, 2005, 3:00 PM
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.LRUCache;
 import freerails.world.*;
@@ -65,7 +64,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         initComponents();
     }
 
-    public void setup(ModelRoot modelRoot, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         this.principal = modelRoot.getPrincipal();
         this.w = modelRoot.getWorld();
         trainListCellRenderer1 = new TrainListCellRenderer(modelRoot, vl);

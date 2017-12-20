@@ -19,12 +19,11 @@
 /*
  * SelectStationJPanel.java
  *
- * Created on 06 February 2004, 16:34
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
@@ -344,7 +343,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         }
     }
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         cargoWaitingAndDemandedJPanel1.setup(mr, vl, null);
         this.world = mr.getWorld();
         this.submitButtonCallBack = closeAction;

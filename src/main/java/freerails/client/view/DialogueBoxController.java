@@ -19,7 +19,6 @@
 /*
  * DialogueBoxController.java
  *
- * Created on 29 December 2002, 02:05
  */
 package freerails.client.view;
 
@@ -27,7 +26,7 @@ import freerails.client.ClientConfig;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.CopyableTextJPanel;
 import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot.Property;
@@ -88,7 +87,7 @@ public class DialogueBoxController implements WorldListListener {
     private final JFrame frame;
     private ReadOnlyWorld world;
     private ModelRootImpl modelRoot;
-    private RenderersRoot vl;
+    private RendererRoot vl;
     private Component defaultFocusOwner = null;
     private JInternalFrame dialogueJInternalFrame;
 
@@ -199,7 +198,7 @@ public class DialogueBoxController implements WorldListListener {
 
     /**
      * Called when a new game is started or a game is loaded.
-     * <p>
+     *
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
@@ -207,7 +206,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param mr
      * @param vl
      */
-    public void setup(ModelRootImpl mr, RenderersRoot vl) {
+    public void setup(ModelRootImpl mr, RendererRoot vl) {
         this.modelRoot = mr;
         this.vl = vl;
         modelRoot.addListListener(this); // When a new train gets built, we

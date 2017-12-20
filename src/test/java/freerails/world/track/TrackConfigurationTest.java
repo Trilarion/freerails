@@ -21,7 +21,6 @@
  * JUnit based test
  *
  *Tests that adding and removing track sections from a configuration.
- * Created on 26 January 2002, 02:25
  */
 package freerails.world.track;
 

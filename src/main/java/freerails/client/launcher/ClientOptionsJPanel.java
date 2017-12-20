@@ -19,7 +19,6 @@
 /*
  * ClientOptionsJPanel.java
  *
- * Created on 20 December 2003, 15:57
  */
 
 package freerails.client.launcher;

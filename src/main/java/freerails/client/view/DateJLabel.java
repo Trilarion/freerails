@@ -17,12 +17,11 @@
  */
 
 /*
- * Created on 01-Jun-2003
  *
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.GameCalendar;
 import freerails.world.GameTime;
@@ -64,7 +63,7 @@ public class DateJLabel extends JLabel implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot model, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
         this.w = model.getWorld();
     }
 }

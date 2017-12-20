@@ -179,7 +179,7 @@ final public class ScreenHandler {
             }
 
             case WINDOWED_MODE: {
-                // Some of the dialogue boxes do not get layed out properly if they
+                // Some of the dialogue boxes do not get laid out properly if they
                 // are smaller than their
                 // minimum size. JFrameMinimumSizeEnforcer increases the size of the
                 // Jframe when its size falls
@@ -240,7 +240,7 @@ final public class ScreenHandler {
     }
 
     private synchronized void createBufferStrategy() {
-        // Use 2 backbuffers to avoid using too much VRAM.
+        // Use 2 back buffers to avoid using too much VRAM.
         frame.createBufferStrategy(2);
         bufferStrategy = frame.getBufferStrategy();
         setRepaintOffAndDisableDoubleBuffering(frame);

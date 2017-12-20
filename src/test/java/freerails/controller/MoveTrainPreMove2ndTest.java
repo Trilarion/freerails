@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 12-Aug-2005
  *
  */
 package freerails.controller;
@@ -170,7 +169,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     }
 
     /**
-     * Test that when the train arrives at a non sheduled station tile it stops,
+     * Test that when the train arrives at a non scheduled station tile it stops,
      * drops off and picks up cargo, then continues
      */
     public void testStops2() {
@@ -205,7 +204,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(station1Location.y, pot.getY());
         assertEquals(STOPPED_AT_STATION, tm.getActivity());
 
-        // 80 Units of cargo should have been transfered to the train!
+        // 80 Units of cargo should have been transferred to the train!
         CargoBundle onTrain = ta.getCargoBundle();
         int amount = onTrain.getAmount(0);
         assertEquals(80, amount);
@@ -236,7 +235,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     }
 
     /**
-     * Test that when the train arrives at a sheduled station tile it stops,
+     * Test that when the train arrives at a scheduled station tile it stops,
      * updates its schedule and transfers cargo and starts moving again.
      */
     public void testStops3() {
@@ -279,7 +278,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(1, schedule2.getOrderToGoto());
         assertEquals(0, schedule2.getStationToGoto());
 
-        // 80 Units of cargo should have been transfered to the train!
+        // 80 Units of cargo should have been transferred to the train!
 
         CargoBundle onTrain = ta.getCargoBundle();
         int amount = onTrain.getAmount(0);
@@ -474,7 +473,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     /**
      * Tests that when extra wagons are added, the TrainMotion lengthens to
-     * accomodate them.
+     * accommodate them.
      */
     public void testLengtheningTrain() {
         // Set the train to add wagons at station2.

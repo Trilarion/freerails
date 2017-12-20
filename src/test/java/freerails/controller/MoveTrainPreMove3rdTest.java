@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 13-Aug-2005
  *
  */
 package freerails.controller;
@@ -36,7 +35,7 @@ import junit.framework.TestCase;
 import static freerails.world.TileTransition.*;
 
 /**
- * Unit test for MoveTrainPreMove, tests pathfinding.
+ * Unit test for MoveTrainPreMove, tests path finding.
  */
 public class MoveTrainPreMove3rdTest extends TestCase {
 

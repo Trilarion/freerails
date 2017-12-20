@@ -19,12 +19,11 @@
 /*
  * HtmlJPanel.java
  *
- * Created on 19 April 2003, 16:41
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 
@@ -156,7 +155,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         // TODO add your handling code here:
     }// GEN-LAST:event_doneActionPerformed
 
-    public void setup(ModelRoot m, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
         this.done.setAction(closeAction);
     }
 

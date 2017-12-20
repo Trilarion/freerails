@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 05-Dec-2005
  *
  */
 package freerails.client.renderer;
@@ -61,10 +60,10 @@ public class SquareTileBackgroundRendererTest extends TestCase {
             return;
         }
 
-        SquareTileBackgroundRenderer stbr = new SquareTileBackgroundRenderer(
-                renderer);
-        stbr.refreshAll();
-        stbr.refreshTile(1, 2);
+        SquareTileBackgroundRenderer renderer = new SquareTileBackgroundRenderer(
+                this.renderer);
+        renderer.refreshAll();
+        renderer.refreshTile(1, 2);
     }
 
 }

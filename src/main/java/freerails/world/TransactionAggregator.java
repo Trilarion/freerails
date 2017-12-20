@@ -127,8 +127,8 @@ public abstract class TransactionAggregator {
 
                 if (timeIndex >= timeValues.length) {
                     /*
-                     * The current transaction occured after the last of the
-                     * specifed times.
+                     * The current transaction occurred after the last of the
+                     * specified times.
                      */
                     return monetaryTotals;
                 }
@@ -140,7 +140,7 @@ public abstract class TransactionAggregator {
         }
 
         /*
-         * There are no more transactions and the last transaction occured
+         * There are no more transactions and the last transaction occurred
          * before one or more of the specified times.
          */
         while (timeIndex < timeValues.length) {

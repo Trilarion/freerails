@@ -48,7 +48,7 @@
  * object.</p>
  * <p>(5) Changes to game world objects should be done using Move objects. There are
  * more details on the <a href="../move/package-summary.html">move package overview</a>.</p>
- * <p>(6) Where possible, game world elements should be immutable or composed of immmutable
+ * <p>(6) Where possible, game world elements should be immutable or composed of immutable
  * parts. See Bloch, <em>Effective Java</em>, item 13 or <a
  * href="http://courses.dce.harvard.edu/%7Ecscie160/EffectiveJava.htm" target="_blank">this
  * page</a>.<br>

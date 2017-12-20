@@ -39,12 +39,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Implementation of RenderersRoot whose constructor loads graphics and provides
+ * Implementation of RendererRoot whose constructor loads graphics and provides
  * feed back using a ProgressMonitor.
  */
-public class RenderersRootImpl implements RenderersRoot {
+public class RendererRootImpl implements RendererRoot {
     private static final Logger logger = Logger
-            .getLogger(RenderersRootImpl.class.getName());
+            .getLogger(RendererRootImpl.class.getName());
 
     private final TileRendererList tiles;
 
@@ -61,7 +61,7 @@ public class RenderersRootImpl implements RenderersRoot {
      * @param pm
      * @throws IOException
      */
-    public RenderersRootImpl(ReadOnlyWorld w, ProgressMonitor pm)
+    public RendererRootImpl(ReadOnlyWorld w, ProgressMonitor pm)
             throws IOException {
         imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
         tiles = loadNewTileViewList(w, pm);
@@ -145,8 +145,8 @@ public class RenderersRootImpl implements RenderersRoot {
             pm.setValue(++progress);
 
             try {
-                // XXX hack to make rivers flow into ocean and habours & occean
-                // treate habours as the same type.
+                // XXX hack to make rivers flow into ocean and harbours & ocean
+                // treat harbours as the same type.
                 TerrainCategory thisTerrainCategory = t.getCategory();
 
                 if (thisTerrainCategory.equals(TerrainCategory.River)
@@ -235,7 +235,7 @@ public class RenderersRootImpl implements RenderersRoot {
             }
         }
 
-        // XXXX add special tile renderer for habours
+        // add special tile renderer for harbours
         TileRenderer occeanTileRenderer = null;
 
         for (int j = 0; j < numberOfTypes; j++) {

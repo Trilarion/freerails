@@ -30,7 +30,7 @@ import java.io.Serializable;
  * This interface defines a unified set of methods to access the elements that
  * make up the game world. The game world is composed of the following
  * specific-purpose collections into which one can put game world elements.
- * <p>
+ *
  * <ul>
  * A list of players.
  * </ul>
@@ -50,18 +50,18 @@ import java.io.Serializable;
  * <ul>
  * A list of financial transactions for each of the players
  * </ul>
- * <p>
+ *
  * Example: the following code gets player1's train #5.
- * <p>
- * <p>
+ *
+ *
  * {@code TrainModel t = (TrainModel)world.get(KEY.TRAINS, 5, player1);}
- * <p>
- * <p>
+ *
+ *
  * The motivation for accessing lists using keys is that one does not need to
  * add a new class or change the interface of the World class when a new list is
  * added. Instead one can just add a new entry to the class KEY.
- * <p>
- * <p>
+ *
+ *
  * Code that loops through lists should handle null values gracefully
  */
 public interface ReadOnlyWorld extends FreerailsMutableSerializable {

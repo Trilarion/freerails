@@ -26,9 +26,9 @@ import java.io.Serializable;
 /**
  * This class provides a set of keys to access the lists of elements in the game
  * world that are shared by all players.
- * <p>
- * <p>
- * <p>
+ *
+ *
+ *
  * It implements the type-safe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
  */

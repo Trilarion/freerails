@@ -26,16 +26,16 @@ import java.io.Serializable;
 
 /**
  * This class implements methods which can be used to alter the world. Notice
- * that incontrast to, say, {@code java.util.List} there is no remove()
+ * that in contrast to, say, {@code java.util.List} there is no remove()
  * method that shifts any subsequent elements to the left (subtracts one from
  * their indices). This means that an elements' position in a list can be used
  * as an address space independent way to reference the element. If you want to
  * remove an element from a list, you should set it to null, e.g.
- * <p>
- * <p>
+ *
+ *
  * {@code world.set(KEY.TRAINS, 5, null, player);}
- * <p>
- * <p>
+ *
+ *
  * Code that loops through lists should handle null values gracefully
  */
 public interface World extends ReadOnlyWorld {
@@ -55,7 +55,7 @@ public interface World extends ReadOnlyWorld {
     void add(FreerailsPrincipal principal, int index, Activity element);
 
     /**
-     * Appends the specified element to the end of the specifed list and returns
+     * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      *
      * @param principal

@@ -19,7 +19,6 @@
 /*
  * RunMe.java
  *
- * Created on 23 June 2002, 02:44
  */
 package experimental;
 

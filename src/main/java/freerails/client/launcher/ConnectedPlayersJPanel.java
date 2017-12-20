@@ -19,7 +19,6 @@
 /*
  * ConnectedPlayersJPanel.java
  *
- * Created on 12 September 2004, 04:51
  */
 
 package freerails.client.launcher;

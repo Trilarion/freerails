@@ -52,7 +52,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param rr
      * @param modelRoot
      */
-    public DetailMapRenderer(ReadOnlyWorld world, RenderersRoot rr,
+    public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rr,
                              ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rr, modelRoot);
 

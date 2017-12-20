@@ -39,7 +39,7 @@ import static freerails.util.ListKey.Type.EndPoint;
 
 /**
  * A move that makes a number of changes to the map and to the lists.
- * <p>
+ *
  * WARNING: This class currently only handles the most common cases. A
  * UnsupportedOperationException is thrown if an appropriate move cannot be
  * generated.

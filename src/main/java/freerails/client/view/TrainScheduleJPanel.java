@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.Move;
@@ -77,7 +77,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
     private int scheduleID = -1;
     private TrainOrdersListModel listModel;
     private ModelRoot modelRoot;
-    private RenderersRoot vl;
+    private RendererRoot vl;
 
     public TrainScheduleJPanel() {
         initComponents();
@@ -499,7 +499,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         orders.setSelectedIndex(i - 1);
     }// GEN-LAST:event_pullUpJMenuItemActionPerformed
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action al) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action al) {
         trainOrderJPanel1.setup(mr, vl, null);
         this.modelRoot = mr;
         this.vl = vl;

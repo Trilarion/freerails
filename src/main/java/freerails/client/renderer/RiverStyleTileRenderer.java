@@ -17,9 +17,7 @@
  */
 
 /*
- * RiverStyleTileIconSelecter.java
  *
- * Created on 07 July 2001, 12:36
  */
 package freerails.client.renderer;
 

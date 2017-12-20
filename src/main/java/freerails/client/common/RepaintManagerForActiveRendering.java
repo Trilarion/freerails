@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 18-May-2003
  *
  */
 package freerails.client.common;
@@ -34,7 +33,7 @@ import java.util.HashSet;
  * <strong>not</strong> the component being actively rendered in the game loop
  * are processed normally. This behaviour is needed because when menus extend
  * outside the bounds of their parent window, they have a different top level
- * component to the parent window, so are not painted when paintCompoments is
+ * component to the parent window, so are not painted when paintComponents is
  * called from the game loop.
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {

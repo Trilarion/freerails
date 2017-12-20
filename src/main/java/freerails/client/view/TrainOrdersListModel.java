@@ -19,7 +19,6 @@
 /*
  * TrainOrdersListModel.java
  *
- * Created on 23 August 2003, 17:49
  */
 package freerails.client.view;
 

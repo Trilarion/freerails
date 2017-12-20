@@ -28,10 +28,10 @@ import java.util.List;
 
 /**
  * An essential part of Java - locates any Class, anywhere.
- * <p>
+ *
  * This class should have been part of the JDK for the last 7 years, but Sun
  * hasn't added it, so we did it instead :).
- * <p>
+ *
  * No static methods since people are already using this in environments where
  * they need multiple separately configured copies running in parallel. Sun's
  * JVM design (caching classloaders) ensure that cached class data is
@@ -48,17 +48,17 @@ import java.util.List;
  * are cases where you cannot use the packages this way (though personally I'd
  * recommend you re-think your design in that case), and in those cases you can
  * easily use a class-naming convention instead. So, everyone should be happy.
- * <p>
+ *
  * If you reserve a package for plugins, e.g. declare that all plugins must be
  * in package "org.javagamesfactory.plugins", then you simply pass something
  * like "org\.javagamesfactory\.plugins\..*" in (regex meaning "all things in
- * that package). This class will actually find all things in that pacakge
+ * that package). This class will actually find all things in that package
  * <i>even if they are in different copies of that package, in different JAR
  * files, or different directories</i>.
- * <p>
+ *
  * To use a naming convention, e.g. all plugin class names start with the text
  * "PLUGIN" you would do something like: ".*\.PLUGIN.*".
- * <p>
+ *
  * In all cases, note the fact that regex's have special meaning for dot, so you
  * have to escape it when you just mean a full-stop. Read the java API docs for
  * java.util.regex for more information
@@ -147,9 +147,9 @@ public class ClassLocater {
     /**
      * Adds a prefix for classes (and packages) to completely ignore, based on
      * their package + class name.
-     * <p>
+     *
      * For example, "org.apache.log4j".
-     * <p>
+     *
      * The advantage of this method is that you don't have to bother with regex
      * syntax. Also, it is remembered between calls to getSubclassesOf - so it's
      * useful if you know you never care about certain packages.
@@ -163,7 +163,7 @@ public class ClassLocater {
     /**
      * Find all instances of the given {@code Class} or interface by
      * loading all classes on the class path.
-     * <p>
+     *
      * Delegates to the other version, but passing in ".*" as the regex, i.e.
      * "anything at all"
      *
@@ -178,20 +178,20 @@ public class ClassLocater {
      * Find all subclasses of the given {@code Class} or interface by
      * loading only those classes with names that match the given regular
      * expression.
-     * <p>
+     *
      * Once all classes have been checked, it will output at WARN a list of all
      * the classes that were referenced by other classes but are not installed
      * in the classpath. This can be incredibly useful - it catches situations
      * where e.g. you thought a class was on the classpath but you put it in the
      * wrong directory etc.
-     * <p>
+     *
      * It can also be very annoying because java uses dynamic linking so it is
      * LEGAL for many classes to be missing, just so long as you never use them
      * at runtime. Because this class tries to use *every* class, it triggers
      * errors on lots that you don't care about - use addSkipPrefix( class or
-     * package you dont use even though its on the classpath ) and they will be
+     * package you don't use even though its on the classpath ) and they will be
      * skipped (i.e. not even examined by this method).
-     * <p>
+     *
      * OR improve your regex so that it is more selective about the packages
      * where your classes could conceivable be located!
      *

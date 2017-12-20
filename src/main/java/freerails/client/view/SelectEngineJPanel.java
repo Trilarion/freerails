@@ -19,12 +19,11 @@
 /*
  * SelectEngineJPanel.java
  *
- * Created on 25 December 2002, 23:00
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.SKEY;
 import freerails.world.train.EngineType;
@@ -124,7 +123,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
      * @param closeAction
      */
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
 
         jList1.setModel(new WorldToListModelAdapter(mr.getWorld(),
                 SKEY.ENGINE_TYPES));
@@ -134,7 +133,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     /**
      * Removes any existing ActionListener listeners from the cancel button,
-     * then adds the specifed one.
+     * then adds the specified one.
      */
     void setCancelButtonActionListener(ActionListener l) {
         ActionListener[] oldListeners = canceljButton.getActionListeners();
@@ -155,11 +154,11 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     final private class TrainCellRenderer implements ListCellRenderer {
 
-        final RenderersRoot rr;
+        final RendererRoot rr;
 
         private final Map<String, JLabel> savesJLabels;
 
-        public TrainCellRenderer(RenderersRoot vl) {
+        public TrainCellRenderer(RendererRoot vl) {
             rr = vl;
             savesJLabels = new HashMap<>();
         }

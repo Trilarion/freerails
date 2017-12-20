@@ -19,7 +19,6 @@
 /*
  * BrokerScreenGenerator.java
  *
- * Created on January 26, 2005, 1:31 PM
  */
 
 package freerails.client.view;

@@ -49,14 +49,14 @@ public class FreerailsGameServerTest extends TestCase {
         response = server.logon(request3);
         assertFalse("Player is already logged on.", response.isSuccessful());
 
-        /* Test 4: When new logons are not allowed. */
+        /* Test 4: When new log-ons are not allowed. */
         server.setNewPlayersAllowed(false);
 
         LogOnRequest request4 = new LogOnRequest("Name4", "password4");
         response = server.logon(request4);
         assertFalse("New logons are not allowed.", response.isSuccessful());
 
-        /* Test 5: When the player has logged off, then trieds to log on. */
+        /* Test 5: When the player has logged off, then tries to log on. */
         server.logoff(0);
 
         response = server.logon(request1);

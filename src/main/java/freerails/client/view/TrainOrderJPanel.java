@@ -19,13 +19,12 @@
 /*
  * TrainOrderJPanel.java
  *
- * Created on 23 August 2003, 17:25
  */
 
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -58,7 +57,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     private ReadOnlyWorld w;
     private FreerailsPrincipal principal;
     private Action closeAction;
-    private RenderersRoot vl;
+    private RendererRoot vl;
     private ModelRoot mr;
 
     /**
@@ -74,7 +73,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         this.mr = mr;
         this.vl = vl;
         this.closeAction = closeAction;
@@ -266,7 +265,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
         // End of variables declaration//GEN-END:variables
 
-        public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+        public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
             w = mr.getWorld();
             TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;
             trainViewJPanel.setHeight(15);

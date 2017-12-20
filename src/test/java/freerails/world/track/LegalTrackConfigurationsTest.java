@@ -24,7 +24,6 @@
  *is used in the ruleset are processed correctly by the
  *constructor of LegalTrackConfigurations.
  *
- * Created on 21 January 2002, 23:15
  */
 package freerails.world.track;
 

@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 28-Jun-2003
  *
  */
 package freerails.controller;
@@ -152,7 +151,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         MutableCargoBundle expectedAtStation = new MutableCargoBundle();
         expectedAtStation.setAmount(this.cargoType0FromStation2, 80);
 
-        // Test the expected values against the actuals..
+        // Test the expected values against the actual values.
         assertEquals(expectedOnTrain.toImmutableCargoBundle(),
                 getCargoOnTrain());
         assertEquals(expectedAtStation.toImmutableCargoBundle(),
@@ -213,7 +212,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         station = new StationModel(station, demand);
         w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
 
-        // Check that the station demadns what we think it does.
+        // Check that the station demands what we think it does.
         assertTrue("The station should demand cargo type 0.", station
                 .getDemand().isCargoDemanded(0));
         assertFalse("The station shouldn't demand cargo type 1.", station
@@ -289,11 +288,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
          * station demands it or not. Since the station does not demand it, the
          * cargo should get added to the cargo waiting at the station.
          */
-        MutableCargoBundle expectedAtStaton = new MutableCargoBundle();
-        expectedAtStaton.setAmount(cargoType0FromStation0, 50);
-        expectedAtStaton.setAmount(cargoType0FromStation2, 50);
+        MutableCargoBundle expectedAtStation = new MutableCargoBundle();
+        expectedAtStation.setAmount(cargoType0FromStation0, 50);
+        expectedAtStation.setAmount(cargoType0FromStation2, 50);
 
-        assertEquals(expectedAtStaton.toImmutableCargoBundle(),
+        assertEquals(expectedAtStation.toImmutableCargoBundle(),
                 getCargoAtStation());
         assertEquals(ImmutableCargoBundle.EMPTY_BUNDLE, getCargoOnTrain());
     }

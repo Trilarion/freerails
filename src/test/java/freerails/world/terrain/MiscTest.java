@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 04-Jul-2005
  *
  */
 package freerails.world.terrain;

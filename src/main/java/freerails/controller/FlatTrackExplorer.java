@@ -194,7 +194,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     TileTransition getFirstVectorToTry() {
         if (beforeFirst) {
-            // Return the vector that is 45 degrees clockwise from the oppposite
+            // Return the vector that is 45 degrees clockwise from the opposite
             // of the current position.
             TileTransition v = this.currentPosition.cameFrom();
             v = v.getOpposite();

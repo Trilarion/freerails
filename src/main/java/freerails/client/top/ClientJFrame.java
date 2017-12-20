@@ -19,7 +19,6 @@
 /*
  * ClientJFrame.java
  *
- * Created on 01 June 2003, 15:56
  */
 
 package freerails.client.top;

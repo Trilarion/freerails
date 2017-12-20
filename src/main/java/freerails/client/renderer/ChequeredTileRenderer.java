@@ -19,7 +19,6 @@
 /*
  * ChequeredTileView.java
  *
- * Created on 07 July 2001, 14:25
  */
 package freerails.client.renderer;
 

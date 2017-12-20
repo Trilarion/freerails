@@ -19,7 +19,6 @@
 /*
  * Launcher.java
  *
- * Created on 20 December 2003, 16:05
  */
 
 package freerails.client.launcher;
@@ -49,13 +48,13 @@ import java.util.Properties;
 
 /**
  * Launcher GUI for both the server and/or client.
- * <p>
+ *
  * TODO The code in the switch statements needs reviewing.
  */
 public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     /**
-     * server sleeptime in ms (1000/SERVERUPDATE is the frame rate)
+     * server sleeping time in ms (1000/SERVERUPDATE is the frame rate)
      */
     private static final int SERVERUPDATE = 50;
 

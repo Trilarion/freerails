@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 28-May-2003
  *
  */
 package freerails.world.common;

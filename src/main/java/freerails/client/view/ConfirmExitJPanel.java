@@ -19,18 +19,17 @@
 /*
  * ConfirmExitJPanel.java
  *
- * Created on 20 January 2005, 15:56
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 
 import javax.swing.*;
 
 /**
- * JPanel that didplays confirmation of exiting, used when the exit menu item is
+ * JPanel that displays confirmation of exiting, used when the exit menu item is
  * selected or x is pressed.
  */
 public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
@@ -98,7 +97,7 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
         System.exit(0);
     }// GEN-LAST:event_confirmExitActionPerformed
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         closeJButton.setAction(closeAction);
     }
 

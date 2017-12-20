@@ -23,7 +23,7 @@ import freerails.client.common.ActionAdapter.MappedButtonModel;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.renderer.BuildTrackController;
 import freerails.client.renderer.MapRenderer;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.ZoomedOutMapRenderer;
 import freerails.client.view.*;
 import freerails.controller.ModelRoot;
@@ -617,7 +617,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     /**
      * Called when a new game is started or a game is loaded.
-     * <p>
+     *
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
@@ -626,7 +626,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      * @param w
      * @throws java.io.IOException
      */
-    public void setup(RenderersRoot vl, ReadOnlyWorld w) throws IOException {
+    public void setup(RendererRoot vl, ReadOnlyWorld w) throws IOException {
         /*
          * Set the cursor position. The initial cursor position is 0,0. However,
          * if a game is loaded or a new game is started and the map size is the
@@ -647,7 +647,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         if (!vl.validate(world)) {
             throw new IllegalArgumentException("The specified"
-                    + " RenderersRoot are not compatible with the clients"
+                    + " RendererRoot are not compatible with the clients"
                     + "world!");
         }
 

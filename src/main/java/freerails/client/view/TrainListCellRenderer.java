@@ -19,11 +19,10 @@
 /*
  * TrainView.java
  *
- * Created on 22 August 2003, 20:49
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImInts;
 import freerails.world.KEY;
@@ -51,7 +50,7 @@ public class TrainListCellRenderer extends JPanel implements View,
             .getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private ReadOnlyWorld w;
-    private RenderersRoot vl;
+    private RendererRoot vl;
     private int trainNumber = -1;
     private int scheduleOrderNumber;
     private int scheduleID = -1;
@@ -81,7 +80,7 @@ public class TrainListCellRenderer extends JPanel implements View,
      * @param mr
      * @param vl
      */
-    public TrainListCellRenderer(ModelRoot mr, RenderersRoot vl) {
+    public TrainListCellRenderer(ModelRoot mr, RendererRoot vl) {
         setup(mr, vl, null);
         this.setBackground(backgoundColor);
     }
@@ -173,7 +172,7 @@ public class TrainListCellRenderer extends JPanel implements View,
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
         this.w = mr.getWorld();
         this.vl = vl;
         this.principal = mr.getPrincipal();

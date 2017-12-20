@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 15-Apr-2003
  *
  */
 package freerails.world.top;
@@ -93,7 +92,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
         assertEquals(0, wi.getRowID());
         assertEquals(station1, wi.getElement());
 
-        // Look at seond station
+        // Look at second station
         assertTrue(wi.next());
         assertEquals(2, wi.getIndex());
         assertEquals(1, wi.getRowID());

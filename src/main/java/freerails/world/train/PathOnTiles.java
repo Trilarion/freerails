@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 03-Feb-2005
  *
  */
 package freerails.world.train;

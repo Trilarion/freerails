@@ -43,7 +43,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
             .getDefaultConfiguration();
     /**
      * The bounds and location of the map region that is stored in the offscreen
-     * Image backgraoundBuffer.
+     * Image backgroundBuffer.
      */
     final Rectangle bufferRect = new Rectangle();
     /**
@@ -58,7 +58,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * Used to draw on the backbuffer. It is translated so that to its users, it
      * appears they are drawing on the actual map, not a buffered region of the
      * map.
-     * <p>
+     *
      * translatedBg equals bg.translate(-bufferRect.x , -bufferRect.y);
      */
     private Graphics translatedBg;
@@ -69,11 +69,11 @@ public abstract class BufferedTiledBackgroundRenderer implements
      *
      * @param outputGraphics         Once it has been updated, the backbuffer is drawn onto this
      *                               Graphics object.
-     * @param newVisibleRectectangle The region of the map that the backbuffer must be updated to
+     * @param newVisibleRectangle The region of the map that the backbuffer must be updated to
      *                               display.
      */
     public void paintRect(Graphics outputGraphics,
-                          Rectangle newVisibleRectectangle) {
+                          Rectangle newVisibleRectangle) {
         boolean contentsLost = false;
         do {
             /*
@@ -81,18 +81,18 @@ public abstract class BufferedTiledBackgroundRenderer implements
              * has just been resized, we need to create a new backgroundBuffer.
              */
             if ((backgroundBuffer == null)
-                    || (newVisibleRectectangle.height != bufferRect.height)
-                    || (newVisibleRectectangle.width != bufferRect.width)) {
-                setbackgroundBuffer(newVisibleRectectangle.width,
-                        newVisibleRectectangle.height);
+                    || (newVisibleRectangle.height != bufferRect.height)
+                    || (newVisibleRectangle.width != bufferRect.width)) {
+                setbackgroundBuffer(newVisibleRectangle.width,
+                        newVisibleRectangle.height);
             }
 
             // Test if image is lost and restore it.
             int valCode = backgroundBuffer.validate(defaultConfig);
 
             if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
-                setbackgroundBuffer(newVisibleRectectangle.width,
-                        newVisibleRectectangle.height);
+                setbackgroundBuffer(newVisibleRectangle.width,
+                        newVisibleRectangle.height);
             } else if (valCode == VolatileImage.IMAGE_RESTORED) {
                 this.refreshBackground();
             }
@@ -100,25 +100,25 @@ public abstract class BufferedTiledBackgroundRenderer implements
             /*
              * Has the VisibleRectangle moved since the last paint?
              */
-            if ((bufferRect.x != newVisibleRectectangle.x)
-                    || (bufferRect.y != newVisibleRectectangle.y)) {
-                int dx = bufferRect.x - newVisibleRectectangle.x;
-                int dy = bufferRect.y - newVisibleRectectangle.y;
+            if ((bufferRect.x != newVisibleRectangle.x)
+                    || (bufferRect.y != newVisibleRectangle.y)) {
+                int dx = bufferRect.x - newVisibleRectangle.x;
+                int dy = bufferRect.y - newVisibleRectangle.y;
                 scrollbackgroundBuffer(dx, dy);
-                bufferRect.setBounds(newVisibleRectectangle);
+                bufferRect.setBounds(newVisibleRectangle);
             }
 
-            if ((bufferRect.width != newVisibleRectectangle.width)
-                    && (bufferRect.height != newVisibleRectectangle.height)) {
-                paintBufferRectangle(newVisibleRectectangle.x - bufferRect.x,
-                        newVisibleRectectangle.y - bufferRect.y,
-                        newVisibleRectectangle.width,
-                        newVisibleRectectangle.height);
+            if ((bufferRect.width != newVisibleRectangle.width)
+                    && (bufferRect.height != newVisibleRectangle.height)) {
+                paintBufferRectangle(newVisibleRectangle.x - bufferRect.x,
+                        newVisibleRectangle.y - bufferRect.y,
+                        newVisibleRectangle.width,
+                        newVisibleRectangle.height);
             }
 
             outputGraphics.drawImage(backgroundBuffer,
-                    newVisibleRectectangle.x, newVisibleRectectangle.y, null);
-            bufferRect.setBounds(newVisibleRectectangle);
+                    newVisibleRectangle.x, newVisibleRectangle.y, null);
+            bufferRect.setBounds(newVisibleRectangle);
             contentsLost = backgroundBuffer.contentsLost();
         } while (contentsLost);
     }

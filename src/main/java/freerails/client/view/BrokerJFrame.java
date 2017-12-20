@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 
@@ -93,7 +93,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot m, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
         this.done.setAction(closeAction);
     }
 

@@ -74,7 +74,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
      * @param rr
      * @param modelRoot
      */
-    public MapBackgroundRender(ReadOnlyWorld w, RenderersRoot rr,
+    public MapBackgroundRender(ReadOnlyWorld w, RendererRoot rr,
                                ModelRoot modelRoot) {
         trackLayer = new TrackLayer(w, rr);
         terrainLayer = new TerrainLayer(w, rr);
@@ -142,18 +142,18 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     /**
-     * This innner class represents a view of the track on the map.
+     * This inner class represents a view of the track on the map.
      */
     final public class TrackLayer implements MapLayerRenderer {
         private final ReadOnlyWorld w;
 
-        private final RenderersRoot rr;
+        private final RendererRoot rr;
 
         /**
          * @param world
          * @param trackPieceViewList
          */
-        public TrackLayer(ReadOnlyWorld world, RenderersRoot trackPieceViewList) {
+        public TrackLayer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
             this.rr = trackPieceViewList;
             this.w = world;
         }
@@ -169,7 +169,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
              * Track can overlap the adjacent terrain tiles by half a tile. This
              * means that we need to paint the track from the tiles bordering
              * the specified rectangle of tiles (tilesToPaint). To prevent
-             * unnecessay painting, we set the clip to expose only the rectangle
+             * unnecessary painting, we set the clip to expose only the rectangle
              * of tilesToPaint.
              */
             Point tile = new Point();
@@ -284,8 +284,8 @@ final public class MapBackgroundRender implements MapLayerRenderer {
         /**
          * Paints a rectangle of tiles on the supplied graphics context.
          *
-         * @param g            The grahics context.
-         * @param tilesToPaint The rectangle, measued in tiles, to paint.
+         * @param g            The graphics context.
+         * @param tilesToPaint The rectangle, measured in tiles, to paint.
          */
         public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
             Point tile = new Point();

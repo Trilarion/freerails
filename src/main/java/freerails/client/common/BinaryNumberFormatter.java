@@ -19,7 +19,6 @@
 /*
  * BinaryNumberFormatter.java
  *
- * Created on 30 April 2003, 20:23
  */
 package freerails.client.common;
 

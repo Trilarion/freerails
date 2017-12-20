@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 29-Mar-2003
  *
  */
 package freerails.world;
@@ -57,7 +56,7 @@ public interface WorldIterator {
     void reset();
 
     /**
-     * Returns the element the curor is pointing to.
+     * Returns the element the cursor is pointing to.
      *
      * @return
      */

@@ -21,7 +21,7 @@
  */
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.StationBuilder;
@@ -79,7 +79,7 @@ public class StationBuildModel {
      * @param rr
      * @param mr
      */
-    public StationBuildModel(StationBuilder sb, RenderersRoot rr, ModelRoot mr) {
+    public StationBuildModel(StationBuilder sb, RendererRoot rr, ModelRoot mr) {
         stationBuilder = sb;
         modelRoot = mr;
 

@@ -68,7 +68,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private ImInts consist = new ImInts();
 
     /**
-     * Contructor.
+     * Constructor.
      *
      * @param trainNo     ID of the train
      * @param stationNo   ID of the station
@@ -90,7 +90,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         consist = train.getTrain().getConsist();
         getBundles();
 
-        processTrainBundle(); // ie. unload train / dropoff cargo
+        processTrainBundle(); // ie. unload train / drop-off cargo
 
         if (autoConsist) {
             ArrayList<WagonLoad> wagonsAvailable = new ArrayList<>();
@@ -142,7 +142,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     * Move the specified quantity of the specifed cargotype from one bundle to
+     * Move the specified quantity of the specified cargo type from one bundle to
      * another.
      */
     private static void transferCargo(int cargoTypeToTransfer,
@@ -320,7 +320,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     * Stores the type and quanity of cargo in a wagon.
+     * Stores the type and quantity of cargo in a wagon.
      */
     private static class WagonLoad implements Comparable<WagonLoad> {
         final int quantity;

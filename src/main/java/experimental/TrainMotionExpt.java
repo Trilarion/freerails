@@ -45,9 +45,9 @@ import static freerails.world.TileTransition.*;
 
 /**
  * This class is a visual test for the train movement code.
- * <p>
+ *
  * TODO: Update the trains position when necessary. Make the train stop at
- * intevals, and slowly accelerate.
+ * intervals, and slowly accelerate.
  */
 public class TrainMotionExpt extends JComponent {
 

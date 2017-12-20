@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 4, 2004
  *
  */
 package freerails.controller;
@@ -95,7 +94,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         if (tile.hasTrack()) {
             /*
              * If there is already track here, we need to check what directions
-             * we can build in without creating an illegel track config.
+             * we can build in without creating an illegal track config.
              */
             TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
                     ruleNumber);

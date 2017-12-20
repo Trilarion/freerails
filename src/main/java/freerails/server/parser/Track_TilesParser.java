@@ -28,9 +28,9 @@ import java.io.IOException;
 /**
  * The class reads XML documents according to specified DTD and translates all
  * related events into Track_TilesHandler events.
- * <p>
+ *
  * Usage sample:
- * <p>
+ *
  * <pre>
  *      Track_TilesParser parser = new Track_TilesParser(...);
  *      parser.parse(new InputSource(&quot;...&quot;));
@@ -61,7 +61,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
     public static void parse(final InputSource input,
@@ -77,7 +77,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @param handler
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
-     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfining requested configuration can not be
+     * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
     public static void parse(final java.net.URL url,

@@ -19,12 +19,11 @@
 /*
  * TrainDetailsJPanel.java
  *
- * Created on 16 June 2030, 20:03
  */
 
 package freerails.client.view;
 
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
@@ -123,7 +122,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
 
     }// GEN-END:initComponents
 
-    public void setup(ModelRoot mr, RenderersRoot vl, Action closeAction) {
+    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
 
         this.trainViewJPanel1.setup(mr, vl, closeAction);
         trainViewJPanel1.setHeight(30);

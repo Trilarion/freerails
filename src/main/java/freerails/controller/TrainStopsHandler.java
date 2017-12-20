@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 18-Feb-2005
  *
  */
 package freerails.controller;
@@ -145,9 +144,7 @@ public class TrainStopsHandler implements Serializable {
      * current station.
      */
     public int getStationID(int x, int y) {
-        // loop thru the station list to check if train is at the same Point
-        // as
-        // a station
+        // loop through the station list to check if train is at the same Point as a station
         for (int i = 0; i < worldDiffs.size(principal, KEY.STATIONS); i++) {
             StationModel tempPoint = (StationModel) worldDiffs.get(principal,
                     KEY.STATIONS, i);
@@ -333,7 +330,7 @@ public class TrainStopsHandler implements Serializable {
         boolean waiting4FullLoad = order.waitUntilFull && !isTrainFull();
 
         if (!waiting4FullLoad) {
-            schedule.gotoNextStaton();
+            schedule.gotoNextStation();
 
             ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
             worldDiffs.set(principal, KEY.TRAIN_SCHEDULES, scheduleID,

@@ -212,8 +212,8 @@ public class ServerControlModel implements ModelRootListener {
              * showInputDialog.toString(); // Load the game chosen
              * MessageToServer message2 = new LoadGameMessageToServer(1,
              * filename); modelRoot.sendCommand(message2); } catch (Exception
-             * exept) { // <Hack> // When no saved game is selected, or one that
-             * doesnt exist, // nothing changes // </.Hack> }
+             * except) { // <Hack> // When no saved game is selected, or one that
+             * doesn't exist, // nothing changes // </.Hack> }
              */
         }
     }

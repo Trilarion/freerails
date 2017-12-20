@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on Sep 11, 2004
  *
  */
 package freerails.network;
@@ -173,7 +172,7 @@ public class MovePrecommitter {
     }
 
     /**
-     * Undoes each of the precommitted moves and puts them back on the
+     * Undoes each of the pre-committed moves and puts them back on the
      * uncommitted list.
      */
     private void rollBackPrecommittedMoves() {

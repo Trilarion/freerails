@@ -27,7 +27,7 @@ public interface Painter {
 
     /**
      * @param g
-     * @param newVisibleRectectangle
+     * @param newVisibleRectangle
      */
-    void paint(Graphics2D g, Rectangle newVisibleRectectangle);
+    void paint(Graphics2D g, Rectangle newVisibleRectangle);
 }

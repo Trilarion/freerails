@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 28-Jul-2005
  *
  */
 package freerails.world;
@@ -36,9 +35,9 @@ import java.util.TreeMap;
  * does. The {@code key} object could be a location on the map, a
  * position in a list etc. <code><pre>
  * HashMap underlyingWorldObject;
- * <p>
+ *
  * HashMap differences;
- * <p>
+ *
  * public void put(Object key, Object value) {
  *     if (underlyingWorldObject.get(key).equals(value)) {
  *         if (differences.containsKey(key)) {
@@ -48,7 +47,7 @@ import java.util.TreeMap;
  *         differences.put(key, value);
  *     }
  * }
- * <p>
+ *
  * public Object get(Object key) {
  *     if (differences.containsKey(key)) {
  *         return differences.get(key);
@@ -57,7 +56,7 @@ import java.util.TreeMap;
  *     }
  * }
  * </code></pre>
- * <p>
+ *
  * The advantages of using an instance of this class instead of a copy of the
  * world object are:
  * <ol>

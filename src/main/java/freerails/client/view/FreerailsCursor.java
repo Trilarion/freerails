@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.BuildTrackRenderer;
-import freerails.client.renderer.RenderersRoot;
+import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.ImPoint;
@@ -55,7 +55,7 @@ final public class FreerailsCursor {
      * @param rr
      * @throws IOException
      */
-    public FreerailsCursor(ModelRoot mr, RenderersRoot rr) throws IOException {
+    public FreerailsCursor(ModelRoot mr, RendererRoot rr) throws IOException {
         this.modelRoot = mr;
         modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
         buildTrack = rr.getImage("cursor/buildtrack.png");

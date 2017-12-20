@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 05-Jan-2005
  *
  */
 package freerails.controller;
@@ -121,17 +120,17 @@ public class PathOnTrackFinderTest extends TestCase {
         try {
             pathFinder.setupSearch(start, end);
         } catch (PathNotFoundException e) {
-            fail("Track at both of the points so no excepton should be thrown");
+            fail("Track at both of the points so no exception should be thrown");
         }
         try {
             pathFinder.setupSearch(start, new ImPoint(10, 10));
-            fail("No track at one of the points so an excepton should be thrown");
+            fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
 
         }
         try {
             pathFinder.setupSearch(new ImPoint(10, 10), end);
-            fail("No track at one of the points so an excepton should be thrown");
+            fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
 
         }

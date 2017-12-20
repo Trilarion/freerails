@@ -17,7 +17,6 @@
  */
 
 /*
- * Created on 20-Mar-2003
  *
  */
 package freerails.world.top;
