@@ -22,11 +22,11 @@ and used a [CVS repository](http://freerails.cvs.sourceforge.net/) for source co
 The source code is under the GPL-2.0 license. Main Java programmer seems to have been Luke Lindsay.
 
 - Last binary release: [FreeRails 0.2.7](https://sourceforge.net/projects/freerails/files/jfreerails/0.2.7/)
-- Authors: Luke Ehresman, Luke Lindsay (=lindsal?), Alexander Opitz, Chris Phillips, Samuel Benzaquen,
-Dennis M. Sosnoski, Rob, MystiqueAgent, Scott Bennett, Robert Tuck, SonnyZ, smackay, Jan Tozicka, mduarte-leon,
-adam@jgf, Patrice Espie
+- Authors: Luke Ehresman (Original project proposal), Luke Lindsay ((Administrator)), Alexander Opitz, Chris Phillips, Samuel Benzaquen,
+Dennis M. Sosnoski, Rob, MystiqueAgent, Scott Bennett, Robert Tuck, Sonny Zubia, Steven Mackay, Jan Tozicka, Moises Duarte,
+adam@jgf, Patrice Espie, Jon Lund Steffensen, Karl-Heinz Pennemann, David Magnuson (Testing), Dave Brosius
 
-### C++ client for FreeRails
+### C++/C# client for FreeRails
 
 A client for Freerails using C++  was [announced](https://sourceforge.net/p/freerails/news/2001/08/freerails-status-update/)
 in 2001-08, but no official releases remain. Code can be found in the CVS repository. They shared the same graphics

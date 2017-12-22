@@ -11,6 +11,7 @@ railroad empire. It is based on the RailRoad Tycoon I and II games.
    tutorial
    specification
    coding_guidelines
+   development
    history
    changelog
 

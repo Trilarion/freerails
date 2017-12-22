@@ -21,7 +21,7 @@
  *
  */
 
-package freerails.controller;
+package freerails.client.view;
 
 import javax.swing.*;
 

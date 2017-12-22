@@ -21,7 +21,6 @@
  */
 package freerails.server;
 
-import freerails.controller.FreerailsServerSerializable;
 import freerails.move.ChangeCargoBundleMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;

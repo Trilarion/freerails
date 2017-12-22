@@ -38,16 +38,16 @@ public interface CargoBundle {
     Iterator<CargoBatch> cargoBatchIterator();
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @return
      */
-    boolean contains(CargoBatch cb);
+    boolean contains(CargoBatch cargoBatch);
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @return
      */
-    int getAmount(CargoBatch cb);
+    int getAmount(CargoBatch cargoBatch);
 
     /**
      * @param cargoType

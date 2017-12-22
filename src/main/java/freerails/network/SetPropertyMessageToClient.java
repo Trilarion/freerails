@@ -30,12 +30,10 @@ import java.io.Serializable;
  * of saved games available) on a client.
  */
 public class SetPropertyMessageToClient implements MessageToClient {
+
     private static final long serialVersionUID = 3544392521746034740L;
-
     private final int id;
-
     private final ClientProperty key;
-
     private final Serializable value;
 
     /**

@@ -21,6 +21,9 @@ package freerails.fxclient;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Starting point for the whole application.
+ */
 public class Start extends Application {
 
     public static void main(String[] args) {
@@ -30,8 +33,10 @@ public class Start extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        // set title and icon
         primaryStage.setTitle("FreeRails");
-        primaryStage.show();
+        // primaryStage.getIcons().add();
 
+        primaryStage.show();
     }
 }

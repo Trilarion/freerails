@@ -33,7 +33,6 @@ import java.util.TreeMap;
 public class MutableCargoBundle implements CargoBundle {
 
     private final SortedMap<CargoBatch, Integer> sortedMap;
-
     private int updateID = 0;
 
     /**
@@ -44,26 +43,26 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     * @param imcb
+     * @param immutableCargoBundle
      */
-    public MutableCargoBundle(ImmutableCargoBundle imcb) {
+    public MutableCargoBundle(ImmutableCargoBundle immutableCargoBundle) {
         this();
 
-        Iterator<CargoBatch> it = imcb.cargoBatchIterator();
+        Iterator<CargoBatch> it = immutableCargoBundle.cargoBatchIterator();
 
         while (it.hasNext()) {
-            CargoBatch cb = it.next();
-            addCargo(cb, imcb.getAmount(cb));
+            CargoBatch cargoBatch = it.next();
+            addCargo(cargoBatch, immutableCargoBundle.getAmount(cargoBatch));
         }
     }
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @param amount
      */
-    public void addCargo(CargoBatch cb, int amount) {
-        int amountAlready = this.getAmount(cb);
-        this.setAmount(cb, amount + amountAlready);
+    public void addCargo(CargoBatch cargoBatch, int amount) {
+        int amountAlready = this.getAmount(cargoBatch);
+        this.setAmount(cargoBatch, amount + amountAlready);
         updateID++;
     }
 
@@ -113,11 +112,11 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @return
      */
-    public boolean contains(CargoBatch cb) {
-        return sortedMap.containsKey(cb);
+    public boolean contains(CargoBatch cargoBatch) {
+        return sortedMap.containsKey(cargoBatch);
     }
 
     @Override
@@ -131,13 +130,13 @@ public class MutableCargoBundle implements CargoBundle {
     }
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @return
      */
-    public int getAmount(CargoBatch cb) {
-        if (contains(cb)) {
+    public int getAmount(CargoBatch cargoBatch) {
+        if (contains(cargoBatch)) {
 
-            return sortedMap.get(cb);
+            return sortedMap.get(cargoBatch);
         }
         return 0;
     }

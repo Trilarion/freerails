@@ -6,11 +6,11 @@ General suggestions
 +++++++++++++++++++
 
 - Package dependencies.
- - Avoid circular dependencies between packages. I.e. if any classes in package A import classes from package B, then
-   classes in package B should not import classes from package A.
- - (ii) Follow the package dependency rules.
+- Avoid circular dependencies between packages. I.e. if any classes in package A import classes from package B, then
+  classes in package B should not import classes from package A.
+- (ii) Follow the package dependency rules.
 - Some of the GUI classes have been created using the NetBeans GUI editor. The .java files for these classes have corresponding .form files.
-Within the java files are protected sections of code, if you edit these files, please do not alter these sections by hand.
+  Within the java files are protected sections of code, if you edit these files, please do not alter these sections by hand.
 - Generally follow the sun java coding converions(http://java.sun.com/docs/codeconv/).
 - Run all unit tests after making changes to see whether anything has broken. You can do this using the test Ant target.
 - Check the javadoc Ant target runs without errors or warnings.
@@ -20,7 +20,7 @@ Within the java files are protected sections of code, if you edit these files, p
 - Consider using assertions.
 - Add //FIXME ..and //TODO comments if you spot possible problems in existing code.
 - Use logging instead of System.out or System.err for debug messages. Each class should have its own logger, e.g.
-private static final Logger logger = Logger.getLogger(SomeClass.class.getName());
+  private static final Logger logger = Logger.getLogger(SomeClass.class.getName());
 
 Submitting Patches
 ++++++++++++++++++
@@ -32,7 +32,7 @@ Submitting Patches
 
     (B) If you have create new files, are they included in the patch? Look at the -N option.
 
-    (C) Are binary files excluded from the diff file? Any new or modified binary files, *.png, *.wav etc, should be included separately.
+    (C) Are binary files excluded from the diff file? Any new or modified binary files, \*.png, \*.wav etc, should be included separately.
 
     (D) Do the following Ant targets work without warnings or errors when the patch is applied against a fresh CVS checkout?
 

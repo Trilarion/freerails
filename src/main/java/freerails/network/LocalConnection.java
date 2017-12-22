@@ -18,6 +18,9 @@
 
 package freerails.network;
 
+import freerails.util.SychronizedQueue;
+import freerails.util.SynchronizedFlag;
+
 import java.io.IOException;
 import java.io.Serializable;
 

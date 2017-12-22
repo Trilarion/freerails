@@ -23,6 +23,7 @@ import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImStringList;
+import freerails.util.SynchronizedFlag;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;

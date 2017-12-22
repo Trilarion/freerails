@@ -76,7 +76,6 @@ public class SaveGameMessageToServer implements MessageToServer {
     public MessageStatus execute(ServerControlInterface server) {
         try {
             server.savegame(filename);
-
             return new MessageStatus(id, true);
         } catch (Exception e) {
             return new MessageStatus(id, false, e.getMessage());

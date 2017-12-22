@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import freerails.util.SynchronizedFlag;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

@@ -59,9 +59,10 @@ public enum CargoCategory {
      * @param category_name
      * @return
      */
+    // TODO use valueOf instead
     public static CargoCategory getCategoryByName(String category_name) {
         for (CargoCategory category : values()) {
-            if (category.toString().equals(category_name)) {
+            if (category.name().equals(category_name)) {
                 return category;
             }
         }

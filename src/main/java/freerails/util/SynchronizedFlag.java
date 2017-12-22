@@ -16,13 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
-
-import java.io.Serializable;
+package freerails.util;
 
 /**
- * Tags classes that the server may need to save but which won't be sent to
- * clients.
+ * Synchronized flag - used to tell threads whether they should keep going.
+ * Note, thought about using volatile keyword but wasn't sure if it is
+ * implemented on all JVMs
  */
-public interface FreerailsServerSerializable extends Serializable {
+public class SynchronizedFlag {
+    private boolean isOpen = true;
+
+    public SynchronizedFlag(boolean b) {
+        this.isOpen = b;
+    }
+
+    public synchronized boolean isOpen() {
+        return isOpen;
+    }
+
+    public synchronized void close() {
+        this.isOpen = false;
+        notifyAll();
+    }
+
+    public synchronized void open() {
+        this.isOpen = true;
+        notifyAll();
+    }
 }

@@ -21,18 +21,16 @@ package freerails.world.cargo;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for CargoType.
+ * Test for CargoType.
  */
 public class CargoTypeTest extends TestCase {
 
     /**
-     *
+     * Invalid categories get rejected. Valid categories are accepted.
      */
     public void testCargoType() {
-        // Test that invalid categories get rejected.
         try {
-            new CargoType(10, "Test", CargoCategory
-                    .getCategoryByName("Non valid catgeory"));
+            new CargoType(10, "Test", CargoCategory.getCategoryByName("Invalid category"));
             fail();
         } catch (Exception e) {
         }

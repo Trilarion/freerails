@@ -23,6 +23,8 @@
 
 package freerails.controller;
 
+import freerails.client.view.CopyableTextJPanel;
+
 /**
  */
 public class UnexpectedExceptionForm extends javax.swing.JFrame {
@@ -30,7 +32,7 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
     private static final long serialVersionUID = -4348641764811196495L;
     // Variables declaration - do not modify                     
     javax.swing.JButton closebutton;
-    freerails.controller.CopyableTextJPanel copyableTextJPanel1;
+    CopyableTextJPanel copyableTextJPanel1;
 
     /**
      * Creates new form UnexpectedExceptionForm
@@ -73,7 +75,7 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        copyableTextJPanel1 = new freerails.controller.CopyableTextJPanel();
+        copyableTextJPanel1 = new CopyableTextJPanel();
         closebutton = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());

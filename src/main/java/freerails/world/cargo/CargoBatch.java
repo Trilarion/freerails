@@ -21,12 +21,14 @@ package freerails.world.cargo;
 import java.io.Serializable;
 
 /**
- * This class represents a cargo batch (cargo of the same batch is cargo of the
- * same type that was produced at the same location at the same time).
+ * This class represents a cargo batch.
+ *
+ * Cargo of the same batch is cargo of the same type that was produced at the same location at the same time.
  */
 public class CargoBatch implements Serializable, Comparable<CargoBatch> {
-    private static final long serialVersionUID = 3257006557605540149L;
 
+    // TODO Why is cargoType an int here and not CargoCategory or CargoType??
+    private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoType;
     private final int sourceX;
     private final int sourceY;

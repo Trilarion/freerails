@@ -130,12 +130,12 @@ public class ImmutableCargoBundle implements CargoBundle, Serializable {
     }
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @return
      */
-    public boolean contains(CargoBatch cb) {
+    public boolean contains(CargoBatch cargoBatch) {
         for (int i = 0; i < batches.size(); i++) {
-            if (batches.get(i).equals(cb)) {
+            if (batches.get(i).equals(cargoBatch)) {
                 return true;
             }
         }
@@ -154,14 +154,14 @@ public class ImmutableCargoBundle implements CargoBundle, Serializable {
     }
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @return
      */
-    public int getAmount(CargoBatch cb) {
+    public int getAmount(CargoBatch cargoBatch) {
         int amount = 0;
 
         for (int i = 0; i < batches.size(); i++) {
-            if (batches.get(i).equals(cb)) {
+            if (batches.get(i).equals(cargoBatch)) {
                 amount += amounts.get(i);
             }
         }

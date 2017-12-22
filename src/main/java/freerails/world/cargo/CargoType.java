@@ -24,20 +24,21 @@ import java.io.Serializable;
  * Represents a type of cargo.
  */
 final public class CargoType implements Serializable {
+
     private static final long serialVersionUID = 3834874680581369912L;
     private final CargoCategory category;
     private final String name;
     private final int unitWeight;
 
     /**
-     * @param weight
-     * @param s
-     * @param cat
+     * @param unitWeight
+     * @param name
+     * @param category
      */
-    public CargoType(int weight, String s, CargoCategory cat) {
-        unitWeight = weight;
-        category = cat;
-        name = s;
+    public CargoType(int unitWeight, String name, CargoCategory category) {
+        this.unitWeight = unitWeight;
+        this.category = category;
+        this.name = name;
     }
 
     @Override
@@ -45,8 +46,7 @@ final public class CargoType implements Serializable {
         if (!(obj instanceof CargoType))
             return false;
         CargoType other = (CargoType) obj;
-        return other.unitWeight == this.unitWeight && other.name.equals(name)
-                && other.category.equals(category);
+        return other.unitWeight == unitWeight && other.name.equals(name) && other.category.equals(category);
     }
 
     /**
@@ -72,22 +72,12 @@ final public class CargoType implements Serializable {
         return name;
     }
 
-    /**
-     * @return
-     */
-    public int getUnitWeight() {
-        return unitWeight;
-    }
-
     @Override
     public int hashCode() {
-
-        int result;
-        result = unitWeight;
+        int result = unitWeight;
         result = 29 * result + category.hashCode();
         result = 29 * result + name.hashCode();
         return result;
-
     }
 
     @Override

@@ -8,13 +8,13 @@ Dec 25, 2016, lukeyj
 - Only show good supplied or demanded
 - Modernised build through maven
 - Pulled out file paths into constants
-- Apply patch  1557521 (simple cleanups)
+- Apply patch 1557521 (simple cleanups)
 
 Sep 3, 2006, Luke
 
 - Give moving trains priority over stationary trains.
 - Fixed bugs
-- 1551106  Trains with 'auto consist' set don't pickup cargo
+- 1551106 Trains with 'auto consist' set don't pickup cargo
 
 Sep 1, 2006, Luke
 
@@ -80,8 +80,8 @@ Sept 8, 2005 Luke
 - Fixed bugs
 - 1266581 Underscores in map names
 - 1223231 "waiting" message on launcher unclear
-- 1266582  Progress bar
-- 1269679  Train Info doesn't update
+- 1266582 Progress bar
+- 1269679 Train Info doesn't update
 
 Aug- 31, 2005 Luke
 
@@ -96,7 +96,6 @@ Aug- 24, 2005 Luke
 - RFEs implemented
 - 1223234- Add show FPS to 'Display' menu.
 - 1223235- Save launcher input
--
 - Fixed bugs
 - 1266695 Unexpected exception during network game
 - 1266637 OutOfMemoryError
@@ -115,7 +114,7 @@ Jul 03, 2005 Luke
 May 22, 2005 Luke
 
 - Code cleanup
-- Improve pathfinder - finding paths for track is now up to 20 times faster.
+- Improve pathfinder: finding paths for track is now up to 20 times faster.
 - More of the same
 
 Apr 10, 2005 Luke
@@ -159,8 +158,8 @@ Jan 27, 2005 Luke
 
 Jan 26, 2005 Luke
 
-    Bugs Fixed:
-    1105499- Word wrapping in Html components
+- Bugs Fixed:
+- 1105499- Word wrapping in Html components
 - 1105494- Load game with wrong player
 - 1105488- Attempting to join game in progress
 
@@ -203,11 +202,9 @@ Jan 17, 2005 Luke
 - 1087426- Can see stations boxes for other players
 - 1087433- Can't tell that train roster has focus
 - 1087422- Pressing 'I' on other's station ->crash-
-- 1005144- java.lang.IllegalArgumentException: Tried to add TrainPosition- - - - - -
--
+- 1005144- java.lang.IllegalArgumentException: Tried to add TrainPosition
 - Features implemented:
-- 927146- Display natural numbers for trains, stations, etc-
--
+- 927146- Display natural numbers for trains, stations, etc
 - Other changes:
 - New track graphics
 
@@ -237,7 +234,6 @@ Jan 04, 2005 Luke
 - Bugs fixed:
 - 1087437- java properties window should word wrap.
 - 1087434- Building track out of station
-- -
 - Other changes:
 - Code cleanup
 
@@ -251,12 +247,12 @@ Dec 18, 2004 Luke
 
 Dec 15, 2004 Luke
 
-- More on track build system.  Its almost complete.
+- More on track build system. Its almost complete.
 
 Dec 14, 2004 Luke
 
-- Work on track build system.  Appropriate track for the terrain
-- is now automatically selected.  Still some bugs.
+- Work on track build system. Appropriate track for the terrain
+- is now automatically selected. Still some bugs.
 
 Dec 12, 2004 Luke
 
@@ -284,15 +280,14 @@ Oct 19, 2004 Luke
 Oct 18, 2004 Luke
 
 - RFEs Implemented:
--  1048913- Option to turn off sound
+- 1048913- Option to turn off sound
 - Bugs:
-
 - Work on 1046399- No supply and demand at new stations
 
 Oct 17, 2004 Luke
 
 - RFEs Implemented:
- - 972863- Launcher: progress bar should be on new page
+- 972863- Launcher: progress bar should be on new page
 - Bugs Fixed:
 - 1047435- Can't rejoin game
 - 1047445 Invalid port but next button enabled-
@@ -328,8 +323,7 @@ Sep 18, 2004 Luke
 Aug 14, 2004 Luke
 
 - Added ConstJava ant target
-- Note, ConstJava adds the keyword 'const' to java.  It can
-- be typed /*=const */ so that the files remain valid java files.
+- Note, ConstJava adds the keyword 'const' to java. It can be typed /\*=const \*/ so that the files remain valid java files.
 - Fixed some mutability problems that it identified.
 
 Aug 10, 2004 Luke
@@ -339,7 +333,7 @@ Aug 10, 2004 Luke
 
 Jul 26, 2004 Luke
 
-- Apply Jan Tozicka's patch for bug 997088  (IllegalArgumentException in OneTileMoveVector.getInstance)
+- Apply Jan Tozicka's patch for bug 997088 (IllegalArgumentException in OneTileMoveVector.getInstance)
 
 Jul 21, 2004 Luke
 
@@ -364,7 +358,7 @@ Jul 06, 2004 Luke
 Jun 25, 2004 Luke
 
 - Bugs fixed:-
- - 979831 Stack traces printed out when running unit tests
+- 979831 Stack traces printed out when running unit tests
 
 Jun 17, 2004 Luke
 
@@ -377,7 +371,7 @@ Jun 15, 2004 Luke
 - Bugs fixed:-
 - 972869 Crash when track under train removed.
 - 972867 Signal towers do nothing
-- - I've removed them!
+- I've removed them!
 - 972864 Deselect place-station-mode when track selected
 
 Jun 14, 2004 Luke
@@ -416,7 +410,7 @@ Jun 9, 2004 Luke
 Jun 6, 2004 Luke
 
 - Bugs Fixed:
- - 967677 OutOfMemoryError after starting several new games
+- 967677 OutOfMemoryError after starting several new games
 
 Jun 6, 2004 Luke
 
@@ -438,10 +432,10 @@ May 31, 2004 Luke
 - 948659 Dialogue Box Behavior not deterministic
 - 948663 Extra Close Button on Station List tab
 - 948661 No Formal Specification
--  see /src/docs/freerails_1_0_functional_specification.html
+- see /src/docs/freerails_1_0_functional_specification.html
 - 948656 Non Movable Dialogue Boxes
-- - -made dialogue boxes movable
-- - -added option to show/hide station names, spheres of influence, and cargo waiting.
+- made dialogue boxes movable
+- added option to show/hide station names, spheres of influence, and cargo waiting.
 
 May 30, 2004 Luke
 
@@ -469,7 +463,7 @@ May 24, 2004 PM Luke
 
 May 24, 2004 PM Luke
 
-- Added class freerails.world.top.WorldDifferences  - may be useful for RFE 915957!
+- Added class freerails.world.top.WorldDifferences - may be useful for RFE 915957!
 
 May 10, 2004 11:09:17 PM Luke
 
@@ -510,7 +504,7 @@ Apr 8, 2004 10:52:32 PM Luke
 
 Apr 7, 2004 8:18:36 PM Luke
 
-- Implemented  930716 (Scale overview map) by
+- Implemented 930716 (Scale overview map) by
 - incorporating code from Railz.
 
 Apr 6, 2004 6:28:50 PM Luke
@@ -551,8 +545,8 @@ Apr 1, 2004 8:16:48 PM Luke
 Apr 1, 2004 12:38:47 AM Luke
 
 - Implemented
-- - 910138 After building a train display train orders
-- - 910143 After building station show supply and demand
+- 910138 After building a train display train orders
+- 910143 After building station show supply and demand
 - Started rewriting freerails in C#!
 
 Mar 30, 2004 6:39:20 PM Luke
@@ -580,8 +574,7 @@ Mar 14, 2004 11:47:50 PM Luke
 Mar 13, 2004 3:45:44 PM Luke
 
 - Fixed various bugs where exceptions were getting thrown.
-- Stopped the client window getting displayed before the world
-- is loaded from the server.
+- Stopped the client window getting displayed before the world is loaded from the server.
 
 Mar 13, 2004 3:50:51 AM Luke
 
@@ -595,12 +588,12 @@ Mar 12, 2004 8:37:12 PM Luke
 
 Mar 9, 2004 1:11:50 AM Luke
 
-- Increase client performance.  93FPS to 111FPS on my machine.
+- Increase client performance. 93FPS to 111FPS on my machine.
 - Note, I get much higher FPS when the client and server are in different JVMs.
 
 Mar 8, 2004 11:39:01 PM Luke
 
-- Readied 640x480 fixed size windows mode.  It is useful
+- Readied 640x480 fixed size windows mode. It is useful
 - for taking screen shots and making sure the dialogue boxes
 - work in 640x480 fullscreen mode.
 
@@ -640,8 +633,7 @@ Mar 2, 2004 5:21:23 PM Luke
 Mar 1, 2004 10:33:52 PM Luke
 
 - Implemented Request 905441 Multi player support: different bank accounts
-- Note, presently some of the dialogue boxes are not working.  This will
-- be fixed as adding multi player support continues.
+- Note, presently some of the dialogue boxes are not working. This will be fixed as adding multi player support continues.
 
 Feb 27, 2004 1:03:38 PM Luke
 
@@ -717,13 +709,13 @@ Dec 31, 2003 1:35:01 AM Luke
 Dec 30, 2003 12:00:03 AM Luke
 
 - Refactoring to change the threads in which moves are executed.
-- - (i)  Moves are precommitted on the client's copy of the world
-- - by the thread "AWT_EventQueue."
-- - (ii) All moves are now executed on the server's copy of the world
-- - in freerails.server.ServerGameEngine.update() by the thread "freerails server".
-- - (iii) Moves received from the server are now executed on the clients copy of the
-- - world in freerails.client.top.run() by the client thread by the  thread
-- - "freerails client: ..."
+- (i) Moves are precommitted on the client's copy of the world
+- by the thread "AWT_EventQueue."
+- (ii) All moves are now executed on the server's copy of the world
+- in freerails.server.ServerGameEngine.update() by the thread "freerails server".
+- (iii) Moves received from the server are now executed on the clients copy of the
+- world in freerails.client.top.run() by the client thread by the thread
+- "freerails client: ..."
 - Moves are passed between threads using queues.
 - Currently starting new games and loading games does not work.
 - Removed most of the passing of mutexes between classes.
@@ -857,39 +849,32 @@ Nov 3, 2003 10:02:54 PM Luke
 
 - Made train speed decrease with no of wagons.
 - Made fare increase with distance travelled.
-- Made CalcSupplyAtStations implement WorldListListener so
-- that when a new station is added, its supply and demand is
-- calculated by the server.
+- Made CalcSupplyAtStations implement WorldListListener so that when a new station is added, its supply and demand is calculated by the server.
 
 25-Aug-2003 23:00:00 Luke
 
 - Added new Train orders dialogue.
-- Made changes to train consist and schedule
-- use Moves instead of changing the DB directly.
+- Made changes to train consist and schedule use Moves instead of changing the DB directly.
 - Lots of other changes/fixes.
 
 23-Aug-2003 15:45:00 Luke
 
 - Removed cruft from the experimental package.
 - Added a simple train list dialogue, accessible via the display menu.
-- Made the engine images have transparent backgrounds and flipped them
-- horizontally.
+- Made the engine images have transparent backgrounds and flipped them horizontally.
 
 19-Aug-2003 00:59:00 Luke
 
 - Applied Robert Tuck's patches that separated the
-- client and server and allow you to start up two clients
-- in the same JVM.
-- Fixed painting bug that occurred when you started two
-- clients.
+- client and server and allow you to start up two clients in the same JVM.
+- Fixed painting bug that occurred when you started two clients.
 - Major refactor to get the checkdep ant target working again.
 
 11-Aug-2003 21:06:23 Luke
 
 - You are now charged for track maintenance once per year.
 - Cargo conversions occur when you deliver cargo to a station
-- if an industry that converts the relevant cargo is within the
-- station radius.
+- if an industry that converts the relevant cargo is within the station radius.
 
 07-Aug-2003 23:26:02 Luke
 
@@ -906,7 +891,7 @@ Nov 3, 2003 10:02:54 PM Luke
 
 - Applied Robert Tuck's patch to stop the splitpane divider
 - getting focus when you press F8.
-- Added the field 'constrained' to AddTransactionMove.  When
+- Added the field 'constrained' to AddTransactionMove. When
 - this is set to true, the move will fail if you don't have enough
 - cash.
 - Made the building and upgrading track cash constrained.
@@ -946,10 +931,7 @@ Nov 3, 2003 10:02:54 PM Luke
 
 21-Jul-2003 23:48:47 Luke
 
-- The player now gets charged for:
- - building stations
- - building trains
- - upgrading track
+- The player now gets charged for: building stations, building trains, upgrading track
 - The text for the 'Game controls' dialogue box is now read in from a file rather than hard coded into the java.
 
 08-Jul-2003 19:55:14 Luke
@@ -981,13 +963,13 @@ Nov 3, 2003 10:02:54 PM Luke
 
 27-Jun-2003 23:46:15 Luke
 
-- Added 'station of origin' field to CargoBatch and updated- the classes that use CargoBatch as appropriate.  It lets us
-check whether a train has brought cargo back to the station- that it came from.
+- Added 'station of origin' field to CargoBatch and updated- the classes that use CargoBatch as appropriate. It lets us
+  check whether a train has brought cargo back to the station- that it came from.
 
 27-Jun-2003 23:25:54 Luke
 
 - Added 'no change' option to train orders - it indicates that a train should keep whatever wagons it has when it stops
-at a station.
+  at a station.
 - Made 'no change' the default order for new trains.
 
 15-Jun_2003 23:17:00 Luke
@@ -1038,7 +1020,7 @@ at a station.
 
 01-Jun-2003 18:45:42 Luke
 
-- Rewrote  ClientJFrame using Netbean's GUI editor.
+- Rewrote ClientJFrame using Netbean's GUI editor.
 - Added JLabels to show the date and available cash to ClientJFrame.
 
 31-May-2003 23:58:04 Luke
@@ -1052,12 +1034,12 @@ at a station.
 31-May-2003 16:26:35 Luke
 
 - Cargo gets added to stations based on what they supply, currently this is triggered by the 'Add cargo to stations' item
-on the game menu.
+  on the game menu.
 
 19-May-2003 04:02:00 Scott
 
 - Fixed the problem and deviation from the design ;-) of the station cargo calculations, there's now a temporary
-menu item on the display menu. Use this to manually update the cargo supply rates.
+  menu item on the display menu. Use this to manually update the cargo supply rates.
 
 18-May-2003 20:16:40 Luke
 
@@ -1105,7 +1087,7 @@ menu item on the display menu. Use this to manually update the cargo supply rate
 02-May-2003 00:19:53 Luke
 
 - The terrain graphics now get loaded correctly although there is a bug in the code that picks the right image
-for rivers and other types that are drawn in the same way.
+  for rivers and other types that are drawn in the same way.
 
 01-May-2003 00:39:49 Luke
 
@@ -1159,7 +1141,7 @@ for rivers and other types that are drawn in the same way.
 10-Mar-2003 17:22:16 Luke
 
 - Added the MapViewJComponentMouseAdapter in MapViewJComponentConcrete.java contributed by Karl-Heinz Pennemann -
-it scrolls the mainmap while pressing the second mouse button.
+  it scrolls the mainmap while pressing the second mouse button.
 
 10-Mar-2003 17:20:43 Luke
 
@@ -1176,9 +1158,10 @@ it scrolls the mainmap while pressing the second mouse button.
 12-Jan-2003 05:11:47 Luke
 
 - Major refactoring
-- added ant target, checkdep, to check that the dependencies between packages are in order.  What it does is copy the java files from
-a package together with the java files from all the packages that it is allowed to depend on to a temporary directory.
-It then compiles the java files from the package in question in the temporary director. If the- build succeeds, then the package dependencies are ok.
+- added ant target, checkdep, to check that the dependencies between packages are in order. What it does is copy the
+  java files from a package together with the java files from all the packages that it is allowed to depend on to a
+  temporary directory. It then compiles the java files from the package in question in the temporary director.
+  If the build succeeds, then the package dependencies are ok.
 
 11-Jan-2003 02:44:16 Luke
 
@@ -1191,12 +1174,12 @@ It then compiles the java files from the package in question in the temporary di
 
 22-Dec-2002 20:47:51 Luke Lindsay
 
-- Added 'Newspaper' option to 'game' menu to test drawing on the glass panel.  The same technique can be used for dialogue boxes.
+- Added 'Newspaper' option to 'game' menu to test drawing on the glass panel. The same technique can be used for dialogue boxes.
 
 04-Dec-2002 21:36:42 Luke Lindsay
 
 - The classes from the fastUtils library that are needed by freerails have been added to the freerails source tree, so
-you no longer need fastUtils.jar on the classpath to compile and run freerails.
+  you no longer need fastUtils.jar on the classpath to compile and run freerails.
 
 01-Dec-2002 15:53:02 Luke Lindsay
 
@@ -1217,7 +1200,7 @@ you no longer need fastUtils.jar on the classpath to compile and run freerails.
 27-Nov-2002 23:45:40 Luke Lindsay
 
 - Wrote SimpleAStarPathFinder and a unit test for it. It seems to work. The next step is use it together with
-NewFlatTrackExplorer to control train movement.
+  NewFlatTrackExplorer to control train movement.
 
 26-Nov-2002 21:32:20 Luke Lindsay
 
@@ -1238,8 +1221,8 @@ NewFlatTrackExplorer to control train movement.
 09-Nov-2002 01:13:47 Luke Lindsay
 
 - Changes to how the mainmap's buffer gets refreshed.vInstead of the refresh being driven by the cursor moving,
-it is now driven by moves being received.  This means that it it will refresh even if the moves are generate by another
-player.
+  it is now driven by moves being received. This means that it it will refresh even if the moves are generate by another
+  player.
 
 08-Nov-2002 23:05:39 Luke Lindsay
 
@@ -1280,11 +1263,11 @@ player.
 16-Oct-2002 21:48:24 Luke Lindsay
 
 - Refactored the freerails.world.* packages so that (1) freerails.world.* do not depend on any other freerails packages.
-(2) there are no cyclic dependencies between any of the freerails.world.* packages.- hopefully this should make it easier to maintain.
+  (2) there are no cyclic dependencies between any of the freerails.world.* packages.- hopefully this should make it easier to maintain.
 
 13-Oct-2002 22:30:30 Luke Lindsay
 
-- Added trains!  They don't move yet.  Hit F7 when the cursor is over the track to build one.
+- Added trains! They don't move yet. Hit F7 when the cursor is over the track to build one.
 
 13-Oct-2002 00:24:18 Luke Lindsay :
 
@@ -1306,7 +1289,7 @@ player.
 23-Sep-2002 23:35:30 Luke Lindsay :
 
 - Wrote a simple demo, TrainDemo, to try out using FreerailsPathIterator and PathWalker to move trains along a track.
-To see it in action, run: experimental.RunTrainDemo
+  To see it in action, run: experimental.RunTrainDemo
 
 22-Sep-2002 23:47:07 Luke Lindsay :
 
@@ -1320,7 +1303,7 @@ To see it in action, run: experimental.RunTrainDemo
 16-Sep-2002 21:36:50 Luke Lindsay :
 
 - Updated and commented FreerailsPathIterator and PathWalker interfaces.
-- build.xml written by JonLS added.  (Sorry, I - forgot to add it to the change log earlier.)
+- build.xml written by JonLS added. (Sorry, I - forgot to add it to the change log earlier.)
 
 08-Sep-2002 22:11:24 Luke Lindsay :
 
@@ -1348,7 +1331,7 @@ To see it in action, run: experimental.RunTrainDemo
 - Fullscreen mode
 - GameLoop, freerails now uses active, rather than passive, rendering.
 - Work on separating the model and view.
-- Tilesets can be validated against rulesets - ViewLists.validate(Type t)  -
+- Tilesets can be validated against rulesets - ViewLists.validate(Type t) -
 - FPS counter added.
 
 04-Mar-2002 21:57:23 Luke Lindsay :

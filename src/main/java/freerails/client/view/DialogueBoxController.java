@@ -27,7 +27,6 @@ import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.CopyableTextJPanel;
 import freerails.controller.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ReportBugTextGenerator;

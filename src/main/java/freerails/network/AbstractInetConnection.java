@@ -18,6 +18,8 @@
 
 package freerails.network;
 
+import freerails.util.SychronizedQueue;
+import freerails.util.SynchronizedFlag;
 import org.apache.log4j.Logger;
 
 import java.io.EOFException;

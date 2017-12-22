@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.util;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
- * Intended to let objects be safely passed between threads. 666 perhaps an
- * arrayList is better (-> profile it)
+ * Intended to let objects be safely passed between threads.
+ * TODO perhaps an arrayList is better (-> profile it)
  */
 public class SychronizedQueue {
     private final LinkedList<Serializable> queue = new LinkedList<>();

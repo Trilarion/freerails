@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 import java.io.Serializable;
 
 /**
- *
+ * Test for CargoBundle
  */
 public class CargoBundleTest extends TestCase {
 
@@ -35,6 +35,7 @@ public class CargoBundleTest extends TestCase {
      *
      */
     public void testEquals() {
+
         MutableCargoBundle bundle1 = new MutableCargoBundle();
         MutableCargoBundle bundle2 = new MutableCargoBundle();
         CargoBatch batch1 = new CargoBatch(1, 2, 3, 4, 5);
