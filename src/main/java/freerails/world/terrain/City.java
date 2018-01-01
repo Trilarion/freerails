@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * A city.
  *
- * Simply storing the city name and x & y coordinates.
+ * Simply storing the city name and x and y coordinates.
  * TODO Possible potential for expansion?? Initial size of city, growth rate etc.???
  */
 public class City implements Serializable {

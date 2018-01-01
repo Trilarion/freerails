@@ -718,7 +718,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
     /**
      * Listens for changes on the map, for instance when track is built, and
-     * refreshes the map views. 666 changes to often -> 10% of time
+     * refreshes the map views.
+     *
+     * TODO changes to often, ~10% of time
      */
     public void tilesChanged(Rectangle tilesChanged) {
         if (logger.isDebugEnabled()) {

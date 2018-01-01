@@ -60,7 +60,7 @@ public interface ActivityIterator {
 
     /**
      * Converts an absolute time value to a time value relative to the start of
-     * the current activity. If absoluteTime > getFinishTime(), getDuration() is
+     * the current activity. If absoluteTime is greater then getFinishTime(), getDuration() is
      * returned.
      *
      * @param absoluteTime

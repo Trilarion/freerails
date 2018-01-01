@@ -68,12 +68,12 @@ public class TrainMotionTest extends TestCase {
 
         double expectedTotalDistance = 97.57359312880715d; // Copied from
         // debugger.
-        double actualTotalDistance = speeds.getS();
+        double actualTotalDistance = speeds.getDistance();
 
         assertEquals(expectedTotalDistance, actualTotalDistance, 0d);
 
         double expectedDuration = 10.972888751347389d;
-        double actualDuration = speeds.getT();
+        double actualDuration = speeds.getTime();
         assertEquals(expectedDuration, actualDuration, 0d);
 
         int engineStep = 1;

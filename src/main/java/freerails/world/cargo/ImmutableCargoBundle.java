@@ -29,9 +29,8 @@ import java.util.SortedMap;
  * This class represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
  *
- * For example:
- *
  * <table width="75%" border="0">
+ * <caption>Example</caption>
  * <tr>
  * <td><strong>Cargo Batch</strong></td>
  * <td><strong>Quantity</strong></td>

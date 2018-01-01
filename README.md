@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/Trilarion/freerails.svg?branch=master)](https://travis-ci.org/Trilarion/freerails) - [![Documentation Status](https://readthedocs.org/projects/freerails/badge/?version=latest)](http://freerails.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/Trilarion/freerails.svg?branch=master)](https://travis-ci.org/Trilarion/freerails)
+[![Documentation Status](https://readthedocs.org/projects/freerails/badge/?version=latest)](http://freerails.readthedocs.io/en/latest/)
 
 # FreeRails
 
@@ -12,7 +13,7 @@ The [History](HISTORY.md) of FreeRails.
 ## Download & Manual
 
 - Get last binary version
-- [Manual](https://readthedocs.org/projects/freerails/badge/?version=latest)](http://freerails.readthedocs.io/en/latest/?badge=latest) on readthedocs
+- [Manual](http://freerails.readthedocs.io/en/latest/)
 
 ## Bugs, Feature requests, Feedback
 

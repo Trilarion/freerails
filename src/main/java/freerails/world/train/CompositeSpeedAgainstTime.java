@@ -44,8 +44,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         values.checkForNulls();
         double tempDuration = 0, tempTotalDistance = 0;
         for (SpeedAgainstTime acc : accs) {
-            tempDuration += acc.getT();
-            tempTotalDistance += acc.getS();
+            tempDuration += acc.getTime();
+            tempTotalDistance += acc.getDistance();
         }
         finalT = tempDuration;
         finalS = tempTotalDistance;
@@ -101,77 +101,77 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         SpeedAgainstTime acc = values.get(tai.i);
         speed = acc.calcV(tai.offset);
         acceleration = acc.calcA(tai.offset);
-        s = acc.calcS(tai.offset);
+        s = acc.calculateDistance(tai.offset);
 
         return new SpeedTimeAndStatus(acceleration, activity, dt, s, speed);
     }
 
-    public double calcS(double t) {
-        if (t == this.finalT)
+    public double calculateDistance(double time) {
+        if (time == this.finalT)
             return this.finalS;
-        checkT(t);
-        TandI tai = getIndex(t);
+        checkT(time);
+        TandI tai = getIndex(time);
         double s = 0;
         for (int i = 0; i < tai.i; i++) {
             SpeedAgainstTime acc = values.get(i);
-            s += acc.getS();
+            s += acc.getDistance();
         }
         SpeedAgainstTime acc = values.get(tai.i);
-        if (tai.offset >= acc.getT()) {
+        if (tai.offset >= acc.getTime()) {
             // Note, it is possible for tai.offset > acc.getTransaction()
             // even though we called checkT(t) above
-            s += acc.getS();
+            s += acc.getDistance();
         } else {
-            s += acc.calcS(tai.offset);
+            s += acc.calculateDistance(tai.offset);
         }
         return s;
     }
 
-    public double calcT(double s) {
-        if (s == this.finalS)
+    public double calculateTime(double distance) {
+        if (distance == this.finalS)
             return this.finalT;
-        if (s > finalS)
-            throw new IllegalArgumentException(String.valueOf(s));
+        if (distance > finalS)
+            throw new IllegalArgumentException(String.valueOf(distance));
 
         double sSoFar = 0;
         double tSoFar = 0;
         int i = 0;
         SpeedAgainstTime acc = values.get(i);
 
-        while ((sSoFar + acc.getS()) < s) {
-            sSoFar += acc.getS();
-            tSoFar += acc.getT();
+        while ((sSoFar + acc.getDistance()) < distance) {
+            sSoFar += acc.getDistance();
+            tSoFar += acc.getTime();
             i++;
             acc = values.get(i);
         }
-        double sOffset = s - sSoFar;
-        if (sOffset >= acc.getS()) {
-            tSoFar += acc.getT();
+        double sOffset = distance - sSoFar;
+        if (sOffset >= acc.getDistance()) {
+            tSoFar += acc.getTime();
         } else {
-            tSoFar += acc.calcT(sOffset);
+            tSoFar += acc.calculateTime(sOffset);
         }
         return tSoFar;
     }
 
-    public double calcV(double t) {
-        checkT(t);
-        TandI tai = getIndex(t);
+    public double calcV(double time) {
+        checkT(time);
+        TandI tai = getIndex(time);
         SpeedAgainstTime acc = values.get(tai.i);
         return acc.calcV(tai.offset);
     }
 
-    public double calcA(double t) {
-        checkT(t);
-        TandI tai = getIndex(t);
+    public double calcA(double time) {
+        checkT(time);
+        TandI tai = getIndex(time);
         SpeedAgainstTime acc = values.get(tai.i);
         return acc.calcA(tai.offset);
     }
 
-    public double getT() {
+    public double getTime() {
         return finalT;
     }
 
-    public double getS() {
+    public double getDistance() {
         return finalS;
     }
 
@@ -181,11 +181,11 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         for (int i = 0; i < values.size(); i++) {
             SpeedAgainstTime acc = values.get(i);
 
-            if (t <= (tSoFar + acc.getT())) {
+            if (t <= (tSoFar + acc.getTime())) {
                 double offset = t - tSoFar;
                 return new TandI(i, offset);
             }
-            tSoFar += acc.getT();
+            tSoFar += acc.getTime();
         }
         // Should never happen since we call checkT() above!
         throw new IllegalStateException(String.valueOf(t));

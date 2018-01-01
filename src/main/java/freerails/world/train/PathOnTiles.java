@@ -121,8 +121,8 @@ strictfp public class PathOnTiles implements Serializable {
      *
      * @param distance
      * @return
-     * @throws IllegalArgumentException if distance < 0
-     * @throws IllegalArgumentException if distance > getLength()
+     * @throws IllegalArgumentException if distance &lt; 0
+     * @throws IllegalArgumentException if distance &gt; getLength()
      */
     public ImPoint getPoint(double distance) {
         if (0 > distance)
@@ -160,8 +160,8 @@ strictfp public class PathOnTiles implements Serializable {
      * @param firstdistance
      * @param lastdistance
      * @return
-     * @throws IllegalArgumentException if distance < 0
-     * @throws IllegalArgumentException if distance > getLength()
+     * @throws IllegalArgumentException if distance &lt; 0
+     * @throws IllegalArgumentException if distance &gt; getLength()
      */
     public Pair<ImPoint, ImPoint> getPoint(double firstdistance,
                                            double lastdistance) {
@@ -289,8 +289,8 @@ strictfp public class PathOnTiles implements Serializable {
      *
      * @param distance
      * @return
-     * @throws IllegalArgumentException if distance < 0
-     * @throws IllegalArgumentException if distance > getLength()
+     * @throws IllegalArgumentException if distance &lt; 0
+     * @throws IllegalArgumentException if distance &gt; getLength()
      */
     public int getStepIndex(int distance) {
         if (0 > distance)
@@ -338,9 +338,9 @@ strictfp public class PathOnTiles implements Serializable {
      * @param offset
      * @param length
      * @return
-     * @throws IllegalArgumentException if offset < 0
-     * @throws IllegalArgumentException if length <= 0
-     * @throws IllegalArgumentException if offset + length > getLength()
+     * @throws IllegalArgumentException if offset &lt; 0
+     * @throws IllegalArgumentException if length &le; 0
+     * @throws IllegalArgumentException if offset + length &gt; getLength()
      */
     public Pair<FreerailsPathIterator, Integer> subPath(double offset,
                                                         double length) {

@@ -33,7 +33,9 @@ import java.util.TreeMap;
  * An implementation of World that only stores differences relative to an
  * underlying world object. Below is some stylised code showing what this class
  * does. The {@code key} object could be a location on the map, a
- * position in a list etc. <code><pre>
+ * position in a list etc.
+ *
+ * <code>
  * HashMap underlyingWorldObject;
  *
  * HashMap differences;
@@ -55,7 +57,7 @@ import java.util.TreeMap;
  *         return underlyingWorldObject.get(key);
  *     }
  * }
- * </code></pre>
+ * </code>
  *
  * The advantages of using an instance of this class instead of a copy of the
  * world object are:

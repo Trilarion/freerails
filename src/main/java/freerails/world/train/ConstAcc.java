@@ -72,29 +72,29 @@ strictfp public class ConstAcc implements Serializable,
         return new ConstAcc(a, t, u, s);
     }
 
-    public double calcS(double t) {
-        if (t == finalT)
+    public double calculateDistance(double time) {
+        if (time == finalT)
             return finalS;
-        validateT(t);
-        double ds = u * t + a * t * t / 2;
+        validateT(time);
+        double ds = u * time + a * time * time / 2;
         ds = Math.min(ds, finalS);
         return ds;
     }
 
-    public double calcT(double s) {
-        if (s == finalS)
+    public double calculateTime(double distance) {
+        if (distance == finalS)
             return finalT;
-        if (s < 0 || s > this.finalS)
-            throw new IllegalArgumentException(s + " < 0 || " + s + " > "
+        if (distance < 0 || distance > this.finalS)
+            throw new IllegalArgumentException(distance + " < 0 || " + distance + " > "
                     + finalS);
-        double returnValue = calcT(u, a, s);
+        double returnValue = calcT(u, a, distance);
         returnValue = Math.min(returnValue, finalT);
         return returnValue;
     }
 
-    public double calcV(double t) {
-        validateT(t);
-        return u + a * t;
+    public double calcV(double time) {
+        validateT(time);
+        return u + a * time;
     }
 
     @Override
@@ -113,16 +113,16 @@ strictfp public class ConstAcc implements Serializable,
         return !(u != constAcc.u);
     }
 
-    public double calcA(double t) {
-        validateT(t);
+    public double calcA(double time) {
+        validateT(time);
         return a;
     }
 
-    public double getT() {
+    public double getTime() {
         return finalT;
     }
 
-    public double getS() {
+    public double getDistance() {
         return finalS;
     }
 

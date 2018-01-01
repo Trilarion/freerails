@@ -27,7 +27,9 @@
  * for the interface.</p>
  * <p>(2) Rather than writing the class from scratch, it is probably better to extend
  * one of the generic moves class.</p>
+ *
  * <table width="75%" border="0">
+ * <caption>??</caption>
  * <tr>
  * <td><strong>if the move..</strong></td>
  * <td><strong>then extend</strong></td>
@@ -49,8 +51,9 @@
  * <td>{@link freerails.move.CompositeMove}</td>
  * </tr>
  * </table>
+ *
  * <p>(3) Consider writing a junit testcase for the move, and if you do, make the
- * testcase a extend {@link freerails.move.AbstractMoveTestCase}.</p>
+ * testcase a extend freerails.move.AbstractMoveTestCase.</p>
  * <p>(4) If the move depends on properties stored on the world object, consider
  * extending {@link freerails.controller.PreMove}.</p>
  * <p>&nbsp;</p>

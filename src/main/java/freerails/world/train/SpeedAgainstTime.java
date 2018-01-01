@@ -32,56 +32,56 @@ public interface SpeedAgainstTime extends Serializable {
      * Returns the distance travelled at time t. The returned value, s,
      * satisfies the following conditions:
      * <ol>
-     * <li>s >= 0</li>
-     * <li>s <= getS()</li>
+     * <li>s &ge; 0</li>
+     * <li>s &le; getDistance()</li>
      * <li>s = 0 if t = 0 </li>
-     * <li>s = getS() if t = getT()</li>
+     * <li>s = getDistance() if t = getTime()</li>
      * </ol>
      *
-     * @param t
-     * @return s
-     * @throws IllegalArgumentException iff t < 0 or t > getT()
+     * @param time
+     * @return distance
+     * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
-    double calcS(double t);
+    double calculateDistance(double time);
 
     /**
      * Returns the time taken to travel distance s. The returned value, t,
      * satisfies the following conditions:
      * <ol>
-     * <li>t >= 0</li>
-     * <li>t <= getT()</li>
+     * <li>t &ge; 0</li>
+     * <li>t &le; getTime()</li>
      * <li>t = 0 if s = 0 </li>
-     * <li>t = getT() if s = getS()</li>
+     * <li>t = getTime() if s = getDistance()</li>
      * </ol>
      *
-     * @param s
-     * @return t
-     * @throws IllegalArgumentException iff s < 0 or s > getS()
+     * @param distance
+     * @return time
+     * @throws IllegalArgumentException iff s &lt; 0 or s &gt; getDistance()
      */
-    double calcT(double s);
+    double calculateTime(double distance);
 
     /**
-     * @param t
+     * @param time
      * @return
-     * @throws IllegalArgumentException iff t < 0 or t > getT()
+     * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
-    double calcV(double t);
+    double calcV(double time);
 
     /**
-     * @param t
+     * @param time
      * @return
-     * @throws IllegalArgumentException iff t < 0 or t > getT()
+     * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
-    double calcA(double t);
+    double calcA(double time);
 
     /**
-     * @return The time taken to travel the distance given by getS().
+     * @return The time taken to travel the distance given by getDistance().
      */
-    double getT();
+    double getTime();
 
     /**
-     * @return The distance traveled during at time given by getT().
+     * @return The distance traveled during at time given by getTime().
      */
-    double getS();
+    double getDistance();
 
 }

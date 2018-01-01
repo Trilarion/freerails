@@ -26,5 +26,5 @@ and server are immutable and are instances of one of the following:
 
 When a new game starts or a game is loaded, the server sends the client a copy of the World object (using an instance
 of SetWorldMessage2Client) All changes to the game world that occur after the game has started, referred to as moves,
-are done using the classes in the package jfreerails.move. Moves are either obtained from a PreMove object or
+are done using the classes in the package freerails.move. Moves are either obtained from a PreMove object or
 constructed directly.

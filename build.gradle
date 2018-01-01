@@ -1,5 +1,5 @@
 group 'org.freerails'
-version '0.0.4-SNAPSHOT'
+version '0.4.1'
 
 apply plugin: 'java'
 apply plugin: 'application'

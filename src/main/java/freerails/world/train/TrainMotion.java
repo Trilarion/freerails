@@ -47,6 +47,7 @@ import java.util.ArrayList;
  *
  * It makes supporting low bandwidth networks easier since it allows the server
  * to send updates less frequently. </li>
+ * </ol>
  *
  * @see freerails.world.train.PathOnTiles
  * @see freerails.world.train.CompositeSpeedAgainstTime
@@ -102,15 +103,15 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
                             + "the train's initial position to be specified.");
         double totalPathDistance = path.getTotalDistance();
         distanceEngineWillTravel = totalPathDistance - initialPosition;
-        if (distanceEngineWillTravel > speeds.getS())
+        if (distanceEngineWillTravel > speeds.getDistance())
             throw new IllegalArgumentException(
                     "The train's speed is not defined for the whole of the journey.");
 
         if (distanceEngineWillTravel == 0) {
             duration = 0d;
         } else {
-            double tempDuration = speeds.calcT(distanceEngineWillTravel);
-            while ((speeds.calcS(tempDuration) - distanceEngineWillTravel) > 0) {
+            double tempDuration = speeds.calculateTime(distanceEngineWillTravel);
+            while ((speeds.calculateDistance(tempDuration) - distanceEngineWillTravel) > 0) {
                 tempDuration -= Math.ulp(tempDuration);
             }
             duration = tempDuration;
@@ -194,8 +195,8 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
      */
     public double getDistance(double t) {
         checkT(t);
-        t = Math.min(t, speeds.getT());
-        return speeds.calcS(t);
+        t = Math.min(t, speeds.getTime());
+        return speeds.calculateDistance(t);
     }
 
     /**
@@ -209,7 +210,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
      * @return
      */
     public double getSpeedAtEnd() {
-        double finalT = speeds.getT();
+        double finalT = speeds.getTime();
         return speeds.calcV(finalT);
     }
 
@@ -221,7 +222,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
      * @throws IllegalArgumentException if t is outside the interval
      */
     public TrainPositionOnMap getState(double t) {
-        t = Math.min(t, speeds.getT());
+        t = Math.min(t, speeds.getTime());
         double offset = calcOffSet(t);
         Pair<FreerailsPathIterator, Integer> pathIt = path.subPath(offset,
                 trainLength); // 666
@@ -242,7 +243,7 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
      */
     public PathOnTiles getTiles(double t) {
         checkT(t);
-        t = Math.min(t, speeds.getT());
+        t = Math.min(t, speeds.getTime());
         double start = calcOffSet(t);
         double end = start + trainLength;
         ArrayList<TileTransition> tileTransitions = new ArrayList<>();

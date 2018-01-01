@@ -37,11 +37,11 @@ public class CompositeSpeedAgainstTimeTest extends TestCase {
         SpeedAgainstTime sat = ConstAcc.uas(10, 2, 400d);
         CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(sat);
         double t = csat.duration();
-        double t2 = csat.calcT(400d);
+        double t2 = csat.calculateTime(400d);
         assertEquals(t, t2);
-        double s = csat.calcS(t);
+        double s = csat.calculateDistance(t);
         assertEquals(400d, s);
-        double t3 = csat.calcT(0d);
+        double t3 = csat.calculateTime(0d);
         assertEquals(0d, t3);
     }
 

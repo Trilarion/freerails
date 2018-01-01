@@ -17,7 +17,7 @@
  */
 
 /**
- * <p>The <code>freerails&#46world&#46*</code> packages provide the classes that make up
+ * <p>The <code>freerails world *</code> packages provide the classes that make up
  * the game-world, the classes in these packages will be used by the client and
  * the server. If at some stage there is a C/C++ version of freerails that works
  * with the java version, then there will need to be C/C++ and java versions of

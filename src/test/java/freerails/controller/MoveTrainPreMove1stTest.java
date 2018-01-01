@@ -113,8 +113,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         SpeedAgainstTime speeds = preMove.nextSpeeds(world, EAST);
         assertNotNull(speeds);
         assertEquals(speeds.calcV(0), 0d);
-        assertTrue(speeds.getS() >= EAST.getLength());
-        double t = speeds.getT();
+        assertTrue(speeds.getDistance() >= EAST.getLength());
+        double t = speeds.getTime();
         assertTrue(t > 0);
         assertTrue(speeds.calcV(t) > 0);
     }

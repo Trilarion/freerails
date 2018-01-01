@@ -64,3 +64,38 @@ different sized regions, different sized maps should be used.
 
 .. note::
    The exact shape of mountain ranges and the distribution of terrain types will vary between games.
+
+Terrain
++++++++
+
+Terrain Type
+............
+
+Each tile on the map has a 'terrain type' e.g. Farm, desert etc.
+
+Category
+  All terrain types fall into one of the following categories: Urban, River, Ocean, Hill, Country, Special, Industry, or Resource.
+
+Cargo production
+  Some types of terrain produce cargo (of one or more types), e.g. A Cattle Ranch produces livestock.
+
+Cargo consumption
+  Some types of terrain consume cargo, e.g. 'City' tiles consume 'Food'.
+
+Right-of-way cost
+  Before you build track on a square, you need to purchase the right of way. Different terrain types have different ROW costs.
+
+Terrain Heights
+...............
+
+Different terrain types will have different heights, I'll call this the type-height.
+The height of a tile will be the weighted average of the type-heights of the surrounding tiles.
+
+Cargo
++++++
+
+There are a number of cargo types, e.g. Mail, Passengers, Livestock etc. Cargo types fall into one of the following categories:
+Mail, Passengers, Fast Freight, Slow Freight, Bulk Freight. Mail is the most sensitive to speed of delivery; Bulk Freight is the least.
+
+Cities
+++++++
