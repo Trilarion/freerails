@@ -22,7 +22,6 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.common.ImageManager;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TerrainType;
@@ -124,8 +123,6 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         }
         return match;
     }
-
-    abstract public void dumpImages(ImageManager imageManager);
 
     String generateRelativeFileName(int i) {
         return "terrain" + File.separator + this.getTerrainType() + "_"

@@ -64,20 +64,6 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         activelyRendereredComponents.add(f);
     }
 
-    /**
-     * @return
-     */
-    public static long getNumRepaintRequests() {
-        return numRepaintRequests;
-    }
-
-    /**
-     * @return
-     */
-    public static long getNumDirtyRequests() {
-        return numDirtyRequests;
-    }
-
     @Override
     public boolean isDoubleBufferingEnabled() {
         return false;

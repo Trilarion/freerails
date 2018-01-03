@@ -39,7 +39,6 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         ListCellRenderer, View {
 
     private static final long serialVersionUID = 4121133628006020919L;
-    final LRUCache<String, JLabel> jLabels;
     private final TrainSummeryModel model;
     private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
             .getDefaults().get("List.background");
@@ -59,7 +58,6 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
      * Creates new form TrainSummaryJPanel
      */
     public TrainSummaryJPanel() {
-        jLabels = new LRUCache<>(1000);
         model = new TrainSummeryModel();
         initComponents();
     }

@@ -98,21 +98,6 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * @param relativeFilename
      * @return
-     */
-    public boolean contains(String relativeFilename) {
-        relativeFilename = relativeFilename.replace(' ', '_');
-
-        if (imageHashMap.containsKey(relativeFilename)) {
-            return true;
-        }
-        File f = new File(pathToWriteTo + File.separator + relativeFilename);
-
-        return f.isFile();
-    }
-
-    /**
-     * @param relativeFilename
-     * @return
      * @throws IOException
      */
     public Image getImage(String relativeFilename) throws IOException {
@@ -210,13 +195,6 @@ public class ImageManagerImpl implements ImageManager {
         }
 
         imageHashMap.put(relativeFilename, i);
-    }
-
-    /**
-     * @param s
-     */
-    public void setPathToReadFrom(String s) {
-        pathToReadFrom = s;
     }
 
     /**

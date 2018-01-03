@@ -27,6 +27,7 @@ import java.io.Serializable;
  * This interface provides information about changes to the lists in the World
  * database.
  */
+@SuppressWarnings("unused")
 public interface ListMove extends Move {
     /**
      * @return the type of object which was changed

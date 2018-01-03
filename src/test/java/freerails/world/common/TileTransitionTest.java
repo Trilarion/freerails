@@ -29,17 +29,11 @@ public class TileTransitionTest extends TestCase {
 
     final TileTransition ne = TileTransition.NORTH_EAST;
 
-    final TileTransition e = TileTransition.EAST;
-
-    final TileTransition se = TileTransition.SOUTH_EAST;
-
     final TileTransition s = TileTransition.SOUTH;
 
     final TileTransition sw = TileTransition.SOUTH_WEST;
 
     final TileTransition w = TileTransition.WEST;
-
-    final TileTransition nw = TileTransition.NORTH_WEST;
 
     /**
      * @param arg0

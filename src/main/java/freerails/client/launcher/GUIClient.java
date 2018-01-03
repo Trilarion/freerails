@@ -174,13 +174,6 @@ public class GUIClient extends FreerailsClient implements
     }
 
     /**
-     * @param s
-     */
-    public void setMessage(String s) {
-        System.out.println(s);
-    }
-
-    /**
      * @param i
      */
     public void setValue(int i) {

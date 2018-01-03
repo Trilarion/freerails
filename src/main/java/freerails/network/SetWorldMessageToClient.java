@@ -53,10 +53,6 @@ public class SetWorldMessageToClient implements MessageToClient {
         return new MessageStatus(id, true);
     }
 
-    public int getID() {
-        return id;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)

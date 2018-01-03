@@ -23,6 +23,7 @@ package freerails.controller;
 
 /**
  */
+@SuppressWarnings("ALL")
 public class SharePriceCalculator {
 
     /**

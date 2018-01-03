@@ -65,24 +65,6 @@ final public class MoveChainFork implements MoveReceiver {
     }
 
     /**
-     * @param l
-     */
-    public void removeMapListener(WorldMapListener l) {
-        mapListeners.remove(l);
-    }
-
-    /**
-     * @param moveReceiver
-     */
-    public void removeCompleteMoveReceiver(MoveReceiver moveReceiver) {
-        if (null == moveReceiver) {
-            throw new NullPointerException();
-        }
-
-        moveReceivers.remove(moveReceiver);
-    }
-
-    /**
      * @param moveReceiver
      */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {

@@ -90,15 +90,6 @@ public class MessageStatus implements Serializable {
     }
 
     /**
-     * Returns the reason the command failed, may be null.
-     *
-     * @return
-     */
-    public String getReason() {
-        return reason;
-    }
-
-    /**
      * True if the command was successfully executed.
      *
      * @return

@@ -113,7 +113,7 @@ public class CompositeMove implements Move {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = compositeTest(world, principal);
+        MoveStatus ms = compositeTest(world);
 
         if (!ms.ok) {
             return ms;
@@ -174,7 +174,7 @@ public class CompositeMove implements Move {
      * Subclasses may override this method to perform tests which pass or fail
      * depending on the combination of moves making up this composite move.
      */
-    MoveStatus compositeTest(World w, FreerailsPrincipal p) {
+    MoveStatus compositeTest(World w) {
         return MoveStatus.MOVE_OK;
     }
 

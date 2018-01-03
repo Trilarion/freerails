@@ -26,10 +26,7 @@ import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
 import freerails.network.ServerGameModel;
 import freerails.world.*;
-import freerails.world.player.Player;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 /**
@@ -188,24 +185,6 @@ public class ServerGameModelImpl implements ServerGameModel {
                 // }
                 nextModelUpdateDue = System.currentTimeMillis();
             }
-        }
-    }
-
-    /**
-     * @param objectOut
-     * @throws IOException
-     */
-    public void write(ObjectOutputStream objectOut) throws IOException {
-
-        objectOut.writeObject(world);
-        objectOut.writeObject(serverAutomata);
-
-        /*
-          save player private data
-         */
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
-            player.saveSession(objectOut);
         }
     }
 

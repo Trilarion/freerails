@@ -99,26 +99,6 @@ public class EchoGameServer implements GameServer, Runnable {
         return connections.size();
     }
 
-    /**
-     *
-     */
-    public synchronized void stop() {
-        status.close();
-
-        for (ConnectionToClient connection1 : connections) {
-            AbstractInetConnection connection = (AbstractInetConnection) connection1;
-
-            if (connection.isOpen()) {
-                try {
-                    connection.setTimeOut(0);
-                    connection.disconnect();
-                } catch (Exception e) {
-                    // Do nothing.
-                }
-            }
-        }
-    }
-
     public void run() {
         status.open();
 

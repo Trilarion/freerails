@@ -29,6 +29,7 @@ import javax.swing.*;
  * Displays text that can be selected with the mouse and copied to the
  * clipboard.
  */
+@SuppressWarnings("unused")
 public class CopyableTextJPanel extends javax.swing.JPanel {
 
     private static final long serialVersionUID = 4076159955353400345L;

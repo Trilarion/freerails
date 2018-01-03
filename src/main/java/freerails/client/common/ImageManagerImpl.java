@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
  * TRANSLUCENT, the scaled images it returns are rendered with renderingHints
  * set for quality.
  */
+@SuppressWarnings("unused")
 public class ImageManagerImpl implements ImageManager {
     /**
      * Matches anything but a string beginning with a "/"*. The reason for this
@@ -46,8 +47,7 @@ public class ImageManagerImpl implements ImageManager {
      */
     private static final String A_REGEX = "^[^///].*";
 
-    private static final Logger logger = Logger
-            .getLogger(ImageManagerImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
 
     private static final Pattern pattern = Pattern.compile(A_REGEX);
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
@@ -80,15 +80,6 @@ public class ImageManagerImpl implements ImageManager {
     public static boolean isValid(String s) {
         Matcher m = pattern.matcher(s);
         return m.matches();
-    }
-
-    /**
-     * @param relativeFilename
-     * @return
-     */
-    public boolean contains(String relativeFilename) {
-        relativeFilename = relativeFilename.replace(' ', '_');
-        return imageHashMap.containsKey(relativeFilename);
     }
 
     /**
@@ -191,12 +182,5 @@ public class ImageManagerImpl implements ImageManager {
         }
 
         imageHashMap.put(relativeFilename, i);
-    }
-
-    /**
-     * @param s
-     */
-    public void setPathToReadFrom(String s) {
-        pathToReadFrom = s;
     }
 }

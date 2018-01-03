@@ -44,8 +44,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     final TileTransition south = TileTransition.SOUTH;
 
-    final TileTransition west = TileTransition.WEST;
-
     TrackMoveTransactionsGenerator transactionsGenerator;
 
     /**

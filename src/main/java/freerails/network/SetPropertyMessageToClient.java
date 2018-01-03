@@ -72,10 +72,6 @@ public class SetPropertyMessageToClient implements MessageToClient {
         return new MessageStatus(id, true);
     }
 
-    public int getID() {
-        return id;
-    }
-
     @Override
     public int hashCode() {
         int result;

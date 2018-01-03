@@ -87,12 +87,6 @@ class Connection {
         return (Serializable) object;
     }
 
-    synchronized boolean isOpen() {
-        boolean isClosed = socket.isClosed();
-
-        return !isClosed;
-    }
-
     synchronized void flush() throws IOException {
         objectOutputStream.flush();
         // deflaterOutputStream.flush();

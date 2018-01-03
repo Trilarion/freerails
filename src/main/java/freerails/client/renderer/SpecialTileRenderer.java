@@ -94,11 +94,6 @@ final public class SpecialTileRenderer extends AbstractTileRenderer {
         return 0;
     }
 
-    @Override
-    public void dumpImages(ImageManager imageManager) {
-        imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
-    }
-
     private String generateFilename() {
         return "terrain" + File.separator + this.getTerrainType() + ".png";
     }

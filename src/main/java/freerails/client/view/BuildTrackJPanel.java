@@ -26,7 +26,6 @@ package freerails.client.view;
 import freerails.client.ClientConfig;
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
-import freerails.client.renderer.RendererRoot;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
@@ -39,7 +38,6 @@ import freerails.world.track.TrackRule;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,6 +51,7 @@ import static freerails.controller.TrackMoveProducer.BuildMode.*;
  * mode (build track, upgrade track, build station, bulldoze, and info mode) and
  * select the track/bridge/station type to use.
  */
+@SuppressWarnings("unused")
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     private static final long serialVersionUID = 3618701915647850036L;
@@ -87,13 +86,11 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
 
     /**
+     * @param al
      * @param mr
      * @param ar
-     * @param vl
-     * @param al
      */
-    public void setup(ModelRoot mr, ActionRoot ar, RendererRoot vl,
-                      ActionListener al) {
+    public void setup(ModelRoot mr, ActionRoot ar) {
 
         modelRoot = mr;
         stationBuildModel = ar.getStationBuildModel();

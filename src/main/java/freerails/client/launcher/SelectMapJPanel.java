@@ -33,6 +33,7 @@ import javax.swing.event.DocumentListener;
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
  */
+@SuppressWarnings("unused")
 public class SelectMapJPanel extends javax.swing.JPanel implements
         LauncherPanel {
     private static final long serialVersionUID = 3763096353857024568L;

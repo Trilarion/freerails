@@ -57,7 +57,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     javax.swing.JRadioButton singlePlayerButton;
     javax.swing.JRadioButton startNetworkButton;
 
-    public LauncherPanel1(LauncherInterface owner) {
+    public LauncherPanel1() {
         initComponents();
         buttonModels[MODE_SINGLE_PLAYER] = singlePlayerButton.getModel();
         buttonModels[MODE_START_NETWORK_GAME] = startNetworkButton.getModel();

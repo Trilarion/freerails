@@ -38,6 +38,7 @@ import java.util.ArrayList;
 /**
  * This JPanel lets the user add wagons to a train.
  */
+@SuppressWarnings("unused")
 public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3905239009449095220L;

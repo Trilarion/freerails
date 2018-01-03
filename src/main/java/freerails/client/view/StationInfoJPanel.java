@@ -45,6 +45,7 @@ import java.util.NoSuchElementException;
 /**
  * This JPanel displays the supply and demand at a station.
  */
+@SuppressWarnings("unused")
 public class StationInfoJPanel extends JPanel implements View,
         WorldListListener {
 

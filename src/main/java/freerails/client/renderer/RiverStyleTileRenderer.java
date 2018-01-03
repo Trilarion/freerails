@@ -78,14 +78,6 @@ final public class RiverStyleTileRenderer extends
         return iconNumber;
     }
 
-    @Override
-    public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.getTileIcons().length; i++) {
-            imageManager.setImage(generateRelativeFileName(i), this
-                    .getTileIcons()[i]);
-        }
-    }
-
     /**
      * @param i
      * @return

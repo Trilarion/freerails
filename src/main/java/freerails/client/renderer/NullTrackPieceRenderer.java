@@ -17,8 +17,6 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.common.ImageManager;
-
 import java.awt.*;
 
 /**
@@ -66,7 +64,4 @@ final public class NullTrackPieceRenderer implements TrackPieceRenderer {
         // Draw nothing since there no track here.
     }
 
-    public void dumpImages(ImageManager imageManager) {
-        // TODO Auto-generated method stub
-    }
 }

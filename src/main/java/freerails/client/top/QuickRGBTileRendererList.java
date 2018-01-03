@@ -42,7 +42,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
             .getDefaultConfiguration();
     private final Image[] images;
     private final HashMap<Integer, Integer> rgb2index = new HashMap<>();
-    private final SimpleTileRenderer simpleTileRenderer = new SimpleTileRenderer();
 
     /**
      * @param w
@@ -84,17 +83,6 @@ public class QuickRGBTileRendererList implements TileRendererList {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * @param rgb
-     * @return
-     */
-    public TileRenderer getTileViewWithRGBValue(int rgb) {
-        Integer i = rgb2index.get(rgb);
-        this.simpleTileRenderer.setImage(images[i]);
-
-        return simpleTileRenderer;
-    }
-
     public boolean validate(ReadOnlyWorld world) {
         return true;
     }
@@ -118,9 +106,5 @@ public class QuickRGBTileRendererList implements TileRendererList {
             g.drawImage(i, renderX, renderY, null);
         }
 
-        public void dumpImages(ImageManager imageManager) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException();
-        }
     }
 }

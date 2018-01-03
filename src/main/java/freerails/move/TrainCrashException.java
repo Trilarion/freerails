@@ -25,6 +25,7 @@ package freerails.move;
 
 /**
  */
+@SuppressWarnings("ALL")
 public class TrainCrashException extends Exception {
     private static final long serialVersionUID = 3978710596948342065L;
     private int trainA;

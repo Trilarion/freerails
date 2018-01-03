@@ -25,6 +25,7 @@ package freerails.controller;
  * Defines part of the contract for a pathfinder whose search can be completed
  * in several steps.
  */
+@SuppressWarnings("unused")
 public interface IncrementalPathFinder {
 
     // TODO replace with enum.

@@ -41,6 +41,7 @@ import java.util.Map;
  */
 public class TrainOrderJPanel implements View, ListCellRenderer {
 
+    @SuppressWarnings("unused")
     private static final long serialVersionUID = 4051047466990319413L;
     private final ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class
             .getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));

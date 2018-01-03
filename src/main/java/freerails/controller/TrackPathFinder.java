@@ -216,7 +216,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         int[] startInts = findTargets(startPoint);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal,
-                startPoint, targetPoint);
+                startPoint);
         explorer.setBuildTrackStrategy(bts);
 
         pathFinder.setupSearch(startInts, targetInts, explorer);

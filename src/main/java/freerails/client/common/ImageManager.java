@@ -35,12 +35,8 @@ public interface ImageManager {
      * @param width
      * @return
      */
+    @SuppressWarnings("unused")
     Image newBlankImage(int height, int width);
-
-    /**
-     * @param s
-     */
-    void setPathToReadFrom(String s);
 
     /**
      * @param relativeFilename
@@ -48,12 +44,6 @@ public interface ImageManager {
      * @throws IOException
      */
     Image getImage(String relativeFilename) throws IOException;
-
-    /**
-     * @param relativeFilename
-     * @return
-     */
-    boolean contains(String relativeFilename);
 
     /**
      * @param relativeFilename

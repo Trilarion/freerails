@@ -21,19 +21,12 @@
  */
 package freerails.controller;
 
-import freerails.world.ReadOnlyWorld;
-import freerails.world.finances.EconomicClimate;
 import freerails.world.finances.Money;
 
 /**
  * Not yet implemented
  */
 public class FinancialMoveProducer {
-
-    /**
-     *
-     */
-    public static final Money IPO_SHARE_PRICE = new Money(5);
 
     /**
      *
@@ -45,14 +38,4 @@ public class FinancialMoveProducer {
      */
     public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
 
-    FinancialMoveProducer(ReadOnlyWorld row) {
-    }
-
-    EconomicClimate worsen() {
-        return null;
-    }
-
-    EconomicClimate improve() {
-        return null;
-    }
 }

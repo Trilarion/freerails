@@ -75,12 +75,4 @@ public class AddStationMove extends CompositeMove {
         return new AddStationMove(new Move[]{upgradeTrackMove});
     }
 
-    /**
-     * @return
-     */
-    public StationModel getNewStation() {
-        AddItemToListMove addStation = (AddItemToListMove) super.getMove(2);
-
-        return (StationModel) addStation.getAfter();
-    }
 }

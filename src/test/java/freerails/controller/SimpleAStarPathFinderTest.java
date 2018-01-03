@@ -177,8 +177,4 @@ class Map implements GraphExplorer {
         this.setPosition(this.getVertexConnectedByEdge());
     }
 
-    public int getH() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 }

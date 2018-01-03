@@ -51,13 +51,6 @@ public class RefreshListOfGamesMessageToServer implements MessageToServer {
         return new MessageStatus(id, true);
     }
 
-    /**
-     * @return
-     */
-    public int getID() {
-        return id;
-    }
-
     @Override
     public int hashCode() {
         final int PRIME = 31;

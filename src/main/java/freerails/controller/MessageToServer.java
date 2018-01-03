@@ -26,11 +26,6 @@ import java.io.Serializable;
 public interface MessageToServer extends Serializable {
 
     /**
-     * @return
-     */
-    int getID();
-
-    /**
      * @param server
      * @return
      */

@@ -62,14 +62,6 @@ final public class ChequeredTileRenderer extends AbstractTileRenderer {
         return (x + y) % 2;
     }
 
-    @Override
-    public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.getTileIcons().length; i++) {
-            String fileName = generateRelativeFileName(i);
-            imageManager.setImage(fileName, this.getTileIcons()[i]);
-        }
-    }
-
     /**
      * @param i
      * @return

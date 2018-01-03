@@ -21,12 +21,7 @@
  */
 package freerails.network;
 
-import freerails.world.KEY;
 import freerails.world.World;
-import freerails.world.player.FreerailsPrincipal;
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 /**
  * A ServerGameModel that has a world object but no automation.
@@ -61,40 +56,9 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @param objectOut
-     * @throws IOException
-     */
-    public void write(ObjectOutputStream objectOut) throws IOException {
-    }
-
-    /**
      *
      */
     public void update() {
-    }
-
-    /**
-     * @param key
-     * @param index
-     * @param principal
-     */
-    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-    }
-
-    /**
-     * @param key
-     * @param index
-     * @param principal
-     */
-    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
-    }
-
-    /**
-     * @param key
-     * @param index
-     * @param principal
-     */
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
     }
 
     /**

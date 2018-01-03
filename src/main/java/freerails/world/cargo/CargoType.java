@@ -21,7 +21,7 @@ package freerails.world.cargo;
 import java.io.Serializable;
 
 /**
- * Represents a type of cargo.
+ * Represents a type of cargo which consists of a category, a weight (per unit) and a name.
  */
 final public class CargoType implements Serializable {
 
@@ -50,23 +50,21 @@ final public class CargoType implements Serializable {
     }
 
     /**
-     * @return
+     * @return The category.
      */
     public CargoCategory getCategory() {
         return category;
     }
 
     /**
-     * Returns the name, replacing any underscores with spaces.
-     *
-     * @return
+     * @return The name, replacing any underscores with spaces.
      */
     public String getDisplayName() {
-        return this.name.replace('_', ' ');
+        return name.replace('_', ' ');
     }
 
     /**
-     * @return
+     * @return The name.
      */
     public String getName() {
         return name;

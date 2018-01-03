@@ -21,7 +21,6 @@ package freerails.controller;
 import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.world.*;
 import freerails.world.finances.Money;
-import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
@@ -80,14 +79,12 @@ public class BalanceSheetGenerator {
     }
 
     /**
-     * @param category
      * @param w
      * @param principal
      * @param startTime
      * @return
      */
-    public static Money calTrackTotal(TransactionCategory category,
-                                      ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
+    public static Money calTrackTotal(ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
 
@@ -191,7 +188,7 @@ public class BalanceSheetGenerator {
 
             operatingFunds = operatingFundsAggregator.calculateValue();
 
-            track = calTrackTotal(TRACK, world, principal, totalTimeInterval[0]);
+            track = calTrackTotal(world, principal, totalTimeInterval[0]);
 
             ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                     world, principal);

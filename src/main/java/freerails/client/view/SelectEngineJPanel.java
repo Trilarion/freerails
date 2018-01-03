@@ -105,6 +105,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     }// GEN-END:initComponents
 
+    @SuppressWarnings("unused")
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) { // GEN-FIRST:event_jList1ValueChanged
         // We need to disable the OK button if no engine type is selected.
 

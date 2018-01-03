@@ -51,6 +51,7 @@ import java.util.Properties;
  *
  * TODO The code in the switch statements needs reviewing.
  */
+@SuppressWarnings("unused")
 public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     /**
@@ -86,7 +87,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         loadProps();
         initComponents();
 
-        wizardPages[0] = new LauncherPanel1(this);
+        wizardPages[0] = new LauncherPanel1();
         wizardPages[1] = new SelectMapJPanel(this);
         wizardPages[2] = new ClientOptionsJPanel(this);
         wizardPages[3] = new ConnectedPlayersJPanel();
@@ -183,7 +184,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         try {
             PatternLayout patternLayout = new PatternLayout(
                     "%r [%t] %-5p %m -- at %l%n");
-            SimpleLayout layout = new SimpleLayout();
             ConsoleAppender consoleAppender = new ConsoleAppender(patternLayout);
             Logger rootLogger = LogManager.getRootLogger();
             rootLogger.addAppender(consoleAppender);

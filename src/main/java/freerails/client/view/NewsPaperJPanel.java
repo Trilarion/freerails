@@ -112,6 +112,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     }
 
     // GEN-END:initComponents
+    @SuppressWarnings("unused")
     private void formKeyPressed(java.awt.event.KeyEvent evt) { // GEN-FIRST:event_formKeyPressed
         // Add your handling code here:
         this.setVerifyInputWhenFocusTarget(false);
@@ -122,13 +123,6 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     public void paint(Graphics g) {
         g.drawImage(this.pieceOfNewspaper, 0, 0, null);
         this.paintChildren(g);
-    }
-
-    /**
-     * @param s
-     */
-    public void setHeadline(String s) {
-        this.headline.setText(s);
     }
 
     /**

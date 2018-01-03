@@ -214,13 +214,6 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * @return
-     */
-    public FreerailsCursor getMapCursor() {
-        return mapCursor;
-    }
-
     private void println(String s) {
         StringTokenizer st = new StringTokenizer(s, "\n");
         this.userMessage = new String[st.countTokens()];

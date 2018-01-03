@@ -67,17 +67,6 @@ public class AddStationPreMove implements PreMove {
         return new AddStationPreMove(p, trackRule, principal);
     }
 
-    /**
-     * @param p
-     * @param trackRule
-     * @param principal
-     * @return
-     */
-    public static AddStationPreMove upgradeStation(ImPoint p, int trackRule,
-                                                   FreerailsPrincipal principal) {
-        return new AddStationPreMove(p, trackRule, principal);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o)

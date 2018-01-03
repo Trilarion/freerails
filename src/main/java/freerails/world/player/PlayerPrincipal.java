@@ -52,13 +52,6 @@ public class PlayerPrincipal extends FreerailsPrincipal {
         return "Player " + id;
     }
 
-    /**
-     * @return an integer unique to this PlayerPrincipal
-     */
-    public int getId() {
-        return id;
-    }
-
     @Override
     public boolean equals(Object o) {
         return o instanceof PlayerPrincipal && id == ((PlayerPrincipal) o).id;

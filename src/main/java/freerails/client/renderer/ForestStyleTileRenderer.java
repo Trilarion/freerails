@@ -79,14 +79,6 @@ final public class ForestStyleTileRenderer extends
         return iconNumber;
     }
 
-    @Override
-    public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < this.getTileIcons().length; i++) {
-            String fileName = generateRelativeFileName(i);
-            imageManager.setImage(fileName, this.getTileIcons()[i]);
-        }
-    }
-
     /**
      * @param i
      * @return

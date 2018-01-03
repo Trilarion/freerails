@@ -272,12 +272,12 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (!moveStatus.isOk()) {
             return moveStatus;
         }
-        move(world, this.trackPieceBefore, this.trackPieceAfter);
+        move(world, this.trackPieceAfter);
 
         return moveStatus;
     }
 
-    private void move(World w, TrackPiece oldTrackPiece,
+    private void move(World w,
                       TrackPiece newTrackPiece) {
         // FIXME why is oldTrackPiece not used???
         FreerailsTile oldTile = (FreerailsTile) w.getTile(location.x,
@@ -295,7 +295,7 @@ final public class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (!moveStatus.isOk()) {
             return moveStatus;
         }
-        move(world, this.trackPieceAfter, this.trackPieceBefore);
+        move(world, this.trackPieceBefore);
 
         return moveStatus;
     }

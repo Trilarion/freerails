@@ -44,7 +44,6 @@ public class BuildTrackExplorer implements GraphExplorer {
             0, TileTransition.NORTH);
     final private PositionOnTrack currentPosition = PositionOnTrack
             .createComingFrom(0, 0, TileTransition.NORTH);
-    private final ImPoint target;
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principle;
     private boolean beforeFirst = true;
@@ -57,17 +56,16 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param principle
      */
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
-        this(w, principle, null, new ImPoint(0, 0));
+        this(w, principle, null);
     }
 
     /**
      * @param w
      * @param principle
      * @param start
-     * @param target
      */
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
-                              ImPoint start, ImPoint target) {
+                              ImPoint start) {
         world = w;
         this.principle = principle;
         PositionOnTrack pos;
@@ -81,7 +79,6 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         currentPosition.setValuesFromInt(pos.toInt());
         directionInt = 0;
-        this.target = target;
         buildTrackStrategy = BuildTrackStrategy.getDefault(w);
     }
 
@@ -270,19 +267,6 @@ public class BuildTrackExplorer implements GraphExplorer {
             }
         }
         return cost;
-    }
-
-    /**
-     * @return
-     */
-    public int getH() {
-        int xDistance = (target.x - currentPosition.getX())
-                * TileTransition.TILE_DIAMETER;
-        int yDistance = (target.y - currentPosition.getY())
-                * TileTransition.TILE_DIAMETER;
-        int sumOfSquares = (xDistance * xDistance + yDistance * yDistance);
-
-        return (int) Math.sqrt(sumOfSquares);
     }
 
     public int getPosition() {

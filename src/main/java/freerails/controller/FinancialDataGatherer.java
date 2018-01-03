@@ -93,19 +93,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
     }
 
     /**
-     * @param deltaStock
-     */
-    public void changeTreasuryStock(int deltaStock) {
-    }
-
-    /**
-     * @param stakeHolder
-     * @param deltaStock
-     */
-    public void changeStake(int stakeHolder, int deltaStock) {
-    }
-
-    /**
      * @return
      */
     public boolean canIssueBond() {
@@ -115,23 +102,9 @@ public class FinancialDataGatherer extends TransactionAggregator {
     /**
      * @return
      */
-    public boolean canBuyStock() {
-        return totalShares > 0;
-    }
-
-    /**
-     * @return
-     */
     public int nextBondInterestRate() {
         EconomicClimate ec = (EconomicClimate) w.get(ITEM.ECONOMIC_CLIMATE);
         return bonds + ec.getBaseInterestRate();
-    }
-
-    /**
-     * @return
-     */
-    public int[] bondInterestRates() {
-        return null;
     }
 
     /**
@@ -162,14 +135,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
             returnValue -= aStock;
         }
         return returnValue;
-    }
-
-    /**
-     * @param otherReId
-     * @return
-     */
-    public boolean thisRRHasStakeIn(int otherReId) {
-        return stockInRRs[otherReId] > 0;
     }
 
     /**

@@ -243,7 +243,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     @Override
-    protected MoveStatus compositeTest(World world, FreerailsPrincipal p) {
+    protected MoveStatus compositeTest(World world) {
         if (mustConnectToExistingTrack(world)) {
             if (hasAnyTrackBeenBuilt(world, this.builder)) {
                 try {

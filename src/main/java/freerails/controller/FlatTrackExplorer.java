@@ -217,11 +217,4 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return v;
     }
 
-    /**
-     * @return
-     */
-    public int getH() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 }

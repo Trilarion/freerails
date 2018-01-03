@@ -104,6 +104,7 @@ public class UnexpectedExceptionForm extends javax.swing.JFrame {
         pack();
     }
 
+    @SuppressWarnings("unused")
     private void closebuttonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_closebuttonActionPerformed
         System.exit(1);
     }// GEN-LAST:event_closebuttonActionPerformed

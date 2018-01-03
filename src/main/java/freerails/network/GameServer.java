@@ -35,8 +35,4 @@ public interface GameServer extends GameModel {
      */
     int countOpenConnections();
 
-    /**
-     *
-     */
-    void stop();
 }

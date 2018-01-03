@@ -308,32 +308,6 @@ public class IncomeStatementGenerator {
         profitYtd = new Money(profit);
     }
 
-    // 666 save old values -> if numberOfTransactions not changed -> do nothing
-
-    /**
-     * @param trainId
-     * @return
-     */
-    public Money calTrainRevenue(int trainId) {
-        long amount = 0;
-
-        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
-        for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = w
-                    .getTransactionAndTimeStamp(principal, i);
-            Transaction t = transactionAndTimeStamp.getA();
-            GameTime time = transactionAndTimeStamp.getB();
-            if (t instanceof DeliverCargoReceipt
-                    && cal.getYear(time.getTicks()) >= this.startyear) {
-                DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
-                if (dcr.getTrainId() == trainId) {
-                    amount += dcr.deltaCash().getAmount();
-                }
-            }
-        }
-        return new Money(amount);
-    }
-
     /**
      * returns the revenue for all trains with id from 1 to money.length-1
      *

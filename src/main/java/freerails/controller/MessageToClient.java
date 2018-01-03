@@ -32,10 +32,4 @@ public interface MessageToClient extends Serializable {
      */
     MessageStatus execute(ClientControlInterface client);
 
-    /**
-     * Returns the id of this command.
-     *
-     * @return
-     */
-    int getID();
 }

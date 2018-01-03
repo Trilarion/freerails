@@ -193,6 +193,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 
     }// GEN-END:initComponents
 
+    @SuppressWarnings("unused")
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_jList1ValueChanged
         // if a train is selected, enable the 'show details' button.
         if (jList1.getSelectedIndex() != -1) {

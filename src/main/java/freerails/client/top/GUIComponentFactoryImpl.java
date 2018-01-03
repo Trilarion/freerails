@@ -667,7 +667,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         userInputOnMapController.setup(mapViewJComponent, actionRoot
                         .getTrackMoveProducer(), stationTypesPopup, this.modelRoot,
-                dialogueBoxController, mapViewJComponent.getMapCursor(),
+                dialogueBoxController,
                 getBuildTrackController());
 
         buildMenu.setup(actionRoot);

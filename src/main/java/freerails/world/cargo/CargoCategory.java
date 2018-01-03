@@ -19,35 +19,15 @@
 package freerails.world.cargo;
 
 /**
- *
+ * Category of a Cargo
  */
 public enum CargoCategory {
 
-    /**
-     *
-     */
     Mail(0),
-
-    /**
-     *
-     */
     Passengers(1),
-
-    /**
-     *
-     */
     Fast_Freight(2),
-
-    /**
-     *
-     */
     Slow_Freight(3),
-
-    /**
-     *
-     */
     Bulk_Freight(4);
-
 
     private final int id;
 
@@ -56,28 +36,14 @@ public enum CargoCategory {
     }
 
     /**
-     * @param category_name
-     * @return
-     */
-    // TODO use valueOf instead
-    public static CargoCategory getCategoryByName(String category_name) {
-        for (CargoCategory category : values()) {
-            if (category.name().equals(category_name)) {
-                return category;
-            }
-        }
-        throw new IllegalArgumentException("Category:" + category_name + " unknown.");
-    }
-
-    /**
-     * @return
+     * @return number of categories
      */
     public static int getNumberOfCategories() {
         return values().length;
     }
 
     /**
-     * @return
+     * @return ID value
      */
     public int getID() {
         return id;

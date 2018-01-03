@@ -207,21 +207,6 @@ final public class TrackMoveProducer {
 
     }
 
-    /**
-     * @param point
-     * @return
-     */
-    public MoveStatus upgradeTrack(ImPoint point) {
-        if (getBuildMode() == BuildMode.UPGRADE_TRACK) {
-            ReadOnlyWorld w = executor.getWorld();
-            FreerailsTile tile = (FreerailsTile) w.getTile(point.x, point.y);
-            int tt = tile.getTerrainTypeID();
-            return upgradeTrack(point, getBuildTrackStrategy().getRule(tt));
-        }
-        throw new IllegalStateException(
-                "Track builder not set to upgrade track!");
-    }
-
     private MoveStatus upgradeTrack(ImPoint point, int trackRuleID) {
         ReadOnlyWorld w = executor.getWorld();
         TrackPiece before = ((FreerailsTile) w.getTile(point.x, point.y))
@@ -247,25 +232,6 @@ final public class TrackMoveProducer {
         Move move2 = transactionsGenerator.addTransactions(move);
 
         return sendMove(move2);
-    }
-
-    /**
-     * @return
-     */
-    public MoveStatus undoLastTrackMove() {
-        clearStackIfStale();
-
-        if (moveStack.size() > 0) {
-            Move m = moveStack.pop();
-            UndoMove undoMove = new UndoMove(m);
-            MoveStatus ms = executor.doMove(undoMove);
-
-            if (!ms.ok) {
-                return MoveStatus.moveFailed("Can not undo building track!");
-            }
-            return ms;
-        }
-        return MoveStatus.moveFailed("No track to undo building!");
     }
 
     /**

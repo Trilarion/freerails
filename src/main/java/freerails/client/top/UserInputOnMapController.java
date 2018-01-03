@@ -86,13 +86,12 @@ public class UserInputOnMapController extends KeyAdapter {
      * @param stPopup
      * @param mr
      * @param dbc
-     * @param cursor
      * @param buildTrack
      */
 
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
                       StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
-                      FreerailsCursor cursor, BuildTrackController buildTrack) {
+                      BuildTrackController buildTrack) {
         this.dialogueBoxController = dbc;
         this.mapView = mv;
         this.stationTypesPopup = stPopup;
@@ -297,26 +296,11 @@ public class UserInputOnMapController extends KeyAdapter {
         }
     }
 
-    private void cursorJumped(ImPoint to) {
-        // if (trackBuilder.getTrackBuilderMode() ==
-        // TrackMoveProducer.UPGRADE_TRACK) {
-        // MoveStatus ms = trackBuilder.upgradeTrack(to);
-        //
-        // if (ms.ok) {
-        // setCursorMessage("");
-        // playAppropriateSound();
-        // } else {
-        // setCursorMessage(ms.message);
-        // }
-        // }
-    }
-
     private void moveCursorJump(ImPoint tryThisPoint) {
         setCursorMessage("");
 
         if (legalRectangleContains(tryThisPoint)) {
             setCursorPosition(tryThisPoint);
-            cursorJumped(tryThisPoint);
         } else {
             this.setCursorMessage("Illegal cursor position!");
         }

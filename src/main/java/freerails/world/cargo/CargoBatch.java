@@ -23,7 +23,8 @@ import java.io.Serializable;
 /**
  * This class represents a cargo batch.
  *
- * Cargo of the same batch is cargo of the same type that was produced at the same location at the same time.
+ * Cargo of the same batch is cargo of the same type that was produced
+ * at the same location and at the same time.
  */
 public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
@@ -76,13 +77,6 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      */
     public int getSourceY() {
         return sourceY;
-    }
-
-    /**
-     * @return
-     */
-    public long getTimeCreated() {
-        return timeCreated;
     }
 
     @Override

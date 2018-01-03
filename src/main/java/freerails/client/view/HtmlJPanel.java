@@ -151,6 +151,7 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     }// GEN-END:initComponents
 
+    @SuppressWarnings("unused")
     private void doneActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doneActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_doneActionPerformed

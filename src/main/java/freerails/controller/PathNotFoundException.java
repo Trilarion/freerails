@@ -28,25 +28,11 @@ public class PathNotFoundException extends Exception {
     private static final long serialVersionUID = 4121409601112717368L;
 
     /**
-     *
-     */
-    public PathNotFoundException() {
-        super();
-    }
-
-    /**
      * @param message message
      * @param cause   cause
      */
     public PathNotFoundException(String message, Throwable cause) {
         super(message, cause);
-    }
-
-    /**
-     * @param cause cause
-     */
-    public PathNotFoundException(Throwable cause) {
-        super(cause);
     }
 
     /**

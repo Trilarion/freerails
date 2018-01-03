@@ -30,7 +30,7 @@ public class CargoTypeTest extends TestCase {
      */
     public void testCargoType() {
         try {
-            new CargoType(10, "Test", CargoCategory.getCategoryByName("Invalid category"));
+            new CargoType(10, "Test", CargoCategory.valueOf("Invalid category"));
             fail();
         } catch (Exception e) {
         }

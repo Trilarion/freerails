@@ -338,19 +338,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     /**
      * @param mapName
-     * @param numAI
-     */
-    public void newGame(String mapName, int numAI) {
-        for (int i = 0; i < numAI; ++i) {
-            NameAndPassword aiPlayer = new NameAndPassword("AI" + i, null);
-
-            players.add(aiPlayer);
-        }
-        this.newGame(mapName);
-    }
-
-    /**
-     * @param mapName
      */
     public void newGame(String mapName) {
         newPlayersAllowed = false;
@@ -405,13 +392,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         String[] after = getPlayerNames();
         propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before,
                 after);
-    }
-
-    /**
-     * @param l
-     */
-    public void removePropertyChangeListener(PropertyChangeListener l) {
-        propertyChangeSupport.removePropertyChangeListener(l);
     }
 
     public void run() {
@@ -509,13 +489,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         };
 
         serverGameModel.init(moveExecuter);
-    }
-
-    /**
-     *
-     */
-    public void stop() {
-        // TODO Auto-generated method stub
     }
 
     /**

@@ -24,32 +24,10 @@ package freerails.controller;
 public class NoTrackException extends RuntimeException {
 
     /**
-     *
-     */
-    public NoTrackException() {
-        super();
-    }
-
-    /**
-     * @param message message
-     * @param cause   cause
-     */
-    public NoTrackException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
      * @param message message
      */
     public NoTrackException(String message) {
         super(message);
-    }
-
-    /**
-     * @param cause cause
-     */
-    public NoTrackException(Throwable cause) {
-        super(cause);
     }
 
 }

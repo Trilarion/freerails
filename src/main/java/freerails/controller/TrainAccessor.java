@@ -88,13 +88,6 @@ public class TrainAccessor {
     }
 
     /**
-     * @return
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
      * @param time
      * @return
      */

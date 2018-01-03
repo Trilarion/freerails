@@ -46,6 +46,7 @@ import java.util.NoSuchElementException;
  * This JPanel lets the user select a station from a map and add it to a train
  * schedule.
  */
+@SuppressWarnings("unused")
 public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3258411750662877488L;

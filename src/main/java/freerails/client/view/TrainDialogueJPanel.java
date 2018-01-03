@@ -36,6 +36,7 @@ import java.awt.event.ActionListener;
  * JPanel that displays info on a train; it is composed of a
  * {@link TrainScheduleJPanel} and {@link TrainDescriptionJPanel}.
  */
+@SuppressWarnings("unused")
 public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         WorldListListener {
 

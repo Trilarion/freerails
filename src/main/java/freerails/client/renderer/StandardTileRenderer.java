@@ -57,11 +57,6 @@ final public class StandardTileRenderer extends
         return "terrain" + File.separator + typeName + ".png";
     }
 
-    @Override
-    public void dumpImages(ImageManager imageManager) {
-        imageManager.setImage(generateFilename(), this.getTileIcons()[0]);
-    }
-
     private String generateFilename() {
         return generateFilename(this.getTerrainType());
     }

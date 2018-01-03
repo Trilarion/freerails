@@ -293,16 +293,6 @@ public class MoveTrainPreMove implements PreMove {
         }
     }
 
-    /**
-     * @param w
-     * @return
-     */
-    public SpeedTimeAndStatus.TrainActivity getActivity(ReadOnlyWorld w) {
-        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-        TrainMotion tm = ta.findCurrentMotion(Integer.MAX_VALUE);
-        return tm.getActivity();
-    }
-
     @Override
     public int hashCode() {
         int result;

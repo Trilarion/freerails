@@ -265,20 +265,6 @@ public class RendererRootImpl implements RendererRoot {
         return new TileRendererListImpl(tileRenderers);
     }
 
-    /**
-     * @return
-     */
-    public TileRendererList getTileViewList() {
-        return this.tiles;
-    }
-
-    /**
-     * @return
-     */
-    public TrackPieceRendererList getTrackPieceViewList() {
-        return this.trackPieceViewList;
-    }
-
     public boolean validate(ReadOnlyWorld w) {
         boolean okSoFar = true;
 
@@ -291,18 +277,6 @@ public class RendererRootImpl implements RendererRoot {
         }
 
         return okSoFar;
-    }
-
-    // public OldTrainImages getTrainImages() {
-    // return rr;
-    // }
-
-    /**
-     * @return
-     */
-
-    public ImageManager getImageManager() {
-        return imageManager;
     }
 
     /**

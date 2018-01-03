@@ -29,6 +29,7 @@ public class TrainPathIntIterator implements IntIterator {
     /**
      * @param t
      */
+    @SuppressWarnings("unused")
     public TrainPathIntIterator(FlatTrackExplorer t) {
         trackExplorer = t;
     }

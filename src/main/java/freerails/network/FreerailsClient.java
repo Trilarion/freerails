@@ -168,14 +168,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         return properties.get(propertyName.name());
     }
 
-    /**
-     * @param newProperties
-     */
-    public final void resetProperties(HashMap newProperties) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException();
-    }
-
     final Serializable read() {
         try {
             return this.connectionToServer.waitForObjectFromServer();

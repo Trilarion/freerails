@@ -31,6 +31,7 @@ import java.awt.*;
 /**
  * This class draws a train from an overhead view.
  */
+@SuppressWarnings("unused")
 public class TrainRenderer {
     private final RendererRoot rr;
 
@@ -72,32 +73,6 @@ public class TrainRenderer {
             int wagonType = train.getWagon(i);
             renderWagon(g, pw, wagonType, false);
         }
-    }
-
-    // @SonnyZ
-    // This code renders the explosion that occurs when 2 trains crash on the
-    // map
-
-    /**
-     * @param g
-     * @param s
-     */
-    public void paintTrainCrash(Graphics g, TrainPositionOnMap s) {
-        // check to see if there is a train
-        // if (s == null) {
-        // return;
-        // }
-        // // Get the image for that frame of the explosion
-        // Image explosionImage = rr
-        // .getExplosionImage(s.getFrameCt() - 1);
-        // // draw the image
-        // for (int i = 0; i < s.getLength() - 1; i++) {
-        // Point p = new Point(s.getX(i), s.getY(i));
-        // g.drawImage(explosionImage, p.x - 15, p.y - 15, null);
-        //
-        // }
-        // // increment the frame count
-        // s.incrementFramCt();
     }
 
     private void renderWagon(Graphics g, PathWalker pw, int type, boolean engine) {

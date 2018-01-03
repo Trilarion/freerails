@@ -37,6 +37,7 @@ import java.awt.event.ActionListener;
 
 /**
  */
+@SuppressWarnings("unused")
 public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = -6810248272441137826L;

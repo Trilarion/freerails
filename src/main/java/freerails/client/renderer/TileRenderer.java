@@ -44,10 +44,4 @@ public interface TileRenderer {
     void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX,
                     int mapY, ReadOnlyWorld w);
 
-    /**
-     * Adds the images this TileRenderer uses to the specified ImageManager.
-     *
-     * @param imageManager
-     */
-    void dumpImages(ImageManager imageManager);
 }

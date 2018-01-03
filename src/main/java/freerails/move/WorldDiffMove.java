@@ -366,13 +366,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     /**
-     * @return
-     */
-    public ImList<MapDiff> getDiffs() {
-        return diffs;
-    }
-
-    /**
      *
      */
     public enum Cause {

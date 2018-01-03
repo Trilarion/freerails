@@ -304,22 +304,6 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     /**
-     * @return
-     */
-    public boolean isCargo2Transfer() {
-        ImInts spaceAvailable = train.spaceAvailable();
-
-        int total = 0;
-        for (int cargoType = 0; cargoType < w.size(SKEY.CARGO_TYPES); cargoType++) {
-            int quantity = spaceAvailable.get(cargoType);
-            int amount2transfer = Math.min(quantity, stationAfter
-                    .getAmount(cargoType));
-            total += amount2transfer;
-        }
-        return total > 0;
-    }
-
-    /**
      * Stores the type and quantity of cargo in a wagon.
      */
     private static class WagonLoad implements Comparable<WagonLoad> {

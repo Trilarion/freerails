@@ -105,15 +105,6 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         return trackPieceIcons[trackTemplate];
     }
 
-    public void dumpImages(ImageManager imageManager) {
-        for (int i = 0; i < 512; i++) {
-            if (trackPieceIcons[i] != null) {
-                String fileName = generateFilename(i, getTrackTypeName());
-                imageManager.setImage(fileName, trackPieceIcons[i]);
-            }
-        }
-    }
-
     private String getTrackTypeName() {
         return typeName;
     }

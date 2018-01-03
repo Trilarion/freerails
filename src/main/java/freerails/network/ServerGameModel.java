@@ -55,10 +55,4 @@ public interface ServerGameModel extends GameModel, Serializable {
      */
     void init(MoveReceiver moveExecutor);
 
-    /**
-     * @param objectOut
-     * @throws IOException
-     */
-    void write(ObjectOutputStream objectOut) throws IOException;
-
 }

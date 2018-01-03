@@ -28,8 +28,6 @@ import junit.framework.TestCase;
  */
 public class TrainScheduleJPanelTest extends TestCase {
 
-    TrainScheduleJPanel jpanel;
-
     /**
      * @throws Exception
      */

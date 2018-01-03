@@ -93,6 +93,7 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 
     }// GEN-END:initComponents
 
+    @SuppressWarnings("unused")
     private void confirmExitActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_confirmExitActionPerformed
         System.exit(0);
     }// GEN-LAST:event_confirmExitActionPerformed

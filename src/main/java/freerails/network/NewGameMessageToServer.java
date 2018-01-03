@@ -52,13 +52,6 @@ public class NewGameMessageToServer implements MessageToServer {
     }
 
     /**
-     * @return
-     */
-    public int getID() {
-        return id;
-    }
-
-    /**
      * @param server
      * @return
      */

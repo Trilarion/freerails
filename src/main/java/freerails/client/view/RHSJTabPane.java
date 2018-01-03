@@ -149,7 +149,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         trainListPanel.setup(modelRoot, vl, null);
         modelRoot.addPropertyChangeListener(this);
 
-        buildTrackPanel.setup(modelRoot, actionRoot, vl, null);
+        buildTrackPanel.setup(modelRoot, actionRoot);
     }
 
     /**
@@ -206,13 +206,6 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
             }
 
         }
-    }
-
-    /**
-     * @param enabled
-     */
-    public void setTerrainTabEnabled(boolean enabled) {
-        this.setEnabledAt(this.terrainInfoIndex, enabled);
     }
 
     /**
