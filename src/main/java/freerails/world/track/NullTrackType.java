@@ -22,7 +22,6 @@
  */
 package freerails.world.track;
 
-import freerails.world.TileTransition;
 import freerails.world.finances.Money;
 import freerails.world.terrain.TerrainCategory;
 
@@ -65,22 +64,6 @@ final public class NullTrackType implements TrackRule {
     }
 
     /**
-     * @param directionComingFrom
-     * @return
-     */
-    public TileTransition[] getLegalRoutes(
-            TileTransition directionComingFrom) {
-        return new TileTransition[0];
-    }
-
-    /**
-     * @return
-     */
-    public int getMaximumConsecutivePieces() {
-        return -1;
-    }
-
-    /**
      * @return
      */
     public String getTypeName() {
@@ -107,15 +90,6 @@ final public class NullTrackType implements TrackRule {
      * @return
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
-        throw new UnsupportedOperationException("Method not implemented yet!");
-    }
-
-    /**
-     * @param config
-     * @param owner
-     * @return
-     */
-    public TrackPiece getTrackPiece(TrackConfiguration config, int owner) {
         throw new UnsupportedOperationException("Method not implemented yet!");
     }
 

@@ -37,6 +37,7 @@ import java.util.Map;
  * @param <K>
  * @param <V>
  */
+@SuppressWarnings("unused")
 public class LRUCache<K, V> {
 
     private static final float hashTableLoadFactor = 0.75f;

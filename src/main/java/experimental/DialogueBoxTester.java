@@ -48,6 +48,7 @@ import java.io.IOException;
 /**
  * This class lets you test dialogue boxes without running the whole game.
  */
+@SuppressWarnings("unused")
 public class DialogueBoxTester extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 4050764909631780659L;

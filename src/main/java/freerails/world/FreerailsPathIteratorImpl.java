@@ -63,14 +63,6 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
         return new FreerailsPathIteratorImpl(l, true);
     }
 
-    /**
-     * @param l
-     * @return
-     */
-    public static FreerailsPathIterator backwardsIterator(List<Point> l) {
-        return new FreerailsPathIteratorImpl(l, false);
-    }
-
     public boolean hasNext() {
         if (forwards) {
             return (position + 1) < points.size();

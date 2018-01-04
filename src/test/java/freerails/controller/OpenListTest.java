@@ -31,12 +31,6 @@ public class OpenListTest extends TestCase {
     /**
      *
      */
-    public void testGetF() {
-    }
-
-    /**
-     *
-     */
     public void testContains() {
         OpenList openList = new OpenList();
         assertFalse(openList.contains(0));

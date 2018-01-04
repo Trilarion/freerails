@@ -30,6 +30,7 @@ import java.util.Set;
  *
  * @param <E>
  */
+@SuppressWarnings("unused")
 @Immutable
 public final class ImSet<E extends Serializable> implements
         Serializable {

@@ -30,6 +30,7 @@ import java.io.Serializable;
 /**
  * All moves that add an item to a shared list should extend this class.
  */
+@SuppressWarnings("unused")
 public class AddItemToSharedListMove implements Move {
     private static final long serialVersionUID = 3762256352759722807L;
     private final SKEY listKey;

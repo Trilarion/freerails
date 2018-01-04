@@ -49,24 +49,6 @@ strictfp public class Utils {
     }
 
     /**
-     * Used when debugging.
-     *
-     * @param m
-     * @param fileName
-     */
-    public static void write(Serializable m, String fileName) {
-        try {
-            File f = new File(fileName);
-            OutputStream out = new FileOutputStream(f);
-            ObjectOutputStream objectOut = new ObjectOutputStream(out);
-            objectOut.writeObject(m);
-            objectOut.flush();
-            objectOut.close();
-        } catch (Exception e) {
-        }
-    }
-
-    /**
      * @param m
      * @return
      */
@@ -167,16 +149,6 @@ strictfp public class Utils {
             throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
         return (-b + StrictMath.sqrt(disc)) / (2 * a);
 
-    }
-
-    /**
-     * @param a
-     * @param b
-     * @return
-     */
-    public static int hypotenuse(int a, int b) {
-        double d = Math.hypot(a, b);
-        return (int) Math.round(d);
     }
 
     /**

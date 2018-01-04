@@ -63,13 +63,6 @@ public interface ConnectionToClient {
     void writeToClient(Serializable object) throws IOException;
 
     /**
-     * Flush the underlying stream.
-     *
-     * @throws java.io.IOException
-     */
-    void flush() throws IOException;
-
-    /**
      * Disconnect from the client. When this method returns, calling isOpen() on
      * this object returns false <b>and</b> calling isOpen() on the
      * corresponding ConnectionToServer held by the client also returns false.

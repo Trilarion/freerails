@@ -21,8 +21,6 @@
  */
 package freerails.controller;
 
-import freerails.world.finances.Money;
-
 /**
  * Not yet implemented
  */

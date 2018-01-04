@@ -26,6 +26,7 @@ import java.util.Iterator;
 /**
  *
  */
+@SuppressWarnings("unused")
 public interface CargoBundle {
 
     /**
@@ -41,6 +42,7 @@ public interface CargoBundle {
      * @param cargoBatch
      * @return
      */
+    @SuppressWarnings("unused")
     boolean contains(CargoBatch cargoBatch);
 
     /**

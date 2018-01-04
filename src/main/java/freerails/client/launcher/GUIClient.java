@@ -94,7 +94,7 @@ public class GUIClient extends FreerailsClient implements
             GUIClient client = new GUIClient("Test", null,
                     ScreenHandler.WINDOWED_MODE, null);
             client.start();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 

@@ -82,7 +82,7 @@ public class SoundManager implements ModelRootListener, LineListener {
 
             try {
                 Thread.sleep(40);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -159,7 +159,7 @@ public class SoundManager implements ModelRootListener, LineListener {
                 voices.add(clip);
             } catch (LineUnavailableException e) {
                 logger.warn(e.getMessage());
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

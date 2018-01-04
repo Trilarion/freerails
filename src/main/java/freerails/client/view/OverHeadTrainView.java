@@ -87,7 +87,7 @@ public class OverHeadTrainView implements Painter {
                         try {
                             soundManager.playSound(
                                     ClientConfig.SOUND_TRAIN_CRASH, 1);
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
                     }
                 } else {

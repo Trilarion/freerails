@@ -30,17 +30,15 @@ import java.io.Serializable;
  * growable array. See the base class description for details of the
  * implementation.
  *
- *
  * Growable arrays based on this class are unsynchronized in order to provide
  * the best possible performance for typical usage scenarios, so explicit
  * synchronization must be implemented by the subclass or the application in
  * cases where they are to be modified in a multithreaded environment.
  *
- *
  * Subclasses need to implement the abstract methods defined by the base class
  * for working with the data array, as well as the actual data access methods
- * (at least the basic {@code add()}, <code>get()</code>,
- * {@code set()}, and <code>toArray()</code> methods).
+ * (at least the basic {@code add()}, {@code get()},
+ * {@code set()}, and {@code toArray()} methods).
  *
  * @author Dennis M. Sosnoski
  */
@@ -83,18 +81,6 @@ public abstract class ArrayBase extends GrowableBase implements Serializable {
     }
 
     /**
-     * Get the array for another instance of this class. This is a convenience
-     * method to allow subclasses access to the backing array of other
-     * subclasses.
-     *
-     * @param other subclass instance to get array from
-     * @return backing array object
-     */
-    protected static Object getArray(ArrayBase other) {
-        return other.getArray();
-    }
-
-    /**
      * Gets the array offset for appending a value to those in the array. If the
      * underlying array is full, it is grown by the appropriate size increment
      * so that the index value returned is always valid for the array in use by
@@ -134,68 +120,12 @@ public abstract class ArrayBase extends GrowableBase implements Serializable {
     }
 
     /**
-     * Remove a range of value from the array. The index positions for values
-     * above the range removed are decreased by the number of values removed.
-     *
-     * @param from index number of first value to be removed
-     * @param to   index number past last value to be removed
-     */
-    public void remove(int from, int to) {
-        if (from >= 0 && to <= countPresent && from <= to) {
-            if (to < countPresent) {
-                int change = from - to;
-                Object base = getArray();
-                System.arraycopy(base, to, base, from, countPresent - to);
-                discardValues(countPresent + change, countPresent);
-                countPresent += change;
-            }
-        } else {
-            throw new ArrayIndexOutOfBoundsException("Invalid remove range");
-        }
-    }
-
-    /**
-     * Remove a value from the array. All values above the index removed are
-     * moved down one index position.
-     *
-     * @param index index number of value to be removed
-     */
-    public void remove(int index) {
-        remove(index, index + 1);
-    }
-
-    /**
      * Get the number of values currently present in the array.
      *
      * @return count of values present
      */
     public final int size() {
         return countPresent;
-    }
-
-    /**
-     * Sets the number of values currently present in the array. If the new size
-     * is greater than the current size, the added values are initialized to the
-     * default values. If the new size is less than the current size, all values
-     * dropped from the array are discarded.
-     *
-     * @param count number of values to be set
-     */
-    public void setSize(int count) {
-        if (count > countLimit) {
-            growArray(count);
-        } else if (count < countPresent) {
-            discardValues(count, countPresent);
-        }
-
-        countPresent = count;
-    }
-
-    /**
-     * Set the array to the empty state.
-     */
-    public final void clear() {
-        setSize(0);
     }
 
     /**

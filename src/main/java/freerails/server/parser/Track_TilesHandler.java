@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 /**
  * Defines methods to handle parsing the track types XML.
  */
+@SuppressWarnings("unused")
 public interface Track_TilesHandler {
     /**
      * A container element start event handling method.
@@ -56,30 +57,6 @@ public interface Track_TilesHandler {
      * @throws org.xml.sax.SAXException
      */
     void end_ListOfTrackPieceTemplates() throws SAXException;
-
-    /**
-     * A container element start event handling method.
-     *
-     * @param meta attributes
-     * @throws org.xml.sax.SAXException
-     */
-    void start_ListOfLegalRoutesAcrossNode(final Attributes meta)
-            throws SAXException;
-
-    /**
-     * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
-     */
-    void end_ListOfLegalRoutesAcrossNode() throws SAXException;
-
-    /**
-     * An empty element event handling method.
-     *
-     * @param meta
-     * @throws org.xml.sax.SAXException
-     */
-    void handle_LegalRouteAcrossNode(final Attributes meta) throws SAXException;
 
     /**
      * A container element start event handling method.
@@ -121,14 +98,6 @@ public interface Track_TilesHandler {
     void handle_TerrainType(final Attributes meta) throws SAXException;
 
     /**
-     * A container element start event handling method.
-     *
-     * @param meta attributes
-     * @throws org.xml.sax.SAXException
-     */
-    void start_Tiles(final Attributes meta) throws SAXException;
-
-    /**
      * A container element end event handling method.
      *
      * @throws org.xml.sax.SAXException
@@ -144,13 +113,6 @@ public interface Track_TilesHandler {
     void start_TrackPieceTemplate(final Attributes meta) throws SAXException;
 
     /**
-     * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
-     */
-    void end_TrackPieceTemplate() throws SAXException;
-
-    /**
      * A container element start event handling method.
      *
      * @param meta attributes
@@ -158,10 +120,4 @@ public interface Track_TilesHandler {
      */
     void start_TrackSet(final Attributes meta) throws SAXException;
 
-    /**
-     * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
-     */
-    void end_TrackSet() throws SAXException;
 }

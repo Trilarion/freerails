@@ -86,7 +86,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
 
     /**
-     * @param al
      * @param mr
      * @param ar
      */
@@ -343,11 +342,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         addTrack.setToolTipText("Build Track");
         addTrack.setFocusable(false);
         addTrack.setPreferredSize(new java.awt.Dimension(36, 36));
-        addTrack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addTrackActionPerformed(evt);
-            }
-        });
+        addTrack.addActionListener(this::addTrackActionPerformed);
 
         buildModeJPanel.add(addTrack);
 
@@ -356,11 +351,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         upgradeTrack.setToolTipText("Upgrade Track");
         upgradeTrack.setFocusable(false);
         upgradeTrack.setPreferredSize(new java.awt.Dimension(36, 36));
-        upgradeTrack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upgradeTrackActionPerformed(evt);
-            }
-        });
+        upgradeTrack.addActionListener(this::upgradeTrackActionPerformed);
 
         buildModeJPanel.add(upgradeTrack);
 
@@ -369,11 +360,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         addStation.setToolTipText("Build Station");
         addStation.setFocusable(false);
         addStation.setPreferredSize(new java.awt.Dimension(36, 36));
-        addStation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addStationActionPerformed(evt);
-            }
-        });
+        addStation.addActionListener(this::addStationActionPerformed);
 
         buildModeJPanel.add(addStation);
 
@@ -382,11 +369,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         bulldoze.setToolTipText("Remove Track");
         bulldoze.setFocusable(false);
         bulldoze.setPreferredSize(new java.awt.Dimension(36, 36));
-        bulldoze.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bulldozeActionPerformed(evt);
-            }
-        });
+        bulldoze.addActionListener(this::bulldozeActionPerformed);
 
         buildModeJPanel.add(bulldoze);
 
@@ -395,11 +378,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         viewMode.setToolTipText("Don't build anything");
         viewMode.setFocusable(false);
         viewMode.setPreferredSize(new java.awt.Dimension(36, 36));
-        viewMode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewModeActionPerformed(evt);
-            }
-        });
+        viewMode.addActionListener(this::viewModeActionPerformed);
 
         buildModeJPanel.add(viewMode);
 

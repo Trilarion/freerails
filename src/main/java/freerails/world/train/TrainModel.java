@@ -87,16 +87,6 @@ public class TrainModel implements Serializable {
         cargoBundleId = 0;
     }
 
-    /**
-     * @param engine
-     */
-    public TrainModel(int engine) {
-        engineTypeId = engine;
-        wagonTypes = new ImInts(0, 1, 2);
-        scheduleId = 0;
-        cargoBundleId = 0;
-    }
-
     @Override
     public int hashCode() {
         int result;
@@ -122,13 +112,6 @@ public class TrainModel implements Serializable {
      */
     public int getLength() {
         return (1 + wagonTypes.size()) * WAGON_LENGTH; // Engine + wagons.
-    }
-
-    /**
-     * @return
-     */
-    public boolean canAddWagon() {
-        return wagonTypes.size() < MAX_NUMBER_OF_WAGONS;
     }
 
     /**

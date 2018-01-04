@@ -131,11 +131,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
         nextStation.setText("next ->");
         nextStation.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        nextStation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextStationActionPerformed(evt);
-            }
-        });
+        nextStation.addActionListener(this::nextStationActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -148,11 +144,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
         previousStation.setText("<- previous");
         previousStation.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        previousStation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                previousStationActionPerformed(evt);
-            }
-        });
+        previousStation.addActionListener(this::previousStationActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

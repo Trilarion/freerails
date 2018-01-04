@@ -103,23 +103,6 @@ public class TrainPositionOnMap implements Serializable {
 
     private final SpeedTimeAndStatus.TrainActivity activity;
 
-    private boolean crashSite = false;
-    private int frameCt = 1;
-    private int frame = 0;
-
-    /**
-     * @param xs
-     * @param ys
-     */
-    public TrainPositionOnMap(ImInts xs, ImInts ys) {
-        this.xpoints = xs;
-        this.ypoints = ys;
-        this.acceleration = 0d;
-        this.speed = 0d;
-        this.activity = SpeedTimeAndStatus.TrainActivity.READY;
-
-    }
-
     private TrainPositionOnMap(int[] xs, int[] ys, double speed,
                                double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
         if (xs.length != ys.length) {
@@ -280,53 +263,19 @@ public class TrainPositionOnMap implements Serializable {
     }
 
     /**
-     * @param a
-     * @param b
-     * @return
-     */
-    public static boolean bHeadEqualsATail(TrainPositionOnMap a,
-                                           TrainPositionOnMap b) {
-        return aHeadEqualsBTail(b, a);
-    }
-
-    /**
      * @return
      */
     public boolean isCrashSite() {
+        boolean crashSite = false;
         return crashSite;
-    }
-
-    /**
-     * @param isCrash
-     */
-    public void setCrashSite(boolean isCrash) {
-        crashSite = isCrash;
     }
 
     /**
      * @return
      */
     public int getFrameCt() {
+        int frameCt = 1;
         return frameCt;
-    }
-
-    /**
-     *
-     */
-    public void incrementFramCt() {
-        if (frame > 0) {
-            incrementFrame();
-            frame = 0;
-        } else {
-            frame++;
-        }
-    }
-
-    /**
-     *
-     */
-    public void incrementFrame() {
-        frameCt++;
     }
 
     @Override
@@ -389,41 +338,8 @@ public class TrainPositionOnMap implements Serializable {
     /**
      * @return
      */
-    public double calulateDistance() {
-        double distance = 0;
-        IntLine line = new IntLine();
-        FreerailsPathIterator path = this.path();
-
-        while (path.hasNext()) {
-            path.nextSegment(line);
-
-            int sumOfSquares = (line.x1 - line.x2) * (line.x1 - line.x2)
-                    + (line.y1 - line.y2) * (line.y1 - line.y2);
-            distance += Math.sqrt(sumOfSquares);
-        }
-
-        return distance;
-    }
-
-    /**
-     * @return
-     */
     public int getLength() {
         return xpoints.size();
-    }
-
-    /**
-     * @return
-     */
-    public ImInts getXPoints() {
-        return xpoints;
-    }
-
-    /**
-     * @return
-     */
-    public ImInts getYPoints() {
-        return ypoints;
     }
 
     /**
@@ -552,38 +468,6 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public TrainPositionOnMap removeFromHead(TrainPositionOnMap b) {
-        if (headsAreEqual(this, b)) {
-            int newLength = this.getLength() - b.getLength() + 2;
-
-            int[] newXpoints = new int[newLength];
-            int[] newYpoints = new int[newLength];
-
-            int bLength = b.getLength();
-
-            // copy head from b
-            int bHeadPosition = b.getLength() - 1;
-            newXpoints[0] = b.getX(bHeadPosition);
-            newYpoints[0] = b.getY(bHeadPosition);
-
-            // Copy rest from this
-            for (int i = 1; i < newLength; i++) {
-                int position = bLength + i - 2;
-
-                newXpoints[i] = this.getX(position);
-                newYpoints[i] = this.getY(position);
-            }
-
-            return new TrainPositionOnMap(newXpoints, newYpoints, speed,
-                    acceleration, activity);
-        }
-        throw new IllegalArgumentException();
-    }
-
-    /**
-     * @param b
-     * @return
-     */
     public boolean canRemoveFromHead(TrainPositionOnMap b) {
         if (headsAreEqual(this, b)) {
             FreerailsPathIterator path = b.path();
@@ -673,20 +557,6 @@ public class TrainPositionOnMap implements Serializable {
         sb.append("}");
 
         return sb.toString();
-    }
-
-    /**
-     * @return
-     */
-    public double getAcceleration() {
-        return acceleration;
-    }
-
-    /**
-     * @return
-     */
-    public SpeedTimeAndStatus.TrainActivity getActivity() {
-        return activity;
     }
 
     /**

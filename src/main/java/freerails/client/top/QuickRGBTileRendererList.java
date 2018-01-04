@@ -22,7 +22,6 @@
 package freerails.client.top;
 
 import freerails.client.ClientConstants;
-import freerails.client.common.ImageManager;
 import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
 import freerails.world.ReadOnlyWorld;
@@ -35,13 +34,12 @@ import java.util.HashMap;
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
  */
+@SuppressWarnings("unused")
 public class QuickRGBTileRendererList implements TileRendererList {
 
     private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment
             .getLocalGraphicsEnvironment().getDefaultScreenDevice()
             .getDefaultConfiguration();
-    private final Image[] images;
-    private final HashMap<Integer, Integer> rgb2index = new HashMap<>();
 
     /**
      * @param w
@@ -49,12 +47,13 @@ public class QuickRGBTileRendererList implements TileRendererList {
     public QuickRGBTileRendererList(ReadOnlyWorld w) {
         int numberOfTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
         int[] rgbValues = new int[numberOfTerrainTypes];
-        images = new Image[numberOfTerrainTypes];
+        Image[] images = new Image[numberOfTerrainTypes];
 
         for (int i = 0; i < numberOfTerrainTypes; i++) {
             TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
             rgbValues[i] = t.getRGB();
             images[i] = createImageFor(t);
+            HashMap<Integer, Integer> rgb2index = new HashMap<>();
             rgb2index.put(t.getRGB(), i);
         }
     }
@@ -87,6 +86,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
         return true;
     }
 
+    @SuppressWarnings("unused")
     class SimpleTileRenderer implements TileRenderer {
         Image i;
 

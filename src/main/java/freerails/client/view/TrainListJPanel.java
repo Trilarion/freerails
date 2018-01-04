@@ -112,11 +112,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         add(closeJButton, gridBagConstraints);
 
         showDetails.setText("Show details");
-        showDetails.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showDetailsActionPerformed(evt);
-            }
-        });
+        showDetails.addActionListener(this::showDetailsActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -137,12 +133,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
             }
         });
         jList1
-                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-                    public void valueChanged(
-                            javax.swing.event.ListSelectionEvent evt) {
-                        jList1ValueChanged(evt);
-                    }
-                });
+                .addListSelectionListener(this::jList1ValueChanged);
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {

@@ -76,11 +76,7 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
                 java.awt.event.KeyEvent.VK_C,
                 java.awt.event.InputEvent.CTRL_MASK));
         copyItem.setText("Copy");
-        copyItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                copyItemActionPerformed(evt);
-            }
-        });
+        copyItem.addActionListener(this::copyItemActionPerformed);
 
         jPopupMenu1.add(copyItem);
 
@@ -88,11 +84,7 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
                 java.awt.event.KeyEvent.VK_A,
                 java.awt.event.InputEvent.CTRL_MASK));
         selectAllItem.setText("Select All");
-        selectAllItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectAllItemActionPerformed(evt);
-            }
-        });
+        selectAllItem.addActionListener(this::selectAllItemActionPerformed);
 
         jPopupMenu1.add(selectAllItem);
 

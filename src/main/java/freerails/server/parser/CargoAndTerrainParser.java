@@ -157,15 +157,6 @@ public class CargoAndTerrainParser implements ContentHandler {
             case "Cargo":
                 handler.handle_Cargo(attrs);
                 break;
-            case "Cargo_Types":
-                handler.start_Cargo_Types(attrs);
-                break;
-            case "Terrain_Types":
-                handler.start_Terrain_Types(attrs);
-                break;
-            case "Types":
-                handler.start_Types(attrs);
-                break;
             case "Consumes":
                 handler.handle_Consumes(attrs);
                 break;
@@ -190,15 +181,6 @@ public class CargoAndTerrainParser implements ContentHandler {
         switch (name) {
             case "Tile":
                 handler.end_Tile();
-                break;
-            case "Cargo_Types":
-                handler.end_Cargo_Types();
-                break;
-            case "Terrain_Types":
-                handler.end_Terrain_Types();
-                break;
-            case "Types":
-                handler.end_Types();
                 break;
         }
     }

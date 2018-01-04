@@ -125,24 +125,10 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     }
 
     /**
-     * @return
-     */
-    public TransactionCategory getCategory() {
-        return category;
-    }
-
-    /**
      * @param category
      */
     public void setCategory(TransactionCategory category) {
         this.category = category;
-    }
-
-    /**
-     * @return
-     */
-    public int getType() {
-        return type;
     }
 
     /**
@@ -155,6 +141,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     /**
      * Stores the quantities and monetary values of a series of items.
      */
+    @SuppressWarnings("unused")
     public static class QuantitiesAndValues {
 
         /**

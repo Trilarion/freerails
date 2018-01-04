@@ -84,7 +84,7 @@ public class OldWorldImpl {
 
         try {
             CityNamesSAXParser.readCityNames(w, cities_xml_url);
-        } catch (SAXException e) {
+        } catch (SAXException ignored) {
         }
 
         // Randomly position the city tiles

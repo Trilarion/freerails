@@ -72,13 +72,6 @@ public interface ConnectionToServer {
     void disconnect() throws IOException;
 
     /**
-     * Flush the underlying stream.
-     *
-     * @throws java.io.IOException
-     */
-    void flush() throws IOException;
-
-    /**
      * @return
      */
     String getServerDetails();

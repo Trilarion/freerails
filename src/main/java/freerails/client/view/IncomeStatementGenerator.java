@@ -30,6 +30,7 @@ import freerails.world.player.FreerailsPrincipal;
  * Generates the income statement- note, its fields are read using reflection so
  * don't change their names.
  */
+@SuppressWarnings("ALL")
 public class IncomeStatementGenerator {
 
     /**

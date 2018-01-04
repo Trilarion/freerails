@@ -118,7 +118,6 @@ public class EchoGameServer implements GameServer, Runnable {
         for (ConnectionToClient connection : connections) {
             try {
                 connection.writeToClient(m);
-                connection.flush();
                 if (logger.isDebugEnabled()) {
                     logger.debug("Sent ok: " + m);
                 }

@@ -93,11 +93,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         add(trainDetailsJPanel1, gridBagConstraints);
 
         previousJButton.setText("last");
-        previousJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                previousJButtonActionPerformed(evt);
-            }
-        });
+        previousJButton.addActionListener(this::previousJButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -106,11 +102,7 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         add(previousJButton, gridBagConstraints);
 
         nextJButton.setText("next");
-        nextJButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextJButtonActionPerformed(evt);
-            }
-        });
+        nextJButton.addActionListener(this::nextJButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;

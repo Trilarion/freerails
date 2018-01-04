@@ -122,30 +122,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
         gotoStationJMenuItem.setText("Goto station");
         gotoStationJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        gotoStationJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::gotoStationJMenuItemActionPerformed);
 
         editOrderJPopupMenu.add(gotoStationJMenuItem);
 
         changeStation.setText("Change Station");
-        changeStation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeStationActionPerformed(evt);
-            }
-        });
+        changeStation.addActionListener(this::changeStationActionPerformed);
 
         editOrderJPopupMenu.add(changeStation);
 
         removeStationJMenuItem.setText("Remove station");
         removeStationJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        removeStationJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::removeStationJMenuItemActionPerformed);
 
         editOrderJPopupMenu.add(removeStationJMenuItem);
 
@@ -157,21 +145,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         removeWagonsJMenu.setText("Remove wagon(s)");
         removeLastJMenuItem.setText("Remove last");
         removeLastJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        removeLastJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::removeLastJMenuItemActionPerformed);
 
         removeWagonsJMenu.add(removeLastJMenuItem);
 
         removeAllJMenuItem.setText("Remove all wagons");
         removeAllJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        removeAllJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::removeAllJMenuItemActionPerformed);
 
         removeWagonsJMenu.add(removeAllJMenuItem);
 
@@ -180,31 +160,19 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         changeConsistJMenu.setText("Change consist to..");
         noChangeJMenuItem.setText("'No change'");
         noChangeJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        noChangeJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::noChangeJMenuItemActionPerformed);
 
         changeConsistJMenu.add(noChangeJMenuItem);
 
         engineOnlyJMenuItem.setText("Engine only");
         engineOnlyJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        engineOnlyJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::engineOnlyJMenuItemActionPerformed);
 
         changeConsistJMenu.add(engineOnlyJMenuItem);
 
         autoConsistJMenuItem.setText("Choose wagons automatically");
         autoConsistJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        autoConsistJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::autoConsistJMenuItemActionPerformed);
 
         changeConsistJMenu.add(autoConsistJMenuItem);
 
@@ -213,21 +181,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         waitJMenu.setText("Wait at station");
         dontWaitJMenuItem.setText("Don't wait");
         dontWaitJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        dontWaitJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::dontWaitJMenuItemActionPerformed);
 
         waitJMenu.add(dontWaitJMenuItem);
 
         waitUntilFullJMenuItem.setText("Wait until full");
         waitUntilFullJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        waitUntilFullJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::waitUntilFullJMenuItemActionPerformed);
 
         waitJMenu.add(waitUntilFullJMenuItem);
 
@@ -236,21 +196,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         editOrderJPopupMenu.add(jSeparator2);
 
         pullUpJMenuItem.setText("Pull up");
-        pullUpJMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pullUpJMenuItemActionPerformed(evt);
-            }
-        });
+        pullUpJMenuItem.addActionListener(this::pullUpJMenuItemActionPerformed);
 
         editOrderJPopupMenu.add(pullUpJMenuItem);
 
         pushDownJMenuItem.setText("Push down");
         pushDownJMenuItem
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        pushDownJMenuItemActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::pushDownJMenuItemActionPerformed);
 
         editOrderJPopupMenu.add(pushDownJMenuItem);
 
@@ -259,11 +211,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         setBorder(new javax.swing.border.TitledBorder("Schedule"));
         addStationJButton.setText("Add Station");
         addStationJButton
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        addStationJButtonActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::addStationJButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -273,11 +221,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
         priorityOrdersJButton.setText("Add Priority Orders");
         priorityOrdersJButton
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        priorityOrdersJButtonActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::priorityOrdersJButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;

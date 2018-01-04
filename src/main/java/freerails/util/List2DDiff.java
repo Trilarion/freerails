@@ -108,11 +108,6 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
     }
 
     @Override
-    Object getUnderlyingList() {
-        return underlyingList;
-    }
-
-    @Override
     T uGet(int... i) {
         if (i.length != 2)
             throw new IllegalArgumentException(String.valueOf(i.length));

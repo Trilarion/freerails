@@ -44,9 +44,8 @@ public final class MoveStatus implements Serializable {
      */
     public final String message;
 
-    private final Throwable t;
-
     private MoveStatus(boolean ok, String message) {
+        Throwable t;
         if (ok) {
             t = null;
         } else {

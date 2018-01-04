@@ -40,13 +40,6 @@ public class MoneyTransaction implements Transaction {
         this.category = category;
     }
 
-    /**
-     * @return
-     */
-    public Money deltaAssets() {
-        return amount.changeSign();
-    }
-
     public Money deltaCash() {
         return amount;
     }

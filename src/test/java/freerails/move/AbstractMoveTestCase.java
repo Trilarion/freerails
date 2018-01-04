@@ -228,17 +228,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertUndoMoveFails(Move m) {
-        assertSetupHasBeenCalled();
-
-        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
-    }
-
-    /**
-     * @param m
-     */
     protected void assertUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 

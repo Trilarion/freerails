@@ -18,21 +18,26 @@
 
 package freerails.server;
 
-import freerails.client.ClientConstants;
 import freerails.controller.*;
-import freerails.move.*;
+import freerails.move.ChangeProductionAtEngineShopMove;
+import freerails.move.Move;
 import freerails.network.MoveReceiver;
 import freerails.util.ImInts;
 import freerails.util.ImList;
 import freerails.util.ImPoint;
-import freerails.world.*;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.PlannedTrain;
 import freerails.world.station.StationModel;
-import freerails.world.train.*;
+import freerails.world.train.ImmutableSchedule;
+import freerails.world.train.MutableSchedule;
+import freerails.world.train.TrainModel;
+import freerails.world.train.TrainOrdersModel;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * This class is used by the server to generate moves that add trains, move
@@ -55,63 +60,6 @@ public class TrainUpdater implements ServerAutomaton {
             throw new NullPointerException();
         }
 
-    }
-
-    /**
-     * @param train
-     * @param principal
-     * @param currentSchedule
-     * @param trainID
-     * @return a move that initialises the trains schedule.
-     */
-    public static Move initTarget(TrainModel train, int trainID,
-                                  ImmutableSchedule currentSchedule, FreerailsPrincipal principal) {
-        Vector<Move> moves = new Vector<>();
-        int scheduleID = train.getScheduleID();
-        MutableSchedule schedule = new MutableSchedule(currentSchedule);
-        ImInts wagonsToAdd = schedule.getWagonsToAdd();
-
-        if (null != wagonsToAdd) {
-            int engine = train.getEngineType();
-            ChangeTrainMove move = ChangeTrainMove.generateMove(trainID, train,
-                    engine, wagonsToAdd, principal);
-            moves.add(move);
-        }
-
-        schedule.gotoNextStation();
-
-        ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
-        ChangeTrainScheduleMove move = new ChangeTrainScheduleMove(scheduleID,
-                currentSchedule, newSchedule, principal);
-        moves.add(move);
-
-        return new CompositeMove(moves.toArray(new Move[1]));
-    }
-
-    static TrainPositionOnMap setInitialTrainPosition(TrainModel train,
-                                                      FreerailsPathIterator from) {
-        int trainLength = train.getLength();
-        PathWalker fromPathWalker = new PathWalkerImpl(from);
-        assert fromPathWalker.canStepForward();
-        fromPathWalker.stepForward(trainLength);
-
-        return TrainPositionOnMap
-                .createInSameDirectionAsPath(fromPathWalker);
-    }
-
-    /**
-     * @param pos
-     * @return
-     */
-    public static ImPoint[] trainPos2Tiles(TrainPositionOnMap pos) {
-        ImPoint[] returnValue = new ImPoint[pos.getLength()];
-        final int TILE_WIDTH = ClientConstants.TILE_SIZE;
-        for (int i = 0; i < returnValue.length; i++) {
-            returnValue[i] = new ImPoint(pos.getX(i) / TILE_WIDTH, pos.getY(i)
-                    / TILE_WIDTH);
-        }
-
-        return returnValue;
     }
 
     /**

@@ -26,6 +26,7 @@ import java.io.Serializable;
 /**
  * Represents the state of the economy.
  */
+@SuppressWarnings("unused")
 public class EconomicClimate implements Serializable {
     private static final long serialVersionUID = 3834025840475321136L;
 

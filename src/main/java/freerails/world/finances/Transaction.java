@@ -26,11 +26,6 @@ import java.io.Serializable;
 public interface Transaction extends Serializable {
 
     /**
-     * @return
-     */
-    Money deltaAssets();
-
-    /**
      * Positive means credit.
      *
      * @return

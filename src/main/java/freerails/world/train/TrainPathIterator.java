@@ -27,6 +27,7 @@ import freerails.world.PositionOnTrack;
 /**
  * Exposes the path of a train. TODO needs better comment
  */
+@SuppressWarnings("unused")
 public class TrainPathIterator implements FreerailsPathIterator {
     private static final long serialVersionUID = 3256999977816502584L;
     private static final int tileSize = ClientConstants.TILE_SIZE;

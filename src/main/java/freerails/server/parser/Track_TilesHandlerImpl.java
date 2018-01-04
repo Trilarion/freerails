@@ -82,7 +82,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     public Track_TilesHandlerImpl(java.net.URL trackXmlUrl) {
         try {
             Track_TilesParser.parse(trackXmlUrl, this);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
@@ -106,17 +106,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         legalTrackConfigurations = new freerails.world.track.LegalTrackConfigurations(
                 maxConsequ, legalTemplates);
         legalTemplates = null;
-    }
-
-    public void start_ListOfLegalRoutesAcrossNode(final Attributes meta)
-            throws SAXException {
-    }
-
-    public void end_ListOfLegalRoutesAcrossNode() throws SAXException {
-    }
-
-    public void handle_LegalRouteAcrossNode(final Attributes meta)
-            throws SAXException {
     }
 
     public void start_CannotBuildOnTheseTerrainTypes(final Attributes meta)
@@ -197,9 +186,6 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         terrainTypes.add(cat);
     }
 
-    public void start_Tiles(final Attributes meta) throws SAXException {
-    }
-
     public void end_Tiles() throws SAXException {
         // Sort the track tiles by category then price.
         Collections.sort(ruleList);
@@ -210,15 +196,8 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         legalTemplates.add(meta.getValue("trackTemplate"));
     }
 
-    public void end_TrackPieceTemplate() throws SAXException {
-        // do nothing.
-    }
-
     public void start_TrackSet(final Attributes meta) throws SAXException {
         ruleList = new ArrayList<>();
-    }
-
-    public void end_TrackSet() throws SAXException {
     }
 
     /**

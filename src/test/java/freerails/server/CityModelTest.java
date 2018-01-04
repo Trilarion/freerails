@@ -43,9 +43,4 @@ public class CityModelTest extends TestCase {
         assertEquals("A city is a 7*7 area", 49, city.clearTiles.size());
     }
 
-    /**
-     * Tests calculating the utility of a City.
-     */
-    public void testUtilityCalculation() {
-    }
 }

@@ -56,7 +56,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
     static {
         try {
             robot = new Robot();
-        } catch (java.awt.AWTException e) {
+        } catch (java.awt.AWTException ignored) {
         }
     }
 

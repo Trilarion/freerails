@@ -23,7 +23,6 @@
  */
 package freerails.world.track;
 
-import freerails.world.TileTransition;
 import freerails.world.finances.Money;
 import freerails.world.terrain.TerrainCategory;
 
@@ -132,15 +131,6 @@ final public class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     * @param directionComingFrom
-     * @return
-     */
-    public TileTransition[] getLegalRoutes(TileTransition directionComingFrom) {
-        // TODO add code..
-        return null;
-    }
-
-    /**
      * @return
      */
     public LegalTrackPlacement getLegalTrackPlacement() {
@@ -152,13 +142,6 @@ final public class TrackRuleImpl implements TrackRule {
      */
     public Money getMaintenanceCost() {
         return properties.getMaintenanceCost();
-    }
-
-    /**
-     * @return
-     */
-    public int getMaximumConsecutivePieces() {
-        return legalConfigurations.getMaximumConsecutivePieces();
     }
 
     /**

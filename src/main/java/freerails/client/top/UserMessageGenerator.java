@@ -149,7 +149,7 @@ public class UserMessageGenerator implements MoveReceiver {
 
             try {
                 soundManager.playSound(ClientConfig.SOUND_CASH, loops);
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }

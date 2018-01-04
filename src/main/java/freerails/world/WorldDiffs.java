@@ -41,21 +41,21 @@ import java.util.TreeMap;
  * HashMap differences;
  *
  * public void put(Object key, Object value) {
- *     if (underlyingWorldObject.get(key).equals(value)) {
- *         if (differences.containsKey(key)) {
- *             differences.remove(key);
- *         }
- *     } else {
- *         differences.put(key, value);
- *     }
+ * if (underlyingWorldObject.get(key).equals(value)) {
+ * if (differences.containsKey(key)) {
+ * differences.remove(key);
+ * }
+ * } else {
+ * differences.put(key, value);
+ * }
  * }
  *
  * public Object get(Object key) {
- *     if (differences.containsKey(key)) {
- *         return differences.get(key);
- *     } else {
- *         return underlyingWorldObject.get(key);
- *     }
+ * if (differences.containsKey(key)) {
+ * return differences.get(key);
+ * } else {
+ * return underlyingWorldObject.get(key);
+ * }
  * }
  * </code>
  *
@@ -191,13 +191,6 @@ public class WorldDiffs extends WorldImpl {
         } else {
             this.mapDiff.put(p, tile);
         }
-    }
-
-    /**
-     * @return
-     */
-    public boolean isDifferent() {
-        return (mapDiff.size() != 0) || (listDiff.size() != 0);
     }
 
     /**

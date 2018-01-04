@@ -23,7 +23,6 @@ import freerails.world.TileTransition;
 
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * An instance of this class represents one of the possible track configurations
@@ -189,13 +188,6 @@ final public class TrackConfiguration implements FlatTrackTemplate {
      */
     public int getLength() {
         return length;
-    }
-
-    /**
-     * @return
-     */
-    public Iterator getPossibleConfigurationsIterator() {
-        return flatTrackConfigurations.iterator();
     }
 
     /**

@@ -84,12 +84,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         jList1
                 .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jList1
-                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-                    public void valueChanged(
-                            javax.swing.event.ListSelectionEvent evt) {
-                        jList1ValueChanged(evt);
-                    }
-                });
+                .addListSelectionListener(this::jList1ValueChanged);
 
         jScrollPane1.setViewportView(jList1);
 

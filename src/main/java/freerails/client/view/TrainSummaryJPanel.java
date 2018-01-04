@@ -25,7 +25,6 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.LRUCache;
 import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;

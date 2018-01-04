@@ -100,15 +100,9 @@ public class SpeedTimeAndStatus implements Serializable {
     }
 
     /**
-     * @return
-     */
-    public TrainActivity getActivity() {
-        return activity;
-    }
-
-    /**
      *
      */
+    @SuppressWarnings("unused")
     public enum TrainActivity {
 
         /**

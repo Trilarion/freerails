@@ -78,22 +78,8 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
         setLayout(new java.awt.GridBagLayout());
 
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
-            }
-        });
-
-        jList1
-                .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1
-                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-                    public void valueChanged(
-                            javax.swing.event.ListSelectionEvent evt) {
-                        jList1ValueChanged(evt);
-                    }
-                });
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.addListSelectionListener(this::jList1ValueChanged);
 
         jScrollPane1.setViewportView(jList1);
 
@@ -116,11 +102,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         add(jLabel1, gridBagConstraints);
 
         okButton.setText("OK");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
+        okButton.addActionListener(this::okButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -129,11 +111,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         add(okButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
+        cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -142,11 +120,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         add(cancelButton, gridBagConstraints);
 
         refreshButton.setText("Refresh");
-        refreshButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButtonActionPerformed(evt);
-            }
-        });
+        refreshButton.addActionListener(this::refreshButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -160,10 +134,6 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
         modelRoot.sendCommand(refreshGames);
     }// GEN-LAST:event_refreshButtonActionPerformed
-
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {// GEN-FIRST:event_formComponentShown
-
-    }// GEN-LAST:event_formComponentShown
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
         if (null != close)

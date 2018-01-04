@@ -18,8 +18,6 @@
 
 package freerails.client.renderer;
 
-import freerails.client.common.ImageManager;
-
 import java.awt.*;
 
 /**

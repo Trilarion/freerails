@@ -66,6 +66,7 @@ public interface ActivityIterator {
      * @param absoluteTime
      * @return
      */
+    @SuppressWarnings("unused")
     double absoluteToRelativeTime(double absoluteTime);
 
     /**

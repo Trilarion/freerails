@@ -18,7 +18,6 @@
 
 package freerails.world.track;
 
-import freerails.world.TileTransition;
 import freerails.world.finances.Money;
 import freerails.world.terrain.TerrainCategory;
 
@@ -87,17 +86,6 @@ public interface TrackRule extends Serializable, Comparable<TrackRule> {
      * @return
      */
     boolean trackPieceIsLegal(TrackConfiguration config);
-
-    /**
-     * @return
-     */
-    int getMaximumConsecutivePieces();
-
-    /**
-     * @param directionComingFrom
-     * @return
-     */
-    TileTransition[] getLegalRoutes(TileTransition directionComingFrom);
 
     /**
      * @return

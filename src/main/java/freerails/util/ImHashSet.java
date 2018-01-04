@@ -22,10 +22,8 @@
 package freerails.util;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * @param <E>
@@ -43,22 +41,6 @@ public class ImHashSet<E extends Serializable> implements
      */
     public ImHashSet(HashSet<E> hashSet) {
         this.hashSet = new HashSet<>(hashSet);
-    }
-
-    /**
-     * @param values
-     */
-    public ImHashSet(E... values) {
-        this.hashSet = new HashSet<>();
-        Collections.addAll(hashSet, values);
-    }
-
-    /**
-     * @param values
-     */
-    public ImHashSet(List<E> values) {
-        this.hashSet = new HashSet<>();
-        hashSet.addAll(values);
     }
 
     @Override

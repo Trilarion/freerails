@@ -32,6 +32,7 @@ import static freerails.world.finances.TransactionCategory.*;
  * don't change their names.
  */
 // TODO Do not use reflection here.
+@SuppressWarnings("unused")
 public class BalanceSheetGenerator {
 
     /**

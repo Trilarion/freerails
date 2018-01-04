@@ -379,12 +379,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         }
 
         jList1
-                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-                    public void valueChanged(
-                            javax.swing.event.ListSelectionEvent evt) {
-                        jList1ValueChanged(evt);
-                    }
-                });
+                .addListSelectionListener(this::jList1ValueChanged);
 
         jScrollPane1.setViewportView(jList1);
 
@@ -410,11 +405,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         }
         fullScreenButton.setText("Full screen");
         fullScreenButton
-                .addChangeListener(new javax.swing.event.ChangeListener() {
-                    public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                        fullScreenButtonStateChanged(evt);
-                    }
-                });
+                .addChangeListener(this::fullScreenButtonStateChanged);
 
         jPanel2.add(fullScreenButton);
 

@@ -348,7 +348,7 @@ public class BuildTrackController implements GameModel {
      */
     private void setTargetPoint(ImPoint newTargetPoint) {
         this.targetPoint = newTargetPoint;
-        ImPoint p = null == newTargetPoint ? null : newTargetPoint;
+        ImPoint p = newTargetPoint;
         modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, p);
     }
 

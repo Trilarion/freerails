@@ -24,6 +24,7 @@ import freerails.world.player.FreerailsPrincipal;
 /**
  * Undoes the Move passed to its constructor.
  */
+@SuppressWarnings("unused")
 public class UndoMove implements Move {
     private static final long serialVersionUID = 3977582498051929144L;
 

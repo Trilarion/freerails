@@ -51,13 +51,6 @@ public class ItemTransaction implements Transaction {
         this.amount = amount;
     }
 
-    /**
-     * @return
-     */
-    public Money deltaAssets() {
-        return amount.changeSign();
-    }
-
     public Money deltaCash() {
         return amount;
     }

@@ -43,7 +43,7 @@ public class RunTypesParser {
             CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(
                     new WorldImpl()));
             logger.info("It worked");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

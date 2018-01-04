@@ -82,11 +82,6 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
     }
 
     @Override
-    Object getUnderlyingList() {
-        return underlyingList;
-    }
-
-    @Override
     int getUnderlyingSize(int... dim) {
         if (dim.length == 0)
             return underlyingList.sizeD1();

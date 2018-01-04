@@ -25,6 +25,7 @@ package freerails.world;
 /**
  * This class stores an SKEY and an item index.
  */
+@SuppressWarnings("unused")
 public class TypeID {
     private final int id;
 

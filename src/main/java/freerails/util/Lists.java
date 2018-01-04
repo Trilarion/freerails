@@ -32,7 +32,6 @@ public class Lists {
      * @param b
      * @return
      */
-    @SuppressWarnings("unchecked")
     public static boolean equals(List1D a, List1D b) {
         if (a.size() != b.size())
             return false;
@@ -48,7 +47,6 @@ public class Lists {
      * @param b
      * @return
      */
-    @SuppressWarnings("unchecked")
     public static boolean equals(List2D a, List2D b) {
         if (a.sizeD1() != b.sizeD1())
             return false;
@@ -68,7 +66,6 @@ public class Lists {
      * @param b
      * @return
      */
-    @SuppressWarnings("unchecked")
     public static boolean equals(List3D a, List3D b) {
         if (a.sizeD1() != b.sizeD1())
             return false;

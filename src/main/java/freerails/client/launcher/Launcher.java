@@ -423,7 +423,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     /**
-     * Shows GUI. If {@code quickstart} is <code>true</code> runs the
+     * Shows GUI. If {@code quickstart} is {@code true} runs the
      * game.
      *
      * @param quickstart boolean
@@ -493,11 +493,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         getContentPane().add(jPanel1, gridBagConstraints);
 
         nextButton.setText("Next...");
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
-            }
-        });
+        nextButton.addActionListener(this::nextButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -508,11 +504,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
         prevButton.setText("Back...");
         prevButton.setEnabled(false);
-        prevButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prevButtonActionPerformed(evt);
-            }
-        });
+        prevButton.addActionListener(this::prevButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -633,8 +625,8 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         } else {
                             initServer();
                             server.loadgame(msp.getSaveGameName());
-                            String[] playernames = server.getPlayerNames();
-                            cop.limitPlayerNames(playernames);
+                            String[] playerNames = server.getPlayerNames();
+                            cop.limitPlayerNames(playerNames);
                         }
 
                         nextIsStart = true;

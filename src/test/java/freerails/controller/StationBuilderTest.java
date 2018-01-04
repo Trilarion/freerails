@@ -58,13 +58,6 @@ public class StationBuilderTest extends TestCase {
     /**
      *
      */
-    public void testCanBuiltStationHere() {
-
-    }
-
-    /**
-     *
-     */
     public void testBuildStation() {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));

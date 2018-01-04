@@ -42,20 +42,6 @@ final public class EngineType implements Serializable {
     /**
      * @param name
      * @param power
-     * @param m
-     * @param speed
-     */
-    public EngineType(String name, int power, Money m, int speed) {
-        engineTypeName = name;
-        powerAtDrawbar = power;
-        price = m;
-        maxSpeed = speed;
-        maintenance = new Money(0);
-    }
-
-    /**
-     * @param name
-     * @param power
      * @param price
      * @param speed
      * @param maintenance
@@ -86,13 +72,6 @@ final public class EngineType implements Serializable {
      */
     public String getEngineTypeName() {
         return engineTypeName;
-    }
-
-    /**
-     * @return
-     */
-    public Money getMaintenance() {
-        return maintenance;
     }
 
     /**

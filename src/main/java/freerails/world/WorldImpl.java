@@ -91,7 +91,6 @@ public class WorldImpl implements World {
      * @param index
      * @param element
      */
-    @SuppressWarnings("unchecked")
     public void add(FreerailsPrincipal p, int index, Activity element) {
         int playerIndex = p.getWorldIndex();
         int lastID = activityLists.sizeD3(playerIndex, index) - 1;
@@ -178,15 +177,6 @@ public class WorldImpl implements World {
      */
     public boolean boundsContain(int x, int y) {
         return x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight();
-    }
-
-    /**
-     * @param k
-     * @param index
-     * @return
-     */
-    public boolean boundsContain(SKEY k, int index) {
-        return (index >= 0 && index < this.size(k));
     }
 
     /**

@@ -30,6 +30,7 @@ public interface FlatTrackTemplate extends Serializable {
      * @return true if the vectors represented by this FlatTrackTemplate are a
      * superset of the vectors of the specified FlatTrackTemplate
      */
+    @SuppressWarnings("unused")
     boolean contains(FlatTrackTemplate ftt);
 
     /**

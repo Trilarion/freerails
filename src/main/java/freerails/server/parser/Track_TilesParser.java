@@ -124,12 +124,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
             case "ListOfTrackPieceTemplates":
                 handler.start_ListOfTrackPieceTemplates(attrs);
                 break;
-            case "ListOfLegalRoutesAcrossNode":
-                handler.start_ListOfLegalRoutesAcrossNode(attrs);
-                break;
-            case "LegalRouteAcrossNode":
-                handler.handle_LegalRouteAcrossNode(attrs);
-                break;
             case "CannotBuildOnTheseTerrainTypes":
                 handler.start_CannotBuildOnTheseTerrainTypes(attrs);
                 break;
@@ -138,9 +132,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
                 break;
             case "TerrainType":
                 handler.handle_TerrainType(attrs);
-                break;
-            case "Tiles":
-                handler.start_Tiles(attrs);
                 break;
             case "TrackPieceTemplate":
                 handler.start_TrackPieceTemplate(attrs);
@@ -163,9 +154,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
             case "ListOfTrackPieceTemplates":
                 handler.end_ListOfTrackPieceTemplates();
                 break;
-            case "ListOfLegalRoutesAcrossNode":
-                handler.end_ListOfLegalRoutesAcrossNode();
-                break;
             case "CannotBuildOnTheseTerrainTypes":
                 handler.end_CannotBuildOnTheseTerrainTypes();
                 break;
@@ -174,12 +162,6 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
                 break;
             case "Tiles":
                 handler.end_Tiles();
-                break;
-            case "TrackPieceTemplate":
-                handler.end_TrackPieceTemplate();
-                break;
-            case "TrackSet":
-                handler.end_TrackSet();
                 break;
         }
     }

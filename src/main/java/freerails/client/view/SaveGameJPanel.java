@@ -80,11 +80,7 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
         fileNameTextField.setText("savegame");
         fileNameTextField
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        fileNameTextFieldActionPerformed(evt);
-                    }
-                });
+                .addActionListener(this::fileNameTextFieldActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -96,11 +92,7 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
         add(fileNameTextField, gridBagConstraints);
 
         oKButton.setText("OK");
-        oKButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                oKButtonActionPerformed(evt);
-            }
-        });
+        oKButton.addActionListener(this::oKButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -109,11 +101,7 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
         add(oKButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
+        cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;

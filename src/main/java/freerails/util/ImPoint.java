@@ -52,14 +52,6 @@ public final class ImPoint implements Serializable,
     }
 
     /**
-     * @param p
-     */
-    public ImPoint(Point p) {
-        x = p.x;
-        y = p.y;
-    }
-
-    /**
      * @param x
      * @param y
      */

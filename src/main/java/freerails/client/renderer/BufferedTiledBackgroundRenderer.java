@@ -67,10 +67,10 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * Updates the backbuffer as necessary, then draws it on to the Graphics
      * object passed.
      *
-     * @param outputGraphics         Once it has been updated, the backbuffer is drawn onto this
-     *                               Graphics object.
+     * @param outputGraphics      Once it has been updated, the backbuffer is drawn onto this
+     *                            Graphics object.
      * @param newVisibleRectangle The region of the map that the backbuffer must be updated to
-     *                               display.
+     *                            display.
      */
     public void paintRect(Graphics outputGraphics,
                           Rectangle newVisibleRectangle) {

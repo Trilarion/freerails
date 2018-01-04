@@ -101,7 +101,4 @@ public class SKEY implements Serializable {
         return Utils.findConstantFieldName(this);
     }
 
-    static SKEY getKey(int keyNum) {
-        return keys[keyNum];
-    }
 }

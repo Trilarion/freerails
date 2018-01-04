@@ -28,9 +28,10 @@ import java.io.Serializable;
  * implementation is unsynchronized in order to provide the best possible
  * performance for typical usage scenarios, so explicit synchronization must be
  * implemented by a wrapper class or directly by the application in cases where
- * instances are modified in a multithreaded environment. See the base classes
+ * instances are modified in a multi-threaded environment. See the base classes
  * for other details of the implementation.
  */
+@SuppressWarnings("unused")
 public class IntArray extends ArrayBase implements Serializable {
     private static final long serialVersionUID = 3258408426391418681L;
 
@@ -155,18 +156,6 @@ public class IntArray extends ArrayBase implements Serializable {
      */
     public int[] toArray() {
         return (int[]) buildArray(int.class, 0, countPresent);
-    }
-
-    /**
-     * Constructs and returns a simple array containing the same data as held in
-     * a portion of this growable array.
-     *
-     * @param offset start offset in array
-     * @param length number of characters to use
-     * @return array containing a copy of the data
-     */
-    public int[] toArray(int offset, int length) {
-        return (int[]) buildArray(int.class, offset, length);
     }
 
     /**

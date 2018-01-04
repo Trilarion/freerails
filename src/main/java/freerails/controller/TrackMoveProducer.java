@@ -280,19 +280,6 @@ final public class TrackMoveProducer {
         return tile.getTrackPiece().getTrackRule().isStation();
     }
 
-    // public BuildTrackStrategy getBuildTrackStrategy() {
-    // return buildTrackStrategy;
-    // }
-    //
-    // public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy)
-    // {
-    // this.buildTrackStrategy = buildTrackStrategy;
-    // }
-
-    /**
-     * @return
-     */
-
     public BuildTrackStrategy getBuildTrackStrategy() {
         return (BuildTrackStrategy) mr
                 .getProperty(Property.BUILD_TRACK_STRATEGY);

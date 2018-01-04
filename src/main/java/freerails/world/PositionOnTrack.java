@@ -104,19 +104,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     /**
-     * @param ints
-     * @return
-     */
-    public static PositionOnTrack[] fromInts(int[] ints) {
-        PositionOnTrack[] returnValue = new PositionOnTrack[ints.length];
-        for (int i = 0; i < ints.length; i++) {
-            PositionOnTrack p = new PositionOnTrack(ints[i]);
-            returnValue[i] = p;
-        }
-        return returnValue;
-    }
-
-    /**
      * @param pos
      * @return
      */
@@ -221,13 +208,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      */
     public void setCameFrom(TileTransition v) {
         this.cameFrom = v;
-    }
-
-    /**
-     * @param v
-     */
-    public void setFacing(TileTransition v) {
-        this.cameFrom = v.getOpposite();
     }
 
     /**

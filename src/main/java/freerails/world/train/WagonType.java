@@ -25,6 +25,7 @@ import java.io.Serializable;
  * encapsulates the properties of a wagon that are common to all wagons of the
  * same type.
  */
+@SuppressWarnings("unused")
 public class WagonType implements Serializable {
 
     /**

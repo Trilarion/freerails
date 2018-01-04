@@ -117,13 +117,6 @@ public class TrainOrdersModel implements Serializable {
     /**
      * @return
      */
-    public boolean isNoConsistChange() {
-        return null == consist;
-    }
-
-    /**
-     * @return
-     */
     public boolean getWaitUntilFull() {
         return waitUntilFull;
     }

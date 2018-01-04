@@ -40,6 +40,7 @@ public class Pair<A, B> {
      * @param other
      * @return
      */
+    @SuppressWarnings("unused")
     public boolean equals(Pair<A, B> other) {
         return this == other || null != other && (a.equals(other.a) && b.equals(other.b));
     }

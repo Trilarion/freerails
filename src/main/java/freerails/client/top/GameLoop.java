@@ -29,6 +29,7 @@ import java.awt.*;
 /**
  * This thread updates the GUI Client window.
  */
+@SuppressWarnings("unused")
 final public class GameLoop implements Runnable {
 
     private static final Logger logger = Logger.getLogger(GameLoop.class
@@ -159,7 +160,7 @@ final public class GameLoop implements Runnable {
                         try {
                             long sleeptime = (1000 / TARGET_FPS) - deltatime;
                             Thread.sleep(sleeptime);
-                        } catch (Exception e) {
+                        } catch (Exception ignored) {
                         }
 
                         deltatime = System.currentTimeMillis() - frameStartTime;

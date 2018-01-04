@@ -63,14 +63,6 @@ public abstract class TransactionAggregator {
     }
 
     /**
-     * @return
-     */
-    public GameTime[] getTimes() {
-        // return defensive copy.
-        return timeValues.clone();
-    }
-
-    /**
      * @param times
      */
     public void setTimes(GameTime[] times) {

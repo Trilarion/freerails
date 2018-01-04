@@ -23,6 +23,7 @@ import java.io.Serializable;
 /**
  *
  */
+@SuppressWarnings("unused")
 public enum TerrainCategory implements Serializable {
 
     /**

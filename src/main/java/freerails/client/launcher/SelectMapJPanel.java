@@ -188,12 +188,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         newmapsJList
                 .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         newmapsJList
-                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-                    public void valueChanged(
-                            javax.swing.event.ListSelectionEvent evt) {
-                        newmapsJListValueChanged(evt);
-                    }
-                });
+                .addListSelectionListener(this::newmapsJListValueChanged);
 
         jScrollPane1.setViewportView(newmapsJList);
 
@@ -216,12 +211,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         savedmapsJList
                 .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         savedmapsJList
-                .addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-                    public void valueChanged(
-                            javax.swing.event.ListSelectionEvent evt) {
-                        savedmapsJListValueChanged(evt);
-                    }
-                });
+                .addListSelectionListener(this::savedmapsJListValueChanged);
 
         jScrollPane2.setViewportView(savedmapsJList);
 

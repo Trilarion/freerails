@@ -40,7 +40,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     /**
      * The JFrame(s) that are being actively rendered in the game loop(s).
      */
-    private static final HashSet<JFrame> activelyRendereredComponents = new HashSet<>();
+    private static final HashSet<JFrame> activelyRenderedComponents = new HashSet<>();
 
     private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
 
@@ -61,7 +61,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
      * @param f
      */
     public static synchronized void addJFrame(JFrame f) {
-        activelyRendereredComponents.add(f);
+        activelyRenderedComponents.add(f);
     }
 
     @Override
@@ -72,7 +72,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
     @Override
     public synchronized void addDirtyRegion(JComponent c, int x, int y, int w,
                                             int h) {
-        if (hasDifferentAncester(c)) {
+        if (hasDifferentAncestor(c)) {
             super.addDirtyRegion(c, x, y, w, h);
             numDirtyRequests++;
         } else {
@@ -82,7 +82,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 
     @Override
     public synchronized void addInvalidComponent(JComponent invalidComponent) {
-        if (hasDifferentAncester(invalidComponent)) {
+        if (hasDifferentAncestor(invalidComponent)) {
             super.addInvalidComponent(invalidComponent);
             numDirtyRequests++;
         } else {
@@ -92,7 +92,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 
     @Override
     public void markCompletelyClean(JComponent aComponent) {
-        if (hasDifferentAncester(aComponent)) {
+        if (hasDifferentAncestor(aComponent)) {
             super.markCompletelyClean(aComponent);
             numDirtyRequests++;
         } else {
@@ -102,7 +102,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
 
     @Override
     public void markCompletelyDirty(JComponent aComponent) {
-        if (hasDifferentAncester(aComponent)) {
+        if (hasDifferentAncestor(aComponent)) {
             super.markCompletelyDirty(aComponent);
             numDirtyRequests++;
         } else {
@@ -110,10 +110,10 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         }
     }
 
-    private boolean hasDifferentAncester(JComponent aComponent) {
+    private boolean hasDifferentAncestor(JComponent aComponent) {
         Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
         return null != topLevelAncestor
-                && !activelyRendereredComponents.contains(topLevelAncestor);
+                && !activelyRenderedComponents.contains(topLevelAncestor);
     }
 }

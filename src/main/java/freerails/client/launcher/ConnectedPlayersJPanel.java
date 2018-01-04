@@ -115,11 +115,7 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
             if (EventQueue.isDispatchThread()) {
                 updateListOfPlayers();
             } else {
-                EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        updateListOfPlayers();
-                    }
-                });
+                EventQueue.invokeLater(this::updateListOfPlayers);
             }
         }
     }

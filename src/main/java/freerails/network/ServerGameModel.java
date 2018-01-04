@@ -24,8 +24,6 @@ package freerails.network;
 import freerails.world.GameModel;
 import freerails.world.World;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**

@@ -53,17 +53,6 @@ final public class GameCalendar implements Serializable {
     }
 
     /**
-     * @param t
-     * @return
-     */
-    public GameTime getStartOfYear(GameTime t) {
-        int year = getYear(t.getTicks());
-        int ticks = getTicks(year);
-
-        return new GameTime(ticks);
-    }
-
-    /**
      * @param ticks
      * @return
      */

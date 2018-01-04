@@ -28,7 +28,6 @@ import java.util.SortedMap;
 /**
  * This class represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
- *
  * <table width="75%" border="0">
  * <caption>Example</caption>
  * <tr>

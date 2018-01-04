@@ -87,7 +87,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         try {
             LogOnRequest request = new LogOnRequest(username, password);
             connectionToServer.writeToServer(request);
-            connectionToServer.flush();
 
             return (LogOnResponse) connectionToServer
                     .waitForObjectFromServer();
@@ -198,7 +197,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
                 processMessage(message);
             }
 
-            connectionToServer.flush();
             clientUpdates();
         } catch (IOException e) {
             ReportBugTextGenerator.unexpectedException(e);

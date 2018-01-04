@@ -137,11 +137,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         add(jScrollPane1, gridBagConstraints);
 
         done.setText("Close");
-        done.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doneActionPerformed(evt);
-            }
-        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -150,11 +145,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
         add(done, gridBagConstraints);
 
     }// GEN-END:initComponents
-
-    @SuppressWarnings("unused")
-    private void doneActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_doneActionPerformed
-        // TODO add your handling code here:
-    }// GEN-LAST:event_doneActionPerformed
 
     public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
         this.done.setAction(closeAction);

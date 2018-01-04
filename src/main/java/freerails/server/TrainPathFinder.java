@@ -32,10 +32,10 @@ import freerails.world.player.FreerailsPrincipal;
  * PositionOnTrack objects encoded as ints, it also deals with stops at
  * stations.
  */
+@SuppressWarnings("unused")
 public class TrainPathFinder implements IntIterator, ServerAutomaton {
 
     private static final long serialVersionUID = 3256446893302559280L;
-    final ReadOnlyWorld w;
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final TrainStopsHandler stopsHandler;
     private final FlatTrackExplorer trackExplorer;
@@ -54,7 +54,6 @@ public class TrainPathFinder implements IntIterator, ServerAutomaton {
         stopsHandler = new TrainStopsHandler(trainNumber, p,
                 new WorldDiffs(w));
         this.mr = newMr;
-        this.w = w;
     }
 
     /**

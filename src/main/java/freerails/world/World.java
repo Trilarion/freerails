@@ -171,6 +171,7 @@ public interface World extends ReadOnlyWorld {
      * @param index
      * @param element
      */
+    @SuppressWarnings("unused")
     void set(SKEY key, int index, Serializable element);
 
     /**

@@ -62,14 +62,6 @@ public class PathOnTrackFinderTest extends TestCase {
     }
 
     /**
-     * @throws Exception
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    /**
      *
      */
     public void testPathAsVectors1() {

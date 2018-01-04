@@ -37,6 +37,7 @@ public class StockItemTransaction extends ItemTransaction {
             throw new IllegalArgumentException();
     }
 
+    @SuppressWarnings("unused")
     private StockItemTransaction(int quantity, Money amount) {
         super(TransactionCategory.ISSUE_STOCK, -1, quantity, amount);
     }
@@ -71,14 +72,4 @@ public class StockItemTransaction extends ItemTransaction {
                 playerId, quantity, value);
     }
 
-    /**
-     * @param quantity
-     * @param pricePerShare
-     * @return
-     */
-    public static StockItemTransaction issueStock(int quantity, long pricePerShare) {
-        Money amount = new Money(pricePerShare * quantity);
-
-        return new StockItemTransaction(quantity, amount);
-    }
 }

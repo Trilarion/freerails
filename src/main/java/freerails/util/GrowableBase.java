@@ -31,6 +31,7 @@ import java.lang.reflect.Array;
  * specified by the user.
  */
 // TODO this is surely also part of Java by now
+@SuppressWarnings("unused")
 public abstract class GrowableBase implements Serializable {
     /**
      * Default initial array size.
@@ -111,25 +112,6 @@ public abstract class GrowableBase implements Serializable {
     }
 
     /**
-     * Discards values for a range of indices in the array. Checks if the values
-     * stored in the array are object references, and if so clears them. If the
-     * values are primitives, this method does nothing.
-     *
-     * @param from index of first value to be discarded
-     * @param to   index past last value to be discarded
-     */
-    protected void discardValues(int from, int to) {
-        Object values = getArray();
-
-        if (!values.getClass().getComponentType().isPrimitive()) {
-            Object[] objects = (Object[]) values;
-            for (int i = from; i < to; i++) {
-                objects[i] = null;
-            }
-        }
-    }
-
-    /**
      * Increase the size of the array to at least a specified size. The array
      * will normally be at least doubled in size, but if a maximum size
      * increment was specified in the constructor and the value is less than the
@@ -149,18 +131,6 @@ public abstract class GrowableBase implements Serializable {
         resizeCopy(base, grown);
         countLimit = size;
         setArray(grown);
-    }
-
-    /**
-     * Ensure that the array has the capacity for at least the specified number
-     * of values.
-     *
-     * @param min minimum capacity to be guaranteed
-     */
-    public final void ensureCapacity(int min) {
-        if (min > countLimit) {
-            growArray(min);
-        }
     }
 
     /**

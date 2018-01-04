@@ -49,7 +49,7 @@ public class CityNamesSAXParser {
         try {
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(is, handler);
-        } catch (IOException | ParserConfigurationException e) {
+        } catch (IOException | ParserConfigurationException ignored) {
         }
     }
 }

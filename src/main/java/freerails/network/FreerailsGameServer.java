@@ -131,7 +131,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
             LogOnResponse response = this.logon(request);
             connection.writeToClient(response);
-            connection.flush();
             NameAndPassword p = new NameAndPassword(request.getUsername(),
                     request.getPassword());
             if (response.isSuccessful()) {
@@ -433,7 +432,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             if (dontSend2 != connection) {
                 try {
                     connection.writeToClient(message);
-                    connection.flush();
                 } catch (Exception e) {
                     if (connection.isOpen()) {
 
@@ -585,7 +583,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                         }
                     }
 
-                    connection.flush();
                 } else {
                     /* Remove connection. */
                     this.removeConnection(player);

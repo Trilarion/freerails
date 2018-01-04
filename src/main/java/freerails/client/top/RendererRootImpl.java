@@ -187,7 +187,7 @@ public class RendererRootImpl implements RendererRoot {
                 tileRenderers.add(tr);
 
                 continue;
-            } catch (IOException io) {
+            } catch (IOException ignored) {
             }
 
             try {
@@ -196,7 +196,7 @@ public class RendererRootImpl implements RendererRoot {
                 tileRenderers.add(tr);
 
                 continue;
-            } catch (IOException io) {
+            } catch (IOException ignored) {
             }
 
             try {
@@ -205,7 +205,7 @@ public class RendererRootImpl implements RendererRoot {
                 tileRenderers.add(tr);
 
                 continue;
-            } catch (IOException io) {
+            } catch (IOException ignored) {
             }
 
             try {

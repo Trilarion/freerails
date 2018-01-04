@@ -325,8 +325,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             if (waitUntilFull != null && cmp.waitUntilFull == null) {
                 return false;
             }
-            if (waitUntilFull != null
-                    && !waitUntilFull.equals(cmp.waitUntilFull)) {
+            if (waitUntilFull != null && !waitUntilFull.equals(cmp.waitUntilFull)) {
                 return false;
             }
             return orderText == null || orderText.equals(cmp.orderText);

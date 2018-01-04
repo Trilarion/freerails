@@ -139,30 +139,6 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         world.add(SKEY.CARGO_TYPES, cargoType);
     }
 
-    public void start_Cargo_Types(final Attributes meta) throws SAXException {
-        // no need to do anything here.
-    }
-
-    public void end_Cargo_Types() throws SAXException {
-        // no need to do anything here.
-    }
-
-    public void start_Terrain_Types(final Attributes meta) throws SAXException {
-        // no need to do anything here.
-    }
-
-    public void end_Terrain_Types() throws SAXException {
-        // no need to do anything here.
-    }
-
-    public void start_Types(final Attributes meta) throws SAXException {
-        // no need to do anything here.
-    }
-
-    public void end_Types() throws SAXException {
-        // no need to do anything here.
-    }
-
     public void handle_Consumes(final Attributes meta) throws SAXException {
         int cargoConsumed = string2CargoID(meta.getValue("Cargo"));
         String prerequisiteString = meta.getValue("Prerequisite");

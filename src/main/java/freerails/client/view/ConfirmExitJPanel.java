@@ -73,11 +73,7 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 
         confirmExit.setText("Exit");
         confirmExit.setContentAreaFilled(false);
-        confirmExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmExitActionPerformed(evt);
-            }
-        });
+        confirmExit.addActionListener(this::confirmExitActionPerformed);
 
         jPanel2.add(confirmExit, new java.awt.GridBagConstraints());
 

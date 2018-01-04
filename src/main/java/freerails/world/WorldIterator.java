@@ -28,6 +28,7 @@ import java.util.NoSuchElementException;
  * This interface lets the caller access the results of a search in the
  * game world. It is similar in concept to {@code java.sql.ResultSet}.
  */
+@SuppressWarnings("unused")
 public interface WorldIterator {
 
     /**

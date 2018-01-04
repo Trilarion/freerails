@@ -18,9 +18,6 @@
 
 package freerails.world.player;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -45,10 +42,6 @@ public class Player implements Serializable {
      */
     public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal(
             "Authoritative Server");
-    /**
-     * This Principal has no permissions.
-     */
-    public static final FreerailsPrincipal NOBODY = new WorldPrincipal("Nobody");
     private static final long serialVersionUID = 1;
     /**
      * Name of the player.
@@ -118,31 +111,6 @@ public class Player implements Serializable {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * TODO save this player's private data so that they can be re-connected to
-     * the server at a later point in time.
-     *
-     * @param out
-     * @throws java.io.IOException
-     */
-    public void saveSession(ObjectOutputStream out) throws IOException {
-        // out.writeObject(privateData);
-    }
-
-    /**
-     * Called by the client to reconstitute the data from a saved game.
-     *
-     * @param in
-     * @throws java.io.IOException
-     */
-    public void loadSession(ObjectInputStream in) throws IOException {
-        // try {
-        // privateData = (PrivateData) in.readObject();
-        // } catch (ClassNotFoundException e) {
-        // throw new IOException("Couldn't find class:" + e);
-        // }
     }
 
     /**

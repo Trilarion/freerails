@@ -114,8 +114,6 @@ public abstract class ListXDDiffs<T> implements Serializable {
         return uGet(i);
     }
 
-    abstract Object getUnderlyingList();
-
     /**
      * Returns the size of the underlying list at the specified dimension or -1
      * if the underlying list does not have the specified dimension.

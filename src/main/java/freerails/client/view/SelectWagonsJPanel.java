@@ -134,11 +134,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
         okjButton.setText("OK");
-        okjButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonAction(evt);
-            }
-        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -149,11 +144,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
         clearjButton.setText("Clear");
         clearjButton.setActionCommand("clear");
-        clearjButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        clearjButton.addActionListener(this::jButton1ActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -179,11 +170,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         add(jPanel1, gridBagConstraints);
 
     }// GEN-END:initComponents
-
-    private void okButtonAction(java.awt.event.ActionEvent evt) { // GEN-FIRST:event_okButtonAction
-        // Add your handling code here:
-
-    } // GEN-LAST:event_okButtonAction
 
     private void wagonTypesJListMouseClicked(java.awt.event.MouseEvent evt) { // GEN-FIRST:event_wagonTypesJListMouseClicked
         // Add your handling code here:

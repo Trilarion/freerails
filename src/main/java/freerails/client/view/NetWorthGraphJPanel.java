@@ -227,7 +227,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     /**
      * Sets the value of scaleMax subject to the following constraints.
      *
-     *
      * (1) scaleMax >= max, where max is the max net worth value.
      *
      *

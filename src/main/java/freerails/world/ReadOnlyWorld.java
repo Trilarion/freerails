@@ -32,12 +32,12 @@ import java.io.Serializable;
  * specific-purpose collections into which one can put game world elements.
  *
  * <ul>
- *  <li>A list of players.</li>
- *  <li>A 2D grid - the map.</li>
- *  <li>A series of lists that are accessible using the keys defined in {@link SKEY}</li>
- *  <li>Another series of lists indexed by player and accessible using the keys defined in {@link KEY}</li>
- *  <li>A collection items accessible using the keys defined in {@link ITEM}</li>
- *  <li>A list of financial transactions for each of the players</li>
+ * <li>A list of players.</li>
+ * <li>A 2D grid - the map.</li>
+ * <li>A series of lists that are accessible using the keys defined in {@link SKEY}</li>
+ * <li>Another series of lists indexed by player and accessible using the keys defined in {@link KEY}</li>
+ * <li>A collection items accessible using the keys defined in {@link ITEM}</li>
+ * <li>A list of financial transactions for each of the players</li>
  * </ul>
  *
  * Example: the following code gets player1's train #5.
@@ -69,13 +69,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
      * @return
      */
     boolean boundsContain(FreerailsPrincipal p, KEY k, int index);
-
-    /**
-     * @param k
-     * @param index
-     * @return
-     */
-    boolean boundsContain(SKEY k, int index);
 
     /**
      * @return
