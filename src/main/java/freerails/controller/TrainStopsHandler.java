@@ -35,9 +35,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
-
 /**
  */
 public class TrainStopsHandler implements Serializable {
@@ -258,8 +255,8 @@ public class TrainStopsHandler implements Serializable {
                 TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = tm.getPath();
                 path = lengthenPath(worldDiffs, path, oldLength);
-                SpeedTimeAndStatus.TrainActivity status = isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD
-                        : STOPPED_AT_STATION;
+                SpeedTimeAndStatus.TrainActivity status = isWaiting4FullLoad() ? SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD
+                        : SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0,
                         status);
 
@@ -324,7 +321,7 @@ public class TrainStopsHandler implements Serializable {
         ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
-        StationModel station = null;
+        StationModel station;
 
         TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
         boolean waiting4FullLoad = order.waitUntilFull && !isTrainFull();

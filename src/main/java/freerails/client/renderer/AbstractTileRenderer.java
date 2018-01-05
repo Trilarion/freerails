@@ -125,7 +125,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     String generateRelativeFileName(int i) {
-        return "terrain" + File.separator + this.getTerrainType() + "_"
+        return "terrain" + File.separator + this.getTerrainType() + '_'
                 + generateFileNameNumber(i) + ".png";
     }
 

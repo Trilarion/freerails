@@ -26,7 +26,7 @@ import freerails.move.Move;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.CargoBundle;
+import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.finances.DeliverCargoReceipt;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
@@ -43,7 +43,7 @@ public class ProcessCargoAtStationMoveGenerator {
      * Determines how much the player gets for delivering cargo. Changed from
      * 100 to 75 to fix bug 910132 (Too easy to make money!)
      */
-    private final static int MAGIC_NUMBER = 75;
+    private static final int MAGIC_NUMBER = 75;
 
     /**
      * @param w
@@ -54,7 +54,7 @@ public class ProcessCargoAtStationMoveGenerator {
      * @return
      */
     public static ArrayList<Move> processCargo(ReadOnlyWorld w,
-                                               CargoBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
+                                               CargoBatchBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
         StationModel thisStation = (StationModel) w.get(p, KEY.STATIONS,
                 stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();

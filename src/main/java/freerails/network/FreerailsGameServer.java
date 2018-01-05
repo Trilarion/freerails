@@ -446,7 +446,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
     }
 
-    private void sendListOfConnectedPlayers2Clients() throws IOException {
+    private void sendListOfConnectedPlayers2Clients() {
         /* Send the client the list of players. */
         String[] playerNames = getPlayerNames();
 

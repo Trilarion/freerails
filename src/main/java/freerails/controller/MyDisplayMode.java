@@ -44,7 +44,7 @@ public class MyDisplayMode {
 
     @Override
     public String toString() {
-        return displayMode.getWidth() + "x" + displayMode.getHeight() + " "
+        return displayMode.getWidth() + "x" + displayMode.getHeight() + ' '
                 + displayMode.getBitDepth() + " bit "
                 + displayMode.getRefreshRate() + "Hz";
     }

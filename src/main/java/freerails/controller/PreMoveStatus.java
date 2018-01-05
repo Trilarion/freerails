@@ -25,7 +25,7 @@ import java.io.Serializable;
 /**
  * Records the success or failure of an attempt to execute a move.
  */
-final public class PreMoveStatus implements Serializable {
+public final class PreMoveStatus implements Serializable {
 
     /**
      *

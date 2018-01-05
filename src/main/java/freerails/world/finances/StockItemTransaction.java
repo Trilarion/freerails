@@ -53,7 +53,7 @@ public class StockItemTransaction extends ItemTransaction {
         // Issue Stock of the Player
         long temp = (pricePerShare.getAmount() * quantity);
         temp = 0L - temp;
-        Money amount = new Money(temp).changeSign();
+        Money amount = Money.changeSign(new Money(temp));
         return new StockItemTransaction(TransactionCategory.ISSUE_STOCK, playerId,
                 quantity, amount);
     }

@@ -47,7 +47,6 @@ public final class MoveStatus implements Serializable {
     private MoveStatus(boolean ok, String message) {
         Throwable t;
         if (ok) {
-            t = null;
         } else {
             t = new Throwable();
             t.fillInStackTrace();

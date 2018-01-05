@@ -29,7 +29,6 @@ import freerails.world.track.TrackRule;
 import freerails.world.track.TrackRuleImpl;
 import freerails.world.track.TrackRuleProperties;
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,40 +85,37 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         }
     }
 
-    public void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta)
-            throws SAXException {
+    public void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta) {
         terrainTypes = new HashSet<>();
     }
 
-    public void end_CanOnlyBuildOnTheseTerrainTypes() throws SAXException {
+    public void end_CanOnlyBuildOnTheseTerrainTypes() {
         legalTrackPlacement = new LegalTrackPlacement(terrainTypes,
                 LegalTrackPlacement.PlacementRule.ONLY_ON_THESE);
         terrainTypes = null;
     }
 
-    public void start_ListOfTrackPieceTemplates(final Attributes meta)
-            throws SAXException {
+    public void start_ListOfTrackPieceTemplates(final Attributes meta) {
         legalTemplates = new ArrayList<>();
     }
 
-    public void end_ListOfTrackPieceTemplates() throws SAXException {
+    public void end_ListOfTrackPieceTemplates() {
         legalTrackConfigurations = new freerails.world.track.LegalTrackConfigurations(
                 maxConsequ, legalTemplates);
         legalTemplates = null;
     }
 
-    public void start_CannotBuildOnTheseTerrainTypes(final Attributes meta)
-            throws SAXException {
+    public void start_CannotBuildOnTheseTerrainTypes(final Attributes meta) {
         terrainTypes = new java.util.HashSet<>();
     }
 
-    public void end_CannotBuildOnTheseTerrainTypes() throws SAXException {
+    public void end_CannotBuildOnTheseTerrainTypes() {
         legalTrackPlacement = new LegalTrackPlacement(terrainTypes,
                 LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         terrainTypes = null;
     }
 
-    public void start_TrackType(final Attributes meta) throws SAXException {
+    public void start_TrackType(final Attributes meta) {
         int rGBvalue;
         String rgbString = meta.getValue("RGBvalue");
         rGBvalue = Integer.parseInt(rgbString, 16);
@@ -169,7 +165,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
                 maintenance, fixedCost);
     }
 
-    public void end_TrackType() throws SAXException {
+    public void end_TrackType() {
         TrackRuleImpl trackRuleImpl = new freerails.world.track.TrackRuleImpl(
                 trackRuleProperties, legalTrackConfigurations,
                 legalTrackPlacement);
@@ -180,23 +176,22 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         legalTrackPlacement = null;
     }
 
-    public void handle_TerrainType(final Attributes meta) throws SAXException {
+    public void handle_TerrainType(final Attributes meta) {
         TerrainCategory cat = TerrainCategory.valueOf(meta
                 .getValue("name"));
         terrainTypes.add(cat);
     }
 
-    public void end_Tiles() throws SAXException {
+    public void end_Tiles() {
         // Sort the track tiles by category then price.
         Collections.sort(ruleList);
     }
 
-    public void start_TrackPieceTemplate(final Attributes meta)
-            throws SAXException {
+    public void start_TrackPieceTemplate(final Attributes meta) {
         legalTemplates.add(meta.getValue("trackTemplate"));
     }
 
-    public void start_TrackSet(final Attributes meta) throws SAXException {
+    public void start_TrackSet(final Attributes meta) {
         ruleList = new ArrayList<>();
     }
 

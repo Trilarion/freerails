@@ -42,7 +42,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             .getFlatInstance("000010000");
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
             0, TileTransition.NORTH);
-    final private PositionOnTrack currentPosition = PositionOnTrack
+    private final PositionOnTrack currentPosition = PositionOnTrack
             .createComingFrom(0, 0, TileTransition.NORTH);
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principle;

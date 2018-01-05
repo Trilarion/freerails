@@ -103,8 +103,7 @@ public class TrainModel implements Serializable {
      * @return
      */
     public TrainModel getNewInstance(int newEngine, ImInts newWagons) {
-        return new TrainModel(newEngine, newWagons, this.getScheduleID(), this
-                .getCargoBundleID());
+        return new TrainModel(newEngine, newWagons, scheduleId, cargoBundleId);
     }
 
     /**

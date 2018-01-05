@@ -95,7 +95,7 @@ public class WorldImplTest extends TestCase {
 
         assertTrue(Utils.equalsBySerialization(original, copy));
 
-        Transaction t = new MoneyTransaction2(new Money(100),
+        Transaction t = new MoneyTransaction(new Money(100),
                 TransactionCategory.MISC_INCOME);
         copy.addTransaction(player.getPrincipal(), t);
         assertEquals(new Money(100), copy.getCurrentBalance(player
@@ -280,7 +280,7 @@ public class WorldImplTest extends TestCase {
 
         @Override
         public String toString() {
-            return getClass().getName() + "{" + duration + "}";
+            return getClass().getName() + '{' + duration + '}';
         }
 
     }

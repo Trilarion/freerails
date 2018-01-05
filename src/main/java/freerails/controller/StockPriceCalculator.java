@@ -27,8 +27,6 @@ import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 
-import static freerails.world.WorldConstants.STOCK_BUNDLE_SIZE;
-
 /**
  * Calculates the stock price for each of the players. Stock price = [Net worth +
  * 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other
@@ -191,13 +189,13 @@ public class StockPriceCalculator {
             currentPrice = calStockPrice(netWorth, profitLastYear,
                     publicShares, otherRRShares);
             sellPrice = calStockPrice(netWorth, profitLastYear, publicShares
-                    + STOCK_BUNDLE_SIZE, otherRRShares - STOCK_BUNDLE_SIZE);
+                    + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares - WorldConstants.STOCK_BUNDLE_SIZE);
             buyPrice = calStockPrice(netWorth, profitLastYear, publicShares
-                    - STOCK_BUNDLE_SIZE, otherRRShares + STOCK_BUNDLE_SIZE);
+                    - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares + WorldConstants.STOCK_BUNDLE_SIZE);
             treasurySellPrice = calStockPrice(netWorth, profitLastYear,
-                    publicShares + STOCK_BUNDLE_SIZE, otherRRShares);
+                    publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
             treasuryBuyPrice = calStockPrice(netWorth, profitLastYear,
-                    publicShares - STOCK_BUNDLE_SIZE, otherRRShares);
+                    publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
         }
     }
 

@@ -20,7 +20,6 @@ package freerails.world;
 
 import freerails.util.Utils;
 
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
@@ -80,7 +79,7 @@ public class ITEM implements Serializable {
         return keyNumber;
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         return keys[this.keyNumber];
     }
 

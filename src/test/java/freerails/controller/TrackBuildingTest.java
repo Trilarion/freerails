@@ -32,8 +32,6 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 
-import static freerails.world.TileTransition.*;
-
 /**
  *
  */
@@ -152,7 +150,7 @@ public class TrackBuildingTest extends TestCase {
     public void testTerminalProblem() {
         try {
             ImPoint from = new ImPoint(5, 5);
-            TileTransition[] path = {EAST, EAST, EAST};
+            TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
@@ -163,7 +161,7 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
-            TileTransition[] expectedPath = {EAST, EAST};
+            TileTransition[] expectedPath = {TileTransition.EAST, TileTransition.EAST};
             assertTrue(Arrays.equals(expectedPath, path));
         } catch (PathNotFoundException e) {
             fail();
@@ -189,7 +187,7 @@ public class TrackBuildingTest extends TestCase {
             pathFinder.setupSearch(a, b, bts);
             pathFinder.search(-1);
             TileTransition[] path = pathFinder.pathAsVectors();
-            TileTransition[] expectedPath = {EAST};
+            TileTransition[] expectedPath = {TileTransition.EAST};
             assertTrue(Arrays.equals(expectedPath, path));
             MoveStatus ms = producer.buildTrack(a, path);
             assertTrue(ms.ok);
@@ -204,7 +202,7 @@ public class TrackBuildingTest extends TestCase {
             path = pathFinder.pathAsVectors();
             assertEquals(1, path.length);
 
-            expectedPath = new TileTransition[]{SOUTH_EAST};
+            expectedPath = new TileTransition[]{TileTransition.SOUTH_EAST};
             assertTrue(Arrays.equals(expectedPath, path));
         } catch (PathNotFoundException e) {
             fail();
@@ -218,15 +216,15 @@ public class TrackBuildingTest extends TestCase {
     public void testStartSearchOnSharpCurve() {
         try {
             ImPoint from = new ImPoint(5, 5);
-            TileTransition[] path = {EAST, SOUTH};
+            TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             pathFinder.setupSearch(new ImPoint(6, 5), new ImPoint(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
-            assertEquals(SOUTH, path[0]);
-            assertEquals(SOUTH, path[1]);
+            assertEquals(TileTransition.SOUTH, path[0]);
+            assertEquals(TileTransition.SOUTH, path[1]);
         } catch (PathNotFoundException e) {
             fail();
         }

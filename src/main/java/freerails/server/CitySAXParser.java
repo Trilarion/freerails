@@ -25,7 +25,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class to parse an xml file that contains city names and coordinates. Upon reading
@@ -33,22 +34,22 @@ import java.util.Vector;
  */
 public class CitySAXParser extends DefaultHandler {
 
-    private final Vector<City> cities;
+    private final List<City> cities;
     private final World world;
 
     /**
      * @param w
      * @throws SAXException
      */
-    public CitySAXParser(World w) throws SAXException {
+    public CitySAXParser(World w) {
         world = w;
-        cities = new Vector<>();
+        cities = new ArrayList();
     }
 
     @Override
-    public void endDocument() throws SAXException {
+    public void endDocument() {
         for (int i = 0; i < cities.size(); i++) {
-            City tempCity = cities.elementAt(i);
+            City tempCity = cities.get(i);
             world.add(SKEY.CITIES, new City(tempCity.getCityName(),
                     tempCity.getCityX(), tempCity.getCityY()));
         }
@@ -56,17 +57,17 @@ public class CitySAXParser extends DefaultHandler {
 
     @Override
     public void startElement(String namespaceURI, String sName, String qName,
-                             Attributes attrs) throws SAXException {
+                             Attributes attrs) {
 
         String cityName = null;
         int x = 0;
-        int y = 0;
+        int y;
 
         if (attrs != null) {
             for (int i = 0; i < attrs.getLength(); i++) {
                 String aName = attrs.getLocalName(i); // Attr name
 
-                if (aName.equals("")) {
+                if (aName.isEmpty()) {
                     aName = attrs.getQName(i);
                 }
 
@@ -83,7 +84,7 @@ public class CitySAXParser extends DefaultHandler {
                     y = Integer.parseInt(attrs.getValue(i));
 
                     City city = new City(cityName, x, y);
-                    cities.addElement(city);
+                    cities.add(city);
                 }
             }
 

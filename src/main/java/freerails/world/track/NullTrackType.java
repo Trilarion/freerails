@@ -25,14 +25,13 @@ package freerails.world.track;
 import freerails.world.finances.Money;
 import freerails.world.terrain.TerrainCategory;
 
-import java.io.ObjectStreamException;
 import java.util.Iterator;
 
 /**
  * The type of a Null track piece. TODO maybe it would be simpler to get rid of
  * this and just check against null!
  */
-final public class NullTrackType implements TrackRule {
+public final class NullTrackType implements TrackRule {
 
     /**
      *
@@ -51,7 +50,7 @@ final public class NullTrackType implements TrackRule {
         return nullTrackType;
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         return nullTrackType;
     }
 
@@ -155,6 +154,6 @@ final public class NullTrackType implements TrackRule {
      * @return
      */
     public Money getFixedCost() {
-        return Money.ZERO;
+        return Money.ZERO_MONEY;
     }
 }

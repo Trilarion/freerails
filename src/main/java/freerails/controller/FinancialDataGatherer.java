@@ -80,18 +80,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
         }
     }
 
-    @Override
-    protected void setTotalsArrayLength(int length) {
-        // TODO Auto-generated method stub
-        super.setTotalsArrayLength(length);
-    }
-
-    @Override
-    protected void storeRunningTotal(int timeIndex) {
-        // TODO Auto-generated method stub
-        super.storeRunningTotal(timeIndex);
-    }
-
     /**
      * @return
      */
@@ -102,7 +90,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
     /**
      * @return
      */
-    public int nextBondInterestRate() {
+    public double nextBondInterestRate() {
         EconomicClimate ec = (EconomicClimate) w.get(ITEM.ECONOMIC_CLIMATE);
         return bonds + ec.getBaseInterestRate();
     }

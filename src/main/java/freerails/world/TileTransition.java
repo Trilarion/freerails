@@ -25,14 +25,12 @@ package freerails.world;
 import freerails.client.ClientConstants;
 import freerails.util.ImPoint;
 
-import java.io.ObjectStreamException;
-
 /**
  * This class represents a movement from a tile to any one of the surrounding
  * eight tiles.
  */
 @freerails.util.InstanceControlled
-final public class TileTransition implements FlatTrackTemplate {
+public final class TileTransition implements FlatTrackTemplate {
 
     /**
      *
@@ -447,7 +445,7 @@ final public class TileTransition implements FlatTrackTemplate {
         return i;
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         return TileTransition.getInstance(this.deltaX, this.deltaY);
     }
 

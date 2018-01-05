@@ -74,7 +74,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      */
     public void paintRect(Graphics outputGraphics,
                           Rectangle newVisibleRectangle) {
-        boolean contentsLost = false;
+        boolean contentsLost;
         do {
             /*
              * If this is the first call to the paint method or the component

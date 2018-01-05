@@ -50,7 +50,7 @@ public class NearestCityFinder {
      */
     public String findNearestCity() {
         double cityDistance;
-        String cityName = null;
+        String cityName;
         double tempDistance;
         City tempCity;
 
@@ -77,7 +77,7 @@ public class NearestCityFinder {
     }
 
     private double getDistance(int cityX, int cityY) {
-        double distance = 0;
+        double distance;
         double a = (this.x - cityX) * (this.x - cityX);
         double b = (this.y - cityY) * (this.y - cityY);
 

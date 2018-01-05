@@ -28,7 +28,7 @@ import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
@@ -237,7 +237,7 @@ public class StationInfoJPanel extends JPanel implements View,
             String stationTypeName = tile.getTrackPiece().getTrackRule()
                     .getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
-            ImmutableCargoBundle cargoWaiting = (ImmutableCargoBundle) w.get(
+            ImmutableCargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) w.get(
                     modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station
                             .getCargoBundleID());
 
@@ -267,7 +267,7 @@ public class StationInfoJPanel extends JPanel implements View,
                                 / WagonType.UNITS_OF_CARGO_PER_WAGON)
                         : "&nbsp;";
 
-                int amountWaiting = cargoWaiting.getAmount(i);
+                int amountWaiting = cargoWaiting.getAmountOfType(i);
                 String waiting = (amountWaiting > 0) ? String
                         .valueOf(amountWaiting
                                 / WagonType.UNITS_OF_CARGO_PER_WAGON)

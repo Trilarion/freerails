@@ -120,7 +120,7 @@ public class AddItemToSharedListMove implements Move {
         if (o instanceof AddItemToSharedListMove) {
             AddItemToSharedListMove test = (AddItemToSharedListMove) o;
 
-            if (!this.item.equals(test.getAfter())) {
+            if (!this.item.equals(test.item)) {
                 return false;
             }
 

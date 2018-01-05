@@ -67,7 +67,7 @@ public class GUIClient extends FreerailsClient implements
      * @throws IOException
      */
     public GUIClient(String name, ProgressMonitor fm, int screenMode,
-                     DisplayMode dm) throws IOException {
+                     DisplayMode dm) {
         this.name = name;
         this.monitor = null == fm ? this : fm;
         // Set up model root and action root.
@@ -90,12 +90,9 @@ public class GUIClient extends FreerailsClient implements
      * @param args
      */
     public static void main(String[] args) {
-        try {
             GUIClient client = new GUIClient("Test", null,
                     ScreenHandler.WINDOWED_MODE, null);
             client.start();
-        } catch (IOException ignored) {
-        }
     }
 
     @Override
@@ -111,8 +108,7 @@ public class GUIClient extends FreerailsClient implements
             GameTime currentGameTime = world2.currentTime();
             double ticks = currentGameTime.getTicks();
             if (!gameSpeed.isPaused()) {
-                double milliSecondsPerTick = 1000 / gameSpeed.getSpeed();
-                double subTicks = dt / milliSecondsPerTick;
+                double subTicks;
                 subTicks = Math.min(dt, 1d);
                 ticks += subTicks;
             }

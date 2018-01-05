@@ -30,13 +30,13 @@ import java.awt.*;
  * This thread updates the GUI Client window.
  */
 @SuppressWarnings("unused")
-final public class GameLoop implements Runnable {
+public final class GameLoop implements Runnable {
 
     private static final Logger logger = Logger.getLogger(GameLoop.class
             .getName());
 
-    private final static boolean LIMIT_FRAME_RATE = false;
-    private final static int TARGET_FPS = 40;
+    private static final boolean LIMIT_FRAME_RATE = false;
+    private static final int TARGET_FPS = 40;
     private final ScreenHandler screenHandler;
     private final GameModel[] model;
 
@@ -110,7 +110,7 @@ final public class GameLoop implements Runnable {
 
                     if (!screenHandler.isMinimised()) {
                         if (screenHandler.isInUse()) {
-                            boolean contentsRestored = false;
+                            boolean contentsRestored;
                             do {
                                 Graphics g = screenHandler.getDrawGraphics();
 

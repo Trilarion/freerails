@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 public class PathOnTrackFinder implements IncrementalPathFinder {
 
     private static final Logger logger = Logger
-            .getLogger(IncrementalPathFinder.class.getName());
+            .getLogger(PathOnTrackFinder.class.getName());
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld world;
@@ -110,11 +110,11 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         FreerailsTile tileB = (FreerailsTile) world.getTile(target.x, target.y);
         if (!tileA.hasTrack()) {
             throw new PathNotFoundException("No track at " + from.x + ", "
-                    + from.y + ".");
+                    + from.y + '.');
         }
         if (!tileB.hasTrack()) {
             throw new PathNotFoundException("No track at " + target.x + ", "
-                    + target.y + ".");
+                    + target.y + '.');
         }
 
         PositionOnTrack[] startPoints = FlatTrackExplorer.getPossiblePositions(

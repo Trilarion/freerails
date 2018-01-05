@@ -206,33 +206,33 @@ public class IncomeStatementGenerator {
                 CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
                 switch (ct.getCategory()) {
                     case Bulk_Freight:
-                        bulkFreightTotal += dcr.deltaCash().getAmount();
+                        bulkFreightTotal += dcr.value().getAmount();
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
-                            bulkFreightYtd += dcr.deltaCash().getAmount();
+                            bulkFreightYtd += dcr.value().getAmount();
                         }
                         break;
                     case Fast_Freight:
-                        fastFreightTotal += dcr.deltaCash().getAmount();
+                        fastFreightTotal += dcr.value().getAmount();
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
-                            fastFreightYtd += dcr.deltaCash().getAmount();
+                            fastFreightYtd += dcr.value().getAmount();
                         }
                         break;
                     case Mail:
-                        mailTotal += dcr.deltaCash().getAmount();
+                        mailTotal += dcr.value().getAmount();
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
-                            mailYtd += dcr.deltaCash().getAmount();
+                            mailYtd += dcr.value().getAmount();
                         }
                         break;
                     case Passengers:
-                        passengersTotal += dcr.deltaCash().getAmount();
+                        passengersTotal += dcr.value().getAmount();
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
-                            passengersYtd += dcr.deltaCash().getAmount();
+                            passengersYtd += dcr.value().getAmount();
                         }
                         break;
                     case Slow_Freight:
-                        slowFreightTotal += dcr.deltaCash().getAmount();
+                        slowFreightTotal += dcr.value().getAmount();
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
-                            slowFreightYtd += dcr.deltaCash().getAmount();
+                            slowFreightYtd += dcr.value().getAmount();
                         }
                         break;
                 }
@@ -240,27 +240,27 @@ public class IncomeStatementGenerator {
             }
             switch (t.getCategory()) {
                 case INTEREST_CHARGE:
-                    interestTotal += t.deltaCash().getAmount();
+                    interestTotal += t.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        interestYtd += t.deltaCash().getAmount();
+                        interestYtd += t.value().getAmount();
                     }
                     break;
                 case TRAIN_MAINTENANCE:
-                    trainMaintenanceTotal += t.deltaCash().getAmount();
+                    trainMaintenanceTotal += t.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        trainMaintenanceYtd += t.deltaCash().getAmount();
+                        trainMaintenanceYtd += t.value().getAmount();
                     }
                     break;
                 case TRACK_MAINTENANCE:
-                    trackMaintenanceTotal += t.deltaCash().getAmount();
+                    trackMaintenanceTotal += t.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        trackMaintenanceYtd += t.deltaCash().getAmount();
+                        trackMaintenanceYtd += t.value().getAmount();
                     }
                     break;
                 case STATION_MAINTENANCE:
-                    stationMaintenanceTotal += t.deltaCash().getAmount();
+                    stationMaintenanceTotal += t.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        stationMaintenanceYtd += t.deltaCash().getAmount();
+                        stationMaintenanceYtd += t.value().getAmount();
                     }
                     break;
             }
@@ -328,7 +328,7 @@ public class IncomeStatementGenerator {
                 DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
                 int trainId = dcr.getTrainId();
                 if (trainId < money.length) {
-                    amount[trainId] += dcr.deltaCash().getAmount();
+                    amount[trainId] += dcr.value().getAmount();
                 }
             }
         }

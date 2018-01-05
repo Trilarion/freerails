@@ -22,7 +22,6 @@ import freerails.world.track.NullTrackPiece;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -108,7 +107,7 @@ public class FreerailsTile implements TerrainTile, Serializable {
         return result;
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         FreerailsTile storedTile = instances.get(this);
         if (storedTile != null) {
             return storedTile;

@@ -32,9 +32,6 @@ import junit.framework.TestCase;
 import java.io.Serializable;
 import java.util.Iterator;
 
-import static freerails.util.ListKey.Type.Element;
-import static freerails.world.WorldDiffs.LISTID.SHARED_LISTS;
-
 /**
  * JUnit test for WorldDifferences.
  */
@@ -261,7 +258,7 @@ public class WorldDiffsTest extends TestCase {
         ListKey lk1 = it.next();
         ListKey lk2 = it.next();
         assertFalse(it.hasNext());
-        ListKey expected = new ListKey(Element, SHARED_LISTS, SKEY.CITIES.getKeyID(), 0);
+        ListKey expected = new ListKey(ListKey.Type.Element, WorldDiffs.LISTID.SHARED_LISTS, SKEY.CITIES.getKeyID(), 0);
         assertEquals(expected, lk2);
 
     }

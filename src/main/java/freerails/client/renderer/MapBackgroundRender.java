@@ -40,7 +40,7 @@ import java.awt.*;
  * the map view. At present it is composed of two layers: the terrain layer and
  * the track layer.
  */
-final public class MapBackgroundRender implements MapLayerRenderer {
+public final class MapBackgroundRender implements MapLayerRenderer {
     private static final Logger logger = Logger
             .getLogger(MapBackgroundRender.class.getName());
 
@@ -144,7 +144,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     /**
      * This inner class represents a view of the track on the map.
      */
-    final public class TrackLayer implements MapLayerRenderer {
+    public final class TrackLayer implements MapLayerRenderer {
         private final ReadOnlyWorld w;
 
         private final RendererRoot rr;
@@ -244,7 +244,7 @@ final public class MapBackgroundRender implements MapLayerRenderer {
     /**
      * This inner class represents the terrain of the map.
      */
-    final public class TerrainLayer implements MapLayerRenderer {
+    public final class TerrainLayer implements MapLayerRenderer {
         private final TileRendererList tiles;
 
         private final ReadOnlyWorld w;

@@ -21,11 +21,10 @@ package freerails.controller;
 import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.world.*;
 import freerails.world.finances.Money;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
-
-import static freerails.world.finances.TransactionCategory.*;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so
@@ -89,7 +88,7 @@ public class BalanceSheetGenerator {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
 
-        aggregator.setCategory(TRACK);
+        aggregator.setCategory(TransactionCategory.TRACK);
         long amount = 0;
 
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
@@ -195,17 +194,17 @@ public class BalanceSheetGenerator {
                     world, principal);
             aggregator.setTimes(totalTimeInterval);
 
-            aggregator.setCategory(STATIONS);
+            aggregator.setCategory(TransactionCategory.STATIONS);
             stations = aggregator.calculateValue();
 
-            aggregator.setCategory(TRAIN);
+            aggregator.setCategory(TransactionCategory.TRAIN);
             rollingStock = aggregator.calculateValue();
 
-            aggregator.setCategory(INDUSTRIES);
+            aggregator.setCategory(TransactionCategory.INDUSTRIES);
             industries = aggregator.calculateValue();
-            aggregator.setCategory(BOND);
+            aggregator.setCategory(TransactionCategory.BOND);
             loans = aggregator.calculateValue();
-            aggregator.setCategory(ISSUE_STOCK);
+            aggregator.setCategory(TransactionCategory.ISSUE_STOCK);
             equity = aggregator.calculateValue();
 
             // If we don't initialize this variable
@@ -218,7 +217,7 @@ public class BalanceSheetGenerator {
                     .calculate();
             for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
 
-                aggregator.setCategory(TRANSFER_STOCK);
+                aggregator.setCategory(TransactionCategory.TRANSFER_STOCK);
                 aggregator.setType(thisPlayerId);
                 int quantity = aggregator.calculateQuantity();
                 if (playerId == thisPlayerId) {

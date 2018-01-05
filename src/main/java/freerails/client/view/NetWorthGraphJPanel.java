@@ -310,7 +310,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
             abv = "";
         }
 
-        return "$" + String.valueOf(value) + abv;
+        return '$' + String.valueOf(value) + abv;
     }
 
     /**

@@ -27,17 +27,17 @@ import junit.framework.TestCase;
 import java.io.Serializable;
 
 /**
- * Test for CargoBundle
+ * Test for CargoBatchBundle
  */
-public class CargoBundleTest extends TestCase {
+public class CargoBatchBundleTest extends TestCase {
 
     /**
      *
      */
     public void testEquals() {
 
-        MutableCargoBundle bundle1 = new MutableCargoBundle();
-        MutableCargoBundle bundle2 = new MutableCargoBundle();
+        MutableCargoBatchBundle bundle1 = new MutableCargoBatchBundle();
+        MutableCargoBatchBundle bundle2 = new MutableCargoBatchBundle();
         CargoBatch batch1 = new CargoBatch(1, 2, 3, 4, 5);
         CargoBatch batch2 = new CargoBatch(4, 2, 3, 4, 5);
         int q1 = 10;
@@ -51,15 +51,15 @@ public class CargoBundleTest extends TestCase {
         assertBundlesEqual(bundle1, bundle2);
     }
 
-    private void assertBundlesEqual(MutableCargoBundle a, MutableCargoBundle b) {
+    private void assertBundlesEqual(MutableCargoBatchBundle a, MutableCargoBatchBundle b) {
         assertEquals(a, b);
         assertEquals(a, a);
         assertEquals(b, a);
-        ImmutableCargoBundle immA = a.toImmutableCargoBundle();
+        ImmutableCargoBatchBundle immA = a.toImmutableCargoBundle();
         assertEquals(immA, immA);
         assertEquals(immA, b);
 
-        ImmutableCargoBundle immB = b.toImmutableCargoBundle();
+        ImmutableCargoBatchBundle immB = b.toImmutableCargoBundle();
         assertEquals(immA, immB);
         Serializable cloneA = Utils.cloneBySerialisation(immA);
         Serializable cloneB = Utils.cloneBySerialisation(immB);
@@ -67,8 +67,8 @@ public class CargoBundleTest extends TestCase {
         assertEquals(a, immB);
     }
 
-    private void assertBundlesNotEqual(MutableCargoBundle a,
-                                       MutableCargoBundle b) {
+    private void assertBundlesNotEqual(MutableCargoBatchBundle a,
+                                       MutableCargoBatchBundle b) {
         assertFalse(a.equals(b));
         assertFalse(b.equals(a));
         assertFalse(a.toImmutableCargoBundle().equals(b));

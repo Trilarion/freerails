@@ -24,7 +24,8 @@ package freerails.world.train;
 
 import freerails.util.ImInts;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a train's schedule. That is, which stations that the
@@ -34,7 +35,7 @@ public class MutableSchedule implements Schedule {
     /**
      * Vector of TrainOrdersModel.
      */
-    private final Vector<TrainOrdersModel> orders = new Vector<>();
+    private final List<TrainOrdersModel> orders = new ArrayList();
 
     private int nextScheduledOrder = -1;
 
@@ -290,7 +291,7 @@ public class MutableSchedule implements Schedule {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
         }
 
-        boolean isGoingToThisStation = getOrderToGoto() == orderNumber;
+        boolean isGoingToThisStation = nextScheduledOrder == orderNumber;
         TrainOrdersModel order = getOrder(orderNumber);
         removeOrder(orderNumber);
         addOrder(orderNumber - 1, order);
@@ -308,7 +309,7 @@ public class MutableSchedule implements Schedule {
             throw new IllegalArgumentException(String.valueOf(orderNumber));
         }
 
-        boolean isGoingToThisStation = getOrderToGoto() == orderNumber;
+        boolean isGoingToThisStation = nextScheduledOrder == orderNumber;
         TrainOrdersModel order = getOrder(orderNumber);
         removeOrder(orderNumber);
         addOrder(orderNumber + 1, order);

@@ -32,7 +32,6 @@ import freerails.world.terrain.TerrainType;
 import freerails.world.train.EngineType;
 import org.apache.log4j.Logger;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
@@ -113,7 +112,7 @@ public class RendererRootImpl implements RendererRoot {
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
                 sm.addClip(soundsFiles[i]);
-            } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+            } catch (IOException | UnsupportedAudioFileException e) {
                 // TODO Auto-generated catch block
             }
             pm.setValue(i + 1);
@@ -141,7 +140,7 @@ public class RendererRootImpl implements RendererRoot {
             TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
             int[] typesTreatedAsTheSame = new int[]{i};
 
-            TileRenderer tr = null;
+            TileRenderer tr;
             pm.setValue(++progress);
 
             try {

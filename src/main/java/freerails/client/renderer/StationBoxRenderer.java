@@ -24,7 +24,7 @@ import freerails.controller.ModelRoot;
 import freerails.world.*;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.train.WagonType;
@@ -108,7 +108,7 @@ public class StationBoxRenderer implements Painter {
                     g.setStroke(new BasicStroke(1f));
                     g.drawRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
 
-                    ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(
+                    ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(
                             principal, KEY.CARGO_BUNDLES, station
                                     .getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cb);
@@ -139,14 +139,14 @@ public class StationBoxRenderer implements Painter {
      * array are the type of the cargo. E.g. if the bundle contained 2 carloads
      * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
      */
-    private int[][] calculateCarLoads(ImmutableCargoBundle cb) {
+    private int[][] calculateCarLoads(ImmutableCargoBatchBundle cb) {
         int categories = CargoCategory.getNumberOfCategories();
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         int[] numberOfCarLoads = new int[categories];
         int[][] cars = new int[categories][numCargoTypes];
         for (int i = 0; i < numCargoTypes; i++) {
             CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
-            int carsOfThisCargo = cb.getAmount(i)
+            int carsOfThisCargo = cb.getAmountOfType(i)
                     / WagonType.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
             cars[ct.getCategory().getID()][i] += carsOfThisCargo;

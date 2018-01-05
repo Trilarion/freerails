@@ -25,8 +25,6 @@ import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.world.ReadOnlyWorld;
 
-import java.io.ObjectStreamException;
-
 /**
  * Generates a TimeTickMove.
  */
@@ -51,7 +49,7 @@ public class TimeTickPreMove implements PreMove {
         return TimeTickMove.getMove(w);
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         return INSTANCE;
     }
 }

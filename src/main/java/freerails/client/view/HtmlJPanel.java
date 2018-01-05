@@ -74,11 +74,11 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     static String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
-        String output = "";
+        StringBuilder output = new StringBuilder();
 
         while (tokenizer.hasMoreTokens()) {
 
-            output += tokenizer.nextToken();
+            output.append(tokenizer.nextToken());
 
             if (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
@@ -88,7 +88,6 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
                 } else {
                     try {
                         StringTokenizer t2 = new StringTokenizer(token, ".");
-                        value = null;
                         Object o = context;
                         while (t2.hasMoreTokens()) {
                             String subToken = t2.nextToken();
@@ -101,11 +100,11 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
                     }
 
                 }
-                output += value;
+                output.append(value);
             }
         }
 
-        return output;
+        return output.toString();
     }
 
     /**
@@ -159,11 +158,11 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     new DataInputStream(in)));
             String line;
-            String text = "";
+            StringBuilder text = new StringBuilder();
             while ((line = br.readLine()) != null) {
-                text = text + line;
+                text.append(line);
             }
-            return text;
+            return text.toString();
         } catch (Exception e) {
             logger.warn(htmlUrl.toString());
             return "Couldn't read: " + htmlUrl;

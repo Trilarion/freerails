@@ -32,16 +32,14 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FreerailsTile;
 import junit.framework.TestCase;
 
-import static freerails.world.TileTransition.*;
-
 /**
  * Unit test for MoveTrainPreMove, tests path finding.
  */
 public class MoveTrainPreMove3rdTest extends TestCase {
 
-    final TileTransition[] line1 = {EAST, NORTH_EAST, EAST, NORTH_EAST, NORTH};
-    final TileTransition[] line2 = {WEST, WEST, SOUTH_WEST, SOUTH, SOUTH_EAST, EAST};
-    final TileTransition[] line3 = {NORTH_WEST, NORTH_WEST, NORTH, NORTH, NORTH_EAST};
+    final TileTransition[] line1 = {TileTransition.EAST, TileTransition.NORTH_EAST, TileTransition.EAST, TileTransition.NORTH_EAST, TileTransition.NORTH};
+    final TileTransition[] line2 = {TileTransition.WEST, TileTransition.WEST, TileTransition.SOUTH_WEST, TileTransition.SOUTH, TileTransition.SOUTH_EAST, TileTransition.EAST};
+    final TileTransition[] line3 = {TileTransition.NORTH_WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH, TileTransition.NORTH_EAST};
     TrackMoveProducer trackBuilder;
     StationBuilder stationBuilder;
     FreerailsPrincipal principal;
@@ -86,7 +84,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         FreerailsTile tile = (FreerailsTile) world
                 .getTile(target1.x, target1.y);
         assertTrue(tile.hasTrack());
-        PositionOnTrack pot = PositionOnTrack.createFacing(10, 10, EAST);
+        PositionOnTrack pot = PositionOnTrack.createFacing(10, 10, TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
             TileTransition actual = MoveTrainPreMove.findNextStep(world, pot, target1);

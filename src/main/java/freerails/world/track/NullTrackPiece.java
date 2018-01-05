@@ -22,13 +22,11 @@
  */
 package freerails.world.track;
 
-import java.io.ObjectStreamException;
-
 /**
  * A track piece that doesn't exist - using this avoids needing to check against
  * null before calling the methods on a track piece.
  */
-final public class NullTrackPiece implements TrackPiece {
+public final class NullTrackPiece implements TrackPiece {
     private static final long serialVersionUID = 3258413915376268599L;
 
     private static final TrackPiece nullTrackPiece = new NullTrackPiece();
@@ -66,7 +64,7 @@ final public class NullTrackPiece implements TrackPiece {
         return TrackConfiguration.from9bitTemplate(0);
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         return nullTrackPiece;
     }
 

@@ -28,7 +28,7 @@ import java.util.Iterator;
 /**
  * Stores the legal track configurations for a type of track.
  */
-final public class LegalTrackConfigurations implements Serializable {
+public final class LegalTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
 
@@ -66,7 +66,7 @@ final public class LegalTrackConfigurations implements Serializable {
         legalConfigs = new ImHashSet<>(temp);
     }
 
-    static private void processTemplate(String trackTemplateString,
+    private static void processTemplate(String trackTemplateString,
                                         HashSet<TrackConfiguration> temp) {
         int trackTemplate = Integer.parseInt(trackTemplateString, 2);
 
@@ -94,8 +94,7 @@ final public class LegalTrackConfigurations implements Serializable {
         if (o instanceof LegalTrackConfigurations) {
             LegalTrackConfigurations test = (LegalTrackConfigurations) o;
 
-            return this.maximumConsecutivePieces == test
-                    .getMaximumConsecutivePieces()
+            return this.maximumConsecutivePieces == test.maximumConsecutivePieces
                     && this.legalConfigs.equals(test.legalConfigs);
         }
         return false;

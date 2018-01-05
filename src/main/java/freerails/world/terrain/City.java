@@ -93,6 +93,6 @@ public class City implements Serializable {
 
     @Override
     public String toString() {
-        return name + " " + x + ", " + y;
+        return name + ' ' + x + ", " + y;
     }
 }

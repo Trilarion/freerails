@@ -24,8 +24,7 @@ import java.io.Serializable;
 /**
  * Lets a client send messages to the server over the Internet.
  */
-public class InetConnectionToServer extends AbstractInetConnection implements
-        ConnectionToServer {
+public class InetConnectionToServer extends AbstractInetConnection implements ConnectionToServer {
     final String serverDetails;
 
     /**
@@ -35,7 +34,7 @@ public class InetConnectionToServer extends AbstractInetConnection implements
      */
     public InetConnectionToServer(String ip, int port) throws IOException {
         super(ip, port);
-        serverDetails = "server at " + ip + ":" + port;
+        serverDetails = "server at " + ip + ':' + port;
     }
 
     public Serializable[] readFromServer() throws IOException {

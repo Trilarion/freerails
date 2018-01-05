@@ -34,16 +34,17 @@ public class BondItemTransaction extends ItemTransaction {
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
     private static final long serialVersionUID = 3257562923491473465L;
 
-    private BondItemTransaction(TransactionCategory category, int type, int quantity,
+    private BondItemTransaction(TransactionCategory category, double rate, int quantity,
                                 Money amount) {
-        super(category, type, quantity, amount);
+        // TODO item transaction only understands ints, this should not be a type, but a double rate
+        super(category, (int)rate, quantity, amount);
     }
 
     /**
      * @param interestRate
      * @return
      */
-    public static BondItemTransaction issueBond(int interestRate) {
+    public static BondItemTransaction issueBond(double interestRate) {
         return new BondItemTransaction(TransactionCategory.BOND, interestRate, 1,
                 BOND_VALUE_ISSUE);
     }

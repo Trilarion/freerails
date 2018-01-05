@@ -32,8 +32,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
+
 
 /**
  * This class has a static method that converts an image file into a map.
@@ -45,9 +47,9 @@ public final class MapFactory {
     /*
      * create a vector to keep track of what terrain types to 'clump'
      */
-    private static final Vector<Integer> countryTypes = new Vector<>();
+    private static final List<Integer> countryTypes = new ArrayList();
 
-    private static final Vector<Integer> non_countryTypes = new Vector<>();
+    private static final List<Integer> non_countryTypes = new ArrayList();
 
     private static WorldImpl world;
 
@@ -105,13 +107,12 @@ public final class MapFactory {
             }
         }
 
-        TerrainRandomiser terrainRandomiser = new TerrainRandomiser(
-                countryTypes, non_countryTypes);
+        TerrainRandomiser terrainRandomiser = new TerrainRandomiser(countryTypes, non_countryTypes);
 
         /*
          * create vector to keep track of terrain randomisation 'clumping'
          */
-        Vector<TerrainAtLocation> locations = new Vector<>();
+        List<TerrainAtLocation> locations = new ArrayList();
 
         for (int x = 0; x < mapRect.width; x++) {
             pm.setValue(x);
@@ -140,7 +141,7 @@ public final class MapFactory {
         }
 
         for (int i = 0; i < locations.size(); i++) {
-            TerrainAtLocation rtv = locations.elementAt(i);
+            TerrainAtLocation rtv = locations.get(i);
             FreerailsTile tile = FreerailsTile.getInstance(rtv.getType());
 
             int x = rtv.getX();

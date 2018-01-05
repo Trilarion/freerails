@@ -30,7 +30,9 @@ import freerails.world.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * This class probes the tiles adjacent to a station for what cargo they supply,
@@ -50,7 +52,7 @@ public class CalcCargoSupplyRateAtStation {
 
     private final int[] demand;
 
-    private final Vector<CargoElementObject> supplies;
+    private final List<CargoElementObject> supplies;
 
     private final ReadOnlyWorld w;
 
@@ -77,7 +79,7 @@ public class CalcCargoSupplyRateAtStation {
         TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
 
-        supplies = new Vector<>();
+        supplies = new ArrayList<>();
         populateSuppliesVector();
 
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
@@ -185,7 +187,7 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * @return
      */
-    public Vector<CargoElementObject> scanAdjacentTiles() {
+    public List<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(x - stationRadius, y
@@ -220,7 +222,7 @@ public class CalcCargoSupplyRateAtStation {
         // loop through supplies vector and increment the cargo values as
         // required
         for (int n = 0; n < supplies.size(); n++) {
-            CargoElementObject tempElement = supplies.elementAt(n);
+            CargoElementObject tempElement = supplies.get(n);
 
             if (tempElement.getType() == type) {
                 // cargo types are the same, so increment the rate in supply
@@ -241,7 +243,7 @@ public class CalcCargoSupplyRateAtStation {
     public StationModel calculations(StationModel station) {
         int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
 
-        Vector<CargoElementObject> supply = scanAdjacentTiles();
+        List<CargoElementObject> supply = scanAdjacentTiles();
 
         // grab the supply rates from the vector
         for (int i = 0; i < supply.size(); i++) {

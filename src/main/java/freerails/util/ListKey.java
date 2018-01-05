@@ -106,13 +106,13 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(listID);
-        sb.append(" ");
+        sb.append(' ');
         sb.append(type);
         sb.append(" index ");
         for (int anIndex : index) {
-            sb.append("[");
+            sb.append('[');
             sb.append(anIndex);
-            sb.append("]");
+            sb.append(']');
         }
         return sb.toString();
     }

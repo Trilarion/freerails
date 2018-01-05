@@ -408,7 +408,7 @@ public class TrainPositionOnMapTest extends TestCase {
         c = TrainPositionOnMap.createInstance(new int[]{30, 40}, new int[]{
                 33, 44});
 
-        assertTrue(!a.equals(null));
+        assertTrue(a != null);
         assertTrue(!a.equals(new Object()));
         //noinspection EqualsWithItself
         assertTrue(a.equals(a));

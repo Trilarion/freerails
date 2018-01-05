@@ -108,13 +108,13 @@ public class ImInts implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getClass().getName());
-        sb.append("[");
+        sb.append('[');
         for (int i = 0; i < ints.length; i++) {
             sb.append(ints[i]);
             if (i + 1 < ints.length)
                 sb.append(", ");
         }
-        sb.append("]");
+        sb.append(']');
         return sb.toString();
     }
 

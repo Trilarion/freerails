@@ -23,10 +23,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Implementation of GameServer that simply echoes whatever clients send it.
@@ -35,7 +32,7 @@ public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class
             .getName());
 
-    private final Vector<ConnectionToClient> connections = new Vector<>();
+    private final List<ConnectionToClient> connections = new ArrayList();
 
     private final SynchronizedFlag status = new SynchronizedFlag(false);
 
@@ -86,15 +83,8 @@ public class EchoGameServer implements GameServer, Runnable {
      * @return
      */
     public synchronized int countOpenConnections() {
-        Iterator<ConnectionToClient> it = connections.iterator();
 
-        while (it.hasNext()) {
-            ConnectionToClient connection = it.next();
-
-            if (!connection.isOpen()) {
-                it.remove();
-            }
-        }
+        connections.removeIf(connection -> !connection.isOpen());
 
         return connections.size();
     }

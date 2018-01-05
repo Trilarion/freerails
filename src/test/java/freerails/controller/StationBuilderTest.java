@@ -29,8 +29,6 @@ import freerails.world.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
 
-import static freerails.world.TileTransition.EAST;
-
 /**
  * A Junit test.
  */
@@ -61,7 +59,7 @@ public class StationBuilderTest extends TestCase {
     public void testBuildStation() {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
-        TileTransition[] track = {EAST, EAST, EAST};
+        TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         MoveStatus ms = trackBuilder.buildTrack(new ImPoint(10, 10), track);
         assertTrue(ms.ok);
         assertTrue(stationBuilder.tryBuildingStation(new ImPoint(10, 10)).ok);

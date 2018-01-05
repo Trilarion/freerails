@@ -108,10 +108,6 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
         return status.isOpen();
     }
 
-    public void flush() {
-        // No need to do anything.
-    }
-
     public synchronized void disconnect() {
         status.close();
     }

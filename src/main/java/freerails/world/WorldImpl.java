@@ -153,7 +153,7 @@ public class WorldImpl implements World {
         TransactionWithTimeStamp tats = new TransactionWithTimeStamp(t, time);
         bankAccounts.addD2(playerIndex, tats);
         Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = new Money(t.deltaCash().getAmount()
+        Money newBalance = new Money(t.value().getAmount()
                 + oldBalance.getAmount());
         currentBalance.set(playerIndex, newBalance);
     }
@@ -400,12 +400,12 @@ public class WorldImpl implements World {
      * @param index
      * @return
      */
-    public Activity removeLastActivity(FreerailsPrincipal p, int index) {
+    public void removeLastActivity(FreerailsPrincipal p, int index) {
         int playerIndex = p.getWorldIndex();
         if (activityLists.sizeD3(playerIndex, index) < 2)
             throw new IllegalStateException();
 
-        return activityLists.removeLastD3(playerIndex, index).act;
+        activityLists.removeLastD3(playerIndex, index);
     }
 
     /**
@@ -433,7 +433,7 @@ public class WorldImpl implements World {
         TransactionWithTimeStamp tats = bankAccounts.removeLastD2(playerIndex);
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = new Money(oldBalance.getAmount()
-                - tats.getTransaction().deltaCash().getAmount());
+                - tats.getTransaction().value().getAmount());
         currentBalance.set(playerIndex, newBalance);
         return tats.getTransaction();
     }

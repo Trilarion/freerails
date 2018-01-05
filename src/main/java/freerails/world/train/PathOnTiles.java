@@ -35,12 +35,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static freerails.world.TileTransition.TILE_DIAMETER;
-
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
  */
-strictfp public class PathOnTiles implements Serializable {
+public strictfp class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
 
@@ -137,15 +135,15 @@ strictfp public class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new ImPoint(x * TILE_DIAMETER + TILE_DIAMETER / 2, y
-                        * TILE_DIAMETER + TILE_DIAMETER / 2);
+                return new ImPoint(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
+                        * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
             }
             if (distanceSoFar > distance) {
-                int excess = (int) (TILE_DIAMETER * (distanceSoFar - distance) / v
+                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - distance) / v
                         .getLength());
-                x = x * TILE_DIAMETER - v.deltaX * excess;
-                y = y * TILE_DIAMETER - v.deltaY * excess;
-                return new ImPoint(x + TILE_DIAMETER / 2, y + TILE_DIAMETER / 2);
+                x = x * TileTransition.TILE_DIAMETER - v.deltaX * excess;
+                y = y * TileTransition.TILE_DIAMETER - v.deltaY * excess;
+                return new ImPoint(x + TileTransition.TILE_DIAMETER / 2, y + TileTransition.TILE_DIAMETER / 2);
             }
         }
         throw new IllegalArgumentException("distance:" + distance
@@ -190,16 +188,16 @@ strictfp public class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new ImPoint(x * TILE_DIAMETER + TILE_DIAMETER / 2,
-                        y * TILE_DIAMETER + TILE_DIAMETER / 2);
+                firstPoint = new ImPoint(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2,
+                        y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
-                int excess = (int) (TILE_DIAMETER
+                int excess = (int) (TileTransition.TILE_DIAMETER
                         * (distanceSoFar - firstdistance) / v.getLength());
-                int nx = x * TILE_DIAMETER - v.deltaX * excess + TILE_DIAMETER
+                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER
                         / 2;
-                int ny = y * TILE_DIAMETER - v.deltaY * excess + TILE_DIAMETER
+                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER
                         / 2;
                 firstPoint = new ImPoint(nx, ny);
                 break;
@@ -219,16 +217,16 @@ strictfp public class PathOnTiles implements Serializable {
 
             if (distanceSoFar == lastdistance) {
                 secondPoint = new ImPoint(
-                        x * TILE_DIAMETER + TILE_DIAMETER / 2, y
-                        * TILE_DIAMETER + TILE_DIAMETER / 2);
+                        x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
+                        * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
-                int excess = (int) (TILE_DIAMETER
+                int excess = (int) (TileTransition.TILE_DIAMETER
                         * (distanceSoFar - lastdistance) / v.getLength());
-                int nx = x * TILE_DIAMETER - v.deltaX * excess + TILE_DIAMETER
+                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER
                         / 2;
-                int ny = y * TILE_DIAMETER - v.deltaY * excess + TILE_DIAMETER
+                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER
                         / 2;
                 secondPoint = new ImPoint(nx, ny);
                 break;
@@ -353,7 +351,7 @@ strictfp public class PathOnTiles implements Serializable {
                     + getTotalDistance());
 
         final LinkedList<ImPoint> points = new LinkedList<>();
-        ImPoint tile = getStart();
+        ImPoint tile = start;
         int tileX = tile.x;
         int tileY = tile.y;
         int distanceSoFar = 0;
@@ -363,8 +361,8 @@ strictfp public class PathOnTiles implements Serializable {
                 break;
             }
             if (distanceSoFar >= offset) {
-                int x = TILE_DIAMETER / 2 + TILE_DIAMETER * tileX;
-                int y = TILE_DIAMETER / 2 + TILE_DIAMETER * tileY;
+                int x = TileTransition.TILE_DIAMETER / 2 + TileTransition.TILE_DIAMETER * tileX;
+                int y = TileTransition.TILE_DIAMETER / 2 + TileTransition.TILE_DIAMETER * tileY;
                 points.add(new ImPoint(x, y));
             }
 
@@ -462,7 +460,7 @@ strictfp public class PathOnTiles implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getClass().getName());
-        sb.append("{");
+        sb.append('{');
         sb.append(start.x);
         sb.append(", ");
         sb.append(start.y);
@@ -470,7 +468,7 @@ strictfp public class PathOnTiles implements Serializable {
             sb.append(", ");
             sb.append(vectors.get(i));
         }
-        sb.append("}");
+        sb.append('}');
         return sb.toString();
     }
 

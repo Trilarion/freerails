@@ -57,12 +57,12 @@ public class ReportBugTextGenerator {
     public static String genText() {
         StringBuffer sb = new StringBuffer();
         sb.append("How to report a bug\n");
-        sb.append("\n");
+        sb.append('\n');
         sb
                 .append("Use the sourceforge.net bug tracker at the following url:\n");
         sb.append(TRACKER_URL);
-        sb.append("\n");
-        sb.append("\n");
+        sb.append('\n');
+        sb.append('\n');
         sb.append("Please include:\n");
         sb
                 .append("  1. Steps to reproduce the bug (attach a  save game if  appropriate).\n");
@@ -72,8 +72,8 @@ public class ReportBugTextGenerator {
         sb
                 .append("  4. The details below (copy and past them into the bug report).\n");
         appendBuildProps(sb);
-        sb.append("\n");
-        sb.append("\n");
+        sb.append('\n');
+        sb.append('\n');
         return sb.toString();
     }
 
@@ -86,25 +86,25 @@ public class ReportBugTextGenerator {
 
         StringBuffer sb = new StringBuffer();
         sb.append("Unexpected Exception\n");
-        sb.append("\n");
+        sb.append('\n');
         sb.append("Consider submitting a bug report using the sourceforge.net"
                 + " bug tracker at the following url:\n");
         sb.append(TRACKER_URL);
-        sb.append("\n");
-        sb.append("\n");
+        sb.append('\n');
+        sb.append('\n');
         sb.append("Please:\n");
         sb.append("  1. Use the following as the title of the bug report:\n\t");
         sb.append(" Unexpected Exception: ");
         sb.append(s[0].getFileName());
         sb.append(" line ");
         sb.append(s[0].getLineNumber());
-        sb.append("\n");
+        sb.append('\n');
         sb
                 .append("  2. Include steps to reproduce the bug (attach a  save game if  appropriate).\n");
         sb
                 .append("  3. Copy and paste the details below into the bug report:\n");
         appendBuildProps(sb);
-        sb.append("\n");
+        sb.append('\n');
         sb.append("\n\t");
 
         sb.append(e.toString());
@@ -140,13 +140,13 @@ public class ReportBugTextGenerator {
         builtBy = null == builtBy ? "not set" : builtBy;
         versionnumber = null == versionnumber ? "not set" : versionnumber;
 
-        sb.append("\t");
+        sb.append('\t');
         sb.append(System.getProperty("os.name"));
-        sb.append(" ");
+        sb.append(' ');
         sb.append(System.getProperty("os.version"));
         sb.append("\n\t");
         sb.append(System.getProperty("java.vm.name"));
-        sb.append(" ");
+        sb.append(' ');
         sb.append(System.getProperty("java.version"));
         sb.append("\n\t");
         sb.append("Freerails build ");

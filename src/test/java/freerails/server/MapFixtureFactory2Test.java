@@ -27,8 +27,6 @@ import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import junit.framework.TestCase;
 
-import static freerails.server.MapFixtureFactory2.getCopy;
-
 /**
  */
 public class MapFixtureFactory2Test extends TestCase {
@@ -39,9 +37,9 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     public void testGetCopy() {
         World w2;
-        w1 = getCopy();
+        w1 = MapFixtureFactory2.getCopy();
         assertNotNull(w1);
-        w2 = getCopy();
+        w2 = MapFixtureFactory2.getCopy();
         assertNotNull(w2);
         assertNotSame(w1, w2);
         assertEquals(w1, w2);
@@ -104,7 +102,7 @@ public class MapFixtureFactory2Test extends TestCase {
     protected void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();
-        w1 = getCopy();
+        w1 = MapFixtureFactory2.getCopy();
     }
 
 }

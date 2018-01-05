@@ -27,8 +27,8 @@ import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.cargo.MutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
+import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.CargoConversionAtStation;
 import freerails.world.station.DemandForCargoAtStation;
@@ -60,10 +60,10 @@ public class DropOffAndPickupCargoMoveGenerator {
     private final boolean autoConsist;
     private int trainBundleId;
     private int stationBundleId;
-    private MutableCargoBundle stationAfter;
-    private MutableCargoBundle stationBefore;
-    private MutableCargoBundle trainAfter;
-    private MutableCargoBundle trainBefore;
+    private MutableCargoBatchBundle stationAfter;
+    private MutableCargoBatchBundle stationBefore;
+    private MutableCargoBatchBundle trainAfter;
+    private MutableCargoBatchBundle trainBefore;
     private ArrayList<Move> moves;
     private ImInts consist = new ImInts();
 
@@ -110,7 +110,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
                 // If this cargo is demanded at the next scheduled station.
                 if (demand.isCargoDemanded(i)) {
-                    int amount = stationAfter.getAmount(i);
+                    int amount = stationAfter.getAmountOfType(i);
 
                     while (amount > 0) {
                         int amount2remove = Math.min(amount,
@@ -146,7 +146,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * another.
      */
     private static void transferCargo(int cargoTypeToTransfer,
-                                      int amountToTransfer, MutableCargoBundle from, MutableCargoBundle to) {
+                                      int amountToTransfer, MutableCargoBatchBundle from, MutableCargoBatchBundle to) {
         if (0 == amountToTransfer) {
             return;
         }
@@ -228,11 +228,11 @@ public class DropOffAndPickupCargoMoveGenerator {
         stationBefore = getCopyOfBundle(stationBundleId);
     }
 
-    private MutableCargoBundle getCopyOfBundle(int id) {
+    private MutableCargoBatchBundle getCopyOfBundle(int id) {
         Serializable fs = w.get(principal, KEY.CARGO_BUNDLES, id);
-        ImmutableCargoBundle ibundle = (ImmutableCargoBundle) fs;
+        ImmutableCargoBatchBundle ibundle = (ImmutableCargoBatchBundle) fs;
 
-        return new MutableCargoBundle(ibundle);
+        return new MutableCargoBatchBundle(ibundle);
     }
 
     private void processTrainBundle() {
@@ -240,7 +240,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 .cargoBatchIterator();
         StationModel station = (StationModel) w.get(principal, KEY.STATIONS,
                 stationId);
-        MutableCargoBundle cargoDroppedOff = new MutableCargoBundle();
+        MutableCargoBatchBundle cargoDroppedOff = new MutableCargoBatchBundle();
 
         // Unload the cargo that the station demands
         while (batches.hasNext()) {
@@ -298,7 +298,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
             int amount2transfer = Math.min(quantity, stationAfter
-                    .getAmount(cargoType));
+                    .getAmountOfType(cargoType));
             transferCargo(cargoType, amount2transfer, stationAfter, trainAfter);
         }
     }

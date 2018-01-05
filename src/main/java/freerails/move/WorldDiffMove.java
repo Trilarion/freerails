@@ -34,9 +34,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static freerails.util.ListKey.Type.Element;
-import static freerails.util.ListKey.Type.EndPoint;
-
 /**
  * A move that makes a number of changes to the map and to the lists.
  *
@@ -106,7 +103,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                     FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
                             .getPrincipal();
                     KEY k = KEY.getKey(lkey.getIndex()[1]);
-                    if (lkey.getType() == Element) {
+                    if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
                         int elementId = lkey.getIndex()[2];
 
@@ -127,7 +124,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                         tempList.add(m);
 
                     } else {
-                        assert (lkey.getType() == EndPoint);
+                        assert (lkey.getType() == ListKey.Type.EndPoint);
                         Integer newSize = (Integer) worldDiffs.getDiff(lkey);
                         int oldSize = world.size(fp, k);
                         if (newSize < oldSize) {
@@ -146,7 +143,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                     int playerId = lkey.getIndex()[0];
                     FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
                             .getPrincipal();
-                    if (lkey.getType() == Element) {
+                    if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
                         int elementId = lkey.getIndex()[1];
 
@@ -159,7 +156,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                         tempList.add(m);
 
                     } else {
-                        assert (lkey.getType() == EndPoint);
+                        assert (lkey.getType() == ListKey.Type.EndPoint);
                         Integer newSize = (Integer) worldDiffs.getDiff(lkey);
                         int oldSize = world.getNumberOfTransactions(fp);
                         if (newSize < oldSize) {
@@ -179,14 +176,14 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
                     switch (lkey.getIndex().length) {
                         case 1: {
-                            assert (lkey.getType() == EndPoint);
+                            assert (lkey.getType() == ListKey.Type.EndPoint);
                             // Do nothing. Adding the activities will increase the
                             // size of the list.
                             break;
 
                         }
                         case 2:
-                            assert (lkey.getType() == EndPoint);
+                            assert (lkey.getType() == ListKey.Type.EndPoint);
                             // Do nothing. Adding the activities will increase the
                             // size of the list.
                             break;

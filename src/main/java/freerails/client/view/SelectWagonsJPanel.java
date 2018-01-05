@@ -180,8 +180,6 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         // Add your handling code here:
         if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
             addwagon();
-        } else {
-
         }
 
     } // GEN-LAST:event_wagonTypesJListKeyTyped
@@ -287,7 +285,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     }
 
     // End of variables declaration                   
-    final private class WagonCellRenderer implements ListCellRenderer {
+    private final class WagonCellRenderer implements ListCellRenderer {
         final RendererRoot rr;
         private final Component[] labels;
 

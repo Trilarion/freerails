@@ -32,7 +32,7 @@ import java.io.IOException;
 /**
  * This class renders a track piece.
  */
-final public class TrackPieceRendererImpl implements TrackPieceRenderer {
+public final class TrackPieceRendererImpl implements TrackPieceRenderer {
     private final Image[] trackPieceIcons = new Image[512];
 
     private final String typeName;
@@ -50,7 +50,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
         for (int i = 0; i < 512; i++) {
             if (trackRule.testTrackPieceLegality(i)) {
-                String fileName = generateFilename(i, getTrackTypeName());
+                String fileName = generateFilename(i, typeName);
                 trackPieceIcons[i] = imageManager.getImage(fileName);
             }
         }
@@ -66,7 +66,7 @@ final public class TrackPieceRendererImpl implements TrackPieceRenderer {
         int newTemplate = TrackConfiguration.from9bitTemplate(i)
                 .get8bitTemplate();
 
-        return relativeFileNameBase + "_"
+        return relativeFileNameBase + '_'
                 + BinaryNumberFormatter.formatWithLowBitOnLeft(newTemplate, 8)
                 + ".png";
     }

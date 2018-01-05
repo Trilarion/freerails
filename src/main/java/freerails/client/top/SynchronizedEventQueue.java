@@ -30,7 +30,7 @@ import java.util.Map;
  *
  * Note, changed to be a singleton to get it working on pre 1.4.2 VMs.
  */
-final public class SynchronizedEventQueue extends EventQueue {
+public final class SynchronizedEventQueue extends EventQueue {
 
     /**
      *

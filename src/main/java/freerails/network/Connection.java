@@ -36,7 +36,7 @@ class Connection {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
 
-    Connection(Socket acceptedConnection) throws IOException {
+    Connection(Socket acceptedConnection) {
         socket = acceptedConnection;
     }
 

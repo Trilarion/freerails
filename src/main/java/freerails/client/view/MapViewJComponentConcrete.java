@@ -41,7 +41,7 @@ import java.util.StringTokenizer;
  * Displays the map, the cursor, and user messages (which are stored on the
  * ModelRoot under the keys QUICK_MESSAGE and PERMANENT_MESSAGE).
  */
-final public class MapViewJComponentConcrete extends MapViewJComponent
+public final class MapViewJComponentConcrete extends MapViewJComponent
         implements ModelRootListener {
     private static final long serialVersionUID = 3834868087706236208L;
 
@@ -284,7 +284,7 @@ final public class MapViewJComponentConcrete extends MapViewJComponent
      * Possible enhancements: setCursor(blankCursor),
      * g.draw(cursorimage,lastMouseLocation.x,lastMouseLocation.y,null)
      */
-    final private class MapViewJComponentMouseAdapter extends MouseInputAdapter {
+    private final class MapViewJComponentMouseAdapter extends MouseInputAdapter {
         /**
          * Screen location of the mouse cursor, when the second mouse button was
          * pressed.

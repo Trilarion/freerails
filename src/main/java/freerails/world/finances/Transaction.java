@@ -30,7 +30,7 @@ public interface Transaction extends Serializable {
      *
      * @return
      */
-    Money deltaCash();
+    Money value();
 
     /**
      * @return

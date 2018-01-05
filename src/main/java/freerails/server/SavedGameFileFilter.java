@@ -10,6 +10,6 @@ import java.io.FilenameFilter;
 class SavedGameFileFilter implements FilenameFilter {
 
     public boolean accept(File dir, String name) {
-        return (name.endsWith(".sav"));
+        return name.endsWith(".sav");
     }
 }

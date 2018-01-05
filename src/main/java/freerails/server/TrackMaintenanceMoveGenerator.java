@@ -35,8 +35,6 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
-import static freerails.world.finances.TransactionCategory.*;
-
 /**
  * This class iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
@@ -60,13 +58,13 @@ public class TrackMaintenanceMoveGenerator {
      */
     public static AddTransactionMove generateMove(World world,
                                                   FreerailsPrincipal principal, TransactionCategory category) {
-        if (TRACK_MAINTENANCE != category && STATION_MAINTENANCE != category) {
+        if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 world, principal);
-        aggregator.setCategory(TRACK);
+        aggregator.setCategory(TransactionCategory.TRACK);
 
         long amount = 0;
 
@@ -75,7 +73,7 @@ public class TrackMaintenanceMoveGenerator {
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
             // Is the track type the category we are interested in?
-            boolean rightType = TRACK_MAINTENANCE == category ? !trackRule
+            boolean rightType = TransactionCategory.TRACK_MAINTENANCE == category ? !trackRule
                     .isStation() : trackRule.isStation();
 
             if (rightType) {
@@ -85,7 +83,7 @@ public class TrackMaintenanceMoveGenerator {
             }
         }
 
-        Transaction t = new MoneyTransaction(new Money(amount), category);
+        Transaction t = new MoneyTransaction(new Money(-amount), category);
 
         return new AddTransactionMove(principal, t);
     }
@@ -96,10 +94,10 @@ public class TrackMaintenanceMoveGenerator {
     public void update(World w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-            Move m = generateMove(w, principal, TRACK_MAINTENANCE);
+            Move m = generateMove(w, principal, TransactionCategory.TRACK_MAINTENANCE);
             moveReceiver.process(m);
 
-            m = generateMove(w, principal, STATION_MAINTENANCE);
+            m = generateMove(w, principal, TransactionCategory.STATION_MAINTENANCE);
             moveReceiver.process(m);
         }
     }

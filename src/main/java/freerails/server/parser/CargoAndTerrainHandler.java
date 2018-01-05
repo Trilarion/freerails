@@ -47,7 +47,7 @@ public interface CargoAndTerrainHandler {
      *
      * @throws org.xml.sax.SAXException
      */
-    void end_Tile() throws SAXException;
+    void end_Tile();
 
     /**
      * An empty element event handling method.
@@ -55,7 +55,7 @@ public interface CargoAndTerrainHandler {
      * @param meta
      * @throws org.xml.sax.SAXException
      */
-    void handle_Cargo(final Attributes meta) throws SAXException;
+    void handle_Cargo(final Attributes meta);
 
     /**
      * An empty element event handling method.

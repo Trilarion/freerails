@@ -106,11 +106,11 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     new DataInputStream(in)));
             String line;
-            String text = "";
+            StringBuilder text = new StringBuilder();
             while ((line = br.readLine()) != null) {
-                text = text + line;
+                text.append(line);
             }
-            return text;
+            return text.toString();
         } catch (Exception e) {
             logger.warn(htmlUrl.toString());
             return "Couldn't read: " + htmlUrl;
@@ -128,10 +128,10 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
      */
     public String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
-        String output = "";
+        StringBuilder output = new StringBuilder();
 
         while (tokenizer.hasMoreTokens()) {
-            output += tokenizer.nextToken();
+            output.append(tokenizer.nextToken());
             if (tokenizer.hasMoreTokens()) {
                 String token = tokenizer.nextToken();
                 String value;
@@ -145,11 +145,11 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
                         throw new NoSuchElementException(token);
                     }
                 }
-                output += value;
+                output.append(value);
             }
         }
 
-        return output;
+        return output.toString();
     }
 
     /**

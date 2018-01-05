@@ -35,7 +35,7 @@ import java.util.Iterator;
  * maximum number of consecutive nodes of this type (used for bridges and
  * tunnels).
  */
-final public class TrackRuleImpl implements TrackRule {
+public final class TrackRuleImpl implements TrackRule {
     private static final long serialVersionUID = 3257281414171801401L;
 
     private final LegalTrackConfigurations legalConfigurations;
@@ -97,11 +97,11 @@ final public class TrackRuleImpl implements TrackRule {
         if (o instanceof TrackRuleImpl) {
             TrackRuleImpl trackRuleImpl = (TrackRuleImpl) o;
             boolean propertiesFieldsEqual = this.properties
-                    .equals(trackRuleImpl.getProperties());
+                    .equals(trackRuleImpl.properties);
             boolean legalConfigurationsEqual = this.legalConfigurations
-                    .equals(trackRuleImpl.getLegalConfigurations());
+                    .equals(trackRuleImpl.legalConfigurations);
             boolean legalTrackPlacementEqual = this.legalTrackPlacement
-                    .equals(trackRuleImpl.getLegalTrackPlacement());
+                    .equals(trackRuleImpl.legalTrackPlacement);
 
             return propertiesFieldsEqual && legalConfigurationsEqual
                     && legalTrackPlacementEqual;

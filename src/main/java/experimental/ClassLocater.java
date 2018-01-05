@@ -206,11 +206,11 @@ public class ClassLocater {
                 + regex + " and which are subtypes of " + targetType.getName());
         StringBuilder sbSkips = new StringBuilder();
         for (Iterator i2 = skipPrefixes.iterator(); i2.hasNext(); ) {
-            sbSkips.append(i2.next().toString() + "*");
+            sbSkips.append(i2.next().toString()).append('*');
             if (i2.hasNext())
                 sbSkips.append(", ");
         }
-        logger.info("...unless they match: " + sbSkips.toString());
+        logger.info("...unless they match: " + sbSkips);
 
         LinkedList<Class> matches = new LinkedList<>();
 

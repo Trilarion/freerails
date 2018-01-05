@@ -116,10 +116,7 @@ public class SavedGameManagerImpl implements SavedGamesManager {
             logger.info("done, " + deltaTime + "ms");
 
             return game;
-        } catch (ClassNotFoundException e) {
-            throw new IOException(e.getMessage());
-        } catch (InvalidClassException e) {
-            //
+        } catch (ClassNotFoundException | InvalidClassException e) {
             throw new IOException(e.getMessage());
         }
     }
@@ -129,7 +126,7 @@ public class SavedGameManagerImpl implements SavedGamesManager {
      * @return
      * @throws IOException
      */
-    public Serializable newMap(String name) throws IOException {
+    public Serializable newMap(String name) {
         return OldWorldImpl.createWorldFromMapFile(name,
                 ProgressMonitor.NULL_INSTANCE);
     }

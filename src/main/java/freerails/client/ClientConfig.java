@@ -46,7 +46,7 @@ public class ClientConfig {
     /**
      *
      */
-    public static final String PATH_ICONS = GRAPHICS_PATH + ICONS_FOLDER_NAME + "/";
+    public static final String PATH_ICONS = GRAPHICS_PATH + ICONS_FOLDER_NAME + '/';
 
     // Sound resource locations
 

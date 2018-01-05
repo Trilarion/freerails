@@ -92,8 +92,7 @@ public class Player implements Serializable {
             return false;
         }
 
-        // return (name.equals(((Player) o).name) && keysEqual);
-        return (name.equals(((Player) o).name));
+        return name.equals(((Player) o).name);
     }
 
     @Override

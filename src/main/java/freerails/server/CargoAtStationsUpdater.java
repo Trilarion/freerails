@@ -26,8 +26,8 @@ import freerails.move.Move;
 import freerails.network.MoveReceiver;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.ImmutableCargoBundle;
-import freerails.world.cargo.MutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
+import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.station.SupplyAtStation;
@@ -64,11 +64,11 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
                 StationModel station = (StationModel) nonNullStations
                         .getElement();
                 SupplyAtStation supply = station.getSupply();
-                ImmutableCargoBundle cargoBundle = (ImmutableCargoBundle) w
+                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) w
                         .get(principal, KEY.CARGO_BUNDLES, station
                                 .getCargoBundleID());
-                MutableCargoBundle before = new MutableCargoBundle(cargoBundle);
-                MutableCargoBundle after = new MutableCargoBundle(cargoBundle);
+                MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
+                MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
                 int stationNumber = nonNullStations.getIndex();
 
                 /*

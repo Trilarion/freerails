@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * A central point at which a client may register to receive moves which have
  * been committed.
  */
-final public class MoveChainFork implements MoveReceiver {
+public final class MoveChainFork implements MoveReceiver {
     private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<>();
 
     private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<>();

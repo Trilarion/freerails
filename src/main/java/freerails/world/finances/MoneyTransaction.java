@@ -25,31 +25,29 @@ package freerails.world.finances;
  * For example, the cost of buying a trains.
  */
 public class MoneyTransaction implements Transaction {
+
     private static final long serialVersionUID = 3258416144497782835L;
-
-    private final Money amount;
-
+    private final Money value;
     private final TransactionCategory category;
 
     /**
-     * @param amount
+     * @param value
      * @param category
      */
-    public MoneyTransaction(Money amount, TransactionCategory category) {
-        this.amount = new Money(-amount.getAmount());
+    public MoneyTransaction(Money value, TransactionCategory category) {
+        this.value = value;
         this.category = category;
     }
 
-    public Money deltaCash() {
-        return amount;
+    public Money value() {
+        return value;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof MoneyTransaction) {
-            MoneyTransaction test = (MoneyTransaction) o;
-
-            return test.amount.equals(amount) && category == test.category;
+            MoneyTransaction other = (MoneyTransaction) o;
+            return other.value.equals(value) && category == other.category;
         }
         return false;
     }
@@ -64,9 +62,8 @@ public class MoneyTransaction implements Transaction {
     @Override
     public int hashCode() {
         int result;
-        result = amount.hashCode();
+        result = value.hashCode();
         result = 29 * result + category.hashCode();
-
         return result;
     }
 }

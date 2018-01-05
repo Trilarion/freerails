@@ -201,12 +201,12 @@ public class StationBuildModel {
          * This key can be used to set the position where the station is to be
          * built as a Point object.
          */
-        public final static String STATION_POSITION_KEY = "STATION_POSITION_KEY";
+        public static final String STATION_POSITION_KEY = "STATION_POSITION_KEY";
         /**
          * This key can be used to retrieve the radius of the currently selected
          * station as an Integer value. Don't bother writing to it!
          */
-        public final static String STATION_RADIUS_KEY = "STATION_RADIUS_KEY";
+        public static final String STATION_RADIUS_KEY = "STATION_RADIUS_KEY";
         private static final long serialVersionUID = 3905236827739926833L;
 
         StationBuildAction() {

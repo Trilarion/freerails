@@ -28,11 +28,10 @@ import freerails.controller.StockPriceCalculator;
 import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.world.*;
 import freerails.world.finances.Money;
+import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.text.DecimalFormat;
-
-import static freerails.world.finances.TransactionCategory.BOND;
 
 /**
  */
@@ -115,7 +114,7 @@ public class BrokerScreenGenerator {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
 
-        aggregator.setCategory(BOND);
+        aggregator.setCategory(TransactionCategory.BOND);
         this.loansTotal = aggregator.calculateValue();
 
         this.publicShares = DC.format(dataGatherer.sharesHeldByPublic());
@@ -134,8 +133,8 @@ public class BrokerScreenGenerator {
                 otherRRsStakes.append("<tr> ");
                 otherRRsStakes.append("<td> </td>");
                 otherRRsStakes.append("<td> </td>");
-                otherRRsStakes.append("<td>" + otherRRName + "</td>");
-                otherRRsStakes.append("<td>" + otherRRStake + "</td>");
+                otherRRsStakes.append("<td>").append(otherRRName).append("</td>");
+                otherRRsStakes.append("<td>").append(otherRRStake).append("</td>");
                 otherRRsStakes.append("</tr>");
             }
         }

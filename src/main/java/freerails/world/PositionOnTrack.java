@@ -141,8 +141,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
             PositionOnTrack other = (PositionOnTrack) o;
 
             return other.cameFrom() == this.cameFrom()
-                    && other.getX() == this.getX()
-                    && other.getY() == this.getY();
+                    && other.x == x
+                    && other.y == y;
         }
         return false;
     }
@@ -158,8 +158,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @return the position on the track which is in the opposite direction.
      */
     public PositionOnTrack getOpposite() {
-        int newX = this.getX() - this.cameFrom.deltaX;
-        int newY = this.getY() - this.cameFrom.deltaY;
+        int newX = x - this.cameFrom.deltaX;
+        int newY = y - this.cameFrom.deltaY;
         TileTransition newDirection = this.cameFrom.getOpposite();
 
         return createComingFrom(newX, newY, newDirection);

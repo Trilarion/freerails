@@ -22,8 +22,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Provides a mapping from a set of ButtonModels or a ComboBoxModel to a set of
@@ -43,7 +42,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     /**
      * The set of MappedButtonModels corresponding to the actions.
      */
-    private final Vector<MappedButtonModel> buttonModels;
+    private final List<MappedButtonModel> buttonModels;
     private boolean initialised = false;
     private boolean performActionOnSetSelectedItem = true;
 
@@ -57,7 +56,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
     public ActionAdapter(Action[] actions) {
         super();
         this.actions = actions;
-        buttonModels = new Vector<>();
+        buttonModels = new ArrayList();
 
         for (Action action : actions) {
             buttonModels.add(new MappedButtonModel(action));
@@ -90,7 +89,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
             private int i = 0;
 
             public boolean hasMoreElements() {
-                return (i < actions.length);
+                return i < actions.length;
             }
 
             public Action nextElement() {
@@ -103,7 +102,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * @return an enumeration of MappedButtonModel
      */
     public Enumeration<MappedButtonModel> getButtonModels() {
-        return buttonModels.elements();
+        return Collections.enumeration(buttonModels);
     }
 
     /**

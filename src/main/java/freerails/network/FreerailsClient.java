@@ -75,7 +75,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     public final LogOnResponse connect(String address, int port,
                                        String username, String password) {
         if (logger.isDebugEnabled()) {
-            logger.debug("Connect to remote server.  " + address + ":" + port);
+            logger.debug("Connect to remote server.  " + address + ':' + port);
         }
 
         try {
@@ -96,7 +96,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
             return LogOnResponse.rejected(e.getMessage());
         }
     }
@@ -125,7 +124,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-
             return LogOnResponse.rejected(e.getMessage());
         }
     }
@@ -137,6 +135,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         try {
             connectionToServer.disconnect();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -188,7 +187,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Reads and deals with all outstanding messages from the server.
      */
-    final public void update() {
+    public final void update() {
         try {
             Serializable[] messages = connectionToServer
                     .readFromServer();
@@ -246,7 +245,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * @return
      */
-    final public World getWorld() {
+    public final World getWorld() {
         return world;
     }
 
@@ -255,7 +254,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      *
      * @param move
      */
-    final public void process(Move move) {
+    public final void process(Move move) {
         committer.toServer(move);
         moveFork.process(move);
         write(move);
@@ -267,7 +266,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      * @param move
      * @return
      */
-    final public MoveStatus tryDoMove(Move move) {
+    public final MoveStatus tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 

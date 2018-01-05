@@ -128,7 +128,7 @@ public class TrackConfigurationTest extends TestCase {
             String toString = test.toString();
 
             if (strings.contains(toString)) {
-                fail(toString + " " + i);
+                fail(toString + ' ' + i);
             }
 
             strings.add(toString);

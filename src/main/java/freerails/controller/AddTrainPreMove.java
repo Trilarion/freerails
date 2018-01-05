@@ -25,7 +25,7 @@ import freerails.move.*;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.*;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
@@ -155,7 +155,7 @@ public class AddTrainPreMove implements PreMove {
     public Move generateMove(ReadOnlyWorld w) {
         // Add cargo bundle.
         int bundleId = w.size(principal, KEY.CARGO_BUNDLES);
-        ImmutableCargoBundle cargo = ImmutableCargoBundle.EMPTY_BUNDLE;
+        ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;
         AddItemToListMove addCargoBundle = new AddItemToListMove(
                 KEY.CARGO_BUNDLES, bundleId, cargo, principal);
 

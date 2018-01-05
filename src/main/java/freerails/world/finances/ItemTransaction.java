@@ -51,7 +51,7 @@ public class ItemTransaction implements Transaction {
         this.amount = amount;
     }
 
-    public Money deltaCash() {
+    public Money value() {
         return amount;
     }
 

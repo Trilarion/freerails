@@ -38,7 +38,7 @@ import java.util.Stack;
 /**
  * Provides methods that generate moves that build, upgrade, and remove track.
  */
-final public class TrackMoveProducer {
+public final class TrackMoveProducer {
 
     private final ModelRoot mr;
 

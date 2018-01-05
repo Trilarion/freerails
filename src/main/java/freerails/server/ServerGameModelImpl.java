@@ -27,7 +27,8 @@ import freerails.network.MoveReceiver;
 import freerails.network.ServerGameModel;
 import freerails.world.*;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A ServerGameModel that contains the automations used in the actual game.
@@ -37,7 +38,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     /**
      * List of the ServerAutomaton objects connected to this game.
      */
-    private final Vector<ServerAutomaton> serverAutomata;
+    private final List<ServerAutomaton> serverAutomata;
 
     /**
      *
@@ -59,14 +60,14 @@ public class ServerGameModelImpl implements ServerGameModel {
      *
      */
     public ServerGameModelImpl() {
-        this(null, new Vector<>());
+        this(null, new ArrayList());
     }
 
     /**
      * @param w
      * @param serverAutomata
      */
-    public ServerGameModelImpl(World w, Vector<ServerAutomaton> serverAutomata) {
+    public ServerGameModelImpl(World w, List<ServerAutomaton> serverAutomata) {
         this.world = w;
         this.serverAutomata = serverAutomata;
 

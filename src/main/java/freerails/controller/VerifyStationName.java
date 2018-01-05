@@ -61,7 +61,7 @@ public class VerifyStationName {
      */
     public String getName() {
         String appropriateName = nameToVerify;
-        boolean found = false;
+        boolean found;
         String tempName = null;
 
         found = checkStationExists(appropriateName);
@@ -72,7 +72,7 @@ public class VerifyStationName {
         // a station with that name already exists, so we need to find another
         // name
         for (String stationAlternative : stationAlternatives) {
-            tempName = appropriateName + " " + stationAlternative;
+            tempName = appropriateName + ' ' + stationAlternative;
             found = checkStationExists(tempName);
             if (!found) {
                 return tempName;

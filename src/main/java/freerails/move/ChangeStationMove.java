@@ -25,7 +25,7 @@ import freerails.world.station.StationModel;
 /**
  * This Move changes the properties of a station.
  */
-final public class ChangeStationMove extends ChangeItemInListMove {
+public final class ChangeStationMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3833469496064160307L;
 
     /**

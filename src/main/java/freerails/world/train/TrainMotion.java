@@ -52,7 +52,7 @@ import java.util.ArrayList;
  * @see freerails.world.train.PathOnTiles
  * @see freerails.world.train.CompositeSpeedAgainstTime
  */
-strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
+public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
 
     private static final long serialVersionUID = 3618423722025891641L;
 
@@ -264,12 +264,6 @@ strictfp public class TrainMotion implements Activity<TrainPositionOnMap> {
 
         }
 
-        if (distanceSoFar < start) {
-            // throw new IllegalStateException();
-        }
-        if (distanceSoFar < (end - 0.1)) {
-            // throw new IllegalStateException();
-        }
         int lastStep = path.steps() - stepsAfterEnd;
         for (int i = stepsBeforeStart; i < lastStep; i++) {
             tileTransitions.add(path.getStep(i));

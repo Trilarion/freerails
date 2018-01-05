@@ -21,33 +21,33 @@ package freerails.world.cargo;
 import java.io.Serializable;
 
 /**
- * This class represents a cargo batch.
- *
- * Cargo of the same batch is cargo of the same type that was produced
- * at the same location and at the same time.
+ * Represents a cargo batch. Cargo of the same batch is cargo of
+ * the same type that was produced at the same location and at the same time.
  */
 public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
     // TODO Why is cargoType an int here and not CargoCategory or CargoType??
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoType;
+    // TODO Use a Point instead of X ands Y
     private final int sourceX;
     private final int sourceY;
+    // TODO call it originalStationID
     private final int stationOfOrigin;
-    private final long timeCreated;
+    private final long creationTime;
 
     /**
-     * @param type
+     * @param cargoType
      * @param x
      * @param y
      * @param time
      * @param origin
      */
-    public CargoBatch(int type, int x, int y, long time, int origin) {
-        cargoType = type;
+    public CargoBatch(int cargoType, int x, int y, long time, int origin) {
+        this.cargoType = cargoType;
         sourceX = x;
         sourceY = y;
-        timeCreated = time;
+        creationTime = time;
         stationOfOrigin = origin;
     }
 
@@ -84,10 +84,10 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (o instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) o;
 
-            return test.getCargoType() == this.cargoType
-                    && test.getSourceX() == this.sourceX
+            return test.cargoType == this.cargoType
+                    && test.sourceX == this.sourceX
                     && test.sourceY == this.sourceY
-                    && test.timeCreated == this.timeCreated
+                    && test.creationTime == this.creationTime
                     && test.stationOfOrigin == this.stationOfOrigin;
         }
         return false;
@@ -101,22 +101,22 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         result = 37 * result + this.sourceY;
         result = 37 * result + this.stationOfOrigin;
         result = 37 * result
-                + (int) (this.timeCreated ^ (this.timeCreated >>> 32));
+                + (int) (this.creationTime ^ (this.creationTime >>> 32));
 
         return result;
     }
 
     public int compareTo(CargoBatch o) {
-        if (timeCreated != o.timeCreated)
-            return (int) (timeCreated - o.timeCreated);
+        if (creationTime != o.creationTime)
+            return (int) (creationTime - o.creationTime);
         if (cargoType != o.cargoType)
-            return (cargoType - o.cargoType);
+            return cargoType - o.cargoType;
         if (stationOfOrigin != o.stationOfOrigin)
-            return (stationOfOrigin - o.stationOfOrigin);
+            return stationOfOrigin - o.stationOfOrigin;
         if (sourceX != o.sourceX)
-            return (sourceX - o.sourceX);
+            return sourceX - o.sourceX;
         if (sourceY != o.sourceY)
-            return (sourceY - o.sourceY);
+            return sourceY - o.sourceY;
         return 0;
     }
 }

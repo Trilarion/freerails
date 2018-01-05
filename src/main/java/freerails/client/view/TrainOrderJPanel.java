@@ -105,7 +105,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         } else {
             select = Selection.unselect;
         }
-        String orderText = null;
+        String orderText;
         if (null == trainOrders.order.consist) {
             if (trainOrders.order.autoConsist) {
                 orderText = "Select wagons automatically";

@@ -67,7 +67,7 @@ public class FinancialDataGathererTest extends TestCase {
         assertTrue(addBond()); // 7%
         assertFalse(addBond()); // 8% so can't
         fdg = new FinancialDataGatherer(w, player.getPrincipal());
-        assertEquals(8, fdg.nextBondInterestRate());
+        assertEquals(8.0, fdg.nextBondInterestRate());
     }
 
     /**
@@ -88,10 +88,10 @@ public class FinancialDataGathererTest extends TestCase {
     public void testNextBondInterestRate() {
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
                 .getPrincipal());
-        assertEquals(5, fdg.nextBondInterestRate());
+        assertEquals(5.0, fdg.nextBondInterestRate());
         w.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
         fdg = new FinancialDataGatherer(w, player.getPrincipal());
-        assertEquals(6, fdg.nextBondInterestRate());
+        assertEquals(6.0, fdg.nextBondInterestRate());
     }
 
     /**

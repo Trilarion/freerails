@@ -266,16 +266,14 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public boolean isCrashSite() {
-        boolean crashSite = false;
-        return crashSite;
+        return false;
     }
 
     /**
      * @return
      */
     public int getFrameCt() {
-        int frameCt = 1;
-        return frameCt;
+        return 1;
     }
 
     @Override
@@ -547,14 +545,14 @@ public class TrainPositionOnMap implements Serializable {
         sb.append("TrainPosition {");
 
         for (int i = 0; i < xpoints.size(); i++) {
-            sb.append("(");
+            sb.append('(');
             sb.append(xpoints.get(i));
             sb.append(", ");
             sb.append(ypoints.get(i));
             sb.append("), ");
         }
 
-        sb.append("}");
+        sb.append('}');
 
         return sb.toString();
     }

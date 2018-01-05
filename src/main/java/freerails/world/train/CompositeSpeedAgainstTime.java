@@ -94,7 +94,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         checkT(dt);
         double acceleration;
         SpeedTimeAndStatus.TrainActivity activity = SpeedTimeAndStatus.TrainActivity.READY;
-        double s = 0;
+        double s;
         double speed;
 
         TandI tai = getIndex(dt);

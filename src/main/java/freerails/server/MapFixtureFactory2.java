@@ -43,7 +43,7 @@ public class MapFixtureFactory2 {
      *
      * @return
      */
-    synchronized public static World getCopy() {
+    public static synchronized World getCopy() {
         if (null == w) {
             w = generateWorld();
         }

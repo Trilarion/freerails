@@ -128,7 +128,7 @@ public class RemoveItemFromListMove implements ListMove {
         if (o instanceof RemoveItemFromListMove) {
             RemoveItemFromListMove test = (RemoveItemFromListMove) o;
 
-            if (!this.item.equals(test.getBefore())) {
+            if (!this.item.equals(test.item)) {
                 return false;
             }
 

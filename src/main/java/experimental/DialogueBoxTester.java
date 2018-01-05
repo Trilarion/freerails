@@ -32,7 +32,7 @@ import freerails.util.ImInts;
 import freerails.util.ProgressMonitor;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.MutableCargoBundle;
+import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.DemandForCargoAtStation;
@@ -140,7 +140,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
         // same one.
-        MutableCargoBundle cb = new MutableCargoBundle();
+        MutableCargoBatchBundle cb = new MutableCargoBatchBundle();
         cb.setAmount(new CargoBatch(0, 10, 10, 8, 0), 80);
         cb.setAmount(new CargoBatch(0, 10, 10, 9, 0), 60);
         cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 140);

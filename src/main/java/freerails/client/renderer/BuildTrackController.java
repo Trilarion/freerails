@@ -37,8 +37,6 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static freerails.controller.TrackMoveProducer.BuildMode.*;
-
 /**
  * This class provides methods to change the proposed track and save it to the
  * real world.
@@ -222,7 +220,7 @@ public class BuildTrackController implements GameModel {
 
         // If track has actually been built, play the build track sound.
         if (trackBuilder != null && ms.isOk()) {
-            if (trackBuilder.getTrackBuilderMode() == BUILD_TRACK) {
+            if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BuildMode.BUILD_TRACK) {
                 this.soundManager.playSound(
                         ClientConfig.SOUND_BUILD_TRACK, 0);
             }
@@ -291,9 +289,9 @@ public class BuildTrackController implements GameModel {
 
         ImPoint from = getCursorPosition();
 
-        assert (trackBuilder.getTrackBuilderMode() != IGNORE_TRACK);
-        assert (trackBuilder.getTrackBuilderMode() != BUILD_STATION);
-        buildNewTrack = trackBuilder.getTrackBuilderMode() == BUILD_TRACK;
+        assert (trackBuilder.getTrackBuilderMode() != TrackMoveProducer.BuildMode.IGNORE_TRACK);
+        assert (trackBuilder.getTrackBuilderMode() != TrackMoveProducer.BuildMode.BUILD_STATION);
+        buildNewTrack = trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BuildMode.BUILD_TRACK;
 
         /*
          * If we have just found the route between the two points, don't waste
@@ -348,8 +346,7 @@ public class BuildTrackController implements GameModel {
      */
     private void setTargetPoint(ImPoint newTargetPoint) {
         this.targetPoint = newTargetPoint;
-        ImPoint p = newTargetPoint;
-        modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, p);
+        modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, newTargetPoint);
     }
 
     private void setVisible(boolean show) {
@@ -533,7 +530,7 @@ public class BuildTrackController implements GameModel {
             if (ms.ok) {
                 actPoint = targetPoint;
                 setCursorMessage("");
-                if (REMOVE_TRACK == getBuildMode()) {
+                if (TrackMoveProducer.BuildMode.REMOVE_TRACK == getBuildMode()) {
                     soundManager.playSound(
                             ClientConfig.SOUND_REMOVE_TRACK, 0);
                 } else {

@@ -18,7 +18,7 @@
 
 package freerails.server;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Class to randomly select a terrain type for a terrain tile.
@@ -37,8 +37,8 @@ import java.util.Vector;
 // TODO only used by MapFactory, should go there
 public class TerrainRandomiser {
 
-    private final Vector<Integer> terrainTypes;
-    private final Vector<Integer> non_terrainTypes;
+    private final List<Integer> terrainTypes;
+    private final List<Integer> non_terrainTypes;
 
     // clear (on avg.)
 
@@ -47,7 +47,7 @@ public class TerrainRandomiser {
      * @param num2
      */
 
-    public TerrainRandomiser(Vector<Integer> num, Vector<Integer> num2) {
+    public TerrainRandomiser(List<Integer> num, List<Integer> num2) {
         terrainTypes = num;
         non_terrainTypes = num2;
     }
@@ -78,7 +78,7 @@ public class TerrainRandomiser {
              */
             for (int i = 0; i < terrainTypes.size(); i++) {
                 if ((value > (i * divide)) && (value <= ((i + 1) * divide))) {
-                    return terrainTypes.elementAt(i);
+                    return terrainTypes.get(i);
                 }
             }
         }

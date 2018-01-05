@@ -26,8 +26,6 @@ import junit.framework.TestCase;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static freerails.util.ListKey.Type.EndPoint;
-
 /**
  *
  */
@@ -147,7 +145,7 @@ public class List2DDiffTest extends TestCase {
         assertEquals(1, diffs.size());
 
         diffs.addD1();
-        ListKey sizeKey = new ListKey(EndPoint, listid.test);
+        ListKey sizeKey = new ListKey(ListKey.Type.EndPoint, listid.test);
         assertEquals(2, map.size());
         assertTrue(map.containsKey(sizeKey));
         assertEquals(2, map.get(sizeKey));
@@ -213,7 +211,7 @@ public class List2DDiffTest extends TestCase {
         assertEquals(0, diffs.sizeD1());
         diffs.addDimension();
 
-        ListKey sizeKey = new ListKey(EndPoint, listid.test);
+        ListKey sizeKey = new ListKey(ListKey.Type.EndPoint, listid.test);
 
         assertEquals(
                 "There should be two values: EndPoint = 0 and EndPoint[0] = 0",

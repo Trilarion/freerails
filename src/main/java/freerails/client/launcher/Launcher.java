@@ -249,7 +249,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     client.connect(server, cop.getPlayerName(), "password");
 
                     setServerGameModel();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     recover = true;
                 } finally {
@@ -276,7 +276,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     cp.setListOfPlayers(playerNames);
                     cl.show(jPanel1, "3");
                     setNextEnabled(false);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     // We end up here if an Exception was thrown when loading a
                     // saved game.
                     setInfoText(e.getMessage(), MSG_TYPE.WARNING);
@@ -320,7 +320,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         recover = true;
                         setInfoText(logOnResponse.getMessage(), MSG_TYPE.WARNING);
                     }
-                } catch (IOException | NullPointerException e) {
+                } catch (NullPointerException e) {
                     setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                     recover = true;
                 } finally {
@@ -357,16 +357,15 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         }// End of switch statement
     }
 
-    private void setServerGameModel() throws IOException {
+    private void setServerGameModel() {
 
         ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
         if (isNewGame()) {
             SelectMapJPanel msp2 = (SelectMapJPanel) wizardPages[1];
             server.newGame(msp2.getNewMapName());
             cop.limitPlayerNames(null);
-        } else {
-            // Do nothing since the server is already set up.
-        }
+        }  // Do nothing since the server is already set up.
+
     }
 
     private boolean isNewGame() {
@@ -671,7 +670,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                         }
                         setButtonsVisible(false);
                         setNextEnabled(false);
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         setInfoText(e.getMessage(), MSG_TYPE.WARNING);
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);

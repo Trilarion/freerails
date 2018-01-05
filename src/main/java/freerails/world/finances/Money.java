@@ -22,17 +22,13 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 
 /**
- * Represents an amount of Money.
+ * Represents an immutable amount of Money.
  */
-final public class Money implements Serializable {
+public final class Money implements Serializable {
 
-    /**
-     *
-     */
-    public static final Money ZERO = new Money(0);
     private static final long serialVersionUID = 3258697615163338805L;
+    public static final Money ZERO_MONEY = new Money(0);
     private static final DecimalFormat df = new DecimalFormat("#,###");
-
     private final long amount;
 
     /**
@@ -62,8 +58,8 @@ final public class Money implements Serializable {
     /**
      * @return
      */
-    public Money changeSign() {
-        return new Money(-amount);
+    public static Money changeSign(Money money) {
+        return new Money(-money.amount);
     }
 
     @Override

@@ -26,7 +26,7 @@ import java.io.Serializable;
  * This class represents an engine type, for example 'Grass Hopper'. It
  * encapsulates the properties that are common to all engines of the same type.
  */
-final public class EngineType implements Serializable {
+public final class EngineType implements Serializable {
     private static final long serialVersionUID = 3617014130905592630L;
 
     private final String engineTypeName;

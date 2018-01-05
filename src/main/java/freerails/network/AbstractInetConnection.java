@@ -22,7 +22,6 @@ import freerails.util.SychronizedQueue;
 import freerails.util.SynchronizedFlag;
 import org.apache.log4j.Logger;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
@@ -107,7 +106,6 @@ abstract class AbstractInetConnection implements Runnable {
                     inbound.notifyAll();
                 }
             }
-        } catch (EOFException e) {
         } catch (IOException | ClassNotFoundException e) {
         }
 

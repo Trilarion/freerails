@@ -230,7 +230,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
     }
 
     public int getNaturalNumber() {
-        return getRowID() + 1;
+        return row + 1;
     }
 
     public void gotoRow(int newRow) {

@@ -58,7 +58,7 @@ public class SoundManager implements ModelRootListener, LineListener {
                 break; // Java Sound Audio Engine, version 1.0 satisfies this.
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + "("
+            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + '('
                     + maxLines + " voices).");
         }
 
@@ -76,7 +76,7 @@ public class SoundManager implements ModelRootListener, LineListener {
      */
     public static void main(String[] args) {
 
-        SoundManager soundPlayer = getSoundManager();
+        SoundManager soundPlayer = soundManager;
         for (int i = 0; i < 100; i++) {
             soundPlayer.playSound(ClientConfig.SOUND_CASH, 10);
 
@@ -94,7 +94,7 @@ public class SoundManager implements ModelRootListener, LineListener {
      * @throws LineUnavailableException
      */
     public void addClip(String s) throws IOException,
-            UnsupportedAudioFileException, LineUnavailableException {
+            UnsupportedAudioFileException {
         if (samples.containsKey(s)) {
             return;
         }
@@ -165,13 +165,13 @@ public class SoundManager implements ModelRootListener, LineListener {
     }
 
     /**
-     * @param p
-     * @param before
-     * @param after
+     * @param property
+     * @param oldValue
+     * @param newValue
      */
-    public void propertyChange(ModelRoot.Property p, Object before, Object after) {
-        if (p.equals(ModelRoot.Property.PLAY_SOUNDS)) {
-            playSounds = (Boolean) after;
+    public void propertyChange(ModelRoot.Property property, Object oldValue, Object newValue) {
+        if (property.equals(ModelRoot.Property.PLAY_SOUNDS)) {
+            playSounds = (Boolean) newValue;
         }
     }
 

@@ -60,7 +60,7 @@ public final class LegalTrackPlacement implements Serializable {
 
     @Override
     public int hashCode() {
-        return (placementRule != null ? placementRule.hashCode() : 0);
+        return placementRule != null ? placementRule.hashCode() : 0;
     }
 
     /**
@@ -79,7 +79,7 @@ public final class LegalTrackPlacement implements Serializable {
         if (o instanceof LegalTrackPlacement) {
             LegalTrackPlacement test = (LegalTrackPlacement) o;
 
-            return this.placementRule.equals(test.getPlacementRule())
+            return this.placementRule.equals(test.placementRule)
                     && this.terrainTypes.equals(test.terrainTypes);
         }
         return false;

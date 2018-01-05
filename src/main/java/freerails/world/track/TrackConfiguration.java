@@ -21,7 +21,6 @@ package freerails.world.track;
 import freerails.world.FlatTrackTemplate;
 import freerails.world.TileTransition;
 
-import java.io.ObjectStreamException;
 import java.util.ArrayList;
 
 /**
@@ -30,7 +29,7 @@ import java.util.ArrayList;
  * Instances of this class cannot be created and must be obtained via the static
  * methods herein.
  */
-final public class TrackConfiguration implements FlatTrackTemplate {
+public final class TrackConfiguration implements FlatTrackTemplate {
 
     /**
      *
@@ -97,7 +96,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
         int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
 
-        return (flatTrackConfigurations.get(i));
+        return flatTrackConfigurations.get(i);
     }
 
     private static ArrayList<TrackConfiguration> setupConfigurations() {
@@ -214,7 +213,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
         return configuration;
     }
 
-    private Object readResolve() throws ObjectStreamException {
+    private Object readResolve() {
         return TrackConfiguration.from9bitTemplate(this.configuration);
     }
 
@@ -237,7 +236,7 @@ final public class TrackConfiguration implements FlatTrackTemplate {
             TileTransition v = TileTransition.getInstance(i);
 
             if (contains(v)) {
-                sb.append(",");
+                sb.append(',');
                 sb.append(v);
                 matches++;
             }

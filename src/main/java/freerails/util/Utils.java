@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 /**
  * A bunch of static methods.
  */
-strictfp public class Utils {
+public strictfp class Utils {
 
     /**
      * @param a
@@ -62,10 +62,7 @@ strictfp public class Utils {
 
             o = (Serializable) objectIn.readObject();
             return o;
-        } catch (ClassNotFoundException e) {
-            // Should never happen.
-            throw new IllegalStateException();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             // Should never happen.
             throw new IllegalStateException();
         }
@@ -97,8 +94,7 @@ strictfp public class Utils {
 
         while (tok.hasMoreTokens()) {
             String token = tok.nextToken().toLowerCase();
-            result.append(Character.toUpperCase(token.charAt(0))
-                    + token.substring(1) + " ");
+            result.append(Character.toUpperCase(token.charAt(0))).append(token.substring(1)).append(' ');
         }
         return result.toString().trim();
     }

@@ -52,7 +52,7 @@ public class TrainMaintenanceMoveGenerator {
         NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
         int numberOfTrains = trains.size();
         long amount = numberOfTrains * 5000;
-        Transaction t = new MoneyTransaction(new Money(amount),
+        Transaction t = new MoneyTransaction(new Money(-amount),
                 TransactionCategory.TRAIN_MAINTENANCE);
 
         return new AddTransactionMove(principal, t);

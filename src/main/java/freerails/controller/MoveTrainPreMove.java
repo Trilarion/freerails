@@ -27,7 +27,7 @@ import freerails.move.NextActivityMove;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.*;
-import freerails.world.cargo.CargoBundle;
+import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.terrain.FreerailsTile;
@@ -38,9 +38,6 @@ import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
-
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
-import static freerails.world.train.SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD;
 
 /**
  * Generates moves for changes in train position and stops at stations.
@@ -88,7 +85,7 @@ public class MoveTrainPreMove implements PreMove {
                 currentPosition.getY());
         int endPos = PositionOnTrack.toInt(target.x, target.y);
         HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
-        TileTransition nextTileTransition = null;
+        TileTransition nextTileTransition;
         if (destPaths != null) {
             nextTileTransition = destPaths.get(startPos);
             if (nextTileTransition != null) {
@@ -169,12 +166,12 @@ public class MoveTrainPreMove implements PreMove {
 
             StationModel station = (StationModel) w.get(principal,
                     KEY.STATIONS, stationId);
-            CargoBundle cb = (CargoBundle) w.get(principal, KEY.CARGO_BUNDLES,
+            CargoBatchBundle cb = (CargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES,
                     station.getCargoBundleID());
 
             for (int i = 0; i < spaceAvailable.size(); i++) {
                 int space = spaceAvailable.get(i);
-                int atStation = cb.getAmount(i);
+                int atStation = cb.getAmountOfType(i);
                 if (space * atStation > 0) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("There is cargo to transfer!");
@@ -246,8 +243,8 @@ public class MoveTrainPreMove implements PreMove {
                     stopsHandler.arrivesAtPoint(x, y);
 
                     SpeedTimeAndStatus.TrainActivity status = stopsHandler
-                            .isWaiting4FullLoad() ? WAITING_FOR_FULL_LOAD
-                            : STOPPED_AT_STATION;
+                            .isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD
+                            : TrainActivity.STOPPED_AT_STATION;
                     PathOnTiles path = tm.getPath();
                     int lastTrainLength = tm.getTrainLength();
                     int currentTrainLength = stopsHandler.getTrainLength();

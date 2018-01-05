@@ -26,8 +26,8 @@ import java.io.Serializable;
 public class IntLine implements Serializable {
 
     private static final long serialVersionUID = 3257853198755705393L;
-    private final static int MAX_SQUAREROOTS = 64 * 256;
-    private final static double squareRoots[];
+    private static final int MAX_SQUAREROOTS = 64 * 256;
+    private static final double squareRoots[];
 
     static {
         squareRoots = new double[MAX_SQUAREROOTS];
@@ -118,6 +118,6 @@ public class IntLine implements Serializable {
 
     @Override
     public String toString() {
-        return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ")";
+        return "(" + x1 + ", " + y1 + ", " + x2 + ", " + y2 + ')';
     }
 }

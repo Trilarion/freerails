@@ -27,60 +27,59 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * This CargoBundle implementation uses a {@code java.util.SortedMap} to
+ * This CargoBatchBundle implementation uses a {@code java.util.SortedMap} to
  * map quantities to cargo batches.
  */
-public class MutableCargoBundle implements CargoBundle {
+public class MutableCargoBatchBundle implements CargoBatchBundle {
 
-    private final SortedMap<CargoBatch, Integer> sortedMap;
+    private final SortedMap<CargoBatch, Integer> cargoMap;
     private int updateID = 0;
 
-    /**
-     *
-     */
-    public MutableCargoBundle() {
-        sortedMap = new TreeMap<>();
+    public MutableCargoBatchBundle() {
+        cargoMap = new TreeMap<>();
     }
 
     /**
-     * @param immutableCargoBundle
+     * @param immutableCargoBatchBundle
      */
-    public MutableCargoBundle(ImmutableCargoBundle immutableCargoBundle) {
+    public MutableCargoBatchBundle(ImmutableCargoBatchBundle immutableCargoBatchBundle) {
         this();
 
-        Iterator<CargoBatch> it = immutableCargoBundle.cargoBatchIterator();
+        Iterator<CargoBatch> it = immutableCargoBatchBundle.cargoBatchIterator();
 
         while (it.hasNext()) {
             CargoBatch cargoBatch = it.next();
-            addCargo(cargoBatch, immutableCargoBundle.getAmount(cargoBatch));
+            addCargo(cargoBatch, immutableCargoBatchBundle.getAmount(cargoBatch));
         }
     }
 
     /**
+     * Adds a cargo batch with a certain amount.
+     *
      * @param cargoBatch
      * @param amount
      */
     public void addCargo(CargoBatch cargoBatch, int amount) {
-        int amountAlready = this.getAmount(cargoBatch);
-        this.setAmount(cargoBatch, amount + amountAlready);
+        setAmount(cargoBatch, amount + getAmount(cargoBatch));
         updateID++;
     }
 
     /**
      * Note, calling hasNext() or next() on the returned iterator throws a
-     * ConcurrentModificationException if this CargoBundle has changed since the
+     * ConcurrentModificationException if this CargoBatchBundle has changed since the
      * iterator was acquired.
      *
      * @return
      */
     public Iterator<CargoBatch> cargoBatchIterator() {
-        final Iterator<CargoBatch> it = sortedMap.keySet().iterator();
+        final Iterator<CargoBatch> it = cargoMap.keySet().iterator();
 
+        // TODO Does Java already has a nonmo
         /*
          * A ConcurrentModificationException used to get thrown when the amount
          * of cargo was set to 0, since this resulted in the key being removed
          * from the hash map. The iterator below throws a
-         * ConcurrentModificationException whenever this CargoBundle has been
+         * ConcurrentModificationException whenever this CargoBatchBundle has been
          * changed since the iterator was acquired. This should mean that if the
          * cargo bundle gets changed while the iterator is in use, you will know
          * about it straight away.
@@ -106,7 +105,7 @@ public class MutableCargoBundle implements CargoBundle {
 
             public void remove() {
                 throw new UnsupportedOperationException(
-                        "Use CargoBundle.setAmount(CargoBatch cb, 0)");
+                        "Use CargoBatchBundle.setAmount(CargoBatch cb, 0)");
             }
         };
     }
@@ -116,7 +115,7 @@ public class MutableCargoBundle implements CargoBundle {
      * @return
      */
     public boolean contains(CargoBatch cargoBatch) {
-        return sortedMap.containsKey(cargoBatch);
+        return cargoMap.containsKey(cargoBatch);
     }
 
     @Override
@@ -124,75 +123,61 @@ public class MutableCargoBundle implements CargoBundle {
         if (null == arg0) {
             return false;
         }
-
-        return arg0 instanceof CargoBundle && ImmutableCargoBundle.equals(this, (CargoBundle) arg0);
-
-    }
-
-    /**
-     * @param cargoBatch
-     * @return
-     */
-    public int getAmount(CargoBatch cargoBatch) {
-        if (contains(cargoBatch)) {
-
-            return sortedMap.get(cargoBatch);
-        }
-        return 0;
+        return arg0 instanceof CargoBatchBundle && ImmutableCargoBatchBundle.equals(this, (CargoBatchBundle) arg0);
     }
 
     /**
      * @param cargoType
      * @return
      */
-    public int getAmount(int cargoType) {
-        Iterator<CargoBatch> it = cargoBatchIterator();
+    public int getAmountOfType(int cargoType) {
         int amount = 0;
-
-        while (it.hasNext()) {
-            CargoBatch cb = it.next();
-
-            if (cb.getCargoType() == cargoType) {
-                amount += getAmount(cb);
+        for (CargoBatch cargoBatch : cargoMap.keySet()) {
+            if (cargoBatch.getCargoType() == cargoType) {
+                amount += getAmount(cargoBatch);
             }
         }
-
         return amount;
     }
 
     @Override
     public int hashCode() {
-        return sortedMap.size();
+        return cargoMap.size();
+    }
+
+    public int getAmount(CargoBatch cargoBatch) {
+        if (contains(cargoBatch)) {
+            return cargoMap.get(cargoBatch);
+        }
+        return 0;
     }
 
     /**
-     * @param cb
+     * @param cargoBatch
      * @param amount
      */
-    public void setAmount(CargoBatch cb, int amount) {
+    public void setAmount(CargoBatch cargoBatch, int amount) {
         if (0 == amount) {
-            sortedMap.remove(cb);
+            cargoMap.remove(cargoBatch);
         } else {
-            sortedMap.put(cb, amount);
+            cargoMap.put(cargoBatch, amount);
         }
 
         updateID++;
     }
 
-    /**
-     * @return
-     */
     public int size() {
-        return sortedMap.size();
+        return cargoMap.size();
     }
 
     /**
      * @return
      */
-    public ImmutableCargoBundle toImmutableCargoBundle() {
-        return new ImmutableCargoBundle(sortedMap);
+    public ImmutableCargoBatchBundle toImmutableCargoBundle() {
+        return new ImmutableCargoBatchBundle(this);
     }
 
+    // TODO this involves some crazy copying just for the name, make the interface abstract instead
     @Override
     public String toString() {
         return toImmutableCargoBundle().toString();

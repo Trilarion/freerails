@@ -75,7 +75,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 
     private String findTrainIncome(int trainNum) {
         Money m = model.findTrainIncome(trainNum);
-        return "$" + m.toString();
+        return '$' + m.toString();
     }
 
     public java.awt.Component getListCellRendererComponent(
@@ -129,7 +129,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         long cost = (long) (month / 12 * 5000);
 
         Money m = new Money(cost);
-        return "$" + m.toString();
+        return '$' + m.toString();
     }
 
     /**

@@ -315,17 +315,16 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
             int xInt = (int) x;
             int yInt = (int) y;
 
-            String stopNumbersString = "";
+            StringBuilder stopNumbersString = new StringBuilder();
             boolean stationIsOnSchedule = false;
             for (int orderNumber = 0; orderNumber < schedule.getNumOrders(); orderNumber++) {
                 int stationID = orderNumber == this.selectedOrderNumber ? this.selectedStationID
                         : schedule.getOrder(orderNumber).getStationID();
                 if (it.getIndex() == stationID) {
                     if (stationIsOnSchedule) {
-                        stopNumbersString = stopNumbersString + ", "
-                                + String.valueOf(orderNumber + 1);
+                        stopNumbersString.append(", ").append(String.valueOf(orderNumber + 1));
                     } else {
-                        stopNumbersString = String.valueOf(orderNumber + 1);
+                        stopNumbersString = new StringBuilder(String.valueOf(orderNumber + 1));
                     }
                     stationIsOnSchedule = true;
                 }
@@ -336,7 +335,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
                 } else {
                     g2.setColor(Color.BLUE);
                 }
-                g2.drawString(stopNumbersString, xInt, yInt - 4);
+                g2.drawString(stopNumbersString.toString(), xInt, yInt - 4);
             } else {
                 g2.setColor(Color.WHITE);
             }

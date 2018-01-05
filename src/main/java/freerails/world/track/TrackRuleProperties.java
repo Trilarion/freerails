@@ -25,7 +25,7 @@ import java.io.Serializable;
 /**
  * Stores some of the properties of a track type.
  */
-final public class TrackRuleProperties implements Serializable {
+public final class TrackRuleProperties implements Serializable {
     private static final long serialVersionUID = 3618704101752387641L;
 
     private final boolean enableDoubleTrack;
@@ -72,9 +72,9 @@ final public class TrackRuleProperties implements Serializable {
         if (o instanceof TrackRuleProperties) {
             TrackRuleProperties test = (TrackRuleProperties) o;
 
-            return rGBvalue == test.getRGBvalue()
-                    && enableDoubleTrack == test.isEnableDoubleTrack()
-                    && typeName.equals(test.getTypeName())
+            return rGBvalue == test.rGBvalue
+                    && enableDoubleTrack == test.enableDoubleTrack
+                    && typeName.equals(test.typeName)
                     && category == test.category
                     && stationRadius == test.stationRadius;
         }

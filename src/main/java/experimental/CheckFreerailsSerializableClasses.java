@@ -96,7 +96,7 @@ public class CheckFreerailsSerializableClasses {
                     && !assertImmutable) {
                 if (!immutableTypes.contains(type) && !type.isEnum()
                         && !type.isAnnotationPresent(Immutable.class)) {
-                    System.err.println(clazz.getName() + "." + field.getName()
+                    System.err.println(clazz.getName() + '.' + field.getName()
                             + " {" + type.getName()
                             + "} might not be immutable!");
                     okSoFar = false;

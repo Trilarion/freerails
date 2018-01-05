@@ -109,7 +109,7 @@ public class TrainUpdater implements ServerAutomaton {
     // /* Create the move that sets up the train's cargo bundle. */
     // int cargoBundleId = world.size(principal, KEY.CARGO_BUNDLES);
     // Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleId,
-    // ImmutableCargoBundle.EMPTY_BUNDLE, principal);
+    // ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
     //
     // /* Create the train model object. */
     // int scheduleId = world.size(principal, KEY.TRAIN_SCHEDULES);

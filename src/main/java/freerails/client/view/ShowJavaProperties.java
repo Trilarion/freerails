@@ -72,9 +72,7 @@ public class ShowJavaProperties {
              * elements easier.
              */
             value = value.replaceAll(";", ";<br>");
-            sb
-                    .append("<tr><td>" + key + " </td><td> " + value
-                            + "</td></tr>\n");
+            sb.append("<tr><td>").append(key).append(" </td><td> ").append(value).append("</td></tr>\n");
         }
 
         sb.append("</table></html>\n");

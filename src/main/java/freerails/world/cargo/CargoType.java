@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * Represents a type of cargo which consists of a category, a weight (per unit) and a name.
  */
-final public class CargoType implements Serializable {
+public final class CargoType implements Serializable {
 
     private static final long serialVersionUID = 3834874680581369912L;
     private final CargoCategory category;

@@ -124,13 +124,13 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void startDocument() throws SAXException {
+    public final void startDocument() {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void endDocument() throws SAXException {
+    public final void endDocument() {
     }
 
     /**
@@ -191,8 +191,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @param chars
      * @param len
      */
-    public final void characters(char[] chars, int start, int len)
-            throws SAXException {
+    public final void characters(char[] chars, int start, int len) {
         buffer.append(chars, start, len);
     }
 
@@ -202,38 +201,36 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @param chars
      * @param len
      */
-    public final void ignorableWhitespace(char[] chars, int start, int len)
-            throws SAXException {
+    public final void ignorableWhitespace(char[] chars, int start, int len) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
     public final void processingInstruction(java.lang.String target,
-                                            java.lang.String data) throws SAXException {
+                                            java.lang.String data) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
     public final void startPrefixMapping(final java.lang.String prefix,
-                                         final java.lang.String uri) throws SAXException {
+                                         final java.lang.String uri) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void endPrefixMapping(final java.lang.String prefix)
-            throws SAXException {
+    public final void endPrefixMapping(final java.lang.String prefix) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void skippedEntity(java.lang.String name) throws SAXException {
+    public final void skippedEntity(java.lang.String name) {
     }
 
-    private void dispatch(final boolean fireOnlyIfMixed) throws SAXException {
+    private void dispatch(final boolean fireOnlyIfMixed) {
         if (fireOnlyIfMixed && buffer.length() == 0) {
             return; // skip it
         }
@@ -260,7 +257,7 @@ public class CargoAndTerrainParser implements ContentHandler {
                 throw ex;
             }
 
-            public void warning(SAXParseException ex) throws SAXException {
+            public void warning(SAXParseException ex) {
                 // ignore
             }
         };

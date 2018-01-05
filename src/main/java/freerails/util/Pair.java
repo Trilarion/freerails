@@ -46,7 +46,7 @@ public class Pair<A, B> {
     }
 
     public String toString() {
-        return "(" + a.toString() + ", " + b.toString() + ")";
+        return '(' + a.toString() + ", " + b.toString() + ')';
     }
 
     /**

@@ -72,11 +72,11 @@ public class ChangeItemInListMove implements ListMove {
         if (o instanceof ChangeItemInListMove) {
             ChangeItemInListMove test = (ChangeItemInListMove) o;
 
-            if (!before.equals(test.getBefore())) {
+            if (!before.equals(test.before)) {
                 return false;
             }
 
-            if (!after.equals(test.getAfter())) {
+            if (!after.equals(test.after)) {
                 return false;
             }
 

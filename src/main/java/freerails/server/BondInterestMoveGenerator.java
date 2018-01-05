@@ -55,7 +55,7 @@ public class BondInterestMoveGenerator {
             }
         }
 
-        Transaction t = new MoneyTransaction(new Money(interestDue),
+        Transaction t = new MoneyTransaction(new Money(-interestDue),
                 TransactionCategory.INTEREST_CHARGE);
 
         return new AddTransactionMove(principal, t);

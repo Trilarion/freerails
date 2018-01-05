@@ -63,7 +63,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertDoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.doMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -74,7 +74,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertDoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.doMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
     }
@@ -84,7 +84,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
         try {
-            World w = getWorld();
+            World w = world;
             World before = (World) Utils.cloneBySerialisation(w);
 
             assertEquals(before, w);
@@ -175,7 +175,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -186,11 +186,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 
-        ms = m.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(
                 "Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
@@ -203,7 +203,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryUndoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertTrue("Move went through when it should have failed", !ms.ok);
     }
@@ -214,11 +214,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertTryUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 
-        ms = m.tryUndoMove(getWorld(), Player.AUTHORITATIVE);
+        ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(
                 "Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
@@ -231,7 +231,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void assertUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.undoMove(getWorld(), Player.AUTHORITATIVE);
+        MoveStatus ms = m.undoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
     }
@@ -267,7 +267,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        setHasSetupBeenCalled(true);
+        this.hasSetupBeenCalled = true;
         setupWorld();
     }
 
@@ -275,10 +275,10 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      */
     protected void setupWorld() {
-        setWorld(new WorldImpl(10, 10));
+        this.world = new WorldImpl(10, 10);
         // Set the time..
-        getWorld().set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
-        getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
+        world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
+        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
     }
 
     /**

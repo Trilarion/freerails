@@ -29,7 +29,7 @@ import java.awt.image.BufferStrategy;
 /**
  * Handles going into fullscreen mode and setting buffer strategy etc.
  */
-final public class ScreenHandler {
+public final class ScreenHandler {
 
     /**
      *
@@ -163,7 +163,7 @@ final public class ScreenHandler {
     /**
      *
      */
-    public synchronized static void exitFullScreenMode() {
+    public static synchronized void exitFullScreenMode() {
         device.setFullScreenWindow(null);
     }
 

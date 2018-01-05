@@ -33,7 +33,7 @@ import java.io.IOException;
  * Paints the cursor on the map, note the cursor's position is stored on the
  * ModelRoot under the key CURSOR_POSITION.
  */
-final public class FreerailsCursor {
+public final class FreerailsCursor {
     private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
 
     private final ModelRoot modelRoot;
@@ -120,7 +120,7 @@ final public class FreerailsCursor {
         String message = (String) modelRoot
                 .getProperty(ModelRoot.Property.CURSOR_MESSAGE);
 
-        if (null != message && !message.equals("")) {
+        if (null != message && !message.isEmpty()) {
             int fontSize = 12;
             Font font = new Font("Arial", 0, fontSize);
             FontRenderContext frc = g2.getFontRenderContext();

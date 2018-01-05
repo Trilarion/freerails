@@ -36,7 +36,7 @@ import java.io.IOException;
  *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
  */
-final public class Track_TilesParser implements org.xml.sax.ContentHandler {
+public final class Track_TilesParser implements org.xml.sax.ContentHandler {
     private static final Logger logger = Logger.getLogger(Track_TilesParser.class.getName());
 
     private final java.lang.StringBuffer buffer;
@@ -104,10 +104,10 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
     public void setDocumentLocator(org.xml.sax.Locator locator) {
     }
 
-    public void startDocument() throws SAXException {
+    public void startDocument() {
     }
 
-    public void endDocument() throws SAXException {
+    public void endDocument() {
     }
 
     public void startElement(java.lang.String ns, java.lang.String name,
@@ -166,31 +166,28 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
     }
 
-    public void characters(char[] chars, int start, int len)
-            throws SAXException {
+    public void characters(char[] chars, int start, int len) {
         buffer.append(chars, start, len);
     }
 
-    public void ignorableWhitespace(char[] chars, int start, int len)
-            throws SAXException {
+    public void ignorableWhitespace(char[] chars, int start, int len) {
     }
 
     public void processingInstruction(java.lang.String target,
-                                      java.lang.String data) throws SAXException {
+                                      java.lang.String data) {
     }
 
     public void startPrefixMapping(final java.lang.String prefix,
-                                   final java.lang.String uri) throws SAXException {
+                                   final java.lang.String uri) {
     }
 
-    public void endPrefixMapping(final java.lang.String prefix)
-            throws SAXException {
+    public void endPrefixMapping(final java.lang.String prefix) {
     }
 
-    public void skippedEntity(java.lang.String name) throws SAXException {
+    public void skippedEntity(java.lang.String name) {
     }
 
-    private void dispatch(final boolean fireOnlyIfMixed) throws SAXException {
+    private void dispatch(final boolean fireOnlyIfMixed) {
         if (fireOnlyIfMixed && buffer.length() == 0) {
             return; // skip it
         }
@@ -214,8 +211,7 @@ final public class Track_TilesParser implements org.xml.sax.ContentHandler {
                 throw ex;
             }
 
-            public void warning(org.xml.sax.SAXParseException ex)
-                    throws SAXException {
+            public void warning(org.xml.sax.SAXParseException ex) {
                 // ignore
             }
         };

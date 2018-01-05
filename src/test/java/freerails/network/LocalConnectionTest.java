@@ -147,7 +147,11 @@ public class LocalConnectionTest extends TestCase {
 
         public void run() {
             try {
-                while (isKeepGoing()) {
+                boolean result;
+                synchronized (this) {
+                    result = keepGoing;
+                }
+                while (result) {
                     Serializable fs = connection
                             .waitForObjectFromClient();
                     connection.writeToClient(fs);

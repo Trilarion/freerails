@@ -187,12 +187,12 @@ public class CompositeMove implements Move {
 
     @Override
     public final String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < moves.size(); i++) {
-            s += moves.get(i).toString() + ((i > 0) ? ", " : "");
+            s.append(moves.get(i).toString()).append((i > 0) ? ", " : "");
         }
 
-        return s;
+        return s.toString();
     }
 }

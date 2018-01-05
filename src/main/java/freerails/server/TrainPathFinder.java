@@ -39,7 +39,7 @@ public class TrainPathFinder implements IntIterator, ServerAutomaton {
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final TrainStopsHandler stopsHandler;
     private final FlatTrackExplorer trackExplorer;
-    private transient MoveReceiver mr = null;
+    private transient MoveReceiver mr;
 
     /**
      * @param tx

@@ -148,7 +148,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         return jList1.getSelectedIndex();
     }
 
-    final private class TrainCellRenderer implements ListCellRenderer {
+    private final class TrainCellRenderer implements ListCellRenderer {
 
         final RendererRoot rr;
 

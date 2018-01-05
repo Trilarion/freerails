@@ -55,7 +55,7 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
      * @return
      */
     public int size() {
-        return super.size(new int[0]);
+        return super.size();
     }
 
     @Override

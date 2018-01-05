@@ -264,15 +264,6 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    @Override
-    public void setVisible(boolean aFlag) {
-        if (aFlag && null != world) {
-            // jList1.setModel(new WorldToListModelAdapter(world,
-            // KEY.TRAINS,principal));
-        }
-        super.setVisible(aFlag);
-    }
-
     /**
      * @param trainViewHeight
      */

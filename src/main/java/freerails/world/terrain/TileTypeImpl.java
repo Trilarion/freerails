@@ -24,7 +24,7 @@ import freerails.world.finances.Money;
 /**
  * Represents a type of terrain.
  */
-final public class TileTypeImpl implements TerrainType {
+public final class TileTypeImpl implements TerrainType {
 
     // TODO why is TerrainType and TerrainTypeImplementation separate?
     private static final long serialVersionUID = 4049919380945253945L;

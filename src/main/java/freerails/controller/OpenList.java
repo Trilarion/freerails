@@ -128,7 +128,7 @@ class OpenList implements Serializable {
 
         @Override
         public String toString() {
-            return "OpenListEntry{node=" + node + ", f=" + f + "}";
+            return "OpenListEntry{node=" + node + ", f=" + f + '}';
         }
 
     }

@@ -73,7 +73,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
             final Money price = type.getBuildCost();
 
             if (null != price) {
-                JMenuItem item = new JMenuItem(type.getDisplayName() + " "
+                JMenuItem item = new JMenuItem(type.getDisplayName() + ' '
                         + price);
                 item.addActionListener(new ActionListener() {
                     private final int terrainType = it.getIndex();
@@ -83,7 +83,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
                                 cursorLocation, terrainType);
                         Transaction t = new ItemTransaction(
                                 TransactionCategory.INDUSTRIES, terrainType,
-                                1, price.changeSign());
+                                1, Money.changeSign(price));
                         Move m2 = new AddTransactionMove(modelRoot
                                 .getPrincipal(), t);
                         CompositeMove m3 = new CompositeMove(m1, m2);

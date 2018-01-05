@@ -43,7 +43,7 @@ public class BinaryNumberFormatter {
         if (i >= maxValue) {
             throw new IllegalArgumentException("i must be less than "
                     + maxValue + ".  It was " + i + " ("
-                    + Integer.toString(i, 2) + ")");
+                    + Integer.toString(i, 2) + ')');
         }
 
         String s = Integer.toString(i + maxValue, 2);

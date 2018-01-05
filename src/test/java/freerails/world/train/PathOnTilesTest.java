@@ -30,8 +30,6 @@ import junit.framework.TestCase;
 
 import java.util.Iterator;
 
-import static freerails.world.TileTransition.*;
-
 /**
  * JUnit test for PathOnTiles.
  */
@@ -48,7 +46,7 @@ public class PathOnTilesTest extends TestCase {
         assertTrue(throwsException(start, vectors));
         vectors = new TileTransition[]{null, null};
         assertTrue(throwsException(start, vectors));
-        vectors = new TileTransition[]{NORTH, SOUTH};
+        vectors = new TileTransition[]{TileTransition.NORTH, TileTransition.SOUTH};
         assertFalse(throwsException(start, vectors));
 
     }
@@ -58,7 +56,7 @@ public class PathOnTilesTest extends TestCase {
      */
     public void testGetStepIndex() {
         ImPoint start = new ImPoint();
-        TileTransition[] vectors = new TileTransition[]{SOUTH_EAST, EAST, EAST};
+        TileTransition[] vectors = new TileTransition[]{TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
         assertEquals(0, path.getStepIndex(0));
         assertEquals(0, path.getStepIndex(1));
@@ -72,7 +70,7 @@ public class PathOnTilesTest extends TestCase {
      */
     public void testGetLength() {
         ImPoint start = new ImPoint();
-        TileTransition[] vectors = new TileTransition[]{EAST, EAST, EAST};
+        TileTransition[] vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
         assertEquals(3 * TileTransition.TILE_DIAMETER, path.getTotalDistance(), 0.001);
 
@@ -83,7 +81,7 @@ public class PathOnTilesTest extends TestCase {
      */
     public void testGetPoint() {
         ImPoint start = new ImPoint();
-        TileTransition[] vectors = new TileTransition[]{EAST, EAST, EAST};
+        TileTransition[] vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
         ImPoint expected = new ImPoint(15, 15);
         ImPoint actual = path.getPoint(0);
@@ -103,7 +101,7 @@ public class PathOnTilesTest extends TestCase {
      */
     public void testGetPointPair() {
         ImPoint start = new ImPoint();
-        TileTransition[] vectors = new TileTransition[]{EAST, EAST, EAST};
+        TileTransition[] vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
         ImPoint expected15 = new ImPoint(15, 15);
         Pair<ImPoint, ImPoint> actual = path.getPoint(0, 0);
@@ -126,7 +124,7 @@ public class PathOnTilesTest extends TestCase {
      */
     public void testSubPath() {
         ImPoint start = new ImPoint();
-        TileTransition[] vectors = new TileTransition[]{EAST, EAST, EAST};
+        TileTransition[] vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         // First check.
@@ -154,7 +152,7 @@ public class PathOnTilesTest extends TestCase {
 
         // 4th check, with a path just 1 tile long.
         start = new ImPoint(5, 5);
-        vectors = new TileTransition[]{SOUTH_WEST};
+        vectors = new TileTransition[]{TileTransition.SOUTH_WEST};
         path = new PathOnTiles(start, vectors);
         pathIt = path.subPath(18, 24);
         IntLine line = new IntLine();
@@ -164,7 +162,7 @@ public class PathOnTilesTest extends TestCase {
         assertFalse(pathIt.getA().hasNext());
 
         // 5th check, same as 2nd but with different starting position.
-        vectors = new TileTransition[]{EAST, EAST, EAST};
+        vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
 
         start = new ImPoint(4, 7);
         path = new PathOnTiles(start, vectors);
@@ -173,8 +171,8 @@ public class PathOnTilesTest extends TestCase {
         expected = new ImPoint[]{new ImPoint(18, 15), new ImPoint(45, 15),
                 new ImPoint(75, 15), new ImPoint(105, 15)};
         for (int j = 0; j < expected.length; j++) {
-            int x = expected[j].x + start.x * TILE_DIAMETER;
-            int y = expected[j].y + start.y * TILE_DIAMETER;
+            int x = expected[j].x + start.x * TileTransition.TILE_DIAMETER;
+            int y = expected[j].y + start.y * TileTransition.TILE_DIAMETER;
             expected[j] = new ImPoint(x, y);
         }
         // for (ImPoint point : expected) {
@@ -212,8 +210,8 @@ public class PathOnTilesTest extends TestCase {
      *
      */
     public void testTiles() {
-        PathOnTiles path = new PathOnTiles(new ImPoint(5, 5), SOUTH_WEST,
-                NORTH_EAST);
+        PathOnTiles path = new PathOnTiles(new ImPoint(5, 5), TileTransition.SOUTH_WEST,
+                TileTransition.NORTH_EAST);
         Iterator<ImPoint> it = path.tiles();
 
         assertEquals(new ImPoint(5, 5), it.next());

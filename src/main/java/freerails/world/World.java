@@ -108,7 +108,7 @@ public interface World extends ReadOnlyWorld {
      * @param index
      * @return
      */
-    Activity removeLastActivity(FreerailsPrincipal principal, int index);
+    void removeLastActivity(FreerailsPrincipal principal, int index);
 
     /**
      * Removes the last element from the specified list.

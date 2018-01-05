@@ -41,8 +41,6 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.Random;
 
-import static freerails.world.TileTransition.*;
-
 /**
  * This class is a visual test for the train movement code.
  *
@@ -70,8 +68,8 @@ public class TrainMotionExpt extends JComponent {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        TileTransition[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
-                NORTH_WEST, NORTH, NORTH_EAST};
+        TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
+                TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         ImPoint from = new ImPoint(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
         if (!ms.ok)

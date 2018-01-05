@@ -44,8 +44,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import static freerails.controller.TrackMoveProducer.BuildMode.*;
-
 /**
  * A JPanel that presents toggle buttons that let the player select the build
  * mode (build track, upgrade track, build station, bulldoze, and info mode) and
@@ -474,20 +472,20 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_viewModeActionPerformed
         setVisible(false, false, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(IGNORE_TRACK);
+        setTrackBuilderMode(TrackMoveProducer.BuildMode.IGNORE_TRACK);
     }// GEN-LAST:event_viewModeActionPerformed
 
     private void bulldozeActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_bulldozeActionPerformed
 
         setVisible(false, false, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(REMOVE_TRACK);
+        setTrackBuilderMode(TrackMoveProducer.BuildMode.REMOVE_TRACK);
     }// GEN-LAST:event_bulldozeActionPerformed
 
     private void addStationActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_addStationActionPerformed
 
         setVisible(false, false, false, true);
-        setTrackBuilderMode(BUILD_STATION);
+        setTrackBuilderMode(TrackMoveProducer.BuildMode.BUILD_STATION);
 
     }// GEN-LAST:event_addStationActionPerformed
 
@@ -495,7 +493,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
         setVisible(true, true, false, false);
         cancelStationPlacement();
-        setTrackBuilderMode(UPGRADE_TRACK);
+        setTrackBuilderMode(TrackMoveProducer.BuildMode.UPGRADE_TRACK);
 
     }// GEN-LAST:event_upgradeTrackActionPerformed
 
@@ -503,7 +501,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
         setVisible(true, true, true, false);
         cancelStationPlacement();
-        setTrackBuilderMode(BUILD_TRACK);
+        setTrackBuilderMode(TrackMoveProducer.BuildMode.BUILD_TRACK);
     }// GEN-LAST:event_addTrackActionPerformed
 
     private void setVisible(boolean track, boolean bridges, boolean tunnels,

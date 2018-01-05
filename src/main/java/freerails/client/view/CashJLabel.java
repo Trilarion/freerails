@@ -62,7 +62,7 @@ public class CashJLabel extends JLabel implements View {
         if (null != w) {
             Money m = w.getCurrentBalance(principal);
             String s = m.toString();
-            this.setText("$" + s);
+            this.setText('$' + s);
         }
 
         super.paintComponent(g);

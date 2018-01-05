@@ -24,8 +24,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * This class generates an ant script that checks the dependencies between
@@ -50,8 +50,7 @@ public class GenerateDependenciesXmlAndHtml {
     private GenerateDependenciesXmlAndHtml(String xmlFilename,
                                            String htmlFilename) throws FileNotFoundException {
 
-        Date d = new Date();
-        sig = this.getClass().getName() + " on " + d;
+        sig = this.getClass().getName() + " on " + LocalDate.now();
 
         // Setup writers
         File xmlFile = new File(xmlFilename);
@@ -221,14 +220,14 @@ public class GenerateDependenciesXmlAndHtml {
         assert started;
         assert startedBlock;
 
-        String packagesString = "";
+        StringBuilder packagesString = new StringBuilder();
         for (int i = packageNames.length - 1; i > 0; i--) {
-            packagesString += convertToPackageName(packageNames[i]) + ", ";
+            packagesString.append(convertToPackageName(packageNames[i])).append(", ");
         }
-        packagesString += " " + convertToPackageName(packageNames[0]);
+        packagesString.append(' ').append(convertToPackageName(packageNames[0]));
 
         // The html writer will use this later.
-        packages.add(packagesString);
+        packages.add(packagesString.toString());
 
         xmlWriter.write("\n\t\t<!-- New row: " + packagesString + "  -->\n");
         xmlWriter.write("\t\t<echo message=\"New row: " + packagesString

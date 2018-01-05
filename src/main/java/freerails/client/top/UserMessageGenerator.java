@@ -119,13 +119,13 @@ public class UserMessageGenerator implements MoveReceiver {
             StationModel station = (StationModel) world.get(modelRoot
                     .getPrincipal(), KEY.STATIONS, stationId);
             message.append(station.getStationName());
-            message.append("\n");
+            message.append('\n');
             long revenue = 0;
             int[] cargoQuantities = new int[modelRoot.getWorld().size(
                     SKEY.CARGO_TYPES)];
             for (DeliverCargoReceipt receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCb();
-                revenue += receipt.deltaCash().getAmount();
+                revenue += receipt.value().getAmount();
                 cargoQuantities[batch.getCargoType()] = receipt.getQuantity();
             }
             for (int i = 0; i < cargoQuantities.length; i++) {
@@ -134,9 +134,9 @@ public class UserMessageGenerator implements MoveReceiver {
                     CargoType cargoType = (CargoType) world.get(
                             SKEY.CARGO_TYPES, i);
                     message.append(j);
-                    message.append(" ");
+                    message.append(' ');
                     message.append(cargoType.getDisplayName());
-                    message.append("\n");
+                    message.append('\n');
                 }
             }
             message.append("Revenue $");

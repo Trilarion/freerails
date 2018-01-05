@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.world.KEY;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
@@ -38,8 +38,8 @@ public class ChangeCargoBundleMove extends ChangeItemInListMove {
      * @param bundleNumber
      * @param p
      */
-    public ChangeCargoBundleMove(ImmutableCargoBundle before,
-                                 ImmutableCargoBundle after, int bundleNumber, FreerailsPrincipal p) {
+    public ChangeCargoBundleMove(ImmutableCargoBatchBundle before,
+                                 ImmutableCargoBatchBundle after, int bundleNumber, FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, bundleNumber, before, after, p);
     }
 }

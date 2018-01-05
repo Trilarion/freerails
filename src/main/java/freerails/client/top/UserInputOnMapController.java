@@ -41,8 +41,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import static freerails.controller.TrackMoveProducer.BuildMode.*;
-
 /**
  * Handles key presses and mouse movements on the map - responsible for moving
  * the cursor etc.
@@ -418,7 +416,7 @@ public class UserInputOnMapController extends KeyAdapter {
                  * build track selected
                  */
                 boolean isBuildTrackModeSet = trackBuilder
-                        .getTrackBuilderMode() == BUILD_TRACK;
+                        .getTrackBuilderMode() == BuildMode.BUILD_TRACK;
 
                 if (isBuildTrackModeSet) {
                     buildTrack.show();
@@ -480,9 +478,9 @@ public class UserInputOnMapController extends KeyAdapter {
              * station.
              */
             // TODO pull these next bits out into method
-            boolean trackBuildingOn = (trackBuilderMode == BUILD_TRACK)
-                    || (trackBuilderMode == REMOVE_TRACK)
-                    || (trackBuilderMode == UPGRADE_TRACK);
+            boolean trackBuildingOn = (trackBuilderMode == BuildMode.BUILD_TRACK)
+                    || (trackBuilderMode == BuildMode.REMOVE_TRACK)
+                    || (trackBuilderMode == BuildMode.UPGRADE_TRACK);
             trackBuildingOn = trackBuildingOn
                     && (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 

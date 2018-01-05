@@ -24,7 +24,7 @@ package freerails.util;
  * implemented on all JVMs
  */
 public class SynchronizedFlag {
-    private boolean isOpen = true;
+    private boolean isOpen;
 
     public SynchronizedFlag(boolean b) {
         this.isOpen = b;

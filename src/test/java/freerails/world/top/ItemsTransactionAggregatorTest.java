@@ -32,8 +32,6 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 
-import static freerails.world.finances.TransactionCategory.TRACK;
-
 /**
  *
  */
@@ -49,7 +47,7 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         FreerailsPrincipal fp = w.getPlayer(0).getPrincipal();
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, fp);
-        aggregator.setCategory(TRACK);
+        aggregator.setCategory(TransactionCategory.TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
         Transaction t = new ItemTransaction(TransactionCategory.TRACK, 10, 5,

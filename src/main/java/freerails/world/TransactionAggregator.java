@@ -78,7 +78,7 @@ public abstract class TransactionAggregator {
         for (int i = 1; i < times.length; i++) {
             if (times[i].getTicks() < times[i - 1].getTicks()) {
                 throw new IllegalArgumentException("Time at index " + (i - 1)
-                        + " > time at index " + i + ".");
+                        + " > time at index " + i + '.');
             }
 
             timeValues[i] = times[i];
@@ -90,7 +90,7 @@ public abstract class TransactionAggregator {
      *
      * @return
      */
-    final public Money calculateValue() {
+    public final Money calculateValue() {
         Money[] values = calculateValues();
 
         return values[0];
@@ -102,7 +102,7 @@ public abstract class TransactionAggregator {
      *
      * @return
      */
-    final public Money[] calculateValues() {
+    public final Money[] calculateValues() {
         setTotalsArrayLength(timeValues.length - 1);
 
         int timeIndex = 0;
@@ -166,7 +166,7 @@ public abstract class TransactionAggregator {
      */
     protected void incrementRunningTotal(int transactionID) {
         Transaction t = w.getTransaction(principal, transactionID);
-        runningTotal += t.deltaCash().getAmount();
+        runningTotal += t.value().getAmount();
     }
 
     /**
@@ -185,5 +185,5 @@ public abstract class TransactionAggregator {
      * @param transactionID
      * @return
      */
-    abstract protected boolean condition(int transactionID);
+    protected abstract boolean condition(int transactionID);
 }

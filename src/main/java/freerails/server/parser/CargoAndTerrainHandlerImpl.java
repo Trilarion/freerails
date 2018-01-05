@@ -103,7 +103,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         tileROW = Integer.parseInt(meta.getValue("right-of-way"));
     }
 
-    public void end_Tile() throws SAXException {
+    public void end_Tile() {
         Consumption[] consumes = new Consumption[typeConsumes.size()];
 
         for (int i = 0; i < typeConsumes.size(); i++) {
@@ -128,7 +128,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         world.add(SKEY.TERRAIN_TYPES, tileType);
     }
 
-    public void handle_Cargo(final Attributes meta) throws SAXException {
+    public void handle_Cargo(final Attributes meta) {
         String cargoID = meta.getValue("id");
         String cargoCategory = meta.getValue("Category");
         int unitWeight = Integer.parseInt(meta.getValue("unitWeight"));

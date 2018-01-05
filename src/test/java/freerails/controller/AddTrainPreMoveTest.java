@@ -35,8 +35,6 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.train.*;
 
-import static freerails.world.TileTransition.*;
-
 /**
  * Junit test for AddTrainPreMove.
  */
@@ -65,7 +63,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
-        TileTransition[] track = {EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST, EAST};
+        TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         stationA = new ImPoint(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.ok);
@@ -136,7 +134,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         assertEquals(0d, tm.getDistance(0));
         PositionOnTrack pot = tm.getFinalPosition();
         assertNotNull(pot);
-        assertEquals(EAST, pot.facing());
+        assertEquals(TileTransition.EAST, pot.facing());
         assertEquals(13, pot.getX());
         assertEquals(10, pot.getY());
 
@@ -151,8 +149,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        TileTransition[] trackPath = {EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST,
-                NORTH_WEST, NORTH, NORTH_EAST};
+        TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
+                TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         ImPoint from = new ImPoint(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
         if (!ms.ok)

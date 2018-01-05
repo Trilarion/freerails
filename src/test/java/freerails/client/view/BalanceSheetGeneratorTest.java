@@ -49,8 +49,8 @@ public class BalanceSheetGeneratorTest extends TestCase {
                 player.getPrincipal());
         Money expectedBondValue = new Money(BondItemTransaction.BOND_VALUE_ISSUE
                 .getAmount());
-        assertEquals(expectedBondValue.changeSign(), generator.total.loans);
-        assertEquals(expectedBondValue.changeSign(), generator.ytd.loans);
+        assertEquals(Money.changeSign(expectedBondValue), generator.total.loans);
+        assertEquals(Money.changeSign(expectedBondValue), generator.ytd.loans);
     }
 
     /**

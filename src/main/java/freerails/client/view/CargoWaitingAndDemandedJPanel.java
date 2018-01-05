@@ -29,7 +29,7 @@ import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.train.WagonType;
@@ -180,7 +180,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         StationModel station = (StationModel) world.get(principal,
                 KEY.STATIONS, newStationID);
         this.stationName.setText(station.getStationName());
-        final ImmutableCargoBundle cargoWaiting = (ImmutableCargoBundle) world
+        final ImmutableCargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world
                 .get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
@@ -189,7 +189,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         final List<String> typeDemanded = new ArrayList<>();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
-            int amountWaiting = cargoWaiting.getAmount(i);
+            int amountWaiting = cargoWaiting.getAmountOfType(i);
 
             if (0 != amountWaiting) {
                 typeWaiting.add(cargoType.getDisplayName());

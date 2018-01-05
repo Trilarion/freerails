@@ -28,7 +28,7 @@ import java.io.Serializable;
 /**
  *
  */
-strictfp public class ConstAcc implements Serializable,
+public strictfp class ConstAcc implements Serializable,
         SpeedAgainstTime {
 
     /**
@@ -142,13 +142,13 @@ strictfp public class ConstAcc implements Serializable,
     private void validateT(double t) {
         if (t < 0 || t > finalT)
             throw new IllegalArgumentException("(" + t + " < 0 || " + t + " > "
-                    + finalT + ")");
+                    + finalT + ')');
 
     }
 
     @Override
     public String toString() {
-        return "ConstAcc [a=" + a + ", u=" + u + ", dt=" + finalT + "]";
+        return "ConstAcc [a=" + a + ", u=" + u + ", dt=" + finalT + ']';
     }
 
 }

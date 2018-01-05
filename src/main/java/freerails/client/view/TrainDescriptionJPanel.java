@@ -30,7 +30,7 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.TrainModel;
 
@@ -74,9 +74,6 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
         TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
                 trainNumber);
 
-        for (int i = 0; i < train.getNumberOfWagons(); i++) {
-            // this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
-        }
         int cargoBundleID = train.getCargoBundleID();
         Serializable cb = w.get(principal, KEY.CARGO_BUNDLES,
                 cargoBundleID);
@@ -142,32 +139,29 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
         TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
                 newTrainNumber);
 
-        for (int i = 0; i < train.getNumberOfWagons(); i++) {
-            // this.sideOnTrainViewJPanel1.addWagon(train.getWagon(i));
-        }
         int cargoBundleID = train.getCargoBundleID();
-        ImmutableCargoBundle cb = (ImmutableCargoBundle) w.get(principal,
+        ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(principal,
                 KEY.CARGO_BUNDLES, cargoBundleID);
-        String s = "Train #" + it.getNaturalNumber() + ": ";
+        StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
         int numberOfTypesInBundle = 0;
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
-            int amount = cb.getAmount(i);
+            int amount = cb.getAmountOfType(i);
             if (0 != amount) {
                 CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
                 String cargoTypeName = ct.getDisplayName();
                 if (0 != numberOfTypesInBundle) {
-                    s += "; ";
+                    s.append("; ");
                 }
                 numberOfTypesInBundle++;
 
-                s += cargoTypeName + " (" + amount + ")";
+                s.append(cargoTypeName).append(" (").append(amount).append(')');
             }
         }
         if (0 == numberOfTypesInBundle) {
-            s += "no cargo";
+            s.append("no cargo");
         }
-        s += ".";
-        this.jLabel1.setText(s);
+        s.append('.');
+        this.jLabel1.setText(s.toString());
         this.lastCargoBundle = cb;
         this.lastTrain = train;
     }

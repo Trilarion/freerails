@@ -23,34 +23,34 @@ package freerails.move;
 
 import freerails.world.KEY;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.MutableCargoBundle;
+import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.top.MapFixtureFactory;
 
 /**
  * JUnit test.
  */
-public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
+public class ChangeCargoBatchBundleMoveTest extends AbstractMoveTestCase {
 
     /**
      *
      */
     @Override
     public void testMove() {
-        MutableCargoBundle bundleA;
-        MutableCargoBundle bundleB;
-        bundleA = new MutableCargoBundle();
-        bundleB = new MutableCargoBundle();
-        bundleA.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
-        bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
-        assertEquals(bundleA, bundleB);
+        MutableCargoBatchBundle before;
+        MutableCargoBatchBundle after;
+        before = new MutableCargoBatchBundle();
+        after = new MutableCargoBatchBundle();
+        before.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
+        after.setAmount(new CargoBatch(1, 2, 3, 4, 0), 8);
 
-        Move m = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(),
+        Move m = new ChangeCargoBundleMove(before.toImmutableCargoBundle(),
+                after.toImmutableCargoBundle(), 0,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        assertDoMoveIsOk(m);
-        assertEquals(getWorld().size(MapFixtureFactory.TEST_PRINCIPAL,
-                KEY.CARGO_BUNDLES), 1);
-        assertUndoMoveIsOk(m);
         assertSurvivesSerialisation(m);
-        assertOkButNotRepeatable(m);
+
+        assertTryMoveFails(m);
+        assertTryUndoMoveFails(m);
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES,
+                before.toImmutableCargoBundle());
     }
 }

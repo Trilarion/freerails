@@ -30,8 +30,6 @@ import junit.framework.TestCase;
 
 import java.util.Arrays;
 
-import static freerails.world.TileTransition.*;
-
 /**
  */
 public class PathOnTrackFinderTest extends TestCase {
@@ -65,7 +63,7 @@ public class PathOnTrackFinderTest extends TestCase {
      *
      */
     public void testPathAsVectors1() {
-        TileTransition[] path = {EAST, EAST, SOUTH_EAST};
+        TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
         ImPoint end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
@@ -85,7 +83,7 @@ public class PathOnTrackFinderTest extends TestCase {
      *
      */
     public void testPathAsVectors2() {
-        TileTransition[] path = {EAST, EAST, SOUTH_EAST, EAST, EAST, NORTH_EAST};
+        TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.NORTH_EAST};
         ImPoint start = new ImPoint(5, 5);
         ImPoint end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
@@ -105,7 +103,7 @@ public class PathOnTrackFinderTest extends TestCase {
      *
      */
     public void testSetupSearch() {
-        TileTransition[] path = {EAST, EAST, SOUTH_EAST};
+        TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
         ImPoint start = new ImPoint(5, 5);
         ImPoint end = TileTransition.move(start, path);
         producer.buildTrack(start, path);

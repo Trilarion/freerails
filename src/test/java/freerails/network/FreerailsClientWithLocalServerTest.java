@@ -26,7 +26,7 @@ import freerails.move.MoveStatus;
 import freerails.util.ImStringList;
 import freerails.world.World;
 import freerails.world.finances.Money;
-import freerails.world.finances.MoneyTransaction2;
+import freerails.world.finances.MoneyTransaction;
 import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
@@ -219,7 +219,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             World world = client0.getWorld();
             Player player0 = world.getPlayer(0);
             FreerailsPrincipal principal0 = player0.getPrincipal();
-            Transaction t = new MoneyTransaction2(new Money(100),
+            Transaction t = new MoneyTransaction(new Money(100),
                     TransactionCategory.MISC_INCOME);
             Move move = new AddTransactionMove(principal0, t);
             World copyOfWorld = world.defensiveCopy();

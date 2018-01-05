@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.*;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 import freerails.world.track.TrackSection;
@@ -33,8 +33,6 @@ import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
 
 import java.awt.*;
 import java.util.HashSet;
-
-import static freerails.world.TileTransition.TILE_DIAMETER;
 
 /**
  * Provides convenience methods to access the properties of a train from the
@@ -67,7 +65,7 @@ public class TrainAccessor {
      * @return
      */
     public static ImInts spaceAvailable2(ReadOnlyWorld row,
-                                         ImmutableCargoBundle onTrain, ImInts consist) {
+                                         ImmutableCargoBatchBundle onTrain, ImInts consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);
@@ -81,7 +79,7 @@ public class TrainAccessor {
 
         for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
             spaceAvailable[cargoType] = spaceAvailable[cargoType]
-                    - onTrain.getAmount(cargoType);
+                    - onTrain.getAmountOfType(cargoType);
         }
         return new ImInts(spaceAvailable);
 
@@ -145,8 +143,8 @@ public class TrainAccessor {
 
         ImPoint start = tm.getPath().getStart();
         int trainLength = tm.getTrainLength();
-        Rectangle trainBox = new Rectangle(start.x * TILE_DIAMETER
-                - trainLength * 2, start.y * TILE_DIAMETER - trainLength * 2,
+        Rectangle trainBox = new Rectangle(start.x * TileTransition.TILE_DIAMETER
+                - trainLength * 2, start.y * TileTransition.TILE_DIAMETER - trainLength * 2,
                 trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
             return null; // 666 doesn't work
@@ -186,9 +184,9 @@ public class TrainAccessor {
     /**
      * @return
      */
-    public ImmutableCargoBundle getCargoBundle() {
+    public ImmutableCargoBatchBundle getCargoBundle() {
         TrainModel train = getTrain();
-        return (ImmutableCargoBundle) w.get(p, KEY.CARGO_BUNDLES, train
+        return (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train
                 .getCargoBundleID());
     }
 
@@ -283,7 +281,7 @@ public class TrainAccessor {
     public ImInts spaceAvailable() {
 
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
-        ImmutableCargoBundle bundleOnTrain = (ImmutableCargoBundle) w.get(p,
+        ImmutableCargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p,
                 KEY.CARGO_BUNDLES, train.getCargoBundleID());
         return spaceAvailable2(w, bundleOnTrain, train.getConsist());
 

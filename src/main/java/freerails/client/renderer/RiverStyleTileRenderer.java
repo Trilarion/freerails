@@ -33,7 +33,7 @@ import java.io.IOException;
  * Selects a tile icon to use based on the type of the tiles to the North, East,
  * South and West.
  */
-final public class RiverStyleTileRenderer extends
+public final class RiverStyleTileRenderer extends
         freerails.client.renderer.AbstractTileRenderer {
     private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
 

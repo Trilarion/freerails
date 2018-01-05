@@ -88,7 +88,7 @@ public final class ImPoint implements Serializable,
 
     @Override
     public String toString() {
-        return "ImPoint{" + x + ", " + y + "}";
+        return "ImPoint{" + x + ", " + y + '}';
     }
 
     public int compareTo(ImPoint o) {

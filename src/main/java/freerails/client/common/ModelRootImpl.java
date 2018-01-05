@@ -154,11 +154,11 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param p
+     * @param property
      * @return
      */
-    public Object getProperty(Property p) {
-        return properties.get(p);
+    public Object getProperty(Property property) {
+        return properties.get(property);
     }
 
     /**
@@ -194,14 +194,14 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param p
+     * @param property
      * @param newValue
      */
-    public void setProperty(Property p, Object newValue) {
-        Object oldValue = properties.get(p);
-        properties.put(p, newValue);
+    public void setProperty(Property property, Object newValue) {
+        Object oldValue = properties.get(property);
+        properties.put(property, newValue);
         for (ModelRootListener listener : listeners) {
-            listener.propertyChange(p, oldValue, newValue);
+            listener.propertyChange(property, oldValue, newValue);
         }
 
     }
@@ -247,7 +247,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         return this.moveReceiver.tryDoMove(m);
     }
 
-    public boolean is(ModelRoot.Property p, Object value) {
-        return getProperty(p).equals(value);
+    public boolean is(ModelRoot.Property property, Object value) {
+        return getProperty(property).equals(value);
     }
 }

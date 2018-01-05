@@ -24,7 +24,7 @@ import freerails.world.cargo.CargoBatch;
  * A credit for delivering cargo.
  */
 // TODO Is this an Item transaction?
-public class DeliverCargoReceipt extends MoneyTransaction2 {
+public class DeliverCargoReceipt extends MoneyTransaction {
     private static final long serialVersionUID = 3257009851963160372L;
 
     private final CargoBatch cb;

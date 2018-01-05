@@ -77,7 +77,7 @@ public class TrackSection implements Serializable {
 
     @Override
     public String toString() {
-        return tile.toString() + " " + tileTransition.toString();
+        return tile.toString() + ' ' + tileTransition.toString();
     }
 
     /**

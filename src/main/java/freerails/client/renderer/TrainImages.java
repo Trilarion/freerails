@@ -68,7 +68,7 @@ public class TrainImages {
         TileTransition[] vectors = TileTransition.getList();
 
         return "trains" + File.separator + "overhead" + File.separator + name
-                + "_" + vectors[i].toAbrvString() + ".png";
+                + '_' + vectors[i].toAbrvString() + ".png";
     }
 
     /**

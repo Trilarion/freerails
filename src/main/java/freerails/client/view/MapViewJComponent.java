@@ -47,19 +47,19 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
      * @return
      */
     public float getScale() {
-        return getMapView().getScale();
+        return mapView.getScale();
     }
 
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
         java.awt.Rectangle r = this.getVisibleRect();
-        getMapView().paintRect(g2, r);
+        mapView.paintRect(g2, r);
     }
 
     public int getScrollableUnitIncrement(java.awt.Rectangle rectangle,
                                           int orientation, int direction) {
-        return (int) getMapView().getScale();
+        return (int) mapView.getScale();
     }
 
     public boolean getScrollableTracksViewportWidth() {
@@ -69,7 +69,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     public int getScrollableBlockIncrement(java.awt.Rectangle rectangle,
                                            int orientation, int direction) {
         if (javax.swing.SwingConstants.VERTICAL == orientation) {
-            int best = (int) (((rectangle.height / getMapView().getScale()) - 2) * getMapView()
+            int best = (int) (((rectangle.height / mapView.getScale()) - 2) * mapView
                     .getScale());
 
             if (best > 0) {
@@ -77,8 +77,8 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
             }
             return rectangle.height;
         }
-        float f = ((rectangle.width / getMapView().getScale()) - 2)
-                * getMapView().getScale();
+        float f = ((rectangle.width / mapView.getScale()) - 2)
+                * mapView.getScale();
         int best = (int) (f);
 
         if (best > 0) {
@@ -111,7 +111,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
      * @param tile
      */
     public void centerOnTile(Point tile) {
-        float scale = getMapView().getScale();
+        float scale = mapView.getScale();
         Rectangle visRect = new Rectangle(this.getVisibleRect());
         visRect.x = (int) (tile.x * scale - (visRect.width / 2));
         visRect.y = (int) (tile.y * scale - (visRect.height / 2));
@@ -122,7 +122,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
      * @return
      */
     public Dimension getMapSizeInPixels() {
-        return getMapView().getMapSizeInPixels();
+        return mapView.getMapSizeInPixels();
     }
 
     @Override

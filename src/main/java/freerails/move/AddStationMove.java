@@ -25,7 +25,7 @@ import freerails.util.ImPoint;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.cargo.ImmutableCargoBundle;
+import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationModel;
 
@@ -54,7 +54,7 @@ public class AddStationMove extends CompositeMove {
                                               ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
         int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
-                ImmutableCargoBundle.EMPTY_BUNDLE, principal);
+                ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
         int stationNumber = w.size(principal, KEY.STATIONS);
         StationModel station = new StationModel(p.x, p.y, stationName, w
                 .size(SKEY.CARGO_TYPES), cargoBundleNumber);

@@ -172,14 +172,14 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
     public boolean validateInput() {
         /* Validate player name. */
-        if (playerName.getText() == null || playerName.getText().equals("")) {
+        if (playerName.getText() == null || playerName.getText().isEmpty()) {
             owner.setInfoText("Please set a name for your player",
                     MSG_TYPE.ERROR);
             return false;
         }
 
         /* Validate host name. */
-        if (remoteIP.getText() == null || remoteIP.getText().equals("")) {
+        if (remoteIP.getText() == null || remoteIP.getText().isEmpty()) {
             owner.setInfoText("Please enter a host name", MSG_TYPE.ERROR);
             return false;
         }
