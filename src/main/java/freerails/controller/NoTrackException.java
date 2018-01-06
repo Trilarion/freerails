@@ -23,6 +23,8 @@ package freerails.controller;
  */
 public class NoTrackException extends RuntimeException {
 
+    private static final long serialVersionUID = -4345207670990590768L;
+
     /**
      * @param message message
      */

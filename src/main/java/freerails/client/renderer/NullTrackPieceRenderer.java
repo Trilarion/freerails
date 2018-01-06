@@ -20,7 +20,7 @@ package freerails.client.renderer;
 import java.awt.*;
 
 /**
- * This class implements the TrackPieceView interface, but intentionally does
+ * Implements the TrackPieceView interface, but intentionally does
  * nothing. Its methods are called when drawing tiles with no track.
  */
 public final class NullTrackPieceRenderer implements TrackPieceRenderer {

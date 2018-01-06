@@ -37,6 +37,7 @@ public abstract class GrowableBase implements Serializable {
      * Default initial array size.
      */
     public static final int DEFAULT_SIZE = 8;
+    private static final long serialVersionUID = 7017586128591119295L;
     /**
      * Maximum size increment for growing array.
      */

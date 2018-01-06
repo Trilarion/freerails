@@ -26,7 +26,7 @@ import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.train.WagonType;
 
 import java.awt.*;
@@ -94,7 +94,7 @@ public class StationBoxRenderer implements Painter {
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (wi.next()) { // loop over non null stations
-                StationModel station = (StationModel) wi.getElement();
+                Station station = (Station) wi.getElement();
                 int positionX = (station.getStationX() * ClientConstants.TILE_SIZE)
                         + ClientConstants.TILE_SIZE / 2;
                 int positionY = (station.getStationY() * ClientConstants.TILE_SIZE)

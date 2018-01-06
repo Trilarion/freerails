@@ -24,7 +24,7 @@ package freerails.world;
 import java.io.Serializable;
 
 /**
- * This class represents actual game speed. If the game speed {@code speed}
+ * Represents actual game speed. If the game speed {@code speed}
  * is lesser then zero, game is paused. After unpausing, the speed should be
  * {@code -speed}.
  *

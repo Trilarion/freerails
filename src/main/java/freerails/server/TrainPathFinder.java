@@ -28,7 +28,7 @@ import freerails.world.WorldDiffs;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
- * This class provides methods that generate a path to a target as a series of
+ * Provides methods that generate a path to a target as a series of
  * PositionOnTrack objects encoded as ints, it also deals with stops at
  * stations.
  */

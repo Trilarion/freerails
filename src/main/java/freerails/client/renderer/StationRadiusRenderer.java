@@ -27,7 +27,7 @@ import freerails.controller.ModelRoot.Value;
 import java.awt.*;
 
 /**
- * This class draws the radius of a station on the map.
+ * Draws the radius of a station on the map.
  */
 public class StationRadiusRenderer implements Painter {
     /**

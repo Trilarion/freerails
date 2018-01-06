@@ -26,7 +26,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * This class returns the Java System Properties as an HTML table.
+ * Returns the Java System Properties as an HTML table.
  */
 public class ShowJavaProperties {
 

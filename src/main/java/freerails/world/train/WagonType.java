@@ -21,7 +21,7 @@ package freerails.world.train;
 import java.io.Serializable;
 
 /**
- * This class represents a wagon type, for example 'goods wagon'. It
+ * Represents a wagon type, for example 'goods wagon'. It
  * encapsulates the properties of a wagon that are common to all wagons of the
  * same type.
  */

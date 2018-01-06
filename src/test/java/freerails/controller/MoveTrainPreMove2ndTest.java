@@ -31,8 +31,8 @@ import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.cargo.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.DemandForCargoAtStation;
-import freerails.world.station.StationModel;
+import freerails.world.station.StationDemand;
+import freerails.world.station.Station;
 import freerails.world.train.*;
 
 /**
@@ -220,7 +220,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         CargoBatch cb = new CargoBatch(0, 6, 6, 0, stationId);
         MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
         mb.addCargo(cb, amount);
-        StationModel station1Model = (StationModel) world.get(principal,
+        Station station1Model = (Station) world.get(principal,
                 KEY.STATIONS, stationId);
         ImmutableCargoBatchBundle cargoAtStationBefore = mb.toImmutableCargoBundle();
         int station1BundleId = station1Model.getCargoBundleID();
@@ -408,7 +408,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
         // Add 35 unit of cargo #0 to station 1.
-        StationModel station0 = (StationModel) world.get(principal,
+        Station station0 = (Station) world.get(principal,
                 KEY.STATIONS, 1);
         int cargoBundleId = station0.getCargoBundleID();
         MutableCargoBatchBundle mcb = new MutableCargoBatchBundle();
@@ -420,10 +420,10 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Make station2 demand cargo #0;
         boolean[] boolArray = new boolean[world.size(SKEY.CARGO_TYPES)];
         boolArray[0] = true;
-        DemandForCargoAtStation demand = new DemandForCargoAtStation(boolArray);
-        StationModel station2 = (StationModel) world.get(principal,
+        StationDemand demand = new StationDemand(boolArray);
+        Station station2 = (Station) world.get(principal,
                 KEY.STATIONS, 2);
-        StationModel stationWithNewDemand = new StationModel(station2, demand);
+        Station stationWithNewDemand = new Station(station2, demand);
         world.set(principal, KEY.STATIONS, 2, stationWithNewDemand);
 
         // The train should be bound for station 1.

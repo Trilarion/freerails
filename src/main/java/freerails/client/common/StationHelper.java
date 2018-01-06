@@ -22,7 +22,7 @@ import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.track.TrackRule;
 
@@ -49,7 +49,7 @@ public class StationHelper {
                 && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
 
             for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-                StationModel station = (StationModel) world.get(principal,
+                Station station = (Station) world.get(principal,
                         KEY.STATIONS, i);
 
                 if (null != station && station.x == x && station.y == y) {

@@ -26,7 +26,7 @@ package freerails.client.renderer;
 import java.awt.*;
 
 /**
- * This class stores a buffer containing the terrain and track layers of current
+ * Stores a buffer containing the terrain and track layers of current
  * visible rectangle of the map. It is responsible of painting these layers and
  * updating the buffer when the map scrolls or tiles are updated.
  */

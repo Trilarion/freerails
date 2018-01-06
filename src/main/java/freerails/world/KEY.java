@@ -23,7 +23,7 @@ import freerails.util.Utils;
 import java.io.Serializable;
 
 /**
- * This class provides a set of keys to access the lists of elements in the game
+ * Provides a set of keys to access the lists of elements in the game
  * world that are indexed by player.
  *
  *

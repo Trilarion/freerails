@@ -25,6 +25,7 @@ import java.io.Serializable;
  */
 public interface TerrainTile extends Serializable {
 
+    // TODO what is the meaning of the terrain type id?
     /**
      * @return
      */

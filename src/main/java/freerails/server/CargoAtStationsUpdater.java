@@ -29,13 +29,13 @@ import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
-import freerails.world.station.SupplyAtStation;
+import freerails.world.station.Station;
+import freerails.world.station.StationSupply;
 
 import java.util.Iterator;
 
 /**
- * This class loops over the list of stations and adds cargo depending on what
+ * Loops over the list of stations and adds cargo depending on what
  * the surrounding tiles supply.
  */
 public class CargoAtStationsUpdater implements FreerailsServerSerializable {
@@ -61,9 +61,9 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
                     w, principal);
 
             while (nonNullStations.next()) {
-                StationModel station = (StationModel) nonNullStations
+                Station station = (Station) nonNullStations
                         .getElement();
-                SupplyAtStation supply = station.getSupply();
+                StationSupply supply = station.getSupply();
                 ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) w
                         .get(principal, KEY.CARGO_BUNDLES, station
                                 .getCargoBundleID());

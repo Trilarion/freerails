@@ -26,7 +26,7 @@ import freerails.world.train.EngineType;
 import freerails.world.train.WagonType;
 
 /**
- * This class adds hard coded wagon and engine types to the World. Later the
+ * Adds hard coded wagon and engine types to the World. Later the
  * wagon and engine types will be defined in an xml file, but this will do for
  * now.
  */

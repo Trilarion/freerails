@@ -22,7 +22,7 @@ import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.train.TrainOrdersModel;
 
 import java.util.HashMap;
@@ -120,7 +120,7 @@ public class TrainSummeryModel {
                 break;
             }
         }
-        StationModel station = (StationModel) world.get(principal,
+        Station station = (Station) world.get(principal,
                 KEY.STATIONS, orders.getStationID());
         String stationName = station.getStationName();
         lastStations.put(trainNum, stationName);

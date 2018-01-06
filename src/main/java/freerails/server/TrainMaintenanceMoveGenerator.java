@@ -34,7 +34,7 @@ import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
- * This class iterates over the entries in the BankAccount and counts the number
+ * Iterates over the entries in the BankAccount and counts the number
  * of trains, then calculates the cost of maintenance.
  */
 public class TrainMaintenanceMoveGenerator {

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class represents a train's schedule. That is, which stations that the
+ * Represents a train's schedule. That is, which stations that the
  * train should visit and what wagons the engine should pull.
  */
 public class MutableSchedule implements Schedule {

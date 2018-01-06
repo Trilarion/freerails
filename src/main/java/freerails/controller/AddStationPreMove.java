@@ -28,7 +28,7 @@ import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
@@ -162,12 +162,12 @@ public class AddStationPreMove implements PreMove {
                 AddItemToListMove move = (AddItemToListMove) moves[i];
 
                 if (move.getKey().equals(KEY.STATIONS)) {
-                    StationModel station = (StationModel) move.getAfter();
+                    Station station = (Station) move.getAfter();
                     CalcCargoSupplyRateAtStation supplyRate;
                     supplyRate = new CalcCargoSupplyRateAtStation(w, station.x,
                             station.y, ruleNumber);
 
-                    StationModel stationAfter = supplyRate
+                    Station stationAfter = supplyRate
                             .calculations(station);
                     moves[i] = new AddItemToListMove(move.getKey(), move
                             .getIndex(), stationAfter, move.getPrincipal());

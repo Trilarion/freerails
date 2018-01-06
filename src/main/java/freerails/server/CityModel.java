@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * This class lets the server analyse and alter cities.
+ * Lets the server analyse and alter cities.
  */
 class CityModel {
 

@@ -23,49 +23,49 @@ import freerails.util.ImInts;
 import java.io.Serializable;
 
 /**
- * This class represents the demand for cargo at a station.
+ * Represents the supply at a station.
  */
-public class DemandForCargoAtStation implements Serializable {
-    private static final long serialVersionUID = 3257565088071038009L;
+public class StationSupply implements Serializable {
 
-    private final ImInts demand;
+    private static final long serialVersionUID = 4049918272826847286L;
+    // TODO this should not be ImInts, probably a map (or immutable map)
+    private final ImInts supply;
 
+    // TODO what is the meaning of cargoWaiting and do we need it?
     /**
-     * @param demandArray
+     * @param cargoWaiting
      */
-    public DemandForCargoAtStation(boolean[] demandArray) {
-        demand = ImInts.fromBoolean(demandArray);
+    public StationSupply(int[] cargoWaiting) {
+        supply = new ImInts(cargoWaiting);
+    }
+
+    // TODO why is cargType an int, not the class from world.cargo
+    /**
+     * Returns the number of car loads of the specified cargo that the station
+     * supplies per year.
+     *
+     * @param cargoType
+     * @return
+     */
+    public int getSupply(int cargoType) {
+        return supply.get(cargoType);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof DemandForCargoAtStation))
+        if (!(o instanceof StationSupply))
             return false;
 
-        final DemandForCargoAtStation demandAtStation = (DemandForCargoAtStation) o;
+        final StationSupply stationSupply = (StationSupply) o;
 
-        return demand.equals(demandAtStation.demand);
+        return supply.equals(stationSupply.supply);
     }
 
     @Override
     public int hashCode() {
-        int result = 0;
-
-        for (int i = 0; i < demand.size(); i++) {
-            result = 29 * result + demand.get(i);
-        }
-
-        return result;
-    }
-
-    /**
-     * @param cargoNumber
-     * @return
-     */
-    public boolean isCargoDemanded(int cargoNumber) {
-        return demand.get(cargoNumber) == 1;
+        return supply.hashCode();
     }
 
 }

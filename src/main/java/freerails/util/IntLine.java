@@ -21,7 +21,7 @@ package freerails.util;
 import java.io.Serializable;
 
 /**
- * This class defines a straight line between two points. Units are arbitrary.
+ * Defines a straight line between two points. Units are arbitrary.
  */
 public class IntLine implements Serializable {
 

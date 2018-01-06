@@ -23,46 +23,49 @@ import freerails.util.ImInts;
 import java.io.Serializable;
 
 /**
- * This class represents the supply at a station.
+ * Represents the demand for cargo at a station.
  */
-public class SupplyAtStation implements Serializable {
-    private static final long serialVersionUID = 4049918272826847286L;
+public class StationDemand implements Serializable {
+    private static final long serialVersionUID = 3257565088071038009L;
 
-    private final ImInts supply;
-
-    /**
-     * @param cargoWaiting
-     */
-    public SupplyAtStation(int[] cargoWaiting) {
-        supply = new ImInts(cargoWaiting);
-    }
+    private final ImInts demand;
 
     /**
-     * Returns the number of car loads of the specified cargo that the station
-     * supplies per year.
-     *
-     * @param cargoType
-     * @return
+     * @param demandArray
      */
-    public int getSupply(int cargoType) {
-        return supply.get(cargoType);
+    public StationDemand(boolean[] demandArray) {
+        demand = ImInts.fromBoolean(demandArray);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof SupplyAtStation))
+        if (!(o instanceof StationDemand))
             return false;
 
-        final SupplyAtStation supplyAtStation = (SupplyAtStation) o;
+        final StationDemand demandAtStation = (StationDemand) o;
 
-        return supply.equals(supplyAtStation.supply);
+        return demand.equals(demandAtStation.demand);
     }
 
     @Override
     public int hashCode() {
-        return supply.hashCode();
+        int result = 0;
+
+        for (int i = 0; i < demand.size(); i++) {
+            result = 29 * result + demand.get(i);
+        }
+
+        return result;
+    }
+
+    /**
+     * @param cargoNumber
+     * @return
+     */
+    public boolean isCargoDemanded(int cargoNumber) {
+        return demand.get(cargoNumber) == 1;
     }
 
 }

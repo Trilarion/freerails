@@ -25,7 +25,7 @@ import freerails.world.player.Player;
 import java.io.Serializable;
 
 /**
- * This class implements methods which can be used to alter the world. Notice
+ * Implements methods which can be used to alter the world. Notice
  * that in contrast to, say, {@code java.util.List} there is no remove()
  * method that shifts any subsequent elements to the left (subtracts one from
  * their indices). This means that an elements' position in a list can be used

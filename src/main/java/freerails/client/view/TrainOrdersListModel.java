@@ -124,7 +124,7 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     /**
-     * This class holds the values that are needed by the ListCellRender.
+     * Holds the values that are needed by the ListCellRender.
      * TrainOrdersListModel.getElementAt(int index) returns an instance of this
      * class.
      */

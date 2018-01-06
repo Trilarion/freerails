@@ -27,7 +27,7 @@ import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.train.*;
 import org.apache.log4j.Logger;
 
@@ -143,7 +143,7 @@ public class TrainStopsHandler implements Serializable {
     public int getStationID(int x, int y) {
         // loop through the station list to check if train is at the same Point as a station
         for (int i = 0; i < worldDiffs.size(principal, KEY.STATIONS); i++) {
-            StationModel tempPoint = (StationModel) worldDiffs.get(principal,
+            Station tempPoint = (Station) worldDiffs.get(principal,
                     KEY.STATIONS, i);
 
             if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
@@ -321,7 +321,7 @@ public class TrainStopsHandler implements Serializable {
         ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
-        StationModel station;
+        Station station;
 
         TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
         boolean waiting4FullLoad = order.waitUntilFull && !isTrainFull();
@@ -334,7 +334,7 @@ public class TrainStopsHandler implements Serializable {
                     newSchedule);
 
             int stationNumber = schedule.getStationToGoto();
-            station = (StationModel) worldDiffs.get(principal, KEY.STATIONS,
+            station = (Station) worldDiffs.get(principal, KEY.STATIONS,
                     stationNumber);
 
             if (null == station) {

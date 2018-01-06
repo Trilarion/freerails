@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * This class tests that the game loop and screen handler are working correctly.
+ * Tests that the game loop and screen handler are working correctly.
  * All it does is display the current time in ms and display the number of
  * frames per second.
  */

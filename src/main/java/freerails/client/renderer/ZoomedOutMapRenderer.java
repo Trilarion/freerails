@@ -44,7 +44,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 /**
- * This class draws the overview map.
+ * Draws the overview map.
  */
 public final class ZoomedOutMapRenderer implements MapRenderer {
     private final int imageWidth;

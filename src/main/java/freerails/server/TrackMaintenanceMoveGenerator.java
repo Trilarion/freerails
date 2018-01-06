@@ -36,7 +36,7 @@ import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
 /**
- * This class iterates over the entries in the BankAccount and counts the number
+ * Iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
  */
 public class TrackMaintenanceMoveGenerator {

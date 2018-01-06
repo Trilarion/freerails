@@ -23,7 +23,7 @@ import freerails.world.finances.Money;
 import java.io.Serializable;
 
 /**
- * This class represents an engine type, for example 'Grass Hopper'. It
+ * Represents an engine type, for example 'Grass Hopper'. It
  * encapsulates the properties that are common to all engines of the same type.
  */
 public final class EngineType implements Serializable {

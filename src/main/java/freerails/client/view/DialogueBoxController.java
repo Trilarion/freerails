@@ -36,8 +36,8 @@ import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.util.ImList;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.PlannedTrain;
-import freerails.world.station.StationModel;
+import freerails.world.station.TrainBlueprint;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import org.apache.log4j.Logger;
 
@@ -48,7 +48,7 @@ import java.awt.event.ActionListener;
 import java.util.NoSuchElementException;
 
 /**
- * This class is responsible for displaying dialogue boxes, adding borders to
+ * Is responsible for displaying dialogue boxes, adding borders to
  * them as appropriate, and returning focus to the last focus owner after a
  * dialogue box has been closed. It is also responsible for adding components
  * that need to update in response to moves to the MoveChainFork. Currently
@@ -125,13 +125,13 @@ public class DialogueBoxController implements WorldListListener {
                     .getWorld(), modelRoot.getPrincipal());
 
             if (wi.next()) {
-                StationModel station = (StationModel) wi.getElement();
+                Station station = (Station) wi.getElement();
 
-                ImList<PlannedTrain> before = station.getProduction();
+                ImList<TrainBlueprint> before = station.getProduction();
                 int engineType = selectEngine.getEngineType();
                 int[] wagonTypes = selectWagons.getWagons();
-                ImList<PlannedTrain> after = new ImList<>(
-                        new PlannedTrain(engineType, wagonTypes));
+                ImList<TrainBlueprint> after = new ImList<>(
+                        new TrainBlueprint(engineType, wagonTypes));
 
                 Move m = new ChangeProductionAtEngineShopMove(before, after, wi
                         .getIndex(), modelRoot.getPrincipal());
@@ -587,7 +587,7 @@ public class DialogueBoxController implements WorldListListener {
 //                && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
 //
 //            for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-//                StationModel station = (StationModel) world.get(principal,
+//                Station station = (Station) world.get(principal,
 //                        KEY.STATIONS, i);
 //
 //                if (null != station && station.x == x && station.y == y) {

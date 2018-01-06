@@ -30,8 +30,8 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.PlannedTrain;
-import freerails.world.station.StationModel;
+import freerails.world.station.TrainBlueprint;
+import freerails.world.station.Station;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
@@ -40,7 +40,7 @@ import freerails.world.train.TrainOrdersModel;
 import java.util.ArrayList;
 
 /**
- * This class is used by the server to generate moves that add trains, move
+ * Is used by the server to generate moves that add trains, move
  * trains, and handle stops at stations. Note, the client should not use this
  * class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
@@ -172,11 +172,11 @@ public class TrainUpdater implements ServerAutomaton {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
             for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-                StationModel station = (StationModel) world.get(principal,
+                Station station = (Station) world.get(principal,
                         KEY.STATIONS, i);
                 if (null != station) {
 
-                    ImList<PlannedTrain> production = station.getProduction();
+                    ImList<TrainBlueprint> production = station.getProduction();
 
                     if (production.size() > 0) {
 

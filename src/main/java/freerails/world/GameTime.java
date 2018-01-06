@@ -24,7 +24,7 @@ package freerails.world;
 import java.io.Serializable;
 
 /**
- * This class represents a specific instant in time during a game.
+ * Represents a specific instant in time during a game.
  */
 public class GameTime implements Serializable, Comparable<GameTime> {
     /**

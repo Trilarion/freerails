@@ -43,6 +43,7 @@ import java.io.Serializable;
  * @author Dennis M. Sosnoski
  */
 public abstract class ArrayBase extends GrowableBase implements Serializable {
+    private static final long serialVersionUID = -1899068791184507467L;
     /**
      * The number of values currently present in the array.
      */

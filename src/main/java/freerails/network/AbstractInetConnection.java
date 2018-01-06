@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.net.Socket;
 
 /**
- * This class has the code that is shared by the client and server versions of
+ * Has the code that is shared by the client and server versions of
  * InetConnection.
  */
 @SuppressWarnings("unused")

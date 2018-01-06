@@ -22,7 +22,7 @@ package freerails.client.common;
 import junit.framework.TestCase;
 
 /**
- * This class formats and integer as a binary number with a specified number of
+ * Formats and integer as a binary number with a specified number of
  * digits.
  */
 public class BinaryNumberFormatterTest extends TestCase {

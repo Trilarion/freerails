@@ -24,6 +24,8 @@ package freerails.world.finances;
 /**
  * A transaction that occurs when a new company is founded or when a company
  * issues additional shares.
+ *
+ * Additionally to the values necessary for an item transaction also a player id is needed.
  */
 public class StockItemTransaction extends ItemTransaction {
 
@@ -33,15 +35,12 @@ public class StockItemTransaction extends ItemTransaction {
                                  Money amount) {
 
         super(category, playerId, quantity, amount);
+        // TODO why should the player id ever be negative
         if (playerId < 0)
             throw new IllegalArgumentException();
     }
 
-    @SuppressWarnings("unused")
-    private StockItemTransaction(int quantity, Money amount) {
-        super(TransactionCategory.ISSUE_STOCK, -1, quantity, amount);
-    }
-
+    // TODO Do these static methods have to be here?
     /**
      * @param playerId
      * @param quantity
@@ -51,11 +50,8 @@ public class StockItemTransaction extends ItemTransaction {
     public static StockItemTransaction issueStock(int playerId, int quantity,
                                                   Money pricePerShare) {
         // Issue Stock of the Player
-        long temp = (pricePerShare.getAmount() * quantity);
-        temp = 0L - temp;
-        Money amount = Money.changeSign(new Money(temp));
-        return new StockItemTransaction(TransactionCategory.ISSUE_STOCK, playerId,
-                quantity, amount);
+        Money amount = new Money(pricePerShare.getAmount() * quantity);
+        return new StockItemTransaction(TransactionCategory.ISSUE_STOCK, playerId, quantity, amount);
     }
 
     /**
@@ -64,12 +60,9 @@ public class StockItemTransaction extends ItemTransaction {
      * @param stockPrice
      * @return
      */
-    public static StockItemTransaction buyOrSellStock(int playerId, int quantity,
-                                                      Money stockPrice) {
+    public static StockItemTransaction buyOrSellStock(int playerId, int quantity, Money stockPrice) {
         // Buys another Players Stock, Uses another Category
         Money value = new Money(stockPrice.getAmount() * quantity * -1);
-        return new StockItemTransaction(TransactionCategory.TRANSFER_STOCK,
-                playerId, quantity, value);
+        return new StockItemTransaction(TransactionCategory.TRANSFER_STOCK, playerId, quantity, value);
     }
-
 }

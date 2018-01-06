@@ -22,20 +22,20 @@
 package freerails.move;
 
 import freerails.world.KEY;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.top.MapFixtureFactory;
 
 /**
  * JUnit test.
  */
 public class CompositeMoveTest extends AbstractMoveTestCase {
-    final StationModel station1 = new StationModel(1, 1, "station1", 10, 0);
+    final Station station1 = new Station(1, 1, "station1", 10, 0);
 
-    final StationModel station2 = new StationModel(2, 3, "station2", 10, 0);
+    final Station station2 = new Station(2, 3, "station2", 10, 0);
 
-    final StationModel station3 = new StationModel(3, 3, "station3", 10, 0);
+    final Station station3 = new Station(3, 3, "station3", 10, 0);
 
-    final StationModel station4 = new StationModel(4, 4, "station4", 10, 0);
+    final Station station4 = new Station(4, 4, "station4", 10, 0);
 
     /**
      *

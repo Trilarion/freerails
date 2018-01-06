@@ -31,7 +31,7 @@ import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.train.WagonType;
 
 import javax.swing.*;
@@ -177,7 +177,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
      * @param newStationID
      */
     public void display(int newStationID) {
-        StationModel station = (StationModel) world.get(principal,
+        Station station = (Station) world.get(principal,
                 KEY.STATIONS, newStationID);
         this.stationName.setText(station.getStationName());
         final ImmutableCargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world
@@ -197,7 +197,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
                         / WagonType.UNITS_OF_CARGO_PER_WAGON;
                 quantityWaiting.add(carloads);
             }
-            if (station.getDemand().isCargoDemanded(i)) {
+            if (station.getDemandForCargo().isCargoDemanded(i)) {
                 typeDemanded.add(cargoType.getDisplayName());
             }
         }

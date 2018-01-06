@@ -26,7 +26,7 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 
 import java.awt.*;
@@ -76,7 +76,7 @@ public class StationNamesRenderer implements Painter {
         float textX;
         float textY;
 
-        StationModel tempStation;
+        Station tempStation;
         String stationName;
         int positionX;
         int positionY;
@@ -96,7 +96,7 @@ public class StationNamesRenderer implements Painter {
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (wi.next()) { // loop over non null stations
-                tempStation = (StationModel) wi.getElement();
+                tempStation = (Station) wi.getElement();
 
                 int x = tempStation.getStationX();
                 int y = tempStation.getStationY();

@@ -22,7 +22,7 @@ import freerails.controller.PathCacheController;
 import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.NullTrackType;
@@ -89,7 +89,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (wi.next()) {
-                StationModel station = (StationModel) wi.getElement();
+                Station station = (Station) wi.getElement();
 
                 /*
                  * Fix for bug 948675 - Can't upgrade station types If locations

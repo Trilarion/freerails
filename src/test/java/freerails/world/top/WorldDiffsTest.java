@@ -24,7 +24,7 @@ import freerails.world.*;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.Player;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.City;
 import freerails.world.terrain.FreerailsTile;
 import junit.framework.TestCase;
@@ -108,7 +108,7 @@ public class WorldDiffsTest extends TestCase {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
 
-        StationModel station0 = new StationModel();
+        Station station0 = new Station();
         underlyingWorld.add(player0.getPrincipal(), KEY.STATIONS, station0);
 
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
@@ -122,14 +122,14 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(station0, fs);
 
         // Add a station.
-        StationModel station1 = new StationModel();
+        Station station1 = new Station();
         worldDiff.add(player0.getPrincipal(), KEY.STATIONS, station1);
         assertEquals(2, worldDiff.size(player0.getPrincipal(), KEY.STATIONS));
         fs = worldDiff.get(player0.getPrincipal(), KEY.STATIONS, 1);
         assertEquals(station1, fs);
 
         // Change a station.
-        StationModel station2 = new StationModel();
+        Station station2 = new Station();
         worldDiff.set(player0.getPrincipal(), KEY.STATIONS, 0, station2);
         fs = worldDiff.get(player0.getPrincipal(), KEY.STATIONS, 0);
         assertEquals(station2, fs);
@@ -167,8 +167,8 @@ public class WorldDiffsTest extends TestCase {
     public void testUsingNullElements() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
         underlyingWorld.addPlayer(player0);
-        StationModel station0 = new StationModel();
-        StationModel station1 = null;
+        Station station0 = new Station();
+        Station station1 = null;
         underlyingWorld.add(player0.getPrincipal(), KEY.STATIONS, station0);
         underlyingWorld.add(player0.getPrincipal(), KEY.STATIONS, station1);
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
@@ -185,8 +185,8 @@ public class WorldDiffsTest extends TestCase {
      */
     public void testItem() {
         WorldImpl underlyingWorld = new WorldImpl(10, 10);
-        StationModel station0 = new StationModel();
-        StationModel station1 = new StationModel();
+        Station station0 = new Station();
+        Station station1 = new Station();
         underlyingWorld.set(ITEM.GAME_RULES, station0); // why not!
 
         WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);

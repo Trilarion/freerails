@@ -21,10 +21,10 @@ package freerails.controller;
 import freerails.util.ImList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.station.CargoConversionAtStation;
-import freerails.world.station.DemandForCargoAtStation;
-import freerails.world.station.StationModel;
-import freerails.world.station.SupplyAtStation;
+import freerails.world.station.StationConversion;
+import freerails.world.station.StationDemand;
+import freerails.world.station.Station;
+import freerails.world.station.StationSupply;
 import freerails.world.terrain.*;
 import freerails.world.track.TrackRule;
 import org.apache.log4j.Logger;
@@ -35,7 +35,7 @@ import java.util.List;
 
 
 /**
- * This class probes the tiles adjacent to a station for what cargo they supply,
+ * Probes the tiles adjacent to a station for what cargo they supply,
  * demand, and convert and then returns a vector of these rates.
  */
 public class CalcCargoSupplyRateAtStation {
@@ -84,7 +84,7 @@ public class CalcCargoSupplyRateAtStation {
 
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         demand = new int[numCargoTypes];
-        converts = CargoConversionAtStation.emptyConversionArray(numCargoTypes);
+        converts = StationConversion.emptyConversionArray(numCargoTypes);
     }
 
     /**
@@ -107,14 +107,14 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * @return
      */
-    public CargoConversionAtStation getConversion() {
-        return new CargoConversionAtStation(this.converts);
+    public StationConversion getConversion() {
+        return new StationConversion(this.converts);
     }
 
     /**
      * @return
      */
-    public DemandForCargoAtStation getDemand() {
+    public StationDemand getDemand() {
         boolean[] demandboolean = new boolean[w.size(SKEY.CARGO_TYPES)];
 
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
@@ -123,7 +123,7 @@ public class CalcCargoSupplyRateAtStation {
             }
         }
 
-        return new DemandForCargoAtStation(demandboolean);
+        return new StationDemand(demandboolean);
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
@@ -237,10 +237,10 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * Process each existing station, updating what is supplied to it.
      *
-     * @param station A StationModel object to be processed
+     * @param station A Station object to be processed
      * @return
      */
-    public StationModel calculations(StationModel station) {
+    public Station calculations(Station station) {
         int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
 
         List<CargoElementObject> supply = scanAdjacentTiles();
@@ -251,10 +251,10 @@ public class CalcCargoSupplyRateAtStation {
         }
 
         // set the supply rates for the current station
-        SupplyAtStation supplyAtStation = new SupplyAtStation(cargoSupplied);
-        station = new StationModel(station, supplyAtStation);
-        station = new StationModel(station, getDemand());
-        station = new StationModel(station, getConversion());
+        StationSupply stationSupply = new StationSupply(cargoSupplied);
+        station = new Station(station, stationSupply);
+        station = new Station(station, getDemand());
+        station = new Station(station, getConversion());
 
         return station;
     }

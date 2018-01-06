@@ -27,7 +27,7 @@ import freerails.util.ImInts;
 import java.io.Serializable;
 
 /**
- * This class encapsulates the orders for a train.
+ * Encapsulates the orders for a train.
  */
 public class TrainOrdersModel implements Serializable {
     private static final long serialVersionUID = 3616453397155559472L;

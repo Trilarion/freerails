@@ -21,6 +21,7 @@ package freerails.world.finances;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
+// TODO sum of two money objects and multiplication with integer, double
 /**
  * Represents an immutable amount of Money.
  */

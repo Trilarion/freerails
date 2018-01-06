@@ -21,7 +21,7 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- * This class represents the conversion of one cargo type to another one a tile.
+ * Represents the conversion of one cargo type to another one a tile.
  */
 public class Conversion implements Serializable {
 

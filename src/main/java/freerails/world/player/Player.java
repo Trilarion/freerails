@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
+// TODO What is the difference between Player and PlayerPrincipal?
 /**
  * Represents a player within the game. The player model is such that a user can
  * start a client, create a new player on the server and start playing. They can
@@ -33,16 +34,18 @@ import java.security.NoSuchAlgorithmException;
  * XXX the player is only authenticated when the connection is opened, and
  * subsequent exchanges are not authenticated.
  *
- * TODO implement a more complete authentication system using certificates
- * rather than public keys.
+ * TODO implement a more complete authentication system using certificates rather than public keys.
  */
 public class Player implements Serializable {
+
+    // TODO What is the meaning of the AUTHORITATIVE principal?
     /**
      * This Principal can be granted all permissions.
      */
     public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal(
             "Authoritative Server");
-    private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 4849154251645451999L;
+
     /**
      * Name of the player.
      */
@@ -77,8 +80,6 @@ public class Player implements Serializable {
      */
     public Player(String name, int id) {
         this.name = name;
-        // this.publicKey = publicKey;
-        // privateData = new PrivateData();
         this.principal = new PlayerPrincipal(id, name);
     }
 
@@ -87,11 +88,9 @@ public class Player implements Serializable {
         if (o == null) {
             return false;
         }
-
         if (!(o instanceof Player)) {
             return false;
         }
-
         return name.equals(((Player) o).name);
     }
 
@@ -117,39 +116,5 @@ public class Player implements Serializable {
      */
     public FreerailsPrincipal getPrincipal() {
         return principal;
-    }
-
-    /**
-     * A FreerailsPrincipal that is not a player.
-     */
-    private static class WorldPrincipal extends FreerailsPrincipal {
-        private static final long serialVersionUID = 1;
-
-        private final String principalName;
-
-        public WorldPrincipal(String name) {
-            super(-1);
-            this.principalName = name;
-        }
-
-        public String getName() {
-            return principalName;
-        }
-
-        @Override
-        public String toString() {
-            return principalName;
-        }
-
-        @Override
-        public int hashCode() {
-            return principalName.hashCode();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return o instanceof WorldPrincipal && (principalName.equals(((WorldPrincipal) o).principalName));
-
-        }
     }
 }

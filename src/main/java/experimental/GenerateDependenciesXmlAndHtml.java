@@ -28,7 +28,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * This class generates an ant script that checks the dependencies between
+ * Generates an ant script that checks the dependencies between
  * packages and also generates an html page that illustrates the allowed
  * dependencies. The checkdep target on the generated ant script tests the
  * dependencies of packages. It does this by copying the contents of the package

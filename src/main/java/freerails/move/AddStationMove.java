@@ -27,7 +27,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 /**
  * This {@link CompositeMove}adds a station to the station list and adds a
@@ -56,7 +56,7 @@ public class AddStationMove extends CompositeMove {
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
                 ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
         int stationNumber = w.size(principal, KEY.STATIONS);
-        StationModel station = new StationModel(p.x, p.y, stationName, w
+        Station station = new Station(p.x, p.y, stationName, w
                 .size(SKEY.CARGO_TYPES), cargoBundleNumber);
 
         Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber,

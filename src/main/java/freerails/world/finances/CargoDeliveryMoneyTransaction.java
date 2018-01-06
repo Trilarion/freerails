@@ -24,30 +24,27 @@ import freerails.world.cargo.CargoBatch;
  * A credit for delivering cargo.
  */
 // TODO Is this an Item transaction?
-public class DeliverCargoReceipt extends MoneyTransaction {
+public class CargoDeliveryMoneyTransaction extends MoneyTransaction {
+
     private static final long serialVersionUID = 3257009851963160372L;
-
-    private final CargoBatch cb;
-
+    private final CargoBatch cargoBatch;
     private final int quantity;
-
     private final int stationId;
-
     private final int trainId;
 
     /**
-     * @param m
+     * @param money
      * @param quantity
      * @param stationId
-     * @param cb
+     * @param cargoBatch
      * @param trainId
      */
-    public DeliverCargoReceipt(Money m, int quantity, int stationId,
-                               CargoBatch cb, int trainId) {
-        super(m, TransactionCategory.CARGO_DELIVERY);
+    public CargoDeliveryMoneyTransaction(Money money, int quantity, int stationId,
+                                         CargoBatch cargoBatch, int trainId) {
+        super(money, TransactionCategory.CARGO_DELIVERY);
         this.stationId = stationId;
         this.quantity = quantity;
-        this.cb = cb;
+        this.cargoBatch = cargoBatch;
         this.trainId = trainId;
     }
 
@@ -61,8 +58,8 @@ public class DeliverCargoReceipt extends MoneyTransaction {
     /**
      * @return
      */
-    public CargoBatch getCb() {
-        return cb;
+    public CargoBatch getCargoBatch() {
+        return cargoBatch;
     }
 
     /**

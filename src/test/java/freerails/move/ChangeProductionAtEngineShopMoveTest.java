@@ -24,8 +24,8 @@ package freerails.move;
 import freerails.util.ImList;
 import freerails.world.KEY;
 import freerails.world.WagonAndEngineTypesFactory;
-import freerails.world.station.PlannedTrain;
-import freerails.world.station.StationModel;
+import freerails.world.station.TrainBlueprint;
+import freerails.world.station.Station;
 import freerails.world.top.MapFixtureFactory;
 
 /**
@@ -33,7 +33,7 @@ import freerails.world.top.MapFixtureFactory;
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
-    private ImList<PlannedTrain> after;
+    private ImList<TrainBlueprint> after;
 
     private int engineType;
 
@@ -46,18 +46,18 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
-                new StationModel());
+                new Station());
         getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
-                new StationModel());
+                new Station());
         getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
-                new StationModel());
+                new Station());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         wetf.addTypesToWorld(getWorld());
         engineType = 0;
         int wagonType = 0;
         wagons = new int[]{wagonType, wagonType};
-        after = new ImList<>(new PlannedTrain(engineType, wagons));
+        after = new ImList<>(new TrainBlueprint(engineType, wagons));
     }
 
     /**
@@ -65,7 +65,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
      */
     @Override
     public void testMove() {
-        ImList<PlannedTrain> before = new ImList<>();
+        ImList<TrainBlueprint> before = new ImList<>();
 
         ChangeProductionAtEngineShopMove m;
 
@@ -99,10 +99,10 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testProductionAtEngineShopEquals() {
-        PlannedTrain b;
-        PlannedTrain c;
-        b = new PlannedTrain(engineType, wagons);
-        c = new PlannedTrain(engineType, wagons);
+        TrainBlueprint b;
+        TrainBlueprint c;
+        b = new TrainBlueprint(engineType, wagons);
+        c = new TrainBlueprint(engineType, wagons);
         assertEquals(c, b);
         assertEquals(b, c);
     }

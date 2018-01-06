@@ -25,30 +25,32 @@ import java.io.Serializable;
 /**
  * Records which cargo is converted to other cargo at a station.
  */
-public class CargoConversionAtStation implements Serializable {
+public class StationConversion implements Serializable {
+
     private static final long serialVersionUID = 3690754012076978231L;
-
+    // TODO what about Null as standard value
     private static final int NOT_CONVERTED = Integer.MIN_VALUE;
-
+    // this should probably be a map
     private final ImInts convertedTo;
 
+    // TODO provide as map
     /**
      * @param convertedTo
      */
-    public CargoConversionAtStation(int[] convertedTo) {
+    public StationConversion(int[] convertedTo) {
         this.convertedTo = new ImInts(convertedTo);
     }
 
+    // TODO is this really needed
     /**
      * @param numberOfCargoTypes
      * @return
      */
-    public static CargoConversionAtStation emptyInstance(int numberOfCargoTypes) {
-        int[] convertedTo = emptyConversionArray(numberOfCargoTypes);
-
-        return new CargoConversionAtStation(convertedTo);
+    public static StationConversion emptyInstance(int numberOfCargoTypes) {
+        return new StationConversion(emptyConversionArray(numberOfCargoTypes));
     }
 
+    // TODO eliminate this
     /**
      * @param numberOfCargoTypes
      * @return
@@ -59,18 +61,19 @@ public class CargoConversionAtStation implements Serializable {
         for (int i = 0; i < numberOfCargoTypes; i++) {
             convertedTo[i] = NOT_CONVERTED;
         }
-
         return convertedTo;
     }
 
+    // TODO what is the cargoNumber and do we need it? Maybe a cargo type?
     /**
      * @param cargoNumber
      * @return
      */
-    public boolean isCargoConverted(int cargoNumber) {
+    public boolean convertsCargo(int cargoNumber) {
         return NOT_CONVERTED != convertedTo.get(cargoNumber);
     }
 
+    // TODO what is the meaning of the return value?
     /**
      * @param cargoNumber
      * @return
@@ -82,7 +85,6 @@ public class CargoConversionAtStation implements Serializable {
     @Override
     public int hashCode() {
         int result = 0;
-
         for (int i = 0; i < convertedTo.size(); i++) {
             result = 29 * result + convertedTo.get(i);
         }
@@ -92,19 +94,16 @@ public class CargoConversionAtStation implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof CargoConversionAtStation) {
-            CargoConversionAtStation test = (CargoConversionAtStation) o;
-
+        if (o instanceof StationConversion) {
+            StationConversion test = (StationConversion) o;
             if (this.convertedTo.size() != test.convertedTo.size()) {
                 return false;
             }
-
             for (int i = 0; i < convertedTo.size(); i++) {
                 if (convertedTo.get(i) != test.convertedTo.get(i)) {
                     return false;
                 }
             }
-
             return true;
         }
         return false;

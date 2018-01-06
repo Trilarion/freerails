@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * This class provides the UI model for building a station. The mode of
+ * Provides the UI model for building a station. The mode of
  * operation is as follows:
  * <ol>
  * <li>Select a station to build by calling ActionPerformed() on the choose

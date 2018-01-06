@@ -27,7 +27,7 @@ import freerails.server.parser.RunTypesParser;
 import freerails.world.World;
 
 /**
- * This class adds cargo and terrain types defined in an XML file to a World
+ * Adds cargo and terrain types defined in an XML file to a World
  * object.
  */
 // TODO difference interface and implementation

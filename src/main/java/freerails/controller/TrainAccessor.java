@@ -26,7 +26,7 @@ import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
 import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
@@ -108,7 +108,7 @@ public class TrainAccessor {
 
         // loop through the station list to check if train is at the same Point as a station
         for (int i = 0; i < w.size(p, KEY.STATIONS); i++) {
-            StationModel tempPoint = (StationModel) w.get(p, KEY.STATIONS, i);
+            Station tempPoint = (Station) w.get(p, KEY.STATIONS, i);
 
             if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
                 return i; // train is at the station at location tempPoint
@@ -236,7 +236,7 @@ public class TrainAccessor {
             return new ImPoint(0, 0);
         }
 
-        StationModel station = (StationModel) w.get(p, KEY.STATIONS,
+        Station station = (Station) w.get(p, KEY.STATIONS,
                 stationNumber);
 
         return new ImPoint(station.x, station.y);

@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * This class renders a track piece.
+ * Renders a track piece.
  */
 public final class TrackPieceRendererImpl implements TrackPieceRenderer {
     private final Image[] trackPieceIcons = new Image[512];

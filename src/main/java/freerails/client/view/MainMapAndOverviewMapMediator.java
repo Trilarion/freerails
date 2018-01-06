@@ -29,7 +29,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
- * This class mediates between the main map view and the overview map view. It
+ * Mediates between the main map view and the overview map view. It
  * does the following:<br>
  * (1) Updates the rectangle on the overview map when the visible rectangle of
  * the main map changes.<br>

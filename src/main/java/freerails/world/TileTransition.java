@@ -26,7 +26,7 @@ import freerails.client.ClientConstants;
 import freerails.util.ImPoint;
 
 /**
- * This class represents a movement from a tile to any one of the surrounding
+ * Represents a movement from a tile to any one of the surrounding
  * eight tiles.
  */
 @freerails.util.InstanceControlled

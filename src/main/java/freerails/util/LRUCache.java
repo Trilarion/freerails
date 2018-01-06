@@ -29,7 +29,7 @@ import java.util.Map;
  * If the cache is full and another entry is added, the LRU (least recently
  * used) entry is dropped.
  *
- * This class is thread-safe. All methods of this class are synchronized.<br>
+ * Is thread-safe. All methods of this class are synchronized.<br>
  * Author: Christian d'Heureuse (<a
  * href="http://www.source-code.biz">www.source-code.biz</a>)<br>
  * License: <a href="http://www.gnu.org/licenses/lgpl.html">LGPL</a>.
@@ -56,8 +56,8 @@ public class LRUCache<K, V> {
                 .ceil(cacheSize / hashTableLoadFactor) + 1;
         map = new LinkedHashMap<K, V>(hashTableCapacity, hashTableLoadFactor,
                 true) {
+            private static final long serialVersionUID = -850532828896961745L;
             // (an anonymous inner class)
-            private static final long serialVersionUID = 1;
 
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {

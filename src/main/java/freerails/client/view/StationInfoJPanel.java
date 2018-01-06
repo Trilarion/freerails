@@ -30,7 +30,7 @@ import freerails.world.*;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.train.WagonType;
 import org.apache.log4j.Logger;
@@ -173,8 +173,8 @@ public class StationInfoJPanel extends JPanel implements View,
         // GEN-FIRST:event_previousStationActionPerformed
         // Add your handling code here:
         if (wi.previous()) {
-            ImPoint p = new ImPoint(((StationModel) wi.getElement())
-                    .getStationX(), ((StationModel) wi.getElement())
+            ImPoint p = new ImPoint(((Station) wi.getElement())
+                    .getStationX(), ((Station) wi.getElement())
                     .getStationY());
             this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
 
@@ -188,8 +188,8 @@ public class StationInfoJPanel extends JPanel implements View,
         // GEN-FIRST:event_nextStationActionPerformed
         // Add your handling code here:
         if (wi.next()) {
-            ImPoint p = new ImPoint(((StationModel) wi.getElement())
-                    .getStationX(), ((StationModel) wi.getElement())
+            ImPoint p = new ImPoint(((Station) wi.getElement())
+                    .getStationX(), ((Station) wi.getElement())
                     .getStationY());
             this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
             display();
@@ -230,7 +230,7 @@ public class StationInfoJPanel extends JPanel implements View,
         int stationNumber = wi.getIndex();
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
-            StationModel station = (StationModel) w.get(modelRoot
+            Station station = (Station) w.get(modelRoot
                     .getPrincipal(), KEY.STATIONS, stationNumber);
             FreerailsTile tile = (FreerailsTile) w
                     .getTile(station.x, station.y);
@@ -257,7 +257,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
                 // get the values
                 CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
-                String demanded = (station.getDemand().isCargoDemanded(i) ? "Yes"
+                String demanded = (station.getDemandForCargo().isCargoDemanded(i) ? "Yes"
                         : "No");
 
                 int amountSupplied = station.getSupply().getSupply(i);
@@ -274,7 +274,7 @@ public class StationInfoJPanel extends JPanel implements View,
                         : "&nbsp;";
 
                 // build the html
-                if (station.getDemand().isCargoDemanded(i) || isSupplied) {
+                if (station.getDemandForCargo().isCargoDemanded(i) || isSupplied) {
                     table1.append("<tr>");
                     table1.append("<td>").append(cargoType.getDisplayName()).append("</td>");
                     table1.append("<td align=center>").append(demanded).append("</td>");

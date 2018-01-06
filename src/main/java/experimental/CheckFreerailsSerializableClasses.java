@@ -52,7 +52,7 @@ public class CheckFreerailsSerializableClasses {
 
         immutableTypes.add(String.class);
 
-        // Class clazz = StationModel.class;
+        // Class clazz = Station.class;
         // System.err.println(overridesHashCodeAndEquals(clazz));
         // System.out.println(clazz.isAnnotationPresent(InstanceControlled.class));
         // Annotation[] ans = clazz.getAnnotations();

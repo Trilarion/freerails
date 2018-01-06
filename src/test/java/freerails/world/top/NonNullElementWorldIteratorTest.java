@@ -22,7 +22,7 @@
 package freerails.world.top;
 
 import freerails.world.*;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -35,11 +35,11 @@ import java.util.NoSuchElementException;
 public class NonNullElementWorldIteratorTest extends TestCase {
     World w;
 
-    StationModel station1;
+    Station station1;
 
-    StationModel station2;
+    Station station2;
 
-    StationModel station3;
+    Station station3;
 
     /**
      * @param args
@@ -62,9 +62,9 @@ public class NonNullElementWorldIteratorTest extends TestCase {
     @Override
     protected void setUp() {
         w = new WorldImpl();
-        station1 = new StationModel(10, 20, "Station1", 4, 0);
-        station2 = new StationModel(15, 16, "Station2", 4, 1);
-        station3 = new StationModel(30, 50, "Station3", 4, 2);
+        station1 = new Station(10, 20, "Station1", 4, 0);
+        station2 = new Station(15, 16, "Station2", 4, 1);
+        station3 = new Station(30, 50, "Station3", 4, 2);
         w.addPlayer(MapFixtureFactory.TEST_PLAYER);
         w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station1);
         w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);

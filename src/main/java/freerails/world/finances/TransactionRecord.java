@@ -23,9 +23,9 @@ import freerails.world.GameTime;
 import java.io.Serializable;
 
 /**
- *
+ * A transaction record is a transaction with a time stamp.
  */
-public class TransactionWithTimeStamp implements Serializable {
+public class TransactionRecord implements Serializable {
 
     private static final long serialVersionUID = 1540065347606694456L;
     private final Transaction transaction;
@@ -33,25 +33,23 @@ public class TransactionWithTimeStamp implements Serializable {
 
     /**
      * @param transaction
-     * @param time
+     * @param timestamp
      */
-    public TransactionWithTimeStamp(Transaction transaction, GameTime time) {
+    public TransactionRecord(Transaction transaction, GameTime timestamp) {
         this.transaction = transaction;
-        timestamp = time;
+        this.timestamp = timestamp;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof TransactionWithTimeStamp))
+        if (!(o instanceof TransactionRecord))
             return false;
-
-        final TransactionWithTimeStamp transactionWithTimeStamp = (TransactionWithTimeStamp) o;
-
-        if (!transaction.equals(transactionWithTimeStamp.transaction))
+        final TransactionRecord transactionRecord = (TransactionRecord) o;
+        if (!transaction.equals(transactionRecord.transaction))
             return false;
-        return timestamp.equals(transactionWithTimeStamp.timestamp);
+        return timestamp.equals(transactionRecord.timestamp);
     }
 
     @Override

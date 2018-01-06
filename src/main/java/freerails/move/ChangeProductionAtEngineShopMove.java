@@ -25,8 +25,8 @@ import freerails.util.ImList;
 import freerails.world.KEY;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.PlannedTrain;
-import freerails.world.station.StationModel;
+import freerails.world.station.TrainBlueprint;
+import freerails.world.station.Station;
 
 /**
  * This Move changes what is being built at an engine shop - when a client wants
@@ -34,8 +34,8 @@ import freerails.world.station.StationModel;
  */
 public class ChangeProductionAtEngineShopMove implements Move {
     private static final long serialVersionUID = 3905519384997737520L;
-    private final ImList<PlannedTrain> before;
-    private final ImList<PlannedTrain> after;
+    private final ImList<TrainBlueprint> before;
+    private final ImList<TrainBlueprint> after;
     private final int stationNumber;
     private final FreerailsPrincipal principal;
 
@@ -45,8 +45,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param station
      * @param p
      */
-    public ChangeProductionAtEngineShopMove(ImList<PlannedTrain> b,
-                                            ImList<PlannedTrain> a, int station, FreerailsPrincipal p) {
+    public ChangeProductionAtEngineShopMove(ImList<TrainBlueprint> b,
+                                            ImList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
         this.before = b;
         this.after = a;
         this.stationNumber = station;
@@ -89,13 +89,13 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return tryMove(world, before);
     }
 
-    private MoveStatus tryMove(World w, ImList<PlannedTrain> stateA) {
+    private MoveStatus tryMove(World w, ImList<TrainBlueprint> stateA) {
         // Check that the specified station exists.
         if (!w.boundsContain(principal, KEY.STATIONS, this.stationNumber)) {
             return MoveStatus.moveFailed(this.stationNumber + " " + principal);
         }
 
-        StationModel station = (StationModel) w.get(principal, KEY.STATIONS,
+        Station station = (Station) w.get(principal, KEY.STATIONS,
                 stationNumber);
 
         if (null == station) {
@@ -124,9 +124,9 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.isOk()) {
-            StationModel station = (StationModel) world.get(this.principal,
+            Station station = (Station) world.get(this.principal,
                     KEY.STATIONS, stationNumber);
-            station = new StationModel(station, this.after);
+            station = new Station(station, this.after);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
         return status;
@@ -136,9 +136,9 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.isOk()) {
-            StationModel station = (StationModel) world.get(this.principal,
+            Station station = (Station) world.get(this.principal,
                     KEY.STATIONS, stationNumber);
-            station = new StationModel(station, this.before);
+            station = new Station(station, this.before);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
         return status;

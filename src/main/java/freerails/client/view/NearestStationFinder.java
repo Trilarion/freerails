@@ -23,7 +23,7 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 /**
  * Provides methods that find the nearest station in a given direction, used by
@@ -62,7 +62,7 @@ public class NearestStationFinder {
         int nearestStation = NOT_FOUND;
 
         while (it.next()) {
-            StationModel station = (StationModel) it.getElement();
+            Station station = (Station) it.getElement();
 
             int deltaX = x - station.x;
 
@@ -89,13 +89,13 @@ public class NearestStationFinder {
         int distanceToClosestSquared = Integer.MAX_VALUE;
         NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
-        StationModel currentStation = (StationModel) world.get(principal,
+        Station currentStation = (Station) world.get(principal,
                 KEY.STATIONS, startStation);
 
         int nearestStation = NOT_FOUND;
 
         while (it.next()) {
-            StationModel station = (StationModel) it.getElement();
+            Station station = (Station) it.getElement();
             int deltaX = station.x - currentStation.x;
             int deltaY = station.y - currentStation.y;
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;

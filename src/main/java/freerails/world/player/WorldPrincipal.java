@@ -16,41 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * TypeID.java
- *
- */
-package freerails.world;
+package freerails.world.player;
 
 /**
- * Stores an SKEY and an item index.
+ * A FreerailsPrincipal that is not a player.
  */
-@SuppressWarnings("unused")
-public class TypeID {
-    private final int id;
+class WorldPrincipal extends FreerailsPrincipal {
 
-    private final SKEY key;
+    private static final long serialVersionUID = -5498947120662423937L;
+    private final String principalName;
 
-    /**
-     * @param id
-     * @param key
-     */
-    public TypeID(int id, SKEY key) {
-        this.id = id;
-        this.key = key;
+    public WorldPrincipal(String name) {
+        super(-1);
+        this.principalName = name;
     }
 
-    /**
-     * @return
-     */
-    public SKEY getKey() {
-        return key;
+    public String getName() {
+        return principalName;
     }
 
-    /**
-     * @return
-     */
-    public int getID() {
-        return id;
+    @Override
+    public String toString() {
+        return principalName;
+    }
+
+    @Override
+    public int hashCode() {
+        return principalName.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof WorldPrincipal && (principalName.equals(((WorldPrincipal) o).principalName));
+
     }
 }

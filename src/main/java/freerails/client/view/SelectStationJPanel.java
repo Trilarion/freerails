@@ -30,7 +30,7 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
@@ -236,7 +236,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world,
                 this.principal);
         while (it.next()) {
-            StationModel station = (StationModel) it.getElement();
+            Station station = (Station) it.getElement();
             if (station.x < topLeftX)
                 topLeftX = station.x;
             if (station.y < topLeftY)
@@ -307,7 +307,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
              * drawn above the stations are drawn using the same colour as used
              * to draw the station.
              */
-            StationModel station = (StationModel) it.getElement();
+            Station station = (Station) it.getElement();
             double x = station.x - visableMapTiles.x;
             x = x * scale;
             double y = station.y - visableMapTiles.y;

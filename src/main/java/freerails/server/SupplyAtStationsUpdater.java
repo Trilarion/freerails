@@ -26,10 +26,10 @@ import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 /**
- * This class loops through all of the known stations and recalculates the
+ * Loops through all of the known stations and recalculates the
  * cargoes that they supply, demand, and convert.
  */
 // TODO relation to CargoAtStationsUpdater?
@@ -60,13 +60,13 @@ public class SupplyAtStationsUpdater {
                     principal);
 
             while (iterator.next()) {
-                StationModel stationBefore = (StationModel) iterator
+                Station stationBefore = (Station) iterator
                         .getElement();
                 CalcCargoSupplyRateAtStation supplyRate;
                 supplyRate = new CalcCargoSupplyRateAtStation(world,
                         stationBefore.x, stationBefore.y);
 
-                StationModel stationAfter = supplyRate
+                Station stationAfter = supplyRate
                         .calculations(stationBefore);
 
                 if (!stationAfter.equals(stationBefore)) {

@@ -21,7 +21,7 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- * This class represents the demand for a certain cargo for consumption.
+ * Represents the demand for a certain cargo for consumption.
  */
 public class Consumption implements Serializable {
 

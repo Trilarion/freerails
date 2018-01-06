@@ -29,15 +29,15 @@ import freerails.util.ImList;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
-import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Transaction;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
- * This class inspects incoming moves and generates a user message if
+ * Inspects incoming moves and generates a user message if
  * appropriate. It is also used to trigger sounds.
  */
 public class UserMessageGenerator implements MoveReceiver {
@@ -87,7 +87,7 @@ public class UserMessageGenerator implements MoveReceiver {
      * cash register sound to indicate that revenue is coming in.
      */
     private void trainArrives(WorldDiffMove wdm) {
-        ArrayList<DeliverCargoReceipt> cargoDelivered = new ArrayList<>();
+        ArrayList<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
         CompositeMove listChanges = wdm.getListChanges();
         for (int i = 0; i < listChanges.size(); i++) {
             Move m = listChanges.getMoves().get(i);
@@ -99,8 +99,8 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
 
                 Transaction t = atm.getTransaction();
-                if (t instanceof DeliverCargoReceipt) {
-                    DeliverCargoReceipt receipt = (DeliverCargoReceipt) t;
+                if (t instanceof CargoDeliveryMoneyTransaction) {
+                    CargoDeliveryMoneyTransaction receipt = (CargoDeliveryMoneyTransaction) t;
                     cargoDelivered.add(receipt);
                 }
             }
@@ -109,22 +109,22 @@ public class UserMessageGenerator implements MoveReceiver {
             ReadOnlyWorld world = modelRoot.getWorld();
 
             StringBuilder message = new StringBuilder();
-            DeliverCargoReceipt first = cargoDelivered.get(0);
+            CargoDeliveryMoneyTransaction first = cargoDelivered.get(0);
             int stationId = first.getStationId();
             int trainId = first.getTrainId();
             message.append("Train #");
             message.append(trainId + 1); // So that the first train
             // is #1, not #0.
             message.append(" arrives at ");
-            StationModel station = (StationModel) world.get(modelRoot
+            Station station = (Station) world.get(modelRoot
                     .getPrincipal(), KEY.STATIONS, stationId);
             message.append(station.getStationName());
             message.append('\n');
             long revenue = 0;
             int[] cargoQuantities = new int[modelRoot.getWorld().size(
                     SKEY.CARGO_TYPES)];
-            for (DeliverCargoReceipt receipt : cargoDelivered) {
-                CargoBatch batch = receipt.getCb();
+            for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
+                CargoBatch batch = receipt.getCargoBatch();
                 revenue += receipt.value().getAmount();
                 cargoQuantities[batch.getCargoType()] = receipt.getQuantity();
             }

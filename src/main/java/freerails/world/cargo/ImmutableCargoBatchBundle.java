@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * This class represents a bundle of cargo made up of quantities of cargo from
+ * Represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
 
  */

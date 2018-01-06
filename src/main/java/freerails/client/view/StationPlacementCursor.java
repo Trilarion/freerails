@@ -28,7 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * This class implements a cursor which can be used to place a station on the
+ * Implements a cursor which can be used to place a station on the
  * map. Mode of operation:
  * <ol>
  * <li>User selects a station to place, which sets the current cursor to the

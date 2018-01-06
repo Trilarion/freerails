@@ -35,8 +35,8 @@ import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.station.DemandForCargoAtStation;
-import freerails.world.station.StationModel;
+import freerails.world.station.StationDemand;
+import freerails.world.station.Station;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
@@ -46,7 +46,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 /**
- * This class lets you test dialogue boxes without running the whole game.
+ * Lets you test dialogue boxes without running the whole game.
  */
 @SuppressWarnings("unused")
 public class DialogueBoxTester extends javax.swing.JFrame {
@@ -117,7 +117,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         dialogueBoxController.setDefaultFocusOwner(this);
 
         int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);
-        StationModel bristol = new StationModel(10, 10, "Bristol",
+        Station bristol = new Station(10, 10, "Bristol",
                 numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 
@@ -126,16 +126,16 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             demandArray[i] = true;
         }
 
-        DemandForCargoAtStation demand = new DemandForCargoAtStation(demandArray);
-        bristol = new StationModel(bristol, demand);
+        StationDemand demand = new StationDemand(demandArray);
+        bristol = new Station(bristol, demand);
         w.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(50, 100, "Bath",
+        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(50, 100, "Bath",
                 numberOfCargoTypes, 0));
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(40, 10, "Cardiff",
+        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(40, 10, "Cardiff",
                 numberOfCargoTypes, 0));
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(100, 10, "London",
+        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(100, 10, "London",
                 numberOfCargoTypes, 0));
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new StationModel(90, 50, "Swansea",
+        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(90, 50, "Swansea",
                 numberOfCargoTypes, 0));
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the

@@ -26,22 +26,23 @@ import freerails.util.ImInts;
 import java.io.Serializable;
 
 /**
- * This class represents the blue print for what an engine shop is producing.
+ * Represents the blue print for what an engine shop is producing.
  */
-public class PlannedTrain implements Serializable {
+public class TrainBlueprint implements Serializable {
+
     private static final long serialVersionUID = 3545515106038592057L;
-
+    // TODO engine type?? no enum or an ID
     private final int engineType;
-
+    // TODO wagon type?? (make if ordinary immutable arraylist)
     private final ImInts wagonTypes;
 
     /**
-     * @param e
-     * @param wagons
+     * @param engineType
+     * @param wagonTypes
      */
-    public PlannedTrain(int e, int[] wagons) {
-        engineType = e;
-        wagonTypes = new ImInts(wagons);
+    public TrainBlueprint(int engineType, int[] wagonTypes) {
+        this.engineType = engineType;
+        this.wagonTypes = new ImInts(wagonTypes);
     }
 
     @Override
@@ -53,10 +54,10 @@ public class PlannedTrain implements Serializable {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof PlannedTrain))
+        if (!(o instanceof TrainBlueprint))
             return false;
 
-        final PlannedTrain productionAtEngineShop = (PlannedTrain) o;
+        final TrainBlueprint productionAtEngineShop = (TrainBlueprint) o;
 
         if (engineType != productionAtEngineShop.engineType)
             return false;
@@ -79,7 +80,6 @@ public class PlannedTrain implements Serializable {
 
     @Override
     public String toString() {
-        return "engine type: " + this.engineType + ", with "
-                + wagonTypes.size() + "wagons";
+        return "engine type: " + this.engineType + ", with " + wagonTypes.size() + " wagons";
     }
 }

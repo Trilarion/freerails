@@ -23,7 +23,7 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 import java.util.LinkedList;
 
@@ -91,7 +91,7 @@ public class VerifyStationName {
     }
 
     private boolean checkStationExists(String name) {
-        StationModel tempStation;
+        Station tempStation;
 
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
@@ -99,7 +99,7 @@ public class VerifyStationName {
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (wi.next()) { // loop over non null stations
-                tempStation = (StationModel) wi.getElement();
+                tempStation = (Station) wi.getElement();
 
                 if ((name).equals(tempStation.getStationName())) {
                     // station already exists with that name

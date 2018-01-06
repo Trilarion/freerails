@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.util.Pair;
 import freerails.world.*;
 import freerails.world.cargo.CargoType;
-import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
@@ -200,9 +200,9 @@ public class IncomeStatementGenerator {
                     .getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (t instanceof DeliverCargoReceipt) {
-                DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
-                int cargoType = dcr.getCb().getCargoType();
+            if (t instanceof CargoDeliveryMoneyTransaction) {
+                CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) t;
+                int cargoType = dcr.getCargoBatch().getCargoType();
                 CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
                 switch (ct.getCategory()) {
                     case Bulk_Freight:
@@ -323,9 +323,9 @@ public class IncomeStatementGenerator {
                     .getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (t instanceof DeliverCargoReceipt
+            if (t instanceof CargoDeliveryMoneyTransaction
                     && cal.getYear(time.getTicks()) >= this.startyear) {
-                DeliverCargoReceipt dcr = (DeliverCargoReceipt) t;
+                CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) t;
                 int trainId = dcr.getTrainId();
                 if (trainId < money.length) {
                     amount[trainId] += dcr.value().getAmount();

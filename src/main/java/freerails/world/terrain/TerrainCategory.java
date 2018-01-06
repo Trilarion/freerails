@@ -21,48 +21,16 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- *
+ * Category of a terrain.
  */
-@SuppressWarnings("unused")
 public enum TerrainCategory implements Serializable {
 
-    /**
-     *
-     */
     Urban,
-
-    /**
-     *
-     */
     River,
-
-    /**
-     *
-     */
     Ocean,
-
-    /**
-     *
-     */
     Hill,
-
-    /**
-     *
-     */
     Country,
-
-    /**
-     *
-     */
     Special,
-
-    /**
-     *
-     */
     Industry,
-
-    /**
-     *
-     */
     Resource
 }

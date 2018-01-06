@@ -42,7 +42,7 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * This class is a visual test for the train movement code.
+ * Is a visual test for the train movement code.
  *
  * TODO: Update the trains position when necessary. Make the train stop at
  * intervals, and slowly accelerate.

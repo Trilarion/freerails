@@ -34,6 +34,7 @@ import java.awt.*;
  */
 public abstract class MapViewJComponent extends JPanel implements Scrollable,
         MapRenderer {
+    private static final long serialVersionUID = 3588200012170257744L;
     private MapRenderer mapView = new BlankMapRenderer(10);
 
     /**

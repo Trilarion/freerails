@@ -29,7 +29,7 @@ import freerails.world.terrain.TerrainCategory;
 import java.util.Iterator;
 
 /**
- * This class encapsulates the rules that apply to a type of track node. They
+ * Encapsulates the rules that apply to a type of track node. They
  * concern: the legal routes trains can travel across the node, whether the
  * node's track can be doubled, on which terrain types it can be built, and the
  * maximum number of consecutive nodes of this type (used for bridges and

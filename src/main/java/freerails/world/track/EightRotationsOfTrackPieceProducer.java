@@ -25,7 +25,7 @@ package freerails.world.track;
 import java.awt.*;
 
 /**
- * This class provides a method to get the eight rotations of a track template.
+ * Provides a method to get the eight rotations of a track template.
  * E.g. if the template is: 010 010 110 it returns: 010 001 100 010 110 111 110
  * 100 000 etc.
  */

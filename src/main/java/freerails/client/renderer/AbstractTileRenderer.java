@@ -30,7 +30,7 @@ import java.awt.*;
 import java.io.File;
 
 /**
- * This class encapsulates the visible properties of a tile.
+ * Encapsulates the visible properties of a tile.
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
     private final int[] typeNumbers;

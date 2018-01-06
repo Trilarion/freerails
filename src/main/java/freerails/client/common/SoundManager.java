@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
- * This class is responsible for loading and playing sounds. Samples are read
+ * Is responsible for loading and playing sounds. Samples are read
  * into a byte arrays so that they don't need to be loaded from disk each time
  * they are played.
  */

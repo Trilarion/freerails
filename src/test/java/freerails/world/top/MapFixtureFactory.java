@@ -33,7 +33,7 @@ import freerails.world.track.*;
 import java.util.HashSet;
 
 /**
- * This class is used to generate fixtures for Junit tests.
+ * Is used to generate fixtures for Junit tests.
  */
 public class MapFixtureFactory {
     /**

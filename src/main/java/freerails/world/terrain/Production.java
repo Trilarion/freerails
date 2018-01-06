@@ -21,7 +21,7 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- * This class represents the production of a raw material on a tile.
+ * Represents the production of a raw material on a tile.
  */
 public class Production implements Serializable {
 

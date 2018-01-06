@@ -27,7 +27,7 @@ import freerails.world.GameTime;
 import freerails.world.ITEM;
 import freerails.world.World;
 import freerails.world.cargo.CargoBatch;
-import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
@@ -91,7 +91,7 @@ public class StockPriceCalculatorTest extends TestCase {
         w.setTime(newTime);
         CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
         long income = 100000;
-        Transaction t = new DeliverCargoReceipt(new Money(income), 10, 0,
+        Transaction t = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
         FreerailsPrincipal princ = w.getPlayer(0).getPrincipal();
         w.addTransaction(princ, t);
@@ -151,7 +151,7 @@ public class StockPriceCalculatorTest extends TestCase {
     private void addIncome(long income) {
         CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
 
-        Transaction t = new DeliverCargoReceipt(new Money(income), 10, 0,
+        Transaction t = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
         FreerailsPrincipal princ = w.getPlayer(0).getPrincipal();
         w.addTransaction(princ, t);

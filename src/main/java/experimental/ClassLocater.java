@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * An essential part of Java - locates any Class, anywhere.
 
- * This class should have been part of the JDK for the last 7 years, but Sun
+ * Should have been part of the JDK for the last 7 years, but Sun
  * hasn't added it, so we did it instead :).
  *
  * No static methods since people are already using this in environments where

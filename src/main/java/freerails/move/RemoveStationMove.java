@@ -26,7 +26,7 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.MutableSchedule;
 
@@ -49,7 +49,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         int stationIndex = -1;
 
         while (wi.next()) {
-            StationModel station = (StationModel) wi.getElement();
+            Station station = (Station) wi.getElement();
 
             if (station.x == removeTrackMove.getLocation().x
                     && station.y == removeTrackMove.getLocation().y) {
@@ -66,7 +66,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
                     + removeTrackMove.getLocation().y);
         }
 
-        StationModel station2remove = (StationModel) w.get(principal,
+        Station station2remove = (Station) w.get(principal,
                 KEY.STATIONS, stationIndex);
         ArrayList<Move> moves = new ArrayList<>();
         moves.add(removeTrackMove);

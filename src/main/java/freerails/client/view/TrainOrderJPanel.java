@@ -29,7 +29,7 @@ import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 import javax.swing.*;
 import java.awt.*;
@@ -88,7 +88,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
         // Set station name
         int stationNumber = trainOrders.order.stationId;
-        StationModel station = (StationModel) w.get(principal, KEY.STATIONS,
+        Station station = (Station) w.get(principal, KEY.STATIONS,
                 stationNumber);
         String stationName = station.getStationName();
 
@@ -193,6 +193,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     private final class TrainOrderJPanelSingle extends javax.swing.JPanel
             implements View {
 
+        private static final long serialVersionUID = 3516604388665786813L;
         // Variables declaration - do not modify//GEN-BEGIN:variables
         javax.swing.JPanel consistChangeJPanel;
         javax.swing.JLabel gotoIcon;

@@ -27,16 +27,16 @@ import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoBatchBundle;
-import freerails.world.finances.DeliverCargoReceipt;
+import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * This class generates Moves that pay the player for delivering the cargo.
+ * Generates Moves that pay the player for delivering the cargo.
  */
 public class ProcessCargoAtStationMoveGenerator {
     /**
@@ -55,7 +55,7 @@ public class ProcessCargoAtStationMoveGenerator {
      */
     public static ArrayList<Move> processCargo(ReadOnlyWorld w,
                                                CargoBatchBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
-        StationModel thisStation = (StationModel) w.get(p, KEY.STATIONS,
+        Station thisStation = (Station) w.get(p, KEY.STATIONS,
                 stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
@@ -72,7 +72,7 @@ public class ProcessCargoAtStationMoveGenerator {
 
             double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
             Money money = new Money((long) amount);
-            DeliverCargoReceipt receipt = new DeliverCargoReceipt(money,
+            CargoDeliveryMoneyTransaction receipt = new CargoDeliveryMoneyTransaction(money,
                     quantity, stationID, batch, trainId);
             moves.add(new AddTransactionMove(p, receipt));
         }

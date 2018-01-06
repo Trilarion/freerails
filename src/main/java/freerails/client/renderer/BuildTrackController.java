@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class provides methods to change the proposed track and save it to the
+ * Provides methods to change the proposed track and save it to the
  * real world.
  *
  * TODO freerails.client.renderer is not the most logical place for this class.

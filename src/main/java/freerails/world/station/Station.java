@@ -23,40 +23,38 @@ import freerails.util.ImList;
 import java.io.Serializable;
 
 /**
- * This class represents a station.
+ * Represents a station. with a position, a name, a supply, a demand, a conversion (of cargo).
+ * The content is effectively immutable.
  */
-public class StationModel implements Serializable {
+public class Station implements Serializable {
+
     private static final long serialVersionUID = 3256442503979874355L;
-
-    /**
-     *
-     */
+    // TODO position as Point
     public final int x;
-
-    /**
-     *
-     */
     public final int y;
     private final String name;
-    private final SupplyAtStation supply;
-    private final DemandForCargoAtStation demand;
-    private final CargoConversionAtStation converted;
+    private final StationSupply supply;
+    private final StationDemand demandForCargo;
+    private final StationConversion cargoConversion;
+    // TODO what is the cargo bundle number and what is it good for?
     private final int cargoBundleNumber;
     /**
      * What this station is building.
      */
-    private final ImList<PlannedTrain> production;
+    // TODO remove ImList
+    private final ImList<TrainBlueprint> production;
 
+    // TODO this may be a misuse, instead add cargoConversion, where is this used
     /**
+     * Makes a copy of the station
+     *
      * @param s
-     * @param converted
+     * @param cargoConversion
      */
-    public StationModel(StationModel s, CargoConversionAtStation converted) {
-        this.converted = converted;
-
+    public Station(Station s, StationConversion cargoConversion) {
+        this.cargoConversion = cargoConversion;
         this.cargoBundleNumber = s.cargoBundleNumber;
-
-        this.demand = s.demand;
+        this.demandForCargo = s.demandForCargo;
         this.name = s.name;
         this.production = s.production;
         this.supply = s.supply;
@@ -69,60 +67,63 @@ public class StationModel implements Serializable {
      * @param y
      * @param stationName
      * @param numberOfCargoTypes
-     * @param cargoBundle
+     * @param cargoBundleNumber
      */
-    public StationModel(int x, int y, String stationName,
-                        int numberOfCargoTypes, int cargoBundle) {
+    public Station(int x, int y, String stationName,
+                   int numberOfCargoTypes, int cargoBundleNumber) {
         this.name = stationName;
         this.x = x;
         this.y = y;
-        production = new ImList<>();
+        this.cargoBundleNumber = cargoBundleNumber;
 
-        supply = new SupplyAtStation(new int[numberOfCargoTypes]);
-        demand = new DemandForCargoAtStation(new boolean[numberOfCargoTypes]);
-        converted = CargoConversionAtStation.emptyInstance(numberOfCargoTypes);
-        cargoBundleNumber = cargoBundle;
+        // TODO array creation neccessary here?
+        supply = new StationSupply(new int[numberOfCargoTypes]);
+        production = new ImList<>();
+        demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
+        cargoConversion = StationConversion.emptyInstance(numberOfCargoTypes);
+
     }
 
+    // TODO are these meaningful values
     /**
      *
      */
-    public StationModel() {
-        this.name = "No name";
+    public Station() {
+        name = "No name";
         x = 0;
         y = 0;
-        this.demand = new DemandForCargoAtStation(new boolean[0]);
-        this.supply = new SupplyAtStation(new int[0]);
-        this.converted = new CargoConversionAtStation(new int[0]);
+        demandForCargo = new StationDemand(new boolean[0]);
+        supply = new StationSupply(new int[0]);
+        cargoConversion = new StationConversion(new int[0]);
         production = new ImList<>();
-        this.cargoBundleNumber = 0;
+        cargoBundleNumber = 0;
     }
 
+    // TODO this might be a misuse, just add production as method instead, copy should not be neccessary
     /**
      * @param s
      * @param production
      */
-    public StationModel(StationModel s, ImList<PlannedTrain> production) {
+    public Station(Station s, ImList<TrainBlueprint> production) {
         this.production = production;
-        this.demand = s.demand;
+        this.demandForCargo = s.demandForCargo;
         this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
+        this.cargoConversion = s.cargoConversion;
         this.name = s.name;
         this.supply = s.supply;
         this.x = s.x;
         this.y = s.y;
     }
 
+    // TODO possible misuse, see above
     /**
      * @param s
-     * @param demand
+     * @param demandForCargo
      */
-    public StationModel(StationModel s, DemandForCargoAtStation demand) {
-        this.demand = demand;
-
+    public Station(Station s, StationDemand demandForCargo) {
+        this.demandForCargo = demandForCargo;
         this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
-
+        this.cargoConversion = s.cargoConversion;
         this.name = s.name;
         this.production = s.production;
         this.supply = s.supply;
@@ -130,16 +131,17 @@ public class StationModel implements Serializable {
         this.y = s.y;
     }
 
+    // TODO possible misuse, see above
     /**
      * @param s
      * @param supply
      */
-    public StationModel(StationModel s, SupplyAtStation supply) {
+    public Station(Station s, StationSupply supply) {
         this.supply = supply;
-        this.demand = s.demand;
+        this.demandForCargo = s.demandForCargo;
 
         this.cargoBundleNumber = s.cargoBundleNumber;
-        this.converted = s.converted;
+        this.cargoConversion = s.cargoConversion;
         this.name = s.name;
         this.production = s.production;
         this.x = s.x;
@@ -150,36 +152,27 @@ public class StationModel implements Serializable {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof StationModel))
+        if (!(o instanceof Station))
             return false;
-
-        final StationModel stationModel = (StationModel) o;
-
-        if (cargoBundleNumber != stationModel.cargoBundleNumber)
+        final Station station = (Station) o;
+        if (cargoBundleNumber != station.cargoBundleNumber)
             return false;
-        if (x != stationModel.x)
+        if (x != station.x)
             return false;
-        if (y != stationModel.y)
+        if (y != station.y)
             return false;
-        if (converted != null ? !converted.equals(stationModel.converted)
-                : stationModel.converted != null)
+        if (cargoConversion != null ? !cargoConversion.equals(station.cargoConversion)
+                : station.cargoConversion != null)
             return false;
-        if (demand != null ? !demand.equals(stationModel.demand)
-                : stationModel.demand != null)
+        if (demandForCargo != null ? !demandForCargo.equals(station.demandForCargo)
+                : station.demandForCargo != null)
             return false;
-        if (!name.equals(stationModel.name))
+        if (!name.equals(station.name))
             return false;
-        if (production != null ? !production.equals(stationModel.production)
-                : stationModel.production != null)
+        if (production != null ? !production.equals(station.production)
+                : station.production != null)
             return false;
-        return supply != null ? supply.equals(stationModel.supply) : stationModel.supply == null;
-    }
-
-    /**
-     * @return
-     */
-    public CargoConversionAtStation getConverted() {
-        return converted;
+        return supply != null ? supply.equals(station.supply) : station.supply == null;
     }
 
     @Override
@@ -189,12 +182,18 @@ public class StationModel implements Serializable {
         result = 29 * result + y;
         result = 29 * result + (name != null ? name.hashCode() : 0);
         result = 29 * result + (supply != null ? supply.hashCode() : 0);
-        result = 29 * result + (demand != null ? demand.hashCode() : 0);
-        result = 29 * result + (converted != null ? converted.hashCode() : 0);
+        result = 29 * result + (demandForCargo != null ? demandForCargo.hashCode() : 0);
+        result = 29 * result + (cargoConversion != null ? cargoConversion.hashCode() : 0);
         result = 29 * result + cargoBundleNumber;
         result = 29 * result + production.size();
-
         return result;
+    }
+
+    /**
+     * @return
+     */
+    public StationConversion getCargoConversion() {
+        return cargoConversion;
     }
 
     /**
@@ -221,21 +220,21 @@ public class StationModel implements Serializable {
     /**
      * @return
      */
-    public ImList<PlannedTrain> getProduction() {
+    public ImList<TrainBlueprint> getProduction() {
         return production;
     }
 
     /**
      * @return
      */
-    public DemandForCargoAtStation getDemand() {
-        return demand;
+    public StationDemand getDemandForCargo() {
+        return demandForCargo;
     }
 
     /**
      * @return
      */
-    public SupplyAtStation getSupply() {
+    public StationSupply getSupply() {
         return supply;
     }
 

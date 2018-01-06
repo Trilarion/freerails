@@ -21,6 +21,7 @@ package freerails.world.player;
 import java.io.Serializable;
 import java.security.Principal;
 
+// TODO What is the Java class Principal good for and why do we need it in Freerails?
 /**
  * This interface identifies a principal. This interface may be extended in the
  * future in order to provide faster lookups, rather than using name
@@ -33,6 +34,9 @@ import java.security.Principal;
  * principal.
  */
 public abstract class FreerailsPrincipal implements Principal, Serializable {
+
+    private static final long serialVersionUID = 4673561105333981501L;
+    // TODO what is the meaning of the world index?
     private final int worldIndex;
 
     /**

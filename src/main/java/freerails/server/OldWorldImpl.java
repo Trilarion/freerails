@@ -26,7 +26,7 @@ import org.xml.sax.SAXException;
 import java.net.URL;
 
 /**
- * This class sets up a World object.
+ * Sets up a World object.
  */
 // TODO difference to world.WorldImpl?
 public class OldWorldImpl {

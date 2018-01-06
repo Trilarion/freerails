@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 
 /**
- * This class encapsulates the objects that make-up and paint the background of
+ * Encapsulates the objects that make-up and paint the background of
  * the map view. At present it is composed of two layers: the terrain layer and
  * the track layer.
  */

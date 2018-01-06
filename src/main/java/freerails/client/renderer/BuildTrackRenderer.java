@@ -31,7 +31,7 @@ import java.awt.*;
 import java.util.Iterator;
 
 /**
- * This class draws the track being build.
+ * Draws the track being build.
  */
 public class BuildTrackRenderer implements Painter {
 

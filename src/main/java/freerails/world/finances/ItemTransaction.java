@@ -20,24 +20,21 @@ package freerails.world.finances;
 
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
+ *
+ * Characterized by a category, a type, a quantity and an amount of money of course.
+ *
+ * Example: Buy 4 tiles of standard track
  */
 public class ItemTransaction implements Transaction {
 
     private static final long serialVersionUID = 3690471411852326457L;
     private final Money amount;
-    /**
-     * For example track.
-     */
     private final TransactionCategory category;
-    /**
-     * For example, 4 tiles.
-     */
     private final int quantity;
-    /**
-     * For example, standard track.
-     */
     private final int type;
 
+
+    // TODO what is the difference between category and type
     /**
      * @param category
      * @param type
@@ -51,10 +48,6 @@ public class ItemTransaction implements Transaction {
         this.amount = amount;
     }
 
-    public Money value() {
-        return amount;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ItemTransaction) {
@@ -64,6 +57,10 @@ public class ItemTransaction implements Transaction {
                     && type == test.type && quantity == test.quantity;
         }
         return false;
+    }
+
+    public Money value() {
+        return amount;
     }
 
     /**
@@ -94,19 +91,11 @@ public class ItemTransaction implements Transaction {
         result = 29 * result + type;
         result = 29 * result + quantity;
         result = 29 * result + amount.hashCode();
-
         return result;
     }
 
     @Override
     public String toString() {
-        return "ItemTransaction " +
-                category +
-                ", type " +
-                type +
-                ", quantity " +
-                quantity +
-                ", amount " +
-                amount;
+        return "ItemTransaction " + category + ", type " + type + ", quantity " + quantity + ", amount " + amount;
     }
 }

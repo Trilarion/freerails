@@ -29,7 +29,7 @@ import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationModel;
+import freerails.world.station.Station;
 import freerails.world.terrain.FreerailsTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
@@ -164,7 +164,7 @@ public class MoveTrainPreMove implements PreMove {
             if (stationId == -1)
                 throw new IllegalStateException();
 
-            StationModel station = (StationModel) w.get(principal,
+            Station station = (Station) w.get(principal,
                     KEY.STATIONS, stationId);
             CargoBatchBundle cb = (CargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES,
                     station.getCargoBundleID());

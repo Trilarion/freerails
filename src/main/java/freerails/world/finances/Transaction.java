@@ -25,6 +25,7 @@ import java.io.Serializable;
  */
 public interface Transaction extends Serializable {
 
+    // TODO is money always needed, if so, can we already implement it
     /**
      * Positive means credit.
      *
@@ -32,6 +33,7 @@ public interface Transaction extends Serializable {
      */
     Money value();
 
+    // TODO what is this category good for
     /**
      * @return
      */

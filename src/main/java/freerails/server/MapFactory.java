@@ -38,7 +38,7 @@ import java.util.List;
 
 
 /**
- * This class has a static method that converts an image file into a map.
+ * Has a static method that converts an image file into a map.
  *
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.

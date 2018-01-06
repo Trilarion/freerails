@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * This class encapsulates the rules governing where, that is, on what terrain,
+ * Encapsulates the rules governing where, that is, on what terrain,
  * track of a given type can be built.
  */
 public final class LegalTrackPlacement implements Serializable {

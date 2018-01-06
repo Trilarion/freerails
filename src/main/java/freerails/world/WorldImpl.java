@@ -22,7 +22,7 @@ import freerails.util.*;
 import freerails.world.finances.EconomicClimate;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
-import freerails.world.finances.TransactionWithTimeStamp;
+import freerails.world.finances.TransactionRecord;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.FreerailsTile;
@@ -45,7 +45,7 @@ public class WorldImpl implements World {
     /**
      * A 2D list: D1 is player, D2 is transaction.
      */
-    List2D<TransactionWithTimeStamp> bankAccounts;
+    List2D<TransactionRecord> bankAccounts;
     List1D<Money> currentBalance;
     List1D<Serializable> items;
     /**
@@ -150,7 +150,7 @@ public class WorldImpl implements World {
 
     public void addTransaction(FreerailsPrincipal p, Transaction t) {
         int playerIndex = p.getWorldIndex();
-        TransactionWithTimeStamp tats = new TransactionWithTimeStamp(t, time);
+        TransactionRecord tats = new TransactionRecord(t, time);
         bankAccounts.addD2(playerIndex, tats);
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = new Money(t.value().getAmount()
@@ -330,7 +330,7 @@ public class WorldImpl implements World {
      */
     public Transaction getTransaction(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
-        TransactionWithTimeStamp tats = bankAccounts.get(playerIndex, i);
+        TransactionRecord tats = bankAccounts.get(playerIndex, i);
         return tats.getTransaction();
     }
 
@@ -341,7 +341,7 @@ public class WorldImpl implements World {
      */
     public GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
-        TransactionWithTimeStamp tats = bankAccounts.get(playerIndex, i);
+        TransactionRecord tats = bankAccounts.get(playerIndex, i);
         return tats.getTimestamp();
     }
 
@@ -353,7 +353,7 @@ public class WorldImpl implements World {
     public Pair<Transaction, GameTime> getTransactionAndTimeStamp(
             FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
-        TransactionWithTimeStamp tats = bankAccounts.get(playerIndex, i);
+        TransactionRecord tats = bankAccounts.get(playerIndex, i);
         return new Pair<>(tats.getTransaction(), tats.getTimestamp());
     }
 
@@ -430,7 +430,7 @@ public class WorldImpl implements World {
 
     public Transaction removeLastTransaction(FreerailsPrincipal p) {
         int playerIndex = p.getWorldIndex();
-        TransactionWithTimeStamp tats = bankAccounts.removeLastD2(playerIndex);
+        TransactionRecord tats = bankAccounts.removeLastD2(playerIndex);
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = new Money(oldBalance.getAmount()
                 - tats.getTransaction().value().getAmount());

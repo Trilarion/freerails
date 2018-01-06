@@ -36,8 +36,8 @@ import freerails.util.ImList;
 import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.PlannedTrain;
-import freerails.world.station.StationModel;
+import freerails.world.station.TrainBlueprint;
+import freerails.world.station.Station;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -410,14 +410,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
                     if (wi.next()) {
                         Random randy = new Random();
-                        StationModel station = (StationModel) wi.getElement();
+                        Station station = (Station) wi.getElement();
 
-                        ImList<PlannedTrain> before = station.getProduction();
+                        ImList<TrainBlueprint> before = station.getProduction();
                         int numberOfEngineTypes = modelRoot.getWorld().size(
                                 SKEY.ENGINE_TYPES) - 1;
                         int numberOfcargoTypes = modelRoot.getWorld().size(
                                 SKEY.CARGO_TYPES) - 1;
-                        PlannedTrain[] temp = new PlannedTrain[200];
+                        TrainBlueprint[] temp = new TrainBlueprint[200];
 
                         for (int i = 0; i < temp.length; i++) {
                             int engineType = randy.nextInt(numberOfEngineTypes);
@@ -425,11 +425,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                                     randy.nextInt(numberOfcargoTypes),
                                     randy.nextInt(numberOfcargoTypes),
                                     randy.nextInt(numberOfcargoTypes)};
-                            PlannedTrain plannedTrain = new PlannedTrain(
+                            TrainBlueprint trainBlueprint = new TrainBlueprint(
                                     engineType, wagonTypes);
-                            temp[i] = plannedTrain;
+                            temp[i] = trainBlueprint;
                         }
-                        ImList<PlannedTrain> after = new ImList<>(
+                        ImList<TrainBlueprint> after = new ImList<>(
                                 temp);
                         Move m = new ChangeProductionAtEngineShopMove(before,
                                 after, wi.getIndex(), modelRoot.getPrincipal());

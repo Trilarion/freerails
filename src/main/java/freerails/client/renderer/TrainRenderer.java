@@ -29,7 +29,7 @@ import freerails.world.train.TrainPositionOnMap;
 import java.awt.*;
 
 /**
- * This class draws a train from an overhead view.
+ * Draws a train from an overhead view.
  */
 @SuppressWarnings("unused")
 public class TrainRenderer {

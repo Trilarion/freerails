@@ -23,23 +23,18 @@ package freerails.world.finances;
  */
 public class BondItemTransaction extends ItemTransaction {
 
-    /**
-     *
-     */
     public static final Money BOND_VALUE_ISSUE = new Money(500000);
-
-    /**
-     *
-     */
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
     private static final long serialVersionUID = 3257562923491473465L;
 
-    private BondItemTransaction(TransactionCategory category, double rate, int quantity,
-                                Money amount) {
+    // TODO how many values for category are really possible here, if only one, set it internally
+
+    private BondItemTransaction(TransactionCategory category, double rate, int quantity, Money amount) {
         // TODO item transaction only understands ints, this should not be a type, but a double rate
         super(category, (int)rate, quantity, amount);
     }
 
+    // TODO better place for these static methods
     /**
      * @param interestRate
      * @return
