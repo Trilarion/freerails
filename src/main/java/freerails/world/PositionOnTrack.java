@@ -18,6 +18,8 @@
 
 package freerails.world;
 
+import freerails.world.terrain.TileTransition;
+
 /**
  * A <b>mutable</b> class that stores the coordinates of the tile on entity is
  * standing on and the direction in which the entity is facing (usually the

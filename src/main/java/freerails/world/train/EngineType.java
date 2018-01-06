@@ -27,16 +27,12 @@ import java.io.Serializable;
  * encapsulates the properties that are common to all engines of the same type.
  */
 public final class EngineType implements Serializable {
+
     private static final long serialVersionUID = 3617014130905592630L;
-
     private final String engineTypeName;
-
     private final Money maintenance;
-
     private final int maxSpeed; // speed in mph
-
     private final int powerAtDrawbar;
-
     private final Money price;
 
     /**

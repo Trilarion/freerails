@@ -31,6 +31,7 @@ import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.TileTransition;
 import freerails.world.train.*;
 
 import java.util.ArrayList;

@@ -25,10 +25,12 @@ import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
 import freerails.world.*;
+import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
+import freerails.world.terrain.TileTransition;
 import freerails.world.terrain.TileTypeImpl;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
@@ -109,7 +111,7 @@ public class BuildTrackExplorerTest extends TestCase {
         }
 
         // Place some ocean.
-        FreerailsTile tile = FreerailsTile.getInstance(occeanTypeNumber);
+        FullTerrainTile tile = FullTerrainTile.getInstance(occeanTypeNumber);
         world.setTile(10, 9, tile);
         world.setTile(11, 10, tile);
 

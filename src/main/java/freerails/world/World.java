@@ -19,6 +19,7 @@
 package freerails.world;
 
 import freerails.world.finances.Transaction;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 

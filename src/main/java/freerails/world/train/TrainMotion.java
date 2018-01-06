@@ -24,9 +24,9 @@ package freerails.world.train;
 import freerails.util.ImPoint;
 import freerails.util.Pair;
 import freerails.world.Activity;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 import freerails.world.PositionOnTrack;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 
 import java.util.ArrayList;
 
@@ -55,17 +55,11 @@ import java.util.ArrayList;
 public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
 
     private static final long serialVersionUID = 3618423722025891641L;
-
     private final double duration, distanceEngineWillTravel;
-
     private final double initialPosition;
-
     private final PathOnTiles path;
-
     private final SpeedAgainstTime speeds;
-
     private final int trainLength;
-
     private final SpeedTimeAndStatus.TrainActivity activity;
 
     /**
@@ -211,7 +205,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      */
     public double getSpeedAtEnd() {
         double finalT = speeds.getTime();
-        return speeds.calcV(finalT);
+        return speeds.calcVelocity(finalT);
     }
 
     /**
@@ -224,10 +218,10 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     public TrainPositionOnMap getState(double t) {
         t = Math.min(t, speeds.getTime());
         double offset = calcOffSet(t);
-        Pair<FreerailsPathIterator, Integer> pathIt = path.subPath(offset,
+        Pair<PathIterator, Integer> pathIt = path.subPath(offset,
                 trainLength); // 666
-        double speed = speeds.calcV(t);
-        double acceleration = speeds.calcA(t);
+        double speed = speeds.calcVelocity(t);
+        double acceleration = speeds.calcAcceleration(t);
         return TrainPositionOnMap
                 .createInSameDirectionAsPathReversed(pathIt, speed,
                         acceleration, activity);

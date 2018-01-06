@@ -22,7 +22,8 @@ import freerails.util.ImInts;
 import freerails.util.IntArray;
 import freerails.util.IntLine;
 import freerails.util.Pair;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
+import freerails.world.track.SimplePathIteratorImpl;
 
 import java.io.Serializable;
 
@@ -88,21 +89,12 @@ import java.io.Serializable;
  */
 public class TrainPositionOnMap implements Serializable {
 
-    /**
-     *
-     */
-    public static final int CRASH_FRAMES_COUNT = 15;
-
     private static final long serialVersionUID = 3979269144611010865L;
-
+    public static final int CRASH_FRAMES_COUNT = 15;
     private final ImInts xpoints;
-
     private final ImInts ypoints;
-
     private final double speed, acceleration;
-
     private final SpeedTimeAndStatus.TrainActivity activity;
-
     private TrainPositionOnMap(int[] xs, int[] ys, double speed,
                                double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
         if (xs.length != ys.length) {
@@ -131,7 +123,7 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(
-            FreerailsPathIterator path) {
+            PathIterator path) {
         return createInSameDirectionAsPath(path, 0d, 0d,
                 SpeedTimeAndStatus.TrainActivity.READY);
     }
@@ -144,12 +136,12 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public static TrainPositionOnMap createInSameDirectionAsPathReversed(
-            Pair<FreerailsPathIterator, Integer> path, double speed,
+            Pair<PathIterator, Integer> path, double speed,
             double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
 
         IntLine line = new IntLine();
 
-        FreerailsPathIterator pathIt = path.getA();
+        PathIterator pathIt = path.getA();
         int pathSize = path.getB();
 
         if (pathSize > 10000) {
@@ -184,7 +176,7 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(
-            FreerailsPathIterator path, double speed, double acceleration,
+            PathIterator path, double speed, double acceleration,
             SpeedTimeAndStatus.TrainActivity activity) {
         IntArray xPointsIntArray = new IntArray();
         IntArray yPointsIntArray = new IntArray();
@@ -308,8 +300,8 @@ public class TrainPositionOnMap implements Serializable {
             int otherLength = other.getLength();
 
             if (thisLength == otherLength) {
-                FreerailsPathIterator path1;
-                FreerailsPathIterator path2;
+                PathIterator path1;
+                PathIterator path2;
                 IntLine line1 = new IntLine();
                 IntLine line2 = new IntLine();
 
@@ -359,14 +351,14 @@ public class TrainPositionOnMap implements Serializable {
     /**
      * @return
      */
-    public FreerailsPathIterator path() {
+    public PathIterator path() {
         return new SimplePathIteratorImpl(this.xpoints, this.ypoints);
     }
 
     /**
      * @return
      */
-    public FreerailsPathIterator reversePath() {
+    public PathIterator reversePath() {
         int length = xpoints.size();
         int[] reversed_xpoints = new int[length];
         int[] reversed_ypoints = new int[length];
@@ -468,7 +460,7 @@ public class TrainPositionOnMap implements Serializable {
      */
     public boolean canRemoveFromHead(TrainPositionOnMap b) {
         if (headsAreEqual(this, b)) {
-            FreerailsPathIterator path = b.path();
+            PathIterator path = b.path();
             int i = 0;
             IntLine line = new IntLine();
 
@@ -520,7 +512,7 @@ public class TrainPositionOnMap implements Serializable {
      */
     public boolean canRemoveFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
-            FreerailsPathIterator path = b.reversePath();
+            PathIterator path = b.reversePath();
             int i = this.getLength() - 1;
             IntLine line = new IntLine();
 

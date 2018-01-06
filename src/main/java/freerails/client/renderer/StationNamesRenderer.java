@@ -27,7 +27,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -111,7 +111,7 @@ public class StationNamesRenderer implements Painter {
                 }
                 // First draw station sphere of influence
                 if (showStationBorders) {
-                    FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
+                    FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
                     int radius = tile.getTrackPiece().getTrackRule()
                             .getStationRadius();
                     int diameterInPixels = (radius * 2 + 1)

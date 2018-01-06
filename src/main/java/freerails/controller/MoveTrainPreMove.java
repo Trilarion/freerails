@@ -28,9 +28,11 @@ import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
@@ -316,8 +318,8 @@ public class MoveTrainPreMove implements PreMove {
         // Check whether the desired track section is single or double track.
         ImPoint tileA = desiredTrackSection.tileA();
         ImPoint tileB = desiredTrackSection.tileB();
-        FreerailsTile fta = (FreerailsTile) w.getTile(tileA.x, tileA.y);
-        FreerailsTile ftb = (FreerailsTile) w.getTile(tileB.x, tileB.y);
+        FullTerrainTile fta = (FullTerrainTile) w.getTile(tileA.x, tileA.y);
+        FullTerrainTile ftb = (FullTerrainTile) w.getTile(tileB.x, tileB.y);
         TrackPiece tpa = fta.getTrackPiece();
         TrackPiece tpb = ftb.getTrackPiece();
         int tracks = 1;

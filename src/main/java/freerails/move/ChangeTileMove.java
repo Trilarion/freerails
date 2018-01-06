@@ -25,7 +25,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
 
@@ -39,8 +39,8 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     private static final long serialVersionUID = 3256726169272662320L;
     private final int x;
     private final int y;
-    private final FreerailsTile before;
-    private final FreerailsTile after;
+    private final FullTerrainTile before;
+    private final FullTerrainTile after;
 
     /**
      * @param w
@@ -50,8 +50,8 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     public ChangeTileMove(ReadOnlyWorld w, Point p, int terrainTypeAfter) {
         this.x = p.x;
         this.y = p.y;
-        this.before = (FreerailsTile) w.getTile(x, y);
-        this.after = FreerailsTile.getInstance(terrainTypeAfter, before
+        this.before = (FullTerrainTile) w.getTile(x, y);
+        this.after = FullTerrainTile.getInstance(terrainTypeAfter, before
                 .getTrackPiece());
     }
 
@@ -84,7 +84,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        FreerailsTile actual = (FreerailsTile) world.getTile(x, y);
+        FullTerrainTile actual = (FullTerrainTile) world.getTile(x, y);
         TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, actual
                 .getTerrainTypeID());
 
@@ -100,7 +100,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        FreerailsTile actual = (FreerailsTile) world.getTile(x, y);
+        FullTerrainTile actual = (FullTerrainTile) world.getTile(x, y);
 
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;

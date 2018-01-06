@@ -99,7 +99,7 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
-        FreerailsTile tile = (FreerailsTile) w.getTile(xx, yy);
+        FullTerrainTile tile = (FullTerrainTile) w.getTile(xx, yy);
 
         return tile.getTrackPiece().getTrackTypeID();
     }
@@ -127,14 +127,14 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
-        int tileTypeNumber = ((FreerailsTile) w.getTile(i, j))
+        int tileTypeNumber = ((FullTerrainTile) w.getTile(i, j))
                 .getTerrainTypeID();
 
         TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
                 tileTypeNumber);
 
         // Calculate supply.
-        ImList<Production> production = terrainType.getProduction();
+        ImList<TileProduction> production = terrainType.getProduction();
 
         // loop through the production array and increment
         // the supply rates for the station
@@ -148,7 +148,7 @@ public class CalcCargoSupplyRateAtStation {
         }
 
         // Now calculate demand.
-        ImList<Consumption> consumption = terrainType.getConsumption();
+        ImList<TileConsumption> consumption = terrainType.getConsumption();
 
         for (int m = 0; m < consumption.size(); m++) {
             int type = consumption.get(m).getCargoType();
@@ -160,7 +160,7 @@ public class CalcCargoSupplyRateAtStation {
             demand[type] += PREREQUISITE_FOR_DEMAND / prerequisite;
         }
 
-        ImList<Conversion> conversion = terrainType.getConversion();
+        ImList<TileConversion> conversion = terrainType.getConversion();
 
         for (int m = 0; m < conversion.size(); m++) {
             int type = conversion.get(m).getInput();

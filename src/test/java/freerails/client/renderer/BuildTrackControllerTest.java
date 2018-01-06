@@ -33,7 +33,7 @@ import freerails.util.ImPoint;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
@@ -102,12 +102,12 @@ public class BuildTrackControllerTest extends TestCase {
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.
-        FreerailsTile tile = (FreerailsTile) w.getTile(10, 10);
+        FullTerrainTile tile = (FullTerrainTile) w.getTile(10, 10);
         assertFalse(tile.hasTrack());
         buildTrackController.updateWorld(trackBuilder);
-        tile = (FreerailsTile) w.getTile(10, 10);
+        tile = (FullTerrainTile) w.getTile(10, 10);
         assertTrue(tile.hasTrack());
-        tile = (FreerailsTile) w.getTile(20, 10);
+        tile = (FullTerrainTile) w.getTile(20, 10);
         assertTrue(tile.hasTrack());
 
     }
@@ -136,19 +136,19 @@ public class BuildTrackControllerTest extends TestCase {
 
         buildTrackController.updateWorld(trackBuilder);
 
-        FreerailsTile tile = (FreerailsTile) w.getTile(10, 10);
+        FullTerrainTile tile = (FullTerrainTile) w.getTile(10, 10);
 
         assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FreerailsTile) w.getTile(15, 10);
+        tile = (FullTerrainTile) w.getTile(15, 10);
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FreerailsTile) w.getTile(17, 10);
+        tile = (FullTerrainTile) w.getTile(17, 10);
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FreerailsTile) w.getTile(20, 10);
+        tile = (FullTerrainTile) w.getTile(20, 10);
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 

@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.train;
+package freerails.world.track;
 
 import freerails.util.ImInts;
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 
 import java.util.NoSuchElementException;
 
 /**
  * Exposes a path stored as an array of x points and an array of y points.
  */
-public class SimplePathIteratorImpl implements FreerailsPathIterator {
+public class SimplePathIteratorImpl implements PathIterator {
     private static final long serialVersionUID = 3618420406261003576L;
 
     private final ImInts x;

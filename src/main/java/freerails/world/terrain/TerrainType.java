@@ -58,17 +58,17 @@ public interface TerrainType extends Serializable {
     /**
      * @return
      */
-    ImList<Production> getProduction();
+    ImList<TileProduction> getProduction();
 
     /**
      * @return
      */
-    ImList<Consumption> getConsumption();
+    ImList<TileConsumption> getConsumption();
 
     /**
      * @return
      */
-    ImList<Conversion> getConversion();
+    ImList<TileConversion> getConversion();
 
     /**
      * @return

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
+package freerails.world.game;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

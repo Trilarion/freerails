@@ -20,14 +20,14 @@ package freerails.controller;
 
 import freerails.client.ClientConstants;
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 import freerails.world.PositionOnTrack;
 
 /**
  * Returns a random path along the track.
  */
 @SuppressWarnings("unused")
-public class RandomPathFinder implements FreerailsPathIterator {
+public class RandomPathFinder implements PathIterator {
     private static final long serialVersionUID = 3832906571880608313L;
     private static final int tileSize = ClientConstants.TILE_SIZE;
     private final FlatTrackExplorer trackExplorer;

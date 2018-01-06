@@ -24,7 +24,7 @@ package freerails.world.track;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.Utils;
 import freerails.world.SKEY;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
 

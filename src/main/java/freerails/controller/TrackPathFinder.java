@@ -26,9 +26,9 @@ import freerails.util.IntArray;
 import freerails.world.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
@@ -84,7 +84,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     private int[] findTargets(ImPoint targetPoint) {
-        FreerailsTile tile = (FreerailsTile) world.getTile(targetPoint.x,
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(targetPoint.x,
                 targetPoint.y);
         TrackPiece trackPiece = tile.getTrackPiece();
         int ruleNumber = trackPiece.getTrackTypeID();

@@ -25,9 +25,11 @@ import freerails.move.*;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.*;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.Station;
+import freerails.world.terrain.TileTransition;
 import freerails.world.train.*;
 import org.apache.log4j.Logger;
 

@@ -24,7 +24,7 @@ import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldDiffs;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackPiece;
 
 import java.awt.*;
@@ -85,7 +85,7 @@ public class BuildTrackRenderer implements Painter {
             for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
                     .hasNext(); ) {
                 ImPoint point = iter.next();
-                FreerailsTile fp = (FreerailsTile) worldDiffs.getTile(point.x,
+                FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point.x,
                         point.y);
                 TrackPiece tp = fp.getTrackPiece();
 
@@ -111,9 +111,9 @@ public class BuildTrackRenderer implements Painter {
                         + (tileSize.width - SMALL_DOT_WIDTH) / 2;
                 int y = p.y * tileSize.width
                         + (tileSize.height - SMALL_DOT_WIDTH) / 2;
-                FreerailsTile before = (FreerailsTile) realWorld.getTile(p.x,
+                FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p.x,
                         p.y);
-                FreerailsTile after = (FreerailsTile) worldDiffs.getTile(p.x,
+                FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p.x,
                         p.y);
 
                 boolean trackRemoved = !after.getTrackPiece()

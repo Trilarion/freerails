@@ -19,7 +19,8 @@
 package freerails.world.train;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
+import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
 
 /**
@@ -48,7 +49,7 @@ public class SimplePathIteratorImplTest extends TestCase {
         int[] xpoints = {0, 100};
         int[] ypoints = {0, 0};
 
-        FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
+        PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         assertTrue(it.hasNext());
         it.nextSegment(new IntLine(0, 0, 0, 0));
         assertTrue(!it.hasNext());
@@ -61,7 +62,7 @@ public class SimplePathIteratorImplTest extends TestCase {
         int[] xpoints = {1, 2, 3};
         int[] ypoints = {4, 5, 6};
 
-        FreerailsPathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
+        PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         assertTrue(it.hasNext());
 
         IntLine line = new IntLine(0, 0, 0, 0);

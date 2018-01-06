@@ -22,8 +22,8 @@
 package freerails.controller;
 
 import freerails.server.MapFixtureFactory2;
-import freerails.world.GameCalendar;
-import freerails.world.GameTime;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.ITEM;
 import freerails.world.World;
 import freerails.world.cargo.CargoBatch;

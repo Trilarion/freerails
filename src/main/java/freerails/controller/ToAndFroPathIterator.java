@@ -19,8 +19,8 @@
 package freerails.controller;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
-import freerails.world.FreerailsPathIteratorImpl;
+import freerails.world.track.PathIterator;
+import freerails.world.track.PathIteratorImpl;
 
 import java.awt.*;
 import java.util.List;
@@ -30,10 +30,10 @@ import java.util.NoSuchElementException;
  * Returns a path that goes forwards and backwards along the path passed to its
  * constructor.
  */
-public class ToAndFroPathIterator implements FreerailsPathIterator {
+public class ToAndFroPathIterator implements PathIterator {
     private static final long serialVersionUID = 3256442525337202993L;
     private final List<Point> list;
-    private FreerailsPathIterator path;
+    private PathIterator path;
     private boolean forwards = true;
 
     /**
@@ -45,7 +45,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
     }
 
     private void nextIterator() {
-        path = new FreerailsPathIteratorImpl(list, forwards);
+        path = new PathIteratorImpl(list, forwards);
     }
 
     public boolean hasNext() {
@@ -56,7 +56,7 @@ public class ToAndFroPathIterator implements FreerailsPathIterator {
         if (this.hasNext()) {
             if (!path.hasNext()) {
                 forwards = !forwards;
-                path = new FreerailsPathIteratorImpl(list, forwards);
+                path = new PathIteratorImpl(list, forwards);
             }
 
             path.nextSegment(line);

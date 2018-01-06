@@ -92,7 +92,7 @@ public strictfp class ConstAcc implements Serializable,
         return returnValue;
     }
 
-    public double calcV(double time) {
+    public double calcVelocity(double time) {
         validateT(time);
         return u + a * time;
     }
@@ -113,7 +113,7 @@ public strictfp class ConstAcc implements Serializable,
         return !(u != constAcc.u);
     }
 
-    public double calcA(double time) {
+    public double calcAcceleration(double time) {
         validateT(time);
         return a;
     }

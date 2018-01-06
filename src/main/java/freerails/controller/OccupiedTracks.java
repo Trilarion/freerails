@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.world.GameTime;
+import freerails.world.game.GameTime;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;

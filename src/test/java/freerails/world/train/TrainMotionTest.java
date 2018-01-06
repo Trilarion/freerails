@@ -22,7 +22,7 @@
 package freerails.world.train;
 
 import freerails.util.ImPoint;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 /**

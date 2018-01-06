@@ -28,7 +28,7 @@ import java.util.Iterator;
 /**
  * Stores the legal track configurations for a type of track.
  */
-public final class LegalTrackConfigurations implements Serializable {
+public final class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
 
@@ -41,7 +41,7 @@ public final class LegalTrackConfigurations implements Serializable {
      * @param max
      * @param legalTrackTemplatesArrayList
      */
-    public LegalTrackConfigurations(int max,
+    public ValidTrackConfigurations(int max,
                                     ArrayList<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
 
@@ -57,7 +57,7 @@ public final class LegalTrackConfigurations implements Serializable {
      * @param max
      * @param legalTrackTemplatesArray
      */
-    public LegalTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
+    public ValidTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
         maximumConsecutivePieces = max;
         HashSet<TrackConfiguration> temp = new HashSet<>();
         for (String aLegalTrackTemplatesArray : legalTrackTemplatesArray) {
@@ -91,8 +91,8 @@ public final class LegalTrackConfigurations implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof LegalTrackConfigurations) {
-            LegalTrackConfigurations test = (LegalTrackConfigurations) o;
+        if (o instanceof ValidTrackConfigurations) {
+            ValidTrackConfigurations test = (ValidTrackConfigurations) o;
 
             return this.maximumConsecutivePieces == test.maximumConsecutivePieces
                     && this.legalConfigs.equals(test.legalConfigs);

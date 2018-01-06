@@ -22,8 +22,12 @@ import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.server.parser.Track_TilesHandlerImpl;
 import freerails.world.*;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameRules;
+import freerails.world.game.GameSpeed;
+import freerails.world.game.GameTime;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainType;
 
 import java.net.URL;
@@ -89,7 +93,7 @@ public class MapFixtureFactory2 {
                 break;
             }
         }
-        FreerailsTile tile = FreerailsTile.getInstance(clearTypeID);
+        FullTerrainTile tile = FullTerrainTile.getInstance(clearTypeID);
         for (int x = 0; x < world.getMapWidth(); x++) {
             for (int y = 0; y < world.getMapHeight(); y++) {
                 world.setTile(x, y, tile);

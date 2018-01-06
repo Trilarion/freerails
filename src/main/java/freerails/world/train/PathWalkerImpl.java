@@ -19,17 +19,17 @@
 package freerails.world.train;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 
 import java.util.NoSuchElementException;
 
 /**
- * PathWalker that walks the path exposed by a FreerailsPathIterator.
+ * PathWalker that walks the path exposed by a PathIterator.
  */
 public class PathWalkerImpl implements PathWalker {
     private static final long serialVersionUID = 4050204158701155639L;
 
-    private final FreerailsPathIterator it;
+    private final PathIterator it;
 
     /**
      * current segment of the path we are on.
@@ -49,7 +49,7 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * @param i
      */
-    public PathWalkerImpl(FreerailsPathIterator i) {
+    public PathWalkerImpl(PathIterator i) {
         it = i;
     }
 

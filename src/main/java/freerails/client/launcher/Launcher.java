@@ -34,7 +34,7 @@ import freerails.network.LogOnResponse;
 import freerails.network.SavedGamesManager;
 import freerails.server.SavedGameManagerImpl;
 import freerails.server.ServerGameModelImpl;
-import freerails.world.GameModel;
+import freerails.world.game.GameModel;
 import org.apache.log4j.*;
 
 import javax.swing.*;

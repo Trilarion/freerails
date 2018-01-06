@@ -19,7 +19,7 @@
 package freerails.world.track;
 
 import freerails.util.ImPoint;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 
 import java.io.Serializable;
 

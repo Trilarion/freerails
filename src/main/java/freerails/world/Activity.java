@@ -26,8 +26,7 @@ import java.io.Serializable;
 /**
  * @param <E>
  */
-public interface Activity<E extends Serializable> extends
-        Serializable {
+public interface Activity<E extends Serializable> extends Serializable {
 
     /**
      * @return

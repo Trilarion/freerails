@@ -21,60 +21,57 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- * Represents the production of a raw material on a tile.
+ * Represents the conversion of one cargo type to another one a tile.
  */
-public class Production implements Serializable {
+public class TileConversion implements Serializable {
 
-    private static final long serialVersionUID = 3258125847641536052L;
-    private final int cargoType;
-
-    /**
-     * The number of units per year (40 units = 1 car load).
-     */
-    private final int rate;
+    private static final long serialVersionUID = 3546356219414853689L;
+    // TODO meaning input, output
+    private final int input;
+    private final int output;
 
     /**
-     * @param type
-     * @param r
+     * @param in
+     * @param out
      */
-    public Production(int type, int r) {
-        cargoType = type;
-        rate = r;
+    public TileConversion(int in, int out) {
+        input = in;
+        output = out;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Production))
+        if (!(o instanceof TileConversion))
             return false;
 
-        final Production production = (Production) o;
+        final TileConversion tileConversion = (TileConversion) o;
 
-        if (cargoType != production.cargoType)
+        if (input != tileConversion.input)
             return false;
-        return rate == production.rate;
+        return output == tileConversion.output;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = cargoType;
-        result = 29 * result + rate;
+        result = input;
+        result = 29 * result + output;
         return result;
     }
 
     /**
      * @return
      */
-    public int getCargoType() {
-        return cargoType;
+    public int getInput() {
+        return input;
     }
 
     /**
      * @return
      */
-    public int getRate() {
-        return rate;
+    public int getOutput() {
+        return output;
     }
 }

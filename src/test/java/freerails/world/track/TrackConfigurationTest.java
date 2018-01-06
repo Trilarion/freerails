@@ -24,7 +24,7 @@
  */
 package freerails.world.track;
 
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

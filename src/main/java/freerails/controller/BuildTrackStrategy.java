@@ -26,6 +26,7 @@ package freerails.controller;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.TerrainType;
+import freerails.world.track.TrackCategories;
 import freerails.world.track.TrackRule;
 
 import java.util.ArrayList;
@@ -79,13 +80,13 @@ public class BuildTrackStrategy {
      */
     public static BuildTrackStrategy getDefault(ReadOnlyWorld w) {
         ArrayList<Integer> allowable = new ArrayList<>();
-        allowable.add(getCheapest(TrackRule.TrackCategories.track, w));
-        allowable.add(getCheapest(TrackRule.TrackCategories.bridge, w));
-        allowable.add(getCheapest(TrackRule.TrackCategories.tunnel, w));
+        allowable.add(getCheapest(TrackCategories.track, w));
+        allowable.add(getCheapest(TrackCategories.bridge, w));
+        allowable.add(getCheapest(TrackCategories.tunnel, w));
         return new BuildTrackStrategy(generateRules(allowable, w));
     }
 
-    private static Integer getCheapest(TrackRule.TrackCategories category,
+    private static Integer getCheapest(TrackCategories category,
                                        ReadOnlyWorld w) {
         TrackRule cheapest = null;
         Integer cheapestID = null;

@@ -27,28 +27,14 @@ import java.io.Serializable;
  */
 public class TrainModel implements Serializable {
 
-    /**
-     *
-     */
     public static final int WAGON_LENGTH = 24;
-
-    /**
-     *
-     */
     public static final int MAX_NUMBER_OF_WAGONS = 6;
-
-    /**
-     *
-     */
     public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS)
             * WAGON_LENGTH;
     private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
-
     private final int engineTypeId;
-
     private final ImInts wagonTypes;
-
     private final int cargoBundleId;
 
     /**

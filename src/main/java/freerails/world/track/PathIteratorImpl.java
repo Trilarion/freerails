@@ -17,10 +17,9 @@
  */
 
 /*
- * FreerailsPathIteratorImpl.java
  *
  */
-package freerails.world;
+package freerails.world.track;
 
 import freerails.util.IntLine;
 
@@ -31,19 +30,18 @@ import java.util.NoSuchElementException;
 /**
  * Lets the caller access a series of Points as a series of IntLines.
  */
-public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
+public class PathIteratorImpl implements PathIterator {
     private static final long serialVersionUID = 3258411750679720758L;
     private final boolean forwards;
     private final List<Point> points;
     private int position;
 
     /**
-     * Creates new FreerailsPathIteratorImpl
      *
      * @param l
      * @param f
      */
-    public FreerailsPathIteratorImpl(List<Point> l, boolean f) {
+    public PathIteratorImpl(List<Point> l, boolean f) {
         points = l;
         forwards = f;
 
@@ -59,8 +57,8 @@ public class FreerailsPathIteratorImpl implements FreerailsPathIterator {
      * @param l
      * @return
      */
-    public static FreerailsPathIterator forwardsIterator(List<Point> l) {
-        return new FreerailsPathIteratorImpl(l, true);
+    public static PathIterator forwardsIterator(List<Point> l) {
+        return new PathIteratorImpl(l, true);
     }
 
     public boolean hasNext() {

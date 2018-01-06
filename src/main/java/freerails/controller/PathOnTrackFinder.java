@@ -24,8 +24,8 @@ package freerails.controller;
 import freerails.util.ImPoint;
 import freerails.world.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.TileTransition;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.TileTransition;
+import freerails.world.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
 
 /**
@@ -106,8 +106,8 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
             logger.debug("Find track path from " + from + " to " + target);
         }
         /* Check there is track at both the points. */
-        FreerailsTile tileA = (FreerailsTile) world.getTile(from.x, from.y);
-        FreerailsTile tileB = (FreerailsTile) world.getTile(target.x, target.y);
+        FullTerrainTile tileA = (FullTerrainTile) world.getTile(from.x, from.y);
+        FullTerrainTile tileB = (FullTerrainTile) world.getTile(target.x, target.y);
         if (!tileA.hasTrack()) {
             throw new PathNotFoundException("No track at " + from.x + ", "
                     + from.y + '.');

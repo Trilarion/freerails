@@ -19,8 +19,8 @@
 package freerails.client.renderer;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
-import freerails.world.TileTransition;
+import freerails.world.track.PathIterator;
+import freerails.world.terrain.TileTransition;
 import freerails.world.train.PathWalker;
 import freerails.world.train.PathWalkerImpl;
 import freerails.world.train.TrainModel;
@@ -61,7 +61,7 @@ public class TrainRenderer {
             return;
         }
 
-        FreerailsPathIterator it = s.path();
+        PathIterator it = s.path();
 
         PathWalker pw = new PathWalkerImpl(it);
 

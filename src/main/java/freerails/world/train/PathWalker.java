@@ -19,14 +19,14 @@
 package freerails.world.train;
 
 import freerails.world.FreerailsMutableSerializable;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 
 /**
  * This interface lets the caller retrieve a path broken into a series of steps,
  * whose length the caller specifies. E.g. it could be used to get the sub
  * section of a path that a train travels during an given time interval.
  */
-public interface PathWalker extends FreerailsPathIterator,
+public interface PathWalker extends PathIterator,
         FreerailsMutableSerializable {
     /**
      * Returns true if we have not reached the end of the path.

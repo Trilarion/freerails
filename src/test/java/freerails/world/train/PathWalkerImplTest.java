@@ -19,8 +19,9 @@
 package freerails.world.train;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
-import freerails.world.FreerailsPathIteratorImpl;
+import freerails.world.track.PathIterator;
+import freerails.world.track.PathIteratorImpl;
+import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
 
 import java.awt.*;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * JUnit test.
  */
 public class PathWalkerImplTest extends TestCase {
-    FreerailsPathIterator it;
+    PathIterator it;
 
     PathWalker pw;
 
@@ -139,7 +140,7 @@ public class PathWalkerImplTest extends TestCase {
         points.add(new Point(0, 0));
         points.add(new Point(100, 0));
 
-        FreerailsPathIterator it2 = FreerailsPathIteratorImpl
+        PathIterator it2 = PathIteratorImpl
                 .forwardsIterator(points);
         assertTrue(it2.hasNext());
         pw = new PathWalkerImpl(it2);
@@ -151,7 +152,7 @@ public class PathWalkerImplTest extends TestCase {
     }
 
     void assertHasNextEqualsFalse(ArrayList<Point> points) {
-        FreerailsPathIterator it2 = FreerailsPathIteratorImpl
+        PathIterator it2 = PathIteratorImpl
                 .forwardsIterator(points);
 
         assertTrue(!it2.hasNext());

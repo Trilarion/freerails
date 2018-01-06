@@ -26,7 +26,7 @@ import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.WorldImpl;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
@@ -66,7 +66,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FreerailsTile) world.getTile(0, 0)).getTrackPiece();
+        oldTrackPiece = ((FullTerrainTile) world.getTile(0, 0)).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
         int owner = ChangeTrackPieceCompositeMove.getOwner(

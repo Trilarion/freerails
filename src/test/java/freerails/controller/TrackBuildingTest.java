@@ -22,10 +22,10 @@ import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 import junit.framework.TestCase;
@@ -73,7 +73,7 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FreerailsTile) w.getTile(x, 5))
+                TrackPiece tp = ((FullTerrainTile) w.getTile(x, 5))
                         .getTrackPiece();
                 assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp
                         .getTrackTypeID());
@@ -91,7 +91,7 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(ms.message, ms.ok);
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FreerailsTile) w.getTile(x, 5))
+                TrackPiece tp = ((FullTerrainTile) w.getTile(x, 5))
                         .getTrackPiece();
                 assertEquals(0, tp.getTrackTypeID());
             }
@@ -111,11 +111,11 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
 
-            TrackPiece tp1 = ((FreerailsTile) w.getTile(5, 5)).getTrackPiece();
+            TrackPiece tp1 = ((FullTerrainTile) w.getTile(5, 5)).getTrackPiece();
             assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp1
                     .getTrackTypeID());
 
-            TrackPiece tp2 = ((FreerailsTile) w.getTile(6, 5)).getTrackPiece();
+            TrackPiece tp2 = ((FullTerrainTile) w.getTile(6, 5)).getTrackPiece();
             assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp2
                     .getTrackTypeID());
 
@@ -131,10 +131,10 @@ public class TrackBuildingTest extends TestCase {
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.message, ms.ok);
             // Check track has been built.
-            tp1 = ((FreerailsTile) w.getTile(5, 5)).getTrackPiece();
+            tp1 = ((FullTerrainTile) w.getTile(5, 5)).getTrackPiece();
             assertEquals(0, tp1.getTrackTypeID());
 
-            tp2 = ((FreerailsTile) w.getTile(6, 5)).getTrackPiece();
+            tp2 = ((FullTerrainTile) w.getTile(6, 5)).getTrackPiece();
             assertEquals(0, tp2.getTrackTypeID());
         } catch (PathNotFoundException e) {
             fail();
@@ -192,7 +192,7 @@ public class TrackBuildingTest extends TestCase {
             MoveStatus ms = producer.buildTrack(a, path);
             assertTrue(ms.ok);
 
-            TrackPiece tp = ((FreerailsTile) w.getTile(b.x, b.y))
+            TrackPiece tp = ((FullTerrainTile) w.getTile(b.x, b.y))
                     .getTrackPiece();
             assertEquals("We just build double track here.", trackTypeID, tp
                     .getTrackTypeID());

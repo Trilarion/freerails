@@ -18,8 +18,7 @@
 
 package freerails.world.track;
 
-import freerails.world.FlatTrackTemplate;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 
 import java.util.ArrayList;
 
@@ -29,7 +28,7 @@ import java.util.ArrayList;
  * Instances of this class cannot be created and must be obtained via the static
  * methods herein.
  */
-public final class TrackConfiguration implements FlatTrackTemplate {
+public final class TrackConfiguration implements TrackConfigurations {
 
     /**
      *
@@ -61,8 +60,8 @@ public final class TrackConfiguration implements FlatTrackTemplate {
      * @param v
      * @return the superposition of two track templates
      */
-    public static TrackConfiguration add(FlatTrackTemplate c,
-                                         FlatTrackTemplate v) {
+    public static TrackConfiguration add(TrackConfigurations c,
+                                         TrackConfigurations v) {
         /*
          * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
          * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate | (1 <<
@@ -130,8 +129,8 @@ public final class TrackConfiguration implements FlatTrackTemplate {
      * @return the TrackConfiguration representing the track section c minus the
      * track sections represented by v.
      */
-    public static TrackConfiguration subtract(FlatTrackTemplate c,
-                                              FlatTrackTemplate v) {
+    public static TrackConfiguration subtract(TrackConfigurations c,
+                                              TrackConfigurations v) {
         /*
          * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
          * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate ^ (1 <<
@@ -142,7 +141,7 @@ public final class TrackConfiguration implements FlatTrackTemplate {
         return from9bitTemplate(newTemplate);
     }
 
-    public boolean contains(FlatTrackTemplate ftt) {
+    public boolean contains(TrackConfigurations ftt) {
         int trackTemplate = ftt.get9bitTemplate();
 
         return contains(trackTemplate);

@@ -29,10 +29,7 @@ import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackRule;
+import freerails.world.track.*;
 
 import java.util.ArrayList;
 
@@ -124,7 +121,7 @@ public class TrackMoveTransactionsGenerator {
         final int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
         if (ruleAfter != ruleBefore) {
-            TrackRule.TrackCategories category = newTrackRule.getCategory();
+            TrackCategories category = newTrackRule.getCategory();
             switch (category) {
                 case station: {
                     fixedCostsStations -= newTrackRule.getFixedCost().getAmount();

@@ -18,7 +18,7 @@
 
 package freerails.world.finances;
 
-import freerails.world.GameTime;
+import freerails.world.game.GameTime;
 
 import java.io.Serializable;
 

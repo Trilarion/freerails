@@ -20,17 +20,18 @@
  * OneTileMoveVector.java
  *
  */
-package freerails.world;
+package freerails.world.terrain;
 
 import freerails.client.ClientConstants;
 import freerails.util.ImPoint;
+import freerails.world.track.TrackConfigurations;
 
 /**
  * Represents a movement from a tile to any one of the surrounding
  * eight tiles.
  */
 @freerails.util.InstanceControlled
-public final class TileTransition implements FlatTrackTemplate {
+public final class TileTransition implements TrackConfigurations {
 
     /**
      *
@@ -403,7 +404,7 @@ public final class TileTransition implements FlatTrackTemplate {
         return new ImPoint(from.x + deltaX, from.y + deltaY);
     }
 
-    public boolean contains(FlatTrackTemplate ftt) {
+    public boolean contains(TrackConfigurations ftt) {
         return ftt.get9bitTemplate() == this.flatTrackTemplate;
     }
 

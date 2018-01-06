@@ -23,7 +23,7 @@ import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackRule;
 
 /**
@@ -41,7 +41,7 @@ public class StationHelper {
      * @return
      */
     public static int getStationNumberAtLocation(ReadOnlyWorld world, ModelRoot modelRoot, int x, int y) {
-        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
         FreerailsPrincipal principal = modelRoot.getPrincipal();

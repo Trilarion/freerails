@@ -27,8 +27,10 @@ import freerails.move.MoveStatus;
 import freerails.move.UpgradeTrackMove;
 import freerails.util.ImPoint;
 import freerails.world.*;
+import freerails.world.game.GameModel;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
@@ -180,7 +182,7 @@ public class BuildTrackController implements GameModel {
                     - oldPosition.y);
 
             // If there is already track between the two tiles, do nothing
-            FreerailsTile tile = (FreerailsTile) realWorld.getTile(
+            FullTerrainTile tile = (FullTerrainTile) realWorld.getTile(
                     oldPosition.x, oldPosition.y);
 
             if (tile.getTrackPiece().getTrackConfiguration().contains(vector)) {
@@ -234,14 +236,14 @@ public class BuildTrackController implements GameModel {
      * direction on the worldDiff object.
      */
     private MoveStatus planBuildingTrack(ImPoint point, TileTransition vector) {
-        FreerailsTile tileA = (FreerailsTile) worldDiffs.getTile(point.x,
+        FullTerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point.x,
                 point.y);
         BuildTrackStrategy bts = getBts();
         int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
         TrackRule trackRuleA = (TrackRule) worldDiffs.get(SKEY.TRACK_RULES,
                 trackTypeAID);
 
-        FreerailsTile tileB = (FreerailsTile) worldDiffs.getTile(point.x
+        FullTerrainTile tileB = (FullTerrainTile) worldDiffs.getTile(point.x
                 + vector.deltaX, point.y + vector.deltaY);
         int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
         TrackRule trackRuleB = (TrackRule) worldDiffs.get(SKEY.TRACK_RULES,
@@ -444,7 +446,7 @@ public class BuildTrackController implements GameModel {
 
                                 int owner = ChangeTrackPieceCompositeMove.getOwner(
                                         fp, worldDiffs);
-                                FreerailsTile tile = (FreerailsTile) worldDiffs
+                                FullTerrainTile tile = (FullTerrainTile) worldDiffs
                                         .getTile(locationX, locationY);
                                 int tt = tile.getTerrainTypeID();
                                 int trackRuleID = getBts().getRule(tt);

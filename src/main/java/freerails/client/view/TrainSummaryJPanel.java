@@ -27,6 +27,8 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.*;
 import freerails.world.finances.Money;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 
 import javax.swing.*;

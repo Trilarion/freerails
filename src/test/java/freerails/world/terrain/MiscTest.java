@@ -46,16 +46,16 @@ public class MiscTest extends TestCase {
      *
      */
     public void testTileTypeImpl() {
-        Production[] prod = {new Production(69, 10)};
-        Consumption[] cons = {new Consumption(4, 4), new Consumption(4, 5)};
-        Conversion[] conv = {new Conversion(50, 30)};
+        TileProduction[] prod = {new TileProduction(69, 10)};
+        TileConsumption[] cons = {new TileConsumption(4, 4), new TileConsumption(4, 5)};
+        TileConversion[] conv = {new TileConversion(50, 30)};
         testHashCodeAndEquals(prod[0]);
         testHashCodeAndEquals(cons[0]);
         testHashCodeAndEquals(conv[0]);
         TileTypeImpl tt = new TileTypeImpl(0, TerrainCategory.Country, "Grassland",
                 100, prod, cons, conv, 10);
         testHashCodeAndEquals(tt);
-        Conversion[] conv2 = {new Conversion(5, 30)};
+        TileConversion[] conv2 = {new TileConversion(5, 30)};
         TileTypeImpl tt2 = new TileTypeImpl(0, TerrainCategory.Country, "Grassland",
                 100, prod, cons, conv2, 10);
         assertFalse(tt.equals(tt2));

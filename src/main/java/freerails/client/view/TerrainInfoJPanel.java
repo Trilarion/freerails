@@ -27,9 +27,9 @@ import freerails.client.renderer.RendererRoot;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
-import freerails.world.terrain.Consumption;
-import freerails.world.terrain.Conversion;
-import freerails.world.terrain.Production;
+import freerails.world.terrain.TileConsumption;
+import freerails.world.terrain.TileConversion;
+import freerails.world.terrain.TileProduction;
 import freerails.world.terrain.TerrainType;
 import freerails.world.train.WagonType;
 
@@ -122,7 +122,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
             if (cargosProduced != 0) {
                 tableString.append("<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosProduced; i++) {
-                    Production p = type.getProduction().get(i);
+                    TileProduction p = type.getProduction().get(i);
                     CargoType c = (CargoType) w.get(SKEY.CARGO_TYPES, p
                             .getCargoType());
                     String supply = String.valueOf(p.getRate()
@@ -133,7 +133,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
             if (cargosConsumed != 0) {
                 tableString.append("<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConsumed; i++) {
-                    Consumption p = type.getConsumption().get(i);
+                    TileConsumption p = type.getConsumption().get(i);
                     CargoType c = (CargoType) w.get(SKEY.CARGO_TYPES, p
                             .getCargoType());
                     tableString.append("<tr> <td>").append(c.getDisplayName()).append(" </td><td>&nbsp;</td></tr>");
@@ -142,7 +142,7 @@ public class TerrainInfoJPanel extends javax.swing.JPanel {
             if (cargosConverted != 0) {
                 tableString.append("<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConverted; i++) {
-                    Conversion p = type.getConversion().get(i);
+                    TileConversion p = type.getConversion().get(i);
                     CargoType input = (CargoType) w.get(SKEY.CARGO_TYPES, p
                             .getInput());
                     CargoType output = (CargoType) w.get(SKEY.CARGO_TYPES, p

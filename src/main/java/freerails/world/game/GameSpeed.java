@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.world;
+package freerails.world.game;
 
 import java.io.Serializable;
 

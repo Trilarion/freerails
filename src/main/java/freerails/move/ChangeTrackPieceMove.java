@@ -21,9 +21,10 @@ package freerails.move;
 import freerails.controller.PathCacheController;
 import freerails.util.ImPoint;
 import freerails.world.*;
+import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
@@ -101,7 +102,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
                     continue;
                 }
 
-                FreerailsTile tile = (FreerailsTile) w.getTile(station.x,
+                FullTerrainTile tile = (FullTerrainTile) w.getTile(station.x,
                         station.y);
                 TrackRule otherStationType = tile.getTrackPiece()
                         .getTrackRule();
@@ -193,7 +194,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         // Check that the current track piece at this.location is
         // the same as this.oldTrackPiece.
-        TrackPiece currentTrackPieceAtLocation = ((FreerailsTile) w.getTile(
+        TrackPiece currentTrackPieceAtLocation = ((FullTerrainTile) w.getTile(
                 location.x, location.y)).getTrackPiece();
 
         TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
@@ -237,7 +238,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
                     .moveFailed("Illegal track configuration - diagonal conflict");
         }
 
-        int terrainType = ((FreerailsTile) w.getTile(location.x, location.y))
+        int terrainType = ((FullTerrainTile) w.getTile(location.x, location.y))
                 .getTerrainTypeID();
         TerrainType tt = (TerrainType) w.get(SKEY.TERRAIN_TYPES, terrainType);
 
@@ -280,10 +281,10 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private void move(World w,
                       TrackPiece newTrackPiece) {
         // FIXME why is oldTrackPiece not used???
-        FreerailsTile oldTile = (FreerailsTile) w.getTile(location.x,
+        FullTerrainTile oldTile = (FullTerrainTile) w.getTile(location.x,
                 location.y);
         int terrain = oldTile.getTerrainTypeID();
-        FreerailsTile newTile = FreerailsTile.getInstance(terrain,
+        FullTerrainTile newTile = FullTerrainTile.getInstance(terrain,
                 newTrackPiece);
         w.setTile(location.x, location.y, newTile);
     }
@@ -318,7 +319,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         // Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
-            FreerailsTile ft = (FreerailsTile) w.getTile(point.x, point.y - 1);
+            FullTerrainTile ft = (FullTerrainTile) w.getTile(point.x, point.y - 1);
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateAbove = tp.getTrackGraphicID();
         } else {
@@ -326,7 +327,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         }
 
         if ((point.y + 1) < mapSize.height) {
-            FreerailsTile ft = (FreerailsTile) w.getTile(point.x, point.y + 1);
+            FullTerrainTile ft = (FullTerrainTile) w.getTile(point.x, point.y + 1);
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateBelow = tp.getTrackGraphicID();
         } else {

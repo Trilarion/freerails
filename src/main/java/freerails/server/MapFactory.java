@@ -24,7 +24,7 @@ package freerails.server;
 import freerails.util.ProgressMonitor;
 import freerails.world.SKEY;
 import freerails.world.WorldImpl;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
 
@@ -119,7 +119,7 @@ public final class MapFactory {
 
             for (int y = 0; y < mapRect.height; y++) {
                 int rgb = mapBufferedImage.getRGB(x, y);
-                FreerailsTile tile;
+                FullTerrainTile tile;
                 Integer type = rgb2TerrainType.get(rgb);
 
                 if (null == type) {
@@ -128,7 +128,7 @@ public final class MapFactory {
                                     + rgb + " at location " + x + ", " + y);
                 }
 
-                tile = FreerailsTile.getInstance(terrainRandomiser
+                tile = FullTerrainTile.getInstance(terrainRandomiser
                         .getNewType(type));
 
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
@@ -142,7 +142,7 @@ public final class MapFactory {
 
         for (int i = 0; i < locations.size(); i++) {
             TerrainAtLocation rtv = locations.get(i);
-            FreerailsTile tile = FreerailsTile.getInstance(rtv.getType());
+            FullTerrainTile tile = FullTerrainTile.getInstance(rtv.getType());
 
             int x = rtv.getX();
             int y = rtv.getY();
@@ -163,8 +163,8 @@ public final class MapFactory {
         }
     }
 
-    private static void setTile(int x, int y, FreerailsTile tile) {
-        if (!non_countryTypes.contains(((FreerailsTile) world
+    private static void setTile(int x, int y, FullTerrainTile tile) {
+        if (!non_countryTypes.contains(((FullTerrainTile) world
                 .getTile(x, y)).getTerrainTypeID())) {
             world.setTile(x, y, tile);
         }

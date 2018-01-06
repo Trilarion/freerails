@@ -21,14 +21,15 @@ package freerails.world.train;
 import freerails.client.ClientConstants;
 import freerails.util.IntIterator;
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 import freerails.world.PositionOnTrack;
 
 /**
  * Exposes the path of a train. TODO needs better comment
  */
 @SuppressWarnings("unused")
-public class TrainPathIterator implements FreerailsPathIterator {
+public class TrainPathIterator implements PathIterator {
+
     private static final long serialVersionUID = 3256999977816502584L;
     private static final int tileSize = ClientConstants.TILE_SIZE;
     private final IntIterator intIterator;

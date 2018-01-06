@@ -23,9 +23,11 @@ import freerails.world.finances.EconomicClimate;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionRecord;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 
 import java.io.Serializable;
 import java.util.List;
@@ -479,7 +481,7 @@ public class WorldImpl implements World {
 
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
-                map[x][y] = FreerailsTile.NULL;
+                map[x][y] = FullTerrainTile.NULL;
             }
         }
     }

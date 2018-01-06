@@ -27,6 +27,7 @@ import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
 import freerails.world.train.SpeedTimeAndStatus.TrainActivity;

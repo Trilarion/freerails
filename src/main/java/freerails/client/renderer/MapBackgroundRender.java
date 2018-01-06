@@ -27,7 +27,7 @@ import freerails.client.ClientConstants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
@@ -180,7 +180,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
                         + tilesToPaint.height + 1); tile.y++) {
                     if ((tile.x >= 0) && (tile.x < mapSize.width)
                             && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                        FreerailsTile ft = (FreerailsTile) w.getTile(tile.x,
+                        FullTerrainTile ft = (FullTerrainTile) w.getTile(tile.x,
                                 tile.y);
                         TrackPiece tp = ft.getTrackPiece();
 

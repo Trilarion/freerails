@@ -35,7 +35,7 @@ package freerails.client.renderer;
 
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.NullTrackPiece;
 
@@ -142,7 +142,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     private void refreshTile(Point tile) {
-        FreerailsTile tt = (FreerailsTile) w.getTile(tile.x, tile.y);
+        FullTerrainTile tt = (FullTerrainTile) w.getTile(tile.x, tile.y);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeID();
@@ -194,7 +194,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
 
         for (tile.x = mapX; tile.x < mapWidth + mapX; tile.x++) {
             for (tile.y = mapY; tile.y < mapHeight + mapY; tile.y++) {
-                FreerailsTile tt = (FreerailsTile) w.getTile(tile.x, tile.y);
+                FullTerrainTile tt = (FullTerrainTile) w.getTile(tile.x, tile.y);
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();

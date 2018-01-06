@@ -38,7 +38,7 @@ import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -408,7 +408,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param y
      */
     public void showTerrainInfo(int x, int y) {
-        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
         int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
     }
@@ -579,27 +579,6 @@ public class DialogueBoxController implements WorldListListener {
      * @param y
      */
     public void showStationOrTerrainInfo(int x, int y) {
-//        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
-//
-//        TrackRule trackRule = tile.getTrackPiece().getTrackRule();
-//        FreerailsPrincipal principal = modelRoot.getPrincipal();
-//        if (trackRule.isStation()
-//                && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
-//
-//            for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-//                Station station = (Station) world.get(principal,
-//                        KEY.STATIONS, i);
-//
-//                if (null != station && station.x == x && station.y == y) {
-//                    this.showStationInfo(i);
-//
-//                    return;
-//                }
-//            }
-//
-//            throw new IllegalStateException("Couldn't find station at " + x
-//                    + ", " + y);
-//        }
         int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
         if (stationNumberAtLocation > -1) {
             this.showStationInfo(stationNumberAtLocation);

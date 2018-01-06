@@ -31,7 +31,7 @@ import freerails.world.top.MapFixtureFactory;
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
  */
-public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
+public class ChangeTileProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     private ImList<TrainBlueprint> after;
 

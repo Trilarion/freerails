@@ -56,17 +56,17 @@ public class NearestCityFinder {
 
         if (w.size(SKEY.CITIES) > 0) {
             tempCity = (City) w.get(SKEY.CITIES, 0);
-            cityDistance = getDistance(tempCity.getCityX(), tempCity.getCityY());
-            cityName = tempCity.getCityName();
+            cityDistance = getDistance(tempCity.getX(), tempCity.getY());
+            cityName = tempCity.getName();
 
             for (int i = 1; i < w.size(SKEY.CITIES); i++) {
                 tempCity = (City) w.get(SKEY.CITIES, i);
-                tempDistance = getDistance(tempCity.getCityX(), tempCity
-                        .getCityY());
+                tempDistance = getDistance(tempCity.getX(), tempCity
+                        .getY());
 
                 if (tempDistance < cityDistance) {
                     cityDistance = tempDistance;
-                    cityName = tempCity.getCityName();
+                    cityName = tempCity.getName();
                 }
             }
 

@@ -21,56 +21,63 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- * Represents the conversion of one cargo type to another one a tile.
+ * Represents the demand for a certain cargo for consumption.
  */
-public class Conversion implements Serializable {
+public class TileConsumption implements Serializable {
 
-    private static final long serialVersionUID = 3546356219414853689L;
-    private final int input;
-    private final int output;
+    private static final long serialVersionUID = 3258133565631051064L;
+    // TODO meaning of cargotype why not class
+    private final int cargoType;
+
+    // TODO put requisite limit outside, here only nominal consumption
+    /**
+     * The number of tiles that must be within the station radius before the
+     * station demands the cargo.
+     */
+    private final int prerequisite;
 
     /**
-     * @param in
-     * @param out
+     * @param cargoType
+     * @param pq
      */
-    public Conversion(int in, int out) {
-        input = in;
-        output = out;
-    }
-
-    /**
-     * @return
-     */
-    public int getInput() {
-        return input;
+    public TileConsumption(int cargoType, int pq) {
+        this.cargoType = cargoType;
+        prerequisite = pq; // default value.
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Conversion))
+        if (!(o instanceof TileConsumption))
             return false;
 
-        final Conversion conversion = (Conversion) o;
+        final TileConsumption tileConsumption = (TileConsumption) o;
 
-        if (input != conversion.input)
+        if (cargoType != tileConsumption.cargoType)
             return false;
-        return output == conversion.output;
+        return prerequisite == tileConsumption.prerequisite;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = input;
-        result = 29 * result + output;
+        result = cargoType;
+        result = 29 * result + prerequisite;
         return result;
     }
 
     /**
      * @return
      */
-    public int getOutput() {
-        return output;
+    public int getCargoType() {
+        return cargoType;
+    }
+
+    /**
+     * @return
+     */
+    public int getPrerequisite() {
+        return prerequisite;
     }
 }

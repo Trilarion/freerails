@@ -22,7 +22,7 @@
 package freerails.client.renderer;
 
 import freerails.client.common.ImageManager;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 
 import java.awt.*;
 import java.io.File;

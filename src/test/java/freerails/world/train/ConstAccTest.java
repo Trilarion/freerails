@@ -82,14 +82,14 @@ public class ConstAccTest extends TestCase {
         }
         // Also check getV and getA
         try {
-            double v = sat.calcV(t);
+            double v = sat.calcVelocity(t);
             assertTrue(v >= 0);
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);
         }
         try {
-            sat.calcA(t);
+            sat.calcAcceleration(t);
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);

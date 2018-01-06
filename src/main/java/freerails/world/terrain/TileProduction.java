@@ -21,47 +21,46 @@ package freerails.world.terrain;
 import java.io.Serializable;
 
 /**
- * Represents the demand for a certain cargo for consumption.
+ * Represents the production of a raw material on a tile.
  */
-public class Consumption implements Serializable {
+public class TileProduction implements Serializable {
 
-    private static final long serialVersionUID = 3258133565631051064L;
+    private static final long serialVersionUID = 3258125847641536052L;
+    // TODO why not class
     private final int cargoType;
+    /**
+     * The number of units per year (40 units = 1 car load).
+     */
+    private final int rate;
 
     /**
-     * The number of tiles that must be within the station radius before the
-     * station demands the cargo.
+     * @param type
+     * @param rate
      */
-    private final int prerequisite;
-
-    /**
-     * @param ct
-     * @param pq
-     */
-    public Consumption(int ct, int pq) {
-        cargoType = ct;
-        prerequisite = pq; // default value.
+    public TileProduction(int type, int rate) {
+        cargoType = type;
+        this.rate = rate;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Consumption))
+        if (!(o instanceof TileProduction))
             return false;
 
-        final Consumption consumption = (Consumption) o;
+        final TileProduction tileProduction = (TileProduction) o;
 
-        if (cargoType != consumption.cargoType)
+        if (cargoType != tileProduction.cargoType)
             return false;
-        return prerequisite == consumption.prerequisite;
+        return rate == tileProduction.rate;
     }
 
     @Override
     public int hashCode() {
         int result;
         result = cargoType;
-        result = 29 * result + prerequisite;
+        result = 29 * result + rate;
         return result;
     }
 
@@ -75,7 +74,7 @@ public class Consumption implements Serializable {
     /**
      * @return
      */
-    public int getPrerequisite() {
-        return prerequisite;
+    public int getRate() {
+        return rate;
     }
 }

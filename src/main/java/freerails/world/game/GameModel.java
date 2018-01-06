@@ -16,25 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
-
-import java.io.Serializable;
+package freerails.world.game;
 
 /**
- * Defines methods that encode a track configuration as an int.
+ * Defines a standard method to update the game world.
  */
-public interface FlatTrackTemplate extends Serializable {
-    /**
-     * @param ftt the FlatTrackTemplate which may be a subset of this
-     *            FlatTrackTemplate.
-     * @return true if the vectors represented by this FlatTrackTemplate are a
-     * superset of the vectors of the specified FlatTrackTemplate
-     */
-    @SuppressWarnings("unused")
-    boolean contains(FlatTrackTemplate ftt);
+public interface GameModel {
 
     /**
-     * @return the integer representing the vector(s) of this object.
+     *
      */
-    int get9bitTemplate();
+    void update();
 }

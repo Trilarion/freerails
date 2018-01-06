@@ -29,9 +29,9 @@ public final class TileTypeImpl implements TerrainType {
     // TODO why is TerrainType and TerrainTypeImplementation separate?
     private static final long serialVersionUID = 4049919380945253945L;
 
-    private final ImList<Consumption> consumption;
-    private final ImList<Conversion> conversion;
-    private final ImList<Production> production;
+    private final ImList<TileConsumption> consumption;
+    private final ImList<TileConversion> conversion;
+    private final ImList<TileProduction> production;
     private final int rgb;
     private final int rightOfWay;
     private final TerrainCategory terrainCategory;
@@ -47,22 +47,22 @@ public final class TileTypeImpl implements TerrainType {
      * @param terrainCategory
      * @param terrainType
      * @param rightOfWay
-     * @param production
-     * @param consumption
-     * @param conversion
+     * @param tileProduction
+     * @param tileConsumption
+     * @param tileConversion
      * @param tileBuildCost
      */
     public TileTypeImpl(int rgb, TerrainCategory terrainCategory,
-                        String terrainType, int rightOfWay, Production[] production,
-                        Consumption[] consumption, Conversion[] conversion,
+                        String terrainType, int rightOfWay, TileProduction[] tileProduction,
+                        TileConsumption[] tileConsumption, TileConversion[] tileConversion,
                         int tileBuildCost) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
         this.rightOfWay = rightOfWay;
-        this.production = new ImList<>(production);
-        this.consumption = new ImList<>(consumption);
-        this.conversion = new ImList<>(conversion);
+        this.production = new ImList<>(tileProduction);
+        this.consumption = new ImList<>(tileConsumption);
+        this.conversion = new ImList<>(tileConversion);
 
         if (tileBuildCost > 0) {
             this.tileBuildCost = new Money(tileBuildCost);
@@ -148,14 +148,14 @@ public final class TileTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public ImList<Consumption> getConsumption() {
+    public ImList<TileConsumption> getConsumption() {
         return consumption;
     }
 
     /**
      * @return
      */
-    public ImList<Conversion> getConversion() {
+    public ImList<TileConversion> getConversion() {
         return conversion;
     }
 
@@ -171,7 +171,7 @@ public final class TileTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public ImList<Production> getProduction() {
+    public ImList<TileProduction> getProduction() {
         return production;
     }
 

@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
 

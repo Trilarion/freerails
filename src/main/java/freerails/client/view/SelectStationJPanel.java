@@ -28,10 +28,10 @@ import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainOrdersModel;
@@ -284,7 +284,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
             for (int y = Math.max(0, visableMapTiles.y); y < Math.min(
                     visableMapTiles.height + visableMapTiles.y, world
                             .getMapHeight()); y++) {
-                FreerailsTile tt = (FreerailsTile) world.getTile(x, y);
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(x, y);
                 if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;

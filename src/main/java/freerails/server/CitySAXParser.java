@@ -50,8 +50,8 @@ public class CitySAXParser extends DefaultHandler {
     public void endDocument() {
         for (int i = 0; i < cities.size(); i++) {
             City tempCity = cities.get(i);
-            world.add(SKEY.CITIES, new City(tempCity.getCityName(),
-                    tempCity.getCityX(), tempCity.getCityY()));
+            world.add(SKEY.CITIES, new City(tempCity.getName(),
+                    tempCity.getX(), tempCity.getY()));
         }
     }
 

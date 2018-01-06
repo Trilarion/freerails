@@ -21,6 +21,7 @@ package experimental;
 import freerails.client.renderer.TrackPieceRendererImpl;
 import freerails.server.OldWorldImpl;
 import freerails.server.parser.Track_TilesHandlerImpl;
+import freerails.world.track.TrackCategories;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
@@ -102,16 +103,16 @@ public class TrackTilesGenerator extends JPanel {
     private void generateTiles() {
 
         for (TrackRule rule : rules) {
-            TrackRule.TrackCategories category = rule.getCategory();
+            TrackCategories category = rule.getCategory();
             Image icon;
-            if (category.equals(TrackRule.TrackCategories.bridge)
-                    || category.equals(TrackRule.TrackCategories.station)) {
+            if (category.equals(TrackCategories.bridge)
+                    || category.equals(TrackCategories.station)) {
                 tr.setIcon(rule.getTypeName());
                 icon = tr.icon;
             } else {
                 icon = null;
             }
-            tr.tunnel = category.equals(TrackRule.TrackCategories.tunnel);
+            tr.tunnel = category.equals(TrackCategories.tunnel);
             tr.doubleTrack = rule.isDouble();
 
             for (int i = 0; i < 512; i++) {

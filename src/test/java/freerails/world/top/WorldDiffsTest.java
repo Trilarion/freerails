@@ -26,7 +26,7 @@ import freerails.world.cargo.CargoType;
 import freerails.world.player.Player;
 import freerails.world.station.Station;
 import freerails.world.terrain.City;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -204,11 +204,11 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(21, worldDiff.getMapWidth());
         assertEquals(8, worldDiff.getMapHeight());
 
-        FreerailsTile tile = (FreerailsTile) underlyingWorld.getTile(2, 2);
+        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(2, 2);
         assertNotNull(tile);
         assertEquals(tile, worldDiff.getTile(2, 2));
 
-        FreerailsTile newTile = FreerailsTile.getInstance(999);
+        FullTerrainTile newTile = FullTerrainTile.getInstance(999);
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 

@@ -22,6 +22,8 @@ import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;

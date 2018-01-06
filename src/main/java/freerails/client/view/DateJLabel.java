@@ -23,8 +23,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.GameCalendar;
-import freerails.world.GameTime;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
 

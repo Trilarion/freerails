@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.world.GameTime;
+import freerails.world.game.GameTime;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;

@@ -25,7 +25,7 @@ import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TileTypeImpl;
 import freerails.world.track.*;
@@ -56,7 +56,7 @@ public class MapFixtureFactory {
      * @return
      */
     public static World getWorld(int w, int h) {
-        FreerailsTile tile = FreerailsTile.getInstance(0);
+        FullTerrainTile tile = FullTerrainTile.getInstance(0);
         World world = new WorldImpl(w, h);
         generateTerrainTypesList(world);
         generateCargoTypesList(world);
@@ -76,8 +76,8 @@ public class MapFixtureFactory {
     public static void generateTrackRuleList(World world) {
         TrackRule[] trackRulesArray = new TrackRule[3];
         TrackRuleProperties[] trackRuleProperties = new TrackRuleProperties[3];
-        LegalTrackConfigurations[] legalTrackConfigurations = new LegalTrackConfigurations[3];
-        LegalTrackPlacement[] legalTrackPlacement = new LegalTrackPlacement[3];
+        ValidTrackConfigurations[] validTrackConfigurations = new ValidTrackConfigurations[3];
+        ValidTrackPlacement[] validTrackPlacement = new ValidTrackPlacement[3];
         HashSet<TerrainCategory> cannotBuildOnTheseTerrainTypes = new HashSet<>();
         cannotBuildOnTheseTerrainTypes.add(TerrainCategory.Ocean);
 
@@ -85,41 +85,41 @@ public class MapFixtureFactory {
         String[] trackTemplates0 = {"000010000", "010010000", "010010010",
                 "100111000", "001111000", "010110000", "100110000", "100011000"};
 
-        legalTrackConfigurations[0] = new LegalTrackConfigurations(-1,
+        validTrackConfigurations[0] = new ValidTrackConfigurations(-1,
                 trackTemplates0);
         trackRuleProperties[0] = new TrackRuleProperties(1, false, "type0",
-                TrackRule.TrackCategories.track, 0, 0, 10, 0);
-        legalTrackPlacement[0] = new LegalTrackPlacement(
+                TrackCategories.track, 0, 0, 10, 0);
+        validTrackPlacement[0] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
-                LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[0] = new TrackRuleImpl(trackRuleProperties[0],
-                legalTrackConfigurations[0], legalTrackPlacement[0]);
+                validTrackConfigurations[0], validTrackPlacement[0]);
 
         // 2nd track type..
         String[] trackTemplates1 = {"000010000", "010010000", "010010010"};
-        legalTrackConfigurations[1] = new LegalTrackConfigurations(-1,
+        validTrackConfigurations[1] = new ValidTrackConfigurations(-1,
                 trackTemplates1);
         trackRuleProperties[1] = new TrackRuleProperties(2, false, "type1",
-                TrackRule.TrackCategories.track, 0, 0, 20, 0);
+                TrackCategories.track, 0, 0, 20, 0);
 
-        legalTrackPlacement[1] = new LegalTrackPlacement(
+        validTrackPlacement[1] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
-                LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[1] = new TrackRuleImpl(trackRuleProperties[1],
-                legalTrackConfigurations[1], legalTrackPlacement[1]);
+                validTrackConfigurations[1], validTrackPlacement[1]);
 
         // 3rd track type..
         trackRuleProperties[2] = new TrackRuleProperties(3, false, "type2",
-                TrackRule.TrackCategories.track, 0, 0, 30, 0);
+                TrackCategories.track, 0, 0, 30, 0);
 
         String[] trackTemplates2 = {"000010000"};
-        legalTrackConfigurations[2] = new LegalTrackConfigurations(-1,
+        validTrackConfigurations[2] = new ValidTrackConfigurations(-1,
                 trackTemplates2);
-        legalTrackPlacement[2] = new LegalTrackPlacement(
+        validTrackPlacement[2] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
-                LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[2] = new TrackRuleImpl(trackRuleProperties[2],
-                legalTrackConfigurations[2], legalTrackPlacement[2]);
+                validTrackConfigurations[2], validTrackPlacement[2]);
 
         // Add track rules to world
         for (TrackRule aTrackRulesArray : trackRulesArray) {

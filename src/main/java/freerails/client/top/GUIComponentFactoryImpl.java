@@ -35,6 +35,7 @@ import freerails.network.MoveReceiver;
 import freerails.util.ImList;
 import freerails.util.ImPoint;
 import freerails.world.*;
+import freerails.world.game.GameSpeed;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;

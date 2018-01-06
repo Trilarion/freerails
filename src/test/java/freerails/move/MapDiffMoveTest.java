@@ -20,7 +20,7 @@ package freerails.move;
 
 import freerails.world.World;
 import freerails.world.WorldDiffs;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 
 /**
  * JUnit test for MapDiffMove.
@@ -35,11 +35,11 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
         World world2 = this.getWorld();
         WorldDiffs worldDiff = new WorldDiffs(world2);
 
-        FreerailsTile tile = (FreerailsTile) world2.getTile(2, 2);
+        FullTerrainTile tile = (FullTerrainTile) world2.getTile(2, 2);
         assertNotNull(tile);
         assertEquals(tile, worldDiff.getTile(2, 2));
 
-        FreerailsTile newTile = FreerailsTile.getInstance(999);
+        FullTerrainTile newTile = FullTerrainTile.getInstance(999);
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 

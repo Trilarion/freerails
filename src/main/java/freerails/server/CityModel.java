@@ -22,7 +22,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.terrain.City;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
 
@@ -91,14 +91,14 @@ class CityModel {
         Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w
                 .getMapHeight());
         City city = (City) w.get(SKEY.CITIES, cityID);
-        Rectangle cityArea = new Rectangle(city.getCityX() - 3,
-                city.getCityY() - 3, 7, 7);
+        Rectangle cityArea = new Rectangle(city.getX() - 3,
+                city.getY() - 3, 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
         /* Count tile types. */
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
+                FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
 
                 /* Count the number of stations at the city. */
                 if (tile.getTrackPiece().getTrackRule().isStation()) {
@@ -154,8 +154,8 @@ class CityModel {
 
         int x = tile.p.x;
         int y = tile.p.y;
-        FreerailsTile fTile = (FreerailsTile) w.getTile(x, y);
-        fTile = FreerailsTile.getInstance(type, fTile.getTrackPiece());
+        FullTerrainTile fTile = (FullTerrainTile) w.getTile(x, y);
+        fTile = FullTerrainTile.getInstance(type, fTile.getTrackPiece());
         w.setTile(x, y, fTile);
     }
 

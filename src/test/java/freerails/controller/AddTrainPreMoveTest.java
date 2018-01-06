@@ -30,7 +30,7 @@ import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.ActivityIterator;
 import freerails.world.PositionOnTrack;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.train.*;

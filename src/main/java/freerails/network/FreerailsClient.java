@@ -22,7 +22,7 @@ import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.world.FreerailsMutableSerializable;
-import freerails.world.GameModel;
+import freerails.world.game.GameModel;
 import freerails.world.World;
 import freerails.world.player.Player;
 import org.apache.log4j.Logger;

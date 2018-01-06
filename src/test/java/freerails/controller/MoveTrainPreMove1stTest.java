@@ -29,7 +29,7 @@ import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.PositionOnTrack;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.*;
 
@@ -110,11 +110,11 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
                 new OccupiedTracks(principal, world));
         SpeedAgainstTime speeds = preMove.nextSpeeds(world, TileTransition.EAST);
         assertNotNull(speeds);
-        assertEquals(speeds.calcV(0), 0d);
+        assertEquals(speeds.calcVelocity(0), 0d);
         assertTrue(speeds.getDistance() >= TileTransition.EAST.getLength());
         double t = speeds.getTime();
         assertTrue(t > 0);
-        assertTrue(speeds.calcV(t) > 0);
+        assertTrue(speeds.calcVelocity(t) > 0);
     }
 
     /**

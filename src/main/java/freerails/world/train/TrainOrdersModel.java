@@ -30,29 +30,19 @@ import java.io.Serializable;
  * Encapsulates the orders for a train.
  */
 public class TrainOrdersModel implements Serializable {
+
     private static final long serialVersionUID = 3616453397155559472L;
-
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
-
-    /**
-     *
-     */
     public final boolean waitUntilFull;
-
-    /**
-     *
-     */
     public final boolean autoConsist;
-
     /**
      * The wagon types to add; if null, then no change.
      */
     public final ImInts consist;
-
     /**
-     *
+     * The number of the station to goto.
      */
-    public final int stationId; // The number of the station to goto.
+    public final int stationId;
 
     /**
      * @param station

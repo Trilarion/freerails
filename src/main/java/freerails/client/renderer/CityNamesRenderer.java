@@ -56,15 +56,15 @@ public class CityNamesRenderer implements Painter {
         int size = w.size(SKEY.CITIES);
         for (int i = 0; i < size; i++) {
             City tempCity = (City) w.get(SKEY.CITIES, i);
-            final int xpos = tempCity.getCityX() * ClientConstants.TILE_SIZE;
-            final int ypos = tempCity.getCityY() * ClientConstants.TILE_SIZE + 10;
+            final int xpos = tempCity.getX() * ClientConstants.TILE_SIZE;
+            final int ypos = tempCity.getY() * ClientConstants.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos,
                     ClientConstants.TILE_SIZE * 8, 20);
             if (newVisibleRectangle != null
                     && !newVisibleRectangle.intersects(cityNameBox)) {
                 continue;
             }
-            g.drawString(tempCity.getCityName(), xpos, ypos);
+            g.drawString(tempCity.getName(), xpos, ypos);
         }
     }
 }

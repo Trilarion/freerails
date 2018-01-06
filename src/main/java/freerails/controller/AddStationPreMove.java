@@ -29,7 +29,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
@@ -100,11 +100,11 @@ public class AddStationPreMove implements PreMove {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(
                 world, principal);
 
-        FreerailsTile oldTile = (FreerailsTile) world.getTile(p.x, p.y);
+        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(p.x, p.y);
         String cityName;
         String stationName;
 
-        FreerailsTile ft = (FreerailsTile) world.getTile(p.x, p.y);
+        FullTerrainTile ft = (FullTerrainTile) world.getTile(p.x, p.y);
         TrackPiece before = ft.getTrackPiece();
         TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
                 this.ruleNumber);

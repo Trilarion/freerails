@@ -21,12 +21,12 @@ package freerails.controller;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.util.ImPoint;
-import freerails.world.GameTime;
+import freerails.world.game.GameTime;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
@@ -154,7 +154,7 @@ public final class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            FreerailsTile tile = (FreerailsTile) w.getTile(x, y);
+            FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
             int tt = tile.getTerrainTypeID();
             ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
 
@@ -171,7 +171,7 @@ public final class TrackMoveProducer {
         switch (getBuildMode()) {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
-                FreerailsTile tileA = (FreerailsTile) w.getTile(from.x, from.y);
+                FullTerrainTile tileA = (FullTerrainTile) w.getTile(from.x, from.y);
                 if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0]
                         && !isStationHere(from)) {
                     MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
@@ -181,7 +181,7 @@ public final class TrackMoveProducer {
                 }
                 ImPoint point = new ImPoint(from.x + trackVector.getDx(), from.y
                         + trackVector.getDy());
-                FreerailsTile tileB = (FreerailsTile) w.getTile(point.x, point.y);
+                FullTerrainTile tileB = (FullTerrainTile) w.getTile(point.x, point.y);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1]
                         && !isStationHere(point)) {
                     MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
@@ -209,7 +209,7 @@ public final class TrackMoveProducer {
 
     private MoveStatus upgradeTrack(ImPoint point, int trackRuleID) {
         ReadOnlyWorld w = executor.getWorld();
-        TrackPiece before = ((FreerailsTile) w.getTile(point.x, point.y))
+        TrackPiece before = ((FullTerrainTile) w.getTile(point.x, point.y))
                 .getTrackPiece();
         /* Check whether there is track here. */
         if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
@@ -276,7 +276,7 @@ public final class TrackMoveProducer {
 
     private boolean isStationHere(ImPoint p) {
         ReadOnlyWorld w = executor.getWorld();
-        FreerailsTile tile = (FreerailsTile) w.getTile(p.x, p.y);
+        FullTerrainTile tile = (FullTerrainTile) w.getTile(p.x, p.y);
         return tile.getTrackPiece().getTrackRule().isStation();
     }
 

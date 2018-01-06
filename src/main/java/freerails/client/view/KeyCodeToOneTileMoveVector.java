@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;

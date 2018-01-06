@@ -25,9 +25,9 @@ import freerails.util.ImPoint;
 import freerails.world.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
@@ -126,7 +126,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TrackRule rule4lastTile;
 
         // Determine the track rule for the next tile.
-        final FreerailsTile nextTile = (FreerailsTile) world
+        final FullTerrainTile nextTile = (FullTerrainTile) world
                 .getTile(newX, newY);
 
         // Check there is not another players track at nextTile.
@@ -148,7 +148,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false; // We can't build track on the tile.
         }
         // Determine the track rule for the current tile.
-        FreerailsTile currentTile = (FreerailsTile) world.getTile(currentX,
+        FullTerrainTile currentTile = (FullTerrainTile) world.getTile(currentX,
                 currentY);
 
         // Check for illegal track configurations.
@@ -175,7 +175,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             // We did a bounds check above.
             assert (world.boundsContain(currentX, y2check));
 
-            FreerailsTile tile2Check = (FreerailsTile) world.getTile(currentX,
+            FullTerrainTile tile2Check = (FullTerrainTile) world.getTile(currentX,
                     y2check);
             TrackConfiguration config2check = tile2Check.getTrackPiece()
                     .getTrackConfiguration();
@@ -210,7 +210,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     private TrackRule getAppropriateTrackRule(int x, int y) {
-        final FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+        final FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
         TrackRule rule;
         if (!tile.hasTrack()) {
             int terrainTypeID = tile.getTerrainTypeID();
@@ -258,7 +258,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             long priceB = ruleB.getPrice().getAmount();
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
-            FreerailsTile a = (FreerailsTile) world.getTile(x[0], y[0]);
+            FullTerrainTile a = (FullTerrainTile) world.getTile(x[0], y[0]);
             TrackRule currentRuleA = a.getTrackPiece().getTrackRule();
             if (!currentRuleA.equals(ruleA)) {
                 assert (!currentRuleA.isStation()); // We shouldn't be upgrading

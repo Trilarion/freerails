@@ -22,7 +22,6 @@ import freerails.world.track.NullTrackPiece;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 /**
@@ -31,23 +30,23 @@ import java.util.HashMap;
  * Instances are stored in a HashMap to avoid creating 100,000s of objects.
  */
 // TODO find better name for what it really is
-public class FreerailsTile implements TerrainTile {
+public class FullTerrainTile implements TerrainTile {
 
     /**
      *
      */
-    public static final FreerailsTile NULL = new FreerailsTile(0);
+    public static final FullTerrainTile NULL = new FullTerrainTile(0);
     private static final long serialVersionUID = 3617574907538847544L;
-    private static final HashMap<FreerailsTile, FreerailsTile> instances = new HashMap<>();
+    private static final HashMap<FullTerrainTile, FullTerrainTile> instances = new HashMap<>();
     private final TrackPiece trackPiece;
     private final int terrainType;
 
-    private FreerailsTile(int terrainType) {
+    private FullTerrainTile(int terrainType) {
         this.terrainType = terrainType;
         this.trackPiece = NullTrackPiece.getInstance();
     }
 
-    private FreerailsTile(int terrainType, TrackPiece trackPiece) {
+    private FullTerrainTile(int terrainType, TrackPiece trackPiece) {
         this.terrainType = terrainType;
         this.trackPiece = trackPiece;
     }
@@ -56,9 +55,9 @@ public class FreerailsTile implements TerrainTile {
      * @param terrainType
      * @return
      */
-    public static FreerailsTile getInstance(int terrainType) {
-        FreerailsTile tile = new FreerailsTile(terrainType);
-        FreerailsTile storedTile = instances.get(tile);
+    public static FullTerrainTile getInstance(int terrainType) {
+        FullTerrainTile tile = new FullTerrainTile(terrainType);
+        FullTerrainTile storedTile = instances.get(tile);
         if (storedTile != null) {
             return storedTile;
         }
@@ -72,11 +71,11 @@ public class FreerailsTile implements TerrainTile {
      * @param trackPiece
      * @return
      */
-    public static FreerailsTile getInstance(int terrainType,
-                                            TrackPiece trackPiece) {
-        FreerailsTile tile = new FreerailsTile(terrainType, trackPiece);
+    public static FullTerrainTile getInstance(int terrainType,
+                                              TrackPiece trackPiece) {
+        FullTerrainTile tile = new FullTerrainTile(terrainType, trackPiece);
 
-        FreerailsTile storedTile = instances.get(tile);
+        FullTerrainTile storedTile = instances.get(tile);
         if (storedTile != null) {
             return storedTile;
         }
@@ -92,7 +91,7 @@ public class FreerailsTile implements TerrainTile {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        final FreerailsTile that = (FreerailsTile) o;
+        final FullTerrainTile that = (FullTerrainTile) o;
 
         if (terrainType != that.terrainType)
             return false;
@@ -108,7 +107,7 @@ public class FreerailsTile implements TerrainTile {
     }
 
     private Object readResolve() {
-        FreerailsTile storedTile = instances.get(this);
+        FullTerrainTile storedTile = instances.get(this);
         if (storedTile != null) {
             return storedTile;
         }

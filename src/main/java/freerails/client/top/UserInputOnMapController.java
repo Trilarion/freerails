@@ -30,7 +30,7 @@ import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.move.MoveStatus;
 import freerails.util.ImPoint;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

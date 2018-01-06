@@ -27,7 +27,7 @@ import freerails.controller.TimeTickPreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.TimeTickMove;
-import freerails.world.GameTime;
+import freerails.world.game.GameTime;
 import freerails.world.World;
 import freerails.world.WorldImpl;
 import freerails.world.player.Player;

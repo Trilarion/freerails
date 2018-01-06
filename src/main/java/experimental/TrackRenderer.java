@@ -20,7 +20,7 @@ package experimental;
 
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackConfiguration;
 
 import java.awt.*;

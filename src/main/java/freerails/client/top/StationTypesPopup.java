@@ -22,7 +22,7 @@ import freerails.client.renderer.StationRadiusRenderer;
 import freerails.client.view.ActionRoot;
 import freerails.client.view.StationBuildModel;
 import freerails.controller.ModelRoot;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -65,7 +65,7 @@ public class StationTypesPopup extends JPopupMenu {
         stationBuildModel.getStationBuildAction().putValue(
                 StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
 
-        FreerailsTile tile = (FreerailsTile) modelRoot.getWorld().getTile(p.x,
+        FullTerrainTile tile = (FullTerrainTile) modelRoot.getWorld().getTile(p.x,
                 p.y);
         return tile.hasTrack();
     }

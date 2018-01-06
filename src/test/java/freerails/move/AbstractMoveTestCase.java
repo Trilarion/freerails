@@ -24,9 +24,11 @@ package freerails.move;
 import freerails.util.ImPoint;
 import freerails.util.Utils;
 import freerails.world.*;
+import freerails.world.game.GameCalendar;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.train.PathOnTiles;
 import junit.framework.TestCase;
@@ -293,7 +295,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertTrackHere(int x, int y) {
 
-        FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
         assertTrue(tile.hasTrack());
     }
 

@@ -24,12 +24,12 @@
 package freerails.move;
 
 import freerails.util.ImPoint;
-import freerails.world.GameRules;
+import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.SKEY;
 import freerails.world.WorldImpl;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
@@ -89,7 +89,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FreerailsTile) getWorld().getTile(0, 0))
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(0, 0))
                 .getTrackPiece();
 
         final int trackRuleID = 0;
@@ -155,7 +155,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FreerailsTile) getWorld().getTile(0, 0))
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(0, 0))
                 .getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
@@ -178,7 +178,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
-        TrackConfiguration actual = ((FreerailsTile) getWorld().getTile(0, 0))
+        TrackConfiguration actual = ((FullTerrainTile) getWorld().getTile(0, 0))
                 .getTrackPiece().getTrackConfiguration();
         assertEquals(newTrackPiece.getTrackConfiguration(), actual);
     }
@@ -192,7 +192,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FreerailsTile) getWorld().getTile(0, 0))
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(0, 0))
                 .getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);

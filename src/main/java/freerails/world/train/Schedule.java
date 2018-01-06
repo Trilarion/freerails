@@ -28,14 +28,7 @@ import freerails.util.ImInts;
  */
 public interface Schedule {
 
-    /**
-     *
-     */
     int PRIORITY_ORDERS = 0;
-
-    /**
-     *
-     */
     int MAXIMUM_NUMBER_OF_ORDER = 6;
 
     /**

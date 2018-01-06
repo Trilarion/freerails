@@ -26,14 +26,14 @@ import freerails.util.ImList;
 
 import java.io.Serializable;
 
+// TODO look at MutableSchedule and combine both
 /**
  * A Schedule that is immutable.
  */
 public class ImmutableSchedule implements Schedule, Serializable {
+
     private static final long serialVersionUID = 3977858458324318264L;
-
     private final ImList<TrainOrdersModel> orders;
-
     private final int nextScheduledOrder;
     private final boolean hasPriorityOrders;
 

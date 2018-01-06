@@ -31,7 +31,7 @@ import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.train.WagonType;
 import org.apache.log4j.Logger;
 
@@ -232,7 +232,7 @@ public class StationInfoJPanel extends JPanel implements View,
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             Station station = (Station) w.get(modelRoot
                     .getPrincipal(), KEY.STATIONS, stationNumber);
-            FreerailsTile tile = (FreerailsTile) w
+            FullTerrainTile tile = (FullTerrainTile) w
                     .getTile(station.x, station.y);
             String stationTypeName = tile.getTrackPiece().getTrackRule()
                     .getTypeName();

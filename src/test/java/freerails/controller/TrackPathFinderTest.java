@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.util.ImPoint;
-import freerails.world.GameRules;
+import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.WorldImpl;
 import freerails.world.player.Player;

@@ -26,6 +26,8 @@ import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
 import freerails.world.*;
 import freerails.world.finances.Money;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.player.Player;
 import org.apache.log4j.Logger;
 

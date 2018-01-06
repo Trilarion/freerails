@@ -26,8 +26,10 @@ import freerails.controller.PathCacheController;
 import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.finances.TransactionCategory;
+import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.*;
 
 import java.awt.*;
@@ -107,7 +109,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         int owner = getOwner(principle, w);
 
         if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = ((FreerailsTile) w.getTile(p.x, p.y))
+            oldTrackPiece = ((FullTerrainTile) w.getTile(p.x, p.y))
                     .getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
@@ -137,7 +139,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
         TrackPiece newTrackPiece;
 
         if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = ((FreerailsTile) w.getTile(p.x, p.y))
+            oldTrackPiece = ((FullTerrainTile) w.getTile(p.x, p.y))
                     .getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {

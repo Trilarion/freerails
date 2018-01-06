@@ -21,7 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.world.GameTime;
+import freerails.world.game.GameTime;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.TransactionAggregator;

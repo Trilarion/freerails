@@ -19,7 +19,7 @@
 package freerails.world.common;
 
 import freerails.world.PositionOnTrack;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 /**

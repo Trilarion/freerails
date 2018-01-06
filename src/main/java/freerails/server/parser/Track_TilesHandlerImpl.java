@@ -24,10 +24,7 @@ package freerails.server.parser;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.terrain.TerrainCategory;
-import freerails.world.track.LegalTrackPlacement;
-import freerails.world.track.TrackRule;
-import freerails.world.track.TrackRuleImpl;
-import freerails.world.track.TrackRuleProperties;
+import freerails.world.track.*;
 import org.xml.sax.Attributes;
 
 import java.util.ArrayList;
@@ -57,7 +54,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     /**
      *
      */
-    protected freerails.world.track.LegalTrackConfigurations legalTrackConfigurations;
+    protected ValidTrackConfigurations validTrackConfigurations;
 
     /**
      *
@@ -72,7 +69,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     /**
      *
      */
-    protected LegalTrackPlacement legalTrackPlacement;
+    protected ValidTrackPlacement validTrackPlacement;
     int maxConsequ;
 
     /**
@@ -90,8 +87,8 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_CanOnlyBuildOnTheseTerrainTypes() {
-        legalTrackPlacement = new LegalTrackPlacement(terrainTypes,
-                LegalTrackPlacement.PlacementRule.ONLY_ON_THESE);
+        validTrackPlacement = new ValidTrackPlacement(terrainTypes,
+                ValidTrackPlacement.PlacementRule.ONLY_ON_THESE);
         terrainTypes = null;
     }
 
@@ -100,7 +97,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_ListOfTrackPieceTemplates() {
-        legalTrackConfigurations = new freerails.world.track.LegalTrackConfigurations(
+        validTrackConfigurations = new ValidTrackConfigurations(
                 maxConsequ, legalTemplates);
         legalTemplates = null;
     }
@@ -110,8 +107,8 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_CannotBuildOnTheseTerrainTypes() {
-        legalTrackPlacement = new LegalTrackPlacement(terrainTypes,
-                LegalTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+        validTrackPlacement = new ValidTrackPlacement(terrainTypes,
+                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         terrainTypes = null;
     }
 
@@ -127,7 +124,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
          */
         rGBvalue = new java.awt.Color(rGBvalue).getRGB();
 
-        TrackRule.TrackCategories category = TrackRule.TrackCategories
+        TrackCategories category = TrackCategories
                 .valueOf(meta.getValue("category"));
 
         boolean enableDoubleTrack = Boolean.valueOf(
@@ -167,13 +164,13 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void end_TrackType() {
         TrackRuleImpl trackRuleImpl = new freerails.world.track.TrackRuleImpl(
-                trackRuleProperties, legalTrackConfigurations,
-                legalTrackPlacement);
+                trackRuleProperties, validTrackConfigurations,
+                validTrackPlacement);
         ruleList.add(trackRuleImpl);
 
-        legalTrackConfigurations = null;
+        validTrackConfigurations = null;
         trackRuleProperties = null;
-        legalTrackPlacement = null;
+        validTrackPlacement = null;
     }
 
     public void handle_TerrainType(final Attributes meta) {

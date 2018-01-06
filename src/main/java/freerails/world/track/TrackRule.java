@@ -92,34 +92,4 @@ public interface TrackRule extends Serializable, Comparable<TrackRule> {
      */
     Iterator<TrackConfiguration> getLegalConfigurationsIterator();
 
-    /**
-     *
-     */
-    enum TrackCategories {
-
-        /**
-         *
-         */
-        track,
-
-        /**
-         *
-         */
-        bridge,
-
-        /**
-         *
-         */
-        tunnel,
-
-        /**
-         *
-         */
-        station,
-
-        /**
-         *
-         */
-        non
-    }
 }

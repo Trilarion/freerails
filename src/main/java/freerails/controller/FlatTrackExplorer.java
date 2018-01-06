@@ -21,8 +21,8 @@ package freerails.controller;
 import freerails.util.ImPoint;
 import freerails.world.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.TileTransition;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.TileTransition;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
@@ -52,7 +52,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
             throws NoTrackException {
         w = world;
-        FreerailsTile tile = (FreerailsTile) world.getTile(p.getX(), p.getY());
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(p.getX(), p.getY());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
             throw new NoTrackException(p.toString());
         }
@@ -70,7 +70,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      */
     public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
                                                          ImPoint p) {
-        TrackPiece tp = ((FreerailsTile) w.getTile(p.x, p.y)).getTrackPiece();
+        TrackPiece tp = ((FullTerrainTile) w.getTile(p.x, p.y)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();
 
@@ -130,7 +130,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         }
         TileTransition v = this.getFirstVectorToTry();
         Point p = new Point(currentPosition.getX(), currentPosition.getY());
-        FreerailsTile ft = (FreerailsTile) w.getTile(p.x, p.y);
+        FullTerrainTile ft = (FullTerrainTile) w.getTile(p.x, p.y);
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();

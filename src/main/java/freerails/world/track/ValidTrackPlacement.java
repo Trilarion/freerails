@@ -16,8 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * LegalTrackPlacement.java
+/**
  *
  */
 package freerails.world.track;
@@ -33,19 +32,17 @@ import java.util.Iterator;
  * Encapsulates the rules governing where, that is, on what terrain,
  * track of a given type can be built.
  */
-public final class LegalTrackPlacement implements Serializable {
+public final class ValidTrackPlacement implements Serializable {
+
     private static final long serialVersionUID = 3616445687756437049L;
-
-    private final ImHashSet<TerrainCategory> terrainTypes;// = new
-
-    // HashSet<TerrainType.Category>();
+    private final ImHashSet<TerrainCategory> terrainTypes;
     private final PlacementRule placementRule;
 
     /**
      * @param types
      * @param placementRule
      */
-    public LegalTrackPlacement(HashSet<TerrainCategory> types,
+    public ValidTrackPlacement(HashSet<TerrainCategory> types,
                                PlacementRule placementRule) {
         this.placementRule = placementRule;
 
@@ -76,8 +73,8 @@ public final class LegalTrackPlacement implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof LegalTrackPlacement) {
-            LegalTrackPlacement test = (LegalTrackPlacement) o;
+        if (o instanceof ValidTrackPlacement) {
+            ValidTrackPlacement test = (ValidTrackPlacement) o;
 
             return this.placementRule.equals(test.placementRule)
                     && this.terrainTypes.equals(test.terrainTypes);

@@ -19,7 +19,8 @@
 package freerails.world.train;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
+import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
 
 /**
@@ -67,7 +68,7 @@ public class TrainPositionOnMapTest extends TestCase {
         a = TrainPositionOnMap.createInstance(new int[]{10, 20, 30, 40},
                 new int[]{11, 22, 33, 44});
 
-        FreerailsPathIterator path = a.path();
+        PathIterator path = a.path();
         IntLine line = new IntLine();
         assertTrue(path.hasNext());
         path.nextSegment(line);
@@ -89,7 +90,7 @@ public class TrainPositionOnMapTest extends TestCase {
         a = TrainPositionOnMap.createInstance(new int[]{40, 30, 20, 10},
                 new int[]{44, 33, 22, 11});
 
-        FreerailsPathIterator path = a.reversePath();
+        PathIterator path = a.reversePath();
         IntLine line = new IntLine();
         assertTrue(path.hasNext());
         path.nextSegment(line);
@@ -417,10 +418,10 @@ public class TrainPositionOnMapTest extends TestCase {
     }
 
     /**
-     * Test for TrainPosition createInstance(FreerailsPathIterator)
+     * Test for TrainPosition createInstance(PathIterator)
      */
     public void testCreateInstanceFreerailsPathIterator() {
-        FreerailsPathIterator path = new SimplePathIteratorImpl(new int[]{40,
+        PathIterator path = new SimplePathIteratorImpl(new int[]{40,
                 30, 20, 10}, new int[]{44, 33, 22, 11});
         TrainPositionOnMap a = TrainPositionOnMap
                 .createInSameDirectionAsPath(path);
@@ -444,7 +445,7 @@ public class TrainPositionOnMapTest extends TestCase {
      *
      */
     public void testCreateInOppositeDirectionToPath() {
-        FreerailsPathIterator path = new SimplePathIteratorImpl(new int[]{40,
+        PathIterator path = new SimplePathIteratorImpl(new int[]{40,
                 30, 20, 10}, new int[]{44, 33, 22, 11});
         TrainPositionOnMap a = TrainPositionOnMap.createInSameDirectionAsPath(
                 path).reverse();

@@ -33,6 +33,7 @@ import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.finances.Money;
+import freerails.world.track.TrackCategories;
 import freerails.world.track.TrackRule;
 
 import javax.swing.*;
@@ -57,7 +58,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     private final ImageManager imageManager = new ImageManagerImpl(
             ClientConfig.GRAPHICS_PATH);
 
-    private HashMap<TrackRule.TrackCategories, Integer> selectionSet;
+    private HashMap<TrackCategories, Integer> selectionSet;
 
     private ModelRoot modelRoot;
 
@@ -115,7 +116,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
             JToggleButton toggleButton = new JToggleButton();
             final Integer ruleID = i;
             TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
-            TrackRule.TrackCategories category = rule.getCategory();
+            TrackCategories category = rule.getCategory();
             Money price = null;
             switch (category) {
                 case track:
@@ -126,7 +127,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                                 public void actionPerformed(
                                         java.awt.event.ActionEvent evt) {
                                     selectionSet
-                                            .put(TrackRule.TrackCategories.track,
+                                            .put(TrackCategories.track,
                                                     ruleID);
                                     setBuildTrackStrategy();
                                 }
@@ -143,7 +144,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                                 public void actionPerformed(
                                         java.awt.event.ActionEvent evt) {
                                     selectionSet.put(
-                                            TrackRule.TrackCategories.bridge,
+                                            TrackCategories.bridge,
                                             ruleID);
                                     setBuildTrackStrategy();
                                 }
@@ -161,7 +162,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                                 public void actionPerformed(
                                         java.awt.event.ActionEvent evt) {
                                     selectionSet.put(
-                                            TrackRule.TrackCategories.tunnel,
+                                            TrackCategories.tunnel,
                                             ruleID);
                                     setBuildTrackStrategy();
 
@@ -184,7 +185,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                                 public void actionPerformed(
                                         java.awt.event.ActionEvent evt) {
                                     selectionSet.put(
-                                            TrackRule.TrackCategories.station,
+                                            TrackCategories.station,
                                             ruleID);
                                 }
                             });
@@ -250,7 +251,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
         toggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectionSet.put(TrackRule.TrackCategories.tunnel, null);
+                selectionSet.put(TrackCategories.tunnel, null);
                 setBuildTrackStrategy();
             }
         });
@@ -265,7 +266,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
         toggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectionSet.put(TrackRule.TrackCategories.bridge, null);
+                selectionSet.put(TrackCategories.bridge, null);
                 setBuildTrackStrategy();
             }
         });
@@ -514,9 +515,9 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     private void setBuildTrackStrategy() {
         ArrayList<Integer> ruleIDs = new ArrayList<>();
-        ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.track));
-        ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.bridge));
-        ruleIDs.add(selectionSet.get(TrackRule.TrackCategories.tunnel));
+        ruleIDs.add(selectionSet.get(TrackCategories.track));
+        ruleIDs.add(selectionSet.get(TrackCategories.bridge));
+        ruleIDs.add(selectionSet.get(TrackCategories.tunnel));
         BuildTrackStrategy bts = BuildTrackStrategy.getMultipleRuleInstance(
                 ruleIDs, modelRoot.getWorld());
         modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);

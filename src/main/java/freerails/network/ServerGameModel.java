@@ -21,7 +21,7 @@
  */
 package freerails.network;
 
-import freerails.world.GameModel;
+import freerails.world.game.GameModel;
 import freerails.world.World;
 
 import java.io.Serializable;

@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.util.IntLine;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 import junit.framework.TestCase;
 
 import java.awt.*;
@@ -49,7 +49,7 @@ public class ToAndFroPathIteratorTest extends TestCase {
         l.add(new Point(10, 11));
         l.add(new Point(20, 22));
 
-        FreerailsPathIterator it = new ToAndFroPathIterator(l);
+        PathIterator it = new ToAndFroPathIterator(l);
 
         assertTrue(it.hasNext());
         it.nextSegment(line);

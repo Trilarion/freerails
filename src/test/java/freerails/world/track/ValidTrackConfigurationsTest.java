@@ -17,12 +17,12 @@
  */
 
 /*
- * LegalTrackConfigurationsTest.java
+ * ValidTrackConfigurationsTest.java
  * JUnit based test
  *
  *This test checks that the String representation of track configurations that
  *is used in the ruleset are processed correctly by the
- *constructor of LegalTrackConfigurations.
+ *constructor of ValidTrackConfigurations.
  *
  */
 package freerails.world.track;
@@ -36,12 +36,12 @@ import java.util.ArrayList;
 /**
  * JUnit test.
  */
-public class LegalTrackConfigurationsTest extends TestCase {
+public class ValidTrackConfigurationsTest extends TestCase {
 
     /**
      * @param testName
      */
-    public LegalTrackConfigurationsTest(java.lang.String testName) {
+    public ValidTrackConfigurationsTest(java.lang.String testName) {
         super(testName);
     }
 
@@ -56,7 +56,7 @@ public class LegalTrackConfigurationsTest extends TestCase {
      * @return
      */
     public static Test suite() {
-        return new TestSuite(LegalTrackConfigurationsTest.class);
+        return new TestSuite(ValidTrackConfigurationsTest.class);
     }
 
     /**
@@ -67,7 +67,7 @@ public class LegalTrackConfigurationsTest extends TestCase {
 
         templates.add("000111000");
 
-        LegalTrackConfigurations ltc = new LegalTrackConfigurations(-1,
+        ValidTrackConfigurations ltc = new ValidTrackConfigurations(-1,
                 templates);
 
         TrackConfiguration template = TrackConfiguration

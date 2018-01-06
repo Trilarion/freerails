@@ -26,10 +26,10 @@ import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImPoint;
 import freerails.world.PositionOnTrack;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import junit.framework.TestCase;
 
 /**
@@ -81,7 +81,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     }
 
     private void findPath2Target(ImPoint target1, TileTransition[] expectedPath) {
-        FreerailsTile tile = (FreerailsTile) world
+        FullTerrainTile tile = (FullTerrainTile) world
                 .getTile(target1.x, target1.y);
         assertTrue(tile.hasTrack());
         PositionOnTrack pot = PositionOnTrack.createFacing(10, 10, TileTransition.EAST);

@@ -25,8 +25,10 @@ package freerails.move;
 
 import freerails.util.ImPoint;
 import freerails.world.*;
+import freerails.world.game.GameRules;
 import freerails.world.player.Player;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.*;
 import junit.framework.Test;
@@ -102,12 +104,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         // Remove only track piece built.
         assertRemoveTrackSucceeds(new ImPoint(0, 5), east);
-        TrackConfiguration trackConfiguration = ((FreerailsTile) getWorld()
+        TrackConfiguration trackConfiguration = ((FullTerrainTile) getWorld()
                 .getTile(0, 5)).getTrackPiece().getTrackConfiguration();
         TrackConfiguration expected = NullTrackPiece.getInstance()
                 .getTrackConfiguration();
         assertEquals(expected, trackConfiguration);
-        TrackConfiguration trackConfiguration2 = ((FreerailsTile) getWorld()
+        TrackConfiguration trackConfiguration2 = ((FullTerrainTile) getWorld()
                 .getTile(1, 5)).getTrackPiece().getTrackConfiguration();
 
         assertEquals(expected, trackConfiguration2);
@@ -156,12 +158,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         // Now change the owner of the track piece at (1, 6);
         int anotherPlayer = 999;
-        FreerailsTile oldTile = (FreerailsTile) world.getTile(1, 6);
+        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(1, 6);
         TrackPiece tp = oldTile.getTrackPiece();
         TrackPiece newTrackPiece = new TrackPieceImpl(tp
                 .getTrackConfiguration(), tp.getTrackRule(), anotherPlayer,
                 TRACK_RULE_ID);
-        FreerailsTile newTile = FreerailsTile.getInstance(oldTile
+        FullTerrainTile newTile = FullTerrainTile.getInstance(oldTile
                 .getTerrainTypeID(), newTrackPiece);
         world.setTile(1, 6, newTile);
         assertBuildTrackFails(new ImPoint(1, 6), east, trackRule);

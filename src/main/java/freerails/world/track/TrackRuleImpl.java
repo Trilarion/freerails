@@ -36,12 +36,10 @@ import java.util.Iterator;
  * tunnels).
  */
 public final class TrackRuleImpl implements TrackRule {
+
     private static final long serialVersionUID = 3257281414171801401L;
-
-    private final LegalTrackConfigurations legalConfigurations;
-
-    private final LegalTrackPlacement legalTrackPlacement;
-
+    private final ValidTrackConfigurations validTrackConfigurations;
+    private final ValidTrackPlacement validTrackPlacement;
     private final TrackRuleProperties properties;
 
     /*
@@ -56,14 +54,14 @@ public final class TrackRuleImpl implements TrackRule {
      * @param ltp
      */
 
-    public TrackRuleImpl(TrackRuleProperties p, LegalTrackConfigurations lc,
-                         LegalTrackPlacement ltp) {
+    public TrackRuleImpl(TrackRuleProperties p, ValidTrackConfigurations lc,
+                         ValidTrackPlacement ltp) {
         if (null == p || null == lc || null == ltp) {
             throw new java.lang.IllegalArgumentException();
         }
         properties = p;
-        legalConfigurations = lc;
-        legalTrackPlacement = ltp;
+        validTrackConfigurations = lc;
+        validTrackPlacement = ltp;
     }
 
     /**
@@ -71,7 +69,7 @@ public final class TrackRuleImpl implements TrackRule {
      * @return
      */
     public boolean canBuildOnThisTerrainType(TerrainCategory TerrainType) {
-        return legalTrackPlacement.canBuildOnThisTerrain(TerrainType);
+        return validTrackPlacement.canBuildOnThisTerrain(TerrainType);
     }
 
     /**
@@ -98,10 +96,10 @@ public final class TrackRuleImpl implements TrackRule {
             TrackRuleImpl trackRuleImpl = (TrackRuleImpl) o;
             boolean propertiesFieldsEqual = this.properties
                     .equals(trackRuleImpl.properties);
-            boolean legalConfigurationsEqual = this.legalConfigurations
-                    .equals(trackRuleImpl.legalConfigurations);
-            boolean legalTrackPlacementEqual = this.legalTrackPlacement
-                    .equals(trackRuleImpl.legalTrackPlacement);
+            boolean legalConfigurationsEqual = this.validTrackConfigurations
+                    .equals(trackRuleImpl.validTrackConfigurations);
+            boolean legalTrackPlacementEqual = this.validTrackPlacement
+                    .equals(trackRuleImpl.validTrackPlacement);
 
             return propertiesFieldsEqual && legalConfigurationsEqual
                     && legalTrackPlacementEqual;
@@ -112,29 +110,29 @@ public final class TrackRuleImpl implements TrackRule {
     /**
      * @return
      */
-    public TrackRule.TrackCategories getCategory() {
+    public TrackCategories getCategory() {
         return properties.getCategory();
     }
 
     /**
      * @return
      */
-    public LegalTrackConfigurations getLegalConfigurations() {
-        return legalConfigurations;
+    public ValidTrackConfigurations getValidTrackConfigurations() {
+        return validTrackConfigurations;
     }
 
     /**
      * @return
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
-        return legalConfigurations.getLegalConfigurationsIterator();
+        return validTrackConfigurations.getLegalConfigurationsIterator();
     }
 
     /**
      * @return
      */
-    public LegalTrackPlacement getLegalTrackPlacement() {
-        return legalTrackPlacement;
+    public ValidTrackPlacement getValidTrackPlacement() {
+        return validTrackPlacement;
     }
 
     /**
@@ -176,8 +174,8 @@ public final class TrackRuleImpl implements TrackRule {
     public int hashCode() {
         int result;
         result = properties.hashCode();
-        result = 29 * result + legalConfigurations.hashCode();
-        result = 29 * result + legalTrackPlacement.hashCode();
+        result = 29 * result + validTrackConfigurations.hashCode();
+        result = 29 * result + validTrackPlacement.hashCode();
 
         return result;
     }
@@ -197,7 +195,7 @@ public final class TrackRuleImpl implements TrackRule {
         TrackConfiguration trackConfiguration = TrackConfiguration
                 .from9bitTemplate(trackTemplateToTest);
 
-        return legalConfigurations
+        return validTrackConfigurations
                 .trackConfigurationIsLegal(trackConfiguration);
     }
 
@@ -211,7 +209,7 @@ public final class TrackRuleImpl implements TrackRule {
      * @return
      */
     public boolean trackPieceIsLegal(TrackConfiguration config) {
-        return legalConfigurations.trackConfigurationIsLegal(config);
+        return validTrackConfigurations.trackConfigurationIsLegal(config);
     }
 
     /**

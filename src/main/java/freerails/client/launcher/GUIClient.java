@@ -38,6 +38,9 @@ import freerails.server.SavedGameManagerImpl;
 import freerails.server.ServerGameModelImpl;
 import freerails.util.ProgressMonitor;
 import freerails.world.*;
+import freerails.world.game.GameModel;
+import freerails.world.game.GameSpeed;
+import freerails.world.game.GameTime;
 import freerails.world.player.Player;
 
 import javax.swing.*;

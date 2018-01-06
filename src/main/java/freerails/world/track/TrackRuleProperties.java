@@ -36,7 +36,7 @@ public final class TrackRuleProperties implements Serializable {
 
     private final Money fixedCost;
 
-    private final TrackRule.TrackCategories category;
+    private final TrackCategories category;
 
     private final int rGBvalue;
 
@@ -55,7 +55,7 @@ public final class TrackRuleProperties implements Serializable {
      * @param fixedCost
      */
     public TrackRuleProperties(int rgb, boolean doubleTrack, String name,
-                               TrackRule.TrackCategories c, int radius, int price,
+                               TrackCategories c, int radius, int price,
                                int maintenance, int fixedCost) {
         stationRadius = radius;
         rGBvalue = rgb;
@@ -139,13 +139,13 @@ public final class TrackRuleProperties implements Serializable {
      * @return
      */
     public boolean isStation() {
-        return category.equals(TrackRule.TrackCategories.station);
+        return category.equals(TrackCategories.station);
     }
 
     /**
      * @return
      */
-    public TrackRule.TrackCategories getCategory() {
+    public TrackCategories getCategory() {
         return category;
     }
 

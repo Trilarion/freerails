@@ -25,9 +25,9 @@ import freerails.util.ImList;
 import freerails.util.ImPoint;
 import freerails.util.IntLine;
 import freerails.util.Pair;
-import freerails.world.FreerailsPathIterator;
+import freerails.world.track.PathIterator;
 import freerails.world.PositionOnTrack;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -330,7 +330,7 @@ public strictfp class PathOnTiles implements Serializable {
     }
 
     /**
-     * Returns a FreerailsPathIterator that exposes a sub section of the path
+     * Returns a PathIterator that exposes a sub section of the path
      * this object represents.
      *
      * @param offset
@@ -340,8 +340,8 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if length &le; 0
      * @throws IllegalArgumentException if offset + length &gt; getLength()
      */
-    public Pair<FreerailsPathIterator, Integer> subPath(double offset,
-                                                        double length) {
+    public Pair<PathIterator, Integer> subPath(double offset,
+                                               double length) {
         if (offset < 0)
             throw new IllegalArgumentException();
         if (length <= 0)
@@ -390,7 +390,7 @@ public strictfp class PathOnTiles implements Serializable {
         }
 
         return new Pair<>(
-                new FreerailsPathIterator() {
+                new PathIterator() {
                     private static final long serialVersionUID = 1L;
 
                     int index = 0;

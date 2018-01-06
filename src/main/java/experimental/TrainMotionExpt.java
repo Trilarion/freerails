@@ -28,11 +28,11 @@ import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.util.IntLine;
 import freerails.world.ActivityIterator;
-import freerails.world.FreerailsPathIterator;
-import freerails.world.TileTransition;
+import freerails.world.track.PathIterator;
+import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.NullTrackType;
 import freerails.world.train.*;
 
@@ -115,7 +115,7 @@ public class TrainMotionExpt extends JComponent {
         g.setColor(Color.GREEN);
         for (int x = 0; x < world.getMapWidth(); x++) {
             for (int y = 0; y < world.getMapHeight(); y++) {
-                FreerailsTile tile = (FreerailsTile) world.getTile(x, y);
+                FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                     g.drawRect(x * TileTransition.TILE_DIAMETER, y * TileTransition.TILE_DIAMETER,
                             TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER);
@@ -175,7 +175,7 @@ public class TrainMotionExpt extends JComponent {
 
         g.setColor(Color.BLACK);
         IntLine line = new IntLine();
-        FreerailsPathIterator path = pos.path();
+        PathIterator path = pos.path();
         while (path.hasNext()) {
             path.nextSegment(line);
             g.drawLine(line.x1, line.y1, line.x2, line.y2);

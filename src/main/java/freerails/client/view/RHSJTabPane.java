@@ -26,7 +26,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.ImPoint;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.terrain.FreerailsTile;
+import freerails.world.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -200,7 +200,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
                 LOGGER.info("Default behaviour show terrain.");
-                terrainInfoPanel.setTerrainType(((FreerailsTile) world.getTile(p.x,
+                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p.x,
                         p.y)).getTerrainTypeID());
                 this.setSelectedIndex(terrainInfoIndex);
             }

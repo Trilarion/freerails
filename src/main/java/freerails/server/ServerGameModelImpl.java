@@ -26,6 +26,9 @@ import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
 import freerails.network.ServerGameModel;
 import freerails.world.*;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameSpeed;
+import freerails.world.game.GameTime;
 
 import java.util.ArrayList;
 import java.util.List;

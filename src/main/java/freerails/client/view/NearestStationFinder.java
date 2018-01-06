@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.TileTransition;
+import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 

@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
+package freerails.world.track;
 
 import freerails.util.IntLine;
+import freerails.world.FreerailsMutableSerializable;
 
 /**
  * This interface lets the caller retrieve a path made up of a series of
@@ -27,7 +28,7 @@ import freerails.util.IntLine;
  * track.
  */
 // TODO what is it good for?
-public interface FreerailsPathIterator extends FreerailsMutableSerializable {
+public interface PathIterator extends FreerailsMutableSerializable {
     /**
      * Tests whether the path has another segment.
      *

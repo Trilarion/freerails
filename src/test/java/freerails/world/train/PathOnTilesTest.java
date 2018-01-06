@@ -24,8 +24,8 @@ package freerails.world.train;
 import freerails.util.ImPoint;
 import freerails.util.IntLine;
 import freerails.util.Pair;
-import freerails.world.FreerailsPathIterator;
-import freerails.world.TileTransition;
+import freerails.world.track.PathIterator;
+import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 import java.util.Iterator;
@@ -128,7 +128,7 @@ public class PathOnTilesTest extends TestCase {
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         // First check.
-        Pair<FreerailsPathIterator, Integer> pathIt = path.subPath(0, path
+        Pair<PathIterator, Integer> pathIt = path.subPath(0, path
                 .getTotalDistance());
         ImPoint[] expected = {new ImPoint(15, 15), new ImPoint(45, 15),
                 new ImPoint(75, 15), new ImPoint(105, 15)};
@@ -184,7 +184,7 @@ public class PathOnTilesTest extends TestCase {
 
     }
 
-    private void checkPath(FreerailsPathIterator pathIt, ImPoint[] expected) {
+    private void checkPath(PathIterator pathIt, ImPoint[] expected) {
         IntLine line = new IntLine();
         for (int i = 0; i < expected.length - 1; i++) {
             assertTrue(pathIt.hasNext());

@@ -16,15 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
+package freerails.world.track;
+
+import java.io.Serializable;
 
 /**
- * Defines a standard method to update the game world.
+ * Defines methods that encode a track configuration as an int.
  */
-public interface GameModel {
+public interface TrackConfigurations extends Serializable {
+    /**
+     * @param ftt the TrackConfigurations which may be a subset of this
+     *            TrackConfigurations.
+     * @return true if the vectors represented by this TrackConfigurations are a
+     * superset of the vectors of the specified TrackConfigurations
+     */
+    @SuppressWarnings("unused")
+    boolean contains(TrackConfigurations ftt);
 
     /**
-     *
+     * @return the integer representing the vector(s) of this object.
      */
-    void update();
+    int get9bitTemplate();
 }

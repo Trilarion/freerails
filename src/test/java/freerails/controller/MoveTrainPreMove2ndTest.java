@@ -30,9 +30,11 @@ import freerails.util.ImInts;
 import freerails.util.ImPoint;
 import freerails.world.*;
 import freerails.world.cargo.*;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.StationDemand;
 import freerails.world.station.Station;
+import freerails.world.terrain.TileTransition;
 import freerails.world.train.*;
 
 /**

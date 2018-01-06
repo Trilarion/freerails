@@ -28,6 +28,8 @@ import freerails.move.MoveStatus;
 import freerails.world.*;
 import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
+import freerails.world.game.GameCalendar;
+import freerails.world.game.GameTime;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 

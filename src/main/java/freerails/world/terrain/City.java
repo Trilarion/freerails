@@ -35,14 +35,14 @@ public class City implements Serializable {
     // TODO replace x, y by Pair<> or Point2D<>
 
     /**
-     * @param s
-     * @param xx
-     * @param yy
+     * @param name
+     * @param x
+     * @param y
      */
-    public City(String s, int xx, int yy) {
-        name = s;
-        x = xx;
-        y = yy;
+    public City(String name, int x, int y) {
+        this.name = name;
+        this.x = x;
+        this.y = y;
     }
 
     @Override
@@ -73,21 +73,21 @@ public class City implements Serializable {
     /**
      * @return
      */
-    public String getCityName() {
+    public String getName() {
         return name;
     }
 
     /**
      * @return
      */
-    public int getCityX() {
+    public int getX() {
         return x;
     }
 
     /**
      * @return
      */
-    public int getCityY() {
+    public int getY() {
         return y;
     }
 

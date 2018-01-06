@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.world.GameSpeed;
+import freerails.world.game.GameSpeed;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.World;

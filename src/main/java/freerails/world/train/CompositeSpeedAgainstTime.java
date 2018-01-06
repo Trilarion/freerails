@@ -31,9 +31,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         SpeedAgainstTime {
 
     private static final long serialVersionUID = 3146586143114534610L;
-
     private final ImList<SpeedAgainstTime> values;
-
     private final double finalT, finalS;
 
     /**
@@ -99,8 +97,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 
         TandI tai = getIndex(dt);
         SpeedAgainstTime acc = values.get(tai.i);
-        speed = acc.calcV(tai.offset);
-        acceleration = acc.calcA(tai.offset);
+        speed = acc.calcVelocity(tai.offset);
+        acceleration = acc.calcAcceleration(tai.offset);
         s = acc.calculateDistance(tai.offset);
 
         return new SpeedTimeAndStatus(acceleration, activity, dt, s, speed);
@@ -153,18 +151,18 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         return tSoFar;
     }
 
-    public double calcV(double time) {
+    public double calcVelocity(double time) {
         checkT(time);
         TandI tai = getIndex(time);
         SpeedAgainstTime acc = values.get(tai.i);
-        return acc.calcV(tai.offset);
+        return acc.calcVelocity(tai.offset);
     }
 
-    public double calcA(double time) {
+    public double calcAcceleration(double time) {
         checkT(time);
         TandI tai = getIndex(time);
         SpeedAgainstTime acc = values.get(tai.i);
-        return acc.calcA(tai.offset);
+        return acc.calcAcceleration(tai.offset);
     }
 
     public double getTime() {

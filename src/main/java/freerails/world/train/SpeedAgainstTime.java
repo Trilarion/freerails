@@ -65,14 +65,14 @@ public interface SpeedAgainstTime extends Serializable {
      * @return
      * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
-    double calcV(double time);
+    double calcVelocity(double time);
 
     /**
      * @param time
      * @return
      * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
-    double calcA(double time);
+    double calcAcceleration(double time);
 
     /**
      * @return The time taken to travel the distance given by getDistance().
