@@ -27,20 +27,18 @@ import freerails.world.player.FreerailsPrincipal;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A central point at which a client may register to receive moves which have
  * been committed.
  */
 public final class MoveChainFork implements MoveReceiver {
-    private final ArrayList<MoveReceiver> moveReceivers = new ArrayList<>();
 
-    private final ArrayList<MoveReceiver> splitMoveReceivers = new ArrayList<>();
-
-    private final ArrayList<WorldListListener> listListeners = new ArrayList<>();
-
-    private final ArrayList<WorldMapListener> mapListeners = new ArrayList<>();
-
+    private final List<MoveReceiver> moveReceivers = new ArrayList<>();
+    private final List<MoveReceiver> splitMoveReceivers = new ArrayList<>();
+    private final List<WorldListListener> listListeners = new ArrayList<>();
+    private final List<WorldMapListener> mapListeners = new ArrayList<>();
     private long lastTickTime = System.currentTimeMillis();
 
     /**

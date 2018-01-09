@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
@@ -60,14 +60,14 @@ public class StationBuilderTest extends TestCase {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        MoveStatus ms = trackBuilder.buildTrack(new ImPoint(10, 10), track);
+        MoveStatus ms = trackBuilder.buildTrack(new Point2D(10, 10), track);
         assertTrue(ms.ok);
-        assertTrue(stationBuilder.tryBuildingStation(new ImPoint(10, 10)).ok);
-        assertTrue(stationBuilder.tryBuildingStation(new ImPoint(13, 10)).ok);
-        MoveStatus ms1 = stationBuilder.buildStation(new ImPoint(10, 10));
+        assertTrue(stationBuilder.tryBuildingStation(new Point2D(10, 10)).ok);
+        assertTrue(stationBuilder.tryBuildingStation(new Point2D(13, 10)).ok);
+        MoveStatus ms1 = stationBuilder.buildStation(new Point2D(10, 10));
         assertTrue(ms1.ok);
 
-        MoveStatus ms2 = stationBuilder.buildStation(new ImPoint(13, 10));
+        MoveStatus ms2 = stationBuilder.buildStation(new Point2D(13, 10));
         assertFalse(ms2.ok);
     }
 

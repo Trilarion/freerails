@@ -21,24 +21,22 @@
  */
 package freerails.world.train;
 
-import freerails.util.Utils;
-
 import java.io.Serializable;
 
 /**
  *
  */
-public strictfp class ConstAcc implements Serializable,
+public strictfp class ConstantAcceleration implements Serializable,
         SpeedAgainstTime {
 
     /**
      *
      */
-    public static final ConstAcc STOPPED = new ConstAcc(0, 0, 0, 0);
+    public static final ConstantAcceleration STOPPED = new ConstantAcceleration(0, 0, 0, 0);
     private static final long serialVersionUID = -2180666310811530761L;
     private final double u, a, finalS, finalT;
 
-    private ConstAcc(double a, double t, double u, double s) {
+    private ConstantAcceleration(double a, double t, double u, double s) {
         this.a = a;
         this.finalT = t;
         this.u = u;
@@ -51,14 +49,20 @@ public strictfp class ConstAcc implements Serializable,
      * @param s
      * @return
      */
-    public static ConstAcc uas(double u, double a, double s) {
+    public static ConstantAcceleration uas(double u, double a, double s) {
         double t = calcT(u, a, s);
-        return new ConstAcc(a, t, u, s);
+        return new ConstantAcceleration(a, t, u, s);
     }
 
     private static double calcT(double u, double a, double s) {
+        if (a == 0) return s / u;
         // Note, Utils.solveQuadratic throws an exception if a == 0
-        return a == 0 ? s / u : Utils.solveQuadratic(a * 0.5d, u, -s);
+        double c = -s;
+        double disc = u * u - 4 * a * 0.5d * c;
+        if (disc < 0)
+            throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
+
+        return (-u + StrictMath.sqrt(disc)) / (2 * a * 0.5d);
     }
 
     /**
@@ -67,9 +71,9 @@ public strictfp class ConstAcc implements Serializable,
      * @param t
      * @return
      */
-    public static ConstAcc uat(double u, double a, double t) {
+    public static ConstantAcceleration uat(double u, double a, double t) {
         double s = u * t + a * t * t / 2;
-        return new ConstAcc(a, t, u, s);
+        return new ConstantAcceleration(a, t, u, s);
     }
 
     public double calculateDistance(double time) {
@@ -101,16 +105,16 @@ public strictfp class ConstAcc implements Serializable,
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof ConstAcc))
+        if (!(o instanceof ConstantAcceleration))
             return false;
 
-        final ConstAcc constAcc = (ConstAcc) o;
+        final ConstantAcceleration constantAcceleration = (ConstantAcceleration) o;
 
-        if (a != constAcc.a)
+        if (a != constantAcceleration.a)
             return false;
-        if (finalT != constAcc.finalT)
+        if (finalT != constantAcceleration.finalT)
             return false;
-        return !(u != constAcc.u);
+        return !(u != constantAcceleration.u);
     }
 
     public double calcAcceleration(double time) {
@@ -148,7 +152,7 @@ public strictfp class ConstAcc implements Serializable,
 
     @Override
     public String toString() {
-        return "ConstAcc [a=" + a + ", u=" + u + ", dt=" + finalT + ']';
+        return "ConstantAcceleration [a=" + a + ", u=" + u + ", dt=" + finalT + ']';
     }
 
 }

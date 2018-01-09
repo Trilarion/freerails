@@ -18,8 +18,8 @@
 
 package freerails.controller;
 
-import freerails.util.ImPoint;
-import freerails.world.PositionOnTrack;
+import freerails.util.Point2D;
+import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TileTransition;
 import freerails.world.terrain.FullTerrainTile;
@@ -27,7 +27,6 @@ import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
@@ -69,7 +68,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * center of the tile)
      */
     public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
-                                                         ImPoint p) {
+                                                         Point2D p) {
         TrackPiece tp = ((FullTerrainTile) w.getTile(p.x, p.y)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();
@@ -129,7 +128,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             throw new NoSuchElementException();
         }
         TileTransition v = this.getFirstVectorToTry();
-        Point p = new Point(currentPosition.getX(), currentPosition.getY());
+        java.awt.Point p = new java.awt.Point(currentPosition.getX(), currentPosition.getY());
         FullTerrainTile ft = (FullTerrainTile) w.getTile(p.x, p.y);
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();

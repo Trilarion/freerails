@@ -21,12 +21,26 @@ package freerails.util;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.StringTokenizer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A bunch of static methods.
  */
-public strictfp class Utils {
+public class Utils {
+
+    /**
+     *
+     * @param mutableList
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> immutateList(List<T> mutableList) {
+        List<T> copiedList = new ArrayList<>(mutableList);
+        return Collections.unmodifiableList(copiedList);
+    }
 
     /**
      * @param a
@@ -85,21 +99,6 @@ public strictfp class Utils {
     }
 
     /**
-     * @param str
-     * @return
-     */
-    public static String capitalizeEveryWord(String str) {
-        StringBuilder result = new StringBuilder();
-        StringTokenizer tok = new StringTokenizer(str);
-
-        while (tok.hasMoreTokens()) {
-            String token = tok.nextToken().toLowerCase();
-            result.append(Character.toUpperCase(token.charAt(0))).append(token.substring(1)).append(' ');
-        }
-        return result.toString().trim();
-    }
-
-    /**
      * @param o
      * @return
      */
@@ -122,29 +121,6 @@ public strictfp class Utils {
         }
 
         return null;
-    }
-
-    /**
-     * Returns the largest solution of the quadratic equation ax<sup><font
-     * size="-1">2</font></sup> + bx + c = 0.
-     *
-     * @param a
-     * @param b
-     * @param c
-     * @return
-     * @throws IllegalArgumentException if {@code a == 0}
-     * @throws IllegalArgumentException if {@code (b * b - 4 * a * c) < 0}
-     */
-    public static double solveQuadratic(double a, double b, double c)
-            throws IllegalArgumentException {
-        if (a == 0) {
-            throw new IllegalArgumentException("a == 0");
-        }
-        double disc = b * b - 4 * a * c;
-        if (disc < 0)
-            throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
-        return (-b + StrictMath.sqrt(disc)) / (2 * a);
-
     }
 
     /**

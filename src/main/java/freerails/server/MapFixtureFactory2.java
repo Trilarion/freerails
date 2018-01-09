@@ -29,6 +29,7 @@ import freerails.world.game.GameTime;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainType;
+import freerails.world.train.WagonAndEngineTypesFactory;
 
 import java.net.URL;
 

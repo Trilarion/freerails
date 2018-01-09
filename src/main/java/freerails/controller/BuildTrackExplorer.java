@@ -21,8 +21,8 @@
  */
 package freerails.controller;
 
-import freerails.util.ImPoint;
-import freerails.world.PositionOnTrack;
+import freerails.util.Point2D;
+import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.TileTransition;
@@ -65,7 +65,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param start
      */
     public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
-                              ImPoint start) {
+                              Point2D start) {
         world = w;
         this.principle = principle;
         PositionOnTrack pos;

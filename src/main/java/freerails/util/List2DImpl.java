@@ -22,6 +22,7 @@
 package freerails.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @param <T>
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 public class List2DImpl<T> implements List2D<T> {
 
     private static final long serialVersionUID = 7614246212629595959L;
-    private final ArrayList<ArrayList<T>> elementData = new ArrayList<>();
+    private final List<ArrayList<T>> elementData = new ArrayList<>();
 
     /**
      * @param d1
@@ -38,6 +39,25 @@ public class List2DImpl<T> implements List2D<T> {
         for (int i = 0; i < d1; i++) {
             elementData.add(new ArrayList<>());
         }
+    }
+
+    /**
+     * @param a
+     * @param b
+     * @return
+     */
+    public static boolean equals(List2D a, List2D b) {
+        if (a.sizeD1() != b.sizeD1())
+            return false;
+        for (int d1 = 0; d1 < a.sizeD1(); d1++) {
+            if (a.sizeD2(d1) != b.sizeD2(d1))
+                return false;
+            for (int d2 = 0; d2 < a.sizeD2(d1); d2++) {
+                if (!Utils.equal(a.get(d1, d2), b.get(d1, d2)))
+                    return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -118,7 +138,7 @@ public class List2DImpl<T> implements List2D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof List2D && Lists.equals(this, (List2D) obj);
+        return obj instanceof List2D && equals(this, (List2D) obj);
     }
 
     @Override

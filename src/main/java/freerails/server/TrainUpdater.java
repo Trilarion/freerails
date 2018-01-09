@@ -24,7 +24,7 @@ import freerails.move.Move;
 import freerails.network.MoveReceiver;
 import freerails.util.ImInts;
 import freerails.util.ImList;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -69,7 +69,7 @@ public class TrainUpdater implements ServerAutomaton {
      * @param principal
      * @param world
      */
-    public void buildTrain(int engineTypeId, ImInts wagons, ImPoint p,
+    public void buildTrain(int engineTypeId, ImInts wagons, Point2D p,
                            FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
@@ -103,7 +103,7 @@ public class TrainUpdater implements ServerAutomaton {
 
                     if (production.size() > 0) {
 
-                        ImPoint p = new ImPoint(station.x, station.y);
+                        Point2D p = new Point2D(station.x, station.y);
 
                         for (int j = 0; j < production.size(); j++) {
                             int engineType = production.get(j).getEngineType();

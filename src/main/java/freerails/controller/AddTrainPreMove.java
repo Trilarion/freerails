@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.move.*;
 import freerails.util.ImInts;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.finances.ItemTransaction;
@@ -46,7 +46,7 @@ public class AddTrainPreMove implements PreMove {
     private final int engineTypeId;
 
     private final ImInts wagons;
-    private final ImPoint point;
+    private final Point2D point;
     private final FreerailsPrincipal principal;
     private final ImmutableSchedule schedule;
 
@@ -57,7 +57,7 @@ public class AddTrainPreMove implements PreMove {
      * @param fp
      * @param s
      */
-    public AddTrainPreMove(int e, ImInts wags, ImPoint p,
+    public AddTrainPreMove(int e, ImInts wags, Point2D p,
                            FreerailsPrincipal fp, ImmutableSchedule s) {
         engineTypeId = e;
         wagons = wags;
@@ -137,7 +137,7 @@ public class AddTrainPreMove implements PreMove {
     TrainMotion initPositionStep2(PathOnTiles path) {
         // TODO fix code.
         return new TrainMotion(path, path.steps(), calTrainLength(),
-                ConstAcc.STOPPED);
+                ConstantAcceleration.STOPPED);
     }
 
     /**

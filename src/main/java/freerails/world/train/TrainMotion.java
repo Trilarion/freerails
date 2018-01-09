@@ -21,11 +21,10 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.util.Pair;
 import freerails.world.Activity;
 import freerails.world.track.PathIterator;
-import freerails.world.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     private final PathOnTiles path;
     private final SpeedAgainstTime speeds;
     private final int trainLength;
-    private final SpeedTimeAndStatus.TrainActivity activity;
+    private final TrainActivity activity;
 
     /**
      * Creates a new TrainMotion instance.
@@ -111,7 +110,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             duration = tempDuration;
         }
 
-        activity = SpeedTimeAndStatus.TrainActivity.READY;
+        activity = TrainActivity.READY;
         sanityCheck();
     }
 
@@ -122,13 +121,13 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      * @param act
      */
     public TrainMotion(PathOnTiles path, int trainLength, double duration,
-                       SpeedTimeAndStatus.TrainActivity act) {
+                       TrainActivity act) {
         this.path = path;
         this.trainLength = trainLength;
         this.activity = act;
         this.distanceEngineWillTravel = 0;
         this.initialPosition = path.getTotalDistance();
-        this.speeds = ConstAcc.STOPPED;
+        this.speeds = ConstantAcceleration.STOPPED;
         this.duration = duration;
     }
 
@@ -263,7 +262,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             tileTransitions.add(path.getStep(i));
         }
 
-        ImPoint p = path.getStart();
+        Point2D p = path.getStart();
         int x = p.x;
         int y = p.y;
         for (int i = 0; i < stepsBeforeStart; i++) {
@@ -272,7 +271,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             y += tileTransition.deltaY;
         }
 
-        ImPoint startPoint = new ImPoint(x, y);
+        Point2D startPoint = new Point2D(x, y);
 
         return new PathOnTiles(startPoint, tileTransitions);
     }
@@ -303,7 +302,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * @return
      */
-    public SpeedTimeAndStatus.TrainActivity getActivity() {
+    public TrainActivity getActivity() {
         return activity;
     }
 

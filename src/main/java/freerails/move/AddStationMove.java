@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -50,7 +50,7 @@ public class AddStationMove extends CompositeMove {
      * @return
      */
     public static AddStationMove generateMove(ReadOnlyWorld w,
-                                              String stationName, ImPoint p,
+                                              String stationName, Point2D p,
                                               ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
         int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,

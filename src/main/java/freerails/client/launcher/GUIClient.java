@@ -36,7 +36,7 @@ import freerails.network.FreerailsGameServer;
 import freerails.network.SavedGamesManager;
 import freerails.server.SavedGameManagerImpl;
 import freerails.server.ServerGameModelImpl;
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import freerails.world.*;
 import freerails.world.game.GameModel;
 import freerails.world.game.GameSpeed;
@@ -52,12 +52,12 @@ import java.io.Serializable;
  * A swing freerails client.
  */
 public class GUIClient extends FreerailsClient implements
-        ProgressMonitor {
+        ProgressMonitorModel {
 
     private final ActionRoot actionRoot;
     private final GUIComponentFactoryImpl factory;
     private final ModelRootImpl modelRoot;
-    private final ProgressMonitor monitor;
+    private final ProgressMonitorModel monitor;
     private final String name;
     private final ScreenHandler screenHandler;
     private RendererRoot vl;
@@ -69,7 +69,7 @@ public class GUIClient extends FreerailsClient implements
      * @param dm
      * @throws IOException
      */
-    public GUIClient(String name, ProgressMonitor fm, int screenMode,
+    public GUIClient(String name, ProgressMonitorModel fm, int screenMode,
                      DisplayMode dm) {
         this.name = name;
         this.monitor = null == fm ? this : fm;

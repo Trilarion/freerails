@@ -23,7 +23,7 @@ import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.*;
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
@@ -36,31 +36,28 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of RendererRoot whose constructor loads graphics and provides
- * feed back using a ProgressMonitor.
+ * feed back using a ProgressMonitorModel.
  */
 public class RendererRootImpl implements RendererRoot {
+
     private static final Logger logger = Logger
             .getLogger(RendererRootImpl.class.getName());
-
     private final TileRendererList tiles;
-
     private final TrackPieceRendererList trackPieceViewList;
-
     private final ImageManager imageManager;
-
-    private final ArrayList<TrainImages> wagonImages = new ArrayList<>();
-
-    private final ArrayList<TrainImages> engineImages = new ArrayList<>();
+    private final List<TrainImages> wagonImages = new ArrayList<>();
+    private final List<TrainImages> engineImages = new ArrayList<>();
 
     /**
      * @param w
      * @param pm
      * @throws IOException
      */
-    public RendererRootImpl(ReadOnlyWorld w, ProgressMonitor pm)
+    public RendererRootImpl(ReadOnlyWorld w, ProgressMonitorModel pm)
             throws IOException {
         imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
         tiles = loadNewTileViewList(w, pm);
@@ -72,7 +69,7 @@ public class RendererRootImpl implements RendererRoot {
         preloadSounds(pm);
     }
 
-    private void loadTrainImages(ReadOnlyWorld w, ProgressMonitor pm)
+    private void loadTrainImages(ReadOnlyWorld w, ProgressMonitorModel pm)
             throws IOException {
         // Setup progress monitor..
         final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
@@ -101,7 +98,7 @@ public class RendererRootImpl implements RendererRoot {
 
     }
 
-    private void preloadSounds(ProgressMonitor pm) {
+    private void preloadSounds(ProgressMonitorModel pm) {
         // Pre-load sounds..
         String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK,
                 ClientConfig.SOUND_CASH,
@@ -120,12 +117,12 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
-                                                  ProgressMonitor pm) throws IOException {
+                                                  ProgressMonitorModel pm) throws IOException {
         return new TrackPieceRendererList(w, imageManager, pm);
     }
 
     private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
-                                                 ProgressMonitor pm) throws IOException {
+                                                 ProgressMonitorModel pm) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
         // Setup progress monitor..

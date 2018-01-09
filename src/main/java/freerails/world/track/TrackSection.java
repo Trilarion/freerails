@@ -18,7 +18,7 @@
 
 package freerails.world.track;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 
 import java.io.Serializable;
@@ -30,14 +30,14 @@ public class TrackSection implements Serializable {
 
     private static final long serialVersionUID = -3776624056097990938L;
     private final TileTransition tileTransition;
-    private final ImPoint tile;
+    private final Point2D tile;
 
     /**
      * @param tileTransition
      * @param tile
      */
-    public TrackSection(final TileTransition tileTransition, final ImPoint tile) {
-        ImPoint otherTile = TileTransition.move(tile, tileTransition);
+    public TrackSection(final TileTransition tileTransition, final Point2D tile) {
+        Point2D otherTile = TileTransition.move(tile, tileTransition);
         if (tile.compareTo(otherTile) > 0) {
             this.tileTransition = tileTransition.getOpposite();
             this.tile = otherTile;
@@ -83,14 +83,14 @@ public class TrackSection implements Serializable {
     /**
      * @return
      */
-    public ImPoint tileA() {
+    public Point2D tileA() {
         return tile;
     }
 
     /**
      * @return
      */
-    public ImPoint tileB() {
+    public Point2D tileB() {
         return TileTransition.move(tile, tileTransition);
     }
 

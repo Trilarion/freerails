@@ -31,26 +31,11 @@ import freerails.world.player.FreerailsPrincipal;
  */
 public abstract class TransactionAggregator {
 
-    /**
-     *
-     */
     protected final ReadOnlyWorld w;
-
-    /**
-     *
-     */
     protected final FreerailsPrincipal principal;
     private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{
             GameTime.BIG_BANG, GameTime.DOOMSDAY};
-
-    /**
-     *
-     */
     protected Money[] monetaryTotals;
-
-    /**
-     *
-     */
     protected int runningTotal = 0;
     private GameTime[] timeValues = DEFAULT_INTERVAL;
 
@@ -86,6 +71,7 @@ public abstract class TransactionAggregator {
         }
     }
 
+    // TODO this seems like a misuse, use calculateValues() instead
     /**
      * Returns the sum of the appropriate transactions. Do not override.
      *
@@ -93,7 +79,6 @@ public abstract class TransactionAggregator {
      */
     public final Money calculateValue() {
         Money[] values = calculateValues();
-
         return values[0];
     }
 
@@ -144,6 +129,10 @@ public abstract class TransactionAggregator {
         return monetaryTotals;
     }
 
+    /**
+     *
+     * @param timeIndex
+     */
     private void storeTotalIfAppropriate(int timeIndex) {
         if (timeIndex > 0) {
             storeRunningTotal(timeIndex - 1);

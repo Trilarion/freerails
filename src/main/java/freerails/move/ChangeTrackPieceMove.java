@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.controller.PathCacheController;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
@@ -43,14 +43,14 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     private final TrackPiece trackPieceAfter;
 
-    private final ImPoint location;
+    private final Point2D location;
 
     /**
      * @param before
      * @param after
      * @param p
      */
-    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, ImPoint p) {
+    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point2D p) {
         trackPieceBefore = before;
         trackPieceAfter = after;
         location = p;
@@ -76,7 +76,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * @param trackPiece
      * @return
      */
-    protected static MoveStatus check4overlap(World w, ImPoint location,
+    protected static MoveStatus check4overlap(World w, Point2D location,
                                               TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
@@ -132,7 +132,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     /**
      * @return
      */
-    public ImPoint getLocation() {
+    public Point2D getLocation() {
         return location;
     }
 
@@ -301,7 +301,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return moveStatus;
     }
 
-    private boolean noDiagonalTrackConflicts(ImPoint point, int trackTemplate,
+    private boolean noDiagonalTrackConflicts(Point2D point, int trackTemplate,
                                              World w) {
         /*
          * This method is needs replacing. It only deals with flat track pieces,

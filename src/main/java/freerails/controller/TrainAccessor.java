@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.util.ImInts;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -30,7 +30,7 @@ import freerails.world.station.Station;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
-import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
+import freerails.world.train.TrainActivity;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -90,7 +90,7 @@ public class TrainAccessor {
      * @param time
      * @return
      */
-    public SpeedTimeAndStatus.TrainActivity getStatus(double time) {
+    public TrainActivity getStatus(double time) {
         TrainMotion tm = findCurrentMotion(time);
         return tm.getActivity();
     }
@@ -107,7 +107,7 @@ public class TrainAccessor {
         int x = pot.getX();
         int y = pot.getY();
 
-        // loop through the station list to check if train is at the same Point as a station
+        // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < w.size(p, KEY.STATIONS); i++) {
             Station tempPoint = (Station) w.get(p, KEY.STATIONS, i);
 
@@ -142,7 +142,7 @@ public class TrainAccessor {
         dt = Math.min(dt, ai.getDuration());
         TrainMotion tm = (TrainMotion) ai.getActivity();
 
-        ImPoint start = tm.getPath().getStart();
+        Point2D start = tm.getPath().getStart();
         int trainLength = tm.getTrainLength();
         Rectangle trainBox = new Rectangle(start.x * TileTransition.TILE_DIAMETER
                 - trainLength * 2, start.y * TileTransition.TILE_DIAMETER - trainLength * 2,
@@ -208,7 +208,7 @@ public class TrainAccessor {
         int stationId = getStationId(time);
         if (stationId == -1)
             return false;
-        SpeedTimeAndStatus.TrainActivity act = getStatus(time);
+        TrainActivity act = getStatus(time);
         if (act != TrainActivity.WAITING_FOR_FULL_LOAD)
             return false;
         ImmutableSchedule shedule = getSchedule();
@@ -225,7 +225,7 @@ public class TrainAccessor {
      * @return the location of the station the train is currently heading
      * towards.
      */
-    public ImPoint getTarget() {
+    public Point2D getTarget() {
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule schedule = (ImmutableSchedule) w.get(p,
@@ -234,13 +234,13 @@ public class TrainAccessor {
 
         if (-1 == stationNumber) {
             // There are no stations on the schedule.
-            return new ImPoint(0, 0);
+            return new Point2D(0, 0);
         }
 
         Station station = (Station) w.get(p, KEY.STATIONS,
                 stationNumber);
 
-        return new ImPoint(station.x, station.y);
+        return new Point2D(station.x, station.y);
     }
 
     /**
@@ -251,12 +251,12 @@ public class TrainAccessor {
         TrainMotion tm = findCurrentMotion(time);
         PathOnTiles path = tm.getPath();
         HashSet<TrackSection> sections = new HashSet<>();
-        ImPoint start = path.getStart();
+        Point2D start = path.getStart();
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {
             TileTransition s = path.getStep(i);
-            ImPoint tile = new ImPoint(x, y);
+            Point2D tile = new Point2D(x, y);
             x += s.deltaX;
             y += s.deltaY;
             sections.add(new TrackSection(s, tile));

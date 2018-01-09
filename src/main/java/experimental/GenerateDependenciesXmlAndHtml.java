@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Generates an ant script that checks the dependencies between
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 public class GenerateDependenciesXmlAndHtml {
     private static final Logger logger = Logger
             .getLogger(GenerateDependenciesXmlAndHtml.class.getName());
-    private final ArrayList<String> packages = new ArrayList<>();
+    private final List<String> packages = new ArrayList<>();
     private final String sig;
     private PrintWriter xmlWriter;
     private PrintWriter htmlWriter;

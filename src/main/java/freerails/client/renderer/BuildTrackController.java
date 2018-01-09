@@ -25,7 +25,7 @@ import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.UpgradeTrackMove;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameModel;
 import freerails.world.player.FreerailsPrincipal;
@@ -57,11 +57,11 @@ public class BuildTrackController implements GameModel {
     private final SoundManager soundManager = SoundManager.getSoundManager();
     private final WorldDiffs worldDiffs;
     private boolean buildNewTrack = true;
-    private List<ImPoint> builtTrack = new ArrayList<>();
+    private List<Point2D> builtTrack = new ArrayList<>();
     private boolean isBuildTrackSuccessful = false;
     private TileTransition[] path;
-    private ImPoint startPoint;
-    private ImPoint targetPoint;
+    private Point2D startPoint;
+    private Point2D targetPoint;
     private boolean visible = false;
 
     /**
@@ -95,12 +95,12 @@ public class BuildTrackController implements GameModel {
     /**
      * Utility method that gets the cursor position from the model root.
      */
-    private ImPoint getCursorPosition() {
-        ImPoint point = (ImPoint) modelRoot
+    private Point2D getCursorPosition() {
+        Point2D point = (Point2D) modelRoot
                 .getProperty(ModelRoot.Property.CURSOR_POSITION);
 
         // Check for null & make a defensive copy
-        point = null == point ? new ImPoint() : point;
+        point = null == point ? new Point2D() : point;
 
         if (!modelRoot.getWorld().boundsContain(point.x, point.y)) {
             throw new IllegalStateException(String.valueOf(point));
@@ -140,7 +140,7 @@ public class BuildTrackController implements GameModel {
     /**
      * Moves cursor which causes track to be built on the worldDiff object.
      */
-    private void moveCursorMoreTiles(List<ImPoint> track) {
+    private void moveCursorMoreTiles(List<Point2D> track) {
         moveCursorMoreTiles(track, null);
     }
 
@@ -152,9 +152,9 @@ public class BuildTrackController implements GameModel {
      * @param track        List
      * @param trackBuilder TrackMoveProducer
      */
-    private MoveStatus moveCursorMoreTiles(List<ImPoint> track,
+    private MoveStatus moveCursorMoreTiles(List<Point2D> track,
                                            TrackMoveProducer trackBuilder) {
-        ImPoint oldPosition = getCursorPosition();
+        Point2D oldPosition = getCursorPosition();
 
         if (!TileTransition.checkValidity(oldPosition, track.get(0))) {
             throw new IllegalStateException(oldPosition.toString() + " and "
@@ -168,7 +168,7 @@ public class BuildTrackController implements GameModel {
             trackBuilder.setBuildTrackStrategy(getBts());
         }
 
-        for (ImPoint point : track) {
+        for (Point2D point : track) {
             LOGGER.debug("point" + point);
             LOGGER.debug("oldPosition" + oldPosition);
 
@@ -235,7 +235,7 @@ public class BuildTrackController implements GameModel {
      * Attempts to building track from the specified point in the specified
      * direction on the worldDiff object.
      */
-    private MoveStatus planBuildingTrack(ImPoint point, TileTransition vector) {
+    private MoveStatus planBuildingTrack(Point2D point, TileTransition vector) {
         FullTerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point.x,
                 point.y);
         BuildTrackStrategy bts = getBts();
@@ -287,9 +287,9 @@ public class BuildTrackController implements GameModel {
      * @param to
      * @param trackBuilder
      */
-    public void setProposedTrack(ImPoint to, TrackMoveProducer trackBuilder) {
+    public void setProposedTrack(Point2D to, TrackMoveProducer trackBuilder) {
 
-        ImPoint from = getCursorPosition();
+        Point2D from = getCursorPosition();
 
         assert (trackBuilder.getTrackBuilderMode() != TrackMoveProducer.BuildMode.IGNORE_TRACK);
         assert (trackBuilder.getTrackBuilderMode() != TrackMoveProducer.BuildMode.BUILD_STATION);
@@ -346,7 +346,7 @@ public class BuildTrackController implements GameModel {
     /**
      * @param newTargetPoint The m_targetPoint to set.
      */
-    private void setTargetPoint(ImPoint newTargetPoint) {
+    private void setTargetPoint(Point2D newTargetPoint) {
         this.targetPoint = newTargetPoint;
         modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, newTargetPoint);
     }
@@ -432,7 +432,7 @@ public class BuildTrackController implements GameModel {
 
                                 try {
                                     move = ChangeTrackPieceCompositeMove
-                                            .generateRemoveTrackMove(new ImPoint(
+                                            .generateRemoveTrackMove(new Point2D(
                                                             locationX, locationY), v,
                                                     worldDiffs, fp);
                                     break;
@@ -475,7 +475,7 @@ public class BuildTrackController implements GameModel {
                                 }
 
                                 move = UpgradeTrackMove.generateMove(tile
-                                        .getTrackPiece(), after, new ImPoint(
+                                        .getTrackPiece(), after, new Point2D(
                                         locationX, locationY));
                                 break;
 
@@ -489,7 +489,7 @@ public class BuildTrackController implements GameModel {
                     locationX += v.deltaX;
                     locationY += v.deltaY;
                 }// end for loop
-                startPoint = new ImPoint(locationX, locationY);
+                startPoint = new Point2D(locationX, locationY);
                 isBuildTrackSuccessful = okSoFar;
                 if (okSoFar) {
                     setCursorMessage("");
@@ -512,8 +512,8 @@ public class BuildTrackController implements GameModel {
      * @param trackBuilder
      * @return
      */
-    public ImPoint updateWorld(TrackMoveProducer trackBuilder) {
-        ImPoint actPoint = getCursorPosition();
+    public Point2D updateWorld(TrackMoveProducer trackBuilder) {
+        Point2D actPoint = getCursorPosition();
 
         if (buildNewTrack) {
             if (builtTrack.size() > 0) {

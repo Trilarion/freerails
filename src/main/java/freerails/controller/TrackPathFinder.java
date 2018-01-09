@@ -21,9 +21,9 @@
  */
 package freerails.controller;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.util.IntArray;
-import freerails.world.PositionOnTrack;
+import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.TileTransition;
@@ -48,7 +48,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
-    private ImPoint startPoint;
+    private Point2D startPoint;
 
     /**
      * @param world
@@ -66,14 +66,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
         pathFinder.abandonSearch();
     }
 
-    private List<ImPoint> convertPath2Points(IntArray path) {
+    private List<Point2D> convertPath2Points(IntArray path) {
         PositionOnTrack progress = new PositionOnTrack();
-        List<ImPoint> proposedTrack = new ArrayList<>();
+        List<Point2D> proposedTrack = new ArrayList<>();
 
-        ImPoint p;
+        Point2D p;
         for (int i = 0; i < path.size(); i++) {
             progress.setValuesFromInt(path.get(i));
-            p = new ImPoint(progress.getX(), progress.getY());
+            p = new Point2D(progress.getX(), progress.getY());
             proposedTrack.add(p);
             if (logger.isDebugEnabled()) {
                 logger.debug("Adding point " + p);
@@ -83,7 +83,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         return proposedTrack;
     }
 
-    private int[] findTargets(ImPoint targetPoint) {
+    private int[] findTargets(Point2D targetPoint) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(targetPoint.x,
                 targetPoint.y);
         TrackPiece trackPiece = tile.getTrackPiece();
@@ -143,7 +143,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @return
      * @throws PathNotFoundException
      */
-    public List generatePath(ImPoint start, ImPoint targetPoint,
+    public List generatePath(Point2D start, Point2D targetPoint,
                              BuildTrackStrategy bts) throws PathNotFoundException {
         setupSearch(start, targetPoint, bts);
         pathFinder.search(-1);
@@ -163,7 +163,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @return
      */
-    public List<ImPoint> pathAsPoints() {
+    public List<Point2D> pathAsPoints() {
         IntArray path = pathFinder.retrievePath();
 
         return convertPath2Points(path);
@@ -206,7 +206,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @param bts
      * @throws PathNotFoundException
      */
-    public void setupSearch(ImPoint startPoint, ImPoint targetPoint,
+    public void setupSearch(Point2D startPoint, Point2D targetPoint,
                             BuildTrackStrategy bts) throws PathNotFoundException {
         logger.debug("Find track path from " + startPoint + " to "
                 + targetPoint);

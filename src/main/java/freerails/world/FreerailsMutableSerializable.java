@@ -23,6 +23,6 @@ import java.io.Serializable;
 /**
  * This interface tags mutable serializable classes.
  */
-// TODO what is it good for?
+// TODO what is it good for?, can be exist without it?
 public interface FreerailsMutableSerializable extends Serializable {
 }

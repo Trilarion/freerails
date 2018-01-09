@@ -22,6 +22,7 @@ import freerails.util.Utils;
 
 import java.io.Serializable;
 
+// TODO what about enums instead?
 /**
  * Provides a set of keys to access the items of which there can only
  * be one instance in the game world (for example, the current time).
@@ -62,7 +63,6 @@ public class ITEM implements Serializable {
 
     // END OF KEYS
     private static int numberOfKeys = 0;
-
     private final int keyNumber;
 
     private ITEM() {

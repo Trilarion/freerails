@@ -23,7 +23,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.SKEY;
@@ -98,7 +98,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
@@ -106,7 +106,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         // As above but with newTrackPiece and oldTrackPiece in the wrong order,
         // should fail.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
@@ -114,14 +114,14 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece,
         // should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
 
         // Try to build track outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                new ImPoint(100, 0));
+                new Point2D(100, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.isOk());
@@ -131,7 +131,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(false, moveStatus.isOk());
     }
@@ -174,7 +174,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         MoveStatus moveStatus;
 
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
         moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.isOk());
@@ -199,7 +199,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
 
         assertSurvivesSerialisation(move);
 

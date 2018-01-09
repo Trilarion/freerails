@@ -195,8 +195,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     break;
             }
             toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
-            String tooltip = Utils.capitalizeEveryWord(rule.getTypeName())
-                    + " $" + price.toString();
+            String tooltip = rule.getTypeName() + " $" + price.toString();
             toggleButton.setToolTipText(tooltip);
             if (!selectionSet.containsKey(category)) {
                 selectionSet.put(category, i);

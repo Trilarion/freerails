@@ -24,7 +24,7 @@ import freerails.client.common.ModelRootListener;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
@@ -164,7 +164,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
                                Object after) {
         if (prop.equals(ModelRoot.Property.CURSOR_POSITION)) {
 
-            ImPoint p = (ImPoint) after;
+            Point2D p = (Point2D) after;
 
             int x = p.x;
             int y = p.y;

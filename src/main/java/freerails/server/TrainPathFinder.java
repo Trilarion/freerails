@@ -20,12 +20,13 @@ package freerails.server;
 
 import freerails.controller.*;
 import freerails.network.MoveReceiver;
-import freerails.util.ImPoint;
-import freerails.util.IntIterator;
-import freerails.world.PositionOnTrack;
+import freerails.util.Point2D;
+import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldDiffs;
 import freerails.world.player.FreerailsPrincipal;
+
+import java.util.Iterator;
 
 /**
  * Provides methods that generate a path to a target as a series of
@@ -33,7 +34,7 @@ import freerails.world.player.FreerailsPrincipal;
  * stations.
  */
 @SuppressWarnings("unused")
-public class TrainPathFinder implements IntIterator, ServerAutomaton {
+public class TrainPathFinder implements Iterator<Integer>, ServerAutomaton {
 
     private static final long serialVersionUID = 3256446893302559280L;
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
@@ -59,7 +60,7 @@ public class TrainPathFinder implements IntIterator, ServerAutomaton {
     /**
      * @return
      */
-    public boolean hasNextInt() {
+    public boolean hasNext() {
 
         boolean moving = stopsHandler.isTrainMoving();
 
@@ -85,12 +86,12 @@ public class TrainPathFinder implements IntIterator, ServerAutomaton {
     /**
      * @return a PositionOnTrack packed into an int
      */
-    public int nextInt() {
+    public Integer next() {
 
         PositionOnTrack tempP = new PositionOnTrack(trackExplorer.getPosition());
         int x = tempP.getX();
         int y = tempP.getY();
-        ImPoint targetPoint = stopsHandler.arrivesAtPoint(x, y);
+        Point2D targetPoint = stopsHandler.arrivesAtPoint(x, y);
 
         int currentPosition = tempP.getOpposite().toInt();
         ReadOnlyWorld world = trackExplorer.getWorld();

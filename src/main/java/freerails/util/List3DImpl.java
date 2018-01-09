@@ -31,7 +31,7 @@ public class List3DImpl<T> implements List3D<T> {
 
     private static final long serialVersionUID = 1353309875727204066L;
 
-    private final ArrayList<ArrayList<ArrayList<T>>> elementData = new ArrayList<>();
+    private final List<ArrayList<ArrayList<T>>> elementData = new ArrayList<>();
 
     /**
      * @param d1
@@ -45,6 +45,29 @@ public class List3DImpl<T> implements List3D<T> {
                 dim2.add(new ArrayList<>());
             }
         }
+    }
+
+    /**
+     * @param a
+     * @param b
+     * @return
+     */
+    public static boolean equals(List3D a, List3D b) {
+        if (a.sizeD1() != b.sizeD1())
+            return false;
+        for (int d1 = 0; d1 < a.sizeD1(); d1++) {
+            if (a.sizeD2(d1) != b.sizeD2(d1))
+                return false;
+            for (int d2 = 0; d2 < a.sizeD2(d1); d2++) {
+                if (a.sizeD3(d1, d2) != b.sizeD3(d1, d2))
+                    return false;
+                for (int d3 = 0; d3 < a.sizeD3(d1, d2); d3++) {
+                    if (!Utils.equal(a.get(d1, d2, d3), b.get(d1, d2, d3)))
+                        return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -160,7 +183,7 @@ public class List3DImpl<T> implements List3D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof List3D && Lists.equals(this, (List3D) obj);
+        return obj instanceof List3D && equals(this, (List3D) obj);
     }
 
     @Override

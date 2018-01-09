@@ -147,12 +147,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
                         new ImStringList(savedGamesManager.getNewMapNames()));
+
                 ImStringList savedGameNames = new ImStringList(
                         savedGamesManager.getSaveGameNames());
                 MessageToClient setSaveGames = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.SAVED_GAMES,
                         savedGameNames);
+
                 connection.writeToClient(setMaps);
                 connection.writeToClient(setSaveGames);
 
@@ -410,6 +412,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                     getNextClientCommandId(),
                     ClientControlInterface.ClientProperty.SAVED_GAMES,
                     new ImStringList(saves));
+
             send2All(request);
         } catch (IOException e) {
             // TODO Auto-generated catch block

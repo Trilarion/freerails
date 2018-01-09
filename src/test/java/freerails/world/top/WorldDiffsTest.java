@@ -18,7 +18,7 @@
 
 package freerails.world.top;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.util.ListKey;
 import freerails.world.*;
 import freerails.world.cargo.CargoCategory;
@@ -212,8 +212,8 @@ public class WorldDiffsTest extends TestCase {
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 
-        Iterator<ImPoint> it = worldDiff.getMapDiffs();
-        assertEquals(new ImPoint(3, 5), it.next());
+        Iterator<Point2D> it = worldDiff.getMapDiffs();
+        assertEquals(new Point2D(3, 5), it.next());
     }
 
     /**

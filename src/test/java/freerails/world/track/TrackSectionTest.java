@@ -18,7 +18,7 @@
 
 package freerails.world.track;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
@@ -31,8 +31,8 @@ public class TrackSectionTest extends TestCase {
      *
      */
     public void testEqualsObject() {
-        TrackSection a = new TrackSection(TileTransition.EAST, new ImPoint(10, 5));
-        TrackSection b = new TrackSection(TileTransition.WEST, new ImPoint(11, 5));
+        TrackSection a = new TrackSection(TileTransition.EAST, new Point2D(10, 5));
+        TrackSection b = new TrackSection(TileTransition.WEST, new Point2D(11, 5));
         assertEquals(a, a);
         assertEquals(b, b);
         assertEquals(a, b);

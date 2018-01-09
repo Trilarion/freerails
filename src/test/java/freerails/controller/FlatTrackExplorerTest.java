@@ -20,13 +20,14 @@ package freerails.controller;
 
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
 import freerails.world.player.Player;
 import freerails.world.terrain.TileTransition;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
+import freerails.world.train.PositionOnTrack;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
@@ -60,8 +61,8 @@ public class FlatTrackExplorerTest extends TestCase {
         TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 
         TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
-        ImPoint p = new ImPoint(10, 10);
-        ImPoint[] points = {p, p, p};
+        Point2D p = new Point2D(10, 10);
+        Point2D[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
@@ -193,7 +194,7 @@ public class FlatTrackExplorerTest extends TestCase {
         setUp();
 
         PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(
-                world, new ImPoint(10, 10));
+                world, new Point2D(10, 10));
         assertNotNull(positions);
         assertEquals(3, positions.length);
 

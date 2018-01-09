@@ -30,7 +30,7 @@ import java.awt.*;
 /**
  *
  */
-public class ChangeTileMoveTest extends AbstractMoveTestCase {
+public class ChangeCityTileMoveTest extends AbstractMoveTestCase {
 
     /**
      *

@@ -25,15 +25,16 @@ import freerails.network.MoveChainFork;
 import freerails.network.MoveReceiver;
 import freerails.network.ServerCommandReceiver;
 import freerails.network.UntriedMoveReceiver;
-import freerails.util.ImPoint;
-import freerails.util.ImStringList;
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldListListener;
 import freerails.world.WorldMapListener;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Provides access to the World object and other data that is shared by GUI
@@ -41,7 +42,7 @@ import java.util.HashMap;
  */
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final HashMap<Property, Object> properties = new HashMap<>();
-    private final ArrayList<ModelRootListener> listeners = new ArrayList<>();
+    private final List<ModelRootListener> listeners = new ArrayList<>();
 
     /**
      *
@@ -67,7 +68,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      *
      */
     public ModelRootImpl() {
-        properties.put(Property.CURSOR_POSITION, new ImPoint());
+        properties.put(Property.CURSOR_POSITION, new Point2D());
         properties.put(Property.SHOW_STATION_NAMES, Boolean.TRUE);
         properties.put(Property.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
         properties.put(Property.SHOW_STATION_BORDERS, Boolean.TRUE);
@@ -80,7 +81,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         properties.put(Property.TIME, 0d);
         properties.put(Property.TRACK_BUILDER_MODE,
                 TrackMoveProducer.BuildMode.BUILD_TRACK);
-        properties.put(Property.SAVED_GAMES_LIST, new ImStringList());
+        properties.put(Property.SAVED_GAMES_LIST, Collections.emptyList());
         addPropertyChangeListener(SoundManager.getSoundManager());
     }
 

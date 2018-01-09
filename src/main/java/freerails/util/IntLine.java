@@ -20,6 +20,7 @@ package freerails.util;
 
 import java.io.Serializable;
 
+// TODO is this really needed?
 /**
  * Defines a straight line between two points. Units are arbitrary.
  */
@@ -36,24 +37,9 @@ public class IntLine implements Serializable {
         }
     }
 
-    /**
-     *
-     */
     public int x1;
-
-    /**
-     *
-     */
     public int x2;
-
-    /**
-     *
-     */
     public int y1;
-
-    /**
-     *
-     */
     public int y2;
 
     /**

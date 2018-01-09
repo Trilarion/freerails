@@ -17,19 +17,19 @@
  */
 
 /*
- * ProgressJPanel.java
+ * ProgressJPanelModel.java
  *
  */
 
 package freerails.client.launcher;
 
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 
 /**
  * A JPanel that displays a splash screen and a progress bar.
  */
-public class ProgressJPanel extends javax.swing.JPanel implements
-        ProgressMonitor {
+public class ProgressJPanelModel extends javax.swing.JPanel implements
+        ProgressMonitorModel {
 
     private static final long serialVersionUID = 3256445798203273776L;
     final int numSteps = 5;
@@ -40,11 +40,11 @@ public class ProgressJPanel extends javax.swing.JPanel implements
     javax.swing.JLabel splashImage;
 
     /**
-     * Creates new form ProgressJPanel
+     * Creates new form ProgressJPanelModel
      *
      * @param owner
      */
-    public ProgressJPanel(LauncherInterface owner) {
+    public ProgressJPanelModel(LauncherInterface owner) {
         this.owner = owner;
         initComponents();
         progressBar.setMaximum(numSteps * 100);

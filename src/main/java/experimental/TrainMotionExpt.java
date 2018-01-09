@@ -25,7 +25,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.util.IntLine;
 import freerails.world.ActivityIterator;
 import freerails.world.track.PathIterator;
@@ -70,7 +70,7 @@ public class TrainMotionExpt extends JComponent {
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
-        ImPoint from = new ImPoint(5, 5);
+        Point2D from = new Point2D(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
         if (!ms.ok)
             throw new IllegalStateException(ms.message);
@@ -146,9 +146,9 @@ public class TrainMotionExpt extends JComponent {
         TrainPositionOnMap pos = (TrainPositionOnMap) ai.getState(ticks);
 
         PathOnTiles pathOT = motion.getPath();
-        Iterator<ImPoint> it = pathOT.tiles();
+        Iterator<Point2D> it = pathOT.tiles();
         while (it.hasNext()) {
-            ImPoint tile = it.next();
+            Point2D tile = it.next();
             int x = tile.x * TileTransition.TILE_DIAMETER;
             int y = tile.y * TileTransition.TILE_DIAMETER;
             int w = TileTransition.TILE_DIAMETER;
@@ -162,7 +162,7 @@ public class TrainMotionExpt extends JComponent {
         pathOT = motion.getTiles(t);
         it = pathOT.tiles();
         while (it.hasNext()) {
-            ImPoint tile = it.next();
+            Point2D tile = it.next();
             int x = tile.x * TileTransition.TILE_DIAMETER;
             int y = tile.y * TileTransition.TILE_DIAMETER;
             int w = TileTransition.TILE_DIAMETER;

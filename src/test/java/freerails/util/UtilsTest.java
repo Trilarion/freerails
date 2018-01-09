@@ -23,7 +23,6 @@ package freerails.util;
 
 import junit.framework.TestCase;
 
-import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -36,9 +35,9 @@ public class UtilsTest extends TestCase {
      */
     public void testEqualsBySerialization() {
 
-        Serializable a = new Point(10, 10);
-        Serializable b = new Point(10, 10);
-        Serializable c = new Point(30, 10);
+        Serializable a = new Point2D(10, 10);
+        Serializable b = new Point2D(10, 10);
+        Serializable c = new Point2D(30, 10);
 
         assertTrue(Utils.equalsBySerialization(a, b));
         assertTrue(Utils.equalsBySerialization(a, a));

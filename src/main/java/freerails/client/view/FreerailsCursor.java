@@ -22,7 +22,7 @@ import freerails.client.renderer.BuildTrackRenderer;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -41,7 +41,7 @@ public final class FreerailsCursor {
     /**
      * The location of the cursor last time paintCursor(.) was called.
      */
-    private ImPoint lastCursorPosition = new ImPoint();
+    private Point2D lastCursorPosition = new Point2D();
 
     /**
      * The time in ms the cursor arrived at its current position.
@@ -77,7 +77,7 @@ public final class FreerailsCursor {
         TrackMoveProducer.BuildMode buildMode = (TrackMoveProducer.BuildMode) modelRoot
                 .getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
 
-        ImPoint cursorMapPosition = (ImPoint) modelRoot
+        Point2D cursorMapPosition = (Point2D) modelRoot
                 .getProperty(ModelRoot.Property.CURSOR_POSITION);
 
         /* Has the cursor moved since we last painted it? */
@@ -135,7 +135,7 @@ public final class FreerailsCursor {
         }
 
         // Draw a big white dot at the target point.
-        ImPoint targetPoint = (ImPoint) modelRoot
+        Point2D targetPoint = (Point2D) modelRoot
                 .getProperty(ModelRoot.Property.THINKING_POINT);
         if (null != targetPoint) {
             time = System.currentTimeMillis();

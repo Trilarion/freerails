@@ -23,7 +23,7 @@
 package freerails.client.renderer;
 
 import freerails.client.common.ImageManager;
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.track.NullTrackType;
@@ -51,7 +51,7 @@ public final class TrackPieceRendererList {
      * @throws IOException
      */
     public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
-                                  ProgressMonitor pm) throws IOException {
+                                  ProgressMonitorModel pm) throws IOException {
         // Setup progress monitor..
 
         pm.nextStep(w.size(SKEY.TRACK_RULES));

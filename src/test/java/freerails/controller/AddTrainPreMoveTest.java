@@ -27,9 +27,9 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
-import freerails.world.PositionOnTrack;
+import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -46,7 +46,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
     FreerailsPrincipal principal;
     ImmutableSchedule defaultSchedule;
-    private ImPoint stationA;
+    private Point2D stationA;
 
     /**
      *
@@ -64,14 +64,14 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        stationA = new ImPoint(10, 10);
+        stationA = new Point2D(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.ok);
 
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.ok);
-        ImPoint stationB = new ImPoint(19, 10);
+        Point2D stationB = new Point2D(19, 10);
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.ok);
 
@@ -151,7 +151,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
-        ImPoint from = new ImPoint(5, 5);
+        Point2D from = new Point2D(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
         if (!ms.ok)
             throw new IllegalStateException(ms.message);

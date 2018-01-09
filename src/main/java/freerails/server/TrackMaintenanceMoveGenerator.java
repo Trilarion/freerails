@@ -27,12 +27,12 @@ import freerails.network.MoveReceiver;
 import freerails.world.ItemsTransactionAggregator;
 import freerails.world.SKEY;
 import freerails.world.World;
+import freerails.world.WorldConstants;
 import freerails.world.finances.Money;
 import freerails.world.finances.MoneyTransaction;
 import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
 /**
@@ -79,7 +79,7 @@ public class TrackMaintenanceMoveGenerator {
             if (rightType) {
                 aggregator.setType(i);
                 amount += maintenanceCost * aggregator.calculateQuantity()
-                        / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+                        / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }
 

@@ -19,12 +19,13 @@
 package freerails.server;
 
 import freerails.server.parser.Track_TilesHandlerImpl;
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import freerails.world.*;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
+import freerails.world.train.WagonAndEngineTypesFactory;
 import org.xml.sax.SAXException;
 
 import java.net.URL;
@@ -43,7 +44,7 @@ public class OldWorldImpl {
      * @return
      */
     public static World createWorldFromMapFile(String mapName,
-                                               ProgressMonitor pm) {
+                                               ProgressMonitorModel pm) {
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');

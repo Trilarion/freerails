@@ -21,7 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.WorldImpl;
@@ -59,15 +59,15 @@ public class TrackPathFinderTest extends TestCase {
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer
                     .getPrincipal());
-            List l = pathFinder.generatePath(new ImPoint(0, 0), new ImPoint(0,
+            List l = pathFinder.generatePath(new Point2D(0, 0), new Point2D(0,
                     5), bts);
             assertEquals(5, l.size());
 
-            List list2 = pathFinder.generatePath(new ImPoint(5, 5),
-                    new ImPoint(5, 10), bts);
+            List list2 = pathFinder.generatePath(new Point2D(5, 5),
+                    new Point2D(5, 10), bts);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new ImPoint(5, 10), new ImPoint(5,
+            list2 = pathFinder.generatePath(new Point2D(5, 10), new Point2D(5,
                     5), bts);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {

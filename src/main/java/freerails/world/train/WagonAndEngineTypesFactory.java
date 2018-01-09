@@ -19,8 +19,10 @@
 /*
  *
  */
-package freerails.world;
+package freerails.world.train;
 
+import freerails.world.SKEY;
+import freerails.world.World;
 import freerails.world.finances.Money;
 import freerails.world.train.EngineType;
 import freerails.world.train.WagonType;

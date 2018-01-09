@@ -72,9 +72,9 @@ public class WorldDiffs extends WorldImpl {
     private static final long serialVersionUID = -5993786533926919956L;
     private final SortedMap<ListKey, Object> listDiff;
     /**
-     * Stores the differences on the map, ImPoint are used as keys.
+     * Stores the differences on the map, Point2D are used as keys.
      */
-    private final HashMap<ImPoint, Object> mapDiff;
+    private final HashMap<Point2D, Object> mapDiff;
     private final WorldImpl underlying;
 
     /**
@@ -106,12 +106,12 @@ public class WorldDiffs extends WorldImpl {
     }
 
     /**
-     * The iterator returns instances of java.awt.Point that store the
+     * The iterator returns instances of java.awt.Point2D that store the
      * coordinates of tiles that are different to the underlying world object.
      *
      * @return
      */
-    public Iterator<ImPoint> getMapDiffs() {
+    public Iterator<Point2D> getMapDiffs() {
         return mapDiff.keySet().iterator();
     }
 
@@ -142,7 +142,7 @@ public class WorldDiffs extends WorldImpl {
 
     @Override
     public Serializable getTile(int x, int y) {
-        ImPoint p = new ImPoint(x, y);
+        Point2D p = new Point2D(x, y);
 
         if (this.mapDiff.containsKey(p)) {
             return (Serializable) this.mapDiff.get(p);
@@ -181,7 +181,7 @@ public class WorldDiffs extends WorldImpl {
 
     @Override
     public void setTile(int x, int y, Serializable tile) {
-        ImPoint p = new ImPoint(x, y);
+        Point2D p = new Point2D(x, y);
 
         if (Utils.equal(underlying.getTile(x, y), tile)) {
             if (this.mapDiff.containsKey(p)) {

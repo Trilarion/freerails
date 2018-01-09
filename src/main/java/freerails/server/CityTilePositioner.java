@@ -23,6 +23,7 @@ import freerails.world.World;
 import freerails.world.terrain.TerrainType;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -32,13 +33,11 @@ import java.util.Random;
  */
 // TODO what is random used for? Seed of random generator?
 public class CityTilePositioner {
+
     final Random random = new Random();
-
-    final ArrayList<TerrainType> urbanTerrainTypes = new ArrayList<>();
-
-    final ArrayList<TerrainType> industryTerrainTypes = new ArrayList<>();
-
-    final ArrayList<TerrainType> resourceTerrainTypes = new ArrayList<>();
+    final List<TerrainType> urbanTerrainTypes = new ArrayList<>();
+    final List<TerrainType> industryTerrainTypes = new ArrayList<>();
+    final List<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
     final World world;
 

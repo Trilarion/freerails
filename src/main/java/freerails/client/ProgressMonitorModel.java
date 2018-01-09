@@ -16,38 +16,46 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
-
-import freerails.util.IntIterator;
+/*
+ * ProgressMonitorModel.java
+ *
+ */
+package freerails.client;
 
 /**
- * FlatTrackExplorer to IntIterator adapter.
+ * This interface defines callbacks that can be used to let the user know how a
+ * slow task is progressing.
  */
-public class TrainPathIntIterator implements IntIterator {
-    private final FlatTrackExplorer trackExplorer;
+public interface ProgressMonitorModel {
 
     /**
-     * @param t
+     *
      */
-    @SuppressWarnings("unused")
-    public TrainPathIntIterator(FlatTrackExplorer t) {
-        trackExplorer = t;
-    }
+    // TODO why do we need a null instance?
+    ProgressMonitorModel EMPTY_PROGRESSMONITOR = new ProgressMonitorModel() {
+
+        public void setValue(int i) {
+        }
+
+        public void nextStep(int max) {
+        }
+
+        public void finished() {
+        }
+    };
 
     /**
-     * @return
+     * @param i
      */
-    public boolean hasNextInt() {
-        return trackExplorer.hasNextEdge();
-    }
+    void setValue(int i);
 
     /**
-     * @return
+     * @param max
      */
-    public int nextInt() {
-        trackExplorer.nextEdge();
-        trackExplorer.moveForward();
+    void nextStep(int max);
 
-        return trackExplorer.getPosition();
-    }
+    /**
+     *
+     */
+    void finished();
 }

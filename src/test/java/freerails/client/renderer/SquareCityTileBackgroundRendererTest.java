@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  *
  */
-public class SquareTileBackgroundRendererTest extends TestCase {
+public class SquareCityTileBackgroundRendererTest extends TestCase {
 
     final MapLayerRenderer renderer = new MapLayerRenderer() {
 

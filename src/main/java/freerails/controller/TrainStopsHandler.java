@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.move.*;
 import freerails.util.ImInts;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
@@ -72,7 +72,7 @@ public class TrainStopsHandler implements Serializable {
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
         List<TileTransition> tileTransitions = new ArrayList<>();
-        ImPoint start = path.getStart();
+        Point2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
         PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x,
                 start.y, firstTileTransition);
@@ -99,7 +99,7 @@ public class TrainStopsHandler implements Serializable {
             tileTransitions.add(tileTransition);
         }
 
-        ImPoint newStart = new ImPoint(nextPot.getX(), nextPot.getY());
+        Point2D newStart = new Point2D(nextPot.getX(), nextPot.getY());
         path = new PathOnTiles(newStart, tileTransitions);
         return path;
     }
@@ -109,10 +109,10 @@ public class TrainStopsHandler implements Serializable {
      * @param y
      * @return
      */
-    public ImPoint arrivesAtPoint(int x, int y) {
+    public Point2D arrivesAtPoint(int x, int y) {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
 
-        ImPoint targetPoint = ta.getTarget();
+        Point2D targetPoint = ta.getTarget();
 
         if (x == targetPoint.x && y == targetPoint.y) {
             updateTarget();
@@ -143,7 +143,7 @@ public class TrainStopsHandler implements Serializable {
      * current station.
      */
     public int getStationID(int x, int y) {
-        // loop through the station list to check if train is at the same Point as a station
+        // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < worldDiffs.size(principal, KEY.STATIONS); i++) {
             Station tempPoint = (Station) worldDiffs.get(principal,
                     KEY.STATIONS, i);
@@ -257,8 +257,8 @@ public class TrainStopsHandler implements Serializable {
                 TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = tm.getPath();
                 path = lengthenPath(worldDiffs, path, oldLength);
-                SpeedTimeAndStatus.TrainActivity status = isWaiting4FullLoad() ? SpeedTimeAndStatus.TrainActivity.WAITING_FOR_FULL_LOAD
-                        : SpeedTimeAndStatus.TrainActivity.STOPPED_AT_STATION;
+                TrainActivity status = isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD
+                        : TrainActivity.STOPPED_AT_STATION;
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0,
                         status);
 

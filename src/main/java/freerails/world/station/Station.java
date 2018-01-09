@@ -29,7 +29,7 @@ import java.io.Serializable;
 public class Station implements Serializable {
 
     private static final long serialVersionUID = 3256442503979874355L;
-    // TODO position as Point
+    // TODO position as Point2D
     public final int x;
     public final int y;
     private final String name;

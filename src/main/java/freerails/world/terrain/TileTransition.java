@@ -23,7 +23,7 @@
 package freerails.world.terrain;
 
 import freerails.client.ClientConstants;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.track.TrackConfigurations;
 
 /**
@@ -128,8 +128,8 @@ public final class TileTransition implements TrackConfigurations {
      * property, use getInstance(x,y) instead. Pass values for delta X and Y:
      * they must be in the range -1 to 1 and cannot both be equal to 0.
      *
-     * @param x Tile coordinate.
-     * @param y Tile coordinate
+     * @param x CityTile coordinate.
+     * @param y CityTile coordinate
      * @param t an integer representing the track template this vector
      *          corresponds to.
      */
@@ -162,14 +162,14 @@ public final class TileTransition implements TrackConfigurations {
      * @param path
      * @return
      */
-    public static ImPoint move(ImPoint p, TileTransition... path) {
+    public static Point2D move(Point2D p, TileTransition... path) {
         int x = p.x;
         int y = p.y;
         for (TileTransition v : path) {
             x += v.deltaX;
             y += v.deltaY;
         }
-        return new ImPoint(x, y);
+        return new Point2D(x, y);
     }
 
     /**
@@ -185,7 +185,7 @@ public final class TileTransition implements TrackConfigurations {
      * @param b
      * @return
      */
-    public static boolean checkValidity(ImPoint a, ImPoint b) {
+    public static boolean checkValidity(Point2D a, Point2D b) {
         int dx = b.x - a.x;
         int dy = b.y - a.y;
         return checkValidity(dx, dy);
@@ -400,8 +400,8 @@ public final class TileTransition implements TrackConfigurations {
      * @param from
      * @return
      */
-    public ImPoint createRelocatedPoint(ImPoint from) {
-        return new ImPoint(from.x + deltaX, from.y + deltaY);
+    public Point2D createRelocatedPoint(Point2D from) {
+        return new Point2D(from.x + deltaX, from.y + deltaY);
     }
 
     public boolean contains(TrackConfigurations ftt) {

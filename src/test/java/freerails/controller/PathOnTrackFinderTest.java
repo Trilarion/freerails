@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
@@ -64,8 +64,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testPathAsVectors1() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
-        ImPoint start = new ImPoint(5, 5);
-        ImPoint end = TileTransition.move(start, path);
+        Point2D start = new Point2D(5, 5);
+        Point2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -84,8 +84,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testPathAsVectors2() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.NORTH_EAST};
-        ImPoint start = new ImPoint(5, 5);
-        ImPoint end = TileTransition.move(start, path);
+        Point2D start = new Point2D(5, 5);
+        Point2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -104,8 +104,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testSetupSearch() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
-        ImPoint start = new ImPoint(5, 5);
-        ImPoint end = TileTransition.move(start, path);
+        Point2D start = new Point2D(5, 5);
+        Point2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -113,13 +113,13 @@ public class PathOnTrackFinderTest extends TestCase {
             fail("Track at both of the points so no exception should be thrown");
         }
         try {
-            pathFinder.setupSearch(start, new ImPoint(10, 10));
+            pathFinder.setupSearch(start, new Point2D(10, 10));
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
 
         }
         try {
-            pathFinder.setupSearch(new ImPoint(10, 10), end);
+            pathFinder.setupSearch(new Point2D(10, 10), end);
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
 

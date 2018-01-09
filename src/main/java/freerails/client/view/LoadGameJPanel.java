@@ -29,11 +29,12 @@ import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.network.LoadGameMessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
-import freerails.util.ImStringList;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  */
@@ -50,7 +51,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     javax.swing.JScrollPane jScrollPane1;
     javax.swing.JButton okButton;
     javax.swing.JButton refreshButton;
-    private ImStringList lastFiles;
+    private List<String> lastFiles;
 
     /**
      * Creates new form LoadGameJPanel
@@ -165,8 +166,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     }
 
     private void updateListOfFiles() {
-        ImStringList files = (ImStringList) modelRoot
-                .getProperty(Property.SAVED_GAMES_LIST);
+        List<String> files = (List<String>) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
         Object[] saves = new Object[files.size()];
         for (int i = 0; i < files.size(); i++) {
             saves[i] = files.get(i);
@@ -178,8 +178,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
     @Override
     protected void paintComponent(Graphics g) {
-        ImStringList files = (ImStringList) modelRoot
-                .getProperty(Property.SAVED_GAMES_LIST);
+        List<String> files = (List<String>) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
         if (!lastFiles.equals(files)) {
             updateListOfFiles();
         }

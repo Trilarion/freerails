@@ -29,7 +29,7 @@ import freerails.controller.SimpleMoveExecutor;
 import freerails.controller.TrackMoveProducer;
 import freerails.controller.TrackMoveProducer.BuildMode;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
@@ -92,9 +92,9 @@ public class BuildTrackControllerTest extends TestCase {
      *
      */
     public void testBuildTrack() {
-        ImPoint from = new ImPoint(10, 10);
+        Point2D from = new Point2D(10, 10);
         modelRoot.setProperty(Property.CURSOR_POSITION, from);
-        ImPoint to = new ImPoint(20, 10);
+        Point2D to = new Point2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
 
         buildTrackController.updateUntilComplete();
@@ -127,9 +127,9 @@ public class BuildTrackControllerTest extends TestCase {
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.
-        modelRoot.setProperty(Property.CURSOR_POSITION, new ImPoint(15, 10));
+        modelRoot.setProperty(Property.CURSOR_POSITION, new Point2D(15, 10));
         buildTrackController
-                .setProposedTrack(new ImPoint(20, 10), trackBuilder);
+                .setProposedTrack(new Point2D(20, 10), trackBuilder);
         buildTrackController.updateUntilComplete();
 
         assertTrue(buildTrackController.isBuildTrackSuccessful());
@@ -163,10 +163,10 @@ public class BuildTrackControllerTest extends TestCase {
 
         // Then remove some of it.
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
-        ImPoint from = new ImPoint(15, 10);
+        Point2D from = new Point2D(15, 10);
         modelRoot.setProperty(Property.CURSOR_POSITION, from);
 
-        ImPoint to = new ImPoint(20, 10);
+        Point2D to = new Point2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
 
         buildTrackController.updateUntilComplete();

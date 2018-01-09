@@ -21,32 +21,18 @@
  */
 package freerails.util;
 
-import java.awt.*;
 import java.io.Serializable;
 
 /**
  * An immutable point.
  */
 @Immutable
-public final class ImPoint implements Serializable,
-        Comparable<ImPoint> {
+public final class Point2D implements Serializable, Comparable<Point2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;
+    public final int x, y;
 
-    /**
-     *
-     */
-    public final int x,
-
-    /**
-     *
-     */
-    y;
-
-    /**
-     *
-     */
-    public ImPoint() {
+    public Point2D() {
         x = 0;
         y = 0;
     }
@@ -55,7 +41,7 @@ public final class ImPoint implements Serializable,
      * @param x
      * @param y
      */
-    public ImPoint(int x, int y) {
+    public Point2D(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -64,21 +50,21 @@ public final class ImPoint implements Serializable,
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof ImPoint))
+        if (!(o instanceof Point2D))
             return false;
 
-        final ImPoint imPoint = (ImPoint) o;
+        final Point2D point = (Point2D) o;
 
-        if (x != imPoint.x)
+        if (x != point.x)
             return false;
-        return y == imPoint.y;
+        return y == point.y;
     }
 
     /**
      * @return
      */
-    public Point toPoint() {
-        return new Point(x, y);
+    public java.awt.Point toPoint() {
+        return new java.awt.Point(x, y);
     }
 
     @Override
@@ -88,10 +74,10 @@ public final class ImPoint implements Serializable,
 
     @Override
     public String toString() {
-        return "ImPoint{" + x + ", " + y + '}';
+        return "Point2D{" + x + ", " + y + '}';
     }
 
-    public int compareTo(ImPoint o) {
+    public int compareTo(Point2D o) {
         if (o.y != y)
             return y - o.y;
         else

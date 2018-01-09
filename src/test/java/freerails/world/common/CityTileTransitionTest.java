@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 /**
  * JUnit test for OneTileMoveVector.
  */
-public class TileTransitionTest extends TestCase {
+public class CityTileTransitionTest extends TestCase {
     final TileTransition n = TileTransition.NORTH;
 
     final TileTransition ne = TileTransition.NORTH_EAST;
@@ -38,7 +38,7 @@ public class TileTransitionTest extends TestCase {
     /**
      * @param arg0
      */
-    public TileTransitionTest(String arg0) {
+    public CityTileTransitionTest(String arg0) {
         super(arg0);
     }
 

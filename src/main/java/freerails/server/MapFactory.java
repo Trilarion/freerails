@@ -21,7 +21,7 @@
  */
 package freerails.server;
 
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import freerails.world.SKEY;
 import freerails.world.WorldImpl;
 import freerails.world.terrain.FullTerrainTile;
@@ -61,7 +61,7 @@ public final class MapFactory {
      * @param w
      * @param pm
      */
-    public static void setupMap(URL map_url, WorldImpl w, ProgressMonitor pm) {
+    public static void setupMap(URL map_url, WorldImpl w, ProgressMonitorModel pm) {
         // Setup progress monitor..
         pm.setValue(0);
 

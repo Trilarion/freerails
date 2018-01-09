@@ -21,7 +21,7 @@ package freerails.controller;
 import freerails.client.ClientConstants;
 import freerails.util.IntLine;
 import freerails.world.track.PathIterator;
-import freerails.world.PositionOnTrack;
+import freerails.world.train.PositionOnTrack;
 
 /**
  * Returns a random path along the track.

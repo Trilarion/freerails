@@ -22,6 +22,7 @@
 package freerails.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @param <T>
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 public class List1DImpl<T> implements List1D<T> {
 
     private static final long serialVersionUID = 8285123045287237133L;
-    private final ArrayList<T> elementData;
+    private final List<T> elementData;
 
     /**
      *
@@ -49,6 +50,21 @@ public class List1DImpl<T> implements List1D<T> {
     }
 
     /**
+     * @param a
+     * @param b
+     * @return
+     */
+    public static boolean equals(List1D a, List1D b) {
+        if (a.size() != b.size())
+            return false;
+        for (int i = 0; i < a.size(); i++) {
+            if (!Utils.equal(a.get(i), b.get(i)))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * @return
      */
     public int size() {
@@ -57,7 +73,7 @@ public class List1DImpl<T> implements List1D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof List1D && Lists.equals(this, (List1D) obj);
+        return obj instanceof List1D && equals(this, (List1D) obj);
     }
 
     @Override

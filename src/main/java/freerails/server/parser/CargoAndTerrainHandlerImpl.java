@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Processes CargoAndTerrainHandler events and adds terrain and cargo types to
@@ -42,9 +43,9 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     final HashMap<String, Integer> cargoNameTocargoTypeNumber = new HashMap<>();
     final HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
-    final ArrayList<TileConsumption> typeConsumes = new ArrayList<>();
-    final ArrayList<TileProduction> typeProduces = new ArrayList<>();
-    final ArrayList<TileConversion> typeConverts = new ArrayList<>();
+    final List<TileConsumption> typeConsumes = new ArrayList<>();
+    final List<TileProduction> typeProduces = new ArrayList<>();
+    final List<TileConversion> typeConverts = new ArrayList<>();
     private final World world;
 
     // Parsing variables for Tile

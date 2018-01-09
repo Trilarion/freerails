@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.game.GameTime;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -91,13 +91,13 @@ public final class TrackMoveProducer {
      * @param path
      * @return
      */
-    public MoveStatus buildTrack(ImPoint from, TileTransition[] path) {
+    public MoveStatus buildTrack(Point2D from, TileTransition[] path) {
         MoveStatus returnValue = MoveStatus.MOVE_OK;
         int x = from.x;
         int y = from.y;
         for (TileTransition aPath : path) {
 
-            returnValue = buildTrack(new ImPoint(x, y), aPath);
+            returnValue = buildTrack(new Point2D(x, y), aPath);
             x += aPath.deltaX;
             y += aPath.deltaY;
             if (!returnValue.ok) {
@@ -112,7 +112,7 @@ public final class TrackMoveProducer {
      * @param trackVector
      * @return
      */
-    public MoveStatus buildTrack(ImPoint from, TileTransition trackVector) {
+    public MoveStatus buildTrack(Point2D from, TileTransition trackVector) {
 
         ReadOnlyWorld w = executor.getWorld();
         FreerailsPrincipal principal = executor.getPrincipal();
@@ -179,7 +179,7 @@ public final class TrackMoveProducer {
                         return ms;
                     }
                 }
-                ImPoint point = new ImPoint(from.x + trackVector.getDx(), from.y
+                Point2D point = new Point2D(from.x + trackVector.getDx(), from.y
                         + trackVector.getDy());
                 FullTerrainTile tileB = (FullTerrainTile) w.getTile(point.x, point.y);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1]
@@ -207,7 +207,7 @@ public final class TrackMoveProducer {
 
     }
 
-    private MoveStatus upgradeTrack(ImPoint point, int trackRuleID) {
+    private MoveStatus upgradeTrack(Point2D point, int trackRuleID) {
         ReadOnlyWorld w = executor.getWorld();
         TrackPiece before = ((FullTerrainTile) w.getTile(point.x, point.y))
                 .getTrackPiece();
@@ -274,7 +274,7 @@ public final class TrackMoveProducer {
         return ms;
     }
 
-    private boolean isStationHere(ImPoint p) {
+    private boolean isStationHere(Point2D p) {
         ReadOnlyWorld w = executor.getWorld();
         FullTerrainTile tile = (FullTerrainTile) w.getTile(p.x, p.y);
         return tile.getTrackPiece().getTrackRule().isStation();

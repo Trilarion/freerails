@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.util.ImList;
 import freerails.world.KEY;
-import freerails.world.WagonAndEngineTypesFactory;
+import freerails.world.train.WagonAndEngineTypesFactory;
 import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
 import freerails.world.top.MapFixtureFactory;
@@ -31,7 +31,7 @@ import freerails.world.top.MapFixtureFactory;
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
  */
-public class ChangeTileProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
+public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     private ImList<TrainBlueprint> after;
 

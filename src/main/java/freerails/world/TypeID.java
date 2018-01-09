@@ -22,6 +22,7 @@
  */
 package freerails.world;
 
+// TODO what is this good for?
 /**
  * Stores an SKEY and an item index.
  */

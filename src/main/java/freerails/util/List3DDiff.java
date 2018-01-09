@@ -170,7 +170,7 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof List3D && Lists.equals(this, (List3D) obj);
+        return obj instanceof List3D && List3DImpl.equals(this, (List3D) obj);
     }
 
     @Override

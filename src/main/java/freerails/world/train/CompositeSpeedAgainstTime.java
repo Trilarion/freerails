@@ -91,7 +91,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     public SpeedTimeAndStatus getState(final double dt) {
         checkT(dt);
         double acceleration;
-        SpeedTimeAndStatus.TrainActivity activity = SpeedTimeAndStatus.TrainActivity.READY;
+        TrainActivity activity = TrainActivity.READY;
         double s;
         double speed;
 

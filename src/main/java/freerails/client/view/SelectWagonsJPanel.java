@@ -34,6 +34,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This JPanel lets the user add wagons to a train.
@@ -42,11 +43,8 @@ import java.util.ArrayList;
 public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3905239009449095220L;
-
     private final Image stationView;
-
-    private final ArrayList<Integer> wagons = new ArrayList<>();
-
+    private final List<Integer> wagons = new ArrayList<>();
     private int engineType = 0;
 
     private RendererRoot rr;

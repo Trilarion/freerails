@@ -21,8 +21,8 @@
  */
 package freerails.controller;
 
-import freerails.util.ImPoint;
-import freerails.world.PositionOnTrack;
+import freerails.util.Point2D;
+import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TileTransition;
 import freerails.world.terrain.FullTerrainTile;
@@ -39,7 +39,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld world;
-    private ImPoint startPoint;
+    private Point2D startPoint;
 
     /**
      * @param world
@@ -99,7 +99,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
      * @param target
      * @throws PathNotFoundException
      */
-    public void setupSearch(ImPoint from, ImPoint target)
+    public void setupSearch(Point2D from, Point2D target)
             throws PathNotFoundException {
         startPoint = from;
         if (logger.isDebugEnabled()) {

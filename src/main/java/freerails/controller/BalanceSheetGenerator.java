@@ -25,7 +25,6 @@ import freerails.world.finances.TransactionCategory;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
 /**
@@ -106,7 +105,7 @@ public class BalanceSheetGenerator {
                     .calculateQuantitiesAndValues();
             int quantity = qnv.quantities[0];
             amount += trackValue * quantity
-                    / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+                    / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
 
         }
 

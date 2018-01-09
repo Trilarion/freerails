@@ -21,7 +21,7 @@ package freerails.client.renderer;
 import freerails.client.ClientConstants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldDiffs;
 import freerails.world.terrain.FullTerrainTile;
@@ -82,9 +82,9 @@ public class BuildTrackRenderer implements Painter {
 
         WorldDiffs worldDiffs = getWorldDiffs();
         if (null != worldDiffs) {
-            for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
+            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter
                     .hasNext(); ) {
-                ImPoint point = iter.next();
+                Point2D point = iter.next();
                 FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point.x,
                         point.y);
                 TrackPiece tp = fp.getTrackPiece();
@@ -104,9 +104,9 @@ public class BuildTrackRenderer implements Painter {
              * are white if track has been added or upgraded and red if it has
              * been removed.
              */
-            for (Iterator<ImPoint> iter = worldDiffs.getMapDiffs(); iter
+            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter
                     .hasNext(); ) {
-                ImPoint p = iter.next();
+                Point2D p = iter.next();
                 int x = p.x * tileSize.width
                         + (tileSize.width - SMALL_DOT_WIDTH) / 2;
                 int y = p.y * tileSize.width

@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
+package freerails.world.train;
 
+import freerails.world.FreerailsMutableSerializable;
 import freerails.world.terrain.TileTransition;
 
 /**
@@ -29,27 +30,12 @@ import freerails.world.terrain.TileTransition;
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
 
-    /**
-     *
-     */
+    private static final long serialVersionUID = 3257853198755707184L;
     public static final int BITS_FOR_COORDINATE = 14;
-
-    /**
-     *
-     */
     public static final int BITS_FOR_DIRECTION = 3;
-
-    /**
-     *
-     */
     public static final int MAX_COORDINATE = (1 << BITS_FOR_COORDINATE) - 1;
-
-    /**
-     *
-     */
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
 
-    private static final long serialVersionUID = 3257853198755707184L;
     /**
      * The direction from which we entered the tile.
      */

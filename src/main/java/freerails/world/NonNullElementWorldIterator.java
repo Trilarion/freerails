@@ -26,23 +26,19 @@ import freerails.world.player.FreerailsPrincipal;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
+// TODO why is it important to only return non-null elements
 /**
  * Iterates over one of the lists on the world object only returning non null
  * elements.
  */
 public class NonNullElementWorldIterator implements WorldIterator {
+
     private final KEY key;
-
     private final SKEY skey;
-
     private final ReadOnlyWorld w;
-
     private final FreerailsPrincipal principal;
-
     private int index = BEFORE_FIRST;
-
     private int row = BEFORE_FIRST;
-
     private int size = -1;
 
     /**

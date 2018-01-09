@@ -38,8 +38,8 @@ public class CityModelTest extends TestCase {
 
         CityModel city = new CityModel();
         city.loadFromMap(w, 0);
-        assertEquals(0, city.industryTiles.size());
-        assertEquals(0, city.urbanTiles.size());
+        assertEquals(0, city.industryCityTiles.size());
+        assertEquals(0, city.urbanCityTiles.size());
         assertEquals("A city is a 7*7 area", 49, city.clearTiles.size());
     }
 

@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.WorldImpl;
@@ -73,7 +73,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
                 MapFixtureFactory.TEST_PRINCIPAL, world);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new ImPoint(0, 0));
+                new Point2D(0, 0));
 
         Move m = transactionGenerator.addTransactions(move);
         assertNotNull(m);

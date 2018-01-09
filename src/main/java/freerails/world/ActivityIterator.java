@@ -24,13 +24,14 @@ package freerails.world;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
+// TODO this activity iterator can do far too much, use a standard iterator instead and put the extra features into an activity
 /**
  *
  */
 public interface ActivityIterator {
 
     /**
-     * @return
+     * @returnhh
      */
     boolean hasNext();
 

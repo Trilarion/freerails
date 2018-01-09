@@ -31,9 +31,6 @@ import java.util.NoSuchElementException;
 @SuppressWarnings("unused")
 public interface WorldIterator {
 
-    /**
-     *
-     */
     int BEFORE_FIRST = -1;
 
     /**

@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
@@ -34,6 +34,7 @@ import freerails.world.terrain.TileTransition;
 import freerails.world.terrain.TileTypeImpl;
 import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
+import freerails.world.train.PositionOnTrack;
 import junit.framework.TestCase;
 
 /**
@@ -192,7 +193,7 @@ public class BuildTrackExplorerTest extends TestCase {
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                .generateBuildTrackMove(new ImPoint(x, y), direction, rule,
+                .generateBuildTrackMove(new Point2D(x, y), direction, rule,
                         rule, world, MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);

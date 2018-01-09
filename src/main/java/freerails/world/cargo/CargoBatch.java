@@ -29,7 +29,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     // TODO Why is cargoType an int here and not CargoCategory or CargoType??
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoType;
-    // TODO Use a Point instead of X ands Y
+    // TODO Use a Point2D instead of X ands Y
     private final int sourceX;
     private final int sourceY;
     // TODO call it originalStationID

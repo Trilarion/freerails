@@ -21,6 +21,7 @@ package freerails.world.track;
 import freerails.world.terrain.TileTransition;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An instance of this class represents one of the possible track configurations
@@ -30,12 +31,8 @@ import java.util.ArrayList;
  */
 public final class TrackConfiguration implements TrackConfigurations {
 
-    /**
-     *
-     */
-    public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
     private static final long serialVersionUID = 3618695301330974512L;
-    private static final ArrayList<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
+    private static final List<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
     private final int length;
     private final int configuration;
 

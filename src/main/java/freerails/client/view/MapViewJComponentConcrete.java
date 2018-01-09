@@ -28,7 +28,7 @@ import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -158,7 +158,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
         super.setMapView(mv);
     }
 
-    private void react2curorMove(ImPoint newPoint, ImPoint oldPoint) {
+    private void react2curorMove(Point2D newPoint, Point2D oldPoint) {
         float scale = getMapView().getScale();
         Dimension tileSize = new Dimension((int) scale, (int) scale);
         Rectangle vr = this.getVisibleRect();
@@ -252,11 +252,11 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
 
         switch (p) {
             case CURSOR_POSITION:
-                ImPoint newPoint = (ImPoint) after;
-                ImPoint oldPoint = (ImPoint) before;
+                Point2D newPoint = (Point2D) after;
+                Point2D oldPoint = (Point2D) before;
 
                 if (null == oldPoint) {
-                    oldPoint = new ImPoint();
+                    oldPoint = new Point2D();
                 }
 
                 react2curorMove(newPoint, oldPoint);
@@ -289,20 +289,20 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
          * Screen location of the mouse cursor, when the second mouse button was
          * pressed.
          */
-        private final Point screenLocation = new Point();
+        private final java.awt.Point screenLocation = new java.awt.Point();
 
-        private final Point lastMouseLocation = new Point();
+        private final java.awt.Point lastMouseLocation = new java.awt.Point();
 
         /**
          * A variable to sum up relative mouse movement.
          */
-        private final Point sigmadelta = new Point();
+        private final java.awt.Point sigmadelta = new java.awt.Point();
 
         /**
          * Where to scroll - Reflects granularity, scroll direction and
          * acceleration, respects bounds.
          */
-        private final Point tiledelta = new Point();
+        private final java.awt.Point tiledelta = new java.awt.Point();
 
         @Override
         public void mousePressed(MouseEvent evt) {

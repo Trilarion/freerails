@@ -129,7 +129,7 @@ public class List2DDiff<T> extends ListXDDiffs<T> implements List2D<T> {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof List2D && Lists.equals(this, (List2D) obj);
+        return obj instanceof List2D && List2DImpl.equals(this, (List2D) obj);
     }
 
     @Override

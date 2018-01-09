@@ -24,6 +24,7 @@ package freerails.move;
 import freerails.util.ImList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.WorldConstants;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
@@ -32,6 +33,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Calculates the cost of a series of track moves. The motivation for
@@ -45,7 +47,7 @@ public class TrackMoveTransactionsGenerator {
      * Note, trackAdded and trackRemoved cannot be combined, since it may cost
      * more to added a unit of track than is refunded when you removed it.
      */
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
     private final ReadOnlyWorld w;
     /**
      * Number of each of the track types added.
@@ -170,7 +172,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
                 Money total = new Money(-m.getAmount() * numberAdded
-                        / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                        / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
                 Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded,
                         total);
                 transactions.add(t);
@@ -183,7 +185,7 @@ public class TrackMoveTransactionsGenerator {
                 Money m = rule.getPrice();
 
                 Money total = new Money((m.getAmount() * numberRemoved)
-                        / TrackConfiguration.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                        / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = new Money(total.getAmount() / 2);

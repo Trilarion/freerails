@@ -184,8 +184,8 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
                 .get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
-        final ArrayList<String> typeWaiting = new ArrayList<>();
-        final ArrayList<Integer> quantityWaiting = new ArrayList<>();
+        final List<String> typeWaiting = new ArrayList<>();
+        final List<Integer> quantityWaiting = new ArrayList<>();
         final List<String> typeDemanded = new ArrayList<>();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);

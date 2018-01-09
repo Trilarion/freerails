@@ -22,11 +22,10 @@
 package freerails.world.train;
 
 import freerails.util.ImList;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.util.IntLine;
 import freerails.util.Pair;
 import freerails.world.track.PathIterator;
-import freerails.world.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 
 import java.io.Serializable;
@@ -42,7 +41,7 @@ public strictfp class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
 
-    private final ImPoint start;
+    private final Point2D start;
 
     private final ImList<TileTransition> vectors;
 
@@ -53,7 +52,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectorsList
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
-    public PathOnTiles(ImPoint start, List<TileTransition> vectorsList) {
+    public PathOnTiles(Point2D start, List<TileTransition> vectorsList) {
         if (null == start)
             throw new NullPointerException();
         vectors = new ImList<>(vectorsList);
@@ -68,7 +67,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectors
      * @throws NullPointerException if null == vectors[i] for any i;
      */
-    public PathOnTiles(ImPoint start, TileTransition... vectors) {
+    public PathOnTiles(Point2D start, TileTransition... vectors) {
         if (null == start)
             throw new NullPointerException();
         this.vectors = new ImList<>(vectors);
@@ -122,7 +121,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
-    public ImPoint getPoint(double distance) {
+    public Point2D getPoint(double distance) {
         if (0 > distance)
             throw new IllegalArgumentException("distance:" + distance + " < 0");
 
@@ -135,7 +134,7 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new ImPoint(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
+                return new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
                         * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
             }
             if (distanceSoFar > distance) {
@@ -143,7 +142,7 @@ public strictfp class PathOnTiles implements Serializable {
                         .getLength());
                 x = x * TileTransition.TILE_DIAMETER - v.deltaX * excess;
                 y = y * TileTransition.TILE_DIAMETER - v.deltaY * excess;
-                return new ImPoint(x + TileTransition.TILE_DIAMETER / 2, y + TileTransition.TILE_DIAMETER / 2);
+                return new Point2D(x + TileTransition.TILE_DIAMETER / 2, y + TileTransition.TILE_DIAMETER / 2);
             }
         }
         throw new IllegalArgumentException("distance:" + distance
@@ -161,7 +160,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
-    public Pair<ImPoint, ImPoint> getPoint(double firstdistance,
+    public Pair<Point2D, Point2D> getPoint(double firstdistance,
                                            double lastdistance) {
         if (0 > firstdistance) {
             throw new IllegalArgumentException("firstdistance:" + firstdistance
@@ -178,7 +177,7 @@ public strictfp class PathOnTiles implements Serializable {
         int x = start.x;
         int y = start.y;
         double distanceSoFar = 0;
-        ImPoint firstPoint = null;
+        Point2D firstPoint = null;
         int i;
         TileTransition v = null;
         final int vectorsSize = vectors.size();
@@ -188,7 +187,7 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new ImPoint(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2,
+                firstPoint = new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2,
                         y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
                 break;
             }
@@ -199,7 +198,7 @@ public strictfp class PathOnTiles implements Serializable {
                         / 2;
                 int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER
                         / 2;
-                firstPoint = new ImPoint(nx, ny);
+                firstPoint = new Point2D(nx, ny);
                 break;
             }
         }
@@ -211,12 +210,12 @@ public strictfp class PathOnTiles implements Serializable {
         if (firstdistance == lastdistance) {
             return new Pair<>(firstPoint, firstPoint);
         }
-        ImPoint secondPoint = null;
+        Point2D secondPoint = null;
 
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new ImPoint(
+                secondPoint = new Point2D(
                         x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
                         * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
                 break;
@@ -228,7 +227,7 @@ public strictfp class PathOnTiles implements Serializable {
                         / 2;
                 int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER
                         / 2;
-                secondPoint = new ImPoint(nx, ny);
+                secondPoint = new Point2D(nx, ny);
                 break;
             }
             i++;
@@ -253,7 +252,7 @@ public strictfp class PathOnTiles implements Serializable {
     /**
      * @return
      */
-    public ImPoint getStart() {
+    public Point2D getStart() {
         return start;
     }
 
@@ -350,8 +349,8 @@ public strictfp class PathOnTiles implements Serializable {
             throw new IllegalArgumentException(offset + " + " + length + " > "
                     + getTotalDistance());
 
-        final LinkedList<ImPoint> points = new LinkedList<>();
-        ImPoint tile = start;
+        final LinkedList<Point2D> points = new LinkedList<>();
+        Point2D tile = start;
         int tileX = tile.x;
         int tileY = tile.y;
         int distanceSoFar = 0;
@@ -363,7 +362,7 @@ public strictfp class PathOnTiles implements Serializable {
             if (distanceSoFar >= offset) {
                 int x = TileTransition.TILE_DIAMETER / 2 + TileTransition.TILE_DIAMETER * tileX;
                 int y = TileTransition.TILE_DIAMETER / 2 + TileTransition.TILE_DIAMETER * tileY;
-                points.add(new ImPoint(x, y));
+                points.add(new Point2D(x, y));
             }
 
             TileTransition v = vectors.get(i);
@@ -373,9 +372,9 @@ public strictfp class PathOnTiles implements Serializable {
 
         }
 
-        Pair<ImPoint, ImPoint> point = getPoint(offset, offset + length);
+        Pair<Point2D, Point2D> point = getPoint(offset, offset + length);
 
-        ImPoint first = point.getA();
+        Point2D first = point.getA();
 
         if (points.size() == 0) {
             points.addFirst(first);
@@ -383,7 +382,7 @@ public strictfp class PathOnTiles implements Serializable {
             points.addFirst(first);
         }
 
-        ImPoint last = point.getB();
+        Point2D last = point.getB();
 
         if (!points.getLast().equals(last)) {
             points.addLast(last);
@@ -403,11 +402,11 @@ public strictfp class PathOnTiles implements Serializable {
                         if (!hasNext()) {
                             throw new NoSuchElementException();
                         }
-                        ImPoint a = points.get(index);
+                        Point2D a = points.get(index);
                         line.x1 = a.x;
                         line.y1 = a.y;
 
-                        ImPoint b = points.get(index + 1);
+                        Point2D b = points.get(index + 1);
                         line.x2 = b.x;
                         line.y2 = b.y;
 
@@ -420,28 +419,28 @@ public strictfp class PathOnTiles implements Serializable {
     /**
      * @return
      */
-    public Iterator<ImPoint> tiles() {
-        return new Iterator<ImPoint>() {
+    public Iterator<Point2D> tiles() {
+        return new Iterator<Point2D>() {
             int index = 0;
 
-            ImPoint next = start;
+            Point2D next = start;
 
             public boolean hasNext() {
                 return next != null;
             }
 
-            public ImPoint next() {
+            public Point2D next() {
                 if (next == null)
                     throw new NoSuchElementException();
 
-                ImPoint returnValue = next;
+                Point2D returnValue = next;
                 int x = next.x;
                 int y = next.y;
                 if (index < vectors.size()) {
                     TileTransition s = vectors.get(index);
                     x += s.deltaX;
                     y += s.deltaY;
-                    next = new ImPoint(x, y);
+                    next = new Point2D(x, y);
                 } else {
                     next = null;
                 }

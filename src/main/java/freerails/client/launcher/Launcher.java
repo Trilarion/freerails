@@ -71,7 +71,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             .getResource(ClientConfig.ICON_WARNING));
     private final ImageIcon infoIcon = new javax.swing.ImageIcon(getClass()
             .getResource(ClientConfig.ICON_INFO));
-    private final ProgressJPanel progressPanel = new ProgressJPanel(this);
+    private final ProgressJPanelModel progressPanel = new ProgressJPanelModel(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JLabel infoLabel;
     javax.swing.JPanel jPanel1;

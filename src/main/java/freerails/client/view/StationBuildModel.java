@@ -26,8 +26,7 @@ import freerails.client.renderer.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.StationBuilder;
 import freerails.move.MoveStatus;
-import freerails.util.ImPoint;
-import freerails.util.Utils;
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.finances.Money;
@@ -35,7 +34,6 @@ import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,8 +91,7 @@ public class StationBuildModel {
                 StationChooseAction action = new StationChooseAction(i);
                 String trackType = trackRule.getTypeName();
                 Money price = trackRule.getFixedCost();
-                String shortDescrpt = Utils.capitalizeEveryWord(trackType)
-                        + " $" + price.toString();
+                String shortDescrpt = trackType + " $" + price.toString();
                 action.putValue(Action.SHORT_DESCRIPTION, shortDescrpt);
                 action.putValue(Action.NAME, "Build " + trackType);
 
@@ -126,10 +123,10 @@ public class StationBuildModel {
      * @return
      */
     public boolean canBuildStationHere() {
-        Point p = (Point) stationBuildAction
+        java.awt.Point p = (java.awt.Point) stationBuildAction
                 .getValue(StationBuildAction.STATION_POSITION_KEY);
 
-        return stationBuilder.tryBuildingStation(new ImPoint(p.x, p.y)).ok;
+        return stationBuilder.tryBuildingStation(new Point2D(p.x, p.y)).ok;
     }
 
     /**
@@ -199,7 +196,7 @@ public class StationBuildModel {
     public class StationBuildAction extends AbstractAction {
         /**
          * This key can be used to set the position where the station is to be
-         * built as a Point object.
+         * built as a Point2D object.
          */
         public static final String STATION_POSITION_KEY = "STATION_POSITION_KEY";
         /**
@@ -214,9 +211,9 @@ public class StationBuildModel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            Point value = (Point) stationBuildAction
+            java.awt.Point value = (java.awt.Point) stationBuildAction
                     .getValue(StationBuildAction.STATION_POSITION_KEY);
-            MoveStatus ms = stationBuilder.buildStation(new ImPoint(value.x,
+            MoveStatus ms = stationBuilder.buildStation(new Point2D(value.x,
                     value.y));
             String message = null;
 

@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.game.GameCalendar;
@@ -303,7 +303,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * @param path
      */
     protected void assertTrackHere(PathOnTiles path) {
-        ImPoint start = path.getStart();
+        Point2D start = path.getStart();
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {

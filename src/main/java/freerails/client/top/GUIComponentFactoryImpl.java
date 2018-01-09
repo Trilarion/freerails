@@ -33,7 +33,7 @@ import freerails.move.Move;
 import freerails.network.LocalConnection;
 import freerails.network.MoveReceiver;
 import freerails.util.ImList;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameSpeed;
 import freerails.world.player.FreerailsPrincipal;
@@ -634,11 +634,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
          * same as the last map size, then the cursor should take the position
          * it had on the last map.
          */
-        ImPoint cursorPosition = new ImPoint(0, 0);
+        Point2D cursorPosition = new Point2D(0, 0);
         if (null != world) {
             if (w.getMapWidth() == world.getMapWidth()
                     && w.getMapHeight() == world.getMapHeight()) {
-                cursorPosition = (ImPoint) modelRoot
+                cursorPosition = (Point2D) modelRoot
                         .getProperty(ModelRoot.Property.CURSOR_POSITION);
             }
         }
@@ -734,7 +734,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
             mainMap.refreshAll();
             overviewMap.refreshAll();
         } else {
-            Point tile = new Point();
+            java.awt.Point tile = new java.awt.Point();
 
             // Fix for bug 967673 (Crash when building track close to edge of
             // map).

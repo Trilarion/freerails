@@ -21,7 +21,7 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
@@ -34,14 +34,14 @@ public class TrainMotionTest extends TestCase {
      * this= TrainMotion (id=49) activity= SpeedTimeAndStatus$TrainActivity
      * (id=107) name= "READY" ordinal= 1 distanceEngineWillTravel= 30.0
      * duration= 3.9936298481613424 initialPosition= 42.42640687119285 path=
-     * PathOnTiles (id=48) start= ImPoint (id=73) x= 14 y= 5 vectors= ImList<E>
+     * PathOnTiles (id=48) start= Point2D (id=73) x= 14 y= 5 vectors= ImList<E>
      * (id=75) elementData= FreerailsSerializable[2] (id=77) [0]= TileTransition (id=79)
      * deltaX= 1 deltaY= 1 flatTrackTemplate= 256 length= 42.42640687119285 [1]=
      * TileTransition (id=82) deltaX= 1 deltaY= 0 flatTrackTemplate= 32 length= 30.0
      * speeds= CompositeSpeedAgainstTime (id=111) duration= 10.972888751347389
      * totalDistance= 97.57359312880715 values= ImList<E> (id=114) elementData=
-     * FreerailsSerializable[2] (id=118) [0]= ConstAcc (id=119) a= 0.5 dt=
-     * 6.972888751347389 u= 6.5135556243263055 [1]= ConstAcc (id=121) a= 0.0 dt=
+     * FreerailsSerializable[2] (id=118) [0]= ConstantAcceleration (id=119) a= 0.5 dt=
+     * 6.972888751347389 u= 6.5135556243263055 [1]= ConstantAcceleration (id=121) a= 0.0 dt=
      * 4.0 u= 10.0 trainLength= 24 t= 3.9936298481613424 offset=
      * 48.42640687119287 length= 24.0
      *
@@ -55,16 +55,16 @@ public class TrainMotionTest extends TestCase {
 
     public void test4Bug1266695() {
         // The figures are copied from the debugger.
-        ImPoint start = new ImPoint(14, 5);
+        Point2D start = new Point2D(14, 5);
         TileTransition[] vectors = {TileTransition.getInstance(1, 1), TileTransition.getInstance(1, 0)};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
-        ConstAcc constAcc0 = ConstAcc.uat(6.5135556243263055d, 0.5d,
+        ConstantAcceleration constantAcceleration0 = ConstantAcceleration.uat(6.5135556243263055d, 0.5d,
                 6.972888751347389d);
-        ConstAcc constAcc1 = ConstAcc.uat(10.0, 0.0d, 4.0d);
+        ConstantAcceleration constantAcceleration1 = ConstantAcceleration.uat(10.0, 0.0d, 4.0d);
 
-        SpeedAgainstTime speeds = new CompositeSpeedAgainstTime(constAcc0,
-                constAcc1);
+        SpeedAgainstTime speeds = new CompositeSpeedAgainstTime(constantAcceleration0,
+                constantAcceleration1);
 
         double expectedTotalDistance = 97.57359312880715d; // Copied from
         // debugger.

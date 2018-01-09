@@ -25,7 +25,7 @@ import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.move.NextActivityMove;
 import freerails.util.ImInts;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.game.GameTime;
@@ -36,7 +36,7 @@ import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
-import freerails.world.train.SpeedTimeAndStatus.TrainActivity;
+import freerails.world.train.TrainActivity;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -82,7 +82,7 @@ public class MoveTrainPreMove implements PreMove {
      * @throws NoTrackException if no track
      */
     public static TileTransition findNextStep(ReadOnlyWorld world,
-                                              PositionOnTrack currentPosition, ImPoint target) {
+                                              PositionOnTrack currentPosition, Point2D target) {
         int startPos = PositionOnTrack.toInt(currentPosition.getX(),
                 currentPosition.getY());
         int endPos = PositionOnTrack.toInt(target.x, target.y);
@@ -102,7 +102,7 @@ public class MoveTrainPreMove implements PreMove {
         PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
         try {
-            ImPoint location = new ImPoint(currentPosition.getX(),
+            Point2D location = new Point2D(currentPosition.getX(),
                     currentPosition.getY());
             pathFinder.setupSearch(location, target);
             pathFinder.search(-1);
@@ -187,7 +187,7 @@ public class MoveTrainPreMove implements PreMove {
         return hasFinishedLastActivity;
     }
 
-    private ImPoint currentTrainTarget(ReadOnlyWorld w) {
+    private Point2D currentTrainTarget(ReadOnlyWorld w) {
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         return ta.getTarget();
     }
@@ -222,7 +222,7 @@ public class MoveTrainPreMove implements PreMove {
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
 
-        SpeedTimeAndStatus.TrainActivity activity = tm.getActivity();
+        TrainActivity activity = tm.getActivity();
 
         switch (activity) {
             case STOPPED_AT_STATION:
@@ -244,7 +244,7 @@ public class MoveTrainPreMove implements PreMove {
 
                     stopsHandler.arrivesAtPoint(x, y);
 
-                    SpeedTimeAndStatus.TrainActivity status = stopsHandler
+                    TrainActivity status = stopsHandler
                             .isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD
                             : TrainActivity.STOPPED_AT_STATION;
                     PathOnTiles path = tm.getPath();
@@ -312,12 +312,12 @@ public class MoveTrainPreMove implements PreMove {
 
         TrainMotion motion = lastMotion(w);
         PositionOnTrack pot = motion.getFinalPosition();
-        ImPoint tile = new ImPoint(pot.getX(), pot.getY());
+        Point2D tile = new Point2D(pot.getX(), pot.getY());
         TrackSection desiredTrackSection = new TrackSection(nextVector, tile);
 
         // Check whether the desired track section is single or double track.
-        ImPoint tileA = desiredTrackSection.tileA();
-        ImPoint tileB = desiredTrackSection.tileB();
+        Point2D tileA = desiredTrackSection.tileA();
+        Point2D tileB = desiredTrackSection.tileB();
         FullTerrainTile fta = (FullTerrainTile) w.getTile(tileA.x, tileA.y);
         FullTerrainTile ftb = (FullTerrainTile) w.getTile(tileB.x, tileB.y);
         TrackPiece tpa = fta.getTrackPiece();
@@ -366,14 +366,14 @@ public class MoveTrainPreMove implements PreMove {
         SpeedAgainstTime newSpeeds;
         if (u < topSpeed) {
             double t = (topSpeed - u) / a0;
-            SpeedAgainstTime a = ConstAcc.uat(u, a0, t);
+            SpeedAgainstTime a = ConstantAcceleration.uat(u, a0, t);
             t = s / topSpeed + 1; // Slightly overestimate the time
-            SpeedAgainstTime b = ConstAcc.uat(topSpeed, 0, t);
+            SpeedAgainstTime b = ConstantAcceleration.uat(topSpeed, 0, t);
             newSpeeds = new CompositeSpeedAgainstTime(a, b);
         } else {
             double t;
             t = s / topSpeed + 1; // Slightly overestimate the time
-            newSpeeds = ConstAcc.uat(topSpeed, 0, t);
+            newSpeeds = ConstantAcceleration.uat(topSpeed, 0, t);
         }
 
         return newSpeeds;
@@ -384,7 +384,7 @@ public class MoveTrainPreMove implements PreMove {
         TrainMotion currentMotion = lastMotion(w);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
-        ImPoint targetPoint = currentTrainTarget(w);
+        Point2D targetPoint = currentTrainTarget(w);
         return findNextStep(w, currentPosition, targetPoint);
     }
 
@@ -394,7 +394,7 @@ public class MoveTrainPreMove implements PreMove {
      */
     public Move stopTrain(ReadOnlyWorld w) {
         TrainMotion motion = lastMotion(w);
-        SpeedAgainstTime stopped = ConstAcc.STOPPED;
+        SpeedAgainstTime stopped = ConstantAcceleration.STOPPED;
         double duration = motion.duration();
 
         int trainLength = motion.getTrainLength();

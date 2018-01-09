@@ -44,10 +44,6 @@ public final class ImList<E extends Serializable> implements
     @SuppressWarnings("unchecked")
     public ImList(E... items) {
         elementData = items.clone();
-//        elementData = (E[]) new FreerailsSerializable[items.length];
-//        for (int i = 0; i < items.length; i++) {
-//            elementData[i] = items[i];
-//        }
     }
 
     /**
@@ -56,10 +52,6 @@ public final class ImList<E extends Serializable> implements
     @SuppressWarnings("unchecked")
     public ImList(List<E> list) {
         elementData = list.toArray((E[]) new Serializable[list.size()]);
-//        elementData = (E[]) new FreerailsSerializable[list.size()];
-//        for (int i = 0; i < list.size(); i++) {
-//            elementData[i] = list.get(i);
-//        }
     }
 
     @Override

@@ -29,7 +29,7 @@ import freerails.network.UntriedMoveReceiver;
 import freerails.server.TileSetFactory;
 import freerails.server.TileSetFactoryImpl;
 import freerails.util.ImInts;
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBatchBundle;
@@ -40,6 +40,7 @@ import freerails.world.station.Station;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.WagonAndEngineTypesFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -106,7 +107,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         w.addPlayer(TEST_PLAYER);
         try {
             vl = new RendererRootImpl(w,
-                    ProgressMonitor.NULL_INSTANCE);
+                    ProgressMonitorModel.EMPTY_PROGRESSMONITOR);
         } catch (IOException e) {
         }
         modelRoot.setup(w, TEST_PLAYER.getPrincipal());

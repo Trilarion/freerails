@@ -24,7 +24,7 @@ package freerails.server;
 import freerails.controller.ServerControlInterface;
 import freerails.network.NewGameMessageToServer;
 import freerails.network.SavedGamesManager;
-import freerails.util.ProgressMonitor;
+import freerails.client.ProgressMonitorModel;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -128,6 +128,6 @@ public class SavedGameManagerImpl implements SavedGamesManager {
      */
     public Serializable newMap(String name) {
         return OldWorldImpl.createWorldFromMapFile(name,
-                ProgressMonitor.NULL_INSTANCE);
+                ProgressMonitorModel.EMPTY_PROGRESSMONITOR);
     }
 }

@@ -21,7 +21,7 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
@@ -68,8 +68,8 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testBuildingStraight() {
 
-        ImPoint from = new ImPoint(5, 5);
-        ImPoint to = new ImPoint(10, 5);
+        Point2D from = new Point2D(5, 5);
+        Point2D to = new Point2D(10, 5);
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
@@ -106,8 +106,8 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testBuildingOneTrackPiece() {
 
-        ImPoint from = new ImPoint(5, 5);
-        ImPoint to = new ImPoint(6, 5);
+        Point2D from = new Point2D(5, 5);
+        Point2D to = new Point2D(6, 5);
         try {
             // Check there is no track before we build it.
 
@@ -149,15 +149,15 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testTerminalProblem() {
         try {
-            ImPoint from = new ImPoint(5, 5);
+            Point2D from = new Point2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
             stationBuilder.setStationType(terminalStationType);
-            ms = stationBuilder.buildStation(new ImPoint(8, 5));
+            ms = stationBuilder.buildStation(new Point2D(8, 5));
             assertTrue(ms.ok);
-            pathFinder.setupSearch(new ImPoint(7, 5), new ImPoint(9, 5), bts);
+            pathFinder.setupSearch(new Point2D(7, 5), new Point2D(9, 5), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
@@ -180,9 +180,9 @@ public class TrackBuildingTest extends TestCase {
             int trackTypeID = stationBuilder.getTrackTypeID("double track");
             bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, w);
             producer.setBuildTrackStrategy(bts);
-            ImPoint a = new ImPoint(5, 5);
-            ImPoint b = new ImPoint(6, 5);
-            ImPoint c = new ImPoint(7, 6);
+            Point2D a = new Point2D(5, 5);
+            Point2D b = new Point2D(6, 5);
+            Point2D c = new Point2D(7, 6);
 
             pathFinder.setupSearch(a, b, bts);
             pathFinder.search(-1);
@@ -215,11 +215,11 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testStartSearchOnSharpCurve() {
         try {
-            ImPoint from = new ImPoint(5, 5);
+            Point2D from = new Point2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.ok);
-            pathFinder.setupSearch(new ImPoint(6, 5), new ImPoint(6, 7), bts);
+            pathFinder.setupSearch(new Point2D(6, 5), new Point2D(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);

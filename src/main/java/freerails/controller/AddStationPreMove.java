@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.move.*;
 import freerails.util.ImList;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -43,13 +43,13 @@ public class AddStationPreMove implements PreMove {
 
     private static final long serialVersionUID = 3258131349411148085L;
 
-    private final ImPoint p;
+    private final Point2D p;
 
     private final int ruleNumber;
 
     private final FreerailsPrincipal principal;
 
-    private AddStationPreMove(ImPoint p, int trackRule,
+    private AddStationPreMove(Point2D p, int trackRule,
                               FreerailsPrincipal principal) {
         this.p = p;
         this.ruleNumber = trackRule;
@@ -62,7 +62,7 @@ public class AddStationPreMove implements PreMove {
      * @param principal
      * @return
      */
-    public static AddStationPreMove newStation(ImPoint p, int trackRule,
+    public static AddStationPreMove newStation(Point2D p, int trackRule,
                                                FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
     }

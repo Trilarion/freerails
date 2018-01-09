@@ -94,9 +94,9 @@ public class TrainPositionOnMap implements Serializable {
     private final ImInts xpoints;
     private final ImInts ypoints;
     private final double speed, acceleration;
-    private final SpeedTimeAndStatus.TrainActivity activity;
+    private final TrainActivity activity;
     private TrainPositionOnMap(int[] xs, int[] ys, double speed,
-                               double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
+                               double acceleration, TrainActivity activity) {
         if (xs.length != ys.length) {
             throw new IllegalArgumentException();
         }
@@ -115,7 +115,7 @@ public class TrainPositionOnMap implements Serializable {
      */
     public static TrainPositionOnMap createInstance(int[] xpoints, int[] ypoints) {
         return new TrainPositionOnMap(xpoints, ypoints, 0d, 0d,
-                SpeedTimeAndStatus.TrainActivity.READY);
+                TrainActivity.READY);
     }
 
     /**
@@ -125,7 +125,7 @@ public class TrainPositionOnMap implements Serializable {
     public static TrainPositionOnMap createInSameDirectionAsPath(
             PathIterator path) {
         return createInSameDirectionAsPath(path, 0d, 0d,
-                SpeedTimeAndStatus.TrainActivity.READY);
+                TrainActivity.READY);
     }
 
     /**
@@ -137,7 +137,7 @@ public class TrainPositionOnMap implements Serializable {
      */
     public static TrainPositionOnMap createInSameDirectionAsPathReversed(
             Pair<PathIterator, Integer> path, double speed,
-            double acceleration, SpeedTimeAndStatus.TrainActivity activity) {
+            double acceleration, TrainActivity activity) {
 
         IntLine line = new IntLine();
 
@@ -177,7 +177,7 @@ public class TrainPositionOnMap implements Serializable {
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(
             PathIterator path, double speed, double acceleration,
-            SpeedTimeAndStatus.TrainActivity activity) {
+            TrainActivity activity) {
         IntArray xPointsIntArray = new IntArray();
         IntArray yPointsIntArray = new IntArray();
         IntLine line = new IntLine();

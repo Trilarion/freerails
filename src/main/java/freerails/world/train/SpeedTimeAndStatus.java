@@ -99,41 +99,4 @@ public class SpeedTimeAndStatus implements Serializable {
         return result;
     }
 
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
-    public enum TrainActivity {
-
-        /**
-         *
-         */
-        STOPPED_AT_STATION,
-
-        /**
-         *
-         */
-        READY,
-
-        /**
-         *
-         */
-        WAITING_FOR_FULL_LOAD,
-
-        /**
-         *
-         */
-        STOPPED_AT_SIGNAL,
-
-        /**
-         *
-         */
-        CRASHED,
-
-        /**
-         *
-         */
-        NEEDS_UPDATING
-    }
-
 }

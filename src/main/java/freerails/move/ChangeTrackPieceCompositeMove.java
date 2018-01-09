@@ -23,7 +23,7 @@
 package freerails.move;
 
 import freerails.controller.PathCacheController;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.game.GameRules;
@@ -64,7 +64,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
      * @return
      */
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(
-            ImPoint from, TileTransition direction, TrackRule ruleA, TrackRule ruleB,
+            Point2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB,
             ReadOnlyWorld w, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a;
         ChangeTrackPieceMove b;
@@ -86,7 +86,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
      * @throws Exception
      */
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(
-            ImPoint from, TileTransition direction, ReadOnlyWorld w,
+            Point2D from, TileTransition direction, ReadOnlyWorld w,
             FreerailsPrincipal principal) throws Exception {
         TrackMove a;
         TrackMove b;
@@ -101,7 +101,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     // utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(
-            ImPoint p, TileTransition direction, TrackRule trackRule, ReadOnlyWorld w,
+            Point2D p, TileTransition direction, TrackRule trackRule, ReadOnlyWorld w,
             FreerailsPrincipal principle) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
@@ -132,7 +132,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     // utility method.
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(ImPoint p,
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Point2D p,
                                                                 TileTransition direction, ReadOnlyWorld w, FreerailsPrincipal principal)
             throws Exception {
         TrackPiece oldTrackPiece;

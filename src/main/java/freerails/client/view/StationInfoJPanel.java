@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.ImPoint;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -173,7 +173,7 @@ public class StationInfoJPanel extends JPanel implements View,
         // GEN-FIRST:event_previousStationActionPerformed
         // Add your handling code here:
         if (wi.previous()) {
-            ImPoint p = new ImPoint(((Station) wi.getElement())
+            Point2D p = new Point2D(((Station) wi.getElement())
                     .getStationX(), ((Station) wi.getElement())
                     .getStationY());
             this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
@@ -188,7 +188,7 @@ public class StationInfoJPanel extends JPanel implements View,
         // GEN-FIRST:event_nextStationActionPerformed
         // Add your handling code here:
         if (wi.next()) {
-            ImPoint p = new ImPoint(((Station) wi.getElement())
+            Point2D p = new Point2D(((Station) wi.getElement())
                     .getStationX(), ((Station) wi.getElement())
                     .getStationY());
             this.modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);

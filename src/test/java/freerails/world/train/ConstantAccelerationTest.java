@@ -28,7 +28,7 @@ import java.util.Random;
 /**
  *
  */
-public class ConstAccTest extends TestCase {
+public class ConstantAccelerationTest extends TestCase {
 
     /**
      * Checks the specified object satisfies the contract defined by the
@@ -113,14 +113,14 @@ public class ConstAccTest extends TestCase {
      *
      */
     public void testTandS() {
-        SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 5);
+        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 5);
         double s = acc1.getDistance();
-        SpeedAgainstTime acc2 = ConstAcc.uas(0, 10, s);
+        SpeedAgainstTime acc2 = ConstantAcceleration.uas(0, 10, s);
         assertEquals(acc1, acc2);
 
-        acc1 = ConstAcc.uat(10, 0, 5);
+        acc1 = ConstantAcceleration.uat(10, 0, 5);
         assertEquals(50, acc1.getDistance(), 0.00001);
-        acc2 = ConstAcc.uas(10, 0, acc1.getDistance());
+        acc2 = ConstantAcceleration.uas(10, 0, acc1.getDistance());
         assertEquals(acc1, acc2);
 
     }
@@ -129,8 +129,8 @@ public class ConstAccTest extends TestCase {
      *
      */
     public void testEquals() {
-        SpeedAgainstTime acc1 = ConstAcc.uat(0, 10, 4);
-        SpeedAgainstTime acc2 = ConstAcc.uat(0, 10, 4);
+        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 4);
+        SpeedAgainstTime acc2 = ConstantAcceleration.uat(0, 10, 4);
         assertEquals(acc1, acc2);
     }
 
@@ -140,10 +140,10 @@ public class ConstAccTest extends TestCase {
     public void testContract() {
         Random r = new Random(88);
         for (int i = 0; i < 1000; i++) {
-            ConstAcc acc1 = ConstAcc.uat(r.nextDouble(), r.nextDouble(), r
+            ConstantAcceleration acc1 = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r
                     .nextDouble());
             checkContract(acc1);
-            ConstAcc acc2 = ConstAcc.uas(r.nextDouble(), r.nextDouble(), r
+            ConstantAcceleration acc2 = ConstantAcceleration.uas(r.nextDouble(), r.nextDouble(), r
                     .nextDouble());
             checkContract(acc2);
         }

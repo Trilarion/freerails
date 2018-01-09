@@ -19,10 +19,10 @@
 package freerails.world.train;
 
 import freerails.client.ClientConstants;
-import freerails.util.IntIterator;
 import freerails.util.IntLine;
 import freerails.world.track.PathIterator;
-import freerails.world.PositionOnTrack;
+
+import java.util.Iterator;
 
 /**
  * Exposes the path of a train. TODO needs better comment
@@ -32,27 +32,27 @@ public class TrainPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3256999977816502584L;
     private static final int tileSize = ClientConstants.TILE_SIZE;
-    private final IntIterator intIterator;
+    private final Iterator<Integer> intIterator;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();
 
     /**
      * @param i
      */
-    public TrainPathIterator(IntIterator i) {
+    public TrainPathIterator(Iterator<Integer> i) {
         intIterator = i;
-        p2.setValuesFromInt(intIterator.nextInt());
+        p2.setValuesFromInt(intIterator.next());
     }
 
     public boolean hasNext() {
-        return intIterator.hasNextInt();
+        return intIterator.hasNext();
     }
 
     public void nextSegment(IntLine line) {
         p1.setValuesFromInt(p2.toInt());
         line.x1 = p1.getX() * tileSize + tileSize / 2;
         line.y1 = p1.getY() * tileSize + tileSize / 2;
-        p2.setValuesFromInt(intIterator.nextInt());
+        p2.setValuesFromInt(intIterator.next());
         line.x2 = p2.getX() * tileSize + tileSize / 2;
         line.y2 = p2.getY() * tileSize + tileSize / 2;
     }
