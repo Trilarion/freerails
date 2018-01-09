@@ -18,13 +18,13 @@
 
 package freerails.world.finances;
 
+import freerails.world.WorldConstants;
+
 /**
  * A Transaction that adds or removes a Bond.
  */
 public class BondItemTransaction extends ItemTransaction {
 
-    public static final Money BOND_VALUE_ISSUE = new Money(500000);
-    public static final Money BOND_VALUE_REPAY = new Money(-500000);
     private static final long serialVersionUID = 3257562923491473465L;
 
     // TODO how many values for category are really possible here, if only one, set it internally
@@ -41,7 +41,7 @@ public class BondItemTransaction extends ItemTransaction {
      */
     public static BondItemTransaction issueBond(double interestRate) {
         return new BondItemTransaction(TransactionCategory.BOND, interestRate, 1,
-                BOND_VALUE_ISSUE);
+                WorldConstants.BOND_VALUE_ISSUE);
     }
 
     /**
@@ -50,6 +50,6 @@ public class BondItemTransaction extends ItemTransaction {
      */
     public static BondItemTransaction repayBond(int interestRate) {
         return new BondItemTransaction(TransactionCategory.BOND, interestRate, -1,
-                BOND_VALUE_REPAY);
+                WorldConstants.BOND_VALUE_REPAY);
     }
 }

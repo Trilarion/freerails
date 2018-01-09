@@ -22,7 +22,7 @@ import freerails.controller.*;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.util.ImStringList;
+import freerails.util.ImmutableList;
 import freerails.util.SynchronizedFlag;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
@@ -146,9 +146,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 MessageToClient setMaps = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                        new ImStringList(savedGamesManager.getNewMapNames()));
+                        new ImmutableList<String>(savedGamesManager.getNewMapNames()));
 
-                ImStringList savedGameNames = new ImStringList(
+                ImmutableList<String> savedGameNames = new ImmutableList<String>(
                         savedGamesManager.getSaveGameNames());
                 MessageToClient setSaveGames = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
@@ -411,7 +411,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             MessageToClient request = new SetPropertyMessageToClient(
                     getNextClientCommandId(),
                     ClientControlInterface.ClientProperty.SAVED_GAMES,
-                    new ImStringList(saves));
+                    new ImmutableList<String>(saves));
 
             send2All(request);
         } catch (IOException e) {
@@ -456,7 +456,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         MessageToClient request = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.CONNECTED_CLIENTS,
-                new ImStringList(playerNames));
+                new ImmutableList<String>(playerNames));
 
         send2All(request);
     }
@@ -602,8 +602,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         MessageToClient setMaps = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                new ImStringList(savedGamesManager.getNewMapNames()));
-        ImStringList savedGameNames = new ImStringList(savedGamesManager
+                new ImmutableList<String>(savedGamesManager.getNewMapNames()));
+        ImmutableList<String> savedGameNames = new ImmutableList<String>(savedGamesManager
                 .getSaveGameNames());
         MessageToClient setSaveGames = new SetPropertyMessageToClient(
                 getNextClientCommandId(),

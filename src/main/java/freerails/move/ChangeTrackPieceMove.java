@@ -63,7 +63,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
         GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
 
-        return rules.isCanConnect2OtherRRTrack();
+        return rules.isCanConnectToOtherRRTrack();
     }
 
     /**

@@ -25,8 +25,8 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
+import freerails.util.LineSegment;
 import freerails.util.Point2D;
-import freerails.util.IntLine;
 import freerails.world.ActivityIterator;
 import freerails.world.track.PathIterator;
 import freerails.world.terrain.TileTransition;
@@ -50,13 +50,9 @@ import java.util.Random;
 public class TrainMotionExpt extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
-
     private final World world;
-
     private final FreerailsPrincipal principal;
-
     private double finishTime = 0;
-
     private long startTime;
 
     /**
@@ -174,11 +170,11 @@ public class TrainMotionExpt extends JComponent {
         }
 
         g.setColor(Color.BLACK);
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         PathIterator path = pos.path();
         while (path.hasNext()) {
             path.nextSegment(line);
-            g.drawLine(line.x1, line.y1, line.x2, line.y2);
+            g.drawLine(line.getX1(), line.getY1(), line.getX2(), line.getY2());
         }
 
         int speed = (int) Math.round(pos.getSpeed());

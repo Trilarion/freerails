@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.move.*;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.WorldListListener;
 import freerails.world.WorldMapListener;
@@ -113,7 +113,7 @@ public final class MoveChainFork implements MoveReceiver {
         }
 
         if (move instanceof CompositeMove) {
-            ImList<Move> moves = ((CompositeMove) move).getMoves();
+            ImmutableList<Move> moves = ((CompositeMove) move).getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
                 splitMove(moves.get(i));
@@ -139,7 +139,7 @@ public final class MoveChainFork implements MoveReceiver {
                     // + move.getClass().getCanonicalName());
                     // if (move instanceof WorldDiffMove) {
                     // WorldDiffMove wm = (WorldDiffMove) move;
-                    // ImList<MapDiff> diffs = wm.getDiffs();
+                    // ImmutableList<MapDiff> diffs = wm.getDiffs();
                     // for (int i = 0; i < diffs.size(); i++) {
                     // System.out.println(" " + diffs.get(i).x + "/"
                     // + diffs.get(i).y);

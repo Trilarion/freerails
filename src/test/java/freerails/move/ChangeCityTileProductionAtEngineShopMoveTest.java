@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.train.WagonAndEngineTypesFactory;
 import freerails.world.station.TrainBlueprint;
@@ -33,7 +33,7 @@ import freerails.world.top.MapFixtureFactory;
  */
 public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
-    private ImList<TrainBlueprint> after;
+    private ImmutableList<TrainBlueprint> after;
 
     private int engineType;
 
@@ -57,7 +57,7 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
         engineType = 0;
         int wagonType = 0;
         wagons = new int[]{wagonType, wagonType};
-        after = new ImList<>(new TrainBlueprint(engineType, wagons));
+        after = new ImmutableList<>(new TrainBlueprint(engineType, wagons));
     }
 
     /**
@@ -65,7 +65,7 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
      */
     @Override
     public void testMove() {
-        ImList<TrainBlueprint> before = new ImList<>();
+        ImmutableList<TrainBlueprint> before = new ImmutableList<>();
 
         ChangeProductionAtEngineShopMove m;
 

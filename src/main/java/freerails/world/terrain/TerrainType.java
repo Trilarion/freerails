@@ -18,7 +18,7 @@
 
 package freerails.world.terrain;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.finances.Money;
 
 import java.io.Serializable;
@@ -54,21 +54,21 @@ public interface TerrainType extends Serializable {
      */
     int getRGB();
 
-    // TODO replace ImList  with List
+    // TODO replace ImmutableList  with List
     /**
      * @return
      */
-    ImList<TileProduction> getProduction();
+    ImmutableList<TileProduction> getProduction();
 
     /**
      * @return
      */
-    ImList<TileConsumption> getConsumption();
+    ImmutableList<TileConsumption> getConsumption();
 
     /**
      * @return
      */
-    ImList<TileConversion> getConversion();
+    ImmutableList<TileConversion> getConversion();
 
     /**
      * @return

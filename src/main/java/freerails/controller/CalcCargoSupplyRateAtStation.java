@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.station.StationConversion;
@@ -134,7 +134,7 @@ public class CalcCargoSupplyRateAtStation {
                 tileTypeNumber);
 
         // Calculate supply.
-        ImList<TileProduction> production = terrainType.getProduction();
+        ImmutableList<TileProduction> production = terrainType.getProduction();
 
         // loop through the production array and increment
         // the supply rates for the station
@@ -148,7 +148,7 @@ public class CalcCargoSupplyRateAtStation {
         }
 
         // Now calculate demand.
-        ImList<TileConsumption> consumption = terrainType.getConsumption();
+        ImmutableList<TileConsumption> consumption = terrainType.getConsumption();
 
         for (int m = 0; m < consumption.size(); m++) {
             int type = consumption.get(m).getCargoType();
@@ -160,7 +160,7 @@ public class CalcCargoSupplyRateAtStation {
             demand[type] += PREREQUISITE_FOR_DEMAND / prerequisite;
         }
 
-        ImList<TileConversion> conversion = terrainType.getConversion();
+        ImmutableList<TileConversion> conversion = terrainType.getConversion();
 
         for (int m = 0; m < conversion.size(); m++) {
             int type = conversion.get(m).getInput();

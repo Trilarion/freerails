@@ -36,7 +36,6 @@ public class MutableSchedule implements Schedule {
      * Vector of TrainOrdersModel.
      */
     private final List<TrainOrdersModel> orders = new ArrayList();
-
     private int nextScheduledOrder = -1;
 
     /**

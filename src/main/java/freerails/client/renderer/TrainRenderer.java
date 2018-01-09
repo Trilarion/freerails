@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import freerails.world.terrain.TileTransition;
 import freerails.world.train.PathWalker;
@@ -76,9 +76,9 @@ public class TrainRenderer {
     }
 
     private void renderWagon(Graphics g, PathWalker pw, int type, boolean engine) {
-        IntLine wagon = new IntLine();
+        LineSegment wagon = new LineSegment();
 
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
 
         pw.stepForward(16);
 
@@ -88,19 +88,19 @@ public class TrainRenderer {
             pw.nextSegment(line);
 
             if (firstIteration) {
-                wagon.x1 = line.x1;
-                wagon.y1 = line.y1;
+                wagon.setX1(line.getX1());
+                wagon.setY1(line.getY1());
                 firstIteration = false;
             }
         }
 
-        wagon.x2 = line.x2;
-        wagon.y2 = line.y2;
+        wagon.setX2(line.getX2());
+        wagon.setY2(line.getY2());
 
         TileTransition v = TileTransition
-                .getNearestVector(wagon.x2 - wagon.x1, wagon.y2 - wagon.y1);
-        Point p = new Point((wagon.x2 + wagon.x1) / 2,
-                (wagon.y2 + wagon.y1) / 2);
+                .getNearestVector(wagon.getX2() - wagon.getX1(), wagon.getY2() - wagon.getY1());
+        Point p = new Point((wagon.getX2() + wagon.getX1()) / 2,
+                (wagon.getY2() + wagon.getY1()) / 2);
 
         Image image;
 

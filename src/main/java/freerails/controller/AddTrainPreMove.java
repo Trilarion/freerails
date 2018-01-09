@@ -57,8 +57,7 @@ public class AddTrainPreMove implements PreMove {
      * @param fp
      * @param s
      */
-    public AddTrainPreMove(int e, ImInts wags, Point2D p,
-                           FreerailsPrincipal fp, ImmutableSchedule s) {
+    public AddTrainPreMove(int e, ImInts wags, Point2D p, FreerailsPrincipal fp, ImmutableSchedule s) {
         engineTypeId = e;
         wagons = wags;
         point = p;

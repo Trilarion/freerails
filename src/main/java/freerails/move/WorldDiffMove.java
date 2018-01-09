@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.util.ListKey;
 import freerails.world.*;
@@ -47,7 +47,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             .getName());
     private static final long serialVersionUID = 3905245632406239544L;
     private final Cause cause;
-    private final ImList<MapDiff> diffs;
+    private final ImmutableList<MapDiff> diffs;
     private final CompositeMove listChanges;
     private final int x, y, w, h;
 
@@ -89,7 +89,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             w = 0;
             h = 0;
         }
-        diffs = new ImList<>(diffsArrayList);
+        diffs = new ImmutableList<>(diffsArrayList);
 
         List<Move> tempList = new ArrayList<>();
         Iterator<ListKey> lit = worldDiffs.getListDiffs();

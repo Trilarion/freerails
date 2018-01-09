@@ -20,7 +20,7 @@ package freerails.world.train;
 
 import freerails.util.ImInts;
 import freerails.util.IntArray;
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.util.Pair;
 import freerails.world.track.PathIterator;
 import freerails.world.track.SimplePathIteratorImpl;
@@ -139,7 +139,7 @@ public class TrainPositionOnMap implements Serializable {
             Pair<PathIterator, Integer> path, double speed,
             double acceleration, TrainActivity activity) {
 
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
 
         PathIterator pathIt = path.getA();
         int pathSize = path.getB();
@@ -157,12 +157,12 @@ public class TrainPositionOnMap implements Serializable {
                         + " from:" + pathSize);
             }
             pathIt.nextSegment(line);
-            xPoints[i] = line.x1;
-            yPoints[i] = line.y1;
+            xPoints[i] = line.getX1();
+            yPoints[i] = line.getY1();
         }
 
-        xPoints[0] = line.x2;
-        yPoints[0] = line.y2;
+        xPoints[0] = line.getX2();
+        yPoints[0] = line.getY2();
 
         return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
                 activity);
@@ -180,13 +180,13 @@ public class TrainPositionOnMap implements Serializable {
             TrainActivity activity) {
         IntArray xPointsIntArray = new IntArray();
         IntArray yPointsIntArray = new IntArray();
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         int i = 0;
 
         while (path.hasNext()) {
             path.nextSegment(line);
-            xPointsIntArray.add(i, line.x1);
-            yPointsIntArray.add(i, line.y1);
+            xPointsIntArray.add(i, line.getX1());
+            yPointsIntArray.add(i, line.getY1());
             i++;
 
             if (i > 10000) {
@@ -195,8 +195,8 @@ public class TrainPositionOnMap implements Serializable {
             }
         }
 
-        xPointsIntArray.add(i, line.x2);
-        yPointsIntArray.add(i, line.y2);
+        xPointsIntArray.add(i, line.getX2());
+        yPointsIntArray.add(i, line.getY2());
 
         int[] xPoints;
         int[] yPoints;
@@ -302,8 +302,8 @@ public class TrainPositionOnMap implements Serializable {
             if (thisLength == otherLength) {
                 PathIterator path1;
                 PathIterator path2;
-                IntLine line1 = new IntLine();
-                IntLine line2 = new IntLine();
+                LineSegment line1 = new LineSegment();
+                LineSegment line2 = new LineSegment();
 
                 path1 = other.path();
                 path2 = this.path();
@@ -312,8 +312,8 @@ public class TrainPositionOnMap implements Serializable {
                     path1.nextSegment(line1);
                     path2.nextSegment(line2);
 
-                    if (line1.x1 != line2.x1 || line1.y1 != line2.y1
-                            || line1.x2 != line2.x2 || line1.y2 != line2.y2) {
+                    if (line1.getX1() != line2.getX1() || line1.getY1() != line2.getY1()
+                            || line1.getX2() != line2.getX2() || line1.getY2() != line2.getY2()) {
                         return false;
                     }
                 }
@@ -462,12 +462,12 @@ public class TrainPositionOnMap implements Serializable {
         if (headsAreEqual(this, b)) {
             PathIterator path = b.path();
             int i = 0;
-            IntLine line = new IntLine();
+            LineSegment line = new LineSegment();
 
             while (path.hasNext()) {
                 path.nextSegment(line);
 
-                if (this.getX(i) != line.x1 || this.getY(i) != line.y1) {
+                if (this.getX(i) != line.getX1() || this.getY(i) != line.getY1()) {
                     return false;
                 }
 
@@ -514,12 +514,12 @@ public class TrainPositionOnMap implements Serializable {
         if (tailsAreEqual(this, b)) {
             PathIterator path = b.reversePath();
             int i = this.getLength() - 1;
-            IntLine line = new IntLine();
+            LineSegment line = new LineSegment();
 
             while (path.hasNext()) {
                 path.nextSegment(line);
 
-                if (this.getX(i) != line.x1 || this.getY(i) != line.y1) {
+                if (this.getX(i) != line.getX1() || this.getY(i) != line.getY1()) {
                     return false;
                 }
 

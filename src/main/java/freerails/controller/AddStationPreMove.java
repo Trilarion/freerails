@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -151,7 +151,7 @@ public class AddStationPreMove implements PreMove {
     }
 
     private CompositeMove addSupplyAndDemand(CompositeMove m, ReadOnlyWorld w) {
-        ImList<Move> moves2 = m.getMoves();
+        ImmutableList<Move> moves2 = m.getMoves();
         Move[] moves = new Move[moves2.size()];
         for (int i = 0; i < moves2.size(); i++) {
             moves[i] = moves2.get(i);

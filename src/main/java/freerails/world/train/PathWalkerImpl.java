@@ -18,7 +18,7 @@
 
 package freerails.world.train;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 
 import java.util.NoSuchElementException;
@@ -27,23 +27,18 @@ import java.util.NoSuchElementException;
  * PathWalker that walks the path exposed by a PathIterator.
  */
 public class PathWalkerImpl implements PathWalker {
-    private static final long serialVersionUID = 4050204158701155639L;
 
+    private static final long serialVersionUID = 4050204158701155639L;
     private final PathIterator it;
 
     /**
      * current segment of the path we are on.
      */
-    private final IntLine currentSegment = new IntLine();
-
+    private final LineSegment currentSegment = new LineSegment();
     private double distanceAlongCurrentSegment = 0;
-
     private double distanceOfThisStepRemaining = 0;
-
     private boolean beforeFirst = true;
-
     private int lastX;
-
     private int lastY;
 
     /**
@@ -84,7 +79,7 @@ public class PathWalkerImpl implements PathWalker {
         } else return it.hasNext();
     }
 
-    public void nextSegment(IntLine line) {
+    public void nextSegment(LineSegment line) {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
@@ -112,50 +107,50 @@ public class PathWalkerImpl implements PathWalker {
          *
          */
         if (!beforeFirst) {
-            if (line.x1 != this.lastX) {
+            if (line.getX1() != this.lastX) {
                 throw new IllegalStateException();
             }
 
-            if (line.y1 != this.lastY) {
+            if (line.getY1() != this.lastY) {
                 throw new IllegalStateException();
             }
         }
 
-        this.lastX = line.x2;
-        this.lastY = line.y2;
+        this.lastX = line.getX2();
+        this.lastY = line.getY2();
         beforeFirst = false;
 
     }
 
-    private void endInMiddleOfSegment(IntLine line) {
+    private void endInMiddleOfSegment(LineSegment line) {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
-        line.x2 = getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.x1, currentSegment.x2);
-        line.y2 = getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.y1, currentSegment.y2);
+        line.setX2(getCoorinateOnSegment(distanceAlongCurrentSegment,
+                currentSegment.getX1(), currentSegment.getX2()));
+        line.setY2(getCoorinateOnSegment(distanceAlongCurrentSegment,
+                currentSegment.getY1(), currentSegment.getY2()));
     }
 
-    private void endAtSegmentEnd(IntLine line,
+    private void endAtSegmentEnd(LineSegment line,
                                  double remainingDistanceAlongCurrentSegment) {
-        line.x2 = this.currentSegment.x2;
-        line.y2 = this.currentSegment.y2;
+        line.setX2(this.currentSegment.getX2());
+        line.setY2(this.currentSegment.getY2());
         this.distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
         distanceAlongCurrentSegment = this.currentSegment.getLength();
     }
 
-    private void startInMiddleOfSegment(IntLine line) {
-        line.x1 = getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.x1, currentSegment.x2);
-        line.y1 = getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.y1, currentSegment.y2);
+    private void startInMiddleOfSegment(LineSegment line) {
+        line.setX1(getCoorinateOnSegment(distanceAlongCurrentSegment,
+                currentSegment.getX1(), currentSegment.getX2()));
+        line.setY1(getCoorinateOnSegment(distanceAlongCurrentSegment,
+                currentSegment.getY1(), currentSegment.getY2()));
     }
 
-    private void startNewSegment(IntLine line) {
+    private void startNewSegment(LineSegment line) {
         it.nextSegment(currentSegment);
         distanceAlongCurrentSegment = 0;
-        line.x1 = this.currentSegment.x1;
-        line.y1 = this.currentSegment.y1;
+        line.setX1(this.currentSegment.getX1());
+        line.setY1(this.currentSegment.getY1());
     }
 
     private int getCoorinateOnSegment(double distanceAlongSegment,

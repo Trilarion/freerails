@@ -26,12 +26,10 @@ import java.text.DecimalFormat;
  * represented as <i>Month, Year</i> and <i>hour:minute</i>.
  */
 public final class GameCalendar implements Serializable {
+
     private static final long serialVersionUID = 3257568421033226805L;
-
     private static final DecimalFormat decimalFormat = new DecimalFormat("00");
-
     private final int ticksPerYear;
-
     private final int startYear;
 
     /**

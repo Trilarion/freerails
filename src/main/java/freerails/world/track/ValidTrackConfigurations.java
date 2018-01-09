@@ -31,10 +31,7 @@ import java.util.Iterator;
 public final class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
-
-    private final ImHashSet<TrackConfiguration> legalConfigs;// = new
-    // HashSet<TrackConfiguration>();
-
+    private final ImHashSet<TrackConfiguration> legalConfigs;
     private final int maximumConsecutivePieces;
 
     /**

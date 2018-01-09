@@ -18,7 +18,7 @@
 
 package freerails.world.track;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.FreerailsMutableSerializable;
 
 /**
@@ -29,6 +29,7 @@ import freerails.world.FreerailsMutableSerializable;
  */
 // TODO what is it good for?
 public interface PathIterator extends FreerailsMutableSerializable {
+
     /**
      * Tests whether the path has another segment.
      *
@@ -38,12 +39,12 @@ public interface PathIterator extends FreerailsMutableSerializable {
 
     /**
      * Gets the next segment of the path and places its coordinates in the
-     * specified IntLine; then moves the iterator forwards by one path segment.
-     * (The coordinates are placed the passed-in IntLine rather than a new
+     * specified LineSegment; then moves the iterator forwards by one path segment.
+     * (The coordinates are placed the passed-in LineSegment rather than a new
      * object to avoid the cost of object creation.)
      *
      * @param line
      */
-    void nextSegment(IntLine line);
+    void nextSegment(LineSegment line);
 
 }

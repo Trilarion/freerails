@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
@@ -34,8 +34,8 @@ import freerails.world.station.Station;
  */
 public class ChangeProductionAtEngineShopMove implements Move {
     private static final long serialVersionUID = 3905519384997737520L;
-    private final ImList<TrainBlueprint> before;
-    private final ImList<TrainBlueprint> after;
+    private final ImmutableList<TrainBlueprint> before;
+    private final ImmutableList<TrainBlueprint> after;
     private final int stationNumber;
     private final FreerailsPrincipal principal;
 
@@ -45,8 +45,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param station
      * @param p
      */
-    public ChangeProductionAtEngineShopMove(ImList<TrainBlueprint> b,
-                                            ImList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
+    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b,
+                                            ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
         this.before = b;
         this.after = a;
         this.stationNumber = station;
@@ -89,7 +89,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return tryMove(world, before);
     }
 
-    private MoveStatus tryMove(World w, ImList<TrainBlueprint> stateA) {
+    private MoveStatus tryMove(World w, ImmutableList<TrainBlueprint> stateA) {
         // Check that the specified station exists.
         if (!w.boundsContain(principal, KEY.STATIONS, this.stationNumber)) {
             return MoveStatus.moveFailed(this.stationNumber + " " + principal);

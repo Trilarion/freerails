@@ -19,8 +19,7 @@
 package freerails.world.track;
 
 import freerails.util.ImInts;
-import freerails.util.IntLine;
-import freerails.world.track.PathIterator;
+import freerails.util.LineSegment;
 
 import java.util.NoSuchElementException;
 
@@ -28,12 +27,10 @@ import java.util.NoSuchElementException;
  * Exposes a path stored as an array of x points and an array of y points.
  */
 public class SimplePathIteratorImpl implements PathIterator {
+
     private static final long serialVersionUID = 3618420406261003576L;
-
     private final ImInts x;
-
     private final ImInts y;
-
     private int position = 0;
 
     /**
@@ -66,12 +63,12 @@ public class SimplePathIteratorImpl implements PathIterator {
         }
     }
 
-    public void nextSegment(IntLine line) {
+    public void nextSegment(LineSegment line) {
         if (hasNext()) {
-            line.x1 = x.get(position);
-            line.y1 = y.get(position);
-            line.x2 = x.get(position + 1);
-            line.y2 = y.get(position + 1);
+            line.setX1(x.get(position));
+            line.setY1(y.get(position));
+            line.setX2(x.get(position + 1));
+            line.setY2(y.get(position + 1));
             position++;
         } else {
             throw new NoSuchElementException();

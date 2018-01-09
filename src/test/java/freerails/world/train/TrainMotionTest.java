@@ -34,12 +34,12 @@ public class TrainMotionTest extends TestCase {
      * this= TrainMotion (id=49) activity= SpeedTimeAndStatus$TrainActivity
      * (id=107) name= "READY" ordinal= 1 distanceEngineWillTravel= 30.0
      * duration= 3.9936298481613424 initialPosition= 42.42640687119285 path=
-     * PathOnTiles (id=48) start= Point2D (id=73) x= 14 y= 5 vectors= ImList<E>
+     * PathOnTiles (id=48) start= Point2D (id=73) x= 14 y= 5 vectors= ImmutableList<E>
      * (id=75) elementData= FreerailsSerializable[2] (id=77) [0]= TileTransition (id=79)
      * deltaX= 1 deltaY= 1 flatTrackTemplate= 256 length= 42.42640687119285 [1]=
      * TileTransition (id=82) deltaX= 1 deltaY= 0 flatTrackTemplate= 32 length= 30.0
      * speeds= CompositeSpeedAgainstTime (id=111) duration= 10.972888751347389
-     * totalDistance= 97.57359312880715 values= ImList<E> (id=114) elementData=
+     * totalDistance= 97.57359312880715 values= ImmutableList<E> (id=114) elementData=
      * FreerailsSerializable[2] (id=118) [0]= ConstantAcceleration (id=119) a= 0.5 dt=
      * 6.972888751347389 u= 6.5135556243263055 [1]= ConstantAcceleration (id=121) a= 0.0 dt=
      * 4.0 u= 10.0 trainLength= 24 t= 3.9936298481613424 offset=

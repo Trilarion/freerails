@@ -57,7 +57,6 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     private final String template;
     private ModelRoot modelRoot;
     private final Action repayBondAction = new AbstractAction("Repay bond") {
-        private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
 
@@ -68,7 +67,6 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     };
     private FinancialDataGatherer financialDataGatherer;
     private final Action issueBondAction = new AbstractAction("Issue bond") {
-        private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
 
@@ -133,7 +131,6 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
             String sellLabel = "Sell 10,000 shares of " + playerLabel;
 
             buyStock[playerId] = new AbstractAction(buyLabel) {
-                private static final long serialVersionUID = 1L;
 
                 public void actionPerformed(ActionEvent arg0) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot
@@ -151,7 +148,6 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
             };
 
             sellStock[playerId] = new AbstractAction(sellLabel) {
-                private static final long serialVersionUID = 1L;
 
                 public void actionPerformed(ActionEvent arg0) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot

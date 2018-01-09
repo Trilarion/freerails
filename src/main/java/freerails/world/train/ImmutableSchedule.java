@@ -22,7 +22,7 @@
 package freerails.world.train;
 
 import freerails.util.ImInts;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -33,7 +33,7 @@ import java.io.Serializable;
 public class ImmutableSchedule implements Schedule, Serializable {
 
     private static final long serialVersionUID = 3977858458324318264L;
-    private final ImList<TrainOrdersModel> orders;
+    private final ImmutableList<TrainOrdersModel> orders;
     private final int nextScheduledOrder;
     private final boolean hasPriorityOrders;
 
@@ -44,7 +44,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      */
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
                              boolean hasPriorityOrders) {
-        this.orders = new ImList<>(orders);
+        this.orders = new ImmutableList<>(orders);
         this.nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;
     }

@@ -61,7 +61,6 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private final DialogueBoxController dialogueBoxController;
     private final ModelRootImpl modelRoot;
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
-        private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
             dialogueBoxController.closeContent();

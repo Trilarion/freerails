@@ -201,8 +201,8 @@ public class ServerControlModel implements ModelRootListener {
             dbc.showSelectSavedGame2Load();
             /*
              *
-             * ImStringList files =
-             * (ImStringList)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+             * ImmutableList<String> files =
+             * (ImmutableList<String>)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
              * Object[] saves = new Object[files.size()]; for (int i = 0; i <
              * files.size(); i++) { saves[i] = files.get(i); } // Display a
              * JOptionPane that lists the existing saved games try { Object

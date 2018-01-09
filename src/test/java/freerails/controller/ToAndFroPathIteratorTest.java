@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import junit.framework.TestCase;
 
@@ -43,7 +43,7 @@ public class ToAndFroPathIteratorTest extends TestCase {
      */
     public void testNextSegment() {
         List<Point> l = new ArrayList<>();
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
 
         l.add(new Point(0, 1));
         l.add(new Point(10, 11));
@@ -76,10 +76,10 @@ public class ToAndFroPathIteratorTest extends TestCase {
         assertLineEquals(10, 11, 20, 22, line);
     }
 
-    private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
-        assertEquals(x1, line.x1);
-        assertEquals(x2, line.x2);
-        assertEquals(y1, line.y1);
-        assertEquals(y2, line.y2);
+    private void assertLineEquals(int x1, int y1, int x2, int y2, LineSegment line) {
+        assertEquals(x1, line.getX1());
+        assertEquals(x2, line.getX2());
+        assertEquals(y1, line.getY1());
+        assertEquals(y2, line.getY2());
     }
 }

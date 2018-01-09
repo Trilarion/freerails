@@ -31,8 +31,8 @@ import java.io.Serializable;
  * I.e. pausing/unpausing is equal to multiply the speed by -1.
  */
 public class GameSpeed implements Serializable {
-    private static final long serialVersionUID = 3257562901983081783L;
 
+    private static final long serialVersionUID = 3257562901983081783L;
     private final int speed;
 
     /**

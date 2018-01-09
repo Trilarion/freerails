@@ -21,9 +21,9 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.util.Pair;
 import freerails.world.track.PathIterator;
 import freerails.world.terrain.TileTransition;
@@ -40,10 +40,8 @@ import java.util.NoSuchElementException;
 public strictfp class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
-
     private final Point2D start;
-
-    private final ImList<TileTransition> vectors;
+    private final ImmutableList<TileTransition> vectors;
 
     /**
      * @param start
@@ -55,8 +53,8 @@ public strictfp class PathOnTiles implements Serializable {
     public PathOnTiles(Point2D start, List<TileTransition> vectorsList) {
         if (null == start)
             throw new NullPointerException();
-        vectors = new ImList<>(vectorsList);
-        vectors.checkForNulls();
+        vectors = new ImmutableList<>(vectorsList);
+        vectors.containsNulls();
         this.start = start;
     }
 
@@ -70,8 +68,8 @@ public strictfp class PathOnTiles implements Serializable {
     public PathOnTiles(Point2D start, TileTransition... vectors) {
         if (null == start)
             throw new NullPointerException();
-        this.vectors = new ImList<>(vectors);
-        this.vectors.checkForNulls();
+        this.vectors = new ImmutableList<>(vectors);
+        this.vectors.containsNulls();
         this.start = start;
     }
 
@@ -390,7 +388,6 @@ public strictfp class PathOnTiles implements Serializable {
 
         return new Pair<>(
                 new PathIterator() {
-                    private static final long serialVersionUID = 1L;
 
                     int index = 0;
 
@@ -398,17 +395,17 @@ public strictfp class PathOnTiles implements Serializable {
                         return (index + 1) < points.size();
                     }
 
-                    public void nextSegment(IntLine line) {
+                    public void nextSegment(LineSegment line) {
                         if (!hasNext()) {
                             throw new NoSuchElementException();
                         }
                         Point2D a = points.get(index);
-                        line.x1 = a.x;
-                        line.y1 = a.y;
+                        line.setX1(a.x);
+                        line.setY1(a.y);
 
                         Point2D b = points.get(index + 1);
-                        line.x2 = b.x;
-                        line.y2 = b.y;
+                        line.setX2(b.x);
+                        line.setY2(b.y);
 
                         index++;
                     }

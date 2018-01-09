@@ -26,22 +26,16 @@ import java.io.Serializable;
  * Stores some of the properties of a track type.
  */
 public final class TrackRuleProperties implements Serializable {
+
     private static final long serialVersionUID = 3618704101752387641L;
-
     private final boolean enableDoubleTrack;
-
     private final Money maintenanceCost;
-
     private final Money price;
-
     private final Money fixedCost;
-
     private final TrackCategories category;
-
+    // TODO rgbvalue part of the client, not part of the world model
     private final int rGBvalue;
-
     private final int stationRadius;
-
     private final String typeName;
 
     /**

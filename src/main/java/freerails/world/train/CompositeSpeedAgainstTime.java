@@ -21,7 +21,7 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.Activity;
 
 /**
@@ -31,15 +31,15 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
         SpeedAgainstTime {
 
     private static final long serialVersionUID = 3146586143114534610L;
-    private final ImList<SpeedAgainstTime> values;
+    private final ImmutableList<SpeedAgainstTime> values;
     private final double finalT, finalS;
 
     /**
      * @param accs
      */
     public CompositeSpeedAgainstTime(SpeedAgainstTime... accs) {
-        values = new ImList<>(accs);
-        values.checkForNulls();
+        values = new ImmutableList<>(accs);
+        values.containsNulls();
         double tempDuration = 0, tempTotalDistance = 0;
         for (SpeedAgainstTime acc : accs) {
             tempDuration += acc.getTime();

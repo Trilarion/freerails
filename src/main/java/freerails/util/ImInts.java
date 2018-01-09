@@ -27,11 +27,9 @@ import java.util.Arrays;
 /**
  * An immutable list of ints.
  */
-@Immutable
 public class ImInts implements Serializable {
 
     private static final long serialVersionUID = -7171552118713000676L;
-
     private final int ints[];
 
     /**

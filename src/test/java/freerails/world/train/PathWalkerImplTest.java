@@ -18,7 +18,7 @@
 
 package freerails.world.train;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import freerails.world.track.PathIteratorImpl;
 import freerails.world.track.SimplePathIteratorImpl;
@@ -71,7 +71,7 @@ public class PathWalkerImplTest extends TestCase {
         pw.stepForward(10);
         assertTrue(pw.canStepForward());
 
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         assertTrue(pw.hasNext());
         pw.nextSegment(line);
         assertLineEquals(0, 0, 10, 0, line);
@@ -90,7 +90,7 @@ public class PathWalkerImplTest extends TestCase {
     }
 
     private void moveToNextLimit() {
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
 
         while (pw.hasNext()) {
             pw.nextSegment(line);
@@ -101,7 +101,7 @@ public class PathWalkerImplTest extends TestCase {
      *
      */
     public void testHasNext() {
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
 
         setup();
         assertTrue(!pw.hasNext());
@@ -116,7 +116,7 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(!pw.hasNext());
         pw.stepForward(110);
         assertTrue(pw.hasNext());
-        line = new IntLine();
+        line = new LineSegment();
         pw.nextSegment(line);
         assertLineEquals(0, 0, 100, 0, line);
         assertTrue(pw.hasNext());
@@ -171,10 +171,10 @@ public class PathWalkerImplTest extends TestCase {
         pw = new PathWalkerImpl(it);
     }
 
-    private void assertLineEquals(int x1, int y1, int x2, int y2, IntLine line) {
-        assertEquals(x1, line.x1);
-        assertEquals(x2, line.x2);
-        assertEquals(y1, line.y1);
-        assertEquals(y2, line.y2);
+    private void assertLineEquals(int x1, int y1, int x2, int y2, LineSegment line) {
+        assertEquals(x1, line.getX1());
+        assertEquals(x2, line.getX2());
+        assertEquals(y1, line.getY1());
+        assertEquals(y2, line.getY2());
     }
 }

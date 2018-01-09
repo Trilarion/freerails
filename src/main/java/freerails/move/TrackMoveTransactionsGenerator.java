@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
@@ -104,7 +104,7 @@ public class TrackMoveTransactionsGenerator {
             CompositeMove cm = (CompositeMove) move;
             cm.getMoves();
 
-            ImList<Move> moves = cm.getMoves();
+            ImmutableList<Move> moves = cm.getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
                 unpackMove(moves.get(i));

@@ -26,7 +26,6 @@ import java.io.Serializable;
 /**
  * An immutable point.
  */
-@Immutable
 public final class Point2D implements Serializable, Comparable<Point2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;

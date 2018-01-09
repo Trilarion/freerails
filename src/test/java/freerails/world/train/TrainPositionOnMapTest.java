@@ -18,7 +18,7 @@
 
 package freerails.world.train;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
@@ -69,16 +69,16 @@ public class TrainPositionOnMapTest extends TestCase {
                 new int[]{11, 22, 33, 44});
 
         PathIterator path = a.path();
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         assertTrue(path.hasNext());
         path.nextSegment(line);
-        assertEquals(line, new IntLine(10, 11, 20, 22));
+        assertEquals(line, new LineSegment(10, 11, 20, 22));
         assertTrue(path.hasNext());
         path.nextSegment(line);
-        assertEquals(line, new IntLine(20, 22, 30, 33));
+        assertEquals(line, new LineSegment(20, 22, 30, 33));
         assertTrue(path.hasNext());
         path.nextSegment(line);
-        assertEquals(line, new IntLine(30, 33, 40, 44));
+        assertEquals(line, new LineSegment(30, 33, 40, 44));
         assertTrue(!path.hasNext());
     }
 
@@ -91,16 +91,16 @@ public class TrainPositionOnMapTest extends TestCase {
                 new int[]{44, 33, 22, 11});
 
         PathIterator path = a.reversePath();
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         assertTrue(path.hasNext());
         path.nextSegment(line);
-        assertEquals(line, new IntLine(10, 11, 20, 22));
+        assertEquals(line, new LineSegment(10, 11, 20, 22));
         assertTrue(path.hasNext());
         path.nextSegment(line);
-        assertEquals(line, new IntLine(20, 22, 30, 33));
+        assertEquals(line, new LineSegment(20, 22, 30, 33));
         assertTrue(path.hasNext());
         path.nextSegment(line);
-        assertEquals(line, new IntLine(30, 33, 40, 44));
+        assertEquals(line, new LineSegment(30, 33, 40, 44));
         assertTrue(!path.hasNext());
     }
 

@@ -27,6 +27,7 @@ import java.util.LinkedList;
  * Intended to let objects be safely passed between threads.
  */
 public class SychronizedQueue {
+
     private final LinkedList<Serializable> queue = new LinkedList<>();
 
     /**

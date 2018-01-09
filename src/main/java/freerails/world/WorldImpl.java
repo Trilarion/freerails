@@ -78,12 +78,10 @@ public class WorldImpl implements World {
         items = new List1DImpl<>(ITEM.getNumberOfKeys());
         lists = new List3DImpl<>(0, KEY.getNumberOfKeys());
         players = new List1DImpl<>();
-        sharedLists = new List2DImpl<>(SKEY
-                .getNumberOfKeys());
+        sharedLists = new List2DImpl<>(SKEY.getNumberOfKeys());
         time = GameTime.BIG_BANG;
         setupItems();
         setupMap(mapWidth, mapHeight);
-
     }
 
     /**

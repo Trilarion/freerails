@@ -16,20 +16,35 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
-package freerails.util;
+package freerails.world.train;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import freerails.util.LineSegment;
+import junit.framework.TestCase;
 
-// TODO what is this needed here for?
 /**
+ * Junit test.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Immutable {
+public class LineSegmentTest extends TestCase {
+
+    /**
+     * @param arg0
+     */
+    public LineSegmentTest(String arg0) {
+        super(arg0);
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(LineSegmentTest.class);
+    }
+
+    /**
+     *
+     */
+    public void testGetLength() {
+        LineSegment line = new LineSegment(0, 0, 100, 0);
+        assertEquals(100, line.getLength(), 0.1);
+    }
 }

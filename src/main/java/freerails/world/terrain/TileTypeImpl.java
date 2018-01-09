@@ -18,7 +18,7 @@
 
 package freerails.world.terrain;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.finances.Money;
 
 /**
@@ -29,9 +29,9 @@ public final class TileTypeImpl implements TerrainType {
     // TODO why is TerrainType and TerrainTypeImplementation separate?
     private static final long serialVersionUID = 4049919380945253945L;
 
-    private final ImList<TileConsumption> consumption;
-    private final ImList<TileConversion> conversion;
-    private final ImList<TileProduction> production;
+    private final ImmutableList<TileConsumption> consumption;
+    private final ImmutableList<TileConversion> conversion;
+    private final ImmutableList<TileProduction> production;
     private final int rgb;
     private final int rightOfWay;
     private final TerrainCategory terrainCategory;
@@ -60,9 +60,9 @@ public final class TileTypeImpl implements TerrainType {
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
         this.rightOfWay = rightOfWay;
-        this.production = new ImList<>(tileProduction);
-        this.consumption = new ImList<>(tileConsumption);
-        this.conversion = new ImList<>(tileConversion);
+        this.production = new ImmutableList<>(tileProduction);
+        this.consumption = new ImmutableList<>(tileConsumption);
+        this.conversion = new ImmutableList<>(tileConversion);
 
         if (tileBuildCost > 0) {
             this.tileBuildCost = new Money(tileBuildCost);
@@ -83,9 +83,9 @@ public final class TileTypeImpl implements TerrainType {
         this.terrainCategory = terrainCategory;
         this.rgb = 0;
         this.rightOfWay = 0;
-        this.production = new ImList<>();
-        this.consumption = new ImList<>();
-        this.conversion = new ImList<>();
+        this.production = new ImmutableList<>();
+        this.consumption = new ImmutableList<>();
+        this.conversion = new ImmutableList<>();
         this.tileBuildCost = null;
     }
 
@@ -148,14 +148,14 @@ public final class TileTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public ImList<TileConsumption> getConsumption() {
+    public ImmutableList<TileConsumption> getConsumption() {
         return consumption;
     }
 
     /**
      * @return
      */
-    public ImList<TileConversion> getConversion() {
+    public ImmutableList<TileConversion> getConversion() {
         return conversion;
     }
 
@@ -171,7 +171,7 @@ public final class TileTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public ImList<TileProduction> getProduction() {
+    public ImmutableList<TileProduction> getProduction() {
         return production;
     }
 

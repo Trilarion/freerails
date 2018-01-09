@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.client.ClientConstants;
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import freerails.world.train.PositionOnTrack;
 
@@ -45,14 +45,14 @@ public class RandomPathFinder implements PathIterator {
         return trackExplorer.hasNextEdge();
     }
 
-    public void nextSegment(IntLine line) {
+    public void nextSegment(LineSegment line) {
         p1.setValuesFromInt(trackExplorer.getPosition());
-        line.x1 = p1.getX() * tileSize + tileSize / 2;
-        line.y1 = p1.getY() * tileSize + tileSize / 2;
+        line.setX1(p1.getX() * tileSize + tileSize / 2);
+        line.setY1(p1.getY() * tileSize + tileSize / 2);
         trackExplorer.nextEdge();
         trackExplorer.moveForward();
         p2.setValuesFromInt(trackExplorer.getPosition());
-        line.x2 = p2.getX() * tileSize + tileSize / 2;
-        line.y2 = p2.getY() * tileSize + tileSize / 2;
+        line.setX2(p2.getX() * tileSize + tileSize / 2);
+        line.setY2(p2.getY() * tileSize + tileSize / 2);
     }
 }

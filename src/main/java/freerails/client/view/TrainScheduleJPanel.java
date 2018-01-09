@@ -452,7 +452,6 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         // This actionListener is fired by the select station popup when a
         // station is selected.
         Action action = new AbstractAction() {
-            private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent evt) {
                 sendUpdateMove(selectStationJPanel1.generateNewSchedule());

@@ -59,7 +59,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
      */
     private static final int SERVERUPDATE = 50;
 
-    private static final long serialVersionUID = 1L;
 
     private static final Logger logger = Logger.getLogger(Launcher.class
             .getName());

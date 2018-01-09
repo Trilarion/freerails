@@ -20,7 +20,7 @@ package freerails.network;
 
 import freerails.controller.ClientControlInterface.ClientProperty;
 import freerails.controller.MessageToClient;
-import freerails.util.ImStringList;
+import freerails.util.ImmutableList;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             assertEquals(1, server.countOpenConnections());
 
             assertMapsAndSaveGamesReceived(client);
-            assertConnectClientsEquals(client, new ImStringList("name"));
+            assertConnectClientsEquals(client, new ImmutableList<String>("name"));
 
             /* Test 2 : a client that has already logged on. */
             FreerailsClient client2 = new FreerailsClient();
@@ -64,9 +64,9 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             /* read list of connected clients. */
             assertConnectClientsEquals(client,
-                    new ImStringList("name", "name3"));
+                    new ImmutableList<String>("name", "name3"));
             assertMapsAndSaveGamesReceived(client3);
-            assertConnectClientsEquals(client3, new ImStringList("name",
+            assertConnectClientsEquals(client3, new ImmutableList<String>("name",
                     "name3"));
 
             /* Test 4 : disconnect the client from test 1. */
@@ -78,12 +78,12 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     }
 
     private void assertConnectClientsEquals(FreerailsClient client,
-                                            ImStringList expectedPlayerNames) throws IOException,
+                                            ImmutableList<String> expectedPlayerNames) throws IOException,
             InterruptedException {
         MessageToClient messageToClient = (MessageToClient) client.read();
         messageToClient.execute(client);
 
-        ImStringList actualPlayerNames = (ImStringList) client
+        ImmutableList<String> actualPlayerNames = (ImmutableList<String>) client
                 .getProperty(ClientProperty.CONNECTED_CLIENTS);
         assertNotNull(actualPlayerNames);
         assertEquals(expectedPlayerNames, actualPlayerNames);

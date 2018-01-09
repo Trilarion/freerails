@@ -28,7 +28,6 @@ import java.util.Iterator;
 /**
  * @param <E>
  */
-@Immutable
 public class ImHashSet<E extends Serializable> implements
         Serializable {
 

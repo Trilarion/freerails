@@ -21,7 +21,7 @@
  */
 package freerails.world.track;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 
 import java.awt.*;
 import java.util.List;
@@ -31,6 +31,7 @@ import java.util.NoSuchElementException;
  * Lets the caller access a series of Points as a series of IntLines.
  */
 public class PathIteratorImpl implements PathIterator {
+
     private static final long serialVersionUID = 3258411750679720758L;
     private final boolean forwards;
     private final List<Point> points;
@@ -68,7 +69,7 @@ public class PathIteratorImpl implements PathIterator {
         return (position - 1) >= 0;
     }
 
-    public void nextSegment(IntLine line) {
+    public void nextSegment(LineSegment line) {
         if (hasNext()) {
             Point a;
             Point b;
@@ -83,10 +84,10 @@ public class PathIteratorImpl implements PathIterator {
                 b = points.get(position);
             }
 
-            line.x1 = a.x;
-            line.y1 = a.y;
-            line.x2 = b.x;
-            line.y2 = b.y;
+            line.setX1(a.x);
+            line.setY1(a.y);
+            line.setX2(b.x);
+            line.setY2(b.y);
         } else {
             throw new NoSuchElementException();
         }

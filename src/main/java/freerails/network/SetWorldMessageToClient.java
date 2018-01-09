@@ -21,14 +21,12 @@ package freerails.network;
 import freerails.controller.ClientControlInterface;
 import freerails.controller.MessageStatus;
 import freerails.controller.MessageToClient;
-import freerails.util.Immutable;
 import freerails.world.World;
 
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a
  * game is loaded, or (iii) the client connects to a game in progress.
  */
-@Immutable
 public class SetWorldMessageToClient implements MessageToClient {
     private static final long serialVersionUID = 3257570619972269362L;
 

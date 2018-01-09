@@ -28,9 +28,7 @@ import java.io.Serializable;
  */
 public class SpeedTimeAndStatus implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
+        /**
      *
      */
     public final double dt;

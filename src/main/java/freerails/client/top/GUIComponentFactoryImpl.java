@@ -32,7 +32,7 @@ import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.LocalConnection;
 import freerails.network.MoveReceiver;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameSpeed;
@@ -413,7 +413,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                         Random randy = new Random();
                         Station station = (Station) wi.getElement();
 
-                        ImList<TrainBlueprint> before = station.getProduction();
+                        ImmutableList<TrainBlueprint> before = station.getProduction();
                         int numberOfEngineTypes = modelRoot.getWorld().size(
                                 SKEY.ENGINE_TYPES) - 1;
                         int numberOfcargoTypes = modelRoot.getWorld().size(
@@ -430,7 +430,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                                     engineType, wagonTypes);
                             temp[i] = trainBlueprint;
                         }
-                        ImList<TrainBlueprint> after = new ImList<>(
+                        ImmutableList<TrainBlueprint> after = new ImmutableList<>(
                                 temp);
                         Move m = new ChangeProductionAtEngineShopMove(before,
                                 after, wi.getIndex(), modelRoot.getPrincipal());

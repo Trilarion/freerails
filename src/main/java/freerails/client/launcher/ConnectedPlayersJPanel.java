@@ -71,8 +71,7 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
 
         jList1.setModel(new javax.swing.AbstractListModel() {
 
-            private static final long serialVersionUID = 1L;
-            final String[] strings = {"No players are logged on!"};
+                        final String[] strings = {"No players are logged on!"};
 
             public int getSize() {
                 return strings.length;

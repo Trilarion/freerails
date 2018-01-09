@@ -25,7 +25,7 @@ import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
@@ -65,7 +65,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     public void process(Move move) {
         if (move instanceof CompositeMove) {
-            ImList<Move> moves = ((CompositeMove) move).getMoves();
+            ImmutableList<Move> moves = ((CompositeMove) move).getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
                 process(moves.get(i));

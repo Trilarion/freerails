@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.util.IntLine;
+import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import freerails.world.track.PathIteratorImpl;
 
@@ -52,7 +52,7 @@ public class ToAndFroPathIterator implements PathIterator {
         return list.size() >= 2;
     }
 
-    public void nextSegment(IntLine line) {
+    public void nextSegment(LineSegment line) {
         if (this.hasNext()) {
             if (!path.hasNext()) {
                 forwards = !forwards;

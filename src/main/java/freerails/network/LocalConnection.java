@@ -29,15 +29,9 @@ import java.io.Serializable;
  */
 public class LocalConnection implements ConnectionToClient, ConnectionToServer {
 
-    /**
-     *
-     */
     public static final String SERVER_IN_SAME_JVM = "server in same JVM";
-
     private final SychronizedQueue fromServer = new SychronizedQueue();
-
     private final SychronizedQueue fromClient = new SychronizedQueue();
-
     private final SynchronizedFlag status = new SynchronizedFlag(true);
 
     public Serializable[] readFromClient() throws IOException {

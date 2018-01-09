@@ -22,61 +22,51 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-// TODO replace this with Javas Collections.unmodifiableList
-
 /**
- * An immutable List
+ * Immutable list encapsulation with some convenience methods.
  *
  * @param <E>
  */
-// TODO replace by standard Java stuff
-@Immutable
-public final class ImList<E extends Serializable> implements
-        Serializable {
+public final class ImmutableList<E extends Serializable> implements Serializable {
 
     private static final long serialVersionUID = 2669191159273299313L;
-
-    private final E[] elementData;
+    private final E[] values;
 
     /**
      * @param items
      */
-    @SuppressWarnings("unchecked")
-    public ImList(E... items) {
-        elementData = items.clone();
+    public ImmutableList(E... items) {
+        values = items.clone();
     }
 
     /**
      * @param list
      */
-    @SuppressWarnings("unchecked")
-    public ImList(List<E> list) {
-        elementData = list.toArray((E[]) new Serializable[list.size()]);
+    public ImmutableList(List<E> list) {
+        values = list.toArray((E[]) new Serializable[list.size()]);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof ImList))
+        if (!(o instanceof ImmutableList))
             return false;
-
-        final ImList imList = (ImList) o;
-
-        return Arrays.equals(elementData, imList.elementData);
+        final ImmutableList other = (ImmutableList) o;
+        return Arrays.equals(values, other.values);
     }
 
     @Override
     public int hashCode() {
-        return elementData.length;
+        return values.length;
     }
 
     /**
      * @throws NullPointerException
      */
-    public void checkForNulls() throws NullPointerException {
-        for (E anElementData : elementData) {
-            if (null == anElementData)
+    public void containsNulls() throws NullPointerException {
+        for (E value : values) {
+            if (null == value)
                 throw new NullPointerException();
         }
     }
@@ -85,7 +75,7 @@ public final class ImList<E extends Serializable> implements
      * @return
      */
     public int size() {
-        return elementData.length;
+        return values.length;
     }
 
     /**
@@ -93,7 +83,11 @@ public final class ImList<E extends Serializable> implements
      * @return
      */
     public E get(int i) {
-        return elementData[i];
+        return values[i];
     }
 
+    public static <E extends Serializable> ImmutableList<E> combine(ImmutableList<E> a, ImmutableList<E> b) {
+        // TODO not yet implemented
+        return null;
+    }
 }

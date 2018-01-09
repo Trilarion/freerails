@@ -23,7 +23,7 @@ import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
 import freerails.util.ImInts;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
@@ -99,7 +99,7 @@ public class TrainUpdater implements ServerAutomaton {
                         KEY.STATIONS, i);
                 if (null != station) {
 
-                    ImList<TrainBlueprint> production = station.getProduction();
+                    ImmutableList<TrainBlueprint> production = station.getProduction();
 
                     if (production.size() > 0) {
 
@@ -119,7 +119,7 @@ public class TrainUpdater implements ServerAutomaton {
                         }
 
                         ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(
-                                production, new ImList<>(), i,
+                                production, new ImmutableList<>(), i,
                                 principal);
                         moveReceiver.process(move);
                     }

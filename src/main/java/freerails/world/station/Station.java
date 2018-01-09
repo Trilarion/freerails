@@ -18,7 +18,7 @@
 
 package freerails.world.station;
 
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -41,8 +41,8 @@ public class Station implements Serializable {
     /**
      * What this station is building.
      */
-    // TODO remove ImList
-    private final ImList<TrainBlueprint> production;
+    // TODO remove ImmutableList
+    private final ImmutableList<TrainBlueprint> production;
 
     // TODO this may be a misuse, instead add cargoConversion, where is this used
     /**
@@ -78,7 +78,7 @@ public class Station implements Serializable {
 
         // TODO array creation neccessary here?
         supply = new StationSupply(new int[numberOfCargoTypes]);
-        production = new ImList<>();
+        production = new ImmutableList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationConversion.emptyInstance(numberOfCargoTypes);
 
@@ -95,7 +95,7 @@ public class Station implements Serializable {
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new int[0]);
         cargoConversion = new StationConversion(new int[0]);
-        production = new ImList<>();
+        production = new ImmutableList<>();
         cargoBundleNumber = 0;
     }
 
@@ -104,7 +104,7 @@ public class Station implements Serializable {
      * @param s
      * @param production
      */
-    public Station(Station s, ImList<TrainBlueprint> production) {
+    public Station(Station s, ImmutableList<TrainBlueprint> production) {
         this.production = production;
         this.demandForCargo = s.demandForCargo;
         this.cargoBundleNumber = s.cargoBundleNumber;
@@ -220,7 +220,7 @@ public class Station implements Serializable {
     /**
      * @return
      */
-    public ImList<TrainBlueprint> getProduction() {
+    public ImmutableList<TrainBlueprint> getProduction() {
         return production;
     }
 

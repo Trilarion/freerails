@@ -33,7 +33,7 @@ import freerails.controller.ReportBugTextGenerator;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.RefreshListOfGamesMessageToServer;
-import freerails.util.ImList;
+import freerails.util.ImmutableList;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.TrainBlueprint;
@@ -96,7 +96,6 @@ public class DialogueBoxController implements WorldListListener {
      * Use this Action to close a dialogue without performing any other action.
      */
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
-        private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
             closeContent();
@@ -104,7 +103,6 @@ public class DialogueBoxController implements WorldListListener {
     };
 
     private final Action selectEngineAction = new AbstractAction() {
-        private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
             showSelectWagons();
@@ -118,7 +116,6 @@ public class DialogueBoxController implements WorldListListener {
     };
 
     private final Action selectWagonsAction = new AbstractAction("Next") {
-        private static final long serialVersionUID = 1L;
 
         public void actionPerformed(ActionEvent arg0) {
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
@@ -127,10 +124,10 @@ public class DialogueBoxController implements WorldListListener {
             if (wi.next()) {
                 Station station = (Station) wi.getElement();
 
-                ImList<TrainBlueprint> before = station.getProduction();
+                ImmutableList<TrainBlueprint> before = station.getProduction();
                 int engineType = selectEngine.getEngineType();
                 int[] wagonTypes = selectWagons.getWagons();
-                ImList<TrainBlueprint> after = new ImList<>(
+                ImmutableList<TrainBlueprint> after = new ImmutableList<>(
                         new TrainBlueprint(engineType, wagonTypes));
 
                 Move m = new ChangeProductionAtEngineShopMove(before, after, wi

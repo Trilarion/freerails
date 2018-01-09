@@ -26,8 +26,8 @@ import java.io.Serializable;
  * Represents the demand for cargo at a station.
  */
 public class StationDemand implements Serializable {
-    private static final long serialVersionUID = 3257565088071038009L;
 
+    private static final long serialVersionUID = 3257565088071038009L;
     private final ImInts demand;
 
     /**

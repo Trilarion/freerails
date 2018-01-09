@@ -21,8 +21,8 @@
  */
 package freerails.world.train;
 
+import freerails.util.LineSegment;
 import freerails.util.Point2D;
-import freerails.util.IntLine;
 import freerails.util.Pair;
 import freerails.world.track.PathIterator;
 import freerails.world.terrain.TileTransition;
@@ -155,7 +155,7 @@ public class PathOnTilesTest extends TestCase {
         vectors = new TileTransition[]{TileTransition.SOUTH_WEST};
         path = new PathOnTiles(start, vectors);
         pathIt = path.subPath(18, 24);
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         assertTrue(pathIt.getA().hasNext());
         pathIt.getA().nextSegment(line);
         assertEquals("The length of the train.", 24, line.getLength(), 1d);
@@ -185,14 +185,14 @@ public class PathOnTilesTest extends TestCase {
     }
 
     private void checkPath(PathIterator pathIt, Point2D[] expected) {
-        IntLine line = new IntLine();
+        LineSegment line = new LineSegment();
         for (int i = 0; i < expected.length - 1; i++) {
             assertTrue(pathIt.hasNext());
             pathIt.nextSegment(line);
-            assertEquals(expected[i].x, line.x1);
-            assertEquals(expected[i + 1].x, line.x2);
-            assertEquals(expected[i].y, line.y1);
-            assertEquals(expected[i + 1].y, line.y2);
+            assertEquals(expected[i].x, line.getX1());
+            assertEquals(expected[i + 1].x, line.getX2());
+            assertEquals(expected[i].y, line.getY1());
+            assertEquals(expected[i + 1].y, line.getY2());
         }
         assertFalse(pathIt.hasNext());
     }

@@ -23,7 +23,7 @@ import freerails.controller.ClientControlInterface.ClientProperty;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.util.ImStringList;
+import freerails.util.ImmutableList;
 import freerails.world.World;
 import freerails.world.finances.Money;
 import freerails.world.finances.MoneyTransaction;
@@ -122,7 +122,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         assertNull(client0.getWorld());
         assertNull(client1.getWorld());
 
-        ImStringList mapNames = (ImStringList) client0
+        ImmutableList<String> mapNames = (ImmutableList<String>) client0
                 .getProperty(ClientProperty.MAPS_AVAILABLE);
 
         final int commandID = 66;
@@ -167,7 +167,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
          * number of players under the ClientControlInterface.CONNECTED_CLIENTS
          * key
          */
-        int connectedPlayers = ((ImStringList) client0
+        int connectedPlayers = ((ImmutableList<String>) client0
                 .getProperty(ClientProperty.CONNECTED_CLIENTS)).size();
         int playersOnWorldObject = client0.getWorld().getNumberOfPlayers();
         assertEquals(connectedPlayers, playersOnWorldObject);
@@ -206,7 +206,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             client0.update();
             client1.update();
 
-            ImStringList mapNames = (ImStringList) client0
+            ImmutableList<String> mapNames = (ImmutableList<String>) client0
                     .getProperty(ClientProperty.MAPS_AVAILABLE);
             MessageToServer message2 = new NewGameMessageToServer(99, mapNames
                     .get(0));
@@ -283,7 +283,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             client0.update();
             client1.update();
 
-            ImStringList mapNames = (ImStringList) client0
+            ImmutableList<String> mapNames = (ImmutableList<String>) client0
                     .getProperty(ClientProperty.MAPS_AVAILABLE);
             MessageToServer message2 = new NewGameMessageToServer(99, mapNames
                     .get(0));
@@ -336,7 +336,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             client0.update();
 
             // Start game
-            ImStringList mapNames = (ImStringList) client0
+            ImmutableList<String> mapNames = (ImmutableList<String>) client0
                     .getProperty(ClientProperty.MAPS_AVAILABLE);
             MessageToServer newGameMessage2 = new NewGameMessageToServer(
                     commandID++, mapNames.get(0));

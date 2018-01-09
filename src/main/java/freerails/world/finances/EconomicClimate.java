@@ -30,7 +30,6 @@ import java.io.Serializable;
 public class EconomicClimate implements Serializable {
 
     private static final long serialVersionUID = 3834025840475321136L;
-
     // TODO why start with 2
     public static final EconomicClimate BOOM = new EconomicClimate("BOOM", 2);
     public static final EconomicClimate PROSPERITY = new EconomicClimate("PROSPERITY", 3);

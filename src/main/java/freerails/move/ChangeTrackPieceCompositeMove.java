@@ -219,7 +219,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     private static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
         GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
 
-        return rules.isMustConnect2ExistingTrack();
+        return rules.isMustConnectToExistingTrack();
     }
 
     /**
