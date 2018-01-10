@@ -21,7 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -30,9 +30,9 @@ import freerails.world.station.Station;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
-import freerails.world.train.TrainActivity;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashSet;
 
 /**
@@ -65,12 +65,13 @@ public class TrainAccessor {
      * @param consist
      * @return
      */
-    public static ImInts spaceAvailable2(ReadOnlyWorld row,
-                                         ImmutableCargoBatchBundle onTrain, ImInts consist) {
+    public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld row,
+                                         ImmutableCargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);
-        int[] spaceAvailable = new int[NUM_CARGO_TYPES];
+        Integer[] spaceAvailable = new Integer[NUM_CARGO_TYPES];
+        Arrays.fill(spaceAvailable, 0);
 
         // First calculate the train's total capacity.
         for (int j = 0; j < consist.size(); j++) {
@@ -82,7 +83,7 @@ public class TrainAccessor {
             spaceAvailable[cargoType] = spaceAvailable[cargoType]
                     - onTrain.getAmountOfType(cargoType);
         }
-        return new ImInts(spaceAvailable);
+        return new ImmutableList<Integer>(spaceAvailable);
 
     }
 
@@ -279,7 +280,7 @@ public class TrainAccessor {
      *
      * @return
      */
-    public ImInts spaceAvailable() {
+    public ImmutableList<Integer> spaceAvailable() {
 
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
         ImmutableCargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p,

@@ -22,7 +22,7 @@ import freerails.move.ChangeCargoBundleMove;
 import freerails.move.ChangeTrainMove;
 import freerails.move.Move;
 import freerails.move.TransferCargoAtStationMove;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -65,7 +65,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private MutableCargoBatchBundle trainAfter;
     private MutableCargoBatchBundle trainBefore;
     private ArrayList<Move> moves;
-    private ImInts consist = new ImInts();
+    private ImmutableList<Integer> consist;
 
     /**
      * Constructor.
@@ -128,14 +128,14 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             Collections.sort(wagonsAvailable);
 
-            int numWagons2add = Math.min(wagonsAvailable.size(), 3);
+            int numWagonsToadd = Math.min(wagonsAvailable.size(), 3);
 
-            int[] temp = new int[numWagons2add];
-            for (int i = 0; i < numWagons2add; i++) {
+            Integer[] temp = new Integer[numWagonsToadd];
+            for (int i = 0; i < numWagonsToadd; i++) {
                 WagonLoad wagonload = wagonsAvailable.get(i);
                 temp[i] = wagonload.cargoType;
             }
-            consist = new ImInts(temp);
+            consist = new ImmutableList<Integer>(temp);
         }
 
         processStationBundle(); // ie. load train / pickup cargo
@@ -274,9 +274,8 @@ public class DropOffAndPickupCargoMoveGenerator {
                 cargoDroppedOff, this.stationId, principal, trainId);
 
         // Unload the cargo that there isn't space for on the train regardless
-        // of whether the station
-        // demands it.
-        ImInts spaceAvailable = train.spaceAvailable();
+        // of whether the station demands it.
+        ImmutableList<Integer> spaceAvailable = train.spaceAvailable();
 
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
@@ -293,7 +292,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * available on the train.
      */
     private void processStationBundle() {
-        ImInts spaceAvailable = TrainAccessor.spaceAvailable2(w, trainAfter
+        ImmutableList<Integer> spaceAvailable = TrainAccessor.spaceAvailable2(w, trainAfter
                 .toImmutableCargoBundle(), consist);
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);

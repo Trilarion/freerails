@@ -22,7 +22,8 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.Move;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
+import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;
@@ -429,7 +430,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             gotoStationJMenuItem.setEnabled(s.canSetGotoStation(i));
             removeWagonsJMenu.setEnabled(order.orderHasWagons());
             waitJMenu.setEnabled(order.orderHasWagons());
-            addWagonJMenu.setEnabled(order.hasLessThanMaxiumNumberOfWagons());
+            addWagonJMenu.setEnabled(order.hasLessThanMaximumNumberOfWagons());
             setupWagonsPopup();
             this.editOrderJPopupMenu.show(evt.getComponent(), evt.getX(), evt
                     .getY());
@@ -583,11 +584,11 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         MutableSchedule s = getSchedule();
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
-        int[] newConsist;
+        Integer[] newConsist;
         // The consist will be null if old orders were 'no change'.
         if (null != oldOrders.consist) {
             int oldLength = oldOrders.consist.size();
-            newConsist = new int[oldLength + 1];
+            newConsist = new Integer[oldLength + 1];
             // Copy existing wagons
             for (int i = 0; i < oldLength; i++) {
                 newConsist[i] = oldOrders.consist.get(i);
@@ -595,9 +596,9 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             // Then add specified wagon.
             newConsist[oldLength] = wagonTypeNumber;
         } else {
-            newConsist = new int[]{wagonTypeNumber};
+            newConsist = new Integer[]{wagonTypeNumber};
         }
-        newOrders = new TrainOrdersModel(oldOrders.getStationID(), new ImInts(
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), new ImmutableList<Integer>(
                 newConsist), oldOrders.getWaitUntilFull(), false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
@@ -609,7 +610,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         int orderNumber = this.orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
         newOrders = new TrainOrdersModel(oldOrders.getStationID(),
-                new ImInts(), false, false);
+                new ImmutableList<Integer>(), false, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -622,13 +623,13 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         if (oldOrders.consist == null) {
             return;
         }
-        ImInts oldConsist = oldOrders.consist;
+        ImmutableList<Integer> oldConsist = oldOrders.consist;
         int newLength = oldConsist.size() - 1;
         if (newLength < 0) {
             // No wagons to remove!
             return;
         }
-        ImInts newConsist = oldConsist.removeLast();
+        ImmutableList<Integer> newConsist = Utils.removeLastOfImmutableList(oldConsist);
 
         newOrders = new TrainOrdersModel(oldOrders.getStationID(), newConsist,
                 oldOrders.waitUntilFull, false);

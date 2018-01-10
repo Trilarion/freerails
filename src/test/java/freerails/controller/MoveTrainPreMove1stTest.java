@@ -27,6 +27,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
@@ -81,7 +82,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         defaultSchedule = s.toImmutableSchedule();
 
         Point2D start = new Point2D(10, 10);
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
                 start, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
@@ -220,7 +221,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<Integer>(), from,
                 principal, is);
 
         Move m = addTrain.generateMove(world);

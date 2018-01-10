@@ -22,7 +22,6 @@ import freerails.controller.*;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
-import freerails.util.ImInts;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.KEY;
@@ -69,7 +68,7 @@ public class TrainUpdater implements ServerAutomaton {
      * @param principal
      * @param world
      */
-    public void buildTrain(int engineTypeId, ImInts wagons, Point2D p,
+    public void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Point2D p,
                            FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
@@ -107,7 +106,7 @@ public class TrainUpdater implements ServerAutomaton {
 
                         for (int j = 0; j < production.size(); j++) {
                             int engineType = production.get(j).getEngineType();
-                            ImInts wagonTypes = production.get(j)
+                            ImmutableList<Integer> wagonTypes = production.get(j)
                                     .getWagonTypes();
                             this.buildTrain(engineType, wagonTypes, p,
                                     principal, world);

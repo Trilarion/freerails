@@ -22,8 +22,9 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
@@ -170,8 +171,8 @@ public class TrainStopsHandler implements Serializable {
      */
     public boolean isTrainFull() {
         TrainAccessor train = new TrainAccessor(worldDiffs, principal, trainId);
-        ImInts spaceAvailable = train.spaceAvailable();
-        return spaceAvailable.sum() == 0;
+        ImmutableList<Integer> spaceAvailable = train.spaceAvailable();
+        return Utils.sumOfIntegerImmutableList(spaceAvailable) == 0;
     }
 
     /**
@@ -243,7 +244,7 @@ public class TrainStopsHandler implements Serializable {
         }
 
         // Should we change the consist?
-        ImInts consist = ta.getTrain().getConsist();
+        ImmutableList<Integer> consist = ta.getTrain().getConsist();
         if (!consist.equals(order.consist)) {
             // ..if so, we should change the consist.
             int oldLength = ta.getTrain().getLength();
@@ -297,7 +298,7 @@ public class TrainStopsHandler implements Serializable {
         Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal,
                 KEY.TRAIN_SCHEDULES, train.getScheduleID());
 
-        ImInts wagonsToAdd = schedule.getWagonsToAdd();
+        ImmutableList<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
         // Loading and unloading cargo takes time, so we make the train wait for
         // a few ticks.

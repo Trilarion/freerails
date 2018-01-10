@@ -22,7 +22,6 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -137,5 +136,52 @@ public class Utils {
             return null == a && null == b;
         }
         return a.equals(b);
+    }
+
+    /**
+     * @param values
+     * @return
+     */
+    public static ImmutableList<Integer> integerImmutableListFromBoolean(boolean... values) {
+        Integer[] integers = new Integer[values.length];
+        for (int i = 0; i < values.length; i++) {
+            integers[i] = values[i] ? 1 : 0;
+        }
+        return new ImmutableList<Integer>(integers);
+    }
+
+    /**
+     * Returns the sum of the ints stored in the list.
+     *
+     * @return
+     */
+    public static int sumOfIntegerImmutableList(ImmutableList<Integer> list) {
+        int sum = 0;
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i);
+        }
+        return sum;
+    }
+
+    /**
+     * @return
+     */
+    public static <T extends Serializable> ImmutableList<T> removeLastOfImmutableList(ImmutableList<T> list) {
+        T[] values = (T[]) new Serializable[list.size() - 1];
+        for (int i = 0; i < list.size() - 1; i++) {
+            values[i] = list.get(i);
+        }
+        return new ImmutableList<T>(values);
+    }
+
+    public static <T extends Serializable> ImmutableList<T> combineTwoImmutableLists(ImmutableList<T> listA, ImmutableList<T> listB) {
+        T[] values = (T[]) new Serializable[listA.size() + listB.size()];
+        for (int i = 0; i < listA.size(); i++) {
+            values[i] = listA.get(i);
+        }
+        for (int i = 0; i < listB.size(); i++) {
+            values[listA.size() + i] = listB.get(i);
+        }
+        return new ImmutableList<T>(values);
     }
 }

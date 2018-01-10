@@ -22,7 +22,7 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -38,7 +38,7 @@ public class TrainOrdersModel implements Serializable {
     /**
      * The wagon types to add; if null, then no change.
      */
-    public final ImInts consist;
+    public final ImmutableList<Integer> consist;
     /**
      * The number of the station to goto.
      */
@@ -50,7 +50,7 @@ public class TrainOrdersModel implements Serializable {
      * @param wait
      * @param auto
      */
-    public TrainOrdersModel(int station, ImInts newConsist, boolean wait,
+    public TrainOrdersModel(int station, ImmutableList<Integer> newConsist, boolean wait,
                             boolean auto) {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
@@ -93,7 +93,7 @@ public class TrainOrdersModel implements Serializable {
      * @return either (1) an array of cargo type ids or (2) null to represent
      * 'no change'.
      */
-    public ImInts getConsist() {
+    public ImmutableList<Integer> getConsist() {
         return this.consist;
     }
 
@@ -121,7 +121,7 @@ public class TrainOrdersModel implements Serializable {
     /**
      * @return
      */
-    public boolean hasLessThanMaxiumNumberOfWagons() {
+    public boolean hasLessThanMaximumNumberOfWagons() {
         return null == consist || consist.size() < MAXIMUM_NUMBER_OF_WAGONS;
     }
 

@@ -24,7 +24,7 @@ import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
@@ -73,7 +73,7 @@ public class TrainMotionExpt extends JComponent {
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<Integer>(), from,
                 principal, is);
 
         Move m = addTrain.generateMove(world);

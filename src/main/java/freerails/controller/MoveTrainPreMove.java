@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.move.NextActivityMove;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
@@ -36,7 +36,6 @@ import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackSection;
 import freerails.world.train.*;
-import freerails.world.train.TrainActivity;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -161,7 +160,7 @@ public class MoveTrainPreMove implements PreMove {
         TrainActivity trainActivity = ta.getStatus(finishTime);
         if (trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD) {
             // Check whether there is any cargo that can be added to the train.
-            ImInts spaceAvailable = ta.spaceAvailable();
+            ImmutableList<Integer> spaceAvailable = ta.spaceAvailable();
             int stationId = ta.getStationId(ticks);
             if (stationId == -1)
                 throw new IllegalStateException();

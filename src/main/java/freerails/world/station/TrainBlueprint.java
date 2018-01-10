@@ -21,7 +21,7 @@
  */
 package freerails.world.station;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -34,15 +34,15 @@ public class TrainBlueprint implements Serializable {
     // TODO engine type?? no enum or an ID
     private final int engineType;
     // TODO wagon type?? (make if ordinary immutable arraylist)
-    private final ImInts wagonTypes;
+    private final ImmutableList<Integer> wagonTypes;
 
     /**
      * @param engineType
      * @param wagonTypes
      */
-    public TrainBlueprint(int engineType, int[] wagonTypes) {
+    public TrainBlueprint(int engineType, Integer[] wagonTypes) {
         this.engineType = engineType;
-        this.wagonTypes = new ImInts(wagonTypes);
+        this.wagonTypes = new ImmutableList<Integer>(wagonTypes);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class TrainBlueprint implements Serializable {
     /**
      * @return
      */
-    public ImInts getWagonTypes() {
+    public ImmutableList<Integer> getWagonTypes() {
         return wagonTypes;
     }
 

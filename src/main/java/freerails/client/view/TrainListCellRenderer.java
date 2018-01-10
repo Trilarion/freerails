@@ -24,7 +24,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -105,7 +105,7 @@ public class TrainListCellRenderer extends JPanel implements View,
         resetPreferredSize();
     }
 
-    private void display(int engine, ImInts wagons) {
+    private void display(int engine, ImmutableList<Integer> wagons) {
         images = new Image[1 + wagons.size()];
         // images[0] = vl.getTrainImages().getSideOnEngineImage(
         // train.getEngineType(), height);

@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.TrainModel;
@@ -48,7 +48,7 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * @return
      */
     public static ChangeTrainMove generateMove(int id, TrainModel before,
-                                               int newEngine, ImInts newWagons, FreerailsPrincipal p) {
+                                               int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal p) {
         TrainModel after = before.getNewInstance(newEngine, newWagons);
 
         return new ChangeTrainMove(id, before, after, p);

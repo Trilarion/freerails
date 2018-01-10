@@ -94,7 +94,7 @@ public class Station implements Serializable {
         y = 0;
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new int[0]);
-        cargoConversion = new StationConversion(new int[0]);
+        cargoConversion = new StationConversion(new Integer[0]);
         production = new ImmutableList<>();
         cargoBundleNumber = 0;
     }

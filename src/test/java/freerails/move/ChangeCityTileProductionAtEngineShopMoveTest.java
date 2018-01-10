@@ -37,7 +37,7 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
 
     private int engineType;
 
-    private int[] wagons;
+    private Integer[] wagons;
 
     /**
      * @throws Exception
@@ -56,7 +56,7 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
         wetf.addTypesToWorld(getWorld());
         engineType = 0;
         int wagonType = 0;
-        wagons = new int[]{wagonType, wagonType};
+        wagons = new Integer[]{wagonType, wagonType};
         after = new ImmutableList<>(new TrainBlueprint(engineType, wagons));
     }
 

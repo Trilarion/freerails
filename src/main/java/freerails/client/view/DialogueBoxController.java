@@ -126,7 +126,7 @@ public class DialogueBoxController implements WorldListListener {
 
                 ImmutableList<TrainBlueprint> before = station.getProduction();
                 int engineType = selectEngine.getEngineType();
-                int[] wagonTypes = selectWagons.getWagons();
+                Integer[] wagonTypes = selectWagons.getWagons();
                 ImmutableList<TrainBlueprint> after = new ImmutableList<>(
                         new TrainBlueprint(engineType, wagonTypes));
 

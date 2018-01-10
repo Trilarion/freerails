@@ -85,9 +85,4 @@ public final class ImmutableList<E extends Serializable> implements Serializable
     public E get(int i) {
         return values[i];
     }
-
-    public static <E extends Serializable> ImmutableList<E> combine(ImmutableList<E> a, ImmutableList<E> b) {
-        // TODO not yet implemented
-        return null;
-    }
 }

@@ -28,8 +28,8 @@ import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
 import freerails.server.TileSetFactory;
 import freerails.server.TileSetFactoryImpl;
-import freerails.util.ImInts;
 import freerails.client.ProgressMonitorModel;
+import freerails.util.ImmutableList;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBatchBundle;
@@ -149,9 +149,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         w.add(TEST_PRINCIPAL, KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
-        TrainOrdersModel order = new TrainOrdersModel(0, new ImInts(0, 0, 0),
+        TrainOrdersModel order = new TrainOrdersModel(0, new ImmutableList<Integer>(0, 0, 0),
                 false, false);
-        TrainOrdersModel order2 = new TrainOrdersModel(1, new ImInts(1, 2, 0,
+        TrainOrdersModel order2 = new TrainOrdersModel(1, new ImmutableList<Integer>(1, 2, 0,
                 0, 0), true, false);
         TrainOrdersModel order3 = new TrainOrdersModel(2, null, true, false);
         schedule.setOrder(0, order);
@@ -159,13 +159,13 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         int scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImInts(0, 0),
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<Integer>(0, 0),
                 scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
         scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImInts(1, 1),
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<Integer>(1, 1),
                 scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
@@ -173,7 +173,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
         w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0,
-                new ImInts(1, 2, 0), scheduleID));
+                new ImmutableList<Integer>(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);

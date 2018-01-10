@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -42,10 +42,8 @@ import java.util.List;
 public class AddTrainPreMove implements PreMove {
 
     private static final long serialVersionUID = 4050201951105069624L;
-
     private final int engineTypeId;
-
-    private final ImInts wagons;
+    private final ImmutableList<Integer> wagons;
     private final Point2D point;
     private final FreerailsPrincipal principal;
     private final ImmutableSchedule schedule;
@@ -57,7 +55,7 @@ public class AddTrainPreMove implements PreMove {
      * @param fp
      * @param s
      */
-    public AddTrainPreMove(int e, ImInts wags, Point2D p, FreerailsPrincipal fp, ImmutableSchedule s) {
+    public AddTrainPreMove(int e, ImmutableList<Integer> wags, Point2D p, FreerailsPrincipal fp, ImmutableSchedule s) {
         engineTypeId = e;
         wagons = wags;
         point = p;

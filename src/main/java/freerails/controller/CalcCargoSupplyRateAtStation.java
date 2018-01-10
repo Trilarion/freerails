@@ -39,6 +39,7 @@ import java.util.List;
  * demand, and convert and then returns a vector of these rates.
  */
 public class CalcCargoSupplyRateAtStation {
+
     private static final Logger logger = Logger
             .getLogger(CalcCargoSupplyRateAtStation.class.getName());
 
@@ -47,19 +48,12 @@ public class CalcCargoSupplyRateAtStation {
      * demands the cargo.
      */
     private static final int PREREQUISITE_FOR_DEMAND = 16;
-
-    private final int[] converts;
-
+    private final Integer[] converts;
     private final int[] demand;
-
     private final List<CargoElementObject> supplies;
-
     private final ReadOnlyWorld w;
-
     private final int x;
-
     private final int y;
-
     private final int stationRadius;
 
     /**

@@ -51,7 +51,6 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         moves[3] = new AddItemToListMove(KEY.STATIONS, 3, station4,
                 MapFixtureFactory.TEST_PRINCIPAL);
-
         Move compositeMove = new CompositeMove(moves);
         assertSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);

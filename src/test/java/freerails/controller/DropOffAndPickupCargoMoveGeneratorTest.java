@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -95,7 +96,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 KEY.CARGO_BUNDLES, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
 
         // 3 wagons to carry cargo type 0.
-        ImInts wagons = new ImInts(0, 0, 0);
+        ImmutableList<Integer> wagons = new ImmutableList<Integer>(0, 0, 0);
         TrainModel train = new TrainModel(wagons, trainCargoBundleId);
         w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, train);
     }
@@ -163,7 +164,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * the type of wagons it has when it is picking up cargo.
      */
     public void testPickUpCargo3() {
-        ImInts wagons = new ImInts(0, 0, 2, 2);
+        ImmutableList<Integer> wagons = new ImmutableList<Integer>(0, 0, 2, 2);
 
         // 2 wagons for cargo type 0; 2 wagons for cargo type 2.
         addWagons(wagons);
@@ -219,7 +220,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 .getDemandForCargo().isCargoDemanded(1));
 
         // Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
-        ImInts wagons = new ImInts(0, 0, 1, 1);
+        ImmutableList<Integer> wagons = new ImmutableList<Integer>(0, 0, 1, 1);
         addWagons(wagons);
 
         // Add quantities of cargo type 0 and 2 to the train.
@@ -330,10 +331,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void removeAllWagonsFromTrain() {
-        addWagons(new ImInts());
+        addWagons(new ImmutableList<Integer>());
     }
 
-    private void addWagons(ImInts wagons) {
+    private void addWagons(ImmutableList<Integer> wagons) {
         TrainModel train = (TrainModel) w.get(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.TRAINS, 0);
         TrainModel newTrain = train.getNewInstance(train.getEngineType(),

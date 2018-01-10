@@ -21,7 +21,7 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 /**
  * Defines methods to access a train's schedule.
@@ -58,7 +58,7 @@ public interface Schedule {
      * @return
      */
 
-    ImInts getWagonsToAdd();
+    ImmutableList<Integer> getWagonsToAdd();
 
     /**
      * Returns the value for the autoconsist flag at the next scheduled stop.

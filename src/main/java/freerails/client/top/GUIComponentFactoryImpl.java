@@ -422,7 +422,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
                         for (int i = 0; i < temp.length; i++) {
                             int engineType = randy.nextInt(numberOfEngineTypes);
-                            int[] wagonTypes = new int[]{
+                            Integer[] wagonTypes = new Integer[]{
                                     randy.nextInt(numberOfcargoTypes),
                                     randy.nextInt(numberOfcargoTypes),
                                     randy.nextInt(numberOfcargoTypes)};

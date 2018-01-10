@@ -22,7 +22,7 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,7 +218,7 @@ public class MutableSchedule implements Schedule {
      *
      * @return
      */
-    public ImInts getWagonsToAdd() {
+    public ImmutableList<Integer> getWagonsToAdd() {
         return orders.get(nextScheduledOrder).getConsist();
     }
 

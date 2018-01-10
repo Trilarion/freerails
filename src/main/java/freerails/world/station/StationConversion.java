@@ -19,6 +19,7 @@
 package freerails.world.station;
 
 import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -31,14 +32,14 @@ public class StationConversion implements Serializable {
     // TODO what about Null as standard value
     private static final int NOT_CONVERTED = Integer.MIN_VALUE;
     // this should probably be a map
-    private final ImInts convertedTo;
+    private final ImmutableList<Integer> convertedTo;
 
     // TODO provide as map
     /**
      * @param convertedTo
      */
-    public StationConversion(int[] convertedTo) {
-        this.convertedTo = new ImInts(convertedTo);
+    public StationConversion(Integer[] convertedTo) {
+        this.convertedTo = new ImmutableList<Integer>(convertedTo);
     }
 
     // TODO is this really needed
@@ -55,8 +56,8 @@ public class StationConversion implements Serializable {
      * @param numberOfCargoTypes
      * @return
      */
-    public static int[] emptyConversionArray(int numberOfCargoTypes) {
-        int[] convertedTo = new int[numberOfCargoTypes];
+    public static Integer[] emptyConversionArray(int numberOfCargoTypes) {
+        Integer[] convertedTo = new Integer[numberOfCargoTypes];
 
         for (int i = 0; i < numberOfCargoTypes; i++) {
             convertedTo[i] = NOT_CONVERTED;
@@ -96,15 +97,7 @@ public class StationConversion implements Serializable {
     public boolean equals(Object o) {
         if (o instanceof StationConversion) {
             StationConversion test = (StationConversion) o;
-            if (this.convertedTo.size() != test.convertedTo.size()) {
-                return false;
-            }
-            for (int i = 0; i < convertedTo.size(); i++) {
-                if (convertedTo.get(i) != test.convertedTo.get(i)) {
-                    return false;
-                }
-            }
-            return true;
+            return this.convertedTo.equals(test.convertedTo);
         }
         return false;
     }

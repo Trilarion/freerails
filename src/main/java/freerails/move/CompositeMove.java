@@ -35,14 +35,12 @@ import java.util.List;
  */
 public class CompositeMove implements Move {
     private static final long serialVersionUID = 3257289149391517489L;
-
     private final ImmutableList<Move> moves;
 
     /**
      * @param movesArrayList
      */
     public CompositeMove(List<Move> movesArrayList) {
-
         moves = new ImmutableList<>(movesArrayList);
     }
 

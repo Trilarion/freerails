@@ -21,7 +21,6 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImInts;
 import freerails.util.ImmutableList;
 
 import java.io.Serializable;
@@ -80,7 +79,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
         return order.getStationID();
     }
 
-    public ImInts getWagonsToAdd() {
+    public ImmutableList<Integer> getWagonsToAdd() {
         TrainOrdersModel order = orders.get(getOrderToGoto());
         return order.consist;
     }

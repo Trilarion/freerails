@@ -27,6 +27,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
 import freerails.world.train.PositionOnTrack;
@@ -89,13 +90,11 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      */
     @Override
     public void testMove() {
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         assertDoMoveIsOk(m);
-
         assertUndoMoveIsOk(m);
-
         assertSurvivesSerialisation(m);
     }
 
@@ -104,7 +103,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      * track.
      */
     public void testPathOnTiles() {
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
@@ -122,7 +121,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImInts(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
@@ -158,7 +157,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImInts(), from,
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<Integer>(), from,
                 principal, is);
         Move m = addTrain.generateMove(world);
         ms = m.doMove(world, principal);

@@ -18,7 +18,7 @@
 
 package freerails.world.train;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -34,7 +34,7 @@ public class TrainModel implements Serializable {
     private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
     private final int engineTypeId;
-    private final ImInts wagonTypes;
+    private final ImmutableList<Integer> wagonTypes;
     private final int cargoBundleId;
 
     /**
@@ -43,7 +43,7 @@ public class TrainModel implements Serializable {
      * @param scheduleID
      * @param BundleId
      */
-    public TrainModel(int engine, ImInts wagons, int scheduleID, int BundleId) {
+    public TrainModel(int engine, ImmutableList<Integer> wagons, int scheduleID, int BundleId) {
         engineTypeId = engine;
         wagonTypes = wagons;
         scheduleId = scheduleID;
@@ -54,7 +54,7 @@ public class TrainModel implements Serializable {
      * @param wagons
      * @param BundleId
      */
-    public TrainModel(ImInts wagons, int BundleId) {
+    public TrainModel(ImmutableList<Integer> wagons, int BundleId) {
         wagonTypes = wagons;
         cargoBundleId = BundleId;
         engineTypeId = 0;
@@ -66,7 +66,7 @@ public class TrainModel implements Serializable {
      * @param wagons
      * @param scheduleID
      */
-    public TrainModel(int engine, ImInts wagons, int scheduleID) {
+    public TrainModel(int engine, ImmutableList<Integer> wagons, int scheduleID) {
         engineTypeId = engine;
         wagonTypes = wagons;
         scheduleId = scheduleID;
@@ -88,7 +88,7 @@ public class TrainModel implements Serializable {
      * @param newWagons
      * @return
      */
-    public TrainModel getNewInstance(int newEngine, ImInts newWagons) {
+    public TrainModel getNewInstance(int newEngine, ImmutableList<Integer> newWagons) {
         return new TrainModel(newEngine, newWagons, scheduleId, cargoBundleId);
     }
 
@@ -138,7 +138,7 @@ public class TrainModel implements Serializable {
     /**
      * @return
      */
-    public ImInts getConsist() {
+    public ImmutableList<Integer> getConsist() {
         return wagonTypes;
     }
 
