@@ -94,7 +94,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
                 setbackgroundBuffer(newVisibleRectangle.width,
                         newVisibleRectangle.height);
             } else if (valCode == VolatileImage.IMAGE_RESTORED) {
-                this.refreshBackground();
+                refreshBackground();
             }
 
             /*

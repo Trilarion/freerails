@@ -27,7 +27,7 @@ public class SynchronizedFlag {
     private boolean isOpen;
 
     public SynchronizedFlag(boolean b) {
-        this.isOpen = b;
+        isOpen = b;
     }
 
     public synchronized boolean isOpen() {
@@ -35,12 +35,12 @@ public class SynchronizedFlag {
     }
 
     public synchronized void close() {
-        this.isOpen = false;
+        isOpen = false;
         notifyAll();
     }
 
     public synchronized void open() {
-        this.isOpen = true;
+        isOpen = true;
         notifyAll();
     }
 }

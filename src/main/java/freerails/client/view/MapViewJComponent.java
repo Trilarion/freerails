@@ -41,7 +41,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
      *
      */
     public MapViewJComponent() {
-        this.setAutoscrolls(true);
+        setAutoscrolls(true);
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-        java.awt.Rectangle r = this.getVisibleRect();
+        java.awt.Rectangle r = getVisibleRect();
         mapView.paintRect(g2, r);
     }
 
@@ -105,7 +105,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
      * @return The preferredScrollableViewportSize value
      */
     public java.awt.Dimension getPreferredScrollableViewportSize() {
-        return this.getPreferredSize();
+        return getPreferredSize();
     }
 
     /**
@@ -113,10 +113,10 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
      */
     public void centerOnTile(Point tile) {
         float scale = mapView.getScale();
-        Rectangle visRect = new Rectangle(this.getVisibleRect());
+        Rectangle visRect = new Rectangle(getVisibleRect());
         visRect.x = (int) (tile.x * scale - (visRect.width / 2));
         visRect.y = (int) (tile.y * scale - (visRect.height / 2));
-        this.scrollRectToVisible(visRect);
+        scrollRectToVisible(visRect);
     }
 
     /**

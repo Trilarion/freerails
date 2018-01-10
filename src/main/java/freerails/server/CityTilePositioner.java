@@ -155,7 +155,6 @@ public class CityTilePositioner {
                         // do nothing, 30% chance
                         break;
                 }
-
                 city.writeToMap(world);
             }
         }

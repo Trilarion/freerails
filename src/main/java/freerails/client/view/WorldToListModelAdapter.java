@@ -47,7 +47,7 @@ public class WorldToListModelAdapter implements ListModel {
      */
     public WorldToListModelAdapter(ReadOnlyWorld world, SKEY key) {
 
-        this.w = world;
+        w = world;
 
         if (null == key)
             throw new NullPointerException();
@@ -66,7 +66,7 @@ public class WorldToListModelAdapter implements ListModel {
     public WorldToListModelAdapter(ReadOnlyWorld world, KEY key,
                                    FreerailsPrincipal p) {
 
-        this.w = world;
+        w = world;
 
         if (null == key)
             throw new NullPointerException();

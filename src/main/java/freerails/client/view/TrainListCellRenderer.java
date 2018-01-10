@@ -73,7 +73,7 @@ public class TrainListCellRenderer extends JPanel implements View,
      *
      */
     public TrainListCellRenderer() {
-        this.setOpaque(false);
+        setOpaque(false);
     }
 
     /**
@@ -82,14 +82,14 @@ public class TrainListCellRenderer extends JPanel implements View,
      */
     public TrainListCellRenderer(ModelRoot mr, RendererRoot vl) {
         setup(mr, vl, null);
-        this.setBackground(backgoundColor);
+        setBackground(backgoundColor);
     }
 
     /**
      * @param b
      */
     public void setCenterTrain(boolean b) {
-        this.centerTrain = b;
+        centerTrain = b;
     }
 
     /**
@@ -97,7 +97,7 @@ public class TrainListCellRenderer extends JPanel implements View,
      */
     public void display(int newTrainNumber) {
         showingOrder = false;
-        this.trainNumber = newTrainNumber;
+        trainNumber = newTrainNumber;
 
         TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
                 trainNumber);
@@ -135,12 +135,12 @@ public class TrainListCellRenderer extends JPanel implements View,
      */
     public void display(int newTrainNumber, int newScheduleOrderID) {
         showingOrder = true;
-        this.trainNumber = newTrainNumber;
-        this.scheduleOrderNumber = newScheduleOrderID;
+        trainNumber = newTrainNumber;
+        scheduleOrderNumber = newScheduleOrderID;
 
         TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
                 trainNumber);
-        this.scheduleID = train.getScheduleID();
+        scheduleID = train.getScheduleID();
 
         ImmutableSchedule s = (ImmutableSchedule) w.get(principal,
                 KEY.TRAIN_SCHEDULES, scheduleID);
@@ -163,8 +163,8 @@ public class TrainListCellRenderer extends JPanel implements View,
             width += image.getWidth(null);
         }
 
-        this.trainWidth = width;
-        this.setPreferredSize(new Dimension(width, height));
+        trainWidth = width;
+        setPreferredSize(new Dimension(width, height));
     }
 
     /**
@@ -173,9 +173,9 @@ public class TrainListCellRenderer extends JPanel implements View,
      * @param closeAction
      */
     public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
-        this.w = mr.getWorld();
+        w = mr.getWorld();
         this.vl = vl;
-        this.principal = mr.getPrincipal();
+        principal = mr.getPrincipal();
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
@@ -216,8 +216,8 @@ public class TrainListCellRenderer extends JPanel implements View,
 
         int x = 0;
 
-        if (this.centerTrain) {
-            x = (this.getWidth() - this.trainWidth) / 2;
+        if (centerTrain) {
+            x = (getWidth() - trainWidth) / 2;
         }
 
         for (Image image : images) {
@@ -233,12 +233,12 @@ public class TrainListCellRenderer extends JPanel implements View,
      */
     public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
         if (showingOrder) {
-            if (KEY.TRAIN_SCHEDULES == key && this.scheduleID == index) {
-                this.display(this.trainNumber, this.scheduleOrderNumber);
+            if (KEY.TRAIN_SCHEDULES == key && scheduleID == index) {
+                display(trainNumber, scheduleOrderNumber);
             }
         } else {
-            if (KEY.TRAINS == key && this.trainNumber == index) {
-                this.display(this.trainNumber);
+            if (KEY.TRAINS == key && trainNumber == index) {
+                display(trainNumber);
             }
         }
     }

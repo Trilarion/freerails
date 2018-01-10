@@ -42,7 +42,7 @@ public final class SquareTileBackgroundRenderer extends
             throw new NullPointerException();
         }
 
-        this.mapView = mv;
+        mapView = mv;
     }
 
     /**

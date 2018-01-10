@@ -44,8 +44,8 @@ public class AddItemToSharedListMove implements Move {
      */
     protected AddItemToSharedListMove(SKEY key, int i,
                                       Serializable item) {
-        this.listKey = key;
-        this.index = i;
+        listKey = key;
+        index = i;
         this.item = item;
     }
 
@@ -99,7 +99,7 @@ public class AddItemToSharedListMove implements Move {
         MoveStatus ms = tryDoMove(world, principal);
 
         if (ms.isOk()) {
-            world.add(listKey, this.item);
+            world.add(listKey, item);
         }
 
         return ms;
@@ -120,15 +120,15 @@ public class AddItemToSharedListMove implements Move {
         if (o instanceof AddItemToSharedListMove) {
             AddItemToSharedListMove test = (AddItemToSharedListMove) o;
 
-            if (!this.item.equals(test.item)) {
+            if (!item.equals(test.item)) {
                 return false;
             }
 
-            if (this.index != test.index) {
+            if (index != test.index) {
                 return false;
             }
 
-            return this.listKey == test.listKey;
+            return listKey == test.listKey;
         }
         return false;
     }
@@ -150,11 +150,11 @@ public class AddItemToSharedListMove implements Move {
     @Override
     public String toString() {
 
-        return this.getClass().getName() + "\nlist=" +
+        return getClass().getName() + "\nlist=" +
                 listKey.toString() +
                 "\n index =" +
-                this.index +
+                index +
                 "\n item =" +
-                this.item.toString();
+                item.toString();
     }
 }

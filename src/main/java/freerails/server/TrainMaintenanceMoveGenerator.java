@@ -44,7 +44,7 @@ public class TrainMaintenanceMoveGenerator {
      * @param mr
      */
     public TrainMaintenanceMoveGenerator(MoveReceiver mr) {
-        this.moveReceiver = mr;
+        moveReceiver = mr;
     }
 
     private static AddTransactionMove generateMove(World w,

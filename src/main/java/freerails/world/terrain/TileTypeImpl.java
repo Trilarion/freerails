@@ -60,9 +60,9 @@ public final class TileTypeImpl implements TerrainType {
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
         this.rightOfWay = rightOfWay;
-        this.production = new ImmutableList<>(tileProduction);
-        this.consumption = new ImmutableList<>(tileConsumption);
-        this.conversion = new ImmutableList<>(tileConversion);
+        production = new ImmutableList<>(tileProduction);
+        consumption = new ImmutableList<>(tileConsumption);
+        conversion = new ImmutableList<>(tileConversion);
 
         if (tileBuildCost > 0) {
             this.tileBuildCost = new Money(tileBuildCost);
@@ -81,12 +81,12 @@ public final class TileTypeImpl implements TerrainType {
     public TileTypeImpl(TerrainCategory terrainCategory, String terrainType) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
-        this.rgb = 0;
-        this.rightOfWay = 0;
-        this.production = new ImmutableList<>();
-        this.consumption = new ImmutableList<>();
-        this.conversion = new ImmutableList<>();
-        this.tileBuildCost = null;
+        rgb = 0;
+        rightOfWay = 0;
+        production = new ImmutableList<>();
+        consumption = new ImmutableList<>();
+        conversion = new ImmutableList<>();
+        tileBuildCost = null;
     }
 
     @Override

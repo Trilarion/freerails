@@ -105,8 +105,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     public double calculateDistance(double time) {
-        if (time == this.finalT)
-            return this.finalS;
+        if (time == finalT)
+            return finalS;
         checkT(time);
         TandI tai = getIndex(time);
         double s = 0;
@@ -126,8 +126,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     public double calculateTime(double distance) {
-        if (distance == this.finalS)
-            return this.finalT;
+        if (distance == finalS)
+            return finalT;
         if (distance > finalS)
             throw new IllegalArgumentException(String.valueOf(distance));
 
@@ -205,7 +205,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 
         TandI(int i, double t) {
             this.i = i;
-            this.offset = t;
+            offset = t;
         }
 
     }

@@ -24,7 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.MessageToServer;
+import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.network.SaveGameMessageToServer;
@@ -111,7 +111,7 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    private void oKButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_oKButtonActionPerformed
+    private void oKButtonActionPerformed(java.awt.event.ActionEvent evt) {
 
         String filename = fileNameTextField.getText();
         // Save the current game using the string
@@ -121,16 +121,16 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
         modelRoot.sendCommand(message2);
         close.actionPerformed(evt);
-    }// GEN-LAST:event_oKButtonActionPerformed
+    }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         close.actionPerformed(evt);
-    }// GEN-LAST:event_cancelButtonActionPerformed
+    }
 
-    private void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_fileNameTextFieldActionPerformed
+    private void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
-    }// GEN-LAST:event_fileNameTextFieldActionPerformed
+    }
 
     /**
      * @param m
@@ -138,8 +138,8 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
-        this.close = closeAction;
-        this.modelRoot = m;
+        close = closeAction;
+        modelRoot = m;
     }
     // End of variables declaration                   
 

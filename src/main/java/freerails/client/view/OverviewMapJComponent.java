@@ -37,7 +37,7 @@ public class OverviewMapJComponent extends JPanel {
      * @param r
      */
     public OverviewMapJComponent(Rectangle r) {
-        this.setPreferredSize(mapView.getMapSizeInPixels());
+        setPreferredSize(mapView.getMapSizeInPixels());
         mainMapVisRect = r;
     }
 
@@ -46,19 +46,19 @@ public class OverviewMapJComponent extends JPanel {
      */
     public void setup(MapRenderer mv) {
         mapView = mv;
-        this.setPreferredSize(mapView.getMapSizeInPixels());
-        this.setMinimumSize(this.getPreferredSize());
-        this.setSize(this.getPreferredSize());
+        setPreferredSize(mapView.getMapSizeInPixels());
+        setMinimumSize(getPreferredSize());
+        setSize(getPreferredSize());
 
-        if (null != this.getParent()) {
-            this.getParent().validate();
+        if (null != getParent()) {
+            getParent().validate();
         }
     }
 
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-        java.awt.Rectangle r = this.getVisibleRect();
+        java.awt.Rectangle r = getVisibleRect();
         mapView.paintRect(g2, r);
         g2.setColor(Color.WHITE);
         g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width,

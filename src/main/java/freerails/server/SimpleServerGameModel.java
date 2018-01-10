@@ -19,18 +19,19 @@
 /*
  *
  */
-package freerails.network;
+package freerails.server;
 
+import freerails.network.MoveReceiver;
+import freerails.server.ServerGameModel;
 import freerails.world.World;
 
 /**
  * A ServerGameModel that has a world object but no automation.
  */
 public class SimpleServerGameModel implements ServerGameModel {
+
     private static final long serialVersionUID = 3546074757457131826L;
-
     private World w;
-
     private String[] passwords;
 
     /**
@@ -38,7 +39,7 @@ public class SimpleServerGameModel implements ServerGameModel {
      * @param passwords
      */
     public void setWorld(World world, String[] passwords) {
-        this.w = world;
+        w = world;
         this.passwords = passwords.clone();
     }
 
@@ -50,9 +51,9 @@ public class SimpleServerGameModel implements ServerGameModel {
     }
 
     /**
-     * @param moveExecutor
+     * @param moveReceiver
      */
-    public void init(MoveReceiver moveExecutor) {
+    public void initialize(MoveReceiver moveReceiver) {
     }
 
     /**

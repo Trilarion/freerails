@@ -33,7 +33,6 @@ public interface GameServer extends GameModel {
     /**
      * @return
      */
-    @SuppressWarnings("unused")
     int countOpenConnections();
 
 }

@@ -52,8 +52,8 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
                                TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
             throws IOException {
         super(tileModel, rgbValues, w);
-        this.setTileIcons(new Image[1]);
-        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
+        setTileIcons(new Image[1]);
+        getTileIcons()[0] = imageManager.getImage(generateFilename());
         this.parentTileView = parentTileView;
     }
 
@@ -74,7 +74,7 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
             logger.warn("parent tileView==null");
         }
 
-        Image icon = this.getIcon(mapX, mapX, w);
+        Image icon = getIcon(mapX, mapX, w);
 
         if (null != icon) {
             g.drawImage(icon, renderX, renderY, null);
@@ -95,7 +95,7 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
     }
 
     private String generateFilename() {
-        return "terrain" + File.separator + this.getTerrainType() + ".png";
+        return "terrain" + File.separator + getTerrainType() + ".png";
     }
 
     /**

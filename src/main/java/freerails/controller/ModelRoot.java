@@ -21,6 +21,8 @@
  */
 package freerails.controller;
 
+import freerails.network.MessageToServer;
+
 /**
  * Defines methods and constants that GUI classes can use to access shared data.
  */

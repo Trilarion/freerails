@@ -92,7 +92,7 @@ public abstract class TransactionAggregator {
         setTotalsArrayLength(timeValues.length - 1);
 
         int timeIndex = 0;
-        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
+        int numberOfTransactions = w.getNumberOfTransactions(principal);
         setTotalsArrayLength(timeValues.length - 1);
 
         for (int i = 0; i < numberOfTransactions; i++) {

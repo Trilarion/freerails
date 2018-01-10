@@ -20,10 +20,9 @@ package freerails.server;
 
 import java.util.List;
 
+// TODO maybe shift to world
 /**
  * Class to randomly select a terrain type for a terrain tile.
- *
- * TerrainRandomiser.java
  *
  * Terrain Types are: 0) City (Urban) 1) Refinery (Industry) 2) Village
  * (Urban) 3) Factory (Industry) 4) Clear (Country) 5) Farm (Country) 6)
@@ -35,19 +34,18 @@ import java.util.List;
  * Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
  */
 // TODO only used by MapFactory, should go there
-public class TerrainRandomiser {
+public class TerrainRandomizer {
 
     private final List<Integer> terrainTypes;
     private final List<Integer> non_terrainTypes;
 
-    // clear (on avg.)
 
     /**
      * @param num
      * @param num2
      */
 
-    public TerrainRandomiser(List<Integer> num, List<Integer> num2) {
+    public TerrainRandomizer(List<Integer> num, List<Integer> num2) {
         terrainTypes = num;
         non_terrainTypes = num2;
     }

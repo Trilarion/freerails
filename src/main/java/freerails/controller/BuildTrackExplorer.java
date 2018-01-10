@@ -307,7 +307,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         if (beforeFirst) {
             throw new IllegalStateException();
         }
-        setPosition(this.getVertexConnectedByEdge());
+        setPosition(getVertexConnectedByEdge());
     }
 
     public void nextEdge() {

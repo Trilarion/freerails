@@ -44,7 +44,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         mapHeight = w.getMapHeight();
 
         tileModel = t;
-        this.typeNumbers = rgbValues;
+        typeNumbers = rgbValues;
 
         if (null == t) {
             throw new NullPointerException();
@@ -65,7 +65,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      */
     public void renderTile(java.awt.Graphics g, int screenX, int screenY,
                            int mapX, int mapY, ReadOnlyWorld w) {
-        Image icon = this.getIcon(mapX, mapY, w);
+        Image icon = getIcon(mapX, mapY, w);
 
         if (null != icon) {
             g.drawImage(icon, screenX, screenY, null);
@@ -125,7 +125,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     String generateRelativeFileName(int i) {
-        return "terrain" + File.separator + this.getTerrainType() + '_'
+        return "terrain" + File.separator + getTerrainType() + '_'
                 + generateFileNameNumber(i) + ".png";
     }
 

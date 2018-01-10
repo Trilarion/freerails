@@ -56,7 +56,7 @@ public final class FreerailsCursor {
      * @throws IOException
      */
     public FreerailsCursor(ModelRoot mr, RendererRoot rr) throws IOException {
-        this.modelRoot = mr;
+        modelRoot = mr;
         modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
         buildTrack = rr.getImage("cursor/buildtrack.png");
         upgradeTrack = rr.getImage("cursor/upgradetrack.png");

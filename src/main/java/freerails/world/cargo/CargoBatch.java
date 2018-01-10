@@ -84,11 +84,11 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (o instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) o;
 
-            return test.cargoType == this.cargoType
-                    && test.sourceX == this.sourceX
-                    && test.sourceY == this.sourceY
-                    && test.creationTime == this.creationTime
-                    && test.stationOfOrigin == this.stationOfOrigin;
+            return test.cargoType == cargoType
+                    && test.sourceX == sourceX
+                    && test.sourceY == sourceY
+                    && test.creationTime == creationTime
+                    && test.stationOfOrigin == stationOfOrigin;
         }
         return false;
     }
@@ -96,12 +96,12 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 37 * result + this.cargoType;
-        result = 37 * result + this.sourceX;
-        result = 37 * result + this.sourceY;
-        result = 37 * result + this.stationOfOrigin;
+        result = 37 * result + cargoType;
+        result = 37 * result + sourceX;
+        result = 37 * result + sourceY;
+        result = 37 * result + stationOfOrigin;
         result = 37 * result
-                + (int) (this.creationTime ^ (this.creationTime >>> 32));
+                + (int) (creationTime ^ (creationTime >>> 32));
 
         return result;
     }

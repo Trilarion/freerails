@@ -18,6 +18,7 @@
 
 package freerails.controller;
 
+import freerails.network.MessageToClient;
 import freerails.world.FreerailsMutableSerializable;
 
 import java.io.Serializable;

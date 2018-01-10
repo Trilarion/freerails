@@ -50,11 +50,11 @@ public final class ForestStyleTileRenderer extends
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
                                    TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
-        this.setTileIcons(new Image[4]);
+        setTileIcons(new Image[4]);
 
-        for (int i = 0; i < this.getTileIcons().length; i++) {
+        for (int i = 0; i < getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
-            this.getTileIcons()[i] = imageManager.getImage(fileName);
+            getTileIcons()[i] = imageManager.getImage(fileName);
         }
     }
 

@@ -21,10 +21,7 @@ package freerails.client.common;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.network.MoveChainFork;
-import freerails.network.MoveReceiver;
-import freerails.network.ServerCommandReceiver;
-import freerails.network.UntriedMoveReceiver;
+import freerails.network.*;
 import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldListListener;
@@ -89,21 +86,21 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param l
      */
     public void addCompleteMoveReceiver(MoveReceiver l) {
-        this.moveFork.addCompleteMoveReceiver(l);
+        moveFork.addCompleteMoveReceiver(l);
     }
 
     /**
      * @param listener
      */
     public void addListListener(WorldListListener listener) {
-        this.moveFork.addListListener(listener);
+        moveFork.addListListener(listener);
     }
 
     /**
      * @param l
      */
     public void addMapListener(WorldMapListener l) {
-        this.moveFork.addMapListener(l);
+        moveFork.addMapListener(l);
     }
 
     /**
@@ -117,7 +114,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param l
      */
     public void addSplitMoveReceiver(MoveReceiver l) {
-        this.moveFork.addSplitMoveReceiver(l);
+        moveFork.addSplitMoveReceiver(l);
     }
 
     /**
@@ -125,8 +122,8 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @return
      */
     public MoveStatus doMove(Move m) {
-        MoveStatus ms = this.moveReceiver.tryDoMove(m);
-        this.moveReceiver.process(m);
+        MoveStatus ms = moveReceiver.tryDoMove(m);
+        moveReceiver.process(m);
 
         return ms;
     }
@@ -245,7 +242,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @return
      */
     public MoveStatus tryDoMove(Move m) {
-        return this.moveReceiver.tryDoMove(m);
+        return moveReceiver.tryDoMove(m);
     }
 
     public boolean is(ModelRoot.Property property, Object value) {

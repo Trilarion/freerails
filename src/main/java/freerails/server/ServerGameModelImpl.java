@@ -24,7 +24,6 @@ package freerails.server;
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
-import freerails.network.ServerGameModel;
 import freerails.world.*;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameSpeed;
@@ -37,6 +36,7 @@ import java.util.List;
  * A ServerGameModel that contains the automations used in the actual game.
  */
 public class ServerGameModelImpl implements ServerGameModel {
+
     private static final long serialVersionUID = 3978144352788820021L;
     /**
      * List of the ServerAutomaton objects connected to this game.
@@ -71,7 +71,7 @@ public class ServerGameModelImpl implements ServerGameModel {
      * @param serverAutomata
      */
     public ServerGameModelImpl(World w, List<ServerAutomaton> serverAutomata) {
-        this.world = w;
+        world = w;
         this.serverAutomata = serverAutomata;
 
         nextModelUpdateDue = System.currentTimeMillis();
@@ -193,18 +193,18 @@ public class ServerGameModelImpl implements ServerGameModel {
     }
 
     /**
-     * @param moveExecutor
+     * @param moveReceiver
      */
-    public void init(MoveReceiver moveExecutor) {
-        this.moveExecuter = moveExecutor;
-        tb = new TrainUpdater(moveExecutor);
-        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveExecutor);
+    public void initialize(MoveReceiver moveReceiver) {
+        moveExecuter = moveReceiver;
+        tb = new TrainUpdater(moveReceiver);
+        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveReceiver);
 
         for (ServerAutomaton aServerAutomata : serverAutomata) {
-            aServerAutomata.initAutomaton(moveExecutor);
+            aServerAutomata.initAutomaton(moveReceiver);
         }
 
-        tb.initAutomaton(moveExecutor);
+        tb.initAutomaton(moveReceiver);
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
@@ -221,7 +221,7 @@ public class ServerGameModelImpl implements ServerGameModel {
      */
     public void setWorld(World world, String[] passwords) {
         this.world = world;
-        this.serverAutomata.clear();
+        serverAutomata.clear();
         this.passwords = passwords.clone();
     }
 

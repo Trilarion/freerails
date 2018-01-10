@@ -404,8 +404,8 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                 Point2D p) {
             this.after = after;
             this.before = before;
-            this.x = p.x;
-            this.y = p.y;
+            x = p.x;
+            y = p.y;
         }
 
         @Override

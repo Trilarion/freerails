@@ -66,7 +66,7 @@ public class TrainOrdersListModel extends AbstractListModel {
                                 FreerailsPrincipal p) {
         this.trainNumber = trainNumber;
         this.w = w;
-        this.principal = p;
+        principal = p;
         assert (null != getSchedule());
     }
 

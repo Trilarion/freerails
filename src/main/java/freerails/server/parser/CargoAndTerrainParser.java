@@ -36,15 +36,13 @@ import org.xml.sax.*;
  */
 // TODO where is the DTD, how to find it?
 public class CargoAndTerrainParser implements ContentHandler {
+
     private static final Logger logger = Logger
             .getLogger(CargoAndTerrainParser.class.getName());
 
     private final java.lang.StringBuffer buffer;
-
     private final CargoAndTerrainHandler handler;
-
     private final java.util.Stack<Object[]> context;
-
     private final EntityResolver resolver;
 
     /**

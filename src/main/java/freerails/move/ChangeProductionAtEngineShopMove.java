@@ -47,10 +47,10 @@ public class ChangeProductionAtEngineShopMove implements Move {
      */
     public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b,
                                             ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
-        this.before = b;
-        this.after = a;
-        this.stationNumber = station;
-        this.principal = p;
+        before = b;
+        after = a;
+        stationNumber = station;
+        principal = p;
     }
 
     @Override
@@ -91,15 +91,15 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     private MoveStatus tryMove(World w, ImmutableList<TrainBlueprint> stateA) {
         // Check that the specified station exists.
-        if (!w.boundsContain(principal, KEY.STATIONS, this.stationNumber)) {
-            return MoveStatus.moveFailed(this.stationNumber + " " + principal);
+        if (!w.boundsContain(principal, KEY.STATIONS, stationNumber)) {
+            return MoveStatus.moveFailed(stationNumber + " " + principal);
         }
 
         Station station = (Station) w.get(principal, KEY.STATIONS,
                 stationNumber);
 
         if (null == station) {
-            return MoveStatus.moveFailed(this.stationNumber + " " + principal
+            return MoveStatus.moveFailed(stationNumber + " " + principal
                     + " is does null");
         }
 
@@ -108,12 +108,12 @@ public class ChangeProductionAtEngineShopMove implements Move {
             if (null == stateA) {
                 return MoveStatus.MOVE_OK;
             }
-            return MoveStatus.moveFailed(this.stationNumber + " " + principal);
+            return MoveStatus.moveFailed(stationNumber + " " + principal);
         }
         if (station.getProduction().equals(stateA)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed(this.stationNumber + " " + principal);
+        return MoveStatus.moveFailed(stationNumber + " " + principal);
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
@@ -126,7 +126,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (status.isOk()) {
             Station station = (Station) world.get(this.principal,
                     KEY.STATIONS, stationNumber);
-            station = new Station(station, this.after);
+            station = new Station(station, after);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
         return status;
@@ -138,7 +138,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         if (status.isOk()) {
             Station station = (Station) world.get(this.principal,
                     KEY.STATIONS, stationNumber);
-            station = new Station(station, this.before);
+            station = new Station(station, before);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
         return status;

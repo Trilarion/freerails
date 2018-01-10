@@ -53,7 +53,7 @@ public class ToAndFroPathIterator implements PathIterator {
     }
 
     public void nextSegment(LineSegment line) {
-        if (this.hasNext()) {
+        if (hasNext()) {
             if (!path.hasNext()) {
                 forwards = !forwards;
                 path = new PathIteratorImpl(list, forwards);

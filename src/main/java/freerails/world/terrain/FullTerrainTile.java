@@ -43,7 +43,7 @@ public class FullTerrainTile implements TerrainTile {
 
     private FullTerrainTile(int terrainType) {
         this.terrainType = terrainType;
-        this.trackPiece = NullTrackPiece.getInstance();
+        trackPiece = NullTrackPiece.getInstance();
     }
 
     private FullTerrainTile(int terrainType, TrackPiece trackPiece) {

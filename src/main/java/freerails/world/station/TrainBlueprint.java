@@ -80,6 +80,6 @@ public class TrainBlueprint implements Serializable {
 
     @Override
     public String toString() {
-        return "engine type: " + this.engineType + ", with " + wagonTypes.size() + " wagons";
+        return "engine type: " + engineType + ", with " + wagonTypes.size() + " wagons";
     }
 }

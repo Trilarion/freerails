@@ -165,7 +165,7 @@ public class WorldImpl implements World {
     public boolean boundsContain(FreerailsPrincipal p, KEY k, int index) {
         if (!isPlayer(p)) {
             return false;
-        } else return index >= 0 && index < this.size(p, k);
+        } else return index >= 0 && index < size(p, k);
     }
 
     /**
@@ -221,12 +221,12 @@ public class WorldImpl implements World {
             }
 
             // Compare maps
-            if ((this.getMapWidth() != test.getMapWidth())
-                    || (this.getMapHeight() != test.getMapHeight())) {
+            if ((getMapWidth() != test.getMapWidth())
+                    || (getMapHeight() != test.getMapHeight())) {
                 return false;
             }
-            for (int x = 0; x < this.getMapWidth(); x++) {
-                for (int y = 0; y < this.getMapHeight(); y++) {
+            for (int x = 0; x < getMapWidth(); x++) {
+                for (int y = 0; y < getMapHeight(); y++) {
                     if (!getTile(x, y).equals(test.getTile(x, y))) {
                         return false;
                     }
@@ -463,9 +463,9 @@ public class WorldImpl implements World {
     }
 
     void setupItems() {
-        this.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         time = new GameTime(0);
-        this.set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
+        set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
     }
 
     /**

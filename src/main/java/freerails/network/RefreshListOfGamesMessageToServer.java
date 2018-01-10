@@ -22,7 +22,6 @@
 package freerails.network;
 
 import freerails.controller.MessageStatus;
-import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**

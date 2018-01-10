@@ -97,7 +97,7 @@ public class StationConversion implements Serializable {
     public boolean equals(Object o) {
         if (o instanceof StationConversion) {
             StationConversion test = (StationConversion) o;
-            return this.convertedTo.equals(test.convertedTo);
+            return convertedTo.equals(test.convertedTo);
         }
         return false;
     }

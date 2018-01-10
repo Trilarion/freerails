@@ -52,15 +52,15 @@ public class ChangeItemInListMove implements ListMove {
         this.before = before;
         this.after = after;
         this.index = index;
-        this.listKey = k;
-        this.principal = p;
+        listKey = k;
+        principal = p;
     }
 
     /**
      * @return
      */
     public boolean beforeEqualsAfter() {
-        return Utils.equal(this.before, this.after);
+        return Utils.equal(before, after);
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {

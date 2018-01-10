@@ -55,7 +55,7 @@ public class WagonType implements Serializable {
         if (!(obj instanceof WagonType))
             return false;
         WagonType other = (WagonType) obj;
-        return other.typeCategory == this.typeCategory
+        return other.typeCategory == typeCategory
                 && other.typeName.equals(typeName);
     }
 

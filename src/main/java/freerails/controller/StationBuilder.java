@@ -71,7 +71,7 @@ public class StationBuilder {
 
         FreerailsPrincipal principal = executor.getPrincipal();
         AddStationPreMove preMove = AddStationPreMove.newStation(p,
-                this.ruleNumber, principal);
+                ruleNumber, principal);
         Move m = preMove.generateMove(world);
 
         return executor.tryDoMove(m);
@@ -87,7 +87,7 @@ public class StationBuilder {
         if (status.ok) {
             FreerailsPrincipal principal = executor.getPrincipal();
             AddStationPreMove preMove = AddStationPreMove.newStation(p,
-                    this.ruleNumber, principal);
+                    ruleNumber, principal);
             return executor.doPreMove(preMove);
         }
         if (logger.isDebugEnabled()) {

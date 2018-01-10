@@ -29,6 +29,7 @@ import java.util.*;
  * Implementation of GameServer that simply echoes whatever clients send it.
  */
 public class EchoGameServer implements GameServer, Runnable {
+
     private static final Logger logger = Logger.getLogger(EchoGameServer.class
             .getName());
 

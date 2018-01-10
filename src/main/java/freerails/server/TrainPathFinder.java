@@ -51,10 +51,10 @@ public class TrainPathFinder implements Iterator<Integer>, ServerAutomaton {
      */
     public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
                            int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
-        this.trackExplorer = tx;
+        trackExplorer = tx;
         stopsHandler = new TrainStopsHandler(trainNumber, p,
                 new WorldDiffs(w));
-        this.mr = newMr;
+        mr = newMr;
     }
 
     /**
@@ -71,8 +71,8 @@ public class TrainPathFinder implements Iterator<Integer>, ServerAutomaton {
         return false;
     }
 
-    public void initAutomaton(MoveReceiver newMr) {
-        this.mr = newMr;
+    public void initAutomaton(MoveReceiver moveReceiver) {
+        mr = moveReceiver;
     }
 
     boolean isTrainMoving() {

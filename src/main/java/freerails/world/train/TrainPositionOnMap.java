@@ -296,7 +296,7 @@ public class TrainPositionOnMap implements Serializable {
 
         if (o instanceof TrainPositionOnMap) {
             TrainPositionOnMap other = (TrainPositionOnMap) o;
-            int thisLength = this.getLength();
+            int thisLength = getLength();
             int otherLength = other.getLength();
 
             if (thisLength == otherLength) {
@@ -306,7 +306,7 @@ public class TrainPositionOnMap implements Serializable {
                 LineSegment line2 = new LineSegment();
 
                 path1 = other.path();
-                path2 = this.path();
+                path2 = path();
 
                 while (path1.hasNext() && path2.hasNext()) {
                     path1.nextSegment(line1);
@@ -352,7 +352,7 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public PathIterator path() {
-        return new SimplePathIteratorImpl(this.xpoints, this.ypoints);
+        return new SimplePathIteratorImpl(xpoints, ypoints);
     }
 
     /**
@@ -467,7 +467,7 @@ public class TrainPositionOnMap implements Serializable {
             while (path.hasNext()) {
                 path.nextSegment(line);
 
-                if (this.getX(i) != line.getX1() || this.getY(i) != line.getY1()) {
+                if (getX(i) != line.getX1() || getY(i) != line.getY1()) {
                     return false;
                 }
 
@@ -485,15 +485,15 @@ public class TrainPositionOnMap implements Serializable {
      */
     public TrainPositionOnMap removeFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
-            int newLength = this.getLength() - b.getLength() + 2;
+            int newLength = getLength() - b.getLength() + 2;
 
             int[] newXpoints = new int[newLength];
             int[] newYpoints = new int[newLength];
 
             // Copy from this
             for (int i = 0; i < newLength - 1; i++) {
-                newXpoints[i] = this.getX(i);
-                newYpoints[i] = this.getY(i);
+                newXpoints[i] = getX(i);
+                newYpoints[i] = getY(i);
             }
 
             // Copy tail from b
@@ -513,13 +513,13 @@ public class TrainPositionOnMap implements Serializable {
     public boolean canRemoveFromTail(TrainPositionOnMap b) {
         if (tailsAreEqual(this, b)) {
             PathIterator path = b.reversePath();
-            int i = this.getLength() - 1;
+            int i = getLength() - 1;
             LineSegment line = new LineSegment();
 
             while (path.hasNext()) {
                 path.nextSegment(line);
 
-                if (this.getX(i) != line.getX1() || this.getY(i) != line.getY1()) {
+                if (getX(i) != line.getX1() || getY(i) != line.getY1()) {
                     return false;
                 }
 

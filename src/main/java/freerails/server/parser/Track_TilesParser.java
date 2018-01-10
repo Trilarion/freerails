@@ -37,12 +37,10 @@ import java.io.IOException;
  * </pre>
  */
 public final class Track_TilesParser implements org.xml.sax.ContentHandler {
+
     private static final Logger logger = Logger.getLogger(Track_TilesParser.class.getName());
-
     private final java.lang.StringBuffer buffer;
-
     private final Track_TilesHandler handler;
-
     private final java.util.Stack<Object[]> context;
 
     /**

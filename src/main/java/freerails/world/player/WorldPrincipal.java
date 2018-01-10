@@ -28,7 +28,7 @@ class WorldPrincipal extends FreerailsPrincipal {
 
     public WorldPrincipal(String name) {
         super(-1);
-        this.principalName = name;
+        principalName = name;
     }
 
     public String getName() {

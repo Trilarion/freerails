@@ -147,10 +147,10 @@ public class TrainModel implements Serializable {
         if (obj instanceof TrainModel) {
             TrainModel test = (TrainModel) obj;
 
-            return this.cargoBundleId == test.cargoBundleId
-                    && this.engineTypeId == test.engineTypeId
-                    && this.wagonTypes.equals(test.wagonTypes)
-                    && this.scheduleId == test.scheduleId;
+            return cargoBundleId == test.cargoBundleId
+                    && engineTypeId == test.engineTypeId
+                    && wagonTypes.equals(test.wagonTypes)
+                    && scheduleId == test.scheduleId;
         }
         return false;
     }

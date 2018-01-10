@@ -52,7 +52,7 @@ public class OverHeadTrainView implements Painter {
      * @param mr
      */
     public OverHeadTrainView(ReadOnlyWorld world, RendererRoot rr, ModelRoot mr) {
-        this.w = world;
+        w = world;
         trainPainter = new TrainRenderer(rr);
         this.mr = mr;
     }

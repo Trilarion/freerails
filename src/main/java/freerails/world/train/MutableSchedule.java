@@ -72,8 +72,8 @@ public class MutableSchedule implements Schedule {
             ordersArray[i] = orders.get(i);
         }
 
-        return new ImmutableSchedule(ordersArray, this.nextScheduledOrder,
-                this.hasPriorityOrders);
+        return new ImmutableSchedule(ordersArray, nextScheduledOrder,
+                hasPriorityOrders);
     }
 
     /**
@@ -248,7 +248,7 @@ public class MutableSchedule implements Schedule {
      * @return
      */
     public boolean hasPriorityOrders() {
-        return this.hasPriorityOrders;
+        return hasPriorityOrders;
     }
 
     /**
@@ -266,7 +266,7 @@ public class MutableSchedule implements Schedule {
      */
     public boolean canPullUp(int orderNumber) {
         boolean isAlreadyAtTop = 0 == orderNumber;
-        boolean isPriorityOrdersAbove = (orderNumber == 1 && this.hasPriorityOrders);
+        boolean isPriorityOrdersAbove = (orderNumber == 1 && hasPriorityOrders);
 
         return !isAlreadyAtTop && !isPriorityOrdersAbove;
     }
@@ -276,8 +276,8 @@ public class MutableSchedule implements Schedule {
      * @return
      */
     public boolean canPushDown(int orderNumber) {
-        boolean isOrderPriorityOrders = (orderNumber == 0 && this.hasPriorityOrders);
-        boolean isAlreadyAtBottom = orderNumber == this.orders.size() - 1;
+        boolean isOrderPriorityOrders = (orderNumber == 0 && hasPriorityOrders);
+        boolean isAlreadyAtBottom = orderNumber == orders.size() - 1;
 
         return !isOrderPriorityOrders && !isAlreadyAtBottom;
     }
@@ -340,7 +340,7 @@ public class MutableSchedule implements Schedule {
      * @return
      */
     public int getNextScheduledOrder() {
-        return this.nextScheduledOrder;
+        return nextScheduledOrder;
     }
 
     /**
@@ -349,11 +349,11 @@ public class MutableSchedule implements Schedule {
     public void removeAllStopsAtStation(int stationNumber) {
         int i = 0;
 
-        while (i < this.getNumOrders()) {
-            TrainOrdersModel order = this.getOrder(i);
+        while (i < getNumOrders()) {
+            TrainOrdersModel order = getOrder(i);
 
             if (order.getStationID() == stationNumber) {
-                this.removeOrder(i);
+                removeOrder(i);
             } else {
                 i++;
             }

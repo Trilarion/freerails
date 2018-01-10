@@ -128,8 +128,8 @@ class CityModel {
     }
 
     int size() {
-        return this.urbanCityTiles.size() + this.industryCityTiles.size()
-                + this.resourceCityTiles.size();
+        return urbanCityTiles.size() + industryCityTiles.size()
+                + resourceCityTiles.size();
     }
 
     void writeToMap(World w) {

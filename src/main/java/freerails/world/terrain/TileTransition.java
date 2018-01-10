@@ -308,7 +308,7 @@ public final class TileTransition implements TrackConfigurations {
      * @return A oneTileMoveVector.
      */
     public TileTransition getOpposite() {
-        return getInstance(this.deltaX * -1, this.deltaY * -1);
+        return getInstance(deltaX * -1, deltaY * -1);
     }
 
     /**
@@ -405,7 +405,7 @@ public final class TileTransition implements TrackConfigurations {
     }
 
     public boolean contains(TrackConfigurations ftt) {
-        return ftt.get9bitTemplate() == this.flatTrackTemplate;
+        return ftt.get9bitTemplate() == flatTrackTemplate;
     }
 
     public int get9bitTemplate() {
@@ -447,7 +447,7 @@ public final class TileTransition implements TrackConfigurations {
     }
 
     private Object readResolve() {
-        return TileTransition.getInstance(this.deltaX, this.deltaY);
+        return TileTransition.getInstance(deltaX, deltaY);
     }
 
     /**
@@ -461,6 +461,6 @@ public final class TileTransition implements TrackConfigurations {
      * @return
      */
     public int get8bitTemplate() {
-        return 1 << this.getID();
+        return 1 << getID();
     }
 }

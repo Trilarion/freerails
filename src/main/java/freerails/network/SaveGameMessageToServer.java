@@ -19,15 +19,14 @@
 package freerails.network;
 
 import freerails.controller.MessageStatus;
-import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**
  * A request to save the game.
  */
 public class SaveGameMessageToServer implements MessageToServer {
-    private static final long serialVersionUID = 3257281452725777209L;
 
+    private static final long serialVersionUID = 3257281452725777209L;
     private final int id;
     private final String filename;
 
@@ -37,7 +36,7 @@ public class SaveGameMessageToServer implements MessageToServer {
      */
     public SaveGameMessageToServer(int id, String s) {
         this.id = id;
-        this.filename = s;
+        filename = s;
     }
 
     @Override

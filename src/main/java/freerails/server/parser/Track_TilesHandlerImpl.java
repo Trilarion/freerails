@@ -41,36 +41,13 @@ import java.util.List;
 // TODO difference between interface and implementation
 public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
-    /**
-     *
-     */
     protected List<TrackRule> ruleList;
-
-    /**
-     *
-     */
     protected freerails.world.track.TrackRuleProperties trackRuleProperties;
-
-    /**
-     *
-     */
     protected ValidTrackConfigurations validTrackConfigurations;
-
-    /**
-     *
-     */
     protected ArrayList<String> legalTemplates;
-
-    /**
-     *
-     */
     protected HashSet<TerrainCategory> terrainTypes;
-
-    /**
-     *
-     */
     protected ValidTrackPlacement validTrackPlacement;
-    int maxConsequ;
+    private int maxConsequ;
 
     /**
      * @param trackXmlUrl
@@ -196,7 +173,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
      * @param w
      */
     public void addTrackRules(World w) {
-        for (TrackRule r : this.ruleList) {
+        for (TrackRule r : ruleList) {
             w.add(SKEY.TRACK_RULES, r);
         }
     }

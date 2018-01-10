@@ -52,7 +52,7 @@ public class AddStationPreMove implements PreMove {
     private AddStationPreMove(Point2D p, int trackRule,
                               FreerailsPrincipal principal) {
         this.p = p;
-        this.ruleNumber = trackRule;
+        ruleNumber = trackRule;
         this.principal = principal;
     }
 
@@ -107,7 +107,7 @@ public class AddStationPreMove implements PreMove {
         FullTerrainTile ft = (FullTerrainTile) world.getTile(p.x, p.y);
         TrackPiece before = ft.getTrackPiece();
         TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
-                this.ruleNumber);
+                ruleNumber);
 
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),

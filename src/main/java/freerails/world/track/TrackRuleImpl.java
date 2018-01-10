@@ -84,7 +84,7 @@ public final class TrackRuleImpl implements TrackRule {
         if (comp != 0) {
             return -comp;
         }
-        long dPrice = this.properties.getPrice().getAmount()
+        long dPrice = properties.getPrice().getAmount()
                 - otherRule.getPrice().getAmount();
         return (int) dPrice;
 
@@ -94,11 +94,11 @@ public final class TrackRuleImpl implements TrackRule {
     public boolean equals(Object o) {
         if (o instanceof TrackRuleImpl) {
             TrackRuleImpl trackRuleImpl = (TrackRuleImpl) o;
-            boolean propertiesFieldsEqual = this.properties
+            boolean propertiesFieldsEqual = properties
                     .equals(trackRuleImpl.properties);
-            boolean legalConfigurationsEqual = this.validTrackConfigurations
+            boolean legalConfigurationsEqual = validTrackConfigurations
                     .equals(trackRuleImpl.validTrackConfigurations);
-            boolean legalTrackPlacementEqual = this.validTrackPlacement
+            boolean legalTrackPlacementEqual = validTrackPlacement
                     .equals(trackRuleImpl.validTrackPlacement);
 
             return propertiesFieldsEqual && legalConfigurationsEqual
@@ -146,7 +146,7 @@ public final class TrackRuleImpl implements TrackRule {
      * @return
      */
     public Money getPrice() {
-        return this.properties.getPrice();
+        return properties.getPrice();
     }
 
     /**
@@ -160,7 +160,7 @@ public final class TrackRuleImpl implements TrackRule {
      * @return
      */
     public int getStationRadius() {
-        return this.properties.getStationRadius();
+        return properties.getStationRadius();
     }
 
     /**

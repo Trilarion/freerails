@@ -92,8 +92,8 @@ class OpenList implements Serializable {
         final int node;
 
         OpenListEntry(int _f, int _node) {
-            this.f = _f;
-            this.node = _node;
+            f = _f;
+            node = _node;
         }
 
         public int compareTo(OpenListEntry o) {

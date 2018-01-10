@@ -25,6 +25,7 @@ import java.io.Serializable;
  * Lets a client send messages to the server over the Internet.
  */
 public class InetConnectionToServer extends AbstractInetConnection implements ConnectionToServer {
+
     final String serverDetails;
 
     /**

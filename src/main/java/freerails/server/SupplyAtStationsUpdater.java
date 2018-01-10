@@ -36,7 +36,6 @@ import freerails.world.station.Station;
 public class SupplyAtStationsUpdater {
 
     private final World world;
-
     private final MoveReceiver moveReceiver;
 
     /**
@@ -47,7 +46,7 @@ public class SupplyAtStationsUpdater {
      */
     public SupplyAtStationsUpdater(World world, MoveReceiver mr) {
         this.world = world;
-        this.moveReceiver = mr;
+        moveReceiver = mr;
     }
 
     /**
@@ -72,7 +71,7 @@ public class SupplyAtStationsUpdater {
                 if (!stationAfter.equals(stationBefore)) {
                     Move move = new ChangeStationMove(iterator.getIndex(),
                             stationBefore, stationAfter, principal);
-                    this.moveReceiver.process(move);
+                    moveReceiver.process(move);
                 }
             }
         }

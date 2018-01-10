@@ -166,7 +166,7 @@ public class ImageManagerImpl implements ImageManager {
         int width = (i.getWidth(null) * height) / i.getHeight(null);
         compatibleImage = newBlankImage(height, width);
         Graphics2D g = (Graphics2D) compatibleImage.getGraphics();
-        g.setRenderingHints(this.renderingHints);
+        g.setRenderingHints(renderingHints);
         g.drawImage(i, 0, 0, width, height, null);
         scaledImagesHashMap.put(hashKey, compatibleImage);
 

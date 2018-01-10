@@ -124,10 +124,10 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
                        TrainActivity act) {
         this.path = path;
         this.trainLength = trainLength;
-        this.activity = act;
-        this.distanceEngineWillTravel = 0;
-        this.initialPosition = path.getTotalDistance();
-        this.speeds = ConstantAcceleration.STOPPED;
+        activity = act;
+        distanceEngineWillTravel = 0;
+        initialPosition = path.getTotalDistance();
+        speeds = ConstantAcceleration.STOPPED;
         this.duration = duration;
     }
 

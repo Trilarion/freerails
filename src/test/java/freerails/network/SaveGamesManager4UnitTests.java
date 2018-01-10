@@ -28,7 +28,7 @@ import java.util.HashMap;
 /**
  * Stores saved games in memory rather than on disk.
  */
-public class SavedGamesManager4UnitTests implements SavedGamesManager {
+public class SaveGamesManager4UnitTests implements SaveGamesManager {
     private final String[] mapsAvailable = {"map1", "map2"};
 
     private final HashMap<String, Serializable> savedGames = new HashMap<>();

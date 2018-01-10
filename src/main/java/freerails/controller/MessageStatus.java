@@ -18,6 +18,9 @@
 
 package freerails.controller;
 
+import freerails.network.MessageToClient;
+import freerails.network.MessageToServer;
+
 import java.io.Serializable;
 
 /**
@@ -51,7 +54,7 @@ public class MessageStatus implements Serializable {
      */
     public MessageStatus(int id, boolean successful) {
         this.id = id;
-        this.reason = null;
+        reason = null;
         this.successful = successful;
     }
 

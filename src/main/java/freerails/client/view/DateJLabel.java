@@ -43,7 +43,7 @@ public class DateJLabel extends JLabel implements View {
      *
      */
     public DateJLabel() {
-        this.setText("          ");
+        setText("          ");
     }
 
     @Override
@@ -64,6 +64,6 @@ public class DateJLabel extends JLabel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
-        this.w = model.getWorld();
+        w = model.getWorld();
     }
 }

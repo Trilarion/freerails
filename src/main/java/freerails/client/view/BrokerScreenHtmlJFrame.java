@@ -90,7 +90,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         URL url = BrokerScreenHtmlJFrame.class
                 .getResource(ClientConfig.VIEW_BROKER);
         template = loadText(url);
-        this.setSize(550, 300);
+        setSize(550, 300);
 
     }
 

@@ -44,9 +44,9 @@ public class VerifyStationName {
      * @param name
      */
     public VerifyStationName(ReadOnlyWorld world, String name) {
-        this.w = world;
-        this.nameToVerify = name;
-        this.stationAlternatives = new LinkedList<>();
+        w = world;
+        nameToVerify = name;
+        stationAlternatives = new LinkedList<>();
 
         stationAlternatives.add("Junction");
         stationAlternatives.add("Siding");

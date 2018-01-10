@@ -55,10 +55,10 @@ public class TrainOrdersModel implements Serializable {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
-        this.waitUntilFull = wait;
-        this.consist = newConsist;
-        this.stationId = station;
-        this.autoConsist = auto;
+        waitUntilFull = wait;
+        consist = newConsist;
+        stationId = station;
+        autoConsist = auto;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class TrainOrdersModel implements Serializable {
      * 'no change'.
      */
     public ImmutableList<Integer> getConsist() {
-        return this.consist;
+        return consist;
     }
 
     /**

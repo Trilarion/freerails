@@ -32,18 +32,14 @@ import java.net.Socket;
  */
 @SuppressWarnings("unused")
 abstract class AbstractInetConnection implements Runnable {
+
     private static final Logger logger = Logger
             .getLogger(AbstractInetConnection.class.getName());
-
     private final SychronizedQueue inbound = new SychronizedQueue();
-
     private final Connection inetConnection;
-
     private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(
             false);
-
     private final SynchronizedFlag status = new SynchronizedFlag(true);
-
     private int timeout = 1000 * 5; // 5 seconds.
 
     public AbstractInetConnection(Socket s) throws IOException {

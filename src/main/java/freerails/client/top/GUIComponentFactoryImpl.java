@@ -147,8 +147,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 }
             }
         });
-        userMessageGenerator = new UserMessageGenerator(this.modelRoot,
-                this.actionRoot);
+        userMessageGenerator = new UserMessageGenerator(modelRoot,
+                actionRoot);
         modelRoot.addCompleteMoveReceiver(userMessageGenerator);
 
     }
@@ -160,8 +160,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         enabled = stations.size() > 0;
 
-        this.trainsJTabPane.setStationTabEnabled(enabled);
-        this.stationInfoJMenuItem.setEnabled(enabled);
+        trainsJTabPane.setStationTabEnabled(enabled);
+        stationInfoJMenuItem.setEnabled(enabled);
     }
 
     private void countTrains() {
@@ -171,9 +171,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         enabled = trains.size() > 0;
 
-        this.trainsJTabPane.setTrainTabEnabled(enabled);
-        this.trainListJMenuItem.setEnabled(enabled);
-        this.trainOrdersJMenuItem.setEnabled(enabled);
+        trainsJTabPane.setTrainTabEnabled(enabled);
+        trainListJMenuItem.setEnabled(enabled);
+        trainOrdersJMenuItem.setEnabled(enabled);
     }
 
     /**
@@ -483,17 +483,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                     }
                 });
 
-        JMenuItem showReportBug = new JMenuItem("Report Bug");
-        showReportBug.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogueBoxController.showReportBug();
-            }
-        });
-
         helpMenu.add(showControls);
         helpMenu.add(how2play);
         helpMenu.add(showJavaProperties);
-        helpMenu.add(showReportBug);
         helpMenu.add(about);
 
         return helpMenu;
@@ -582,7 +574,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      */
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal
-                .equals(this.modelRoot.getPrincipal());
+                .equals(modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
             countTrains();
@@ -607,7 +599,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal
-                .equals(this.modelRoot.getPrincipal());
+                .equals(modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
             countTrains();
@@ -667,12 +659,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
         userInputOnMapController.setup(mapViewJComponent, actionRoot
-                        .getTrackMoveProducer(), stationTypesPopup, this.modelRoot,
+                        .getTrackMoveProducer(), stationTypesPopup, modelRoot,
                 dialogueBoxController,
                 getBuildTrackController());
 
         buildMenu.setup(actionRoot);
-        mainMapScrollPane1.setViewportView(this.mapViewJComponent);
+        mainMapScrollPane1.setViewportView(mapViewJComponent);
 
         ((OverviewMapJComponent) overviewMapContainer).setup(overviewMap);
 

@@ -85,7 +85,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         stationId = stationNo;
         w = world;
         this.autoConsist = autoConsist;
-        this.waitingForFullLoad = waiting;
+        waitingForFullLoad = waiting;
         train = new TrainAccessor(w, principal, trainNo);
         consist = train.getTrain().getConsist();
         getBundles();
@@ -96,7 +96,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             ArrayList<WagonLoad> wagonsAvailable = new ArrayList<>();
 
             assert (train
-                    .equals(world.get(principal, KEY.TRAINS, this.trainId)));
+                    .equals(world.get(principal, KEY.TRAINS, trainId)));
             Schedule schedule = train.getSchedule();
             TrainOrdersModel order = schedule.getOrder(schedule
                     .getOrderToGoto());
@@ -196,7 +196,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
         if (autoConsist) {
             int engine = train.getTrain().getEngineType();
-            Move m = ChangeTrainMove.generateMove(this.trainId, train
+            Move m = ChangeTrainMove.generateMove(trainId, train
                     .getTrain(), engine, consist, principal);
             moves.add(m);
         } else if (waitingForFullLoad) {
@@ -271,7 +271,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         }
 
         moves = ProcessCargoAtStationMoveGenerator.processCargo(w,
-                cargoDroppedOff, this.stationId, principal, trainId);
+                cargoDroppedOff, stationId, principal, trainId);
 
         // Unload the cargo that there isn't space for on the train regardless
         // of whether the station demands it.

@@ -44,10 +44,10 @@ public final class ChequeredTileRenderer extends AbstractTileRenderer {
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues,
                                  TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
-        this.setTileIcons(new Image[2]);
-        this.getTileIcons()[0] = imageManager
+        setTileIcons(new Image[2]);
+        getTileIcons()[0] = imageManager
                 .getImage(generateRelativeFileName(0));
-        this.getTileIcons()[1] = imageManager
+        getTileIcons()[1] = imageManager
                 .getImage(generateRelativeFileName(1));
     }
 

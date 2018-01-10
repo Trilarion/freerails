@@ -68,7 +68,7 @@ public final class Money implements Serializable {
         if (obj instanceof Money) {
             Money test = (Money) obj;
 
-            return test.amount == this.amount;
+            return test.amount == amount;
         }
         return false;
     }

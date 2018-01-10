@@ -78,7 +78,7 @@ public class SKEY implements Serializable {
     private final int keyNumber;
 
     private SKEY() {
-        this.keyNumber = numberOfKeys;
+        keyNumber = numberOfKeys;
         keys[keyNumber] = this;
         numberOfKeys++;
     }
@@ -92,7 +92,7 @@ public class SKEY implements Serializable {
     }
 
     private Object readResolve() {
-        return keys[this.keyNumber];
+        return keys[keyNumber];
     }
 
     @Override

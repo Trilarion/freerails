@@ -19,7 +19,6 @@
 package freerails.network;
 
 import freerails.controller.MessageStatus;
-import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**
@@ -38,7 +37,7 @@ public class NewGameMessageToServer implements MessageToServer {
      */
     public NewGameMessageToServer(int id, String s) {
         this.id = id;
-        this.mapName = s;
+        mapName = s;
     }
 
     /**

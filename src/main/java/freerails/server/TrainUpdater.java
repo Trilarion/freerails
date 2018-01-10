@@ -108,13 +108,8 @@ public class TrainUpdater implements ServerAutomaton {
                             int engineType = production.get(j).getEngineType();
                             ImmutableList<Integer> wagonTypes = production.get(j)
                                     .getWagonTypes();
-                            this.buildTrain(engineType, wagonTypes, p,
+                            buildTrain(engineType, wagonTypes, p,
                                     principal, world);
-                            // TrainMover trainMover =
-                            // this.buildTrain(engineType, wagonTypes, p,
-                            // principal, world);
-
-                            // this.addTrainMover(trainMover);
                         }
 
                         ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(
@@ -146,8 +141,8 @@ public class TrainUpdater implements ServerAutomaton {
         return s.toImmutableSchedule();
     }
 
-    public void initAutomaton(MoveReceiver mr) {
-        moveReceiver = mr;
+    public void initAutomaton(MoveReceiver moveReceiver) {
+        this.moveReceiver = moveReceiver;
 
     }
 

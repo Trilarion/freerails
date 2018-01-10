@@ -87,11 +87,6 @@ public class CitySAXParser extends DefaultHandler {
                     cities.add(city);
                 }
             }
-
-            // end for loop
         }
-
-        // end if
     }
-    // end startElement method
 }

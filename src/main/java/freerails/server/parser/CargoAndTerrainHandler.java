@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
  */
 @SuppressWarnings("unused")
 public interface CargoAndTerrainHandler {
+
     /**
      * An empty element event handling method.
      *

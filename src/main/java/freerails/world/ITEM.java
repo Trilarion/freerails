@@ -66,7 +66,7 @@ public class ITEM implements Serializable {
     private final int keyNumber;
 
     private ITEM() {
-        this.keyNumber = numberOfKeys;
+        keyNumber = numberOfKeys;
         keys[keyNumber] = this;
         numberOfKeys++;
     }
@@ -80,7 +80,7 @@ public class ITEM implements Serializable {
     }
 
     private Object readResolve() {
-        return keys[this.keyNumber];
+        return keys[keyNumber];
     }
 
     @Override

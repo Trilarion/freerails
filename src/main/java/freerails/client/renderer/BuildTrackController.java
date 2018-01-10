@@ -113,7 +113,7 @@ public class BuildTrackController implements GameModel {
      * Hides and cancels any proposed track.
      */
     public void hide() {
-        this.setVisible(false);
+        setVisible(false);
         setTargetPoint(null);
         reset();
     }
@@ -223,7 +223,7 @@ public class BuildTrackController implements GameModel {
         // If track has actually been built, play the build track sound.
         if (trackBuilder != null && ms.isOk()) {
             if (trackBuilder.getTrackBuilderMode() == TrackMoveProducer.BuildMode.BUILD_TRACK) {
-                this.soundManager.playSound(
+                soundManager.playSound(
                         ClientConfig.SOUND_BUILD_TRACK, 0);
             }
         }
@@ -262,8 +262,8 @@ public class BuildTrackController implements GameModel {
     private void reset() {
         worldDiffs.reset();
         path4newTrackFinder.abandonSearch();
-        this.builtTrack.clear();
-        this.isBuildTrackSuccessful = false;
+        builtTrack.clear();
+        isBuildTrackSuccessful = false;
     }
 
     int searchStatus() {
@@ -347,7 +347,7 @@ public class BuildTrackController implements GameModel {
      * @param newTargetPoint The m_targetPoint to set.
      */
     private void setTargetPoint(Point2D newTargetPoint) {
-        this.targetPoint = newTargetPoint;
+        targetPoint = newTargetPoint;
         modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, newTargetPoint);
     }
 
@@ -360,7 +360,7 @@ public class BuildTrackController implements GameModel {
         } else {
             setWorldDiffs(null);
         }
-        this.visible = show;
+        visible = show;
     }
 
     private void setWorldDiffs(WorldDiffs worldDiffs) {
@@ -371,7 +371,7 @@ public class BuildTrackController implements GameModel {
      *
      */
     public void show() {
-        this.setVisible(true);
+        setVisible(true);
     }
 
     /**

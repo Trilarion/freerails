@@ -51,7 +51,7 @@ public class GenerateDependenciesXmlAndHtml {
     private GenerateDependenciesXmlAndHtml(String xmlFilename,
                                            String htmlFilename) throws FileNotFoundException {
 
-        sig = this.getClass().getName() + " on " + LocalDate.now();
+        sig = getClass().getName() + " on " + LocalDate.now();
 
         // Setup writers
         File xmlFile = new File(xmlFilename);

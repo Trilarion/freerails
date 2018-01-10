@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
  * together.
  */
 public class RunTypesParser {
+
     private static final Logger logger = Logger.getLogger(RunTypesParser.class.getName());
 
     /**

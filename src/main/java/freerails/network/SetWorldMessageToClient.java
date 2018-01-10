@@ -20,7 +20,6 @@ package freerails.network;
 
 import freerails.controller.ClientControlInterface;
 import freerails.controller.MessageStatus;
-import freerails.controller.MessageToClient;
 import freerails.world.World;
 
 /**
@@ -28,10 +27,9 @@ import freerails.world.World;
  * game is loaded, or (iii) the client connects to a game in progress.
  */
 public class SetWorldMessageToClient implements MessageToClient {
+
     private static final long serialVersionUID = 3257570619972269362L;
-
     private final int id;
-
     private final World world;
 
     /**

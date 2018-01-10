@@ -45,8 +45,8 @@ public final class StandardTileRenderer extends
     public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
                                 TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
-        this.setTileIcons(new Image[1]);
-        this.getTileIcons()[0] = imageManager.getImage(generateFilename());
+        setTileIcons(new Image[1]);
+        getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 
     /**
@@ -58,7 +58,7 @@ public final class StandardTileRenderer extends
     }
 
     private String generateFilename() {
-        return generateFilename(this.getTerrainType());
+        return generateFilename(getTerrainType());
     }
 
     /**

@@ -21,7 +21,6 @@ package freerails.network;
 import freerails.controller.ClientControlInterface;
 import freerails.controller.ClientControlInterface.ClientProperty;
 import freerails.controller.MessageStatus;
-import freerails.controller.MessageToClient;
 
 import java.io.Serializable;
 

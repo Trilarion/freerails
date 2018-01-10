@@ -72,7 +72,7 @@ public final class TrackMoveProducer {
      * @param mr
      */
     public TrackMoveProducer(ModelRoot mr) {
-        this.executor = mr;
+        executor = mr;
         if (null == mr)
             throw new NullPointerException();
         this.mr = mr;

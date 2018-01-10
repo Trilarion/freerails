@@ -38,9 +38,9 @@ public strictfp class ConstantAcceleration implements Serializable,
 
     private ConstantAcceleration(double a, double t, double u, double s) {
         this.a = a;
-        this.finalT = t;
+        finalT = t;
         this.u = u;
-        this.finalS = s;
+        finalS = s;
     }
 
     /**
@@ -88,7 +88,7 @@ public strictfp class ConstantAcceleration implements Serializable,
     public double calculateTime(double distance) {
         if (distance == finalS)
             return finalT;
-        if (distance < 0 || distance > this.finalS)
+        if (distance < 0 || distance > finalS)
             throw new IllegalArgumentException(distance + " < 0 || " + distance + " > "
                     + finalS);
         double returnValue = calcT(u, a, distance);

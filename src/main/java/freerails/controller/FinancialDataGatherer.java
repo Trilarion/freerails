@@ -47,7 +47,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
         super(w, principal);
         stockInRRs = new int[w.getNumberOfPlayers()];
         calculateValues();
-        this.playerID = w.getID(principal);
+        playerID = w.getID(principal);
     }
 
     /**
@@ -118,7 +118,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     public int sharesHeldByPublic() {
         int[] stock = getStockInThisRRs();
-        int returnValue = this.totalShares;
+        int returnValue = totalShares;
         for (int aStock : stock) {
             returnValue -= aStock;
         }
@@ -151,7 +151,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
                 Player p = w.getPlayer(i);
                 FinancialDataGatherer temp = new FinancialDataGatherer(w, p
                         .getPrincipal());
-                stockInThisRRs[i] = temp.stockInRRs[this.playerID];
+                stockInThisRRs[i] = temp.stockInRRs[playerID];
             }
         }
 

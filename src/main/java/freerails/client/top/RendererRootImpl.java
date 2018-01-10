@@ -264,11 +264,11 @@ public class RendererRootImpl implements RendererRoot {
     public boolean validate(ReadOnlyWorld w) {
         boolean okSoFar = true;
 
-        if (!this.tiles.validate(w)) {
+        if (!tiles.validate(w)) {
             okSoFar = false;
         }
 
-        if (!this.trackPieceViewList.validate(w)) {
+        if (!trackPieceViewList.validate(w)) {
             okSoFar = false;
         }
 

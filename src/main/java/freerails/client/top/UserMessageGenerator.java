@@ -57,7 +57,7 @@ public class UserMessageGenerator implements MoveReceiver {
         }
 
         this.actionRoot = actionRoot;
-        this.modelRoot = mr;
+        modelRoot = mr;
     }
 
     /**

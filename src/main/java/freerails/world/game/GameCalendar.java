@@ -196,8 +196,8 @@ public final class GameCalendar implements Serializable {
         if (o instanceof GameCalendar) {
             GameCalendar test = (GameCalendar) o;
 
-            return this.startYear == test.startYear
-                    && this.ticksPerYear == test.ticksPerYear;
+            return startYear == test.startYear
+                    && ticksPerYear == test.ticksPerYear;
         }
         return false;
     }

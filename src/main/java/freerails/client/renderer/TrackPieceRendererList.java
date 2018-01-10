@@ -91,7 +91,7 @@ public final class TrackPieceRendererList {
             TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
             Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule
                     .getLegalConfigurationsIterator();
-            TrackPieceRenderer trackPieceView = this.getTrackPieceView(i);
+            TrackPieceRenderer trackPieceView = getTrackPieceView(i);
 
             if (null == trackPieceView) {
                 logger

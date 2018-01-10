@@ -44,7 +44,7 @@ public final class TrackConfiguration implements TrackConfigurations {
         TileTransition[] vectors = TileTransition.getList();
 
         for (TileTransition vector : vectors) {
-            if (this.contains(vector.get9bitTemplate())) {
+            if (contains(vector.get9bitTemplate())) {
                 tempLength += vector.getLength();
             }
         }
@@ -149,7 +149,7 @@ public final class TrackConfiguration implements TrackConfigurations {
      * @return
      */
     public boolean contains(int trackTemplate) {
-        return (trackTemplate | this.configuration) == this.configuration;
+        return (trackTemplate | configuration) == configuration;
     }
 
     /**
@@ -160,7 +160,7 @@ public final class TrackConfiguration implements TrackConfigurations {
         TileTransition[] vectors = TileTransition.getList();
 
         for (TileTransition vector : vectors) {
-            if (this.contains(vector)) {
+            if (contains(vector)) {
                 newTemplate = newTemplate | vector.get8bitTemplate();
             }
         }
@@ -210,7 +210,7 @@ public final class TrackConfiguration implements TrackConfigurations {
     }
 
     private Object readResolve() {
-        return TrackConfiguration.from9bitTemplate(this.configuration);
+        return TrackConfiguration.from9bitTemplate(configuration);
     }
 
     /**

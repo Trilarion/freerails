@@ -29,7 +29,7 @@ import java.awt.*;
  * All it does is display the current time in ms and display the number of
  * frames per second.
  */
-public class AnimationExpt extends JComponent {
+public class AnimationExample extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
 
@@ -41,7 +41,7 @@ public class AnimationExpt extends JComponent {
 
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        f.getContentPane().add(new AnimationExpt());
+        f.getContentPane().add(new AnimationExample());
 
         ScreenHandler screenHandler = new ScreenHandler(f, ScreenHandler.WINDOWED_MODE);
         screenHandler.apply();

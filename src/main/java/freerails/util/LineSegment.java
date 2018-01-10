@@ -93,8 +93,8 @@ public class LineSegment implements Serializable {
         }
         if (o instanceof LineSegment) {
             LineSegment line = (LineSegment) o;
-            return line.x1 == this.x1 && line.x2 == this.x2 && line.y1 == this.y1
-                    && line.y2 == this.y2;
+            return line.x1 == x1 && line.x2 == x2 && line.y1 == y1
+                    && line.y2 == y2;
         }
         return false;
     }

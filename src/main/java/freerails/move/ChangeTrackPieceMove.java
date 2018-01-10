@@ -162,7 +162,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        return tryMove(world, this.trackPieceBefore, this.trackPieceAfter);
+        return tryMove(world, trackPieceBefore, trackPieceAfter);
     }
 
     private MoveStatus tryMove(World w, TrackPiece oldTrackPiece,
@@ -263,7 +263,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        return tryMove(world, this.trackPieceAfter, this.trackPieceBefore);
+        return tryMove(world, trackPieceAfter, trackPieceBefore);
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
@@ -273,7 +273,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (!moveStatus.isOk()) {
             return moveStatus;
         }
-        move(world, this.trackPieceAfter);
+        move(world, trackPieceAfter);
 
         return moveStatus;
     }
@@ -296,7 +296,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         if (!moveStatus.isOk()) {
             return moveStatus;
         }
-        move(world, this.trackPieceBefore);
+        move(world, trackPieceBefore);
 
         return moveStatus;
     }
@@ -351,13 +351,13 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         // we need to repaint/remove the station radius
         // that appears on the map.
         int radius = 1;
-        TrackRule trackRuleAfter = this.trackPieceAfter.getTrackRule();
+        TrackRule trackRuleAfter = trackPieceAfter.getTrackRule();
 
         if (trackRuleAfter.isStation()) {
             radius = Math.max(radius, trackRuleAfter.getStationRadius());
         }
 
-        TrackRule trackRuleBefore = this.trackPieceBefore.getTrackRule();
+        TrackRule trackRuleBefore = trackPieceBefore.getTrackRule();
 
         if (trackRuleBefore.isStation()) {
             radius = Math.max(radius, trackRuleBefore.getStationRadius());
@@ -383,10 +383,10 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     public boolean equals(Object o) {
         if (o instanceof ChangeTrackPieceMove) {
             ChangeTrackPieceMove m = (ChangeTrackPieceMove) o;
-            boolean fieldPointEqual = this.location.equals(m.location);
-            boolean fieldoldTrackPieceEqual = this.trackPieceBefore
+            boolean fieldPointEqual = location.equals(m.location);
+            boolean fieldoldTrackPieceEqual = trackPieceBefore
                     .equals(m.trackPieceBefore);
-            boolean fieldnewTrackPieceEqual = this.trackPieceAfter
+            boolean fieldnewTrackPieceEqual = trackPieceAfter
                     .equals(m.trackPieceAfter);
 
             return fieldPointEqual && fieldoldTrackPieceEqual

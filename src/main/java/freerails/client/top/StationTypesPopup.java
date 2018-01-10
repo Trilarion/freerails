@@ -80,8 +80,8 @@ public class StationTypesPopup extends JPopupMenu {
         modelRoot = mr;
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
-        this.removeAll();
-        this.removePopupMenuListener(popupMenuListener);
+        removeAll();
+        removePopupMenuListener(popupMenuListener);
         popupMenuListener = new PopupMenuListener() {
             public void popupMenuCanceled(PopupMenuEvent e) {
             }
@@ -103,7 +103,7 @@ public class StationTypesPopup extends JPopupMenu {
                                 tileToBuildStationOn);
             }
         };
-        this.addPopupMenuListener(popupMenuListener);
+        addPopupMenuListener(popupMenuListener);
 
         final Action[] stationChooseActions = stationBuildModel
                 .getStationChooseActions();

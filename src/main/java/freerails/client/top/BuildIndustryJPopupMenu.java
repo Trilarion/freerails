@@ -63,7 +63,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
      */
     public void setup(final ModelRoot modelRoot, RendererRoot vl,
                       Action closeAction) {
-        this.removeAll();
+        removeAll();
 
         final NonNullElementWorldIterator it = new NonNullElementWorldIterator(SKEY.TERRAIN_TYPES,
                 modelRoot.getWorld());

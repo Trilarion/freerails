@@ -30,10 +30,11 @@ import java.io.Serializable;
  */
 // TODO where are they really used?
 public interface ServerAutomaton extends Serializable {
+
     /**
      * Initializes the automaton with a connection to the MoveExecutor.
      *
-     * @param mr
+     * @param moveReceiver
      */
-    void initAutomaton(MoveReceiver mr);
+    void initAutomaton(MoveReceiver moveReceiver);
 }

@@ -40,9 +40,9 @@ public class RemoveItemFromListMove implements ListMove {
     RemoveItemFromListMove(KEY k, int i, Serializable item,
                            FreerailsPrincipal p) {
         this.item = item;
-        this.listKey = k;
-        this.index = i;
-        this.principal = p;
+        listKey = k;
+        index = i;
+        principal = p;
     }
 
     public int getIndex() {
@@ -117,7 +117,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus ms = tryUndoMove(world, principal);
 
         if (ms.isOk()) {
-            world.set(this.principal, listKey, index, this.item);
+            world.set(this.principal, listKey, index, item);
         }
 
         return ms;
@@ -128,15 +128,15 @@ public class RemoveItemFromListMove implements ListMove {
         if (o instanceof RemoveItemFromListMove) {
             RemoveItemFromListMove test = (RemoveItemFromListMove) o;
 
-            if (!this.item.equals(test.item)) {
+            if (!item.equals(test.item)) {
                 return false;
             }
 
-            if (this.index != test.index) {
+            if (index != test.index) {
                 return false;
             }
 
-            return this.listKey == test.listKey;
+            return listKey == test.listKey;
         }
         return false;
     }

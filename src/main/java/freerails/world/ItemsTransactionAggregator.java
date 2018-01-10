@@ -90,7 +90,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     public QuantitiesAndValues calculateQuantitiesAndValues() {
         QuantitiesAndValues returnValue = new QuantitiesAndValues();
         returnValue.values = super.calculateValues();
-        returnValue.quantities = this.quantities;
+        returnValue.quantities = quantities;
 
         return returnValue;
     }

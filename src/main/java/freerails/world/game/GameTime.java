@@ -74,7 +74,7 @@ public class GameTime implements Serializable, Comparable<GameTime> {
         if (o instanceof GameTime) {
             GameTime test = (GameTime) o;
 
-            return this.ticks == test.ticks;
+            return ticks == test.ticks;
         }
         return false;
     }

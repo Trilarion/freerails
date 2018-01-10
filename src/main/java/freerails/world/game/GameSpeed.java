@@ -66,7 +66,7 @@ public class GameSpeed implements Serializable {
         if (o instanceof GameSpeed) {
             GameSpeed test = (GameSpeed) o;
 
-            return this.speed == test.speed;
+            return speed == test.speed;
         }
         return false;
     }

@@ -94,7 +94,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
      * @param closeAction
      */
     public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
-        this.done.setAction(closeAction);
+        done.setAction(closeAction);
     }
 
     /**

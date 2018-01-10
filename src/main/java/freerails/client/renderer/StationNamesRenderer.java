@@ -55,11 +55,11 @@ public class StationNamesRenderer implements Painter {
      * @param modelRoot
      */
     public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
-        this.w = world;
+        w = world;
         this.modelRoot = modelRoot;
-        this.fontSize = 10;
-        this.bgColor = Color.BLACK;
-        this.textColor = Color.WHITE;
+        fontSize = 10;
+        bgColor = Color.BLACK;
+        textColor = Color.WHITE;
         font = new Font("Arial", 0, fontSize);
     }
 

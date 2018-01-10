@@ -247,7 +247,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     @Override
     protected MoveStatus compositeTest(World world) {
         if (mustConnectToExistingTrack(world)) {
-            if (hasAnyTrackBeenBuilt(world, this.builder)) {
+            if (hasAnyTrackBeenBuilt(world, builder)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super
                             .getMove(0);

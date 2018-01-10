@@ -56,8 +56,8 @@ public class StationBoxRenderer implements Painter {
      */
     public StationBoxRenderer(ReadOnlyWorld world, RendererRoot vl,
                               ModelRoot modelRoot) {
-        this.w = world;
-        this.bgColor = new Color(0, 0, 200, 60);
+        w = world;
+        bgColor = new Color(0, 0, 200, 60);
         this.modelRoot = modelRoot;
 
         // How wide will the wagon images be if we scale them so their height is

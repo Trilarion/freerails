@@ -19,7 +19,6 @@
 package freerails.network;
 
 import freerails.controller.ClientControlInterface.ClientProperty;
-import freerails.controller.MessageToClient;
 import freerails.util.ImmutableList;
 
 import java.io.IOException;

@@ -40,7 +40,7 @@ public class NearestCityFinder {
      * @param y
      */
     public NearestCityFinder(ReadOnlyWorld world, int x, int y) {
-        this.w = world;
+        w = world;
         this.x = x;
         this.y = y;
     }
@@ -78,8 +78,8 @@ public class NearestCityFinder {
 
     private double getDistance(int cityX, int cityY) {
         double distance;
-        double a = (this.x - cityX) * (this.x - cityX);
-        double b = (this.y - cityY) * (this.y - cityY);
+        double a = (x - cityX) * (x - cityX);
+        double b = (y - cityY) * (y - cityY);
 
         distance = Math.sqrt(a + b);
 

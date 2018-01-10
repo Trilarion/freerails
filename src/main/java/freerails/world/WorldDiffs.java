@@ -144,8 +144,8 @@ public class WorldDiffs extends WorldImpl {
     public Serializable getTile(int x, int y) {
         Point2D p = new Point2D(x, y);
 
-        if (this.mapDiff.containsKey(p)) {
-            return (Serializable) this.mapDiff.get(p);
+        if (mapDiff.containsKey(p)) {
+            return (Serializable) mapDiff.get(p);
         }
         return underlying.getTile(x, y);
     }
@@ -156,7 +156,7 @@ public class WorldDiffs extends WorldImpl {
      * @return
      */
     public int numberOfMapDifferences() {
-        return this.mapDiff.size();
+        return mapDiff.size();
     }
 
     /**
@@ -184,12 +184,12 @@ public class WorldDiffs extends WorldImpl {
         Point2D p = new Point2D(x, y);
 
         if (Utils.equal(underlying.getTile(x, y), tile)) {
-            if (this.mapDiff.containsKey(p)) {
-                this.mapDiff.remove(p);
+            if (mapDiff.containsKey(p)) {
+                mapDiff.remove(p);
 
             }
         } else {
-            this.mapDiff.put(p, tile);
+            mapDiff.put(p, tile);
         }
     }
 

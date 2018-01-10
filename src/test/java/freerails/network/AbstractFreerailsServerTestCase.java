@@ -34,7 +34,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     @Override
     protected synchronized void setUp() throws Exception {
         server = FreerailsGameServer
-                .startServer(new SavedGamesManager4UnitTests());
+                .startServer(new SaveGamesManager4UnitTests());
         connectionAccepter = new InetConnectionAccepter(0, server);
 
         Thread serverThread = new Thread(connectionAccepter);

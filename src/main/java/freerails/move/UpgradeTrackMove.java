@@ -54,7 +54,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
      * @return
      */
     public Rectangle getUpdatedTiles() {
-        ChangeTrackPieceMove m = (ChangeTrackPieceMove) this.getMove(0);
+        ChangeTrackPieceMove m = (ChangeTrackPieceMove) getMove(0);
 
         return m.getUpdatedTiles();
     }

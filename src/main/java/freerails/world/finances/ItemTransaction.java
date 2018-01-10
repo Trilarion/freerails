@@ -53,7 +53,7 @@ public class ItemTransaction implements Transaction {
         if (obj instanceof ItemTransaction) {
             ItemTransaction test = (ItemTransaction) obj;
 
-            return this.amount.equals(test.amount) && category == test.category
+            return amount.equals(test.amount) && category == test.category
                     && type == test.type && quantity == test.quantity;
         }
         return false;

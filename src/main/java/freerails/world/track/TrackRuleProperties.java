@@ -57,7 +57,7 @@ public final class TrackRuleProperties implements Serializable {
         typeName = name;
         category = c;
         this.price = new Money(price);
-        this.maintenanceCost = new Money(maintenance);
+        maintenanceCost = new Money(maintenance);
         this.fixedCost = new Money(fixedCost);
     }
 

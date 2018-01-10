@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.client.common.ActionAdapter;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
-import freerails.controller.MessageToServer;
+import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.NewGameMessageToServer;
@@ -57,7 +57,7 @@ public class ServerControlModel implements ModelRootListener {
      * @param mr
      */
     public ServerControlModel(ModelRootImpl mr) {
-        this.modelRoot = mr;
+        modelRoot = mr;
 
         mr.addPropertyChangeListener(this);
         setServerControlInterface();

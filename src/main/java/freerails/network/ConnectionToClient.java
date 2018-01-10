@@ -25,6 +25,7 @@ import java.io.Serializable;
  * Defines the methods the server can use to send messages to the client.
  */
 public interface ConnectionToClient {
+
     /**
      * Returns true if this connection is open.
      *

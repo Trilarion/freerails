@@ -48,10 +48,10 @@ public class ChangeTileMove implements Move, MapUpdateMove {
      * @param terrainTypeAfter
      */
     public ChangeTileMove(ReadOnlyWorld w, Point p, int terrainTypeAfter) {
-        this.x = p.x;
-        this.y = p.y;
-        this.before = (FullTerrainTile) w.getTile(x, y);
-        this.after = FullTerrainTile.getInstance(terrainTypeAfter, before
+        x = p.x;
+        y = p.y;
+        before = (FullTerrainTile) w.getTile(x, y);
+        after = FullTerrainTile.getInstance(terrainTypeAfter, before
                 .getTrackPiece());
     }
 

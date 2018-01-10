@@ -184,7 +184,7 @@ public class TrainStopsHandler implements Serializable {
         }
         GameTime time = worldDiffs.currentTime();
 
-        return time.getTicks() > this.timeLoadingFinished.getTicks();
+        return time.getTicks() > timeLoadingFinished.getTicks();
     }
 
     /**
@@ -192,7 +192,7 @@ public class TrainStopsHandler implements Serializable {
      */
     public boolean isWaiting4FullLoad() {
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
-                this.trainId);
+                trainId);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule schedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);
@@ -294,7 +294,7 @@ public class TrainStopsHandler implements Serializable {
     private void scheduledStop() {
 
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
-                this.trainId);
+                trainId);
         Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal,
                 KEY.TRAIN_SCHEDULES, train.getScheduleID());
 
@@ -308,7 +308,7 @@ public class TrainStopsHandler implements Serializable {
 
         if (null != wagonsToAdd) {
             int engine = train.getEngineType();
-            Move m = ChangeTrainMove.generateMove(this.trainId, train, engine,
+            Move m = ChangeTrainMove.generateMove(trainId, train, engine,
                     wagonsToAdd, principal);
             m.doMove(worldDiffs, principal);
         }
@@ -319,7 +319,7 @@ public class TrainStopsHandler implements Serializable {
 
     void updateSchedule() {
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
-                this.trainId);
+                trainId);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);

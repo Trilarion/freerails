@@ -70,7 +70,7 @@ public class KEY implements Serializable {
     private final int keyNumber;
 
     private KEY() {
-        this.keyNumber = numberOfKeys;
+        keyNumber = numberOfKeys;
         keys[keyNumber] = this;
         numberOfKeys++;
     }
@@ -84,7 +84,7 @@ public class KEY implements Serializable {
     }
 
     private Object readResolve() {
-        return keys[this.keyNumber];
+        return keys[keyNumber];
     }
 
     @Override

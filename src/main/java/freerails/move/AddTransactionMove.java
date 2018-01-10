@@ -88,9 +88,9 @@ public class AddTransactionMove implements Move {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.isPlayer(this.principal)) {
-            if (this.cashConstrained) {
+            if (cashConstrained) {
                 long bankBalance = world.getCurrentBalance(this.principal).getAmount();
-                long transactionAmount = this.transaction.value()
+                long transactionAmount = transaction.value()
                         .getAmount();
                 long balanceAfter = bankBalance + transactionAmount;
 
@@ -115,10 +115,10 @@ public class AddTransactionMove implements Move {
         Transaction lastTransaction = world
                 .getTransaction(this.principal, size - 1);
 
-        if (lastTransaction.equals(this.transaction)) {
+        if (lastTransaction.equals(transaction)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed("Expected " + this.transaction
+        return MoveStatus.moveFailed("Expected " + transaction
                 + "but found " + lastTransaction);
     }
 
@@ -126,7 +126,7 @@ public class AddTransactionMove implements Move {
         MoveStatus ms = tryDoMove(world, principal);
 
         if (ms.ok) {
-            world.addTransaction(this.principal, this.transaction);
+            world.addTransaction(this.principal, transaction);
         }
 
         return ms;
@@ -147,8 +147,8 @@ public class AddTransactionMove implements Move {
         if (obj instanceof AddTransactionMove) {
             AddTransactionMove test = (AddTransactionMove) obj;
 
-            return test.principal.equals(this.principal)
-                    && test.transaction.equals(this.transaction);
+            return test.principal.equals(principal)
+                    && test.transaction.equals(transaction);
         }
         return false;
     }

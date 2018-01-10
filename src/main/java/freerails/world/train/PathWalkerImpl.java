@@ -107,17 +107,17 @@ public class PathWalkerImpl implements PathWalker {
          *
          */
         if (!beforeFirst) {
-            if (line.getX1() != this.lastX) {
+            if (line.getX1() != lastX) {
                 throw new IllegalStateException();
             }
 
-            if (line.getY1() != this.lastY) {
+            if (line.getY1() != lastY) {
                 throw new IllegalStateException();
             }
         }
 
-        this.lastX = line.getX2();
-        this.lastY = line.getY2();
+        lastX = line.getX2();
+        lastY = line.getY2();
         beforeFirst = false;
 
     }
@@ -133,10 +133,10 @@ public class PathWalkerImpl implements PathWalker {
 
     private void endAtSegmentEnd(LineSegment line,
                                  double remainingDistanceAlongCurrentSegment) {
-        line.setX2(this.currentSegment.getX2());
-        line.setY2(this.currentSegment.getY2());
-        this.distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
-        distanceAlongCurrentSegment = this.currentSegment.getLength();
+        line.setX2(currentSegment.getX2());
+        line.setY2(currentSegment.getY2());
+        distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
+        distanceAlongCurrentSegment = currentSegment.getLength();
     }
 
     private void startInMiddleOfSegment(LineSegment line) {
@@ -149,13 +149,13 @@ public class PathWalkerImpl implements PathWalker {
     private void startNewSegment(LineSegment line) {
         it.nextSegment(currentSegment);
         distanceAlongCurrentSegment = 0;
-        line.setX1(this.currentSegment.getX1());
-        line.setY1(this.currentSegment.getY1());
+        line.setX1(currentSegment.getX1());
+        line.setY1(currentSegment.getY1());
     }
 
     private int getCoorinateOnSegment(double distanceAlongSegment,
                                       int coordinate1, int coordinate2) {
-        double segmentLength = this.currentSegment.getLength();
+        double segmentLength = currentSegment.getLength();
         double delta = 0;
 
         if (0 != segmentLength) {

@@ -41,8 +41,8 @@ public final class BuildMenu extends javax.swing.JMenu {
      * @param actionRoot
      */
     public void setup(ActionRoot actionRoot) {
-        this.removeAll();
-        this.setText("Build");
+        removeAll();
+        setText("Build");
 
         add(actionRoot.getBuildTrainDialogAction());
     }

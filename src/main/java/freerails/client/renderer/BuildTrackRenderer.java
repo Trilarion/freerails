@@ -59,7 +59,7 @@ public class BuildTrackRenderer implements Painter {
     public BuildTrackRenderer(RendererRoot trackPieceViewList,
                               ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
-        this.rr = trackPieceViewList;
+        rr = trackPieceViewList;
 
     }
 

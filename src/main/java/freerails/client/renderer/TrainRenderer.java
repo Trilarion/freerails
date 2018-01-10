@@ -39,7 +39,7 @@ public class TrainRenderer {
      * @param trainImages
      */
     public TrainRenderer(RendererRoot trainImages) {
-        this.rr = trainImages;
+        rr = trainImages;
     }
 
     /**

@@ -174,7 +174,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
                 super.setSelected(b);
 
                 if (b) {
-                    ActionAdapter.this.setSelectedItem(actionName);
+                    setSelectedItem(actionName);
                 }
             }
         }

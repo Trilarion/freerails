@@ -19,15 +19,14 @@
 package freerails.network;
 
 import freerails.controller.MessageStatus;
-import freerails.controller.MessageToServer;
 import freerails.controller.ServerControlInterface;
 
 /**
  * Request to load a game.
  */
 public class LoadGameMessageToServer implements MessageToServer {
-    private static final long serialVersionUID = 3256726186552930869L;
 
+    private static final long serialVersionUID = 3256726186552930869L;
     private final int id;
     private final String filename;
 
@@ -37,7 +36,7 @@ public class LoadGameMessageToServer implements MessageToServer {
      */
     public LoadGameMessageToServer(int id, String s) {
         this.id = id;
-        this.filename = s;
+        filename = s;
     }
 
     @Override

@@ -103,7 +103,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         terrainInfoJScrollPane
                 .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         addTab(null, terrainInfoIcon, terrainInfoJScrollPane, "Terrain Info");
-        this.terrainInfoIndex = this.getTabCount() - 1;
+        terrainInfoIndex = getTabCount() - 1;
 
         stationInfoPanel = new StationInfoJPanel();
         stationInfoPanel.removeCloseButton();
@@ -112,15 +112,15 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         JScrollPane stationInfoJScrollPane = new JScrollPane(stationInfoPanel);
         stationInfoJScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addTab(null, stationInfoIcon, stationInfoJScrollPane, "Station Info");
-        this.stationInfoIndex = this.getTabCount() - 1;
+        stationInfoIndex = getTabCount() - 1;
 
         trainListPanel.setTrainViewHeight(20);
         addTab(null, buildTrackIcon, buildTrackPanel, "Build Track");
         addTab(null, trainListIcon, trainListPanel, "Train List");
-        this.trainListIndex = this.getTabCount() - 1;
+        trainListIndex = getTabCount() - 1;
 
         /* These values were picked by trial and error! */
-        this.setMinimumSize(new Dimension(250, 200));
+        setMinimumSize(new Dimension(250, 200));
 
     }
 
@@ -196,13 +196,13 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
             if (stationNumberAtLocation > -1) {
                 LOGGER.info("stationNumber: " + stationNumberAtLocation);
                 stationInfoPanel.setStation(stationNumberAtLocation);
-                this.setSelectedIndex(stationInfoIndex);
+                setSelectedIndex(stationInfoIndex);
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
                 LOGGER.info("Default behaviour show terrain.");
                 terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p.x,
                         p.y)).getTerrainTypeID());
-                this.setSelectedIndex(terrainInfoIndex);
+                setSelectedIndex(terrainInfoIndex);
             }
 
         }
@@ -212,7 +212,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      * @param enabled
      */
     public void setTrainTabEnabled(boolean enabled) {
-        this.setEnabledAt(this.trainListIndex, enabled);
+        setEnabledAt(trainListIndex, enabled);
     }
 
     // FIXME surely this is something?
@@ -221,7 +221,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      * @param enabled
      */
     public void setStationTabEnabled(boolean enabled) {
-        this.setEnabledAt(this.stationInfoIndex, enabled);
+        setEnabledAt(stationInfoIndex, enabled);
     }
 
 }

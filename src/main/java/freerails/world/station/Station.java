@@ -53,13 +53,13 @@ public class Station implements Serializable {
      */
     public Station(Station s, StationConversion cargoConversion) {
         this.cargoConversion = cargoConversion;
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.demandForCargo = s.demandForCargo;
-        this.name = s.name;
-        this.production = s.production;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
+        cargoBundleNumber = s.cargoBundleNumber;
+        demandForCargo = s.demandForCargo;
+        name = s.name;
+        production = s.production;
+        supply = s.supply;
+        x = s.x;
+        y = s.y;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Station implements Serializable {
      */
     public Station(int x, int y, String stationName,
                    int numberOfCargoTypes, int cargoBundleNumber) {
-        this.name = stationName;
+        name = stationName;
         this.x = x;
         this.y = y;
         this.cargoBundleNumber = cargoBundleNumber;
@@ -106,13 +106,13 @@ public class Station implements Serializable {
      */
     public Station(Station s, ImmutableList<TrainBlueprint> production) {
         this.production = production;
-        this.demandForCargo = s.demandForCargo;
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.cargoConversion = s.cargoConversion;
-        this.name = s.name;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
+        demandForCargo = s.demandForCargo;
+        cargoBundleNumber = s.cargoBundleNumber;
+        cargoConversion = s.cargoConversion;
+        name = s.name;
+        supply = s.supply;
+        x = s.x;
+        y = s.y;
     }
 
     // TODO possible misuse, see above
@@ -122,13 +122,13 @@ public class Station implements Serializable {
      */
     public Station(Station s, StationDemand demandForCargo) {
         this.demandForCargo = demandForCargo;
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.cargoConversion = s.cargoConversion;
-        this.name = s.name;
-        this.production = s.production;
-        this.supply = s.supply;
-        this.x = s.x;
-        this.y = s.y;
+        cargoBundleNumber = s.cargoBundleNumber;
+        cargoConversion = s.cargoConversion;
+        name = s.name;
+        production = s.production;
+        supply = s.supply;
+        x = s.x;
+        y = s.y;
     }
 
     // TODO possible misuse, see above
@@ -138,14 +138,14 @@ public class Station implements Serializable {
      */
     public Station(Station s, StationSupply supply) {
         this.supply = supply;
-        this.demandForCargo = s.demandForCargo;
+        demandForCargo = s.demandForCargo;
 
-        this.cargoBundleNumber = s.cargoBundleNumber;
-        this.cargoConversion = s.cargoConversion;
-        this.name = s.name;
-        this.production = s.production;
-        this.x = s.x;
-        this.y = s.y;
+        cargoBundleNumber = s.cargoBundleNumber;
+        cargoConversion = s.cargoConversion;
+        name = s.name;
+        production = s.production;
+        x = s.x;
+        y = s.y;
     }
 
     @Override

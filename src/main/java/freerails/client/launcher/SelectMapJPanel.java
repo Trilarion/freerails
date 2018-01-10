@@ -24,7 +24,7 @@
 package freerails.client.launcher;
 
 import freerails.client.launcher.LauncherInterface.MSG_TYPE;
-import freerails.server.SavedGameManagerImpl;
+import freerails.server.SaveGameManagerImpl;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -63,7 +63,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         initComponents();
 
         /* initialise the map list */
-        SavedGameManagerImpl sgm = new SavedGameManagerImpl();
+        SaveGameManagerImpl sgm = new SaveGameManagerImpl();
         newmapsJList.setListData(sgm.getNewMapNames());
         savedmapsJList.setListData(sgm.getSaveGameNames());
         if (sgm.getSaveGameNames().length > 0) {
@@ -104,7 +104,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     }
 
     void setServerPortPanelVisible(boolean b) {
-        this.jPanel3.setVisible(b);
+        jPanel3.setVisible(b);
     }
 
     /**
@@ -131,7 +131,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
      */
     public boolean validateInput() {
         /* Validate map selection. */
-        if (this.getSelection().equals(Selection.NONE)) {
+        if (getSelection().equals(Selection.NONE)) {
             owner.setInfoText(SELECT_A_MAP, MSG_TYPE.ERROR);
             return false;
         }
@@ -150,7 +150,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
         /* Everything is ok. */
         owner.hideErrorMessages();
-        owner.setProperty(LauncherInterface.SERVER_PORT_PROPERTY, this.serverPort.getText());
+        owner.setProperty(LauncherInterface.SERVER_PORT_PROPERTY, serverPort.getText());
         owner.saveProps();
         return true;
     }
@@ -258,21 +258,21 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
     }
 
     private void savedmapsJListValueChanged(
-            javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_savedmapsJListValueChanged
+            javax.swing.event.ListSelectionEvent evt) {
         if (savedmapsJList.getSelectedIndex() != -1)
             newmapsJList.clearSelection();
 
         validateInput();
-    }// GEN-LAST:event_savedmapsJListValueChanged
+    }
 
     private void newmapsJListValueChanged(
-            javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_newmapsJListValueChanged
+            javax.swing.event.ListSelectionEvent evt) {
         if (newmapsJList.getSelectedIndex() != -1)
             savedmapsJList.clearSelection();
 
         validateInput();
 
-    }// GEN-LAST:event_newmapsJListValueChanged
+    }
 
     /**
      *

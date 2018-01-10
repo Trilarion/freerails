@@ -44,7 +44,7 @@ public class CashJLabel extends JLabel implements View {
      *
      */
     public CashJLabel() {
-        this.setText("          ");
+        setText("          ");
     }
 
     /**
@@ -53,7 +53,7 @@ public class CashJLabel extends JLabel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
-        this.w = model.getWorld();
+        w = model.getWorld();
         principal = model.getPrincipal();
     }
 
@@ -62,7 +62,7 @@ public class CashJLabel extends JLabel implements View {
         if (null != w) {
             Money m = w.getCurrentBalance(principal);
             String s = m.toString();
-            this.setText('$' + s);
+            setText('$' + s);
         }
 
         super.paintComponent(g);

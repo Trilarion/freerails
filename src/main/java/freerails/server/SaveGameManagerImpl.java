@@ -23,7 +23,7 @@ package freerails.server;
 
 import freerails.controller.ServerControlInterface;
 import freerails.network.NewGameMessageToServer;
-import freerails.network.SavedGamesManager;
+import freerails.network.SaveGamesManager;
 import freerails.client.ProgressMonitorModel;
 import org.apache.log4j.Logger;
 
@@ -34,9 +34,10 @@ import java.util.zip.GZIPOutputStream;
 /**
  *
  */
-public class SavedGameManagerImpl implements SavedGamesManager {
+public class SaveGameManagerImpl implements SaveGamesManager {
+
     private static final Logger logger = Logger
-            .getLogger(SavedGameManagerImpl.class.getName());
+            .getLogger(SaveGameManagerImpl.class.getName());
 
     /**
      * @return

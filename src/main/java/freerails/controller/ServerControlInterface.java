@@ -18,6 +18,8 @@
 
 package freerails.controller;
 
+import freerails.network.MessageToServer;
+
 import java.io.IOException;
 
 /**

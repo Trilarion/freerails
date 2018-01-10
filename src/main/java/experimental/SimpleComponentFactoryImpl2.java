@@ -137,11 +137,10 @@ public class SimpleComponentFactoryImpl2 implements
      * @return
      */
     public JScrollPane createMainMap() {
-        if (null == this.mainMap) {
-            // this.mainMap = new MapJPanel();
-            this.mainMap = new MapViewJComponentConcrete();
+        if (null == mainMap) {
+            mainMap = new MapViewJComponentConcrete();
             mainMapScrollPane1 = new JScrollPane();
-            mainMapScrollPane1.setViewportView(this.mainMap);
+            mainMapScrollPane1.setViewportView(mainMap);
             addMainMapAndOverviewMapMediatorIfNecessary();
         }
 
@@ -152,10 +151,10 @@ public class SimpleComponentFactoryImpl2 implements
      * @return
      */
     public JPanel createOverviewMap() {
-        if (null == this.overviewMap) {
+        if (null == overviewMap) {
             // this.overviewMap = new OverviewMapJPanel();
-            this.overviewMap = new OverviewMapJComponent(r);
-            this.overviewMap.setup(new BlankMapRenderer(0.4F));
+            overviewMap = new OverviewMapJComponent(r);
+            overviewMap.setup(new BlankMapRenderer(0.4F));
             addMainMapAndOverviewMapMediatorIfNecessary();
         }
 
@@ -164,10 +163,10 @@ public class SimpleComponentFactoryImpl2 implements
     }
 
     private void addMainMapAndOverviewMapMediatorIfNecessary() {
-        if (this.mainMap != null && this.overviewMap != null
-                && null == this.mediator) {
+        if (mainMap != null && overviewMap != null
+                && null == mediator) {
             // Rectangle r = this.overviewMap.getMainMapVisibleRect();
-            this.mediator = new MainMapAndOverviewMapMediator(overviewMap,
+            mediator = new MainMapAndOverviewMapMediator(overviewMap,
                     mainMapScrollPane1.getViewport(), mainMap, r);
         }
     }

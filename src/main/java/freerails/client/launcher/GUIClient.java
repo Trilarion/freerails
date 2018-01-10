@@ -33,8 +33,8 @@ import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ScreenHandler;
 import freerails.network.FreerailsClient;
 import freerails.network.FreerailsGameServer;
-import freerails.network.SavedGamesManager;
-import freerails.server.SavedGameManagerImpl;
+import freerails.network.SaveGamesManager;
+import freerails.server.SaveGameManagerImpl;
 import freerails.server.ServerGameModelImpl;
 import freerails.client.ProgressMonitorModel;
 import freerails.world.*;
@@ -72,10 +72,10 @@ public class GUIClient extends FreerailsClient implements
     public GUIClient(String name, ProgressMonitorModel fm, int screenMode,
                      DisplayMode dm) {
         this.name = name;
-        this.monitor = null == fm ? this : fm;
+        monitor = null == fm ? this : fm;
         // Set up model root and action root.
         modelRoot = new ModelRootImpl();
-        modelRoot.setMoveFork(this.getMoveFork());
+        modelRoot.setMoveFork(getMoveFork());
         modelRoot.setMoveReceiver(this);
         modelRoot.setServerCommandReceiver(this);
         actionRoot = new ActionRoot(modelRoot);
@@ -150,7 +150,7 @@ public class GUIClient extends FreerailsClient implements
             for (int player = 0; player < w.getNumberOfPlayers(); player++) {
                 Player p = w.getPlayer(player);
 
-                if (p.getName().equals(this.name)) {
+                if (p.getName().equals(name)) {
                     modelRoot.setup(w, p.getPrincipal());
                 }
             }
@@ -194,19 +194,19 @@ public class GUIClient extends FreerailsClient implements
 
     void start() {
         // Set up world.
-        SavedGamesManager gamesManager = new SavedGameManagerImpl();
+        SaveGamesManager gamesManager = new SaveGameManagerImpl();
         FreerailsGameServer server = new FreerailsGameServer(gamesManager);
         String mapName = gamesManager.getNewMapNames()[0];
 
         ServerGameModelImpl serverGameModel = new ServerGameModelImpl();
         server.setServerGameModel(serverGameModel);
 
-        this.connect(server, name, "password");
+        connect(server, name, "password");
 
         server.newGame(mapName);
 
-        while (null == this.getWorld()) {
-            this.update();
+        while (null == getWorld()) {
+            update();
             server.update();
         }
 

@@ -92,9 +92,9 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         JLabel title = new JLabel();
         yAxisLabel1 = new JLabel();
 
-        this.setLayout(null);
-        this.setBackground(java.awt.Color.white);
-        this.setSize(444, 315);
+        setLayout(null);
+        setBackground(java.awt.Color.white);
+        setSize(444, 315);
         title.setText("Net Worth");
         title.setFont(new java.awt.Font("Bookman Old Style",
                 java.awt.Font.PLAIN, 24));
@@ -141,16 +141,16 @@ public class NetWorthGraphJPanel extends JPanel implements View {
         xAxisLabel1.setFont(new java.awt.Font("Bookman Old Style",
                 java.awt.Font.BOLD, 10));
         xAxisLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        this.add(xAxisLabel3, null);
-        this.add(xAxisLabel2, null);
-        this.add(xAxisLabel1, null);
+        add(xAxisLabel3, null);
+        add(xAxisLabel2, null);
+        add(xAxisLabel1, null);
         yAxisLabel1.setFont(new java.awt.Font("Bookman Old Style",
                 java.awt.Font.BOLD, 10));
-        this.add(title, null);
-        this.add(yAxisLabel1, null);
-        this.add(yAxisLabel3, null);
-        this.add(yAxisLabel2, null);
-        this.addMouseListener(new java.awt.event.MouseAdapter() {
+        add(title, null);
+        add(yAxisLabel1, null);
+        add(yAxisLabel3, null);
+        add(yAxisLabel2, null);
+        addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (null == submitButtonCallBack) {
@@ -161,7 +161,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
                 }
             }
         });
-        this.add(yAxisLabel4, null);
+        add(yAxisLabel4, null);
 
     }
 
@@ -321,7 +321,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        this.submitButtonCallBack = closeAction;
+        submitButtonCallBack = closeAction;
         ReadOnlyWorld world = modelRoot.getWorld();
         companies = new ArrayList<>();
         GameCalendar calender = (GameCalendar) world.get(ITEM.CALENDAR);

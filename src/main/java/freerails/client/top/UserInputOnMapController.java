@@ -90,9 +90,9 @@ public class UserInputOnMapController extends KeyAdapter {
     public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder,
                       StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc,
                       BuildTrackController buildTrack) {
-        this.dialogueBoxController = dbc;
-        this.mapView = mv;
-        this.stationTypesPopup = stPopup;
+        dialogueBoxController = dbc;
+        mapView = mv;
+        stationTypesPopup = stPopup;
         this.trackBuilder = trackBuilder;
         this.buildTrack = buildTrack;
         buildIndustryJPopupMenu.setup(mr, null, null);
@@ -300,14 +300,14 @@ public class UserInputOnMapController extends KeyAdapter {
         if (legalRectangleContains(tryThisPoint)) {
             setCursorPosition(tryThisPoint);
         } else {
-            this.setCursorMessage("Illegal cursor position!");
+            setCursorMessage("Illegal cursor position!");
         }
     }
 
     private void moveCursorOneTile(TileTransition v) {
         setCursorMessage(null);
 
-        Point2D cursorMapPosition = this.getCursorPosition();
+        Point2D cursorMapPosition = getCursorPosition();
         Point2D tryThisPoint = new Point2D(cursorMapPosition.x + v.getDx(),
                 cursorMapPosition.y + v.getDy());
 
@@ -316,7 +316,7 @@ public class UserInputOnMapController extends KeyAdapter {
             setCursorPosition(tryThisPoint);
             cursorOneTileMove(cursorMapPosition, v);
         } else {
-            this.setCursorMessage("Illegal cursor position!");
+            setCursorMessage("Illegal cursor position!");
         }
     }
 

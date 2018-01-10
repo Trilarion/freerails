@@ -35,6 +35,7 @@ import java.net.URL;
  */
 // TODO difference to world.WorldImpl?
 public class OldWorldImpl {
+
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
      * with underscores.

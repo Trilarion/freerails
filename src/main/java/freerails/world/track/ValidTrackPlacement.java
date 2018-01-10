@@ -76,8 +76,8 @@ public final class ValidTrackPlacement implements Serializable {
         if (o instanceof ValidTrackPlacement) {
             ValidTrackPlacement test = (ValidTrackPlacement) o;
 
-            return this.placementRule.equals(test.placementRule)
-                    && this.terrainTypes.equals(test.terrainTypes);
+            return placementRule.equals(test.placementRule)
+                    && terrainTypes.equals(test.terrainTypes);
         }
         return false;
     }

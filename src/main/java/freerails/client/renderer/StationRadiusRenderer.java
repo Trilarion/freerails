@@ -53,7 +53,7 @@ public class StationRadiusRenderer implements Painter {
      * @param mr
      */
     public StationRadiusRenderer(ModelRoot mr) {
-        this.modelRoot = mr;
+        modelRoot = mr;
     }
 
     /**

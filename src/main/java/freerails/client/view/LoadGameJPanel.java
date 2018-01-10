@@ -24,7 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.MessageToServer;
+import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.network.LoadGameMessageToServer;
@@ -131,28 +131,28 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_refreshButtonActionPerformed
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {
         MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
         modelRoot.sendCommand(refreshGames);
-    }// GEN-LAST:event_refreshButtonActionPerformed
+    }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_cancelButtonActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         if (null != close)
             close.actionPerformed(evt);
-    }// GEN-LAST:event_cancelButtonActionPerformed
+    }
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_okButtonActionPerformed
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {
         String filename = (String) jList1.getSelectedValue();
         MessageToServer message2 = new LoadGameMessageToServer(1, filename);
         modelRoot.sendCommand(message2);
 
         if (null != close)
             close.actionPerformed(evt);
-    }// GEN-LAST:event_okButtonActionPerformed
+    }
 
-    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {// GEN-FIRST:event_jList1ValueChanged
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {
         okButton.setEnabled(jList1.getSelectedIndex() != -1);
-    }// GEN-LAST:event_jList1ValueChanged
+    }
 
     /**
      * @param m
@@ -160,7 +160,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
-        this.close = closeAction;
+        close = closeAction;
         modelRoot = m;
         updateListOfFiles();
     }

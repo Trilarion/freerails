@@ -41,7 +41,7 @@ public class CityNamesRenderer implements Painter {
      * @param world
      */
     public CityNamesRenderer(ReadOnlyWorld world) {
-        this.w = world;
+        w = world;
     }
 
     /**

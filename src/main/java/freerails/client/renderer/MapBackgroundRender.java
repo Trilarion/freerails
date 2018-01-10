@@ -154,8 +154,8 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param trackPieceViewList
          */
         public TrackLayer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
-            this.rr = trackPieceViewList;
-            this.w = world;
+            rr = trackPieceViewList;
+            w = world;
         }
 
         /**
@@ -254,7 +254,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param tiles
          */
         public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
-            this.w = world;
+            w = world;
             this.tiles = tiles;
         }
 

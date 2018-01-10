@@ -35,7 +35,7 @@ public class TerrainAtLocation {
     public TerrainAtLocation(int x, int y, int tt) {
         this.x = x;
         this.y = y;
-        this.terrainType = tt;
+        terrainType = tt;
     }
 
     /**

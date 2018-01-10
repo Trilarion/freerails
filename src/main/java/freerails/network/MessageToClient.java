@@ -16,41 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
 package freerails.network;
 
-import freerails.world.game.GameModel;
-import freerails.world.World;
+import freerails.controller.ClientControlInterface;
+import freerails.controller.MessageStatus;
 
 import java.io.Serializable;
 
 /**
- * Defines methods on a GameModel that let the server load and initiate, and
- * save it.
+ * Defines a command sent from the server to the client.
  */
-public interface ServerGameModel extends GameModel, Serializable {
-
+public interface MessageToClient extends Serializable {
     /**
-     * @param world
-     * @param passwords
-     */
-    void setWorld(World world, String[] passwords);
-
-    /**
+     * Executes this command on the specified ClientControlInterface.
+     *
+     * @param client
      * @return
      */
-    World getWorld();
-
-    /**
-     * @return
-     */
-    String[] getPasswords();
-
-    /**
-     * @param moveExecutor
-     */
-    void init(MoveReceiver moveExecutor);
+    MessageStatus execute(ClientControlInterface client);
 
 }

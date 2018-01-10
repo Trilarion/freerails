@@ -69,7 +69,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
      * This method initializes this
      */
     private void initialize() {
-        this.add(getPlayersList(), null);
+        add(getPlayersList(), null);
         java.awt.event.MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -81,9 +81,9 @@ public class LeaderBoardJPanel extends JPanel implements View {
                 }
             }
         };
-        this.addMouseListener(mouseAdapter);
-        this.playersList.addMouseListener(mouseAdapter);
-        this.setSize(getPreferredSize());
+        addMouseListener(mouseAdapter);
+        playersList.addMouseListener(mouseAdapter);
+        setSize(getPreferredSize());
 
     }
 
@@ -114,7 +114,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         ReadOnlyWorld w = modelRoot.getWorld();
         values.clear();
-        this.submitButtonCallBack = closeAction;
+        submitButtonCallBack = closeAction;
         for (int player = 0; player < w.getNumberOfPlayers(); player++) {
             PlayerDetails details = new PlayerDetails();
             FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();

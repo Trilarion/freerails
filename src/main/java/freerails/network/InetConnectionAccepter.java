@@ -30,6 +30,7 @@ import java.net.Socket;
  * Socket and adds them to the NewGameServer that was passed to its constructor.
  */
 public class InetConnectionAccepter implements Runnable {
+
     private static final Logger logger = Logger
             .getLogger(InetConnectionAccepter.class.getName());
     private final GameServer gameServer;
@@ -102,7 +103,7 @@ public class InetConnectionAccepter implements Runnable {
      * @throws IOException
      */
     public synchronized void stop() throws IOException {
-        this.keepRunning.close();
+        keepRunning.close();
         serverSocket.close();
 
         // Commented out since it causes exceptions to be thrown, fixes bug

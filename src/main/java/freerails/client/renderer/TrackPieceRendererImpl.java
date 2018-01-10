@@ -46,7 +46,7 @@ public final class TrackPieceRendererImpl implements TrackPieceRenderer {
     public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager,
                                   int typeNumber) throws IOException {
         TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, typeNumber);
-        this.typeName = trackRule.getTypeName();
+        typeName = trackRule.getTypeName();
 
         for (int i = 0; i < 512; i++) {
             if (trackRule.testTrackPieceLegality(i)) {

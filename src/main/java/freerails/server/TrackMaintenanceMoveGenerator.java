@@ -47,7 +47,7 @@ public class TrackMaintenanceMoveGenerator {
      * @param mr
      */
     public TrackMaintenanceMoveGenerator(MoveReceiver mr) {
-        this.moveReceiver = mr;
+        moveReceiver = mr;
     }
 
     /**

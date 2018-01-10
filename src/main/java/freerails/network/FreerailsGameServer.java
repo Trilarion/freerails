@@ -22,6 +22,8 @@ import freerails.controller.*;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.server.ServerGameModel;
+import freerails.server.SimpleServerGameModel;
 import freerails.util.ImmutableList;
 import freerails.util.SynchronizedFlag;
 import freerails.world.World;
@@ -48,6 +50,7 @@ import java.util.Iterator;
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer,
         Runnable {
+
     /**
      * Used as a property name for property change events.
      */
@@ -65,7 +68,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     private final HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
             this);
-    private final SavedGamesManager savedGamesManager;
+    private final SaveGamesManager saveGamesManager;
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private int commandID = 0;
     /**
@@ -83,15 +86,15 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     /**
      * @param gamesManager
      */
-    public FreerailsGameServer(SavedGamesManager gamesManager) {
-        this.savedGamesManager = gamesManager;
+    public FreerailsGameServer(SaveGamesManager gamesManager) {
+        saveGamesManager = gamesManager;
     }
 
     /**
      * @param gamesManager
      * @return
      */
-    public static FreerailsGameServer startServer(SavedGamesManager gamesManager) {
+    public static FreerailsGameServer startServer(SaveGamesManager gamesManager) {
         FreerailsGameServer server = new FreerailsGameServer(gamesManager);
         Thread t = new Thread(server);
         t.start();
@@ -129,7 +132,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                                 + request.getUsername());
             }
 
-            LogOnResponse response = this.logon(request);
+            LogOnResponse response = logon(request);
             connection.writeToClient(response);
             NameAndPassword p = new NameAndPassword(request.getUsername(),
                     request.getPassword());
@@ -146,10 +149,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 MessageToClient setMaps = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                        new ImmutableList<String>(savedGamesManager.getNewMapNames()));
+                        new ImmutableList<String>(saveGamesManager.getNewMapNames()));
 
                 ImmutableList<String> savedGameNames = new ImmutableList<String>(
-                        savedGamesManager.getSaveGameNames());
+                        saveGamesManager.getSaveGameNames());
                 MessageToClient setSaveGames = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.SAVED_GAMES,
@@ -211,7 +214,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     }
 
     World getCopyOfWorld() {
-        return this.getWorld().defensiveCopy();
+        return getWorld().defensiveCopy();
     }
 
     private int getNextClientCommandId() {
@@ -276,7 +279,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
         ServerGameModel loadedGame;
 
-        loadedGame = (ServerGameModel) savedGamesManager.loadGame(saveGameName);
+        loadedGame = (ServerGameModel) saveGamesManager.loadGame(saveGameName);
         String[] passwords = loadedGame.getPasswords();
         World w = loadedGame.getWorld();
         assert passwords.length == w.getNumberOfPlayers();
@@ -318,7 +321,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 .getPassword());
         boolean isReturningPlayer = isPlayer(lor.getUsername());
 
-        if (!this.newPlayersAllowed && !isReturningPlayer) {
+        if (!newPlayersAllowed && !isReturningPlayer) {
             return LogOnResponse.rejected("New logins not allowed.");
         }
 
@@ -345,7 +348,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         confirmedPlayers.clear();
 
         try {
-            World world = (World) savedGamesManager.newMap(mapName);
+            World world = (World) saveGamesManager.newMap(mapName);
 
             String[] passwords = new String[players.size()];
 
@@ -388,7 +391,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             connection.disconnect();
         }
 
-        this.currentlyLoggedOn.remove(p);
+        currentlyLoggedOn.remove(p);
 
         String[] after = getPlayerNames();
         propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before,
@@ -406,8 +409,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     public void savegame(String saveGameName) {
         logger.info("save game as " + saveGameName);
         try {
-            savedGamesManager.saveGame(serverGameModel, saveGameName);
-            String[] saves = savedGamesManager.getSaveGameNames();
+            saveGamesManager.saveGame(serverGameModel, saveGameName);
+            String[] saves = saveGamesManager.getSaveGameNames();
             MessageToClient request = new SetPropertyMessageToClient(
                     getNextClientCommandId(),
                     ClientControlInterface.ClientProperty.SAVED_GAMES,
@@ -489,7 +492,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
             }
         };
 
-        serverGameModel.init(moveExecuter);
+        serverGameModel.initialize(moveExecuter);
     }
 
     /**
@@ -528,13 +531,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                         } else if (message instanceof MessageStatus) {
                             MessageStatus messageStatus = (MessageStatus) message;
 
-                            if (messageStatus.getId() == this.confirmationID) {
+                            if (messageStatus.getId() == confirmationID) {
                                 /*
                                  * The client is confirming that they have
                                  * updated their world object to the current
                                  * version.
                                  */
-                                this.confirmedPlayers.add(player);
+                                confirmedPlayers.add(player);
                                 if (logger.isDebugEnabled()) {
                                     logger.debug("Confirmed player " + player);
                                 }
@@ -561,7 +564,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                             }
 
                             MoveStatus mStatus = move.tryDoMove(
-                                    this.getWorld(), principal);
+                                    getWorld(), principal);
 
                             if (mStatus.isOk()) {
                                 move.doMove(getWorld(), principal);
@@ -588,7 +591,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
                 } else {
                     /* Remove connection. */
-                    this.removeConnection(player);
+                    removeConnection(player);
                 }
             }
         } catch (IOException e) {
@@ -602,8 +605,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         MessageToClient setMaps = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                new ImmutableList<String>(savedGamesManager.getNewMapNames()));
-        ImmutableList<String> savedGameNames = new ImmutableList<String>(savedGamesManager
+                new ImmutableList<String>(saveGamesManager.getNewMapNames()));
+        ImmutableList<String> savedGameNames = new ImmutableList<String>(saveGamesManager
                 .getSaveGameNames());
         MessageToClient setSaveGames = new SetPropertyMessageToClient(
                 getNextClientCommandId(),

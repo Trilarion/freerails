@@ -66,9 +66,9 @@ public class CalcCargoSupplyRateAtStation {
      */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y,
                                         int trackRuleNo) {
-        this.w = world;
-        this.x = X;
-        this.y = Y;
+        w = world;
+        x = X;
+        y = Y;
 
         TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
@@ -102,7 +102,7 @@ public class CalcCargoSupplyRateAtStation {
      * @return
      */
     public StationConversion getConversion() {
-        return new StationConversion(this.converts);
+        return new StationConversion(converts);
     }
 
     /**

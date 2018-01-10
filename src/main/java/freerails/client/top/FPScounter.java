@@ -42,7 +42,7 @@ public class FPScounter {
         for (int i = 0; i < MAX_FPS_VALUES; i++) {
             fpsValues.add(0.0);
         }
-        this.fontSize = 10;
+        fontSize = 10;
         bgColor = new Color(0, 0, 128);
         mean = 0.0;
         newFPSstr = new String[3];

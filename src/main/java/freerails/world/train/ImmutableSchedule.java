@@ -44,7 +44,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
     public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
                              boolean hasPriorityOrders) {
         this.orders = new ImmutableList<>(orders);
-        this.nextScheduledOrder = gotoStation;
+        nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;
     }
 
@@ -99,7 +99,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      * @return
      */
     public int getNextScheduledOrder() {
-        return this.nextScheduledOrder;
+        return nextScheduledOrder;
     }
 
     /**
@@ -107,8 +107,8 @@ public class ImmutableSchedule implements Schedule, Serializable {
      * @return
      */
     public boolean stopsAtStation(int stationNumber) {
-        for (int i = 0; i < this.getNumOrders(); i++) {
-            TrainOrdersModel order = this.getOrder(i);
+        for (int i = 0; i < getNumOrders(); i++) {
+            TrainOrdersModel order = getOrder(i);
 
             if (order.getStationID() == stationNumber) {
                 return true;
@@ -123,9 +123,9 @@ public class ImmutableSchedule implements Schedule, Serializable {
         if (o instanceof ImmutableSchedule) {
             ImmutableSchedule test = (ImmutableSchedule) o;
 
-            return this.hasPriorityOrders == test.hasPriorityOrders
-                    && this.nextScheduledOrder == test.nextScheduledOrder
-                    && this.orders.equals(test.orders);
+            return hasPriorityOrders == test.hasPriorityOrders
+                    && nextScheduledOrder == test.nextScheduledOrder
+                    && orders.equals(test.orders);
         }
         return false;
     }

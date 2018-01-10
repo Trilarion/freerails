@@ -135,17 +135,17 @@ public class NonNullElementWorldIterator implements WorldIterator {
     }
 
     private Serializable listGet(int i) {
-        if (null == this.skey) {
+        if (null == skey) {
             return w.get(principal, key, i);
         }
         return w.get(skey, i);
     }
 
     private int listSize() {
-        if (null == this.skey) {
+        if (null == skey) {
             return w.size(principal, key);
         }
-        return w.size(this.skey);
+        return w.size(skey);
     }
 
     public int getIndex() {
@@ -205,8 +205,8 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
                 if (i == j) {
                     reset();
-                    this.index = i;
-                    this.row = newRow;
+                    index = i;
+                    row = newRow;
 
                     return;
                 }

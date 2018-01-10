@@ -44,7 +44,7 @@ public class ActionRoot {
      * @param mr
      */
     public ActionRoot(ModelRootImpl mr) {
-        this.serverControls = new ServerControlModel(mr);
+        serverControls = new ServerControlModel(mr);
     }
 
     /**

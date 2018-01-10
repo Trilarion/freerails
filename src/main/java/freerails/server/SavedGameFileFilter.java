@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 /**
- * A SavedGamesManager reads and writes gzipped saved games to the working
+ * A SaveGamesManager reads and writes gzipped saved games to the working
  * directory.
  */
 class SavedGameFileFilter implements FilenameFilter {

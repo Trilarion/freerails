@@ -91,8 +91,8 @@ public final class ValidTrackConfigurations implements Serializable {
         if (o instanceof ValidTrackConfigurations) {
             ValidTrackConfigurations test = (ValidTrackConfigurations) o;
 
-            return this.maximumConsecutivePieces == test.maximumConsecutivePieces
-                    && this.legalConfigs.equals(test.legalConfigs);
+            return maximumConsecutivePieces == test.maximumConsecutivePieces
+                    && legalConfigs.equals(test.legalConfigs);
         }
         return false;
     }

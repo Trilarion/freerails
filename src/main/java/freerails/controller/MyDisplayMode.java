@@ -59,7 +59,7 @@ public class MyDisplayMode {
         if (o instanceof MyDisplayMode) {
             MyDisplayMode test = (MyDisplayMode) o;
 
-            return test.displayMode.equals(this.displayMode);
+            return test.displayMode.equals(displayMode);
         }
         return false;
     }

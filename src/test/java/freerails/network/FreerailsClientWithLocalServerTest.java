@@ -44,14 +44,14 @@ import java.io.Serializable;
 public class FreerailsClientWithLocalServerTest extends TestCase {
     private FreerailsGameServer server;
 
-    private SavedGamesManager4UnitTests savedGamesManager;
+    private SaveGamesManager4UnitTests savedGamesManager;
 
     /**
      * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
-        savedGamesManager = new SavedGamesManager4UnitTests();
+        savedGamesManager = new SaveGamesManager4UnitTests();
         server = new FreerailsGameServer(savedGamesManager);
     }
 

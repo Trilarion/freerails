@@ -41,6 +41,7 @@ import java.util.Iterator;
  * the surrounding tiles supply.
  */
 public class CargoAtStationsUpdater implements FreerailsServerSerializable {
+
     private static final long serialVersionUID = 3834596504072959796L;
 
     /**

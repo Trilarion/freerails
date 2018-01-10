@@ -80,7 +80,7 @@ public class Player implements Serializable {
      */
     public Player(String name, int id) {
         this.name = name;
-        this.principal = new PlayerPrincipal(id, name);
+        principal = new PlayerPrincipal(id, name);
     }
 
     @Override

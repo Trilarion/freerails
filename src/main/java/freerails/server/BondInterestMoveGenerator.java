@@ -31,13 +31,14 @@ import freerails.world.player.FreerailsPrincipal;
  * of outstanding bonds, then calculates the interest due.
  */
 public class BondInterestMoveGenerator {
+
     private final MoveReceiver moveReceiver;
 
     /**
      * @param mr
      */
     public BondInterestMoveGenerator(MoveReceiver mr) {
-        this.moveReceiver = mr;
+        moveReceiver = mr;
     }
 
     private static AddTransactionMove generateMove(World w,

@@ -48,9 +48,7 @@ public final class MapFactory {
      * create a vector to keep track of what terrain types to 'clump'
      */
     private static final List<Integer> countryTypes = new ArrayList();
-
     private static final List<Integer> non_countryTypes = new ArrayList();
-
     private static WorldImpl world;
 
     private MapFactory() {
@@ -107,7 +105,7 @@ public final class MapFactory {
             }
         }
 
-        TerrainRandomiser terrainRandomiser = new TerrainRandomiser(countryTypes, non_countryTypes);
+        TerrainRandomizer terrainRandomizer = new TerrainRandomizer(countryTypes, non_countryTypes);
 
         /*
          * create vector to keep track of terrain randomisation 'clumping'
@@ -128,7 +126,7 @@ public final class MapFactory {
                                     + rgb + " at location " + x + ", " + y);
                 }
 
-                tile = FullTerrainTile.getInstance(terrainRandomiser
+                tile = FullTerrainTile.getInstance(terrainRandomizer
                         .getNewType(type));
 
                 if (countryTypes.contains(tile.getTerrainTypeID())) {

@@ -24,18 +24,16 @@ import java.io.Serializable;
  * Stores the result of a request to log onto the server.
  */
 public class LogOnResponse implements Serializable {
+
     private static final long serialVersionUID = 3690479099844311344L;
-
     private final boolean successful;
-
     private final int playerNumber;
-
     private final String message;
 
     private LogOnResponse(boolean success, int i, String s) {
-        this.successful = success;
-        this.playerNumber = i;
-        this.message = s;
+        successful = success;
+        playerNumber = i;
+        message = s;
     }
 
     /**

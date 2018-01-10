@@ -91,7 +91,7 @@ public class AddPlayerMove implements Move {
         MoveStatus ms = tryDoMove(world, p);
         if (!ms.ok)
             return ms;
-        int playerId = world.addPlayer(this.playerToAdd);
+        int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         FreerailsPrincipal principal = playerToAdd.getPrincipal();
         world.addTransaction(principal, BondItemTransaction.issueBond(5));
@@ -118,7 +118,7 @@ public class AddPlayerMove implements Move {
     private boolean isAlreadyASimilarPlayer(World world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             Player pp = world.getPlayer(i);
-            if (pp.getName().equalsIgnoreCase(this.playerToAdd.getName())) {
+            if (pp.getName().equalsIgnoreCase(playerToAdd.getName())) {
                 return true;
             }
         }

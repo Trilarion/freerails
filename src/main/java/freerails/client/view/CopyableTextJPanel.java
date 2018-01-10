@@ -53,7 +53,7 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
      * @param s
      */
     public void setText(String s) {
-        this.jTextArea1.setText(s);
+        jTextArea1.setText(s);
     }
 
     /**
@@ -116,19 +116,19 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
 
     }
 
-    private void selectAllItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_selectAllItemActionPerformed
+    private void selectAllItemActionPerformed(java.awt.event.ActionEvent evt) {
         jTextArea1.selectAll();
-    }// GEN-LAST:event_selectAllItemActionPerformed
+    }
 
-    private void copyItemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_copyItemActionPerformed
+    private void copyItemActionPerformed(java.awt.event.ActionEvent evt) {
         jTextArea1.copy();
-    }// GEN-LAST:event_copyItemActionPerformed
+    }
 
-    private void jTextArea1MouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_jTextArea1MouseClicked
+    private void jTextArea1MouseClicked(java.awt.event.MouseEvent evt) {
         if (SwingUtilities.isRightMouseButton(evt)) {
             jPopupMenu1.show(jTextArea1, evt.getX(), evt.getY());
         }
-    }// GEN-LAST:event_jTextArea1MouseClicked
+    }
     // End of variables declaration                   
 
 }

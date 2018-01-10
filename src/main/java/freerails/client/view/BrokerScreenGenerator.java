@@ -105,25 +105,25 @@ public class BrokerScreenGenerator {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(w, principal);
 
         int playerId = w.getID(principal);
-        this.playername = w.getPlayer(playerId).getName();
+        playername = w.getPlayer(playerId).getName();
 
         GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
         GameTime time = w.currentTime();
         final int startyear = cal.getYear(time.getTicks());
-        this.year = String.valueOf(startyear);
-        this.cash = w.getCurrentBalance(principal);
+        year = String.valueOf(startyear);
+        cash = w.getCurrentBalance(principal);
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
                 w, principal);
 
         aggregator.setCategory(TransactionCategory.BOND);
-        this.loansTotal = aggregator.calculateValue();
+        loansTotal = aggregator.calculateValue();
 
-        this.publicShares = DC.format(dataGatherer.sharesHeldByPublic());
-        this.netWorth = dataGatherer.netWorth();
+        publicShares = DC.format(dataGatherer.sharesHeldByPublic());
+        netWorth = dataGatherer.netWorth();
         StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
-        this.pricePerShare = stockPrices[playerId].currentPrice;
-        this.treasuryStock = DC.format(dataGatherer.treasuryStock());
+        pricePerShare = stockPrices[playerId].currentPrice;
+        treasuryStock = DC.format(dataGatherer.treasuryStock());
 
         StringBuilder otherRRsStakes = new StringBuilder();
         int[] stockInThisRRs = dataGatherer.getStockInThisRRs();

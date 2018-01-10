@@ -53,7 +53,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param i
      */
     public PositionOnTrack(int i) {
-        this.setValuesFromInt(i);
+        setValuesFromInt(i);
     }
 
     private PositionOnTrack(int x, int y, TileTransition direction) {
@@ -68,7 +68,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         this.x = x;
         this.y = y;
 
-        this.cameFrom = direction;
+        cameFrom = direction;
     }
 
     /**
@@ -128,7 +128,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         if (o instanceof PositionOnTrack) {
             PositionOnTrack other = (PositionOnTrack) o;
 
-            return other.cameFrom() == this.cameFrom()
+            return other.cameFrom() == cameFrom()
                     && other.x == x
                     && other.y == y;
         }
@@ -146,9 +146,9 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @return the position on the track which is in the opposite direction.
      */
     public PositionOnTrack getOpposite() {
-        int newX = x - this.cameFrom.deltaX;
-        int newY = y - this.cameFrom.deltaY;
-        TileTransition newDirection = this.cameFrom.getOpposite();
+        int newX = x - cameFrom.deltaX;
+        int newY = y - cameFrom.deltaY;
+        TileTransition newDirection = cameFrom.getOpposite();
 
         return createComingFrom(newX, newY, newDirection);
     }
@@ -195,7 +195,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param v
      */
     public void setCameFrom(TileTransition v) {
-        this.cameFrom = v;
+        cameFrom = v;
     }
 
     /**
@@ -216,9 +216,9 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param tileTransition
      */
     public void move(TileTransition tileTransition) {
-        this.x += tileTransition.deltaX;
-        this.y += tileTransition.deltaY;
-        this.cameFrom = tileTransition.getOpposite();
+        x += tileTransition.deltaX;
+        y += tileTransition.deltaY;
+        cameFrom = tileTransition.getOpposite();
     }
 
     /**

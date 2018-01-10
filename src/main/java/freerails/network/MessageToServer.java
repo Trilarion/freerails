@@ -18,43 +18,19 @@
 
 package freerails.network;
 
-import java.io.IOException;
+import freerails.controller.MessageStatus;
+import freerails.controller.ServerControlInterface;
+
 import java.io.Serializable;
 
 /**
- * Defines methods that let the server load and save game states, and get blank
- * maps for new games.
+ * Defines a command sent from a client to the server.
  */
-public interface SavedGamesManager {
+public interface MessageToServer extends Serializable {
 
     /**
+     * @param server
      * @return
      */
-    String[] getSaveGameNames();
-
-    /**
-     * @return
-     */
-    String[] getNewMapNames();
-
-    /**
-     * @param w
-     * @param s
-     * @throws IOException
-     */
-    void saveGame(Serializable w, String s) throws IOException;
-
-    /**
-     * @param name
-     * @return
-     * @throws IOException
-     */
-    Serializable loadGame(String name) throws IOException;
-
-    /**
-     * @param name
-     * @return
-     * @throws IOException
-     */
-    Serializable newMap(String name) throws IOException;
+    MessageStatus execute(ServerControlInterface server);
 }

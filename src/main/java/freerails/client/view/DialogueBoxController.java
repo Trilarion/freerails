@@ -27,7 +27,7 @@ import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.MessageToServer;
+import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ReportBugTextGenerator;
 import freerails.move.ChangeProductionAtEngineShopMove;
@@ -203,12 +203,12 @@ public class DialogueBoxController implements WorldListListener {
      * @param vl
      */
     public void setup(ModelRootImpl mr, RendererRoot vl) {
-        this.modelRoot = mr;
+        modelRoot = mr;
         this.vl = vl;
         modelRoot.addListListener(this); // When a new train gets built, we
         // show the train info etc
 
-        this.world = modelRoot.getWorld();
+        world = modelRoot.getWorld();
 
         if (world == null)
             throw new NullPointerException();
@@ -221,36 +221,36 @@ public class DialogueBoxController implements WorldListListener {
         terrainInfo.setup(world, vl);
 
         // setup the supply and demand at station dialogue.
-        stationInfo.setup(modelRoot, vl, this.closeCurrentDialogue);
+        stationInfo.setup(modelRoot, vl, closeCurrentDialogue);
         modelRoot.addListListener(stationInfo);
 
         // setup the 'show controls' dialogue
-        showControls.setup(this.modelRoot, vl, this.closeCurrentDialogue);
+        showControls.setup(modelRoot, vl, closeCurrentDialogue);
 
-        about.setup(this.modelRoot, vl, this.closeCurrentDialogue);
+        about.setup(modelRoot, vl, closeCurrentDialogue);
 
-        how2play.setup(this.modelRoot, vl, this.closeCurrentDialogue);
+        how2play.setup(modelRoot, vl, closeCurrentDialogue);
 
-        javaProperties.setup(this.modelRoot, vl, this.closeCurrentDialogue);
+        javaProperties.setup(modelRoot, vl, closeCurrentDialogue);
 
         // Set up train orders dialogue
         // trainScheduleJPanel = new TrainScheduleJPanel();
         // trainScheduleJPanel.setup(w, vl);
         // moveChainFork.add(trainScheduleJPanel);
         // Set up select engine dialogue.
-        selectEngine.setCancelButtonActionListener(this.closeCurrentDialogue);
+        selectEngine.setCancelButtonActionListener(closeCurrentDialogue);
         selectEngine.setup(modelRoot, vl, selectEngineAction);
 
         newspaper.setup(modelRoot, vl, closeCurrentDialogue);
 
         selectWagons.setup(modelRoot, vl, selectWagonsAction);
 
-        trainDialogueJPanel.setup(modelRoot, vl, this.closeCurrentDialogue);
+        trainDialogueJPanel.setup(modelRoot, vl, closeCurrentDialogue);
         modelRoot.addListListener(trainDialogueJPanel);
         trainDialogueJPanel
                 .setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
         trainDialogueJPanel
-                .setCancelButtonActionListener(this.closeCurrentDialogue);
+                .setCancelButtonActionListener(closeCurrentDialogue);
     }
 
     /**
@@ -258,7 +258,7 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showSaveGame() {
         SaveGameJPanel saveGameJPanel = new SaveGameJPanel();
-        saveGameJPanel.setup(modelRoot, vl, this.closeCurrentDialogue);
+        saveGameJPanel.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(saveGameJPanel);
     }
 
@@ -269,7 +269,7 @@ public class DialogueBoxController implements WorldListListener {
         MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
         modelRoot.sendCommand(refreshGames);
         LoadGameJPanel loadGameJPane = new LoadGameJPanel();
-        loadGameJPane.setup(modelRoot, vl, this.closeCurrentDialogue);
+        loadGameJPane.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(loadGameJPane);
     }
 
@@ -285,7 +285,7 @@ public class DialogueBoxController implements WorldListListener {
                     + " show train orders since there are no" + " trains!");
         } else {
             trainDialogueJPanel.display(wi.getIndex());
-            this.showContent(trainDialogueJPanel);
+            showContent(trainDialogueJPanel);
         }
     }
 
@@ -308,7 +308,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showGameControls() {
-        showContent(this.showControls);
+        showContent(showControls);
     }
 
     /**
@@ -316,8 +316,8 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showIncomeStatement() {
         IncomeStatementHtmlJPanel bs = new IncomeStatementHtmlJPanel();
-        bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
-        this.showContent(bs);
+        bs.setup(modelRoot, vl, closeCurrentDialogue);
+        showContent(bs);
     }
 
     /**
@@ -325,17 +325,8 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showBalanceSheet() {
         BalanceSheetHtmlJPanel bs = new BalanceSheetHtmlJPanel();
-        bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
-        this.showContent(bs);
-    }
-
-    /**
-     *
-     */
-    public void showReportBug() {
-        CopyableTextJPanel ct = new CopyableTextJPanel();
-        ct.setText(ReportBugTextGenerator.genText());
-        showContent(ct);
+        bs.setup(modelRoot, vl, closeCurrentDialogue);
+        showContent(bs);
     }
 
     /**
@@ -344,8 +335,8 @@ public class DialogueBoxController implements WorldListListener {
     public void showBrokerScreen() {
         // this is Creating a BrokerScreen Internal Frame in the Main Frame
         BrokerScreenHtmlJFrame brokerScreenHtmlJFrame = new BrokerScreenHtmlJFrame();
-        brokerScreenHtmlJFrame.setup(this.modelRoot, vl,
-                this.closeCurrentDialogue);
+        brokerScreenHtmlJFrame.setup(modelRoot, vl,
+                closeCurrentDialogue);
         brokerScreenHtmlJFrame.setFrameIcon(null);
 
         showContent(brokerScreenHtmlJFrame);
@@ -358,22 +349,22 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showExitDialog() {
         ConfirmExitJPanel bs = new ConfirmExitJPanel();
-        bs.setup(this.modelRoot, vl, this.closeCurrentDialogue);
-        this.showContent(bs);
+        bs.setup(modelRoot, vl, closeCurrentDialogue);
+        showContent(bs);
     }
 
     /**
      *
      */
     public void showAbout() {
-        showContent(this.about);
+        showContent(about);
     }
 
     /**
      *
      */
     public void showHow2Play() {
-        showContent(this.how2play);
+        showContent(how2play);
     }
 
     /**
@@ -396,7 +387,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param terrainType
      */
     public void showTerrainInfo(int terrainType) {
-        this.terrainInfo.setTerrainType(terrainType);
+        terrainInfo.setTerrainType(terrainType);
         showContent(terrainInfo);
     }
 
@@ -578,9 +569,9 @@ public class DialogueBoxController implements WorldListListener {
     public void showStationOrTerrainInfo(int x, int y) {
         int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
         if (stationNumberAtLocation > -1) {
-            this.showStationInfo(stationNumberAtLocation);
+            showStationInfo(stationNumberAtLocation);
         } else {
-            this.showTerrainInfo(x, y);
+            showTerrainInfo(x, y);
         }
 
 
@@ -606,12 +597,12 @@ public class DialogueBoxController implements WorldListListener {
          * After building station show supply and demand
          */
         boolean rightPrincipal = principal
-                .equals(this.modelRoot.getPrincipal());
+                .equals(modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
-            this.showTrainOrders(index);
+            showTrainOrders(index);
         } else if (KEY.STATIONS == key && rightPrincipal) {
-            this.showStationInfo(index);
+            showStationInfo(index);
         }
     }
 

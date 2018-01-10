@@ -36,7 +36,7 @@ public class ImInts implements Serializable {
      * @param i
      */
     public ImInts(int... i) {
-        this.ints = i.clone();
+        ints = i.clone();
     }
 
     /**
