@@ -108,44 +108,44 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
     public void endDocument() {
     }
 
-    public void startElement(java.lang.String ns, java.lang.String name,
-                             java.lang.String qname, org.xml.sax.Attributes attrs)
+    public void startElement(java.lang.String uri, java.lang.String localName,
+                             java.lang.String qName, org.xml.sax.Attributes atts)
             throws SAXException {
         dispatch(true);
-        context.push(new Object[]{qname,
-                new org.xml.sax.helpers.AttributesImpl(attrs)});
+        context.push(new Object[]{qName,
+                new org.xml.sax.helpers.AttributesImpl(atts)});
 
-        switch (qname) {
+        switch (qName) {
             case "CanOnlyBuildOnTheseTerrainTypes":
-                handler.start_CanOnlyBuildOnTheseTerrainTypes(attrs);
+                handler.start_CanOnlyBuildOnTheseTerrainTypes(atts);
                 break;
             case "ListOfTrackPieceTemplates":
-                handler.start_ListOfTrackPieceTemplates(attrs);
+                handler.start_ListOfTrackPieceTemplates(atts);
                 break;
             case "CannotBuildOnTheseTerrainTypes":
-                handler.start_CannotBuildOnTheseTerrainTypes(attrs);
+                handler.start_CannotBuildOnTheseTerrainTypes(atts);
                 break;
             case "TrackType":
-                handler.start_TrackType(attrs);
+                handler.start_TrackType(atts);
                 break;
             case "TerrainType":
-                handler.handle_TerrainType(attrs);
+                handler.handle_TerrainType(atts);
                 break;
             case "TrackPieceTemplate":
-                handler.start_TrackPieceTemplate(attrs);
+                handler.start_TrackPieceTemplate(atts);
                 break;
             case "TrackSet":
-                handler.start_TrackSet(attrs);
+                handler.start_TrackSet(atts);
                 break;
         }
     }
 
-    public void endElement(java.lang.String ns, java.lang.String name,
-                           java.lang.String qname) throws SAXException {
+    public void endElement(java.lang.String uri, java.lang.String localName,
+                           java.lang.String qName) throws SAXException {
         dispatch(false);
         context.pop();
 
-        switch (qname) {
+        switch (qName) {
             case "CanOnlyBuildOnTheseTerrainTypes":
                 handler.end_CanOnlyBuildOnTheseTerrainTypes();
                 break;
@@ -164,11 +164,11 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
     }
 
-    public void characters(char[] chars, int start, int len) {
-        buffer.append(chars, start, len);
+    public void characters(char[] ch, int start, int length) {
+        buffer.append(ch, start, length);
     }
 
-    public void ignorableWhitespace(char[] chars, int start, int len) {
+    public void ignorableWhitespace(char[] ch, int start, int length) {
     }
 
     public void processingInstruction(java.lang.String target,
@@ -195,21 +195,21 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     private org.xml.sax.ErrorHandler getDefaultErrorHandler() {
         return new org.xml.sax.ErrorHandler() {
-            public void error(org.xml.sax.SAXParseException ex)
+            public void error(org.xml.sax.SAXParseException exception)
                     throws SAXException {
                 if (context.isEmpty()) {
                     logger.error("Missing DOCTYPE.");
                 }
 
-                throw ex;
+                throw exception;
             }
 
-            public void fatalError(org.xml.sax.SAXParseException ex)
+            public void fatalError(org.xml.sax.SAXParseException exception)
                     throws SAXException {
-                throw ex;
+                throw exception;
             }
 
-            public void warning(org.xml.sax.SAXParseException ex) {
+            public void warning(org.xml.sax.SAXParseException exception) {
                 // ignore
             }
         };

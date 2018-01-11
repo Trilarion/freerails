@@ -25,6 +25,8 @@ import freerails.world.KEY;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 
+import java.io.Serializable;
+
 /**
  * This Move adds a cargo bundle to the cargo bundle list.
  */
@@ -36,7 +38,7 @@ public class AddCargoBundleMove extends AddItemToListMove {
      * @param item
      * @param p
      */
-    public AddCargoBundleMove(int i, ImmutableCargoBatchBundle item,
+    public AddCargoBundleMove(int i, Serializable item,
                               FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, i, item, p);
     }

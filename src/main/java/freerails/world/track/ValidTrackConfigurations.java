@@ -21,9 +21,7 @@ package freerails.world.track;
 import freerails.util.ImHashSet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Stores the legal track configurations for a type of track.
@@ -39,7 +37,7 @@ public final class ValidTrackConfigurations implements Serializable {
      * @param legalTrackTemplatesArrayList
      */
     public ValidTrackConfigurations(int max,
-                                    ArrayList<String> legalTrackTemplatesArrayList) {
+                                    Iterable<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
 
         HashSet<TrackConfiguration> temp = new HashSet<>();
@@ -64,7 +62,7 @@ public final class ValidTrackConfigurations implements Serializable {
     }
 
     private static void processTemplate(String trackTemplateString,
-                                        HashSet<TrackConfiguration> temp) {
+                                        Collection<TrackConfiguration> temp) {
         int trackTemplate = Integer.parseInt(trackTemplateString, 2);
 
         // Check for invalid parameters.
@@ -87,9 +85,9 @@ public final class ValidTrackConfigurations implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof ValidTrackConfigurations) {
-            ValidTrackConfigurations test = (ValidTrackConfigurations) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof ValidTrackConfigurations) {
+            ValidTrackConfigurations test = (ValidTrackConfigurations) obj;
 
             return maximumConsecutivePieces == test.maximumConsecutivePieces
                     && legalConfigs.equals(test.legalConfigs);
@@ -102,13 +100,6 @@ public final class ValidTrackConfigurations implements Serializable {
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
         return legalConfigs.iterator();
-    }
-
-    /**
-     * @return
-     */
-    public int getMaximumConsecutivePieces() {
-        return maximumConsecutivePieces;
     }
 
     @Override

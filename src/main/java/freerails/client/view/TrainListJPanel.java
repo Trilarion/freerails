@@ -28,6 +28,7 @@ import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 
 import javax.swing.*;
@@ -55,10 +56,8 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     // rhsjTabPane then use the original
     // renderer, if not use the
     // trainsummaryjpanel
-    private ActionListener showTrainDetails = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
+    private ActionListener showTrainDetails = e -> {
 
-        }
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeJButton;
@@ -128,16 +127,16 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         jList1.setDoubleBuffered(true);
         jList1.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jList1KeyPressed(evt);
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                jList1KeyPressed(e);
             }
         });
         jList1
                 .addListSelectionListener(this::jList1ValueChanged);
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList1MouseClicked(evt);
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                jList1MouseClicked(e);
             }
         });
 
@@ -212,14 +211,14 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         }
     }
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
-        world = mr.getWorld();
-        trainSummaryJPanel1.setup(mr, vl, null);
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        world = modelRoot.getWorld();
+        trainSummaryJPanel1.setup(modelRoot, vl, null);
 
         if (rhsjTabPane) {
-            jList1.setModel(new WorldToListModelAdapter(mr.getWorld(),
-                    KEY.TRAINS, mr.getPrincipal()));
-            TrainListCellRenderer trainView = new TrainListCellRenderer(mr, vl);
+            jList1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(),
+                    KEY.TRAINS, modelRoot.getPrincipal()));
+            TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, vl);
             jList1.setCellRenderer(trainView);
             trainView.setHeight(trainViewHeight);
         }
@@ -229,7 +228,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
             closeJButton.removeActionListener(oldListener);
         }
         closeJButton.addActionListener(closeAction);
-        principal = mr.getPrincipal();
+        principal = modelRoot.getPrincipal();
     }
 
     void setShowTrainDetailsActionListener(ActionListener l) {
@@ -274,7 +273,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     @Override
     public void paint(Graphics g) {
         if (null != world) {
-            NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, world,
+            WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, world,
                     principal);
             int newNumberOfTrains = trains.size();
             if (newNumberOfTrains != lastNumberOfTrains) {

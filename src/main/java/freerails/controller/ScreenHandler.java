@@ -218,7 +218,7 @@ public final class ScreenHandler {
 
         frame.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent evt) {
+            public void componentResized(java.awt.event.ComponentEvent e) {
                 createBufferStrategy();
             }
         });

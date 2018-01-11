@@ -56,8 +56,8 @@ public class TrackMaintenanceMoveGenerator {
      * @param category
      * @return
      */
-    public static AddTransactionMove generateMove(World world,
-                                                  FreerailsPrincipal principal, TransactionCategory category) {
+    public static Move generateMove(World world,
+                                    FreerailsPrincipal principal, TransactionCategory category) {
         if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }

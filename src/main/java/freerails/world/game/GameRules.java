@@ -26,8 +26,8 @@ import java.io.Serializable;
  */
 public class GameRules implements Serializable {
 
-    public static final GameRules DEFAULT_RULES = new GameRules(true, false);
-    public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);
+    public static final Serializable DEFAULT_RULES = new GameRules(true, false);
+    public static final Serializable NO_RESTRICTIONS = new GameRules(false, true);
     private static final long serialVersionUID = 3258125847557978416L;
     private final boolean canConnectToOtherRRTrack;
     private final boolean mustConnectToExistingTrack;

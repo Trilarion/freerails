@@ -35,9 +35,11 @@ import freerails.world.track.TrackRule;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the UI model for building a station. The mode of
@@ -63,10 +65,10 @@ public class StationBuildModel {
      */
     private final List<Action> stationChooseActions = new ArrayList<>();
     private final StationBuildAction stationBuildAction = new StationBuildAction();
-    private final StationCancelAction stationCancelAction = new StationCancelAction();
+    private final ActionListener stationCancelAction = new StationCancelAction();
     private final StationBuilder stationBuilder;
     private final ModelRoot modelRoot;
-    private final HashMap<Integer, Action> id2Action = new HashMap<>();
+    private final Map<Integer, Action> id2Action = new HashMap<>();
     /**
      * Whether the station's position can should change when the mouse moves.
      */
@@ -88,7 +90,7 @@ public class StationBuildModel {
 
             if (trackRule.isStation()) {
                 TrackPieceRenderer renderer = rr.getTrackPieceView(i);
-                StationChooseAction action = new StationChooseAction(i);
+                Action action = new StationChooseAction(i);
                 String trackType = trackRule.getTypeName();
                 Money price = trackRule.getFixedCost();
                 String shortDescrpt = trackType + " $" + price.toString();
@@ -132,7 +134,7 @@ public class StationBuildModel {
     /**
      * @return
      */
-    public Action getStationCancelAction() {
+    public ActionListener getStationCancelAction() {
         return stationCancelAction;
     }
 

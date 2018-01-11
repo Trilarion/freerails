@@ -59,7 +59,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         g.drawImage(tempImage, 0, 0, null);
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
+            public void mousePressed(java.awt.event.MouseEvent e) {
                 callBack.actionPerformed(new ActionEvent(this, 0, null));
             }
         });
@@ -81,8 +81,8 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         setOpaque(false);
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                formKeyPressed(e);
             }
         });
 
@@ -124,11 +124,11 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         callBack = closeAction;
     }
 

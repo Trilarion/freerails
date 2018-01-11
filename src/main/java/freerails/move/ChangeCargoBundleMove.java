@@ -25,6 +25,8 @@ import freerails.world.KEY;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 
+import java.io.Serializable;
+
 /**
  * This {@link Move} changes a cargo bundle (cargo bundles are used to represent
  * the cargo carried by trains and the cargo waiting at stations).
@@ -38,8 +40,8 @@ public class ChangeCargoBundleMove extends ChangeItemInListMove {
      * @param bundleNumber
      * @param p
      */
-    public ChangeCargoBundleMove(ImmutableCargoBatchBundle before,
-                                 ImmutableCargoBatchBundle after, int bundleNumber, FreerailsPrincipal p) {
+    public ChangeCargoBundleMove(Serializable before,
+                                 Serializable after, int bundleNumber, FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, bundleNumber, before, after, p);
     }
 }

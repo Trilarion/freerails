@@ -52,14 +52,14 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
     }
 
     /**
-     * @param modelRoot
+     * @param m
      * @param vl
      * @param closeAction
      */
     @Override
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        super.setup(modelRoot, vl, closeAction);
-        this.modelRoot = modelRoot;
+    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
+        super.setup(m, vl, closeAction);
+        this.modelRoot = m;
         updateHtml();
     }
 

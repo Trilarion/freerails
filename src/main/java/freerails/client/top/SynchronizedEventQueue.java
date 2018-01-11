@@ -18,7 +18,7 @@
 
 package freerails.client.top;
 
-import freerails.controller.ReportBugTextGenerator;
+import freerails.client.launcher.Launcher;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
@@ -71,10 +71,10 @@ public final class SynchronizedEventQueue extends EventQueue {
         return instance;
     }
 
-    public void postEvent(AWTEvent aEvent) {
+    public void postEvent(AWTEvent theEvent) {
         synchronized (list) {
             count++;
-            list.put(aEvent, new RuntimeException("X"));
+            list.put(theEvent, new RuntimeException("X"));
             if (System.currentTimeMillis() - last > 1000) {
                 last = System.currentTimeMillis();
                 // System.out.println(count);
@@ -97,20 +97,20 @@ public final class SynchronizedEventQueue extends EventQueue {
                 list.clear();
             }
         }
-        super.postEvent(aEvent);
+        super.postEvent(theEvent);
     }
 
     @Override
-    protected void dispatchEvent(AWTEvent aEvent) {
+    protected void dispatchEvent(AWTEvent event) {
         synchronized (MUTEX) {
             try {
-                super.dispatchEvent(aEvent);
+                super.dispatchEvent(event);
             } catch (Exception e) {
                 /*
                  * If something goes wrong, lets kill the game straight away to
                  * avoid hard-to-track-down bugs.
                  */
-                ReportBugTextGenerator.unexpectedException(e);
+                Launcher.emergencyStop();
             }
         }
     }

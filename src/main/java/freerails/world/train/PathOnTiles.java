@@ -74,13 +74,13 @@ public strictfp class PathOnTiles implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof PathOnTiles))
+        if (!(obj instanceof PathOnTiles))
             return false;
 
-        final PathOnTiles pathOnTiles = (PathOnTiles) o;
+        final PathOnTiles pathOnTiles = (PathOnTiles) obj;
 
         if (!start.equals(pathOnTiles.start))
             return false;
@@ -374,7 +374,7 @@ public strictfp class PathOnTiles implements Serializable {
 
         Point2D first = point.getA();
 
-        if (points.size() == 0) {
+        if (points.isEmpty()) {
             points.addFirst(first);
         } else if (!points.getFirst().equals(first)) {
             points.addFirst(first);
@@ -387,30 +387,7 @@ public strictfp class PathOnTiles implements Serializable {
         }
 
         return new Pair<>(
-                new PathIterator() {
-
-                    int index = 0;
-
-                    public boolean hasNext() {
-                        return (index + 1) < points.size();
-                    }
-
-                    public void nextSegment(LineSegment line) {
-                        if (!hasNext()) {
-                            throw new NoSuchElementException();
-                        }
-                        Point2D a = points.get(index);
-                        line.setX1(a.x);
-                        line.setY1(a.y);
-
-                        Point2D b = points.get(index + 1);
-                        line.setX2(b.x);
-                        line.setY2(b.y);
-
-                        index++;
-                    }
-
-                }, points.size());
+                new MyPathIterator(points), points.size());
     }
 
     /**
@@ -468,4 +445,35 @@ public strictfp class PathOnTiles implements Serializable {
         return sb.toString();
     }
 
+    private static class MyPathIterator implements PathIterator {
+
+        private static final long serialVersionUID = -4128415959622019625L;
+        private final LinkedList<Point2D> points;
+        int index;
+
+        public MyPathIterator(LinkedList<Point2D> points) {
+            this.points = points;
+            index = 0;
+        }
+
+        public boolean hasNext() {
+            return (index + 1) < points.size();
+        }
+
+        public void nextSegment(LineSegment line) {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            Point2D a = points.get(index);
+            line.setX1(a.x);
+            line.setY1(a.y);
+
+            Point2D b = points.get(index + 1);
+            line.setX2(b.x);
+            line.setY2(b.y);
+
+            index++;
+        }
+
+    }
 }

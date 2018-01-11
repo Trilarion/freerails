@@ -23,6 +23,7 @@ import freerails.world.World;
 import freerails.world.terrain.TerrainType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -36,7 +37,7 @@ public class CityTilePositioner {
 
     final Random random = new Random();
     final List<TerrainType> urbanTerrainTypes = new ArrayList<>();
-    final List<TerrainType> industryTerrainTypes = new ArrayList<>();
+    final Collection<TerrainType> industryTerrainTypes = new ArrayList<>();
     final List<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
     final World world;

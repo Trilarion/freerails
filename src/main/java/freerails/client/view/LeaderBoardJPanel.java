@@ -24,16 +24,14 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;
-import freerails.world.KEY;
-import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.TransactionAggregator;
+import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +68,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
      */
     private void initialize() {
         add(getPlayersList(), null);
-        java.awt.event.MouseAdapter mouseAdapter = new java.awt.event.MouseAdapter() {
+        MouseListener mouseAdapter = new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (null == submitButtonCallBack) {
@@ -119,7 +117,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
             PlayerDetails details = new PlayerDetails();
             FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();
             details.name = principle.getName();
-            NonNullElementWorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, w,
+            WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, w,
                     principle);
             details.stations = stations.size();
             TransactionAggregator networth = new NetWorthCalculator(w,
@@ -132,31 +130,4 @@ public class LeaderBoardJPanel extends JPanel implements View {
         setSize(getPreferredSize());
     }
 
-    /**
-     * Stores the details a player that are shown on the leader board.
-     */
-    static class PlayerDetails implements Comparable<PlayerDetails> {
-
-        String name = "player";
-
-        Money networth = new Money(0);
-
-        int stations = 0;
-
-        @Override
-        public String toString() {
-            return name +
-                    ", " +
-                    networth.toString() +
-                    " net worth, " +
-                    stations +
-                    "  stations.";
-        }
-
-        public int compareTo(PlayerDetails test) {
-            long l = test.networth.getAmount() - networth.getAmount();
-            return (int) l;
-        }
-
-    }
 } // @jve:decl-index=0:visual-constraint="67,32"

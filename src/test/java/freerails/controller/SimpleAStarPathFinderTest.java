@@ -148,8 +148,8 @@ class Map implements GraphExplorer {
         return this.position;
     }
 
-    public void setPosition(int i) {
-        this.position = i;
+    public void setPosition(int vertex) {
+        this.position = vertex;
         this.branch = -1;
     }
 

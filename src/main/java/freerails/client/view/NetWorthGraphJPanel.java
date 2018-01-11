@@ -171,17 +171,17 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE,
+        g2.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_SQUARE,
                 BasicStroke.JOIN_BEVEL));
 
         // Draw guide lines.
-        g2.setStroke(new BasicStroke(1f, BasicStroke.CAP_SQUARE,
+        g2.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_SQUARE,
                 BasicStroke.JOIN_BEVEL));
         g.setColor(Color.GRAY);
         for (int y = 295; y > 50; y -= 60) {
             g2.drawLine(graphRect.x, y, 420, y);
         }
-        g2.setStroke(new BasicStroke(2f, BasicStroke.CAP_SQUARE,
+        g2.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_SQUARE,
                 BasicStroke.JOIN_BEVEL));
         // Draw key
         for (int i = 0; i < companies.size(); i++) {
@@ -297,7 +297,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
     }
 
-    private String getYScaleString(long value) {
+    private static String getYScaleString(long value) {
         String abv;
         if (value >= 1000000000) {
             value = value / 1000000000;
@@ -362,38 +362,6 @@ public class NetWorthGraphJPanel extends JPanel implements View {
 
         setAppropriateScale();
 
-    }
-
-    /**
-     * Stores the company details that are used to draw a line and title on the
-     * graph.
-     */
-    static class CompanyDetails {
-
-        /**
-         * The company's net worth at the end of each year.
-         */
-        final long[] value = new long[100];
-
-        /**
-         * The colour for the line on the graph.
-         */
-        final Color color;
-
-        /**
-         * The company's name.
-         */
-        final String name;
-
-        CompanyDetails(String n, Color c) {
-
-            color = c;
-            name = n;
-            for (int i = 0; i < 100; i++) {
-                value[i] = Integer.MIN_VALUE;
-            }
-
-        }
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

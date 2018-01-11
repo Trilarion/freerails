@@ -34,7 +34,7 @@ public class TimeTickPreMove implements PreMove {
     /**
      *
      */
-    public static final TimeTickPreMove INSTANCE = new TimeTickPreMove();
+    public static final PreMove INSTANCE = new TimeTickPreMove();
     private static final long serialVersionUID = 3690479125647208760L;
 
     private TimeTickPreMove() {
@@ -49,7 +49,7 @@ public class TimeTickPreMove implements PreMove {
         return TimeTickMove.getMove(w);
     }
 
-    private Object readResolve() {
+    protected Object readResolve() {
         return INSTANCE;
     }
 }

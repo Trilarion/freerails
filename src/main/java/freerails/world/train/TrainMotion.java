@@ -101,7 +101,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
                     "The train's speed is not defined for the whole of the journey.");
 
         if (distanceEngineWillTravel == 0) {
-            duration = 0d;
+            duration = 0.0d;
         } else {
             double tempDuration = speeds.calculateTime(distanceEngineWillTravel);
             while ((speeds.calculateDistance(tempDuration) - distanceEngineWillTravel) > 0) {
@@ -150,7 +150,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     void checkT(double t) {
-        if (t < 0d || t > duration)
+        if (t < 0.0d || t > duration)
             throw new IllegalArgumentException("t=" + t + ", but duration="
                     + duration);
     }
@@ -163,13 +163,13 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TrainMotion))
+        if (!(obj instanceof TrainMotion))
             return false;
 
-        final TrainMotion trainMotion = (TrainMotion) o;
+        final TrainMotion trainMotion = (TrainMotion) obj;
 
         if (trainLength != trainMotion.trainLength)
             return false;
@@ -210,17 +210,17 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * Returns the train's position at the specified time.
      *
-     * @param t the time.
+     * @param dt the time.
      * @return the train's position.
      * @throws IllegalArgumentException if t is outside the interval
      */
-    public TrainPositionOnMap getState(double t) {
-        t = Math.min(t, speeds.getTime());
-        double offset = calcOffSet(t);
+    public TrainPositionOnMap getState(double dt) {
+        dt = Math.min(dt, speeds.getTime());
+        double offset = calcOffSet(dt);
         Pair<PathIterator, Integer> pathIt = path.subPath(offset,
                 trainLength); // 666
-        double speed = speeds.calcVelocity(t);
-        double acceleration = speeds.calcAcceleration(t);
+        double speed = speeds.calcVelocity(dt);
+        double acceleration = speeds.calcAcceleration(dt);
         return TrainPositionOnMap
                 .createInSameDirectionAsPathReversed(pathIt, speed,
                         acceleration, activity);

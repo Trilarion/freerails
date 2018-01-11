@@ -117,7 +117,7 @@ public class NearestStationFinder {
      * Returns true if the angle between direction and the vector (deltaX,
      * deltaY) is less than 45 degrees.
      */
-    private boolean isInRightDirection(TileTransition direction, int deltaX, int deltaY) {
+    private static boolean isInRightDirection(TileTransition direction, int deltaX, int deltaY) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
         boolean sameXDirection = (direction.deltaX * deltaX) > 0;
         boolean sameYDirection = (direction.deltaY * deltaY > 0);

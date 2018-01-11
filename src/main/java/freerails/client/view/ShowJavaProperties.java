@@ -20,10 +20,7 @@ package freerails.client.view;
 
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Returns the Java System Properties as an HTML table.
@@ -37,6 +34,9 @@ public class ShowJavaProperties {
 
     private static final Logger logger = Logger
             .getLogger(ShowJavaProperties.class.getName());
+
+    private ShowJavaProperties() {
+    }
 
     /**
      * @param args
@@ -59,7 +59,7 @@ public class ShowJavaProperties {
 
         // We use an ArrayList so that the keys can be sorted into alphabetical
         // order
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         while (keys.hasMoreElements()) {
             String key = (String) keys.nextElement();
             list.add(key);

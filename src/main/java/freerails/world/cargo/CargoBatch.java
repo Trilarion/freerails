@@ -80,9 +80,9 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof CargoBatch) {
-            CargoBatch test = (CargoBatch) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof CargoBatch) {
+            CargoBatch test = (CargoBatch) obj;
 
             return test.cargoType == cargoType
                     && test.sourceX == sourceX

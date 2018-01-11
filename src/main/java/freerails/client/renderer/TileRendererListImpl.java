@@ -27,6 +27,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list of TileRenderer stored in an array and created from an ArrayList.
@@ -37,7 +38,7 @@ public final class TileRendererListImpl implements TileRendererList {
     /**
      * @param t
      */
-    public TileRendererListImpl(ArrayList<TileRenderer> t) {
+    public TileRendererListImpl(List<TileRenderer> t) {
         tiles = new TileRenderer[t.size()];
 
         for (int i = 0; i < t.size(); i++) {
@@ -53,8 +54,8 @@ public final class TileRendererListImpl implements TileRendererList {
         return tiles[i];
     }
 
-    public boolean validate(ReadOnlyWorld w) {
+    public boolean validate(ReadOnlyWorld world) {
         // There should a TileRenderer for each terrain type.
-        return w.size(SKEY.TERRAIN_TYPES) == tiles.length;
+        return world.size(SKEY.TERRAIN_TYPES) == tiles.length;
     }
 }

@@ -30,6 +30,7 @@ import freerails.world.*;
 import freerails.world.game.GameModel;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
@@ -236,14 +237,14 @@ public class BuildTrackController implements GameModel {
      * direction on the worldDiff object.
      */
     private MoveStatus planBuildingTrack(Point2D point, TileTransition vector) {
-        FullTerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point.x,
+        TerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point.x,
                 point.y);
         BuildTrackStrategy bts = getBts();
         int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
         TrackRule trackRuleA = (TrackRule) worldDiffs.get(SKEY.TRACK_RULES,
                 trackTypeAID);
 
-        FullTerrainTile tileB = (FullTerrainTile) worldDiffs.getTile(point.x
+        TerrainTile tileB = (FullTerrainTile) worldDiffs.getTile(point.x
                 + vector.deltaX, point.y + vector.deltaY);
         int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
         TrackRule trackRuleB = (TrackRule) worldDiffs.get(SKEY.TRACK_RULES,
@@ -516,7 +517,7 @@ public class BuildTrackController implements GameModel {
         Point2D actPoint = getCursorPosition();
 
         if (buildNewTrack) {
-            if (builtTrack.size() > 0) {
+            if (!builtTrack.isEmpty()) {
                 MoveStatus ms = moveCursorMoreTiles(builtTrack, trackBuilder);
 
                 /* Note, reset() will have been called if ms.ok == false */

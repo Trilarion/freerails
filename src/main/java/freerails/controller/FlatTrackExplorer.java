@@ -39,8 +39,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
             0, TileTransition.NORTH);
     private final ReadOnlyWorld w;
-    private PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(
-            0, 0, TileTransition.NORTH);
+    private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
 
     /**
@@ -56,8 +55,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             throw new NoTrackException(p.toString());
         }
 
-        currentPosition = PositionOnTrack.createComingFrom(p.getX(), p
-                .getY(), p.cameFrom());
+        currentPosition = PositionOnTrack.createComingFrom(p.getX(), p.getY(), p.cameFrom());
     }
 
     /**
@@ -109,11 +107,11 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     * @param i
+     * @param vertex
      */
-    public void setPosition(int i) {
+    public void setPosition(int vertex) {
         beforeFirst = true;
-        currentPosition.setValuesFromInt(i);
+        currentPosition.setValuesFromInt(vertex);
     }
 
     public void moveForward() {

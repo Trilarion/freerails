@@ -113,9 +113,9 @@ public class AddItemToListMove implements ListMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof AddItemToListMove) {
-            AddItemToListMove test = (AddItemToListMove) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof AddItemToListMove) {
+            AddItemToListMove test = (AddItemToListMove) obj;
 
             if (null == item) {
                 if (null != test.item) {

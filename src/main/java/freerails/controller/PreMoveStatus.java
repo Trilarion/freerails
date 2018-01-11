@@ -55,7 +55,7 @@ public final class PreMoveStatus implements Serializable {
      * @param ms
      * @return
      */
-    public static PreMoveStatus fromMoveStatus(MoveStatus ms) {
+    public static Serializable fromMoveStatus(MoveStatus ms) {
         if (ms.ok) {
             return PRE_MOVE_OK;
         }
@@ -63,13 +63,13 @@ public final class PreMoveStatus implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof PreMoveStatus))
+        if (!(obj instanceof PreMoveStatus))
             return false;
 
-        final PreMoveStatus preMoveStatus = (PreMoveStatus) o;
+        final PreMoveStatus preMoveStatus = (PreMoveStatus) obj;
 
         return ms.equals(preMoveStatus.ms);
     }

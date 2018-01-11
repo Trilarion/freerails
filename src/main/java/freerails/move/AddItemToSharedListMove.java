@@ -116,9 +116,9 @@ public class AddItemToSharedListMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof AddItemToSharedListMove) {
-            AddItemToSharedListMove test = (AddItemToSharedListMove) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof AddItemToSharedListMove) {
+            AddItemToSharedListMove test = (AddItemToSharedListMove) obj;
 
             if (!item.equals(test.item)) {
                 return false;
@@ -136,7 +136,7 @@ public class AddItemToSharedListMove implements Move {
     /**
      * @return
      */
-    public Serializable getBefore() {
+    public static Serializable getBefore() {
         return null;
     }
 

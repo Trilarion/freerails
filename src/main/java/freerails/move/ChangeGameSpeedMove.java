@@ -42,8 +42,8 @@ public class ChangeGameSpeedMove implements Move {
      * @param newGameSpeed
      * @return
      */
-    public static ChangeGameSpeedMove getMove(ReadOnlyWorld w,
-                                              GameSpeed newGameSpeed) {
+    public static Move getMove(ReadOnlyWorld w,
+                               GameSpeed newGameSpeed) {
         return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED),
                 newGameSpeed);
     }
@@ -90,13 +90,13 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ChangeGameSpeedMove))
+        if (!(obj instanceof ChangeGameSpeedMove))
             return false;
 
-        final ChangeGameSpeedMove changeGameSpeedMove = (ChangeGameSpeedMove) o;
+        final ChangeGameSpeedMove changeGameSpeedMove = (ChangeGameSpeedMove) obj;
 
         if (!newSpeed.equals(changeGameSpeedMove.newSpeed))
             return false;

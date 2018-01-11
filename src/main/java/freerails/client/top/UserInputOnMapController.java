@@ -396,16 +396,16 @@ public class UserInputOnMapController extends KeyAdapter {
         private boolean pressedInside = false;
 
         @Override
-        public void mousePressed(MouseEvent evt) {
+        public void mousePressed(MouseEvent e) {
             logger.debug("Mouse pressed");
-            if (SwingUtilities.isLeftMouseButton(evt)) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
 
                 ignoreDragging = false;
 
                 Dimension tileSize = new Dimension((int) mapView.getScale(), (int) mapView.getScale());
 
                 // only jump - no track building
-                moveCursorJump(new Point2D(evt.getX() / tileSize.width, evt.getY()
+                moveCursorJump(new Point2D(e.getX() / tileSize.width, e.getY()
                         / tileSize.height));
 
                 mapView.requestFocus();
@@ -422,7 +422,7 @@ public class UserInputOnMapController extends KeyAdapter {
                     buildTrack.show();
                 }
 
-            } else if (SwingUtilities.isRightMouseButton(evt)) {
+            } else if (SwingUtilities.isRightMouseButton(e)) {
                 // Cancel building track.
                 buildTrack.hide();
                 ignoreDragging = true;
@@ -432,10 +432,10 @@ public class UserInputOnMapController extends KeyAdapter {
         }
 
         @Override
-        public void mouseReleased(MouseEvent evt) {
+        public void mouseReleased(MouseEvent e) {
 
             logger.debug("Mouse released");
-            if (SwingUtilities.isLeftMouseButton(evt)) {
+            if (SwingUtilities.isLeftMouseButton(e)) {
 
                 ignoreDragging = false;
                 setIgnoreKeyEvents(false);
@@ -448,8 +448,8 @@ public class UserInputOnMapController extends KeyAdapter {
                     // Is current position different from original position?
                     float scale = mapView.getScale();
                     Dimension tileSize = new Dimension((int) scale, (int) scale);
-                    int tileX = evt.getX() / tileSize.width;
-                    int tileY = evt.getY() / tileSize.height;
+                    int tileX = e.getX() / tileSize.width;
+                    int tileY = e.getY() / tileSize.height;
 
                     if (getCursorPosition().x != tileX
                             || getCursorPosition().y != tileY) {
@@ -466,7 +466,7 @@ public class UserInputOnMapController extends KeyAdapter {
         }
 
         @Override
-        public void mouseDragged(MouseEvent evt) {
+        public void mouseDragged(MouseEvent e) {
 
             // Called a lot for a small area, not just every square... efficiency questions?
             logger.debug("Mouse dragged");
@@ -484,13 +484,13 @@ public class UserInputOnMapController extends KeyAdapter {
             trackBuildingOn = trackBuildingOn
                     && (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 
-            if (SwingUtilities.isLeftMouseButton(evt) && pressedInside
+            if (SwingUtilities.isLeftMouseButton(e) && pressedInside
                     && trackBuildingOn && !ignoreDragging) {
 
                 setIgnoreKeyEvents(true);
 
-                int x = evt.getX();
-                int y = evt.getY();
+                int x = e.getX();
+                int y = e.getY();
 
                 float scale = mapView.getScale();
                 Dimension tileSize = new Dimension((int) scale, (int) scale);

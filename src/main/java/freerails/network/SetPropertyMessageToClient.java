@@ -50,17 +50,17 @@ public class SetPropertyMessageToClient implements MessageToClient {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof SetPropertyMessageToClient))
+        if (!(obj instanceof SetPropertyMessageToClient))
             return false;
 
-        final SetPropertyMessageToClient setPropertyMessageToClient = (SetPropertyMessageToClient) o;
+        final SetPropertyMessageToClient setPropertyMessageToClient = (SetPropertyMessageToClient) obj;
 
         if (id != setPropertyMessageToClient.id)
             return false;
-        if (!key.equals(setPropertyMessageToClient.key))
+        if (key != setPropertyMessageToClient.key)
             return false;
         return value.equals(setPropertyMessageToClient.value);
     }

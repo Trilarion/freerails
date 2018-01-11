@@ -85,12 +85,12 @@ public final class MapBackgroundRender implements MapLayerRenderer {
 
     /**
      * @param g
-     * @param x
-     * @param y
+     * @param tileX
+     * @param tileY
      */
-    public void paintTile(Graphics g, int x, int y) {
-        terrainLayer.paintTile(g, x, y);
-        trackLayer.paintTile(g, x, y);
+    public void paintTile(Graphics g, int tileX, int tileY) {
+        terrainLayer.paintTile(g, tileX, tileY);
+        trackLayer.paintTile(g, tileX, tileY);
         cityNames.paint((Graphics2D) g, null);
         stationNames.paint((Graphics2D) g, null);
     }

@@ -26,10 +26,8 @@ import freerails.world.terrain.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Processes CargoAndTerrainHandler events and adds terrain and cargo types to
@@ -42,7 +40,7 @@ import java.util.List;
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
     final HashMap<String, Integer> cargoNameTocargoTypeNumber = new HashMap<>();
-    final HashSet<Integer> rgbValuesAlreadyUsed = new HashSet<>();
+    final Collection<Integer> rgbValuesAlreadyUsed = new HashSet<>();
     final List<TileConsumption> typeConsumes = new ArrayList<>();
     final List<TileProduction> typeProduces = new ArrayList<>();
     final List<TileConversion> typeConverts = new ArrayList<>();
@@ -123,7 +121,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
             converts[i] = typeConverts.get(i);
         }
 
-        TileTypeImpl tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
+        Serializable tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
                 tileROW, produces, consumes, converts, tileBuildCost);
 
         world.add(SKEY.TERRAIN_TYPES, tileType);
@@ -133,7 +131,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         String cargoID = meta.getValue("id");
         String cargoCategory = meta.getValue("Category");
         int unitWeight = Integer.parseInt(meta.getValue("unitWeight"));
-        CargoType cargoType = new CargoType(unitWeight, cargoID, CargoCategory.valueOf(cargoCategory));
+        Serializable cargoType = new CargoType(unitWeight, cargoID, CargoCategory.valueOf(cargoCategory));
 
         int cargoNumber = world.size(SKEY.CARGO_TYPES);
         cargoNameTocargoTypeNumber.put(cargoID, cargoNumber);
@@ -159,7 +157,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         typeProduces.add(tileProduction);
     }
 
-    private int string2RGBValue(String temp_number) {
+    private static int string2RGBValue(String temp_number) {
         int rgb = Integer.parseInt(temp_number, 16);
 
         /*

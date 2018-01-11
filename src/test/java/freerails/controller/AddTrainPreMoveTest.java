@@ -26,11 +26,9 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImInts;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
-import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -90,7 +88,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      */
     @Override
     public void testMove() {
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         assertDoMoveIsOk(m);
@@ -103,7 +101,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      * track.
      */
     public void testPathOnTiles() {
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
@@ -121,16 +119,16 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);
         ActivityIterator ai = world.getActivities(principal, 0);
         TrainMotion tm = (TrainMotion) ai.getActivity();
-        assertEquals(0d, tm.duration());
-        assertEquals(0d, tm.getSpeedAtEnd());
-        assertEquals(0d, tm.getDistance(0));
+        assertEquals(0.0d, tm.duration());
+        assertEquals(0.0d, tm.getSpeedAtEnd());
+        assertEquals(0.0d, tm.getDistance(0));
         PositionOnTrack pot = tm.getFinalPosition();
         assertNotNull(pot);
         assertEquals(TileTransition.EAST, pot.facing());
@@ -157,7 +155,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<Integer>(), from,
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
                 principal, is);
         Move m = addTrain.generateMove(world);
         ms = m.doMove(world, principal);

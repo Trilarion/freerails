@@ -52,13 +52,13 @@ public class CompositeMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof CompositeMove))
+        if (!(obj instanceof CompositeMove))
             return false;
 
-        final CompositeMove compositeMove = (CompositeMove) o;
+        final CompositeMove compositeMove = (CompositeMove) obj;
 
         return moves.equals(compositeMove.moves);
     }

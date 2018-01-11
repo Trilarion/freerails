@@ -28,8 +28,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Is responsible for loading and playing sounds. Samples are read
@@ -41,14 +43,14 @@ public class SoundManager implements ModelRootListener, LineListener {
     private static final Logger logger = Logger.getLogger(SoundManager.class
             .getName());
     private static final SoundManager soundManager = new SoundManager();
-    private final HashMap<String, Sample> samples = new HashMap<>();
-    private final LinkedList<Clip> voices = new LinkedList<>();
+    private final Map<String, Sample> samples = new HashMap<>();
+    private final Deque<Clip> voices = new LinkedList<>();
     private int maxLines;
     private Mixer mixer;
     private boolean playSounds = true;
 
     private SoundManager() {
-        AudioFormat format2 = new AudioFormat(8000f, 16, 1, true, false);
+        AudioFormat format2 = new AudioFormat(8000.0f, 16, 1, true, false);
         DataLine.Info info2 = new DataLine.Info(null, format2, 0);
         for (Mixer.Info mo : AudioSystem.getMixerInfo()) {
 
@@ -76,9 +78,8 @@ public class SoundManager implements ModelRootListener, LineListener {
      */
     public static void main(String[] args) {
 
-        SoundManager soundPlayer = soundManager;
         for (int i = 0; i < 100; i++) {
-            soundPlayer.playSound(ClientConfig.SOUND_CASH, 10);
+            soundManager.playSound(ClientConfig.SOUND_CASH, 10);
 
             try {
                 Thread.sleep(40);
@@ -114,7 +115,7 @@ public class SoundManager implements ModelRootListener, LineListener {
         samples.put(s, sample);
     }
 
-    private ByteArrayInputStream loadStream(InputStream inputstream)
+    private static ByteArrayInputStream loadStream(InputStream inputstream)
             throws IOException {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
         byte[] data = new byte[1024];
@@ -165,12 +166,12 @@ public class SoundManager implements ModelRootListener, LineListener {
     }
 
     /**
-     * @param property
+     * @param p
      * @param oldValue
      * @param newValue
      */
-    public void propertyChange(ModelRoot.Property property, Object oldValue, Object newValue) {
-        if (property.equals(ModelRoot.Property.PLAY_SOUNDS)) {
+    public void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue) {
+        if (p == ModelRoot.Property.PLAY_SOUNDS) {
             playSounds = (Boolean) newValue;
         }
     }

@@ -134,32 +134,32 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      *
-     * @param ns
-     * @param name
-     * @param qname
-     * @param attrs
+     * @param uri
+     * @param localName
+     * @param qName
+     * @param atts
      */
-    public final void startElement(java.lang.String ns, java.lang.String name,
-                                   java.lang.String qname, Attributes attrs) throws SAXException {
+    public final void startElement(java.lang.String uri, java.lang.String localName,
+                                   java.lang.String qName, Attributes atts) throws SAXException {
         dispatch(true);
-        context.push(new Object[]{qname,
-                new org.xml.sax.helpers.AttributesImpl(attrs)});
+        context.push(new Object[]{qName,
+                new org.xml.sax.helpers.AttributesImpl(atts)});
 
-        switch (name) {
+        switch (localName) {
             case "Converts":
-                handler.handle_Converts(attrs);
+                handler.handle_Converts(atts);
                 break;
             case "Tile":
-                handler.start_Tile(attrs);
+                handler.start_Tile(atts);
                 break;
             case "Cargo":
-                handler.handle_Cargo(attrs);
+                handler.handle_Cargo(atts);
                 break;
             case "Consumes":
-                handler.handle_Consumes(attrs);
+                handler.handle_Consumes(atts);
                 break;
             case "Produces":
-                handler.handle_Produces(attrs);
+                handler.handle_Produces(atts);
                 break;
         }
     }
@@ -167,16 +167,16 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      *
-     * @param ns
-     * @param name
-     * @param qname
+     * @param uri
+     * @param localName
+     * @param qName
      */
-    public final void endElement(java.lang.String ns, java.lang.String name,
-                                 java.lang.String qname) throws SAXException {
+    public final void endElement(java.lang.String uri, java.lang.String localName,
+                                 java.lang.String qName) throws SAXException {
         dispatch(false);
         context.pop();
 
-        switch (name) {
+        switch (localName) {
             case "Tile":
                 handler.end_Tile();
                 break;
@@ -186,20 +186,20 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      *
-     * @param chars
-     * @param len
+     * @param ch
+     * @param length
      */
-    public final void characters(char[] chars, int start, int len) {
-        buffer.append(chars, start, len);
+    public final void characters(char[] ch, int start, int length) {
+        buffer.append(ch, start, length);
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      *
-     * @param chars
-     * @param len
+     * @param ch
+     * @param length
      */
-    public final void ignorableWhitespace(char[] chars, int start, int len) {
+    public final void ignorableWhitespace(char[] ch, int start, int length) {
     }
 
     /**
@@ -243,19 +243,19 @@ public class CargoAndTerrainParser implements ContentHandler {
      */
     protected ErrorHandler getDefaultErrorHandler() {
         return new ErrorHandler() {
-            public void error(SAXParseException ex) throws SAXException {
+            public void error(SAXParseException exception) throws SAXException {
                 if (context.isEmpty()) {
                     logger.error("Missing DOCTYPE.");
                 }
 
-                throw ex;
+                throw exception;
             }
 
-            public void fatalError(SAXParseException ex) throws SAXException {
-                throw ex;
+            public void fatalError(SAXParseException exception) throws SAXException {
+                throw exception;
             }
 
-            public void warning(SAXParseException ex) {
+            public void warning(SAXParseException exception) {
                 // ignore
             }
         };

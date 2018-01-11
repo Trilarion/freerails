@@ -27,6 +27,9 @@ package freerails.client.common;
  */
 public class BinaryNumberFormatter {
 
+    private BinaryNumberFormatter() {
+    }
+
     /**
      * @param i
      * @param bits

@@ -102,13 +102,13 @@ public strictfp class ConstantAcceleration implements Serializable,
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ConstantAcceleration))
+        if (!(obj instanceof ConstantAcceleration))
             return false;
 
-        final ConstantAcceleration constantAcceleration = (ConstantAcceleration) o;
+        final ConstantAcceleration constantAcceleration = (ConstantAcceleration) obj;
 
         if (a != constantAcceleration.a)
             return false;

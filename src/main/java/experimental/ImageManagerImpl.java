@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +59,7 @@ public class ImageManagerImpl implements ImageManager {
             .getDefaultConfiguration();
     private final HashMap<String, Image> imageHashMap = new HashMap<>();
     private final RenderingHints renderingHints;
-    private final HashMap<String, Image> scaledImagesHashMap = new HashMap<>();
+    private final Map<String, Image> scaledImagesHashMap = new HashMap<>();
     private String pathToReadFrom;
     private String pathToWriteTo;
 
@@ -90,7 +91,7 @@ public class ImageManagerImpl implements ImageManager {
      * @param s
      * @return
      */
-    public static boolean isValid(String s) {
+    public static boolean isValid(CharSequence s) {
         Matcher m = pattern.matcher(s);
         return m.matches();
     }

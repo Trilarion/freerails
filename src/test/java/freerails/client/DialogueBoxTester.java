@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package experimental;
+package freerails.client;
 
+import experimental.SimpleMoveReciever;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
@@ -28,7 +29,6 @@ import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
 import freerails.server.TileSetFactory;
 import freerails.server.TileSetFactoryImpl;
-import freerails.client.ProgressMonitorModel;
 import freerails.util.ImmutableList;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
@@ -53,16 +53,15 @@ import java.io.IOException;
 public class DialogueBoxTester extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 4050764909631780659L;
-
     private static final Player TEST_PLAYER = new Player("test player", 0);
-
     private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
-
     private final DialogueBoxController dialogueBoxController;
     private final ModelRootImpl modelRoot;
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
 
-        public void actionPerformed(ActionEvent arg0) {
+        private static final long serialVersionUID = -7379893226410558610L;
+
+        public void actionPerformed(ActionEvent e) {
             dialogueBoxController.closeContent();
         }
     };
@@ -101,7 +100,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new TileSetFactoryImpl();
         tileFactory.addTerrainTileTypesList(w);
-        wetf.addTypesToWorld(w);
+        WagonAndEngineTypesFactory.addTypesToWorld(w);
         w.addPlayer(TEST_PLAYER);
         try {
             vl = new RendererRootImpl(w,
@@ -148,9 +147,9 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         w.add(TEST_PRINCIPAL, KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
-        TrainOrdersModel order = new TrainOrdersModel(0, new ImmutableList<Integer>(0, 0, 0),
+        TrainOrdersModel order = new TrainOrdersModel(0, new ImmutableList<>(0, 0, 0),
                 false, false);
-        TrainOrdersModel order2 = new TrainOrdersModel(1, new ImmutableList<Integer>(1, 2, 0,
+        TrainOrdersModel order2 = new TrainOrdersModel(1, new ImmutableList<>(1, 2, 0,
                 0, 0), true, false);
         TrainOrdersModel order3 = new TrainOrdersModel(2, null, true, false);
         schedule.setOrder(0, order);
@@ -158,13 +157,13 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         int scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<Integer>(0, 0),
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<>(0, 0),
                 scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
         scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<Integer>(1, 1),
+        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<>(1, 1),
                 scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
@@ -172,7 +171,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
         w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0,
-                new ImmutableList<Integer>(1, 2, 0), scheduleID));
+                new ImmutableList<>(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);
@@ -213,14 +212,14 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                formKeyPressed(e);
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                exitForm(evt);
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                exitForm(e);
             }
         });
 
@@ -233,112 +232,66 @@ public class DialogueBoxTester extends javax.swing.JFrame {
 
         show.setText("Show");
         showBrokerScreen.setText("Broker Screen");
-        showBrokerScreen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newspaperActionPerformed(evt);
-            }
-        });
+        showBrokerScreen.addActionListener(e -> newspaperActionPerformed(e));
 
         show.add(showBrokerScreen);
 
         selectEngine.setText("Select Engine");
-        selectEngine.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectEngineActionPerformed(evt);
-            }
-        });
+        selectEngine.addActionListener(e -> selectEngineActionPerformed(e));
 
         show.add(selectEngine);
 
         selectWagons.setText("Select Wagons");
-        selectWagons.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectWagonsActionPerformed(evt);
-            }
-        });
+        selectWagons.addActionListener(e -> selectWagonsActionPerformed(e));
 
         show.add(selectWagons);
 
         selectTrainOrders.setText("Train Orders");
         selectTrainOrders
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        selectTrainOrdersActionPerformed(evt);
-                    }
-                });
+                .addActionListener(e -> selectTrainOrdersActionPerformed(e));
 
         show.add(selectTrainOrders);
 
         showControls.setText("Show game controls");
-        showControls.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showControlsActionPerformed(evt);
-            }
-        });
+        showControls.addActionListener(e -> showControlsActionPerformed(e));
 
         show.add(showControls);
 
         showTerrainInfo.setText("Show Terrain Info");
-        showTerrainInfo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showTerrainInfoActionPerformed(evt);
-            }
-        });
+        showTerrainInfo.addActionListener(e -> showTerrainInfoActionPerformed(e));
 
         show.add(showTerrainInfo);
 
         showStationInfo.setText("Show Station Info");
-        showStationInfo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showStationInfoActionPerformed(evt);
-            }
-        });
+        showStationInfo.addActionListener(e -> showStationInfoActionPerformed(e));
 
         show.add(showStationInfo);
 
         showTrainList.setText("Train List");
-        showTrainList.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showTrainListActionPerformed(evt);
-            }
-        });
+        showTrainList.addActionListener(e -> showTrainListActionPerformed(e));
 
         show.add(showTrainList);
 
         showCargoWaitingAndDemand.setText("Cargo waiting & demand");
         showCargoWaitingAndDemand
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        showCargoWaitingAndDemandActionPerformed(evt);
-                    }
-                });
+                .addActionListener(e -> showCargoWaitingAndDemandActionPerformed(e));
 
         show.add(showCargoWaitingAndDemand);
 
         showJavaSystemProperties.setText("Java System Properties");
         showJavaSystemProperties
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        showJavaSystemPropertiesActionPerformed(evt);
-                    }
-                });
+                .addActionListener(e -> showJavaSystemPropertiesActionPerformed(e));
 
         throwException.setText("Throw Exception");
-        throwException.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                throw new IllegalArgumentException();
-            }
+        throwException.addActionListener(e -> {
+            throw new IllegalArgumentException();
         });
 
         show.add(showJavaSystemProperties);
 
         showNetworthGraph.setText("Show net worth graph");
         showNetworthGraph
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        showNetworthGraphActionPerformed(evt);
-                    }
-                });
+                .addActionListener(e -> showNetworthGraphActionPerformed(e));
 
         show.add(showNetworthGraph);
 

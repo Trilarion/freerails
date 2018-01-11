@@ -53,7 +53,7 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
                 new Station());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        wetf.addTypesToWorld(getWorld());
+        WagonAndEngineTypesFactory.addTypesToWorld(getWorld());
         engineType = 0;
         int wagonType = 0;
         wagons = new Integer[]{wagonType, wagonType};

@@ -50,13 +50,13 @@ public class NextActivityMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof NextActivityMove))
+        if (!(obj instanceof NextActivityMove))
             return false;
 
-        final NextActivityMove nextActivityMove = (NextActivityMove) o;
+        final NextActivityMove nextActivityMove = (NextActivityMove) obj;
 
         if (index != nextActivityMove.index)
             return false;

@@ -87,11 +87,11 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
     }
 
     @Override
-    public boolean equals(Object arg0) {
-        if (null == arg0) {
+    public boolean equals(Object obj) {
+        if (null == obj) {
             return false;
         }
-        return arg0 instanceof CargoBatchBundle && equals(this, (CargoBatchBundle) arg0);
+        return obj instanceof CargoBatchBundle && equals(this, (CargoBatchBundle) obj);
     }
 
     /**

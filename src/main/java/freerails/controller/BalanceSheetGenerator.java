@@ -174,18 +174,7 @@ public class BalanceSheetGenerator {
          */
         public Stats(ReadOnlyWorld world, FreerailsPrincipal principal,
                      final GameTime[] totalTimeInterval) {
-            TransactionAggregator operatingFundsAggregator = new TransactionAggregator(
-                    world, principal) {
-                @Override
-                protected boolean condition(int i) {
-                    int transactionTicks = w.getTransactionTimeStamp(principal,
-                            i).getTicks();
-
-                    int from = totalTimeInterval[0].getTicks();
-                    int to = totalTimeInterval[1].getTicks();
-                    return transactionTicks >= from && transactionTicks <= to;
-                }
-            };
+            TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, principal, totalTimeInterval);
 
             operatingFunds = operatingFundsAggregator.calculateValue();
 
@@ -243,6 +232,24 @@ public class BalanceSheetGenerator {
             profit = new Money(profitValue);
         }
 
+        private static class MyTransactionAggregator extends TransactionAggregator {
+            private final GameTime[] totalTimeInterval;
+
+            public MyTransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime[] totalTimeInterval) {
+                super(world, principal);
+                this.totalTimeInterval = totalTimeInterval;
+            }
+
+            @Override
+            protected boolean condition(int transactionID) {
+                int transactionTicks = w.getTransactionTimeStamp(principal,
+                        transactionID).getTicks();
+
+                int from = totalTimeInterval[0].getTicks();
+                int to = totalTimeInterval[1].getTicks();
+                return transactionTicks >= from && transactionTicks <= to;
+            }
+        }
     }
 
 }

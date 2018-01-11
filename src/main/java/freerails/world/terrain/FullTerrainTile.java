@@ -22,7 +22,9 @@ import freerails.world.track.NullTrackPiece;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackPiece;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A tile on the map.
@@ -35,9 +37,9 @@ public class FullTerrainTile implements TerrainTile {
     /**
      *
      */
-    public static final FullTerrainTile NULL = new FullTerrainTile(0);
+    public static final Serializable NULL = new FullTerrainTile(0);
     private static final long serialVersionUID = 3617574907538847544L;
-    private static final HashMap<FullTerrainTile, FullTerrainTile> instances = new HashMap<>();
+    private static final Map<FullTerrainTile, FullTerrainTile> instances = new HashMap<>();
     private final TrackPiece trackPiece;
     private final int terrainType;
 
@@ -85,13 +87,13 @@ public class FullTerrainTile implements TerrainTile {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
 
-        final FullTerrainTile that = (FullTerrainTile) o;
+        final FullTerrainTile that = (FullTerrainTile) obj;
 
         if (terrainType != that.terrainType)
             return false;
@@ -106,7 +108,7 @@ public class FullTerrainTile implements TerrainTile {
         return result;
     }
 
-    private Object readResolve() {
+    protected Object readResolve() {
         FullTerrainTile storedTile = instances.get(this);
         if (storedTile != null) {
             return storedTile;

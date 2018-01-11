@@ -62,12 +62,12 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
     }
 
     @Override
-    protected void paintComponent(Graphics arg0) {
+    protected void paintComponent(Graphics g) {
         // Check whether the train or its cargo have changed since the last call
         // to this method.
         updateIfNecessary();
 
-        super.paintComponent(arg0);
+        super.paintComponent(g);
     }
 
     private void updateIfNecessary() {
@@ -119,13 +119,13 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
 
-        trainViewJPanel1.setup(mr, vl, closeAction);
+        trainViewJPanel1.setup(modelRoot, vl, closeAction);
         trainViewJPanel1.setHeight(30);
         trainViewJPanel1.setCenterTrain(true);
-        w = mr.getWorld();
-        principal = mr.getPrincipal();
+        w = modelRoot.getWorld();
+        principal = modelRoot.getPrincipal();
     }
 
     public void displayTrain(int newTrainNumber) {

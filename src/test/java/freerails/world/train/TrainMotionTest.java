@@ -70,11 +70,11 @@ public class TrainMotionTest extends TestCase {
         // debugger.
         double actualTotalDistance = speeds.getDistance();
 
-        assertEquals(expectedTotalDistance, actualTotalDistance, 0d);
+        assertEquals(expectedTotalDistance, actualTotalDistance, 0.0d);
 
         double expectedDuration = 10.972888751347389d;
         double actualDuration = speeds.getTime();
-        assertEquals(expectedDuration, actualDuration, 0d);
+        assertEquals(expectedDuration, actualDuration, 0.0d);
 
         int engineStep = 1;
         int trainLength = 24;
@@ -84,7 +84,7 @@ public class TrainMotionTest extends TestCase {
 
         double expectedInitialPosition = 42.42640687119285;
         double actualInitialPosition = motion.getInitialPosition();
-        assertEquals(expectedInitialPosition, actualInitialPosition, 0d);
+        assertEquals(expectedInitialPosition, actualInitialPosition, 0.0d);
 
         // Different from above
         double tooLongDuration = 3.9936298481613424d;

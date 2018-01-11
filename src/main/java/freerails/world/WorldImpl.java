@@ -85,12 +85,12 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param p
+     * @param principal
      * @param index
      * @param element
      */
-    public void add(FreerailsPrincipal p, int index, Activity element) {
-        int playerIndex = p.getWorldIndex();
+    public void add(FreerailsPrincipal principal, int index, Activity element) {
+        int playerIndex = principal.getWorldIndex();
         int lastID = activityLists.sizeD3(playerIndex, index) - 1;
         ActivityAndTime last = activityLists.get(playerIndex, index, lastID);
         double duration = last.act.duration();
@@ -101,8 +101,8 @@ public class WorldImpl implements World {
         activityLists.addD3(playerIndex, index, ant);
     }
 
-    public int add(FreerailsPrincipal p, KEY key, Serializable element) {
-        int playerIndex = p.getWorldIndex();
+    public int add(FreerailsPrincipal principal, KEY key, Serializable element) {
+        int playerIndex = principal.getWorldIndex();
         return lists.addD3(playerIndex, key.getKeyID(), element);
     }
 
@@ -111,12 +111,12 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param p
+     * @param principal
      * @param element
      * @return
      */
-    public int addActiveEntity(FreerailsPrincipal p, Activity element) {
-        int playerIndex = p.getWorldIndex();
+    public int addActiveEntity(FreerailsPrincipal principal, Activity element) {
+        int playerIndex = principal.getWorldIndex();
         int index = activityLists.addD2(playerIndex);
         ActivityAndTime ant = new ActivityAndTime(element, currentTime()
                 .getTicks());
@@ -189,9 +189,9 @@ public class WorldImpl implements World {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof WorldImpl) {
-            WorldImpl test = (WorldImpl) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof WorldImpl) {
+            WorldImpl test = (WorldImpl) obj;
 
             // Compare players
             int numberOfPlayers = getNumberOfPlayers();
@@ -371,8 +371,8 @@ public class WorldImpl implements World {
         return p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size();
     }
 
-    public Serializable removeLast(FreerailsPrincipal p, KEY key) {
-        int playerIndex = p.getWorldIndex();
+    public Serializable removeLast(FreerailsPrincipal principal, KEY key) {
+        int playerIndex = principal.getWorldIndex();
         return lists.removeLastD3(playerIndex, key.getKeyID());
     }
 
@@ -382,11 +382,11 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param p
+     * @param principal
      * @return
      */
-    public Activity removeLastActiveEntity(FreerailsPrincipal p) {
-        int playerIndex = p.getWorldIndex();
+    public Activity removeLastActiveEntity(FreerailsPrincipal principal) {
+        int playerIndex = principal.getWorldIndex();
         int lastID = activityLists.sizeD2(playerIndex) - 1;
         Activity act = activityLists.removeLastD3(playerIndex, lastID).act;
         activityLists.removeLastD2(playerIndex);
@@ -394,12 +394,12 @@ public class WorldImpl implements World {
     }
 
     /**
-     * @param p
+     * @param principal
      * @param index
      * @return
      */
-    public void removeLastActivity(FreerailsPrincipal p, int index) {
-        int playerIndex = p.getWorldIndex();
+    public void removeLastActivity(FreerailsPrincipal principal, int index) {
+        int playerIndex = principal.getWorldIndex();
         if (activityLists.sizeD3(playerIndex, index) < 2)
             throw new IllegalStateException();
 
@@ -436,9 +436,9 @@ public class WorldImpl implements World {
         return tats.getTransaction();
     }
 
-    public void set(FreerailsPrincipal p, KEY key, int index,
+    public void set(FreerailsPrincipal principal, KEY key, int index,
                     Serializable element) {
-        int playerIndex = p.getWorldIndex();
+        int playerIndex = principal.getWorldIndex();
         lists.set(playerIndex, key.getKeyID(), index, element);
     }
 
@@ -450,8 +450,8 @@ public class WorldImpl implements World {
         sharedLists.set(key.getKeyID(), index, element);
     }
 
-    public void setTile(int x, int y, Serializable element) {
-        map[x][y] = element;
+    public void setTile(int x, int y, Serializable tile) {
+        map[x][y] = tile;
     }
 
     /**
@@ -528,13 +528,13 @@ public class WorldImpl implements World {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o)
+        public boolean equals(Object obj) {
+            if (this == obj)
                 return true;
-            if (!(o instanceof ActivityAndTime))
+            if (!(obj instanceof ActivityAndTime))
                 return false;
 
-            final ActivityAndTime activityAndTime = (ActivityAndTime) o;
+            final ActivityAndTime activityAndTime = (ActivityAndTime) obj;
 
             if (!act.equals(activityAndTime.act))
                 return false;

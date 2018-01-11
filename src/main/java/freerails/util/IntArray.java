@@ -33,8 +33,8 @@ import java.io.Serializable;
  */
 @SuppressWarnings("unused")
 public class IntArray extends ArrayBase implements Serializable {
-    private static final long serialVersionUID = 3258408426391418681L;
 
+    private static final long serialVersionUID = 3258408426391418681L;
     /**
      * The underlying array used for storing the data.
      */

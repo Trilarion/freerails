@@ -43,13 +43,13 @@ public class ImHashSet<E extends Serializable> implements
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ImHashSet))
+        if (!(obj instanceof ImHashSet))
             return false;
 
-        final ImHashSet imHashSet = (ImHashSet) o;
+        final ImHashSet imHashSet = (ImHashSet) obj;
 
         return hashSet.equals(imHashSet.hashSet);
     }

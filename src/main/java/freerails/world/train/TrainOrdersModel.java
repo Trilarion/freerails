@@ -62,13 +62,13 @@ public class TrainOrdersModel implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TrainOrdersModel))
+        if (!(obj instanceof TrainOrdersModel))
             return false;
 
-        final TrainOrdersModel trainOrdersModel = (TrainOrdersModel) o;
+        final TrainOrdersModel trainOrdersModel = (TrainOrdersModel) obj;
 
         if (autoConsist != trainOrdersModel.autoConsist)
             return false;

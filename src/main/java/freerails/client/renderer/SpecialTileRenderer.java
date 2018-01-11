@@ -59,17 +59,17 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
 
     /**
      * @param g
-     * @param renderX
-     * @param renderY
+     * @param screenX
+     * @param screenY
      * @param mapX
      * @param mapY
      * @param w
      */
     @Override
-    public void renderTile(java.awt.Graphics g, int renderX, int renderY,
+    public void renderTile(java.awt.Graphics g, int screenX, int screenY,
                            int mapX, int mapY, ReadOnlyWorld w) {
         if (parentTileView != null) {
-            parentTileView.renderTile(g, renderX, renderY, mapX, mapY, w);
+            parentTileView.renderTile(g, screenX, screenY, mapX, mapY, w);
         } else {
             logger.warn("parent tileView==null");
         }
@@ -77,7 +77,7 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
         Image icon = getIcon(mapX, mapX, w);
 
         if (null != icon) {
-            g.drawImage(icon, renderX, renderY, null);
+            g.drawImage(icon, screenX, screenY, null);
         } else {
             logger.warn("special tileView icon==null");
         }

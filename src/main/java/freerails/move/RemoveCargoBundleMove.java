@@ -25,6 +25,8 @@ import freerails.world.KEY;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 
+import java.io.Serializable;
+
 /**
  * This move removes a cargo bundle from the cargo bundle list.
  */
@@ -36,7 +38,7 @@ public class RemoveCargoBundleMove extends RemoveItemFromListMove {
      * @param item
      * @param p
      */
-    public RemoveCargoBundleMove(int i, ImmutableCargoBatchBundle item,
+    public RemoveCargoBundleMove(int i, Serializable item,
                                  FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, i, item, p);
     }

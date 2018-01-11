@@ -106,16 +106,16 @@ public class ActionAdapter extends DefaultComboBoxModel {
     }
 
     /**
-     * @param item The NAME of the Action selected
+     * @param anObject The NAME of the Action selected
      */
     @Override
-    public void setSelectedItem(Object item) {
+    public void setSelectedItem(Object anObject) {
         // only set the item if not already selected
-        if ((item != null) && item.equals(getSelectedItem())) {
+        if ((anObject != null) && anObject.equals(getSelectedItem())) {
             return;
         }
 
-        super.setSelectedItem(item);
+        super.setSelectedItem(anObject);
 
         // stop addElement from triggering actions
         if (!initialised) {
@@ -123,14 +123,14 @@ public class ActionAdapter extends DefaultComboBoxModel {
         }
 
         for (MappedButtonModel bm : buttonModels) {
-            if (bm.actionName.equals(item)) {
+            if (bm.actionName.equals(anObject)) {
                 bm.setSelected(true);
             }
         }
 
         if (performActionOnSetSelectedItem) {
             for (Action action : actions) {
-                if (action.getValue(Action.NAME).equals(item)) {
+                if (action.getValue(Action.NAME).equals(anObject)) {
                     action.actionPerformed(new ActionEvent(this,
                             ActionEvent.ACTION_PERFORMED, (String) action
                             .getValue(Action.ACTION_COMMAND_KEY)));
@@ -179,8 +179,8 @@ public class ActionAdapter extends DefaultComboBoxModel {
             }
         }
 
-        public void propertyChange(PropertyChangeEvent e) {
-            setEnabled(((Action) e.getSource()).isEnabled());
+        public void propertyChange(PropertyChangeEvent evt) {
+            setEnabled(((Action) evt.getSource()).isEnabled());
         }
     }
 }

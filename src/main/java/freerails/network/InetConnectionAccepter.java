@@ -83,7 +83,7 @@ public class InetConnectionAccepter implements Runnable {
 
                 synchronized (this) {
                     synchronized (gameServer) {
-                        InetConnectionToClient connection = new InetConnectionToClient(
+                        ConnectionToClient connection = new InetConnectionToClient(
                                 socket);
                         gameServer.addConnection(connection);
                     }

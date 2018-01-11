@@ -114,14 +114,14 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
 
-        jList1.setModel(new WorldToListModelAdapter(mr.getWorld(),
+        jList1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(),
                 SKEY.ENGINE_TYPES));
         jList1.setCellRenderer(new TrainCellRenderer(vl));
         okjButton.addActionListener(closeAction);
@@ -148,7 +148,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         return jList1.getSelectedIndex();
     }
 
-    private final class TrainCellRenderer implements ListCellRenderer {
+    private static final class TrainCellRenderer implements ListCellRenderer {
 
         final RendererRoot rr;
 
@@ -181,7 +181,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
                 int height = image.getHeight(null);
                 int width = image.getWidth(null);
                 int scale = height / 50;
-                ImageIcon icon = new ImageIcon(image.getScaledInstance(width
+                Icon icon = new ImageIcon(image.getScaledInstance(width
                         / scale, height / scale, Image.SCALE_FAST));
                 label.setIcon(icon);
                 savesJLabels.put(text, label);

@@ -35,10 +35,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * When executed by a thread, this class does the following: reads and executes
@@ -58,14 +55,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     private static final Logger logger = Logger
             .getLogger(FreerailsGameServer.class.getName());
-    private final HashMap<NameAndPassword, ConnectionToClient> acceptedConnections = new HashMap<>();
+    private final Map<NameAndPassword, ConnectionToClient> acceptedConnections = new HashMap<>();
     /**
      * The players who have confirmed that they have received the last copy of
      * the world object sent.
      */
     private final HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
     /* Contains the user names of the players who are currently logged on. */
-    private final HashSet<NameAndPassword> currentlyLoggedOn = new HashSet<>();
+    private final Collection<NameAndPassword> currentlyLoggedOn = new HashSet<>();
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
             this);
     private final SaveGamesManager saveGamesManager;
@@ -146,14 +143,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 }
 
                 /* Just send to the new client. */
-                MessageToClient setMaps = new SetPropertyMessageToClient(
+                Serializable setMaps = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                        new ImmutableList<String>(saveGamesManager.getNewMapNames()));
+                        new ImmutableList<>(saveGamesManager.getNewMapNames()));
 
-                ImmutableList<String> savedGameNames = new ImmutableList<String>(
+                ImmutableList<String> savedGameNames = new ImmutableList<>(
                         saveGamesManager.getSaveGameNames());
-                MessageToClient setSaveGames = new SetPropertyMessageToClient(
+                Serializable setSaveGames = new SetPropertyMessageToClient(
                         getNextClientCommandId(),
                         ClientControlInterface.ClientProperty.SAVED_GAMES,
                         savedGameNames);
@@ -169,7 +166,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                  * copy of the world object.
                  */
                 if (null != serverGameModel && null != getWorld()) {
-                    SetWorldMessageToClient command = new SetWorldMessageToClient(
+                    Serializable command = new SetWorldMessageToClient(
                             confirmationID, getWorld());
                     connection.writeToClient(command);
                 }
@@ -411,10 +408,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         try {
             saveGamesManager.saveGame(serverGameModel, saveGameName);
             String[] saves = saveGamesManager.getSaveGameNames();
-            MessageToClient request = new SetPropertyMessageToClient(
+            Serializable request = new SetPropertyMessageToClient(
                     getNextClientCommandId(),
                     ClientControlInterface.ClientProperty.SAVED_GAMES,
-                    new ImmutableList<String>(saves));
+                    new ImmutableList<>(saves));
 
             send2All(request);
         } catch (IOException e) {
@@ -456,10 +453,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         /* Send the client the list of players. */
         String[] playerNames = getPlayerNames();
 
-        MessageToClient request = new SetPropertyMessageToClient(
+        Serializable request = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.CONNECTED_CLIENTS,
-                new ImmutableList<String>(playerNames));
+                new ImmutableList<>(playerNames));
 
         send2All(request);
     }
@@ -468,7 +465,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         /* Send the world to the clients. */
         confirmationID = getNextClientCommandId();
 
-        SetWorldMessageToClient command = new SetWorldMessageToClient(
+        Serializable command = new SetWorldMessageToClient(
                 confirmationID, getWorld());
 
         send2All(command);
@@ -480,15 +477,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     public void setServerGameModel(ServerGameModel serverGameModel) {
         this.serverGameModel = serverGameModel;
 
-        MoveReceiver moveExecuter = new MoveReceiver() {
-            public void process(Move move) {
-                MoveStatus ms = move.doMove(getWorld(), Player.AUTHORITATIVE);
+        MoveReceiver moveExecuter = move -> {
+            MoveStatus ms = move.doMove(getWorld(), Player.AUTHORITATIVE);
 
-                if (ms.ok) {
-                    send2All(move);
-                } else {
-                    logger.warn(ms.message);
-                }
+            if (ms.ok) {
+                send2All(move);
+            } else {
+                logger.warn(ms.message);
             }
         };
 
@@ -602,13 +597,13 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      *
      */
     public void refreshSavedGames() {
-        MessageToClient setMaps = new SetPropertyMessageToClient(
+        Serializable setMaps = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                new ImmutableList<String>(saveGamesManager.getNewMapNames()));
-        ImmutableList<String> savedGameNames = new ImmutableList<String>(saveGamesManager
+                new ImmutableList<>(saveGamesManager.getNewMapNames()));
+        ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager
                 .getSaveGameNames());
-        MessageToClient setSaveGames = new SetPropertyMessageToClient(
+        Serializable setSaveGames = new SetPropertyMessageToClient(
                 getNextClientCommandId(),
                 ClientControlInterface.ClientProperty.SAVED_GAMES,
                 savedGameNames);

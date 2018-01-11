@@ -34,7 +34,7 @@ import java.awt.event.KeyEvent;
  */
 public class ActionRoot {
 
-    private final BuildTrainDialogAction buildTrainDialogAction = new BuildTrainDialogAction();
+    private final Action buildTrainDialogAction = new BuildTrainDialogAction();
     private final ServerControlModel serverControls;
     private DialogueBoxController dialogueBoxController = null;
     private StationBuildModel stationBuildModel;

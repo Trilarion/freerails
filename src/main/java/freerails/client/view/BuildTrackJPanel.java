@@ -40,9 +40,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 
 /**
  * A JPanel that presents toggle buttons that let the player select the build
@@ -53,16 +52,11 @@ import java.util.HashMap;
 public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     private static final long serialVersionUID = 3618701915647850036L;
-
     private final ImageManager imageManager = new ImageManagerImpl(
             ClientConfig.GRAPHICS_PATH);
-
     private HashMap<TrackCategories, Integer> selectionSet;
-
     private ModelRoot modelRoot;
-
     private TrackMoveProducer trackMoveProducer;
-
     private StationBuildModel stationBuildModel;
     private javax.swing.JToggleButton addTrack;
     private javax.swing.ButtonGroup bridgeButtonGroup;
@@ -84,12 +78,12 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param ar
      */
-    public void setup(ModelRoot mr, ActionRoot ar) {
+    public void setup(ModelRoot modelRoot, ActionRoot ar) {
 
-        modelRoot = mr;
+        this.modelRoot = modelRoot;
         stationBuildModel = ar.getStationBuildModel();
         trackMoveProducer = ar.getTrackMoveProducer();
         if (null == trackMoveProducer)
@@ -109,7 +103,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         tunnelsJPanel.removeAll();
 
         // Add the new set of buttons.
-        ReadOnlyWorld world = mr.getWorld();
+        ReadOnlyWorld world = modelRoot.getWorld();
 
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
             JToggleButton toggleButton = new JToggleButton();
@@ -122,14 +116,11 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     trackButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton
-                            .addActionListener(new java.awt.event.ActionListener() {
-                                public void actionPerformed(
-                                        java.awt.event.ActionEvent evt) {
-                                    selectionSet
-                                            .put(TrackCategories.track,
-                                                    ruleID);
-                                    setBuildTrackStrategy();
-                                }
+                            .addActionListener(e -> {
+                                selectionSet
+                                        .put(TrackCategories.track,
+                                                ruleID);
+                                setBuildTrackStrategy();
                             });
                     price = rule.getPrice();
                     trackJPanel.add(toggleButton);
@@ -139,14 +130,11 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     bridgeButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton
-                            .addActionListener(new java.awt.event.ActionListener() {
-                                public void actionPerformed(
-                                        java.awt.event.ActionEvent evt) {
-                                    selectionSet.put(
-                                            TrackCategories.bridge,
-                                            ruleID);
-                                    setBuildTrackStrategy();
-                                }
+                            .addActionListener(e -> {
+                                selectionSet.put(
+                                        TrackCategories.bridge,
+                                        ruleID);
+                                setBuildTrackStrategy();
                             });
 
                     bridgesJPanel.add(toggleButton);
@@ -157,15 +145,12 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     tunnelButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton
-                            .addActionListener(new java.awt.event.ActionListener() {
-                                public void actionPerformed(
-                                        java.awt.event.ActionEvent evt) {
-                                    selectionSet.put(
-                                            TrackCategories.tunnel,
-                                            ruleID);
-                                    setBuildTrackStrategy();
+                            .addActionListener(e -> {
+                                selectionSet.put(
+                                        TrackCategories.tunnel,
+                                        ruleID);
+                                setBuildTrackStrategy();
 
-                                }
                             });
                     price = rule.getPrice();
                     tunnelsJPanel.add(toggleButton);
@@ -180,14 +165,9 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
 
                     toggleButton
-                            .addActionListener(new java.awt.event.ActionListener() {
-                                public void actionPerformed(
-                                        java.awt.event.ActionEvent evt) {
-                                    selectionSet.put(
-                                            TrackCategories.station,
-                                            ruleID);
-                                }
-                            });
+                            .addActionListener(e -> selectionSet.put(
+                                    TrackCategories.station,
+                                    ruleID));
 
                     stationsJPanel.add(toggleButton);
                     price = rule.getFixedCost();
@@ -235,7 +215,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     /**
      * Calls setFocusable(false) for each button in the button group.
      */
-    private void setFocusableFalse(ButtonGroup bg) {
+    private static void setFocusableFalse(ButtonGroup bg) {
         for (Enumeration<AbstractButton> buttons = bg.getElements(); buttons
                 .hasMoreElements(); ) {
             buttons.nextElement().setFocusable(false);
@@ -247,11 +227,9 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         tunnelButtonGroup.add(toggleButton);
         toggleButton.setIcon(getIcon("no_tunnels"));
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
-        toggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectionSet.put(TrackCategories.tunnel, null);
-                setBuildTrackStrategy();
-            }
+        toggleButton.addActionListener(e -> {
+            selectionSet.put(TrackCategories.tunnel, null);
+            setBuildTrackStrategy();
         });
         toggleButton.setToolTipText("Don't build tunnels");
         tunnelsJPanel.add(toggleButton);
@@ -262,17 +240,15 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         bridgeButtonGroup.add(toggleButton);
         toggleButton.setIcon(getIcon("no_bridges"));
         toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
-        toggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectionSet.put(TrackCategories.bridge, null);
-                setBuildTrackStrategy();
-            }
+        toggleButton.addActionListener(e -> {
+            selectionSet.put(TrackCategories.bridge, null);
+            setBuildTrackStrategy();
         });
         toggleButton.setToolTipText("Don't build bridges");
         bridgesJPanel.add(toggleButton);
     }
 
-    private ImageIcon getIcon(String typeName) {
+    private Icon getIcon(String typeName) {
         try {
 
             String relativeFileName = ClientConfig.ICONS_FOLDER_NAME + File.separator + typeName
@@ -320,13 +296,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         setFocusable(false);
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                formKeyPressed(e);
             }
 
             @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                formKeyTyped(evt);
+            public void keyTyped(java.awt.event.KeyEvent e) {
+                formKeyTyped(e);
             }
         });
 
@@ -512,7 +488,7 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
     }
 
     private void setBuildTrackStrategy() {
-        ArrayList<Integer> ruleIDs = new ArrayList<>();
+        Collection<Integer> ruleIDs = new ArrayList<>();
         ruleIDs.add(selectionSet.get(TrackCategories.track));
         ruleIDs.add(selectionSet.get(TrackCategories.bridge));
         ruleIDs.add(selectionSet.get(TrackCategories.tunnel));
@@ -532,6 +508,6 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
         modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
     }
 
-    // End of variables declaration                   
+
 
 }

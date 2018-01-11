@@ -44,7 +44,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             assertEquals(1, server.countOpenConnections());
 
             assertMapsAndSaveGamesReceived(client);
-            assertConnectClientsEquals(client, new ImmutableList<String>("name"));
+            assertConnectClientsEquals(client, new ImmutableList<>("name"));
 
             /* Test 2 : a client that has already logged on. */
             FreerailsClient client2 = new FreerailsClient();
@@ -63,9 +63,9 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             /* read list of connected clients. */
             assertConnectClientsEquals(client,
-                    new ImmutableList<String>("name", "name3"));
+                    new ImmutableList<>("name", "name3"));
             assertMapsAndSaveGamesReceived(client3);
-            assertConnectClientsEquals(client3, new ImmutableList<String>("name",
+            assertConnectClientsEquals(client3, new ImmutableList<>("name",
                     "name3"));
 
             /* Test 4 : disconnect the client from test 1. */

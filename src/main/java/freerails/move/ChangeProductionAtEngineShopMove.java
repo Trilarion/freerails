@@ -54,13 +54,13 @@ public class ChangeProductionAtEngineShopMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ChangeProductionAtEngineShopMove))
+        if (!(obj instanceof ChangeProductionAtEngineShopMove))
             return false;
 
-        final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) o;
+        final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) obj;
 
         if (stationNumber != changeProductionAtEngineShopMove.stationNumber)
             return false;

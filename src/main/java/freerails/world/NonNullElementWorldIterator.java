@@ -229,16 +229,16 @@ public class NonNullElementWorldIterator implements WorldIterator {
         return row + 1;
     }
 
-    public void gotoRow(int newRow) {
-        if (row == newRow) {
+    public void gotoRow(int row) {
+        if (this.row == row) {
             return;
         }
-        if (row < newRow) {
-            while (row != newRow) {
+        if (this.row < row) {
+            while (this.row != row) {
                 next();
             }
         } else {
-            while (row != newRow) {
+            while (this.row != row) {
                 previous();
             }
 

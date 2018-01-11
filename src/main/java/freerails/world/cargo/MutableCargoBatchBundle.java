@@ -42,7 +42,7 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
     /**
      * @param immutableCargoBatchBundle
      */
-    public MutableCargoBatchBundle(ImmutableCargoBatchBundle immutableCargoBatchBundle) {
+    public MutableCargoBatchBundle(CargoBatchBundle immutableCargoBatchBundle) {
         this();
 
         Iterator<CargoBatch> it = immutableCargoBatchBundle.cargoBatchIterator();
@@ -119,11 +119,11 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
     }
 
     @Override
-    public boolean equals(Object arg0) {
-        if (null == arg0) {
+    public boolean equals(Object obj) {
+        if (null == obj) {
             return false;
         }
-        return arg0 instanceof CargoBatchBundle && ImmutableCargoBatchBundle.equals(this, (CargoBatchBundle) arg0);
+        return obj instanceof CargoBatchBundle && ImmutableCargoBatchBundle.equals(this, (CargoBatchBundle) obj);
     }
 
     /**

@@ -92,31 +92,31 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         setPreferredSize(new java.awt.Dimension(500, 350));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                formComponentResized(evt);
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                formComponentResized(e);
             }
 
             @Override
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                formComponentShown(e);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                formKeyPressed(e);
             }
         });
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                formMouseClicked(evt);
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                formMouseClicked(e);
             }
         });
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             @Override
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                formMouseMoved(evt);
+            public void mouseMoved(java.awt.event.MouseEvent e) {
+                formMouseMoved(e);
             }
         });
 
@@ -343,11 +343,11 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         }
     }
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
-        cargoWaitingAndDemandedJPanel1.setup(mr, vl, null);
-        world = mr.getWorld();
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        cargoWaitingAndDemandedJPanel1.setup(modelRoot, vl, null);
+        world = modelRoot.getWorld();
         submitButtonCallBack = closeAction;
-        principal = mr.getPrincipal();
+        principal = modelRoot.getPrincipal();
     }
 
     public MutableSchedule generateNewSchedule() {

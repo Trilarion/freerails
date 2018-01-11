@@ -27,6 +27,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.Point2D;
 import freerails.world.*;
+import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -39,6 +40,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
@@ -70,7 +72,7 @@ public class StationInfoJPanel extends JPanel implements View,
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton nextStation;
     private javax.swing.JButton previousStation;
-    private final ComponentAdapter componentListener = new ComponentAdapter() {
+    private final ComponentListener componentListener = new ComponentAdapter() {
         @Override
         public void componentHidden(ComponentEvent e) {
 
@@ -199,13 +201,13 @@ public class StationInfoJPanel extends JPanel implements View,
 
     }
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action al) {
-        wi = new NonNullElementWorldIterator(KEY.STATIONS, mr.getWorld(), mr
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot
                 .getPrincipal());
         addComponentListener(componentListener);
-        w = mr.getWorld();
-        modelRoot = mr;
-        close.addActionListener(al);
+        w = modelRoot.getWorld();
+        this.modelRoot = modelRoot;
+        close.addActionListener(closeAction);
     }
 
     public void setStation(int stationNumber) {
@@ -237,7 +239,7 @@ public class StationInfoJPanel extends JPanel implements View,
             String stationTypeName = tile.getTrackPiece().getTrackRule()
                     .getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
-            ImmutableCargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) w.get(
+            CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) w.get(
                     modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station
                             .getCargoBundleID());
 

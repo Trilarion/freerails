@@ -24,8 +24,6 @@ package freerails.world.train;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.finances.Money;
-import freerails.world.train.EngineType;
-import freerails.world.train.WagonType;
 
 /**
  * Adds hard coded wagon and engine types to the World. Later the
@@ -37,7 +35,7 @@ public class WagonAndEngineTypesFactory {
     /**
      * @param w
      */
-    public void addTypesToWorld(World w) {
+    public static void addTypesToWorld(World w) {
         // Wagon types
         WagonType[] wagonTypes = new WagonType[]{
                 new WagonType("Mail", WagonType.MAIL),

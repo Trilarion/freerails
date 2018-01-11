@@ -91,7 +91,7 @@ public class SKEY implements Serializable {
         return keyNumber;
     }
 
-    private Object readResolve() {
+    protected Object readResolve() {
         return keys[keyNumber];
     }
 

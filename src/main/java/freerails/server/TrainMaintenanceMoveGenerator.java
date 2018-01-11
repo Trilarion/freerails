@@ -27,6 +27,7 @@ import freerails.network.MoveReceiver;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.World;
+import freerails.world.WorldIterator;
 import freerails.world.finances.Money;
 import freerails.world.finances.MoneyTransaction;
 import freerails.world.finances.Transaction;
@@ -47,9 +48,9 @@ public class TrainMaintenanceMoveGenerator {
         moveReceiver = mr;
     }
 
-    private static AddTransactionMove generateMove(World w,
-                                                   FreerailsPrincipal principal) {
-        NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
+    private static Move generateMove(World w,
+                                     FreerailsPrincipal principal) {
+        WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
         int numberOfTrains = trains.size();
         long amount = numberOfTrains * 5000;
         Transaction t = new MoneyTransaction(new Money(-amount),

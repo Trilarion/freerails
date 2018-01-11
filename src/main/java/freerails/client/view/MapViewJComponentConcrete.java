@@ -68,7 +68,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
      *
      * -2 := invert mouse, scroll twice as fast
      */
-    private final int LINEAR_ACCEL = -1;
+    private static final int LINEAR_ACCEL = -1;
     /**
      * The length of the array is the number of lines. This is necessary since
      * Graphics.drawString(..) doesn't know about newline characters
@@ -244,16 +244,16 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
      * appropriate.
      *
      * @param p
-     * @param after
-     * @param before
+     * @param newValue
+     * @param oldValue
      */
     @Override
-    public void propertyChange(ModelRoot.Property p, Object before, Object after) {
+    public void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue) {
 
         switch (p) {
             case CURSOR_POSITION:
-                Point2D newPoint = (Point2D) after;
-                Point2D oldPoint = (Point2D) before;
+                Point2D newPoint = (Point2D) newValue;
+                Point2D oldPoint = (Point2D) oldValue;
 
                 if (null == oldPoint) {
                     oldPoint = new Point2D();
@@ -262,7 +262,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
                 react2curorMove(newPoint, oldPoint);
                 break;
             case QUICK_MESSAGE:
-                String newMessage = (String) after;
+                String newMessage = (String) newValue;
 
                 if (null != newMessage) {
                     println(newMessage);
@@ -272,7 +272,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
                 }
                 break;
             case PERMANENT_MESSAGE:
-                message = (String) after;
+                message = (String) newValue;
                 break;
         }
     }
@@ -305,19 +305,19 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
         private final java.awt.Point tiledelta = new java.awt.Point();
 
         @Override
-        public void mousePressed(MouseEvent evt) {
+        public void mousePressed(MouseEvent e) {
             /*
              * Note, moving the cursor using the mouse is now handled in
              * UserInputOnMapController
              */
-            if (SwingUtilities.isRightMouseButton(evt)) {
+            if (SwingUtilities.isRightMouseButton(e)) {
                 setCursor(Cursor
                                 .getPredefinedCursor((LINEAR_ACCEL > 0) ? Cursor.HAND_CURSOR
                                         : Cursor.MOVE_CURSOR));
-                lastMouseLocation.x = evt.getX();
-                lastMouseLocation.y = evt.getY();
-                screenLocation.x = evt.getX();
-                screenLocation.y = evt.getY();
+                lastMouseLocation.x = e.getX();
+                lastMouseLocation.y = e.getY();
+                screenLocation.x = e.getX();
+                screenLocation.y = e.getY();
                 sigmadelta.x = 0;
                 sigmadelta.y = 0;
                 javax.swing.SwingUtilities.convertPointToScreen(screenLocation,
@@ -326,16 +326,16 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
         }
 
         @Override
-        public void mouseReleased(MouseEvent evt) {
+        public void mouseReleased(MouseEvent e) {
             setCursor(Cursor
                     .getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
         @Override
-        public void mouseDragged(MouseEvent evt) {
-            if (SwingUtilities.isRightMouseButton(evt)) {
-                sigmadelta.x += evt.getX() - lastMouseLocation.x;
-                sigmadelta.y += evt.getY() - lastMouseLocation.y;
+        public void mouseDragged(MouseEvent e) {
+            if (SwingUtilities.isRightMouseButton(e)) {
+                sigmadelta.x += e.getX() - lastMouseLocation.x;
+                sigmadelta.y += e.getY() - lastMouseLocation.y;
 
                 int tileSize = (int) getScale();
                 /*

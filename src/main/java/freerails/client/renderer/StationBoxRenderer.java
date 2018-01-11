@@ -22,6 +22,7 @@ import freerails.client.ClientConstants;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.*;
+import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -105,10 +106,10 @@ public class StationBoxRenderer implements Painter {
                     g.setColor(bgColor);
                     g.fillRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
                     g.setColor(Color.WHITE);
-                    g.setStroke(new BasicStroke(1f));
+                    g.setStroke(new BasicStroke(1.0f));
                     g.drawRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
 
-                    ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(
+                    CargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(
                             principal, KEY.CARGO_BUNDLES, station
                                     .getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cb);
@@ -139,7 +140,7 @@ public class StationBoxRenderer implements Painter {
      * array are the type of the cargo. E.g. if the bundle contained 2 carloads
      * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
      */
-    private int[][] calculateCarLoads(ImmutableCargoBatchBundle cb) {
+    private int[][] calculateCarLoads(CargoBatchBundle cb) {
         int categories = CargoCategory.getNumberOfCategories();
         int numCargoTypes = w.size(SKEY.CARGO_TYPES);
         int[] numberOfCarLoads = new int[categories];

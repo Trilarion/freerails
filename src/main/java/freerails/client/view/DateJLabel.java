@@ -59,11 +59,11 @@ public class DateJLabel extends JLabel implements View {
     }
 
     /**
-     * @param model
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
-        w = model.getWorld();
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        w = modelRoot.getWorld();
     }
 }

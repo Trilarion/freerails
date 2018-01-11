@@ -24,6 +24,7 @@
 package freerails.client.launcher;
 
 import freerails.client.launcher.LauncherInterface.MSG_TYPE;
+import freerails.network.SaveGamesManager;
 import freerails.server.SaveGameManagerImpl;
 
 import javax.swing.event.DocumentEvent;
@@ -63,7 +64,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
         initComponents();
 
         /* initialise the map list */
-        SaveGameManagerImpl sgm = new SaveGameManagerImpl();
+        SaveGamesManager sgm = new SaveGameManagerImpl();
         newmapsJList.setListData(sgm.getNewMapNames());
         savedmapsJList.setListData(sgm.getSaveGameNames());
         if (sgm.getSaveGameNames().length > 0) {
@@ -131,7 +132,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
      */
     public boolean validateInput() {
         /* Validate map selection. */
-        if (getSelection().equals(Selection.NONE)) {
+        if (getSelection() == Selection.NONE) {
             owner.setInfoText(SELECT_A_MAP, MSG_TYPE.ERROR);
             return false;
         }
@@ -294,6 +295,6 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
          */
         LOAD_GAME
     }
-    // End of variables declaration                   
+
 
 }

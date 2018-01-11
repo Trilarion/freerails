@@ -34,6 +34,9 @@ public class RunTypesParser {
 
     private static final Logger logger = Logger.getLogger(RunTypesParser.class.getName());
 
+    private RunTypesParser() {
+    }
+
     /**
      * @param args
      */

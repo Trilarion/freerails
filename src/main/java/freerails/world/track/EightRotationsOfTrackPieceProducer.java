@@ -30,6 +30,9 @@ import java.awt.*;
  * 100 000 etc.
  */
 public class EightRotationsOfTrackPieceProducer {
+    private EightRotationsOfTrackPieceProducer() {
+    }
+
     /**
      * The method that returns the rotations.
      *

@@ -42,7 +42,7 @@ public class TrainBlueprint implements Serializable {
      */
     public TrainBlueprint(int engineType, Integer[] wagonTypes) {
         this.engineType = engineType;
-        this.wagonTypes = new ImmutableList<Integer>(wagonTypes);
+        this.wagonTypes = new ImmutableList<>(wagonTypes);
     }
 
     @Override
@@ -51,13 +51,13 @@ public class TrainBlueprint implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TrainBlueprint))
+        if (!(obj instanceof TrainBlueprint))
             return false;
 
-        final TrainBlueprint productionAtEngineShop = (TrainBlueprint) o;
+        final TrainBlueprint productionAtEngineShop = (TrainBlueprint) obj;
 
         if (engineType != productionAtEngineShop.engineType)
             return false;

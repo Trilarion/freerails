@@ -16,17 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- *
- */
 package freerails.world.track;
 
 import freerails.util.ImHashSet;
 import freerails.world.terrain.TerrainCategory;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Encapsulates the rules governing where, that is, on what terrain,
@@ -42,7 +41,7 @@ public final class ValidTrackPlacement implements Serializable {
      * @param types
      * @param placementRule
      */
-    public ValidTrackPlacement(HashSet<TerrainCategory> types,
+    public ValidTrackPlacement(Iterable<TerrainCategory> types,
                                PlacementRule placementRule) {
         this.placementRule = placementRule;
 
@@ -72,36 +71,14 @@ public final class ValidTrackPlacement implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof ValidTrackPlacement) {
-            ValidTrackPlacement test = (ValidTrackPlacement) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof ValidTrackPlacement) {
+            ValidTrackPlacement test = (ValidTrackPlacement) obj;
 
-            return placementRule.equals(test.placementRule)
+            return placementRule == test.placementRule
                     && terrainTypes.equals(test.terrainTypes);
         }
         return false;
     }
 
-    /**
-     * @return
-     */
-    public PlacementRule getPlacementRule() {
-        return placementRule;
-    }
-
-    /**
-     *
-     */
-    public enum PlacementRule {
-
-        /**
-         *
-         */
-        ONLY_ON_THESE,
-
-        /**
-         *
-         */
-        ANYWHERE_EXCEPT_ON_THESE
-    }
 }

@@ -51,7 +51,7 @@ public class AddStationMove extends CompositeMove {
      */
     public static AddStationMove generateMove(ReadOnlyWorld w,
                                               String stationName, Point2D p,
-                                              ChangeTrackPieceMove upgradeTrackMove, FreerailsPrincipal principal) {
+                                              Move upgradeTrackMove, FreerailsPrincipal principal) {
         int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
                 ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
@@ -71,7 +71,7 @@ public class AddStationMove extends CompositeMove {
      * @return
      */
     public static AddStationMove upgradeStation(
-            ChangeTrackPieceMove upgradeTrackMove) {
+            Move upgradeTrackMove) {
         return new AddStationMove(new Move[]{upgradeTrackMove});
     }
 

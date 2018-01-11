@@ -25,6 +25,7 @@ import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
@@ -281,7 +282,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private void move(World w,
                       TrackPiece newTrackPiece) {
         // FIXME why is oldTrackPiece not used???
-        FullTerrainTile oldTile = (FullTerrainTile) w.getTile(location.x,
+        TerrainTile oldTile = (FullTerrainTile) w.getTile(location.x,
                 location.y);
         int terrain = oldTile.getTerrainTypeID();
         FullTerrainTile newTile = FullTerrainTile.getInstance(terrain,
@@ -301,8 +302,8 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return moveStatus;
     }
 
-    private boolean noDiagonalTrackConflicts(Point2D point, int trackTemplate,
-                                             World w) {
+    private static boolean noDiagonalTrackConflicts(Point2D point, int trackTemplate,
+                                                    World w) {
         /*
          * This method is needs replacing. It only deals with flat track pieces,
          * and is rather hard to make sense of. LL
@@ -380,9 +381,9 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof ChangeTrackPieceMove) {
-            ChangeTrackPieceMove m = (ChangeTrackPieceMove) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof ChangeTrackPieceMove) {
+            ChangeTrackPieceMove m = (ChangeTrackPieceMove) obj;
             boolean fieldPointEqual = location.equals(m.location);
             boolean fieldoldTrackPieceEqual = trackPieceBefore
                     .equals(m.trackPieceBefore);

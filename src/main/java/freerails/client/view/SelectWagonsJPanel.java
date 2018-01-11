@@ -26,7 +26,6 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.SKEY;
-import freerails.world.cargo.CargoType;
 import freerails.world.train.TrainModel;
 
 import javax.swing.*;
@@ -108,14 +107,14 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         jPanel1.setPreferredSize(new java.awt.Dimension(170, 300));
         wagonTypesJList.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                wagonTypesJListKeyTyped(evt);
+            public void keyTyped(java.awt.event.KeyEvent e) {
+                wagonTypesJListKeyTyped(e);
             }
         });
         wagonTypesJList.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                wagonTypesJListMouseClicked(evt);
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                wagonTypesJListMouseClicked(e);
             }
         });
 
@@ -249,16 +248,16 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         WorldToListModelAdapter w2lma = new WorldToListModelAdapter(
-                mr.getWorld(), SKEY.CARGO_TYPES);
+                modelRoot.getWorld(), SKEY.CARGO_TYPES);
         wagonTypesJList.setModel(w2lma);
         rr = vl;
-        WagonCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rr);
+        ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rr);
         wagonTypesJList.setCellRenderer(wagonCellRenderer);
         okjButton.addActionListener(closeAction);
     }
@@ -282,55 +281,5 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         this.engineType = engineType;
     }
 
-    // End of variables declaration                   
-    private final class WagonCellRenderer implements ListCellRenderer {
-        final RendererRoot rr;
-        private final Component[] labels;
-
-        public WagonCellRenderer(WorldToListModelAdapter w2lma, RendererRoot s) {
-            rr = s;
-
-            labels = new Component[w2lma.getSize()];
-            for (int i = 0; i < w2lma.getSize(); i++) {
-                JLabel label = new JLabel();
-                label.setFont(new java.awt.Font("Dialog", 0, 12));
-                Image image = rr.getWagonImages(i).getSideOnImage();
-                int height = image.getHeight(null);
-                int width = image.getWidth(null);
-                int scale = height / 10;
-
-                ImageIcon icon = new ImageIcon(image.getScaledInstance(width
-                        / scale, height / scale, Image.SCALE_FAST));
-                label.setIcon(icon);
-                labels[i] = label;
-            }
-        }
-
-        public Component getListCellRendererComponent(JList list, Object value, /*
-         * value
-         * to
-         * display
-         */
-                                                      int index, /* cell index */
-                                                      boolean isSelected, /* is the cell selected */
-                                                      boolean cellHasFocus) /* the list and the cell have the focus */ {
-            if (index >= 0 && index < labels.length) {
-                CargoType cargoType = (CargoType) value;
-                String text = "<html><body>"
-                        + (isSelected ? "<strong>" : "")
-                        + cargoType.getDisplayName()
-                        + (isSelected ? "</strong>"
-                        : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
-                 * padding to stop
-                 * word wrap due to
-                 * greater width of
-                 * strong font
-                 */) + "</body></html>";
-                ((JLabel) labels[index]).setText(text);
-                return labels[index];
-            }
-            return null;
-        }
-    }
 
 }

@@ -46,7 +46,7 @@ public class TimeTickMove implements Move {
      * @param w
      * @return
      */
-    public static TimeTickMove getMove(ReadOnlyWorld w) {
+    public static Move getMove(ReadOnlyWorld w) {
         GameTime oldTime = w.currentTime();
         GameTime newTime = new GameTime(oldTime.getTicks() + 1);
 
@@ -54,13 +54,13 @@ public class TimeTickMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TimeTickMove))
+        if (!(obj instanceof TimeTickMove))
             return false;
 
-        final TimeTickMove timeTickMove = (TimeTickMove) o;
+        final TimeTickMove timeTickMove = (TimeTickMove) obj;
 
         if (!newTime.equals(timeTickMove.newTime))
             return false;

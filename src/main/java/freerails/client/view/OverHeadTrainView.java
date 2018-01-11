@@ -80,10 +80,10 @@ public class OverHeadTrainView implements Painter {
                         newVisibleRectangle);
                 if (pos == null)
                     continue;
-                if (pos.isCrashSite()
-                        && (pos.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
+                if (TrainPositionOnMap.isCrashSite()
+                        && (TrainPositionOnMap.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
                     // TODO reimplement trainPainter.paintTrainCrash(g, pos);
-                    if (pos.getFrameCt() == 1) {
+                    if (TrainPositionOnMap.getFrameCt() == 1) {
                         try {
                             soundManager.playSound(
                                     ClientConfig.SOUND_TRAIN_CRASH, 1);

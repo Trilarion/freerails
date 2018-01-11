@@ -70,20 +70,6 @@ public class WagonType implements Serializable {
 
     }
 
-    /**
-     * @return
-     */
-    public int getCategory() {
-        return typeCategory;
-    }
-
-    /**
-     * @return
-     */
-    public String getName() {
-        return typeName;
-    }
-
     @Override
     public String toString() {
         return typeName;

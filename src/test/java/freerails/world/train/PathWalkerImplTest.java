@@ -165,8 +165,8 @@ public class PathWalkerImplTest extends TestCase {
      *
      */
     public void setup() {
-        int[] xpoints = {0, 100, 100};
-        int[] ypoints = {0, 0, 100};
+        Integer[] xpoints = {0, 100, 100};
+        Integer[] ypoints = {0, 0, 100};
         it = new SimplePathIteratorImpl(xpoints, ypoints);
         pw = new PathWalkerImpl(it);
     }

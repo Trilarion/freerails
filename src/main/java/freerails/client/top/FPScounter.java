@@ -58,7 +58,7 @@ public class FPScounter {
         }
         double dt = currentTime - lastFrameTime;
         if (dt != 0.0) {
-            double fps = 1000000000d / dt;
+            double fps = 1000000000.0d / dt;
             double oldfps = fpsValues.removeFirst();
             fpsValues.addLast(fps);
             newFrameCount++;

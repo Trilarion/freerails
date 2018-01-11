@@ -100,8 +100,7 @@ public class StationRadiusRenderer implements Painter {
         ModelRoot.Value lastCursorMode = (ModelRoot.Value) modelRoot
                 .getProperty(ModelRoot.Property.PREVIOUS_CURSOR_MODE);
 
-        assert !lastCursorMode
-                .equals(ModelRoot.Value.PLACE_STATION_CURSOR_MODE);
+        assert lastCursorMode != Value.PLACE_STATION_CURSOR_MODE;
 
         modelRoot.setProperty(ModelRoot.Property.CURSOR_MODE, lastCursorMode);
         modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
@@ -114,7 +113,7 @@ public class StationRadiusRenderer implements Painter {
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         if (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE).equals(
                 Value.PLACE_STATION_CURSOR_MODE)) {
-            g.setStroke(new BasicStroke(2f));
+            g.setStroke(new BasicStroke(2.0f));
             g.setColor(borderColor);
 
             g.drawRect(tileSize * (x - radius), tileSize * (y - radius),

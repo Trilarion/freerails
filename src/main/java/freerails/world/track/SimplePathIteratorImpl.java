@@ -18,7 +18,7 @@
 
 package freerails.world.track;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 
 import java.util.NoSuchElementException;
@@ -29,15 +29,15 @@ import java.util.NoSuchElementException;
 public class SimplePathIteratorImpl implements PathIterator {
 
     private static final long serialVersionUID = 3618420406261003576L;
-    private final ImInts x;
-    private final ImInts y;
+    private final ImmutableList<Integer> x;
+    private final ImmutableList<Integer> y;
     private int position = 0;
 
     /**
      * @param xpoints
      * @param ypoints
      */
-    public SimplePathIteratorImpl(ImInts xpoints, ImInts ypoints) {
+    public SimplePathIteratorImpl(ImmutableList<Integer> xpoints, ImmutableList<Integer> ypoints) {
         x = xpoints;
         y = ypoints;
 
@@ -51,11 +51,9 @@ public class SimplePathIteratorImpl implements PathIterator {
      * @param xpoints
      * @param ypoints
      */
-    public SimplePathIteratorImpl( /* =const */
-            int[] xpoints, /* =const */
-            int[] ypoints) {
-        x = new ImInts(xpoints);
-        y = new ImInts(ypoints); // defensive copy.
+    public SimplePathIteratorImpl(Integer[] xpoints, Integer[] ypoints) {
+        x = new ImmutableList<>(xpoints);
+        y = new ImmutableList<>(ypoints); // defensive copy.
 
         if (x.size() != y.size()) {
             throw new IllegalArgumentException(

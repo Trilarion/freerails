@@ -258,13 +258,13 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof WorldDiffMove))
+        if (!(obj instanceof WorldDiffMove))
             return false;
 
-        final WorldDiffMove mapDiffMove = (WorldDiffMove) o;
+        final WorldDiffMove mapDiffMove = (WorldDiffMove) obj;
 
         if (h != mapDiffMove.h)
             return false;
@@ -304,7 +304,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return ms = listChanges.tryDoMove(world, principal);
     }
 
-    private MoveStatus tryMapChanges(World world, boolean undo) {
+    private MoveStatus tryMapChanges(ReadOnlyWorld world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
             Serializable actual = world.getTile(diff.x, diff.y);
@@ -409,13 +409,13 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o)
+        public boolean equals(Object obj) {
+            if (this == obj)
                 return true;
-            if (!(o instanceof MapDiff))
+            if (!(obj instanceof MapDiff))
                 return false;
 
-            final MapDiff diff = (MapDiff) o;
+            final MapDiff diff = (MapDiff) obj;
 
             if (x != diff.x)
                 return false;

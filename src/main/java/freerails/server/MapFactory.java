@@ -31,10 +31,12 @@ import freerails.world.terrain.TerrainType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -76,7 +78,7 @@ public final class MapFactory {
 
         pm.nextStep(mapRect.width);
 
-        HashMap<Integer, Integer> rgb2TerrainType = new HashMap<>();
+        Map<Integer, Integer> rgb2TerrainType = new HashMap<>();
 
         for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
             TerrainType tilemodel = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
@@ -88,19 +90,15 @@ public final class MapFactory {
         for (int c = 0; c < w.size(SKEY.TERRAIN_TYPES); c++) {
             terrainTypeTile = (TerrainType) w.get(SKEY.TERRAIN_TYPES, c);
 
-            if (terrainTypeTile.getCategory().equals(
-                    TerrainCategory.Country)) {
+            if (terrainTypeTile.getCategory() == TerrainCategory.Country) {
                 if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
                     countryTypes.add(c);
                 }
             }
 
-            if (terrainTypeTile.getCategory()
-                    .equals(TerrainCategory.Ocean)
-                    || terrainTypeTile.getCategory().equals(
-                    TerrainCategory.River)
-                    || terrainTypeTile.getCategory().equals(
-                    TerrainCategory.Hill)) {
+            if (terrainTypeTile.getCategory() == TerrainCategory.Ocean
+                    || terrainTypeTile.getCategory() == TerrainCategory.River
+                    || terrainTypeTile.getCategory() == TerrainCategory.Hill) {
                 non_countryTypes.add(c);
             }
         }
@@ -161,7 +159,7 @@ public final class MapFactory {
         }
     }
 
-    private static void setTile(int x, int y, FullTerrainTile tile) {
+    private static void setTile(int x, int y, Serializable tile) {
         if (!non_countryTypes.contains(((FullTerrainTile) world
                 .getTile(x, y)).getTerrainTypeID())) {
             world.setTile(x, y, tile);

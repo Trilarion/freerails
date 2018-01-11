@@ -19,7 +19,7 @@
 package freerails.client.top;
 
 import freerails.client.common.RepaintManagerForActiveRendering;
-import freerails.controller.ReportBugTextGenerator;
+import freerails.client.launcher.Launcher;
 import freerails.controller.ScreenHandler;
 import freerails.world.game.GameModel;
 import org.apache.log4j.Logger;
@@ -131,8 +131,7 @@ public final class GameLoop implements Runnable {
                                      * the game straight away to avoid
                                      * hard-to-track-down bugs.
                                      */
-                                    ReportBugTextGenerator
-                                            .unexpectedException(re);
+                                    Launcher.emergencyStop();
                                 } finally {
                                     g.dispose();
                                 }
@@ -184,7 +183,7 @@ public final class GameLoop implements Runnable {
                 loopMonitor.notify();
             }
         } catch (Exception e) {
-            ReportBugTextGenerator.unexpectedException(e);
+            Launcher.emergencyStop();
         }
     }
 }

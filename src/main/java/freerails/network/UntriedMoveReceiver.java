@@ -22,6 +22,7 @@ import freerails.controller.PreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 
+// TODO what is this good for?
 /**
  * Lets the caller test moves.
  */

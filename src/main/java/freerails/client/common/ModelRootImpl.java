@@ -28,35 +28,22 @@ import freerails.world.WorldListListener;
 import freerails.world.WorldMapListener;
 import freerails.world.player.FreerailsPrincipal;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Provides access to the World object and other data that is shared by GUI
  * components (for instance the cursor's position).
  */
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
-    private final HashMap<Property, Object> properties = new HashMap<>();
-    private final List<ModelRootListener> listeners = new ArrayList<>();
+    private final Map<Property, Object> properties = new HashMap<>();
+    private final Collection<ModelRootListener> listeners = new ArrayList<>();
 
     /**
      *
      */
     public boolean hasBeenSetup = false;
     private MoveChainFork moveFork = new MoveChainFork();
-    private UntriedMoveReceiver moveReceiver = new UntriedMoveReceiver() {
-        public void process(Move Move) {
-        }
-
-        public void processPreMove(PreMove pm) {
-        }
-
-        public MoveStatus tryDoMove(Move move) {
-            return MoveStatus.moveFailed("No move receiver set on model root!");
-        }
-    };
+    private UntriedMoveReceiver moveReceiver = new MyUntriedMoveReceiver();
     private FreerailsPrincipal playerPrincipal;
     private ServerCommandReceiver serverCommandReceiver;
     private ReadOnlyWorld world;
@@ -75,7 +62,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         properties.put(Property.SERVER, "server details not set!");
         properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);
         properties.put(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
-        properties.put(Property.TIME, 0d);
+        properties.put(Property.TIME, 0.0d);
         properties.put(Property.TRACK_BUILDER_MODE,
                 TrackMoveProducer.BuildMode.BUILD_TRACK);
         properties.put(Property.SAVED_GAMES_LIST, Collections.emptyList());
@@ -247,5 +234,17 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 
     public boolean is(ModelRoot.Property property, Object value) {
         return getProperty(property).equals(value);
+    }
+
+    private static class MyUntriedMoveReceiver implements UntriedMoveReceiver {
+        public void process(Move move) {
+        }
+
+        public void processPreMove(PreMove pm) {
+        }
+
+        public MoveStatus tryDoMove(Move move) {
+            return MoveStatus.moveFailed("No move receiver set on model root!");
+        }
     }
 }

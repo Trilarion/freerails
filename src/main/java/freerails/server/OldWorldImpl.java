@@ -28,6 +28,7 @@ import freerails.world.game.GameTime;
 import freerails.world.train.WagonAndEngineTypesFactory;
 import org.xml.sax.SAXException;
 
+import java.io.Serializable;
 import java.net.URL;
 
 /**
@@ -35,6 +36,9 @@ import java.net.URL;
  */
 // TODO difference to world.WorldImpl?
 public class OldWorldImpl {
+
+    private OldWorldImpl() {
+    }
 
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
@@ -44,8 +48,8 @@ public class OldWorldImpl {
      * @param pm
      * @return
      */
-    public static World createWorldFromMapFile(String mapName,
-                                               ProgressMonitorModel pm) {
+    public static Serializable createWorldFromMapFile(String mapName,
+                                                      ProgressMonitorModel pm) {
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
@@ -61,9 +65,8 @@ public class OldWorldImpl {
         WorldImpl w = new WorldImpl();
         pm.setValue(++progess);
 
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         pm.setValue(++progess);
-        wetf.addTypesToWorld(w);
+        WagonAndEngineTypesFactory.addTypesToWorld(w);
         pm.setValue(++progess);
 
         tileFactory.addTerrainTileTypesList(w);

@@ -46,13 +46,13 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof Point2D))
+        if (!(obj instanceof Point2D))
             return false;
 
-        final Point2D point = (Point2D) o;
+        final Point2D point = (Point2D) obj;
 
         if (x != point.x)
             return false;

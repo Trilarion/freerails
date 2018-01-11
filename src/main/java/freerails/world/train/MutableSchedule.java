@@ -53,7 +53,7 @@ public class MutableSchedule implements Schedule {
     /**
      * @param s
      */
-    public MutableSchedule(ImmutableSchedule s) {
+    public MutableSchedule(Schedule s) {
         nextScheduledOrder = s.getNextScheduledOrder();
         hasPriorityOrders = s.hasPriorityOrders();
 

@@ -65,13 +65,13 @@ public class NewGameMessageToServer implements MessageToServer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof NewGameMessageToServer))
+        if (!(obj instanceof NewGameMessageToServer))
             return false;
 
-        final NewGameMessageToServer newGameMessageToServer = (NewGameMessageToServer) o;
+        final NewGameMessageToServer newGameMessageToServer = (NewGameMessageToServer) obj;
 
         if (id != newGameMessageToServer.id)
             return false;

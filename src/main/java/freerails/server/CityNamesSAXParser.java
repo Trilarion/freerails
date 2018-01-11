@@ -35,6 +35,9 @@ import java.net.URL;
  */
 public class CityNamesSAXParser {
 
+    private CityNamesSAXParser() {
+    }
+
     /**
      * @param w
      * @param filename

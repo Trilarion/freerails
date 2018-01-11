@@ -145,14 +145,14 @@ public class HtmlJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         done.setAction(closeAction);
     }
 
     /**
      * Load the help text from file.
      */
-    String loadText(final URL htmlUrl) {
+    static String loadText(final URL htmlUrl) {
         try {
             InputStream in = htmlUrl.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(

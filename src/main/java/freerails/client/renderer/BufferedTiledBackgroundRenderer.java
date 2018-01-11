@@ -67,13 +67,13 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * Updates the backbuffer as necessary, then draws it on to the Graphics
      * object passed.
      *
-     * @param outputGraphics      Once it has been updated, the backbuffer is drawn onto this
+     * @param g      Once it has been updated, the backbuffer is drawn onto this
      *                            Graphics object.
-     * @param newVisibleRectangle The region of the map that the backbuffer must be updated to
+     * @param visibleRect The region of the map that the backbuffer must be updated to
      *                            display.
      */
-    public void paintRect(Graphics outputGraphics,
-                          Rectangle newVisibleRectangle) {
+    public void paintRect(Graphics g,
+                          Rectangle visibleRect) {
         boolean contentsLost;
         do {
             /*
@@ -81,18 +81,18 @@ public abstract class BufferedTiledBackgroundRenderer implements
              * has just been resized, we need to create a new backgroundBuffer.
              */
             if ((backgroundBuffer == null)
-                    || (newVisibleRectangle.height != bufferRect.height)
-                    || (newVisibleRectangle.width != bufferRect.width)) {
-                setbackgroundBuffer(newVisibleRectangle.width,
-                        newVisibleRectangle.height);
+                    || (visibleRect.height != bufferRect.height)
+                    || (visibleRect.width != bufferRect.width)) {
+                setbackgroundBuffer(visibleRect.width,
+                        visibleRect.height);
             }
 
             // Test if image is lost and restore it.
             int valCode = backgroundBuffer.validate(defaultConfig);
 
             if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
-                setbackgroundBuffer(newVisibleRectangle.width,
-                        newVisibleRectangle.height);
+                setbackgroundBuffer(visibleRect.width,
+                        visibleRect.height);
             } else if (valCode == VolatileImage.IMAGE_RESTORED) {
                 refreshBackground();
             }
@@ -100,25 +100,25 @@ public abstract class BufferedTiledBackgroundRenderer implements
             /*
              * Has the VisibleRectangle moved since the last paint?
              */
-            if ((bufferRect.x != newVisibleRectangle.x)
-                    || (bufferRect.y != newVisibleRectangle.y)) {
-                int dx = bufferRect.x - newVisibleRectangle.x;
-                int dy = bufferRect.y - newVisibleRectangle.y;
+            if ((bufferRect.x != visibleRect.x)
+                    || (bufferRect.y != visibleRect.y)) {
+                int dx = bufferRect.x - visibleRect.x;
+                int dy = bufferRect.y - visibleRect.y;
                 scrollbackgroundBuffer(dx, dy);
-                bufferRect.setBounds(newVisibleRectangle);
+                bufferRect.setBounds(visibleRect);
             }
 
-            if ((bufferRect.width != newVisibleRectangle.width)
-                    && (bufferRect.height != newVisibleRectangle.height)) {
-                paintBufferRectangle(newVisibleRectangle.x - bufferRect.x,
-                        newVisibleRectangle.y - bufferRect.y,
-                        newVisibleRectangle.width,
-                        newVisibleRectangle.height);
+            if ((bufferRect.width != visibleRect.width)
+                    && (bufferRect.height != visibleRect.height)) {
+                paintBufferRectangle(visibleRect.x - bufferRect.x,
+                        visibleRect.y - bufferRect.y,
+                        visibleRect.width,
+                        visibleRect.height);
             }
 
-            outputGraphics.drawImage(backgroundBuffer,
-                    newVisibleRectangle.x, newVisibleRectangle.y, null);
-            bufferRect.setBounds(newVisibleRectangle);
+            g.drawImage(backgroundBuffer,
+                    visibleRect.x, visibleRect.y, null);
+            bufferRect.setBounds(visibleRect);
             contentsLost = backgroundBuffer.contentsLost();
         } while (contentsLost);
     }

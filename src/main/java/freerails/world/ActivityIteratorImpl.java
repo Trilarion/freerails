@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
  */
 public class ActivityIteratorImpl implements ActivityIterator {
 
-    private WorldImpl world;
     /**
      *
      */
@@ -27,14 +26,13 @@ public class ActivityIteratorImpl implements ActivityIterator {
      * @param index
      */
     public ActivityIteratorImpl(WorldImpl world, int playerIndex, int index) {
-        this.world = world;
         currentList = world.activityLists.get(playerIndex, index);
         size = currentList.size();
         ant = currentList.get(activityIndex);
     }
 
-    public double absoluteToRelativeTime(double t) {
-        double dt = t - ant.startTime;
+    public double absoluteToRelativeTime(double absoluteTime) {
+        double dt = absoluteTime - ant.startTime;
         dt = Math.min(dt, ant.act.duration());
         return dt;
     }
@@ -62,11 +60,11 @@ public class ActivityIteratorImpl implements ActivityIterator {
     }
 
     /**
-     * @param t
+     * @param absoluteTime
      * @return
      */
-    public Serializable getState(double t) {
-        double dt = absoluteToRelativeTime(t);
+    public Serializable getState(double absoluteTime) {
+        double dt = absoluteToRelativeTime(absoluteTime);
         return ant.act.getState(dt);
     }
 

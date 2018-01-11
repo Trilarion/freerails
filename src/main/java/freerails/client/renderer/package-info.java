@@ -19,8 +19,8 @@
 /**
  * Provides classes that render/paint/draw the games graphics. Classes in this package
  * should be independent of the windowing toolkit being used. For example, they should
- * not import any {@code javax.swing.*} classes or any classes in the <code>
- * java.awt.Component hierarchy</code>. They may however import {@code java.awt}
- * classes needed to do drawing, e.g. {@code java.awt.Graphics} and <code>java.awt.Image</code>.
+ * not import any {@code javax.swing.*} classes or any classes in the {@code
+ * java.awt.Component hierarchy}. They may however import {@code java.awt}
+ * classes needed to do drawing, e.g. {@code java.awt.Graphics} and {@code java.awt.Image}.
  */
 package freerails.client.renderer;

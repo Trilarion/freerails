@@ -115,7 +115,7 @@ public class AddPlayerMove implements Move {
         return ms;
     }
 
-    private boolean isAlreadyASimilarPlayer(World world) {
+    private boolean isAlreadyASimilarPlayer(ReadOnlyWorld world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             Player pp = world.getPlayer(i);
             if (pp.getName().equalsIgnoreCase(playerToAdd.getName())) {

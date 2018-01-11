@@ -119,9 +119,9 @@ public class ImmutableSchedule implements Schedule, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof ImmutableSchedule) {
-            ImmutableSchedule test = (ImmutableSchedule) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof ImmutableSchedule) {
+            ImmutableSchedule test = (ImmutableSchedule) obj;
 
             return hasPriorityOrders == test.hasPriorityOrders
                     && nextScheduledOrder == test.nextScheduledOrder

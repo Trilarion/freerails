@@ -58,7 +58,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     private ModelRoot modelRoot;
     private final Action repayBondAction = new AbstractAction("Repay bond") {
 
-        public void actionPerformed(ActionEvent arg0) {
+        private static final long serialVersionUID = 440368637080877578L;
+
+        public void actionPerformed(ActionEvent e) {
 
             Move bondTransaction = new AddTransactionMove(modelRoot
                     .getPrincipal(), BondItemTransaction.repayBond(5));
@@ -68,7 +70,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     private FinancialDataGatherer financialDataGatherer;
     private final Action issueBondAction = new AbstractAction("Issue bond") {
 
-        public void actionPerformed(ActionEvent arg0) {
+        private static final long serialVersionUID = -8074364543650188583L;
+
+        public void actionPerformed(ActionEvent e) {
 
             if (financialDataGatherer.canIssueBond()) {
                 Move bondTransaction = new AddTransactionMove(modelRoot
@@ -95,17 +99,17 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     }
 
     /**
-     * @param modelRoot
+     * @param m
      * @param vl
      * @param closeAction
      */
     @Override
-    public void setup(final ModelRoot modelRoot, RendererRoot vl,
+    public void setup(final ModelRoot m, RendererRoot vl,
                       Action closeAction) {
-        super.setup(modelRoot, vl, closeAction);
-        financialDataGatherer = new FinancialDataGatherer(modelRoot.getWorld(),
-                modelRoot.getPrincipal());
-        this.modelRoot = modelRoot;
+        super.setup(m, vl, closeAction);
+        financialDataGatherer = new FinancialDataGatherer(m.getWorld(),
+                m.getPrincipal());
+        this.modelRoot = m;
 
         setupStockMenu();
         updateHtml();
@@ -132,7 +136,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
             buyStock[playerId] = new AbstractAction(buyLabel) {
 
-                public void actionPerformed(ActionEvent arg0) {
+                private static final long serialVersionUID = -6360550478693971570L;
+
+                public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot
                             .getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice
@@ -149,7 +155,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
             sellStock[playerId] = new AbstractAction(sellLabel) {
 
-                public void actionPerformed(ActionEvent arg0) {
+                private static final long serialVersionUID = 3993755349229011031L;
+
+                public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot
                             .getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice

@@ -158,7 +158,7 @@ public class PathOnTilesTest extends TestCase {
         LineSegment line = new LineSegment();
         assertTrue(pathIt.getA().hasNext());
         pathIt.getA().nextSegment(line);
-        assertEquals("The length of the train.", 24, line.getLength(), 1d);
+        assertEquals("The length of the train.", 24, line.getLength(), 1.0d);
         assertFalse(pathIt.getA().hasNext());
 
         // 5th check, same as 2nd but with different starting position.

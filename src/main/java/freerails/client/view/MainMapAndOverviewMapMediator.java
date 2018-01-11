@@ -80,48 +80,44 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
 
         overviewMapJPanel.addMouseMotionListener(this);
         overviewMapJPanel.addMouseListener(this);
-        v.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                updateObservedRect();
-            }
-        });
+        v.addChangeListener(e -> updateObservedRect());
 
         overviewMapJPanel
                 .addComponentListener(new java.awt.event.ComponentAdapter() {
                     @Override
                     public void componentResized(
-                            java.awt.event.ComponentEvent evt) {
+                            java.awt.event.ComponentEvent e) {
                         updateObservedRect();
                     }
 
                     @Override
-                    public void componentShown(java.awt.event.ComponentEvent evt) {
+                    public void componentShown(java.awt.event.ComponentEvent e) {
                         updateObservedRect();
                     }
                 });
     }
 
     @Override
-    public void mouseMoved(MouseEvent evt) {
-        lastMouseLocation.x = evt.getX();
-        lastMouseLocation.y = evt.getY();
-        updateInside(evt);
+    public void mouseMoved(MouseEvent e) {
+        lastMouseLocation.x = e.getX();
+        lastMouseLocation.y = e.getY();
+        updateInside(e);
     }
 
     @Override
-    public void mousePressed(MouseEvent evt) {
+    public void mousePressed(MouseEvent e) {
         if (inside) {
             draggingAndStartedInside = true;
         }
     }
 
     @Override
-    public void mouseReleased(MouseEvent evt) {
+    public void mouseReleased(MouseEvent e) {
         draggingAndStartedInside = false;
     }
 
     @Override
-    public void mouseDragged(MouseEvent evt) {
+    public void mouseDragged(MouseEvent e) {
         if (draggingAndStartedInside) {
             /*
              * Rectangle r= overviewMapJPanel.mainMapVisibleRect;
@@ -131,10 +127,10 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
              *
              * updateInside(evt); overviewMapJPanel.repaint();
              */
-            int deltaX = evt.getX() - lastMouseLocation.x;
-            int deltaY = evt.getY() - lastMouseLocation.y;
-            lastMouseLocation.x = evt.getX();
-            lastMouseLocation.y = evt.getY();
+            int deltaX = e.getX() - lastMouseLocation.x;
+            int deltaY = e.getY() - lastMouseLocation.y;
+            lastMouseLocation.x = e.getX();
+            lastMouseLocation.y = e.getY();
 
             // float overviewScale=overviewMapJPanel.getScale();
             // float mainMapScale=mainMap.getScale();
@@ -149,12 +145,12 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
             r.y += scaledDeltaY;
 
             mainMap.scrollRectToVisible(r);
-            updateInside(evt);
+            updateInside(e);
         }
     }
 
     @Override
-    public void mouseClicked(MouseEvent evt) {
+    public void mouseClicked(MouseEvent e) {
         /*
          * Rectangle r= overviewMapJPanel.mainMapVisibleRect;
          * r.x=evt.getX()-r.width/2; r.y=evt.getY()-r.width/2;
@@ -165,14 +161,14 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         int overviewScale = overviewMapJPanel.getPreferredSize().width;
         int mainMapScale = mainMap.getWidth();
 
-        int x = (evt.getX() * mainMapScale / overviewScale);
-        int y = (evt.getY() * mainMapScale / overviewScale);
+        int x = (e.getX() * mainMapScale / overviewScale);
+        int y = (e.getY() * mainMapScale / overviewScale);
 
         Rectangle r = mainMap.getVisibleRect();
         r.x = x - r.width / 2;
         r.y = y - r.height / 2;
         mainMap.scrollRectToVisible(r);
-        updateInside(evt);
+        updateInside(e);
     }
 
     private void updateInside(MouseEvent evt) {

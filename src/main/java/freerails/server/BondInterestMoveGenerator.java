@@ -21,6 +21,7 @@ package freerails.server;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
 import freerails.world.WorldConstants;
 import freerails.world.finances.*;
@@ -41,8 +42,8 @@ public class BondInterestMoveGenerator {
         moveReceiver = mr;
     }
 
-    private static AddTransactionMove generateMove(World w,
-                                                   FreerailsPrincipal principal) {
+    private static Move generateMove(ReadOnlyWorld w,
+                                     FreerailsPrincipal principal) {
         long interestDue = 0;
 
         for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
@@ -66,7 +67,7 @@ public class BondInterestMoveGenerator {
     /**
      * @param w
      */
-    public void update(World w) {
+    public void update(ReadOnlyWorld w) {
         for (int i = 0; i < w.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
             Move m = generateMove(w, principal);

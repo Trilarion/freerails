@@ -29,7 +29,6 @@ import freerails.client.common.StationHelper;
 import freerails.client.renderer.RendererRoot;
 import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot.Property;
-import freerails.controller.ReportBugTextGenerator;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.RefreshListOfGamesMessageToServer;
@@ -39,6 +38,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -97,27 +97,29 @@ public class DialogueBoxController implements WorldListListener {
      */
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
 
-        public void actionPerformed(ActionEvent arg0) {
+        private static final long serialVersionUID = 673348332616193928L;
+
+        public void actionPerformed(ActionEvent e) {
             closeContent();
         }
     };
 
     private final Action selectEngineAction = new AbstractAction() {
 
-        public void actionPerformed(ActionEvent arg0) {
+        private static final long serialVersionUID = -5932587740749235632L;
+
+        public void actionPerformed(ActionEvent e) {
             showSelectWagons();
         }
     };
 
-    private final ActionListener trainDetailsButtonActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent arg0) {
-            showTrainList();
-        }
-    };
+    private final ActionListener trainDetailsButtonActionListener = e -> showTrainList();
 
     private final Action selectWagonsAction = new AbstractAction("Next") {
 
-        public void actionPerformed(ActionEvent arg0) {
+        private static final long serialVersionUID = -1672545312581874156L;
+
+        public void actionPerformed(ActionEvent e) {
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
                     .getWorld(), modelRoot.getPrincipal());
 
@@ -158,7 +160,7 @@ public class DialogueBoxController implements WorldListListener {
                 new java.awt.event.ComponentAdapter() {
                     @Override
                     public void componentResized(
-                            java.awt.event.ComponentEvent evt) {
+                            java.awt.event.ComponentEvent e) {
                         glassPanel.setSize(glassPanel.getParent().getSize());
                         glassPanel.revalidate();
                     }
@@ -396,7 +398,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param y
      */
     public void showTerrainInfo(int x, int y) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
+        TerrainTile tile = (FullTerrainTile) world.getTile(x, y);
         int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
     }
@@ -432,11 +434,9 @@ public class DialogueBoxController implements WorldListListener {
         if (world.size(modelRoot.getPrincipal(), KEY.TRAINS) > 0) {
             final TrainListJPanel trainList = new TrainListJPanel();
             trainList.setup(modelRoot, vl, closeCurrentDialogue);
-            trainList.setShowTrainDetailsActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    int id = trainList.getSelectedTrainID();
-                    showTrainOrders(id);
-                }
+            trainList.setShowTrainDetailsActionListener(e -> {
+                int id = trainList.getSelectedTrainID();
+                showTrainOrders(id);
             });
 
             showContent(trainList);

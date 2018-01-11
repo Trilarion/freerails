@@ -84,8 +84,8 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 
         assertEquals(it.getActivity(), act);
         assertEquals(it.getStartTime(), currentTime.getTicks(), 0.00001);
-        assertEquals(50d, it.getDuration(), 0.00001);
-        assertEquals(50d, it.getFinishTime(), 0.00001);
+        assertEquals(50.0d, it.getDuration(), 0.00001);
+        assertEquals(50.0d, it.getFinishTime(), 0.00001);
 
         assertTrue(it.hasNext());
         it.nextActivity();

@@ -53,19 +53,19 @@ public class ListKey implements Comparable<ListKey>, Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ListKey))
+        if (!(obj instanceof ListKey))
             return false;
 
-        final ListKey listKey = (ListKey) o;
+        final ListKey listKey = (ListKey) obj;
 
         if (!Arrays.equals(index, listKey.index))
             return false;
-        if (!listID.equals(listKey.listID))
+        if (listID != listKey.listID)
             return false;
-        return type.equals(listKey.type);
+        return type == listKey.type;
     }
 
     @Override

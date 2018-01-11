@@ -104,8 +104,4 @@ public final class TrackPieceRendererImpl implements TrackPieceRenderer {
 
         return trackPieceIcons[trackTemplate];
     }
-
-    private String getTrackTypeName() {
-        return typeName;
-    }
 }

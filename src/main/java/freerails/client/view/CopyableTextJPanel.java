@@ -99,8 +99,8 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
         jTextArea1.setOpaque(false);
         jTextArea1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTextArea1MouseClicked(evt);
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                jTextArea1MouseClicked(e);
             }
         });
 
@@ -129,6 +129,6 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
             jPopupMenu1.show(jTextArea1, evt.getX(), evt.getY());
         }
     }
-    // End of variables declaration                   
+
 
 }

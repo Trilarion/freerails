@@ -81,7 +81,7 @@ public final class TrackConfiguration implements TrackConfigurations {
      * @param v
      * @return
      */
-    public static TrackConfiguration getFlatInstance(TileTransition v) {
+    public static TrackConfiguration getFlatInstance(TrackConfigurations v) {
         return from9bitTemplate(v.get9bitTemplate());
     }
 
@@ -95,8 +95,8 @@ public final class TrackConfiguration implements TrackConfigurations {
         return flatTrackConfigurations.get(i);
     }
 
-    private static ArrayList<TrackConfiguration> setupConfigurations() {
-        ArrayList<TrackConfiguration> configurations = new ArrayList<>(
+    private static List<TrackConfiguration> setupConfigurations() {
+        List<TrackConfiguration> configurations = new ArrayList<>(
                 512);
 
         for (int i = 0; i < 512; i++) {
@@ -193,13 +193,13 @@ public final class TrackConfiguration implements TrackConfigurations {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
 
-        final TrackConfiguration that = (TrackConfiguration) o;
+        final TrackConfiguration that = (TrackConfiguration) obj;
 
         return configuration == that.configuration;
     }

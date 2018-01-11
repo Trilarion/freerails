@@ -21,6 +21,7 @@ package freerails.world.station;
 import freerails.util.ImmutableList;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Represents a station. with a position, a name, a supply, a demand, a conversion (of cargo).
@@ -76,8 +77,10 @@ public class Station implements Serializable {
         this.y = y;
         this.cargoBundleNumber = cargoBundleNumber;
 
-        // TODO array creation neccessary here?
-        supply = new StationSupply(new int[numberOfCargoTypes]);
+        // TODO array creation necessary here?
+        Integer[] a = new Integer[numberOfCargoTypes];
+        Arrays.fill(a, 0);
+        supply = new StationSupply(a);
         production = new ImmutableList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationConversion.emptyInstance(numberOfCargoTypes);
@@ -93,13 +96,13 @@ public class Station implements Serializable {
         x = 0;
         y = 0;
         demandForCargo = new StationDemand(new boolean[0]);
-        supply = new StationSupply(new int[0]);
+        supply = new StationSupply(new Integer[0]);
         cargoConversion = new StationConversion(new Integer[0]);
         production = new ImmutableList<>();
         cargoBundleNumber = 0;
     }
 
-    // TODO this might be a misuse, just add production as method instead, copy should not be neccessary
+    // TODO this might be a misuse, just add production as method instead, copy should not be necessary
     /**
      * @param s
      * @param production
@@ -149,12 +152,12 @@ public class Station implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof Station))
+        if (!(obj instanceof Station))
             return false;
-        final Station station = (Station) o;
+        final Station station = (Station) obj;
         if (cargoBundleNumber != station.cargoBundleNumber)
             return false;
         if (x != station.x)

@@ -61,13 +61,13 @@ public final class MoveStatus implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof MoveStatus))
+        if (!(obj instanceof MoveStatus))
             return false;
 
-        final MoveStatus moveStatus = (MoveStatus) o;
+        final MoveStatus moveStatus = (MoveStatus) obj;
 
         if (ok != moveStatus.ok)
             return false;

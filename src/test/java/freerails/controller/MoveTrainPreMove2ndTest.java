@@ -26,7 +26,6 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImInts;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
@@ -113,7 +112,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         defaultSchedule = s.toImmutableSchedule();
 
         Point2D start = new Point2D(10, 10);
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 start, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
@@ -177,7 +176,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(2, schedule.getOrder(0).getStationID());
 
         // Check the train should have 2 wagons for cargo #0
-        ImmutableList<Integer> expectedConsist = new ImmutableList<Integer>(0, 0);
+        ImmutableList<Integer> expectedConsist = new ImmutableList<>(0, 0);
         ImmutableList<Integer> actualConsist = ta.getTrain().getConsist();
         assertEquals(expectedConsist, actualConsist);
 
@@ -314,7 +313,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
     private void putTrainAtStationWaiting4FullLoad() {
         // Set wait until full on schedule.
-        ImmutableList<Integer> newConsist = new ImmutableList<Integer>(0, 0);
+        ImmutableList<Integer> newConsist = new ImmutableList<>(0, 0);
         TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, true,
                 false);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
@@ -365,7 +364,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         putTrainAtStationWaiting4FullLoad();
 
         // Now change the train's orders.
-        ImmutableList<Integer> newConsist = new ImmutableList<Integer>(0, 0);
+        ImmutableList<Integer> newConsist = new ImmutableList<>(0, 0);
         TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, false,
                 false);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
@@ -397,7 +396,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
         // Remove all wagons from the train.
         TrainModel model = ta.getTrain();
-        model = model.getNewInstance(model.getEngineType(), new ImmutableList<Integer>());
+        model = model.getNewInstance(model.getEngineType(), new ImmutableList<>());
         world.set(principal, KEY.TRAINS, 0, model);
 
         // Change trains schedule to auto consist.
@@ -450,7 +449,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
         // Check that the train has picked up the cargo.
         // The train should have one wagon of type #0
-        assertEquals(new ImInts(0), ta.getTrain().getConsist());
+        assertEquals(new ImmutableList<>(0), ta.getTrain().getConsist());
         assertEquals(AMOUNT_OF_CARGO, ta.getCargoBundle().getAmountOfType(0));
 
     }
@@ -474,7 +473,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
      */
     public void testLengtheningTrain() {
         // Set the train to add wagons at station2.
-        ImmutableList<Integer> newConsist = new ImmutableList<Integer>(0, 0, 0, 0, 0, 0);
+        ImmutableList<Integer> newConsist = new ImmutableList<>(0, 0, 0, 0, 0, 0);
         TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist, false,
                 false);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);

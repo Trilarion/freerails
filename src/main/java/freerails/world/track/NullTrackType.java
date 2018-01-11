@@ -38,7 +38,7 @@ public final class NullTrackType implements TrackRule {
      */
     public static final int NULL_TRACK_TYPE_RULE_NUMBER = -999;
     private static final long serialVersionUID = 3257849891614306614L;
-    private static final NullTrackType nullTrackType = new NullTrackType();
+    private static final TrackRule nullTrackType = new NullTrackType();
 
     private NullTrackType() {
     }
@@ -46,7 +46,7 @@ public final class NullTrackType implements TrackRule {
     /**
      * @return
      */
-    public static NullTrackType getInstance() {
+    public static TrackRule getInstance() {
         return nullTrackType;
     }
 
@@ -70,11 +70,11 @@ public final class NullTrackType implements TrackRule {
     }
 
     /**
-     * @param trackTemplateToTest
+     * @param a9bitTemplate
      * @return
      */
-    public boolean testTrackPieceLegality(int trackTemplateToTest) {
-        return trackTemplateToTest == 0;
+    public boolean testTrackPieceLegality(int a9bitTemplate) {
+        return a9bitTemplate == 0;
     }
 
     /**
@@ -100,8 +100,8 @@ public final class NullTrackType implements TrackRule {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o == this;
+    public boolean equals(Object obj) {
+        return obj == this;
     }
 
     @Override
@@ -137,7 +137,7 @@ public final class NullTrackType implements TrackRule {
         return TrackCategories.non;
     }
 
-    public int compareTo(TrackRule arg0) {
+    public int compareTo(TrackRule o) {
         // TODO Auto-generated method stub
         return 0;
     }

@@ -40,13 +40,13 @@ public class LogOnRequest implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof LogOnRequest))
+        if (!(obj instanceof LogOnRequest))
             return false;
 
-        final LogOnRequest logOnRequest = (LogOnRequest) o;
+        final LogOnRequest logOnRequest = (LogOnRequest) obj;
 
         if (password != null ? !password.equals(logOnRequest.password)
                 : logOnRequest.password != null)

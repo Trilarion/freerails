@@ -28,7 +28,7 @@ public final class NullTrackPieceRenderer implements TrackPieceRenderer {
     /**
      *
      */
-    public static final NullTrackPieceRenderer instance = new NullTrackPieceRenderer();
+    public static final TrackPieceRenderer instance = new NullTrackPieceRenderer();
 
     private NullTrackPieceRenderer() {
     }

@@ -58,7 +58,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         mapView.paintRect(g2, r);
     }
 
-    public int getScrollableUnitIncrement(java.awt.Rectangle rectangle,
+    public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect,
                                           int orientation, int direction) {
         return (int) mapView.getScale();
     }
@@ -67,25 +67,25 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         return false;
     }
 
-    public int getScrollableBlockIncrement(java.awt.Rectangle rectangle,
+    public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect,
                                            int orientation, int direction) {
         if (javax.swing.SwingConstants.VERTICAL == orientation) {
-            int best = (int) (((rectangle.height / mapView.getScale()) - 2) * mapView
+            int best = (int) (((visibleRect.height / mapView.getScale()) - 2) * mapView
                     .getScale());
 
             if (best > 0) {
                 return best;
             }
-            return rectangle.height;
+            return visibleRect.height;
         }
-        float f = ((rectangle.width / mapView.getScale()) - 2)
+        float f = ((visibleRect.width / mapView.getScale()) - 2)
                 * mapView.getScale();
         int best = (int) (f);
 
         if (best > 0) {
             return best;
         }
-        return rectangle.width;
+        return visibleRect.width;
     }
 
     /**

@@ -28,6 +28,7 @@ import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -38,6 +39,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -164,13 +166,13 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
     }
 
     /**
-     * @param model
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot model, RendererRoot vl, Action closeAction) {
-        world = model.getWorld();
-        principal = model.getPrincipal();
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        world = modelRoot.getWorld();
+        principal = modelRoot.getPrincipal();
     }
 
     /**
@@ -180,13 +182,13 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         Station station = (Station) world.get(principal,
                 KEY.STATIONS, newStationID);
         stationName.setText(station.getStationName());
-        final ImmutableCargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world
+        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world
                 .get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
         final List<String> typeWaiting = new ArrayList<>();
         final List<Integer> quantityWaiting = new ArrayList<>();
-        final List<String> typeDemanded = new ArrayList<>();
+        final Collection<String> typeDemanded = new ArrayList<>();
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             int amountWaiting = cargoWaiting.getAmountOfType(i);
@@ -206,25 +208,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
          * The table shows the cargo waiting at the station. First column is
          * cargo type; second column is quantity in carloads.
          */
-        TableModel tableModel = new AbstractTableModel() {
-
-            private static final long serialVersionUID = 3760559784860071476L;
-
-            public int getRowCount() {
-                return typeWaiting.size();
-            }
-
-            public int getColumnCount() {
-                return 2;
-            }
-
-            public Object getValueAt(int row, int column) {
-                if (0 == column) {
-                    return typeWaiting.get(row);
-                }
-                return quantityWaiting.get(row);
-            }
-        };
+        TableModel tableModel = new MyAbstractTableModel(typeWaiting, quantityWaiting);
         waitingJTable.setModel(tableModel);
 
         /* The list shows the cargo demanded by the station. */
@@ -232,6 +216,32 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
         invalidate();
     }
-    // End of variables declaration                   
 
+
+    private static class MyAbstractTableModel extends AbstractTableModel {
+
+        private static final long serialVersionUID = 3760559784860071476L;
+        private final List<String> typeWaiting;
+        private final List<Integer> quantityWaiting;
+
+        public MyAbstractTableModel(List<String> typeWaiting, List<Integer> quantityWaiting) {
+            this.typeWaiting = typeWaiting;
+            this.quantityWaiting = quantityWaiting;
+        }
+
+        public int getRowCount() {
+            return typeWaiting.size();
+        }
+
+        public int getColumnCount() {
+            return 2;
+        }
+
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            if (0 == columnIndex) {
+                return typeWaiting.get(rowIndex);
+            }
+            return quantityWaiting.get(rowIndex);
+        }
+    }
 }

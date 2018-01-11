@@ -26,10 +26,8 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.server.MapFixtureFactory2;
-import freerails.util.ImInts;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
-import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.*;
@@ -82,7 +80,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         defaultSchedule = s.toImmutableSchedule();
 
         Point2D start = new Point2D(10, 10);
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<Integer>(0, 0),
+        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 start, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
@@ -111,7 +109,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
                 new OccupiedTracks(principal, world));
         SpeedAgainstTime speeds = preMove.nextSpeeds(world, TileTransition.EAST);
         assertNotNull(speeds);
-        assertEquals(speeds.calcVelocity(0), 0d);
+        assertEquals(speeds.calcVelocity(0), 0.0d);
         assertTrue(speeds.getDistance() >= TileTransition.EAST.getLength());
         double t = speeds.getTime();
         assertTrue(t > 0);
@@ -142,7 +140,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         TrainMotion tm = ta.findCurrentMotion(3);
 
-        assertEquals(0d, tm.duration());
+        assertEquals(0.0d, tm.duration());
 
         PathOnTiles expected = new PathOnTiles(new Point2D(5, 5), TileTransition.SOUTH_WEST);
         assertEquals(expected, tm.getPath());
@@ -168,7 +166,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         expected = new PathOnTiles(new Point2D(5, 5), TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
         assertEquals(expected, tm2.getPath());
 
-        assertTrue(tm2.duration() > 3d);
+        assertTrue(tm2.duration() > 3.0d);
         // The expected value is 3.481641930846211, found from
         // stepping thu code in debugger.
         assertTrackHere(tm2.getTiles(tm2.duration()));
@@ -221,7 +219,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<Integer>(), from,
+        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
                 principal, is);
 
         Move m = addTrain.generateMove(world);

@@ -80,7 +80,7 @@ public class MovePrecommitter {
     void fromServer(MoveStatus ms) {
         precommitMoves();
 
-        if (precomitted.size() > 0) {
+        if (!precomitted.isEmpty()) {
             Move m = (Move) precomitted.removeFirst();
 
             if (!ms.ok) {
@@ -141,7 +141,7 @@ public class MovePrecommitter {
     void precommitMoves() {
         blocked = false;
 
-        while (uncomitted.size() > 0 && !blocked) {
+        while (!uncomitted.isEmpty() && !blocked) {
             Object first = uncomitted.getFirst();
 
             if (first instanceof Move) {
@@ -162,7 +162,7 @@ public class MovePrecommitter {
                 if (ms.ok) {
                     uncomitted.removeFirst();
 
-                    PreMoveAndMove pmam = new PreMoveAndMove(pm, m);
+                    Serializable pmam = new PreMoveAndMove(pm, m);
                     precomitted.addLast(pmam);
                 } else {
                     blocked = true;
@@ -176,7 +176,7 @@ public class MovePrecommitter {
      * uncommitted list.
      */
     private void rollBackPrecommittedMoves() {
-        while (precomitted.size() > 0) {
+        while (!precomitted.isEmpty()) {
             Object last = precomitted.removeLast();
             Move move2undo;
             Serializable obj2add2uncomitted;
@@ -202,7 +202,7 @@ public class MovePrecommitter {
         }
     }
 
-    void toServer(Move m) {
+    void toServer(Serializable m) {
         uncomitted.addLast(m);
         precommitMoves();
     }
@@ -232,13 +232,13 @@ public class MovePrecommitter {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o)
+        public boolean equals(Object obj) {
+            if (this == obj)
                 return true;
-            if (!(o instanceof PreMoveAndMove))
+            if (!(obj instanceof PreMoveAndMove))
                 return false;
 
-            final PreMoveAndMove preMoveAndMove = (PreMoveAndMove) o;
+            final PreMoveAndMove preMoveAndMove = (PreMoveAndMove) obj;
 
             if (m != null ? !m.equals(preMoveAndMove.m)
                     : preMoveAndMove.m != null)

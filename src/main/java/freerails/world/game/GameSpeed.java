@@ -62,9 +62,9 @@ public class GameSpeed implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof GameSpeed) {
-            GameSpeed test = (GameSpeed) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof GameSpeed) {
+            GameSpeed test = (GameSpeed) obj;
 
             return speed == test.speed;
         }

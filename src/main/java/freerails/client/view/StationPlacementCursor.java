@@ -52,11 +52,11 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private final StationRadiusRenderer stationRadiusRenderer;
     private boolean buildEnabled;
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
-        public void propertyChange(PropertyChangeEvent e) {
-            if (e.getPropertyName().equals(
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getPropertyName().equals(
                     StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
                 /* update the renderer pos */
-                Point p = (Point) e.getNewValue();
+                Point p = (Point) evt.getNewValue();
                 stationRadiusRenderer.setPosition(p.x, p.y);
 
                 if (stationBuildModel.canBuildStationHere()) {
@@ -66,9 +66,9 @@ public class StationPlacementCursor extends MouseInputAdapter {
                     stationRadiusRenderer
                             .setBorderColor(StationRadiusRenderer.COLOR_CANNOT_BUILD);
                 }
-            } else if (e.getPropertyName().equals(
+            } else if (evt.getPropertyName().equals(
                     StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
-                Integer radius = (Integer) e.getNewValue();
+                Integer radius = (Integer) evt.getNewValue();
                 stationRadiusRenderer.setRadius(radius);
             }
 

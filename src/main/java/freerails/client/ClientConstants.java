@@ -26,4 +26,7 @@ public final class ClientConstants {
      * size of a tile (height and width)
      */
     public static final int TILE_SIZE = 30;
+
+    private ClientConstants() {
+    }
 }

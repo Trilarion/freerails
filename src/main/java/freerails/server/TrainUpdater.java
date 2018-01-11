@@ -37,6 +37,8 @@ import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Is used by the server to generate moves that add trains, move
@@ -112,7 +114,7 @@ public class TrainUpdater implements ServerAutomaton {
                                     principal, world);
                         }
 
-                        ChangeProductionAtEngineShopMove move = new ChangeProductionAtEngineShopMove(
+                        Move move = new ChangeProductionAtEngineShopMove(
                                 production, new ImmutableList<>(), i,
                                 principal);
                         moveReceiver.process(move);
@@ -122,7 +124,7 @@ public class TrainUpdater implements ServerAutomaton {
         }
     }
 
-    private ImmutableSchedule generateInitialSchedule(
+    private static ImmutableSchedule generateInitialSchedule(
             FreerailsPrincipal principal, ReadOnlyWorld world,
             boolean autoSchedule) {
         WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
@@ -156,8 +158,8 @@ public class TrainUpdater implements ServerAutomaton {
             // to allow an already stationary train to start moving. To achieve
             // this
             // we process moving trains first.
-            ArrayList<MoveTrainPreMove> movingTrains = new ArrayList<>();
-            ArrayList<MoveTrainPreMove> stoppedTrains = new ArrayList<>();
+            Collection<MoveTrainPreMove> movingTrains = new ArrayList<>();
+            Collection<MoveTrainPreMove> stoppedTrains = new ArrayList<>();
             for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
 
                 TrainModel train = (TrainModel) world.get(principal,

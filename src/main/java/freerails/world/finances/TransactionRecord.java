@@ -41,12 +41,12 @@ public class TransactionRecord implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TransactionRecord))
+        if (!(obj instanceof TransactionRecord))
             return false;
-        final TransactionRecord transactionRecord = (TransactionRecord) o;
+        final TransactionRecord transactionRecord = (TransactionRecord) obj;
         if (!transaction.equals(transactionRecord.transaction))
             return false;
         return timestamp.equals(transactionRecord.timestamp);

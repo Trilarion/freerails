@@ -120,13 +120,13 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (null == o) {
+    public boolean equals(Object obj) {
+        if (null == obj) {
             return false;
         }
 
-        if (o instanceof PositionOnTrack) {
-            PositionOnTrack other = (PositionOnTrack) o;
+        if (obj instanceof PositionOnTrack) {
+            PositionOnTrack other = (PositionOnTrack) obj;
 
             return other.cameFrom() == cameFrom()
                     && other.x == x

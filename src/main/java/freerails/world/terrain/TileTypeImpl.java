@@ -90,13 +90,13 @@ public final class TileTypeImpl implements TerrainType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TileTypeImpl))
+        if (!(obj instanceof TileTypeImpl))
             return false;
 
-        final TileTypeImpl tileType = (TileTypeImpl) o;
+        final TileTypeImpl tileType = (TileTypeImpl) obj;
 
         if (rgb != tileType.rgb)
             return false;
@@ -108,7 +108,7 @@ public final class TileTypeImpl implements TerrainType {
             return false;
         if (!production.equals(tileType.production))
             return false;
-        if (!terrainCategory.equals(tileType.terrainCategory))
+        if (terrainCategory != tileType.terrainCategory)
             return false;
         if (!terrainType.equals(tileType.terrainType))
             return false;

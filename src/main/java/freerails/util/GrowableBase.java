@@ -108,7 +108,7 @@ public abstract class GrowableBase implements Serializable {
      * @param base  original array containing data
      * @param grown resized array for data
      */
-    protected void resizeCopy(Object base, Object grown) {
+    protected static void resizeCopy(Object base, Object grown) {
         System.arraycopy(base, 0, grown, 0, Array.getLength(base));
     }
 

@@ -23,6 +23,7 @@ package freerails.move;
 
 import freerails.util.Utils;
 import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 
@@ -68,9 +69,9 @@ public class ChangeItemInListMove implements ListMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof ChangeItemInListMove) {
-            ChangeItemInListMove test = (ChangeItemInListMove) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof ChangeItemInListMove) {
+            ChangeItemInListMove test = (ChangeItemInListMove) obj;
 
             if (!before.equals(test.before)) {
                 return false;
@@ -161,7 +162,7 @@ public class ChangeItemInListMove implements ListMove {
      * @return
      */
     protected MoveStatus tryMove(Serializable to,
-                                 Serializable from, World w) {
+                                 Serializable from, ReadOnlyWorld w) {
         if (index >= w.size(principal, listKey)) {
             return MoveStatus.moveFailed("w.size(listKey) is "
                     + w.size(principal, listKey) + " but index is " + index);

@@ -100,7 +100,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
     /**
      * Load the help text from file.
      */
-    String loadText(final URL htmlUrl) {
+    static String loadText(final URL htmlUrl) {
         try {
             InputStream in = htmlUrl.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -126,7 +126,7 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
      * @param context
      * @return
      */
-    public String populateTokens(String template, Object context) {
+    public static String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
         StringBuilder output = new StringBuilder();
 
@@ -216,6 +216,6 @@ public class BrokerJFrame extends javax.swing.JInternalFrame {
 
         pack();
     }
-    // End of variables declaration                   
+
 
 }

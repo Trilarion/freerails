@@ -13,5 +13,7 @@ public final class WorldConstants {
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
     public static final Money BOND_VALUE_ISSUE = new Money(500000);
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
-    public static final int CRASH_FRAMES_COUNT = 15;
+
+    private WorldConstants() {
+    }
 }

@@ -122,7 +122,7 @@ public class List3DImpl<T> implements List3D<T> {
      */
     public void removeLastD1() {
         int last = elementData.size() - 1;
-        if (elementData.get(last).size() > 0)
+        if (!elementData.get(last).isEmpty())
             throw new IllegalStateException(String.valueOf(last));
         elementData.remove(last);
     }
@@ -134,7 +134,7 @@ public class List3DImpl<T> implements List3D<T> {
         ArrayList<ArrayList<T>> dim2 = elementData.get(d1);
         int last = dim2.size() - 1;
         ArrayList<T> dim3 = dim2.get(last);
-        if (dim3.size() > 0)
+        if (!dim3.isEmpty())
             throw new IllegalStateException(String.valueOf(d1));
         dim2.remove(last);
     }

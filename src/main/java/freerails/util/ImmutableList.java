@@ -47,12 +47,12 @@ public final class ImmutableList<E extends Serializable> implements Serializable
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ImmutableList))
+        if (!(obj instanceof ImmutableList))
             return false;
-        final ImmutableList other = (ImmutableList) o;
+        final ImmutableList other = (ImmutableList) obj;
         return Arrays.equals(values, other.values);
     }
 

@@ -29,12 +29,12 @@ import freerails.client.top.RendererRootImpl;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.controller.ReportBugTextGenerator;
 import freerails.controller.ScreenHandler;
 import freerails.network.FreerailsClient;
 import freerails.network.FreerailsGameServer;
 import freerails.network.SaveGamesManager;
 import freerails.server.SaveGameManagerImpl;
+import freerails.server.ServerGameModel;
 import freerails.server.ServerGameModelImpl;
 import freerails.client.ProgressMonitorModel;
 import freerails.world.*;
@@ -112,7 +112,7 @@ public class GUIClient extends FreerailsClient implements
             double ticks = currentGameTime.getTicks();
             if (!gameSpeed.isPaused()) {
                 double subTicks;
-                subTicks = Math.min(dt, 1d);
+                subTicks = Math.min(dt, 1.0d);
                 ticks += subTicks;
             }
             modelRoot.setProperty(Property.TIME, ticks);
@@ -161,7 +161,7 @@ public class GUIClient extends FreerailsClient implements
 
             factory.setup(vl, w);
         } catch (Exception e) {
-            ReportBugTextGenerator.unexpectedException(e);
+            Launcher.emergencyStop();
         }
     }
 
@@ -198,7 +198,7 @@ public class GUIClient extends FreerailsClient implements
         FreerailsGameServer server = new FreerailsGameServer(gamesManager);
         String mapName = gamesManager.getNewMapNames()[0];
 
-        ServerGameModelImpl serverGameModel = new ServerGameModelImpl();
+        ServerGameModel serverGameModel = new ServerGameModelImpl();
         server.setServerGameModel(serverGameModel);
 
         connect(server, name, "password");

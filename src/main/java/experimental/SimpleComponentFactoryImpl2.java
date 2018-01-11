@@ -23,6 +23,7 @@
 package experimental;
 
 import freerails.client.renderer.BlankMapRenderer;
+import freerails.client.top.GUIComponentFactory;
 import freerails.client.view.MainMapAndOverviewMapMediator;
 import freerails.client.view.MapViewJComponentConcrete;
 import freerails.client.view.OverviewMapJComponent;
@@ -36,8 +37,7 @@ import java.awt.event.ActionListener;
  * This GUIComponentFactory creates simple components that can be used to test
  * the layout of the client jFrame without running the whole game.
  */
-public class SimpleComponentFactoryImpl2 implements
-        freerails.client.top.GUIComponentFactory {
+public class SimpleComponentFactoryImpl2 implements GUIComponentFactory {
     private final Rectangle r = new Rectangle();
     private OverviewMapJComponent overviewMap;
     private JScrollPane mainMapScrollPane1;
@@ -89,45 +89,39 @@ public class SimpleComponentFactoryImpl2 implements
     private void addOverviewmapzoomMenuItem(JMenu displayMenu, final float scale) {
         String menuItemName = "Set overview map scale=" + scale;
         JMenuItem menuItem = new JMenuItem(menuItemName);
-        menuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                overviewMap.setup(new BlankMapRenderer(scale));
-            }
-        });
+        menuItem.addActionListener(e -> overviewMap.setup(new BlankMapRenderer(scale)));
         displayMenu.add(menuItem);
     }
 
     private void addMainmapzoomMenuItem(JMenu displayMenu, final float scale) {
         String menuItemName = "Set main map scale=" + scale;
         JMenuItem menuItem = new JMenuItem(menuItemName);
-        menuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                Rectangle visRect = mainMap.getVisibleRect();
+        menuItem.addActionListener(e -> {
+            Rectangle visRect = mainMap.getVisibleRect();
 
-                int oldWidth = mainMap.getWidth();
-                mainMap.setup(new BlankMapRenderer(scale));
+            int oldWidth = mainMap.getWidth();
+            mainMap.setup(new BlankMapRenderer(scale));
 
-                int newWidth = mainMap.getPreferredSize().width;
+            int newWidth = mainMap.getPreferredSize().width;
 
-                int oldCenterX = visRect.x + (visRect.width / 2);
-                int newCenterX = oldCenterX * newWidth / oldWidth;
-                visRect.x = newCenterX - visRect.width / 2;
+            int oldCenterX = visRect.x + (visRect.width / 2);
+            int newCenterX = oldCenterX * newWidth / oldWidth;
+            visRect.x = newCenterX - visRect.width / 2;
 
-                int oldCenterY = visRect.y + (visRect.height / 2);
-                int newCenterY = oldCenterY * newWidth / oldWidth;
-                visRect.y = newCenterY - visRect.height / 2;
+            int oldCenterY = visRect.y + (visRect.height / 2);
+            int newCenterY = oldCenterY * newWidth / oldWidth;
+            visRect.y = newCenterY - visRect.height / 2;
 
-                /*
-                 * LL: I'm not sure why the 'if' is necessary in the following,
-                 * but the view does not center on the right spot without it.
-                 */
-                if (oldWidth < newWidth) {
-                    mainMap.setSize(mainMap.getPreferredSize());
-                    mainMap.scrollRectToVisible(visRect);
-                } else {
-                    mainMap.scrollRectToVisible(visRect);
-                    mainMap.setSize(mainMap.getPreferredSize());
-                }
+            /*
+             * LL: I'm not sure why the 'if' is necessary in the following,
+             * but the view does not center on the right spot without it.
+             */
+            if (oldWidth < newWidth) {
+                mainMap.setSize(mainMap.getPreferredSize());
+                mainMap.scrollRectToVisible(visRect);
+            } else {
+                mainMap.scrollRectToVisible(visRect);
+                mainMap.setSize(mainMap.getPreferredSize());
             }
         });
         displayMenu.add(menuItem);

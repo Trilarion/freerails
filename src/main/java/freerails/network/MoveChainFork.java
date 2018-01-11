@@ -27,6 +27,7 @@ import freerails.world.player.FreerailsPrincipal;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,10 +36,10 @@ import java.util.List;
  */
 public final class MoveChainFork implements MoveReceiver {
 
-    private final List<MoveReceiver> moveReceivers = new ArrayList<>();
-    private final List<MoveReceiver> splitMoveReceivers = new ArrayList<>();
-    private final List<WorldListListener> listListeners = new ArrayList<>();
-    private final List<WorldMapListener> mapListeners = new ArrayList<>();
+    private final Collection<MoveReceiver> moveReceivers = new ArrayList<>();
+    private final Collection<MoveReceiver> splitMoveReceivers = new ArrayList<>();
+    private final Collection<WorldListListener> listListeners = new ArrayList<>();
+    private final Collection<WorldMapListener> mapListeners = new ArrayList<>();
     private long lastTickTime = System.currentTimeMillis();
 
     /**
@@ -124,13 +125,13 @@ public final class MoveChainFork implements MoveReceiver {
             }
 
             if (move instanceof AddItemToListMove) {
-                AddItemToListMove mm = (AddItemToListMove) move;
+                ListMove mm = (AddItemToListMove) move;
                 sendItemAdded(mm.getKey(), mm.getIndex(), mm.getPrincipal());
             } else if (move instanceof ChangeItemInListMove) {
-                ChangeItemInListMove mm = (ChangeItemInListMove) move;
+                ListMove mm = (ChangeItemInListMove) move;
                 sendListUpdated(mm.getKey(), mm.getIndex(), mm.getPrincipal());
             } else if (move instanceof RemoveItemFromListMove) {
-                RemoveItemFromListMove mm = (RemoveItemFromListMove) move;
+                ListMove mm = (RemoveItemFromListMove) move;
                 sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
             } else if (move instanceof MapUpdateMove) {
                 Rectangle r = ((MapUpdateMove) move).getUpdatedTiles();

@@ -22,7 +22,6 @@
 package freerails.server;
 
 import freerails.network.MoveReceiver;
-import freerails.server.ServerGameModel;
 import freerails.world.World;
 
 /**

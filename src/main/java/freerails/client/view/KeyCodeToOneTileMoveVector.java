@@ -22,6 +22,7 @@ import freerails.world.terrain.TileTransition;
 
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 /**
@@ -29,7 +30,7 @@ import java.util.NoSuchElementException;
  */
 public class KeyCodeToOneTileMoveVector {
 
-    private static final HashMap<Integer, TileTransition> keycode2vector = new HashMap<>();
+    private static final Map<Integer, TileTransition> keycode2vector = new HashMap<>();
 
     static {
         // Set up key mappings...
@@ -53,6 +54,9 @@ public class KeyCodeToOneTileMoveVector {
         keycode2vector.put(KeyEvent.VK_UP, TileTransition.NORTH);
         keycode2vector.put(KeyEvent.VK_PAGE_UP, TileTransition.NORTH_EAST);
 
+    }
+
+    private KeyCodeToOneTileMoveVector() {
     }
 
     /**

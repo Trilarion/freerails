@@ -88,16 +88,16 @@ public class WorldToListModelAdapter implements ListModel {
         return elements.size();
     }
 
-    public Object getElementAt(int i) {
-        elements.gotoRow(i);
+    public Object getElementAt(int index) {
+        elements.gotoRow(index);
         return elements.getElement();
     }
 
-    public void addListDataListener(ListDataListener arg0) {
+    public void addListDataListener(ListDataListener l) {
         // TODO Auto-generated method stub
     }
 
-    public void removeListDataListener(ListDataListener arg0) {
+    public void removeListDataListener(ListDataListener l) {
         // TODO Auto-generated method stub
     }
 }

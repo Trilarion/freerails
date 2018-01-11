@@ -31,6 +31,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldListListener;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.ImmutableSchedule;
+import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrdersModel;
 
@@ -142,7 +143,7 @@ public class TrainListCellRenderer extends JPanel implements View,
                 trainNumber);
         scheduleID = train.getScheduleID();
 
-        ImmutableSchedule s = (ImmutableSchedule) w.get(principal,
+        Schedule s = (ImmutableSchedule) w.get(principal,
                 KEY.TRAIN_SCHEDULES, scheduleID);
         TrainOrdersModel order = s.getOrder(newScheduleOrderID);
 
@@ -168,14 +169,14 @@ public class TrainListCellRenderer extends JPanel implements View,
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
-        w = mr.getWorld();
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        w = modelRoot.getWorld();
         this.vl = vl;
-        principal = mr.getPrincipal();
+        principal = modelRoot.getPrincipal();
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
@@ -229,9 +230,9 @@ public class TrainListCellRenderer extends JPanel implements View,
     /**
      * @param key
      * @param index
-     * @param p
+     * @param principal
      */
-    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
+    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
         if (showingOrder) {
             if (KEY.TRAIN_SCHEDULES == key && scheduleID == index) {
                 display(trainNumber, scheduleOrderNumber);
@@ -246,16 +247,16 @@ public class TrainListCellRenderer extends JPanel implements View,
     /**
      * @param key
      * @param index
-     * @param p
+     * @param principal
      */
-    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
     }
 
     /**
      * @param key
      * @param index
-     * @param p
+     * @param principal
      */
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
     }
 }

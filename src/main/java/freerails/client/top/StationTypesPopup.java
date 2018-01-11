@@ -115,41 +115,27 @@ public class StationTypesPopup extends JPopupMenu {
             rbMenuItem.setIcon(null);
             // Show the relevant station radius when the station type's
             // menu item gets focus.
-            rbMenuItem.addChangeListener(new ChangeListener() {
-                private boolean armed = false;
-
-                public void stateChanged(ChangeEvent e) {
-                    if (rbMenuItem.isArmed() && (rbMenuItem.isArmed() != armed)) {
-                        stationChooseActions[index]
-                                .actionPerformed(new ActionEvent(rbMenuItem,
-                                        ActionEvent.ACTION_PERFORMED, ""));
-                    }
-
-                    armed = rbMenuItem.isArmed();
-                }
-            });
+            rbMenuItem.addChangeListener(new MyChangeListener(rbMenuItem, stationChooseActions, index));
             rbMenuItem.addActionListener(stationBuildModel
                     .getStationBuildAction());
             add(rbMenuItem);
         }
 
         stationBuildModel.getStationBuildAction().addPropertyChangeListener(
-                new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent e) {
-                        if (e
-                                .getPropertyName()
-                                .equals(
-                                        StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
-                            int newRadius = (Integer) e.getNewValue();
-                            stationRadiusRenderer.setRadius(newRadius);
-                        }
+                evt -> {
+                    if (evt
+                            .getPropertyName()
+                            .equals(
+                                    StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
+                        int newRadius = (Integer) evt.getNewValue();
+                        stationRadiusRenderer.setRadius(newRadius);
+                    }
 
-                        if (stationBuildModel.getStationBuildAction()
-                                .isEnabled()) {
-                            stationRadiusRenderer.show();
-                        } else {
-                            stationRadiusRenderer.hide();
-                        }
+                    if (stationBuildModel.getStationBuildAction()
+                            .isEnabled()) {
+                        stationRadiusRenderer.show();
+                    } else {
+                        stationRadiusRenderer.hide();
                     }
                 });
     }
@@ -174,7 +160,31 @@ public class StationTypesPopup extends JPopupMenu {
         super.setVisible(b);
     }
 
-    private class StationBuildMenuItem extends JMenuItem {
+    private static class MyChangeListener implements ChangeListener {
+        private final StationBuildMenuItem rbMenuItem;
+        private final Action[] stationChooseActions;
+        private final int index;
+        private boolean armed;
+
+        public MyChangeListener(StationBuildMenuItem rbMenuItem, Action[] stationChooseActions, int index) {
+            this.rbMenuItem = rbMenuItem;
+            this.stationChooseActions = stationChooseActions;
+            this.index = index;
+            armed = false;
+        }
+
+        public void stateChanged(ChangeEvent e) {
+            if (rbMenuItem.isArmed() && (rbMenuItem.isArmed() != armed)) {
+                stationChooseActions[index]
+                        .actionPerformed(new ActionEvent(rbMenuItem,
+                                ActionEvent.ACTION_PERFORMED, ""));
+            }
+
+            armed = rbMenuItem.isArmed();
+        }
+    }
+
+    private static class StationBuildMenuItem extends JMenuItem {
         private static final long serialVersionUID = 3256721792751120946L;
 
         @Override

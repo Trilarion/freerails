@@ -22,8 +22,10 @@ import freerails.util.IntArray;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
@@ -38,7 +40,7 @@ public class SimpleAStarPathFinder implements Serializable,
 
     private final OpenList openList = new OpenList();
 
-    private final HashSet<Integer> startingPositions = new HashSet<>();
+    private final Collection<Integer> startingPositions = new HashSet<>();
 
     private final HashMap<Integer, Integer> closedList = new HashMap<>();
 

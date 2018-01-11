@@ -22,6 +22,7 @@ import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackConfiguration;
+import freerails.world.track.TrackConfigurations;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -29,6 +30,7 @@ import java.awt.geom.CubicCurve2D.Double;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -40,13 +42,13 @@ public class TrackRenderer {
 
     final Color sleepersColor = new Color(118, 54, 36);
     final Color railsColor = new Color(118, 118, 118);
-    final double sleeperLength = 6;
-    final float sleeperWidth = 2f;
-    final float targetSleeperGap = 2.5f;
-    final float tileWidth = 30f;
-    final float gauge = 3f;
-    final BasicStroke rail = new BasicStroke(1f);
-    final float doubleTrackGap = 4f;
+    static final double sleeperLength = 6;
+    static final float sleeperWidth = 2.0f;
+    static final float targetSleeperGap = 2.5f;
+    static final float tileWidth = 30.0f;
+    static final float gauge = 3.0f;
+    final Stroke rail = new BasicStroke(1.0f);
+    static final float doubleTrackGap = 4.0f;
     private final ImageManager imageManager = new ImageManagerImpl(
             "/freerails/client/graphics/");
     boolean doubleTrack = false;
@@ -92,7 +94,7 @@ public class TrackRenderer {
                 line2.x2, line2.y2, line2.x1, line2.y1);
     }
 
-    void paintTrackConf(Graphics2D g2, TrackConfiguration conf) {
+    void paintTrackConf(Graphics2D g2, TrackConfigurations conf) {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -106,7 +108,7 @@ public class TrackRenderer {
         // g.drawString(title, 10, 10);
 
         TileTransition[] directions = TileTransition.getList();
-        List<CubicCurve2D.Double> sections = new ArrayList<>();
+        Collection<Double> sections = new ArrayList<>();
         int matches = 0;
         for (int i = 0; i < directions.length - 2; i++) {
 
@@ -183,7 +185,7 @@ public class TrackRenderer {
         return returnValue;
     }
 
-    void paintTrack(Graphics2D g, List<CubicCurve2D.Double> sections) {
+    void paintTrack(Graphics2D g, Iterable<Double> sections) {
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -222,7 +224,7 @@ public class TrackRenderer {
      * @param curve
      * @return
      */
-    public BasicStroke getStroke4Curve(CubicCurve2D.Double curve) {
+    public static BasicStroke getStroke4Curve(Shape curve) {
         PathIterator fpt = curve.getPathIterator(new AffineTransform(), 0.01);
         double length = 0;
         double[] coords = new double[6];

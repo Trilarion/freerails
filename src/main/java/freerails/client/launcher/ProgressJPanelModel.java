@@ -32,7 +32,7 @@ public class ProgressJPanelModel extends javax.swing.JPanel implements
         ProgressMonitorModel {
 
     private static final long serialVersionUID = 3256445798203273776L;
-    final int numSteps = 5;
+    static final int numSteps = 5;
     final LauncherInterface owner;
     int step, stepSize;
     // Variables declaration - do not modify                     
@@ -115,6 +115,6 @@ public class ProgressJPanelModel extends javax.swing.JPanel implements
         add(splashImage, new java.awt.GridBagConstraints());
 
     }
-    // End of variables declaration                   
+
 
 }

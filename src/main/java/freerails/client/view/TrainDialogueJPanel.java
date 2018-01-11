@@ -144,12 +144,12 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         }
     }
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action al) {
-        newTrainScheduleJPanel1.setup(mr, vl, al);
-        trainDetailsJPanel1.setup(mr, vl, al);
-        setCancelButtonActionListener(al);
-        principal = mr.getPrincipal();
-        w = mr.getWorld();
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        newTrainScheduleJPanel1.setup(modelRoot, vl, closeAction);
+        trainDetailsJPanel1.setup(modelRoot, vl, closeAction);
+        setCancelButtonActionListener(closeAction);
+        principal = modelRoot.getPrincipal();
+        w = modelRoot.getWorld();
     }
 
     public void display(int trainNumber) {
@@ -171,14 +171,14 @@ public class TrainDialogueJPanel extends javax.swing.JPanel implements View,
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
-    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
-        newTrainScheduleJPanel1.listUpdated(key, index, p);
+    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
+        newTrainScheduleJPanel1.listUpdated(key, index, principal);
     }
 
-    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
     }
 
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
     }
 
     void setTrainDetailsButtonActionListener(ActionListener l) {

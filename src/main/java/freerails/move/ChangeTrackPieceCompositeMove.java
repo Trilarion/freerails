@@ -101,7 +101,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     // utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(
-            Point2D p, TileTransition direction, TrackRule trackRule, ReadOnlyWorld w,
+            Point2D p, TrackConfigurations direction, TrackRule trackRule, ReadOnlyWorld w,
             FreerailsPrincipal principle) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
@@ -133,7 +133,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
 
     // utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(Point2D p,
-                                                                TileTransition direction, ReadOnlyWorld w, FreerailsPrincipal principal)
+                                                                TrackConfigurations direction, ReadOnlyWorld w, FreerailsPrincipal principal)
             throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
@@ -179,7 +179,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(
-            TileTransition direction, TrackRule trackRule, int owner, int ruleNumber) {
+            TrackConfigurations direction, TrackRule trackRule, int owner, int ruleNumber) {
         TrackConfiguration simplestConfig = TrackConfiguration
                 .getFlatInstance("000010000");
         TrackConfiguration trackConfiguration = TrackConfiguration.add(
@@ -245,9 +245,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove
     }
 
     @Override
-    protected MoveStatus compositeTest(World world) {
-        if (mustConnectToExistingTrack(world)) {
-            if (hasAnyTrackBeenBuilt(world, builder)) {
+    protected MoveStatus compositeTest(World w) {
+        if (mustConnectToExistingTrack(w)) {
+            if (hasAnyTrackBeenBuilt(w, builder)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super
                             .getMove(0);

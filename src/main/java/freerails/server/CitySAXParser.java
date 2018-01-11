@@ -56,32 +56,32 @@ public class CitySAXParser extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String namespaceURI, String sName, String qName,
-                             Attributes attrs) {
+    public void startElement(String uri, String localName, String qName,
+                             Attributes attributes) {
 
         String cityName = null;
         int x = 0;
         int y;
 
-        if (attrs != null) {
-            for (int i = 0; i < attrs.getLength(); i++) {
-                String aName = attrs.getLocalName(i); // Attr name
+        if (attributes != null) {
+            for (int i = 0; i < attributes.getLength(); i++) {
+                String aName = attributes.getLocalName(i); // Attr name
 
                 if (aName.isEmpty()) {
-                    aName = attrs.getQName(i);
+                    aName = attributes.getQName(i);
                 }
 
                 // put values in City obj
                 if (aName.equals("name")) {
-                    cityName = attrs.getValue(i);
+                    cityName = attributes.getValue(i);
                 }
 
                 if (aName.equals("x")) {
-                    x = Integer.parseInt(attrs.getValue(i));
+                    x = Integer.parseInt(attributes.getValue(i));
                 }
 
                 if (aName.equals("y")) {
-                    y = Integer.parseInt(attrs.getValue(i));
+                    y = Integer.parseInt(attributes.getValue(i));
 
                     City city = new City(cityName, x, y);
                     cities.add(city);

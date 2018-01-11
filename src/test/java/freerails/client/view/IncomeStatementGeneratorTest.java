@@ -60,7 +60,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
             CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
 
-            if (ct.getCategory().equals(category)) {
+            if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, 0, 0, 0, 0);
                 w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
                         new CargoDeliveryMoneyTransaction(amount, 10, 0, cb, 1));

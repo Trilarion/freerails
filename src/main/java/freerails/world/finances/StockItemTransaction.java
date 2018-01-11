@@ -47,8 +47,8 @@ public class StockItemTransaction extends ItemTransaction {
      * @param pricePerShare
      * @return
      */
-    public static StockItemTransaction issueStock(int playerId, int quantity,
-                                                  Money pricePerShare) {
+    public static Transaction issueStock(int playerId, int quantity,
+                                         Money pricePerShare) {
         // Issue Stock of the Player
         Money amount = new Money(pricePerShare.getAmount() * quantity);
         return new StockItemTransaction(TransactionCategory.ISSUE_STOCK, playerId, quantity, amount);

@@ -55,13 +55,13 @@ public class AddActiveEntityMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof AddActiveEntityMove))
+        if (!(obj instanceof AddActiveEntityMove))
             return false;
 
-        final AddActiveEntityMove addActiveEntityMove = (AddActiveEntityMove) o;
+        final AddActiveEntityMove addActiveEntityMove = (AddActiveEntityMove) obj;
 
         if (index != addActiveEntityMove.index)
             return false;

@@ -84,14 +84,14 @@ public class Player implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        if (!(o instanceof Player)) {
+        if (!(obj instanceof Player)) {
             return false;
         }
-        return name.equals(((Player) o).name);
+        return name.equals(((Player) obj).name);
     }
 
     @Override

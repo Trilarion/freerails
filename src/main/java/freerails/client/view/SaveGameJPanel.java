@@ -80,7 +80,7 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
 
         fileNameTextField.setText("savegame");
         fileNameTextField
-                .addActionListener(this::fileNameTextFieldActionPerformed);
+                .addActionListener(SaveGameJPanel::fileNameTextFieldActionPerformed);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -127,20 +127,20 @@ public class SaveGameJPanel extends javax.swing.JPanel implements View {
         close.actionPerformed(evt);
     }
 
-    private void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
+    private static void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
     }
 
     /**
-     * @param m
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         close = closeAction;
-        modelRoot = m;
+        this.modelRoot = modelRoot;
     }
-    // End of variables declaration                   
+
 
 }

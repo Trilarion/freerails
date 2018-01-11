@@ -18,7 +18,8 @@
 
 package freerails.world.station;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
+import freerails.util.Utils;
 
 import java.io.Serializable;
 
@@ -28,23 +29,23 @@ import java.io.Serializable;
 public class StationDemand implements Serializable {
 
     private static final long serialVersionUID = 3257565088071038009L;
-    private final ImInts demand;
+    private final ImmutableList<Integer> demand;
 
     /**
      * @param demandArray
      */
     public StationDemand(boolean[] demandArray) {
-        demand = ImInts.fromBoolean(demandArray);
+        demand = Utils.integerImmutableListFromBoolean(demandArray);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof StationDemand))
+        if (!(obj instanceof StationDemand))
             return false;
 
-        final StationDemand demandAtStation = (StationDemand) o;
+        final StationDemand demandAtStation = (StationDemand) obj;
 
         return demand.equals(demandAtStation.demand);
     }

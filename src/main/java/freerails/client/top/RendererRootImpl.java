@@ -98,7 +98,7 @@ public class RendererRootImpl implements RendererRoot {
 
     }
 
-    private void preloadSounds(ProgressMonitorModel pm) {
+    private static void preloadSounds(ProgressMonitorModel pm) {
         // Pre-load sounds..
         String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK,
                 ClientConfig.SOUND_CASH,
@@ -145,9 +145,8 @@ public class RendererRootImpl implements RendererRoot {
                 // treat harbours as the same type.
                 TerrainCategory thisTerrainCategory = t.getCategory();
 
-                if (thisTerrainCategory.equals(TerrainCategory.River)
-                        || thisTerrainCategory
-                        .equals(TerrainCategory.Ocean)) {
+                if (thisTerrainCategory == TerrainCategory.River
+                        || thisTerrainCategory == TerrainCategory.Ocean) {
                     // Count number of types with category "water"
                     int count = 0;
 
@@ -156,8 +155,8 @@ public class RendererRootImpl implements RendererRoot {
                                 SKEY.TERRAIN_TYPES, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory.equals(TerrainCategory.Ocean)
-                                || terrainCategory.equals(thisTerrainCategory)) {
+                        if (terrainCategory == TerrainCategory.Ocean
+                                || terrainCategory == thisTerrainCategory) {
                             count++;
                         }
                     }
@@ -170,8 +169,8 @@ public class RendererRootImpl implements RendererRoot {
                                 SKEY.TERRAIN_TYPES, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory.equals(TerrainCategory.Ocean)
-                                || terrainCategory.equals(thisTerrainCategory)) {
+                        if (terrainCategory == TerrainCategory.Ocean
+                                || terrainCategory == thisTerrainCategory) {
                             typesTreatedAsTheSame[count] = j;
                             count++;
                         }
@@ -261,14 +260,14 @@ public class RendererRootImpl implements RendererRoot {
         return new TileRendererListImpl(tileRenderers);
     }
 
-    public boolean validate(ReadOnlyWorld w) {
+    public boolean validate(ReadOnlyWorld world) {
         boolean okSoFar = true;
 
-        if (!tiles.validate(w)) {
+        if (!tiles.validate(world)) {
             okSoFar = false;
         }
 
-        if (!trackPieceViewList.validate(w)) {
+        if (!trackPieceViewList.validate(world)) {
             okSoFar = false;
         }
 

@@ -68,13 +68,13 @@ public class AddStationPreMove implements PreMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof AddStationPreMove))
+        if (!(obj instanceof AddStationPreMove))
             return false;
 
-        final AddStationPreMove addStationPreMove = (AddStationPreMove) o;
+        final AddStationPreMove addStationPreMove = (AddStationPreMove) obj;
 
         if (ruleNumber != addStationPreMove.ruleNumber)
             return false;
@@ -93,26 +93,26 @@ public class AddStationPreMove implements PreMove {
     }
 
     /**
-     * @param world
+     * @param w
      * @return
      */
-    public Move generateMove(ReadOnlyWorld world) {
+    public Move generateMove(ReadOnlyWorld w) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(
-                world, principal);
+                w, principal);
 
-        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(p.x, p.y);
+        FullTerrainTile oldTile = (FullTerrainTile) w.getTile(p.x, p.y);
         String cityName;
         String stationName;
 
-        FullTerrainTile ft = (FullTerrainTile) world.getTile(p.x, p.y);
+        FullTerrainTile ft = (FullTerrainTile) w.getTile(p.x, p.y);
         TrackPiece before = ft.getTrackPiece();
-        TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
+        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES,
                 ruleNumber);
 
-        int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
+        int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
                 trackRule, owner, ruleNumber);
-        ChangeTrackPieceMove upgradeTrackMove = new ChangeTrackPieceMove(
+        Move upgradeTrackMove = new ChangeTrackPieceMove(
                 before, after, p);
 
         CompositeMove move;
@@ -121,11 +121,11 @@ public class AddStationPreMove implements PreMove {
             // There isn't already a station here, we need to pick a name and
             // add an entry
             // to the station list.
-            NearestCityFinder cNC = new NearestCityFinder(world, p.x, p.y);
+            NearestCityFinder cNC = new NearestCityFinder(w, p.x, p.y);
             try {
                 cityName = cNC.findNearestCity();
 
-                VerifyStationName vSN = new VerifyStationName(world, cityName);
+                VerifyStationName vSN = new VerifyStationName(w, cityName);
                 stationName = vSN.getName();
 
             } catch (NoSuchElementException e) {
@@ -134,13 +134,13 @@ public class AddStationPreMove implements PreMove {
                 // some of the unit tests create stations when there are no
                 // cities.
                 stationName = "Central Station #"
-                        + world.size(principal, KEY.STATIONS);
+                        + w.size(principal, KEY.STATIONS);
             }
 
             // check the terrain to see if we can build a station on it...
-            move = AddStationMove.generateMove(world, stationName, p,
+            move = AddStationMove.generateMove(w, stationName, p,
                     upgradeTrackMove, principal);
-            move = addSupplyAndDemand(move, world);
+            move = addSupplyAndDemand(move, w);
             move = transactionsGenerator.addTransactions(move);
         } else {
             // Upgrade an existing station.

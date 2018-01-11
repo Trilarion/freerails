@@ -17,7 +17,7 @@
  */
 
 /**
- *The <code>freerails world *</code> packages provide the classes that make up
+ *The {@code freerails world *} packages provide the classes that make up
  * the game-world, the classes in these packages will be used by the client and
  * the server. If at some stage there is a C/C++ version of freerails that works
  * with the java version, then there will need to be C/C++ and java versions of
@@ -33,7 +33,7 @@
  * deserialized as B, then A.equals(B) should return true. The rationale for this
  * is it makes writing tests that compare actual and expected states of objects
  * easy.</p>
- *(3) The dependencies between classes that make up the game world (those in <code>freerails.world.*</code>
+ *(3) The dependencies between classes that make up the game world (those in {@code freerails.world.*}
  * packages ) should only flow in one direction. Eg, the World object has references,
  * either directly or indirectly, to all the objects that make up the game world,
  * so non of the other objects that make up the game world should have references

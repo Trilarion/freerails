@@ -47,6 +47,9 @@ public class MapFixtureFactory {
     public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
             .getPrincipal();
 
+    private MapFixtureFactory() {
+    }
+
     /**
      * Returns a world object with a map of the specified size with the terrain
      * and cargo types setup.
@@ -91,7 +94,7 @@ public class MapFixtureFactory {
                 TrackCategories.track, 0, 0, 10, 0);
         validTrackPlacement[0] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
-                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[0] = new TrackRuleImpl(trackRuleProperties[0],
                 validTrackConfigurations[0], validTrackPlacement[0]);
 
@@ -104,7 +107,7 @@ public class MapFixtureFactory {
 
         validTrackPlacement[1] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
-                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[1] = new TrackRuleImpl(trackRuleProperties[1],
                 validTrackConfigurations[1], validTrackPlacement[1]);
 
@@ -117,7 +120,7 @@ public class MapFixtureFactory {
                 trackTemplates2);
         validTrackPlacement[2] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
-                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         trackRulesArray[2] = new TrackRuleImpl(trackRuleProperties[2],
                 validTrackConfigurations[2], validTrackPlacement[2]);
 

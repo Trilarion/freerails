@@ -18,7 +18,7 @@
 
 package freerails.world.station;
 
-import freerails.util.ImInts;
+import freerails.util.ImmutableList;
 
 import java.io.Serializable;
 
@@ -28,15 +28,14 @@ import java.io.Serializable;
 public class StationSupply implements Serializable {
 
     private static final long serialVersionUID = 4049918272826847286L;
-    // TODO this should not be ImInts, probably a map (or immutable map)
-    private final ImInts supply;
+    private final ImmutableList<Integer> supply;
 
     // TODO what is the meaning of cargoWaiting and do we need it?
     /**
      * @param cargoWaiting
      */
-    public StationSupply(int[] cargoWaiting) {
-        supply = new ImInts(cargoWaiting);
+    public StationSupply(Integer[] cargoWaiting) {
+        supply = new ImmutableList<>(cargoWaiting);
     }
 
     // TODO why is cargType an int, not the class from world.cargo
@@ -52,13 +51,13 @@ public class StationSupply implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof StationSupply))
+        if (!(obj instanceof StationSupply))
             return false;
 
-        final StationSupply stationSupply = (StationSupply) o;
+        final StationSupply stationSupply = (StationSupply) obj;
 
         return supply.equals(stationSupply.supply);
     }

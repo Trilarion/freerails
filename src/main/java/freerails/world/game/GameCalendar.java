@@ -192,9 +192,9 @@ public final class GameCalendar implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof GameCalendar) {
-            GameCalendar test = (GameCalendar) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof GameCalendar) {
+            GameCalendar test = (GameCalendar) obj;
 
             return startYear == test.startYear
                     && ticksPerYear == test.ticksPerYear;

@@ -24,6 +24,7 @@ import freerails.util.Point2D;
 import freerails.world.game.GameTime;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
@@ -33,6 +34,8 @@ import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -43,7 +46,7 @@ public final class TrackMoveProducer {
     private final ModelRoot mr;
 
     private final MoveExecutor executor;
-    private final Stack<Move> moveStack = new Stack<>();
+    private final Collection<Move> moveStack = new Stack<>();
     /**
      * This generates the transactions - the charge - for the track being built.
      */
@@ -154,7 +157,7 @@ public final class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
+            TerrainTile tile = (FullTerrainTile) w.getTile(x, y);
             int tt = tile.getTerrainTypeID();
             ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
 

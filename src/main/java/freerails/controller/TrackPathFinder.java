@@ -66,7 +66,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         pathFinder.abandonSearch();
     }
 
-    private List<Point2D> convertPath2Points(IntArray path) {
+    private static List<Point2D> convertPath2Points(IntArray path) {
         PositionOnTrack progress = new PositionOnTrack();
         List<Point2D> proposedTrack = new ArrayList<>();
 
@@ -100,7 +100,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
                     ruleNumber);
 
             /* Count number of possible directions. */
-            ArrayList<TileTransition> possibleDirections = new ArrayList<>();
+            List<TileTransition> possibleDirections = new ArrayList<>();
 
             for (int i = 0; i < 8; i++) {
                 TileTransition direction = TileTransition.getInstance(i);

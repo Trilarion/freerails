@@ -30,6 +30,7 @@ import freerails.world.terrain.TerrainType;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
@@ -53,7 +54,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
             TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
             rgbValues[i] = t.getRGB();
             images[i] = createImageFor(t);
-            HashMap<Integer, Integer> rgb2index = new HashMap<>();
+            Map<Integer, Integer> rgb2index = new HashMap<>();
             rgb2index.put(t.getRGB(), i);
         }
     }
@@ -86,8 +87,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
         return true;
     }
 
-    @SuppressWarnings("unused")
-    class SimpleTileRenderer implements TileRenderer {
+    static class SimpleTileRenderer implements TileRenderer {
         Image i;
 
         public SimpleTileRenderer() {

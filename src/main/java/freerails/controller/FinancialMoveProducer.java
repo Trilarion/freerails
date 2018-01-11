@@ -36,4 +36,6 @@ public class FinancialMoveProducer {
      */
     public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
 
+    private FinancialMoveProducer() {
+    }
 }

@@ -65,7 +65,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void end_CanOnlyBuildOnTheseTerrainTypes() {
         validTrackPlacement = new ValidTrackPlacement(terrainTypes,
-                ValidTrackPlacement.PlacementRule.ONLY_ON_THESE);
+                PlacementRule.ONLY_ON_THESE);
         terrainTypes = null;
     }
 
@@ -85,7 +85,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
 
     public void end_CannotBuildOnTheseTerrainTypes() {
         validTrackPlacement = new ValidTrackPlacement(terrainTypes,
-                ValidTrackPlacement.PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+                PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         terrainTypes = null;
     }
 
@@ -140,7 +140,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_TrackType() {
-        TrackRuleImpl trackRuleImpl = new freerails.world.track.TrackRuleImpl(
+        TrackRule trackRuleImpl = new freerails.world.track.TrackRuleImpl(
                 trackRuleProperties, validTrackConfigurations,
                 validTrackPlacement);
         ruleList.add(trackRuleImpl);

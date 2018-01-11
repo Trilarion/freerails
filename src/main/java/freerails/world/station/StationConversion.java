@@ -18,7 +18,6 @@
 
 package freerails.world.station;
 
-import freerails.util.ImInts;
 import freerails.util.ImmutableList;
 
 import java.io.Serializable;
@@ -39,7 +38,7 @@ public class StationConversion implements Serializable {
      * @param convertedTo
      */
     public StationConversion(Integer[] convertedTo) {
-        this.convertedTo = new ImmutableList<Integer>(convertedTo);
+        this.convertedTo = new ImmutableList<>(convertedTo);
     }
 
     // TODO is this really needed
@@ -94,9 +93,9 @@ public class StationConversion implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof StationConversion) {
-            StationConversion test = (StationConversion) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof StationConversion) {
+            StationConversion test = (StationConversion) obj;
             return convertedTo.equals(test.convertedTo);
         }
         return false;

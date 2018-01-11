@@ -47,7 +47,7 @@ import java.util.Random;
  * TODO: Update the trains position when necessary. Make the train stop at
  * intervals, and slowly accelerate.
  */
-public class TrainMotionExpt extends JComponent {
+public class TrainMotionExperiment extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
     private final World world;
@@ -58,7 +58,7 @@ public class TrainMotionExpt extends JComponent {
     /**
      *
      */
-    public TrainMotionExpt() {
+    public TrainMotionExperiment() {
         world = MapFixtureFactory2.getCopy();
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
         principal = me.getPrincipal();
@@ -73,7 +73,7 @@ public class TrainMotionExpt extends JComponent {
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<Integer>(), from,
+        PreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
                 principal, is);
 
         Move m = addTrain.generateMove(world);
@@ -92,7 +92,7 @@ public class TrainMotionExpt extends JComponent {
 
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        f.getContentPane().add(new TrainMotionExpt());
+        f.getContentPane().add(new TrainMotionExperiment());
 
         ScreenHandler screenHandler = new ScreenHandler(f,
                 ScreenHandler.WINDOWED_MODE);

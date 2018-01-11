@@ -35,7 +35,7 @@ import java.util.TreeMap;
  * does. The {@code key} object could be a location on the map, a
  * position in a list etc.
  *
- * <code>
+ * {@code
  * HashMap underlyingWorldObject;
  *
  * HashMap differences;
@@ -57,7 +57,7 @@ import java.util.TreeMap;
  * return underlyingWorldObject.get(key);
  * }
  * }
- * </code>
+ * }
  *
  * The advantages of using an instance of this class instead of a copy of the
  * world object are:
@@ -180,16 +180,16 @@ public class WorldDiffs extends WorldImpl {
     }
 
     @Override
-    public void setTile(int x, int y, Serializable tile) {
+    public void setTile(int x, int y, Serializable element) {
         Point2D p = new Point2D(x, y);
 
-        if (Utils.equal(underlying.getTile(x, y), tile)) {
+        if (Utils.equal(underlying.getTile(x, y), element)) {
             if (mapDiff.containsKey(p)) {
                 mapDiff.remove(p);
 
             }
         } else {
-            mapDiff.put(p, tile);
+            mapDiff.put(p, element);
         }
     }
 

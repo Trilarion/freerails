@@ -83,7 +83,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
         URL terrainInfoIconUrl = getClass().getResource(
                 ClientConfig.ICON_TERRAIN_INFO);
-        ImageIcon terrainInfoIcon = new ImageIcon(terrainInfoIconUrl);
+        Icon terrainInfoIcon = new ImageIcon(terrainInfoIconUrl);
 
         URL buildTrackIconUrl = getClass().getResource(
                 ClientConfig.ICON_NEW_TRACK);
@@ -162,7 +162,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      */
     public void propertyChange(ModelRoot.Property prop, Object before,
                                Object after) {
-        if (prop.equals(ModelRoot.Property.CURSOR_POSITION)) {
+        if (prop == ModelRoot.Property.CURSOR_POSITION) {
 
             Point2D p = (Point2D) after;
 

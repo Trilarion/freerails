@@ -41,6 +41,9 @@ public class MapFixtureFactory2 {
 
     private static World w;
 
+    private MapFixtureFactory2() {
+    }
+
     /**
      * Returns a world object with a map of size 50*50, 4 players, and track,
      * terrain and cargo types as specified in the xml files used by the actual
@@ -56,17 +59,12 @@ public class MapFixtureFactory2 {
     }
 
     private static World generateWorld() {
+
         World world = new WorldImpl(50, 50);
         TileSetFactory tileFactory = new TileSetFactoryImpl();
-
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-
-        wetf.addTypesToWorld(world);
-
+        WagonAndEngineTypesFactory.addTypesToWorld(world);
         tileFactory.addTerrainTileTypesList(world);
-
         URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
-
         Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
                 track_xml_url);
 

@@ -81,12 +81,7 @@ public class ClientJFrame extends javax.swing.JFrame {
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                exitForm(evt);
-            }
-        });
+        addWindowListener(new MyWindowAdapter());
 
         rhsjPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -164,10 +159,15 @@ public class ClientJFrame extends javax.swing.JFrame {
      * Exit the Application.
      */
     @SuppressWarnings("unused")
-    private void exitForm(java.awt.event.WindowEvent evt) {
+    private static void exitForm(java.awt.event.WindowEvent evt) {
         System.exit(0);
     }
 
-    // End of variables declaration                   
 
+    private static class MyWindowAdapter extends java.awt.event.WindowAdapter {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            exitForm(e);
+        }
+    }
 }

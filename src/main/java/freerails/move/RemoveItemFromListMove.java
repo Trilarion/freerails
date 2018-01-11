@@ -124,9 +124,9 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof RemoveItemFromListMove) {
-            RemoveItemFromListMove test = (RemoveItemFromListMove) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof RemoveItemFromListMove) {
+            RemoveItemFromListMove test = (RemoveItemFromListMove) obj;
 
             if (!item.equals(test.item)) {
                 return false;

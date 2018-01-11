@@ -47,8 +47,8 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * @param p
      * @return
      */
-    public static ChangeTrainMove generateMove(int id, TrainModel before,
-                                               int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal p) {
+    public static Move generateMove(int id, TrainModel before,
+                                    int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal p) {
         TrainModel after = before.getNewInstance(newEngine, newWagons);
 
         return new ChangeTrainMove(id, before, after, p);

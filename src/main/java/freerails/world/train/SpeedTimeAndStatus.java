@@ -28,7 +28,8 @@ import java.io.Serializable;
  */
 public class SpeedTimeAndStatus implements Serializable {
 
-        /**
+    private static final long serialVersionUID = 1769385261436134444L;
+    /**
      *
      */
     public final double dt;
@@ -61,13 +62,13 @@ public class SpeedTimeAndStatus implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof SpeedTimeAndStatus))
+        if (!(obj instanceof SpeedTimeAndStatus))
             return false;
 
-        final SpeedTimeAndStatus speedTimeAndStatus = (SpeedTimeAndStatus) o;
+        final SpeedTimeAndStatus speedTimeAndStatus = (SpeedTimeAndStatus) obj;
 
         if (acceleration != speedTimeAndStatus.acceleration)
             return false;
@@ -77,7 +78,7 @@ public class SpeedTimeAndStatus implements Serializable {
             return false;
         if (speed != speedTimeAndStatus.speed)
             return false;
-        return activity != null ? activity.equals(speedTimeAndStatus.activity) : speedTimeAndStatus.activity == null;
+        return activity != null ? activity == speedTimeAndStatus.activity : speedTimeAndStatus.activity == null;
     }
 
     @Override

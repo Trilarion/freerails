@@ -236,14 +236,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         orders.setCellRenderer(trainOrderJPanel1);
         orders.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ordersKeyPressed(evt);
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                ordersKeyPressed(e);
             }
         });
         orders.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ordersMouseClicked(evt);
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                ordersMouseClicked(e);
             }
         });
 
@@ -445,16 +445,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         orders.setSelectedIndex(i - 1);
     }
 
-    public void setup(ModelRoot mr, RendererRoot vl, Action al) {
-        trainOrderJPanel1.setup(mr, vl, null);
-        modelRoot = mr;
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        trainOrderJPanel1.setup(modelRoot, vl, null);
+        this.modelRoot = modelRoot;
         this.vl = vl;
 
         // This actionListener is fired by the select station popup when a
         // station is selected.
         Action action = new AbstractAction() {
 
-            public void actionPerformed(ActionEvent evt) {
+            private static final long serialVersionUID = -2096909872676721636L;
+
+            public void actionPerformed(ActionEvent e) {
                 sendUpdateMove(selectStationJPanel1.generateNewSchedule());
                 selectStationJPopupMenu.setVisible(false);
                 listModel.fireRefresh();
@@ -462,7 +464,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
 
             }
         };
-        selectStationJPanel1.setup(mr, vl, action);
+        selectStationJPanel1.setup(modelRoot, vl, action);
     }
 
     public void display(int newTrainNumber) {
@@ -502,7 +504,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
      * exists: this method returns the id of the first station that exists.
      */
     private int getFirstStationID() {
-        NonNullElementWorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
+        WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
                 .getWorld(), modelRoot.getPrincipal());
         if (stations.next()) {
             return stations.getIndex();
@@ -524,17 +526,11 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
             int height = image.getHeight(null);
             int width = image.getWidth(null);
             int scale = height / 10;
-            ImageIcon icon = new ImageIcon(image.getScaledInstance(width
+            Icon icon = new ImageIcon(image.getScaledInstance(width
                     / scale, height / scale, Image.SCALE_FAST));
             wagonMenuItem.setIcon(icon);
             wagonMenuItem
-                    .addActionListener(new java.awt.event.ActionListener() {
-                        public void actionPerformed(
-                                java.awt.event.ActionEvent evt) {
-
-                            addWagon(wagonTypeNumber);
-                        }
-                    });
+                    .addActionListener(e -> addWagon(wagonTypeNumber));
             addWagonJMenu.add(wagonMenuItem);
         }
     }
@@ -598,7 +594,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         } else {
             newConsist = new Integer[]{wagonTypeNumber};
         }
-        newOrders = new TrainOrdersModel(oldOrders.getStationID(), new ImmutableList<Integer>(
+        newOrders = new TrainOrdersModel(oldOrders.getStationID(), new ImmutableList<>(
                 newConsist), oldOrders.getWaitUntilFull(), false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
@@ -610,7 +606,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         int orderNumber = orders.getSelectedIndex();
         oldOrders = s.getOrder(orderNumber);
         newOrders = new TrainOrdersModel(oldOrders.getStationID(),
-                new ImmutableList<Integer>(), false, false);
+                new ImmutableList<>(), false, false);
         s.setOrder(orderNumber, newOrders);
         sendUpdateMove(s);
     }
@@ -652,18 +648,18 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View,
         modelRoot.doMove(m);
     }
 
-    public void listUpdated(KEY key, int index, FreerailsPrincipal p) {
+    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
         if (KEY.TRAIN_SCHEDULES == key && scheduleID == index) {
             listModel.fireRefresh();
             enableButtons();
         }
     }
 
-    public void itemAdded(KEY key, int index, FreerailsPrincipal p) {
+    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
         // do nothing.
     }
 
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal p) {
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
         // do nothing.
     }
 

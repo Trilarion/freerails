@@ -46,7 +46,7 @@ public final class CargoType implements Serializable {
         if (!(obj instanceof CargoType))
             return false;
         CargoType other = (CargoType) obj;
-        return other.unitWeight == unitWeight && other.name.equals(name) && other.category.equals(category);
+        return other.unitWeight == unitWeight && other.name.equals(name) && other.category == category;
     }
 
     /**

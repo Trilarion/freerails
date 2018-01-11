@@ -57,18 +57,18 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
     /**
      * @param g
-     * @param screenX
-     * @param screenY
+     * @param renderX
+     * @param renderY
      * @param mapX
      * @param mapY
      * @param w
      */
-    public void renderTile(java.awt.Graphics g, int screenX, int screenY,
+    public void renderTile(java.awt.Graphics g, int renderX, int renderY,
                            int mapX, int mapY, ReadOnlyWorld w) {
         Image icon = getIcon(mapX, mapY, w);
 
         if (null != icon) {
-            g.drawImage(icon, screenX, screenY, null);
+            g.drawImage(icon, renderX, renderY, null);
         }
     }
 

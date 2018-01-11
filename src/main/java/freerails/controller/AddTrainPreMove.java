@@ -72,13 +72,13 @@ public class AddTrainPreMove implements PreMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof AddTrainPreMove))
+        if (!(obj instanceof AddTrainPreMove))
             return false;
 
-        final AddTrainPreMove addTrainPreMove = (AddTrainPreMove) o;
+        final AddTrainPreMove addTrainPreMove = (AddTrainPreMove) obj;
 
         if (engineTypeId != addTrainPreMove.engineTypeId)
             return false;

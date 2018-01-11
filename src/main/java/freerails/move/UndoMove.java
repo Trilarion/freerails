@@ -31,13 +31,13 @@ public class UndoMove implements Move {
     private Move moveToUndo;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof UndoMove))
+        if (!(obj instanceof UndoMove))
             return false;
 
-        final UndoMove undoMove = (UndoMove) o;
+        final UndoMove undoMove = (UndoMove) obj;
 
         return moveToUndo.equals(undoMove.moveToUndo);
     }

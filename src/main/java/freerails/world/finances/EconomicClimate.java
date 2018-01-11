@@ -33,7 +33,7 @@ public class EconomicClimate implements Serializable {
     // TODO why start with 2
     public static final EconomicClimate BOOM = new EconomicClimate("BOOM", 2);
     public static final EconomicClimate PROSPERITY = new EconomicClimate("PROSPERITY", 3);
-    public static final EconomicClimate MODERATION = new EconomicClimate("MODERATION", 4);
+    public static final Serializable MODERATION = new EconomicClimate("MODERATION", 4);
     public static final EconomicClimate RECESSION = new EconomicClimate("RECESSION", 5);
     public static final EconomicClimate PANIC = new EconomicClimate("PANIC", 6);
     private final String name;
@@ -52,14 +52,14 @@ public class EconomicClimate implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (!(o instanceof EconomicClimate)) {
+        if (!(obj instanceof EconomicClimate)) {
             return false;
         }
-        final EconomicClimate economicClimate = (EconomicClimate) o;
+        final EconomicClimate economicClimate = (EconomicClimate) obj;
         if (baseInterestRate != economicClimate.baseInterestRate) {
             return false;
         }

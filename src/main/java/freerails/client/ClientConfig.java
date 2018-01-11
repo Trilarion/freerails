@@ -159,4 +159,6 @@ public class ClientConfig {
      */
     public static final String GRAPHIC_ARROW_DESELECTED = GRAPHICS_PATH + "deselected_arrow.png";
 
+    private ClientConfig() {
+    }
 }

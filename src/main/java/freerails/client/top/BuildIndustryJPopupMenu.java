@@ -78,7 +78,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
                 item.addActionListener(new ActionListener() {
                     private final int terrainType = it.getIndex();
 
-                    public void actionPerformed(ActionEvent arg0) {
+                    public void actionPerformed(ActionEvent e) {
                         Move m1 = new ChangeTileMove(modelRoot.getWorld(),
                                 cursorLocation, terrainType);
                         Transaction t = new ItemTransaction(
@@ -86,7 +86,7 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
                                 1, Money.changeSign(price));
                         Move m2 = new AddTransactionMove(modelRoot
                                 .getPrincipal(), t);
-                        CompositeMove m3 = new CompositeMove(m1, m2);
+                        Move m3 = new CompositeMove(m1, m2);
                         MoveStatus ms = modelRoot.doMove(m3);
 
                         if (!ms.ok) {

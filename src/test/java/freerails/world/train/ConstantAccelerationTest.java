@@ -47,11 +47,11 @@ public class ConstantAccelerationTest extends TestCase {
         checkCalcSCalcVandCalcA(sat, t + ulpt);
         checkCalcSCalcVandCalcA(sat, 0 + Double.MIN_VALUE);
         checkCalcSCalcVandCalcA(sat, t - ulpt);
-        for (double d = 0; d < 1d; d += 0.1d) {
+        for (double d = 0; d < 1.0d; d += 0.1d) {
             checkCalcSCalcVandCalcA(sat, t * d);
         }
         double actualS = sat.calculateDistance(0);
-        assertEquals(0d, actualS);
+        assertEquals(0.0d, actualS);
         actualS = sat.calculateDistance(t);
         assertEquals(s, actualS);
 
@@ -60,11 +60,11 @@ public class ConstantAccelerationTest extends TestCase {
         checkCalcT(sat, s + ulps);
         checkCalcT(sat, 0 + Double.MIN_VALUE);
         checkCalcT(sat, s - ulps);
-        for (double d = 0; d < 1d; d += 0.1d) {
+        for (double d = 0; d < 1.0d; d += 0.1d) {
             checkCalcT(sat, s * d);
         }
         double actualT = sat.calculateTime(0);
-        assertEquals(0d, actualT);
+        assertEquals(0.0d, actualT);
         actualT = sat.calculateTime(s);
         assertEquals(t, actualT);
 

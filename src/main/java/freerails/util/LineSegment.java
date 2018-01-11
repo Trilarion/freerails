@@ -84,15 +84,15 @@ public class LineSegment implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (null == o) {
+    public boolean equals(Object obj) {
+        if (null == obj) {
             return false;
         }
-        if (o == this) {
+        if (obj == this) {
             return true;
         }
-        if (o instanceof LineSegment) {
-            LineSegment line = (LineSegment) o;
+        if (obj instanceof LineSegment) {
+            LineSegment line = (LineSegment) obj;
             return line.x1 == x1 && line.x2 == x2 && line.y1 == y1
                     && line.y2 == y2;
         }

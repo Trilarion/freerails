@@ -23,7 +23,9 @@ package freerails.client.common;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This RepaintManager is intended to be used when we are using active rendering
@@ -37,13 +39,12 @@ import java.util.HashSet;
  * called from the game loop.
  */
 public final class RepaintManagerForActiveRendering extends RepaintManager {
+
     /**
      * The JFrame(s) that are being actively rendered in the game loop(s).
      */
-    private static final HashSet<JFrame> activelyRenderedComponents = new HashSet<>();
-
+    private static final Collection<JFrame> activelyRenderedComponents = new HashSet<>();
     private static final RepaintManagerForActiveRendering instance = new RepaintManagerForActiveRendering();
-
     private static long numRepaintRequests = 0;
     private static long numDirtyRequests;
 
@@ -110,7 +111,7 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         }
     }
 
-    private boolean hasDifferentAncestor(JComponent aComponent) {
+    private static boolean hasDifferentAncestor(JComponent aComponent) {
         Container topLevelAncestor = aComponent.getTopLevelAncestor();
 
         return null != topLevelAncestor

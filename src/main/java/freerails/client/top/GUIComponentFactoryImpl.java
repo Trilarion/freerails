@@ -126,24 +126,22 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 modelRoot);
         actionRoot.setDialogueBoxController(dialogueBoxController);
 
-        modelRoot.addSplitMoveReceiver(new MoveReceiver() {
-            public void process(Move move) {
-                if (move instanceof ChangeGameSpeedMove) {
-                    ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
+        modelRoot.addSplitMoveReceiver(move -> {
+            if (move instanceof ChangeGameSpeedMove) {
+                ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
-                    for (Enumeration<Action> actionsEnum = speedActions
-                            .getActions(); actionsEnum.hasMoreElements(); ) {
-                        Action action = actionsEnum.nextElement();
-                        String actionName = (String) action
-                                .getValue(Action.NAME);
+                for (Enumeration<Action> actionsEnum = speedActions
+                        .getActions(); actionsEnum.hasMoreElements(); ) {
+                    Action action = actionsEnum.nextElement();
+                    String actionName = (String) action
+                            .getValue(Action.NAME);
 
-                        if (actionName.equals(actionRoot.getServerControls()
-                                .getGameSpeedDesc(speedMove.getNewSpeed()))) {
-                            speedActions.setSelectedItem(actionName);
-                        }
-
-                        break;
+                    if (actionName.equals(actionRoot.getServerControls()
+                            .getGameSpeedDesc(speedMove.getNewSpeed()))) {
+                        speedActions.setSelectedItem(actionName);
                     }
+
+                    break;
                 }
             }
         });
@@ -154,7 +152,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     private void countStations() {
-        NonNullElementWorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
+        WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
                 .getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
@@ -165,7 +163,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     private void countTrains() {
-        NonNullElementWorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, modelRoot
+        WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, modelRoot
                 .getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
@@ -214,11 +212,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         JMenu brokerMenu = new JMenu("Broker");
 
         JMenuItem callBrokerJMenuItem = new JMenuItem("Call Broker");
-        callBrokerJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showBrokerScreen();
-            }
-        });
+        callBrokerJMenuItem.addActionListener(e -> dialogueBoxController.showBrokerScreen());
 
         brokerMenu.add(callBrokerJMenuItem);
 
@@ -233,25 +227,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu.setMnemonic(68);
 
         trainOrdersJMenuItem = new JMenuItem("Train Orders");
-        trainOrdersJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showTrainOrders();
-            }
-        });
+        trainOrdersJMenuItem.addActionListener(e -> dialogueBoxController.showTrainOrders());
 
         stationInfoJMenuItem = new JMenuItem("Station Info");
-        stationInfoJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showStationInfo(0);
-            }
-        });
+        stationInfoJMenuItem.addActionListener(e -> dialogueBoxController.showStationInfo(0));
 
         trainListJMenuItem = new JMenuItem("Train List");
-        trainListJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showTrainList();
-            }
-        });
+        trainListJMenuItem.addActionListener(e -> dialogueBoxController.showTrainList());
 
         displayMenu.add(trainOrdersJMenuItem);
         displayMenu.add(stationInfoJMenuItem);
@@ -263,56 +245,44 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         final JCheckBoxMenuItem showCargoMenuItem = new JCheckBoxMenuItem(
                 "Show cargo at stations", true);
         displayMenu.add(showCargoMenuItem);
-        showCargoMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                modelRoot.setProperty(
-                        ModelRoot.Property.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
-                mapViewJComponent.refreshAll();
-            }
+        showCargoMenuItem.addActionListener(e -> {
+            modelRoot.setProperty(
+                    ModelRoot.Property.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
+            mapViewJComponent.refreshAll();
         });
 
         final JCheckBoxMenuItem showStationNamesMenuItem = new JCheckBoxMenuItem(
                 "Show station names", true);
         displayMenu.add(showStationNamesMenuItem);
-        showStationNamesMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES,
-                        showStationNamesMenuItem.isSelected());
-                mapViewJComponent.refreshAll();
-            }
+        showStationNamesMenuItem.addActionListener(e -> {
+            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES,
+                    showStationNamesMenuItem.isSelected());
+            mapViewJComponent.refreshAll();
         });
 
         final JCheckBoxMenuItem showStationBordersMenuItem = new JCheckBoxMenuItem(
                 "Show sphere-of-influence around stations", true);
         displayMenu.add(showStationBordersMenuItem);
-        showStationBordersMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS,
-                        showStationBordersMenuItem.isSelected());
-                mapViewJComponent.refreshAll();
-            }
+        showStationBordersMenuItem.addActionListener(e -> {
+            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS,
+                    showStationBordersMenuItem.isSelected());
+            mapViewJComponent.refreshAll();
         });
 
         final JCheckBoxMenuItem playSoundsMenuItem = new JCheckBoxMenuItem(
                 "Play sounds", false);
         modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS, Boolean.FALSE);
         displayMenu.add(playSoundsMenuItem);
-        playSoundsMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS,
-                        playSoundsMenuItem.isSelected());
-            }
-        });
+        playSoundsMenuItem.addActionListener(e -> modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS,
+                playSoundsMenuItem.isSelected()));
         boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
 
         final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem(
                 "Show FPS stats", showFps);
         displayMenu.add(showFPSMenuItem);
-        showFPSMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String newValue = String.valueOf(showFPSMenuItem.isSelected());
-                System.setProperty("SHOWFPS", newValue);
-            }
+        showFPSMenuItem.addActionListener(e -> {
+            String newValue = String.valueOf(showFPSMenuItem.isSelected());
+            System.setProperty("SHOWFPS", newValue);
         });
 
         return displayMenu;
@@ -330,11 +300,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         JMenuItem quitJMenuItem = new JMenuItem("Exit Game");
         quitJMenuItem.setMnemonic(88);
 
-        quitJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        quitJMenuItem.addActionListener(e -> System.exit(0));
 
         final JMenu newGameJMenu = new JMenu(sc.getNewGameAction());
         newGameJMenu.addMenuListener(new MenuListener() {
@@ -404,38 +370,36 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         if (CHEAT) {
             /* For testing. */
-            final ActionListener build200trains = new ActionListener() {
-                public void actionPerformed(ActionEvent arg0) {
-                    WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS,
-                            modelRoot.getWorld(), modelRoot.getPrincipal());
+            final ActionListener build200trains = e -> {
+                WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS,
+                        modelRoot.getWorld(), modelRoot.getPrincipal());
 
-                    if (wi.next()) {
-                        Random randy = new Random();
-                        Station station = (Station) wi.getElement();
+                if (wi.next()) {
+                    Random randy = new Random();
+                    Station station = (Station) wi.getElement();
 
-                        ImmutableList<TrainBlueprint> before = station.getProduction();
-                        int numberOfEngineTypes = modelRoot.getWorld().size(
-                                SKEY.ENGINE_TYPES) - 1;
-                        int numberOfcargoTypes = modelRoot.getWorld().size(
-                                SKEY.CARGO_TYPES) - 1;
-                        TrainBlueprint[] temp = new TrainBlueprint[200];
+                    ImmutableList<TrainBlueprint> before = station.getProduction();
+                    int numberOfEngineTypes = modelRoot.getWorld().size(
+                            SKEY.ENGINE_TYPES) - 1;
+                    int numberOfcargoTypes = modelRoot.getWorld().size(
+                            SKEY.CARGO_TYPES) - 1;
+                    TrainBlueprint[] temp = new TrainBlueprint[200];
 
-                        for (int i = 0; i < temp.length; i++) {
-                            int engineType = randy.nextInt(numberOfEngineTypes);
-                            Integer[] wagonTypes = new Integer[]{
-                                    randy.nextInt(numberOfcargoTypes),
-                                    randy.nextInt(numberOfcargoTypes),
-                                    randy.nextInt(numberOfcargoTypes)};
-                            TrainBlueprint trainBlueprint = new TrainBlueprint(
-                                    engineType, wagonTypes);
-                            temp[i] = trainBlueprint;
-                        }
-                        ImmutableList<TrainBlueprint> after = new ImmutableList<>(
-                                temp);
-                        Move m = new ChangeProductionAtEngineShopMove(before,
-                                after, wi.getIndex(), modelRoot.getPrincipal());
-                        modelRoot.doMove(m);
+                    for (int i = 0; i < temp.length; i++) {
+                        int engineType = randy.nextInt(numberOfEngineTypes);
+                        Integer[] wagonTypes = new Integer[]{
+                                randy.nextInt(numberOfcargoTypes),
+                                randy.nextInt(numberOfcargoTypes),
+                                randy.nextInt(numberOfcargoTypes)};
+                        TrainBlueprint trainBlueprint = new TrainBlueprint(
+                                engineType, wagonTypes);
+                        temp[i] = trainBlueprint;
                     }
+                    ImmutableList<TrainBlueprint> after = new ImmutableList<>(
+                            temp);
+                    Move m = new ChangeProductionAtEngineShopMove(before,
+                            after, wi.getIndex(), modelRoot.getPrincipal());
+                    modelRoot.doMove(m);
                 }
             };
 
@@ -455,33 +419,17 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         JMenu helpMenu = new JMenu("Help");
 
         JMenuItem about = new JMenuItem("About");
-        about.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogueBoxController.showAbout();
-            }
-        });
+        about.addActionListener(e -> dialogueBoxController.showAbout());
 
         JMenuItem how2play = new JMenuItem("Getting started");
-        how2play.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogueBoxController.showHow2Play();
-            }
-        });
+        how2play.addActionListener(e -> dialogueBoxController.showHow2Play());
 
         JMenuItem showControls = new JMenuItem("Show game controls");
-        showControls.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dialogueBoxController.showGameControls();
-            }
-        });
+        showControls.addActionListener(e -> dialogueBoxController.showGameControls());
 
         JMenuItem showJavaProperties = new JMenuItem("Show Java Properties");
         showJavaProperties
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        dialogueBoxController.showJavaProperties();
-                    }
-                });
+                .addActionListener(e -> dialogueBoxController.showJavaProperties());
 
         helpMenu.add(showControls);
         helpMenu.add(how2play);
@@ -512,31 +460,15 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         JMenu reportsMenu = new JMenu("Reports");
 
         JMenuItem incomeStatementJMenuItem = new JMenuItem("Income Statement");
-        incomeStatementJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showIncomeStatement();
-            }
-        });
+        incomeStatementJMenuItem.addActionListener(e -> dialogueBoxController.showIncomeStatement());
 
         JMenuItem balanceSheetJMenuItem = new JMenuItem("Balance Sheet");
-        balanceSheetJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showBalanceSheet();
-            }
-        });
+        balanceSheetJMenuItem.addActionListener(e -> dialogueBoxController.showBalanceSheet());
         JMenuItem leaderBoardJMenuItem = new JMenuItem("Leaderboard");
-        leaderBoardJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showLeaderBoard();
-            }
-        });
+        leaderBoardJMenuItem.addActionListener(e -> dialogueBoxController.showLeaderBoard());
 
         JMenuItem networthGraphJMenuItem = new JMenuItem("Networth Graph");
-        networthGraphJMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dialogueBoxController.showNetworthGraph();
-            }
-        });
+        networthGraphJMenuItem.addActionListener(e -> dialogueBoxController.showNetworthGraph());
 
         reportsMenu.add(balanceSheetJMenuItem);
         reportsMenu.add(incomeStatementJMenuItem);

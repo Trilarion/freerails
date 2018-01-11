@@ -41,11 +41,9 @@ import java.util.Map;
  */
 public class TrainOrderJPanel implements View, ListCellRenderer {
 
-    @SuppressWarnings("unused")
-    private static final long serialVersionUID = 4051047466990319413L;
-    private final ImageIcon gotoNow = new ImageIcon(TrainOrderJPanel.class
+    private final Icon gotoNow = new ImageIcon(TrainOrderJPanel.class
             .getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));
-    private final ImageIcon gotoAfterPriorityOrders = new ImageIcon(
+    private final Icon gotoAfterPriorityOrders = new ImageIcon(
             TrainOrderJPanel.class
                     .getResource(ClientConfig.GRAPHIC_ARROW_DESELECTED));
     private final ImageIcon dontGoto = null;
@@ -70,16 +68,16 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
-        this.mr = mr;
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+        this.mr = modelRoot;
         this.vl = vl;
         this.closeAction = closeAction;
-        w = mr.getWorld();
-        principal = mr.getPrincipal();
+        w = modelRoot.getWorld();
+        principal = modelRoot.getPrincipal();
     }
 
     public java.awt.Component getListCellRendererComponent(JList list,
@@ -184,10 +182,6 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         return panelSingle;
     }
 
-    enum Selection {
-        select, selectNoFocus, unselect
-    }
-
     // 666 model still not correct ...
 
     private final class TrainOrderJPanelSingle extends javax.swing.JPanel
@@ -267,12 +261,12 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
         // End of variables declaration//GEN-END:variables
 
-        public void setup(ModelRoot mr, RendererRoot vl, Action closeAction) {
-            w = mr.getWorld();
+        public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+            w = modelRoot.getWorld();
             TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;
             trainViewJPanel.setHeight(15);
-            trainViewJPanel.setup(mr, vl, null);
-            principal = mr.getPrincipal();
+            trainViewJPanel.setup(modelRoot, vl, null);
+            principal = modelRoot.getPrincipal();
 
         }
 
@@ -282,7 +276,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
      * contains all data which is displayed for one station (order). This is
      * used to find prebuilt Panels
      */
-    private class TrainOrderModel {
+    private static class TrainOrderModel {
         final String stationName;
         final String waitUntilFull;
         final Selection selected;

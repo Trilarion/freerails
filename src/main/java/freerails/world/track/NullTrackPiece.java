@@ -69,8 +69,8 @@ public final class NullTrackPiece implements TrackPiece {
     }
 
     @Override
-    public boolean equals(Object o) {
-        return o == this;
+    public boolean equals(Object obj) {
+        return obj == this;
     }
 
     @Override

@@ -194,7 +194,7 @@ public class TrainStopsHandler implements Serializable {
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
                 trainId);
         int scheduleID = train.getScheduleID();
-        ImmutableSchedule schedule = (ImmutableSchedule) worldDiffs.get(
+        Schedule schedule = (ImmutableSchedule) worldDiffs.get(
                 principal, KEY.TRAIN_SCHEDULES, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {

@@ -50,13 +50,13 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof CompositeSpeedAgainstTime))
+        if (!(obj instanceof CompositeSpeedAgainstTime))
             return false;
 
-        final CompositeSpeedAgainstTime compositeSpeedAgainstTime = (CompositeSpeedAgainstTime) o;
+        final CompositeSpeedAgainstTime compositeSpeedAgainstTime = (CompositeSpeedAgainstTime) obj;
 
         if (finalT != compositeSpeedAgainstTime.finalT)
             return false;
@@ -190,7 +190,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     void checkT(double t) {
-        if (t < 0d || t > finalT)
+        if (t < 0.0d || t > finalT)
             throw new IllegalArgumentException("t=" + t + ", but duration="
                     + finalT);
     }

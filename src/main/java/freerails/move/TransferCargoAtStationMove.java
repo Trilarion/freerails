@@ -19,6 +19,7 @@
 package freerails.move;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This {@link CompositeMove} transfers cargo from a train to a station and
@@ -46,7 +47,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
      * @param movesArrayList
      * @param waiting
      */
-    public TransferCargoAtStationMove(ArrayList<Move> movesArrayList,
+    public TransferCargoAtStationMove(List<Move> movesArrayList,
                                       boolean waiting) {
         super(movesArrayList);
     }

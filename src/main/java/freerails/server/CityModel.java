@@ -28,6 +28,7 @@ import freerails.world.terrain.TerrainType;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 import java.util.List;
 
@@ -36,10 +37,10 @@ import java.util.List;
  */
 class CityModel {
 
-    final List<CityTile> urbanCityTiles = new ArrayList<>();
-    final List<CityTile> industryCityTiles = new ArrayList<>();
+    final Collection<CityTile> urbanCityTiles = new ArrayList<>();
+    final Collection<CityTile> industryCityTiles = new ArrayList<>();
     final List<TerrainType> industriesNotAtCity = new ArrayList<>();
-    final List<CityTile> resourceCityTiles = new ArrayList<>();
+    final Collection<CityTile> resourceCityTiles = new ArrayList<>();
     final List<Point> clearTiles = new ArrayList<>();
     /**
      * The number of stations within this city's bounds.
@@ -50,19 +51,19 @@ class CityModel {
         Random rand = new Random();
 
         // Pick a spot at random at which to place the tile.
-        if (clearTiles.size() > 0) {
+        if (!clearTiles.isEmpty()) {
             int tilePos = rand.nextInt(clearTiles.size());
             Point p = clearTiles.remove(tilePos);
 
-            if (type.getCategory().equals(TerrainCategory.Urban)) {
+            if (type.getCategory() == TerrainCategory.Urban) {
                 urbanCityTiles.add(new CityTile(p, type));
-            } else if (type.getCategory().equals(TerrainCategory.Industry)) {
+            } else if (type.getCategory() == TerrainCategory.Industry) {
                 industryCityTiles.add(new CityTile(p, type));
                 industriesNotAtCity.remove(type);
-            } else if (type.getCategory().equals(TerrainCategory.Country)) {
+            } else if (type.getCategory() == TerrainCategory.Country) {
                 throw new IllegalArgumentException(
                         "call remove(.) to replace a city tile with a country tile!");
-            } else if (type.getCategory().equals(TerrainCategory.Resource)) {
+            } else if (type.getCategory() == TerrainCategory.Resource) {
                 resourceCityTiles.add(new CityTile(p, type));
             }
         }
@@ -81,7 +82,7 @@ class CityModel {
         for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
             TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
 
-            if (type.getCategory().equals(TerrainCategory.Industry)) {
+            if (type.getCategory() == TerrainCategory.Industry) {
                 industriesNotAtCity.add(type);
             }
         }
@@ -110,17 +111,14 @@ class CityModel {
                 TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
                         terrainTypeNumber);
 
-                if (type.getCategory().equals(TerrainCategory.Urban)) {
+                if (type.getCategory() == TerrainCategory.Urban) {
                     urbanCityTiles.add(new CityTile(new Point(x, y), type));
-                } else if (type.getCategory().equals(
-                        TerrainCategory.Industry)) {
+                } else if (type.getCategory() == TerrainCategory.Industry) {
                     industryCityTiles.add(new CityTile(new Point(x, y), type));
                     industriesNotAtCity.remove(type);
-                } else if (type.getCategory().equals(
-                        TerrainCategory.Country)) {
+                } else if (type.getCategory() == TerrainCategory.Country) {
                     clearTiles.add(new Point(x, y));
-                } else if (type.getCategory().equals(
-                        TerrainCategory.Resource)) {
+                } else if (type.getCategory() == TerrainCategory.Resource) {
                     resourceCityTiles.add(new CityTile(new Point(x, y), type));
                 }
             }
@@ -146,7 +144,7 @@ class CityModel {
         }
     }
 
-    private void writeTile(World w, CityTile cityTile) {
+    private static void writeTile(World w, CityTile cityTile) {
         int type = 0;
 
         while (!w.get(SKEY.TERRAIN_TYPES, type).equals(cityTile.type)) {

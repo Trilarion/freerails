@@ -212,13 +212,13 @@ public class WorldImplTest extends TestCase {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o)
+        public boolean equals(Object obj) {
+            if (this == obj)
                 return true;
-            if (!(o instanceof TestState))
+            if (!(obj instanceof TestState))
                 return false;
 
-            final TestState testState = (TestState) o;
+            final TestState testState = (TestState) obj;
 
             return x == testState.x;
         }
@@ -247,13 +247,13 @@ public class WorldImplTest extends TestCase {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o)
+        public boolean equals(Object obj) {
+            if (this == obj)
                 return true;
-            if (!(o instanceof TestActivity))
+            if (!(obj instanceof TestActivity))
                 return false;
 
-            final TestActivity testActivity = (TestActivity) o;
+            final TestActivity testActivity = (TestActivity) obj;
 
             return !(duration != testActivity.duration);
         }

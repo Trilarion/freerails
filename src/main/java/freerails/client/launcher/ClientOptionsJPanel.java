@@ -282,8 +282,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                formComponentShown(e);
             }
         });
 
@@ -366,7 +366,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         String fullscreenProp = owner
                 .getProperty(LauncherInterface.CLIENT_FULLSCREEN_PROPERTY);
         boolean fullscreen = false;
-        if (displayMode != null && displayMode.trim().length() > 0) {
+        if (displayMode != null && !displayMode.trim().isEmpty()) {
             fullscreen = Boolean.valueOf(fullscreenProp);
         }
 

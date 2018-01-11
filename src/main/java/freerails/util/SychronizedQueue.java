@@ -19,6 +19,7 @@
 package freerails.util;
 
 import java.io.Serializable;
+import java.util.Deque;
 import java.util.LinkedList;
 
 // TODO perhaps an arrayList is better (-> profile it)
@@ -28,7 +29,7 @@ import java.util.LinkedList;
  */
 public class SychronizedQueue {
 
-    private final LinkedList<Serializable> queue = new LinkedList<>();
+    private final Deque<Serializable> queue = new LinkedList<>();
 
     /**
      * @param f

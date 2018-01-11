@@ -53,13 +53,13 @@ public class LogOnResponse implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof LogOnResponse))
+        if (!(obj instanceof LogOnResponse))
             return false;
 
-        final LogOnResponse logOnResponse = (LogOnResponse) o;
+        final LogOnResponse logOnResponse = (LogOnResponse) obj;
 
         if (playerNumber != logOnResponse.playerNumber)
             return false;

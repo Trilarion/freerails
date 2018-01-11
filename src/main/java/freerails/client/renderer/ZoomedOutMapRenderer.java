@@ -90,8 +90,8 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
      * @param maxSize
      * @return
      */
-    public static ZoomedOutMapRenderer getInstance(ReadOnlyWorld world,
-                                                   Dimension maxSize) {
+    public static MapRenderer getInstance(ReadOnlyWorld world,
+                                          Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
         double worldWidth = world.getMapWidth();
         double worldHeight = world.getMapHeight();

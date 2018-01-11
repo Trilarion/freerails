@@ -45,6 +45,9 @@ public class ProcessCargoAtStationMoveGenerator {
      */
     private static final int MAGIC_NUMBER = 75;
 
+    private ProcessCargoAtStationMoveGenerator() {
+    }
+
     /**
      * @param w
      * @param bundle

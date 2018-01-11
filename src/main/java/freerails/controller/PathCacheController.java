@@ -24,6 +24,9 @@ package freerails.controller;
  */
 public class PathCacheController {
 
+    private PathCacheController() {
+    }
+
     /**
      *
      */

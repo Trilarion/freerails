@@ -46,13 +46,13 @@ public class City implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof City))
+        if (!(obj instanceof City))
             return false;
 
-        final City city = (City) o;
+        final City city = (City) obj;
 
         if (x != city.x)
             return false;

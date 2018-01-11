@@ -36,6 +36,7 @@ import freerails.world.station.Station;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Inspects incoming moves and generates a user message if
@@ -74,7 +75,7 @@ public class UserMessageGenerator implements MoveReceiver {
 
         if (move instanceof WorldDiffMove) {
             WorldDiffMove wdm = (WorldDiffMove) move;
-            if (wdm.getCause().equals(WorldDiffMove.Cause.TrainArrives)) {
+            if (wdm.getCause() == WorldDiffMove.Cause.TrainArrives) {
                 trainArrives(wdm);
             }
 
@@ -88,7 +89,7 @@ public class UserMessageGenerator implements MoveReceiver {
      * cash register sound to indicate that revenue is coming in.
      */
     private void trainArrives(WorldDiffMove wdm) {
-        ArrayList<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
+        List<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
         CompositeMove listChanges = wdm.getListChanges();
         for (int i = 0; i < listChanges.size(); i++) {
             Move m = listChanges.getMoves().get(i);
@@ -106,7 +107,7 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
             }
         }
-        if (cargoDelivered.size() > 0) {
+        if (!cargoDelivered.isEmpty()) {
             ReadOnlyWorld world = modelRoot.getWorld();
 
             StringBuilder message = new StringBuilder();

@@ -30,6 +30,9 @@ import java.util.List;
  */
 public class Utils {
 
+    private Utils() {
+    }
+
     /**
      *
      * @param mutableList
@@ -86,7 +89,7 @@ public class Utils {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
-            ObjectOutputStream objectOut = new ObjectOutputStream(out);
+            ObjectOutput objectOut = new ObjectOutputStream(out);
             objectOut.writeObject(m);
             objectOut.flush();
         } catch (IOException e) {
@@ -147,7 +150,7 @@ public class Utils {
         for (int i = 0; i < values.length; i++) {
             integers[i] = values[i] ? 1 : 0;
         }
-        return new ImmutableList<Integer>(integers);
+        return new ImmutableList<>(integers);
     }
 
     /**
@@ -171,7 +174,7 @@ public class Utils {
         for (int i = 0; i < list.size() - 1; i++) {
             values[i] = list.get(i);
         }
-        return new ImmutableList<T>(values);
+        return new ImmutableList<>(values);
     }
 
     public static <T extends Serializable> ImmutableList<T> combineTwoImmutableLists(ImmutableList<T> listA, ImmutableList<T> listB) {
@@ -182,6 +185,6 @@ public class Utils {
         for (int i = 0; i < listB.size(); i++) {
             values[listA.size() + i] = listB.get(i);
         }
-        return new ImmutableList<T>(values);
+        return new ImmutableList<>(values);
     }
 }

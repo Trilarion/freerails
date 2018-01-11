@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
+import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
@@ -66,7 +67,7 @@ public class TrainAccessor {
      * @return
      */
     public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld row,
-                                         ImmutableCargoBatchBundle onTrain, ImmutableList<Integer> consist) {
+                                                         CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);
@@ -83,7 +84,7 @@ public class TrainAccessor {
             spaceAvailable[cargoType] = spaceAvailable[cargoType]
                     - onTrain.getAmountOfType(cargoType);
         }
-        return new ImmutableList<Integer>(spaceAvailable);
+        return new ImmutableList<>(spaceAvailable);
 
     }
 
@@ -186,7 +187,7 @@ public class TrainAccessor {
     /**
      * @return
      */
-    public ImmutableCargoBatchBundle getCargoBundle() {
+    public CargoBatchBundle getCargoBundle() {
         TrainModel train = getTrain();
         return (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train
                 .getCargoBundleID());
@@ -229,7 +230,7 @@ public class TrainAccessor {
     public Point2D getTarget() {
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
         int scheduleID = train.getScheduleID();
-        ImmutableSchedule schedule = (ImmutableSchedule) w.get(p,
+        Schedule schedule = (ImmutableSchedule) w.get(p,
                 KEY.TRAIN_SCHEDULES, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
@@ -283,7 +284,7 @@ public class TrainAccessor {
     public ImmutableList<Integer> spaceAvailable() {
 
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
-        ImmutableCargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p,
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p,
                 KEY.CARGO_BUNDLES, train.getCargoBundleID());
         return spaceAvailable2(w, bundleOnTrain, train.getConsist());
 

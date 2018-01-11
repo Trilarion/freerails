@@ -55,9 +55,9 @@ public class MyDisplayMode {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof MyDisplayMode) {
-            MyDisplayMode test = (MyDisplayMode) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof MyDisplayMode) {
+            MyDisplayMode test = (MyDisplayMode) obj;
 
             return test.displayMode.equals(displayMode);
         }

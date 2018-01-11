@@ -70,9 +70,9 @@ public class GameTime implements Serializable, Comparable<GameTime> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof GameTime) {
-            GameTime test = (GameTime) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof GameTime) {
+            GameTime test = (GameTime) obj;
 
             return ticks == test.ticks;
         }
@@ -82,13 +82,13 @@ public class GameTime implements Serializable, Comparable<GameTime> {
     /**
      * Compares two GameTimes for ordering.
      *
-     * @param t
+     * @param o
      * @return 0 if t is equal to this GameTime; a value less than 0 if this
      * GameTime is before t; and a value greater than 0 if this GameTime
      * is after t.
      */
-    public int compareTo(GameTime t) {
-        return ticks - t.ticks;
+    public int compareTo(GameTime o) {
+        return ticks - o.ticks;
     }
 
 }

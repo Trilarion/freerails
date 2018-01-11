@@ -93,7 +93,7 @@ public class TrackTilesGenerator extends JPanel {
 
     }
 
-    private Point2D.Double controlPoint(Point2D.Double from) {
+    private static Point2D.Double controlPoint(Point2D.Double from) {
         double weight = 0.3;
         double x = from.getX() * weight + 300 * (1 - weight);
         double y = from.getY() * weight + 300 * (1 - weight);
@@ -105,14 +105,14 @@ public class TrackTilesGenerator extends JPanel {
         for (TrackRule rule : rules) {
             TrackCategories category = rule.getCategory();
             Image icon;
-            if (category.equals(TrackCategories.bridge)
-                    || category.equals(TrackCategories.station)) {
+            if (category == TrackCategories.bridge
+                    || category == TrackCategories.station) {
                 tr.setIcon(rule.getTypeName());
                 icon = tr.icon;
             } else {
                 icon = null;
             }
-            tr.tunnel = category.equals(TrackCategories.tunnel);
+            tr.tunnel = category == TrackCategories.tunnel;
             tr.doubleTrack = rule.isDouble();
 
             for (int i = 0; i < 512; i++) {

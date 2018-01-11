@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import freerails.client.launcher.Launcher;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -30,6 +31,7 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A client for FreerailsGameServer.
@@ -38,7 +40,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         UntriedMoveReceiver, ServerCommandReceiver {
     private static final Logger logger = Logger.getLogger(FreerailsClient.class
             .getName());
-    private final HashMap<String, Serializable> properties = new HashMap<>();
+    private final Map<String, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveFork;
 
     /**
@@ -85,7 +87,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         }
 
         try {
-            LogOnRequest request = new LogOnRequest(username, password);
+            Serializable request = new LogOnRequest(username, password);
             connectionToServer.writeToServer(request);
 
             return (LogOnResponse) connectionToServer
@@ -111,7 +113,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     public final LogOnResponse connect(GameServer server, String username,
                                        String password) {
         try {
-            LogOnRequest request = new LogOnRequest(username, password);
+            Serializable request = new LogOnRequest(username, password);
             connectionToServer = new LocalConnection();
             connectionToServer.writeToServer(request);
             server.addConnection((LocalConnection) connectionToServer);
@@ -139,10 +141,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
         }
     }
 
-    public final void setGameModel(FreerailsMutableSerializable o) {
-        world = (World) o;
-        committer = new MovePrecommitter(world);
-        newWorld(world);
+    public final void setGameModel(FreerailsMutableSerializable world) {
+        this.world = (World) world;
+        committer = new MovePrecommitter(this.world);
+        newWorld(this.world);
     }
 
     /**
@@ -198,7 +200,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
             clientUpdates();
         } catch (IOException e) {
-            ReportBugTextGenerator.unexpectedException(e);
+            Launcher.emergencyStop();
         }
     }
 

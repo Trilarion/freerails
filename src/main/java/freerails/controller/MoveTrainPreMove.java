@@ -39,6 +39,7 @@ import freerails.world.train.*;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Generates moves for changes in train position and stops at stations.
@@ -51,7 +52,7 @@ public class MoveTrainPreMove implements PreMove {
      * 666 Performance cache must be cleared if track on map is build ! make a
      * change listener!
      */
-    private static final HashMap<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
+    private static final Map<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
@@ -117,7 +118,7 @@ public class MoveTrainPreMove implements PreMove {
         } catch (PathNotFoundException e) {
             // The pathfinder couldn't find a path so we
             // go in any legal direction.
-            FlatTrackExplorer explorer = new FlatTrackExplorer(world,
+            GraphExplorer explorer = new FlatTrackExplorer(world,
                     currentPosition);
             explorer.nextEdge();
             int next = explorer.getVertexConnectedByEdge();
@@ -137,7 +138,7 @@ public class MoveTrainPreMove implements PreMove {
         // CC:"+cacheCleared);
     }
 
-    double acceleration(int wagons) {
+    static double acceleration(int wagons) {
         return 0.5d / (wagons + 1);
     }
 
@@ -192,13 +193,13 @@ public class MoveTrainPreMove implements PreMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof MoveTrainPreMove))
+        if (!(obj instanceof MoveTrainPreMove))
             return false;
 
-        final MoveTrainPreMove moveTrainPreMove = (MoveTrainPreMove) o;
+        final MoveTrainPreMove moveTrainPreMove = (MoveTrainPreMove) obj;
 
         if (trainID != moveTrainPreMove.trainID)
             return false;
@@ -404,7 +405,7 @@ public class MoveTrainPreMove implements PreMove {
         return new NextActivityMove(nextMotion, trainID, principal);
     }
 
-    double topSpeed(int wagons) {
+    static double topSpeed(int wagons) {
         return 10 / (wagons + 1);
     }
 }

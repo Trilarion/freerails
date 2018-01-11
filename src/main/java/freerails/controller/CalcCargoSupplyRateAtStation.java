@@ -235,7 +235,7 @@ public class CalcCargoSupplyRateAtStation {
      * @return
      */
     public Station calculations(Station station) {
-        int[] cargoSupplied = new int[w.size(SKEY.CARGO_TYPES)];
+        Integer[] cargoSupplied = new Integer[w.size(SKEY.CARGO_TYPES)];
 
         List<CargoElementObject> supply = scanAdjacentTiles();
 

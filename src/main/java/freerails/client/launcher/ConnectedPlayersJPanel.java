@@ -69,18 +69,7 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(title, gridBagConstraints);
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-
-                        final String[] strings = {"No players are logged on!"};
-
-            public int getSize() {
-                return strings.length;
-            }
-
-            public Object getElementAt(int i) {
-                return strings[i];
-            }
-        });
+        jList1.setModel(new MyAbstractListModel());
         jScrollPane1.setViewportView(jList1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -116,6 +105,21 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
             } else {
                 EventQueue.invokeLater(this::updateListOfPlayers);
             }
+        }
+    }
+
+    private static class MyAbstractListModel extends javax.swing.AbstractListModel {
+
+        private static final long serialVersionUID = -7077093078891444168L;
+
+        final String[] strings = {"No players are logged on!"};
+
+        public int getSize() {
+            return strings.length;
+        }
+
+        public Object getElementAt(int index) {
+            return strings[index];
         }
     }
     // End of variables declaration//GEN-END:variables

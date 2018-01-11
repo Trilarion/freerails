@@ -44,13 +44,13 @@ public final class TrackPieceImpl implements TrackPiece {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (o == null || getClass() != o.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
 
-        final TrackPieceImpl that = (TrackPieceImpl) o;
+        final TrackPieceImpl that = (TrackPieceImpl) obj;
 
         if (ownerID != that.ownerID)
             return false;

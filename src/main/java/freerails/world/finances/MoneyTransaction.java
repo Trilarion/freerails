@@ -44,9 +44,9 @@ public class MoneyTransaction implements Transaction {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof MoneyTransaction) {
-            MoneyTransaction other = (MoneyTransaction) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof MoneyTransaction) {
+            MoneyTransaction other = (MoneyTransaction) obj;
             return other.value.equals(value) && category == other.category;
         }
         return false;

@@ -59,13 +59,13 @@ public class MessageStatus implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof MessageStatus))
+        if (!(obj instanceof MessageStatus))
             return false;
 
-        final MessageStatus messageStatus = (MessageStatus) o;
+        final MessageStatus messageStatus = (MessageStatus) obj;
 
         if (id != messageStatus.id)
             return false;

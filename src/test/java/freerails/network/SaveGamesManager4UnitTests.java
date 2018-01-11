@@ -57,13 +57,13 @@ public class SaveGamesManager4UnitTests implements SaveGamesManager {
 
     /**
      * @param w
-     * @param name
+     * @param s
      * @throws IOException
      */
-    public void saveGame(Serializable w, String name) throws IOException {
+    public void saveGame(Serializable w, String s) throws IOException {
         // Make a copy so that the saved version's state cannot be changed.
         Serializable copy = Utils.cloneBySerialisation(w);
-        this.savedGames.put(name, copy);
+        this.savedGames.put(s, copy);
     }
 
     /**

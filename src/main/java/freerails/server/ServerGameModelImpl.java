@@ -21,6 +21,7 @@
  */
 package freerails.server;
 
+import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
@@ -98,7 +99,7 @@ public class ServerGameModelImpl implements ServerGameModel {
         CityTilePositioner ctp = new CityTilePositioner(wd);
         ctp.growCities();
 
-        WorldDiffMove move = new WorldDiffMove(world, wd,
+        Move move = new WorldDiffMove(world, wd,
                 WorldDiffMove.Cause.YearEnd);
         moveExecuter.process(move);
     }

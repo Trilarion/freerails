@@ -62,9 +62,9 @@ public final class TrackRuleProperties implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o instanceof TrackRuleProperties) {
-            TrackRuleProperties test = (TrackRuleProperties) o;
+    public boolean equals(Object obj) {
+        if (obj instanceof TrackRuleProperties) {
+            TrackRuleProperties test = (TrackRuleProperties) obj;
 
             return rGBvalue == test.rGBvalue
                     && enableDoubleTrack == test.enableDoubleTrack
@@ -87,10 +87,6 @@ public final class TrackRuleProperties implements Serializable {
      */
     public Money getPrice() {
         return price;
-    }
-
-    private int getRGBvalue() {
-        return rGBvalue;
     }
 
     /**
@@ -133,7 +129,7 @@ public final class TrackRuleProperties implements Serializable {
      * @return
      */
     public boolean isStation() {
-        return category.equals(TrackCategories.station);
+        return category == TrackCategories.station;
     }
 
     /**

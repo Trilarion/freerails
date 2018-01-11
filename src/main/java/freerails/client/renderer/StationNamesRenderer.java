@@ -41,7 +41,7 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class StationNamesRenderer implements Painter {
     static final float[] dash1 = {5.0f};
-    static final BasicStroke dashed = new BasicStroke(1.0f,
+    static final Stroke dashed = new BasicStroke(1.0f,
             BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
     private final ReadOnlyWorld w;
     private final ModelRoot modelRoot;

@@ -83,15 +83,15 @@ public class Pair<A, B> {
     /**
      * Implementation of an equals method.
      *
-     * @param other Another object.
+     * @param obj Another object.
      * @return True if they are of the same class and not null and both elements
      * are equal.
      */
     @Override
-    public boolean equals(Object other) {
-        if (other != null && getClass() == other.getClass() && a != null && b != null) {
+    public boolean equals(Object obj) {
+        if (obj != null && getClass() == obj.getClass() && a != null && b != null) {
             @SuppressWarnings("unchecked")
-            Pair<A, B> o = (Pair<A, B>) other;
+            Pair<A, B> o = (Pair<A, B>) obj;
             return a.equals(o.getA()) && b.equals(o.getB());
         }
         return false;

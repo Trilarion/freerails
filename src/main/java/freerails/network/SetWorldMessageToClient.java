@@ -50,13 +50,13 @@ public class SetWorldMessageToClient implements MessageToClient {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof SetWorldMessageToClient))
+        if (!(obj instanceof SetWorldMessageToClient))
             return false;
 
-        final SetWorldMessageToClient setWorldMessageToClient = (SetWorldMessageToClient) o;
+        final SetWorldMessageToClient setWorldMessageToClient = (SetWorldMessageToClient) obj;
 
         if (id != setWorldMessageToClient.id)
             return false;

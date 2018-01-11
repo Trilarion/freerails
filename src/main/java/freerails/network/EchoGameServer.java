@@ -33,11 +33,11 @@ public class EchoGameServer implements GameServer, Runnable {
     private static final Logger logger = Logger.getLogger(EchoGameServer.class
             .getName());
 
-    private final List<ConnectionToClient> connections = new ArrayList();
+    private final Collection<ConnectionToClient> connections = new ArrayList();
 
     private final SynchronizedFlag status = new SynchronizedFlag(false);
 
-    private final LinkedList<Serializable> messsages2send = new LinkedList<>();
+    private final Collection<Serializable> messsages2send = new LinkedList<>();
 
     private EchoGameServer() {
     }

@@ -67,7 +67,7 @@ public class SaveGameManagerImpl implements SaveGamesManager {
         FileOutputStream out = new FileOutputStream(s);
         GZIPOutputStream zipout = new GZIPOutputStream(out);
 
-        ObjectOutputStream objectOut = new ObjectOutputStream(zipout);
+        ObjectOutput objectOut = new ObjectOutputStream(zipout);
 
         objectOut.writeObject(ServerControlInterface.VERSION);
         objectOut.writeObject(w);

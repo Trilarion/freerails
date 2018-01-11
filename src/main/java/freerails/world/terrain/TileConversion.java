@@ -40,13 +40,13 @@ public class TileConversion implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof TileConversion))
+        if (!(obj instanceof TileConversion))
             return false;
 
-        final TileConversion tileConversion = (TileConversion) o;
+        final TileConversion tileConversion = (TileConversion) obj;
 
         if (input != tileConversion.input)
             return false;

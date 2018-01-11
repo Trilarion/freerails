@@ -56,13 +56,13 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        if (!(o instanceof ChangeTileMove))
+        if (!(obj instanceof ChangeTileMove))
             return false;
 
-        final ChangeTileMove changeTileMove = (ChangeTileMove) o;
+        final ChangeTileMove changeTileMove = (ChangeTileMove) obj;
 
         if (x != changeTileMove.x)
             return false;
@@ -88,7 +88,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, actual
                 .getTerrainTypeID());
 
-        if (!type.getCategory().equals(TerrainCategory.Country)) {
+        if (type.getCategory() != TerrainCategory.Country) {
             return MoveStatus.moveFailed("Can only build on clear terrain.");
         }
 

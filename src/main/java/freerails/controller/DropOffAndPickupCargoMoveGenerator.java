@@ -42,6 +42,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Generates moves that transfer cargo between train and the stations
@@ -93,7 +94,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         processTrainBundle(); // ie. unload train / drop-off cargo
 
         if (autoConsist) {
-            ArrayList<WagonLoad> wagonsAvailable = new ArrayList<>();
+            List<WagonLoad> wagonsAvailable = new ArrayList<>();
 
             assert (train
                     .equals(world.get(principal, KEY.TRAINS, trainId)));
@@ -135,7 +136,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 WagonLoad wagonload = wagonsAvailable.get(i);
                 temp[i] = wagonload.cargoType;
             }
-            consist = new ImmutableList<Integer>(temp);
+            consist = new ImmutableList<>(temp);
         }
 
         processStationBundle(); // ie. load train / pickup cargo
@@ -182,7 +183,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     public Move generateMove() {
         // The methods that calculate the before and after bundles could be
         // called from here.
-        ChangeCargoBundleMove changeAtStation = new ChangeCargoBundleMove(
+        Move changeAtStation = new ChangeCargoBundleMove(
                 stationBefore.toImmutableCargoBundle(), stationAfter
                 .toImmutableCargoBundle(), stationBundleId, principal);
         ChangeCargoBundleMove changeOnTrain = new ChangeCargoBundleMove(
@@ -315,8 +316,8 @@ public class DropOffAndPickupCargoMoveGenerator {
             cargoType = t;
         }
 
-        public int compareTo(WagonLoad test) {
-            return quantity - test.quantity;
+        public int compareTo(WagonLoad o) {
+            return quantity - o.quantity;
         }
     }
 }

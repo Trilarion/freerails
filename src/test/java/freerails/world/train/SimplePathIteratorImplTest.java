@@ -46,8 +46,8 @@ public class SimplePathIteratorImplTest extends TestCase {
      *
      */
     public void testHasNext() {
-        int[] xpoints = {0, 100};
-        int[] ypoints = {0, 0};
+        Integer[] xpoints = {0, 100};
+        Integer[] ypoints = {0, 0};
 
         PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         assertTrue(it.hasNext());
@@ -59,8 +59,8 @@ public class SimplePathIteratorImplTest extends TestCase {
      *
      */
     public void testNextSegment() {
-        int[] xpoints = {1, 2, 3};
-        int[] ypoints = {4, 5, 6};
+        Integer[] xpoints = {1, 2, 3};
+        Integer[] ypoints = {4, 5, 6};
 
         PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         assertTrue(it.hasNext());

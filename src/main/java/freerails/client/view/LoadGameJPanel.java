@@ -155,13 +155,13 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     }
 
     /**
-     * @param m
+     * @param modelRoot
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         close = closeAction;
-        modelRoot = m;
+        this.modelRoot = modelRoot;
         updateListOfFiles();
     }
 
@@ -184,6 +184,6 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         }
         super.paintComponent(g);
     }
-    // End of variables declaration                   
+
 
 }

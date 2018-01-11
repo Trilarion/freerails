@@ -44,7 +44,7 @@ public class NetWorthCalculator extends TransactionAggregator {
         Transaction t = super.w.getTransaction(super.principal, transactionID);
 
         if (t instanceof ItemTransaction) {
-            return t.getCategory().equals(TransactionCategory.ISSUE_STOCK);
+            return t.getCategory() == TransactionCategory.ISSUE_STOCK;
             // Since buying something is just converting one asset type to
             // another.
         }

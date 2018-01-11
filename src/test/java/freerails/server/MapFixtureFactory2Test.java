@@ -87,7 +87,7 @@ public class MapFixtureFactory2Test extends TestCase {
         assertTrue(numberOfTransactions > 0);
         for (int i = 0; i < numberOfTransactions; i++) {
             Transaction t = w1.getTransaction(p, i);
-            if (t.getCategory().equals(TransactionCategory.ISSUE_STOCK)) {
+            if (t.getCategory() == TransactionCategory.ISSUE_STOCK) {
                 ItemTransaction ait = (ItemTransaction) t;
                 stock += ait.getQuantity();
             }
