@@ -58,21 +58,12 @@ public interface World extends ReadOnlyWorld {
     /**
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
-     *
-     * @param principal
-     * @param key
-     * @param element
-     * @return
      */
     int add(FreerailsPrincipal principal, KEY key, Serializable element);
 
     /**
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
-     *
-     * @param key
-     * @param element
-     * @return
      */
     int add(SKEY key, Serializable element);
 
@@ -84,17 +75,12 @@ public interface World extends ReadOnlyWorld {
 
     /**
      * Adds the specified transaction to the specified principal's bank account.
-     *
-     * @param p
-     * @param t
      */
     void addTransaction(FreerailsPrincipal p, Transaction t);
 
     /**
      * Returns a copy of this world object - making changes to this copy will
      * not change this object.
-     *
-     * @return
      */
     World defensiveCopy();
 
@@ -113,18 +99,11 @@ public interface World extends ReadOnlyWorld {
 
     /**
      * Removes the last element from the specified list.
-     *
-     * @param principal
-     * @param key
-     * @return
      */
     Serializable removeLast(FreerailsPrincipal principal, KEY key);
 
     /**
      * Removes the last element from the specified list.
-     *
-     * @param key
-     * @return
      */
     Serializable removeLast(SKEY key);
 
@@ -132,9 +111,6 @@ public interface World extends ReadOnlyWorld {
      * Removes and returns the last transaction added the the specified
      * principal's bank account. This method is only here so that moves that add
      * transactions can be undone.
-     *
-     * @param p
-     * @return
      */
     Transaction removeLastTransaction(FreerailsPrincipal p);
 
@@ -146,31 +122,18 @@ public interface World extends ReadOnlyWorld {
     /**
      * Replaces the element mapped to the specified item with the specified
      * element.
-     *
-     * @param item
-     * @param element
      */
     void set(ITEM item, Serializable element);
 
     /**
      * Replaces the element at the specified position in the specified list with
      * the specified element.
-     *
-     * @param principal
-     * @param key
-     * @param index
-     * @param element
      */
-    void set(FreerailsPrincipal principal, KEY key, int index,
-             Serializable element);
+    void set(FreerailsPrincipal principal, KEY key, int index, Serializable element);
 
     /**
      * Replaces the element at the specified position in the specified list with
      * the specified element.
-     *
-     * @param key
-     * @param index
-     * @param element
      */
     @SuppressWarnings("unused")
     void set(SKEY key, int index, Serializable element);
@@ -178,10 +141,6 @@ public interface World extends ReadOnlyWorld {
     /**
      * Replaces the tile at the specified position on the map with the specified
      * tile.
-     *
-     * @param x
-     * @param y
-     * @param tile
      */
     void setTile(int x, int y, Serializable tile);
 

@@ -39,8 +39,7 @@ public class CargoDeliveryMoneyTransaction extends MoneyTransaction {
      * @param cargoBatch
      * @param trainId
      */
-    public CargoDeliveryMoneyTransaction(Money money, int quantity, int stationId,
-                                         CargoBatch cargoBatch, int trainId) {
+    public CargoDeliveryMoneyTransaction(Money money, int quantity, int stationId, CargoBatch cargoBatch, int trainId) {
         super(money, TransactionCategory.CARGO_DELIVERY);
         this.stationId = stationId;
         this.quantity = quantity;

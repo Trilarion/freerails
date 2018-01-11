@@ -23,7 +23,6 @@
 package freerails.client.view;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -61,8 +60,7 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
      * @param mm
      * @param rect
      */
-    public MainMapAndOverviewMapMediator(JComponent omv, JViewport v,
-                                         JComponent mm, Rectangle rect) {
+    public MainMapAndOverviewMapMediator(JComponent omv, JViewport v, JComponent mm, Rectangle rect) {
         setup(omv, v, mm, rect);
     }
 
@@ -82,19 +80,17 @@ public class MainMapAndOverviewMapMediator extends MouseInputAdapter {
         overviewMapJPanel.addMouseListener(this);
         v.addChangeListener(e -> updateObservedRect());
 
-        overviewMapJPanel
-                .addComponentListener(new java.awt.event.ComponentAdapter() {
-                    @Override
-                    public void componentResized(
-                            java.awt.event.ComponentEvent e) {
-                        updateObservedRect();
-                    }
+        overviewMapJPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                updateObservedRect();
+            }
 
-                    @Override
-                    public void componentShown(java.awt.event.ComponentEvent e) {
-                        updateObservedRect();
-                    }
-                });
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                updateObservedRect();
+            }
+        });
     }
 
     @Override

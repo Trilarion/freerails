@@ -33,8 +33,6 @@ public interface ServerAutomaton extends Serializable {
 
     /**
      * Initializes the automaton with a connection to the MoveExecutor.
-     *
-     * @param moveReceiver
      */
     void initAutomaton(MoveReceiver moveReceiver);
 }

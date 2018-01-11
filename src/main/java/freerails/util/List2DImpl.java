@@ -47,14 +47,11 @@ public class List2DImpl<T> implements List2D<T> {
      * @return
      */
     public static boolean equals(List2D a, List2D b) {
-        if (a.sizeD1() != b.sizeD1())
-            return false;
+        if (a.sizeD1() != b.sizeD1()) return false;
         for (int d1 = 0; d1 < a.sizeD1(); d1++) {
-            if (a.sizeD2(d1) != b.sizeD2(d1))
-                return false;
+            if (a.sizeD2(d1) != b.sizeD2(d1)) return false;
             for (int d2 = 0; d2 < a.sizeD2(d1); d2++) {
-                if (!Utils.equal(a.get(d1, d2), b.get(d1, d2)))
-                    return false;
+                if (!Utils.equal(a.get(d1, d2), b.get(d1, d2))) return false;
             }
         }
         return true;
@@ -101,8 +98,7 @@ public class List2DImpl<T> implements List2D<T> {
      */
     public int removeLastD1() {
         int last = elementData.size() - 1;
-        if (sizeD2(last) != 0)
-            throw new IllegalStateException(String.valueOf(last));
+        if (sizeD2(last) != 0) throw new IllegalStateException(String.valueOf(last));
         elementData.remove(last);
         return last;
     }

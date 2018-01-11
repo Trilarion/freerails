@@ -48,16 +48,13 @@ public class CitySAXParser extends DefaultHandler {
 
     @Override
     public void endDocument() {
-        for (int i = 0; i < cities.size(); i++) {
-            City tempCity = cities.get(i);
-            world.add(SKEY.CITIES, new City(tempCity.getName(),
-                    tempCity.getX(), tempCity.getY()));
+        for (City tempCity : cities) {
+            world.add(SKEY.CITIES, new City(tempCity.getName(), tempCity.getX(), tempCity.getY()));
         }
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName,
-                             Attributes attributes) {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) {
 
         String cityName = null;
         int x = 0;

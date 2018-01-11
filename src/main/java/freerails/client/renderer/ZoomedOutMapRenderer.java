@@ -62,15 +62,12 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     private final ReadOnlyWorld w;
     private final AffineTransform affineTransform;
     // private Graphics2D mapGraphics;
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
+    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage one2oneImage;
     private BufferedImage mapImage;
     private boolean isDirty = true;
 
-    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height,
-                                 int mapX, int mapY, int mapWidth, int mapHeight) {
+    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, int mapWidth, int mapHeight) {
         w = world;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -78,8 +75,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         imageWidth = width;
 
         double scalingFactor = ((double) imageHeight) / mapHeight;
-        affineTransform = AffineTransform.getScaleInstance(scalingFactor,
-                scalingFactor);
+        affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
         this.mapX = mapX;
         this.mapY = mapY;
         refresh();
@@ -90,8 +86,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
      * @param maxSize
      * @return
      */
-    public static MapRenderer getInstance(ReadOnlyWorld world,
-                                          Dimension maxSize) {
+    public static MapRenderer getInstance(ReadOnlyWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
         double worldWidth = world.getMapWidth();
         double worldHeight = world.getMapHeight();
@@ -106,8 +101,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0,
-                world.getMapWidth(), world.getMapHeight());
+        return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0, world.getMapWidth(), world.getMapHeight());
     }
 
     /**
@@ -131,8 +125,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         if (isDirty) {
             Graphics2D mapGraphics = mapImage.createGraphics();
 
-            mapGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            mapGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
             mapGraphics.setClip(0, 0, imageWidth, imageHeight);
             mapGraphics.clearRect(0, 0, imageWidth, imageHeight);
@@ -146,8 +139,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeID();
-            TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
-                    typeNumber);
+            TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, typeNumber);
             one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
         } else {
             /* black with alpha of 1 */
@@ -185,10 +177,8 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         // mapGraphics.dispose();
         // }
         /* generate a 1:1 map of the terrain layer */
-        one2oneImage = defaultConfiguration.createCompatibleImage(mapWidth,
-                mapHeight, Transparency.TRANSLUCENT);
-        mapImage = defaultConfiguration.createCompatibleImage(imageWidth,
-                imageHeight, Transparency.OPAQUE);
+        one2oneImage = defaultConfiguration.createCompatibleImage(mapWidth, mapHeight, Transparency.TRANSLUCENT);
+        mapImage = defaultConfiguration.createCompatibleImage(imageWidth, imageHeight, Transparency.OPAQUE);
 
         Point tile = new Point();
 
@@ -198,14 +188,11 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();
-                    TerrainType terrainType = (TerrainType) w.get(
-                            SKEY.TERRAIN_TYPES, typeNumber);
-                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,
-                            terrainType.getRGB());
+                    TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, typeNumber);
+                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, terrainType.getRGB());
                 } else {
                     /* black with alpha of 1 */
-                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY,
-                            0xff000000);
+                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, 0xff000000);
                 }
             }
         }

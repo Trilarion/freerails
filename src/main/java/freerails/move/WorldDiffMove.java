@@ -19,8 +19,8 @@
 package freerails.move;
 
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
 import freerails.util.ListKey;
+import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.WorldDiffs.LISTID;
 import freerails.world.WorldImpl.ActivityAndTime;
@@ -43,8 +43,7 @@ import java.util.List;
  */
 public class WorldDiffMove implements Move, MapUpdateMove {
 
-    private static final Logger logger = Logger.getLogger(WorldDiffMove.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(WorldDiffMove.class.getName());
     private static final long serialVersionUID = 3905245632406239544L;
     private final Cause cause;
     private final ImmutableList<MapDiff> diffs;
@@ -57,8 +56,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
      * @param cause
      * @throws UnsupportedOperationException
      */
-    public WorldDiffMove(ReadOnlyWorld world, WorldDiffs worldDiffs, Cause cause)
-            throws UnsupportedOperationException {
+    public WorldDiffMove(ReadOnlyWorld world, WorldDiffs worldDiffs, Cause cause) throws UnsupportedOperationException {
         this.cause = cause;
 
         Iterator<Point2D> mit = worldDiffs.getMapDiffs();
@@ -100,8 +98,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             switch (listId) {
                 case LISTS: {
                     int playerId = lkey.getIndex()[0];
-                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
-                            .getPrincipal();
+                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId).getPrincipal();
                     KEY k = KEY.getKey(lkey.getIndex()[1]);
                     if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
@@ -109,16 +106,12 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
                         // Are we changing an element?
                         if (elementId < world.size(fp, k)) {
-                            Serializable before = world.get(fp, k,
-                                    elementId);
-                            Serializable after = worldDiffs.get(fp, k,
-                                    elementId);
-                            m = new ChangeItemInListMove(k, elementId, before,
-                                    after, fp);
+                            Serializable before = world.get(fp, k, elementId);
+                            Serializable after = worldDiffs.get(fp, k, elementId);
+                            m = new ChangeItemInListMove(k, elementId, before, after, fp);
                         } else {
 
-                            Serializable element = worldDiffs.get(fp, k,
-                                    elementId);
+                            Serializable element = worldDiffs.get(fp, k, elementId);
                             m = new AddItemToListMove(k, elementId, element, fp);
                         }
                         tempList.add(m);
@@ -141,8 +134,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                     break;
                 case BANK_ACCOUNTS: {
                     int playerId = lkey.getIndex()[0];
-                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
-                            .getPrincipal();
+                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId).getPrincipal();
                     if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
                         int elementId = lkey.getIndex()[1];
@@ -167,8 +159,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                 }
                 case ACTIVITY_LISTS: {
                     int playerId = lkey.getIndex()[0];
-                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId)
-                            .getPrincipal();
+                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId).getPrincipal();
                     Object o = worldDiffs.getDiff(lkey);
                     if (logger.isDebugEnabled()) {
                         logger.debug(lkey.toString() + " --> " + o.toString());
@@ -191,21 +182,17 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                             Move m;
                             // Do we need to add a new active entity?
                             int entityId = lkey.getIndex()[1];
-                            ActivityAndTime aat = (ActivityAndTime) worldDiffs
-                                    .getDiff(lkey);
+                            ActivityAndTime aat = (ActivityAndTime) worldDiffs.getDiff(lkey);
                             Activity act = aat.act;
                             int activityID = lkey.getIndex()[2];
-                            if (entityId >= world.getNumberOfActiveEntities(fp)
-                                    && 0 == activityID) {
+                            if (entityId >= world.getNumberOfActiveEntities(fp) && 0 == activityID) {
                                 if (logger.isDebugEnabled()) {
-                                    logger.debug("AddActiveEntityMove: " + act
-                                            + " entityId=" + entityId);
+                                    logger.debug("AddActiveEntityMove: " + act + " entityId=" + entityId);
                                 }
                                 m = new AddActiveEntityMove(act, entityId, fp);
                             } else {
                                 if (logger.isDebugEnabled()) {
-                                    logger.debug("NextActivityMove: " + act
-                                            + " entityId=" + entityId);
+                                    logger.debug("NextActivityMove: " + act + " entityId=" + entityId);
                                 }
                                 m = new NextActivityMove(act, entityId, fp);
                             }
@@ -245,8 +232,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryMapChanges(world, false);
-        if (!ms.ok)
-            return ms;
+        if (!ms.ok) return ms;
 
         ms = listChanges.doMove(world, principal);
 
@@ -259,21 +245,15 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof WorldDiffMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof WorldDiffMove)) return false;
 
         final WorldDiffMove mapDiffMove = (WorldDiffMove) obj;
 
-        if (h != mapDiffMove.h)
-            return false;
-        if (w != mapDiffMove.w)
-            return false;
-        if (x != mapDiffMove.x)
-            return false;
-        if (y != mapDiffMove.y)
-            return false;
+        if (h != mapDiffMove.h) return false;
+        if (w != mapDiffMove.w) return false;
+        if (x != mapDiffMove.x) return false;
+        if (y != mapDiffMove.y) return false;
         return diffs.equals(mapDiffMove.diffs);
     }
 
@@ -298,8 +278,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
 
         MoveStatus ms = tryMapChanges(world, false);
-        if (!ms.ok)
-            return ms;
+        if (!ms.ok) return ms;
 
         return ms = listChanges.tryDoMove(world, principal);
     }
@@ -310,8 +289,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             Serializable actual = world.getTile(diff.x, diff.y);
             Serializable expected = undo ? diff.after : diff.before;
             if (!actual.equals(expected)) {
-                return MoveStatus.moveFailed("expected =" + expected
-                        + ", actual = " + actual);
+                return MoveStatus.moveFailed("expected =" + expected + ", actual = " + actual);
             }
         }
 
@@ -321,8 +299,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
 
         MoveStatus ms = tryMapChanges(world, true);
-        if (!ms.ok)
-            return ms;
+        if (!ms.ok) return ms;
 
         return ms = listChanges.tryUndoMove(world, principal);
     }
@@ -336,8 +313,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryMapChanges(world, true);
-        if (!ms.ok)
-            return ms;
+        if (!ms.ok) return ms;
 
         ms = listChanges.undoMove(world, principal);
 
@@ -400,8 +376,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         y;
         final Serializable before, after;
 
-        MapDiff(Serializable before, Serializable after,
-                Point2D p) {
+        MapDiff(Serializable before, Serializable after, Point2D p) {
             this.after = after;
             this.before = before;
             x = p.x;
@@ -410,19 +385,14 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!(obj instanceof MapDiff))
-                return false;
+            if (this == obj) return true;
+            if (!(obj instanceof MapDiff)) return false;
 
             final MapDiff diff = (MapDiff) obj;
 
-            if (x != diff.x)
-                return false;
-            if (y != diff.y)
-                return false;
-            if (!after.equals(diff.after))
-                return false;
+            if (x != diff.x) return false;
+            if (y != diff.y) return false;
+            if (!after.equals(diff.after)) return false;
             return before.equals(diff.before);
         }
 

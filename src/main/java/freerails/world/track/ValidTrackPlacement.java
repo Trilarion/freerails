@@ -18,11 +18,10 @@
 
 package freerails.world.track;
 
-import freerails.util.ImHashSet;
 import freerails.world.terrain.TerrainCategory;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -34,24 +33,22 @@ import java.util.Set;
 public final class ValidTrackPlacement implements Serializable {
 
     private static final long serialVersionUID = 3616445687756437049L;
-    private final ImHashSet<TerrainCategory> terrainTypes;
+    private final Set<TerrainCategory> terrainTypes;
     private final PlacementRule placementRule;
 
     /**
      * @param types
      * @param placementRule
      */
-    public ValidTrackPlacement(Iterable<TerrainCategory> types,
-                               PlacementRule placementRule) {
+    public ValidTrackPlacement(Iterable<TerrainCategory> types, PlacementRule placementRule) {
+
         this.placementRule = placementRule;
-
         Iterator<TerrainCategory> iterator = types.iterator();
-
-        HashSet<TerrainCategory> temp = new HashSet<>();
+        Set<TerrainCategory> temp = new HashSet<>();
         while (iterator.hasNext()) {
             temp.add(iterator.next());
         }
-        terrainTypes = new ImHashSet<>(temp);
+        terrainTypes = Collections.unmodifiableSet(temp);
     }
 
     @Override
@@ -75,8 +72,7 @@ public final class ValidTrackPlacement implements Serializable {
         if (obj instanceof ValidTrackPlacement) {
             ValidTrackPlacement test = (ValidTrackPlacement) obj;
 
-            return placementRule == test.placementRule
-                    && terrainTypes.equals(test.terrainTypes);
+            return placementRule == test.placementRule && terrainTypes.equals(test.terrainTypes);
         }
         return false;
     }

@@ -31,6 +31,7 @@ import java.awt.*;
  * the players account for the cost of the change.
  */
 public class UpgradeTrackMove extends CompositeMove implements TrackMove {
+
     private static final long serialVersionUID = 3907215961470875442L;
 
     private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
@@ -43,8 +44,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
      * @param p
      * @return
      */
-    public static Move generateMove(TrackPiece before,
-                                    TrackPiece after, Point2D p) {
+    public static Move generateMove(TrackPiece before, TrackPiece after, Point2D p) {
         ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
 
         return new UpgradeTrackMove(m);

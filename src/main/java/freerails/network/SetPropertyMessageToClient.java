@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.controller.ClientControlInterface;
-import freerails.controller.ClientControlInterface.ClientProperty;
+import freerails.controller.ClientProperty;
 import freerails.controller.MessageStatus;
 
 import java.io.Serializable;
@@ -40,10 +40,8 @@ public class SetPropertyMessageToClient implements MessageToClient {
      * @param key
      * @param value
      */
-    public SetPropertyMessageToClient(int id, ClientProperty key,
-                                      Serializable value) {
-        if (null == key || null == value)
-            throw new NullPointerException();
+    public SetPropertyMessageToClient(int id, ClientProperty key, Serializable value) {
+        if (null == key || null == value) throw new NullPointerException();
         this.id = id;
         this.key = key;
         this.value = value;
@@ -51,17 +49,13 @@ public class SetPropertyMessageToClient implements MessageToClient {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof SetPropertyMessageToClient))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof SetPropertyMessageToClient)) return false;
 
         final SetPropertyMessageToClient setPropertyMessageToClient = (SetPropertyMessageToClient) obj;
 
-        if (id != setPropertyMessageToClient.id)
-            return false;
-        if (key != setPropertyMessageToClient.key)
-            return false;
+        if (id != setPropertyMessageToClient.id) return false;
+        if (key != setPropertyMessageToClient.key) return false;
         return value.equals(setPropertyMessageToClient.value);
     }
 

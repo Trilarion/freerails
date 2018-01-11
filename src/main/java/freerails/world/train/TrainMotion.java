@@ -21,11 +21,11 @@
  */
 package freerails.world.train;
 
-import freerails.util.Point2D;
 import freerails.util.Pair;
+import freerails.util.Point2D;
 import freerails.world.Activity;
-import freerails.world.track.PathIterator;
 import freerails.world.terrain.TileTransition;
+import freerails.world.track.PathIterator;
 
 import java.util.ArrayList;
 
@@ -69,7 +69,6 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      *                    path
      * @param trainLength the length of the train, as returned by
      *                    {@code TrainModel.getLength()}.
-     * @param speeds
      * @throws IllegalArgumentException if trainLength is out the range
      *                                  {@code trainLength > TrainModel.WAGON_LENGTH || trainLength < TrainModel.MAX_TRAIN_LENGTH}
      * @throws IllegalArgumentException if {@code path.getDistance(engineStep) < trainLength}.
@@ -77,28 +76,22 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      *                                  {@code (path.getLength() - initialPosition) > speeds.getTotalDistance()}.
      */
 
-    public TrainMotion(PathOnTiles path, int engineStep, int trainLength,
-                       SpeedAgainstTime speeds) {
-        if (trainLength < TrainModel.WAGON_LENGTH
-                || trainLength > TrainModel.MAX_TRAIN_LENGTH)
+    public TrainMotion(PathOnTiles path, int engineStep, int trainLength, SpeedAgainstTime speeds) {
+        if (trainLength < TrainModel.WAGON_LENGTH || trainLength > TrainModel.MAX_TRAIN_LENGTH)
             throw new IllegalArgumentException();
         this.path = path;
         this.speeds = speeds;
         this.trainLength = trainLength;
 
-        if (engineStep > path.steps())
-            throw new ArrayIndexOutOfBoundsException(String.valueOf(engineStep));
+        if (engineStep > path.steps()) throw new ArrayIndexOutOfBoundsException(String.valueOf(engineStep));
 
         initialPosition = path.getDistance(engineStep);
         if (initialPosition < trainLength)
-            throw new IllegalArgumentException(
-                    "The engine's initial position is not far enough along the path for "
-                            + "the train's initial position to be specified.");
+            throw new IllegalArgumentException("The engine's initial position is not far enough along the path for " + "the train's initial position to be specified.");
         double totalPathDistance = path.getTotalDistance();
         distanceEngineWillTravel = totalPathDistance - initialPosition;
         if (distanceEngineWillTravel > speeds.getDistance())
-            throw new IllegalArgumentException(
-                    "The train's speed is not defined for the whole of the journey.");
+            throw new IllegalArgumentException("The train's speed is not defined for the whole of the journey.");
 
         if (distanceEngineWillTravel == 0) {
             duration = 0.0d;
@@ -120,8 +113,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      * @param duration
      * @param act
      */
-    public TrainMotion(PathOnTiles path, int trainLength, double duration,
-                       TrainActivity act) {
+    public TrainMotion(PathOnTiles path, int trainLength, double duration, TrainActivity act) {
         this.path = path;
         this.trainLength = trainLength;
         activity = act;
@@ -141,8 +133,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
         double totalLength = path.getTotalDistance();
         double trainLengthDouble = trainLength;
         if (totalLength < offset + trainLengthDouble)
-            throw new IllegalStateException(offset + " + " + trainLengthDouble
-                    + " > " + totalLength);
+            throw new IllegalStateException(offset + " + " + trainLengthDouble + " > " + totalLength);
     }
 
     private double calcOffSet(double t) {
@@ -150,9 +141,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     }
 
     void checkT(double t) {
-        if (t < 0.0d || t > duration)
-            throw new IllegalArgumentException("t=" + t + ", but duration="
-                    + duration);
+        if (t < 0.0d || t > duration) throw new IllegalArgumentException("t=" + t + ", but duration=" + duration);
     }
 
     /**
@@ -164,17 +153,13 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof TrainMotion))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof TrainMotion)) return false;
 
         final TrainMotion trainMotion = (TrainMotion) obj;
 
-        if (trainLength != trainMotion.trainLength)
-            return false;
-        if (!path.equals(trainMotion.path))
-            return false;
+        if (trainLength != trainMotion.trainLength) return false;
+        if (!path.equals(trainMotion.path)) return false;
         return speeds.equals(trainMotion.speeds);
     }
 
@@ -217,13 +202,10 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     public TrainPositionOnMap getState(double dt) {
         dt = Math.min(dt, speeds.getTime());
         double offset = calcOffSet(dt);
-        Pair<PathIterator, Integer> pathIt = path.subPath(offset,
-                trainLength); // 666
+        Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength); // 666
         double speed = speeds.calcVelocity(dt);
         double acceleration = speeds.calcAcceleration(dt);
-        return TrainPositionOnMap
-                .createInSameDirectionAsPathReversed(pathIt, speed,
-                        acceleration, activity);
+        return TrainPositionOnMap.createInSameDirectionAsPathReversed(pathIt, speed, acceleration, activity);
     }
 
     /**
@@ -246,14 +228,12 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
         int stepsAfterEnd = 0;
 
         for (int i = 0; i < path.steps(); i++) {
-            if (distanceSoFar > end)
-                stepsAfterEnd++;
+            if (distanceSoFar > end) stepsAfterEnd++;
 
             TileTransition tileTransition = path.getStep(i);
             distanceSoFar += tileTransition.getLength();
 
-            if (distanceSoFar < start)
-                stepsBeforeStart++;
+            if (distanceSoFar < start) stepsBeforeStart++;
 
         }
 

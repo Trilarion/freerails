@@ -58,16 +58,11 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         initComponents();
         updateMaxWagonsText();
 
-        URL url = SelectWagonsJPanel.class
-                .getResource("/freerails/data/station.gif");
+        URL url = SelectWagonsJPanel.class.getResource("/freerails/data/station.gif");
         Image tempImage = (new javax.swing.ImageIcon(url)).getImage();
 
-        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-                .getDefaultConfiguration();
-        stationView = defaultConfiguration.createCompatibleImage(tempImage
-                        .getWidth(null), tempImage.getHeight(null),
-                Transparency.BITMASK);
+        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        stationView = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
 
         Graphics g = stationView.getGraphics();
 
@@ -195,8 +190,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
     private void updateMaxWagonsText() {
         if (wagons.size() >= TrainModel.MAX_NUMBER_OF_WAGONS) {
-            jLabel1.setText("Max train length is "
-                    + TrainModel.MAX_NUMBER_OF_WAGONS + " wagons");
+            jLabel1.setText("Max train length is " + TrainModel.MAX_NUMBER_OF_WAGONS + " wagons");
         } else {
             jLabel1.setText("");
         }
@@ -227,8 +221,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
 
             Integer type = wagons.get(i);
             Image image = rr.getWagonImages(type).getSideOnImage();
-            int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT
-                    / image.getHeight(null);
+            int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
 
@@ -238,8 +231,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
         if (-1 != engineType) { // If an engine is selected.
             Image image = rr.getEngineImages(engineType).getSideOnImage();
 
-            int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT)
-                    / image.getHeight(null);
+            int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
         }
@@ -253,8 +245,7 @@ public class SelectWagonsJPanel extends javax.swing.JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        WorldToListModelAdapter w2lma = new WorldToListModelAdapter(
-                modelRoot.getWorld(), SKEY.CARGO_TYPES);
+        WorldToListModelAdapter w2lma = new WorldToListModelAdapter(modelRoot.getWorld(), SKEY.CARGO_TYPES);
         wagonTypesJList.setModel(w2lma);
         rr = vl;
         ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rr);

@@ -41,15 +41,12 @@ public class SaveGameMessageToServer implements MessageToServer {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof SaveGameMessageToServer))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof SaveGameMessageToServer)) return false;
 
         final SaveGameMessageToServer saveGameMessageToServer = (SaveGameMessageToServer) obj;
 
-        if (id != saveGameMessageToServer.id)
-            return false;
+        if (id != saveGameMessageToServer.id) return false;
         return filename.equals(saveGameMessageToServer.filename);
     }
 

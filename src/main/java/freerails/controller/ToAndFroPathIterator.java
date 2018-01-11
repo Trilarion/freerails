@@ -31,6 +31,7 @@ import java.util.NoSuchElementException;
  * constructor.
  */
 public class ToAndFroPathIterator implements PathIterator {
+
     private static final long serialVersionUID = 3256442525337202993L;
     private final List<Point> list;
     private PathIterator path;

@@ -22,16 +22,15 @@
 package freerails.controller;
 
 import freerails.util.Point2D;
-import freerails.util.IntArray;
-import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
+import freerails.world.train.PositionOnTrack;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -41,11 +40,9 @@ import java.util.List;
  * Finds the best route to build track between two points.
  */
 public class TrackPathFinder implements IncrementalPathFinder {
-    private static final Logger logger = Logger.getLogger(TrackPathFinder.class
-            .getName());
 
+    private static final Logger logger = Logger.getLogger(TrackPathFinder.class.getName());
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
     private Point2D startPoint;
@@ -59,20 +56,13 @@ public class TrackPathFinder implements IncrementalPathFinder {
         this.principal = principal;
     }
 
-    /**
-     *
-     */
-    public void abandonSearch() {
-        pathFinder.abandonSearch();
-    }
-
-    private static List<Point2D> convertPath2Points(IntArray path) {
+    private static List<Point2D> convertPath2Points(List<Integer> path) {
         PositionOnTrack progress = new PositionOnTrack();
         List<Point2D> proposedTrack = new ArrayList<>();
 
         Point2D p;
-        for (int i = 0; i < path.size(); i++) {
-            progress.setValuesFromInt(path.get(i));
+        for (Integer aPath : path) {
+            progress.setValuesFromInt(aPath);
             p = new Point2D(progress.getX(), progress.getY());
             proposedTrack.add(p);
             if (logger.isDebugEnabled()) {
@@ -83,9 +73,15 @@ public class TrackPathFinder implements IncrementalPathFinder {
         return proposedTrack;
     }
 
+    /**
+     *
+     */
+    public void abandonSearch() {
+        pathFinder.abandonSearch();
+    }
+
     private int[] findTargets(Point2D targetPoint) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(targetPoint.x,
-                targetPoint.y);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(targetPoint.x, targetPoint.y);
         TrackPiece trackPiece = tile.getTrackPiece();
         int ruleNumber = trackPiece.getTrackTypeID();
 
@@ -96,8 +92,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
              * If there is already track here, we need to check what directions
              * we can build in without creating an illegal track config.
              */
-            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
-                    ruleNumber);
+            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, ruleNumber);
 
             /* Count number of possible directions. */
             List<TileTransition> possibleDirections = new ArrayList<>();
@@ -105,8 +100,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             for (int i = 0; i < 8; i++) {
                 TileTransition direction = TileTransition.getInstance(i);
                 TrackConfiguration config = trackPiece.getTrackConfiguration();
-                TrackConfiguration testConfig = TrackConfiguration.add(config,
-                        direction);
+                TrackConfiguration testConfig = TrackConfiguration.add(config, direction);
 
                 if (trackRule.trackPieceIsLegal(testConfig)) {
                     possibleDirections.add(direction);
@@ -118,8 +112,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
             for (int i = 0; i < targetInts.length; i++) {
                 TileTransition direction = possibleDirections.get(i);
-                PositionOnTrack targetPot = PositionOnTrack.createFacing(
-                        targetPoint.x, targetPoint.y, direction);
+                PositionOnTrack targetPot = PositionOnTrack.createFacing(targetPoint.x, targetPoint.y, direction);
                 targetInts[i] = targetPot.toInt();
             }
         } else {
@@ -127,8 +120,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetInts = new int[8];
 
             for (int i = 0; i < 8; i++) {
-                PositionOnTrack targetPot = PositionOnTrack.createComingFrom(
-                        targetPoint.x, targetPoint.y, TileTransition.getInstance(i));
+                PositionOnTrack targetPot = PositionOnTrack.createComingFrom(targetPoint.x, targetPoint.y, TileTransition.getInstance(i));
                 targetInts[i] = targetPot.toInt();
             }
         }
@@ -143,12 +135,11 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @return
      * @throws PathNotFoundException
      */
-    public List generatePath(Point2D start, Point2D targetPoint,
-                             BuildTrackStrategy bts) throws PathNotFoundException {
+    public List generatePath(Point2D start, Point2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
         setupSearch(start, targetPoint, bts);
         pathFinder.search(-1);
 
-        IntArray path = pathFinder.retrievePath();
+        List<Integer> path = pathFinder.retrievePath();
 
         return convertPath2Points(path);
     }
@@ -164,7 +155,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @return
      */
     public List<Point2D> pathAsPoints() {
-        IntArray path = pathFinder.retrievePath();
+        List<Integer> path = pathFinder.retrievePath();
 
         return convertPath2Points(path);
     }
@@ -173,7 +164,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @return
      */
     public TileTransition[] pathAsVectors() {
-        IntArray path = pathFinder.retrievePath();
+        List<Integer> path = pathFinder.retrievePath();
         int size = path.size();
         TileTransition[] vectors = new TileTransition[size];
         PositionOnTrack progress = new PositionOnTrack();
@@ -206,17 +197,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @param bts
      * @throws PathNotFoundException
      */
-    public void setupSearch(Point2D startPoint, Point2D targetPoint,
-                            BuildTrackStrategy bts) throws PathNotFoundException {
-        logger.debug("Find track path from " + startPoint + " to "
-                + targetPoint);
+    public void setupSearch(Point2D startPoint, Point2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
+        logger.debug("Find track path from " + startPoint + " to " + targetPoint);
 
         this.startPoint = startPoint;
         int[] targetInts = findTargets(targetPoint);
         int[] startInts = findTargets(startPoint);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal,
-                startPoint);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal, startPoint);
         explorer.setBuildTrackStrategy(bts);
 
         pathFinder.setupSearch(startInts, targetInts, explorer);

@@ -50,13 +50,10 @@ public class ImageManagerImpl implements ImageManager {
      */
     private static final String A_REGEX = "^[^///].*";
 
-    private static final Logger logger = Logger
-            .getLogger(ImageManagerImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
 
     private static final Pattern pattern = Pattern.compile(A_REGEX);
-    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
+    private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private final HashMap<String, Image> imageHashMap = new HashMap<>();
     private final RenderingHints renderingHints;
     private final Map<String, Image> scaledImagesHashMap = new HashMap<>();
@@ -78,13 +75,9 @@ public class ImageManagerImpl implements ImageManager {
         pathToReadFrom = readpath;
         pathToWriteTo = writePath;
         // Attempt to increase quality..
-        renderingHints = new RenderingHints(
-                RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        renderingHints.put(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        renderingHints.put(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        renderingHints = new RenderingHints(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+        renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        renderingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
     }
 
     /**
@@ -109,9 +102,7 @@ public class ImageManagerImpl implements ImageManager {
             return compatibleImage;
         }
         relativeFilename = relativeFilename.replace(' ', '_');
-        if (!isValid(relativeFilename))
-            throw new IllegalArgumentException(relativeFilename
-                    + " must match " + A_REGEX);
+        if (!isValid(relativeFilename)) throw new IllegalArgumentException(relativeFilename + " must match " + A_REGEX);
 
         // File f = new File(pathToReadFrom+File.separator+relativeFilename);
         String read = pathToReadFrom + relativeFilename;
@@ -127,9 +118,7 @@ public class ImageManagerImpl implements ImageManager {
         if (null == tempImage) {
             throw new IOException("Couldn't find: " + read);
         }
-        compatibleImage = defaultConfiguration.createCompatibleImage(tempImage
-                        .getWidth(null), tempImage.getHeight(null),
-                Transparency.TRANSLUCENT);
+        compatibleImage = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.TRANSLUCENT);
         Graphics g = compatibleImage.getGraphics();
         g.drawImage(tempImage, 0, 0, null);
         imageHashMap.put(hashKey, compatibleImage);
@@ -140,14 +129,8 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
-     *
-     * @param relativeFilename
-     * @param height
-     * @return
-     * @throws java.io.IOException
      */
-    public Image getScaledImage(String relativeFilename, int height)
-            throws IOException {
+    public Image getScaledImage(String relativeFilename, int height) throws IOException {
         String hashKey = relativeFilename + height;
         Image compatibleImage = scaledImagesHashMap.get(hashKey);
         if (compatibleImage != null) {
@@ -155,9 +138,7 @@ public class ImageManagerImpl implements ImageManager {
         }
 
         relativeFilename = relativeFilename.replace(' ', '_');
-        if (!isValid(relativeFilename))
-            throw new IllegalArgumentException(relativeFilename
-                    + " must match " + A_REGEX);
+        if (!isValid(relativeFilename)) throw new IllegalArgumentException(relativeFilename + " must match " + A_REGEX);
 
         Image i = getImage(relativeFilename);
         if (i.getHeight(null) == height) {
@@ -180,8 +161,7 @@ public class ImageManagerImpl implements ImageManager {
      * @return
      */
     public Image newBlankImage(int height, int width) {
-        return defaultConfiguration.createCompatibleImage(
-                width, height, Transparency.TRANSLUCENT);
+        return defaultConfiguration.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
 
     /**
@@ -214,16 +194,14 @@ public class ImageManagerImpl implements ImageManager {
      */
     public void writeImage(String relativeFilename) throws IOException {
 
-        if (null == pathToWriteTo)
-            throw new NullPointerException("null == pathToWriteTo");
+        if (null == pathToWriteTo) throw new NullPointerException("null == pathToWriteTo");
 
         relativeFilename = relativeFilename.replace(' ', '_');
 
         File f = new File(pathToWriteTo + File.separator + relativeFilename);
 
         if (imageHashMap.containsKey(relativeFilename)) {
-            RenderedImage i = (RenderedImage) imageHashMap
-                    .get(relativeFilename);
+            RenderedImage i = (RenderedImage) imageHashMap.get(relativeFilename);
             String pathName = f.getPath();
             File path = new File(pathName);
             path.mkdirs();

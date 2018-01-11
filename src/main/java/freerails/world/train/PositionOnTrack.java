@@ -30,12 +30,11 @@ import freerails.world.terrain.TileTransition;
  */
 public final class PositionOnTrack implements FreerailsMutableSerializable {
 
-    private static final long serialVersionUID = 3257853198755707184L;
     public static final int BITS_FOR_COORDINATE = 14;
     public static final int BITS_FOR_DIRECTION = 3;
     public static final int MAX_COORDINATE = (1 << BITS_FOR_COORDINATE) - 1;
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
-
+    private static final long serialVersionUID = 3257853198755707184L;
     /**
      * The direction from which we entered the tile.
      */
@@ -128,9 +127,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         if (obj instanceof PositionOnTrack) {
             PositionOnTrack other = (PositionOnTrack) obj;
 
-            return other.cameFrom() == cameFrom()
-                    && other.x == x
-                    && other.y == y;
+            return other.cameFrom() == cameFrom() && other.x == x && other.y == y;
         }
         return false;
     }
@@ -237,7 +234,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
     @Override
     public String toString() {
 
-        return "PositionOnTrack: " + x + ", " + y + " facing "
-                + cameFrom.getOpposite().toString();
+        return "PositionOnTrack: " + x + ", " + y + " facing " + cameFrom.getOpposite().toString();
     }
 }

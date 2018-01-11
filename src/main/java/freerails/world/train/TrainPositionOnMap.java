@@ -18,12 +18,15 @@
 
 package freerails.world.train;
 
-import freerails.util.*;
+import freerails.util.ImmutableList;
+import freerails.util.LineSegment;
+import freerails.util.Pair;
 import freerails.world.track.PathIterator;
 import freerails.world.track.SimplePathIteratorImpl;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This <b>immutable</b> class represents the position of a train as a String
@@ -87,14 +90,14 @@ import java.util.Arrays;
  */
 public class TrainPositionOnMap implements Serializable {
 
-    private static final long serialVersionUID = 3979269144611010865L;
     public static final int CRASH_FRAMES_COUNT = 15;
+    private static final long serialVersionUID = 3979269144611010865L;
     private final ImmutableList<Integer> xpoints;
     private final ImmutableList<Integer> ypoints;
     private final double speed, acceleration;
     private final TrainActivity activity;
-    private TrainPositionOnMap(Integer[] xs, Integer[] ys, double speed,
-                               double acceleration, TrainActivity activity) {
+
+    private TrainPositionOnMap(Integer[] xs, Integer[] ys, double speed, double acceleration, TrainActivity activity) {
         if (xs.length != ys.length) {
             throw new IllegalArgumentException();
         }
@@ -119,8 +122,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param path
      * @return
      */
-    public static TrainPositionOnMap createInSameDirectionAsPath(
-            PathIterator path) {
+    public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path) {
         return createInSameDirectionAsPath(path, 0.0d, 0.0d, TrainActivity.READY);
     }
 
@@ -131,25 +133,21 @@ public class TrainPositionOnMap implements Serializable {
      * @param activity
      * @return
      */
-    public static TrainPositionOnMap createInSameDirectionAsPathReversed(
-            Pair<PathIterator, Integer> path, double speed,
-            double acceleration, TrainActivity activity) {
+    public static TrainPositionOnMap createInSameDirectionAsPathReversed(Pair<PathIterator, Integer> path, double speed, double acceleration, TrainActivity activity) {
 
         LineSegment line = new LineSegment();
         PathIterator pathIt = path.getA();
         int pathSize = path.getB();
 
         if (pathSize > 10000) {
-            throw new IllegalStateException(
-                    "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
+            throw new IllegalStateException("The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
         }
         Integer[] xPoints = new Integer[pathSize];
         Integer[] yPoints = new Integer[pathSize];
 
         for (int i = pathSize - 1; i > 0; i--) {
             if (!pathIt.hasNext()) {
-                throw new IllegalStateException("Programming error at:" + i
-                        + " from:" + pathSize);
+                throw new IllegalStateException("Programming error at:" + i + " from:" + pathSize);
             }
             pathIt.nextSegment(line);
             xPoints[i] = line.getX1();
@@ -159,8 +157,7 @@ public class TrainPositionOnMap implements Serializable {
         xPoints[0] = line.getX2();
         yPoints[0] = line.getY2();
 
-        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
-                activity);
+        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration, activity);
     }
 
     /**
@@ -170,11 +167,9 @@ public class TrainPositionOnMap implements Serializable {
      * @param activity
      * @return
      */
-    public static TrainPositionOnMap createInSameDirectionAsPath(
-            PathIterator path, double speed, double acceleration,
-            TrainActivity activity) {
-        IntArray xPointsIntArray = new IntArray();
-        IntArray yPointsIntArray = new IntArray();
+    public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path, double speed, double acceleration, TrainActivity activity) {
+        List<Integer> xPointsIntArray = new ArrayList<>();
+        List<Integer> yPointsIntArray = new ArrayList<>();
         LineSegment line = new LineSegment();
         int i = 0;
 
@@ -185,8 +180,7 @@ public class TrainPositionOnMap implements Serializable {
             i++;
 
             if (i > 10000) {
-                throw new IllegalStateException(
-                        "The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
+                throw new IllegalStateException("The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
             }
         }
 
@@ -196,11 +190,10 @@ public class TrainPositionOnMap implements Serializable {
         Integer[] xPoints;
         Integer[] yPoints;
 
-        xPoints = Arrays.stream(xPointsIntArray.toArray()).boxed().toArray(Integer[]::new);
-        yPoints = Arrays.stream(yPointsIntArray.toArray()).boxed().toArray(Integer[]::new);
+        xPoints = xPointsIntArray.toArray(new Integer[0]);
+        yPoints = yPointsIntArray.toArray(new Integer[0]);
 
-        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration,
-                activity);
+        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration, activity);
     }
 
     /**
@@ -208,8 +201,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public static boolean headsAreEqual(TrainPositionOnMap a,
-                                        TrainPositionOnMap b) {
+    public static boolean headsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
         int aHeadY = a.getY(0);
         int bHeadX = b.getX(0);
@@ -223,8 +215,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public static boolean tailsAreEqual(TrainPositionOnMap a,
-                                        TrainPositionOnMap b) {
+    public static boolean tailsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
         int aTailX = a.getX(a.getLength() - 1);
         int aTailY = a.getY(a.getLength() - 1);
         int bTailX = b.getX(b.getLength() - 1);
@@ -238,8 +229,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public static boolean aHeadEqualsBTail(TrainPositionOnMap a,
-                                           TrainPositionOnMap b) {
+    public static boolean aHeadEqualsBTail(TrainPositionOnMap a, TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
         int aHeadY = a.getY(0);
 
@@ -261,6 +251,33 @@ public class TrainPositionOnMap implements Serializable {
      */
     public static int getFrameCt() {
         return 1;
+    }
+
+    private static TrainPositionOnMap addBtoHeadOfA(TrainPositionOnMap b, TrainPositionOnMap a) {
+        if (aHeadEqualsBTail(a, b)) {
+            int newLength = a.getLength() + b.getLength() - 2;
+
+            Integer[] newXpoints = new Integer[newLength];
+            Integer[] newYpoints = new Integer[newLength];
+
+            int aLength = a.getLength();
+            int bLength = b.getLength();
+
+            // First copy the points from B
+            for (int i = 0; i < bLength - 1; i++) {
+                newXpoints[i] = b.getX(i);
+                newYpoints[i] = b.getY(i);
+            }
+
+            // Second copy the points from A.
+            for (int i = 1; i < aLength; i++) {
+                newXpoints[i + bLength - 2] = a.getX(i);
+                newYpoints[i + bLength - 2] = a.getY(i);
+            }
+
+            return new TrainPositionOnMap(newXpoints, newYpoints, b.acceleration, b.speed, b.activity);
+        }
+        throw new IllegalArgumentException("Tried to add " + b.toString() + " to the head of " + a.toString());
     }
 
     @Override
@@ -307,8 +324,7 @@ public class TrainPositionOnMap implements Serializable {
                     path1.nextSegment(line1);
                     path2.nextSegment(line2);
 
-                    if (line1.getX1() != line2.getX1() || line1.getY1() != line2.getY1()
-                            || line1.getX2() != line2.getX2() || line1.getY2() != line2.getY2()) {
+                    if (line1.getX1() != line2.getX1() || line1.getY1() != line2.getY1() || line1.getX2() != line2.getX2() || line1.getY2() != line2.getY2()) {
                         return false;
                     }
                 }
@@ -379,8 +395,7 @@ public class TrainPositionOnMap implements Serializable {
             reversed_ypoints[i] = ypoints.get(length - i - 1);
         }
 
-        return new TrainPositionOnMap(reversed_xpoints, reversed_ypoints,
-                speed, acceleration, activity);
+        return new TrainPositionOnMap(reversed_xpoints, reversed_ypoints, speed, acceleration, activity);
     }
 
     /**
@@ -391,36 +406,6 @@ public class TrainPositionOnMap implements Serializable {
         TrainPositionOnMap a = this;
 
         return addBtoHeadOfA(b, a);
-    }
-
-    private static TrainPositionOnMap addBtoHeadOfA(TrainPositionOnMap b,
-                                                    TrainPositionOnMap a) {
-        if (aHeadEqualsBTail(a, b)) {
-            int newLength = a.getLength() + b.getLength() - 2;
-
-            Integer[] newXpoints = new Integer[newLength];
-            Integer[] newYpoints = new Integer[newLength];
-
-            int aLength = a.getLength();
-            int bLength = b.getLength();
-
-            // First copy the points from B
-            for (int i = 0; i < bLength - 1; i++) {
-                newXpoints[i] = b.getX(i);
-                newYpoints[i] = b.getY(i);
-            }
-
-            // Second copy the points from A.
-            for (int i = 1; i < aLength; i++) {
-                newXpoints[i + bLength - 2] = a.getX(i);
-                newYpoints[i + bLength - 2] = a.getY(i);
-            }
-
-            return new TrainPositionOnMap(newXpoints, newYpoints,
-                    b.acceleration, b.speed, b.activity);
-        }
-        throw new IllegalArgumentException("Tried to add " + b.toString()
-                + " to the head of " + a.toString());
     }
 
     /**
@@ -495,8 +480,7 @@ public class TrainPositionOnMap implements Serializable {
             newXpoints[newLength - 1] = b.getX(0);
             newYpoints[newLength - 1] = b.getY(0);
 
-            return new TrainPositionOnMap(newXpoints, newYpoints, speed,
-                    acceleration, activity);
+            return new TrainPositionOnMap(newXpoints, newYpoints, speed, acceleration, activity);
         }
         throw new IllegalArgumentException();
     }

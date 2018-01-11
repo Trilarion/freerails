@@ -18,7 +18,6 @@
 
 package freerails.controller;
 
-import freerails.controller.StockPriceCalculator.StockPrice;
 import freerails.world.*;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;
@@ -32,22 +31,10 @@ import freerails.world.track.TrackRule;
  * don't change their names.
  */
 // TODO Do not use reflection here.
-@SuppressWarnings("unused")
 public class BalanceSheetGenerator {
 
-    /**
-     *
-     */
     public final String year;
-
-    /**
-     *
-     */
     public final Stats total;
-
-    /**
-     *
-     */
     public final Stats ytd;
     final ReadOnlyWorld w;
     final FreerailsPrincipal principal;
@@ -64,192 +51,44 @@ public class BalanceSheetGenerator {
         GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
         // Calculate totals
         GameTime time = w.currentTime();
-        final int startyear = cal.getYear(time.getTicks());
-        year = String.valueOf(startyear);
-        GameTime startOfYear = new GameTime(cal.getTicks(startyear));
-
-        GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG,
-                GameTime.DOOMSDAY};
-
+        final int startYear = cal.getYear(time.getTicks());
+        year = String.valueOf(startYear);
+        GameTime startOfYear = new GameTime(cal.getTicks(startYear));
+        GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
         total = new Stats(w, principal, totalTimeInterval);
 
-        GameTime[] ytdTimeInterval = new GameTime[]{startOfYear,
-                GameTime.DOOMSDAY};
+        GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
         ytd = new Stats(w, principal, ytdTimeInterval);
 
     }
 
     /**
-     * @param w
+     * @param world
      * @param principal
      * @param startTime
      * @return
      */
-    public static Money calTrackTotal(ReadOnlyWorld w, FreerailsPrincipal principal, GameTime startTime) {
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                w, principal);
+    public static Money calTrackTotal(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime startTime) {
 
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);
         long amount = 0;
 
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
             long trackValue = trackRule.getPrice().getAmount();
 
-            GameTime[] times = new GameTime[]{startTime,
-                    GameTime.DOOMSDAY};
+            GameTime[] times = new GameTime[]{startTime, GameTime.DOOMSDAY};
 
             aggregator.setType(i);
             aggregator.setTimes(times);
-            ItemsTransactionAggregator.QuantitiesAndValues qnv = aggregator
-                    .calculateQuantitiesAndValues();
+            ItemsTransactionAggregator.QuantitiesAndValues qnv = aggregator.calculateQuantitiesAndValues();
             int quantity = qnv.quantities[0];
-            amount += trackValue * quantity
-                    / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+            amount += trackValue * quantity / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
 
         }
 
         return new Money(amount);
-    }
-
-    /**
-     *
-     */
-    public static class Stats {
-
-        /**
-         *
-         */
-        public final Money operatingFunds;
-
-        /**
-         *
-         */
-        public final Money track;
-
-        /**
-         *
-         */
-        public final Money stations;
-
-        /**
-         *
-         */
-        public final Money rollingStock;
-
-        /**
-         *
-         */
-        public final Money industries;
-
-        /**
-         *
-         */
-        public final Money loans;
-
-        /**
-         *
-         */
-        public final Money equity;
-
-        /**
-         *
-         */
-        public Money treasuryStock;
-
-        /**
-         *
-         */
-        public Money otherRrStock;
-
-        /**
-         *
-         */
-        public Money profit;
-
-        /**
-         * @param world
-         * @param principal
-         * @param totalTimeInterval
-         */
-        public Stats(ReadOnlyWorld world, FreerailsPrincipal principal,
-                     final GameTime[] totalTimeInterval) {
-            TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, principal, totalTimeInterval);
-
-            operatingFunds = operatingFundsAggregator.calculateValue();
-
-            track = calTrackTotal(world, principal, totalTimeInterval[0]);
-
-            ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                    world, principal);
-            aggregator.setTimes(totalTimeInterval);
-
-            aggregator.setCategory(TransactionCategory.STATIONS);
-            stations = aggregator.calculateValue();
-
-            aggregator.setCategory(TransactionCategory.TRAIN);
-            rollingStock = aggregator.calculateValue();
-
-            aggregator.setCategory(TransactionCategory.INDUSTRIES);
-            industries = aggregator.calculateValue();
-            aggregator.setCategory(TransactionCategory.BOND);
-            loans = aggregator.calculateValue();
-            aggregator.setCategory(TransactionCategory.ISSUE_STOCK);
-            equity = aggregator.calculateValue();
-
-            // If we don't initialize this variable
-            // we get a NPE when we don't own any stock in others RRs
-            otherRrStock = new Money(0);
-
-            int thisPlayerId = world.getID(principal);
-
-            StockPrice[] stockPrices = (new StockPriceCalculator(world))
-                    .calculate();
-            for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
-
-                aggregator.setCategory(TransactionCategory.TRANSFER_STOCK);
-                aggregator.setType(thisPlayerId);
-                int quantity = aggregator.calculateQuantity();
-                if (playerId == thisPlayerId) {
-                    treasuryStock = new Money(quantity
-                            * stockPrices[playerId].currentPrice.getAmount());
-                } else {
-                    otherRrStock = new Money(quantity
-                            * stockPrices[playerId].currentPrice.getAmount()
-                            + otherRrStock.getAmount());
-                }
-            }
-            calProfit();
-
-        }
-
-        private void calProfit() {
-            long profitValue = operatingFunds.getAmount() + track.getAmount()
-                    + stations.getAmount() + rollingStock.getAmount()
-                    + industries.getAmount() + loans.getAmount()
-                    + equity.getAmount() + treasuryStock.getAmount()
-                    + otherRrStock.getAmount();
-            profit = new Money(profitValue);
-        }
-
-        private static class MyTransactionAggregator extends TransactionAggregator {
-            private final GameTime[] totalTimeInterval;
-
-            public MyTransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime[] totalTimeInterval) {
-                super(world, principal);
-                this.totalTimeInterval = totalTimeInterval;
-            }
-
-            @Override
-            protected boolean condition(int transactionID) {
-                int transactionTicks = w.getTransactionTimeStamp(principal,
-                        transactionID).getTicks();
-
-                int from = totalTimeInterval[0].getTicks();
-                int to = totalTimeInterval[1].getTicks();
-                return transactionTicks >= from && transactionTicks <= to;
-            }
-        }
     }
 
 }

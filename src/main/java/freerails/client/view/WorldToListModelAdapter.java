@@ -49,11 +49,9 @@ public class WorldToListModelAdapter implements ListModel {
 
         w = world;
 
-        if (null == key)
-            throw new NullPointerException();
+        if (null == key) throw new NullPointerException();
 
-        if (null == w)
-            throw new NullPointerException();
+        if (null == w) throw new NullPointerException();
 
         elements = new NonNullElementWorldIterator(key, world);
     }
@@ -63,23 +61,18 @@ public class WorldToListModelAdapter implements ListModel {
      * @param key
      * @param p
      */
-    public WorldToListModelAdapter(ReadOnlyWorld world, KEY key,
-                                   FreerailsPrincipal p) {
+    public WorldToListModelAdapter(ReadOnlyWorld world, KEY key, FreerailsPrincipal p) {
 
         w = world;
 
-        if (null == key)
-            throw new NullPointerException();
+        if (null == key) throw new NullPointerException();
 
-        if (null == p)
-            throw new NullPointerException();
+        if (null == p) throw new NullPointerException();
 
-        if (null == w)
-            throw new NullPointerException();
+        if (null == w) throw new NullPointerException();
 
         // Check that the principal exists.
-        if (!world.isPlayer(p))
-            throw new IllegalArgumentException(p.getName());
+        if (!world.isPlayer(p)) throw new IllegalArgumentException(p.getName());
 
         elements = new NonNullElementWorldIterator(key, world, p);
     }

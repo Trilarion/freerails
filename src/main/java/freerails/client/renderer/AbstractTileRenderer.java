@@ -63,8 +63,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param mapY
      * @param w
      */
-    public void renderTile(java.awt.Graphics g, int renderX, int renderY,
-                           int mapX, int mapY, ReadOnlyWorld w) {
+    public void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld w) {
         Image icon = getIcon(mapX, mapY, w);
 
         if (null != icon) {
@@ -93,8 +92,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         if (getTileIcons()[tile] != null) {
             return getTileIcons()[tile];
         }
-        throw new NullPointerException("Error in TileView.getIcon: icon no. "
-                + tile + "==null");
+        throw new NullPointerException("Error in TileView.getIcon: icon no. " + tile + "==null");
     }
 
     int selectTileIcon(int x, int y, ReadOnlyWorld w) {
@@ -125,8 +123,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     String generateRelativeFileName(int i) {
-        return "terrain" + File.separator + getTerrainType() + '_'
-                + generateFileNameNumber(i) + ".png";
+        return "terrain" + File.separator + getTerrainType() + '_' + generateFileNameNumber(i) + ".png";
     }
 
     /**

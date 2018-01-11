@@ -44,15 +44,10 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     public NewsPaperJPanel() {
         initComponents();
 
-        Image tempImage = (new javax.swing.ImageIcon(getClass().getResource(
-                "/freerails/data/newspaper.png"))).getImage();
+        Image tempImage = (new javax.swing.ImageIcon(getClass().getResource("/freerails/data/newspaper.png"))).getImage();
 
-        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-                .getDefaultConfiguration();
-        pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage
-                        .getWidth(null), tempImage.getHeight(null),
-                Transparency.BITMASK);
+        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
 
         Graphics g = pieceOfNewspaper.getGraphics();
 

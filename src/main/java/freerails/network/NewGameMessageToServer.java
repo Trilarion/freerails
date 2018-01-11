@@ -43,8 +43,6 @@ public class NewGameMessageToServer implements MessageToServer {
     /**
      * TODO This would be better implemented in a config file, or better still
      * dynamically determined by scanning the directory.
-     *
-     * @return
      */
     public static String[] getMapNames() {
         return new String[]{"South America", "Small South America"};
@@ -66,15 +64,12 @@ public class NewGameMessageToServer implements MessageToServer {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof NewGameMessageToServer))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof NewGameMessageToServer)) return false;
 
         final NewGameMessageToServer newGameMessageToServer = (NewGameMessageToServer) obj;
 
-        if (id != newGameMessageToServer.id)
-            return false;
+        if (id != newGameMessageToServer.id) return false;
         return mapName.equals(newGameMessageToServer.mapName);
     }
 

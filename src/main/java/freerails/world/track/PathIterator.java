@@ -32,8 +32,6 @@ public interface PathIterator extends FreerailsMutableSerializable {
 
     /**
      * Tests whether the path has another segment.
-     *
-     * @return
      */
     boolean hasNext();
 
@@ -42,8 +40,6 @@ public interface PathIterator extends FreerailsMutableSerializable {
      * specified LineSegment; then moves the iterator forwards by one path segment.
      * (The coordinates are placed the passed-in LineSegment rather than a new
      * object to avoid the cost of object creation.)
-     *
-     * @param line
      */
     void nextSegment(LineSegment line);
 

@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 // TODO this activity iterator can do far too much, use a standard iterator instead and put the extra features into an activity
+
 /**
  *
  */
@@ -42,15 +43,11 @@ public interface ActivityIterator {
 
     /**
      * Returns the time the current activity starts.
-     *
-     * @return
      */
     double getStartTime();
 
     /**
      * Returns the time the current activity ends.
-     *
-     * @return
      */
     double getFinishTime();
 
@@ -63,9 +60,6 @@ public interface ActivityIterator {
      * Converts an absolute time value to a time value relative to the start of
      * the current activity. If absoluteTime is greater then getFinishTime(), getDuration() is
      * returned.
-     *
-     * @param absoluteTime
-     * @return
      */
     @SuppressWarnings("unused")
     double absoluteToRelativeTime(double absoluteTime);

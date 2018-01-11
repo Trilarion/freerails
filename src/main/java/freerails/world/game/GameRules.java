@@ -68,7 +68,6 @@ public class GameRules implements Serializable {
 
         GameRules test = (GameRules) obj;
 
-        return canConnectToOtherRRTrack == test.canConnectToOtherRRTrack
-                && mustConnectToExistingTrack == test.mustConnectToExistingTrack;
+        return canConnectToOtherRRTrack == test.canConnectToOtherRRTrack && mustConnectToExistingTrack == test.mustConnectToExistingTrack;
     }
 }

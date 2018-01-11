@@ -46,11 +46,9 @@ public class Station implements Serializable {
     private final ImmutableList<TrainBlueprint> production;
 
     // TODO this may be a misuse, instead add cargoConversion, where is this used
+
     /**
      * Makes a copy of the station
-     *
-     * @param s
-     * @param cargoConversion
      */
     public Station(Station s, StationConversion cargoConversion) {
         this.cargoConversion = cargoConversion;
@@ -70,8 +68,7 @@ public class Station implements Serializable {
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
      */
-    public Station(int x, int y, String stationName,
-                   int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(int x, int y, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
         name = stationName;
         this.x = x;
         this.y = y;
@@ -88,6 +85,7 @@ public class Station implements Serializable {
     }
 
     // TODO are these meaningful values
+
     /**
      *
      */
@@ -103,6 +101,7 @@ public class Station implements Serializable {
     }
 
     // TODO this might be a misuse, just add production as method instead, copy should not be necessary
+
     /**
      * @param s
      * @param production
@@ -119,6 +118,7 @@ public class Station implements Serializable {
     }
 
     // TODO possible misuse, see above
+
     /**
      * @param s
      * @param demandForCargo
@@ -135,6 +135,7 @@ public class Station implements Serializable {
     }
 
     // TODO possible misuse, see above
+
     /**
      * @param s
      * @param supply
@@ -153,28 +154,18 @@ public class Station implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof Station))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Station)) return false;
         final Station station = (Station) obj;
-        if (cargoBundleNumber != station.cargoBundleNumber)
+        if (cargoBundleNumber != station.cargoBundleNumber) return false;
+        if (x != station.x) return false;
+        if (y != station.y) return false;
+        if (cargoConversion != null ? !cargoConversion.equals(station.cargoConversion) : station.cargoConversion != null)
             return false;
-        if (x != station.x)
+        if (demandForCargo != null ? !demandForCargo.equals(station.demandForCargo) : station.demandForCargo != null)
             return false;
-        if (y != station.y)
-            return false;
-        if (cargoConversion != null ? !cargoConversion.equals(station.cargoConversion)
-                : station.cargoConversion != null)
-            return false;
-        if (demandForCargo != null ? !demandForCargo.equals(station.demandForCargo)
-                : station.demandForCargo != null)
-            return false;
-        if (!name.equals(station.name))
-            return false;
-        if (production != null ? !production.equals(station.production)
-                : station.production != null)
-            return false;
+        if (!name.equals(station.name)) return false;
+        if (production != null ? !production.equals(station.production) : station.production != null) return false;
         return supply != null ? supply.equals(station.supply) : station.supply == null;
     }
 

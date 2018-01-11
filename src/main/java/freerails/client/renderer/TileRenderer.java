@@ -40,7 +40,6 @@ public interface TileRenderer {
      * @param mapY
      * @param w
      */
-    void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX,
-                    int mapY, ReadOnlyWorld w);
+    void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld w);
 
 }

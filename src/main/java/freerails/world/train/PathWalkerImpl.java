@@ -61,8 +61,6 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * Specify the distance this PathWalker is to progress along the current
      * step.
-     *
-     * @param distance
      */
     public void stepForward(double distance) {
         distanceOfThisStepRemaining += distance;
@@ -91,9 +89,7 @@ public class PathWalkerImpl implements PathWalker {
             startInMiddleOfSegment(line);
         }
 
-        double remainingDistanceAlongCurrentSegment = currentSegment
-                .getLength()
-                - distanceAlongCurrentSegment;
+        double remainingDistanceAlongCurrentSegment = currentSegment.getLength() - distanceAlongCurrentSegment;
 
         if (distanceOfThisStepRemaining > remainingDistanceAlongCurrentSegment) {
             endAtSegmentEnd(line, remainingDistanceAlongCurrentSegment);
@@ -125,14 +121,11 @@ public class PathWalkerImpl implements PathWalker {
     private void endInMiddleOfSegment(LineSegment line) {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
-        line.setX2(getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.getX1(), currentSegment.getX2()));
-        line.setY2(getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.getY1(), currentSegment.getY2()));
+        line.setX2(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getX1(), currentSegment.getX2()));
+        line.setY2(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getY1(), currentSegment.getY2()));
     }
 
-    private void endAtSegmentEnd(LineSegment line,
-                                 double remainingDistanceAlongCurrentSegment) {
+    private void endAtSegmentEnd(LineSegment line, double remainingDistanceAlongCurrentSegment) {
         line.setX2(currentSegment.getX2());
         line.setY2(currentSegment.getY2());
         distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
@@ -140,10 +133,8 @@ public class PathWalkerImpl implements PathWalker {
     }
 
     private void startInMiddleOfSegment(LineSegment line) {
-        line.setX1(getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.getX1(), currentSegment.getX2()));
-        line.setY1(getCoorinateOnSegment(distanceAlongCurrentSegment,
-                currentSegment.getY1(), currentSegment.getY2()));
+        line.setX1(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getX1(), currentSegment.getX2()));
+        line.setY1(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getY1(), currentSegment.getY2()));
     }
 
     private void startNewSegment(LineSegment line) {
@@ -153,14 +144,12 @@ public class PathWalkerImpl implements PathWalker {
         line.setY1(currentSegment.getY1());
     }
 
-    private int getCoorinateOnSegment(double distanceAlongSegment,
-                                      int coordinate1, int coordinate2) {
+    private int getCoorinateOnSegment(double distanceAlongSegment, int coordinate1, int coordinate2) {
         double segmentLength = currentSegment.getLength();
         double delta = 0;
 
         if (0 != segmentLength) {
-            delta = (coordinate2 - coordinate1) * distanceAlongSegment
-                    / segmentLength;
+            delta = (coordinate2 - coordinate1) * distanceAlongSegment / segmentLength;
         }
 
         return coordinate1 + (int) delta;

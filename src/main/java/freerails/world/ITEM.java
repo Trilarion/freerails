@@ -23,51 +23,32 @@ import freerails.util.Utils;
 import java.io.Serializable;
 
 // TODO what about enums instead?
+
 /**
- * Provides a set of keys to access the items of which there can only
+ * Provides a set of items to access the items of which there can only
  * be one instance in the game world (for example, the current time).
  *
- * It implements the type-safe enum pattern (see Bloch, <I>Effective Java</I>
- * item 21)
+ * It implements the type-safe enum pattern (see Bloch, <I>Effective Java</I> item 21)
  */
 @freerails.util.InstanceControlled
 public class ITEM implements Serializable {
-    private static final long serialVersionUID = 3257846593180151859L;
 
+    private static final long serialVersionUID = 3257846593180151859L;
     /**
      * Maps key numbers to KEYs.
      */
-    private static final ITEM[] keys = new ITEM[getNumberOfKeys()];
+    private static final ITEM[] items = new ITEM[getNumberOfKeys()];
 
-    // START OF KEYS
-
-    /**
-     *
-     */
     public static final ITEM CALENDAR = new ITEM();
-
-    /**
-     *
-     */
     public static final ITEM GAME_RULES = new ITEM();
-
-    /**
-     *
-     */
     public static final ITEM GAME_SPEED = new ITEM();
-
-    /**
-     *
-     */
     public static final ITEM ECONOMIC_CLIMATE = new ITEM();
-
-    // END OF KEYS
     private static int numberOfKeys = 0;
-    private final int keyNumber;
+    private final int keyID;
 
     private ITEM() {
-        keyNumber = numberOfKeys;
-        keys[keyNumber] = this;
+        keyID = numberOfKeys;
+        items[keyID] = this;
         numberOfKeys++;
     }
 
@@ -76,11 +57,11 @@ public class ITEM implements Serializable {
     }
 
     int getKeyID() {
-        return keyNumber;
+        return keyID;
     }
 
     protected Object readResolve() {
-        return keys[keyNumber];
+        return items[keyID];
     }
 
     @Override

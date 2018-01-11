@@ -42,8 +42,7 @@ public class SimplePathIteratorImpl implements PathIterator {
         y = ypoints;
 
         if (x.size() != y.size()) {
-            throw new IllegalArgumentException(
-                    "The array length of the array must be even");
+            throw new IllegalArgumentException("The array length of the array must be even");
         }
     }
 
@@ -56,8 +55,7 @@ public class SimplePathIteratorImpl implements PathIterator {
         y = new ImmutableList<>(ypoints); // defensive copy.
 
         if (x.size() != y.size()) {
-            throw new IllegalArgumentException(
-                    "The array length of the array must be even");
+            throw new IllegalArgumentException("The array length of the array must be even");
         }
     }
 

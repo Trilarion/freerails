@@ -23,8 +23,8 @@ import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.world.FreerailsMutableSerializable;
-import freerails.world.game.GameModel;
 import freerails.world.World;
+import freerails.world.game.GameModel;
 import freerails.world.player.Player;
 import org.apache.log4j.Logger;
 
@@ -36,10 +36,8 @@ import java.util.Map;
 /**
  * A client for FreerailsGameServer.
  */
-public class FreerailsClient implements ClientControlInterface, GameModel,
-        UntriedMoveReceiver, ServerCommandReceiver {
-    private static final Logger logger = Logger.getLogger(FreerailsClient.class
-            .getName());
+public class FreerailsClient implements ClientControlInterface, GameModel, UntriedMoveReceiver, ServerCommandReceiver {
+    private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private final Map<String, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveFork;
 
@@ -67,15 +65,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Connects this client to a remote server.
-     *
-     * @param address
-     * @param port
-     * @param password
-     * @param username
-     * @return
      */
-    public final LogOnResponse connect(String address, int port,
-                                       String username, String password) {
+    public final LogOnResponse connect(String address, int port, String username, String password) {
         if (logger.isDebugEnabled()) {
             logger.debug("Connect to remote server.  " + address + ':' + port);
         }
@@ -90,8 +81,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
             Serializable request = new LogOnRequest(username, password);
             connectionToServer.writeToServer(request);
 
-            return (LogOnResponse) connectionToServer
-                    .waitForObjectFromServer();
+            return (LogOnResponse) connectionToServer.waitForObjectFromServer();
         } catch (Exception e) {
             try {
                 connectionToServer.disconnect();
@@ -104,22 +94,15 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Connects this client to a local server.
-     *
-     * @param server
-     * @param username
-     * @param password
-     * @return
      */
-    public final LogOnResponse connect(GameServer server, String username,
-                                       String password) {
+    public final LogOnResponse connect(GameServer server, String username, String password) {
         try {
             Serializable request = new LogOnRequest(username, password);
             connectionToServer = new LocalConnection();
             connectionToServer.writeToServer(request);
             server.addConnection((LocalConnection) connectionToServer);
 
-            return (LogOnResponse) connectionToServer
-                    .waitForObjectFromServer();
+            return (LogOnResponse) connectionToServer.waitForObjectFromServer();
         } catch (Exception e) {
             try {
                 connectionToServer.disconnect();
@@ -150,8 +133,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
     /**
      * Subclasses should override this method if they need to respond the the
      * world being changed.
-     *
-     * @param w
      */
     protected void newWorld(World w) {
     }
@@ -191,8 +172,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
      */
     public final void update() {
         try {
-            Serializable[] messages = connectionToServer
-                    .readFromServer();
+            Serializable[] messages = connectionToServer.readFromServer();
 
             for (Serializable message : messages) {
                 processMessage(message);
@@ -253,8 +233,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Sends move to the server.
-     *
-     * @param move
      */
     public final void process(Move move) {
         committer.toServer(move);
@@ -264,9 +242,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel,
 
     /**
      * Tests a move before sending it to the server.
-     *
-     * @param move
-     * @return
      */
     public final MoveStatus tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);

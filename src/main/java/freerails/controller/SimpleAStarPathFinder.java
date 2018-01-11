@@ -18,47 +18,28 @@
 
 package freerails.controller;
 
-import freerails.util.IntArray;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
  * object creation and garbage collection. 26-Nov-2002
  */
-public class SimpleAStarPathFinder implements Serializable,
-        IncrementalPathFinder {
+public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinder {
+
     private static final long serialVersionUID = 3257565105200576310L;
-
-    private static final Logger logger = Logger
-            .getLogger(SimpleAStarPathFinder.class.getName());
-
+    private static final Logger logger = Logger.getLogger(SimpleAStarPathFinder.class.getName());
     private final OpenList openList = new OpenList();
-
     private final Collection<Integer> startingPositions = new HashSet<>();
-
     private final HashMap<Integer, Integer> closedList = new HashMap<>();
-
     private final HashMap<Integer, Integer> shortestPath = new HashMap<>();
-
     private int status = SEARCH_NOT_STARTED;
-
-    /**
-     * Note, IntArray is not Serializable.
-     */
-    private transient IntArray path = null;
-
+    private List<Integer> path = new ArrayList<>();
     private int bestPath;
-
     private int bestPathF;
-
     private GraphExplorer explorer;
-
     private long searchStartTime = 0;
 
     /**
@@ -71,7 +52,7 @@ public class SimpleAStarPathFinder implements Serializable,
     /**
      * @return
      */
-    public IntArray retrievePath() {
+    public List<Integer> retrievePath() {
         return path;
     }
 
@@ -81,11 +62,9 @@ public class SimpleAStarPathFinder implements Serializable,
      * @param tempExplorer
      * @return
      */
-    public int findstep(int currentPosition, int[] targets,
-                        GraphExplorer tempExplorer) {
+    public int findstep(int currentPosition, int[] targets, GraphExplorer tempExplorer) {
         try {
-            return findpath(new int[]{currentPosition}, targets,
-                    tempExplorer).get(0);
+            return findpath(new int[]{currentPosition}, targets, tempExplorer).get(0);
         } catch (PathNotFoundException e) {
             return PATH_NOT_FOUND;
         }
@@ -98,11 +77,9 @@ public class SimpleAStarPathFinder implements Serializable,
      * @return
      * @throws PathNotFoundException
      */
-    public IntArray findpath(int[] currentPosition, int[] targets,
-                             GraphExplorer e) throws PathNotFoundException {
+    public List<Integer> findpath(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
         if (logger.isDebugEnabled()) {
-            logger.debug(currentPosition.length + " starting points; "
-                    + targets.length + " targets.");
+            logger.debug(currentPosition.length + " starting points; " + targets.length + " targets.");
         }
 
         setupSearch(currentPosition, targets, e);
@@ -162,13 +139,11 @@ public class SimpleAStarPathFinder implements Serializable,
                     }
                 }
 
-                if (openList.contains(successor)
-                        && openList.getF(successor) < successorF) {
+                if (openList.contains(successor) && openList.getF(successor) < successorF) {
                     // if a node with the same position as successor is in the
                     // OPEN list \
                     // which has a lower f than successor, skip this successor
-                } else if (closedList.containsKey(successor)
-                        && closedList.get(successor) < successorF) {
+                } else if (closedList.containsKey(successor) && closedList.get(successor) < successorF) {
                     // if a node with the same position as successor is in the
                     // CLOSED list \
                     // which has a lower f than successor, skip this successor
@@ -188,8 +163,7 @@ public class SimpleAStarPathFinder implements Serializable,
                     // the open list, then the best path so far is the shortest
                     // path.
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Path successfully found after "
-                                + loopCounter + " iterations.");
+                        logger.debug("Path successfully found after " + loopCounter + " iterations.");
                     }
                     path.add(bestPath);
 
@@ -223,16 +197,14 @@ public class SimpleAStarPathFinder implements Serializable,
                     status = SEARCH_PAUSED;
 
                     long totalSearchTime = currentTime - searchStartTime;
-                    throw new PathNotFoundException("No path found yet. "
-                            + totalSearchTime + "ms.");
+                    throw new PathNotFoundException("No path found yet. " + totalSearchTime + "ms.");
                 }
             }
         }
 
         status = PATH_NOT_FOUND;
         if (logger.isDebugEnabled()) {
-            logger.debug("No path found and open list empty after "
-                    + loopCounter + " iterations.");
+            logger.debug("No path found and open list empty after " + loopCounter + " iterations.");
         }
         throw new PathNotFoundException("Path not found.");
     }
@@ -243,8 +215,7 @@ public class SimpleAStarPathFinder implements Serializable,
      * @param e
      * @throws PathNotFoundException
      */
-    public void setupSearch(int[] currentPosition, int[] targets,
-                            GraphExplorer e) throws PathNotFoundException {
+    public void setupSearch(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
         abandonSearch();
 
         explorer = e;
@@ -270,7 +241,7 @@ public class SimpleAStarPathFinder implements Serializable,
      *
      */
     public void abandonSearch() {
-        path = new IntArray();
+        path.clear();
         searchStartTime = 0;
 
         bestPath = PATH_NOT_FOUND;

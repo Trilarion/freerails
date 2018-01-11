@@ -18,9 +18,9 @@
 
 package freerails.controller;
 
-import freerails.world.game.GameTime;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackSection;
 import freerails.world.train.TrainModel;
@@ -32,14 +32,7 @@ import java.util.*;
  */
 public class OccupiedTracks {
 
-    /**
-     *
-     */
     public final Map<TrackSection, Integer> occupiedTrackSections;
-
-    /**
-     *
-     */
     public final Map<Integer, List<TrackSection>> trainToTrackList;
 
     /**
@@ -53,18 +46,15 @@ public class OccupiedTracks {
 
         for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {
             TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, i);
-            if (null == train)
-                continue;
+            if (null == train) continue;
 
             TrainAccessor ta = new TrainAccessor(w, principal, i);
             GameTime gt = w.currentTime();
 
             if (ta.isMoving(gt.getTicks())) {
 
-                HashSet<TrackSection> sections = ta.occupiedTrackSection(gt
-                        .getTicks());
-                List<TrackSection> trackList = new ArrayList<>(
-                        sections);
+                HashSet<TrackSection> sections = ta.occupiedTrackSection(gt.getTicks());
+                List<TrackSection> trackList = new ArrayList<>(sections);
                 trainToTrackList.put(i, trackList);
                 for (TrackSection section : sections) {
                     Integer count = occupiedTrackSections.get(section);

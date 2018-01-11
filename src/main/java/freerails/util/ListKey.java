@@ -54,17 +54,13 @@ public class ListKey implements Comparable<ListKey>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof ListKey))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof ListKey)) return false;
 
         final ListKey listKey = (ListKey) obj;
 
-        if (!Arrays.equals(index, listKey.index))
-            return false;
-        if (listID != listKey.listID)
-            return false;
+        if (!Arrays.equals(index, listKey.index)) return false;
+        if (listID != listKey.listID) return false;
         return type == listKey.type;
     }
 
@@ -85,19 +81,15 @@ public class ListKey implements Comparable<ListKey>, Serializable {
 
     public int compareTo(ListKey o) {
 
-        if (o.listID != listID)
-            return o.listID.ordinal() - listID.ordinal();
+        if (o.listID != listID) return o.listID.ordinal() - listID.ordinal();
 
-        if (index.length != o.index.length)
-            return index.length - o.index.length;
+        if (index.length != o.index.length) return index.length - o.index.length;
 
         for (int i = 0; i < index.length; i++) {
-            if (index[i] != o.index[i])
-                return index[i] - o.index[i];
+            if (index[i] != o.index[i]) return index[i] - o.index[i];
         }
 
-        if (o.type != type)
-            return o.type.ordinal() - type.ordinal();
+        if (o.type != type) return o.type.ordinal() - type.ordinal();
 
         return 0;
     }

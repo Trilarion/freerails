@@ -46,8 +46,7 @@ import java.util.List;
  * A JPanel that displays the cargo waiting and demanded at a station - used on
  * the select station popup window.
  */
-public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
-        View {
+public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3760559784860071476L;
 
@@ -86,8 +85,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
         setPreferredSize(new java.awt.Dimension(100, 200));
         jScrollPane1.setBorder(null);
-        jScrollPane1
-                .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         stationName.setText("Station Name");
@@ -105,14 +103,10 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel1.add(waiting, gridBagConstraints);
 
-        waitingJTable.setBackground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.background"));
+        waitingJTable.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         waitingJTable.setFont(new java.awt.Font("Dialog", 0, 10));
-        waitingJTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{{"Mail", "4"}, {"Passengers", null}},
-                new String[]{"Title 1", "Title 2"}));
-        waitingJTable
-                .setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        waitingJTable.setModel(new javax.swing.table.DefaultTableModel(new Object[][]{{"Mail", "4"}, {"Passengers", null}}, new String[]{"Title 1", "Title 2"}));
+        waitingJTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         waitingJTable.setFocusable(false);
         waitingJTable.setRequestFocusEnabled(false);
         waitingJTable.setRowSelectionAllowed(false);
@@ -133,8 +127,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(demands, gridBagConstraints);
 
-        demandsJList.setBackground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.background"));
+        demandsJList.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         demandsJList.setFont(new java.awt.Font("Dialog", 0, 10));
         demandsJList.setFocusable(false);
         demandsJList.setRequestFocusEnabled(false);
@@ -179,11 +172,9 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
      * @param newStationID
      */
     public void display(int newStationID) {
-        Station station = (Station) world.get(principal,
-                KEY.STATIONS, newStationID);
+        Station station = (Station) world.get(principal, KEY.STATIONS, newStationID);
         stationName.setText(station.getStationName());
-        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world
-                .get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
         final List<String> typeWaiting = new ArrayList<>();
@@ -195,8 +186,7 @@ public class CargoWaitingAndDemandedJPanel extends javax.swing.JPanel implements
 
             if (0 != amountWaiting) {
                 typeWaiting.add(cargoType.getDisplayName());
-                int carloads = amountWaiting
-                        / WagonType.UNITS_OF_CARGO_PER_WAGON;
+                int carloads = amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON;
                 quantityWaiting.add(carloads);
             }
             if (station.getDemandForCargo().isCargoDemanded(i)) {

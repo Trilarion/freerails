@@ -41,8 +41,7 @@ public class TrackTilesGenerator extends JPanel {
 
     private static final long serialVersionUID = 3618982273966487859L;
     final CubicCurve2D.Double[] track;
-    private final ImageManagerImpl imageManager = new ImageManagerImpl(
-            "/experimental/", "/experimental/");
+    private final ImageManagerImpl imageManager = new ImageManagerImpl("/experimental/", "/experimental/");
 
     private final List<TrackRule> rules;
 
@@ -64,11 +63,9 @@ public class TrackTilesGenerator extends JPanel {
         track[1] = TrackRenderer.createAdjacentCurve(track[0], 0, 0);
         track[2] = TrackRenderer.createAdjacentCurve(track[0], -60, -60);
         tr = new TrackRenderer();
-        URL track_xml_url = OldWorldImpl.class
-                .getResource("/freerails/data/track_tiles.xml");
+        URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
 
-        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
-                track_xml_url);
+        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
         rules = trackSetFactory.getRuleList();
         generateTiles();
 
@@ -83,8 +80,7 @@ public class TrackTilesGenerator extends JPanel {
         JScrollPane scrollPane = new JScrollPane();
         frame.add(scrollPane);
         TrackTilesGenerator trackTilesGenerator = new TrackTilesGenerator();
-        trackTilesGenerator.setPreferredSize(trackTilesGenerator
-                .getSize4Panel());
+        trackTilesGenerator.setPreferredSize(trackTilesGenerator.getSize4Panel());
         scrollPane.setViewportView(trackTilesGenerator);
         frame.setSize(500, 500);
 
@@ -105,8 +101,7 @@ public class TrackTilesGenerator extends JPanel {
         for (TrackRule rule : rules) {
             TrackCategories category = rule.getCategory();
             Image icon;
-            if (category == TrackCategories.bridge
-                    || category == TrackCategories.station) {
+            if (category == TrackCategories.bridge || category == TrackCategories.station) {
                 tr.setIcon(rule.getTypeName());
                 icon = tr.icon;
             } else {
@@ -118,10 +113,8 @@ public class TrackTilesGenerator extends JPanel {
             for (int i = 0; i < 512; i++) {
                 if (rule.testTrackPieceLegality(i)) {
 
-                    String fileName = TrackPieceRendererImpl.generateFilename(
-                            i, rule.getTypeName());
-                    TrackConfiguration conf = TrackConfiguration
-                            .from9bitTemplate(i);
+                    String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
+                    TrackConfiguration conf = TrackConfiguration.from9bitTemplate(i);
 
                     Image smallImage = imageManager.newBlankImage(60, 60);
                     Graphics2D g2 = (Graphics2D) smallImage.getGraphics();
@@ -154,8 +147,7 @@ public class TrackTilesGenerator extends JPanel {
         for (TrackRule rule : rules) {
             width = Math.max(width, lastWidth);
             lastWidth = 0;
-            Iterator<TrackConfiguration> it = rule
-                    .getLegalConfigurationsIterator();
+            Iterator<TrackConfiguration> it = rule.getLegalConfigurationsIterator();
             while (it.hasNext()) {
                 lastWidth += 60;
             }
@@ -178,8 +170,7 @@ public class TrackTilesGenerator extends JPanel {
 
             for (int i = 0; i < 512; i++) {
                 if (rule.testTrackPieceLegality(i)) {
-                    String fileName = TrackPieceRendererImpl.generateFilename(
-                            i, rule.getTypeName());
+                    String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
                     Image tile;
                     try {
                         tile = imageManager.getImage(fileName);

@@ -42,8 +42,7 @@ public class InetConnectionToServer extends AbstractInetConnection implements Co
         return read();
     }
 
-    public Serializable waitForObjectFromServer() throws IOException,
-            InterruptedException {
+    public Serializable waitForObjectFromServer() throws IOException, InterruptedException {
         return waitForObject();
     }
 

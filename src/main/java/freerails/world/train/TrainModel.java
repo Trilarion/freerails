@@ -29,8 +29,7 @@ public class TrainModel implements Serializable {
 
     public static final int WAGON_LENGTH = 24;
     public static final int MAX_NUMBER_OF_WAGONS = 6;
-    public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS)
-            * WAGON_LENGTH;
+    public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS) * WAGON_LENGTH;
     private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
     private final int engineTypeId;
@@ -147,10 +146,7 @@ public class TrainModel implements Serializable {
         if (obj instanceof TrainModel) {
             TrainModel test = (TrainModel) obj;
 
-            return cargoBundleId == test.cargoBundleId
-                    && engineTypeId == test.engineTypeId
-                    && wagonTypes.equals(test.wagonTypes)
-                    && scheduleId == test.scheduleId;
+            return cargoBundleId == test.cargoBundleId && engineTypeId == test.engineTypeId && wagonTypes.equals(test.wagonTypes) && scheduleId == test.scheduleId;
         }
         return false;
     }

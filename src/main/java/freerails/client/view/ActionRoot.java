@@ -64,8 +64,7 @@ public class ActionRoot {
     /**
      * @param dialogueBoxController
      */
-    public void setDialogueBoxController(
-            DialogueBoxController dialogueBoxController) {
+    public void setDialogueBoxController(DialogueBoxController dialogueBoxController) {
         this.dialogueBoxController = dialogueBoxController;
     }
 
@@ -92,21 +91,16 @@ public class ActionRoot {
 
     /**
      * Call this method when a new game is started or a game is loaded.
-     *
-     * @param modelRoot
-     * @param vl
      */
     public void setup(ModelRootImpl modelRoot, RendererRoot vl) {
         serverControls.setup(modelRoot, dialogueBoxController);
-        if (!modelRoot.hasBeenSetup)
-            throw new IllegalStateException();
+        if (!modelRoot.hasBeenSetup) throw new IllegalStateException();
 
         ReadOnlyWorld world = modelRoot.getWorld();
 
         if (world.size(SKEY.TRACK_RULES) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
-            stationBuildModel = new StationBuildModel(new StationBuilder(
-                    modelRoot), vl, modelRoot);
+            stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), vl, modelRoot);
         }
     }
 

@@ -31,17 +31,17 @@ public class BondItemTransaction extends ItemTransaction {
 
     private BondItemTransaction(TransactionCategory category, double rate, int quantity, Money amount) {
         // TODO item transaction only understands ints, this should not be a type, but a double rate
-        super(category, (int)rate, quantity, amount);
+        super(category, (int) rate, quantity, amount);
     }
 
     // TODO better place for these static methods
+
     /**
      * @param interestRate
      * @return
      */
     public static BondItemTransaction issueBond(double interestRate) {
-        return new BondItemTransaction(TransactionCategory.BOND, interestRate, 1,
-                WorldConstants.BOND_VALUE_ISSUE);
+        return new BondItemTransaction(TransactionCategory.BOND, interestRate, 1, WorldConstants.BOND_VALUE_ISSUE);
     }
 
     /**
@@ -49,7 +49,6 @@ public class BondItemTransaction extends ItemTransaction {
      * @return
      */
     public static BondItemTransaction repayBond(int interestRate) {
-        return new BondItemTransaction(TransactionCategory.BOND, interestRate, -1,
-                WorldConstants.BOND_VALUE_REPAY);
+        return new BondItemTransaction(TransactionCategory.BOND, interestRate, -1, WorldConstants.BOND_VALUE_REPAY);
     }
 }

@@ -55,9 +55,6 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
 
     /**
      * Adds a cargo batch with a certain amount.
-     *
-     * @param cargoBatch
-     * @param amount
      */
     public void addCargo(CargoBatch cargoBatch, int amount) {
         setAmount(cargoBatch, amount + getAmount(cargoBatch));
@@ -68,8 +65,6 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBatchBundle has changed since the
      * iterator was acquired.
-     *
-     * @return
      */
     public Iterator<CargoBatch> cargoBatchIterator() {
         final Iterator<CargoBatch> it = cargoMap.keySet().iterator();
@@ -104,8 +99,7 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
             }
 
             public void remove() {
-                throw new UnsupportedOperationException(
-                        "Use CargoBatchBundle.setAmount(CargoBatch cb, 0)");
+                throw new UnsupportedOperationException("Use CargoBatchBundle.setAmount(CargoBatch cb, 0)");
             }
         };
     }

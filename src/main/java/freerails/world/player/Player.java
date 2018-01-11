@@ -23,6 +23,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
 // TODO What is the difference between Player and PlayerPrincipal?
+
 /**
  * Represents a player within the game. The player model is such that a user can
  * start a client, create a new player on the server and start playing. They can
@@ -42,8 +43,7 @@ public class Player implements Serializable {
     /**
      * This Principal can be granted all permissions.
      */
-    public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal(
-            "Authoritative Server");
+    public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal("Authoritative Server");
     private static final long serialVersionUID = 4849154251645451999L;
 
     /**
@@ -54,8 +54,6 @@ public class Player implements Serializable {
 
     /**
      * Used by the client to generate a player with a particular name.
-     *
-     * @param name
      */
     public Player(String name) {
         this.name = name;
@@ -74,9 +72,6 @@ public class Player implements Serializable {
     /**
      * Used by the server to generate a player with a particular name and public
      * key.
-     *
-     * @param name
-     * @param id
      */
     public Player(String name, int id) {
         this.name = name;

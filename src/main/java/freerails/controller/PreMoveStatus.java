@@ -27,16 +27,8 @@ import java.io.Serializable;
  */
 public final class PreMoveStatus implements Serializable {
 
-    /**
-     *
-     */
-    public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(
-            MoveStatus.MOVE_OK);
+    public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(MoveStatus.MOVE_OK);
     private static final long serialVersionUID = 3978145456646009140L;
-
-    /**
-     *
-     */
     public final MoveStatus ms;
 
     private PreMoveStatus(MoveStatus ms) {
@@ -64,10 +56,8 @@ public final class PreMoveStatus implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof PreMoveStatus))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof PreMoveStatus)) return false;
 
         final PreMoveStatus preMoveStatus = (PreMoveStatus) obj;
 

@@ -8,7 +8,9 @@ railroad empire. It is based on the RailRoad Tycoon I and II games.
 
 It is written in Java and the code is released under the open source GPL-3.0 [license](LICENSE.txt). 
 
-The [History](HISTORY.md) of FreeRails.
+- [Website](https://freerails.twelvepm.de/)
+- [Development blog](https://freerails.blogspot.com/)
+- [History](http://freerails.readthedocs.io/en/latest/history.html)
 
 ## Download & Manual
 

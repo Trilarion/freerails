@@ -31,8 +31,8 @@ import java.io.Serializable;
  * @see MessageToServer
  */
 public class MessageStatus implements Serializable {
-    private static final long serialVersionUID = 3257285842216103987L;
 
+    private static final long serialVersionUID = 3257285842216103987L;
     private final int id;
     private final String reason;
     private final boolean successful;
@@ -60,17 +60,13 @@ public class MessageStatus implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof MessageStatus))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof MessageStatus)) return false;
 
         final MessageStatus messageStatus = (MessageStatus) obj;
 
-        if (id != messageStatus.id)
-            return false;
-        if (successful != messageStatus.successful)
-            return false;
+        if (id != messageStatus.id) return false;
+        if (successful != messageStatus.successful) return false;
         return reason != null ? reason.equals(messageStatus.reason) : messageStatus.reason == null;
     }
 
@@ -85,8 +81,6 @@ public class MessageStatus implements Serializable {
 
     /**
      * Returns the id of the command whose status this object stores.
-     *
-     * @return
      */
     public int getId() {
         return id;
@@ -94,8 +88,6 @@ public class MessageStatus implements Serializable {
 
     /**
      * True if the command was successfully executed.
-     *
-     * @return
      */
     public boolean isSuccessful() {
         return successful;

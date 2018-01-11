@@ -2,12 +2,10 @@ package freerails.controller;
 
 import java.io.Serializable;
 
-class OpenListEntry implements Comparable<OpenListEntry>,
-        Serializable {
+class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
+
     private static final long serialVersionUID = -4873508719707382681L;
-
     final int f;
-
     final int node;
 
     OpenListEntry(int _f, int _node) {
@@ -25,15 +23,12 @@ class OpenListEntry implements Comparable<OpenListEntry>,
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof OpenListEntry))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof OpenListEntry)) return false;
 
         final OpenListEntry openListEntry = (OpenListEntry) obj;
 
-        if (f != openListEntry.f)
-            return false;
+        if (f != openListEntry.f) return false;
         return node == openListEntry.node;
     }
 

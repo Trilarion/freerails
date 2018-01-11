@@ -23,11 +23,7 @@ package freerails.world.cargo;
  */
 public enum CargoCategory {
 
-    Mail(0),
-    Passengers(1),
-    Fast_Freight(2),
-    Slow_Freight(3),
-    Bulk_Freight(4);
+    Mail(0), Passengers(1), Fast_Freight(2), Slow_Freight(3), Bulk_Freight(4);
 
     private final int id;
 

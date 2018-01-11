@@ -26,6 +26,7 @@ import freerails.util.ImmutableList;
 import java.io.Serializable;
 
 // TODO look at MutableSchedule and combine both
+
 /**
  * A Schedule that is immutable.
  */
@@ -41,8 +42,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      * @param gotoStation
      * @param hasPriorityOrders
      */
-    public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation,
-                             boolean hasPriorityOrders) {
+    public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation, boolean hasPriorityOrders) {
         this.orders = new ImmutableList<>(orders);
         nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;
@@ -123,9 +123,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
         if (obj instanceof ImmutableSchedule) {
             ImmutableSchedule test = (ImmutableSchedule) obj;
 
-            return hasPriorityOrders == test.hasPriorityOrders
-                    && nextScheduledOrder == test.nextScheduledOrder
-                    && orders.equals(test.orders);
+            return hasPriorityOrders == test.hasPriorityOrders && nextScheduledOrder == test.nextScheduledOrder && orders.equals(test.orders);
         }
         return false;
     }

@@ -29,8 +29,8 @@ import freerails.world.terrain.TerrainType;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Lets the server analyse and alter cities.
@@ -47,6 +47,20 @@ class CityModel {
      */
     int stations = 0;
 
+    private static void writeTile(World w, CityTile cityTile) {
+        int type = 0;
+
+        while (!w.get(SKEY.TERRAIN_TYPES, type).equals(cityTile.type)) {
+            type++;
+        }
+
+        int x = cityTile.p.x;
+        int y = cityTile.p.y;
+        FullTerrainTile fTile = (FullTerrainTile) w.getTile(x, y);
+        fTile = FullTerrainTile.getInstance(type, fTile.getTrackPiece());
+        w.setTile(x, y, fTile);
+    }
+
     void addTile(TerrainType type) {
         Random rand = new Random();
 
@@ -55,16 +69,19 @@ class CityModel {
             int tilePos = rand.nextInt(clearTiles.size());
             Point p = clearTiles.remove(tilePos);
 
-            if (type.getCategory() == TerrainCategory.Urban) {
-                urbanCityTiles.add(new CityTile(p, type));
-            } else if (type.getCategory() == TerrainCategory.Industry) {
-                industryCityTiles.add(new CityTile(p, type));
-                industriesNotAtCity.remove(type);
-            } else if (type.getCategory() == TerrainCategory.Country) {
-                throw new IllegalArgumentException(
-                        "call remove(.) to replace a city tile with a country tile!");
-            } else if (type.getCategory() == TerrainCategory.Resource) {
-                resourceCityTiles.add(new CityTile(p, type));
+            switch (type.getCategory()) {
+                case Urban:
+                    urbanCityTiles.add(new CityTile(p, type));
+                    break;
+                case Industry:
+                    industryCityTiles.add(new CityTile(p, type));
+                    industriesNotAtCity.remove(type);
+                    break;
+                case Country:
+                    throw new IllegalArgumentException("call remove(.) to replace a city tile with a country tile!");
+                case Resource:
+                    resourceCityTiles.add(new CityTile(p, type));
+                    break;
             }
         }
     }
@@ -90,11 +107,9 @@ class CityModel {
         stations = 0;
 
         /* Identify city's bounds. */
-        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w
-                .getMapHeight());
+        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w.getMapHeight());
         City city = (City) w.get(SKEY.CITIES, cityID);
-        Rectangle cityArea = new Rectangle(city.getX() - 3,
-                city.getY() - 3, 7, 7);
+        Rectangle cityArea = new Rectangle(city.getX() - 3, city.getY() - 3, 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
         /* Count tile types. */
@@ -108,26 +123,29 @@ class CityModel {
                 }
 
                 int terrainTypeNumber = tile.getTerrainTypeID();
-                TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
-                        terrainTypeNumber);
+                TerrainType type = (TerrainType) w.get(SKEY.TERRAIN_TYPES, terrainTypeNumber);
 
-                if (type.getCategory() == TerrainCategory.Urban) {
-                    urbanCityTiles.add(new CityTile(new Point(x, y), type));
-                } else if (type.getCategory() == TerrainCategory.Industry) {
-                    industryCityTiles.add(new CityTile(new Point(x, y), type));
-                    industriesNotAtCity.remove(type);
-                } else if (type.getCategory() == TerrainCategory.Country) {
-                    clearTiles.add(new Point(x, y));
-                } else if (type.getCategory() == TerrainCategory.Resource) {
-                    resourceCityTiles.add(new CityTile(new Point(x, y), type));
+                switch (type.getCategory()) {
+                    case Urban:
+                        urbanCityTiles.add(new CityTile(new Point(x, y), type));
+                        break;
+                    case Industry:
+                        industryCityTiles.add(new CityTile(new Point(x, y), type));
+                        industriesNotAtCity.remove(type);
+                        break;
+                    case Country:
+                        clearTiles.add(new Point(x, y));
+                        break;
+                    case Resource:
+                        resourceCityTiles.add(new CityTile(new Point(x, y), type));
+                        break;
                 }
             }
         }
     }
 
     int size() {
-        return urbanCityTiles.size() + industryCityTiles.size()
-                + resourceCityTiles.size();
+        return urbanCityTiles.size() + industryCityTiles.size() + resourceCityTiles.size();
     }
 
     void writeToMap(World w) {
@@ -142,20 +160,6 @@ class CityModel {
         for (CityTile resourceCityTile : resourceCityTiles) {
             writeTile(w, resourceCityTile);
         }
-    }
-
-    private static void writeTile(World w, CityTile cityTile) {
-        int type = 0;
-
-        while (!w.get(SKEY.TERRAIN_TYPES, type).equals(cityTile.type)) {
-            type++;
-        }
-
-        int x = cityTile.p.x;
-        int y = cityTile.p.y;
-        FullTerrainTile fTile = (FullTerrainTile) w.getTile(x, y);
-        fTile = FullTerrainTile.getInstance(type, fTile.getTrackPiece());
-        w.setTile(x, y, fTile);
     }
 
 }

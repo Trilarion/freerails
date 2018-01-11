@@ -21,11 +21,11 @@
  */
 package freerails.controller;
 
-import freerails.world.game.GameTime;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.TransactionAggregator;
 import freerails.world.finances.*;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 
@@ -33,6 +33,7 @@ import freerails.world.player.Player;
  * Gathers the financial data for a company.
  */
 public class FinancialDataGatherer extends TransactionAggregator {
+
     private final int playerID;
     private final int[] stockInRRs;
     private int totalShares = 100000;
@@ -60,15 +61,12 @@ public class FinancialDataGatherer extends TransactionAggregator {
         if (t instanceof ItemTransaction) {
             ItemTransaction ait = (ItemTransaction) t;
 
-            if (t instanceof StockItemTransaction
-                    && ait.getCategory() == TransactionCategory.ISSUE_STOCK
-                    && ait.getType() == -1) {
+            if (t instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getType() == -1) {
                 // If it is a change in the total number of shares issued.
                 StockItemTransaction ist = (StockItemTransaction) t;
                 totalShares += ist.getQuantity();
 
-            } else if (t instanceof StockItemTransaction
-                    && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
+            } else if (t instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
                 //
                 stockInRRs[ait.getType()] += ait.getQuantity();
 
@@ -97,8 +95,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     /**
      * Returns the number of stock in the Treasury
-     *
-     * @return
      */
     public int treasuryStock() {
         return stockInRRs[playerID];
@@ -106,8 +102,6 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     /**
      * Returns The number of open Shares
-     *
-     * @return
      */
     public int totalShares() {
         return totalShares;
@@ -149,8 +143,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
             stockInThisRRs = new int[w.getNumberOfPlayers()];
             for (int i = 0; i < w.getNumberOfPlayers(); i++) {
                 Player p = w.getPlayer(i);
-                FinancialDataGatherer temp = new FinancialDataGatherer(w, p
-                        .getPrincipal());
+                FinancialDataGatherer temp = new FinancialDataGatherer(w, p.getPrincipal());
                 stockInThisRRs[i] = temp.stockInRRs[playerID];
             }
         }

@@ -32,8 +32,7 @@ import java.awt.*;
 /**
  * JPanel that displays the map and provides methods to handle scrolling.
  */
-public abstract class MapViewJComponent extends JPanel implements Scrollable,
-        MapRenderer {
+public abstract class MapViewJComponent extends JPanel implements Scrollable, MapRenderer {
     private static final long serialVersionUID = 3588200012170257744L;
     private MapRenderer mapView = new BlankMapRenderer(10);
 
@@ -58,8 +57,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         mapView.paintRect(g2, r);
     }
 
-    public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect,
-                                          int orientation, int direction) {
+    public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) {
         return (int) mapView.getScale();
     }
 
@@ -67,19 +65,16 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable,
         return false;
     }
 
-    public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect,
-                                           int orientation, int direction) {
+    public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) {
         if (javax.swing.SwingConstants.VERTICAL == orientation) {
-            int best = (int) (((visibleRect.height / mapView.getScale()) - 2) * mapView
-                    .getScale());
+            int best = (int) (((visibleRect.height / mapView.getScale()) - 2) * mapView.getScale());
 
             if (best > 0) {
                 return best;
             }
             return visibleRect.height;
         }
-        float f = ((visibleRect.width / mapView.getScale()) - 2)
-                * mapView.getScale();
+        float f = ((visibleRect.width / mapView.getScale()) - 2) * mapView.getScale();
         int best = (int) (f);
 
         if (best > 0) {

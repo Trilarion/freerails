@@ -61,12 +61,8 @@ public class KeyCodeToOneTileMoveVector {
 
     /**
      * Returns the OneTileMoveVector that is mapped to the specified keycode.
-     *
-     * @param keycode
-     * @return
      */
-    public static TileTransition getInstanceMappedToKey(int keycode)
-            throws NoSuchElementException {
+    public static TileTransition getInstanceMappedToKey(int keycode) throws NoSuchElementException {
         Integer integer = keycode;
 
         if (!keycode2vector.containsKey(integer)) {

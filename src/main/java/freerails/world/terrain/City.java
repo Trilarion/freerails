@@ -47,17 +47,13 @@ public class City implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof City))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof City)) return false;
 
         final City city = (City) obj;
 
-        if (x != city.x)
-            return false;
-        if (y != city.y)
-            return false;
+        if (x != city.x) return false;
+        if (y != city.y) return false;
         return name.equals(city.name);
     }
 

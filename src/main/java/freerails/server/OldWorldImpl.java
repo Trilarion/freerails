@@ -18,9 +18,10 @@
 
 package freerails.server;
 
-import freerails.server.parser.Track_TilesHandlerImpl;
 import freerails.client.ProgressMonitorModel;
-import freerails.world.*;
+import freerails.server.parser.Track_TilesHandlerImpl;
+import freerails.world.ITEM;
+import freerails.world.WorldImpl;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
@@ -43,13 +44,8 @@ public class OldWorldImpl {
     /**
      * Note, the map name is converted to lower case and any spaces are replaced
      * with underscores.
-     *
-     * @param mapName
-     * @param pm
-     * @return
      */
-    public static Serializable createWorldFromMapFile(String mapName,
-                                                      ProgressMonitorModel pm) {
+    public static Serializable createWorldFromMapFile(String mapName, ProgressMonitorModel pm) {
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
@@ -72,24 +68,20 @@ public class OldWorldImpl {
         tileFactory.addTerrainTileTypesList(w);
         pm.setValue(++progess);
 
-        URL track_xml_url = OldWorldImpl.class
-                .getResource("/freerails/data/track_tiles.xml");
+        URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
 
-        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
-                track_xml_url);
+        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
         pm.setValue(++progess);
 
         trackSetFactory.addTrackRules(w);
         pm.setValue(++progess);
 
         // Load the terrain map
-        URL map_url = OldWorldImpl.class.getResource("/freerails/data/"
-                + mapName + ".png");
+        URL map_url = OldWorldImpl.class.getResource("/freerails/data/" + mapName + ".png");
         MapFactory.setupMap(map_url, w, pm);
 
         // Load the city names
-        URL cities_xml_url = OldWorldImpl.class.getResource("/freerails/data/"
-                + mapName + "_cities.xml");
+        URL cities_xml_url = OldWorldImpl.class.getResource("/freerails/data/" + mapName + "_cities.xml");
 
         try {
             CityNamesSAXParser.readCityNames(w, cities_xml_url);

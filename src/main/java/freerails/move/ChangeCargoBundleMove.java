@@ -22,7 +22,6 @@
 package freerails.move;
 
 import freerails.world.KEY;
-import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.io.Serializable;
@@ -32,6 +31,7 @@ import java.io.Serializable;
  * the cargo carried by trains and the cargo waiting at stations).
  */
 public class ChangeCargoBundleMove extends ChangeItemInListMove {
+
     private static final long serialVersionUID = 3258126960072143408L;
 
     /**
@@ -40,8 +40,7 @@ public class ChangeCargoBundleMove extends ChangeItemInListMove {
      * @param bundleNumber
      * @param p
      */
-    public ChangeCargoBundleMove(Serializable before,
-                                 Serializable after, int bundleNumber, FreerailsPrincipal p) {
+    public ChangeCargoBundleMove(Serializable before, Serializable after, int bundleNumber, FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, bundleNumber, before, after, p);
     }
 }

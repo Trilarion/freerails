@@ -48,9 +48,7 @@ public final class TrackRuleProperties implements Serializable {
      * @param maintenance
      * @param fixedCost
      */
-    public TrackRuleProperties(int rgb, boolean doubleTrack, String name,
-                               TrackCategories c, int radius, int price,
-                               int maintenance, int fixedCost) {
+    public TrackRuleProperties(int rgb, boolean doubleTrack, String name, TrackCategories c, int radius, int price, int maintenance, int fixedCost) {
         stationRadius = radius;
         rGBvalue = rgb;
         enableDoubleTrack = doubleTrack;
@@ -66,11 +64,7 @@ public final class TrackRuleProperties implements Serializable {
         if (obj instanceof TrackRuleProperties) {
             TrackRuleProperties test = (TrackRuleProperties) obj;
 
-            return rGBvalue == test.rGBvalue
-                    && enableDoubleTrack == test.enableDoubleTrack
-                    && typeName.equals(test.typeName)
-                    && category == test.category
-                    && stationRadius == test.stationRadius;
+            return rGBvalue == test.rGBvalue && enableDoubleTrack == test.enableDoubleTrack && typeName.equals(test.typeName) && category == test.category && stationRadius == test.stationRadius;
         }
         return false;
     }

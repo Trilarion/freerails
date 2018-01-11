@@ -22,8 +22,7 @@ final class WagonCellRenderer implements ListCellRenderer {
             int width = image.getWidth(null);
             int scale = height / 10;
 
-            Icon icon = new ImageIcon(image.getScaledInstance(width
-                    / scale, height / scale, Image.SCALE_FAST));
+            Icon icon = new ImageIcon(image.getScaledInstance(width / scale, height / scale, Image.SCALE_FAST));
             label.setIcon(icon);
             labels[i] = label;
         }
@@ -39,11 +38,7 @@ final class WagonCellRenderer implements ListCellRenderer {
                                                   boolean cellHasFocus) /* the list and the cell have the focus */ {
         if (index >= 0 && index < labels.length) {
             CargoType cargoType = (CargoType) value;
-            String text = "<html><body>"
-                    + (isSelected ? "<strong>" : "")
-                    + cargoType.getDisplayName()
-                    + (isSelected ? "</strong>"
-                    : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
+            String text = "<html><body>" + (isSelected ? "<strong>" : "") + cargoType.getDisplayName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
              * padding to stop
              * word wrap due to
              * greater width of

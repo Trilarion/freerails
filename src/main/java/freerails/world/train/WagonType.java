@@ -27,8 +27,6 @@ import java.io.Serializable;
  */
 public class WagonType implements Serializable {
 
-    private static final long serialVersionUID = 3906368233710826292L;
-
     // TODO instead of type category use enum
     public static final int BULK_FREIGHT = 4;
     public static final int ENGINE = 5;
@@ -37,7 +35,7 @@ public class WagonType implements Serializable {
     public static final int PASSENGER = 1;
     public static final int SLOW_FREIGHT = 3;
     public static final int UNITS_OF_CARGO_PER_WAGON = 40;
-
+    private static final long serialVersionUID = 3906368233710826292L;
     private final int typeCategory;
     private final String typeName;
 
@@ -52,11 +50,9 @@ public class WagonType implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof WagonType))
-            return false;
+        if (!(obj instanceof WagonType)) return false;
         WagonType other = (WagonType) obj;
-        return other.typeCategory == typeCategory
-                && other.typeName.equals(typeName);
+        return other.typeCategory == typeCategory && other.typeName.equals(typeName);
     }
 
     @Override

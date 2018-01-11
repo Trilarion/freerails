@@ -22,8 +22,8 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.common.ImageManager;
 import freerails.client.ProgressMonitorModel;
+import freerails.client.common.ImageManager;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.track.NullTrackType;
@@ -39,8 +39,7 @@ import java.util.Iterator;
  * A list of TrackPieceRenderer.
  */
 public final class TrackPieceRendererList {
-    private static final Logger logger = Logger
-            .getLogger(TrackPieceRendererList.class.getName());
+    private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
 
     private final TrackPieceRenderer[] trackPieceViewArray;
 
@@ -50,8 +49,7 @@ public final class TrackPieceRendererList {
      * @param pm
      * @throws IOException
      */
-    public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager,
-                                  ProgressMonitorModel pm) throws IOException {
+    public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager, ProgressMonitorModel pm) throws IOException {
         // Setup progress monitor..
 
         pm.nextStep(w.size(SKEY.TRACK_RULES));
@@ -63,8 +61,7 @@ public final class TrackPieceRendererList {
         trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
 
         for (int i = 0; i < numberOfTrackTypes; i++) {
-            trackPieceViewArray[i] = new TrackPieceRendererImpl(w,
-                    imageManager, i);
+            trackPieceViewArray[i] = new TrackPieceRendererImpl(w, imageManager, i);
             pm.setValue(++progress);
         }
     }
@@ -89,29 +86,21 @@ public final class TrackPieceRendererList {
 
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
             TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
-            Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule
-                    .getLegalConfigurationsIterator();
+            Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule.getLegalConfigurationsIterator();
             TrackPieceRenderer trackPieceView = getTrackPieceView(i);
 
             if (null == trackPieceView) {
-                logger
-                        .warn("No track piece view for the following track type: "
-                                + trackRule.getTypeName());
+                logger.warn("No track piece view for the following track type: " + trackRule.getTypeName());
 
                 return false;
             }
             while (legalConfigurationsIterator.hasNext()) {
-                TrackConfiguration trackConfig = legalConfigurationsIterator
-                        .next();
+                TrackConfiguration trackConfig = legalConfigurationsIterator.next();
                 int trackGraphicsNo = trackConfig.getTrackGraphicsID();
                 Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 
                 if (null == img) {
-                    logger
-                            .warn("No track piece image for the following track type: "
-                                    + trackRule.getTypeName()
-                                    + ", with configuration: "
-                                    + trackGraphicsNo);
+                    logger.warn("No track piece image for the following track type: " + trackRule.getTypeName() + ", with configuration: " + trackGraphicsNo);
                     okSoFar = false;
                 }
             }

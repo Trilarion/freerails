@@ -37,8 +37,7 @@ import org.xml.sax.*;
 // TODO where is the DTD, how to find it?
 public class CargoAndTerrainParser implements ContentHandler {
 
-    private static final Logger logger = Logger
-            .getLogger(CargoAndTerrainParser.class.getName());
+    private static final Logger logger = Logger.getLogger(CargoAndTerrainParser.class.getName());
 
     private final java.lang.StringBuffer buffer;
     private final CargoAndTerrainHandler handler;
@@ -53,8 +52,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      *                 is recommended that it could be able to resolve at least the
      *                 DTD.
      */
-    public CargoAndTerrainParser(final CargoAndTerrainHandler handler,
-                                 final EntityResolver resolver) {
+    public CargoAndTerrainParser(final CargoAndTerrainHandler handler, final EntityResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
@@ -64,40 +62,31 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * The recognizer entry method taking an Inputsource.
      *
-     * @param input   InputSource to be parsed.
-     * @param handler
+     * @param input InputSource to be parsed.
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final InputSource input,
-                             final CargoAndTerrainHandler handler) throws SAXException,
-            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    public static void parse(final InputSource input, final CargoAndTerrainHandler handler) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
         parse(input, new CargoAndTerrainParser(handler, null));
     }
 
     /**
      * The recognizer entry method taking a URL.
      *
-     * @param url     URL source to be parsed.
-     * @param handler
+     * @param url URL source to be parsed.
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final java.net.URL url,
-                             final CargoAndTerrainHandler handler) throws SAXException,
-            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    public static void parse(final java.net.URL url, final CargoAndTerrainHandler handler) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
         parse(new InputSource(url.toExternalForm()), handler);
     }
 
-    private static void parse(final InputSource input,
-                              final CargoAndTerrainParser recognizer) throws SAXException,
-            javax.xml.parsers.ParserConfigurationException, java.io.IOException {
-        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
-                .newInstance();
+    private static void parse(final InputSource input, final CargoAndTerrainParser recognizer) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory.newInstance();
         factory.setValidating(true); // the code was generated according DTD
         factory.setNamespaceAware(true); // the code was generated according
         // DTD
@@ -133,17 +122,10 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
-     *
-     * @param uri
-     * @param localName
-     * @param qName
-     * @param atts
      */
-    public final void startElement(java.lang.String uri, java.lang.String localName,
-                                   java.lang.String qName, Attributes atts) throws SAXException {
+    public final void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, Attributes atts) throws SAXException {
         dispatch(true);
-        context.push(new Object[]{qName,
-                new org.xml.sax.helpers.AttributesImpl(atts)});
+        context.push(new Object[]{qName, new org.xml.sax.helpers.AttributesImpl(atts)});
 
         switch (localName) {
             case "Converts":
@@ -166,13 +148,8 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
-     *
-     * @param uri
-     * @param localName
-     * @param qName
      */
-    public final void endElement(java.lang.String uri, java.lang.String localName,
-                                 java.lang.String qName) throws SAXException {
+    public final void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) throws SAXException {
         dispatch(false);
         context.pop();
 
@@ -185,9 +162,6 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
-     *
-     * @param ch
-     * @param length
      */
     public final void characters(char[] ch, int start, int length) {
         buffer.append(ch, start, length);
@@ -195,9 +169,6 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     /**
      * This SAX interface method is implemented by the parser.
-     *
-     * @param ch
-     * @param length
      */
     public final void ignorableWhitespace(char[] ch, int start, int length) {
     }
@@ -205,15 +176,13 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void processingInstruction(java.lang.String target,
-                                            java.lang.String data) {
+    public final void processingInstruction(java.lang.String target, java.lang.String data) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void startPrefixMapping(final java.lang.String prefix,
-                                         final java.lang.String uri) {
+    public final void startPrefixMapping(final java.lang.String prefix, final java.lang.String uri) {
     }
 
     /**

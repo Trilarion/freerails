@@ -18,7 +18,10 @@
 
 package freerails.client.common;
 
-import freerails.controller.*;
+import freerails.controller.BuildMode;
+import freerails.controller.BuildTrackStrategy;
+import freerails.controller.ModelRoot;
+import freerails.controller.PreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.network.*;
@@ -57,14 +60,12 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         properties.put(Property.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
         properties.put(Property.SHOW_STATION_BORDERS, Boolean.TRUE);
         properties.put(Property.CURSOR_MODE, Value.BUILD_TRACK_CURSOR_MODE);
-        properties.put(Property.PREVIOUS_CURSOR_MODE,
-                Value.BUILD_TRACK_CURSOR_MODE);
+        properties.put(Property.PREVIOUS_CURSOR_MODE, Value.BUILD_TRACK_CURSOR_MODE);
         properties.put(Property.SERVER, "server details not set!");
         properties.put(Property.PLAY_SOUNDS, Boolean.TRUE);
         properties.put(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
         properties.put(Property.TIME, 0.0d);
-        properties.put(Property.TRACK_BUILDER_MODE,
-                TrackMoveProducer.BuildMode.BUILD_TRACK);
+        properties.put(Property.TRACK_BUILDER_MODE, BuildMode.BUILD_TRACK);
         properties.put(Property.SAVED_GAMES_LIST, Collections.emptyList());
         addPropertyChangeListener(SoundManager.getSoundManager());
     }
@@ -194,8 +195,7 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @param serverCommandReceiver
      */
-    public void setServerCommandReceiver(
-            ServerCommandReceiver serverCommandReceiver) {
+    public void setServerCommandReceiver(ServerCommandReceiver serverCommandReceiver) {
         this.serverCommandReceiver = serverCommandReceiver;
     }
 
@@ -203,9 +203,6 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model. Call this when the world model is changed (e.g. new map is
      * loaded)
-     *
-     * @param world
-     * @param p
      */
     public void setup(ReadOnlyWorld world, FreerailsPrincipal p) {
         this.world = world;

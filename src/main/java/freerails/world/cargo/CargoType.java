@@ -43,8 +43,7 @@ public final class CargoType implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof CargoType))
-            return false;
+        if (!(obj instanceof CargoType)) return false;
         CargoType other = (CargoType) obj;
         return other.unitWeight == unitWeight && other.name.equals(name) && other.category == category;
     }

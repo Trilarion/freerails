@@ -68,10 +68,8 @@ public final class MapFactory {
         world = w;
 
         Image mapImage = (new ImageIcon(map_url)).getImage();
-        Rectangle mapRect = new java.awt.Rectangle(0, 0, mapImage
-                .getWidth(null), mapImage.getHeight(null));
-        BufferedImage mapBufferedImage = new BufferedImage(mapRect.width,
-                mapRect.height, BufferedImage.TYPE_INT_ARGB);
+        Rectangle mapRect = new java.awt.Rectangle(0, 0, mapImage.getWidth(null), mapImage.getHeight(null));
+        BufferedImage mapBufferedImage = new BufferedImage(mapRect.width, mapRect.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = mapBufferedImage.getGraphics();
         g.drawImage(mapImage, 0, 0, null);
         w.setupMap(mapRect.width, mapRect.height);
@@ -96,9 +94,7 @@ public final class MapFactory {
                 }
             }
 
-            if (terrainTypeTile.getCategory() == TerrainCategory.Ocean
-                    || terrainTypeTile.getCategory() == TerrainCategory.River
-                    || terrainTypeTile.getCategory() == TerrainCategory.Hill) {
+            if (terrainTypeTile.getCategory() == TerrainCategory.Ocean || terrainTypeTile.getCategory() == TerrainCategory.River || terrainTypeTile.getCategory() == TerrainCategory.Hill) {
                 non_countryTypes.add(c);
             }
         }
@@ -119,25 +115,20 @@ public final class MapFactory {
                 Integer type = rgb2TerrainType.get(rgb);
 
                 if (null == type) {
-                    throw new NullPointerException(
-                            "There is no terrain type mapped to rgb value "
-                                    + rgb + " at location " + x + ", " + y);
+                    throw new NullPointerException("There is no terrain type mapped to rgb value " + rgb + " at location " + x + ", " + y);
                 }
 
-                tile = FullTerrainTile.getInstance(terrainRandomizer
-                        .getNewType(type));
+                tile = FullTerrainTile.getInstance(terrainRandomizer.getNewType(type));
 
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
-                    locations.add(new TerrainAtLocation(x, y, tile
-                            .getTerrainTypeID()));
+                    locations.add(new TerrainAtLocation(x, y, tile.getTerrainTypeID()));
                 }
 
                 w.setTile(x, y, tile);
             }
         }
 
-        for (int i = 0; i < locations.size(); i++) {
-            TerrainAtLocation rtv = locations.get(i);
+        for (TerrainAtLocation rtv : locations) {
             FullTerrainTile tile = FullTerrainTile.getInstance(rtv.getType());
 
             int x = rtv.getX();
@@ -146,8 +137,7 @@ public final class MapFactory {
 
             double prob = 0.75;
 
-            if (w.boundsContain(x - val, y - val)
-                    && w.boundsContain(x + val, y + val)) {
+            if (w.boundsContain(x - val, y - val) && w.boundsContain(x + val, y + val)) {
                 for (int m = x - val; m < x + val; m++) {
                     for (int n = y - val; n < y + val; n++) {
                         if (Math.random() > prob) {
@@ -160,8 +150,7 @@ public final class MapFactory {
     }
 
     private static void setTile(int x, int y, Serializable tile) {
-        if (!non_countryTypes.contains(((FullTerrainTile) world
-                .getTile(x, y)).getTerrainTypeID())) {
+        if (!non_countryTypes.contains(((FullTerrainTile) world.getTile(x, y)).getTerrainTypeID())) {
             world.setTile(x, y, tile);
         }
     }

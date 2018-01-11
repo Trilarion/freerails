@@ -20,7 +20,6 @@ package freerails.move;
 
 import freerails.world.KEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
 
 import java.io.Serializable;
 
@@ -28,6 +27,7 @@ import java.io.Serializable;
  * This Move changes the properties of a station.
  */
 public final class ChangeStationMove extends ChangeItemInListMove {
+
     private static final long serialVersionUID = 3833469496064160307L;
 
     /**
@@ -36,8 +36,7 @@ public final class ChangeStationMove extends ChangeItemInListMove {
      * @param after
      * @param p
      */
-    public ChangeStationMove(int index, Serializable before,
-                             Serializable after, FreerailsPrincipal p) {
+    public ChangeStationMove(int index, Serializable before, Serializable after, FreerailsPrincipal p) {
         super(KEY.STATIONS, index, before, after, p);
     }
 }

@@ -32,8 +32,7 @@ public class ShowJavaProperties {
      */
     public static final int TABLE_WIDTH = 500;
 
-    private static final Logger logger = Logger
-            .getLogger(ShowJavaProperties.class.getName());
+    private static final Logger logger = Logger.getLogger(ShowJavaProperties.class.getName());
 
     private ShowJavaProperties() {
     }
@@ -52,8 +51,7 @@ public class ShowJavaProperties {
         Properties p = System.getProperties();
         StringBuilder sb = new StringBuilder();
         /* We set the width of the table so that its text word-wraps. */
-        sb.append("<html><h3>Java System Properties</h3><table width =\""
-                + TABLE_WIDTH + "\" align = \"left\" valign = \"top\">\n");
+        sb.append("<html><h3>Java System Properties</h3><table width =\"" + TABLE_WIDTH + "\" align = \"left\" valign = \"top\">\n");
 
         Enumeration keys = p.keys();
 

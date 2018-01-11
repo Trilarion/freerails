@@ -56,14 +56,12 @@ public class TrackMaintenanceMoveGenerator {
      * @param category
      * @return
      */
-    public static Move generateMove(World world,
-                                    FreerailsPrincipal principal, TransactionCategory category) {
+    public static Move generateMove(World world, FreerailsPrincipal principal, TransactionCategory category) {
         if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                world, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);
 
         long amount = 0;
@@ -73,13 +71,11 @@ public class TrackMaintenanceMoveGenerator {
             long maintenanceCost = trackRule.getMaintenanceCost().getAmount();
 
             // Is the track type the category we are interested in?
-            boolean rightType = TransactionCategory.TRACK_MAINTENANCE == category ? !trackRule
-                    .isStation() : trackRule.isStation();
+            boolean rightType = TransactionCategory.TRACK_MAINTENANCE == category ? !trackRule.isStation() : trackRule.isStation();
 
             if (rightType) {
                 aggregator.setType(i);
-                amount += maintenanceCost * aggregator.calculateQuantity()
-                        / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+                amount += maintenanceCost * aggregator.calculateQuantity() / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }
 

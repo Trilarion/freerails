@@ -19,13 +19,13 @@
 package freerails.controller;
 
 import freerails.util.Point2D;
-import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.terrain.TileTransition;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.NullTrackType;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
+import freerails.world.train.PositionOnTrack;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;
@@ -35,9 +35,9 @@ import java.util.NoSuchElementException;
  * PositionOnTrack objects.
  */
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
+
     private static final long serialVersionUID = 3834311713465185081L;
-    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
-            0, TileTransition.NORTH);
+    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
     private final ReadOnlyWorld w;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
@@ -47,8 +47,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * @param p
      * @throws NoTrackException
      */
-    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p)
-            throws NoTrackException {
+    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) throws NoTrackException {
         w = world;
         FullTerrainTile tile = (FullTerrainTile) world.getTile(p.getX(), p.getY());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
@@ -59,14 +58,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     * @param w
      * @param p location of track to consider.
      * @return an array of PositionOnTrack objects describing the set of
      * possible orientations at this position (heading towards the
      * center of the tile)
      */
-    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w,
-                                                         Point2D p) {
+    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w, Point2D p) {
         TrackPiece tp = ((FullTerrainTile) w.getTile(p.x, p.y)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();
@@ -86,8 +83,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         for (TileTransition vector : vectors) {
             if (conf.contains(vector.get9bitTemplate())) {
-                possiblePositions[n] = PositionOnTrack.createComingFrom(p.x,
-                        p.y, vector.getOpposite());
+                possiblePositions[n] = PositionOnTrack.createComingFrom(p.x, p.y, vector.getOpposite());
                 n++;
             }
         }
@@ -182,11 +178,9 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         // current branch is not equal to the opposite of the current direction,
         // there must be another branch.
         TileTransition currentBranchDirection = currentBranch.cameFrom();
-        TileTransition oppositeToCurrentDirection = currentPosition.cameFrom()
-                .getOpposite();
+        TileTransition oppositeToCurrentDirection = currentPosition.cameFrom().getOpposite();
 
-        return oppositeToCurrentDirection.getID() != currentBranchDirection
-                .getID();
+        return oppositeToCurrentDirection.getID() != currentBranchDirection.getID();
     }
 
     TileTransition getFirstVectorToTry() {

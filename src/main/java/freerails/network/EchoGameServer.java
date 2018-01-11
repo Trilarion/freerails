@@ -23,15 +23,17 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 /**
  * Implementation of GameServer that simply echoes whatever clients send it.
  */
 public class EchoGameServer implements GameServer, Runnable {
 
-    private static final Logger logger = Logger.getLogger(EchoGameServer.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(EchoGameServer.class.getName());
 
     private final Collection<ConnectionToClient> connections = new ArrayList();
 
@@ -45,8 +47,6 @@ public class EchoGameServer implements GameServer, Runnable {
     /**
      * Creates an EchoGameServer, starts it in a new Thread, and waits for its
      * status to change to isOpen before returning.
-     *
-     * @return
      */
     public static EchoGameServer startServer() {
         EchoGameServer server = new EchoGameServer();
@@ -133,8 +133,7 @@ public class EchoGameServer implements GameServer, Runnable {
             /* Read messages. */
             for (ConnectionToClient connection : connections) {
                 try {
-                    Serializable[] messages = connection
-                            .readFromClient();
+                    Serializable[] messages = connection.readFromClient();
 
                     Collections.addAll(messsages2send, messages);
                 } catch (IOException e) {

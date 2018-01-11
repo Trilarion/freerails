@@ -16,14 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.top;
+package freerails.client;
 
-import freerails.client.ClientConfig;
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.*;
-import freerails.client.ProgressMonitorModel;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
@@ -44,8 +42,7 @@ import java.util.List;
  */
 public class RendererRootImpl implements RendererRoot {
 
-    private static final Logger logger = Logger
-            .getLogger(RendererRootImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(RendererRootImpl.class.getName());
     private final TileRendererList tiles;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
@@ -57,8 +54,7 @@ public class RendererRootImpl implements RendererRoot {
      * @param pm
      * @throws IOException
      */
-    public RendererRootImpl(ReadOnlyWorld w, ProgressMonitorModel pm)
-            throws IOException {
+    public RendererRootImpl(ReadOnlyWorld w, ProgressMonitorModel pm) throws IOException {
         imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
         tiles = loadNewTileViewList(w, pm);
 
@@ -69,8 +65,22 @@ public class RendererRootImpl implements RendererRoot {
         preloadSounds(pm);
     }
 
-    private void loadTrainImages(ReadOnlyWorld w, ProgressMonitorModel pm)
-            throws IOException {
+    private static void preloadSounds(ProgressMonitorModel pm) {
+        // Pre-load sounds..
+        String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK, ClientConfig.SOUND_CASH, ClientConfig.SOUND_REMOVE_TRACK, ClientConfig.SOUND_WHISTLE};
+        pm.nextStep(soundsFiles.length);
+        SoundManager sm = SoundManager.getSoundManager();
+        for (int i = 0; i < soundsFiles.length; i++) {
+            try {
+                sm.addClip(soundsFiles[i]);
+            } catch (IOException | UnsupportedAudioFileException e) {
+                // TODO Auto-generated catch block
+            }
+            pm.setValue(i + 1);
+        }
+    }
+
+    private void loadTrainImages(ReadOnlyWorld w, ProgressMonitorModel pm) throws IOException {
         // Setup progress monitor..
         final int numberOfWagonTypes = w.size(SKEY.CARGO_TYPES);
         final int numberOfEngineTypes = w.size(SKEY.ENGINE_TYPES);
@@ -98,31 +108,11 @@ public class RendererRootImpl implements RendererRoot {
 
     }
 
-    private static void preloadSounds(ProgressMonitorModel pm) {
-        // Pre-load sounds..
-        String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK,
-                ClientConfig.SOUND_CASH,
-                ClientConfig.SOUND_REMOVE_TRACK,
-                ClientConfig.SOUND_WHISTLE};
-        pm.nextStep(soundsFiles.length);
-        SoundManager sm = SoundManager.getSoundManager();
-        for (int i = 0; i < soundsFiles.length; i++) {
-            try {
-                sm.addClip(soundsFiles[i]);
-            } catch (IOException | UnsupportedAudioFileException e) {
-                // TODO Auto-generated catch block
-            }
-            pm.setValue(i + 1);
-        }
-    }
-
-    private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w,
-                                                  ProgressMonitorModel pm) throws IOException {
+    private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w, ProgressMonitorModel pm) throws IOException {
         return new TrackPieceRendererList(w, imageManager, pm);
     }
 
-    private TileRendererList loadNewTileViewList(ReadOnlyWorld w,
-                                                 ProgressMonitorModel pm) throws IOException {
+    private TileRendererList loadNewTileViewList(ReadOnlyWorld w, ProgressMonitorModel pm) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
         // Setup progress monitor..
@@ -145,18 +135,15 @@ public class RendererRootImpl implements RendererRoot {
                 // treat harbours as the same type.
                 TerrainCategory thisTerrainCategory = t.getCategory();
 
-                if (thisTerrainCategory == TerrainCategory.River
-                        || thisTerrainCategory == TerrainCategory.Ocean) {
+                if (thisTerrainCategory == TerrainCategory.River || thisTerrainCategory == TerrainCategory.Ocean) {
                     // Count number of types with category "water"
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType) w.get(
-                                SKEY.TERRAIN_TYPES, j);
+                        TerrainType t2 = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory == TerrainCategory.Ocean
-                                || terrainCategory == thisTerrainCategory) {
+                        if (terrainCategory == TerrainCategory.Ocean || terrainCategory == thisTerrainCategory) {
                             count++;
                         }
                     }
@@ -165,20 +152,17 @@ public class RendererRootImpl implements RendererRoot {
                     count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType) w.get(
-                                SKEY.TERRAIN_TYPES, j);
+                        TerrainType t2 = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory == TerrainCategory.Ocean
-                                || terrainCategory == thisTerrainCategory) {
+                        if (terrainCategory == TerrainCategory.Ocean || terrainCategory == thisTerrainCategory) {
                             typesTreatedAsTheSame[count] = j;
                             count++;
                         }
                     }
                 }
 
-                tr = new RiverStyleTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t, w);
+                tr = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
@@ -186,8 +170,7 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tr = new ForestStyleTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t, w);
+                tr = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
@@ -195,8 +178,7 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tr = new ChequeredTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t, w);
+                tr = new ChequeredTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
                 continue;
@@ -204,23 +186,20 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tr = new StandardTileRenderer(imageManager,
-                        typesTreatedAsTheSame, t, w);
+                tr = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
 
             } catch (IOException io) {
                 // If the image is missing, we generate it.
                 logger.warn("No tile renderer for " + t.getTerrainTypeName());
 
-                String filename = StandardTileRenderer.generateFilename(t
-                        .getTerrainTypeName());
+                String filename = StandardTileRenderer.generateFilename(t.getTerrainTypeName());
                 Image image = QuickRGBTileRendererList.createImageFor(t);
                 imageManager.setImage(filename, image);
 
                 // generatedImages.setImage(filename, image);
                 try {
-                    tr = new StandardTileRenderer(imageManager,
-                            typesTreatedAsTheSame, t, w);
+                    tr = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                     tileRenderers.add(tr);
 
                 } catch (IOException io2) {
@@ -250,8 +229,7 @@ public class RendererRootImpl implements RendererRoot {
 
             if (terrainName.equalsIgnoreCase("Harbour")) {
                 TerrainType t = (TerrainType) w.get(SKEY.TERRAIN_TYPES, j);
-                TileRenderer tr = new SpecialTileRenderer(imageManager,
-                        new int[]{j}, t, occeanTileRenderer, w);
+                TileRenderer tr = new SpecialTileRenderer(imageManager, new int[]{j}, t, occeanTileRenderer, w);
                 tileRenderers.set(j, tr);
                 break;
             }
@@ -321,8 +299,7 @@ public class RendererRootImpl implements RendererRoot {
      * @return
      * @throws IOException
      */
-    public Image getScaledImage(String relativeFilename, int height)
-            throws IOException {
+    public Image getScaledImage(String relativeFilename, int height) throws IOException {
         return imageManager.getScaledImage(relativeFilename, height);
     }
 }

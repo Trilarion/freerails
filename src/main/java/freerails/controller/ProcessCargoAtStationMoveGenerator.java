@@ -39,6 +39,7 @@ import java.util.Iterator;
  * Generates Moves that pay the player for delivering the cargo.
  */
 public class ProcessCargoAtStationMoveGenerator {
+
     /**
      * Determines how much the player gets for delivering cargo. Changed from
      * 100 to 75 to fix bug 910132 (Too easy to make money!)
@@ -56,27 +57,21 @@ public class ProcessCargoAtStationMoveGenerator {
      * @param trainId
      * @return
      */
-    public static ArrayList<Move> processCargo(ReadOnlyWorld w,
-                                               CargoBatchBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
-        Station thisStation = (Station) w.get(p, KEY.STATIONS,
-                stationID);
+    public static ArrayList<Move> processCargo(ReadOnlyWorld w, CargoBatchBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
+        Station thisStation = (Station) w.get(p, KEY.STATIONS, stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
         ArrayList<Move> moves = new ArrayList<>();
 
         while (batches.hasNext()) {
             CargoBatch batch = batches.next();
-            double distanceSquared = (batch.getSourceX() - thisStation.x)
-                    * (batch.getSourceX() - thisStation.x)
-                    + (batch.getSourceY() - thisStation.y)
-                    * (batch.getSourceY() - thisStation.y);
+            double distanceSquared = (batch.getSourceX() - thisStation.x) * (batch.getSourceX() - thisStation.x) + (batch.getSourceY() - thisStation.y) * (batch.getSourceY() - thisStation.y);
             double dist = Math.sqrt(distanceSquared);
             int quantity = bundle.getAmount(batch);
 
             double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
             Money money = new Money((long) amount);
-            CargoDeliveryMoneyTransaction receipt = new CargoDeliveryMoneyTransaction(money,
-                    quantity, stationID, batch, trainId);
+            CargoDeliveryMoneyTransaction receipt = new CargoDeliveryMoneyTransaction(money, quantity, stationID, batch, trainId);
             moves.add(new AddTransactionMove(p, receipt));
         }
 

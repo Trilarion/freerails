@@ -47,8 +47,7 @@ public class BuildTrackRenderer implements Painter {
 
     private final ModelRoot modelRoot;
 
-    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE,
-            ClientConstants.TILE_SIZE);
+    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
 
     private final RendererRoot rr;
 
@@ -56,8 +55,7 @@ public class BuildTrackRenderer implements Painter {
      * @param trackPieceViewList
      * @param modelRoot
      */
-    public BuildTrackRenderer(RendererRoot trackPieceViewList,
-                              ModelRoot modelRoot) {
+    public BuildTrackRenderer(RendererRoot trackPieceViewList, ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
         rr = trackPieceViewList;
 
@@ -67,35 +65,27 @@ public class BuildTrackRenderer implements Painter {
         if (modelRoot == null) {
             return null;
         }
-        return (WorldDiffs) modelRoot
-                .getProperty(ModelRoot.Property.PROPOSED_TRACK);
+        return (WorldDiffs) modelRoot.getProperty(ModelRoot.Property.PROPOSED_TRACK);
     }
 
     /**
      * Paints the proposed track and dots to distinguish the proposed track from
      * any existing track.
-     *
-     * @param g
-     * @param newVisibleRectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
         WorldDiffs worldDiffs = getWorldDiffs();
         if (null != worldDiffs) {
-            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter
-                    .hasNext(); ) {
+            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D point = iter.next();
-                FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point.x,
-                        point.y);
+                FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point.x, point.y);
                 TrackPiece tp = fp.getTrackPiece();
 
                 int graphicsNumber = tp.getTrackGraphicID();
 
                 int ruleNumber = tp.getTrackTypeID();
-                freerails.client.renderer.TrackPieceRenderer trackPieceView = rr
-                        .getTrackPieceView(ruleNumber);
-                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x,
-                        point.y, tileSize);
+                freerails.client.renderer.TrackPieceRenderer trackPieceView = rr.getTrackPieceView(ruleNumber);
+                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x, point.y, tileSize);
             }
 
             ReadOnlyWorld realWorld = modelRoot.getWorld();
@@ -104,21 +94,14 @@ public class BuildTrackRenderer implements Painter {
              * are white if track has been added or upgraded and red if it has
              * been removed.
              */
-            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter
-                    .hasNext(); ) {
+            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D p = iter.next();
-                int x = p.x * tileSize.width
-                        + (tileSize.width - SMALL_DOT_WIDTH) / 2;
-                int y = p.y * tileSize.width
-                        + (tileSize.height - SMALL_DOT_WIDTH) / 2;
-                FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p.x,
-                        p.y);
-                FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p.x,
-                        p.y);
+                int x = p.x * tileSize.width + (tileSize.width - SMALL_DOT_WIDTH) / 2;
+                int y = p.y * tileSize.width + (tileSize.height - SMALL_DOT_WIDTH) / 2;
+                FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p.x, p.y);
+                FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p.x, p.y);
 
-                boolean trackRemoved = !after.getTrackPiece()
-                        .getTrackConfiguration().contains(
-                                before.getTrackPiece().getTrackConfiguration());
+                boolean trackRemoved = !after.getTrackPiece().getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
                 Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
                 g.setColor(dotColor);
                 g.fillOval(x, y, SMALL_DOT_WIDTH, SMALL_DOT_WIDTH);

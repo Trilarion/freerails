@@ -76,17 +76,13 @@ public class OverHeadTrainView implements Painter {
                 // TrainPositionOnMap pos = (TrainPositionOnMap) w.get(
                 // principal, KEY.TRAIN_POSITIONS, i);
                 TrainAccessor ta = new TrainAccessor(w, principal, i);
-                TrainPositionOnMap pos = ta.findPosition(time,
-                        newVisibleRectangle);
-                if (pos == null)
-                    continue;
-                if (TrainPositionOnMap.isCrashSite()
-                        && (TrainPositionOnMap.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
+                TrainPositionOnMap pos = ta.findPosition(time, newVisibleRectangle);
+                if (pos == null) continue;
+                if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
                     // TODO reimplement trainPainter.paintTrainCrash(g, pos);
                     if (TrainPositionOnMap.getFrameCt() == 1) {
                         try {
-                            soundManager.playSound(
-                                    ClientConfig.SOUND_TRAIN_CRASH, 1);
+                            soundManager.playSound(ClientConfig.SOUND_TRAIN_CRASH, 1);
                         } catch (Exception ignored) {
                         }
                     }

@@ -46,17 +46,13 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      * @param w
      * @param principal
      */
-    public ItemsTransactionAggregator(ReadOnlyWorld w,
-                                      FreerailsPrincipal principal) {
+    public ItemsTransactionAggregator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         super(w, principal);
     }
 
     /**
      * Returns true if the transaction with the specified ID has an acceptable
      * type and category.
-     *
-     * @param transactionID
-     * @return
      */
     @Override
     protected boolean condition(int transactionID) {
@@ -67,10 +63,8 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         }
 
         ItemTransaction itemTransaction = (ItemTransaction) t;
-        boolean isTypeAcceptable = (type == ANY_VALUE)
-                || (type == itemTransaction.getType());
-        boolean isCategoryAcceptable = (category == null)
-                || (category == itemTransaction.getCategory());
+        boolean isTypeAcceptable = (type == ANY_VALUE) || (type == itemTransaction.getType());
+        boolean isCategoryAcceptable = (category == null) || (category == itemTransaction.getCategory());
 
         return isCategoryAcceptable && isTypeAcceptable;
     }

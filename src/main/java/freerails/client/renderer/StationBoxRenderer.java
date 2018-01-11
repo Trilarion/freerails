@@ -55,8 +55,7 @@ public class StationBoxRenderer implements Painter {
      * @param vl
      * @param modelRoot
      */
-    public StationBoxRenderer(ReadOnlyWorld world, RendererRoot vl,
-                              ModelRoot modelRoot) {
+    public StationBoxRenderer(ReadOnlyWorld world, RendererRoot vl, ModelRoot modelRoot) {
         w = world;
         bgColor = new Color(0, 0, 200, 60);
         this.modelRoot = modelRoot;
@@ -64,16 +63,14 @@ public class StationBoxRenderer implements Painter {
         // How wide will the wagon images be if we scale them so their height is
         // WAGON_IMAGE_HEIGHT?
         Image wagonImage = vl.getWagonImages(0).getSideOnImage();
-        wagonImageWidth = wagonImage.getWidth(null) * WAGON_IMAGE_HEIGHT
-                / wagonImage.getHeight(null);
+        wagonImageWidth = wagonImage.getWidth(null) * WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
         int nrOfCargoTypes = w.size(SKEY.CARGO_TYPES);
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
             String wagonFilename = vl.getWagonImages(i).sideOnFileName;
             try {
-                wagonImage = vl.getScaledImage(wagonFilename,
-                        WAGON_IMAGE_HEIGHT);
+                wagonImage = vl.getScaledImage(wagonFilename, WAGON_IMAGE_HEIGHT);
             } catch (IOException e) {
                 throw new IllegalArgumentException(wagonFilename);
             }
@@ -86,8 +83,7 @@ public class StationBoxRenderer implements Painter {
      * @param newVisibleRectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
-        Boolean showCargoWaiting = (Boolean) modelRoot
-                .getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
+        Boolean showCargoWaiting = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
 
         if (showCargoWaiting) {
             /* We only show the station boxes for the current player. */
@@ -96,12 +92,9 @@ public class StationBoxRenderer implements Painter {
 
             while (wi.next()) { // loop over non null stations
                 Station station = (Station) wi.getElement();
-                int positionX = (station.getStationX() * ClientConstants.TILE_SIZE)
-                        + ClientConstants.TILE_SIZE / 2;
-                int positionY = (station.getStationY() * ClientConstants.TILE_SIZE)
-                        + ClientConstants.TILE_SIZE * 2;
-                Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH,
-                        MAX_HEIGHT);
+                int positionX = (station.getStationX() * ClientConstants.TILE_SIZE) + ClientConstants.TILE_SIZE / 2;
+                int positionY = (station.getStationY() * ClientConstants.TILE_SIZE) + ClientConstants.TILE_SIZE * 2;
+                Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
                     g.setColor(bgColor);
                     g.fillRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
@@ -109,22 +102,15 @@ public class StationBoxRenderer implements Painter {
                     g.setStroke(new BasicStroke(1.0f));
                     g.drawRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
 
-                    CargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(
-                            principal, KEY.CARGO_BUNDLES, station
-                                    .getCargoBundleID());
+                    CargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cb);
-                    for (int category = 0; category < CargoCategory
-                            .getNumberOfCategories(); category++) {
-                        int alternateWidth = (MAX_WIDTH - 2 * SPACING)
-                                / (carsLoads[category].length + 1);
-                        int xOffsetPerWagon = Math.min(wagonImageWidth,
-                                alternateWidth);
+                    for (int category = 0; category < CargoCategory.getNumberOfCategories(); category++) {
+                        int alternateWidth = (MAX_WIDTH - 2 * SPACING) / (carsLoads[category].length + 1);
+                        int xOffsetPerWagon = Math.min(wagonImageWidth, alternateWidth);
 
                         for (int car = 0; car < carsLoads[category].length; car++) {
-                            int x = positionX + (car * xOffsetPerWagon)
-                                    + SPACING;
-                            int y = positionY
-                                    + (category * (WAGON_IMAGE_HEIGHT + SPACING));
+                            int x = positionX + (car * xOffsetPerWagon) + SPACING;
+                            int y = positionY + (category * (WAGON_IMAGE_HEIGHT + SPACING));
                             int cargoType = carsLoads[category][car];
                             g.drawImage(cargoImages[cargoType], x, y, null);
                         }
@@ -147,8 +133,7 @@ public class StationBoxRenderer implements Painter {
         int[][] cars = new int[categories][numCargoTypes];
         for (int i = 0; i < numCargoTypes; i++) {
             CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
-            int carsOfThisCargo = cb.getAmountOfType(i)
-                    / WagonType.UNITS_OF_CARGO_PER_WAGON;
+            int carsOfThisCargo = cb.getAmountOfType(i) / WagonType.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
             cars[ct.getCategory().getID()][i] += carsOfThisCargo;
         }

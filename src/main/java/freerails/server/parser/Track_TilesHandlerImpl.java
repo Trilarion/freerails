@@ -64,8 +64,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_CanOnlyBuildOnTheseTerrainTypes() {
-        validTrackPlacement = new ValidTrackPlacement(terrainTypes,
-                PlacementRule.ONLY_ON_THESE);
+        validTrackPlacement = new ValidTrackPlacement(terrainTypes, PlacementRule.ONLY_ON_THESE);
         terrainTypes = null;
     }
 
@@ -74,8 +73,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_ListOfTrackPieceTemplates() {
-        validTrackConfigurations = new ValidTrackConfigurations(
-                maxConsequ, legalTemplates);
+        validTrackConfigurations = new ValidTrackConfigurations(maxConsequ, legalTemplates);
         legalTemplates = null;
     }
 
@@ -84,8 +82,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void end_CannotBuildOnTheseTerrainTypes() {
-        validTrackPlacement = new ValidTrackPlacement(terrainTypes,
-                PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+        validTrackPlacement = new ValidTrackPlacement(terrainTypes, PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
         terrainTypes = null;
     }
 
@@ -101,11 +98,9 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
          */
         rGBvalue = new java.awt.Color(rGBvalue).getRGB();
 
-        TrackCategories category = TrackCategories
-                .valueOf(meta.getValue("category"));
+        TrackCategories category = TrackCategories.valueOf(meta.getValue("category"));
 
-        boolean enableDoubleTrack = Boolean.valueOf(
-                meta.getValue("doubleTrack"));
+        boolean enableDoubleTrack = Boolean.valueOf(meta.getValue("doubleTrack"));
         String typeName = meta.getValue("type");
         // TODO correct this meta value (probably needs to change somewhere else too)
         maxConsequ = Integer.parseInt(meta.getValue("maxConsecuativePieces"));
@@ -134,15 +129,11 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
         String maintenanceString = meta.getValue("maintenance");
         int maintenance = Integer.parseInt(maintenanceString);
 
-        trackRuleProperties = new TrackRuleProperties(rGBvalue,
-                enableDoubleTrack, typeName, category, stationRadius, price,
-                maintenance, fixedCost);
+        trackRuleProperties = new TrackRuleProperties(rGBvalue, enableDoubleTrack, typeName, category, stationRadius, price, maintenance, fixedCost);
     }
 
     public void end_TrackType() {
-        TrackRule trackRuleImpl = new freerails.world.track.TrackRuleImpl(
-                trackRuleProperties, validTrackConfigurations,
-                validTrackPlacement);
+        TrackRule trackRuleImpl = new freerails.world.track.TrackRuleImpl(trackRuleProperties, validTrackConfigurations, validTrackPlacement);
         ruleList.add(trackRuleImpl);
 
         validTrackConfigurations = null;
@@ -151,8 +142,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     }
 
     public void handle_TerrainType(final Attributes meta) {
-        TerrainCategory cat = TerrainCategory.valueOf(meta
-                .getValue("name"));
+        TerrainCategory cat = TerrainCategory.valueOf(meta.getValue("name"));
         terrainTypes.add(cat);
     }
 

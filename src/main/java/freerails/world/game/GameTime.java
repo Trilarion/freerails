@@ -82,7 +82,6 @@ public class GameTime implements Serializable, Comparable<GameTime> {
     /**
      * Compares two GameTimes for ordering.
      *
-     * @param o
      * @return 0 if t is equal to this GameTime; a value less than 0 if this
      * GameTime is before t; and a value greater than 0 if this GameTime
      * is after t.

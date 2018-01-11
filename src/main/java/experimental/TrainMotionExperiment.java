@@ -18,8 +18,9 @@
 
 package experimental;
 
+import freerails.client.GameLoop;
+import freerails.client.ScreenHandler;
 import freerails.client.common.ModelRootImpl;
-import freerails.client.top.GameLoop;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -28,12 +29,12 @@ import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
-import freerails.world.track.PathIterator;
-import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.NullTrackType;
+import freerails.world.track.PathIterator;
 import freerails.world.train.*;
 
 import javax.swing.*;
@@ -64,22 +65,18 @@ public class TrainMotionExperiment extends JComponent {
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
-        TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
-                TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
+        TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Point2D from = new Point2D(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
-        if (!ms.ok)
-            throw new IllegalStateException(ms.message);
+        if (!ms.ok) throw new IllegalStateException(ms.message);
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        PreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
-                principal, is);
+        PreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from, principal, is);
 
         Move m = addTrain.generateMove(world);
         ms = m.doMove(world, principal);
-        if (!ms.ok)
-            throw new IllegalStateException(ms.message);
+        if (!ms.ok) throw new IllegalStateException(ms.message);
 
         startTime = System.currentTimeMillis();
     }
@@ -94,8 +91,7 @@ public class TrainMotionExperiment extends JComponent {
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         f.getContentPane().add(new TrainMotionExperiment());
 
-        ScreenHandler screenHandler = new ScreenHandler(f,
-                ScreenHandler.WINDOWED_MODE);
+        ScreenHandler screenHandler = new ScreenHandler(f, ScreenHandler.WINDOWED_MODE);
         screenHandler.apply();
 
         GameLoop gameLoop = new GameLoop(screenHandler);
@@ -113,8 +109,7 @@ public class TrainMotionExperiment extends JComponent {
             for (int y = 0; y < world.getMapHeight(); y++) {
                 FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                    g.drawRect(x * TileTransition.TILE_DIAMETER, y * TileTransition.TILE_DIAMETER,
-                            TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER);
+                    g.drawRect(x * TileTransition.TILE_DIAMETER, y * TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER);
 
                 }
             }
@@ -184,8 +179,7 @@ public class TrainMotionExperiment extends JComponent {
 
     private void updateTrainPosition() {
         Random rand = new Random(System.currentTimeMillis());
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
-                new OccupiedTracks(principal, world));
+        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
         Move m;
         if (rand.nextInt(10) == 0) {
             m = moveTrain.stopTrain(world);
@@ -193,8 +187,7 @@ public class TrainMotionExperiment extends JComponent {
             m = moveTrain.generateMove(world);
         }
         MoveStatus ms = m.doMove(world, principal);
-        if (!ms.ok)
-            throw new IllegalStateException(ms.message);
+        if (!ms.ok) throw new IllegalStateException(ms.message);
 
         ActivityIterator ai = world.getActivities(principal, 0);
 

@@ -22,11 +22,11 @@
 package freerails.world.train;
 
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
 import freerails.util.LineSegment;
 import freerails.util.Pair;
-import freerails.world.track.PathIterator;
+import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
+import freerails.world.track.PathIterator;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -44,30 +44,24 @@ public strictfp class PathOnTiles implements Serializable {
     private final ImmutableList<TileTransition> vectors;
 
     /**
-     * @param start
-     * @param vectorsList
      * @throws NullPointerException if null == start
      * @throws NullPointerException if null == vectorsList
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
     public PathOnTiles(Point2D start, List<TileTransition> vectorsList) {
-        if (null == start)
-            throw new NullPointerException();
+        if (null == start) throw new NullPointerException();
         vectors = new ImmutableList<>(vectorsList);
         vectors.containsNulls();
         this.start = start;
     }
 
     /**
-     * @param start
-     * @param vectors
      * @throws NullPointerException if null == start
      * @throws NullPointerException if null == vectors
      * @throws NullPointerException if null == vectors[i] for any i;
      */
     public PathOnTiles(Point2D start, TileTransition... vectors) {
-        if (null == start)
-            throw new NullPointerException();
+        if (null == start) throw new NullPointerException();
         this.vectors = new ImmutableList<>(vectors);
         this.vectors.containsNulls();
         this.start = start;
@@ -75,23 +69,18 @@ public strictfp class PathOnTiles implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof PathOnTiles))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof PathOnTiles)) return false;
 
         final PathOnTiles pathOnTiles = (PathOnTiles) obj;
 
-        if (!start.equals(pathOnTiles.start))
-            return false;
+        if (!start.equals(pathOnTiles.start)) return false;
         return vectors.equals(pathOnTiles.vectors);
     }
 
     /**
      * Returns the distance you would travel if you walked the all the way along
      * the path.
-     *
-     * @return
      */
     public double getTotalDistance() {
         return getDistance(vectors.size());
@@ -114,14 +103,11 @@ public strictfp class PathOnTiles implements Serializable {
      * Returns the coordinates of the point you would be standing at if you
      * walked the specified distance along the path from the start point.
      *
-     * @param distance
-     * @return
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
     public Point2D getPoint(double distance) {
-        if (0 > distance)
-            throw new IllegalArgumentException("distance:" + distance + " < 0");
+        if (0 > distance) throw new IllegalArgumentException("distance:" + distance + " < 0");
 
         int x = start.x;
         int y = start.y;
@@ -132,45 +118,34 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
-                        * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
+                return new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
             }
             if (distanceSoFar > distance) {
-                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - distance) / v
-                        .getLength());
+                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - distance) / v.getLength());
                 x = x * TileTransition.TILE_DIAMETER - v.deltaX * excess;
                 y = y * TileTransition.TILE_DIAMETER - v.deltaY * excess;
                 return new Point2D(x + TileTransition.TILE_DIAMETER / 2, y + TileTransition.TILE_DIAMETER / 2);
             }
         }
-        throw new IllegalArgumentException("distance:" + distance
-                + " > getLength():" + vectors.size() + " distanceSoFar:"
-                + distanceSoFar);
+        throw new IllegalArgumentException("distance:" + distance + " > getLength():" + vectors.size() + " distanceSoFar:" + distanceSoFar);
     }
 
     /**
      * Returns the coordinates of the point you would be standing at if you
      * walked the specified distance along the path from the start point.
      *
-     * @param firstdistance
-     * @param lastdistance
-     * @return
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
-    public Pair<Point2D, Point2D> getPoint(double firstdistance,
-                                           double lastdistance) {
+    public Pair<Point2D, Point2D> getPoint(double firstdistance, double lastdistance) {
         if (0 > firstdistance) {
-            throw new IllegalArgumentException("firstdistance:" + firstdistance
-                    + " < 0");
+            throw new IllegalArgumentException("firstdistance:" + firstdistance + " < 0");
         }
         if (0 > lastdistance) {
-            throw new IllegalArgumentException("lastdistance:" + lastdistance
-                    + " < 0");
+            throw new IllegalArgumentException("lastdistance:" + lastdistance + " < 0");
         }
         if (firstdistance > lastdistance) {
-            throw new IllegalArgumentException("firstdistance:" + firstdistance
-                    + " > lastdistance:" + lastdistance);
+            throw new IllegalArgumentException("firstdistance:" + firstdistance + " > lastdistance:" + lastdistance);
         }
         int x = start.x;
         int y = start.y;
@@ -185,25 +160,19 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2,
-                        y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
+                firstPoint = new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
-                int excess = (int) (TileTransition.TILE_DIAMETER
-                        * (distanceSoFar - firstdistance) / v.getLength());
-                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER
-                        / 2;
-                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER
-                        / 2;
+                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - firstdistance) / v.getLength());
+                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER / 2;
+                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER / 2;
                 firstPoint = new Point2D(nx, ny);
                 break;
             }
         }
         if (firstPoint == null) {
-            throw new IllegalArgumentException("firstdistance:" + firstdistance
-                    + " > getLength():" + vectorsSize + " distanceSoFar:"
-                    + distanceSoFar);
+            throw new IllegalArgumentException("firstdistance:" + firstdistance + " > getLength():" + vectorsSize + " distanceSoFar:" + distanceSoFar);
         }
         if (firstdistance == lastdistance) {
             return new Pair<>(firstPoint, firstPoint);
@@ -213,18 +182,13 @@ public strictfp class PathOnTiles implements Serializable {
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new Point2D(
-                        x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y
-                        * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
+                secondPoint = new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
-                int excess = (int) (TileTransition.TILE_DIAMETER
-                        * (distanceSoFar - lastdistance) / v.getLength());
-                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER
-                        / 2;
-                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER
-                        / 2;
+                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - lastdistance) / v.getLength());
+                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER / 2;
+                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER / 2;
                 secondPoint = new Point2D(nx, ny);
                 break;
             }
@@ -239,9 +203,7 @@ public strictfp class PathOnTiles implements Serializable {
         } while (true);
 
         if (secondPoint == null) {
-            throw new IllegalArgumentException("lastdistance:" + lastdistance
-                    + " > getLength():" + vectorsSize + " distanceSoFar:"
-                    + distanceSoFar);
+            throw new IllegalArgumentException("lastdistance:" + lastdistance + " > getLength():" + vectorsSize + " distanceSoFar:" + distanceSoFar);
         }
 
         return new Pair<>(firstPoint, secondPoint);
@@ -282,20 +244,16 @@ public strictfp class PathOnTiles implements Serializable {
      * Returns the index of the step that takes the distance travelled over the
      * specified distance.
      *
-     * @param distance
-     * @return
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
     public int getStepIndex(int distance) {
-        if (0 > distance)
-            throw new IllegalArgumentException("distance < 0");
+        if (0 > distance) throw new IllegalArgumentException("distance < 0");
         int distanceSoFar = 0;
         for (int i = 0; i < vectors.size(); i++) {
             TileTransition v = vectors.get(i);
             distanceSoFar += v.getLength();
-            if (distanceSoFar >= distance)
-                return i;
+            if (distanceSoFar >= distance) return i;
         }
         throw new IllegalArgumentException("distance > getLength()");
     }
@@ -330,22 +288,15 @@ public strictfp class PathOnTiles implements Serializable {
      * Returns a PathIterator that exposes a sub section of the path
      * this object represents.
      *
-     * @param offset
-     * @param length
-     * @return
      * @throws IllegalArgumentException if offset &lt; 0
      * @throws IllegalArgumentException if length &le; 0
      * @throws IllegalArgumentException if offset + length &gt; getLength()
      */
-    public Pair<PathIterator, Integer> subPath(double offset,
-                                               double length) {
-        if (offset < 0)
-            throw new IllegalArgumentException();
-        if (length <= 0)
-            throw new IllegalArgumentException();
+    public Pair<PathIterator, Integer> subPath(double offset, double length) {
+        if (offset < 0) throw new IllegalArgumentException();
+        if (length <= 0) throw new IllegalArgumentException();
         if ((offset + length) > getTotalDistance())
-            throw new IllegalArgumentException(offset + " + " + length + " > "
-                    + getTotalDistance());
+            throw new IllegalArgumentException(offset + " + " + length + " > " + getTotalDistance());
 
         final LinkedList<Point2D> points = new LinkedList<>();
         Point2D tile = start;
@@ -386,8 +337,7 @@ public strictfp class PathOnTiles implements Serializable {
             points.addLast(last);
         }
 
-        return new Pair<>(
-                new MyPathIterator(points), points.size());
+        return new Pair<>(new MyPathIterator(points), points.size());
     }
 
     /**
@@ -404,8 +354,7 @@ public strictfp class PathOnTiles implements Serializable {
             }
 
             public Point2D next() {
-                if (next == null)
-                    throw new NoSuchElementException();
+                if (next == null) throw new NoSuchElementException();
 
                 Point2D returnValue = next;
                 int x = next.x;

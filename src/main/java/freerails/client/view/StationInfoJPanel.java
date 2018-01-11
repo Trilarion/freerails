@@ -48,11 +48,9 @@ import java.util.NoSuchElementException;
  * This JPanel displays the supply and demand at a station.
  */
 @SuppressWarnings("unused")
-public class StationInfoJPanel extends JPanel implements View,
-        WorldListListener {
+public class StationInfoJPanel extends JPanel implements View, WorldListListener {
 
-    private static final Logger logger = Logger
-            .getLogger(StationInfoJPanel.class.getName());
+    private static final Logger logger = Logger.getLogger(StationInfoJPanel.class.getName());
 
     private static final long serialVersionUID = 4050759377680150585L;
 
@@ -87,8 +85,7 @@ public class StationInfoJPanel extends JPanel implements View,
                 try {
                     wi.gotoIndex(i);
                 } catch (NoSuchElementException ex) {
-                    logger
-                            .info("Exception ignored in StationInfoJPanel (NoSuchElement).");
+                    logger.info("Exception ignored in StationInfoJPanel (NoSuchElement).");
                     return; // ignore silently
                 }
             }
@@ -117,8 +114,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
         setMinimumSize(new java.awt.Dimension(250, 177));
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 10));
-        jLabel1
-                .setText("<html>\n<h4 align=\"center\">Supply and Demand at stationName</h4>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay<br>for</td>\n    <td>Supplies<br>(cars per year)</td>\n    <td>Waiting for pickup<br>(car loads)</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
+        jLabel1.setText("<html>\n<h4 align=\"center\">Supply and Demand at stationName</h4>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay<br>for</td>\n    <td>Supplies<br>(cars per year)</td>\n    <td>Waiting for pickup<br>(car loads)</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setAlignmentY(0.0F);
         jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
@@ -175,9 +171,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
         // Add your handling code here:
         if (wi.previous()) {
-            Point2D p = new Point2D(((Station) wi.getElement())
-                    .getStationX(), ((Station) wi.getElement())
-                    .getStationY());
+            Point2D p = new Point2D(((Station) wi.getElement()).getStationX(), ((Station) wi.getElement()).getStationY());
             modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
 
             display();
@@ -190,9 +184,7 @@ public class StationInfoJPanel extends JPanel implements View,
 
         // Add your handling code here:
         if (wi.next()) {
-            Point2D p = new Point2D(((Station) wi.getElement())
-                    .getStationX(), ((Station) wi.getElement())
-                    .getStationY());
+            Point2D p = new Point2D(((Station) wi.getElement()).getStationX(), ((Station) wi.getElement()).getStationY());
             modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
             display();
         } else {
@@ -202,8 +194,7 @@ public class StationInfoJPanel extends JPanel implements View,
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot
-                .getPrincipal());
+        wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
         addComponentListener(componentListener);
         w = modelRoot.getWorld();
         this.modelRoot = modelRoot;
@@ -232,16 +223,11 @@ public class StationInfoJPanel extends JPanel implements View,
         int stationNumber = wi.getIndex();
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
-            Station station = (Station) w.get(modelRoot
-                    .getPrincipal(), KEY.STATIONS, stationNumber);
-            FullTerrainTile tile = (FullTerrainTile) w
-                    .getTile(station.x, station.y);
-            String stationTypeName = tile.getTrackPiece().getTrackRule()
-                    .getTypeName();
+            Station station = (Station) w.get(modelRoot.getPrincipal(), KEY.STATIONS, stationNumber);
+            FullTerrainTile tile = (FullTerrainTile) w.getTile(station.x, station.y);
+            String stationTypeName = tile.getTrackPiece().getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
-            CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) w.get(
-                    modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station
-                            .getCargoBundleID());
+            CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) w.get(modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
             StringBuilder table1 = new StringBuilder();
 
@@ -259,21 +245,14 @@ public class StationInfoJPanel extends JPanel implements View,
 
                 // get the values
                 CargoType cargoType = (CargoType) w.get(SKEY.CARGO_TYPES, i);
-                String demanded = (station.getDemandForCargo().isCargoDemanded(i) ? "Yes"
-                        : "No");
+                String demanded = (station.getDemandForCargo().isCargoDemanded(i) ? "Yes" : "No");
 
                 int amountSupplied = station.getSupply().getSupply(i);
                 boolean isSupplied = (amountSupplied > 0);
-                String supply = isSupplied ? String
-                        .valueOf(amountSupplied
-                                / WagonType.UNITS_OF_CARGO_PER_WAGON)
-                        : "&nbsp;";
+                String supply = isSupplied ? String.valueOf(amountSupplied / WagonType.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
                 int amountWaiting = cargoWaiting.getAmountOfType(i);
-                String waiting = (amountWaiting > 0) ? String
-                        .valueOf(amountWaiting
-                                / WagonType.UNITS_OF_CARGO_PER_WAGON)
-                        : "&nbsp;";
+                String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
                 // build the html
                 if (station.getDemandForCargo().isCargoDemanded(i) || isSupplied) {
@@ -291,8 +270,7 @@ public class StationInfoJPanel extends JPanel implements View,
             label = table1.toString();
         } else {
             cargoBundleIndex = WorldIterator.BEFORE_FIRST;
-            label = "<html><h2 align=\"center\">No Station "
-                    + "Selected</h2></html>";
+            label = "<html><h2 align=\"center\">No Station " + "Selected</h2></html>";
         }
         jLabel1.setText(label);
         repaint();
@@ -307,10 +285,8 @@ public class StationInfoJPanel extends JPanel implements View,
          * Avoid a array out of bounds exception when there are no stations and
          * the stations tab is visible.
          */
-        if (w.boundsContain(playerPrincipal, KEY.CARGO_BUNDLES,
-                cargoBundleIndex)) {
-            Serializable currentCargoBundle = w.get(playerPrincipal,
-                    KEY.CARGO_BUNDLES, cargoBundleIndex);
+        if (w.boundsContain(playerPrincipal, KEY.CARGO_BUNDLES, cargoBundleIndex)) {
+            Serializable currentCargoBundle = w.get(playerPrincipal, KEY.CARGO_BUNDLES, cargoBundleIndex);
             if (lastCargoBundle != currentCargoBundle) {
                 display();
                 lastCargoBundle = currentCargoBundle;
@@ -345,8 +321,7 @@ public class StationInfoJPanel extends JPanel implements View,
                 }
             }
 
-            if (currentIndex == changedIndex
-                    || currentIndex == WorldIterator.BEFORE_FIRST) {
+            if (currentIndex == changedIndex || currentIndex == WorldIterator.BEFORE_FIRST) {
                 display();
             }
         }
@@ -354,18 +329,15 @@ public class StationInfoJPanel extends JPanel implements View,
     }
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal))
-            reactToUpdate(key, index, false);
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, false);
     }
 
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal))
-            reactToUpdate(key, index, true);
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, true);
     }
 
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal))
-            reactToUpdate(key, index, false);
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, false);
     }
 
     void removeCloseButton() {

@@ -23,6 +23,7 @@
 package freerails.world.track;
 
 // TODO do we really need that? use NULL instead?
+
 /**
  * A track piece that doesn't exist - using this avoids needing to check against
  * null before calling the methods on a track piece.

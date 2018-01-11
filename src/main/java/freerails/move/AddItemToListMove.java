@@ -43,8 +43,7 @@ public class AddItemToListMove implements ListMove {
      * @param item
      * @param p
      */
-    public AddItemToListMove(KEY key, int i, Serializable item,
-                             FreerailsPrincipal p) {
+    public AddItemToListMove(KEY key, int i, Serializable item, FreerailsPrincipal p) {
         listKey = key;
         index = i;
         this.item = item;
@@ -72,9 +71,7 @@ public class AddItemToListMove implements ListMove {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.size(this.principal, listKey) != index) {
-            return MoveStatus.moveFailed("Expected size of "
-                    + listKey.toString() + " list is " + index
-                    + " but actual size is " + world.size(this.principal, listKey));
+            return MoveStatus.moveFailed("Expected size of " + listKey.toString() + " list is " + index + " but actual size is " + world.size(this.principal, listKey));
         }
 
         return MoveStatus.MOVE_OK;
@@ -84,9 +81,7 @@ public class AddItemToListMove implements ListMove {
         int expectListSize = index + 1;
 
         if (world.size(this.principal, listKey) != expectListSize) {
-            return MoveStatus.moveFailed("Expected size of "
-                    + listKey.toString() + " list is " + expectListSize
-                    + " but actual size is " + world.size(this.principal, listKey));
+            return MoveStatus.moveFailed("Expected size of " + listKey.toString() + " list is " + expectListSize + " but actual size is " + world.size(this.principal, listKey));
         }
 
         return MoveStatus.MOVE_OK;
@@ -145,12 +140,7 @@ public class AddItemToListMove implements ListMove {
     @Override
     public String toString() {
 
-        return getClass().getName() + "\n list=" +
-                listKey.toString() +
-                "\n index =" +
-                index +
-                "\n item =" +
-                item;
+        return getClass().getName() + "\n list=" + listKey.toString() + "\n index =" + index + "\n item =" + item;
     }
 
     /**

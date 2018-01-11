@@ -20,7 +20,7 @@
  * GUIComponentFactoryTestImpl.java
  *
  */
-package freerails.client.top;
+package freerails.client;
 
 import javax.swing.*;
 

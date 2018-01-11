@@ -47,15 +47,12 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof Point2D))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof Point2D)) return false;
 
         final Point2D point = (Point2D) obj;
 
-        if (x != point.x)
-            return false;
+        if (x != point.x) return false;
         return y == point.y;
     }
 
@@ -77,9 +74,7 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
     }
 
     public int compareTo(Point2D o) {
-        if (o.y != y)
-            return y - o.y;
-        else
-            return x - o.x;
+        if (o.y != y) return y - o.y;
+        else return x - o.x;
     }
 }

@@ -47,15 +47,12 @@ public class TileConsumption implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof TileConsumption))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof TileConsumption)) return false;
 
         final TileConsumption tileConsumption = (TileConsumption) obj;
 
-        if (cargoType != tileConsumption.cargoType)
-            return false;
+        if (cargoType != tileConsumption.cargoType) return false;
         return prerequisite == tileConsumption.prerequisite;
     }
 

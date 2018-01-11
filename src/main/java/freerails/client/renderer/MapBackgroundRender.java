@@ -41,8 +41,7 @@ import java.awt.*;
  * the track layer.
  */
 public final class MapBackgroundRender implements MapLayerRenderer {
-    private static final Logger logger = Logger
-            .getLogger(MapBackgroundRender.class.getName());
+    private static final Logger logger = Logger.getLogger(MapBackgroundRender.class.getName());
 
     /**
      * The terrain layer.
@@ -54,8 +53,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      */
     private final TrackLayer trackLayer;
 
-    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE,
-            ClientConstants.TILE_SIZE);
+    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
 
     private final Dimension mapSize;
 
@@ -74,8 +72,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * @param rr
      * @param modelRoot
      */
-    public MapBackgroundRender(ReadOnlyWorld w, RendererRoot rr,
-                               ModelRoot modelRoot) {
+    public MapBackgroundRender(ReadOnlyWorld w, RendererRoot rr, ModelRoot modelRoot) {
         trackLayer = new TrackLayer(w, rr);
         terrainLayer = new TerrainLayer(w, rr);
         mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
@@ -115,13 +112,10 @@ public final class MapBackgroundRender implements MapLayerRenderer {
         stationNames.paint((Graphics2D) g, visibleRect);
     }
 
-    private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-                                       int height) {
+    private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);
-        Rectangle visibleRectangle = new Rectangle(x * ClientConstants.TILE_SIZE, y
-                * ClientConstants.TILE_SIZE, width * ClientConstants.TILE_SIZE, height
-                * ClientConstants.TILE_SIZE);
+        Rectangle visibleRectangle = new Rectangle(x * ClientConstants.TILE_SIZE, y * ClientConstants.TILE_SIZE, width * ClientConstants.TILE_SIZE, height * ClientConstants.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
     }
@@ -174,25 +168,19 @@ public final class MapBackgroundRender implements MapLayerRenderer {
              */
             Point tile = new Point();
 
-            for (tile.x = tilesToPaint.x - 1; tile.x < (tilesToPaint.x
-                    + tilesToPaint.width + 1); tile.x++) {
-                for (tile.y = tilesToPaint.y - 1; tile.y < (tilesToPaint.y
-                        + tilesToPaint.height + 1); tile.y++) {
-                    if ((tile.x >= 0) && (tile.x < mapSize.width)
-                            && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                        FullTerrainTile ft = (FullTerrainTile) w.getTile(tile.x,
-                                tile.y);
+            for (tile.x = tilesToPaint.x - 1; tile.x < (tilesToPaint.x + tilesToPaint.width + 1); tile.x++) {
+                for (tile.y = tilesToPaint.y - 1; tile.y < (tilesToPaint.y + tilesToPaint.height + 1); tile.y++) {
+                    if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
+                        FullTerrainTile ft = (FullTerrainTile) w.getTile(tile.x, tile.y);
                         TrackPiece tp = ft.getTrackPiece();
 
                         int graphicsNumber = tp.getTrackGraphicID();
 
                         int ruleNumber = tp.getTrackTypeID();
                         if (ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                            TrackPieceRenderer trackPieceView = rr
-                                    .getTrackPieceView(ruleNumber);
+                            TrackPieceRenderer trackPieceView = rr.getTrackPieceView(ruleNumber);
 
-                            trackPieceView.drawTrackPieceIcon(graphicsNumber,
-                                    g, tile.x, tile.y, tileSize);
+                            trackPieceView.drawTrackPieceIcon(graphicsNumber, g, tile.x, tile.y, tileSize);
                         }
                     }
                 }
@@ -213,8 +201,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
             paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
         }
 
-        private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-                                           int height) {
+        private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 
@@ -230,8 +217,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param visibleRect
          */
         public void paintRect(Graphics g, Rectangle visibleRect) {
-            throw new UnsupportedOperationException(
-                    "Method not yet implemented.");
+            throw new UnsupportedOperationException("Method not yet implemented.");
         }
 
         /**
@@ -266,8 +252,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
             int screenX = tileSize.width * tile.x;
             int screenY = tileSize.height * tile.y;
 
-            if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0)
-                    && (tile.y < mapSize.height)) {
+            if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
                 TerrainTile tt = (TerrainTile) w.getTile(tile.x, tile.y);
 
                 int typeNumber = tt.getTerrainTypeID();
@@ -302,8 +287,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param visibleRect
          */
         public void paintRect(Graphics g, Rectangle visibleRect) {
-            throw new UnsupportedOperationException(
-                    "Method not yet implemented.");
+            throw new UnsupportedOperationException("Method not yet implemented.");
         }
 
         /**
@@ -315,8 +299,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
             paintTile(g, new Point(tileX, tileY));
         }
 
-        private void paintRectangleOfTiles(Graphics g, int x, int y, int width,
-                                           int height) {
+        private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 

@@ -19,17 +19,19 @@
 package freerails.world.cargo;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * Represents a bundle of cargo made up of quantities of cargo from
  * different {@link CargoBatch}s.
-
  */
 public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable {
 
-    private static final long serialVersionUID = 3257566187666814009L;
     public static final ImmutableCargoBatchBundle EMPTY_CARGO_BATCH_BUNDLE = new ImmutableCargoBatchBundle();
+    private static final long serialVersionUID = 3257566187666814009L;
     private final SortedMap<CargoBatch, Integer> cargoMap;
 
     private ImmutableCargoBatchBundle() {
@@ -38,8 +40,6 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
 
     /**
      * Copies and wraps in an unmodifieable map, making it immutable.
-     * 
-     * @param cargoBatchBundle
      */
     public ImmutableCargoBatchBundle(CargoBatchBundle cargoBatchBundle) {
         SortedMap<CargoBatch, Integer> map = new TreeMap<>();
@@ -50,7 +50,7 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
             CargoBatch cargoBatch = it.next();
             map.put(cargoBatch, cargoBatchBundle.getAmount(cargoBatch));
         }
-        
+
         cargoMap = Collections.unmodifiableSortedMap(map);
     }
 
@@ -60,8 +60,7 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
      * @return
      */
     public static boolean equals(CargoBatchBundle a, CargoBatchBundle b) {
-        if (a.size() != b.size())
-            return false;
+        if (a.size() != b.size()) return false;
 
         Iterator<CargoBatch> it = a.cargoBatchIterator();
         while (it.hasNext()) {

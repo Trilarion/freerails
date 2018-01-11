@@ -38,8 +38,7 @@ public class TileSetFactoryImpl implements TileSetFactory {
      */
     public void addTerrainTileTypesList(World world) {
         try {
-            java.net.URL url = RunTypesParser.class
-                    .getResource("/freerails/data/cargo_and_terrain.xml");
+            java.net.URL url = RunTypesParser.class.getResource("/freerails/data/cargo_and_terrain.xml");
 
             CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(world));
         } catch (Exception e) {

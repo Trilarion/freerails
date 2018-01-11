@@ -21,13 +21,13 @@ package freerails.client.view;
 import freerails.client.common.ActionAdapter;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
-import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeGameSpeedMove;
+import freerails.network.MessageToServer;
 import freerails.network.NewGameMessageToServer;
-import freerails.world.game.GameSpeed;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
+import freerails.world.game.GameSpeed;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -42,13 +42,8 @@ public class ServerControlModel implements ModelRootListener {
     private final Action loadGameAction = new LoadGameAction();
     private final Action newGameAction = new NewGameAction(null);
     private final Action saveGameAction = new SaveGameAction();
-    private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[]{
-            new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P),
-            new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1),
-            new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2),
-            new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3),};
-    private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(
-            speedActions, 0);
+    private final SetTargetTicksPerSecondAction[] speedActions = new SetTargetTicksPerSecondAction[]{new SetTargetTicksPerSecondAction("Pause", 0, KeyEvent.VK_P), new SetTargetTicksPerSecondAction("Slow", 10, KeyEvent.VK_1), new SetTargetTicksPerSecondAction("Moderate", 30, KeyEvent.VK_2), new SetTargetTicksPerSecondAction("Fast", 70, KeyEvent.VK_3),};
+    private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(speedActions, 0);
     private ModelRootImpl modelRoot;
     private ActionAdapter selectMapActions;
     private DialogueBoxController dbc;
@@ -79,8 +74,7 @@ public class ServerControlModel implements ModelRootListener {
         for (SetTargetTicksPerSecondAction speedAction : speedActions) {
             action = speedAction;
 
-            if (action.speed >= tickPerSecond)
-                break;
+            if (action.speed >= tickPerSecond) break;
         }
 
         return (String) action.getValue(Action.NAME);
@@ -288,8 +282,7 @@ public class ServerControlModel implements ModelRootListener {
          *                 <p>
          *                 by MystiqueAgent
          */
-        public SetTargetTicksPerSecondAction(String name, int speed,
-                                             int keyEvent) {
+        public SetTargetTicksPerSecondAction(String name, int speed, int keyEvent) {
             putValue(NAME, name);
             this.speed = speed;
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
@@ -302,8 +295,7 @@ public class ServerControlModel implements ModelRootListener {
                 speed2set = -1 * getTargetTicksPerSecond();
 
             }
-            modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(),
-                    new GameSpeed(speed2set)));
+            modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(), new GameSpeed(speed2set)));
         }
     }
 

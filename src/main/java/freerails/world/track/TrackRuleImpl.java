@@ -54,8 +54,7 @@ public final class TrackRuleImpl implements TrackRule {
      * @param ltp
      */
 
-    public TrackRuleImpl(TrackRuleProperties p, ValidTrackConfigurations lc,
-                         ValidTrackPlacement ltp) {
+    public TrackRuleImpl(TrackRuleProperties p, ValidTrackConfigurations lc, ValidTrackPlacement ltp) {
         if (null == p || null == lc || null == ltp) {
             throw new java.lang.IllegalArgumentException();
         }
@@ -75,8 +74,6 @@ public final class TrackRuleImpl implements TrackRule {
     /**
      * If the specified object is a track rule, comparison is by category then
      * price.
-     *
-     * @param o
      */
     public int compareTo(TrackRule o) {
 
@@ -84,8 +81,7 @@ public final class TrackRuleImpl implements TrackRule {
         if (comp != 0) {
             return -comp;
         }
-        long dPrice = properties.getPrice().getAmount()
-                - o.getPrice().getAmount();
+        long dPrice = properties.getPrice().getAmount() - o.getPrice().getAmount();
         return (int) dPrice;
 
     }
@@ -94,15 +90,11 @@ public final class TrackRuleImpl implements TrackRule {
     public boolean equals(Object obj) {
         if (obj instanceof TrackRuleImpl) {
             TrackRuleImpl trackRuleImpl = (TrackRuleImpl) obj;
-            boolean propertiesFieldsEqual = properties
-                    .equals(trackRuleImpl.properties);
-            boolean legalConfigurationsEqual = validTrackConfigurations
-                    .equals(trackRuleImpl.validTrackConfigurations);
-            boolean legalTrackPlacementEqual = validTrackPlacement
-                    .equals(trackRuleImpl.validTrackPlacement);
+            boolean propertiesFieldsEqual = properties.equals(trackRuleImpl.properties);
+            boolean legalConfigurationsEqual = validTrackConfigurations.equals(trackRuleImpl.validTrackConfigurations);
+            boolean legalTrackPlacementEqual = validTrackPlacement.equals(trackRuleImpl.validTrackPlacement);
 
-            return propertiesFieldsEqual && legalConfigurationsEqual
-                    && legalTrackPlacementEqual;
+            return propertiesFieldsEqual && legalConfigurationsEqual && legalTrackPlacementEqual;
         }
         return false;
     }
@@ -171,11 +163,9 @@ public final class TrackRuleImpl implements TrackRule {
      * @return
      */
     public boolean testTrackPieceLegality(int a9bitTemplate) {
-        TrackConfiguration trackConfiguration = TrackConfiguration
-                .from9bitTemplate(a9bitTemplate);
+        TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(a9bitTemplate);
 
-        return validTrackConfigurations
-                .trackConfigurationIsLegal(trackConfiguration);
+        return validTrackConfigurations.trackConfigurationIsLegal(trackConfiguration);
     }
 
     @Override

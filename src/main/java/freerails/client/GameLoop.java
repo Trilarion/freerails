@@ -16,11 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.top;
+package freerails.client;
 
 import freerails.client.common.RepaintManagerForActiveRendering;
 import freerails.client.launcher.Launcher;
-import freerails.controller.ScreenHandler;
 import freerails.world.game.GameModel;
 import org.apache.log4j.Logger;
 
@@ -32,8 +31,7 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public final class GameLoop implements Runnable {
 
-    private static final Logger logger = Logger.getLogger(GameLoop.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
 
     private static final boolean LIMIT_FRAME_RATE = false;
     private static final int TARGET_FPS = 40;
@@ -118,9 +116,7 @@ public final class GameLoop implements Runnable {
 
                                     screenHandler.frame.paintComponents(g);
 
-                                    boolean showFps = Boolean
-                                            .parseBoolean(System
-                                                    .getProperty("SHOWFPS"));
+                                    boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
                                     if (showFps) {
                                         fPScounter.drawFPS((Graphics2D) g);
                                     }
@@ -152,8 +148,7 @@ public final class GameLoop implements Runnable {
                         // do nothing.
                     }
                 } else if (LIMIT_FRAME_RATE) {
-                    long deltatime = System.currentTimeMillis()
-                            - frameStartTime;
+                    long deltatime = System.currentTimeMillis() - frameStartTime;
 
                     while (deltatime < (1000 / TARGET_FPS)) {
                         try {

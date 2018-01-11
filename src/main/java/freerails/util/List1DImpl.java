@@ -55,11 +55,9 @@ public class List1DImpl<T> implements List1D<T> {
      * @return
      */
     public static boolean equals(List1D a, List1D b) {
-        if (a.size() != b.size())
-            return false;
+        if (a.size() != b.size()) return false;
         for (int i = 0; i < a.size(); i++) {
-            if (!Utils.equal(a.get(i), b.get(i)))
-                return false;
+            if (!Utils.equal(a.get(i), b.get(i))) return false;
         }
         return true;
     }

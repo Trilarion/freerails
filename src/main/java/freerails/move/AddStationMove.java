@@ -49,29 +49,22 @@ public class AddStationMove extends CompositeMove {
      * @param principal
      * @return
      */
-    public static AddStationMove generateMove(ReadOnlyWorld w,
-                                              String stationName, Point2D p,
-                                              Move upgradeTrackMove, FreerailsPrincipal principal) {
+    public static AddStationMove generateMove(ReadOnlyWorld w, String stationName, Point2D p, Move upgradeTrackMove, FreerailsPrincipal principal) {
         int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
-        Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber,
-                ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
+        Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
         int stationNumber = w.size(principal, KEY.STATIONS);
-        Station station = new Station(p.x, p.y, stationName, w
-                .size(SKEY.CARGO_TYPES), cargoBundleNumber);
+        Station station = new Station(p.x, p.y, stationName, w.size(SKEY.CARGO_TYPES), cargoBundleNumber);
 
-        Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber,
-                station, principal);
+        Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber, station, principal);
 
-        return new AddStationMove(new Move[]{upgradeTrackMove,
-                addCargoBundleMove, addStation});
+        return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
     }
 
     /**
      * @param upgradeTrackMove
      * @return
      */
-    public static AddStationMove upgradeStation(
-            Move upgradeTrackMove) {
+    public static AddStationMove upgradeStation(Move upgradeTrackMove) {
         return new AddStationMove(new Move[]{upgradeTrackMove});
     }
 

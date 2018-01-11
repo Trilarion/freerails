@@ -56,8 +56,7 @@ public class StationBuildModel {
     /*
      * 100 010 001 = 0x111
      */
-    private static final int trackTemplate = TrackConfiguration
-            .from9bitTemplate(0x111).get9bitTemplate();
+    private static final int trackTemplate = TrackConfiguration.from9bitTemplate(0x111).get9bitTemplate();
 
     /**
      * Vector of StationBuildAction. Actions which represent stations which can
@@ -85,8 +84,7 @@ public class StationBuildModel {
 
         ReadOnlyWorld world = modelRoot.getWorld();
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            final TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES,
-                    i);
+            final TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
 
             if (trackRule.isStation()) {
                 TrackPieceRenderer renderer = rr.getTrackPieceView(i);
@@ -97,8 +95,7 @@ public class StationBuildModel {
                 action.putValue(Action.SHORT_DESCRIPTION, shortDescrpt);
                 action.putValue(Action.NAME, "Build " + trackType);
 
-                action.putValue(Action.SMALL_ICON, new ImageIcon(renderer
-                        .getTrackPieceIcon(trackTemplate)));
+                action.putValue(Action.SMALL_ICON, new ImageIcon(renderer.getTrackPieceIcon(trackTemplate)));
                 stationChooseActions.add(action);
                 id2Action.put(i, action);
             }
@@ -117,16 +114,14 @@ public class StationBuildModel {
      * @return
      */
     public Action[] getStationChooseActions() {
-        return stationChooseActions.toArray(new Action[stationChooseActions
-                .size()]);
+        return stationChooseActions.toArray(new Action[stationChooseActions.size()]);
     }
 
     /**
      * @return
      */
     public boolean canBuildStationHere() {
-        java.awt.Point p = (java.awt.Point) stationBuildAction
-                .getValue(StationBuildAction.STATION_POSITION_KEY);
+        java.awt.Point p = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
 
         return stationBuilder.tryBuildingStation(new Point2D(p.x, p.y)).ok;
     }
@@ -171,14 +166,12 @@ public class StationBuildModel {
         public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
 
-            TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(
-                    SKEY.TRACK_RULES, actionId);
+            TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(SKEY.TRACK_RULES, actionId);
 
             // Show the relevant station radius when the station type's menu
             // item
             // gets focus.
-            stationBuildAction.putValue(StationBuildAction.STATION_RADIUS_KEY,
-                    trackRule.getStationRadius());
+            stationBuildAction.putValue(StationBuildAction.STATION_RADIUS_KEY, trackRule.getStationRadius());
             stationBuildAction.setEnabled(true);
         }
     }
@@ -213,10 +206,8 @@ public class StationBuildModel {
         }
 
         public void actionPerformed(ActionEvent e) {
-            java.awt.Point value = (java.awt.Point) stationBuildAction
-                    .getValue(StationBuildAction.STATION_POSITION_KEY);
-            MoveStatus ms = stationBuilder.buildStation(new Point2D(value.x,
-                    value.y));
+            java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
+            MoveStatus ms = stationBuilder.buildStation(new Point2D(value.x, value.y));
             String message = null;
 
             if (ms.isOk()) {

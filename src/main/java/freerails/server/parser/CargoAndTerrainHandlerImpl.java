@@ -60,6 +60,19 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         this.world = world;
     }
 
+    private static int string2RGBValue(String temp_number) {
+        int rgb = Integer.parseInt(temp_number, 16);
+
+        /*
+         * We need to change the format of the rgb value to the same one as used
+         * by the the BufferedImage that stores the map. See
+         * freerails.common.Map
+         */
+        rgb = new java.awt.Color(rgb).getRGB();
+
+        return rgb;
+    }
+
     public void handle_Converts(final Attributes meta) throws SAXException {
         String inputCargo = meta.getValue("input");
         String outputCargo = meta.getValue("output");
@@ -93,9 +106,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         Integer rgbInteger = tileRGB;
 
         if (rgbValuesAlreadyUsed.contains(rgbInteger)) {
-            throw new SAXException(tileID + " can't using rgb value "
-                    + rgbString
-                    + " because it is being used by another tile type!");
+            throw new SAXException(tileID + " can't using rgb value " + rgbString + " because it is being used by another tile type!");
         }
         rgbValuesAlreadyUsed.add(rgbInteger);
 
@@ -121,8 +132,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
             converts[i] = typeConverts.get(i);
         }
 
-        Serializable tileType = new TileTypeImpl(tileRGB, tileCategory, tileID,
-                tileROW, produces, consumes, converts, tileBuildCost);
+        Serializable tileType = new TileTypeImpl(tileRGB, tileCategory, tileID, tileROW, produces, consumes, converts, tileBuildCost);
 
         world.add(SKEY.TERRAIN_TYPES, tileType);
     }
@@ -143,10 +153,8 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         String prerequisiteString = meta.getValue("Prerequisite");
 
         // "Prerequisite" is an optional attribute, so may be null.
-        int prerequisiteForConsumption = (null == prerequisiteString ? 1
-                : Integer.parseInt(prerequisiteString));
-        TileConsumption tileConsumption = new TileConsumption(cargoConsumed,
-                prerequisiteForConsumption);
+        int prerequisiteForConsumption = (null == prerequisiteString ? 1 : Integer.parseInt(prerequisiteString));
+        TileConsumption tileConsumption = new TileConsumption(cargoConsumed, prerequisiteForConsumption);
         typeConsumes.add(tileConsumption);
     }
 
@@ -155,19 +163,6 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
         int rateOfProduction = Integer.parseInt(meta.getValue("Rate"));
         TileProduction tileProduction = new TileProduction(cargoProduced, rateOfProduction);
         typeProduces.add(tileProduction);
-    }
-
-    private static int string2RGBValue(String temp_number) {
-        int rgb = Integer.parseInt(temp_number, 16);
-
-        /*
-         * We need to change the format of the rgb value to the same one as used
-         * by the the BufferedImage that stores the map. See
-         * freerails.common.Map
-         */
-        rgb = new java.awt.Color(rgb).getRGB();
-
-        return rgb;
     }
 
     /**

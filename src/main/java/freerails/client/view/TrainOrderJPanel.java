@@ -41,16 +41,11 @@ import java.util.Map;
  */
 public class TrainOrderJPanel implements View, ListCellRenderer {
 
-    private final Icon gotoNow = new ImageIcon(TrainOrderJPanel.class
-            .getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));
-    private final Icon gotoAfterPriorityOrders = new ImageIcon(
-            TrainOrderJPanel.class
-                    .getResource(ClientConfig.GRAPHIC_ARROW_DESELECTED));
+    private final Icon gotoNow = new ImageIcon(TrainOrderJPanel.class.getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));
+    private final Icon gotoAfterPriorityOrders = new ImageIcon(TrainOrderJPanel.class.getResource(ClientConfig.GRAPHIC_ARROW_DESELECTED));
     private final ImageIcon dontGoto = null;
-    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
-            .getDefaults().get("List.background");
-    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
-            .getDefaults().get("List.selectionBackground");
+    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
+    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private final Map<TrainOrderModel, TrainOrderJPanelSingle> lines;
     private ReadOnlyWorld w;
@@ -80,19 +75,16 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
         principal = modelRoot.getPrincipal();
     }
 
-    public java.awt.Component getListCellRendererComponent(JList list,
-                                                           Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public java.awt.Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement) value;
 
         // Set station name
         int stationNumber = trainOrders.order.stationId;
-        Station station = (Station) w.get(principal, KEY.STATIONS,
-                stationNumber);
+        Station station = (Station) w.get(principal, KEY.STATIONS, stationNumber);
         String stationName = station.getStationName();
 
         // Set wait until full
-        String waitUntilFull = trainOrders.order.waitUntilFull ? "Wait until full"
-                : "";
+        String waitUntilFull = trainOrders.order.waitUntilFull ? "Wait until full" : "";
         Selection select;
         if (isSelected) {
             if (list.isFocusOwner()) {
@@ -114,8 +106,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             orderText = "";
         }
 
-        TrainOrderModel tm = new TrainOrderModel(stationName, waitUntilFull,
-                select, trainOrders.gotoStatus, orderText);
+        TrainOrderModel tm = new TrainOrderModel(stationName, waitUntilFull, select, trainOrders.gotoStatus, orderText);
         TrainOrderJPanelSingle panelSingle = lines.get(tm);
         if (panelSingle == null) {
             panelSingle = new TrainOrderJPanelSingle();
@@ -147,8 +138,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
                     panelSingle.gotoIcon.setIcon(gotoNow);
                     break;
                 default:
-                    throw new IllegalArgumentException(String
-                            .valueOf(trainOrders.gotoStatus));
+                    throw new IllegalArgumentException(String.valueOf(trainOrders.gotoStatus));
             }
             panelSingle.gotoIcon.setPreferredSize(new Dimension(20, 20));
 
@@ -166,8 +156,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             // Check for 'No change'
             if (null == trainOrders.order.consist) {
                 if (trainOrders.order.autoConsist) {
-                    panelSingle.noChangeJLabel
-                            .setText("Select wagons automatically");
+                    panelSingle.noChangeJLabel.setText("Select wagons automatically");
                 } else {
                     panelSingle.noChangeJLabel.setText("No Change");
                 }
@@ -184,8 +173,67 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
     // 666 model still not correct ...
 
-    private final class TrainOrderJPanelSingle extends javax.swing.JPanel
-            implements View {
+    /**
+     * contains all data which is displayed for one station (order). This is
+     * used to find prebuilt Panels
+     */
+    private static class TrainOrderModel {
+        final String stationName;
+        final String waitUntilFull;
+        final Selection selected;
+        final int gotoStatus;
+        final String orderText;
+
+        /**
+         * @param stationName
+         * @param waitUntilFull
+         * @param selected
+         * @param gotoStatus
+         */
+        public TrainOrderModel(String stationName, String waitUntilFull, Selection selected, int gotoStatus, String orderText) {
+            super();
+            this.stationName = stationName;
+            this.waitUntilFull = waitUntilFull;
+            this.selected = selected;
+            this.gotoStatus = gotoStatus;
+            this.orderText = orderText;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof TrainOrderModel)) {
+                return false;
+            }
+            TrainOrderModel cmp = (TrainOrderModel) obj;
+            if (cmp.gotoStatus != gotoStatus) {
+                return false;
+            }
+            if (cmp.selected != selected) {
+                return false;
+            }
+            if (stationName != null && cmp.stationName == null) {
+                return false;
+            }
+            if (stationName != null && !stationName.equals(cmp.stationName)) {
+                return false;
+            }
+            if (waitUntilFull != null && cmp.waitUntilFull == null) {
+                return false;
+            }
+            if (waitUntilFull != null && !waitUntilFull.equals(cmp.waitUntilFull)) {
+                return false;
+            }
+            return orderText == null || orderText.equals(cmp.orderText);
+        }
+
+        @Override
+        public int hashCode() {
+            return waitUntilFull.hashCode() + stationName.hashCode() + selected.hashCode() + gotoStatus + orderText.hashCode();
+        }
+
+    }
+
+    private final class TrainOrderJPanelSingle extends javax.swing.JPanel implements View {
 
         private static final long serialVersionUID = 3516604388665786813L;
         // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -216,8 +264,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
             setLayout(new java.awt.GridBagLayout());
 
-            gotoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                    ClientConfig.GRAPHIC_ARROW_SELECTED)));
+            gotoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource(ClientConfig.GRAPHIC_ARROW_SELECTED)));
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 0;
@@ -228,8 +275,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             consistChangeJPanel.setLayout(new java.awt.GridBagLayout());
 
             noChangeJLabel.setText("No Change");
-            consistChangeJPanel.add(noChangeJLabel,
-                    new java.awt.GridBagConstraints());
+            consistChangeJPanel.add(noChangeJLabel, new java.awt.GridBagConstraints());
 
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 1;
@@ -268,68 +314,6 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
             trainViewJPanel.setup(modelRoot, vl, null);
             principal = modelRoot.getPrincipal();
 
-        }
-
-    }
-
-    /**
-     * contains all data which is displayed for one station (order). This is
-     * used to find prebuilt Panels
-     */
-    private static class TrainOrderModel {
-        final String stationName;
-        final String waitUntilFull;
-        final Selection selected;
-        final int gotoStatus;
-        final String orderText;
-
-        /**
-         * @param stationName
-         * @param waitUntilFull
-         * @param selected
-         * @param gotoStatus
-         */
-        public TrainOrderModel(String stationName, String waitUntilFull,
-                               Selection selected, int gotoStatus, String orderText) {
-            super();
-            this.stationName = stationName;
-            this.waitUntilFull = waitUntilFull;
-            this.selected = selected;
-            this.gotoStatus = gotoStatus;
-            this.orderText = orderText;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof TrainOrderModel)) {
-                return false;
-            }
-            TrainOrderModel cmp = (TrainOrderModel) obj;
-            if (cmp.gotoStatus != gotoStatus) {
-                return false;
-            }
-            if (cmp.selected != selected) {
-                return false;
-            }
-            if (stationName != null && cmp.stationName == null) {
-                return false;
-            }
-            if (stationName != null && !stationName.equals(cmp.stationName)) {
-                return false;
-            }
-            if (waitUntilFull != null && cmp.waitUntilFull == null) {
-                return false;
-            }
-            if (waitUntilFull != null && !waitUntilFull.equals(cmp.waitUntilFull)) {
-                return false;
-            }
-            return orderText == null || orderText.equals(cmp.orderText);
-        }
-
-        @Override
-        public int hashCode() {
-            return waitUntilFull.hashCode() + stationName.hashCode()
-                    + selected.hashCode() + gotoStatus + orderText.hashCode();
         }
 
     }

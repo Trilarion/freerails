@@ -35,6 +35,7 @@ public class ItemTransaction implements Transaction {
 
 
     // TODO what is the difference between category and type
+
     /**
      * @param category
      * @param type
@@ -53,8 +54,7 @@ public class ItemTransaction implements Transaction {
         if (obj instanceof ItemTransaction) {
             ItemTransaction test = (ItemTransaction) obj;
 
-            return amount.equals(test.amount) && category == test.category
-                    && type == test.type && quantity == test.quantity;
+            return amount.equals(test.amount) && category == test.category && type == test.type && quantity == test.quantity;
         }
         return false;
     }

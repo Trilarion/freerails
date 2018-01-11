@@ -29,8 +29,8 @@ import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
+import freerails.world.station.TrainBlueprint;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
@@ -38,7 +38,6 @@ import freerails.world.train.TrainOrdersModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Is used by the server to generate moves that add trains, move
@@ -63,6 +62,22 @@ public class TrainUpdater implements ServerAutomaton {
 
     }
 
+    private static ImmutableSchedule generateInitialSchedule(FreerailsPrincipal principal, ReadOnlyWorld world, boolean autoSchedule) {
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+
+        MutableSchedule s = new MutableSchedule();
+
+        // Add up to 4 stations to the schedule.
+        while (wi.next() && s.getNumOrders() < 5) {
+            TrainOrdersModel orders = new TrainOrdersModel(wi.getIndex(), null, false, autoSchedule);
+            s.addOrder(orders);
+        }
+
+        s.setOrderToGoto(0);
+
+        return s.toImmutableSchedule();
+    }
+
     /**
      * @param engineTypeId
      * @param wagons
@@ -70,17 +85,14 @@ public class TrainUpdater implements ServerAutomaton {
      * @param principal
      * @param world
      */
-    public void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Point2D p,
-                           FreerailsPrincipal principal, ReadOnlyWorld world) {
+    public void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Point2D p, FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
 
-        ImmutableSchedule is = generateInitialSchedule(principal, world,
-                autoSchedule);
+        ImmutableSchedule is = generateInitialSchedule(principal, world, autoSchedule);
 
-        PreMove addTrain = new AddTrainPreMove(engineTypeId, wagons, p,
-                principal, is);
+        PreMove addTrain = new AddTrainPreMove(engineTypeId, wagons, p, principal, is);
 
         Move m = addTrain.generateMove(world);
         moveReceiver.process(m);
@@ -96,8 +108,7 @@ public class TrainUpdater implements ServerAutomaton {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
             for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-                Station station = (Station) world.get(principal,
-                        KEY.STATIONS, i);
+                Station station = (Station) world.get(principal, KEY.STATIONS, i);
                 if (null != station) {
 
                     ImmutableList<TrainBlueprint> production = station.getProduction();
@@ -108,39 +119,16 @@ public class TrainUpdater implements ServerAutomaton {
 
                         for (int j = 0; j < production.size(); j++) {
                             int engineType = production.get(j).getEngineType();
-                            ImmutableList<Integer> wagonTypes = production.get(j)
-                                    .getWagonTypes();
-                            buildTrain(engineType, wagonTypes, p,
-                                    principal, world);
+                            ImmutableList<Integer> wagonTypes = production.get(j).getWagonTypes();
+                            buildTrain(engineType, wagonTypes, p, principal, world);
                         }
 
-                        Move move = new ChangeProductionAtEngineShopMove(
-                                production, new ImmutableList<>(), i,
-                                principal);
+                        Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, principal);
                         moveReceiver.process(move);
                     }
                 }
             }
         }
-    }
-
-    private static ImmutableSchedule generateInitialSchedule(
-            FreerailsPrincipal principal, ReadOnlyWorld world,
-            boolean autoSchedule) {
-        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
-
-        MutableSchedule s = new MutableSchedule();
-
-        // Add up to 4 stations to the schedule.
-        while (wi.next() && s.getNumOrders() < 5) {
-            TrainOrdersModel orders = new TrainOrdersModel(wi.getIndex(), null,
-                    false, autoSchedule);
-            s.addOrder(orders);
-        }
-
-        s.setOrderToGoto(0);
-
-        return s.toImmutableSchedule();
     }
 
     public void initAutomaton(MoveReceiver moveReceiver) {
@@ -162,13 +150,10 @@ public class TrainUpdater implements ServerAutomaton {
             Collection<MoveTrainPreMove> stoppedTrains = new ArrayList<>();
             for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
 
-                TrainModel train = (TrainModel) world.get(principal,
-                        KEY.TRAINS, i);
-                if (null == train)
-                    continue;
+                TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, i);
+                if (null == train) continue;
 
-                MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal,
-                        occupiedTracks);
+                MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal, occupiedTracks);
                 if (moveTrain.isUpdateDue(world)) {
                     TrainAccessor ta = new TrainAccessor(world, principal, i);
                     if (ta.isMoving(time)) {

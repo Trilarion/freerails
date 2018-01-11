@@ -43,8 +43,7 @@ public final class MoveStatus implements Serializable {
 
     private MoveStatus(boolean ok, String message) {
         Throwable t;
-        if (ok) {
-        } else {
+        if (!ok) {
             t = new Throwable();
             t.fillInStackTrace();
         }
@@ -62,15 +61,12 @@ public final class MoveStatus implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof MoveStatus))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof MoveStatus)) return false;
 
         final MoveStatus moveStatus = (MoveStatus) obj;
 
-        if (ok != moveStatus.ok)
-            return false;
+        if (ok != moveStatus.ok) return false;
         return message != null ? message.equals(moveStatus.message) : moveStatus.message == null;
     }
 

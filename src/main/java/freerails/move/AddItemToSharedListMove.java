@@ -42,11 +42,17 @@ public class AddItemToSharedListMove implements Move {
      * @param i
      * @param item
      */
-    protected AddItemToSharedListMove(SKEY key, int i,
-                                      Serializable item) {
+    protected AddItemToSharedListMove(SKEY key, int i, Serializable item) {
         listKey = key;
         index = i;
         this.item = item;
+    }
+
+    /**
+     * @return
+     */
+    public static Serializable getBefore() {
+        return null;
     }
 
     /**
@@ -75,9 +81,7 @@ public class AddItemToSharedListMove implements Move {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.size(listKey) != index) {
-            return MoveStatus.moveFailed("Expected size of "
-                    + listKey.toString() + " list is " + index
-                    + " but actual size is " + world.size(listKey));
+            return MoveStatus.moveFailed("Expected size of " + listKey.toString() + " list is " + index + " but actual size is " + world.size(listKey));
         }
 
         return MoveStatus.MOVE_OK;
@@ -87,9 +91,7 @@ public class AddItemToSharedListMove implements Move {
         int expectListSize = index + 1;
 
         if (world.size(listKey) != expectListSize) {
-            return MoveStatus.moveFailed("Expected size of "
-                    + listKey.toString() + " list is " + expectListSize
-                    + " but actual size is " + world.size(listKey));
+            return MoveStatus.moveFailed("Expected size of " + listKey.toString() + " list is " + expectListSize + " but actual size is " + world.size(listKey));
         }
 
         return MoveStatus.MOVE_OK;
@@ -136,13 +138,6 @@ public class AddItemToSharedListMove implements Move {
     /**
      * @return
      */
-    public static Serializable getBefore() {
-        return null;
-    }
-
-    /**
-     * @return
-     */
     public Serializable getAfter() {
         return item;
     }
@@ -150,11 +145,6 @@ public class AddItemToSharedListMove implements Move {
     @Override
     public String toString() {
 
-        return getClass().getName() + "\nlist=" +
-                listKey.toString() +
-                "\n index =" +
-                index +
-                "\n item =" +
-                item.toString();
+        return getClass().getName() + "\nlist=" + listKey.toString() + "\n index =" + index + "\n item =" + item.toString();
     }
 }

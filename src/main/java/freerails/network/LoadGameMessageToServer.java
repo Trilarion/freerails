@@ -41,15 +41,12 @@ public class LoadGameMessageToServer implements MessageToServer {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof LoadGameMessageToServer))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof LoadGameMessageToServer)) return false;
 
         final LoadGameMessageToServer loadGameMessageToServer = (LoadGameMessageToServer) obj;
 
-        if (id != loadGameMessageToServer.id)
-            return false;
+        if (id != loadGameMessageToServer.id) return false;
         return filename.equals(loadGameMessageToServer.filename);
     }
 

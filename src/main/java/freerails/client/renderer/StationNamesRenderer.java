@@ -41,8 +41,7 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class StationNamesRenderer implements Painter {
     static final float[] dash1 = {5.0f};
-    static final Stroke dashed = new BasicStroke(1.0f,
-            BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+    static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
     private final ReadOnlyWorld w;
     private final ModelRoot modelRoot;
     private final int fontSize;
@@ -81,10 +80,8 @@ public class StationNamesRenderer implements Painter {
         int positionX;
         int positionY;
 
-        Boolean showStationNames = (Boolean) modelRoot
-                .getProperty(ModelRoot.Property.SHOW_STATION_NAMES);
-        Boolean showStationBorders = (Boolean) modelRoot
-                .getProperty(ModelRoot.Property.SHOW_STATION_BORDERS);
+        Boolean showStationNames = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_STATION_NAMES);
+        Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_STATION_BORDERS);
 
         FontRenderContext frc = g.getFontRenderContext();
         TextLayout layout;
@@ -102,26 +99,20 @@ public class StationNamesRenderer implements Painter {
                 int y = tempStation.getStationY();
                 int xdisp = x * ClientConstants.TILE_SIZE;
                 int ydisp = y * ClientConstants.TILE_SIZE;
-                Rectangle stationBox = new Rectangle(xdisp
-                        - ClientConstants.TILE_SIZE * 3, ydisp - ClientConstants.TILE_SIZE
-                        * 3, ClientConstants.TILE_SIZE * 7, ClientConstants.TILE_SIZE * 7);
-                if (newVisibleRectangle != null
-                        && !newVisibleRectangle.intersects(stationBox)) {
+                Rectangle stationBox = new Rectangle(xdisp - ClientConstants.TILE_SIZE * 3, ydisp - ClientConstants.TILE_SIZE * 3, ClientConstants.TILE_SIZE * 7, ClientConstants.TILE_SIZE * 7);
+                if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
                 }
                 // First draw station sphere of influence
                 if (showStationBorders) {
                     FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
-                    int radius = tile.getTrackPiece().getTrackRule()
-                            .getStationRadius();
-                    int diameterInPixels = (radius * 2 + 1)
-                            * ClientConstants.TILE_SIZE;
+                    int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
+                    int diameterInPixels = (radius * 2 + 1) * ClientConstants.TILE_SIZE;
                     int radiusX = (x - radius) * ClientConstants.TILE_SIZE;
                     int radiusY = (y - radius) * ClientConstants.TILE_SIZE;
                     g.setColor(Color.WHITE);
                     g.setStroke(dashed);
-                    g.draw(new RoundRectangle2D.Double(radiusX, radiusY,
-                            diameterInPixels, diameterInPixels, 10, 10));
+                    g.draw(new RoundRectangle2D.Double(radiusX, radiusY, diameterInPixels, diameterInPixels, 10, 10));
                 }
 
                 // Then draw the station name.
@@ -150,8 +141,7 @@ public class StationNamesRenderer implements Painter {
 
                     g.setStroke(new BasicStroke(1.0f));
                     // draw a border 1 pixel inside the edges of the rectangle
-                    g.draw(new Rectangle(rectX + 1, rectY + 1, rectWidth - 3,
-                            rectHeight - 3));
+                    g.draw(new Rectangle(rectX + 1, rectY + 1, rectWidth - 3, rectHeight - 3));
                 }
             }
         }

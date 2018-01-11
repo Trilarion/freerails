@@ -54,10 +54,8 @@ public class AddPlayerMove implements Move {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof AddPlayerMove))
-            return false;
+        if (this == o) return true;
+        if (!(o instanceof AddPlayerMove)) return false;
 
         final AddPlayerMove addPlayerMove = (AddPlayerMove) o;
 
@@ -71,8 +69,7 @@ public class AddPlayerMove implements Move {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (isAlreadyASimilarPlayer(world))
-            return MoveStatus
-                    .moveFailed("There is already a player with the same name.");
+            return MoveStatus.moveFailed("There is already a player with the same name.");
 
         return MoveStatus.MOVE_OK;
     }
@@ -83,30 +80,26 @@ public class AddPlayerMove implements Move {
         if (pp.equals(playerToAdd)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed("The last player is " + pp.getName()
-                + "not " + playerToAdd.getName());
+        return MoveStatus.moveFailed("The last player is " + pp.getName() + "not " + playerToAdd.getName());
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal p) {
         MoveStatus ms = tryDoMove(world, p);
-        if (!ms.ok)
-            return ms;
+        if (!ms.ok) return ms;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         FreerailsPrincipal principal = playerToAdd.getPrincipal();
         world.addTransaction(principal, BondItemTransaction.issueBond(5));
         // Issue stock
         Money initialStockPrice = new Money(5);
-        Transaction t = StockItemTransaction.issueStock(playerId, 100000,
-                initialStockPrice);
+        Transaction t = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
         world.addTransaction(principal, t);
         return ms;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryUndoMove(world, principal);
-        if (!ms.ok)
-            return ms;
+        if (!ms.ok) return ms;
 
         world.removeLastTransaction(playerToAdd.getPrincipal());
         world.removeLastTransaction(playerToAdd.getPrincipal());

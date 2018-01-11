@@ -34,9 +34,6 @@ public class SetWorldMessageToClient implements MessageToClient {
 
     /**
      * Note, makes a defensive copy of the world object passed to it.
-     *
-     * @param id
-     * @param world
      */
     public SetWorldMessageToClient(int id, World world) {
         this.id = id;
@@ -51,15 +48,12 @@ public class SetWorldMessageToClient implements MessageToClient {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof SetWorldMessageToClient))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof SetWorldMessageToClient)) return false;
 
         final SetWorldMessageToClient setWorldMessageToClient = (SetWorldMessageToClient) obj;
 
-        if (id != setWorldMessageToClient.id)
-            return false;
+        if (id != setWorldMessageToClient.id) return false;
         return world.equals(setWorldMessageToClient.world);
     }
 

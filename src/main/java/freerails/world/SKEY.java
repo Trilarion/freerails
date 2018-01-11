@@ -26,60 +26,32 @@ import java.io.Serializable;
  * Provides a set of keys to access the lists of elements in the game
  * world that are shared by all players.
  *
- *
- *
  * It implements the type-safe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
  */
 @freerails.util.InstanceControlled
 public class SKEY implements Serializable {
-    private static final long serialVersionUID = 3257847679739506737L;
 
+    private static final long serialVersionUID = 3257847679739506737L;
     /**
      * Maps key numbers to KEYs.
      */
     private static final SKEY[] keys = new SKEY[getNumberOfKeys()];
 
-    // START OF KEYS
-
-    /**
-     *
-     */
     public static final SKEY TERRAIN_TYPES = new SKEY();
-
-    /**
-     *
-     */
     public static final SKEY WAGON_TYPES = new SKEY();
-
-    /**
-     *
-     */
     public static final SKEY CARGO_TYPES = new SKEY();
-
-    /**
-     *
-     */
     public static final SKEY CITIES = new SKEY();
-
-    /**
-     *
-     */
     public static final SKEY ENGINE_TYPES = new SKEY();
-
-    /**
-     *
-     */
     public static final SKEY TRACK_RULES = new SKEY();
 
     // END OF SKEYS
     private static int numberOfKeys;
-
-    private final int keyNumber;
+    private final int keyID;
 
     private SKEY() {
-        keyNumber = numberOfKeys;
-        keys[keyNumber] = this;
+        keyID = numberOfKeys;
+        keys[keyID] = this;
         numberOfKeys++;
     }
 
@@ -88,11 +60,11 @@ public class SKEY implements Serializable {
     }
 
     public int getKeyID() {
-        return keyNumber;
+        return keyID;
     }
 
     protected Object readResolve() {
-        return keys[keyNumber];
+        return keys[keyID];
     }
 
     @Override

@@ -18,16 +18,17 @@
 
 package freerails.move;
 
-import freerails.world.game.GameSpeed;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
+import freerails.world.game.GameSpeed;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
  * Changes the game speed item on the world object.
  */
 public class ChangeGameSpeedMove implements Move {
+
     private static final long serialVersionUID = 3545794368956086071L;
     private final GameSpeed oldSpeed;
     private final GameSpeed newSpeed;
@@ -42,19 +43,15 @@ public class ChangeGameSpeedMove implements Move {
      * @param newGameSpeed
      * @return
      */
-    public static Move getMove(ReadOnlyWorld w,
-                               GameSpeed newGameSpeed) {
-        return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED),
-                newGameSpeed);
+    public static Move getMove(ReadOnlyWorld w, GameSpeed newGameSpeed) {
+        return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED), newGameSpeed);
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.get(ITEM.GAME_SPEED).equals(oldSpeed)) {
             return MoveStatus.MOVE_OK;
         }
-        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> "
-                + "currentSpeed "
-                + ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
 
         return MoveStatus.moveFailed(string);
     }
@@ -65,8 +62,7 @@ public class ChangeGameSpeedMove implements Move {
         if (speed.equals(newSpeed)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed("Expected " + newSpeed + ", found "
-                + speed);
+        return MoveStatus.moveFailed("Expected " + newSpeed + ", found " + speed);
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
@@ -91,15 +87,12 @@ public class ChangeGameSpeedMove implements Move {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof ChangeGameSpeedMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof ChangeGameSpeedMove)) return false;
 
         final ChangeGameSpeedMove changeGameSpeedMove = (ChangeGameSpeedMove) obj;
 
-        if (!newSpeed.equals(changeGameSpeedMove.newSpeed))
-            return false;
+        if (!newSpeed.equals(changeGameSpeedMove.newSpeed)) return false;
         return oldSpeed.equals(changeGameSpeedMove.oldSpeed);
     }
 

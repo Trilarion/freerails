@@ -24,7 +24,9 @@ package freerails.controller;
 import freerails.move.*;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
-import freerails.world.*;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
@@ -61,33 +63,23 @@ public class AddTrainPreMove implements PreMove {
         point = p;
         principal = fp;
         schedule = s;
-        if (null == wags)
-            throw new NullPointerException();
-        if (null == p)
-            throw new NullPointerException();
-        if (null == fp)
-            throw new NullPointerException();
-        if (null == s)
-            throw new NullPointerException();
+        if (null == wags) throw new NullPointerException();
+        if (null == p) throw new NullPointerException();
+        if (null == fp) throw new NullPointerException();
+        if (null == s) throw new NullPointerException();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof AddTrainPreMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof AddTrainPreMove)) return false;
 
         final AddTrainPreMove addTrainPreMove = (AddTrainPreMove) obj;
 
-        if (engineTypeId != addTrainPreMove.engineTypeId)
-            return false;
-        if (!point.equals(addTrainPreMove.point))
-            return false;
-        if (!principal.equals(addTrainPreMove.principal))
-            return false;
-        if (!schedule.equals(addTrainPreMove.schedule))
-            return false;
+        if (engineTypeId != addTrainPreMove.engineTypeId) return false;
+        if (!point.equals(addTrainPreMove.point)) return false;
+        if (!principal.equals(addTrainPreMove.principal)) return false;
+        if (!schedule.equals(addTrainPreMove.schedule)) return false;
         return wagons.equals(addTrainPreMove.wagons);
     }
 
@@ -133,8 +125,7 @@ public class AddTrainPreMove implements PreMove {
 
     TrainMotion initPositionStep2(PathOnTiles path) {
         // TODO fix code.
-        return new TrainMotion(path, path.steps(), calTrainLength(),
-                ConstantAcceleration.STOPPED);
+        return new TrainMotion(path, path.steps(), calTrainLength(), ConstantAcceleration.STOPPED);
     }
 
     /**
@@ -146,40 +137,29 @@ public class AddTrainPreMove implements PreMove {
      * <li>Adds transaction to pay for the train</li>
      * <li>Init. the trains position and motion</li>
      * </ol>
-     *
-     * @param w
-     * @return
      */
     public Move generateMove(ReadOnlyWorld w) {
         // Add cargo bundle.
         int bundleId = w.size(principal, KEY.CARGO_BUNDLES);
         ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;
-        AddItemToListMove addCargoBundle = new AddItemToListMove(
-                KEY.CARGO_BUNDLES, bundleId, cargo, principal);
+        AddItemToListMove addCargoBundle = new AddItemToListMove(KEY.CARGO_BUNDLES, bundleId, cargo, principal);
 
         // Add schedule
         int scheduleId = w.size(principal, KEY.TRAIN_SCHEDULES);
-        AddItemToListMove addSchedule = new AddItemToListMove(
-                KEY.TRAIN_SCHEDULES, scheduleId, schedule, principal);
+        AddItemToListMove addSchedule = new AddItemToListMove(KEY.TRAIN_SCHEDULES, scheduleId, schedule, principal);
 
         // Add train to train list.
-        TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId,
-                bundleId);
+        TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId, bundleId);
         int trainId = w.size(principal, KEY.TRAINS);
-        AddItemToListMove addTrain = new AddItemToListMove(KEY.TRAINS, trainId,
-                train, principal);
+        AddItemToListMove addTrain = new AddItemToListMove(KEY.TRAINS, trainId, train, principal);
 
         // Pay for train.
         int quantity = 1;
         /* Determine the price of the train. */
-        EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES,
-                engineTypeId);
+        EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES, engineTypeId);
         Money price = engineType.getPrice();
-        Transaction transaction = new ItemTransaction(
-                TransactionCategory.TRAIN, engineTypeId, quantity, new Money(
-                -price.getAmount()));
-        AddTransactionMove transactionMove = new AddTransactionMove(principal,
-                transaction);
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineTypeId, quantity, new Money(-price.getAmount()));
+        AddTransactionMove transactionMove = new AddTransactionMove(principal, transaction);
 
         // Setup and add train position.
 
@@ -188,8 +168,7 @@ public class AddTrainPreMove implements PreMove {
 
         Move addPosition = new AddActiveEntityMove(motion, trainId, principal);
 
-        return new CompositeMove(addCargoBundle, addSchedule, addTrain,
-                transactionMove, addPosition);
+        return new CompositeMove(addCargoBundle, addSchedule, addTrain, transactionMove, addPosition);
     }
 
 }

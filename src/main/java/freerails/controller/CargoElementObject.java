@@ -22,6 +22,7 @@ package freerails.controller;
  * Small data object to store the rate of supply of a cargo.
  */
 public class CargoElementObject {
+
     private final int type;
     private int rate;
 

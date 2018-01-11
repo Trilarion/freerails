@@ -23,12 +23,10 @@ package freerails.controller;
  * graph is stored. Vertices are packed into single int values to avoid the cost of
  * object creation and garbage collection.
  */
-@SuppressWarnings("unused")
 public interface GraphExplorer {
+
     /**
      * Return the current edge.
-     *
-     * @return
      */
     int getPosition();
 
@@ -46,15 +44,11 @@ public interface GraphExplorer {
     /**
      * Returns the vertex that is connected to the current vertex by the current
      * edge.
-     *
-     * @return
      */
     int getVertexConnectedByEdge();
 
     /**
      * Returns the cost of the current edge.
-     *
-     * @return
      */
     int getEdgeCost();
 

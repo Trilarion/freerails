@@ -23,37 +23,13 @@ package freerails.controller;
 
 /**
  */
-@SuppressWarnings("ALL")
 public class SharePriceCalculator {
 
-    /**
-     *
-     */
     public int totalShares;
-
-    /**
-     *
-     */
     public int treasuryStock;
-
-    /**
-     *
-     */
     public int otherRRStakes;
-
-    /**
-     *
-     */
     public long profitsLastYear;
-
-    /**
-     *
-     */
     public long networth;
-
-    /**
-     *
-     */
     public long stockholderEquity;
 
     /**
@@ -69,8 +45,7 @@ public class SharePriceCalculator {
         long expectedIncrease = profitsLastYear * 5;
 
         int publicOwnedShares = totalShares - treasuryStock - otherRRStakes;
-        price = 2 * (currentValue + expectedIncrease)
-                / (2 * publicOwnedShares + otherRRStakes);
+        price = 2 * (currentValue + expectedIncrease) / (2 * publicOwnedShares + otherRRStakes);
 
         return price;
     }

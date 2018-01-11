@@ -42,15 +42,11 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
      *
      */
     public DisplayModesComboBoxModels() {
-        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment
-                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-                .getDefaultConfiguration();
-        DisplayMode currentMode = defaultConfiguration.getDevice()
-                .getDisplayMode();
+        GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+        DisplayMode currentMode = defaultConfiguration.getDevice().getDisplayMode();
         selection = new MyDisplayMode(currentMode);
 
-        DisplayMode[] displayModes = defaultConfiguration.getDevice()
-                .getDisplayModes();
+        DisplayMode[] displayModes = defaultConfiguration.getDevice().getDisplayModes();
         for (DisplayMode displayMode : displayModes) {
             MyDisplayMode mode = new MyDisplayMode(displayMode);
             modes.add(mode);
@@ -60,10 +56,6 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
     /**
      * Permanently removes from the list in this object any display modes with
      * width, height, or bitdepth below the specified values.
-     *
-     * @param width
-     * @param height
-     * @param bitDepth
      */
     public void removeDisplayModesBelow(int width, int height, int bitDepth) {
         Iterator<MyDisplayMode> it = modes.iterator();
@@ -76,8 +68,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
              * Note, displayMode.getBitDepth() may return
              * DisplayMode.BIT_DEPTH_MULTI, which is -1.
              */
-            final boolean tooFewColours = (displayMode.getBitDepth() < bitDepth)
-                    && (displayMode.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI);
+            final boolean tooFewColours = (displayMode.getBitDepth() < bitDepth) && (displayMode.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI);
             if (tooNarrow || tooShort || tooFewColours) {
                 it.remove();
             }

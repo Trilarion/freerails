@@ -22,7 +22,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Provides a mapping from a set of ButtonModels or a ComboBoxModel to a set of
@@ -50,8 +53,6 @@ public class ActionAdapter extends DefaultComboBoxModel {
      * An array of the actions to be used. The ComboBoxModel objects are taken
      * from the NAME property of the Action. The ButtonModel icons are obtained
      * from the SMALL_ICON property.
-     *
-     * @param actions
      */
     public ActionAdapter(Action[] actions) {
         super();
@@ -131,9 +132,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
         if (performActionOnSetSelectedItem) {
             for (Action action : actions) {
                 if (action.getValue(Action.NAME).equals(anObject)) {
-                    action.actionPerformed(new ActionEvent(this,
-                            ActionEvent.ACTION_PERFORMED, (String) action
-                            .getValue(Action.ACTION_COMMAND_KEY)));
+                    action.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, (String) action.getValue(Action.ACTION_COMMAND_KEY)));
                 }
             }
         }
@@ -142,16 +141,14 @@ public class ActionAdapter extends DefaultComboBoxModel {
     /**
      * @param performActionOnSetSelectedItem
      */
-    public void setPerformActionOnSetSelectedItem(
-            boolean performActionOnSetSelectedItem) {
+    public void setPerformActionOnSetSelectedItem(boolean performActionOnSetSelectedItem) {
         this.performActionOnSetSelectedItem = performActionOnSetSelectedItem;
     }
 
     /**
      *
      */
-    public class MappedButtonModel extends JToggleButton.ToggleButtonModel
-            implements PropertyChangeListener {
+    public class MappedButtonModel extends JToggleButton.ToggleButtonModel implements PropertyChangeListener {
         private static final long serialVersionUID = 3834589889856353845L;
 
         /**

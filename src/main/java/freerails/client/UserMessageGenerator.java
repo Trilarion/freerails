@@ -16,17 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.top;
+package freerails.client;
 
-import freerails.client.ClientConfig;
 import freerails.client.common.SoundManager;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.network.MoveReceiver;
-import freerails.util.ImmutableList;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
 import freerails.world.finances.CargoDeliveryMoneyTransaction;
@@ -66,7 +67,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     public void process(Move move) {
         if (move instanceof CompositeMove) {
-            ImmutableList<Move> moves = ((CompositeMove) move).getMoves();
+            List<Move> moves = ((CompositeMove) move).getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
                 process(moves.get(i));
@@ -118,13 +119,11 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(trainId + 1); // So that the first train
             // is #1, not #0.
             message.append(" arrives at ");
-            Station station = (Station) world.get(modelRoot
-                    .getPrincipal(), KEY.STATIONS, stationId);
+            Station station = (Station) world.get(modelRoot.getPrincipal(), KEY.STATIONS, stationId);
             message.append(station.getStationName());
             message.append('\n');
             long revenue = 0;
-            int[] cargoQuantities = new int[modelRoot.getWorld().size(
-                    SKEY.CARGO_TYPES)];
+            int[] cargoQuantities = new int[modelRoot.getWorld().size(SKEY.CARGO_TYPES)];
             for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
                 revenue += receipt.value().getAmount();
@@ -133,8 +132,7 @@ public class UserMessageGenerator implements MoveReceiver {
             for (int i = 0; i < cargoQuantities.length; i++) {
                 int j = cargoQuantities[i];
                 if (j > 0) {
-                    CargoType cargoType = (CargoType) world.get(
-                            SKEY.CARGO_TYPES, i);
+                    CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
                     message.append(j);
                     message.append(' ');
                     message.append(cargoType.getDisplayName());
@@ -165,8 +163,7 @@ public class UserMessageGenerator implements MoveReceiver {
         int gameSpeed = speed.getSpeed();
 
         if (gameSpeed <= 0) {
-            modelRoot
-                    .setProperty(Property.PERMANENT_MESSAGE, "Game is paused.");
+            modelRoot.setProperty(Property.PERMANENT_MESSAGE, "Game is paused.");
 
             /*
              * Also hide any other message. It looks silly if it says "Game is
@@ -176,10 +173,8 @@ public class UserMessageGenerator implements MoveReceiver {
         } else {
             modelRoot.setProperty(Property.PERMANENT_MESSAGE, null);
 
-            String gameSpeedDesc = actionRoot.getServerControls()
-                    .getGameSpeedDesc(gameSpeed);
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "Game speed: "
-                    + gameSpeedDesc);
+            String gameSpeedDesc = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "Game speed: " + gameSpeedDesc);
         }
     }
 }

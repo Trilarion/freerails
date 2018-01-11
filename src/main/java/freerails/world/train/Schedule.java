@@ -39,31 +39,23 @@ public interface Schedule {
 
     /**
      * Returns the number of the order the train is currently carry out.
-     *
-     * @return
      */
     int getOrderToGoto();
 
     /**
      * Returns the station number of the next station the train is scheduled to
      * stop at.
-     *
-     * @return
      */
     int getStationToGoto();
 
     /**
      * Returns the wagons to add at the next scheduled stop.
-     *
-     * @return
      */
 
     ImmutableList<Integer> getWagonsToAdd();
 
     /**
      * Returns the value for the autoconsist flag at the next scheduled stop.
-     *
-     * @return
      */
     boolean autoConsist();
 

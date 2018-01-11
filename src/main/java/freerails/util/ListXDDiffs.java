@@ -91,8 +91,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
                     break setElementDiff;
                 }
             }
-            ListKey elementKey = new ListKey(ListKey.Type.Element, listID,
-                    index);
+            ListKey elementKey = new ListKey(ListKey.Type.Element, listID, index);
             diffs.put(elementKey, element);
         }
 
@@ -146,8 +145,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
         int last = size(dim) - 1;
         // Check that the list we are removing is empty.
         int[] array = add2Array(dim, last);
-        if (0 != size(array))
-            throw new IllegalStateException();
+        if (0 != size(array)) throw new IllegalStateException();
 
         ListKey sizeKeyB = new ListKey(ListKey.Type.EndPoint, listID, array);
         diffs.remove(sizeKeyB);
@@ -168,8 +166,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
         ListKey elementKey = new ListKey(ListKey.Type.Element, listID, i);
         boolean b = getUnderlyingSize(dim) > last;
         if (b && Utils.equal(uGet(i), element)) {
-            if (diffs.containsKey(elementKey))
-                diffs.remove(elementKey);
+            if (diffs.containsKey(elementKey)) diffs.remove(elementKey);
         } else {
             diffs.put(elementKey, element);
         }
@@ -178,8 +175,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
     private int[] checkBounds(int... i) {
         int[] dim = removeFromArray(i);
         int last = i[i.length - 1];
-        if (last >= size(dim))
-            throw new IndexOutOfBoundsException(String.valueOf(last));
+        if (last >= size(dim)) throw new IndexOutOfBoundsException(String.valueOf(last));
         return dim;
     }
 

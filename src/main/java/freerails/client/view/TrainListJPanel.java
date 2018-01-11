@@ -33,7 +33,6 @@ import freerails.world.player.FreerailsPrincipal;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
@@ -121,8 +120,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(showDetails, gridBagConstraints);
 
-        jList1
-                .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jList1.setCellRenderer(trainSummaryJPanel1);
         jList1.setDoubleBuffered(true);
         jList1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -131,8 +129,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
                 jList1KeyPressed(e);
             }
         });
-        jList1
-                .addListSelectionListener(this::jList1ValueChanged);
+        jList1.addListSelectionListener(this::jList1ValueChanged);
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -216,8 +213,7 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
         trainSummaryJPanel1.setup(modelRoot, vl, null);
 
         if (rhsjTabPane) {
-            jList1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(),
-                    KEY.TRAINS, modelRoot.getPrincipal()));
+            jList1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), KEY.TRAINS, modelRoot.getPrincipal()));
             TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, vl);
             jList1.setCellRenderer(trainView);
             trainView.setHeight(trainViewHeight);
@@ -273,12 +269,10 @@ public class TrainListJPanel extends javax.swing.JPanel implements View {
     @Override
     public void paint(Graphics g) {
         if (null != world) {
-            WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, world,
-                    principal);
+            WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, world, principal);
             int newNumberOfTrains = trains.size();
             if (newNumberOfTrains != lastNumberOfTrains) {
-                jList1.setModel(new WorldToListModelAdapter(world, KEY.TRAINS,
-                        principal));
+                jList1.setModel(new WorldToListModelAdapter(world, KEY.TRAINS, principal));
                 if (newNumberOfTrains > 0) {
                     jList1.setSelectedIndex(0);
                 }

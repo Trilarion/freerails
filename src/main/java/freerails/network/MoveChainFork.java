@@ -19,7 +19,6 @@
 package freerails.network;
 
 import freerails.move.*;
-import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.WorldListListener;
 import freerails.world.WorldMapListener;
@@ -46,7 +45,6 @@ public final class MoveChainFork implements MoveReceiver {
      *
      */
     public MoveChainFork() {
-        // do nothing
     }
 
     /**
@@ -108,13 +106,8 @@ public final class MoveChainFork implements MoveReceiver {
     }
 
     private void splitMove(Move move) {
-        if (move instanceof UndoMove) {
-            UndoMove undoneMove = (UndoMove) move;
-            move = undoneMove.getUndoneMove();
-        }
-
         if (move instanceof CompositeMove) {
-            ImmutableList<Move> moves = ((CompositeMove) move).getMoves();
+            List<Move> moves = ((CompositeMove) move).getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
                 splitMove(moves.get(i));

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.top;
+package freerails.client;
 
 import freerails.client.renderer.StationRadiusRenderer;
 import freerails.client.view.ActionRoot;
@@ -31,8 +31,6 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * This JPopupMenu displays the list of station types that are available and
@@ -62,11 +60,9 @@ public class StationTypesPopup extends JPopupMenu {
      * @return
      */
     public boolean canBuiltStationHere(Point p) {
-        stationBuildModel.getStationBuildAction().putValue(
-                StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
+        stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
 
-        FullTerrainTile tile = (FullTerrainTile) modelRoot.getWorld().getTile(p.x,
-                p.y);
+        FullTerrainTile tile = (FullTerrainTile) modelRoot.getWorld().getTile(p.x, p.y);
         return tile.hasTrack();
     }
 
@@ -75,8 +71,7 @@ public class StationTypesPopup extends JPopupMenu {
      * @param actionRoot
      * @param srr
      */
-    public void setup(ModelRoot mr, ActionRoot actionRoot,
-                      StationRadiusRenderer srr) {
+    public void setup(ModelRoot mr, ActionRoot actionRoot, StationRadiusRenderer srr) {
         modelRoot = mr;
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
@@ -88,56 +83,41 @@ public class StationTypesPopup extends JPopupMenu {
 
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 stationRadiusRenderer.hide();
-                stationBuildModel.getStationCancelAction().actionPerformed(
-                        new ActionEvent(StationTypesPopup.this,
-                                ActionEvent.ACTION_PERFORMED, ""));
+                stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(StationTypesPopup.this, ActionEvent.ACTION_PERFORMED, ""));
             }
 
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                stationRadiusRenderer.setPosition(tileToBuildStationOn.x,
-                        tileToBuildStationOn.y);
-                stationBuildModel
-                        .getStationBuildAction()
-                        .putValue(
-                                StationBuildModel.StationBuildAction.STATION_POSITION_KEY,
-                                tileToBuildStationOn);
+                stationRadiusRenderer.setPosition(tileToBuildStationOn.x, tileToBuildStationOn.y);
+                stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, tileToBuildStationOn);
             }
         };
         addPopupMenuListener(popupMenuListener);
 
-        final Action[] stationChooseActions = stationBuildModel
-                .getStationChooseActions();
+        final Action[] stationChooseActions = stationBuildModel.getStationChooseActions();
 
         for (int i = 0; i < stationChooseActions.length; i++) {
             final StationBuildMenuItem rbMenuItem = new StationBuildMenuItem();
-            final int index = i;
             rbMenuItem.configurePropertiesFromAction(stationChooseActions[i]);
             rbMenuItem.setIcon(null);
             // Show the relevant station radius when the station type's
             // menu item gets focus.
-            rbMenuItem.addChangeListener(new MyChangeListener(rbMenuItem, stationChooseActions, index));
-            rbMenuItem.addActionListener(stationBuildModel
-                    .getStationBuildAction());
+            rbMenuItem.addChangeListener(new MyChangeListener(rbMenuItem, stationChooseActions, i));
+            rbMenuItem.addActionListener(stationBuildModel.getStationBuildAction());
             add(rbMenuItem);
         }
 
-        stationBuildModel.getStationBuildAction().addPropertyChangeListener(
-                evt -> {
-                    if (evt
-                            .getPropertyName()
-                            .equals(
-                                    StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
-                        int newRadius = (Integer) evt.getNewValue();
-                        stationRadiusRenderer.setRadius(newRadius);
-                    }
+        stationBuildModel.getStationBuildAction().addPropertyChangeListener(evt -> {
+            if (evt.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
+                int newRadius = (Integer) evt.getNewValue();
+                stationRadiusRenderer.setRadius(newRadius);
+            }
 
-                    if (stationBuildModel.getStationBuildAction()
-                            .isEnabled()) {
-                        stationRadiusRenderer.show();
-                    } else {
-                        stationRadiusRenderer.hide();
-                    }
-                });
+            if (stationBuildModel.getStationBuildAction().isEnabled()) {
+                stationRadiusRenderer.show();
+            } else {
+                stationRadiusRenderer.hide();
+            }
+        });
     }
 
     /**
@@ -175,9 +155,7 @@ public class StationTypesPopup extends JPopupMenu {
 
         public void stateChanged(ChangeEvent e) {
             if (rbMenuItem.isArmed() && (rbMenuItem.isArmed() != armed)) {
-                stationChooseActions[index]
-                        .actionPerformed(new ActionEvent(rbMenuItem,
-                                ActionEvent.ACTION_PERFORMED, ""));
+                stationChooseActions[index].actionPerformed(new ActionEvent(rbMenuItem, ActionEvent.ACTION_PERFORMED, ""));
             }
 
             armed = rbMenuItem.isArmed();

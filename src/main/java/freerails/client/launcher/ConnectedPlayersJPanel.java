@@ -32,8 +32,7 @@ import java.beans.PropertyChangeListener;
 /**
  * A JPanel that shows the players currently logged in to the server.
  */
-public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
-        PropertyChangeListener {
+public class ConnectedPlayersJPanel extends javax.swing.JPanel implements PropertyChangeListener {
 
     private static final long serialVersionUID = 4049080453489111344L;
 
@@ -85,8 +84,7 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements
     void updateListOfPlayers() {
         if (null != server) {
             String[] playerNames = server.getPlayerNames();
-            playerNames = playerNames.length == 0 ? new String[]{"No players are logged on!"}
-                    : playerNames;
+            playerNames = playerNames.length == 0 ? new String[]{"No players are logged on!"} : playerNames;
             setListOfPlayers(playerNames);
         }
     }

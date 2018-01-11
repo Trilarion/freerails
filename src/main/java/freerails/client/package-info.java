@@ -16,21 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
-
 /**
- * simple class which clears caches, if something in the world happens, which
- * changes the result of the path finding algorithm
+ * Provides classes that make up the client user interface (implemented using Swing).
  */
-public class PathCacheController {
-
-    private PathCacheController() {
-    }
-
-    /**
-     *
-     */
-    public static void clearTrackCache() {
-        MoveTrainPreMove.clearCache();
-    }
-}
+package freerails.client;

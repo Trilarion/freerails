@@ -53,17 +53,13 @@ public class List3DImpl<T> implements List3D<T> {
      * @return
      */
     public static boolean equals(List3D a, List3D b) {
-        if (a.sizeD1() != b.sizeD1())
-            return false;
+        if (a.sizeD1() != b.sizeD1()) return false;
         for (int d1 = 0; d1 < a.sizeD1(); d1++) {
-            if (a.sizeD2(d1) != b.sizeD2(d1))
-                return false;
+            if (a.sizeD2(d1) != b.sizeD2(d1)) return false;
             for (int d2 = 0; d2 < a.sizeD2(d1); d2++) {
-                if (a.sizeD3(d1, d2) != b.sizeD3(d1, d2))
-                    return false;
+                if (a.sizeD3(d1, d2) != b.sizeD3(d1, d2)) return false;
                 for (int d3 = 0; d3 < a.sizeD3(d1, d2); d3++) {
-                    if (!Utils.equal(a.get(d1, d2, d3), b.get(d1, d2, d3)))
-                        return false;
+                    if (!Utils.equal(a.get(d1, d2, d3), b.get(d1, d2, d3))) return false;
                 }
             }
         }
@@ -122,8 +118,7 @@ public class List3DImpl<T> implements List3D<T> {
      */
     public void removeLastD1() {
         int last = elementData.size() - 1;
-        if (!elementData.get(last).isEmpty())
-            throw new IllegalStateException(String.valueOf(last));
+        if (!elementData.get(last).isEmpty()) throw new IllegalStateException(String.valueOf(last));
         elementData.remove(last);
     }
 
@@ -134,8 +129,7 @@ public class List3DImpl<T> implements List3D<T> {
         ArrayList<ArrayList<T>> dim2 = elementData.get(d1);
         int last = dim2.size() - 1;
         ArrayList<T> dim3 = dim2.get(last);
-        if (!dim3.isEmpty())
-            throw new IllegalStateException(String.valueOf(d1));
+        if (!dim3.isEmpty()) throw new IllegalStateException(String.valueOf(d1));
         dim2.remove(last);
     }
 

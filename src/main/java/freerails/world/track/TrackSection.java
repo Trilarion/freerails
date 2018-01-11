@@ -58,18 +58,13 @@ public class TrackSection implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         final TrackSection other = (TrackSection) obj;
         if (tileTransition == null) {
-            if (other.tileTransition != null)
-                return false;
-        } else if (!tileTransition.equals(other.tileTransition))
-            return false;
+            if (other.tileTransition != null) return false;
+        } else if (!tileTransition.equals(other.tileTransition)) return false;
         if (tile == null) {
             return other.tile == null;
         } else return tile.equals(other.tile);

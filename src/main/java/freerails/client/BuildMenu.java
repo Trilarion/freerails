@@ -16,7 +16,34 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Provides classes that make up the client user interface (implemented using Swing).
+/*
+ * BuildMenu.java
+ *
  */
-package freerails.client.top;
+package freerails.client;
+
+import freerails.client.view.ActionRoot;
+
+/**
+ * The menu that lets you select a track type.
+ */
+public final class BuildMenu extends javax.swing.JMenu {
+    private static final long serialVersionUID = 3617850859305055542L;
+
+    /**
+     *
+     */
+    public BuildMenu() {
+        super();
+    }
+
+    /**
+     * @param actionRoot
+     */
+    public void setup(ActionRoot actionRoot) {
+        removeAll();
+        setText("Build");
+
+        add(actionRoot.getBuildTrainDialogAction());
+    }
+}

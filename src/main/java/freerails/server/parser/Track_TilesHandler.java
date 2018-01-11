@@ -29,15 +29,11 @@ public interface Track_TilesHandler {
      * A container element start event handling method.
      *
      * @param meta attributes
-     * @throws org.xml.sax.SAXException
      */
-    void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta)
-    ;
+    void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta);
 
     /**
      * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
      */
     void end_CanOnlyBuildOnTheseTerrainTypes();
 
@@ -45,15 +41,11 @@ public interface Track_TilesHandler {
      * A container element start event handling method.
      *
      * @param meta attributes
-     * @throws org.xml.sax.SAXException
      */
-    void start_ListOfTrackPieceTemplates(final Attributes meta)
-    ;
+    void start_ListOfTrackPieceTemplates(final Attributes meta);
 
     /**
      * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
      */
     void end_ListOfTrackPieceTemplates();
 
@@ -61,15 +53,11 @@ public interface Track_TilesHandler {
      * A container element start event handling method.
      *
      * @param meta attributes
-     * @throws org.xml.sax.SAXException
      */
-    void start_CannotBuildOnTheseTerrainTypes(final Attributes meta)
-    ;
+    void start_CannotBuildOnTheseTerrainTypes(final Attributes meta);
 
     /**
      * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
      */
     void end_CannotBuildOnTheseTerrainTypes();
 
@@ -77,29 +65,21 @@ public interface Track_TilesHandler {
      * A container element start event handling method.
      *
      * @param meta attributes
-     * @throws org.xml.sax.SAXException
      */
     void start_TrackType(final Attributes meta);
 
     /**
      * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
      */
     void end_TrackType();
 
     /**
      * An empty element event handling method.
-     *
-     * @param meta
-     * @throws org.xml.sax.SAXException
      */
     void handle_TerrainType(final Attributes meta);
 
     /**
      * A container element end event handling method.
-     *
-     * @throws org.xml.sax.SAXException
      */
     void end_Tiles();
 
@@ -107,7 +87,6 @@ public interface Track_TilesHandler {
      * A container element start event handling method.
      *
      * @param meta attributes
-     * @throws org.xml.sax.SAXException
      */
     void start_TrackPieceTemplate(final Attributes meta);
 
@@ -115,7 +94,6 @@ public interface Track_TilesHandler {
      * A container element start event handling method.
      *
      * @param meta attributes
-     * @throws org.xml.sax.SAXException
      */
     void start_TrackSet(final Attributes meta);
 

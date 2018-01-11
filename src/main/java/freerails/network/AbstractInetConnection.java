@@ -33,12 +33,10 @@ import java.net.Socket;
 @SuppressWarnings("unused")
 abstract class AbstractInetConnection implements Runnable {
 
-    private static final Logger logger = Logger
-            .getLogger(AbstractInetConnection.class.getName());
+    private static final Logger logger = Logger.getLogger(AbstractInetConnection.class.getName());
     private final SychronizedQueue inbound = new SychronizedQueue();
     private final Connection inetConnection;
-    private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(
-            false);
+    private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(false);
     private final SynchronizedFlag status = new SynchronizedFlag(true);
     private int timeout = 1000 * 5; // 5 seconds.
 
@@ -66,8 +64,7 @@ abstract class AbstractInetConnection implements Runnable {
 
                 if (currentTime >= waitUntil) {
                     shutDownInput();
-                    throw new IOException(
-                            "Time-out while trying to disconnect.");
+                    throw new IOException("Time-out while trying to disconnect.");
                 }
 
                 try {
@@ -79,8 +76,7 @@ abstract class AbstractInetConnection implements Runnable {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug(this + "Finished shutdown!! --status="
-                    + String.valueOf(status.isOpen()));
+            logger.debug(this + "Finished shutdown!! --status=" + String.valueOf(status.isOpen()));
         }
     }
 
@@ -164,8 +160,7 @@ abstract class AbstractInetConnection implements Runnable {
         timeout = i;
     }
 
-    Serializable waitForObject() throws InterruptedException,
-            IOException {
+    Serializable waitForObject() throws InterruptedException, IOException {
         if (status.isOpen()) {
             synchronized (inbound) {
                 if (inbound.size() > 0) {

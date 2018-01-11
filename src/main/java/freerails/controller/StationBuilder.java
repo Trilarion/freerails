@@ -37,8 +37,8 @@ import java.util.NoSuchElementException;
  * Updated 12th April 2003 by Scott Bennett to include nearest city names.
  */
 public class StationBuilder {
-    private static final Logger logger = Logger.getLogger(StationBuilder.class
-            .getName());
+
+    private static final Logger logger = Logger.getLogger(StationBuilder.class.getName());
     private final MoveExecutor executor;
     private int ruleNumber;
 
@@ -70,8 +70,7 @@ public class StationBuilder {
         ReadOnlyWorld world = executor.getWorld();
 
         FreerailsPrincipal principal = executor.getPrincipal();
-        AddStationPreMove preMove = AddStationPreMove.newStation(p,
-                ruleNumber, principal);
+        AddStationPreMove preMove = AddStationPreMove.newStation(p, ruleNumber, principal);
         Move m = preMove.generateMove(world);
 
         return executor.tryDoMove(m);
@@ -86,8 +85,7 @@ public class StationBuilder {
         MoveStatus status = tryBuildingStation(p);
         if (status.ok) {
             FreerailsPrincipal principal = executor.getPrincipal();
-            AddStationPreMove preMove = AddStationPreMove.newStation(p,
-                    ruleNumber, principal);
+            AddStationPreMove preMove = AddStationPreMove.newStation(p, ruleNumber, principal);
             return executor.doPreMove(preMove);
         }
         if (logger.isDebugEnabled()) {

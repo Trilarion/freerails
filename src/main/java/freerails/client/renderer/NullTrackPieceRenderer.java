@@ -59,8 +59,7 @@ public final class NullTrackPieceRenderer implements TrackPieceRenderer {
      * @param tileSize
      */
 
-    public void drawTrackPieceIcon(int trackTemplate, Graphics g, int x, int y,
-                                   Dimension tileSize) {
+    public void drawTrackPieceIcon(int trackTemplate, Graphics g, int x, int y, Dimension tileSize) {
         // Draw nothing since there no track here.
     }
 

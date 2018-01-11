@@ -27,7 +27,7 @@ import freerails.controller.ModelRoot.Property;
 import freerails.controller.MoveExecutor;
 import freerails.controller.SimpleMoveExecutor;
 import freerails.controller.TrackMoveProducer;
-import freerails.controller.TrackMoveProducer.BuildMode;
+import freerails.controller.BuildMode;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.SKEY;
@@ -96,9 +96,7 @@ public class BuildTrackControllerTest extends TestCase {
         modelRoot.setProperty(Property.CURSOR_POSITION, from);
         Point2D to = new Point2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
-
         buildTrackController.updateUntilComplete();
-
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.

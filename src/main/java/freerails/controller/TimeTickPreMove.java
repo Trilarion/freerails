@@ -31,9 +31,6 @@ import freerails.world.ReadOnlyWorld;
 @freerails.util.InstanceControlled
 public class TimeTickPreMove implements PreMove {
 
-    /**
-     *
-     */
     public static final PreMove INSTANCE = new TimeTickPreMove();
     private static final long serialVersionUID = 3690479125647208760L;
 
@@ -42,11 +39,11 @@ public class TimeTickPreMove implements PreMove {
     }
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    public Move generateMove(ReadOnlyWorld w) {
-        return TimeTickMove.getMove(w);
+    public Move generateMove(ReadOnlyWorld world) {
+        return TimeTickMove.getMove(world);
     }
 
     protected Object readResolve() {

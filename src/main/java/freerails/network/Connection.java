@@ -50,8 +50,7 @@ class Connection {
      */
     synchronized void open() throws IOException {
         OutputStream outputStream = socket.getOutputStream();
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
-                outputStream);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
 
         // deflaterOutputStream = new DeflaterOutputStream(outputStream);
         // objectOutputStream = new ObjectOutputStream(deflaterOutputStream);

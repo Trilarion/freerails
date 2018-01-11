@@ -41,8 +41,7 @@ import java.util.LinkedList;
  * the server.
  */
 public class MovePrecommitter {
-    private static final Logger logger = Logger
-            .getLogger(MovePrecommitter.class.getName());
+    private static final Logger logger = Logger.getLogger(MovePrecommitter.class.getName());
     /**
      * List of moves and premoves that have been sent to the server and executed
      * on the local world object.
@@ -233,16 +232,12 @@ public class MovePrecommitter {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!(obj instanceof PreMoveAndMove))
-                return false;
+            if (this == obj) return true;
+            if (!(obj instanceof PreMoveAndMove)) return false;
 
             final PreMoveAndMove preMoveAndMove = (PreMoveAndMove) obj;
 
-            if (m != null ? !m.equals(preMoveAndMove.m)
-                    : preMoveAndMove.m != null)
-                return false;
+            if (m != null ? !m.equals(preMoveAndMove.m) : preMoveAndMove.m != null) return false;
             return pm != null ? pm.equals(preMoveAndMove.pm) : preMoveAndMove.pm == null;
         }
 

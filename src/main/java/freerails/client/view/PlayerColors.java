@@ -28,8 +28,7 @@ import java.awt.*;
  */
 public class PlayerColors {
 
-    private static final Color[] colors = new Color[]{Color.BLUE,
-            Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW};// Save
+    private static final Color[] colors = new Color[]{Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW};// Save
 
     private PlayerColors() {
     }

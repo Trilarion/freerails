@@ -95,8 +95,7 @@ public class WorldImpl implements World {
         ActivityAndTime last = activityLists.get(playerIndex, index, lastID);
         double duration = last.act.duration();
         double lastFinishTime = last.startTime + duration;
-        double thisStartTime = Math.max(lastFinishTime, currentTime()
-                .getTicks());
+        double thisStartTime = Math.max(lastFinishTime, currentTime().getTicks());
         ActivityAndTime ant = new ActivityAndTime(element, thisStartTime);
         activityLists.addD3(playerIndex, index, ant);
     }
@@ -118,8 +117,7 @@ public class WorldImpl implements World {
     public int addActiveEntity(FreerailsPrincipal principal, Activity element) {
         int playerIndex = principal.getWorldIndex();
         int index = activityLists.addD2(playerIndex);
-        ActivityAndTime ant = new ActivityAndTime(element, currentTime()
-                .getTicks());
+        ActivityAndTime ant = new ActivityAndTime(element, currentTime().getTicks());
         activityLists.addD3(playerIndex, index, ant);
         return index;
     }
@@ -151,8 +149,7 @@ public class WorldImpl implements World {
         TransactionRecord tats = new TransactionRecord(t, time);
         bankAccounts.addD2(playerIndex, tats);
         Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = new Money(t.value().getAmount()
-                + oldBalance.getAmount());
+        Money newBalance = new Money(t.value().getAmount() + oldBalance.getAmount());
         currentBalance.set(playerIndex, newBalance);
     }
 
@@ -195,12 +192,10 @@ public class WorldImpl implements World {
 
             // Compare players
             int numberOfPlayers = getNumberOfPlayers();
-            if (numberOfPlayers != test.getNumberOfPlayers())
-                return false;
+            if (numberOfPlayers != test.getNumberOfPlayers()) return false;
 
             for (int i = 0; i < numberOfPlayers; i++) {
-                if (!getPlayer(i).equals(test.getPlayer(i)))
-                    return false;
+                if (!getPlayer(i).equals(test.getPlayer(i))) return false;
             }
 
             // Compare lists
@@ -221,8 +216,7 @@ public class WorldImpl implements World {
             }
 
             // Compare maps
-            if ((getMapWidth() != test.getMapWidth())
-                    || (getMapHeight() != test.getMapHeight())) {
+            if ((getMapWidth() != test.getMapWidth()) || (getMapHeight() != test.getMapHeight())) {
                 return false;
             }
             for (int x = 0; x < getMapWidth(); x++) {
@@ -348,8 +342,7 @@ public class WorldImpl implements World {
      * @param i
      * @return
      */
-    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(
-            FreerailsPrincipal p, int i) {
+    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal p, int i) {
         int playerIndex = p.getWorldIndex();
         TransactionRecord tats = bankAccounts.get(playerIndex, i);
         return new Pair<>(tats.getTransaction(), tats.getTimestamp());
@@ -400,8 +393,7 @@ public class WorldImpl implements World {
      */
     public void removeLastActivity(FreerailsPrincipal principal, int index) {
         int playerIndex = principal.getWorldIndex();
-        if (activityLists.sizeD3(playerIndex, index) < 2)
-            throw new IllegalStateException();
+        if (activityLists.sizeD3(playerIndex, index) < 2) throw new IllegalStateException();
 
         activityLists.removeLastD3(playerIndex, index);
     }
@@ -416,8 +408,7 @@ public class WorldImpl implements World {
     public Player removeLastPlayer() {
 
         int playerID = bankAccounts.removeLastD1();
-        while (lists.sizeD2(playerID) > 0)
-            lists.removeLastD2(playerID);
+        while (lists.sizeD2(playerID) > 0) lists.removeLastD2(playerID);
 
         lists.removeLastD1();
         currentBalance.removeLast();
@@ -430,14 +421,12 @@ public class WorldImpl implements World {
         int playerIndex = p.getWorldIndex();
         TransactionRecord tats = bankAccounts.removeLastD2(playerIndex);
         Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = new Money(oldBalance.getAmount()
-                - tats.getTransaction().value().getAmount());
+        Money newBalance = new Money(oldBalance.getAmount() - tats.getTransaction().value().getAmount());
         currentBalance.set(playerIndex, newBalance);
         return tats.getTransaction();
     }
 
-    public void set(FreerailsPrincipal principal, KEY key, int index,
-                    Serializable element) {
+    public void set(FreerailsPrincipal principal, KEY key, int index, Serializable element) {
         int playerIndex = principal.getWorldIndex();
         lists.set(playerIndex, key.getKeyID(), index, element);
     }
@@ -529,15 +518,12 @@ public class WorldImpl implements World {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!(obj instanceof ActivityAndTime))
-                return false;
+            if (this == obj) return true;
+            if (!(obj instanceof ActivityAndTime)) return false;
 
             final ActivityAndTime activityAndTime = (ActivityAndTime) obj;
 
-            if (!act.equals(activityAndTime.act))
-                return false;
+            if (!act.equals(activityAndTime.act)) return false;
             return !(startTime != activityAndTime.startTime);
         }
 

@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.controller.*;
-import freerails.controller.ClientControlInterface.ClientProperty;
+import freerails.controller.ClientProperty;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -72,11 +72,11 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             // Check the client gets its properties updated.
             client.update();
             assertNotNull(client
-                    .getProperty(ClientControlInterface.ClientProperty.CONNECTED_CLIENTS));
+                    .getProperty(ClientProperty.CONNECTED_CLIENTS));
             assertNotNull(client
-                    .getProperty(ClientControlInterface.ClientProperty.MAPS_AVAILABLE));
+                    .getProperty(ClientProperty.MAPS_AVAILABLE));
             assertNotNull(client
-                    .getProperty(ClientControlInterface.ClientProperty.SAVED_GAMES));
+                    .getProperty(ClientProperty.SAVED_GAMES));
 
             /* Test 2 : a client that has already logged on. */
             FreerailsClient client1 = new FreerailsClient();

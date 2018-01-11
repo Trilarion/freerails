@@ -33,10 +33,9 @@ import java.util.LinkedList;
  * is required, by adding perhaps "Junction" or "Siding" to the name.
  */
 public class VerifyStationName {
+
     private final ReadOnlyWorld w;
-
     private final String nameToVerify;
-
     private final LinkedList<String> stationAlternatives;
 
     /**
@@ -107,7 +106,6 @@ public class VerifyStationName {
                 }
             }
         }
-
         // no stations exist with that name
         return false;
     }

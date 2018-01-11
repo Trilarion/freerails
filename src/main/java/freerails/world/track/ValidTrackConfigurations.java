@@ -18,8 +18,6 @@
 
 package freerails.world.track;
 
-import freerails.util.ImHashSet;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -29,23 +27,22 @@ import java.util.*;
 public final class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
-    private final ImHashSet<TrackConfiguration> legalConfigs;
+    private final Set<TrackConfiguration> legalConfigs;
     private final int maximumConsecutivePieces;
 
     /**
      * @param max
      * @param legalTrackTemplatesArrayList
      */
-    public ValidTrackConfigurations(int max,
-                                    Iterable<String> legalTrackTemplatesArrayList) {
+    public ValidTrackConfigurations(int max, Iterable<String> legalTrackTemplatesArrayList) {
         maximumConsecutivePieces = max;
 
-        HashSet<TrackConfiguration> temp = new HashSet<>();
+        Set<TrackConfiguration> temp = new HashSet<>();
         // Iterate over the track templates.
         for (String trackTemplateString : legalTrackTemplatesArrayList) {
             processTemplate(trackTemplateString, temp);
         }
-        legalConfigs = new ImHashSet<>(temp);
+        legalConfigs = Collections.unmodifiableSet(temp);
     }
 
     /**
@@ -54,29 +51,25 @@ public final class ValidTrackConfigurations implements Serializable {
      */
     public ValidTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
         maximumConsecutivePieces = max;
-        HashSet<TrackConfiguration> temp = new HashSet<>();
+        Set<TrackConfiguration> temp = new HashSet<>();
         for (String aLegalTrackTemplatesArray : legalTrackTemplatesArray) {
             processTemplate(aLegalTrackTemplatesArray, temp);
         }
-        legalConfigs = new ImHashSet<>(temp);
+        legalConfigs = Collections.unmodifiableSet(temp);
     }
 
-    private static void processTemplate(String trackTemplateString,
-                                        Collection<TrackConfiguration> temp) {
+    private static void processTemplate(String trackTemplateString, Collection<TrackConfiguration> temp) {
         int trackTemplate = Integer.parseInt(trackTemplateString, 2);
 
         // Check for invalid parameters.
         if ((trackTemplate > 511) || (trackTemplate < 0)) {
-            throw new IllegalArgumentException("trackTemplate = "
-                    + trackTemplate + ", it should be in the range 0-511");
+            throw new IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
         }
 
-        int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer
-                .getRotations(trackTemplate);
+        int[] rotationsOfTrackTemplate = EightRotationsOfTrackPieceProducer.getRotations(trackTemplate);
 
         for (int i : rotationsOfTrackTemplate) {
-            TrackConfiguration trackConfiguration = TrackConfiguration
-                    .from9bitTemplate(i);
+            TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(i);
 
             if (!temp.contains(trackConfiguration)) {
                 temp.add(trackConfiguration);
@@ -89,8 +82,7 @@ public final class ValidTrackConfigurations implements Serializable {
         if (obj instanceof ValidTrackConfigurations) {
             ValidTrackConfigurations test = (ValidTrackConfigurations) obj;
 
-            return maximumConsecutivePieces == test.maximumConsecutivePieces
-                    && legalConfigs.equals(test.legalConfigs);
+            return maximumConsecutivePieces == test.maximumConsecutivePieces && legalConfigs.equals(test.legalConfigs);
         }
         return false;
     }
@@ -106,8 +98,7 @@ public final class ValidTrackConfigurations implements Serializable {
     public int hashCode() {
         int result;
         result = maximumConsecutivePieces;
-        result = 29 * result
-                + (legalConfigs != null ? legalConfigs.hashCode() : 0);
+        result = 29 * result + (legalConfigs != null ? legalConfigs.hashCode() : 0);
 
         return result;
     }
@@ -116,8 +107,7 @@ public final class ValidTrackConfigurations implements Serializable {
      * @param trackConfiguration
      * @return
      */
-    public boolean trackConfigurationIsLegal(
-            TrackConfiguration trackConfiguration) {
+    public boolean trackConfigurationIsLegal(TrackConfiguration trackConfiguration) {
         return legalConfigs.contains(trackConfiguration);
     }
 }

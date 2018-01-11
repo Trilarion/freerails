@@ -53,12 +53,9 @@ public final class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @param c
-     * @param v
      * @return the superposition of two track templates
      */
-    public static TrackConfiguration add(TrackConfigurations c,
-                                         TrackConfigurations v) {
+    public static TrackConfiguration add(TrackConfigurations c, TrackConfigurations v) {
         /*
          * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
          * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate | (1 <<
@@ -96,8 +93,7 @@ public final class TrackConfiguration implements TrackConfigurations {
     }
 
     private static List<TrackConfiguration> setupConfigurations() {
-        List<TrackConfiguration> configurations = new ArrayList<>(
-                512);
+        List<TrackConfiguration> configurations = new ArrayList<>(512);
 
         for (int i = 0; i < 512; i++) {
             configurations.add(i, new TrackConfiguration(i));
@@ -121,13 +117,10 @@ public final class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @param c
-     * @param v
      * @return the TrackConfiguration representing the track section c minus the
      * track sections represented by v.
      */
-    public static TrackConfiguration subtract(TrackConfigurations c,
-                                              TrackConfigurations v) {
+    public static TrackConfiguration subtract(TrackConfigurations c, TrackConfigurations v) {
         /*
          * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
          * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate ^ (1 <<
@@ -178,8 +171,6 @@ public final class TrackConfiguration implements TrackConfigurations {
     /**
      * Returns the length of track used in this configuration. Used to calculate
      * the cost of building track.
-     *
-     * @return
      */
     public int getLength() {
         return length;
@@ -194,10 +185,8 @@ public final class TrackConfiguration implements TrackConfigurations {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
         final TrackConfiguration that = (TrackConfiguration) obj;
 

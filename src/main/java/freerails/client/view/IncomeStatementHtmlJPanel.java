@@ -44,8 +44,7 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
     public IncomeStatementHtmlJPanel() {
         super();
 
-        URL url = IncomeStatementHtmlJPanel.class
-                .getResource(ClientConfig.VIEW_INCOME_STATEMENT);
+        URL url = IncomeStatementHtmlJPanel.class.getResource(ClientConfig.VIEW_INCOME_STATEMENT);
         template = loadText(url);
     }
 
@@ -64,11 +63,9 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
     private void updateHtml() {
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(
-                world, playerPrincipal);
+        IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(world, playerPrincipal);
         balanceSheetGenerator.calculateAll();
-        String populatedTemplate = populateTokens(template,
-                balanceSheetGenerator);
+        String populatedTemplate = populateTokens(template, balanceSheetGenerator);
         setHtml(populatedTemplate);
     }
 
@@ -77,8 +74,7 @@ public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
         /* Check to see if the text needs updating before painting. */
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world
-                .getNumberOfTransactions(playerPrincipal);
+        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

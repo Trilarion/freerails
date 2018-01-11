@@ -84,11 +84,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (obj instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) obj;
 
-            return test.cargoType == cargoType
-                    && test.sourceX == sourceX
-                    && test.sourceY == sourceY
-                    && test.creationTime == creationTime
-                    && test.stationOfOrigin == stationOfOrigin;
+            return test.cargoType == cargoType && test.sourceX == sourceX && test.sourceY == sourceY && test.creationTime == creationTime && test.stationOfOrigin == stationOfOrigin;
         }
         return false;
     }
@@ -100,23 +96,17 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         result = 37 * result + sourceX;
         result = 37 * result + sourceY;
         result = 37 * result + stationOfOrigin;
-        result = 37 * result
-                + (int) (creationTime ^ (creationTime >>> 32));
+        result = 37 * result + (int) (creationTime ^ (creationTime >>> 32));
 
         return result;
     }
 
     public int compareTo(CargoBatch o) {
-        if (creationTime != o.creationTime)
-            return (int) (creationTime - o.creationTime);
-        if (cargoType != o.cargoType)
-            return cargoType - o.cargoType;
-        if (stationOfOrigin != o.stationOfOrigin)
-            return stationOfOrigin - o.stationOfOrigin;
-        if (sourceX != o.sourceX)
-            return sourceX - o.sourceX;
-        if (sourceY != o.sourceY)
-            return sourceY - o.sourceY;
+        if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
+        if (cargoType != o.cargoType) return cargoType - o.cargoType;
+        if (stationOfOrigin != o.stationOfOrigin) return stationOfOrigin - o.stationOfOrigin;
+        if (sourceX != o.sourceX) return sourceX - o.sourceX;
+        if (sourceY != o.sourceY) return sourceY - o.sourceY;
         return 0;
     }
 }

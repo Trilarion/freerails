@@ -51,25 +51,19 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         x = p.x;
         y = p.y;
         before = (FullTerrainTile) w.getTile(x, y);
-        after = FullTerrainTile.getInstance(terrainTypeAfter, before
-                .getTrackPiece());
+        after = FullTerrainTile.getInstance(terrainTypeAfter, before.getTrackPiece());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof ChangeTileMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof ChangeTileMove)) return false;
 
         final ChangeTileMove changeTileMove = (ChangeTileMove) obj;
 
-        if (x != changeTileMove.x)
-            return false;
-        if (y != changeTileMove.y)
-            return false;
-        if (!after.equals(changeTileMove.after))
-            return false;
+        if (x != changeTileMove.x) return false;
+        if (y != changeTileMove.y) return false;
+        if (!after.equals(changeTileMove.after)) return false;
         return before.equals(changeTileMove.before);
     }
 
@@ -85,8 +79,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         FullTerrainTile actual = (FullTerrainTile) world.getTile(x, y);
-        TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, actual
-                .getTerrainTypeID());
+        TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, actual.getTerrainTypeID());
 
         if (type.getCategory() != TerrainCategory.Country) {
             return MoveStatus.moveFailed("Can only build on clear terrain.");
@@ -95,8 +88,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         if (actual.equals(before)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed("Expected " + before + " but found "
-                + actual);
+        return MoveStatus.moveFailed("Expected " + before + " but found " + actual);
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
@@ -105,8 +97,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed("Expected " + after + " but found "
-                + actual);
+        return MoveStatus.moveFailed("Expected " + after + " but found " + actual);
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {

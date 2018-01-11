@@ -72,8 +72,7 @@ public class MutableSchedule implements Schedule {
             ordersArray[i] = orders.get(i);
         }
 
-        return new ImmutableSchedule(ordersArray, nextScheduledOrder,
-                hasPriorityOrders);
+        return new ImmutableSchedule(ordersArray, nextScheduledOrder, hasPriorityOrders);
     }
 
     /**
@@ -93,8 +92,6 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Removes the order at the specified position.
-     *
-     * @param orderNumber
      */
     public void removeOrder(int orderNumber) {
         if (PRIORITY_ORDERS == orderNumber && hasPriorityOrders) {
@@ -132,9 +129,6 @@ public class MutableSchedule implements Schedule {
     /**
      * Inserts an order at the specified position. Note you must call
      * setPriorityOrders() to set the priority orders.
-     *
-     * @param orderNumber
-     * @param order
      */
     public void addOrder(int orderNumber, TrainOrdersModel order) {
         orders.add(orderNumber, order);
@@ -185,8 +179,6 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Returns the number of the order the train is currently carry out.
-     *
-     * @return
      */
     public int getOrderToGoto() {
         return nextScheduledOrder;
@@ -206,8 +198,6 @@ public class MutableSchedule implements Schedule {
     /**
      * Returns the station number of the next station the train is scheduled to
      * stop at.
-     *
-     * @return
      */
     public int getStationToGoto() {
         return orders.get(nextScheduledOrder).getStationID();
@@ -215,8 +205,6 @@ public class MutableSchedule implements Schedule {
 
     /**
      * Returns the wagons to add at the next scheduled stop.
-     *
-     * @return
      */
     public ImmutableList<Integer> getWagonsToAdd() {
         return orders.get(nextScheduledOrder).getConsist();
@@ -322,8 +310,7 @@ public class MutableSchedule implements Schedule {
      * @return
      */
     public boolean canAddOrder() {
-        int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1
-                : MAXIMUM_NUMBER_OF_ORDER;
+        int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1 : MAXIMUM_NUMBER_OF_ORDER;
 
         return max > getNumOrders();
     }

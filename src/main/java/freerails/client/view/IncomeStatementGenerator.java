@@ -19,7 +19,9 @@
 package freerails.client.view;
 
 import freerails.util.Pair;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Money;
@@ -198,8 +200,7 @@ public class IncomeStatementGenerator {
 
         int numberOfTransactions = w.getNumberOfTransactions(this.principal);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = w
-                    .getTransactionAndTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = w.getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
             if (t instanceof CargoDeliveryMoneyTransaction) {
@@ -287,46 +288,27 @@ public class IncomeStatementGenerator {
         this.stationMaintenanceTotal = new Money(stationMaintenanceTotal);
         this.stationMaintenanceYtd = new Money(stationMaintenanceYtd);
 
-        long profit = this.mailTotal.getAmount()
-                + this.passengersTotal.getAmount()
-                + this.fastFreightTotal.getAmount()
-                + this.slowFreightTotal.getAmount()
-                + this.bulkFreightTotal.getAmount()
-                + this.interestTotal.getAmount()
-                + this.trainMaintenanceTotal.getAmount()
-                + this.trackMaintenanceTotal.getAmount()
-                + this.stationMaintenanceTotal.getAmount();
+        long profit = this.mailTotal.getAmount() + this.passengersTotal.getAmount() + this.fastFreightTotal.getAmount() + this.slowFreightTotal.getAmount() + this.bulkFreightTotal.getAmount() + this.interestTotal.getAmount() + this.trainMaintenanceTotal.getAmount() + this.trackMaintenanceTotal.getAmount() + this.stationMaintenanceTotal.getAmount();
 
         profitTotal = new Money(profit);
 
-        profit = this.mailYtd.getAmount() + this.passengersYtd.getAmount()
-                + this.fastFreightYtd.getAmount()
-                + this.slowFreightYtd.getAmount()
-                + this.bulkFreightYtd.getAmount()
-                + this.interestYtd.getAmount()
-                + this.trainMaintenanceYtd.getAmount()
-                + this.trackMaintenanceYtd.getAmount()
-                + this.stationMaintenanceYtd.getAmount();
+        profit = this.mailYtd.getAmount() + this.passengersYtd.getAmount() + this.fastFreightYtd.getAmount() + this.slowFreightYtd.getAmount() + this.bulkFreightYtd.getAmount() + this.interestYtd.getAmount() + this.trainMaintenanceYtd.getAmount() + this.trackMaintenanceYtd.getAmount() + this.stationMaintenanceYtd.getAmount();
 
         profitYtd = new Money(profit);
     }
 
     /**
      * returns the revenue for all trains with id from 1 to money.length-1
-     *
-     * @param money
      */
     public void calTrainRevenue(Money[] money) {
         long[] amount = new long[money.length];
 
         int numberOfTransactions = w.getNumberOfTransactions(this.principal);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = w
-                    .getTransactionAndTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = w.getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (t instanceof CargoDeliveryMoneyTransaction
-                    && cal.getYear(time.getTicks()) >= this.startyear) {
+            if (t instanceof CargoDeliveryMoneyTransaction && cal.getYear(time.getTicks()) >= this.startyear) {
                 CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) t;
                 int trainId = dcr.getTrainId();
                 if (trainId < money.length) {

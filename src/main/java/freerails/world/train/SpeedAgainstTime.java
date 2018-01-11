@@ -38,7 +38,6 @@ public interface SpeedAgainstTime extends Serializable {
      * <li>s = getDistance() if t = getTime()</li>
      * </ol>
      *
-     * @param time
      * @return distance
      * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
@@ -54,22 +53,17 @@ public interface SpeedAgainstTime extends Serializable {
      * <li>t = getTime() if s = getDistance()</li>
      * </ol>
      *
-     * @param distance
      * @return time
      * @throws IllegalArgumentException iff s &lt; 0 or s &gt; getDistance()
      */
     double calculateTime(double distance);
 
     /**
-     * @param time
-     * @return
      * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
     double calcVelocity(double time);
 
     /**
-     * @param time
-     * @return
      * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
      */
     double calcAcceleration(double time);

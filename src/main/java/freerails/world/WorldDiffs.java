@@ -88,28 +88,19 @@ public class WorldDiffs extends WorldImpl {
         // Bit of a hack but it's not clear there is a better way, LL
         underlying = (WorldImpl) row;
 
-        activityLists = new List3DDiff<>(listDiff,
-                underlying.activityLists, LISTID.ACTIVITY_LISTS);
-        bankAccounts = new List2DDiff<>(listDiff,
-                underlying.bankAccounts, LISTID.BANK_ACCOUNTS);
-        currentBalance = new List1DDiff<>(listDiff,
-                underlying.currentBalance, LISTID.CURRENT_BALANCE);
-        items = new List1DDiff<>(listDiff,
-                underlying.items, LISTID.ITEMS);
-        lists = new List3DDiff<>(listDiff,
-                underlying.lists, LISTID.LISTS);
-        players = new List1DDiff<>(listDiff, underlying.players,
-                LISTID.PLAYERS);
-        sharedLists = new List2DDiff<>(listDiff,
-                underlying.sharedLists, LISTID.SHARED_LISTS);
+        activityLists = new List3DDiff<>(listDiff, underlying.activityLists, LISTID.ACTIVITY_LISTS);
+        bankAccounts = new List2DDiff<>(listDiff, underlying.bankAccounts, LISTID.BANK_ACCOUNTS);
+        currentBalance = new List1DDiff<>(listDiff, underlying.currentBalance, LISTID.CURRENT_BALANCE);
+        items = new List1DDiff<>(listDiff, underlying.items, LISTID.ITEMS);
+        lists = new List3DDiff<>(listDiff, underlying.lists, LISTID.LISTS);
+        players = new List1DDiff<>(listDiff, underlying.players, LISTID.PLAYERS);
+        sharedLists = new List2DDiff<>(listDiff, underlying.sharedLists, LISTID.SHARED_LISTS);
         time = underlying.time;
     }
 
     /**
      * The iterator returns instances of java.awt.Point2D that store the
      * coordinates of tiles that are different to the underlying world object.
-     *
-     * @return
      */
     public Iterator<Point2D> getMapDiffs() {
         return mapDiff.keySet().iterator();
@@ -152,8 +143,6 @@ public class WorldDiffs extends WorldImpl {
 
     /**
      * Used by unit tests.
-     *
-     * @return
      */
     public int numberOfMapDifferences() {
         return mapDiff.size();
@@ -161,8 +150,6 @@ public class WorldDiffs extends WorldImpl {
 
     /**
      * Used by unit tests.
-     *
-     * @return
      */
     public int listDiffs() {
         return listDiff.size();

@@ -31,16 +31,13 @@ import java.awt.image.VolatileImage;
  * rectangle of the map. Code that is independent of how tiles are represented,
  * e.g. whether they are square or isometric, should go here.
  */
-public abstract class BufferedTiledBackgroundRenderer implements
-        MapLayerRenderer {
+public abstract class BufferedTiledBackgroundRenderer implements MapLayerRenderer {
     /**
      * This is used to create images that are compatible with the default
      * graphics configuration. Such images can be drawn to the screen quickly
      * since no conversion is needed.
      */
-    protected final GraphicsConfiguration defaultConfig = GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
+    protected final GraphicsConfiguration defaultConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     /**
      * The bounds and location of the map region that is stored in the offscreen
      * Image backgroundBuffer.
@@ -67,32 +64,27 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * Updates the backbuffer as necessary, then draws it on to the Graphics
      * object passed.
      *
-     * @param g      Once it has been updated, the backbuffer is drawn onto this
-     *                            Graphics object.
+     * @param g           Once it has been updated, the backbuffer is drawn onto this
+     *                    Graphics object.
      * @param visibleRect The region of the map that the backbuffer must be updated to
-     *                            display.
+     *                    display.
      */
-    public void paintRect(Graphics g,
-                          Rectangle visibleRect) {
+    public void paintRect(Graphics g, Rectangle visibleRect) {
         boolean contentsLost;
         do {
             /*
              * If this is the first call to the paint method or the component
              * has just been resized, we need to create a new backgroundBuffer.
              */
-            if ((backgroundBuffer == null)
-                    || (visibleRect.height != bufferRect.height)
-                    || (visibleRect.width != bufferRect.width)) {
-                setbackgroundBuffer(visibleRect.width,
-                        visibleRect.height);
+            if ((backgroundBuffer == null) || (visibleRect.height != bufferRect.height) || (visibleRect.width != bufferRect.width)) {
+                setbackgroundBuffer(visibleRect.width, visibleRect.height);
             }
 
             // Test if image is lost and restore it.
             int valCode = backgroundBuffer.validate(defaultConfig);
 
             if (valCode == VolatileImage.IMAGE_INCOMPATIBLE) {
-                setbackgroundBuffer(visibleRect.width,
-                        visibleRect.height);
+                setbackgroundBuffer(visibleRect.width, visibleRect.height);
             } else if (valCode == VolatileImage.IMAGE_RESTORED) {
                 refreshBackground();
             }
@@ -100,24 +92,18 @@ public abstract class BufferedTiledBackgroundRenderer implements
             /*
              * Has the VisibleRectangle moved since the last paint?
              */
-            if ((bufferRect.x != visibleRect.x)
-                    || (bufferRect.y != visibleRect.y)) {
+            if ((bufferRect.x != visibleRect.x) || (bufferRect.y != visibleRect.y)) {
                 int dx = bufferRect.x - visibleRect.x;
                 int dy = bufferRect.y - visibleRect.y;
                 scrollbackgroundBuffer(dx, dy);
                 bufferRect.setBounds(visibleRect);
             }
 
-            if ((bufferRect.width != visibleRect.width)
-                    && (bufferRect.height != visibleRect.height)) {
-                paintBufferRectangle(visibleRect.x - bufferRect.x,
-                        visibleRect.y - bufferRect.y,
-                        visibleRect.width,
-                        visibleRect.height);
+            if ((bufferRect.width != visibleRect.width) && (bufferRect.height != visibleRect.height)) {
+                paintBufferRectangle(visibleRect.x - bufferRect.x, visibleRect.y - bufferRect.y, visibleRect.width, visibleRect.height);
             }
 
-            g.drawImage(backgroundBuffer,
-                    visibleRect.x, visibleRect.y, null);
+            g.drawImage(backgroundBuffer, visibleRect.x, visibleRect.y, null);
             bufferRect.setBounds(visibleRect);
             contentsLost = backgroundBuffer.contentsLost();
         } while (contentsLost);
@@ -167,8 +153,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
      * @param width
      * @param height
      */
-    protected abstract void paintBufferRectangle(int x, int y, int width,
-                                                 int height);
+    protected abstract void paintBufferRectangle(int x, int y, int width, int height);
 
     private void scrollbackgroundBuffer(int dx, int dy) {
         int copyWidth = bufferRect.width;
@@ -203,8 +188,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
             } else {
                 bg.setClip(bufferRect.width + dx, 0, -dx, bufferRect.height);
                 bg.clearRect(bufferRect.width + dx, 0, -dx, bufferRect.height);
-                paintBufferRectangle(bufferRect.width + dx, 0, -dx,
-                        bufferRect.height);
+                paintBufferRectangle(bufferRect.width + dx, 0, -dx, bufferRect.height);
             }
         }
 
@@ -216,8 +200,7 @@ public abstract class BufferedTiledBackgroundRenderer implements
             } else {
                 bg.setClip(0, bufferRect.height + dy, bufferRect.width, -dy);
                 bg.clearRect(0, bufferRect.height + dy, bufferRect.width, -dy);
-                paintBufferRectangle(0, bufferRect.height + dy,
-                        bufferRect.width, -dy);
+                paintBufferRectangle(0, bufferRect.height + dy, bufferRect.width, -dy);
             }
         }
 

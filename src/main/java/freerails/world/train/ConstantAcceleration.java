@@ -26,8 +26,7 @@ import java.io.Serializable;
 /**
  *
  */
-public strictfp class ConstantAcceleration implements Serializable,
-        SpeedAgainstTime {
+public strictfp class ConstantAcceleration implements Serializable, SpeedAgainstTime {
 
     /**
      *
@@ -59,8 +58,7 @@ public strictfp class ConstantAcceleration implements Serializable,
         // Note, Utils.solveQuadratic throws an exception if a == 0
         double c = -s;
         double disc = u * u - 4 * a * 0.5d * c;
-        if (disc < 0)
-            throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
+        if (disc < 0) throw new IllegalArgumentException("(b * b - 4 * a * c) < 0");
 
         return (-u + StrictMath.sqrt(disc)) / (2 * a * 0.5d);
     }
@@ -77,8 +75,7 @@ public strictfp class ConstantAcceleration implements Serializable,
     }
 
     public double calculateDistance(double time) {
-        if (time == finalT)
-            return finalS;
+        if (time == finalT) return finalS;
         validateT(time);
         double ds = u * time + a * time * time / 2;
         ds = Math.min(ds, finalS);
@@ -86,11 +83,9 @@ public strictfp class ConstantAcceleration implements Serializable,
     }
 
     public double calculateTime(double distance) {
-        if (distance == finalS)
-            return finalT;
+        if (distance == finalS) return finalT;
         if (distance < 0 || distance > finalS)
-            throw new IllegalArgumentException(distance + " < 0 || " + distance + " > "
-                    + finalS);
+            throw new IllegalArgumentException(distance + " < 0 || " + distance + " > " + finalS);
         double returnValue = calcT(u, a, distance);
         returnValue = Math.min(returnValue, finalT);
         return returnValue;
@@ -103,17 +98,13 @@ public strictfp class ConstantAcceleration implements Serializable,
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof ConstantAcceleration))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof ConstantAcceleration)) return false;
 
         final ConstantAcceleration constantAcceleration = (ConstantAcceleration) obj;
 
-        if (a != constantAcceleration.a)
-            return false;
-        if (finalT != constantAcceleration.finalT)
-            return false;
+        if (a != constantAcceleration.a) return false;
+        if (finalT != constantAcceleration.finalT) return false;
         return !(u != constantAcceleration.u);
     }
 
@@ -144,9 +135,7 @@ public strictfp class ConstantAcceleration implements Serializable,
     }
 
     private void validateT(double t) {
-        if (t < 0 || t > finalT)
-            throw new IllegalArgumentException("(" + t + " < 0 || " + t + " > "
-                    + finalT + ')');
+        if (t < 0 || t > finalT) throw new IllegalArgumentException("(" + t + " < 0 || " + t + " > " + finalT + ')');
 
     }
 

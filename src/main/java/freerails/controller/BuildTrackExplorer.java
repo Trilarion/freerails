@@ -22,14 +22,14 @@
 package freerails.controller;
 
 import freerails.util.Point2D;
-import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
+import freerails.world.train.PositionOnTrack;
 
 import java.util.NoSuchElementException;
 
@@ -38,12 +38,10 @@ import java.util.NoSuchElementException;
  * are encoded PositionOnTrack objects.
  */
 public class BuildTrackExplorer implements GraphExplorer {
-    private static final TrackConfiguration TILE_CENTER = TrackConfiguration
-            .getFlatInstance("000010000");
-    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0,
-            0, TileTransition.NORTH);
-    private final PositionOnTrack currentPosition = PositionOnTrack
-            .createComingFrom(0, 0, TileTransition.NORTH);
+
+    private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
+    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
+    private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principle;
     private boolean beforeFirst = true;
@@ -64,8 +62,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param principle
      * @param start
      */
-    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle,
-                              Point2D start) {
+    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle, Point2D start) {
         world = w;
         this.principle = principle;
         PositionOnTrack pos;
@@ -73,8 +70,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         if (null == start) {
             pos = new PositionOnTrack();
         } else {
-            pos = PositionOnTrack
-                    .createComingFrom(start.x, start.y, TileTransition.NORTH);
+            pos = PositionOnTrack.createComingFrom(start.x, start.y, TileTransition.NORTH);
         }
 
         currentPosition.setValuesFromInt(pos.toInt());
@@ -105,9 +101,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
         int directionWeCameFromMinus = (directionWeCameFrom + 7) % 8;
 
-        if (directionInt == directionWeCameFrom
-                || directionInt == directionWeCameFromPlus
-                || directionInt == directionWeCameFromMinus) {
+        if (directionInt == directionWeCameFrom || directionInt == directionWeCameFromPlus || directionInt == directionWeCameFromMinus) {
             return false;
         }
 
@@ -126,8 +120,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TrackRule rule4lastTile;
 
         // Determine the track rule for the next tile.
-        final FullTerrainTile nextTile = (FullTerrainTile) world
-                .getTile(newX, newY);
+        final FullTerrainTile nextTile = (FullTerrainTile) world.getTile(newX, newY);
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
@@ -148,14 +141,11 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false; // We can't build track on the tile.
         }
         // Determine the track rule for the current tile.
-        FullTerrainTile currentTile = (FullTerrainTile) world.getTile(currentX,
-                currentY);
+        FullTerrainTile currentTile = (FullTerrainTile) world.getTile(currentX, currentY);
 
         // Check for illegal track configurations.
-        final TrackConfiguration trackAlreadyPresent1 = currentTile
-                .getTrackPiece().getTrackConfiguration();
-        final TrackConfiguration trackAlreadyPresent2 = nextTile
-                .getTrackPiece().getTrackConfiguration();
+        final TrackConfiguration trackAlreadyPresent1 = currentTile.getTrackPiece().getTrackConfiguration();
+        final TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackPiece().getTrackConfiguration();
         TrackConfiguration fromConfig = trackAlreadyPresent1;
 
         fromConfig = TrackConfiguration.add(fromConfig, opposite2current);
@@ -175,12 +165,9 @@ public class BuildTrackExplorer implements GraphExplorer {
             // We did a bounds check above.
             assert (world.boundsContain(currentX, y2check));
 
-            FullTerrainTile tile2Check = (FullTerrainTile) world.getTile(currentX,
-                    y2check);
-            TrackConfiguration config2check = tile2Check.getTrackPiece()
-                    .getTrackConfiguration();
-            TileTransition vector2check = TileTransition.getInstance(directionOfNextTile.deltaX,
-                    -directionOfNextTile.deltaY);
+            FullTerrainTile tile2Check = (FullTerrainTile) world.getTile(currentX, y2check);
+            TrackConfiguration config2check = tile2Check.getTrackPiece().getTrackConfiguration();
+            TileTransition vector2check = TileTransition.getInstance(directionOfNextTile.deltaX, -directionOfNextTile.deltaY);
 
             if (config2check.contains(vector2check)) {
                 // then we have a diagonal conflict.
@@ -229,8 +216,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * Calculates a cost figure incorporating the distance and the cost of any
      * new track.
-     *
-     * @return
      */
     public int getEdgeCost() {
         if (beforeFirst) {
@@ -243,10 +228,8 @@ public class BuildTrackExplorer implements GraphExplorer {
         int cost = (int) Math.round(DISTANCE_COST * length);
 
         if (!usingExistingTrack) {
-            int[] x = {currentPosition.getX(),
-                    currentPosition.getX() + edgeDirection.deltaX};
-            int[] y = {currentPosition.getY(),
-                    currentPosition.getY() + edgeDirection.deltaY};
+            int[] x = {currentPosition.getX(), currentPosition.getX() + edgeDirection.deltaX};
+            int[] y = {currentPosition.getY(), currentPosition.getY() + edgeDirection.deltaY};
             TrackRule ruleA = getAppropriateTrackRule(x[0], y[0]);
             TrackRule ruleB = getAppropriateTrackRule(x[1], y[1]);
             /*
@@ -329,8 +312,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param trackStrategy
      */
     public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
-        if (null == trackStrategy)
-            throw new NullPointerException();
+        if (null == trackStrategy) throw new NullPointerException();
         buildTrackStrategy = trackStrategy;
     }
 }

@@ -46,6 +46,11 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
 
     }
 
+    @SuppressWarnings("unused")
+    private static void confirmExitActionPerformed(java.awt.event.ActionEvent evt) {
+        System.exit(0);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,11 +92,6 @@ public class ConfirmExitJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         add(jPanel2, gridBagConstraints);
 
-    }
-
-    @SuppressWarnings("unused")
-    private static void confirmExitActionPerformed(java.awt.event.ActionEvent evt) {
-        System.exit(0);
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {

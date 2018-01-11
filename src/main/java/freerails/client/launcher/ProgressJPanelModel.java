@@ -28,11 +28,10 @@ import freerails.client.ProgressMonitorModel;
 /**
  * A JPanel that displays a splash screen and a progress bar.
  */
-public class ProgressJPanelModel extends javax.swing.JPanel implements
-        ProgressMonitorModel {
+public class ProgressJPanelModel extends javax.swing.JPanel implements ProgressMonitorModel {
 
-    private static final long serialVersionUID = 3256445798203273776L;
     static final int numSteps = 5;
+    private static final long serialVersionUID = 3256445798203273776L;
     final LauncherInterface owner;
     int step, stepSize;
     // Variables declaration - do not modify                     
@@ -41,8 +40,6 @@ public class ProgressJPanelModel extends javax.swing.JPanel implements
 
     /**
      * Creates new form ProgressJPanelModel
-     *
-     * @param owner
      */
     public ProgressJPanelModel(LauncherInterface owner) {
         this.owner = owner;
@@ -70,8 +67,7 @@ public class ProgressJPanelModel extends javax.swing.JPanel implements
 
         step++;
         stepSize = max;
-        if (numSteps < step)
-            throw new IllegalStateException();
+        if (numSteps < step) throw new IllegalStateException();
     }
 
     // </editor-fold>                        
@@ -81,8 +77,7 @@ public class ProgressJPanelModel extends javax.swing.JPanel implements
      */
 
     public void finished() {
-        if (numSteps - 1 != step)
-            throw new IllegalStateException(numSteps + "!=" + step);
+        if (numSteps - 1 != step) throw new IllegalStateException(numSteps + "!=" + step);
 
         getTopLevelAncestor().setVisible(false);
     }
@@ -110,8 +105,7 @@ public class ProgressJPanelModel extends javax.swing.JPanel implements
         add(progressBar, gridBagConstraints);
 
         splashImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        splashImage.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-                "/freerails/client/graphics/splash_screen.jpg")));
+        splashImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/freerails/client/graphics/splash_screen.jpg")));
         add(splashImage, new java.awt.GridBagConstraints());
 
     }

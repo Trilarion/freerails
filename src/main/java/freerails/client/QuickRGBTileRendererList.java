@@ -19,9 +19,8 @@
 /*
  *
  */
-package freerails.client.top;
+package freerails.client;
 
-import freerails.client.ClientConstants;
 import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
 import freerails.world.ReadOnlyWorld;
@@ -38,9 +37,7 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public class QuickRGBTileRendererList implements TileRendererList {
 
-    private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
+    private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     /**
      * @param w
@@ -64,8 +61,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
      * @return
      */
     public static Image createImageFor(TerrainType t) {
-        Image image = defaultConfiguration.createCompatibleImage(
-                ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
+        Image image = defaultConfiguration.createCompatibleImage(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
         Color c = new Color(t.getRGB());
         Graphics g = image.getGraphics();
         g.setColor(c);
@@ -101,8 +97,7 @@ public class QuickRGBTileRendererList implements TileRendererList {
             return i;
         }
 
-        public void renderTile(Graphics g, int renderX, int renderY, int mapX,
-                               int mapY, ReadOnlyWorld w) {
+        public void renderTile(Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld w) {
             g.drawImage(i, renderX, renderY, null);
         }
 

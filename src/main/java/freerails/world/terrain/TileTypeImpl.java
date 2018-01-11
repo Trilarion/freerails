@@ -52,10 +52,7 @@ public final class TileTypeImpl implements TerrainType {
      * @param tileConversion
      * @param tileBuildCost
      */
-    public TileTypeImpl(int rgb, TerrainCategory terrainCategory,
-                        String terrainType, int rightOfWay, TileProduction[] tileProduction,
-                        TileConsumption[] tileConsumption, TileConversion[] tileConversion,
-                        int tileBuildCost) {
+    public TileTypeImpl(int rgb, TerrainCategory terrainCategory, String terrainType, int rightOfWay, TileProduction[] tileProduction, TileConsumption[] tileConsumption, TileConversion[] tileConversion, int tileBuildCost) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
@@ -74,9 +71,6 @@ public final class TileTypeImpl implements TerrainType {
     /**
      * Lets unit tests create terrain types without bothering with all the
      * details.
-     *
-     * @param terrainCategory
-     * @param terrainType
      */
     public TileTypeImpl(TerrainCategory terrainCategory, String terrainType) {
         this.terrainType = terrainType;
@@ -91,29 +85,19 @@ public final class TileTypeImpl implements TerrainType {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof TileTypeImpl))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof TileTypeImpl)) return false;
 
         final TileTypeImpl tileType = (TileTypeImpl) obj;
 
-        if (rgb != tileType.rgb)
-            return false;
-        if (rightOfWay != tileType.rightOfWay)
-            return false;
-        if (!consumption.equals(tileType.consumption))
-            return false;
-        if (!conversion.equals(tileType.conversion))
-            return false;
-        if (!production.equals(tileType.production))
-            return false;
-        if (terrainCategory != tileType.terrainCategory)
-            return false;
-        if (!terrainType.equals(tileType.terrainType))
-            return false;
-        return tileBuildCost != null ? tileBuildCost
-                .equals(tileType.tileBuildCost) : tileType.tileBuildCost == null;
+        if (rgb != tileType.rgb) return false;
+        if (rightOfWay != tileType.rightOfWay) return false;
+        if (!consumption.equals(tileType.consumption)) return false;
+        if (!conversion.equals(tileType.conversion)) return false;
+        if (!production.equals(tileType.production)) return false;
+        if (terrainCategory != tileType.terrainCategory) return false;
+        if (!terrainType.equals(tileType.terrainType)) return false;
+        return tileBuildCost != null ? tileBuildCost.equals(tileType.tileBuildCost) : tileType.tileBuildCost == null;
     }
 
     @Override
@@ -126,8 +110,7 @@ public final class TileTypeImpl implements TerrainType {
         result = 29 * result + rightOfWay;
         result = 29 * result + terrainCategory.hashCode();
         result = 29 * result + terrainType.hashCode();
-        result = 29 * result
-                + (tileBuildCost != null ? tileBuildCost.hashCode() : 0);
+        result = 29 * result + (tileBuildCost != null ? tileBuildCost.hashCode() : 0);
         return result;
     }
 
@@ -161,8 +144,6 @@ public final class TileTypeImpl implements TerrainType {
 
     /**
      * Returns the name, replacing any underscores with spaces.
-     *
-     * @return
      */
     public String getDisplayName() {
         return terrainType.replace('_', ' ');

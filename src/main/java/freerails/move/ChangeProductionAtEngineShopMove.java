@@ -25,14 +25,15 @@ import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
+import freerails.world.station.TrainBlueprint;
 
 /**
  * This Move changes what is being built at an engine shop - when a client wants
  * to build a train, it should send an instance of this class to the server.
  */
 public class ChangeProductionAtEngineShopMove implements Move {
+
     private static final long serialVersionUID = 3905519384997737520L;
     private final ImmutableList<TrainBlueprint> before;
     private final ImmutableList<TrainBlueprint> after;
@@ -45,8 +46,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param station
      * @param p
      */
-    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b,
-                                            ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
+    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
         before = b;
         after = a;
         stationNumber = station;
@@ -55,22 +55,15 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof ChangeProductionAtEngineShopMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof ChangeProductionAtEngineShopMove)) return false;
 
         final ChangeProductionAtEngineShopMove changeProductionAtEngineShopMove = (ChangeProductionAtEngineShopMove) obj;
 
-        if (stationNumber != changeProductionAtEngineShopMove.stationNumber)
+        if (stationNumber != changeProductionAtEngineShopMove.stationNumber) return false;
+        if (after != null ? !after.equals(changeProductionAtEngineShopMove.after) : changeProductionAtEngineShopMove.after != null)
             return false;
-        if (after != null ? !after
-                .equals(changeProductionAtEngineShopMove.after)
-                : changeProductionAtEngineShopMove.after != null)
-            return false;
-        if (before != null ? !before
-                .equals(changeProductionAtEngineShopMove.before)
-                : changeProductionAtEngineShopMove.before != null)
+        if (before != null ? !before.equals(changeProductionAtEngineShopMove.before) : changeProductionAtEngineShopMove.before != null)
             return false;
         return principal.equals(changeProductionAtEngineShopMove.principal);
     }
@@ -95,12 +88,10 @@ public class ChangeProductionAtEngineShopMove implements Move {
             return MoveStatus.moveFailed(stationNumber + " " + principal);
         }
 
-        Station station = (Station) w.get(principal, KEY.STATIONS,
-                stationNumber);
+        Station station = (Station) w.get(principal, KEY.STATIONS, stationNumber);
 
         if (null == station) {
-            return MoveStatus.moveFailed(stationNumber + " " + principal
-                    + " is does null");
+            return MoveStatus.moveFailed(stationNumber + " " + principal + " is does null");
         }
 
         // Check that the station is building what we expect.
@@ -124,8 +115,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.isOk()) {
-            Station station = (Station) world.get(this.principal,
-                    KEY.STATIONS, stationNumber);
+            Station station = (Station) world.get(this.principal, KEY.STATIONS, stationNumber);
             station = new Station(station, after);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }
@@ -136,8 +126,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.isOk()) {
-            Station station = (Station) world.get(this.principal,
-                    KEY.STATIONS, stationNumber);
+            Station station = (Station) world.get(this.principal, KEY.STATIONS, stationNumber);
             station = new Station(station, before);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
         }

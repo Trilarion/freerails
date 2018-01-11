@@ -21,10 +21,10 @@
  */
 package freerails.server;
 
+import freerails.client.ProgressMonitorModel;
 import freerails.controller.ServerControlInterface;
 import freerails.network.NewGameMessageToServer;
 import freerails.network.SaveGamesManager;
-import freerails.client.ProgressMonitorModel;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -36,8 +36,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class SaveGameManagerImpl implements SaveGamesManager {
 
-    private static final Logger logger = Logger
-            .getLogger(SaveGameManagerImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(SaveGameManagerImpl.class.getName());
 
     /**
      * @return
@@ -128,7 +127,6 @@ public class SaveGameManagerImpl implements SaveGamesManager {
      * @throws IOException
      */
     public Serializable newMap(String name) {
-        return OldWorldImpl.createWorldFromMapFile(name,
-                ProgressMonitorModel.EMPTY_PROGRESSMONITOR);
+        return OldWorldImpl.createWorldFromMapFile(name, ProgressMonitorModel.EMPTY_PROGRESSMONITOR);
     }
 }

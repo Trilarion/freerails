@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.client;
 
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -27,8 +27,8 @@ import java.awt.event.ComponentListener;
  * this class to do the job.
  */
 public class JFrameMinimumSizeEnforcer implements ComponentListener {
-    private final int minWidth;
 
+    private final int minWidth;
     private final int minHeight;
 
     /**

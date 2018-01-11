@@ -21,7 +21,7 @@
  *
  */
 
-package freerails.client.top;
+package freerails.client;
 
 /**
  * The JFrame that you see while you are playing the game.
@@ -34,8 +34,6 @@ public class ClientJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form ClientJFrame.
-     *
-     * @param gcf
      */
     public ClientJFrame(GUIComponentFactory gcf) {
         setup(gcf);
@@ -46,6 +44,14 @@ public class ClientJFrame extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
+    }
+
+    /**
+     * Exit the Application.
+     */
+    @SuppressWarnings("unused")
+    private static void exitForm(java.awt.event.WindowEvent evt) {
+        System.exit(0);
     }
 
     private void setup(GUIComponentFactory gcf) {
@@ -154,15 +160,6 @@ public class ClientJFrame extends javax.swing.JFrame {
 
         pack();
     }
-
-    /**
-     * Exit the Application.
-     */
-    @SuppressWarnings("unused")
-    private static void exitForm(java.awt.event.WindowEvent evt) {
-        System.exit(0);
-    }
-
 
     private static class MyWindowAdapter extends java.awt.event.WindowAdapter {
         @Override

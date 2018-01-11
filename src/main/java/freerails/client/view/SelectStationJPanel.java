@@ -28,10 +28,10 @@ import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.terrain.TileTransition;
 import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainOrdersModel;
@@ -120,11 +120,8 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
             }
         });
 
-        cargoWaitingAndDemandedJPanel1
-                .setBorder(new javax.swing.border.LineBorder(
-                        new java.awt.Color(0, 0, 0)));
-        cargoWaitingAndDemandedJPanel1.setPreferredSize(new java.awt.Dimension(
-                165, 300));
+        cargoWaitingAndDemandedJPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
+        cargoWaitingAndDemandedJPanel1.setPreferredSize(new java.awt.Dimension(165, 300));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -156,16 +153,12 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
         try {
-            TileTransition v = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt
-                    .getKeyCode());
+            TileTransition v = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
             // now find nearest station in direction of the vector.
-            NearestStationFinder stationFinder = new NearestStationFinder(
-                    world, principal);
-            int station = stationFinder.findNearestStationInDirection(
-                    selectedStationID, v);
+            NearestStationFinder stationFinder = new NearestStationFinder(world, principal);
+            int station = stationFinder.findNearestStationInDirection(selectedStationID, v);
 
-            if (selectedStationID != station
-                    && station != NearestStationFinder.NOT_FOUND) {
+            if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
                 selectedStationID = station;
                 cargoWaitingAndDemandedJPanel1.display(selectedStationID);
                 validate();
@@ -192,12 +185,10 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         double y = evt.getY();
         y = y / scale + visableMapTiles.y;
 
-        NearestStationFinder stationFinder = new NearestStationFinder(
-                world, principal);
+        NearestStationFinder stationFinder = new NearestStationFinder(world, principal);
         int station = stationFinder.findNearestStation((int) x, (int) y);
 
-        if (selectedStationID != station
-                && station != NearestStationFinder.NOT_FOUND) {
+        if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
             selectedStationID = station;
             cargoWaitingAndDemandedJPanel1.display(selectedStationID);
             validate();
@@ -233,18 +224,13 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         int bottomRightX = Integer.MIN_VALUE;
         int bottomRightY = Integer.MIN_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world,
-                principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
         while (it.next()) {
             Station station = (Station) it.getElement();
-            if (station.x < topLeftX)
-                topLeftX = station.x;
-            if (station.y < topLeftY)
-                topLeftY = station.y;
-            if (station.x > bottomRightX)
-                bottomRightX = station.x;
-            if (station.y > bottomRightY)
-                bottomRightY = station.y;
+            if (station.x < topLeftX) topLeftX = station.x;
+            if (station.y < topLeftY) topLeftY = station.y;
+            if (station.x > bottomRightX) bottomRightX = station.x;
+            if (station.y > bottomRightY) bottomRightY = station.y;
         }
         // Add some padding.
         topLeftX -= 10;
@@ -255,8 +241,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         int width = bottomRightX - topLeftX;
         int height = bottomRightY - topLeftY;
         visableMapTiles = new Rectangle(topLeftX, topLeftY, width, height);
-        boolean heightConstraintBinds = (visableMapTiles.getHeight() / visableMapTiles
-                .getWidth()) > (mapRect.getHeight() / mapRect.getWidth());
+        boolean heightConstraintBinds = (visableMapTiles.getHeight() / visableMapTiles.getWidth()) > (mapRect.getHeight() / mapRect.getWidth());
         if (heightConstraintBinds) {
             scale = mapRect.getHeight() / visableMapTiles.getHeight();
         } else {
@@ -274,16 +259,12 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world,
-                principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
         // Draw track
         g2.setColor(Color.BLACK);
-        for (int x = Math.max(0, visableMapTiles.x); x < Math.min(
-                visableMapTiles.width + visableMapTiles.x, world.getMapWidth()); x++) {
-            for (int y = Math.max(0, visableMapTiles.y); y < Math.min(
-                    visableMapTiles.height + visableMapTiles.y, world
-                            .getMapHeight()); y++) {
+        for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, world.getMapWidth()); x++) {
+            for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, world.getMapHeight()); y++) {
                 FullTerrainTile tt = (FullTerrainTile) world.getTile(x, y);
                 if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     double xDouble = x - visableMapTiles.x;
@@ -318,8 +299,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
             StringBuilder stopNumbersString = new StringBuilder();
             boolean stationIsOnSchedule = false;
             for (int orderNumber = 0; orderNumber < schedule.getNumOrders(); orderNumber++) {
-                int stationID = orderNumber == selectedOrderNumber ? selectedStationID
-                        : schedule.getOrder(orderNumber).getStationID();
+                int stationID = orderNumber == selectedOrderNumber ? selectedStationID : schedule.getOrder(orderNumber).getStationID();
                 if (it.getIndex() == stationID) {
                     if (stationIsOnSchedule) {
                         stopNumbersString.append(", ").append(String.valueOf(orderNumber + 1));
@@ -353,9 +333,7 @@ public class SelectStationJPanel extends javax.swing.JPanel implements View {
     public MutableSchedule generateNewSchedule() {
         TrainOrdersModel oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
-        newOrders = new TrainOrdersModel(selectedStationID, oldOrders
-                .getConsist(), oldOrders.getWaitUntilFull(), oldOrders
-                .isAutoConsist());
+        newOrders = new TrainOrdersModel(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
         schedule.setOrder(selectedOrderNumber, newOrders);
         return schedule;
     }

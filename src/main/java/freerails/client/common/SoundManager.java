@@ -40,8 +40,7 @@ import java.util.Map;
  */
 public class SoundManager implements ModelRootListener, LineListener {
 
-    private static final Logger logger = Logger.getLogger(SoundManager.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(SoundManager.class.getName());
     private static final SoundManager soundManager = new SoundManager();
     private final Map<String, Sample> samples = new HashMap<>();
     private final Deque<Clip> voices = new LinkedList<>();
@@ -56,12 +55,10 @@ public class SoundManager implements ModelRootListener, LineListener {
 
             mixer = AudioSystem.getMixer(mo);
             maxLines = mixer.getMaxLines(info2);
-            if (maxLines >= 32)
-                break; // Java Sound Audio Engine, version 1.0 satisfies this.
+            if (maxLines >= 32) break; // Java Sound Audio Engine, version 1.0 satisfies this.
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + '('
-                    + maxLines + " voices).");
+            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + '(' + maxLines + " voices).");
         }
 
     }
@@ -88,40 +85,11 @@ public class SoundManager implements ModelRootListener, LineListener {
         }
     }
 
-    /**
-     * @param s
-     * @throws IOException
-     * @throws UnsupportedAudioFileException
-     * @throws LineUnavailableException
-     */
-    public void addClip(String s) throws IOException,
-            UnsupportedAudioFileException {
-        if (samples.containsKey(s)) {
-            return;
-        }
-
-        URL url = getClass().getResource(s);
-        AudioInputStream audioInputStream = AudioSystem
-                .getAudioInputStream(loadStream(url.openStream()));
-
-        Sample sample = new Sample();
-
-        sample.format = audioInputStream.getFormat();
-        sample.size = (int) (sample.format.getFrameSize() * audioInputStream
-                .getFrameLength());
-        sample.audio = new byte[sample.size];
-        sample.info = new DataLine.Info(Clip.class, sample.format, sample.size);
-        audioInputStream.read(sample.audio, 0, sample.size);
-        samples.put(s, sample);
-    }
-
-    private static ByteArrayInputStream loadStream(InputStream inputstream)
-            throws IOException {
+    private static ByteArrayInputStream loadStream(InputStream inputstream) throws IOException {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
         byte[] data = new byte[1024];
 
-        for (int i = inputstream.read(data); i != -1; i = inputstream
-                .read(data)) {
+        for (int i = inputstream.read(data); i != -1; i = inputstream.read(data)) {
             bytearrayoutputstream.write(data, 0, i);
         }
 
@@ -130,6 +98,30 @@ public class SoundManager implements ModelRootListener, LineListener {
         data = bytearrayoutputstream.toByteArray();
 
         return new ByteArrayInputStream(data);
+    }
+
+    /**
+     * @param s
+     * @throws IOException
+     * @throws UnsupportedAudioFileException
+     * @throws LineUnavailableException
+     */
+    public void addClip(String s) throws IOException, UnsupportedAudioFileException {
+        if (samples.containsKey(s)) {
+            return;
+        }
+
+        URL url = getClass().getResource(s);
+        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(loadStream(url.openStream()));
+
+        Sample sample = new Sample();
+
+        sample.format = audioInputStream.getFormat();
+        sample.size = (int) (sample.format.getFrameSize() * audioInputStream.getFrameLength());
+        sample.audio = new byte[sample.size];
+        sample.info = new DataLine.Info(Clip.class, sample.format, sample.size);
+        audioInputStream.read(sample.audio, 0, sample.size);
+        samples.put(s, sample);
     }
 
     /**

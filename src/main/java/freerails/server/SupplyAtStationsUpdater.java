@@ -42,7 +42,6 @@ public class SupplyAtStationsUpdater {
      * Constructor, currently called from GUIComponentFactory.
      *
      * @param world The World object that contains all about the game world
-     * @param mr
      */
     public SupplyAtStationsUpdater(World world, MoveReceiver mr) {
         this.world = world;
@@ -55,22 +54,17 @@ public class SupplyAtStationsUpdater {
     public void update() {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
-            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(KEY.STATIONS, world,
-                    principal);
+            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
             while (iterator.next()) {
-                Station stationBefore = (Station) iterator
-                        .getElement();
+                Station stationBefore = (Station) iterator.getElement();
                 CalcCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalcCargoSupplyRateAtStation(world,
-                        stationBefore.x, stationBefore.y);
+                supplyRate = new CalcCargoSupplyRateAtStation(world, stationBefore.x, stationBefore.y);
 
-                Station stationAfter = supplyRate
-                        .calculations(stationBefore);
+                Station stationAfter = supplyRate.calculations(stationBefore);
 
                 if (!stationAfter.equals(stationBefore)) {
-                    Move move = new ChangeStationMove(iterator.getIndex(),
-                            stationBefore, stationAfter, principal);
+                    Move move = new ChangeStationMove(iterator.getIndex(), stationBefore, stationAfter, principal);
                     moveReceiver.process(move);
                 }
             }

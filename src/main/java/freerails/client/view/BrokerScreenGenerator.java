@@ -26,7 +26,9 @@ package freerails.client.view;
 import freerails.controller.FinancialDataGatherer;
 import freerails.controller.StockPriceCalculator;
 import freerails.controller.StockPriceCalculator.StockPrice;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.ItemsTransactionAggregator;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.game.GameCalendar;
@@ -97,9 +99,6 @@ public class BrokerScreenGenerator {
 
     /**
      * Creates a new instance of BrokerScreenGenerator
-     *
-     * @param w
-     * @param principal
      */
     public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(w, principal);
@@ -113,8 +112,7 @@ public class BrokerScreenGenerator {
         year = String.valueOf(startyear);
         cash = w.getCurrentBalance(principal);
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                w, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w, principal);
 
         aggregator.setCategory(TransactionCategory.BOND);
         loansTotal = aggregator.calculateValue();

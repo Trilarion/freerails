@@ -31,14 +31,14 @@ import java.io.Serializable;
  * All moves that remove an item from a list should extend this class.
  */
 public class RemoveItemFromListMove implements ListMove {
+
     private static final long serialVersionUID = 3906091169698953521L;
     private final Serializable item;
     private final KEY listKey;
     private final int index;
     private final FreerailsPrincipal principal;
 
-    RemoveItemFromListMove(KEY k, int i, Serializable item,
-                           FreerailsPrincipal p) {
+    RemoveItemFromListMove(KEY k, int i, Serializable item, FreerailsPrincipal p) {
         this.item = item;
         listKey = k;
         index = i;
@@ -66,21 +66,17 @@ public class RemoveItemFromListMove implements ListMove {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.size(this.principal, listKey) < (index + 1)) {
-            return MoveStatus.moveFailed("w.size(listKey)="
-                    + world.size(this.principal, listKey) + " but index =" + index);
+            return MoveStatus.moveFailed("w.size(listKey)=" + world.size(this.principal, listKey) + " but index =" + index);
         }
 
         Serializable item2remove = world.get(this.principal, listKey, index);
 
         if (null == item2remove) {
-            return MoveStatus.moveFailed("The item at position " + index
-                    + " has already been removed.");
+            return MoveStatus.moveFailed("The item at position " + index + " has already been removed.");
         }
 
         if (!item.equals(item2remove)) {
-            String reason = "The item at position " + index + " in the list ("
-                    + item2remove.toString() + ") is not the expected item ("
-                    + item.toString() + ").";
+            String reason = "The item at position " + index + " in the list (" + item2remove.toString() + ") is not the expected item (" + item.toString() + ").";
 
             return MoveStatus.moveFailed(reason);
         }
@@ -89,14 +85,11 @@ public class RemoveItemFromListMove implements ListMove {
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
         if (world.size(this.principal, listKey) < (index + 1)) {
-            return MoveStatus.moveFailed("w.size(listKey)="
-                    + world.size(this.principal, listKey) + " but index =" + index);
+            return MoveStatus.moveFailed("w.size(listKey)=" + world.size(this.principal, listKey) + " but index =" + index);
         }
 
         if (null != world.get(this.principal, listKey, index)) {
-            String reason = "The item at position " + index + " in the list ("
-                    + world.get(this.principal, listKey, index).toString()
-                    + ") is not the expected item (null).";
+            String reason = "The item at position " + index + " in the list (" + world.get(this.principal, listKey, index).toString() + ") is not the expected item (null).";
 
             return MoveStatus.moveFailed(reason);
         }

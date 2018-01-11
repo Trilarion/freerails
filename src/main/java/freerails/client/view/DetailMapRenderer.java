@@ -30,8 +30,7 @@ import java.awt.*;
  * Draws the main map, that is the terrain, track, trains, station names etc.
  */
 public class DetailMapRenderer implements MapRenderer {
-    private static final boolean OSXWorkaround = (System
-            .getProperty("OSXWorkaround") != null);
+    private static final boolean OSXWorkaround = (System.getProperty("OSXWorkaround") != null);
 
     private final MapLayerRenderer background;
 
@@ -52,12 +51,10 @@ public class DetailMapRenderer implements MapRenderer {
      * @param rr
      * @param modelRoot
      */
-    public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rr,
-                             ModelRoot modelRoot) {
+    public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rr, ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rr, modelRoot);
 
-        MapBackgroundRender render = new MapBackgroundRender(world, rr,
-                modelRoot);
+        MapBackgroundRender render = new MapBackgroundRender(world, rr, modelRoot);
 
         if (OSXWorkaround) {
             // Don't buffer the mapviews background.
@@ -66,10 +63,8 @@ public class DetailMapRenderer implements MapRenderer {
             background = new SquareTileBackgroundRenderer(render);
         }
 
-        Dimension mapSize = new Dimension(world.getMapWidth(), world
-                .getMapHeight());
-        mapSizeInPixels = new Dimension(mapSize.width * ClientConstants.TILE_SIZE,
-                mapSize.height * ClientConstants.TILE_SIZE);
+        Dimension mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
+        mapSizeInPixels = new Dimension(mapSize.width * ClientConstants.TILE_SIZE, mapSize.height * ClientConstants.TILE_SIZE);
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rr, modelRoot);
         buildTrackController = new BuildTrackController(world, modelRoot);

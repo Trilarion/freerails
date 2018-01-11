@@ -24,8 +24,8 @@
 package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
-import freerails.client.top.GameLoop;
-import freerails.controller.ScreenHandler;
+import freerails.client.GameLoop;
+import freerails.client.ScreenHandler;
 import freerails.controller.ServerControlInterface;
 import freerails.network.FreerailsGameServer;
 import freerails.network.InetConnectionAccepter;
@@ -60,17 +60,13 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     private static final int SERVERUPDATE = 50;
 
 
-    private static final Logger logger = Logger.getLogger(Launcher.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static final long serialVersionUID = -8224003315973977661L;
 
     private final Component[] wizardPages = new Component[4];
-    private final Icon errorIcon = new javax.swing.ImageIcon(getClass()
-            .getResource(ClientConfig.ICON_ERROR));
-    private final Icon warningIcon = new javax.swing.ImageIcon(getClass()
-            .getResource(ClientConfig.ICON_WARNING));
-    private final Icon infoIcon = new javax.swing.ImageIcon(getClass()
-            .getResource(ClientConfig.ICON_INFO));
+    private final Icon errorIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_ERROR));
+    private final Icon warningIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_WARNING));
+    private final Icon infoIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_INFO));
     private final ProgressJPanelModel progressPanel = new ProgressJPanelModel(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JLabel infoLabel;
@@ -110,8 +106,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     /**
      * Starts the client and server in the same thread.
      */
-    private static void startThread(final GameModel server,
-                                    final GUIClient client) {
+    private static void startThread(final GameModel server, final GUIClient client) {
         startThread(server);
         try {
             Runnable run = () -> {
@@ -174,8 +169,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         // Let the user know if we are using a custom logging config.
 
         try {
-            PatternLayout patternLayout = new PatternLayout(
-                    "%r [%t] %-5p %m -- at %l%n");
+            PatternLayout patternLayout = new PatternLayout("%r [%t] %-5p %m -- at %l%n");
             Appender consoleAppender = new ConsoleAppender(patternLayout);
             Logger rootLogger = LogManager.getRootLogger();
             rootLogger.addAppender(consoleAppender);
@@ -192,8 +186,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         if (args.length > 0) {
             for (String arg : args) {
                 String QUICKSTART = "-quickstart";
-                if (QUICKSTART.equals(arg))
-                    quickstart = true;
+                if (QUICKSTART.equals(arg)) quickstart = true;
             }
 
         }
@@ -209,6 +202,40 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         if (!EventQueue.isDispatchThread()) {
             Thread.currentThread().stop();
         }
+    }
+
+    /**
+     * Starts the client in a new thread.
+     */
+    private static void startThread(final GUIClient guiClient) {
+        try {
+            Runnable run = () -> {
+                while (null == guiClient.getWorld()) {
+                    guiClient.update();
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        // do nothing
+                    }
+                }
+                GameModel[] models = new GameModel[]{guiClient};
+                ScreenHandler screenHandler = guiClient.getScreenHandler();
+                Runnable gameLoop = new GameLoop(screenHandler, models);
+                gameLoop.run();
+            };
+
+            Thread t = new Thread(run, "Client main loop");
+            t.start();
+        } catch (Exception e) {
+            emergencyStop();
+        }
+    }
+
+    /**
+     * Exit the Application.
+     */
+    private static void exitForm(java.awt.event.WindowEvent evt) {
+        System.exit(0);
     }
 
     public void setNextEnabled(boolean enabled) {
@@ -239,8 +266,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
                     mode = cop.getScreenMode();
 
-                    client = new GUIClient(cop.getPlayerName(), progressPanel,
-                            mode, cop.getDisplayMode());
+                    client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
                     if (isNewGame()) {
                         initServer();
                     }
@@ -269,8 +295,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                     setServerGameModel();
                     currentPage = 3;
                     String[] playerNames = server.getPlayerNames();
-                    playerNames = playerNames.length == 0 ? new String[]{"No players are connected."}
-                            : playerNames;
+                    playerNames = playerNames.length == 0 ? new String[]{"No players are connected."} : playerNames;
                     cp.setListOfPlayers(playerNames);
                     cl.show(jPanel1, "3");
                     setNextEnabled(false);
@@ -296,23 +321,19 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                 mode = cop.getScreenMode();
                 try {
 
-                    InetSocketAddress serverInetAddress = cop
-                            .getRemoteServerAddress();
+                    InetSocketAddress serverInetAddress = cop.getRemoteServerAddress();
                     if (null == serverInetAddress) {
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
                     String playerName = cop.getPlayerName();
-                    client = new GUIClient(playerName, progressPanel, mode, cop
-                            .getDisplayMode());
+                    client = new GUIClient(playerName, progressPanel, mode, cop.getDisplayMode());
 
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
                     setInfoText("Connecting to server...", MSG_TYPE.INFO);
-                    LogOnResponse logOnResponse = client.connect(hostname, port,
-                            playerName, "password");
+                    LogOnResponse logOnResponse = client.connect(hostname, port, playerName, "password");
                     if (logOnResponse.isSuccessful()) {
-                        setInfoText("Logged on and waiting for game to start.",
-                                MSG_TYPE.INFO);
+                        setInfoText("Logged on and waiting for game to start.", MSG_TYPE.INFO);
                         startThread(client);
                     } else {
                         recover = true;
@@ -372,33 +393,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         return msp2.getSelection() == SelectMapJPanel.Selection.NEW_GAME;
     }
 
-    /**
-     * Starts the client in a new thread.
-     */
-    private static void startThread(final GUIClient guiClient) {
-        try {
-            Runnable run = () -> {
-                while (null == guiClient.getWorld()) {
-                    guiClient.update();
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                        // do nothing
-                    }
-                }
-                GameModel[] models = new GameModel[]{guiClient};
-                ScreenHandler screenHandler = guiClient.getScreenHandler();
-                Runnable gameLoop = new GameLoop(screenHandler, models);
-                gameLoop.run();
-            };
-
-            Thread t = new Thread(run, "Client main loop");
-            t.start();
-        } catch (Exception e) {
-            emergencyStop();
-        }
-    }
-
     private void initServer() {
         SaveGamesManager gamesManager = new SaveGameManagerImpl();
         server = new FreerailsGameServer(gamesManager);
@@ -436,8 +430,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         if (isNewGame()) {
             initServer();
         }
-        InetConnectionAccepter accepter = new InetConnectionAccepter(port,
-                server);
+        InetConnectionAccepter accepter = new InetConnectionAccepter(port, server);
         /*
          * Note, the thread's name gets set in the run method so there is no
          * point setting it here.
@@ -597,8 +590,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                             try {
                                 if (!isNewGame()) {
                                     initServer();
-                                    server
-                                            .loadgame(ServerControlInterface.FREERAILS_SAV);
+                                    server.loadgame(ServerControlInterface.FREERAILS_SAV);
                                 }
                                 prepare2HostNetworkGame(msp.getServerPort());
                             } catch (BindException be) {
@@ -633,8 +625,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
                             int mode = cop.getScreenMode();
 
                             prepare2HostNetworkGame(msp.getServerPort());
-                            client = new GUIClient(cop.getPlayerName(),
-                                    progressPanel, mode, cop.getDisplayMode());
+                            client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
                             client.connect(server, cop.getPlayerName(), "password");
                         }
                     } else {
@@ -675,13 +666,6 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         } catch (Exception e) {
             emergencyStop();
         }
-    }
-
-    /**
-     * Exit the Application.
-     */
-    private static void exitForm(java.awt.event.WindowEvent evt) {
-        System.exit(0);
     }
 
     // End of variables declaration//GEN-END:variables
@@ -747,16 +731,13 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
             FileInputStream in = new FileInputStream(PROPERTIES_FILENAME);
             props.load(in);
             in.close();
-            if (!props.containsKey(SERVER_PORT_PROPERTY)
-                    || !props.containsKey(PLAYER_NAME_PROPERTY)
-                    || !props.containsKey(SERVER_IP_ADDRESS_PROPERTY)) {
+            if (!props.containsKey(SERVER_PORT_PROPERTY) || !props.containsKey(PLAYER_NAME_PROPERTY) || !props.containsKey(SERVER_IP_ADDRESS_PROPERTY)) {
                 throw new Exception();
             }
         } catch (Exception e) {
             props = new Properties();
             props.setProperty(SERVER_PORT_PROPERTY, "55000");
-            props.setProperty(PLAYER_NAME_PROPERTY, System
-                    .getProperty("user.name"));
+            props.setProperty(PLAYER_NAME_PROPERTY, System.getProperty("user.name"));
             props.setProperty(SERVER_IP_ADDRESS_PROPERTY, "127.0.0.1");
         }
     }

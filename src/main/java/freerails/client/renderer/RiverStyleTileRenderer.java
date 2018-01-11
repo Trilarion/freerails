@@ -33,8 +33,7 @@ import java.io.IOException;
  * Selects a tile icon to use based on the type of the tiles to the North, East,
  * South and West.
  */
-public final class RiverStyleTileRenderer extends
-        freerails.client.renderer.AbstractTileRenderer {
+public final class RiverStyleTileRenderer extends freerails.client.renderer.AbstractTileRenderer {
     private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
 
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
@@ -46,8 +45,7 @@ public final class RiverStyleTileRenderer extends
      * @param w
      * @throws IOException
      */
-    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues,
-                                  TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
         setTileIcons(new Image[16]);
 
@@ -59,11 +57,6 @@ public final class RiverStyleTileRenderer extends
 
     /**
      * 666 optimize cache
-     *
-     * @param x
-     * @param w
-     * @param y
-     * @return
      */
     @Override
     public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
@@ -71,8 +64,7 @@ public final class RiverStyleTileRenderer extends
 
         for (int i = 0; i < 4; i++) {
             iconNumber = iconNumber << 1;
-            iconNumber = iconNumber
-                    | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
+            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
         }
 
         return iconNumber;

@@ -21,7 +21,6 @@
  */
 package freerails.move;
 
-import freerails.util.ImmutableList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
@@ -30,7 +29,10 @@ import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.*;
+import freerails.world.track.NullTrackType;
+import freerails.world.track.TrackCategories;
+import freerails.world.track.TrackPiece;
+import freerails.world.track.TrackRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +63,10 @@ public class TrackMoveTransactionsGenerator {
     private int[] trackRemoved;
 
     /**
-     * @param world
-     * @param p     the Principal on behalf of which this object generates
-     *              transactions for
+     * @param p the Principal on behalf of which this object generates
+     *          transactions for
      */
-    public TrackMoveTransactionsGenerator(ReadOnlyWorld world,
-                                          FreerailsPrincipal p) {
+    public TrackMoveTransactionsGenerator(ReadOnlyWorld world, FreerailsPrincipal p) {
         w = world;
         principal = p;
     }
@@ -102,9 +102,7 @@ public class TrackMoveTransactionsGenerator {
             processMove(tm);
         } else if (move instanceof CompositeMove) {
             CompositeMove cm = (CompositeMove) move;
-            cm.getMoves();
-
-            ImmutableList<Move> moves = cm.getMoves();
+            List<Move> moves = cm.getMoves();
 
             for (int i = 0; i < moves.size(); i++) {
                 unpackMove(moves.get(i));
@@ -171,10 +169,8 @@ public class TrackMoveTransactionsGenerator {
             if (0 != numberAdded) {
                 TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
-                Money total = new Money(-m.getAmount() * numberAdded
-                        / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-                Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded,
-                        total);
+                Money total = new Money(-m.getAmount() * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
                 transactions.add(t);
             }
 
@@ -184,25 +180,21 @@ public class TrackMoveTransactionsGenerator {
                 TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
 
-                Money total = new Money((m.getAmount() * numberRemoved)
-                        / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money((m.getAmount() * numberRemoved) / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = new Money(total.getAmount() / 2);
 
-                Transaction t = new ItemTransaction(TransactionCategory.TRACK, i,
-                        -numberRemoved, total);
+                Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, -numberRemoved, total);
                 transactions.add(t);
             }
         }
         if (0 != fixedCostsStations) {
-            Transaction t = new ItemTransaction(TransactionCategory.STATIONS, -1, -1, new Money(
-                    fixedCostsStations));
+            Transaction t = new ItemTransaction(TransactionCategory.STATIONS, -1, -1, new Money(fixedCostsStations));
             transactions.add(t);
         }
         if (0 != fixedCostsBridges) {
-            Transaction t = new ItemTransaction(TransactionCategory.BRIDGES, -1, -1, new Money(
-                    fixedCostsBridges));
+            Transaction t = new ItemTransaction(TransactionCategory.BRIDGES, -1, -1, new Money(fixedCostsBridges));
             transactions.add(t);
         }
     }

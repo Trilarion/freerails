@@ -50,8 +50,7 @@ public class TrainOrdersModel implements Serializable {
      * @param wait
      * @param auto
      */
-    public TrainOrdersModel(int station, ImmutableList<Integer> newConsist, boolean wait,
-                            boolean auto) {
+    public TrainOrdersModel(int station, ImmutableList<Integer> newConsist, boolean wait, boolean auto) {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
@@ -63,19 +62,14 @@ public class TrainOrdersModel implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof TrainOrdersModel))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof TrainOrdersModel)) return false;
 
         final TrainOrdersModel trainOrdersModel = (TrainOrdersModel) obj;
 
-        if (autoConsist != trainOrdersModel.autoConsist)
-            return false;
-        if (stationId != trainOrdersModel.stationId)
-            return false;
-        if (waitUntilFull != trainOrdersModel.waitUntilFull)
-            return false;
+        if (autoConsist != trainOrdersModel.autoConsist) return false;
+        if (stationId != trainOrdersModel.stationId) return false;
+        if (waitUntilFull != trainOrdersModel.waitUntilFull) return false;
         return consist != null ? consist.equals(trainOrdersModel.consist) : trainOrdersModel.consist == null;
     }
 

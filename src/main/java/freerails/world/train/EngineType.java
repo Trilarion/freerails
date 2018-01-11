@@ -52,14 +52,11 @@ public final class EngineType implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof EngineType))
-            return false;
+        if (!(obj instanceof EngineType)) return false;
         EngineType other = (EngineType) obj;
         return engineTypeName.equals(other.engineTypeName)
 
-                && powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price)
-                && maintenance.equals(other.maintenance)
-                && maxSpeed == other.maxSpeed;
+                && powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price) && maintenance.equals(other.maintenance) && maxSpeed == other.maxSpeed;
 
     }
 

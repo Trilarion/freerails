@@ -25,7 +25,10 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.KEY;
+import freerails.world.NonNullElementWorldIterator;
+import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
@@ -36,15 +39,12 @@ import java.awt.*;
 
 /**
  */
-public class TrainSummaryJPanel extends javax.swing.JPanel implements
-        ListCellRenderer, View {
+public class TrainSummaryJPanel extends javax.swing.JPanel implements ListCellRenderer, View {
 
     private static final long serialVersionUID = 4121133628006020919L;
     private final TrainSummeryModel model;
-    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager
-            .getDefaults().get("List.background");
-    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager
-            .getDefaults().get("List.selectionBackground");
+    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
+    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private ReadOnlyWorld w;
     private FreerailsPrincipal principal;
@@ -80,12 +80,9 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         return '$' + m.toString();
     }
 
-    public java.awt.Component getListCellRendererComponent(
-            javax.swing.JList list, Object value, int index,
-            boolean isSelected, boolean cellHasFocus) {
+    public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator
-                .row2index(w, KEY.TRAINS, principal, index);
+        int trainID = NonNullElementWorldIterator.row2index(w, KEY.TRAINS, principal, index);
         String trainNumText = "#" + (trainID + 1);
 
         trainNumLabel.setText(trainNumText);
@@ -152,8 +149,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         setPreferredSize(new java.awt.Dimension(500, 50));
         trainNumLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         trainNumLabel.setText("jLabel1");
-        trainNumLabel
-                .setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        trainNumLabel.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         trainNumLabel.setPreferredSize(new java.awt.Dimension(100, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -165,8 +161,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
 
         headingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         headingLabel.setText("jLabel2");
-        headingLabel
-                .setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        headingLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         headingLabel.setPreferredSize(new java.awt.Dimension(100, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -176,12 +171,10 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         add(headingLabel, gridBagConstraints);
 
-        trainMaintenanceCostLabel
-                .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        trainMaintenanceCostLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         trainMaintenanceCostLabel.setText("jLabel3");
         trainMaintenanceCostLabel.setMaximumSize(getMaximumSize());
-        trainMaintenanceCostLabel.setPreferredSize(new java.awt.Dimension(100,
-                25));
+        trainMaintenanceCostLabel.setPreferredSize(new java.awt.Dimension(100, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
@@ -190,8 +183,7 @@ public class TrainSummaryJPanel extends javax.swing.JPanel implements
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         add(trainMaintenanceCostLabel, gridBagConstraints);
 
-        trainIncomeLabel
-                .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        trainIncomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         trainIncomeLabel.setText("jLabel1");
         trainIncomeLabel.setPreferredSize(new java.awt.Dimension(100, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();

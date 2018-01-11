@@ -25,7 +25,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This RepaintManager is intended to be used when we are using active rendering
@@ -65,14 +64,19 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         activelyRenderedComponents.add(f);
     }
 
+    private static boolean hasDifferentAncestor(JComponent aComponent) {
+        Container topLevelAncestor = aComponent.getTopLevelAncestor();
+
+        return null != topLevelAncestor && !activelyRenderedComponents.contains(topLevelAncestor);
+    }
+
     @Override
     public boolean isDoubleBufferingEnabled() {
         return false;
     }
 
     @Override
-    public synchronized void addDirtyRegion(JComponent c, int x, int y, int w,
-                                            int h) {
+    public synchronized void addDirtyRegion(JComponent c, int x, int y, int w, int h) {
         if (hasDifferentAncestor(c)) {
             super.addDirtyRegion(c, x, y, w, h);
             numDirtyRequests++;
@@ -109,12 +113,5 @@ public final class RepaintManagerForActiveRendering extends RepaintManager {
         } else {
             numRepaintRequests++;
         }
-    }
-
-    private static boolean hasDifferentAncestor(JComponent aComponent) {
-        Container topLevelAncestor = aComponent.getTopLevelAncestor();
-
-        return null != topLevelAncestor
-                && !activelyRenderedComponents.contains(topLevelAncestor);
     }
 }

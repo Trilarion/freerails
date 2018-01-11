@@ -61,8 +61,7 @@ public class OverviewMapJComponent extends JPanel {
         java.awt.Rectangle r = getVisibleRect();
         mapView.paintRect(g2, r);
         g2.setColor(Color.WHITE);
-        g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width,
-                mainMapVisRect.height);
+        g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width, mainMapVisRect.height);
     }
 
     @Override

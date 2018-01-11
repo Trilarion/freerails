@@ -41,13 +41,21 @@ import java.util.StringTokenizer;
  * Displays the map, the cursor, and user messages (which are stored on the
  * ModelRoot under the keys QUICK_MESSAGE and PERMANENT_MESSAGE).
  */
-public final class MapViewJComponentConcrete extends MapViewJComponent
-        implements ModelRootListener {
+public final class MapViewJComponentConcrete extends MapViewJComponent implements ModelRootListener {
     private static final long serialVersionUID = 3834868087706236208L;
 
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
 
     private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
+    /**
+     * Affects scroll direction and scroll speed relative to the cursor.
+     * Examples:
+     *
+     * 1 := grab map, move 1:1
+     *
+     * -2 := invert mouse, scroll twice as fast
+     */
+    private static final int LINEAR_ACCEL = -1;
     /**
      * A {@link Robot} to compensate mouse cursor movement.
      */
@@ -60,15 +68,6 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
         }
     }
 
-    /**
-     * Affects scroll direction and scroll speed relative to the cursor.
-     * Examples:
-     *
-     * 1 := grab map, move 1:1
-     *
-     * -2 := invert mouse, scroll twice as fast
-     */
-    private static final int LINEAR_ACCEL = -1;
     /**
      * The length of the array is the number of lines. This is necessary since
      * Graphics.drawString(..) doesn't know about newline characters
@@ -104,8 +103,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
         super.paintComponent(g);
 
         if (null != mapCursor && isFocusOwner()) {
-            mapCursor.paintCursor(g, new java.awt.Dimension(
-                    ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE));
+            mapCursor.paintCursor(g, new java.awt.Dimension(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE));
         }
 
         if (System.currentTimeMillis() < displayMessageUntil) {
@@ -114,8 +112,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
             g.setFont(USER_MESSAGE_FONT);
 
             for (int i = 0; i < userMessage.length; i++) {
-                g.drawString(userMessage[i], 50 + visRect.x, 50
-                        + visRect.y + i * 20);
+                g.drawString(userMessage[i], 50 + visRect.x, 50 + visRect.y + i * 20);
             }
         }
 
@@ -124,12 +121,9 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
             g.setColor(Color.lightGray);
             g.setFont(LARGE_MESSAGE_FONT);
 
-            int msgWidth = g.getFontMetrics(LARGE_MESSAGE_FONT).stringWidth(
-                    message);
+            int msgWidth = g.getFontMetrics(LARGE_MESSAGE_FONT).stringWidth(message);
             int msgHeight = g.getFontMetrics(LARGE_MESSAGE_FONT).getHeight();
-            g.drawString(message,
-                    (int) (visRect.x + (visRect.getWidth() - msgWidth) / 2),
-                    (int) (visRect.y + (visRect.getHeight() - msgHeight) / 2));
+            g.drawString(message, (int) (visRect.x + (visRect.getWidth() - msgWidth) / 2), (int) (visRect.y + (visRect.getHeight() - msgHeight) / 2));
         }
     }
 
@@ -139,8 +133,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
      * @param rr
      * @throws IOException
      */
-    public void setup(MapRenderer mv, ModelRootImpl mr, RendererRoot rr)
-            throws IOException {
+    public void setup(MapRenderer mv, ModelRootImpl mr, RendererRoot rr) throws IOException {
         super.setMapView(mv);
 
         setBorder(null);
@@ -164,10 +157,8 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
         Rectangle vr = getVisibleRect();
         Rectangle rectangleSurroundingCursor = new Rectangle(0, 0, 1, 1);
 
-        rectangleSurroundingCursor.setLocation((newPoint.x - 1)
-                * tileSize.width, (newPoint.y - 1) * tileSize.height);
-        rectangleSurroundingCursor.setSize(tileSize.width * 3,
-                tileSize.height * 3);
+        rectangleSurroundingCursor.setLocation((newPoint.x - 1) * tileSize.width, (newPoint.y - 1) * tileSize.height);
+        rectangleSurroundingCursor.setSize(tileSize.width * 3, tileSize.height * 3);
 
         if (!(vr.contains(rectangleSurroundingCursor))) {
             int x = newPoint.x * tileSize.width - vr.width / 2;
@@ -175,11 +166,9 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
             scrollRectToVisible(new Rectangle(x, y, vr.width, vr.height));
         }
 
-        repaint((newPoint.x - 1) * tileSize.width, (newPoint.y - 1)
-                * tileSize.height, tileSize.width * 3, tileSize.height * 3);
+        repaint((newPoint.x - 1) * tileSize.width, (newPoint.y - 1) * tileSize.height, tileSize.width * 3, tileSize.height * 3);
 
-        repaint((oldPoint.x - 1) * tileSize.width, (oldPoint.y - 1)
-                * tileSize.height, tileSize.width * 3, tileSize.height * 3);
+        repaint((oldPoint.x - 1) * tileSize.width, (oldPoint.y - 1) * tileSize.height, tileSize.width * 3, tileSize.height * 3);
     }
 
     /**
@@ -242,10 +231,6 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
      *
      * (3) If it was ModelRoot.PERMANENT_MESSAGE, display or hide the message as
      * appropriate.
-     *
-     * @param p
-     * @param newValue
-     * @param oldValue
      */
     @Override
     public void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue) {
@@ -311,24 +296,20 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
              * UserInputOnMapController
              */
             if (SwingUtilities.isRightMouseButton(e)) {
-                setCursor(Cursor
-                                .getPredefinedCursor((LINEAR_ACCEL > 0) ? Cursor.HAND_CURSOR
-                                        : Cursor.MOVE_CURSOR));
+                setCursor(Cursor.getPredefinedCursor((LINEAR_ACCEL > 0) ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
                 lastMouseLocation.x = e.getX();
                 lastMouseLocation.y = e.getY();
                 screenLocation.x = e.getX();
                 screenLocation.y = e.getY();
                 sigmadelta.x = 0;
                 sigmadelta.y = 0;
-                javax.swing.SwingUtilities.convertPointToScreen(screenLocation,
-                        MapViewJComponentConcrete.this);
+                javax.swing.SwingUtilities.convertPointToScreen(screenLocation, MapViewJComponentConcrete.this);
             }
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            setCursor(Cursor
-                    .getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
 
         @Override
@@ -346,10 +327,8 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
                 int GRANULARITY = 2 * LINEAR_ACCEL;
                 tiledelta.x = (sigmadelta.x * GRANULARITY) / tileSize;
                 tiledelta.y = (sigmadelta.y * GRANULARITY) / tileSize;
-                tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY)
-                        * LINEAR_ACCEL;
-                tiledelta.y = ((tiledelta.y * tileSize) / GRANULARITY)
-                        * LINEAR_ACCEL;
+                tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY) * LINEAR_ACCEL;
+                tiledelta.y = ((tiledelta.y * tileSize) / GRANULARITY) * LINEAR_ACCEL;
 
                 Rectangle vr = getVisibleRect();
                 Rectangle bounds = getBounds();
@@ -359,8 +338,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
                 if ((temp = vr.x - tiledelta.x) < 0) {
                     sigmadelta.x += temp / LINEAR_ACCEL;
                     tiledelta.x += temp;
-                } else if ((temp = (bounds.width) - (vr.x + vr.width)
-                        + tiledelta.x) < 0) {
+                } else if ((temp = (bounds.width) - (vr.x + vr.width) + tiledelta.x) < 0) {
                     sigmadelta.x -= temp / LINEAR_ACCEL;
                     tiledelta.x -= temp;
                 }
@@ -368,8 +346,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
                 if ((temp = vr.y - tiledelta.y) < 0) {
                     sigmadelta.y += temp / LINEAR_ACCEL;
                     tiledelta.y += temp;
-                } else if ((temp = (bounds.height) - (vr.y + vr.height)
-                        + tiledelta.y) < 0) {
+                } else if ((temp = (bounds.height) - (vr.y + vr.height) + tiledelta.y) < 0) {
                     sigmadelta.y -= temp / LINEAR_ACCEL;
                     tiledelta.y -= temp;
                 }
@@ -385,8 +362,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent
                     lastMouseLocation.y -= tiledelta.y;
                 }
 
-                MapViewJComponentConcrete.robot.mouseMove(screenLocation.x,
-                        screenLocation.y);
+                MapViewJComponentConcrete.robot.mouseMove(screenLocation.x, screenLocation.y);
             }
         }
     }

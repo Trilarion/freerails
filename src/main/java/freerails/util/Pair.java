@@ -90,8 +90,7 @@ public class Pair<A, B> {
     @Override
     public boolean equals(Object obj) {
         if (obj != null && getClass() == obj.getClass() && a != null && b != null) {
-            @SuppressWarnings("unchecked")
-            Pair<A, B> o = (Pair<A, B>) obj;
+            @SuppressWarnings("unchecked") Pair<A, B> o = (Pair<A, B>) obj;
             return a.equals(o.getA()) && b.equals(o.getB());
         }
         return false;

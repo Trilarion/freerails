@@ -21,10 +21,10 @@ package freerails.server;
 import freerails.controller.*;
 import freerails.network.MoveReceiver;
 import freerails.util.Point2D;
-import freerails.world.train.PositionOnTrack;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldDiffs;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.train.PositionOnTrack;
 
 import java.util.Iterator;
 
@@ -49,11 +49,9 @@ public class TrainPathFinder implements Iterator<Integer>, ServerAutomaton {
      * @param newMr
      * @param p
      */
-    public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w,
-                           int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
+    public TrainPathFinder(FlatTrackExplorer tx, ReadOnlyWorld w, int trainNumber, MoveReceiver newMr, FreerailsPrincipal p) {
         trackExplorer = tx;
-        stopsHandler = new TrainStopsHandler(trainNumber, p,
-                new WorldDiffs(w));
+        stopsHandler = new TrainStopsHandler(trainNumber, p, new WorldDiffs(w));
         mr = newMr;
     }
 
@@ -95,8 +93,7 @@ public class TrainPathFinder implements Iterator<Integer>, ServerAutomaton {
 
         int currentPosition = tempP.getOpposite().toInt();
         ReadOnlyWorld world = trackExplorer.getWorld();
-        PositionOnTrack[] t = FlatTrackExplorer.getPossiblePositions(world,
-                targetPoint);
+        PositionOnTrack[] t = FlatTrackExplorer.getPossiblePositions(world, targetPoint);
         int[] targets = new int[t.length];
 
         for (int i = 0; i < t.length; i++) {

@@ -21,9 +21,9 @@ package freerails.controller;
 import freerails.util.ImmutableList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.station.Station;
 import freerails.world.station.StationConversion;
 import freerails.world.station.StationDemand;
-import freerails.world.station.Station;
 import freerails.world.station.StationSupply;
 import freerails.world.terrain.*;
 import freerails.world.track.TrackRule;
@@ -40,8 +40,7 @@ import java.util.List;
  */
 public class CalcCargoSupplyRateAtStation {
 
-    private static final Logger logger = Logger
-            .getLogger(CalcCargoSupplyRateAtStation.class.getName());
+    private static final Logger logger = Logger.getLogger(CalcCargoSupplyRateAtStation.class.getName());
 
     /**
      * The threshold that demand for a cargo must exceed before the station
@@ -59,13 +58,9 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station does not exist yet.
      *
-     * @param world
-     * @param X
      * @param trackRuleNo the station type.
-     * @param Y
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y,
-                                        int trackRuleNo) {
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y, int trackRuleNo) {
         w = world;
         x = X;
         y = Y;
@@ -83,10 +78,6 @@ public class CalcCargoSupplyRateAtStation {
 
     /**
      * Call this constructor if the station already exists.
-     *
-     * @param world
-     * @param X
-     * @param Y
      */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
         this(world, X, Y, findTrackRule(X, Y, world));
@@ -121,11 +112,9 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
-        int tileTypeNumber = ((FullTerrainTile) w.getTile(i, j))
-                .getTerrainTypeID();
+        int tileTypeNumber = ((FullTerrainTile) w.getTile(i, j)).getTerrainTypeID();
 
-        TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES,
-                tileTypeNumber);
+        TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, tileTypeNumber);
 
         // Calculate supply.
         ImmutableList<TileProduction> production = terrainType.getProduction();
@@ -184,10 +173,8 @@ public class CalcCargoSupplyRateAtStation {
     public List<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
-        Rectangle stationRadiusRect = new Rectangle(x - stationRadius, y
-                - stationRadius, stationDiameter, stationDiameter);
-        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w
-                .getMapHeight());
+        Rectangle stationRadiusRect = new Rectangle(x - stationRadius, y - stationRadius, stationDiameter, stationDiameter);
+        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w.getMapHeight());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
         if (logger.isDebugEnabled()) {
             logger.debug("stationRadiusRect=" + stationRadiusRect);
@@ -215,9 +202,7 @@ public class CalcCargoSupplyRateAtStation {
     private void updateSupplyRate(int type, int rate) {
         // loop through supplies vector and increment the cargo values as
         // required
-        for (int n = 0; n < supplies.size(); n++) {
-            CargoElementObject tempElement = supplies.get(n);
-
+        for (CargoElementObject tempElement : supplies) {
             if (tempElement.getType() == type) {
                 // cargo types are the same, so increment the rate in supply
                 // with the rate.
@@ -232,7 +217,6 @@ public class CalcCargoSupplyRateAtStation {
      * Process each existing station, updating what is supplied to it.
      *
      * @param station A Station object to be processed
-     * @return
      */
     public Station calculations(Station station) {
         Integer[] cargoSupplied = new Integer[w.size(SKEY.CARGO_TYPES)];

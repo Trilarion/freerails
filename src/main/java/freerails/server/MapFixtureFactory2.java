@@ -21,7 +21,10 @@ package freerails.server;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.server.parser.Track_TilesHandlerImpl;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.SKEY;
+import freerails.world.World;
+import freerails.world.WorldImpl;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
@@ -48,8 +51,6 @@ public class MapFixtureFactory2 {
      * Returns a world object with a map of size 50*50, 4 players, and track,
      * terrain and cargo types as specified in the xml files used by the actual
      * game.
-     *
-     * @return
      */
     public static synchronized World getCopy() {
         if (null == w) {
@@ -65,8 +66,7 @@ public class MapFixtureFactory2 {
         WagonAndEngineTypesFactory.addTypesToWorld(world);
         tileFactory.addTerrainTileTypesList(world);
         URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
-        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(
-                track_xml_url);
+        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
 
         trackSetFactory.addTrackRules(world);
 

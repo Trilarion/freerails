@@ -34,8 +34,7 @@ import java.io.Serializable;
 public class ChangeTrainMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3257854272514242873L;
 
-    private ChangeTrainMove(int index, Serializable before,
-                            Serializable after, FreerailsPrincipal p) {
+    private ChangeTrainMove(int index, Serializable before, Serializable after, FreerailsPrincipal p) {
         super(KEY.TRAINS, index, before, after, p);
     }
 
@@ -47,8 +46,7 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * @param p
      * @return
      */
-    public static Move generateMove(int id, TrainModel before,
-                                    int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal p) {
+    public static Move generateMove(int id, TrainModel before, int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal p) {
         TrainModel after = before.getNewInstance(newEngine, newWagons);
 
         return new ChangeTrainMove(id, before, after, p);

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.top;
+package freerails.client;
 
 import freerails.client.launcher.Launcher;
 
@@ -57,8 +57,7 @@ public final class SynchronizedEventQueue extends EventQueue {
     public static synchronized void use() {
         if (!alreadyInUse) {
             /* set up the synchronized event queue */
-            EventQueue eventQueue = Toolkit.getDefaultToolkit()
-                    .getSystemEventQueue();
+            EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
             eventQueue.push(instance);
             alreadyInUse = true;
         }

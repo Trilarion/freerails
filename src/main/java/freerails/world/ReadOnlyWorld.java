@@ -78,30 +78,18 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the element mapped to the specified item.
-     *
-     * @param item
-     * @return
      */
 
     Serializable get(ITEM item);
 
     /**
      * Returns the element at the specified position in the specified list.
-     *
-     * @param p
-     * @param key
-     * @param index
-     * @return
      */
 
     Serializable get(FreerailsPrincipal p, KEY key, int index);
 
     /**
      * Returns the element at the specified position in the specified list.
-     *
-     * @param key
-     * @param index
-     * @return
      */
 
     Serializable get(SKEY key, int index);
@@ -127,15 +115,11 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the height of the map in tiles.
-     *
-     * @return
      */
     int getMapHeight();
 
     /**
      * Returns the width of the map in tiles.
-     *
-     * @return
      */
     int getMapWidth();
 
@@ -164,10 +148,6 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the tile at the specified position on the map.
-     *
-     * @param x
-     * @param y
-     * @return
      */
     Serializable getTile(int x, int y);
 
@@ -190,8 +170,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
      * @param i
      * @return
      */
-    Pair<Transaction, GameTime> getTransactionAndTimeStamp(
-            FreerailsPrincipal p, int i);
+    Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal p, int i);
 
     /**
      * @param p
@@ -201,26 +180,16 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
      * Returns the number of elements in the specified list.
-     *
-     * @param p
-     * @param key
-     * @return
      */
     int size(FreerailsPrincipal p, KEY key);
 
     /**
      * Returns the number of elements in the specified list.
-     *
-     * @param key
-     * @return
      */
     int size(SKEY key);
 
     /**
      * Returns number of active entities belonging to the specified principal.
-     *
-     * @param p
-     * @return
      */
     int size(FreerailsPrincipal p);
 }

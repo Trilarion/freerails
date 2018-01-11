@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.top;
+package freerails.client;
 
 import freerails.client.common.ActionAdapter;
 import freerails.client.common.ActionAdapter.MappedButtonModel;
@@ -31,21 +31,19 @@ import freerails.move.ChangeGameSpeedMove;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.LocalConnection;
-import freerails.network.MoveReceiver;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameSpeed;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
+import freerails.world.station.TrainBlueprint;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Enumeration;
@@ -54,16 +52,14 @@ import java.util.Random;
 /**
  * Creates and wires up the GUI components.
  */
-public class GUIComponentFactoryImpl implements GUIComponentFactory,
-        WorldMapListener, WorldListListener {
+public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapListener, WorldListListener {
 
     /**
      * Whether to show certain 'cheat' menus used for testing.
      */
     private static final boolean CHEAT = (System.getProperty("cheat") != null);
 
-    private static final Logger logger = Logger
-            .getLogger(GUIComponentFactoryImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
 
     private final ActionRoot actionRoot;
 
@@ -105,7 +101,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         modelRoot = mr;
         actionRoot = ar;
         userInputOnMapController = new UserInputOnMapController(modelRoot, ar);
-        buildMenu = new freerails.client.top.BuildMenu();
+        buildMenu = new BuildMenu();
         mapViewJComponent = new MapViewJComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
         Rectangle r = new Rectangle(10, 10, 10, 10);
@@ -113,8 +109,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         stationTypesPopup = new StationTypesPopup();
 
         MainMapAndOverviewMapMediator mediator = new MainMapAndOverviewMapMediator();
-        mediator.setup(overviewMapContainer, mainMapScrollPane1.getViewport(),
-                mapViewJComponent, r);
+        mediator.setup(overviewMapContainer, mainMapScrollPane1.getViewport(), mapViewJComponent, r);
 
         trainsJTabPane = new RHSJTabPane();
         datejLabel = new DateJLabel();
@@ -122,22 +117,18 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         cashjLabel = new CashJLabel();
 
         clientJFrame = new ClientJFrame(this);
-        dialogueBoxController = new DialogueBoxController(clientJFrame,
-                modelRoot);
+        dialogueBoxController = new DialogueBoxController(clientJFrame, modelRoot);
         actionRoot.setDialogueBoxController(dialogueBoxController);
 
         modelRoot.addSplitMoveReceiver(move -> {
             if (move instanceof ChangeGameSpeedMove) {
                 ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
-                for (Enumeration<Action> actionsEnum = speedActions
-                        .getActions(); actionsEnum.hasMoreElements(); ) {
+                for (Enumeration<Action> actionsEnum = speedActions.getActions(); actionsEnum.hasMoreElements(); ) {
                     Action action = actionsEnum.nextElement();
-                    String actionName = (String) action
-                            .getValue(Action.NAME);
+                    String actionName = (String) action.getValue(Action.NAME);
 
-                    if (actionName.equals(actionRoot.getServerControls()
-                            .getGameSpeedDesc(speedMove.getNewSpeed()))) {
+                    if (actionName.equals(actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed()))) {
                         speedActions.setSelectedItem(actionName);
                     }
 
@@ -145,15 +136,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
                 }
             }
         });
-        userMessageGenerator = new UserMessageGenerator(modelRoot,
-                actionRoot);
+        userMessageGenerator = new UserMessageGenerator(modelRoot, actionRoot);
         modelRoot.addCompleteMoveReceiver(userMessageGenerator);
 
     }
 
     private void countStations() {
-        WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
-                .getWorld(), modelRoot.getPrincipal());
+        WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
         enabled = stations.size() > 0;
@@ -163,8 +152,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
     }
 
     private void countTrains() {
-        WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, modelRoot
-                .getWorld(), modelRoot.getPrincipal());
+        WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, modelRoot.getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
         enabled = trains.size() > 0;
@@ -242,43 +230,34 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         displayMenu.addSeparator();
 
         // Add menu items to control what gets displayed on the map.
-        final JCheckBoxMenuItem showCargoMenuItem = new JCheckBoxMenuItem(
-                "Show cargo at stations", true);
+        final JCheckBoxMenuItem showCargoMenuItem = new JCheckBoxMenuItem("Show cargo at stations", true);
         displayMenu.add(showCargoMenuItem);
         showCargoMenuItem.addActionListener(e -> {
-            modelRoot.setProperty(
-                    ModelRoot.Property.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
+            modelRoot.setProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
             mapViewJComponent.refreshAll();
         });
 
-        final JCheckBoxMenuItem showStationNamesMenuItem = new JCheckBoxMenuItem(
-                "Show station names", true);
+        final JCheckBoxMenuItem showStationNamesMenuItem = new JCheckBoxMenuItem("Show station names", true);
         displayMenu.add(showStationNamesMenuItem);
         showStationNamesMenuItem.addActionListener(e -> {
-            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES,
-                    showStationNamesMenuItem.isSelected());
+            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES, showStationNamesMenuItem.isSelected());
             mapViewJComponent.refreshAll();
         });
 
-        final JCheckBoxMenuItem showStationBordersMenuItem = new JCheckBoxMenuItem(
-                "Show sphere-of-influence around stations", true);
+        final JCheckBoxMenuItem showStationBordersMenuItem = new JCheckBoxMenuItem("Show sphere-of-influence around stations", true);
         displayMenu.add(showStationBordersMenuItem);
         showStationBordersMenuItem.addActionListener(e -> {
-            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS,
-                    showStationBordersMenuItem.isSelected());
+            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS, showStationBordersMenuItem.isSelected());
             mapViewJComponent.refreshAll();
         });
 
-        final JCheckBoxMenuItem playSoundsMenuItem = new JCheckBoxMenuItem(
-                "Play sounds", false);
+        final JCheckBoxMenuItem playSoundsMenuItem = new JCheckBoxMenuItem("Play sounds", false);
         modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS, Boolean.FALSE);
         displayMenu.add(playSoundsMenuItem);
-        playSoundsMenuItem.addActionListener(e -> modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS,
-                playSoundsMenuItem.isSelected()));
+        playSoundsMenuItem.addActionListener(e -> modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS, playSoundsMenuItem.isSelected()));
         boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
 
-        final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem(
-                "Show FPS stats", showFps);
+        final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem("Show FPS stats", showFps);
         displayMenu.add(showFPSMenuItem);
         showFPSMenuItem.addActionListener(e -> {
             String newValue = String.valueOf(showFPSMenuItem.isSelected());
@@ -345,13 +324,11 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         speedActions = sc.getSetTargetTickPerSecondActions();
 
-        Enumeration<MappedButtonModel> buttonModels = speedActions
-                .getButtonModels();
+        Enumeration<MappedButtonModel> buttonModels = speedActions.getButtonModels();
         Enumeration<Action> actions = speedActions.getActions();
 
         while (buttonModels.hasMoreElements()) {
-            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(actions
-                    .nextElement());
+            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(actions.nextElement());
             mi.setModel(buttonModels.nextElement());
             group.add(mi);
             gameSpeedSubMenu.add(mi);
@@ -371,40 +348,30 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         if (CHEAT) {
             /* For testing. */
             final ActionListener build200trains = e -> {
-                WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS,
-                        modelRoot.getWorld(), modelRoot.getPrincipal());
+                WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
 
                 if (wi.next()) {
                     Random randy = new Random();
                     Station station = (Station) wi.getElement();
 
                     ImmutableList<TrainBlueprint> before = station.getProduction();
-                    int numberOfEngineTypes = modelRoot.getWorld().size(
-                            SKEY.ENGINE_TYPES) - 1;
-                    int numberOfcargoTypes = modelRoot.getWorld().size(
-                            SKEY.CARGO_TYPES) - 1;
+                    int numberOfEngineTypes = modelRoot.getWorld().size(SKEY.ENGINE_TYPES) - 1;
+                    int numberOfcargoTypes = modelRoot.getWorld().size(SKEY.CARGO_TYPES) - 1;
                     TrainBlueprint[] temp = new TrainBlueprint[200];
 
                     for (int i = 0; i < temp.length; i++) {
                         int engineType = randy.nextInt(numberOfEngineTypes);
-                        Integer[] wagonTypes = new Integer[]{
-                                randy.nextInt(numberOfcargoTypes),
-                                randy.nextInt(numberOfcargoTypes),
-                                randy.nextInt(numberOfcargoTypes)};
-                        TrainBlueprint trainBlueprint = new TrainBlueprint(
-                                engineType, wagonTypes);
+                        Integer[] wagonTypes = new Integer[]{randy.nextInt(numberOfcargoTypes), randy.nextInt(numberOfcargoTypes), randy.nextInt(numberOfcargoTypes)};
+                        TrainBlueprint trainBlueprint = new TrainBlueprint(engineType, wagonTypes);
                         temp[i] = trainBlueprint;
                     }
-                    ImmutableList<TrainBlueprint> after = new ImmutableList<>(
-                            temp);
-                    Move m = new ChangeProductionAtEngineShopMove(before,
-                            after, wi.getIndex(), modelRoot.getPrincipal());
+                    ImmutableList<TrainBlueprint> after = new ImmutableList<>(temp);
+                    Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
                     modelRoot.doMove(m);
                 }
             };
 
-            JMenuItem build200TrainsMenuItem = new JMenuItem(
-                    "Build 200 trains!");
+            JMenuItem build200TrainsMenuItem = new JMenuItem("Build 200 trains!");
             build200TrainsMenuItem.addActionListener(build200trains);
             gameMenu.add(build200TrainsMenuItem);
         }
@@ -428,8 +395,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         showControls.addActionListener(e -> dialogueBoxController.showGameControls());
 
         JMenuItem showJavaProperties = new JMenuItem("Show Java Properties");
-        showJavaProperties
-                .addActionListener(e -> dialogueBoxController.showJavaProperties());
+        showJavaProperties.addActionListener(e -> dialogueBoxController.showJavaProperties());
 
         helpMenu.add(showControls);
         helpMenu.add(how2play);
@@ -505,8 +471,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      * @param principal
      */
     public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
-        boolean rightPrincipal = principal
-                .equals(modelRoot.getPrincipal());
+        boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
             countTrains();
@@ -530,8 +495,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      * @param principal
      */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-        boolean rightPrincipal = principal
-                .equals(modelRoot.getPrincipal());
+        boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
             countTrains();
@@ -546,10 +510,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
-     *
-     * @param vl
-     * @param w
-     * @throws java.io.IOException
      */
     public void setup(RendererRoot vl, ReadOnlyWorld w) throws IOException {
         /*
@@ -560,10 +520,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
          */
         Point2D cursorPosition = new Point2D(0, 0);
         if (null != world) {
-            if (w.getMapWidth() == world.getMapWidth()
-                    && w.getMapHeight() == world.getMapHeight()) {
-                cursorPosition = (Point2D) modelRoot
-                        .getProperty(ModelRoot.Property.CURSOR_POSITION);
+            if (w.getMapWidth() == world.getMapWidth() && w.getMapHeight() == world.getMapHeight()) {
+                cursorPosition = (Point2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
             }
         }
         world = w;
@@ -571,9 +529,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         modelRoot.addListListener(this);
 
         if (!vl.validate(world)) {
-            throw new IllegalArgumentException("The specified"
-                    + " RendererRoot are not compatible with the clients"
-                    + "world!");
+            throw new IllegalArgumentException("The specified" + " RendererRoot are not compatible with the clients" + "world!");
         }
 
         // create the main and overview maps
@@ -582,18 +538,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         Dimension maxSize = new Dimension(200, 200);
         overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
 
-        stationTypesPopup.setup(modelRoot, actionRoot, mainMap
-                .getStationRadius());
+        stationTypesPopup.setup(modelRoot, actionRoot, mainMap.getStationRadius());
 
         mapViewJComponent.setup(mainMap, modelRoot, vl);
 
         // setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
-        userInputOnMapController.setup(mapViewJComponent, actionRoot
-                        .getTrackMoveProducer(), stationTypesPopup, modelRoot,
-                dialogueBoxController,
-                getBuildTrackController());
+        userInputOnMapController.setup(mapViewJComponent, actionRoot.getTrackMoveProducer(), stationTypesPopup, modelRoot, dialogueBoxController, getBuildTrackController());
 
         buildMenu.setup(actionRoot);
         mainMapScrollPane1.setViewportView(mapViewJComponent);
@@ -606,14 +558,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         dialogueBoxController.setup(modelRoot, vl);
 
-        StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(),
-                mapViewJComponent);
+        StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
         int gameSpeed = ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
 
         /* Set the selected game speed radio button. */
-        String actionName = actionRoot.getServerControls().getGameSpeedDesc(
-                gameSpeed);
+        String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);
         userMessageGenerator.logSpeed();
 
@@ -625,8 +575,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
         countTrains();
 
         String name = modelRoot.getPrincipal().getName();
-        String serverDetails = (String) modelRoot
-                .getProperty(ModelRoot.Property.SERVER);
+        String serverDetails = (String) modelRoot.getProperty(ModelRoot.Property.SERVER);
         String frameTitle;
         if (serverDetails.equals(LocalConnection.SERVER_IN_SAME_JVM)) {
             frameTitle = name + " - Freerails";
@@ -636,8 +585,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
         clientJFrame.setTitle(frameTitle);
         isSetup = true;
-        modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION,
-                cursorPosition);
+        modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, cursorPosition);
         mapViewJComponent.requestFocus();
     }
 
@@ -662,8 +610,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory,
 
             // Fix for bug 967673 (Crash when building track close to edge of
             // map).
-            Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world
-                    .getMapHeight());
+            Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
             tilesChanged = tilesChanged.intersection(mapRect);
 
             for (tile.x = tilesChanged.x; tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {

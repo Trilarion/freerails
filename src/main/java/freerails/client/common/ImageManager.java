@@ -57,6 +57,5 @@ public interface ImageManager {
      * @return
      * @throws IOException
      */
-    Image getScaledImage(String relativeFilename, int height)
-            throws IOException;
+    Image getScaledImage(String relativeFilename, int height) throws IOException;
 }

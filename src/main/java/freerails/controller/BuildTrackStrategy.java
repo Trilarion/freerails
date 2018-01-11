@@ -31,7 +31,6 @@ import freerails.world.track.TrackRule;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A BuildTrackStrategy determines which track types to build (or upgrade to) on
@@ -53,8 +52,7 @@ public class BuildTrackStrategy {
      * @param w
      * @return
      */
-    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID,
-                                                           ReadOnlyWorld w) {
+    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld w) {
         int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {
@@ -70,8 +68,7 @@ public class BuildTrackStrategy {
      * @param w
      * @return
      */
-    public static BuildTrackStrategy getMultipleRuleInstance(
-            Iterable<Integer> ruleIDs, ReadOnlyWorld w) {
+    public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, ReadOnlyWorld w) {
         int[] rulesArray = generateRules(ruleIDs, w);
         return new BuildTrackStrategy(rulesArray);
     }
@@ -88,16 +85,13 @@ public class BuildTrackStrategy {
         return new BuildTrackStrategy(generateRules(allowable, w));
     }
 
-    private static Integer getCheapest(TrackCategories category,
-                                       ReadOnlyWorld w) {
+    private static Integer getCheapest(TrackCategories category, ReadOnlyWorld w) {
         TrackRule cheapest = null;
         Integer cheapestID = null;
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
             TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
             if (rule.getCategory() == category) {
-                if (null == cheapest
-                        || cheapest.getPrice().getAmount() > rule.getPrice()
-                        .getAmount()) {
+                if (null == cheapest || cheapest.getPrice().getAmount() > rule.getPrice().getAmount()) {
                     cheapest = rule;
                     cheapestID = i;
                 }
@@ -106,20 +100,16 @@ public class BuildTrackStrategy {
         return cheapestID;
     }
 
-    private static int[] generateRules(Iterable<Integer> allowable,
-                                       ReadOnlyWorld w) {
+    private static int[] generateRules(Iterable<Integer> allowable, ReadOnlyWorld w) {
         int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {
-            TerrainType terrainType = (TerrainType) w
-                    .get(SKEY.TERRAIN_TYPES, i);
+            TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
             newRules[i] = -1; // the default value.
             for (Integer rule : allowable) {
                 if (null != rule) {
-                    TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES,
-                            rule);
-                    if (trackRule.canBuildOnThisTerrainType(terrainType
-                            .getCategory())) {
+                    TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, rule);
+                    if (trackRule.canBuildOnThisTerrainType(terrainType.getCategory())) {
                         newRules[i] = rule;
                         break;
                     }

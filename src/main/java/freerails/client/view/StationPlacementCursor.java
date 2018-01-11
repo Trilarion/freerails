@@ -53,27 +53,22 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private boolean buildEnabled;
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
         public void propertyChange(PropertyChangeEvent evt) {
-            if (evt.getPropertyName().equals(
-                    StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
+            if (evt.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
                 /* update the renderer pos */
                 Point p = (Point) evt.getNewValue();
                 stationRadiusRenderer.setPosition(p.x, p.y);
 
                 if (stationBuildModel.canBuildStationHere()) {
-                    stationRadiusRenderer
-                            .setBorderColor(StationRadiusRenderer.COLOR_OK);
+                    stationRadiusRenderer.setBorderColor(StationRadiusRenderer.COLOR_OK);
                 } else {
-                    stationRadiusRenderer
-                            .setBorderColor(StationRadiusRenderer.COLOR_CANNOT_BUILD);
+                    stationRadiusRenderer.setBorderColor(StationRadiusRenderer.COLOR_CANNOT_BUILD);
                 }
-            } else if (evt.getPropertyName().equals(
-                    StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
+            } else if (evt.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_RADIUS_KEY)) {
                 Integer radius = (Integer) evt.getNewValue();
                 stationRadiusRenderer.setRadius(radius);
             }
 
-            boolean enabled = stationBuildModel.getStationBuildAction()
-                    .isEnabled();
+            boolean enabled = stationBuildModel.getStationBuildAction().isEnabled();
 
             if (buildEnabled != enabled) {
                 if (enabled) {
@@ -83,8 +78,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
                 } else {
                     stationRadiusRenderer.hide();
                     mapView.removeMouseListener(StationPlacementCursor.this);
-                    mapView
-                            .removeMouseMotionListener(StationPlacementCursor.this);
+                    mapView.removeMouseMotionListener(StationPlacementCursor.this);
                 }
 
                 buildEnabled = enabled;
@@ -92,8 +86,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     };
 
-    private StationPlacementCursor(ActionRoot actionRoot,
-                                   StationRadiusRenderer srr, MapViewJComponent mapView) {
+    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewJComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();
@@ -107,10 +100,8 @@ public class StationPlacementCursor extends MouseInputAdapter {
      * @param srr
      * @param mapView
      */
-    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr,
-                              MapViewJComponent mapView) {
-        StationPlacementCursor spc = new StationPlacementCursor(actionRoot,
-                srr, mapView);
+    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewJComponent mapView) {
+        StationPlacementCursor spc = new StationPlacementCursor(actionRoot, srr, mapView);
         spc.init();
     }
 
@@ -124,8 +115,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
             mapView.removeMouseListener(this);
             mapView.removeMouseMotionListener(this);
         }
-        stationBuildModel.getStationBuildAction().addPropertyChangeListener(
-                buildActionListener);
+        stationBuildModel.getStationBuildAction().addPropertyChangeListener(buildActionListener);
     }
 
     @Override
@@ -134,12 +124,10 @@ public class StationPlacementCursor extends MouseInputAdapter {
 
         if (button == MouseEvent.BUTTON1) {
             /* attempt to build */
-            stationBuildModel.getStationBuildAction().actionPerformed(
-                    new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+            stationBuildModel.getStationBuildAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         } else if (button == MouseEvent.BUTTON3) {
             /* cancel the build */
-            stationBuildModel.getStationCancelAction().actionPerformed(
-                    new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+            stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         }
     }
 
@@ -158,9 +146,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
         if (stationBuildModel.isPositionFollowsMouse()) {
             Point p = e.getPoint();
             Point mapCoord = new Point((int) (p.x / scale), (int) (p.y / scale));
-            stationBuildModel.getStationBuildAction().putValue(
-                    StationBuildModel.StationBuildAction.STATION_POSITION_KEY,
-                    mapCoord);
+            stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, mapCoord);
         }
     }
 

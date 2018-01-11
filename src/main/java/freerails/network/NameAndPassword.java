@@ -50,8 +50,7 @@ public class NameAndPassword implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof NameAndPassword))
-            return false;
+        if (!(obj instanceof NameAndPassword)) return false;
         NameAndPassword test = (NameAndPassword) obj;
         return test.password.equals(password) && test.username.equals(username);
     }

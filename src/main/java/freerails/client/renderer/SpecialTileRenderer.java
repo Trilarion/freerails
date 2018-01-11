@@ -35,8 +35,7 @@ import java.io.IOException;
  * A special tile's icon gets drawn over the icon of a normal tile.
  */
 public final class SpecialTileRenderer extends AbstractTileRenderer {
-    private static final Logger logger = Logger
-            .getLogger(SpecialTileRenderer.class.getName());
+    private static final Logger logger = Logger.getLogger(SpecialTileRenderer.class.getName());
 
     private final TileRenderer parentTileView;
 
@@ -48,9 +47,7 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
      * @param w
      * @throws IOException
      */
-    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues,
-                               TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w)
-            throws IOException {
+    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
         setTileIcons(new Image[1]);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
@@ -66,8 +63,7 @@ public final class SpecialTileRenderer extends AbstractTileRenderer {
      * @param w
      */
     @Override
-    public void renderTile(java.awt.Graphics g, int screenX, int screenY,
-                           int mapX, int mapY, ReadOnlyWorld w) {
+    public void renderTile(java.awt.Graphics g, int screenX, int screenY, int mapX, int mapY, ReadOnlyWorld w) {
         if (parentTileView != null) {
             parentTileView.renderTile(g, screenX, screenY, mapX, mapY, w);
         } else {

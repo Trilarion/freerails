@@ -22,16 +22,14 @@
  */
 package experimental;
 
+import freerails.client.GUIComponentFactory;
 import freerails.client.renderer.BlankMapRenderer;
-import freerails.client.top.GUIComponentFactory;
 import freerails.client.view.MainMapAndOverviewMapMediator;
 import freerails.client.view.MapViewJComponentConcrete;
 import freerails.client.view.OverviewMapJComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * This GUIComponentFactory creates simple components that can be used to test
@@ -157,11 +155,9 @@ public class SimpleComponentFactoryImpl2 implements GUIComponentFactory {
     }
 
     private void addMainMapAndOverviewMapMediatorIfNecessary() {
-        if (mainMap != null && overviewMap != null
-                && null == mediator) {
+        if (mainMap != null && overviewMap != null && null == mediator) {
             // Rectangle r = this.overviewMap.getMainMapVisibleRect();
-            mediator = new MainMapAndOverviewMapMediator(overviewMap,
-                    mainMapScrollPane1.getViewport(), mainMap, r);
+            mediator = new MainMapAndOverviewMapMediator(overviewMap, mainMapScrollPane1.getViewport(), mainMap, r);
         }
     }
 

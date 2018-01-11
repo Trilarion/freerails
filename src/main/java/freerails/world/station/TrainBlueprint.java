@@ -52,15 +52,12 @@ public class TrainBlueprint implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof TrainBlueprint))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof TrainBlueprint)) return false;
 
         final TrainBlueprint productionAtEngineShop = (TrainBlueprint) obj;
 
-        if (engineType != productionAtEngineShop.engineType)
-            return false;
+        if (engineType != productionAtEngineShop.engineType) return false;
         return wagonTypes.equals(productionAtEngineShop.wagonTypes);
     }
 

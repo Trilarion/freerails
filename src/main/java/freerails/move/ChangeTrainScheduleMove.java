@@ -20,7 +20,6 @@ package freerails.move;
 
 import freerails.world.KEY;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.train.ImmutableSchedule;
 
 import java.io.Serializable;
 
@@ -36,8 +35,7 @@ public class ChangeTrainScheduleMove extends ChangeItemInListMove {
      * @param after
      * @param p
      */
-    public ChangeTrainScheduleMove(int id, Serializable before,
-                                   Serializable after, FreerailsPrincipal p) {
+    public ChangeTrainScheduleMove(int id, Serializable before, Serializable after, FreerailsPrincipal p) {
         super(KEY.TRAIN_SCHEDULES, id, before, after, p);
     }
 }

@@ -74,8 +74,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
                 if (null == submitButtonCallBack) {
                     System.err.println("mouseClicked");
                 } else {
-                    submitButtonCallBack.actionPerformed(new ActionEvent(this,
-                            0, null));
+                    submitButtonCallBack.actionPerformed(new ActionEvent(this, 0, null));
                 }
             }
         };
@@ -93,8 +92,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     private JList getPlayersList() {
         if (playersList == null) {
             playersList = new JList();
-            playersList
-                    .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+            playersList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
             playersList.setRequestFocusEnabled(false);
             playersList.setEnabled(true);
 
@@ -117,11 +115,9 @@ public class LeaderBoardJPanel extends JPanel implements View {
             PlayerDetails details = new PlayerDetails();
             FreerailsPrincipal principle = w.getPlayer(player).getPrincipal();
             details.name = principle.getName();
-            WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, w,
-                    principle);
+            WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, w, principle);
             details.stations = stations.size();
-            TransactionAggregator networth = new NetWorthCalculator(w,
-                    principle);
+            TransactionAggregator networth = new NetWorthCalculator(w, principle);
             details.networth = networth.calculateValue();
             values.add(details);
         }

@@ -23,6 +23,7 @@ import freerails.util.Utils;
 import java.io.Serializable;
 
 // TODO how is this different from ITEM?
+
 /**
  * Provides a set of keys to access the lists of elements in the game
  * world that are indexed by player.
@@ -32,64 +33,29 @@ import java.io.Serializable;
  */
 @freerails.util.InstanceControlled
 public class KEY implements Serializable {
-    private static final long serialVersionUID = 3257572793275987001L;
 
+    private static final long serialVersionUID = 3257572793275987001L;
     /**
      * Maps key numbers to KEYs.
      */
     private static final KEY[] keys = new KEY[15];
 
-    // START OF KEYS
-
-    /**
-     *
-     */
     public static final KEY TRAINS = new KEY();
-
-    // public static final KEY TRAIN_POSITIONS = new KEY();
-
-    /**
-     *
-     */
-
     public static final KEY STATIONS = new KEY();
-
-    /**
-     * The cargo waiting at stations or carried by trains.
-     */
     public static final KEY CARGO_BUNDLES = new KEY();
-
-    /**
-     *
-     */
     public static final KEY TRAIN_SCHEDULES = new KEY();
 
-    // END OF KEYS
     private static int numberOfKeys;
-
-    private final int keyNumber;
+    private final int keyID;
 
     private KEY() {
-        keyNumber = numberOfKeys;
-        keys[keyNumber] = this;
+        keyID = numberOfKeys;
+        keys[keyID] = this;
         numberOfKeys++;
     }
 
     public static int getNumberOfKeys() {
         return numberOfKeys;
-    }
-
-    int getKeyID() {
-        return keyNumber;
-    }
-
-    protected Object readResolve() {
-        return keys[keyNumber];
-    }
-
-    @Override
-    public String toString() {
-        return Utils.findConstantFieldName(this);
     }
 
     /**
@@ -98,5 +64,18 @@ public class KEY implements Serializable {
      */
     public static KEY getKey(int keyNum) {
         return keys[keyNum];
+    }
+
+    int getKeyID() {
+        return keyID;
+    }
+
+    protected Object readResolve() {
+        return keys[keyID];
+    }
+
+    @Override
+    public String toString() {
+        return Utils.findConstantFieldName(this);
     }
 }

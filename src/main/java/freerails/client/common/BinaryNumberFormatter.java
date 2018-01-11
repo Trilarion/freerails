@@ -39,14 +39,11 @@ public class BinaryNumberFormatter {
         int maxValue = 1 << (bits);
 
         if (i < 0) {
-            throw new IllegalArgumentException(
-                    "i must be greater than 0.  It was " + i);
+            throw new IllegalArgumentException("i must be greater than 0.  It was " + i);
         }
 
         if (i >= maxValue) {
-            throw new IllegalArgumentException("i must be less than "
-                    + maxValue + ".  It was " + i + " ("
-                    + Integer.toString(i, 2) + ')');
+            throw new IllegalArgumentException("i must be less than " + maxValue + ".  It was " + i + " (" + Integer.toString(i, 2) + ')');
         }
 
         String s = Integer.toString(i + maxValue, 2);

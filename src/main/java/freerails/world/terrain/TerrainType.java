@@ -24,6 +24,7 @@ import freerails.world.finances.Money;
 import java.io.Serializable;
 
 // TODO are these things all
+
 /**
  * Defines the methods to access the properties of a type of terrains.
  */
@@ -55,6 +56,7 @@ public interface TerrainType extends Serializable {
     int getRGB();
 
     // TODO replace ImmutableList  with List
+
     /**
      * @return
      */

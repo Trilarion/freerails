@@ -52,24 +52,17 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
 
     /**
      * Call this method once a month.
-     *
-     * @param w
-     * @param moveReceiver
      */
     public void update(World w, MoveReceiver moveReceiver) {
         for (int k = 0; k < w.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = w.getPlayer(k).getPrincipal();
 
-            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(KEY.STATIONS,
-                    w, principal);
+            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
 
             while (nonNullStations.next()) {
-                Station station = (Station) nonNullStations
-                        .getElement();
+                Station station = (Station) nonNullStations.getElement();
                 StationSupply supply = station.getSupply();
-                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) w
-                        .get(principal, KEY.CARGO_BUNDLES, station
-                                .getCargoBundleID());
+                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
                 MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
                 MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
                 int stationNumber = nonNullStations.getIndex();
@@ -79,8 +72,7 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
                  * ConcurrentModificationException if the amount gets set to
                  * zero and the CargoBatch removed from the cargo bundle. LL
                  */
-                Iterator<CargoBatch> it = after.toImmutableCargoBundle()
-                        .cargoBatchIterator();
+                Iterator<CargoBatch> it = after.toImmutableCargoBundle().cargoBatchIterator();
 
                 while (it.hasNext()) {
                     CargoBatch cb = it.next();
@@ -96,27 +88,20 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cb = new CargoBatch(i, station.x, station.y,
-                                0, stationNumber);
+                        CargoBatch cb = new CargoBatch(i, station.x, station.y, 0, stationNumber);
                         int amountAlready = after.getAmount(cb);
 
                         // Obtain the month
                         GameTime time = w.currentTime();
-                        GameCalendar calendar = (GameCalendar) w
-                                .get(ITEM.CALENDAR);
+                        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
                         int month = calendar.getMonth(time.getTicks());
 
-                        int amountAfter = calculateAmountToAdd(amountSupplied,
-                                month)
-                                + amountAlready;
+                        int amountAfter = calculateAmountToAdd(amountSupplied, month) + amountAlready;
                         after.setAmount(cb, amountAfter);
                     }
                 }
 
-                Move m = new ChangeCargoBundleMove(before
-                        .toImmutableCargoBundle(), after
-                        .toImmutableCargoBundle(), station.getCargoBundleID(),
-                        principal);
+                Move m = new ChangeCargoBundleMove(before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), station.getCargoBundleID(), principal);
                 moveReceiver.process(m);
             }
         }

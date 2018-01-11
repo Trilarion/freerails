@@ -24,6 +24,7 @@ package freerails.world.cargo;
 import java.util.Iterator;
 
 // TODO should the amount already be included in the cargo batch
+
 /**
  * Holds a number of cargo batches with an amount for each cargo batch.
  *
@@ -60,13 +61,10 @@ public interface CargoBatchBundle {
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBatchBundle has changed since the
      * iterator was acquired.
-     *
-     * @return
      */
     Iterator<CargoBatch> cargoBatchIterator();
 
     /**
-     * @param cargoBatch
      * @return True if this cargo batch is contained.
      */
     boolean contains(CargoBatch cargoBatch);

@@ -72,8 +72,7 @@ public class TrainSummeryModel {
     public Money findTrainIncome(int trainNum) {
         int numberOfTransactions = world.getNumberOfTransactions(principal);
         long currentTime = System.currentTimeMillis();
-        if (lastUpdate + MINIMUM_WAIT_TIME > currentTime
-                || numberOfTransactions == lastNrOfTransactions) {
+        if (lastUpdate + MINIMUM_WAIT_TIME > currentTime || numberOfTransactions == lastNrOfTransactions) {
             // not necessary ...
             Money m = lastTrainIncome.get(trainNum);
             if (m != null) {
@@ -84,8 +83,7 @@ public class TrainSummeryModel {
             lastNrOfTransactions = numberOfTransactions;
             lastUpdate = currentTime;
         }
-        IncomeStatementGenerator income = new IncomeStatementGenerator(world,
-                principal);
+        IncomeStatementGenerator income = new IncomeStatementGenerator(world, principal);
         maxTrainNum = Math.max(maxTrainNum, trainNum);
         Money[] m = new Money[maxTrainNum + 1];
         income.calTrainRevenue(m);
@@ -109,19 +107,16 @@ public class TrainSummeryModel {
         }
         lastStationUpdate = currentTime;
         TrainOrdersModel orders = null;
-        TrainOrdersListModel ordersList = new TrainOrdersListModel(world,
-                trainNum, principal);
+        TrainOrdersListModel ordersList = new TrainOrdersListModel(world, trainNum, principal);
         int size = ordersList.getSize();
         for (int i = 0; i < size; ++i) {
-            TrainOrdersListElement element = (TrainOrdersListElement) ordersList
-                    .getElementAt(i);
+            TrainOrdersListElement element = (TrainOrdersListElement) ordersList.getElementAt(i);
             if (element.gotoStatus == TrainOrdersListModel.GOTO_NOW) {
                 orders = element.order;
                 break;
             }
         }
-        Station station = (Station) world.get(principal,
-                KEY.STATIONS, orders.getStationID());
+        Station station = (Station) world.get(principal, KEY.STATIONS, orders.getStationID());
         String stationName = station.getStationName();
         lastStations.put(trainNum, stationName);
         return stationName;

@@ -54,17 +54,13 @@ public class LogOnResponse implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof LogOnResponse))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof LogOnResponse)) return false;
 
         final LogOnResponse logOnResponse = (LogOnResponse) obj;
 
-        if (playerNumber != logOnResponse.playerNumber)
-            return false;
-        if (successful != logOnResponse.successful)
-            return false;
+        if (playerNumber != logOnResponse.playerNumber) return false;
+        if (successful != logOnResponse.successful) return false;
         return message != null ? message.equals(logOnResponse.message) : logOnResponse.message == null;
     }
 

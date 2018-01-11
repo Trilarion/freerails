@@ -22,7 +22,6 @@ import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.MoveReceiver;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.World;
 import freerails.world.WorldConstants;
 import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
@@ -42,8 +41,7 @@ public class BondInterestMoveGenerator {
         moveReceiver = mr;
     }
 
-    private static Move generateMove(ReadOnlyWorld w,
-                                     FreerailsPrincipal principal) {
+    private static Move generateMove(ReadOnlyWorld w, FreerailsPrincipal principal) {
         long interestDue = 0;
 
         for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
@@ -53,13 +51,11 @@ public class BondInterestMoveGenerator {
                 BondItemTransaction bt = (BondItemTransaction) t;
                 int interestRate = bt.getType();
                 long bondAmount = WorldConstants.BOND_VALUE_ISSUE.getAmount();
-                interestDue += (interestRate * bondAmount / 100)
-                        * bt.getQuantity();
+                interestDue += (interestRate * bondAmount / 100) * bt.getQuantity();
             }
         }
 
-        Transaction t = new MoneyTransaction(new Money(-interestDue),
-                TransactionCategory.INTEREST_CHARGE);
+        Transaction t = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
 
         return new AddTransactionMove(principal, t);
     }

@@ -31,6 +31,7 @@ public class StationSupply implements Serializable {
     private final ImmutableList<Integer> supply;
 
     // TODO what is the meaning of cargoWaiting and do we need it?
+
     /**
      * @param cargoWaiting
      */
@@ -39,12 +40,10 @@ public class StationSupply implements Serializable {
     }
 
     // TODO why is cargType an int, not the class from world.cargo
+
     /**
      * Returns the number of car loads of the specified cargo that the station
      * supplies per year.
-     *
-     * @param cargoType
-     * @return
      */
     public int getSupply(int cargoType) {
         return supply.get(cargoType);
@@ -52,10 +51,8 @@ public class StationSupply implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof StationSupply))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof StationSupply)) return false;
 
         final StationSupply stationSupply = (StationSupply) obj;
 

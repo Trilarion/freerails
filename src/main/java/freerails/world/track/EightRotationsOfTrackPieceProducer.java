@@ -75,8 +75,7 @@ public class EightRotationsOfTrackPieceProducer {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
                 if (railsList[x][y]) {
-                    trackGraphicNumber = trackGraphicNumber
-                            | (1 << (3 * y + x));
+                    trackGraphicNumber = trackGraphicNumber | (1 << (3 * y + x));
                 }
             }
         }
@@ -86,12 +85,9 @@ public class EightRotationsOfTrackPieceProducer {
 
     private static boolean[][] rotateTrackNodeClockwise(boolean[][] source) {
         Point[][] grabValueFrom = new Point[3][];
-        grabValueFrom[0] = new Point[]{new Point(0, 1), new Point(0, 0),
-                new Point(1, 0)};
-        grabValueFrom[1] = new Point[]{new Point(0, 2), new Point(1, 1),
-                new Point(2, 0)};
-        grabValueFrom[2] = new Point[]{new Point(1, 2), new Point(2, 2),
-                new Point(2, 1)};
+        grabValueFrom[0] = new Point[]{new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+        grabValueFrom[1] = new Point[]{new Point(0, 2), new Point(1, 1), new Point(2, 0)};
+        grabValueFrom[2] = new Point[]{new Point(1, 2), new Point(2, 2), new Point(2, 1)};
 
         /*
          * I think there is a neater way of doing this, let me know if you know

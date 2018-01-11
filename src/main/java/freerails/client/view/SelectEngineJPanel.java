@@ -81,10 +81,8 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(canceljButton, gridBagConstraints);
 
-        jList1
-                .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1
-                .addListSelectionListener(this::jList1ValueChanged);
+        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.addListSelectionListener(this::jList1ValueChanged);
 
         jScrollPane1.setViewportView(jList1);
 
@@ -121,8 +119,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
 
-        jList1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(),
-                SKEY.ENGINE_TYPES));
+        jList1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), SKEY.ENGINE_TYPES));
         jList1.setCellRenderer(new TrainCellRenderer(vl));
         okjButton.addActionListener(closeAction);
     }
@@ -141,8 +138,6 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     /**
      * Returns the number of the currently selected engine type.
-     *
-     * @return
      */
     public int getEngineType() {
         return jList1.getSelectedIndex();
@@ -166,12 +161,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
                                                       boolean cellHasFocus) /* the list and the cell have the focus */ {
 
             EngineType engine = (EngineType) value;
-            String text = "<html><body>" + (isSelected ? "<strong>" : "")
-                    + engine.getEngineTypeName() + "<br>"
-                    + engine.getMaxSpeed() + " m.p.h. "
-                    + engine.getPowerAtDrawbar() + " hp $"
-                    + engine.getPrice().toString()
-                    + (isSelected ? "</strong>" : "") + "</body></html>";
+            String text = "<html><body>" + (isSelected ? "<strong>" : "") + engine.getEngineTypeName() + "<br>" + engine.getMaxSpeed() + " m.p.h. " + engine.getPowerAtDrawbar() + " hp $" + engine.getPrice().toString() + (isSelected ? "</strong>" : "") + "</body></html>";
 
             JLabel label = savesJLabels.get(text);
             if (label == null) {
@@ -181,8 +171,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
                 int height = image.getHeight(null);
                 int width = image.getWidth(null);
                 int scale = height / 50;
-                Icon icon = new ImageIcon(image.getScaledInstance(width
-                        / scale, height / scale, Image.SCALE_FAST));
+                Icon icon = new ImageIcon(image.getScaledInstance(width / scale, height / scale, Image.SCALE_FAST));
                 label.setIcon(icon);
                 savesJLabels.put(text, label);
             }

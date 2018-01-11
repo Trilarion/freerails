@@ -48,13 +48,11 @@ public class TrainMaintenanceMoveGenerator {
         moveReceiver = mr;
     }
 
-    private static Move generateMove(World w,
-                                     FreerailsPrincipal principal) {
+    private static Move generateMove(World w, FreerailsPrincipal principal) {
         WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, w, principal);
         int numberOfTrains = trains.size();
         long amount = numberOfTrains * 5000;
-        Transaction t = new MoneyTransaction(new Money(-amount),
-                TransactionCategory.TRAIN_MAINTENANCE);
+        Transaction t = new MoneyTransaction(new Money(-amount), TransactionCategory.TRAIN_MAINTENANCE);
 
         return new AddTransactionMove(principal, t);
     }

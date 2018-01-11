@@ -38,6 +38,5 @@ public interface TrackPieceRenderer {
      * @param y
      * @param tileSize
      */
-    void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g, int x,
-                            int y, java.awt.Dimension tileSize);
+    void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g, int x, int y, java.awt.Dimension tileSize);
 }

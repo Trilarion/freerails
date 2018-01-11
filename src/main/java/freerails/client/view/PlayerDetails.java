@@ -15,12 +15,7 @@ class PlayerDetails implements Comparable<PlayerDetails> {
 
     @Override
     public String toString() {
-        return name +
-                ", " +
-                networth.toString() +
-                " net worth, " +
-                stations +
-                "  stations.";
+        return name + ", " + networth.toString() + " net worth, " + stations + "  stations.";
     }
 
     public int compareTo(PlayerDetails o) {

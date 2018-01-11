@@ -21,23 +21,22 @@
  */
 package freerails.client.launcher;
 
+import freerails.client.*;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.renderer.RendererRoot;
-import freerails.client.top.GUIComponentFactoryImpl;
-import freerails.client.top.GameLoop;
-import freerails.client.top.RendererRootImpl;
 import freerails.client.view.ActionRoot;
+import freerails.controller.ClientProperty;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.controller.ScreenHandler;
 import freerails.network.FreerailsClient;
 import freerails.network.FreerailsGameServer;
 import freerails.network.SaveGamesManager;
 import freerails.server.SaveGameManagerImpl;
 import freerails.server.ServerGameModel;
 import freerails.server.ServerGameModelImpl;
-import freerails.client.ProgressMonitorModel;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.World;
 import freerails.world.game.GameModel;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
@@ -51,8 +50,7 @@ import java.io.Serializable;
 /**
  * A swing freerails client.
  */
-public class GUIClient extends FreerailsClient implements
-        ProgressMonitorModel {
+public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
 
     private final ActionRoot actionRoot;
     private final GUIComponentFactoryImpl factory;
@@ -69,8 +67,7 @@ public class GUIClient extends FreerailsClient implements
      * @param dm
      * @throws IOException
      */
-    public GUIClient(String name, ProgressMonitorModel fm, int screenMode,
-                     DisplayMode dm) {
+    public GUIClient(String name, ProgressMonitorModel fm, int screenMode, DisplayMode dm) {
         this.name = name;
         monitor = null == fm ? this : fm;
         // Set up model root and action root.
@@ -93,9 +90,8 @@ public class GUIClient extends FreerailsClient implements
      * @param args
      */
     public static void main(String[] args) {
-            GUIClient client = new GUIClient("Test", null,
-                    ScreenHandler.WINDOWED_MODE, null);
-            client.start();
+        GUIClient client = new GUIClient("Test", null, ScreenHandler.WINDOWED_MODE, null);
+        client.start();
     }
 
     @Override
@@ -155,8 +151,7 @@ public class GUIClient extends FreerailsClient implements
                 }
             }
 
-            modelRoot.setProperty(ModelRoot.Property.SERVER, connectionToServer
-                    .getServerDetails());
+            modelRoot.setProperty(ModelRoot.Property.SERVER, connectionToServer.getServerDetails());
             actionRoot.setup(modelRoot, vl);
 
             factory.setup(vl, w);

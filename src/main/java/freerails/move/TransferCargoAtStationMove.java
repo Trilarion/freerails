@@ -18,7 +18,6 @@
 
 package freerails.move;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,8 +46,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
      * @param movesArrayList
      * @param waiting
      */
-    public TransferCargoAtStationMove(List<Move> movesArrayList,
-                                      boolean waiting) {
+    public TransferCargoAtStationMove(List<Move> movesArrayList, boolean waiting) {
         super(movesArrayList);
     }
 
@@ -56,16 +54,14 @@ public class TransferCargoAtStationMove extends CompositeMove {
      * @return
      */
     public ChangeCargoBundleMove getChangeAtStation() {
-        return (ChangeCargoBundleMove) super.getMoves().get(
-                CHANGE_AT_STATION_INDEX);
+        return (ChangeCargoBundleMove) super.getMoves().get(CHANGE_AT_STATION_INDEX);
     }
 
     /**
      * @return
      */
     public ChangeCargoBundleMove getChangeOnTrain() {
-        return (ChangeCargoBundleMove) super.getMoves().get(
-                CHANGE_ON_TRAIN_INDEX);
+        return (ChangeCargoBundleMove) super.getMoves().get(CHANGE_ON_TRAIN_INDEX);
     }
 
 }

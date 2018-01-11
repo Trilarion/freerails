@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.ImmutableList;
+import freerails.util.Utils;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
 
@@ -34,29 +34,28 @@ import java.util.List;
  * encapsulated as sub-moves of this move.
  */
 public class CompositeMove implements Move {
+
     private static final long serialVersionUID = 3257289149391517489L;
-    private final ImmutableList<Move> moves;
+    private final List<Move> moves;
 
     /**
-     * @param movesArrayList
+     * @param moves
      */
-    public CompositeMove(List<Move> movesArrayList) {
-        moves = new ImmutableList<>(movesArrayList);
+    public CompositeMove(List<Move> moves) {
+        this.moves = Utils.immutableList(moves);
     }
 
     /**
      * @param moves
      */
     public CompositeMove(Move... moves) {
-        this.moves = new ImmutableList<>(moves);
+        this.moves = Utils.immutableList(moves);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof CompositeMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof CompositeMove)) return false;
 
         final CompositeMove compositeMove = (CompositeMove) obj;
 
@@ -79,7 +78,7 @@ public class CompositeMove implements Move {
     /**
      * @return
      */
-    public final ImmutableList<Move> getMoves() {
+    public final List<Move> getMoves() {
         return moves;
     }
 

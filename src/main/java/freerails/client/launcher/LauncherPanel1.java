@@ -50,8 +50,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
      * case MODE_JOIN_NETWORK_GAME: isValid = true; break; }
      * owner.setInfoText(infoText, LauncherInterface.WARNING);
      * owner.setNextEnabled(isValid); }
-     */
-    javax.swing.JRadioButton joinNetworkButton;
+     */ javax.swing.JRadioButton joinNetworkButton;
     javax.swing.JPanel paddingJPanel;
     javax.swing.JRadioButton serverOnlyButton;
     javax.swing.JRadioButton singlePlayerButton;
@@ -92,8 +91,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        setBorder(new javax.swing.border.TitledBorder(
-                new javax.swing.border.EtchedBorder(), "Select Game Type"));
+        setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Select Game Type"));
         buttonGroup1.add(singlePlayerButton);
         singlePlayerButton.setSelected(true);
         singlePlayerButton.setText("Single-Player");

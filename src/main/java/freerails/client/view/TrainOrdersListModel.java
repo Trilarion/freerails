@@ -62,8 +62,7 @@ public class TrainOrdersListModel extends AbstractListModel {
      * @param trainNumber
      * @param p
      */
-    public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber,
-                                FreerailsPrincipal p) {
+    public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber, FreerailsPrincipal p) {
         this.trainNumber = trainNumber;
         this.w = w;
         principal = p;
@@ -92,8 +91,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         boolean isPriorityOrders = 0 == index && s.hasPriorityOrders();
         TrainOrdersModel order = getSchedule().getOrder(index);
 
-        return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order,
-                trainNumber);
+        return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
     }
 
     public int getSize() {
@@ -113,12 +111,10 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     private Schedule getSchedule() {
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
-                trainNumber);
+        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
         ImmutableSchedule sched = null;
         if (train != null) {
-            sched = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES,
-                    train.getScheduleID());
+            sched = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
         }
         return sched;
     }
@@ -156,8 +152,7 @@ public class TrainOrdersListModel extends AbstractListModel {
          * @param order
          * @param trainNumber
          */
-        public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus,
-                                      TrainOrdersModel order, int trainNumber) {
+        public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrdersModel order, int trainNumber) {
             this.isPriorityOrder = isPriorityOrder;
             this.gotoStatus = gotoStatus;
             this.order = order;

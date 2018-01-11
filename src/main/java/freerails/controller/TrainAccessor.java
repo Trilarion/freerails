@@ -23,7 +23,10 @@ package freerails.controller;
 
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
-import freerails.world.*;
+import freerails.world.ActivityIterator;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.SKEY;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -37,15 +40,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 /**
- * Provides convenience methods to access the properties of a train from the
- * world object.
+ * Provides convenience methods to access the properties of a train from the world object.
  */
 public class TrainAccessor {
 
     private final ReadOnlyWorld w;
-
     private final FreerailsPrincipal p;
-
     private final int id;
 
     /**
@@ -53,8 +53,7 @@ public class TrainAccessor {
      * @param p
      * @param id
      */
-    public TrainAccessor(final ReadOnlyWorld w, final FreerailsPrincipal p,
-                         final int id) {
+    public TrainAccessor(final ReadOnlyWorld w, final FreerailsPrincipal p, final int id) {
         this.w = w;
         this.p = p;
         this.id = id;
@@ -66,8 +65,7 @@ public class TrainAccessor {
      * @param consist
      * @return
      */
-    public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld row,
-                                                         CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
+    public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld row, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = row.size(SKEY.CARGO_TYPES);
@@ -81,8 +79,7 @@ public class TrainAccessor {
         }
 
         for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
-            spaceAvailable[cargoType] = spaceAvailable[cargoType]
-                    - onTrain.getAmountOfType(cargoType);
+            spaceAvailable[cargoType] = spaceAvailable[cargoType] - onTrain.getAmountOfType(cargoType);
         }
         return new ImmutableList<>(spaceAvailable);
 
@@ -98,7 +95,6 @@ public class TrainAccessor {
     }
 
     /**
-     * @param time
      * @return the id of the station the train is currently at, or -1 if no
      * current station.
      */
@@ -146,9 +142,7 @@ public class TrainAccessor {
 
         Point2D start = tm.getPath().getStart();
         int trainLength = tm.getTrainLength();
-        Rectangle trainBox = new Rectangle(start.x * TileTransition.TILE_DIAMETER
-                - trainLength * 2, start.y * TileTransition.TILE_DIAMETER - trainLength * 2,
-                trainLength * 4, trainLength * 4);
+        Rectangle trainBox = new Rectangle(start.x * TileTransition.TILE_DIAMETER - trainLength * 2, start.y * TileTransition.TILE_DIAMETER - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
             return null; // 666 doesn't work
         }
@@ -180,8 +174,7 @@ public class TrainAccessor {
      */
     public ImmutableSchedule getSchedule() {
         TrainModel train = getTrain();
-        return (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, train
-                .getScheduleID());
+        return (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, train.getScheduleID());
     }
 
     /**
@@ -189,8 +182,7 @@ public class TrainAccessor {
      */
     public CargoBatchBundle getCargoBundle() {
         TrainModel train = getTrain();
-        return (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train
-                .getCargoBundleID());
+        return (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
     }
 
     /**
@@ -202,23 +194,17 @@ public class TrainAccessor {
      * <li>The current train order specifies a consist that matches the train's
      * current consist.</li>
      * </ol>
-     *
-     * @return
      */
     public boolean keepWaiting() {
         double time = w.currentTime().getTicks();
         int stationId = getStationId(time);
-        if (stationId == -1)
-            return false;
+        if (stationId == -1) return false;
         TrainActivity act = getStatus(time);
-        if (act != TrainActivity.WAITING_FOR_FULL_LOAD)
-            return false;
+        if (act != TrainActivity.WAITING_FOR_FULL_LOAD) return false;
         ImmutableSchedule shedule = getSchedule();
         TrainOrdersModel order = shedule.getOrder(shedule.getOrderToGoto());
-        if (order.stationId != stationId)
-            return false;
-        if (!order.waitUntilFull)
-            return false;
+        if (order.stationId != stationId) return false;
+        if (!order.waitUntilFull) return false;
         TrainModel train = getTrain();
         return order.getConsist().equals(train.getConsist());
     }
@@ -230,8 +216,7 @@ public class TrainAccessor {
     public Point2D getTarget() {
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) w.get(p,
-                KEY.TRAIN_SCHEDULES, scheduleID);
+        Schedule schedule = (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {
@@ -239,8 +224,7 @@ public class TrainAccessor {
             return new Point2D(0, 0);
         }
 
-        Station station = (Station) w.get(p, KEY.STATIONS,
-                stationNumber);
+        Station station = (Station) w.get(p, KEY.STATIONS, stationNumber);
 
         return new Point2D(station.x, station.y);
     }
@@ -278,14 +262,11 @@ public class TrainAccessor {
 
     /**
      * The space available on the train measured in cargo units.
-     *
-     * @return
      */
     public ImmutableList<Integer> spaceAvailable() {
 
         TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p,
-                KEY.CARGO_BUNDLES, train.getCargoBundleID());
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
         return spaceAvailable2(w, bundleOnTrain, train.getConsist());
 
     }

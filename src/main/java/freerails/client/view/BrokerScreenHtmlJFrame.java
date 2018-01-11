@@ -62,8 +62,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
         public void actionPerformed(ActionEvent e) {
 
-            Move bondTransaction = new AddTransactionMove(modelRoot
-                    .getPrincipal(), BondItemTransaction.repayBond(5));
+            Move bondTransaction = new AddTransactionMove(modelRoot.getPrincipal(), BondItemTransaction.repayBond(5));
             modelRoot.doMove(bondTransaction);
         }
     };
@@ -75,10 +74,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         public void actionPerformed(ActionEvent e) {
 
             if (financialDataGatherer.canIssueBond()) {
-                Move bondTransaction = new AddTransactionMove(modelRoot
-                        .getPrincipal(),
-                        BondItemTransaction.issueBond(financialDataGatherer
-                                .nextBondInterestRate()));
+                Move bondTransaction = new AddTransactionMove(modelRoot.getPrincipal(), BondItemTransaction.issueBond(financialDataGatherer.nextBondInterestRate()));
                 modelRoot.doMove(bondTransaction);
             }
         }
@@ -91,8 +87,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     public BrokerScreenHtmlJFrame() {
         super();
 
-        URL url = BrokerScreenHtmlJFrame.class
-                .getResource(ClientConfig.VIEW_BROKER);
+        URL url = BrokerScreenHtmlJFrame.class.getResource(ClientConfig.VIEW_BROKER);
         template = loadText(url);
         setSize(550, 300);
 
@@ -104,11 +99,9 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
      * @param closeAction
      */
     @Override
-    public void setup(final ModelRoot m, RendererRoot vl,
-                      Action closeAction) {
+    public void setup(final ModelRoot m, RendererRoot vl, Action closeAction) {
         super.setup(m, vl, closeAction);
-        financialDataGatherer = new FinancialDataGatherer(m.getWorld(),
-                m.getPrincipal());
+        financialDataGatherer = new FinancialDataGatherer(m.getWorld(), m.getPrincipal());
         this.modelRoot = m;
 
         setupStockMenu();
@@ -129,8 +122,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
             final boolean isThisPlayer = playerId == thisPlayerId;
             final int otherPlayerId = playerId;
             Player otherPlayer = world.getPlayer(playerId);
-            String playerLabel = isThisPlayer ? "Treasury stock" : otherPlayer
-                    .getName();
+            String playerLabel = isThisPlayer ? "Treasury stock" : otherPlayer.getName();
             String buyLabel = "Buy 10,000 shares of " + playerLabel;
             String sellLabel = "Sell 10,000 shares of " + playerLabel;
 
@@ -139,15 +131,10 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
                 private static final long serialVersionUID = -6360550478693971570L;
 
                 public void actionPerformed(ActionEvent e) {
-                    StockPrice stockPrice = new StockPriceCalculator(modelRoot
-                            .getWorld()).calculate()[otherPlayerId];
-                    Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice
-                            : stockPrice.buyPrice;
-                    StockItemTransaction t = StockItemTransaction.buyOrSellStock(
-                            otherPlayerId, WorldConstants.STOCK_BUNDLE_SIZE,
-                            sharePrice);
-                    Move move = new AddTransactionMove(
-                            modelRoot.getPrincipal(), t);
+                    StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
+                    Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
+                    StockItemTransaction t = StockItemTransaction.buyOrSellStock(otherPlayerId, WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    Move move = new AddTransactionMove(modelRoot.getPrincipal(), t);
                     modelRoot.doMove(move);
                     updateHtml();
                 }
@@ -158,15 +145,10 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
                 private static final long serialVersionUID = 3993755349229011031L;
 
                 public void actionPerformed(ActionEvent e) {
-                    StockPrice stockPrice = new StockPriceCalculator(modelRoot
-                            .getWorld()).calculate()[otherPlayerId];
-                    Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice
-                            : stockPrice.sellPrice;
-                    StockItemTransaction t = StockItemTransaction.buyOrSellStock(
-                            otherPlayerId, -WorldConstants.STOCK_BUNDLE_SIZE,
-                            sharePrice);
-                    Move move = new AddTransactionMove(
-                            modelRoot.getPrincipal(), t);
+                    StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
+                    Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
+                    StockItemTransaction t = StockItemTransaction.buyOrSellStock(otherPlayerId, -WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    Move move = new AddTransactionMove(modelRoot.getPrincipal(), t);
                     modelRoot.doMove(move);
                     updateHtml();
                 }
@@ -181,18 +163,15 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal p = modelRoot.getPrincipal();
 
-        FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(
-                world, p);
+        FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, p);
 
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
-        long highestAffordablePrice = world.getCurrentBalance(p).getAmount()
-                / WorldConstants.STOCK_BUNDLE_SIZE;
+        long highestAffordablePrice = world.getCurrentBalance(p).getAmount() / WorldConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
         for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
             Player temp = modelRoot.getWorld().getPlayer(playerId);
             FreerailsPrincipal otherPrincipal = temp.getPrincipal();
-            FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(
-                    world, otherPrincipal);
+            FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPrincipal);
 
             // If this RR has stock in other RR, then enable sell stock
             boolean hasStockInRR = thisDataGatherer.getStockInRRs()[playerId] > 0;
@@ -235,13 +214,11 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
 
         StringBuilder populatedTemplate = new StringBuilder();
         populatedTemplate.append("<html>");
-        populatedTemplate
-                .append(populateTokens(template, brokerScreenGenerator));
+        populatedTemplate.append(populateTokens(template, brokerScreenGenerator));
 
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             if (!(world.getPlayer(i).getPrincipal().equals(p))) {
-                BrokerScreenGenerator temp = new BrokerScreenGenerator(world,
-                        world.getPlayer(i).getPrincipal());
+                BrokerScreenGenerator temp = new BrokerScreenGenerator(world, world.getPlayer(i).getPrincipal());
                 populatedTemplate.append(populateTokens(template, temp));
             }
         }
@@ -257,8 +234,7 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
         /* Check to see if the text needs updating before painting. */
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world
-                .getNumberOfTransactions(playerPrincipal);
+        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

@@ -71,15 +71,12 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
     }
 
     private void updateIfNecessary() {
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
-                trainNumber);
+        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
 
         int cargoBundleID = train.getCargoBundleID();
-        Serializable cb = w.get(principal, KEY.CARGO_BUNDLES,
-                cargoBundleID);
+        Serializable cb = w.get(principal, KEY.CARGO_BUNDLES, cargoBundleID);
 
-        if (train != lastTrain || cb != lastCargoBundle)
-            displayTrain(trainNumber);
+        if (train != lastTrain || cb != lastCargoBundle) displayTrain(trainNumber);
     }
 
     /**
@@ -98,8 +95,7 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
         setBorder(new javax.swing.border.TitledBorder("Current Details"));
         setPreferredSize(new java.awt.Dimension(250, 97));
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12));
-        jLabel1
-                .setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
+        jLabel1.setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
         jLabel1.setMinimumSize(new java.awt.Dimension(250, 17));
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         jLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
@@ -136,12 +132,10 @@ public class TrainDescriptionJPanel extends javax.swing.JPanel implements View {
         trainNumber = newTrainNumber;
 
         trainViewJPanel1.display(newTrainNumber);
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS,
-                newTrainNumber);
+        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, newTrainNumber);
 
         int cargoBundleID = train.getCargoBundleID();
-        ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(principal,
-                KEY.CARGO_BUNDLES, cargoBundleID);
+        ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, cargoBundleID);
         StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
         int numberOfTypesInBundle = 0;
         for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {

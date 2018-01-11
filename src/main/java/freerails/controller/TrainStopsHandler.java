@@ -25,7 +25,9 @@ import freerails.move.*;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.util.Utils;
-import freerails.world.*;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldDiffs;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -42,11 +44,8 @@ import java.util.List;
  */
 public class TrainStopsHandler implements Serializable {
 
-    private static final Logger logger = Logger
-            .getLogger(TrainStopsHandler.class.getName());
-
+    private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
     private static final int NOT_AT_STATION = -1;
-
     private static final long serialVersionUID = 3257567287094882872L;
     private final FreerailsPrincipal principal;
     private final int trainId;
@@ -67,16 +66,14 @@ public class TrainStopsHandler implements Serializable {
     /**
      * If wagons are added to a train, we need to increase its length.
      */
-    static PathOnTiles lengthenPath(ReadOnlyWorld w, PathOnTiles path,
-                                    int currentTrainLength) {
+    static PathOnTiles lengthenPath(ReadOnlyWorld w, PathOnTiles path, int currentTrainLength) {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
         List<TileTransition> tileTransitions = new ArrayList<>();
         Point2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
-        PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x,
-                start.y, firstTileTransition);
+        PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x, start.y, firstTileTransition);
 
         while (extraDistanceNeeded > 0) {
 
@@ -131,23 +128,19 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public Move getMoves() {
-        Move m = WorldDiffMove.generate(worldDiffs,
-                WorldDiffMove.Cause.TrainArrives);
+        Move m = WorldDiffMove.generate(worldDiffs, WorldDiffMove.Cause.TrainArrives);
         worldDiffs.reset();
         return m;
     }
 
     /**
-     * @param x
-     * @param y
      * @return the number of the station the train is currently at, or -1 if no
      * current station.
      */
     public int getStationID(int x, int y) {
         // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < worldDiffs.size(principal, KEY.STATIONS); i++) {
-            Station tempPoint = (Station) worldDiffs.get(principal,
-                    KEY.STATIONS, i);
+            Station tempPoint = (Station) worldDiffs.get(principal, KEY.STATIONS, i);
 
             if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
                 return i; // train is at the station at location tempPoint
@@ -191,11 +184,9 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public boolean isWaiting4FullLoad() {
-        TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
-                trainId);
+        TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS, trainId);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) worldDiffs.get(
-                principal, KEY.TRAIN_SCHEDULES, scheduleID);
+        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {
             return false;
@@ -207,13 +198,11 @@ public class TrainStopsHandler implements Serializable {
     void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
 
         // train is at a station so do the cargo processing
-        DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(
-                trainId, stationId, worldDiffs, principal, waiting, autoConsist);
+        DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, worldDiffs, principal, waiting, autoConsist);
         Move m = transfer.generateMove();
         if (null != m) {
             MoveStatus ms = m.doMove(worldDiffs, principal);
-            if (!ms.ok)
-                throw new IllegalStateException(ms.message);
+            if (!ms.ok) throw new IllegalStateException(ms.message);
         }
 
     }
@@ -232,8 +221,7 @@ public class TrainStopsHandler implements Serializable {
         ImmutableSchedule schedule = ta.getSchedule();
 
         int stationId = ta.getStationId(Double.MAX_VALUE);
-        if (stationId < 0)
-            throw new IllegalStateException();
+        if (stationId < 0) throw new IllegalStateException();
 
         // The train's orders may have changed...
         TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
@@ -249,8 +237,7 @@ public class TrainStopsHandler implements Serializable {
             // ..if so, we should change the consist.
             int oldLength = ta.getTrain().getLength();
             int engineType = ta.getTrain().getEngineType();
-            TrainModel newTrain = ta.getTrain().getNewInstance(engineType,
-                    order.consist);
+            TrainModel newTrain = ta.getTrain().getNewInstance(engineType, order.consist);
             worldDiffs.set(principal, KEY.TRAINS, trainId, newTrain);
             int newLength = newTrain.getLength();
             // has the trains length increased?
@@ -258,24 +245,18 @@ public class TrainStopsHandler implements Serializable {
                 TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = tm.getPath();
                 path = lengthenPath(worldDiffs, path, oldLength);
-                TrainActivity status = isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD
-                        : TrainActivity.STOPPED_AT_STATION;
-                TrainMotion nextMotion = new TrainMotion(path, newLength, 0,
-                        status);
+                TrainActivity status = isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD : TrainActivity.STOPPED_AT_STATION;
+                TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
                 // Create a new Move object.
-                Move trainMove = new NextActivityMove(nextMotion, trainId,
-                        principal);
-                MoveStatus ms = trainMove.doMove(worldDiffs,
-                        Player.AUTHORITATIVE);
-                if (!ms.ok)
-                    throw new IllegalStateException(ms.message);
+                Move trainMove = new NextActivityMove(nextMotion, trainId, principal);
+                MoveStatus ms = trainMove.doMove(worldDiffs, Player.AUTHORITATIVE);
+                if (!ms.ok) throw new IllegalStateException(ms.message);
             }
         }
 
         /* Add any cargo that is waiting. */
-        loadAndUnloadCargo(schedule.getStationToGoto(), order.waitUntilFull,
-                order.autoConsist);
+        loadAndUnloadCargo(schedule.getStationToGoto(), order.waitUntilFull, order.autoConsist);
 
         // Should we stop waiting?
         if (!order.waitUntilFull) {
@@ -293,10 +274,8 @@ public class TrainStopsHandler implements Serializable {
 
     private void scheduledStop() {
 
-        TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
-                trainId);
-        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal,
-                KEY.TRAIN_SCHEDULES, train.getScheduleID());
+        TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS, trainId);
+        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
 
         ImmutableList<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -308,8 +287,7 @@ public class TrainStopsHandler implements Serializable {
 
         if (null != wagonsToAdd) {
             int engine = train.getEngineType();
-            Move m = ChangeTrainMove.generateMove(trainId, train, engine,
-                    wagonsToAdd, principal);
+            Move m = ChangeTrainMove.generateMove(trainId, train, engine, wagonsToAdd, principal);
             m.doMove(worldDiffs, principal);
         }
         updateSchedule();
@@ -318,11 +296,9 @@ public class TrainStopsHandler implements Serializable {
     }
 
     void updateSchedule() {
-        TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS,
-                trainId);
+        TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS, trainId);
         int scheduleID = train.getScheduleID();
-        ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(
-                principal, KEY.TRAIN_SCHEDULES, scheduleID);
+        ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         Station station;
 
@@ -333,16 +309,13 @@ public class TrainStopsHandler implements Serializable {
             schedule.gotoNextStation();
 
             ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
-            worldDiffs.set(principal, KEY.TRAIN_SCHEDULES, scheduleID,
-                    newSchedule);
+            worldDiffs.set(principal, KEY.TRAIN_SCHEDULES, scheduleID, newSchedule);
 
             int stationNumber = schedule.getStationToGoto();
-            station = (Station) worldDiffs.get(principal, KEY.STATIONS,
-                    stationNumber);
+            station = (Station) worldDiffs.get(principal, KEY.STATIONS, stationNumber);
 
             if (null == station) {
-                logger.warn("null == station, train " + trainId
-                        + " doesn't know where to go next!");
+                logger.warn("null == station, train " + trainId + " doesn't know where to go next!");
             }
         }
     }

@@ -21,7 +21,10 @@
  */
 package freerails.controller;
 
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.TransactionAggregator;
+import freerails.world.WorldConstants;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
@@ -35,21 +38,19 @@ import freerails.world.player.FreerailsPrincipal;
  * players] Let profit last year = 100,000 in the first year.
  */
 public class StockPriceCalculator {
-    private final ReadOnlyWorld w;
+
+    private final ReadOnlyWorld world;
 
     /**
-     * @param w
+     * @param world
      */
-    public StockPriceCalculator(ReadOnlyWorld w) {
-        this.w = w;
+    public StockPriceCalculator(ReadOnlyWorld world) {
+        this.world = world;
     }
 
-    static Money calStockPrice(long netWorth, long profitLastyear,
-                               int publicShares, int otherRRShares) {
-        if ((publicShares + otherRRShares) == 0)
-            return new Money(Long.MAX_VALUE);
-        long price = 2 * (5 * profitLastyear + netWorth)
-                / (2 * publicShares + otherRRShares);
+    static Money calStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares) {
+        if ((publicShares + otherRRShares) == 0) return new Money(Long.MAX_VALUE);
+        long price = 2 * (5 * profitLastyear + netWorth) / (2 * publicShares + otherRRShares);
         return new Money(price);
     }
 
@@ -57,7 +58,7 @@ public class StockPriceCalculator {
      * @return
      */
     public StockPrice[] calculate() {
-        StockPrice[] stockPrices = new StockPrice[w.getNumberOfPlayers()];
+        StockPrice[] stockPrices = new StockPrice[world.getNumberOfPlayers()];
         for (int playerId = 0; playerId < stockPrices.length; playerId++) {
             long profitLastYear;
             if (isFirstYear(playerId)) {
@@ -68,8 +69,7 @@ public class StockPriceCalculator {
             long netWorth = netWorth(playerId);
             int publicShares = sharesOwnedByPublic(playerId);
             int otherRRShares = sharesOwnedByOtherPlayers(playerId);
-            stockPrices[playerId] = new StockPrice(netWorth, profitLastYear,
-                    publicShares, otherRRShares);
+            stockPrices[playerId] = new StockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
         }
         return stockPrices;
     }
@@ -79,11 +79,11 @@ public class StockPriceCalculator {
      * transaction for the specified player.
      */
     boolean isFirstYear(int playerId) {
-        FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
-        GameTime firstTransactionTime = w.getTransactionTimeStamp(pr, 0);
-        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
+        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
+        GameTime firstTransactionTime = world.getTransactionTimeStamp(pr, 0);
+        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
         int year = calendar.getYear(firstTransactionTime.getTicks());
-        GameTime currentTime = w.currentTime();
+        GameTime currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         return year == currentYear;
     }
@@ -92,38 +92,35 @@ public class StockPriceCalculator {
      * Returns the players networth at the start of this year.
      */
     long netWorth(int playerId) {
-        FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
-        NetWorthCalculator nwc = new NetWorthCalculator(w, pr);
+        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
+        NetWorthCalculator nwc = new NetWorthCalculator(world, pr);
 
         // Set the interval to beginning of time to start of this year.
-        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
-        GameTime currentTime = w.currentTime();
+        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameTime currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
-        GameTime[] times = {GameTime.BIG_BANG,
-                new GameTime(ticksAtStartOfyear + 1)};
+        GameTime[] times = {GameTime.BIG_BANG, new GameTime(ticksAtStartOfyear + 1)};
         nwc.setTimes(times);
 
         return nwc.calculateValue().getAmount();
     }
 
     long profitsLastYear(int playerId) {
-        FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
+        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
 
-        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
-        GameTime currentTime = w.currentTime();
+        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameTime currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int lastyear = currentYear - 1;
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
         int ticksAtStartOfLastYear = calendar.getTicks(lastyear);
-        GameTime[] interval = {new GameTime(ticksAtStartOfLastYear),
-                new GameTime(ticksAtStartOfyear)};
+        GameTime[] interval = {new GameTime(ticksAtStartOfLastYear), new GameTime(ticksAtStartOfyear)};
 
-        TransactionAggregator aggregator = new TransactionAggregator(w, pr) {
+        TransactionAggregator aggregator = new TransactionAggregator(world, pr) {
             @Override
             protected boolean condition(int transactionID) {
-                Transaction t = super.w.getTransaction(super.principal,
-                        transactionID);
+                Transaction t = super.w.getTransaction(super.principal, transactionID);
                 return !(t instanceof ItemTransaction);
             }
         };
@@ -132,14 +129,14 @@ public class StockPriceCalculator {
     }
 
     int sharesOwnedByPublic(int playerId) {
-        FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
-        FinancialDataGatherer gatherer = new FinancialDataGatherer(w, pr);
+        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
+        FinancialDataGatherer gatherer = new FinancialDataGatherer(world, pr);
         return gatherer.sharesHeldByPublic();
     }
 
     int sharesOwnedByOtherPlayers(int playerId) {
-        FreerailsPrincipal pr = w.getPlayer(playerId).getPrincipal();
-        FinancialDataGatherer gatherer = new FinancialDataGatherer(w, pr);
+        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
+        FinancialDataGatherer gatherer = new FinancialDataGatherer(world, pr);
         int[] stakes = gatherer.getStockInThisRRs();
         int total = 0;
         for (int i = 0; i < stakes.length; i++) {
@@ -186,18 +183,12 @@ public class StockPriceCalculator {
          * @param publicShares
          * @param otherRRShares
          */
-        public StockPrice(long netWorth, long profitLastYear, int publicShares,
-                          int otherRRShares) {
-            currentPrice = calStockPrice(netWorth, profitLastYear,
-                    publicShares, otherRRShares);
-            sellPrice = calStockPrice(netWorth, profitLastYear, publicShares
-                    + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares - WorldConstants.STOCK_BUNDLE_SIZE);
-            buyPrice = calStockPrice(netWorth, profitLastYear, publicShares
-                    - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares + WorldConstants.STOCK_BUNDLE_SIZE);
-            treasurySellPrice = calStockPrice(netWorth, profitLastYear,
-                    publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
-            treasuryBuyPrice = calStockPrice(netWorth, profitLastYear,
-                    publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
+        public StockPrice(long netWorth, long profitLastYear, int publicShares, int otherRRShares) {
+            currentPrice = calStockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
+            sellPrice = calStockPrice(netWorth, profitLastYear, publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares - WorldConstants.STOCK_BUNDLE_SIZE);
+            buyPrice = calStockPrice(netWorth, profitLastYear, publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares + WorldConstants.STOCK_BUNDLE_SIZE);
+            treasurySellPrice = calStockPrice(netWorth, profitLastYear, publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
+            treasuryBuyPrice = calStockPrice(netWorth, profitLastYear, publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
         }
     }
 

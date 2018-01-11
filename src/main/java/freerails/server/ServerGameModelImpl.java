@@ -25,7 +25,9 @@ import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
 import freerails.network.MoveReceiver;
-import freerails.world.*;
+import freerails.world.ITEM;
+import freerails.world.World;
+import freerails.world.WorldDiffs;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
@@ -82,16 +84,13 @@ public class ServerGameModelImpl implements ServerGameModel {
      * This is called on the last tick of each year.
      */
     private void yearEnd() {
-        TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(
-                moveExecuter);
+        TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
         tmmg.update(world);
 
-        TrainMaintenanceMoveGenerator trainMaintenanceMoveGenerator = new TrainMaintenanceMoveGenerator(
-                moveExecuter);
+        TrainMaintenanceMoveGenerator trainMaintenanceMoveGenerator = new TrainMaintenanceMoveGenerator(moveExecuter);
         trainMaintenanceMoveGenerator.update(world);
 
-        BondInterestMoveGenerator bondInterestMoveGenerator = new BondInterestMoveGenerator(
-                moveExecuter);
+        BondInterestMoveGenerator bondInterestMoveGenerator = new BondInterestMoveGenerator(moveExecuter);
         bondInterestMoveGenerator.update(world);
 
         // Grow cities.
@@ -99,8 +98,7 @@ public class ServerGameModelImpl implements ServerGameModel {
         CityTilePositioner ctp = new CityTilePositioner(wd);
         ctp.growCities();
 
-        Move move = new WorldDiffMove(world, wd,
-                WorldDiffMove.Cause.YearEnd);
+        Move move = new WorldDiffMove(world, wd, WorldDiffMove.Cause.YearEnd);
         moveExecuter.process(move);
     }
 

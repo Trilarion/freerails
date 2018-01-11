@@ -72,17 +72,13 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
-        copyItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-                java.awt.event.KeyEvent.VK_C,
-                java.awt.event.InputEvent.CTRL_MASK));
+        copyItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         copyItem.setText("Copy");
         copyItem.addActionListener(this::copyItemActionPerformed);
 
         jPopupMenu1.add(copyItem);
 
-        selectAllItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(
-                java.awt.event.KeyEvent.VK_A,
-                java.awt.event.InputEvent.CTRL_MASK));
+        selectAllItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         selectAllItem.setText("Select All");
         selectAllItem.addActionListener(this::selectAllItemActionPerformed);
 
@@ -93,8 +89,7 @@ public class CopyableTextJPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(500, 300));
         jTextArea1.setEditable(false);
         // TODO do we need to set this text?
-        jTextArea1
-                .setText("dsfasd\n\nsad\nf\nasd\nfa\nsdf\nas\ndf\nas\ndf\nads\nf\nasd\nf\nads\nf\ndsa\nf\ndsa\nf\ndasf\na\ndsf\nads\nf\nasd\nf\nasd\nf\n\nasdf");
+        jTextArea1.setText("dsfasd\n\nsad\nf\nasd\nfa\nsdf\nas\ndf\nas\ndf\nads\nf\nasd\nf\nads\nf\ndsa\nf\ndsa\nf\ndasf\na\ndsf\nads\nf\nasd\nf\nasd\nf\n\nasdf");
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setOpaque(false);
         jTextArea1.addMouseListener(new java.awt.event.MouseAdapter() {

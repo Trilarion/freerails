@@ -25,12 +25,5 @@ import java.io.Serializable;
  */
 public enum TerrainCategory implements Serializable {
 
-    Urban,
-    River,
-    Ocean,
-    Hill,
-    Country,
-    Special,
-    Industry,
-    Resource
+    Urban, River, Ocean, Hill, Country, Special, Industry, Resource
 }

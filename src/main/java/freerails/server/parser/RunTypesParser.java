@@ -42,10 +42,8 @@ public class RunTypesParser {
      */
     public static void main(String[] args) {
         try {
-            java.net.URL url = RunTypesParser.class
-                    .getResource("/freerails/data/cargo_and_terrain.xml");
-            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(
-                    new WorldImpl()));
+            java.net.URL url = RunTypesParser.class.getResource("/freerails/data/cargo_and_terrain.xml");
+            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(new WorldImpl()));
             logger.info("It worked");
         } catch (Exception ignored) {
         }

@@ -32,7 +32,6 @@ import freerails.world.player.Player;
 public class SimpleMoveExecutor implements MoveExecutor {
 
     private final World w;
-
     private final FreerailsPrincipal p;
 
     /**

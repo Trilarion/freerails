@@ -55,40 +55,31 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
     /**
      * The recognizer entry method taking an Inputsource.
      *
-     * @param input   InputSource to be parsed.
-     * @param handler
+     * @param input InputSource to be parsed.
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final InputSource input,
-                             final Track_TilesHandler handler) throws SAXException,
-            ParserConfigurationException, IOException {
+    public static void parse(final InputSource input, final Track_TilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
         parse(input, new Track_TilesParser(handler));
     }
 
     /**
      * The recognizer entry method taking a URL.
      *
-     * @param url     URL source to be parsed.
-     * @param handler
+     * @param url URL source to be parsed.
      * @throws java.io.IOException                            on I/O error.
      * @throws SAXException                                   propagated exception thrown by a DocumentHandler.
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final java.net.URL url,
-                             final Track_TilesHandler handler) throws SAXException,
-            ParserConfigurationException, IOException {
+    public static void parse(final java.net.URL url, final Track_TilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
         parse(new InputSource(url.toExternalForm()), handler);
     }
 
-    private static void parse(final InputSource input,
-                              final Track_TilesParser recognizer) throws SAXException,
-            ParserConfigurationException, IOException {
-        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory
-                .newInstance();
+    private static void parse(final InputSource input, final Track_TilesParser recognizer) throws SAXException, ParserConfigurationException, IOException {
+        javax.xml.parsers.SAXParserFactory factory = javax.xml.parsers.SAXParserFactory.newInstance();
         factory.setValidating(true); // the code was generated according DTD
         factory.setNamespaceAware(false); // the code was generated according
         // DTD
@@ -108,12 +99,9 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
     public void endDocument() {
     }
 
-    public void startElement(java.lang.String uri, java.lang.String localName,
-                             java.lang.String qName, org.xml.sax.Attributes atts)
-            throws SAXException {
+    public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, org.xml.sax.Attributes atts) throws SAXException {
         dispatch(true);
-        context.push(new Object[]{qName,
-                new org.xml.sax.helpers.AttributesImpl(atts)});
+        context.push(new Object[]{qName, new org.xml.sax.helpers.AttributesImpl(atts)});
 
         switch (qName) {
             case "CanOnlyBuildOnTheseTerrainTypes":
@@ -140,8 +128,7 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
     }
 
-    public void endElement(java.lang.String uri, java.lang.String localName,
-                           java.lang.String qName) throws SAXException {
+    public void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) throws SAXException {
         dispatch(false);
         context.pop();
 
@@ -171,12 +158,10 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
     public void ignorableWhitespace(char[] ch, int start, int length) {
     }
 
-    public void processingInstruction(java.lang.String target,
-                                      java.lang.String data) {
+    public void processingInstruction(java.lang.String target, java.lang.String data) {
     }
 
-    public void startPrefixMapping(final java.lang.String prefix,
-                                   final java.lang.String uri) {
+    public void startPrefixMapping(final java.lang.String prefix, final java.lang.String uri) {
     }
 
     public void endPrefixMapping(final java.lang.String prefix) {
@@ -195,8 +180,7 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     private org.xml.sax.ErrorHandler getDefaultErrorHandler() {
         return new org.xml.sax.ErrorHandler() {
-            public void error(org.xml.sax.SAXParseException exception)
-                    throws SAXException {
+            public void error(org.xml.sax.SAXParseException exception) throws SAXException {
                 if (context.isEmpty()) {
                     logger.error("Missing DOCTYPE.");
                 }
@@ -204,8 +188,7 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
                 throw exception;
             }
 
-            public void fatalError(org.xml.sax.SAXParseException exception)
-                    throws SAXException {
+            public void fatalError(org.xml.sax.SAXParseException exception) throws SAXException {
                 throw exception;
             }
 

@@ -34,6 +34,7 @@ import java.io.Serializable;
  * class.
  */
 public class ChangeItemInListMove implements ListMove {
+
     private static final long serialVersionUID = -4457694821370844051L;
     private final KEY listKey;
     private final int index;
@@ -48,8 +49,7 @@ public class ChangeItemInListMove implements ListMove {
      * @param after
      * @param p
      */
-    public ChangeItemInListMove(KEY k, int index, Serializable before,
-                                Serializable after, FreerailsPrincipal p) {
+    public ChangeItemInListMove(KEY k, int index, Serializable before, Serializable after, FreerailsPrincipal p) {
         this.before = before;
         this.after = after;
         this.index = index;
@@ -131,8 +131,7 @@ public class ChangeItemInListMove implements ListMove {
      * @param w
      * @return
      */
-    protected MoveStatus move(Serializable to,
-                              Serializable from, World w) {
+    protected MoveStatus move(Serializable to, Serializable from, World w) {
         MoveStatus ms = tryMove(to, from, w);
 
         if (ms.ok) {
@@ -144,11 +143,7 @@ public class ChangeItemInListMove implements ListMove {
 
     @Override
     public String toString() {
-        return getClass().getName() +
-                " before: " +
-                before.toString() +
-                " after: " +
-                after.toString();
+        return getClass().getName() + " before: " + before.toString() + " after: " + after.toString();
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
@@ -161,11 +156,9 @@ public class ChangeItemInListMove implements ListMove {
      * @param w
      * @return
      */
-    protected MoveStatus tryMove(Serializable to,
-                                 Serializable from, ReadOnlyWorld w) {
+    protected MoveStatus tryMove(Serializable to, Serializable from, ReadOnlyWorld w) {
         if (index >= w.size(principal, listKey)) {
-            return MoveStatus.moveFailed("w.size(listKey) is "
-                    + w.size(principal, listKey) + " but index is " + index);
+            return MoveStatus.moveFailed("w.size(listKey) is " + w.size(principal, listKey) + " but index is " + index);
         }
 
         Serializable item2change = w.get(principal, listKey, index);
@@ -177,8 +170,7 @@ public class ChangeItemInListMove implements ListMove {
             return MoveStatus.moveFailed("Expected null but found " + from);
         }
         if (!from.equals(item2change)) {
-            String message = "Expected " + from.toString() + " but found "
-                    + to.toString();
+            String message = "Expected " + from.toString() + " but found " + to.toString();
             return MoveStatus.moveFailed(message);
         }
         return MoveStatus.MOVE_OK;

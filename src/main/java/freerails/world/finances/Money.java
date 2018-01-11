@@ -22,13 +22,14 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 
 // TODO sum of two money objects and multiplication with integer, double
+
 /**
  * Represents an immutable amount of Money.
  */
 public final class Money implements Serializable {
 
-    private static final long serialVersionUID = 3258697615163338805L;
     public static final Money ZERO_MONEY = new Money(0);
+    private static final long serialVersionUID = 3258697615163338805L;
     private static final DecimalFormat df = new DecimalFormat("#,###");
     private final long amount;
 
@@ -37,6 +38,13 @@ public final class Money implements Serializable {
      */
     public Money(long amount) {
         this.amount = amount;
+    }
+
+    /**
+     * @return
+     */
+    public static Money changeSign(Money money) {
+        return new Money(-money.amount);
     }
 
     /**
@@ -54,13 +62,6 @@ public final class Money implements Serializable {
     @Override
     public String toString() {
         return df.format(amount);
-    }
-
-    /**
-     * @return
-     */
-    public static Money changeSign(Money money) {
-        return new Money(-money.amount);
     }
 
     @Override

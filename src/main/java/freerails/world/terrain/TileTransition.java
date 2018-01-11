@@ -41,8 +41,7 @@ public final class TileTransition implements TrackConfigurations {
     /**
      *
      */
-    public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER,
-            TILE_DIAMETER);
+    public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER, TILE_DIAMETER);
     /**
      * North.
      */
@@ -197,27 +196,17 @@ public final class TileTransition implements TrackConfigurations {
      * @return
      */
     public static TileTransition getInstance(int dx, int dy) {
-        if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1)))
-                || ((dx == 0) && (dy == 0))) {
-            throw new IllegalArgumentException(
-                    dx
-                            + " and "
-                            + dy
-                            + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
+        if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1))) || ((dx == 0) && (dy == 0))) {
+            throw new IllegalArgumentException(dx + " and " + dy + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         }
         return vectors[dx + 1][dy + 1];
     }
 
     /**
      * Returns true if the values passed could be used to create a valid vector.
-     *
-     * @param x
-     * @param y
-     * @return
      */
     public static boolean checkValidity(int x, int y) {
-        return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1)))
-                && ((x != 0) || (y != 0));
+        return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1))) && ((x != 0) || (y != 0));
     }
 
     /**
@@ -229,8 +218,6 @@ public final class TileTransition implements TrackConfigurations {
     }
 
     /**
-     * @param dx
-     * @param dy
      * @return the OneTileMoveVector nearest in orientation to the specified dx,
      * dy
      */
@@ -285,8 +272,6 @@ public final class TileTransition implements TrackConfigurations {
 
     /**
      * Returns the X component of the vector.
-     *
-     * @return
      */
     public int getDx() {
         return deltaX;
@@ -294,8 +279,6 @@ public final class TileTransition implements TrackConfigurations {
 
     /**
      * Returns the Y component of the vector.
-     *
-     * @return
      */
     public int getDy() {
         return deltaY;

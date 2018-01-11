@@ -41,8 +41,7 @@ public class NextActivityMove implements Move {
      * @param index
      * @param principal
      */
-    public NextActivityMove(Activity activity, int index,
-                            FreerailsPrincipal principal) {
+    public NextActivityMove(Activity activity, int index, FreerailsPrincipal principal) {
         this.activity = activity;
         this.index = index;
 
@@ -51,17 +50,13 @@ public class NextActivityMove implements Move {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof NextActivityMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof NextActivityMove)) return false;
 
         final NextActivityMove nextActivityMove = (NextActivityMove) obj;
 
-        if (index != nextActivityMove.index)
-            return false;
-        if (!activity.equals(nextActivityMove.activity))
-            return false;
+        if (index != nextActivityMove.index) return false;
+        if (!activity.equals(nextActivityMove.activity)) return false;
         return principal.equals(nextActivityMove.principal);
     }
 
@@ -78,8 +73,7 @@ public class NextActivityMove implements Move {
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         // Check that active entity exists.
         if (world.size(this.principal) <= index)
-            return MoveStatus.moveFailed("Index out of range. "
-                    + world.size(this.principal) + "<= " + index);
+            return MoveStatus.moveFailed("Index out of range. " + world.size(this.principal) + "<= " + index);
 
         return MoveStatus.MOVE_OK;
     }
@@ -89,24 +83,20 @@ public class NextActivityMove implements Move {
         ai.gotoLastActivity();
 
         Activity act = ai.getActivity();
-        if (act.equals(activity))
-            return MoveStatus.MOVE_OK;
+        if (act.equals(activity)) return MoveStatus.MOVE_OK;
 
-        return MoveStatus.moveFailed("Expected " + activity + " but found "
-                + act);
+        return MoveStatus.moveFailed("Expected " + activity + " but found " + act);
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryDoMove(world, principal);
-        if (ms.ok)
-            world.add(this.principal, index, activity);
+        if (ms.ok) world.add(this.principal, index, activity);
         return ms;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryUndoMove(world, principal);
-        if (ms.ok)
-            world.removeLastActivity(this.principal, index);
+        if (ms.ok) world.removeLastActivity(this.principal, index);
         return ms;
     }
 }

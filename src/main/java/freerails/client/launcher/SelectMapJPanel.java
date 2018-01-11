@@ -35,8 +35,7 @@ import javax.swing.event.DocumentListener;
  * choice of maps.
  */
 @SuppressWarnings("unused")
-public class SelectMapJPanel extends javax.swing.JPanel implements
-        LauncherPanel {
+public class SelectMapJPanel extends javax.swing.JPanel implements LauncherPanel {
     private static final long serialVersionUID = 3763096353857024568L;
 
     private static final String SELECT_A_MAP = "Select a map.";
@@ -181,15 +180,11 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(new javax.swing.border.TitledBorder(
-                new javax.swing.border.EtchedBorder(), "New Game"));
+        jPanel1.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "New Game"));
         jPanel1.setPreferredSize(null);
-        jScrollPane1.setViewportBorder(new javax.swing.border.BevelBorder(
-                javax.swing.border.BevelBorder.LOWERED));
-        newmapsJList
-                .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        newmapsJList
-                .addListSelectionListener(this::newmapsJListValueChanged);
+        jScrollPane1.setViewportBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        newmapsJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        newmapsJList.addListSelectionListener(this::newmapsJListValueChanged);
 
         jScrollPane1.setViewportView(newmapsJList);
 
@@ -203,16 +198,12 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setBorder(new javax.swing.border.TitledBorder(
-                new javax.swing.border.EtchedBorder(), "Load game"));
+        jPanel4.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Load game"));
         jPanel4.setPreferredSize(null);
         jPanel4.setRequestFocusEnabled(false);
-        jScrollPane2.setViewportBorder(new javax.swing.border.BevelBorder(
-                javax.swing.border.BevelBorder.LOWERED));
-        savedmapsJList
-                .setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        savedmapsJList
-                .addListSelectionListener(this::savedmapsJListValueChanged);
+        jScrollPane2.setViewportBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        savedmapsJList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        savedmapsJList.addListSelectionListener(this::savedmapsJListValueChanged);
 
         jScrollPane2.setViewportView(savedmapsJList);
 
@@ -228,8 +219,7 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBorder(new javax.swing.border.TitledBorder(
-                new javax.swing.border.EtchedBorder(), "Server port"));
+        jPanel3.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Server port"));
         portLabel.setText("Port:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -258,18 +248,14 @@ public class SelectMapJPanel extends javax.swing.JPanel implements
 
     }
 
-    private void savedmapsJListValueChanged(
-            javax.swing.event.ListSelectionEvent evt) {
-        if (savedmapsJList.getSelectedIndex() != -1)
-            newmapsJList.clearSelection();
+    private void savedmapsJListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+        if (savedmapsJList.getSelectedIndex() != -1) newmapsJList.clearSelection();
 
         validateInput();
     }
 
-    private void newmapsJListValueChanged(
-            javax.swing.event.ListSelectionEvent evt) {
-        if (newmapsJList.getSelectedIndex() != -1)
-            savedmapsJList.clearSelection();
+    private void newmapsJListValueChanged(javax.swing.event.ListSelectionEvent evt) {
+        if (newmapsJList.getSelectedIndex() != -1) savedmapsJList.clearSelection();
 
         validateInput();
 

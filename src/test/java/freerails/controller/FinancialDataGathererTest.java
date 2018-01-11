@@ -25,6 +25,7 @@ import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.world.World;
+import freerails.world.WorldConstants;
 import freerails.world.WorldImpl;
 import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
@@ -103,7 +104,7 @@ public class FinancialDataGathererTest extends TestCase {
         assertEquals(0, fdg.treasuryStock());
 
         int treasuryStock = 10000;
-        int totalStock = FinancialMoveProducer.IPO_SIZE;
+        int totalStock = WorldConstants.IPO_SIZE;
         int publicStock = totalStock - treasuryStock;
         Transaction t = StockItemTransaction.buyOrSellStock(0, treasuryStock,
                 new Money(5));
@@ -145,7 +146,7 @@ public class FinancialDataGathererTest extends TestCase {
     public void testTotalShares() {
         FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
                 .getPrincipal());
-        int expected = FinancialMoveProducer.IPO_SIZE;
+        int expected = WorldConstants.IPO_SIZE;
         assertEquals(expected, fdg.totalShares());
     }
 

@@ -24,8 +24,6 @@ import java.util.List;
 
 /**
  * Immutable list encapsulation with some convenience methods.
- *
- * @param <E>
  */
 public final class ImmutableList<E extends Serializable> implements Serializable {
 
@@ -48,10 +46,8 @@ public final class ImmutableList<E extends Serializable> implements Serializable
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof ImmutableList))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof ImmutableList)) return false;
         final ImmutableList other = (ImmutableList) obj;
         return Arrays.equals(values, other.values);
     }
@@ -66,8 +62,7 @@ public final class ImmutableList<E extends Serializable> implements Serializable
      */
     public void containsNulls() throws NullPointerException {
         for (E value : values) {
-            if (null == value)
-                throw new NullPointerException();
+            if (null == value) throw new NullPointerException();
         }
     }
 

@@ -24,14 +24,13 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.network.LoadGameMessageToServer;
+import freerails.network.MessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -137,8 +136,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
     }
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        if (null != close)
-            close.actionPerformed(evt);
+        if (null != close) close.actionPerformed(evt);
     }
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,8 +144,7 @@ public class LoadGameJPanel extends javax.swing.JPanel implements View {
         MessageToServer message2 = new LoadGameMessageToServer(1, filename);
         modelRoot.sendCommand(message2);
 
-        if (null != close)
-            close.actionPerformed(evt);
+        if (null != close) close.actionPerformed(evt);
     }
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {

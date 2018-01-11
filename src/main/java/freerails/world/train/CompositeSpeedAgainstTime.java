@@ -27,8 +27,7 @@ import freerails.world.Activity;
 /**
  *
  */
-public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
-        SpeedAgainstTime {
+public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>, SpeedAgainstTime {
 
     private static final long serialVersionUID = 3146586143114534610L;
     private final ImmutableList<SpeedAgainstTime> values;
@@ -51,17 +50,13 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof CompositeSpeedAgainstTime))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof CompositeSpeedAgainstTime)) return false;
 
         final CompositeSpeedAgainstTime compositeSpeedAgainstTime = (CompositeSpeedAgainstTime) obj;
 
-        if (finalT != compositeSpeedAgainstTime.finalT)
-            return false;
-        if (finalS != compositeSpeedAgainstTime.finalS)
-            return false;
+        if (finalT != compositeSpeedAgainstTime.finalT) return false;
+        if (finalS != compositeSpeedAgainstTime.finalS) return false;
         return values.equals(compositeSpeedAgainstTime.values);
     }
 
@@ -105,8 +100,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     public double calculateDistance(double time) {
-        if (time == finalT)
-            return finalS;
+        if (time == finalT) return finalS;
         checkT(time);
         TandI tai = getIndex(time);
         double s = 0;
@@ -126,10 +120,8 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     public double calculateTime(double distance) {
-        if (distance == finalS)
-            return finalT;
-        if (distance > finalS)
-            throw new IllegalArgumentException(String.valueOf(distance));
+        if (distance == finalS) return finalT;
+        if (distance > finalS) throw new IllegalArgumentException(String.valueOf(distance));
 
         double sSoFar = 0;
         double tSoFar = 0;
@@ -190,9 +182,7 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>,
     }
 
     void checkT(double t) {
-        if (t < 0.0d || t > finalT)
-            throw new IllegalArgumentException("t=" + t + ", but duration="
-                    + finalT);
+        if (t < 0.0d || t > finalT) throw new IllegalArgumentException("t=" + t + ", but duration=" + finalT);
     }
 
     /**

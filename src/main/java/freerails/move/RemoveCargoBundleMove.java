@@ -22,7 +22,6 @@
 package freerails.move;
 
 import freerails.world.KEY;
-import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.io.Serializable;
@@ -38,8 +37,7 @@ public class RemoveCargoBundleMove extends RemoveItemFromListMove {
      * @param item
      * @param p
      */
-    public RemoveCargoBundleMove(int i, Serializable item,
-                                 FreerailsPrincipal p) {
+    public RemoveCargoBundleMove(int i, Serializable item, FreerailsPrincipal p) {
         super(KEY.CARGO_BUNDLES, i, item, p);
     }
 }

@@ -35,8 +35,7 @@ public final class TrackPieceImpl implements TrackPiece {
      * @param owner
      * @param rule
      */
-    public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner,
-                          int rule) {
+    public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner, int rule) {
         configuration = c;
         trackType = type;
         ownerID = owner;
@@ -45,19 +44,14 @@ public final class TrackPieceImpl implements TrackPiece {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
         final TrackPieceImpl that = (TrackPieceImpl) obj;
 
-        if (ownerID != that.ownerID)
-            return false;
-        if (ruleNumber != that.ruleNumber)
-            return false;
-        if (!configuration.equals(that.configuration))
-            return false;
+        if (ownerID != that.ownerID) return false;
+        if (ruleNumber != that.ruleNumber) return false;
+        if (!configuration.equals(that.configuration)) return false;
         return trackType.equals(that.trackType);
     }
 

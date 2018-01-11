@@ -29,13 +29,13 @@ import java.io.Serializable;
 @SuppressWarnings("unused")
 public class EconomicClimate implements Serializable {
 
-    private static final long serialVersionUID = 3834025840475321136L;
     // TODO why start with 2
     public static final EconomicClimate BOOM = new EconomicClimate("BOOM", 2);
     public static final EconomicClimate PROSPERITY = new EconomicClimate("PROSPERITY", 3);
     public static final Serializable MODERATION = new EconomicClimate("MODERATION", 4);
     public static final EconomicClimate RECESSION = new EconomicClimate("RECESSION", 5);
     public static final EconomicClimate PANIC = new EconomicClimate("PANIC", 6);
+    private static final long serialVersionUID = 3834025840475321136L;
     private final String name;
     private final double baseInterestRate;
 
@@ -70,7 +70,7 @@ public class EconomicClimate implements Serializable {
     public int hashCode() {
         int result;
         result = (name != null ? name.hashCode() : 0);
-        result = 29 * result + (int)baseInterestRate;
+        result = 29 * result + (int) baseInterestRate;
         return result;
     }
 }

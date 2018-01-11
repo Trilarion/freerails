@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 // TODO why is it important to only return non-null elements
+
 /**
  * Iterates over one of the lists on the world object only returning non null
  * elements.
@@ -91,8 +92,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param row
      * @return
      */
-    public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p,
-                                int row) {
+    public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p, int row) {
         int count = 0;
         for (int i = 0; i < w.size(p, key); i++) {
 
@@ -193,8 +193,6 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
     /**
      * Moves the cursor to the specified index.
-     *
-     * @param i
      */
     public void gotoIndex(int i) {
         int newRow = -1;
@@ -213,8 +211,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
             }
         }
 
-        throw new NoSuchElementException("Index:" + String.valueOf(i)
-                + " Size:" + listSize() + " Row:" + newRow);
+        throw new NoSuchElementException("Index:" + String.valueOf(i) + " Size:" + listSize() + " Row:" + newRow);
     }
 
     /**

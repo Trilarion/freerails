@@ -61,8 +61,7 @@ public class NearestCityFinder {
 
             for (int i = 1; i < w.size(SKEY.CITIES); i++) {
                 tempCity = (City) w.get(SKEY.CITIES, i);
-                tempDistance = getDistance(tempCity.getX(), tempCity
-                        .getY());
+                tempDistance = getDistance(tempCity.getX(), tempCity.getY());
 
                 if (tempDistance < cityDistance) {
                     cityDistance = tempDistance;

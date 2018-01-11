@@ -41,8 +41,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
         throw new IOException();
     }
 
-    public Serializable waitForObjectFromClient() throws IOException,
-            InterruptedException {
+    public Serializable waitForObjectFromClient() throws IOException, InterruptedException {
         synchronized (fromClient) {
             if (fromClient.size() == 0) {
                 fromClient.wait();
@@ -73,8 +72,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
         throw new IOException();
     }
 
-    public Serializable waitForObjectFromServer() throws IOException,
-            InterruptedException {
+    public Serializable waitForObjectFromServer() throws IOException, InterruptedException {
         if (status.isOpen()) {
             synchronized (fromServer) {
                 if (fromServer.size() == 0) {

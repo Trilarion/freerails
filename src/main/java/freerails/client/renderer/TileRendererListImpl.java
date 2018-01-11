@@ -26,7 +26,6 @@ package freerails.client.renderer;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

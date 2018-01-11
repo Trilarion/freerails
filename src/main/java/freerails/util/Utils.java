@@ -22,6 +22,7 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,8 +40,19 @@ public class Utils {
      * @param <T>
      * @return
      */
-    public static <T> List<T> immutateList(List<T> mutableList) {
+    public static <T> List<T> immutableList(List<T> mutableList) {
         List<T> copiedList = new ArrayList<>(mutableList);
+        return Collections.unmodifiableList(copiedList);
+    }
+
+    /**
+     *
+     * @param mutableArray
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> immutableList(T[] mutableArray) {
+        List<T> copiedList = new ArrayList<T>(Arrays.asList(mutableArray));
         return Collections.unmodifiableList(copiedList);
     }
 
@@ -53,12 +65,10 @@ public class Utils {
 
         byte[] bytesA = write2ByteArray(a);
         byte[] bytesB = write2ByteArray(b);
-        if (bytesA.length != bytesB.length)
-            return false;
+        if (bytesA.length != bytesB.length) return false;
 
         for (int i = 0; i < bytesA.length; i++) {
-            if (bytesA[i] != bytesB[i])
-                return false;
+            if (bytesA[i] != bytesB[i]) return false;
         }
 
         return true;
@@ -110,8 +120,7 @@ public class Utils {
             int modifiers = field.getModifiers();
 
             try {
-                if (Modifier.isStatic(modifiers)
-                        && Modifier.isPublic(modifiers)) {
+                if (Modifier.isStatic(modifiers) && Modifier.isPublic(modifiers)) {
                     Object o2 = field.get(null);
                     if (o2.equals(o)) {
                         return field.getName();
@@ -129,10 +138,6 @@ public class Utils {
      * Returns true if the objects are equal or both null, otherwise returns
      * false. Does not throw null pointer exceptions when either of the objects
      * is null.
-     *
-     * @param a
-     * @param b
-     * @return
      */
     public static boolean equal(Object a, Object b) {
         if (null == a || null == b) {
@@ -155,8 +160,6 @@ public class Utils {
 
     /**
      * Returns the sum of the ints stored in the list.
-     *
-     * @return
      */
     public static int sumOfIntegerImmutableList(ImmutableList<Integer> list) {
         int sum = 0;

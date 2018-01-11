@@ -27,16 +27,16 @@ import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RendererRoot;
-import freerails.network.MessageToServer;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
+import freerails.network.MessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.util.ImmutableList;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
+import freerails.world.station.TrainBlueprint;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainTile;
 import org.apache.log4j.Logger;
@@ -57,8 +57,7 @@ import java.util.NoSuchElementException;
  * transparent regions to be used.
  */
 public class DialogueBoxController implements WorldListListener {
-    private static final Logger logger = Logger
-            .getLogger(DialogueBoxController.class.getName());
+    private static final Logger logger = Logger.getLogger(DialogueBoxController.class.getName());
 
     private final JButton closeButton = new JButton("Close");
 
@@ -120,8 +119,7 @@ public class DialogueBoxController implements WorldListListener {
         private static final long serialVersionUID = -1672545312581874156L;
 
         public void actionPerformed(ActionEvent e) {
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot
-                    .getWorld(), modelRoot.getPrincipal());
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
 
             if (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -129,11 +127,9 @@ public class DialogueBoxController implements WorldListListener {
                 ImmutableList<TrainBlueprint> before = station.getProduction();
                 int engineType = selectEngine.getEngineType();
                 Integer[] wagonTypes = selectWagons.getWagons();
-                ImmutableList<TrainBlueprint> after = new ImmutableList<>(
-                        new TrainBlueprint(engineType, wagonTypes));
+                ImmutableList<TrainBlueprint> after = new ImmutableList<>(new TrainBlueprint(engineType, wagonTypes));
 
-                Move m = new ChangeProductionAtEngineShopMove(before, after, wi
-                        .getIndex(), modelRoot.getPrincipal());
+                Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
                 modelRoot.doMove(m);
             }
             closeContent();
@@ -156,29 +152,23 @@ public class DialogueBoxController implements WorldListListener {
         glassPanel.setVisible(false);
 
         // We need to resize the glass panel when its parent resizes.
-        frame.getLayeredPane().addComponentListener(
-                new java.awt.event.ComponentAdapter() {
-                    @Override
-                    public void componentResized(
-                            java.awt.event.ComponentEvent e) {
-                        glassPanel.setSize(glassPanel.getParent().getSize());
-                        glassPanel.revalidate();
-                    }
-                });
+        frame.getLayeredPane().addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                glassPanel.setSize(glassPanel.getParent().getSize());
+                glassPanel.revalidate();
+            }
+        });
 
         closeButton.addActionListener(closeCurrentDialogue);
 
-        showControls = new HtmlJPanel(DialogueBoxController.class
-                .getResource(ClientConfig.VIEW_GAME_CONTROLS));
-        about = new HtmlJPanel(DialogueBoxController.class
-                .getResource(ClientConfig.VIEW_ABOUT));
-        how2play = new HtmlJPanel(DialogueBoxController.class
-                .getResource(ClientConfig.VIEW_HOW_TO_PLAY));
+        showControls = new HtmlJPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_GAME_CONTROLS));
+        about = new HtmlJPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_ABOUT));
+        how2play = new HtmlJPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_HOW_TO_PLAY));
 
         terrainInfo = new TerrainInfoJPanel();
         stationInfo = new StationInfoJPanel();
-        javaProperties = new HtmlJPanel(ShowJavaProperties
-                .getPropertiesHtmlString());
+        javaProperties = new HtmlJPanel(ShowJavaProperties.getPropertiesHtmlString());
         Dimension d = javaProperties.getPreferredSize();
         d.width += 50;
         javaProperties.setPreferredSize(d);
@@ -200,9 +190,6 @@ public class DialogueBoxController implements WorldListListener {
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
-     *
-     * @param mr
-     * @param vl
      */
     public void setup(ModelRootImpl mr, RendererRoot vl) {
         modelRoot = mr;
@@ -212,11 +199,9 @@ public class DialogueBoxController implements WorldListListener {
 
         world = modelRoot.getWorld();
 
-        if (world == null)
-            throw new NullPointerException();
+        if (world == null) throw new NullPointerException();
 
-        if (vl == null)
-            throw new NullPointerException();
+        if (vl == null) throw new NullPointerException();
 
         // Setup the various dialogue boxes.
         // setup the terrain info dialogue.
@@ -249,10 +234,8 @@ public class DialogueBoxController implements WorldListListener {
 
         trainDialogueJPanel.setup(modelRoot, vl, closeCurrentDialogue);
         modelRoot.addListListener(trainDialogueJPanel);
-        trainDialogueJPanel
-                .setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
-        trainDialogueJPanel
-                .setCancelButtonActionListener(closeCurrentDialogue);
+        trainDialogueJPanel.setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
+        trainDialogueJPanel.setCancelButtonActionListener(closeCurrentDialogue);
     }
 
     /**
@@ -279,12 +262,10 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElementWorldIterator(KEY.TRAINS, world, modelRoot
-                .getPrincipal());
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.TRAINS, world, modelRoot.getPrincipal());
 
         if (!wi.next()) {
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot"
-                    + " show train orders since there are no" + " trains!");
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
         } else {
             trainDialogueJPanel.display(wi.getIndex());
             showContent(trainDialogueJPanel);
@@ -295,12 +276,10 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, modelRoot
-                .getPrincipal());
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, modelRoot.getPrincipal());
 
         if (!wi.next()) {
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "Can't"
-                    + " build train since there are no stations");
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
         } else {
             showContent(selectEngine);
         }
@@ -337,8 +316,7 @@ public class DialogueBoxController implements WorldListListener {
     public void showBrokerScreen() {
         // this is Creating a BrokerScreen Internal Frame in the Main Frame
         BrokerScreenHtmlJFrame brokerScreenHtmlJFrame = new BrokerScreenHtmlJFrame();
-        brokerScreenHtmlJFrame.setup(modelRoot, vl,
-                closeCurrentDialogue);
+        brokerScreenHtmlJFrame.setup(modelRoot, vl, closeCurrentDialogue);
         brokerScreenHtmlJFrame.setFrameIcon(null);
 
         showContent(brokerScreenHtmlJFrame);
@@ -441,8 +419,7 @@ public class DialogueBoxController implements WorldListListener {
 
             showContent(trainList);
         } else {
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "There are"
-                    + " no trains to display!");
+            modelRoot.setProperty(Property.QUICK_MESSAGE, "There are" + " no trains to display!");
         }
     }
 
@@ -525,12 +502,9 @@ public class DialogueBoxController implements WorldListListener {
 
         dialogueJInternalFrame.setSize(size);
 
-        dialogueJInternalFrame.setLocation(
-                (frame.getWidth() - dialogueJInternalFrame.getWidth()) / 2,
-                (frame.getHeight() - dialogueJInternalFrame.getHeight()) / 2);
+        dialogueJInternalFrame.setLocation((frame.getWidth() - dialogueJInternalFrame.getWidth()) / 2, (frame.getHeight() - dialogueJInternalFrame.getHeight()) / 2);
 
-        frame.getLayeredPane().add(dialogueJInternalFrame,
-                JLayeredPane.MODAL_LAYER);
+        frame.getLayeredPane().add(dialogueJInternalFrame, JLayeredPane.MODAL_LAYER);
 
         dialogueJInternalFrame.setVisible(true);
     }
@@ -596,8 +570,7 @@ public class DialogueBoxController implements WorldListListener {
          * Fix for: 910138 After building a train display train orders 910143
          * After building station show supply and demand
          */
-        boolean rightPrincipal = principal
-                .equals(modelRoot.getPrincipal());
+        boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
         if (KEY.TRAINS == key && rightPrincipal) {
             showTrainOrders(index);

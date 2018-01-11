@@ -81,9 +81,6 @@ public final class GameCalendar implements Serializable {
     /**
      * Returns the time of day as a string, note that a year is made up of a
      * representative day, so 1st June is equivalent to 12 noon.
-     *
-     * @param i
-     * @return
      */
     public String getTimeOfDay(int i) {
         int ticksPerHour = ticksPerYear / 24;
@@ -181,9 +178,6 @@ public final class GameCalendar implements Serializable {
 
     /**
      * Returns the month, 0=Jan, 1=Feb, etc.
-     *
-     * @param i
-     * @return
      */
     public int getMonth(int i) {
         int ticksPerMonth = ticksPerYear / 12;
@@ -196,8 +190,7 @@ public final class GameCalendar implements Serializable {
         if (obj instanceof GameCalendar) {
             GameCalendar test = (GameCalendar) obj;
 
-            return startYear == test.startYear
-                    && ticksPerYear == test.ticksPerYear;
+            return startYear == test.startYear && ticksPerYear == test.ticksPerYear;
         }
         return false;
     }

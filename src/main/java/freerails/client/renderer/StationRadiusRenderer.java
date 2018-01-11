@@ -83,12 +83,9 @@ public class StationRadiusRenderer implements Painter {
      *
      */
     public void show() {
-        if (!modelRoot
-                .is(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE)) {
-            modelRoot.setProperty(Property.PREVIOUS_CURSOR_MODE, modelRoot
-                    .getProperty(Property.CURSOR_MODE));
-            modelRoot.setProperty(Property.CURSOR_MODE,
-                    Value.PLACE_STATION_CURSOR_MODE);
+        if (!modelRoot.is(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE)) {
+            modelRoot.setProperty(Property.PREVIOUS_CURSOR_MODE, modelRoot.getProperty(Property.CURSOR_MODE));
+            modelRoot.setProperty(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE);
             modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.TRUE);
         }
     }
@@ -97,8 +94,7 @@ public class StationRadiusRenderer implements Painter {
      *
      */
     public void hide() {
-        ModelRoot.Value lastCursorMode = (ModelRoot.Value) modelRoot
-                .getProperty(ModelRoot.Property.PREVIOUS_CURSOR_MODE);
+        ModelRoot.Value lastCursorMode = (ModelRoot.Value) modelRoot.getProperty(ModelRoot.Property.PREVIOUS_CURSOR_MODE);
 
         assert lastCursorMode != Value.PLACE_STATION_CURSOR_MODE;
 
@@ -111,13 +107,11 @@ public class StationRadiusRenderer implements Painter {
      * @param newVisibleRectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
-        if (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE).equals(
-                Value.PLACE_STATION_CURSOR_MODE)) {
+        if (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE).equals(Value.PLACE_STATION_CURSOR_MODE)) {
             g.setStroke(new BasicStroke(2.0f));
             g.setColor(borderColor);
 
-            g.drawRect(tileSize * (x - radius), tileSize * (y - radius),
-                    tileSize * (2 * radius + 1), tileSize * (2 * radius + 1));
+            g.drawRect(tileSize * (x - radius), tileSize * (y - radius), tileSize * (2 * radius + 1), tileSize * (2 * radius + 1));
         }
     }
 }

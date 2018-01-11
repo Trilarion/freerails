@@ -29,9 +29,6 @@ import java.io.Serializable;
 public interface MessageToClient extends Serializable {
     /**
      * Executes this command on the specified ClientControlInterface.
-     *
-     * @param client
-     * @return
      */
     MessageStatus execute(ClientControlInterface client);
 

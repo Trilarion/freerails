@@ -32,8 +32,7 @@ import java.io.IOException;
 /**
  * Paints a tile for which there only one tile icon.
  */
-public final class StandardTileRenderer extends
-        freerails.client.renderer.AbstractTileRenderer {
+public final class StandardTileRenderer extends freerails.client.renderer.AbstractTileRenderer {
 
     /**
      * @param imageManager
@@ -42,8 +41,7 @@ public final class StandardTileRenderer extends
      * @param w
      * @throws IOException
      */
-    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues,
-                                TerrainType tileModel, ReadOnlyWorld w) throws IOException {
+    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld w) throws IOException {
         super(tileModel, rgbValues, w);
         setTileIcons(new Image[1]);
         getTileIcons()[0] = imageManager.getImage(generateFilename());

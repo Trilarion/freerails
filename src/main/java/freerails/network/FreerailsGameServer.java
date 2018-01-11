@@ -45,16 +45,14 @@ import java.util.*;
  * @see InetConnectionAccepter
  * @see ConnectionToClient
  */
-public class FreerailsGameServer implements ServerControlInterface, GameServer,
-        Runnable {
+public class FreerailsGameServer implements ServerControlInterface, GameServer, Runnable {
 
     /**
      * Used as a property name for property change events.
      */
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
 
-    private static final Logger logger = Logger
-            .getLogger(FreerailsGameServer.class.getName());
+    private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     private final Map<NameAndPassword, ConnectionToClient> acceptedConnections = new HashMap<>();
     /**
      * The players who have confirmed that they have received the last copy of
@@ -63,8 +61,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     private final HashSet<NameAndPassword> confirmedPlayers = new HashSet<>();
     /* Contains the user names of the players who are currently logged on. */
     private final Collection<NameAndPassword> currentlyLoggedOn = new HashSet<>();
-    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(
-            this);
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SaveGamesManager saveGamesManager;
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private int commandID = 0;
@@ -121,18 +118,14 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         }
 
         try {
-            LogOnRequest request = (LogOnRequest) connection
-                    .waitForObjectFromClient();
+            LogOnRequest request = (LogOnRequest) connection.waitForObjectFromClient();
             if (logger.isDebugEnabled()) {
-                logger
-                        .debug("Trying to login player: "
-                                + request.getUsername());
+                logger.debug("Trying to login player: " + request.getUsername());
             }
 
             LogOnResponse response = logon(request);
             connection.writeToClient(response);
-            NameAndPassword p = new NameAndPassword(request.getUsername(),
-                    request.getPassword());
+            NameAndPassword p = new NameAndPassword(request.getUsername(), request.getPassword());
             if (response.isSuccessful()) {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Login successful");
@@ -143,17 +136,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 }
 
                 /* Just send to the new client. */
-                Serializable setMaps = new SetPropertyMessageToClient(
-                        getNextClientCommandId(),
-                        ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                        new ImmutableList<>(saveGamesManager.getNewMapNames()));
+                Serializable setMaps = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(saveGamesManager.getNewMapNames()));
 
-                ImmutableList<String> savedGameNames = new ImmutableList<>(
-                        saveGamesManager.getSaveGameNames());
-                Serializable setSaveGames = new SetPropertyMessageToClient(
-                        getNextClientCommandId(),
-                        ClientControlInterface.ClientProperty.SAVED_GAMES,
-                        savedGameNames);
+                ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
+                Serializable setSaveGames = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, savedGameNames);
 
                 connection.writeToClient(setMaps);
                 connection.writeToClient(setSaveGames);
@@ -166,8 +152,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                  * copy of the world object.
                  */
                 if (null != serverGameModel && null != getWorld()) {
-                    Serializable command = new SetWorldMessageToClient(
-                            confirmationID, getWorld());
+                    Serializable command = new SetWorldMessageToClient(confirmationID, getWorld());
                     connection.writeToClient(command);
                 }
 
@@ -175,8 +160,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 sendListOfConnectedPlayers2Clients();
 
                 String[] after = getPlayerNames();
-                propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS",
-                        before, after);
+                propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
             } else {
                 connection.disconnect();
             }
@@ -259,8 +243,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
 
     private boolean isPlayer(String username) {
         for (NameAndPassword p : players) {
-            if (p.username.equals(username))
-                return true;
+            if (p.username.equals(username)) return true;
         }
         return false;
     }
@@ -283,8 +266,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         ArrayList<NameAndPassword> newPlayers = new ArrayList<>();
         for (int i = 0; i < passwords.length; i++) {
             Player player = w.getPlayer(i);
-            NameAndPassword nap = new NameAndPassword(player.getName(),
-                    passwords[i]);
+            NameAndPassword nap = new NameAndPassword(player.getName(), passwords[i]);
             newPlayers.add(nap);
         }
         /*
@@ -314,8 +296,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      * @return
      */
     public LogOnResponse logon(LogOnRequest lor) {
-        NameAndPassword p = new NameAndPassword(lor.getUsername(), lor
-                .getPassword());
+        NameAndPassword p = new NameAndPassword(lor.getUsername(), lor.getPassword());
         boolean isReturningPlayer = isPlayer(lor.getUsername());
 
         if (!newPlayersAllowed && !isReturningPlayer) {
@@ -355,10 +336,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 Player p = new Player(name, i);
 
                 Move addPlayerMove = AddPlayerMove.generateMove(world, p);
-                MoveStatus ms = addPlayerMove.doMove(world,
-                        Player.AUTHORITATIVE);
-                if (!ms.ok)
-                    throw new IllegalStateException();
+                MoveStatus ms = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
+                if (!ms.ok) throw new IllegalStateException();
                 passwords[i] = players.get(i).password;
             }
 
@@ -391,8 +370,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         currentlyLoggedOn.remove(p);
 
         String[] after = getPlayerNames();
-        propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before,
-                after);
+        propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
     }
 
     public void run() {
@@ -408,10 +386,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         try {
             saveGamesManager.saveGame(serverGameModel, saveGameName);
             String[] saves = saveGamesManager.getSaveGameNames();
-            Serializable request = new SetPropertyMessageToClient(
-                    getNextClientCommandId(),
-                    ClientControlInterface.ClientProperty.SAVED_GAMES,
-                    new ImmutableList<>(saves));
+            Serializable request = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, new ImmutableList<>(saves));
 
             send2All(request);
         } catch (IOException e) {
@@ -426,8 +401,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
     /**
      * Sends the specified message to all connections except the specified one.
      */
-    private void send2AllExcept(ConnectionToClient dontSend2,
-                                Serializable message) {
+    private void send2AllExcept(ConnectionToClient dontSend2, Serializable message) {
 
         for (NameAndPassword p : acceptedConnections.keySet()) {
             ConnectionToClient connection = acceptedConnections.get(p);
@@ -453,10 +427,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         /* Send the client the list of players. */
         String[] playerNames = getPlayerNames();
 
-        Serializable request = new SetPropertyMessageToClient(
-                getNextClientCommandId(),
-                ClientControlInterface.ClientProperty.CONNECTED_CLIENTS,
-                new ImmutableList<>(playerNames));
+        Serializable request = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.CONNECTED_CLIENTS, new ImmutableList<>(playerNames));
 
         send2All(request);
     }
@@ -465,8 +436,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
         /* Send the world to the clients. */
         confirmationID = getNextClientCommandId();
 
-        Serializable command = new SetWorldMessageToClient(
-                confirmationID, getWorld());
+        Serializable command = new SetWorldMessageToClient(confirmationID, getWorld());
 
         send2All(command);
     }
@@ -512,8 +482,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                 ConnectionToClient connection = acceptedConnections.get(player);
 
                 if (connection.isOpen()) {
-                    Serializable[] messages = connection
-                            .readFromClient();
+                    Serializable[] messages = connection.readFromClient();
 
                     for (Serializable message : messages) {
                         if (message instanceof MessageToServer) {
@@ -541,12 +510,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                             if (logger.isDebugEnabled()) {
                                 logger.debug(message.toString());
                             }
-                        } else if (message instanceof Move
-                                || message instanceof PreMove) {
-                            Player player2 = getWorld().getPlayer(
-                                    players.indexOf(player));
-                            FreerailsPrincipal principal = player2
-                                    .getPrincipal();
+                        } else if (message instanceof Move || message instanceof PreMove) {
+                            Player player2 = getWorld().getPlayer(players.indexOf(player));
+                            FreerailsPrincipal principal = player2.getPrincipal();
 
                             Move move;
                             boolean isMove = message instanceof Move;
@@ -558,8 +524,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                                 move = pm.generateMove(getWorld());
                             }
 
-                            MoveStatus mStatus = move.tryDoMove(
-                                    getWorld(), principal);
+                            MoveStatus mStatus = move.tryDoMove(getWorld(), principal);
 
                             if (mStatus.isOk()) {
                                 move.doMove(getWorld(), principal);
@@ -574,8 +539,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
                             if (isMove) {
                                 connection.writeToClient(mStatus);
                             } else {
-                                connection.writeToClient(PreMoveStatus
-                                        .fromMoveStatus(mStatus));
+                                connection.writeToClient(PreMoveStatus.fromMoveStatus(mStatus));
                             }
                         } else {
                             if (logger.isDebugEnabled()) {
@@ -597,16 +561,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer,
      *
      */
     public void refreshSavedGames() {
-        Serializable setMaps = new SetPropertyMessageToClient(
-                getNextClientCommandId(),
-                ClientControlInterface.ClientProperty.MAPS_AVAILABLE,
-                new ImmutableList<>(saveGamesManager.getNewMapNames()));
-        ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager
-                .getSaveGameNames());
-        Serializable setSaveGames = new SetPropertyMessageToClient(
-                getNextClientCommandId(),
-                ClientControlInterface.ClientProperty.SAVED_GAMES,
-                savedGameNames);
+        Serializable setMaps = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(saveGamesManager.getNewMapNames()));
+        ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
+        Serializable setSaveGames = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, savedGameNames);
         send2All(setMaps);
         send2All(setSaveGames);
     }

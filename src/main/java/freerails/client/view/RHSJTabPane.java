@@ -42,8 +42,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
     private static final long serialVersionUID = 3906926798502965297L;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(RHSJTabPane.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RHSJTabPane.class.getName());
 
     private final TerrainInfoJPanel terrainInfoPanel;
 
@@ -81,27 +80,22 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
         buildTrackPanel = new BuildTrackJPanel();
         trainListPanel.removeButtons();
 
-        URL terrainInfoIconUrl = getClass().getResource(
-                ClientConfig.ICON_TERRAIN_INFO);
+        URL terrainInfoIconUrl = getClass().getResource(ClientConfig.ICON_TERRAIN_INFO);
         Icon terrainInfoIcon = new ImageIcon(terrainInfoIconUrl);
 
-        URL buildTrackIconUrl = getClass().getResource(
-                ClientConfig.ICON_NEW_TRACK);
+        URL buildTrackIconUrl = getClass().getResource(ClientConfig.ICON_NEW_TRACK);
         buildTrackIcon = new ImageIcon(buildTrackIconUrl);
 
-        URL trainListIconUrl = getClass().getResource(
-                ClientConfig.ICON_TRAIN_LIST);
+        URL trainListIconUrl = getClass().getResource(ClientConfig.ICON_TRAIN_LIST);
         trainListIcon = new ImageIcon(trainListIconUrl);
 
-        URL stationListIconUrl = getClass().getResource(
-                ClientConfig.ICON_STATION_LIST);
+        URL stationListIconUrl = getClass().getResource(ClientConfig.ICON_STATION_LIST);
         stationInfoIcon = new ImageIcon(stationListIconUrl);
 
         // Note titles set to null so only the icon appears at the top of the
         // top.
         JScrollPane terrainInfoJScrollPane = new JScrollPane(terrainInfoPanel);
-        terrainInfoJScrollPane
-                .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        terrainInfoJScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         addTab(null, terrainInfoIcon, terrainInfoJScrollPane, "Terrain Info");
         terrainInfoIndex = getTabCount() - 1;
 
@@ -129,8 +123,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
      * @param vl
      * @param modelRoot
      */
-    public void setup(final ActionRoot actionRoot, RendererRoot vl,
-                      final ModelRootImpl modelRoot) {
+    public void setup(final ActionRoot actionRoot, RendererRoot vl, final ModelRootImpl modelRoot) {
 
         this.modelRoot = modelRoot;
         world = modelRoot.getWorld();
@@ -155,13 +148,8 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     /**
      * Updates the Terrain Info Panel if the specified PropertyChangeEvent was
      * triggered by the cursor moving.
-     *
-     * @param prop
-     * @param before
-     * @param after
      */
-    public void propertyChange(ModelRoot.Property prop, Object before,
-                               Object after) {
+    public void propertyChange(ModelRoot.Property prop, Object before, Object after) {
         if (prop == ModelRoot.Property.CURSOR_POSITION) {
 
             Point2D p = (Point2D) after;
@@ -200,8 +188,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
                 LOGGER.info("Default behaviour show terrain.");
-                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p.x,
-                        p.y)).getTerrainTypeID());
+                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p.x, p.y)).getTerrainTypeID());
                 setSelectedIndex(terrainInfoIndex);
             }
 

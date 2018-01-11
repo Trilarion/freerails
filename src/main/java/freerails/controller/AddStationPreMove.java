@@ -22,7 +22,6 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -34,6 +33,7 @@ import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -49,8 +49,7 @@ public class AddStationPreMove implements PreMove {
 
     private final FreerailsPrincipal principal;
 
-    private AddStationPreMove(Point2D p, int trackRule,
-                              FreerailsPrincipal principal) {
+    private AddStationPreMove(Point2D p, int trackRule, FreerailsPrincipal principal) {
         this.p = p;
         ruleNumber = trackRule;
         this.principal = principal;
@@ -62,24 +61,19 @@ public class AddStationPreMove implements PreMove {
      * @param principal
      * @return
      */
-    public static AddStationPreMove newStation(Point2D p, int trackRule,
-                                               FreerailsPrincipal principal) {
+    public static AddStationPreMove newStation(Point2D p, int trackRule, FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof AddStationPreMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof AddStationPreMove)) return false;
 
         final AddStationPreMove addStationPreMove = (AddStationPreMove) obj;
 
-        if (ruleNumber != addStationPreMove.ruleNumber)
-            return false;
-        if (!p.equals(addStationPreMove.p))
-            return false;
+        if (ruleNumber != addStationPreMove.ruleNumber) return false;
+        if (!p.equals(addStationPreMove.p)) return false;
         return principal.equals(addStationPreMove.principal);
     }
 
@@ -97,8 +91,7 @@ public class AddStationPreMove implements PreMove {
      * @return
      */
     public Move generateMove(ReadOnlyWorld w) {
-        TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(
-                w, principal);
+        TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(w, principal);
 
         FullTerrainTile oldTile = (FullTerrainTile) w.getTile(p.x, p.y);
         String cityName;
@@ -106,14 +99,11 @@ public class AddStationPreMove implements PreMove {
 
         FullTerrainTile ft = (FullTerrainTile) w.getTile(p.x, p.y);
         TrackPiece before = ft.getTrackPiece();
-        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES,
-                ruleNumber);
+        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, ruleNumber);
 
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
-        TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(),
-                trackRule, owner, ruleNumber);
-        Move upgradeTrackMove = new ChangeTrackPieceMove(
-                before, after, p);
+        TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, ruleNumber);
+        Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, p);
 
         CompositeMove move;
 
@@ -133,13 +123,11 @@ public class AddStationPreMove implements PreMove {
                 // game. However
                 // some of the unit tests create stations when there are no
                 // cities.
-                stationName = "Central Station #"
-                        + w.size(principal, KEY.STATIONS);
+                stationName = "Central Station #" + w.size(principal, KEY.STATIONS);
             }
 
             // check the terrain to see if we can build a station on it...
-            move = AddStationMove.generateMove(w, stationName, p,
-                    upgradeTrackMove, principal);
+            move = AddStationMove.generateMove(w, stationName, p, upgradeTrackMove, principal);
             move = addSupplyAndDemand(move, w);
             move = transactionsGenerator.addTransactions(move);
         } else {
@@ -151,7 +139,7 @@ public class AddStationPreMove implements PreMove {
     }
 
     private CompositeMove addSupplyAndDemand(CompositeMove m, ReadOnlyWorld w) {
-        ImmutableList<Move> moves2 = m.getMoves();
+        List<Move> moves2 = m.getMoves();
         Move[] moves = new Move[moves2.size()];
         for (int i = 0; i < moves2.size(); i++) {
             moves[i] = moves2.get(i);
@@ -164,13 +152,10 @@ public class AddStationPreMove implements PreMove {
                 if (move.getKey().equals(KEY.STATIONS)) {
                     Station station = (Station) move.getAfter();
                     CalcCargoSupplyRateAtStation supplyRate;
-                    supplyRate = new CalcCargoSupplyRateAtStation(w, station.x,
-                            station.y, ruleNumber);
+                    supplyRate = new CalcCargoSupplyRateAtStation(w, station.x, station.y, ruleNumber);
 
-                    Station stationAfter = supplyRate
-                            .calculations(station);
-                    moves[i] = new AddItemToListMove(move.getKey(), move
-                            .getIndex(), stationAfter, move.getPrincipal());
+                    Station stationAfter = supplyRate.calculations(station);
+                    moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPrincipal());
                 }
             }
         }

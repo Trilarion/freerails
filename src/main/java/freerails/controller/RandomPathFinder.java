@@ -26,8 +26,8 @@ import freerails.world.train.PositionOnTrack;
 /**
  * Returns a random path along the track.
  */
-@SuppressWarnings("unused")
 public class RandomPathFinder implements PathIterator {
+
     private static final long serialVersionUID = 3832906571880608313L;
     private static final int tileSize = ClientConstants.TILE_SIZE;
     private final FlatTrackExplorer trackExplorer;

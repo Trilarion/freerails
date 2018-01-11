@@ -37,8 +37,7 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
      * @param list
      * @param listID
      */
-    public List1DDiff(SortedMap<ListKey, Object> diffs, List1D<T> list,
-                      Enum listID) {
+    public List1DDiff(SortedMap<ListKey, Object> diffs, List1D<T> list, Enum listID) {
         super(diffs, listID);
         underlyingList = list;
     }
@@ -60,8 +59,7 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
 
     @Override
     T uGet(int... i) {
-        if (i.length != 1)
-            throw new IllegalArgumentException();
+        if (i.length != 1) throw new IllegalArgumentException();
         return underlyingList.get(i[0]);
     }
 
@@ -91,8 +89,7 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
 
     @Override
     int getUnderlyingSize(int... dim) {
-        if (dim.length != 0)
-            throw new IllegalArgumentException(String.valueOf(dim.length));
+        if (dim.length != 0) throw new IllegalArgumentException(String.valueOf(dim.length));
 
         return underlyingList.size();
     }

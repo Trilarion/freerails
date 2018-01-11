@@ -31,24 +31,22 @@ public class StockItemTransaction extends ItemTransaction {
 
     private static final long serialVersionUID = 3256441412924224824L;
 
-    private StockItemTransaction(TransactionCategory category, int playerId, int quantity,
-                                 Money amount) {
+    private StockItemTransaction(TransactionCategory category, int playerId, int quantity, Money amount) {
 
         super(category, playerId, quantity, amount);
         // TODO why should the player id ever be negative
-        if (playerId < 0)
-            throw new IllegalArgumentException();
+        if (playerId < 0) throw new IllegalArgumentException();
     }
 
     // TODO Do these static methods have to be here?
+
     /**
      * @param playerId
      * @param quantity
      * @param pricePerShare
      * @return
      */
-    public static Transaction issueStock(int playerId, int quantity,
-                                         Money pricePerShare) {
+    public static Transaction issueStock(int playerId, int quantity, Money pricePerShare) {
         // Issue Stock of the Player
         Money amount = new Money(pricePerShare.getAmount() * quantity);
         return new StockItemTransaction(TransactionCategory.ISSUE_STOCK, playerId, quantity, amount);

@@ -46,8 +46,7 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
     public BalanceSheetHtmlJPanel() {
         super();
 
-        URL url = BalanceSheetHtmlJPanel.class
-                .getResource(ClientConfig.VIEW_BALANCE_SHEET);
+        URL url = BalanceSheetHtmlJPanel.class.getResource(ClientConfig.VIEW_BALANCE_SHEET);
         template = loadText(url);
     }
 
@@ -66,10 +65,8 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
     private void updateHtml() {
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(
-                world, playerPrincipal);
-        String populatedTemplate = populateTokens(template,
-                balanceSheetGenerator);
+        BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world, playerPrincipal);
+        String populatedTemplate = populateTokens(template, balanceSheetGenerator);
         setHtml(populatedTemplate);
     }
 
@@ -78,8 +75,7 @@ public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
         /* Check to see if the text needs updating before painting. */
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world
-                .getNumberOfTransactions(playerPrincipal);
+        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

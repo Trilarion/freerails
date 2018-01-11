@@ -21,9 +21,9 @@ package freerails.client.view;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.terrain.TileTransition;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
+import freerails.world.terrain.TileTransition;
 
 /**
  * Provides methods that find the nearest station in a given direction, used by
@@ -50,6 +50,25 @@ public class NearestStationFinder {
     }
 
     /**
+     * Returns true if the angle between direction and the vector (deltaX,
+     * deltaY) is less than 45 degrees.
+     */
+    private static boolean isInRightDirection(TileTransition direction, int deltaX, int deltaY) {
+        boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
+        boolean sameXDirection = (direction.deltaX * deltaX) > 0;
+        boolean sameYDirection = (direction.deltaY * deltaY > 0);
+        boolean deltaXisLongerThanDeltaY = deltaX * deltaX < deltaY * deltaY;
+
+        if (isDiagonal) {
+            return sameXDirection && sameYDirection;
+        }
+        if (0 == direction.deltaX) {
+            return deltaXisLongerThanDeltaY && sameYDirection;
+        }
+        return !deltaXisLongerThanDeltaY && sameXDirection;
+    }
+
+    /**
      * @param x
      * @param y
      * @return
@@ -70,8 +89,7 @@ public class NearestStationFinder {
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
             int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
-            if (distanceSquared < distanceToClosestSquared
-                    && MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
+            if (distanceSquared < distanceToClosestSquared && MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
                 distanceToClosestSquared = distanceSquared;
                 nearestStation = it.getIndex();
             }
@@ -89,8 +107,7 @@ public class NearestStationFinder {
         int distanceToClosestSquared = Integer.MAX_VALUE;
         NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
-        Station currentStation = (Station) world.get(principal,
-                KEY.STATIONS, startStation);
+        Station currentStation = (Station) world.get(principal, KEY.STATIONS, startStation);
 
         int nearestStation = NOT_FOUND;
 
@@ -101,8 +118,7 @@ public class NearestStationFinder {
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != it.getIndex();
-            boolean inRightDirection = isInRightDirection(direction, deltaX,
-                    deltaY);
+            boolean inRightDirection = isInRightDirection(direction, deltaX, deltaY);
 
             if (closer && inRightDirection && notTheSameStation) {
                 distanceToClosestSquared = distanceSquared;
@@ -111,24 +127,5 @@ public class NearestStationFinder {
         }
 
         return nearestStation;
-    }
-
-    /**
-     * Returns true if the angle between direction and the vector (deltaX,
-     * deltaY) is less than 45 degrees.
-     */
-    private static boolean isInRightDirection(TileTransition direction, int deltaX, int deltaY) {
-        boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
-        boolean sameXDirection = (direction.deltaX * deltaX) > 0;
-        boolean sameYDirection = (direction.deltaY * deltaY > 0);
-        boolean deltaXisLongerThanDeltaY = deltaX * deltaX < deltaY * deltaY;
-
-        if (isDiagonal) {
-            return sameXDirection && sameYDirection;
-        }
-        if (0 == direction.deltaX) {
-            return deltaXisLongerThanDeltaY && sameYDirection;
-        }
-        return !deltaXisLongerThanDeltaY && sameXDirection;
     }
 }

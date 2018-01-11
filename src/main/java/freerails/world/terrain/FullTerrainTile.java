@@ -73,8 +73,7 @@ public class FullTerrainTile implements TerrainTile {
      * @param trackPiece
      * @return
      */
-    public static FullTerrainTile getInstance(int terrainType,
-                                              TrackPiece trackPiece) {
+    public static FullTerrainTile getInstance(int terrainType, TrackPiece trackPiece) {
         FullTerrainTile tile = new FullTerrainTile(terrainType, trackPiece);
 
         FullTerrainTile storedTile = instances.get(tile);
@@ -88,15 +87,12 @@ public class FullTerrainTile implements TerrainTile {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
         final FullTerrainTile that = (FullTerrainTile) obj;
 
-        if (terrainType != that.terrainType)
-            return false;
+        if (terrainType != that.terrainType) return false;
         return trackPiece != null ? trackPiece.equals(that.trackPiece) : that.trackPiece == null;
     }
 
@@ -126,8 +122,7 @@ public class FullTerrainTile implements TerrainTile {
 
     @Override
     public String toString() {
-        return "trackPiece=" + trackPiece.toString() + " and terrainType is "
-                + terrainType;
+        return "trackPiece=" + trackPiece.toString() + " and terrainType is " + terrainType;
     }
 
     /**

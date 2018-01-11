@@ -41,10 +41,6 @@ public interface ModelRoot extends MoveExecutor {
 
     /**
      * Tests whether the specified property has the specified value.
-     *
-     * @param property
-     * @param value
-     * @return
      */
     boolean is(Property property, Object value);
 

@@ -34,9 +34,6 @@ public interface TileRendererList {
     /**
      * Checks whether this tile view list has tile views for all the terrain
      * types in the specified list.
-     *
-     * @param world
-     * @return
      */
     boolean validate(ReadOnlyWorld world);
 }

@@ -18,7 +18,6 @@
 
 package freerails.client.common;
 
-import freerails.controller.ModelRoot;
 import freerails.controller.MoveExecutor;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -37,24 +36,16 @@ public class StationHelper {
 
     /**
      * Return Station number if station exists at location or -1
-     *
-     * @param world
-     * @param modelRoot
-     * @param x
-     * @param y
-     * @return
      */
     public static int getStationNumberAtLocation(ReadOnlyWorld world, MoveExecutor modelRoot, int x, int y) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
         FreerailsPrincipal principal = modelRoot.getPrincipal();
-        if (trackRule.isStation()
-                && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
+        if (trackRule.isStation() && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
 
             for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-                Station station = (Station) world.get(principal,
-                        KEY.STATIONS, i);
+                Station station = (Station) world.get(principal, KEY.STATIONS, i);
 
                 if (null != station && station.x == x && station.y == y) {
                     return i;

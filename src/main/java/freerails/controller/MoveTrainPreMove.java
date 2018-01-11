@@ -26,7 +26,10 @@ import freerails.move.Move;
 import freerails.move.NextActivityMove;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
-import freerails.world.*;
+import freerails.world.ActivityIterator;
+import freerails.world.KEY;
+import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldDiffs;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
@@ -39,18 +42,19 @@ import freerails.world.train.*;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Generates moves for changes in train position and stops at stations.
  */
 public class MoveTrainPreMove implements PreMove {
+
     private static final long serialVersionUID = 3545516188269491250L;
-    private static final Logger logger = Logger
-            .getLogger(MoveTrainPreMove.class.getName());
+    private static final Logger logger = Logger.getLogger(MoveTrainPreMove.class.getName());
+
     /**
-     * 666 Performance cache must be cleared if track on map is build ! make a
-     * change listener!
+     * TODO Performance cache must be cleared if track on map is build ! make a change listener!
      */
     private static final Map<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
@@ -65,8 +69,7 @@ public class MoveTrainPreMove implements PreMove {
      * @param p
      * @param occupiedTracks
      */
-    public MoveTrainPreMove(int id, FreerailsPrincipal p,
-                            OccupiedTracks occupiedTracks) {
+    public MoveTrainPreMove(int id, FreerailsPrincipal p, OccupiedTracks occupiedTracks) {
         trainID = id;
         principal = p;
         this.occupiedTracks = occupiedTracks;
@@ -75,16 +78,10 @@ public class MoveTrainPreMove implements PreMove {
     /**
      * Uses static method to make testing easier.
      *
-     * @param world
-     * @param currentPosition
-     * @param target
-     * @return
      * @throws NoTrackException if no track
      */
-    public static TileTransition findNextStep(ReadOnlyWorld world,
-                                              PositionOnTrack currentPosition, Point2D target) {
-        int startPos = PositionOnTrack.toInt(currentPosition.getX(),
-                currentPosition.getY());
+    public static TileTransition findNextStep(ReadOnlyWorld world, PositionOnTrack currentPosition, Point2D target) {
+        int startPos = PositionOnTrack.toInt(currentPosition.getX(), currentPosition.getY());
         int endPos = PositionOnTrack.toInt(target.x, target.y);
         HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
         TileTransition nextTileTransition;
@@ -102,15 +99,13 @@ public class MoveTrainPreMove implements PreMove {
         PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
         try {
-            Point2D location = new Point2D(currentPosition.getX(),
-                    currentPosition.getY());
+            Point2D location = new Point2D(currentPosition.getX(), currentPosition.getY());
             pathFinder.setupSearch(location, target);
             pathFinder.search(-1);
             TileTransition[] pathAsVectors = pathFinder.pathAsVectors();
-            int[] pathAsInts = pathFinder.pathAsInts();
-            for (int i = 0; i < pathAsInts.length - 1; i++) {
-                int calcPos = pathAsInts[i]
-                        & (PositionOnTrack.MAX_COORDINATE | (PositionOnTrack.MAX_COORDINATE << PositionOnTrack.BITS_FOR_COORDINATE));
+            List<Integer> pathAsInts = pathFinder.pathAsInts();
+            for (int i = 0; i < pathAsInts.size() - 1; i++) {
+                int calcPos = pathAsInts.get(i) & (PositionOnTrack.MAX_COORDINATE | (PositionOnTrack.MAX_COORDINATE << PositionOnTrack.BITS_FOR_COORDINATE));
                 destPaths.put(calcPos, pathAsVectors[i + 1]);
             }
             nextTileTransition = pathAsVectors[0];
@@ -118,8 +113,7 @@ public class MoveTrainPreMove implements PreMove {
         } catch (PathNotFoundException e) {
             // The pathfinder couldn't find a path so we
             // go in any legal direction.
-            GraphExplorer explorer = new FlatTrackExplorer(world,
-                    currentPosition);
+            GraphExplorer explorer = new FlatTrackExplorer(world, currentPosition);
             explorer.nextEdge();
             int next = explorer.getVertexConnectedByEdge();
             PositionOnTrack nextPosition = new PositionOnTrack(next);
@@ -142,11 +136,12 @@ public class MoveTrainPreMove implements PreMove {
         return 0.5d / (wagons + 1);
     }
 
+    static double topSpeed(int wagons) {
+        return 10 / (wagons + 1);
+    }
+
     /**
      * Returns true if an updated is due.
-     *
-     * @param w
-     * @return
      */
     public boolean isUpdateDue(ReadOnlyWorld w) {
         GameTime currentTime = w.currentTime();
@@ -163,13 +158,10 @@ public class MoveTrainPreMove implements PreMove {
             // Check whether there is any cargo that can be added to the train.
             ImmutableList<Integer> spaceAvailable = ta.spaceAvailable();
             int stationId = ta.getStationId(ticks);
-            if (stationId == -1)
-                throw new IllegalStateException();
+            if (stationId == -1) throw new IllegalStateException();
 
-            Station station = (Station) w.get(principal,
-                    KEY.STATIONS, stationId);
-            CargoBatchBundle cb = (CargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES,
-                    station.getCargoBundleID());
+            Station station = (Station) w.get(principal, KEY.STATIONS, stationId);
+            CargoBatchBundle cb = (CargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
             for (int i = 0; i < spaceAvailable.size(); i++) {
                 int space = spaceAvailable.get(i);
@@ -192,21 +184,18 @@ public class MoveTrainPreMove implements PreMove {
         return ta.getTarget();
     }
 
+    // 666 optimize
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof MoveTrainPreMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof MoveTrainPreMove)) return false;
 
         final MoveTrainPreMove moveTrainPreMove = (MoveTrainPreMove) obj;
 
-        if (trainID != moveTrainPreMove.trainID)
-            return false;
+        if (trainID != moveTrainPreMove.trainID) return false;
         return principal.equals(moveTrainPreMove.principal);
     }
-
-    // 666 optimize
 
     /**
      * @param w
@@ -229,8 +218,7 @@ public class MoveTrainPreMove implements PreMove {
                 return moveTrain(w, occupiedTracks);
             case READY: {
                 // Are we at a station?
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
-                        principal, new WorldDiffs(w));
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(w));
                 ta.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack pot = tm.getFinalPosition();
                 int x = pot.getX();
@@ -244,25 +232,20 @@ public class MoveTrainPreMove implements PreMove {
 
                     stopsHandler.arrivesAtPoint(x, y);
 
-                    TrainActivity status = stopsHandler
-                            .isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD
-                            : TrainActivity.STOPPED_AT_STATION;
+                    TrainActivity status = stopsHandler.isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD : TrainActivity.STOPPED_AT_STATION;
                     PathOnTiles path = tm.getPath();
                     int lastTrainLength = tm.getTrainLength();
                     int currentTrainLength = stopsHandler.getTrainLength();
 
                     // If we are adding wagons we may need to lengthen the path.
                     if (lastTrainLength < currentTrainLength) {
-                        path = TrainStopsHandler.lengthenPath(w, path,
-                                currentTrainLength);
+                        path = TrainStopsHandler.lengthenPath(w, path, currentTrainLength);
                     }
 
-                    nextMotion = new TrainMotion(path, currentTrainLength,
-                            durationOfStationStop, status);
+                    nextMotion = new TrainMotion(path, currentTrainLength, durationOfStationStop, status);
 
                     // Create a new Move object.
-                    Move trainMove = new NextActivityMove(nextMotion, trainID,
-                            principal);
+                    Move trainMove = new NextActivityMove(nextMotion, trainID, principal);
 
                     Move cargoMove = stopsHandler.getMoves();
                     return new CompositeMove(trainMove, cargoMove);
@@ -270,8 +253,7 @@ public class MoveTrainPreMove implements PreMove {
                 return moveTrain(w, occupiedTracks);
             }
             case WAITING_FOR_FULL_LOAD: {
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID,
-                        principal, new WorldDiffs(w));
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(w));
 
                 boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
                 Move cargoMove = stopsHandler.getMoves();
@@ -326,8 +308,7 @@ public class MoveTrainPreMove implements PreMove {
         if (tpa.getTrackRule().isDouble() && tpb.getTrackRule().isDouble()) {
             tracks = 2;
         }
-        Integer trains = occupiedTracks.occupiedTrackSections
-                .get(desiredTrackSection);
+        Integer trains = occupiedTracks.occupiedTrackSections.get(desiredTrackSection);
         if (trains != null) {
             if (trains >= tracks) {
                 // We need to wait for the track ahead to clear.
@@ -348,8 +329,7 @@ public class MoveTrainPreMove implements PreMove {
 
         PathOnTiles currentTiles = motion.getTiles(motion.duration());
         PathOnTiles pathOnTiles = currentTiles.addSteps(v);
-        return new TrainMotion(pathOnTiles, currentTiles.steps(), motion
-                .getTrainLength(), speeds);
+        return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
 
     SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, TileTransition v) {
@@ -400,12 +380,7 @@ public class MoveTrainPreMove implements PreMove {
         int trainLength = motion.getTrainLength();
         PathOnTiles tiles = motion.getTiles(duration);
         int engineDist = tiles.steps();
-        TrainMotion nextMotion = new TrainMotion(tiles, engineDist,
-                trainLength, stopped);
+        TrainMotion nextMotion = new TrainMotion(tiles, engineDist, trainLength, stopped);
         return new NextActivityMove(nextMotion, trainID, principal);
-    }
-
-    static double topSpeed(int wagons) {
-        return 10 / (wagons + 1);
     }
 }

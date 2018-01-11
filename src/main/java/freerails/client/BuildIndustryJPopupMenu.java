@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.client.top;
+package freerails.client;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.View;
@@ -61,38 +61,29 @@ public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
      * @param vl
      * @param closeAction
      */
-    public void setup(final ModelRoot modelRoot, RendererRoot vl,
-                      Action closeAction) {
+    public void setup(final ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         removeAll();
 
-        final NonNullElementWorldIterator it = new NonNullElementWorldIterator(SKEY.TERRAIN_TYPES,
-                modelRoot.getWorld());
+        final NonNullElementWorldIterator it = new NonNullElementWorldIterator(SKEY.TERRAIN_TYPES, modelRoot.getWorld());
 
         while (it.next()) {
             TerrainType type = (TerrainType) it.getElement();
             final Money price = type.getBuildCost();
 
             if (null != price) {
-                JMenuItem item = new JMenuItem(type.getDisplayName() + ' '
-                        + price);
+                JMenuItem item = new JMenuItem(type.getDisplayName() + ' ' + price);
                 item.addActionListener(new ActionListener() {
                     private final int terrainType = it.getIndex();
 
                     public void actionPerformed(ActionEvent e) {
-                        Move m1 = new ChangeTileMove(modelRoot.getWorld(),
-                                cursorLocation, terrainType);
-                        Transaction t = new ItemTransaction(
-                                TransactionCategory.INDUSTRIES, terrainType,
-                                1, Money.changeSign(price));
-                        Move m2 = new AddTransactionMove(modelRoot
-                                .getPrincipal(), t);
+                        Move m1 = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainType);
+                        Transaction t = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainType, 1, Money.changeSign(price));
+                        Move m2 = new AddTransactionMove(modelRoot.getPrincipal(), t);
                         Move m3 = new CompositeMove(m1, m2);
                         MoveStatus ms = modelRoot.doMove(m3);
 
                         if (!ms.ok) {
-                            modelRoot.setProperty(
-                                    ModelRoot.Property.CURSOR_MESSAGE,
-                                    ms.message);
+                            modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, ms.message);
                         }
                     }
                 });

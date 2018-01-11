@@ -18,19 +18,18 @@
 
 package freerails.move;
 
-import freerails.world.game.GameTime;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
+import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 
 /**
  * Changes the time item on the world object.
  */
 public class TimeTickMove implements Move {
+
     private static final long serialVersionUID = 3257290240212153393L;
-
     private final GameTime oldTime;
-
     private final GameTime newTime;
 
     /**
@@ -47,6 +46,7 @@ public class TimeTickMove implements Move {
      * @return
      */
     public static Move getMove(ReadOnlyWorld w) {
+
         GameTime oldTime = w.currentTime();
         GameTime newTime = new GameTime(oldTime.getTicks() + 1);
 
@@ -55,15 +55,12 @@ public class TimeTickMove implements Move {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof TimeTickMove))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof TimeTickMove)) return false;
 
         final TimeTickMove timeTickMove = (TimeTickMove) obj;
 
-        if (!newTime.equals(timeTickMove.newTime))
-            return false;
+        if (!newTime.equals(timeTickMove.newTime)) return false;
         return oldTime.equals(timeTickMove.oldTime);
     }
 
@@ -79,8 +76,7 @@ public class TimeTickMove implements Move {
         if (world.currentTime().equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         }
-        String string = "oldTime = " + oldTime.getTicks() + " <=> "
-                + "currentTime " + (world.currentTime()).getTicks();
+        String string = "oldTime = " + oldTime.getTicks() + " <=> " + "currentTime " + (world.currentTime()).getTicks();
 
         return MoveStatus.moveFailed(string);
     }

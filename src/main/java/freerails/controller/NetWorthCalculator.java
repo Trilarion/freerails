@@ -32,11 +32,11 @@ import freerails.world.player.FreerailsPrincipal;
 public class NetWorthCalculator extends TransactionAggregator {
 
     /**
-     * @param w
+     * @param world
      * @param principal
      */
-    public NetWorthCalculator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        super(w, principal);
+    public NetWorthCalculator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        super(world, principal);
     }
 
     @Override
