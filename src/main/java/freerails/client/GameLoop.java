@@ -20,6 +20,7 @@ package freerails.client;
 
 import freerails.client.common.RepaintManagerForActiveRendering;
 import freerails.client.launcher.Launcher;
+import freerails.util.SynchronizedEventQueue;
 import freerails.world.game.GameModel;
 import org.apache.log4j.Logger;
 
@@ -33,8 +34,6 @@ public final class GameLoop implements Runnable {
 
     private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
 
-    private static final boolean LIMIT_FRAME_RATE = false;
-    private static final int TARGET_FPS = 40;
     private final ScreenHandler screenHandler;
     private final GameModel[] model;
 
@@ -72,7 +71,7 @@ public final class GameLoop implements Runnable {
 
             boolean gameNotDone = true;
 
-            FPScounter fPScounter = new FPScounter();
+            FramePerSecondDisplay fPScounter = new FramePerSecondDisplay();
 
             /*
              * Reduce this threads priority to avoid starvation of the input
@@ -147,12 +146,12 @@ public final class GameLoop implements Runnable {
                     } catch (Exception e) {
                         // do nothing.
                     }
-                } else if (LIMIT_FRAME_RATE) {
+                } else if (ClientConfig.LIMIT_FRAME_RATE) {
                     long deltatime = System.currentTimeMillis() - frameStartTime;
 
-                    while (deltatime < (1000 / TARGET_FPS)) {
+                    while (deltatime < (1000 / ClientConfig.TARGET_FPS)) {
                         try {
-                            long sleeptime = (1000 / TARGET_FPS) - deltatime;
+                            long sleeptime = (1000 / ClientConfig.TARGET_FPS) - deltatime;
                             Thread.sleep(sleeptime);
                         } catch (Exception ignored) {
                         }

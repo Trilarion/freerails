@@ -90,7 +90,7 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
      * @param args
      */
     public static void main(String[] args) {
-        GUIClient client = new GUIClient("Test", null, ScreenHandler.WINDOWED_MODE, null);
+        GUIClient client = new GUIClient("Test", null, ClientConfig.WINDOWED_MODE, null);
         client.start();
     }
 

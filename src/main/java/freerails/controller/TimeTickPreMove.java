@@ -28,7 +28,6 @@ import freerails.world.ReadOnlyWorld;
 /**
  * Generates a TimeTickMove.
  */
-@freerails.util.InstanceControlled
 public class TimeTickPreMove implements PreMove {
 
     public static final PreMove INSTANCE = new TimeTickPreMove();

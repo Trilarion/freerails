@@ -33,23 +33,13 @@ public final class NullTrackPieceRenderer implements TrackPieceRenderer {
     private NullTrackPieceRenderer() {
     }
 
-    /*
-     * @see TrackPieceView#getTrackPieceIcon(int)
-     */
-
     /**
      * @param trackTemplate
      * @return
      */
-
     public Image getTrackPieceIcon(int trackTemplate) {
         return null;
     }
-
-    /*
-     * @see TrackPieceView#drawTrackPieceIcon(int, Graphics, int, int,
-     *      Dimension)
-     */
 
     /**
      * @param trackTemplate
@@ -58,9 +48,7 @@ public final class NullTrackPieceRenderer implements TrackPieceRenderer {
      * @param y
      * @param tileSize
      */
-
     public void drawTrackPieceIcon(int trackTemplate, Graphics g, int x, int y, Dimension tileSize) {
         // Draw nothing since there no track here.
     }
-
 }

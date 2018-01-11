@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
@@ -36,10 +36,10 @@ import java.awt.geom.RoundRectangle2D;
 
 /**
  * Class to render the station names and spheres of influence on the game map.
- * Names are retrieved from the KEY.STATIONS object. Date: 14th April 2003 28
- * May 2004 updated to also show station sphere of influence.
+ * Names are retrieved from the KEY.STATIONS object. Updated to also show station sphere of influence.
  */
 public class StationNamesRenderer implements Painter {
+
     static final float[] dash1 = {5.0f};
     static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
     private final ReadOnlyWorld w;
@@ -97,9 +97,9 @@ public class StationNamesRenderer implements Painter {
 
                 int x = tempStation.getStationX();
                 int y = tempStation.getStationY();
-                int xdisp = x * ClientConstants.TILE_SIZE;
-                int ydisp = y * ClientConstants.TILE_SIZE;
-                Rectangle stationBox = new Rectangle(xdisp - ClientConstants.TILE_SIZE * 3, ydisp - ClientConstants.TILE_SIZE * 3, ClientConstants.TILE_SIZE * 7, ClientConstants.TILE_SIZE * 7);
+                int xdisp = x * ClientConfig.TILE_SIZE;
+                int ydisp = y * ClientConfig.TILE_SIZE;
+                Rectangle stationBox = new Rectangle(xdisp - ClientConfig.TILE_SIZE * 3, ydisp - ClientConfig.TILE_SIZE * 3, ClientConfig.TILE_SIZE * 7, ClientConfig.TILE_SIZE * 7);
                 if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
                 }
@@ -107,9 +107,9 @@ public class StationNamesRenderer implements Painter {
                 if (showStationBorders) {
                     FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
                     int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
-                    int diameterInPixels = (radius * 2 + 1) * ClientConstants.TILE_SIZE;
-                    int radiusX = (x - radius) * ClientConstants.TILE_SIZE;
-                    int radiusY = (y - radius) * ClientConstants.TILE_SIZE;
+                    int diameterInPixels = (radius * 2 + 1) * ClientConfig.TILE_SIZE;
+                    int radiusX = (x - radius) * ClientConfig.TILE_SIZE;
+                    int radiusY = (y - radius) * ClientConfig.TILE_SIZE;
                     g.setColor(Color.WHITE);
                     g.setStroke(dashed);
                     g.draw(new RoundRectangle2D.Double(radiusX, radiusY, diameterInPixels, diameterInPixels, 10, 10));
@@ -119,8 +119,8 @@ public class StationNamesRenderer implements Painter {
                 if (showStationNames) {
                     stationName = tempStation.getStationName();
 
-                    positionX = xdisp + ClientConstants.TILE_SIZE / 2;
-                    positionY = ydisp + ClientConstants.TILE_SIZE;
+                    positionX = xdisp + ClientConfig.TILE_SIZE / 2;
+                    positionY = ydisp + ClientConfig.TILE_SIZE;
 
                     layout = new TextLayout(stationName, font, frc);
                     visibleAdvance = layout.getVisibleAdvance();
@@ -145,8 +145,5 @@ public class StationNamesRenderer implements Painter {
                 }
             }
         }
-
-        // end FOR loop
     }
-    // paint method
 }

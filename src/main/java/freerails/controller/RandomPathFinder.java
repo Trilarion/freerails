@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 import freerails.world.train.PositionOnTrack;
@@ -29,7 +29,7 @@ import freerails.world.train.PositionOnTrack;
 public class RandomPathFinder implements PathIterator {
 
     private static final long serialVersionUID = 3832906571880608313L;
-    private static final int tileSize = ClientConstants.TILE_SIZE;
+    private static final int tileSize = ClientConfig.TILE_SIZE;
     private final FlatTrackExplorer trackExplorer;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();

@@ -90,13 +90,13 @@ public class BuildTrackJPanel extends javax.swing.JPanel implements ActiveView {
 
     /**
      * @param modelRoot
-     * @param ar
+     * @param actionRoot
      */
-    public void setup(ModelRoot modelRoot, ActionRoot ar) {
+    public void setup(ModelRoot modelRoot, ActionRoot actionRoot) {
 
         this.modelRoot = modelRoot;
-        stationBuildModel = ar.getStationBuildModel();
-        trackMoveProducer = ar.getTrackMoveProducer();
+        stationBuildModel = actionRoot.getStationBuildModel();
+        trackMoveProducer = actionRoot.getTrackMoveProducer();
         if (null == trackMoveProducer) throw new NullPointerException();
 
         selectionSet = new HashMap<>();

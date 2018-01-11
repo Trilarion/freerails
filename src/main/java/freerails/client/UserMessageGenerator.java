@@ -44,6 +44,7 @@ import java.util.List;
  * appropriate. It is also used to trigger sounds.
  */
 public class UserMessageGenerator implements MoveReceiver {
+
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
     private final SoundManager soundManager = SoundManager.getSoundManager();
     private ModelRoot modelRoot;

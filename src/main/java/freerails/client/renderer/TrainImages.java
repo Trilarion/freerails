@@ -33,9 +33,6 @@ import java.io.IOException;
  */
 public class TrainImages {
 
-    /**
-     *
-     */
     public final String sideOnFileName;
     private final Image sideOnImage;
     private final Image[] overheadImages = new Image[8];

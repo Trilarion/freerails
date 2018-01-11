@@ -24,6 +24,7 @@ import java.awt.*;
  * Used for testing the Map view components without setting up any map data.
  */
 public class BlankMapRenderer implements MapRenderer {
+
     private final float scale;
 
     /**
@@ -63,8 +64,7 @@ public class BlankMapRenderer implements MapRenderer {
      * @param x
      * @param y
      */
-    public void refreshTile(int x, int y) {
-    }
+    public void refreshTile(int x, int y) {}
 
     /**
      * @param g
@@ -85,7 +85,5 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      *
      */
-    public void refreshAll() {
-        // do nothing
-    }
+    public void refreshAll() {}
 }

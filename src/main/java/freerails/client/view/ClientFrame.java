@@ -17,25 +17,29 @@
  */
 
 /*
- * ClientJFrame.java
+ * ClientFrame.java
  *
  */
 
-package freerails.client;
+package freerails.client.view;
+
+import freerails.client.GUIComponentFactory;
+import freerails.client.GUIComponentFactoryTestImpl;
+
+import javax.swing.*;
 
 /**
  * The JFrame that you see while you are playing the game.
  */
-public class ClientJFrame extends javax.swing.JFrame {
+public class ClientFrame extends JFrame {
 
     private static final long serialVersionUID = 3834868100742265142L;
-
     private GUIComponentFactory gUIComponentFactory;
 
     /**
-     * Creates new form ClientJFrame.
+     * Creates new form ClientFrame.
      */
-    public ClientJFrame(GUIComponentFactory gcf) {
+    public ClientFrame(GUIComponentFactory gcf) {
         setup(gcf);
     }
 
@@ -43,7 +47,7 @@ public class ClientJFrame extends javax.swing.JFrame {
      * @param args
      */
     public static void main(String args[]) {
-        new ClientJFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
+        new ClientFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
     }
 
     /**

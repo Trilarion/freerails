@@ -31,7 +31,6 @@ import java.io.Serializable;
  * It implements the type-safe enum pattern (see Bloch, <I>Effective Java</I>
  * item 21)
  */
-@freerails.util.InstanceControlled
 public class KEY implements Serializable {
 
     private static final long serialVersionUID = 3257572793275987001L;

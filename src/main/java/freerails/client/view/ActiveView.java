@@ -32,7 +32,7 @@ public interface ActiveView {
 
     /**
      * @param modelRoot
-     * @param ar
+     * @param actionRoot
      */
-    void setup(ModelRoot modelRoot, ActionRoot ar);
+    void setup(ModelRoot modelRoot, ActionRoot actionRoot);
 }

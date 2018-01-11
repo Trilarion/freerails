@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.BuildTrackRenderer;
+import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.BuildMode;
 import freerails.controller.ModelRoot;
@@ -133,9 +133,9 @@ public final class FreerailsCursor {
             int dotSize;
 
             if ((time % 500) > 250) {
-                dotSize = BuildTrackRenderer.BIG_DOT_WIDTH;
+                dotSize = ClientConfig.BIG_DOT_WIDTH;
             } else {
-                dotSize = BuildTrackRenderer.SMALL_DOT_WIDTH;
+                dotSize = ClientConfig.SMALL_DOT_WIDTH;
             }
 
             g.setColor(Color.WHITE);

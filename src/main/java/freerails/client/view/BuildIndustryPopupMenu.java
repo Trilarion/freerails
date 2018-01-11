@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.client;
+package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.View;
@@ -43,15 +43,15 @@ import java.awt.event.ActionListener;
  * class contains the code that generates and dispatches a ChangeTileMove when
  * the player clicks on the menu.
  */
-public class BuildIndustryJPopupMenu extends JPopupMenu implements View {
-    private static final long serialVersionUID = 3689636912575165749L;
+public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
+    private static final long serialVersionUID = 3689636912575165749L;
     private final Point cursorLocation = new Point();
 
     /**
      * @param p
      */
-    public void setCusorLocation(Point p) {
+    public void setCursorLocation(Point p) {
         cursorLocation.x = p.x;
         cursorLocation.y = p.y;
     }

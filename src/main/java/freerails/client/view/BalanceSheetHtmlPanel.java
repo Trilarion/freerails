@@ -32,21 +32,19 @@ import java.net.URL;
 /**
  * A HtmlJPanel that displays the balance sheet.
  */
-public class BalanceSheetHtmlJPanel extends HtmlJPanel implements View {
+public class BalanceSheetHtmlPanel extends HtmlJPanel implements View {
 
     private static final long serialVersionUID = 3257009873370886964L;
-
     private final String template;
-
     private ModelRoot modelRoot;
 
     /**
      *
      */
-    public BalanceSheetHtmlJPanel() {
+    public BalanceSheetHtmlPanel() {
         super();
 
-        URL url = BalanceSheetHtmlJPanel.class.getResource(ClientConfig.VIEW_BALANCE_SHEET);
+        URL url = BalanceSheetHtmlPanel.class.getResource(ClientConfig.VIEW_BALANCE_SHEET);
         template = loadText(url);
     }
 

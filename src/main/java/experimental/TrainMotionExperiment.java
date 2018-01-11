@@ -18,6 +18,7 @@
 
 package experimental;
 
+import freerails.client.ClientConfig;
 import freerails.client.GameLoop;
 import freerails.client.ScreenHandler;
 import freerails.client.common.ModelRootImpl;
@@ -91,7 +92,7 @@ public class TrainMotionExperiment extends JComponent {
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         f.getContentPane().add(new TrainMotionExperiment());
 
-        ScreenHandler screenHandler = new ScreenHandler(f, ScreenHandler.WINDOWED_MODE);
+        ScreenHandler screenHandler = new ScreenHandler(f, ClientConfig.WINDOWED_MODE);
         screenHandler.apply();
 
         GameLoop gameLoop = new GameLoop(screenHandler);

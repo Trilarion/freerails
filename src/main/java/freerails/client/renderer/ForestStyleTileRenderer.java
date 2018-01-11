@@ -35,8 +35,8 @@ import java.io.IOException;
  * deciding which tile icon to use.
  */
 public final class ForestStyleTileRenderer extends freerails.client.renderer.AbstractTileRenderer {
-    private static final int[] X_LOOK_AT = {-1, 1};
 
+    private static final int[] X_LOOK_AT = {-1, 1};
     private static final int[] Y_LOOK_AT = {0, 0};
 
     /**

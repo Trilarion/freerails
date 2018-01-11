@@ -61,11 +61,11 @@ public class QuickRGBTileRendererList implements TileRendererList {
      * @return
      */
     public static Image createImageFor(TerrainType t) {
-        Image image = defaultConfiguration.createCompatibleImage(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
+        Image image = defaultConfiguration.createCompatibleImage(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
         Color c = new Color(t.getRGB());
         Graphics g = image.getGraphics();
         g.setColor(c);
-        g.fillRect(0, 0, ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
+        g.fillRect(0, 0, ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
         g.dispose();
 
         return image;

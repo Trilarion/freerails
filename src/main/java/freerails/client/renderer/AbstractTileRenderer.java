@@ -33,6 +33,7 @@ import java.io.File;
  * Encapsulates the visible properties of a tile.
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
+
     private final int[] typeNumbers;
     private final int mapWidth;
     private final int mapHeight;

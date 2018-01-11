@@ -17,7 +17,7 @@
  */
 
 /*
- * BrokerScreenHtmlJFrame.java
+ * BrokerScreenHtmlFrame.java
  *
  */
 
@@ -46,7 +46,7 @@ import java.net.URL;
 
 /**
  */
-public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
+public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
 
@@ -84,10 +84,10 @@ public class BrokerScreenHtmlJFrame extends BrokerJFrame implements View {
     /**
      * Creates a new instance of BrokerScreenHtmlJPanel
      */
-    public BrokerScreenHtmlJFrame() {
+    public BrokerScreenHtmlFrame() {
         super();
 
-        URL url = BrokerScreenHtmlJFrame.class.getResource(ClientConfig.VIEW_BROKER);
+        URL url = BrokerScreenHtmlFrame.class.getResource(ClientConfig.VIEW_BROKER);
         template = loadText(url);
         setSize(550, 300);
 

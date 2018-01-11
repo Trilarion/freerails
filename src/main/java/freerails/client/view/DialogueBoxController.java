@@ -305,7 +305,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showBalanceSheet() {
-        BalanceSheetHtmlJPanel bs = new BalanceSheetHtmlJPanel();
+        BalanceSheetHtmlPanel bs = new BalanceSheetHtmlPanel();
         bs.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(bs);
     }
@@ -315,7 +315,7 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showBrokerScreen() {
         // this is Creating a BrokerScreen Internal Frame in the Main Frame
-        BrokerScreenHtmlJFrame brokerScreenHtmlJFrame = new BrokerScreenHtmlJFrame();
+        BrokerScreenHtmlFrame brokerScreenHtmlJFrame = new BrokerScreenHtmlFrame();
         brokerScreenHtmlJFrame.setup(modelRoot, vl, closeCurrentDialogue);
         brokerScreenHtmlJFrame.setFrameIcon(null);
 

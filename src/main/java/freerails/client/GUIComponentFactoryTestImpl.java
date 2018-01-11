@@ -26,27 +26,19 @@ import javax.swing.*;
 
 /**
  * Implementation of GUIComponentFactory that returns 'blank' components - used
- * for testing the layout of ClientJFrame.
+ * for testing the layout of ClientFrame.
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
+
     private final JLabel datejLabel;
-
     private final JLabel cashjLabel;
-
     private final JTabbedPane trainsJPanel;
-
     private final JMenu displayMenu;
-
     private final JScrollPane mainMapView;
-
     private final JMenu buildMenu;
-
     private final JMenu gameMenu;
-
     private final JPanel mapOverview;
-
     private final JMenu helpMenu;
-
     private final JMenu brokerMenu;
 
     /**

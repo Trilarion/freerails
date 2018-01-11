@@ -39,8 +39,8 @@ import java.util.Iterator;
  * A list of TrackPieceRenderer.
  */
 public final class TrackPieceRendererList {
-    private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
 
+    private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     /**

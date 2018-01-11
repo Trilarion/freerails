@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.*;
@@ -38,12 +38,6 @@ import java.io.IOException;
  */
 public class StationBoxRenderer implements Painter {
 
-    private static final int WAGON_IMAGE_HEIGHT = 10;
-
-    private static final int SPACING = 3;
-
-    private static final int MAX_WIDTH = 80;
-    private static final int MAX_HEIGHT = 5 * (WAGON_IMAGE_HEIGHT + SPACING);
     private final ReadOnlyWorld w;
     private final Color bgColor;
     private final int wagonImageWidth;
@@ -63,14 +57,14 @@ public class StationBoxRenderer implements Painter {
         // How wide will the wagon images be if we scale them so their height is
         // WAGON_IMAGE_HEIGHT?
         Image wagonImage = vl.getWagonImages(0).getSideOnImage();
-        wagonImageWidth = wagonImage.getWidth(null) * WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
+        wagonImageWidth = wagonImage.getWidth(null) * ClientConfig.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
         int nrOfCargoTypes = w.size(SKEY.CARGO_TYPES);
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
             String wagonFilename = vl.getWagonImages(i).sideOnFileName;
             try {
-                wagonImage = vl.getScaledImage(wagonFilename, WAGON_IMAGE_HEIGHT);
+                wagonImage = vl.getScaledImage(wagonFilename, ClientConfig.WAGON_IMAGE_HEIGHT);
             } catch (IOException e) {
                 throw new IllegalArgumentException(wagonFilename);
             }
@@ -92,25 +86,25 @@ public class StationBoxRenderer implements Painter {
 
             while (wi.next()) { // loop over non null stations
                 Station station = (Station) wi.getElement();
-                int positionX = (station.getStationX() * ClientConstants.TILE_SIZE) + ClientConstants.TILE_SIZE / 2;
-                int positionY = (station.getStationY() * ClientConstants.TILE_SIZE) + ClientConstants.TILE_SIZE * 2;
-                Rectangle r = new Rectangle(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
+                int positionX = (station.getStationX() * ClientConfig.TILE_SIZE) + ClientConfig.TILE_SIZE / 2;
+                int positionY = (station.getStationY() * ClientConfig.TILE_SIZE) + ClientConfig.TILE_SIZE * 2;
+                Rectangle r = new Rectangle(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
                     g.setColor(bgColor);
-                    g.fillRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
+                    g.fillRect(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
                     g.setColor(Color.WHITE);
                     g.setStroke(new BasicStroke(1.0f));
-                    g.drawRect(positionX, positionY, MAX_WIDTH, MAX_HEIGHT);
+                    g.drawRect(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
 
                     CargoBatchBundle cb = (ImmutableCargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cb);
                     for (int category = 0; category < CargoCategory.getNumberOfCategories(); category++) {
-                        int alternateWidth = (MAX_WIDTH - 2 * SPACING) / (carsLoads[category].length + 1);
+                        int alternateWidth = (ClientConfig.MAX_WIDTH - 2 * ClientConfig.SPACING) / (carsLoads[category].length + 1);
                         int xOffsetPerWagon = Math.min(wagonImageWidth, alternateWidth);
 
                         for (int car = 0; car < carsLoads[category].length; car++) {
-                            int x = positionX + (car * xOffsetPerWagon) + SPACING;
-                            int y = positionY + (category * (WAGON_IMAGE_HEIGHT + SPACING));
+                            int x = positionX + (car * xOffsetPerWagon) + ClientConfig.SPACING;
+                            int y = positionY + (category * (ClientConfig.WAGON_IMAGE_HEIGHT + ClientConfig.SPACING));
                             int cargoType = carsLoads[category][car];
                             g.drawImage(cargoImages[cargoType], x, y, null);
                         }

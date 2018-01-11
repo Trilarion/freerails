@@ -32,9 +32,6 @@ import java.awt.image.BufferStrategy;
  */
 public final class ScreenHandler {
 
-    public static final int FULL_SCREEN = 0;
-    public static final int WINDOWED_MODE = 1;
-    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
     static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static final Logger logger = Logger.getLogger(ScreenHandler.class.getName());
     private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{new DisplayMode(640, 400, 8, 60), new DisplayMode(800, 600, 16, 60), new DisplayMode(1024, 768, 8, 60), new DisplayMode(1024, 768, 16, 60),};
@@ -146,13 +143,13 @@ public final class ScreenHandler {
      */
     public synchronized void apply() {
         switch (mode) {
-            case FULL_SCREEN: {
+            case ClientConfig.FULL_SCREEN: {
                 goFullScreen(frame, displayMode);
 
                 break;
             }
 
-            case WINDOWED_MODE: {
+            case ClientConfig.WINDOWED_MODE: {
                 // Some of the dialogue boxes do not get laid out properly if they
                 // are smaller than their
                 // minimum size. JFrameMinimumSizeEnforcer increases the size of the
@@ -166,7 +163,7 @@ public final class ScreenHandler {
                 break;
             }
 
-            case FIXED_SIZE_WINDOWED_MODE: {
+            case ClientConfig.FIXED_SIZE_WINDOWED_MODE: {
                 /*
                  * We need to make the frame not displayable before calling
                  * setUndecorated(true) otherwise a

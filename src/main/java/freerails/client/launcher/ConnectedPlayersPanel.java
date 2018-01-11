@@ -17,7 +17,7 @@
  */
 
 /*
- * ConnectedPlayersJPanel.java
+ * ConnectedPlayersPanel.java
  *
  */
 
@@ -25,6 +25,7 @@ package freerails.client.launcher;
 
 import freerails.network.FreerailsGameServer;
 
+import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -32,20 +33,18 @@ import java.beans.PropertyChangeListener;
 /**
  * A JPanel that shows the players currently logged in to the server.
  */
-public class ConnectedPlayersJPanel extends javax.swing.JPanel implements PropertyChangeListener {
+public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
 
     private static final long serialVersionUID = 4049080453489111344L;
-
     FreerailsGameServer server = null;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JList jList1;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JLabel title;
+    JList jList1;
+    JScrollPane jScrollPane1;
+    JLabel title;
 
     /**
-     * Creates new form ConnectedPlayersJPanel
+     * Creates new form ConnectedPlayersPanel
      */
-    public ConnectedPlayersJPanel() {
+    public ConnectedPlayersPanel() {
         initComponents();
     }
 
@@ -57,9 +56,9 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements Proper
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        title = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        title = new JLabel();
+        jScrollPane1 = new JScrollPane();
+        jList1 = new JList();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -105,21 +104,5 @@ public class ConnectedPlayersJPanel extends javax.swing.JPanel implements Proper
             }
         }
     }
-
-    private static class MyAbstractListModel extends javax.swing.AbstractListModel {
-
-        private static final long serialVersionUID = -7077093078891444168L;
-
-        final String[] strings = {"No players are logged on!"};
-
-        public int getSize() {
-            return strings.length;
-        }
-
-        public Object getElementAt(int index) {
-            return strings[index];
-        }
-    }
-    // End of variables declaration//GEN-END:variables
 
 }

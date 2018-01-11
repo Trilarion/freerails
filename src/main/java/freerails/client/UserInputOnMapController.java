@@ -47,11 +47,9 @@ import java.awt.event.MouseEvent;
 public class UserInputOnMapController extends KeyAdapter {
 
     private static final Logger logger = Logger.getLogger(UserInputOnMapController.class.getName());
-
     private final ModelRoot modelRoot;
-
     private final ActionRoot actionRoot;
-    private final BuildIndustryJPopupMenu buildIndustryJPopupMenu = new BuildIndustryJPopupMenu();
+    private final BuildIndustryPopupMenu buildIndustryPopupMenu = new BuildIndustryPopupMenu();
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
     private final SoundManager soundManager = SoundManager.getSoundManager();
     private MapViewJComponent mapView;
@@ -91,7 +89,7 @@ public class UserInputOnMapController extends KeyAdapter {
         stationTypesPopup = stPopup;
         this.trackBuilder = trackBuilder;
         this.buildTrack = buildTrack;
-        buildIndustryJPopupMenu.setup(mr, null, null);
+        buildIndustryPopupMenu.setup(mr, null, null);
 
         /*
          * We attempt to remove listeners before adding them to prevent them
@@ -207,8 +205,8 @@ public class UserInputOnMapController extends KeyAdapter {
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
                 int x = cursorPosition.x * tileSize.width;
                 int y = cursorPosition.y * tileSize.height;
-                buildIndustryJPopupMenu.setCusorLocation(cursorPosition.toPoint());
-                buildIndustryJPopupMenu.show(mapView, x, y);
+                buildIndustryPopupMenu.setCursorLocation(cursorPosition.toPoint());
+                buildIndustryPopupMenu.show(mapView, x, y);
 
                 break;
             }

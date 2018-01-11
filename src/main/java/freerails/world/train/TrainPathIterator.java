@@ -18,7 +18,7 @@
 
 package freerails.world.train;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.util.LineSegment;
 import freerails.world.track.PathIterator;
 
@@ -31,7 +31,7 @@ import java.util.Iterator;
 public class TrainPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3256999977816502584L;
-    private static final int tileSize = ClientConstants.TILE_SIZE;
+    private static final int tileSize = ClientConfig.TILE_SIZE;
     private final Iterator<Integer> intIterator;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();

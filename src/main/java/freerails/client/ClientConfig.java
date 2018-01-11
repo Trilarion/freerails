@@ -19,7 +19,7 @@
 package freerails.client;
 
 /**
- *
+ * Important constants
  */
 public class ClientConfig {
 
@@ -158,6 +158,22 @@ public class ClientConfig {
      *
      */
     public static final String GRAPHIC_ARROW_DESELECTED = GRAPHICS_PATH + "deselected_arrow.png";
+    /**
+     * size of a tile (height and width)
+     */
+    public static final int TILE_SIZE = 30;
+    public static final int FULL_SCREEN = 0;
+    public static final int WINDOWED_MODE = 1;
+
+    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
+    public static final int BIG_DOT_WIDTH = 12;
+    public static final int SMALL_DOT_WIDTH = 6;
+    static final boolean LIMIT_FRAME_RATE = false;
+    static final int TARGET_FPS = 40;
+    public static final int WAGON_IMAGE_HEIGHT = 10;
+    public static final int SPACING = 3;
+    public static final int MAX_HEIGHT = 5 * (WAGON_IMAGE_HEIGHT + SPACING);
+    public static final int MAX_WIDTH = 80;
 
     private ClientConfig() {
     }

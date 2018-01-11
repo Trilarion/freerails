@@ -17,21 +17,26 @@
  */
 
 /*
- * ClientOptionsJPanel.java
+ * ClientOptionsPanel.java
  *
  */
 
 package freerails.client.launcher;
 
-import freerails.client.ScreenHandler;
+import freerails.client.ClientConfig;
 import freerails.client.launcher.LauncherInterface.MSG_TYPE;
 import freerails.client.view.DisplayModesComboBoxModels;
 import freerails.controller.MyDisplayMode;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.net.InetSocketAddress;
 
@@ -39,35 +44,33 @@ import java.net.InetSocketAddress;
  * The Launcher panel that lets you choose fullscreen or windowed mode and the
  * screen resolution etc.
  */
-@SuppressWarnings("unused")
-class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
-    private static final long serialVersionUID = 3256721779883325748L;
+class ClientOptionsPanel extends JPanel implements LauncherPanel {
 
-    private static final Logger logger = Logger.getLogger(ClientOptionsJPanel.class.getName());
+    private static final long serialVersionUID = 3256721779883325748L;
+    private static final Logger logger = Logger.getLogger(ClientOptionsPanel.class.getName());
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.ButtonGroup buttonGroup1;
-    javax.swing.JRadioButton fixedSizeButton;
-    javax.swing.JRadioButton fullScreenButton;
-    javax.swing.JLabel jLabel1;
-    javax.swing.JLabel jLabel2;
-    javax.swing.JLabel jLabel3;
-    javax.swing.JList jList1;
-    javax.swing.JPanel jPanel1;
-    javax.swing.JPanel jPanel2;
-    javax.swing.JPanel jPanel3;
-    javax.swing.JPanel jPanel4;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JTextField playerName;
-    javax.swing.JComboBox playerNames;
-    javax.swing.JTextField remoteIP;
-    javax.swing.JTextField remotePort;
-    javax.swing.JPanel spacer;
-    javax.swing.JRadioButton windowedButton;
+    ButtonGroup buttonGroup1;
+    JRadioButton fixedSizeButton;
+    JRadioButton fullScreenButton;
+    JLabel jLabel1;
+    JLabel jLabel2;
+    JLabel jLabel3;
+    JList jList1;
+    JPanel jPanel1;
+    JPanel jPanel2;
+    JPanel jPanel3;
+    JPanel jPanel4;
+    JScrollPane jScrollPane1;
+    JTextField playerName;
+    JComboBox playerNames;
+    JTextField remoteIP;
+    JTextField remotePort;
+    JPanel spacer;
+    JRadioButton windowedButton;
     private String[] names;
 
-    public ClientOptionsJPanel(LauncherInterface owner) {
+    public ClientOptionsPanel(LauncherInterface owner) {
         this.owner = owner;
         initComponents();
         validateInput();
@@ -217,11 +220,11 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
     int getScreenMode() {
         if (fullScreenButton.isSelected()) {
-            return ScreenHandler.FULL_SCREEN;
+            return ClientConfig.FULL_SCREEN;
         } else if (windowedButton.isSelected()) {
-            return ScreenHandler.WINDOWED_MODE;
+            return ClientConfig.WINDOWED_MODE;
         } else if (fixedSizeButton.isSelected()) {
-            return ScreenHandler.FIXED_SIZE_WINDOWED_MODE;
+            return ClientConfig.FIXED_SIZE_WINDOWED_MODE;
         } else {
             throw new IllegalStateException();
         }
@@ -248,24 +251,24 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        playerName = new javax.swing.JTextField();
-        playerNames = new javax.swing.JComboBox();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        remoteIP = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        remotePort = new javax.swing.JTextField();
-        spacer = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jPanel2 = new javax.swing.JPanel();
-        windowedButton = new javax.swing.JRadioButton();
-        fixedSizeButton = new javax.swing.JRadioButton();
-        fullScreenButton = new javax.swing.JRadioButton();
+        buttonGroup1 = new ButtonGroup();
+        jPanel3 = new JPanel();
+        jLabel1 = new JLabel();
+        playerName = new JTextField();
+        playerNames = new JComboBox();
+        jPanel4 = new JPanel();
+        jLabel2 = new JLabel();
+        remoteIP = new JTextField();
+        jLabel3 = new JLabel();
+        remotePort = new JTextField();
+        spacer = new JPanel();
+        jPanel1 = new JPanel();
+        jScrollPane1 = new JScrollPane();
+        jList1 = new JList();
+        jPanel2 = new JPanel();
+        windowedButton = new JRadioButton();
+        fixedSizeButton = new JRadioButton();
+        fullScreenButton = new JRadioButton();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -278,7 +281,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jPanel3.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Player Details"));
+        jPanel3.setBorder(new TitledBorder(new EtchedBorder(), "Player Details"));
         jLabel1.setText("Player name:");
         jPanel3.add(jLabel1);
 
@@ -295,7 +298,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        jPanel4.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Remote server address"));
+        jPanel4.setBorder(new TitledBorder(new EtchedBorder(), "Remote server address"));
         jPanel4.setEnabled(false);
         jLabel2.setText("IP Address:");
         jPanel4.add(jLabel2, new java.awt.GridBagConstraints());
@@ -338,8 +341,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Select Display Mode"));
-        jScrollPane1.setBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "Select Display Mode"));
+        jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
         String displayMode = owner.getProperty(LauncherInterface.CLIENT_DISPLAY_PROPERTY);
         String fullscreenProp = owner.getProperty(LauncherInterface.CLIENT_FULLSCREEN_PROPERTY);
@@ -348,7 +351,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
             fullscreen = Boolean.valueOf(fullscreenProp);
         }
 
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         if (!fullscreen) {
             jList1.setEnabled(false);
         } else {
@@ -361,7 +364,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+        jPanel2.setLayout(new BoxLayout(jPanel2, BoxLayout.Y_AXIS));
 
         buttonGroup1.add(windowedButton);
         if (!fullscreen) {
@@ -407,7 +410,7 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         jList1.ensureIndexIsVisible(jList1.getSelectedIndex());
     }
 
-    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {
+    private void jList1ValueChanged(ListSelectionEvent evt) {
         validateInput();
     }
 
@@ -415,10 +418,8 @@ class ClientOptionsJPanel extends javax.swing.JPanel implements LauncherPanel {
         validateInput();
     }
 
-    private void fullScreenButtonStateChanged(javax.swing.event.ChangeEvent evt) {
+    private void fullScreenButtonStateChanged(ChangeEvent evt) {
         jList1.setEnabled(fullScreenButton.isSelected());
         validateInput();
     }
-    // End of variables declaration//GEN-END:variables
-
 }

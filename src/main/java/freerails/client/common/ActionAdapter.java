@@ -36,6 +36,7 @@ import java.util.List;
  * order to receive property change updates and to set icons etc.
  */
 public class ActionAdapter extends DefaultComboBoxModel {
+
     private static final long serialVersionUID = 3546920294666351415L;
 
     /**

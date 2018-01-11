@@ -67,7 +67,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     private final Icon errorIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_ERROR));
     private final Icon warningIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_WARNING));
     private final Icon infoIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_INFO));
-    private final ProgressJPanelModel progressPanel = new ProgressJPanelModel(this);
+    private final ProgressPanelModel progressPanel = new ProgressPanelModel(this);
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JLabel infoLabel;
     javax.swing.JPanel jPanel1;
@@ -84,9 +84,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         initComponents();
 
         wizardPages[0] = new LauncherPanel1();
-        wizardPages[1] = new SelectMapJPanel(this);
-        wizardPages[2] = new ClientOptionsJPanel(this);
-        wizardPages[3] = new ConnectedPlayersJPanel();
+        wizardPages[1] = new SelectMapPanel(this);
+        wizardPages[2] = new ClientOptionsPanel(this);
+        wizardPages[3] = new ConnectedPlayersPanel();
 
         if (!quickstart) {
             jPanel1.add(wizardPages[0], "0");
@@ -253,9 +253,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
         setButtonsVisible(false);
         LauncherPanel1 lp = (LauncherPanel1) wizardPages[0];
-        SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
-        ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
-        ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
+        SelectMapPanel msp = (SelectMapPanel) wizardPages[1];
+        ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
+        ConnectedPlayersPanel cp = (ConnectedPlayersPanel) wizardPages[3];
 
         boolean recover = false;
         int mode;
@@ -378,9 +378,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
 
     private void setServerGameModel() {
 
-        ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
+        ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
         if (isNewGame()) {
-            SelectMapJPanel msp2 = (SelectMapJPanel) wizardPages[1];
+            SelectMapPanel msp2 = (SelectMapPanel) wizardPages[1];
             server.newGame(msp2.getNewMapName());
             cop.limitPlayerNames(null);
         }  // Do nothing since the server is already set up.
@@ -388,9 +388,9 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     }
 
     private boolean isNewGame() {
-        SelectMapJPanel msp2 = (SelectMapJPanel) wizardPages[1];
+        SelectMapPanel msp2 = (SelectMapPanel) wizardPages[1];
 
-        return msp2.getSelection() == SelectMapJPanel.Selection.NEW_GAME;
+        return msp2.getSelection() == MapSelection.NEW_GAME;
     }
 
     private void initServer() {
@@ -403,7 +403,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
          * Set the server field on the connected players panel so that it can
          * keep track of who is connected.
          */
-        ConnectedPlayersJPanel cp = (ConnectedPlayersJPanel) wizardPages[3];
+        ConnectedPlayersPanel cp = (ConnectedPlayersPanel) wizardPages[3];
         cp.server = server;
         server.addPropertyChangeListener(cp);
         cp.updateListOfPlayers();
@@ -540,8 +540,8 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         try {
             CardLayout cl = (CardLayout) jPanel1.getLayout();
             LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
-            SelectMapJPanel msp = (SelectMapJPanel) wizardPages[1];
-            ClientOptionsJPanel cop = (ClientOptionsJPanel) wizardPages[2];
+            SelectMapPanel msp = (SelectMapPanel) wizardPages[1];
+            ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
             hideAllMessages();
 
             switch (currentPage) {

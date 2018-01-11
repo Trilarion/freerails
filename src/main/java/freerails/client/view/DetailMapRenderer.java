@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.client.renderer.*;
 import freerails.controller.ModelRoot;
@@ -64,7 +64,7 @@ public class DetailMapRenderer implements MapRenderer {
         }
 
         Dimension mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
-        mapSizeInPixels = new Dimension(mapSize.width * ClientConstants.TILE_SIZE, mapSize.height * ClientConstants.TILE_SIZE);
+        mapSizeInPixels = new Dimension(mapSize.width * ClientConfig.TILE_SIZE, mapSize.height * ClientConfig.TILE_SIZE);
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rr, modelRoot);
         buildTrackController = new BuildTrackController(world, modelRoot);
@@ -89,7 +89,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @return
      */
     public float getScale() {
-        return ClientConstants.TILE_SIZE;
+        return ClientConfig.TILE_SIZE;
     }
 
     /**

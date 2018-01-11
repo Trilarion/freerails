@@ -31,8 +31,8 @@ import java.awt.*;
 /**
  * Draws a train from an overhead view.
  */
-@SuppressWarnings("unused")
 public class TrainRenderer {
+
     private final RendererRoot rr;
 
     /**

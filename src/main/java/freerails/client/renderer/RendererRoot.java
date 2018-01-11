@@ -46,8 +46,6 @@ public interface RendererRoot extends TileRendererList {
      */
     TrainImages getEngineImages(int type);
 
-    // OldTrainImages getTrainImages();
-
     boolean validate(ReadOnlyWorld world);
 
     /**

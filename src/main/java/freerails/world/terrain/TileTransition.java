@@ -22,7 +22,7 @@
  */
 package freerails.world.terrain;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.util.Point2D;
 import freerails.world.track.TrackConfigurations;
 
@@ -30,17 +30,9 @@ import freerails.world.track.TrackConfigurations;
  * Represents a movement from a tile to any one of the surrounding
  * eight tiles.
  */
-@freerails.util.InstanceControlled
 public final class TileTransition implements TrackConfigurations {
 
-    /**
-     *
-     */
-    public static final int TILE_DIAMETER = ClientConstants.TILE_SIZE;
-
-    /**
-     *
-     */
+    public static final int TILE_DIAMETER = ClientConfig.TILE_SIZE;
     public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER, TILE_DIAMETER);
     /**
      * North.

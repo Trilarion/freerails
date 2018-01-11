@@ -28,26 +28,19 @@ import freerails.client.renderer.ZoomedOutMapRenderer;
 import freerails.client.view.*;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeGameSpeedMove;
-import freerails.move.ChangeProductionAtEngineShopMove;
-import freerails.move.Move;
 import freerails.network.LocalConnection;
-import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameSpeed;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
-import freerails.world.station.TrainBlueprint;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Enumeration;
-import java.util.Random;
 
 /**
  * Creates and wires up the GUI components.
@@ -57,20 +50,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * Whether to show certain 'cheat' menus used for testing.
      */
-    private static final boolean CHEAT = (System.getProperty("cheat") != null);
-
     private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
-
     private final ActionRoot actionRoot;
-
     private final BuildMenu buildMenu;
-
     private final CashJLabel cashjLabel;
-
-    private final ClientJFrame clientJFrame;
-
+    private final ClientFrame clientFrame;
     private final DateJLabel datejLabel;
-
     private final DialogueBoxController dialogueBoxController;
     private final JScrollPane mainMapScrollPane1;
     private final MapViewJComponentConcrete mapViewJComponent;
@@ -116,8 +101,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         cashjLabel = new CashJLabel();
 
-        clientJFrame = new ClientJFrame(this);
-        dialogueBoxController = new DialogueBoxController(clientJFrame, modelRoot);
+        clientFrame = new ClientFrame(this);
+        dialogueBoxController = new DialogueBoxController(clientFrame, modelRoot);
         actionRoot.setDialogueBoxController(dialogueBoxController);
 
         modelRoot.addSplitMoveReceiver(move -> {
@@ -181,9 +166,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @return
      */
     public JFrame createClientJFrame(String title) {
-        clientJFrame.setTitle(title);
+        clientFrame.setTitle(title);
 
-        return clientJFrame;
+        return clientFrame;
     }
 
     /**
@@ -306,17 +291,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         JMenuItem loadGameJMenuItem = new JMenuItem(sc.getLoadGameAction());
 
-        // Fix bug 1102806 Newspaper does nothing, so hide it.
-        // JMenuItem newspaperJMenuItem = new JMenuItem("Newspaper");
-        // newspaperJMenuItem.setMnemonic(78);
-
-        // newspaperJMenuItem.addActionListener(new ActionListener() {
-        // public void actionPerformed(ActionEvent e) {
-        // dialogueBoxController.showNewspaper("Headline");
-        // //glassPanel.setVisible(true);
-        // }
-        // });
-
         // Set up the game speed sub-menu.
         JMenu gameSpeedSubMenu = new JMenu("Game Speed");
 
@@ -341,40 +315,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         gameMenu.addSeparator();
 
         gameMenu.add(gameSpeedSubMenu);
-        // gameMenu.add(newspaperJMenuItem);
         gameMenu.addSeparator();
         gameMenu.add(quitJMenuItem);
-
-        if (CHEAT) {
-            /* For testing. */
-            final ActionListener build200trains = e -> {
-                WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
-
-                if (wi.next()) {
-                    Random randy = new Random();
-                    Station station = (Station) wi.getElement();
-
-                    ImmutableList<TrainBlueprint> before = station.getProduction();
-                    int numberOfEngineTypes = modelRoot.getWorld().size(SKEY.ENGINE_TYPES) - 1;
-                    int numberOfcargoTypes = modelRoot.getWorld().size(SKEY.CARGO_TYPES) - 1;
-                    TrainBlueprint[] temp = new TrainBlueprint[200];
-
-                    for (int i = 0; i < temp.length; i++) {
-                        int engineType = randy.nextInt(numberOfEngineTypes);
-                        Integer[] wagonTypes = new Integer[]{randy.nextInt(numberOfcargoTypes), randy.nextInt(numberOfcargoTypes), randy.nextInt(numberOfcargoTypes)};
-                        TrainBlueprint trainBlueprint = new TrainBlueprint(engineType, wagonTypes);
-                        temp[i] = trainBlueprint;
-                    }
-                    ImmutableList<TrainBlueprint> after = new ImmutableList<>(temp);
-                    Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
-                    modelRoot.doMove(m);
-                }
-            };
-
-            JMenuItem build200TrainsMenuItem = new JMenuItem("Build 200 trains!");
-            build200TrainsMenuItem.addActionListener(build200trains);
-            gameMenu.add(build200TrainsMenuItem);
-        }
 
         return gameMenu;
     }
@@ -583,7 +525,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             frameTitle = name + " - " + serverDetails + " - Freerails";
         }
 
-        clientJFrame.setTitle(frameTitle);
+        clientFrame.setTitle(frameTitle);
         isSetup = true;
         modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, cursorPosition);
         mapViewJComponent.requestFocus();

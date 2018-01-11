@@ -22,7 +22,7 @@
  */
 package freerails.client.view;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
@@ -103,7 +103,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent implement
         super.paintComponent(g);
 
         if (null != mapCursor && isFocusOwner()) {
-            mapCursor.paintCursor(g, new java.awt.Dimension(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE));
+            mapCursor.paintCursor(g, new java.awt.Dimension(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE));
         }
 
         if (System.currentTimeMillis() < displayMessageUntil) {

@@ -32,6 +32,7 @@ import java.awt.image.VolatileImage;
  * e.g. whether they are square or isometric, should go here.
  */
 public abstract class BufferedTiledBackgroundRenderer implements MapLayerRenderer {
+
     /**
      * This is used to create images that are compatible with the default
      * graphics configuration. Such images can be drawn to the screen quickly

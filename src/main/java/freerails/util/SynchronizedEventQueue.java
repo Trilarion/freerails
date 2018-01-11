@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client;
+package freerails.util;
 
 import freerails.client.launcher.Launcher;
 
@@ -32,13 +32,8 @@ import java.util.Map;
  */
 public final class SynchronizedEventQueue extends EventQueue {
 
-    /**
-     *
-     */
     public static final Object MUTEX = new Object();
-
     private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
-
     private static boolean alreadyInUse = false;
     private final LinkedHashMap<AWTEvent, Throwable> list;
     private int count;

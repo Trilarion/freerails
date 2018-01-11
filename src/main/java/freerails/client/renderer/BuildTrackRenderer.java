@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Point2D;
@@ -35,21 +35,9 @@ import java.util.Iterator;
  */
 public class BuildTrackRenderer implements Painter {
 
-    /**
-     *
-     */
-    public static final int BIG_DOT_WIDTH = 12;
-
-    /**
-     *
-     */
-    public static final int SMALL_DOT_WIDTH = 6;
-
     private final ModelRoot modelRoot;
-
-    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
-
-    private final RendererRoot rr;
+    private final Dimension tileSize = new Dimension(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
+    private final RendererRoot rendererRoot;
 
     /**
      * @param trackPieceViewList
@@ -57,7 +45,7 @@ public class BuildTrackRenderer implements Painter {
      */
     public BuildTrackRenderer(RendererRoot trackPieceViewList, ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
-        rr = trackPieceViewList;
+        rendererRoot = trackPieceViewList;
 
     }
 
@@ -84,7 +72,7 @@ public class BuildTrackRenderer implements Painter {
                 int graphicsNumber = tp.getTrackGraphicID();
 
                 int ruleNumber = tp.getTrackTypeID();
-                freerails.client.renderer.TrackPieceRenderer trackPieceView = rr.getTrackPieceView(ruleNumber);
+                freerails.client.renderer.TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
                 trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x, point.y, tileSize);
             }
 
@@ -96,15 +84,15 @@ public class BuildTrackRenderer implements Painter {
              */
             for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D p = iter.next();
-                int x = p.x * tileSize.width + (tileSize.width - SMALL_DOT_WIDTH) / 2;
-                int y = p.y * tileSize.width + (tileSize.height - SMALL_DOT_WIDTH) / 2;
+                int x = p.x * tileSize.width + (tileSize.width - ClientConfig.SMALL_DOT_WIDTH) / 2;
+                int y = p.y * tileSize.width + (tileSize.height - ClientConfig.SMALL_DOT_WIDTH) / 2;
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p.x, p.y);
                 FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p.x, p.y);
 
                 boolean trackRemoved = !after.getTrackPiece().getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
                 Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
                 g.setColor(dotColor);
-                g.fillOval(x, y, SMALL_DOT_WIDTH, SMALL_DOT_WIDTH);
+                g.fillOval(x, y, ClientConfig.SMALL_DOT_WIDTH, ClientConfig.SMALL_DOT_WIDTH);
             }
         }
 

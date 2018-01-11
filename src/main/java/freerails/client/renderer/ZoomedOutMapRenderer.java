@@ -47,21 +47,15 @@ import java.awt.image.BufferedImage;
  * Draws the overview map.
  */
 public final class ZoomedOutMapRenderer implements MapRenderer {
+
     private final int imageWidth;
-
     private final int imageHeight;
-
     private final int mapWidth;
-
     private final int mapHeight;
-
     private final int mapX;
-
     private final int mapY;
-
     private final ReadOnlyWorld w;
     private final AffineTransform affineTransform;
-    // private Graphics2D mapGraphics;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage one2oneImage;
     private BufferedImage mapImage;
@@ -147,15 +141,6 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         }
 
         isDirty = true;
-        // int scaledX = (tile.x - mapX) * imageWidth / mapWidth;
-        // int scaledY = (tile.y - mapY) * imageHeight / mapHeight;
-        // int minx = scaledX < 2 ? 0 : scaledX - 2;
-        // int miny = scaledY < 2 ? 0 : scaledY - 2;
-        // int maxx = scaledX > imageWidth - 4 ? imageWidth : scaledX + 4;
-        // int maxy = scaledY > imageHeight - 4 ? imageHeight : scaledY + 4;
-        // mapGraphics.setClip(minx, miny, maxx - minx, maxy - miny);
-        // mapGraphics.clearRect(minx, miny, maxx - minx, maxy - miny);
-        // mapGraphics.drawImage(one2oneImage, affineTransform, null);
     }
 
     /**

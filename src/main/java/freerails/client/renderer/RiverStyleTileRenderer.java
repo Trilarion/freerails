@@ -34,8 +34,8 @@ import java.io.IOException;
  * South and West.
  */
 public final class RiverStyleTileRenderer extends freerails.client.renderer.AbstractTileRenderer {
-    private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
 
+    private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
 
     /**

@@ -38,12 +38,9 @@ import java.util.*;
  * components (for instance the cursor's position).
  */
 public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
+
     private final Map<Property, Object> properties = new HashMap<>();
     private final Collection<ModelRootListener> listeners = new ArrayList<>();
-
-    /**
-     *
-     */
     public boolean hasBeenSetup = false;
     private MoveChainFork moveFork = new MoveChainFork();
     private UntriedMoveReceiver moveReceiver = new MyUntriedMoveReceiver();
@@ -233,15 +230,4 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         return getProperty(property).equals(value);
     }
 
-    private static class MyUntriedMoveReceiver implements UntriedMoveReceiver {
-        public void process(Move move) {
-        }
-
-        public void processPreMove(PreMove pm) {
-        }
-
-        public MoveStatus tryDoMove(Move move) {
-            return MoveStatus.moveFailed("No move receiver set on model root!");
-        }
-    }
 }

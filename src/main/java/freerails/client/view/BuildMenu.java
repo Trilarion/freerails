@@ -16,17 +16,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client;
+/*
+ * BuildMenu.java
+ *
+ */
+package freerails.client.view;
+
+import freerails.client.view.ActionRoot;
+
+import javax.swing.*;
 
 /**
- * game constants
+ * The menu that lets you select a track type.
  */
-public final class ClientConstants {
-    /**
-     * size of a tile (height and width)
-     */
-    public static final int TILE_SIZE = 30;
+public final class BuildMenu extends JMenu {
 
-    private ClientConstants() {
+    private static final long serialVersionUID = 3617850859305055542L;
+
+    /**
+     *
+     */
+    public BuildMenu() {
+        super();
+    }
+
+    /**
+     * @param actionRoot
+     */
+    public void setup(ActionRoot actionRoot) {
+        removeAll();
+        setText("Build");
+
+        add(actionRoot.getBuildTrainDialogAction());
     }
 }

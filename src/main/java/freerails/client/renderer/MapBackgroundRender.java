@@ -23,7 +23,7 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.ClientConstants;
+import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.ReadOnlyWorld;
@@ -41,6 +41,7 @@ import java.awt.*;
  * the track layer.
  */
 public final class MapBackgroundRender implements MapLayerRenderer {
+
     private static final Logger logger = Logger.getLogger(MapBackgroundRender.class.getName());
 
     /**
@@ -52,13 +53,9 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * The track layer.
      */
     private final TrackLayer trackLayer;
-
-    private final Dimension tileSize = new Dimension(ClientConstants.TILE_SIZE, ClientConstants.TILE_SIZE);
-
+    private final Dimension tileSize = new Dimension(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
     private final Dimension mapSize;
-
     private final Painter cityNames;
-
     private final Painter stationNames;
 
     /*
@@ -97,8 +94,8 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * @param visibleRect
      */
     public void paintRect(Graphics g, Rectangle visibleRect) {
-        int tileWidth = ClientConstants.TILE_SIZE;
-        int tileHeight = ClientConstants.TILE_SIZE;
+        int tileWidth = ClientConfig.TILE_SIZE;
+        int tileHeight = ClientConfig.TILE_SIZE;
 
         clipRectangle = g.getClipBounds(clipRectangle);
 
@@ -115,7 +112,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);
-        Rectangle visibleRectangle = new Rectangle(x * ClientConstants.TILE_SIZE, y * ClientConstants.TILE_SIZE, width * ClientConstants.TILE_SIZE, height * ClientConstants.TILE_SIZE);
+        Rectangle visibleRectangle = new Rectangle(x * ClientConfig.TILE_SIZE, y * ClientConfig.TILE_SIZE, width * ClientConfig.TILE_SIZE, height * ClientConfig.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
     }

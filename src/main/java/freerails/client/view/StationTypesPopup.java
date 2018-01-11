@@ -16,11 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client;
+package freerails.client.view;
 
 import freerails.client.renderer.StationRadiusRenderer;
-import freerails.client.view.ActionRoot;
-import freerails.client.view.StationBuildModel;
 import freerails.controller.ModelRoot;
 import freerails.world.terrain.FullTerrainTile;
 
@@ -37,16 +35,12 @@ import java.awt.event.ActionEvent;
  * builds the type that is selected.
  */
 public class StationTypesPopup extends JPopupMenu {
+
     private static final long serialVersionUID = 3258415040658093364L;
-
     private Point tileToBuildStationOn;
-
     private StationRadiusRenderer stationRadiusRenderer;
-
     private PopupMenuListener popupMenuListener;
-
     private StationBuildModel stationBuildModel;
-
     private ModelRoot modelRoot;
 
     /**

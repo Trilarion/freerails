@@ -51,9 +51,6 @@ public class StationHelper {
                     return i;
                 }
             }
-
-//            throw new IllegalStateException("Couldn't find station at " + x
-//                    + ", " + y);
         }
         return -1;
         // Don't show terrain...
