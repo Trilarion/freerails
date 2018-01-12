@@ -33,16 +33,7 @@ public class PlayerColors {
     private PlayerColors() {
     }
 
-    // red
-    // for
-    // when
-    // we
-    // need
-    // to
-    // grab
-    // the
-    // player's
-    // attention!
+    // keep red for when we need to grab the player's attention!
 
     /**
      * @param playerNumber

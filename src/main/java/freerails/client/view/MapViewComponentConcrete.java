@@ -17,7 +17,7 @@
  */
 
 /*
- * MapViewJComponent.java
+ * MapViewComponent.java
  *
  */
 package freerails.client.view;
@@ -41,11 +41,10 @@ import java.util.StringTokenizer;
  * Displays the map, the cursor, and user messages (which are stored on the
  * ModelRoot under the keys QUICK_MESSAGE and PERMANENT_MESSAGE).
  */
-public final class MapViewJComponentConcrete extends MapViewJComponent implements ModelRootListener {
+public final class MapViewComponentConcrete extends MapViewComponent implements ModelRootListener {
+
     private static final long serialVersionUID = 3834868087706236208L;
-
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
-
     private static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
     /**
      * Affects scroll direction and scroll speed relative to the cursor.
@@ -87,7 +86,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent implement
     /**
      *
      */
-    public MapViewJComponentConcrete() {
+    public MapViewComponentConcrete() {
         super();
 
         MapViewJComponentMouseAdapter mva = new MapViewJComponentMouseAdapter();
@@ -303,7 +302,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent implement
                 screenLocation.y = e.getY();
                 sigmadelta.x = 0;
                 sigmadelta.y = 0;
-                javax.swing.SwingUtilities.convertPointToScreen(screenLocation, MapViewJComponentConcrete.this);
+                javax.swing.SwingUtilities.convertPointToScreen(screenLocation, MapViewComponentConcrete.this);
             }
         }
 
@@ -362,7 +361,7 @@ public final class MapViewJComponentConcrete extends MapViewJComponent implement
                     lastMouseLocation.y -= tiledelta.y;
                 }
 
-                MapViewJComponentConcrete.robot.mouseMove(screenLocation.x, screenLocation.y);
+                MapViewComponentConcrete.robot.mouseMove(screenLocation.x, screenLocation.y);
             }
         }
     }

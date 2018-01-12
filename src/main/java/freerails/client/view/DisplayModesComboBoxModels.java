@@ -24,6 +24,8 @@ package freerails.client.view;
 
 import freerails.controller.MyDisplayMode;
 
+import javax.swing.*;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,7 +35,7 @@ import java.util.List;
  * ComboBoxModel that provides access to the screen resolutions and bit depths
  * available.
  */
-public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
+public class DisplayModesComboBoxModels implements ComboBoxModel {
 
     private final List<MyDisplayMode> modes = new ArrayList<>();
     private MyDisplayMode selection;
@@ -84,7 +86,7 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
         selection = (MyDisplayMode) anItem;
     }
 
-    public void addListDataListener(javax.swing.event.ListDataListener l) {
+    public void addListDataListener(ListDataListener l) {
     }
 
     public MyDisplayMode getElementAt(int index) {
@@ -95,6 +97,6 @@ public class DisplayModesComboBoxModels implements javax.swing.ComboBoxModel {
         return modes.size();
     }
 
-    public void removeListDataListener(javax.swing.event.ListDataListener l) {
+    public void removeListDataListener(ListDataListener l) {
     }
 }

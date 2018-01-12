@@ -27,22 +27,12 @@ import java.io.Serializable;
  * This interface provides information about changes to the lists in the World
  * database.
  */
-@SuppressWarnings("unused")
+
 public interface ListMove extends Move {
     /**
      * @return the type of object which was changed
      */
     KEY getKey();
-
-    /**
-     * @return the old item or null if not any.
-     */
-    Serializable getBefore();
-
-    /**
-     * @return the new item or null if not any.
-     */
-    Serializable getAfter();
 
     /**
      * @return the index of the item which changed.

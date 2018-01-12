@@ -17,7 +17,7 @@
  */
 
 /*
- * NewsPaperJPanel.java
+ * NewsPaperPanel.java
  *
  */
 package freerails.client.view;
@@ -26,6 +26,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +34,8 @@ import java.awt.event.ActionListener;
 /**
  * A JPanel that displays a newspaper headline.
  */
-public class NewsPaperJPanel extends javax.swing.JPanel implements View {
+public class NewsPaperPanel extends JPanel implements View {
+    
     private static final long serialVersionUID = 3258410638366946868L;
     private final Image pieceOfNewspaper;
     private ActionListener callBack;
@@ -41,10 +43,10 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     /**
      *
      */
-    public NewsPaperJPanel() {
+    public NewsPaperPanel() {
         initComponents();
 
-        Image tempImage = (new javax.swing.ImageIcon(getClass().getResource("/freerails/data/newspaper.png"))).getImage();
+        Image tempImage = (new ImageIcon(getClass().getResource("/freerails/data/newspaper.png"))).getImage();
 
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         pieceOfNewspaper = defaultConfiguration.createCompatibleImage(tempImage.getWidth(null), tempImage.getHeight(null), Transparency.BITMASK);
@@ -86,14 +88,14 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         headline.setText("NEWSPAPER HEADLINE");
         headline.setForeground(java.awt.Color.black);
         headline.setBackground(java.awt.Color.white);
-        headline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        headline.setHorizontalAlignment(SwingConstants.CENTER);
         headline.setFont(new java.awt.Font("Lucida Bright", 1, 36));
         headline.setMaximumSize(new java.awt.Dimension(620, 110));
 
         add(headline);
         headline.setBounds(10, 70, 620, 110);
 
-        jPanel1.setBorder(new javax.swing.border.BevelBorder(0));
+        jPanel1.setBorder(new BevelBorder(0));
 
         anyKeyToContinueJLabel.setText("Click to continue");
         anyKeyToContinueJLabel.setForeground(java.awt.Color.black);
@@ -105,7 +107,7 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
     }
 
 
-    @SuppressWarnings("unused")
+
     private void formKeyPressed(java.awt.event.KeyEvent evt) {
         // Add your handling code here:
         setVerifyInputWhenFocusTarget(false);
@@ -127,5 +129,4 @@ public class NewsPaperJPanel extends javax.swing.JPanel implements View {
         callBack = closeAction;
     }
 
-    // End of variables declaration//GEN-END:variables
 }

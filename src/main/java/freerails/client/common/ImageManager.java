@@ -35,7 +35,7 @@ public interface ImageManager {
      * @param width
      * @return
      */
-    @SuppressWarnings("unused")
+
     Image newBlankImage(int height, int width);
 
     /**

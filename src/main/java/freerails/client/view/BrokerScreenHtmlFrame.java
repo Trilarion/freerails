@@ -49,19 +49,15 @@ import java.net.URL;
 public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
-
-    /**
-     *
-     */
     public static BrokerScreenGenerator brokerScreenGenerator;
     private final String template;
     private ModelRoot modelRoot;
+
     private final Action repayBondAction = new AbstractAction("Repay bond") {
 
         private static final long serialVersionUID = 440368637080877578L;
 
         public void actionPerformed(ActionEvent e) {
-
             Move bondTransaction = new AddTransactionMove(modelRoot.getPrincipal(), BondItemTransaction.repayBond(5));
             modelRoot.doMove(bondTransaction);
         }

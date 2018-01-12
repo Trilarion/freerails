@@ -26,7 +26,7 @@ import java.io.Serializable;
 /**
  * Represents the state of the economy.
  */
-@SuppressWarnings("unused")
+
 public class EconomicClimate implements Serializable {
 
     // TODO why start with 2

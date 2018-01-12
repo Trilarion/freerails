@@ -27,7 +27,7 @@ import java.util.Iterator;
 /**
  * Exposes the path of a train. TODO needs better comment
  */
-@SuppressWarnings("unused")
+
 public class TrainPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3256999977816502584L;

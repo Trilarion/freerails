@@ -17,7 +17,7 @@
  */
 
 /*
- *  MapViewJComponent.java
+ *  MapViewComponent.java
  *
  *  Created on 06 August 2001, 14:12
  */
@@ -32,14 +32,15 @@ import java.awt.*;
 /**
  * JPanel that displays the map and provides methods to handle scrolling.
  */
-public abstract class MapViewJComponent extends JPanel implements Scrollable, MapRenderer {
+public abstract class MapViewComponent extends JPanel implements Scrollable, MapRenderer {
+
     private static final long serialVersionUID = 3588200012170257744L;
     private MapRenderer mapView = new BlankMapRenderer(10);
 
     /**
      *
      */
-    public MapViewJComponent() {
+    public MapViewComponent() {
         setAutoscrolls(true);
     }
 
@@ -85,7 +86,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable, Ma
 
     /**
      * Gets the scrollableTracksViewportHeight attribute of the
-     * MapViewJComponent object.
+     * MapViewComponent object.
      *
      * @return The scrollableTracksViewportHeight value
      */
@@ -95,7 +96,7 @@ public abstract class MapViewJComponent extends JPanel implements Scrollable, Ma
 
     /**
      * Gets the preferredScrollableViewportSize attribute of the
-     * MapViewJComponent object.
+     * MapViewComponent object.
      *
      * @return The preferredScrollableViewportSize value
      */

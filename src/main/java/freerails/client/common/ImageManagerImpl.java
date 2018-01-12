@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * TRANSLUCENT, the scaled images it returns are rendered with renderingHints
  * set for quality.
  */
-@SuppressWarnings("unused")
+
 public class ImageManagerImpl implements ImageManager {
     /**
      * Matches anything but a string beginning with a "/"*. The reason for this

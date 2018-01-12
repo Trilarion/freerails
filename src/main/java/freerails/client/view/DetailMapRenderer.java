@@ -30,20 +30,14 @@ import java.awt.*;
  * Draws the main map, that is the terrain, track, trains, station names etc.
  */
 public class DetailMapRenderer implements MapRenderer {
+
     private static final boolean OSXWorkaround = (System.getProperty("OSXWorkaround") != null);
-
     private final MapLayerRenderer background;
-
     private final Dimension mapSizeInPixels;
-
     private final OverHeadTrainView trainsview;
-
     private final StationRadiusRenderer stationRadius;
-
     private final BuildTrackRenderer buildTrackRenderer;
-
     private final BuildTrackController buildTrackController;
-
     private final Painter stationBoxes;
 
     /**

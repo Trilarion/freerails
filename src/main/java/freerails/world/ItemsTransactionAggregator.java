@@ -135,7 +135,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     /**
      * Stores the quantities and monetary values of a series of items.
      */
-    @SuppressWarnings("unused")
+
     public static class QuantitiesAndValues {
 
         /**

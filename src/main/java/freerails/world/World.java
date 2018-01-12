@@ -135,7 +135,7 @@ public interface World extends ReadOnlyWorld {
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
-    @SuppressWarnings("unused")
+
     void set(SKEY key, int index, Serializable element);
 
     /**

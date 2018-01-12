@@ -17,7 +17,7 @@
  */
 
 /*
- * SelectEngineJPanel.java
+ * SelectEnginePanel.java
  *
  */
 
@@ -29,6 +29,7 @@ import freerails.world.SKEY;
 import freerails.world.train.EngineType;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -37,15 +38,14 @@ import java.util.Map;
 /**
  * This JPanel lets the user select an engine from a list.
  */
-public class SelectEngineJPanel extends javax.swing.JPanel implements View {
+public class SelectEnginePanel extends JPanel implements View {
 
     private static final long serialVersionUID = 4122537730158179638L;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton canceljButton;
-    private javax.swing.JList jList1;
-    private javax.swing.JButton okjButton;
+    private JButton canceljButton;
+    private JList jList1;
+    private JButton okjButton;
 
-    public SelectEngineJPanel() {
+    public SelectEnginePanel() {
         initComponents();
         jList1ValueChanged(null); // Disable the ok button if no engine type
         // is selected.
@@ -59,10 +59,10 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        okjButton = new javax.swing.JButton();
-        canceljButton = new javax.swing.JButton();
+        okjButton = new JButton();
+        canceljButton = new JButton();
         JScrollPane jScrollPane1 = new JScrollPane();
-        jList1 = new javax.swing.JList();
+        jList1 = new JList();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -81,7 +81,7 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(canceljButton, gridBagConstraints);
 
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jList1.addListSelectionListener(this::jList1ValueChanged);
 
         jScrollPane1.setViewportView(jList1);
@@ -98,8 +98,8 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
 
     }
 
-    @SuppressWarnings("unused")
-    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {
+
+    private void jList1ValueChanged(ListSelectionEvent evt) {
         // We need to disable the OK button if no engine type is selected.
 
         if (-1 == jList1.getSelectedIndex()) {
@@ -109,7 +109,6 @@ public class SelectEngineJPanel extends javax.swing.JPanel implements View {
         }
     }
 
-    // End of variables declaration//GEN-END:variables
 
     /**
      * @param modelRoot

@@ -23,39 +23,27 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameTime;
+import freerails.world.finances.Money;
+import freerails.world.player.FreerailsPrincipal;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * This JLabel shows the current date.
+ * This JLabel shows the amount of cash available.
  */
-public class DateJLabel extends JLabel implements View {
-    private static final long serialVersionUID = 3689348840578757942L;
+public class CashLabel extends JLabel implements View {
 
-    private ReadOnlyWorld w;
+    private static final long serialVersionUID = 3257853181542412341L;
+    private ReadOnlyWorld world;
+    private FreerailsPrincipal principal;
 
     /**
      *
      */
-    public DateJLabel() {
+    public CashLabel() {
         setText("          ");
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        if (null != w) {
-            GameTime time = w.currentTime();
-            GameCalendar gameCalendar = (GameCalendar) w.get(ITEM.CALENDAR);
-            String s = gameCalendar.getYearAndMonth(time.getTicks());
-            super.setText(s);
-        }
-
-        super.paintComponent(g);
     }
 
     /**
@@ -64,6 +52,18 @@ public class DateJLabel extends JLabel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        w = modelRoot.getWorld();
+        world = modelRoot.getWorld();
+        principal = modelRoot.getPrincipal();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        if (null != world) {
+            Money m = world.getCurrentBalance(principal);
+            String s = m.toString();
+            setText('$' + s);
+        }
+
+        super.paintComponent(g);
     }
 }

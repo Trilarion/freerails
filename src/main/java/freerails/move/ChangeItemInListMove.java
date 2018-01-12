@@ -90,14 +90,6 @@ public class ChangeItemInListMove implements ListMove {
         return false;
     }
 
-    public Serializable getAfter() {
-        return after;
-    }
-
-    public Serializable getBefore() {
-        return before;
-    }
-
     public int getIndex() {
         return index;
     }

@@ -61,7 +61,7 @@ public interface ActivityIterator {
      * the current activity. If absoluteTime is greater then getFinishTime(), getDuration() is
      * returned.
      */
-    @SuppressWarnings("unused")
+
     double absoluteToRelativeTime(double absoluteTime);
 
     /**

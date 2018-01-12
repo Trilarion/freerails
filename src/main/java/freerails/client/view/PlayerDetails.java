@@ -8,9 +8,7 @@ import freerails.world.finances.Money;
 class PlayerDetails implements Comparable<PlayerDetails> {
 
     String name = "player";
-
     Money networth = new Money(0);
-
     int stations = 0;
 
     @Override

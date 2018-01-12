@@ -52,7 +52,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private final BuildIndustryPopupMenu buildIndustryPopupMenu = new BuildIndustryPopupMenu();
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
     private final SoundManager soundManager = SoundManager.getSoundManager();
-    private MapViewJComponent mapView;
+    private MapViewComponent mapView;
     private StationTypesPopup stationTypesPopup;
     private TrackMoveProducer trackBuilder;
     private DialogueBoxController dialogueBoxController;
@@ -83,7 +83,7 @@ public class UserInputOnMapController extends KeyAdapter {
      * @param buildTrack
      */
 
-    public void setup(MapViewJComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc, BuildTrackController buildTrack) {
+    public void setup(MapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc, BuildTrackController buildTrack) {
         dialogueBoxController = dbc;
         mapView = mv;
         stationTypesPopup = stPopup;

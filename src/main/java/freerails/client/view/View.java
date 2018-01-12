@@ -37,6 +37,6 @@ public interface View {
      * @param vl
      * @param closeAction
      */
-    @SuppressWarnings("unused")
+
     void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction);
 }

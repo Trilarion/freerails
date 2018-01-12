@@ -38,63 +38,20 @@ import freerails.world.player.FreerailsPrincipal;
 import java.text.DecimalFormat;
 
 /**
+ *
  */
-@SuppressWarnings("unused")
 public class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    /**
-     *
-     */
     public final String playername;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final String year;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final Money cash;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final Money loansTotal;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final Money netWorth;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final Money pricePerShare;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final String publicShares;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final String treasuryStock;
-
-    /**
-     *
-     */
-    @SuppressWarnings("unused")
     public final String othersRRsStockRows;
 
     /**

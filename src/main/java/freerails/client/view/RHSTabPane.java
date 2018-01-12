@@ -38,19 +38,14 @@ import java.net.URL;
 /**
  * The tabbed panel that sits in the lower right hand corner of the screen.
  */
-public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
+public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
     private static final long serialVersionUID = 3906926798502965297L;
-
-    private static final Logger LOGGER = Logger.getLogger(RHSJTabPane.class.getName());
-
+    private static final Logger LOGGER = Logger.getLogger(RHSTabPane.class.getName());
     private final TerrainInfoJPanel terrainInfoPanel;
-
     private final StationInfoJPanel stationInfoPanel;
-
     private final TrainListJPanel trainListPanel;
-
-    private final BuildTrackJPanel buildTrackPanel;
+    private final BuildTrackPanel buildTrackPanel;
     private final int terrainInfoIndex;
     private final int trainListIndex;
     private final int stationInfoIndex;
@@ -60,7 +55,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
     /**
      *
      */
-    public RHSJTabPane() {
+    public RHSTabPane() {
         /*
          * Don't accept keyboard focus since we want to leave it with the main
          * map view.
@@ -77,7 +72,7 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
         trainListPanel = new TrainListJPanel(true);
 
-        buildTrackPanel = new BuildTrackJPanel();
+        buildTrackPanel = new BuildTrackPanel();
         trainListPanel.removeButtons();
 
         URL terrainInfoIconUrl = getClass().getResource(ClientConfig.ICON_TERRAIN_INFO);
@@ -159,24 +154,6 @@ public class RHSJTabPane extends JTabbedPane implements ModelRootListener {
 
             // Select priority element at location
             LOGGER.debug("Let's try to show the station.");
-
-//            FreerailsSerializable freerailsSerializable = world.get(SKEY.TRACK_RULES, 0);
-//            if (freerailsSerializable != null) {
-//                LOGGER.info("Track piece at location.");
-//                
-//                LOGGER.info("Type is: " + freerailsSerializable.getClass().getName());
-//                
-//                if (freerailsSerializable instanceof TrackRule) {
-//                    TrackRule trackRule = (TrackRule) freerailsSerializable;
-//                    boolean station = trackRule.isStation();
-//                    LOGGER.info("isStation: " + station);   
-//                }
-//
-//            }
-//            else {
-//                LOGGER.info("No piece at location.");
-//            }
-
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that

@@ -23,7 +23,7 @@ package freerails.client.launcher;
 
 /**
  */
-@SuppressWarnings("ALL")
+
 public interface LauncherPanel {
 
     /**

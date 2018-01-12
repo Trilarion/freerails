@@ -57,30 +57,19 @@ import java.util.NoSuchElementException;
  * transparent regions to be used.
  */
 public class DialogueBoxController implements WorldListListener {
+
     private static final Logger logger = Logger.getLogger(DialogueBoxController.class.getName());
-
     private final JButton closeButton = new JButton("Close");
-
-    private final SelectEngineJPanel selectEngine;
-
+    private final SelectEnginePanel selectEngine;
     private final MyGlassPanel glassPanel;
-
-    private final NewsPaperJPanel newspaper;
-
+    private final NewsPaperPanel newspaper;
     private final SelectWagonsJPanel selectWagons;
-
-    private final HtmlJPanel showControls;
-
-    private final HtmlJPanel about;
-
-    private final HtmlJPanel how2play;
-
-    private final HtmlJPanel javaProperties;
-
+    private final HtmlPanel showControls;
+    private final HtmlPanel about;
+    private final HtmlPanel how2play;
+    private final HtmlPanel javaProperties;
     private final TerrainInfoJPanel terrainInfo;
-
     private final StationInfoJPanel stationInfo;
-
     private final TrainDialogueJPanel trainDialogueJPanel;
     private final JFrame frame;
     private ReadOnlyWorld world;
@@ -88,7 +77,6 @@ public class DialogueBoxController implements WorldListListener {
     private RendererRoot vl;
     private Component defaultFocusOwner = null;
     private JInternalFrame dialogueJInternalFrame;
-
     private Component lastShownComponent = null;
 
     /**
@@ -162,19 +150,19 @@ public class DialogueBoxController implements WorldListListener {
 
         closeButton.addActionListener(closeCurrentDialogue);
 
-        showControls = new HtmlJPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_GAME_CONTROLS));
-        about = new HtmlJPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_ABOUT));
-        how2play = new HtmlJPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_HOW_TO_PLAY));
+        showControls = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_GAME_CONTROLS));
+        about = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_ABOUT));
+        how2play = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_HOW_TO_PLAY));
 
         terrainInfo = new TerrainInfoJPanel();
         stationInfo = new StationInfoJPanel();
-        javaProperties = new HtmlJPanel(ShowJavaProperties.getPropertiesHtmlString());
+        javaProperties = new HtmlPanel(ShowJavaProperties.getPropertiesHtmlString());
         Dimension d = javaProperties.getPreferredSize();
         d.width += 50;
         javaProperties.setPreferredSize(d);
-        newspaper = new NewsPaperJPanel();
+        newspaper = new NewsPaperPanel();
         selectWagons = new SelectWagonsJPanel();
-        selectEngine = new SelectEngineJPanel();
+        selectEngine = new SelectEnginePanel();
         trainDialogueJPanel = new TrainDialogueJPanel();
         /*
          * 666 needed ?? trainDialogueJPanel.setIgnoreRepaint(true);
@@ -213,17 +201,10 @@ public class DialogueBoxController implements WorldListListener {
 
         // setup the 'show controls' dialogue
         showControls.setup(modelRoot, vl, closeCurrentDialogue);
-
         about.setup(modelRoot, vl, closeCurrentDialogue);
-
         how2play.setup(modelRoot, vl, closeCurrentDialogue);
-
         javaProperties.setup(modelRoot, vl, closeCurrentDialogue);
 
-        // Set up train orders dialogue
-        // trainScheduleJPanel = new TrainScheduleJPanel();
-        // trainScheduleJPanel.setup(w, vl);
-        // moveChainFork.add(trainScheduleJPanel);
         // Set up select engine dialogue.
         selectEngine.setCancelButtonActionListener(closeCurrentDialogue);
         selectEngine.setup(modelRoot, vl, selectEngineAction);
@@ -242,9 +223,9 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSaveGame() {
-        SaveGameJPanel saveGameJPanel = new SaveGameJPanel();
-        saveGameJPanel.setup(modelRoot, vl, closeCurrentDialogue);
-        showContent(saveGameJPanel);
+        SaveGamePanel saveGamePanel = new SaveGamePanel();
+        saveGamePanel.setup(modelRoot, vl, closeCurrentDialogue);
+        showContent(saveGamePanel);
     }
 
     /**
@@ -296,7 +277,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showIncomeStatement() {
-        IncomeStatementHtmlJPanel bs = new IncomeStatementHtmlJPanel();
+        IncomeStatementHtmlPanel bs = new IncomeStatementHtmlPanel();
         bs.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(bs);
     }
@@ -328,7 +309,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showExitDialog() {
-        ConfirmExitJPanel bs = new ConfirmExitJPanel();
+        ConfirmExitPanel bs = new ConfirmExitPanel();
         bs.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(bs);
     }
@@ -428,7 +409,7 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showNetworthGraph() {
 
-        final NetWorthGraphJPanel worthGraph = new NetWorthGraphJPanel();
+        final NetWorthGraphPanel worthGraph = new NetWorthGraphPanel();
         worthGraph.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(worthGraph);
 
@@ -439,9 +420,9 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showLeaderBoard() {
 
-        LeaderBoardJPanel leaderBoardJPanel = new LeaderBoardJPanel();
-        leaderBoardJPanel.setup(modelRoot, vl, closeCurrentDialogue);
-        showContent(leaderBoardJPanel);
+        LeaderBoardPanel leaderBoardPanel = new LeaderBoardPanel();
+        leaderBoardPanel.setup(modelRoot, vl, closeCurrentDialogue);
+        showContent(leaderBoardPanel);
 
     }
 

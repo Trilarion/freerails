@@ -28,7 +28,8 @@ import java.awt.*;
  * JPanel that displays the overview map and a rectangle showing the region of
  * the map currently displayed on the main view.
  */
-public class OverviewMapJComponent extends JPanel {
+public class OverviewMapComponent extends JPanel {
+
     private static final long serialVersionUID = 3258697585148376888L;
     private final Rectangle mainMapVisRect;
     private MapRenderer mapView = new BlankMapRenderer(0.4F);
@@ -36,7 +37,7 @@ public class OverviewMapJComponent extends JPanel {
     /**
      * @param r
      */
-    public OverviewMapJComponent(Rectangle r) {
+    public OverviewMapComponent(Rectangle r) {
         setPreferredSize(mapView.getMapSizeInPixels());
         mainMapVisRect = r;
     }

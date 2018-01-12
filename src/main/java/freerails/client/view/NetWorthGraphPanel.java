@@ -43,11 +43,11 @@ import java.util.ArrayList;
  * A JPanel that displays a graph of the net worth of each of the players
  * against time.
  */
-public class NetWorthGraphJPanel extends JPanel implements View {
+public class NetWorthGraphPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3618703010813980982L;
 
-    private static final Logger logger = Logger.getLogger(NetWorthGraphJPanel.class.getName());
+    private static final Logger logger = Logger.getLogger(NetWorthGraphPanel.class.getName());
     private final Font FONT;
     private final Rectangle graphRect = new Rectangle(44, 50, 380, 245);
     ActionListener submitButtonCallBack = null;
@@ -64,7 +64,7 @@ public class NetWorthGraphJPanel extends JPanel implements View {
     /**
      * This method initializes
      */
-    public NetWorthGraphJPanel() {
+    public NetWorthGraphPanel() {
 
         super();
         FONT = new java.awt.Font("Bookman Old Style", java.awt.Font.BOLD, 10);

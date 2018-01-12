@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
  */
-@SuppressWarnings("unused")
+
 public class QuickRGBTileRendererList implements TileRendererList {
 
     private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -83,23 +83,4 @@ public class QuickRGBTileRendererList implements TileRendererList {
         return true;
     }
 
-    static class SimpleTileRenderer implements TileRenderer {
-        Image i;
-
-        public SimpleTileRenderer() {
-        }
-
-        public void setImage(Image i) {
-            this.i = i;
-        }
-
-        public Image getDefaultIcon() {
-            return i;
-        }
-
-        public void renderTile(Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld w) {
-            g.drawImage(i, renderX, renderY, null);
-        }
-
-    }
 }

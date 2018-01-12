@@ -29,7 +29,7 @@ import java.awt.*;
 /**
  * This thread updates the GUI Client window.
  */
-@SuppressWarnings("unused")
+
 public final class GameLoop implements Runnable {
 
     private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
@@ -84,7 +84,6 @@ public final class GameLoop implements Runnable {
             }
 
             while (true) {
-                // stats.record();
                 long frameStartTime = System.currentTimeMillis();
 
                 /*

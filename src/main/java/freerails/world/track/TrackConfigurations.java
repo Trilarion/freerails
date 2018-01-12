@@ -30,7 +30,7 @@ public interface TrackConfigurations extends Serializable {
      * @return true if the vectors represented by this TrackConfigurations are a
      * superset of the vectors of the specified TrackConfigurations
      */
-    @SuppressWarnings("unused")
+
     boolean contains(TrackConfigurations ftt);
 
     /**

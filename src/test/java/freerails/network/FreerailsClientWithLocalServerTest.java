@@ -19,7 +19,6 @@
 package freerails.network;
 
 import freerails.controller.*;
-import freerails.controller.ClientProperty;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;

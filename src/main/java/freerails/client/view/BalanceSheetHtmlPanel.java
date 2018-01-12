@@ -30,9 +30,9 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * A HtmlJPanel that displays the balance sheet.
+ * A HtmlPanel that displays the balance sheet.
  */
-public class BalanceSheetHtmlPanel extends HtmlJPanel implements View {
+public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
 
     private static final long serialVersionUID = 3257009873370886964L;
     private final String template;

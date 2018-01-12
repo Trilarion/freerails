@@ -254,7 +254,7 @@ public class WorldDiffsTest extends TestCase {
         diffs.add(SKEY.CITIES, city);
 
         Iterator<ListKey> it = diffs.getListDiffs();
-        @SuppressWarnings("unused")
+
         ListKey lk1 = it.next();
         ListKey lk2 = it.next();
         assertFalse(it.hasNext());

@@ -52,7 +52,7 @@ import java.util.Iterator;
  * </tr>
  * </table>
  */
-@SuppressWarnings("unused")
+
 public interface CargoBatchBundle {
 
     /**

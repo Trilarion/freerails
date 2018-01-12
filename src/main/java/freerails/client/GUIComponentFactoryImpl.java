@@ -53,19 +53,19 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
     private final ActionRoot actionRoot;
     private final BuildMenu buildMenu;
-    private final CashJLabel cashjLabel;
+    private final CashLabel cashjLabel;
     private final ClientFrame clientFrame;
-    private final DateJLabel datejLabel;
+    private final DateLabel datejLabel;
     private final DialogueBoxController dialogueBoxController;
     private final JScrollPane mainMapScrollPane1;
-    private final MapViewJComponentConcrete mapViewJComponent;
+    private final MapViewComponentConcrete mapViewJComponent;
     private final ModelRootImpl modelRoot;
     private final JPanel overviewMapContainer;
     private final StationTypesPopup stationTypesPopup;
     /**
      * This is the panel at the bottom right of the screen.
      */
-    private final RHSJTabPane trainsJTabPane;
+    private final RHSTabPane trainsJTabPane;
     private final UserInputOnMapController userInputOnMapController;
     private final UserMessageGenerator userMessageGenerator;
     private boolean isSetup = false;
@@ -87,19 +87,19 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         actionRoot = ar;
         userInputOnMapController = new UserInputOnMapController(modelRoot, ar);
         buildMenu = new BuildMenu();
-        mapViewJComponent = new MapViewJComponentConcrete();
+        mapViewJComponent = new MapViewComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
         Rectangle r = new Rectangle(10, 10, 10, 10);
-        overviewMapContainer = new OverviewMapJComponent(r);
+        overviewMapContainer = new OverviewMapComponent(r);
         stationTypesPopup = new StationTypesPopup();
 
         MainMapAndOverviewMapMediator mediator = new MainMapAndOverviewMapMediator();
         mediator.setup(overviewMapContainer, mainMapScrollPane1.getViewport(), mapViewJComponent, r);
 
-        trainsJTabPane = new RHSJTabPane();
-        datejLabel = new DateJLabel();
+        trainsJTabPane = new RHSTabPane();
+        datejLabel = new DateLabel();
 
-        cashjLabel = new CashJLabel();
+        cashjLabel = new CashLabel();
 
         clientFrame = new ClientFrame(this);
         dialogueBoxController = new DialogueBoxController(clientFrame, modelRoot);
@@ -492,7 +492,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         buildMenu.setup(actionRoot);
         mainMapScrollPane1.setViewportView(mapViewJComponent);
 
-        ((OverviewMapJComponent) overviewMapContainer).setup(overviewMap);
+        ((OverviewMapComponent) overviewMapContainer).setup(overviewMap);
 
         datejLabel.setup(modelRoot, vl, null);
         cashjLabel.setup(modelRoot, vl, null);

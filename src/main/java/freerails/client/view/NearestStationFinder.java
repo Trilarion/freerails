@@ -31,13 +31,8 @@ import freerails.world.terrain.TileTransition;
  */
 public class NearestStationFinder {
 
-    /**
-     *
-     */
     public static final int NOT_FOUND = Integer.MIN_VALUE;
-
     private final ReadOnlyWorld world;
-
     private final FreerailsPrincipal principal;
 
     /**

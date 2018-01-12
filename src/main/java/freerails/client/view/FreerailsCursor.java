@@ -34,8 +34,8 @@ import java.io.IOException;
  * ModelRoot under the key CURSOR_POSITION.
  */
 public final class FreerailsCursor {
-    private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
 
+    private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
     private final ModelRoot modelRoot;
 
     /**

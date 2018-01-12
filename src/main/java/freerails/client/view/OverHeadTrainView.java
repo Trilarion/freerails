@@ -38,12 +38,10 @@ import java.awt.*;
  * Draws the trains on the main map.
  */
 public class OverHeadTrainView implements Painter {
+
     private final TrainRenderer trainPainter;
-
-    private final ReadOnlyWorld w;
-
+    private final ReadOnlyWorld world;
     private final SoundManager soundManager = SoundManager.getSoundManager();
-
     private final ModelRoot mr;
 
     /**
@@ -52,7 +50,7 @@ public class OverHeadTrainView implements Painter {
      * @param mr
      */
     public OverHeadTrainView(ReadOnlyWorld world, RendererRoot rr, ModelRoot mr) {
-        w = world;
+        this.world = world;
         trainPainter = new TrainRenderer(rr);
         this.mr = mr;
     }
@@ -67,15 +65,15 @@ public class OverHeadTrainView implements Painter {
 
         Double time = (Double) mr.getProperty(Property.TIME);
 
-        for (int k = 0; k < w.getNumberOfPlayers(); k++) {
-            FreerailsPrincipal principal = w.getPlayer(k).getPrincipal();
+        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
+            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
-            for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {
-                TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, i);
+            for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
+                TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, i);
 
-                // TrainPositionOnMap pos = (TrainPositionOnMap) w.get(
+                // TrainPositionOnMap pos = (TrainPositionOnMap) world.get(
                 // principal, KEY.TRAIN_POSITIONS, i);
-                TrainAccessor ta = new TrainAccessor(w, principal, i);
+                TrainAccessor ta = new TrainAccessor(world, principal, i);
                 TrainPositionOnMap pos = ta.findPosition(time, newVisibleRectangle);
                 if (pos == null) continue;
                 if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {

@@ -2,6 +2,7 @@ package freerails.client.view;
 
 import java.awt.*;
 
+// TODO this is part of the client model
 /**
  * Stores the company details that are used to draw a line and title on the
  * graph.

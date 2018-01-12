@@ -134,14 +134,6 @@ public class RemoveItemFromListMove implements ListMove {
         return false;
     }
 
-    public Serializable getBefore() {
-        return item;
-    }
-
-    public Serializable getAfter() {
-        return null;
-    }
-
     /**
      * @return
      */

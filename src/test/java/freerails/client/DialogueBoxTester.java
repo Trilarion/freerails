@@ -47,7 +47,7 @@ import java.io.IOException;
 /**
  * Lets you test dialogue boxes without running the whole game.
  */
-@SuppressWarnings("unused")
+
 public class DialogueBoxTester extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 4050764909631780659L;
@@ -64,7 +64,6 @@ public class DialogueBoxTester extends javax.swing.JFrame {
         }
     };
     private final TrainDialogueJPanel trainDialogueJPanel = new TrainDialogueJPanel();
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JLabel jLabel1;
     javax.swing.JMenuBar jMenuBar1;
     javax.swing.JMenuItem showBrokerScreen;
@@ -307,7 +306,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
             java.awt.event.ActionEvent evt) {
         // Add your handling code here:
         String s = ShowJavaProperties.getPropertiesHtmlString();
-        HtmlJPanel htmlPanel = new HtmlJPanel(s);
+        HtmlPanel htmlPanel = new HtmlPanel(s);
         htmlPanel.setup(modelRoot, vl, closeCurrentDialogue);
         dialogueBoxController.showContent(htmlPanel);
     }
@@ -321,7 +320,7 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private void showCargoWaitingAndDemandActionPerformed(
             java.awt.event.ActionEvent evt) {
         // Add your handling code here:
-        CargoWaitingAndDemandedJPanel panel = new CargoWaitingAndDemandedJPanel();
+        CargoWaitingAndDemandedPanel panel = new CargoWaitingAndDemandedPanel();
         panel.setup(modelRoot, vl, closeCurrentDialogue);
         int newStationID = 0;
         panel.display(newStationID);
@@ -379,6 +378,5 @@ public class DialogueBoxTester extends javax.swing.JFrame {
     private void exitForm(java.awt.event.WindowEvent evt) {
         System.exit(0);
     }
-    // End of variables declaration//GEN-END:variables
 
 }

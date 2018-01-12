@@ -46,7 +46,7 @@ import java.beans.PropertyChangeListener;
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 
-    private final MapViewJComponent mapView;
+    private final MapViewComponent mapView;
     private final float scale;
     private final StationBuildModel stationBuildModel;
     private final StationRadiusRenderer stationRadiusRenderer;
@@ -86,7 +86,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     };
 
-    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewJComponent mapView) {
+    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();
@@ -100,7 +100,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
      * @param srr
      * @param mapView
      */
-    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewJComponent mapView) {
+    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewComponent mapView) {
         StationPlacementCursor spc = new StationPlacementCursor(actionRoot, srr, mapView);
         spc.init();
     }

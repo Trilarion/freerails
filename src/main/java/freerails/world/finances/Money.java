@@ -59,6 +59,7 @@ public final class Money implements Serializable {
         return (int) (amount ^ (amount >>> 32));
     }
 
+    // TODO add currrency here (not in the client)
     @Override
     public String toString() {
         return df.format(amount);

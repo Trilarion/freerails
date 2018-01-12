@@ -236,8 +236,7 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
     private final class TrainOrderJPanelSingle extends javax.swing.JPanel implements View {
 
         private static final long serialVersionUID = 3516604388665786813L;
-        // Variables declaration - do not modify//GEN-BEGIN:variables
-        javax.swing.JPanel consistChangeJPanel;
+            javax.swing.JPanel consistChangeJPanel;
         javax.swing.JLabel gotoIcon;
         javax.swing.JLabel noChangeJLabel;
         javax.swing.JLabel ordersJLabel;
@@ -305,7 +304,6 @@ public class TrainOrderJPanel implements View, ListCellRenderer {
 
         }
 
-        // End of variables declaration//GEN-END:variables
 
         public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
             w = modelRoot.getWorld();

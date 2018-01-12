@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 final class WagonCellRenderer implements ListCellRenderer {
+
     final RendererRoot rr;
     private final Component[] labels;
 

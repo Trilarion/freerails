@@ -129,10 +129,6 @@ public class AddItemToListMove implements ListMove {
         return false;
     }
 
-    public Serializable getBefore() {
-        return null;
-    }
-
     public Serializable getAfter() {
         return item;
     }

@@ -33,6 +33,7 @@ import java.io.IOException;
  * Renders a track piece.
  */
 public final class TrackPieceRendererImpl implements TrackPieceRenderer {
+
     private final Image[] trackPieceIcons = new Image[512];
 
     /**

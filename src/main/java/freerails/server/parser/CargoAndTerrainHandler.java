@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 /**
  * Defines methods to handle parsing the cargo and terrain types XML.
  */
-@SuppressWarnings("unused")
+
 public interface CargoAndTerrainHandler {
 
     /**

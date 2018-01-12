@@ -171,18 +171,6 @@ public class TrainStopsHandler implements Serializable {
     /**
      * @return
      */
-    public boolean isTrainMoving() {
-        if (refreshWaitingForFullLoad()) {
-            return false;
-        }
-        GameTime time = worldDiffs.currentTime();
-
-        return time.getTicks() > timeLoadingFinished.getTicks();
-    }
-
-    /**
-     * @return
-     */
     public boolean isWaiting4FullLoad() {
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS, trainId);
         int scheduleID = train.getScheduleID();

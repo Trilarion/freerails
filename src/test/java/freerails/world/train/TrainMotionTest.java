@@ -93,7 +93,7 @@ public class TrainMotionTest extends TestCase {
         assertTrue(tooLongDuration > actualDuration);
 
         // This method used to throw an exception
-        @SuppressWarnings("unused")
+
         Object o = motion.getState(actualDuration);
 
     }

@@ -24,7 +24,7 @@ import java.util.List;
  * This {@link CompositeMove} transfers cargo from a train to a station and
  * vice-versa.
  */
-@SuppressWarnings("unused")
+
 public class TransferCargoAtStationMove extends CompositeMove {
 
     /**

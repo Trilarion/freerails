@@ -25,8 +25,8 @@ package experimental;
 import freerails.client.GUIComponentFactory;
 import freerails.client.renderer.BlankMapRenderer;
 import freerails.client.view.MainMapAndOverviewMapMediator;
-import freerails.client.view.MapViewJComponentConcrete;
-import freerails.client.view.OverviewMapJComponent;
+import freerails.client.view.MapViewComponentConcrete;
+import freerails.client.view.OverviewMapComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,9 +37,9 @@ import java.awt.*;
  */
 public class SimpleComponentFactoryImpl2 implements GUIComponentFactory {
     private final Rectangle r = new Rectangle();
-    private OverviewMapJComponent overviewMap;
+    private OverviewMapComponent overviewMap;
     private JScrollPane mainMapScrollPane1;
-    private MapViewJComponentConcrete mainMap;
+    private MapViewComponentConcrete mainMap;
     private MainMapAndOverviewMapMediator mediator;
 
     /**
@@ -130,7 +130,7 @@ public class SimpleComponentFactoryImpl2 implements GUIComponentFactory {
      */
     public JScrollPane createMainMap() {
         if (null == mainMap) {
-            mainMap = new MapViewJComponentConcrete();
+            mainMap = new MapViewComponentConcrete();
             mainMapScrollPane1 = new JScrollPane();
             mainMapScrollPane1.setViewportView(mainMap);
             addMainMapAndOverviewMapMediatorIfNecessary();
@@ -145,7 +145,7 @@ public class SimpleComponentFactoryImpl2 implements GUIComponentFactory {
     public JPanel createOverviewMap() {
         if (null == overviewMap) {
             // this.overviewMap = new OverviewMapJPanel();
-            overviewMap = new OverviewMapJComponent(r);
+            overviewMap = new OverviewMapComponent(r);
             overviewMap.setup(new BlankMapRenderer(0.4F));
             addMainMapAndOverviewMapMediatorIfNecessary();
         }

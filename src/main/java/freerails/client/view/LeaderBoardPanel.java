@@ -40,7 +40,7 @@ import java.util.Random;
 /**
  * A JPanel that displays the details of the players ordered by net worth.
  */
-public class LeaderBoardJPanel extends JPanel implements View {
+public class LeaderBoardPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3258131375298066229L;
     private final List<PlayerDetails> values;
@@ -50,7 +50,7 @@ public class LeaderBoardJPanel extends JPanel implements View {
     /**
      * This method initializes
      */
-    public LeaderBoardJPanel() {
+    public LeaderBoardPanel() {
         super();
 
         values = new ArrayList<>();

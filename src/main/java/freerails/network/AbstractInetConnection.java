@@ -30,7 +30,7 @@ import java.net.Socket;
  * Has the code that is shared by the client and server versions of
  * InetConnection.
  */
-@SuppressWarnings("unused")
+
 abstract class AbstractInetConnection implements Runnable {
 
     private static final Logger logger = Logger.getLogger(AbstractInetConnection.class.getName());

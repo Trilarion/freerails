@@ -34,125 +34,42 @@ import freerails.world.player.FreerailsPrincipal;
  * Generates the income statement- note, its fields are read using reflection so
  * don't change their names.
  */
-@SuppressWarnings("ALL")
 public class IncomeStatementGenerator {
 
-    /**
-     *
-     */
     public final String year;
-    final ReadOnlyWorld w;
+    final ReadOnlyWorld world;
     final FreerailsPrincipal principal;
     private final GameCalendar cal;
     private final int startyear;
 
-    /**
-     *
-     */
     public Money mailTotal;
-
-    /**
-     *
-     */
     public Money passengersTotal;
-
-    /**
-     *
-     */
     public Money fastFreightTotal;
-
-    /**
-     *
-     */
     public Money slowFreightTotal;
-
-    /**
-     *
-     */
     public Money bulkFreightTotal;
-
-    /**
-     *
-     */
     public Money interestTotal;
-
-    /**
-     *
-     */
     public Money trainMaintenanceTotal;
-
-    /**
-     *
-     */
     public Money trackMaintenanceTotal;
-
-    /**
-     *
-     */
     public Money stationMaintenanceTotal;
-
-    /**
-     *
-     */
     public Money profitTotal;
-
-    /**
-     *
-     */
     public Money mailYtd;
-
-    /**
-     *
-     */
     public Money passengersYtd;
-
-    /**
-     *
-     */
     public Money fastFreightYtd;
-
-    /**
-     *
-     */
     public Money slowFreightYtd;
-
-    /**
-     *
-     */
     public Money bulkFreightYtd;
-
-    /**
-     *
-     */
     public Money interestYtd;
-
-    /**
-     *
-     */
     public Money trainMaintenanceYtd;
-
-    /**
-     *
-     */
     public Money trackMaintenanceYtd;
-
-    /**
-     *
-     */
     public Money stationMaintenanceYtd;
-
-    /**
-     *
-     */
     public Money profitYtd;
     GameTime from;
     GameTime to;
 
-    IncomeStatementGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        this.w = w;
+    IncomeStatementGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        this.world = world;
         this.principal = principal;
-        cal = (GameCalendar) w.get(ITEM.CALENDAR);
-        GameTime time = w.currentTime();
+        cal = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameTime time = world.currentTime();
         startyear = cal.getYear(time.getTicks());
         year = String.valueOf(startyear);
     }
@@ -161,52 +78,34 @@ public class IncomeStatementGenerator {
      * calculates all public values
      */
     public void calculateAll() {
-
         long mailTotal = 0;
-
         long passengersTotal = 0;
-
         long fastFreightTotal = 0;
-
         long slowFreightTotal = 0;
-
         long bulkFreightTotal = 0;
-
         long interestTotal = 0;
-
         long trainMaintenanceTotal = 0;
-
         long trackMaintenanceTotal = 0;
-
         long stationMaintenanceTotal = 0;
-
         long mailYtd = 0;
-
         long passengersYtd = 0;
-
         long fastFreightYtd = 0;
-
         long slowFreightYtd = 0;
-
         long bulkFreightYtd = 0;
-
         long interestYtd = 0;
-
         long trainMaintenanceYtd = 0;
-
         long trackMaintenanceYtd = 0;
-
         long stationMaintenanceYtd = 0;
 
-        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
+        int numberOfTransactions = world.getNumberOfTransactions(this.principal);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = w.getTransactionAndTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
             if (t instanceof CargoDeliveryMoneyTransaction) {
                 CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) t;
                 int cargoType = dcr.getCargoBatch().getCargoType();
-                CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, cargoType);
+                CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, cargoType);
                 switch (ct.getCategory()) {
                     case Bulk_Freight:
                         bulkFreightTotal += dcr.value().getAmount();
@@ -303,9 +202,9 @@ public class IncomeStatementGenerator {
     public void calTrainRevenue(Money[] money) {
         long[] amount = new long[money.length];
 
-        int numberOfTransactions = w.getNumberOfTransactions(this.principal);
+        int numberOfTransactions = world.getNumberOfTransactions(this.principal);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = w.getTransactionAndTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(principal, i);
             Transaction t = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
             if (t instanceof CargoDeliveryMoneyTransaction && cal.getYear(time.getTicks()) >= this.startyear) {

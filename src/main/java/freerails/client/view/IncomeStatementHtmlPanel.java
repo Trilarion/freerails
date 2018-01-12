@@ -29,22 +29,21 @@ import java.awt.*;
 import java.net.URL;
 
 /**
- * A HtmlJPanel that displays the income statement.
+ * A HtmlPanel that displays the income statement.
  */
-public class IncomeStatementHtmlJPanel extends HtmlJPanel implements View {
+public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
+
     private static final long serialVersionUID = 3257846588885120057L;
-
     private final String template;
-
     private ModelRoot modelRoot;
 
     /**
      *
      */
-    public IncomeStatementHtmlJPanel() {
+    public IncomeStatementHtmlPanel() {
         super();
 
-        URL url = IncomeStatementHtmlJPanel.class.getResource(ClientConfig.VIEW_INCOME_STATEMENT);
+        URL url = IncomeStatementHtmlPanel.class.getResource(ClientConfig.VIEW_INCOME_STATEMENT);
         template = loadText(url);
     }
 

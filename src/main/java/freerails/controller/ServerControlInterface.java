@@ -47,7 +47,7 @@ public interface ServerControlInterface {
     /**
      *
      */
-    @SuppressWarnings("unused")
+
     void stopGame();
 
     /**
