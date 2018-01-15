@@ -28,7 +28,7 @@ package freerails.world;
  * Stores an SKEY and an item index.
  */
 
-public class TypeID {
+class TypeID {
     private final int id;
 
     private final SKEY key;

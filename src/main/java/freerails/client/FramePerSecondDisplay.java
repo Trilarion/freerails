@@ -25,7 +25,7 @@ import java.util.LinkedList;
  * Provides a method that draws a String showing the average FPS over the last
  * complete 5000ms interval.
  */
-public class FramePerSecondDisplay {
+class FramePerSecondDisplay {
 
     private static final int MAX_FPS_VALUES = 100;
 

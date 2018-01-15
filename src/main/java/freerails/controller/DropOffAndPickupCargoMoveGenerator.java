@@ -49,9 +49,9 @@ import java.util.List;
  * it stops at - it also handles cargo conversions that occur when cargo is
  * dropped off.
  */
-public class DropOffAndPickupCargoMoveGenerator {
+class DropOffAndPickupCargoMoveGenerator {
 
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final TrainAccessor train;
     private final int trainId;
     private final int stationId;
@@ -78,10 +78,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         principal = p;
         trainId = trainNo;
         stationId = stationNo;
-        w = world;
+        this.world = world;
         this.autoConsist = autoConsist;
         waitingForFullLoad = waiting;
-        train = new TrainAccessor(w, principal, trainNo);
+        train = new TrainAccessor(this.world, principal, trainNo);
         consist = train.getTrain().getConsist();
         getBundles();
 
@@ -96,10 +96,10 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             int nextStationId = order.stationId;
 
-            Station station = (Station) w.get(principal, KEY.STATIONS, nextStationId);
+            Station station = (Station) this.world.get(principal, KEY.STATIONS, nextStationId);
             StationDemand demand = station.getDemandForCargo();
 
-            for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+            for (int i = 0; i < this.world.size(SKEY.CARGO_TYPES); i++) {
                 // If this cargo is demanded at the next scheduled station.
                 if (demand.isCargoDemanded(i)) {
                     int amount = stationAfter.getAmountOfType(i);
@@ -193,19 +193,19 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     private void getBundles() {
-        TrainModel trainModel = ((TrainModel) w.get(principal, KEY.TRAINS, trainId));
+        TrainModel trainModel = ((TrainModel) world.get(principal, KEY.TRAINS, trainId));
         trainBundleId = trainModel.getCargoBundleID();
         trainBefore = getCopyOfBundle(trainBundleId);
         trainAfter = getCopyOfBundle(trainBundleId);
 
-        Station station = ((Station) w.get(principal, KEY.STATIONS, stationId));
+        Station station = ((Station) world.get(principal, KEY.STATIONS, stationId));
         stationBundleId = station.getCargoBundleID();
         stationAfter = getCopyOfBundle(stationBundleId);
         stationBefore = getCopyOfBundle(stationBundleId);
     }
 
     private MutableCargoBatchBundle getCopyOfBundle(int id) {
-        Serializable fs = w.get(principal, KEY.CARGO_BUNDLES, id);
+        Serializable fs = world.get(principal, KEY.CARGO_BUNDLES, id);
         ImmutableCargoBatchBundle ibundle = (ImmutableCargoBatchBundle) fs;
 
         return new MutableCargoBatchBundle(ibundle);
@@ -213,7 +213,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     private void processTrainBundle() {
         Iterator<CargoBatch> batches = trainAfter.toImmutableCargoBundle().cargoBatchIterator();
-        Station station = (Station) w.get(principal, KEY.STATIONS, stationId);
+        Station station = (Station) world.get(principal, KEY.STATIONS, stationId);
         MutableCargoBatchBundle cargoDroppedOff = new MutableCargoBatchBundle();
 
         // Unload the cargo that the station demands
@@ -242,7 +242,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             }
         }
 
-        moves = ProcessCargoAtStationMoveGenerator.processCargo(w, cargoDroppedOff, stationId, principal, trainId);
+        moves = ProcessCargoAtStationMoveGenerator.processCargo(world, cargoDroppedOff, stationId, principal, trainId);
 
         // Unload the cargo that there isn't space for on the train regardless
         // of whether the station demands it.
@@ -262,7 +262,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * available on the train.
      */
     private void processStationBundle() {
-        ImmutableList<Integer> spaceAvailable = TrainAccessor.spaceAvailable2(w, trainAfter.toImmutableCargoBundle(), consist);
+        ImmutableList<Integer> spaceAvailable = TrainAccessor.spaceAvailable2(world, trainAfter.toImmutableCargoBundle(), consist);
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
             int amount2transfer = Math.min(quantity, stationAfter.getAmountOfType(cargoType));
@@ -274,11 +274,11 @@ public class DropOffAndPickupCargoMoveGenerator {
      * Stores the type and quantity of cargo in a wagon.
      */
     private static class WagonLoad implements Comparable<WagonLoad> {
-        final int quantity;
+        private final int quantity;
 
-        final int cargoType;
+        private final int cargoType;
 
-        WagonLoad(int q, int t) {
+        private WagonLoad(int q, int t) {
             quantity = q;
             cargoType = t;
         }

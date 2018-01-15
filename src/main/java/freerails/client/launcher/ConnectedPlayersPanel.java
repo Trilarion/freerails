@@ -33,13 +33,13 @@ import java.beans.PropertyChangeListener;
 /**
  * A JPanel that shows the players currently logged in to the server.
  */
-public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
+class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
 
     private static final long serialVersionUID = 4049080453489111344L;
     FreerailsGameServer server = null;
-    JList jList1;
-    JScrollPane jScrollPane1;
-    JLabel title;
+    private JList list1;
+    private JScrollPane jScrollPane1;
+    private JLabel title;
 
     /**
      * Creates new form ConnectedPlayersPanel
@@ -54,7 +54,7 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
 
         title = new JLabel();
         jScrollPane1 = new JScrollPane();
-        jList1 = new JList();
+        list1 = new JList();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -63,8 +63,8 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
         add(title, gridBagConstraints);
 
-        jList1.setModel(new MyAbstractListModel());
-        jScrollPane1.setViewportView(jList1);
+        list1.setModel(new MyAbstractListModel());
+        jScrollPane1.setViewportView(list1);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -85,7 +85,7 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
     }
 
     void setListOfPlayers(String[] players) {
-        jList1.setListData(players);
+        list1.setListData(players);
     }
 
     /**

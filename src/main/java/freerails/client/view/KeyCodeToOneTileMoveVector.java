@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
 /**
  * Maps keys to OneTileMoveVectors.
  */
-public class KeyCodeToOneTileMoveVector {
+class KeyCodeToOneTileMoveVector {
 
     private static final Map<Integer, TileTransition> keycode2vector = new HashMap<>();
 

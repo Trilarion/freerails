@@ -27,11 +27,7 @@ import java.util.*;
  */
 public class ShowJavaProperties {
 
-    /**
-     *
-     */
-    public static final int TABLE_WIDTH = 500;
-
+    private static final int TABLE_WIDTH = 500;
     private static final Logger logger = Logger.getLogger(ShowJavaProperties.class.getName());
 
     private ShowJavaProperties() {

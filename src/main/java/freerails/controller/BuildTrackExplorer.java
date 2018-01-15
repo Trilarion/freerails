@@ -40,7 +40,7 @@ import java.util.NoSuchElementException;
 public class BuildTrackExplorer implements GraphExplorer {
 
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
-    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
+    private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
     private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principle;

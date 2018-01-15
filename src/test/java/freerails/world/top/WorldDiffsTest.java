@@ -36,9 +36,9 @@ import java.util.Iterator;
  * JUnit test for WorldDifferences.
  */
 public class WorldDiffsTest extends TestCase {
-    final Player player0 = new Player("player0", 0);
+    private final Player player0 = new Player("player0", 0);
 
-    final Player player1 = new Player("player1", 1);
+    private final Player player1 = new Player("player1", 1);
 
     /**
      *

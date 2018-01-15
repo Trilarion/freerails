@@ -31,11 +31,11 @@ import java.util.TreeMap;
  */
 public class List2DDiffTest extends TestCase {
 
-    List2D<Object> underlying;
+    private List2D<Object> underlying;
 
-    List2DDiff<Object> diffs;
+    private List2DDiff<Object> diffs;
 
-    SortedMap<ListKey, Object> map;
+    private SortedMap<ListKey, Object> map;
 
     /**
      * @throws Exception

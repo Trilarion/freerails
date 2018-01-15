@@ -62,7 +62,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertDoMoveFails(Move m) {
+    void assertDoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
@@ -84,7 +84,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertDoThenUndoLeavesWorldUnchanged(Move m) {
+    void assertDoThenUndoLeavesWorldUnchanged(Move m) {
         try {
             World w = world;
             World before = (World) Utils.cloneBySerialisation(w);
@@ -128,7 +128,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertOkAndRepeatable(Move m) {
+    void assertOkAndRepeatable(Move m) {
         assertSetupHasBeenCalled();
 
         // Do move
@@ -152,7 +152,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      * @param m
      */
-    protected void assertOkButNotRepeatable(Move m) {
+    void assertOkButNotRepeatable(Move m) {
         assertSetupHasBeenCalled();
 
         assertTryMoveIsOk(m);
@@ -174,7 +174,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertTryMoveFails(Move m) {
+    void assertTryMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
         MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
@@ -185,7 +185,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertTryMoveIsOk(Move m) {
+    void assertTryMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
         MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
@@ -202,7 +202,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertTryUndoMoveFails(Move m) {
+    void assertTryUndoMoveFails(Move m) {
         assertSetupHasBeenCalled();
 
         MoveStatus ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
@@ -213,7 +213,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param m
      */
-    protected void assertTryUndoMoveIsOk(Move m) {
+    void assertTryUndoMoveIsOk(Move m) {
         assertSetupHasBeenCalled();
 
         MoveStatus ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
@@ -253,14 +253,14 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @return
      */
-    protected boolean hasSetupBeenCalled() {
+    private boolean hasSetupBeenCalled() {
         return hasSetupBeenCalled;
     }
 
     /**
      * @param hasSetupBeenCalled
      */
-    protected void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
+    void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
         this.hasSetupBeenCalled = hasSetupBeenCalled;
     }
 

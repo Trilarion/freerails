@@ -37,9 +37,9 @@ import junit.framework.TestCase;
  */
 public class BalanceSheetGeneratorTest extends TestCase {
 
-    Player player;
+    private Player player;
 
-    World world;
+    private World world;
 
     /**
      *

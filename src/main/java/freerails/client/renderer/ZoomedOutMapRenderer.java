@@ -54,7 +54,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     private final int mapHeight;
     private final int mapX;
     private final int mapY;
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final AffineTransform affineTransform;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage one2oneImage;
@@ -62,7 +62,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     private boolean isDirty = true;
 
     private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, int mapWidth, int mapHeight) {
-        w = world;
+        this.world = world;
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         imageHeight = height;
@@ -129,11 +129,11 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     }
 
     private void refreshTile(Point tile) {
-        FullTerrainTile tt = (FullTerrainTile) w.getTile(tile.x, tile.y);
+        FullTerrainTile tt = (FullTerrainTile) world.getTile(tile.x, tile.y);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeID();
-            TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, typeNumber);
+            TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
             one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
         } else {
             /* black with alpha of 1 */
@@ -169,11 +169,11 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
 
         for (tile.x = mapX; tile.x < mapWidth + mapX; tile.x++) {
             for (tile.y = mapY; tile.y < mapHeight + mapY; tile.y++) {
-                FullTerrainTile tt = (FullTerrainTile) w.getTile(tile.x, tile.y);
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(tile.x, tile.y);
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();
-                    TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, typeNumber);
+                    TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
                     one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, terrainType.getRGB());
                 } else {
                     /* black with alpha of 1 */

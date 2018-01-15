@@ -38,10 +38,6 @@ public class TransferCargoAtStationMove extends CompositeMove {
     public static final int CHANGE_AT_STATION_INDEX = 0;
     private static final long serialVersionUID = 3257291318215456563L;
 
-    private TransferCargoAtStationMove(Move[] moves) {
-        super(moves);
-    }
-
     /**
      * @param movesArrayList
      * @param waiting

@@ -27,7 +27,7 @@ import freerails.controller.ModelRoot;
  * Defines a standard method to initiate GUI components that need access to the
  * ModelRoot <b> and </b> the ActionRoot.
  */
-public interface ActiveView {
+interface ActiveView {
 
     /**
      * @param modelRoot

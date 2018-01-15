@@ -39,9 +39,9 @@ import junit.framework.TestCase;
  * JUnit test for FinancialDataGatherer.
  */
 public class FinancialDataGathererTest extends TestCase {
-    World w;
+    private World w;
 
-    Player player;
+    private Player player;
 
     /**
      * @throws Exception

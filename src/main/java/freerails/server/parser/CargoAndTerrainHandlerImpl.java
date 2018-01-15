@@ -39,19 +39,19 @@ import java.util.*;
 // TODO difference between interface and implementation?
 public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
 
-    final HashMap<String, Integer> cargoNameTocargoTypeNumber = new HashMap<>();
-    final Collection<Integer> rgbValuesAlreadyUsed = new HashSet<>();
-    final List<TileConsumption> typeConsumes = new ArrayList<>();
-    final List<TileProduction> typeProduces = new ArrayList<>();
-    final List<TileConversion> typeConverts = new ArrayList<>();
+    private final HashMap<String, Integer> cargoNameTocargoTypeNumber = new HashMap<>();
+    private final Collection<Integer> rgbValuesAlreadyUsed = new HashSet<>();
+    private final List<TileConsumption> typeConsumes = new ArrayList<>();
+    private final List<TileProduction> typeProduces = new ArrayList<>();
+    private final List<TileConversion> typeConverts = new ArrayList<>();
     private final World world;
 
     // Parsing variables for Tile
-    String tileID;
-    TerrainCategory tileCategory;
-    int tileRGB;
-    int tileROW;
-    int tileBuildCost;
+    private String tileID;
+    private TerrainCategory tileCategory;
+    private int tileRGB;
+    private int tileROW;
+    private int tileBuildCost;
 
     /**
      * @param world

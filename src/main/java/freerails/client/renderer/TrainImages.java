@@ -58,7 +58,7 @@ public class TrainImages {
      * @param i
      * @return
      */
-    public static String generateOverheadFilename(String name, int i) {
+    private static String generateOverheadFilename(String name, int i) {
         TileTransition[] vectors = TileTransition.getList();
 
         return "trains" + File.separator + "overhead" + File.separator + name + '_' + vectors[i].toAbrvString() + ".png";
@@ -68,7 +68,7 @@ public class TrainImages {
      * @param name
      * @return
      */
-    public static String generateSideOnFilename(String name) {
+    private static String generateSideOnFilename(String name) {
         return "trains" + File.separator + "sideon" + File.separator + name + ".png";
     }
 

@@ -30,7 +30,7 @@ import java.awt.*;
  */
 public class SquareCityTileBackgroundRendererTest extends TestCase {
 
-    final MapLayerRenderer renderer = new MapLayerRenderer() {
+    private final MapLayerRenderer renderer = new MapLayerRenderer() {
 
         public void paintTile(Graphics g, int tileX, int tileY) {
 

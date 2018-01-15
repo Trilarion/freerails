@@ -155,12 +155,12 @@ public class ActionAdapter extends DefaultComboBoxModel {
         /**
          * The NAME of the Action to which this ButtonModel is mapped.
          */
-        public final String actionName;
+        private final String actionName;
 
         /**
          * @param action
          */
-        public MappedButtonModel(Action action) {
+        private MappedButtonModel(Action action) {
             actionName = (String) action.getValue(Action.NAME);
             action.addPropertyChangeListener(this);
             setEnabled(action.isEnabled());

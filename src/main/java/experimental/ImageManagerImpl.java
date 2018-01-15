@@ -63,7 +63,7 @@ public class ImageManagerImpl implements ImageManager {
     /**
      * @param readpath
      */
-    public ImageManagerImpl(String readpath) {
+    private ImageManagerImpl(String readpath) {
         this(readpath, null);
     }
 
@@ -84,7 +84,7 @@ public class ImageManagerImpl implements ImageManager {
      * @param s
      * @return
      */
-    public static boolean isValid(CharSequence s) {
+    private static boolean isValid(CharSequence s) {
         Matcher m = pattern.matcher(s);
         return m.matches();
     }
@@ -192,7 +192,7 @@ public class ImageManagerImpl implements ImageManager {
      * @param relativeFilename
      * @throws IOException
      */
-    public void writeImage(String relativeFilename) throws IOException {
+    private void writeImage(String relativeFilename) throws IOException {
 
         if (null == pathToWriteTo) throw new NullPointerException("null == pathToWriteTo");
 

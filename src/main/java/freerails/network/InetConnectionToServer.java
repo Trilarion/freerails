@@ -26,7 +26,7 @@ import java.io.Serializable;
  */
 public class InetConnectionToServer extends AbstractInetConnection implements ConnectionToServer {
 
-    final String serverDetails;
+    private final String serverDetails;
 
     /**
      * @param ip

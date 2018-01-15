@@ -36,7 +36,7 @@ import java.io.IOException;
  *      parser.parse(new InputSource(&quot;...&quot;));
  * </pre>
  */
-public final class Track_TilesParser implements org.xml.sax.ContentHandler {
+final class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     private static final Logger logger = Logger.getLogger(Track_TilesParser.class.getName());
     private final java.lang.StringBuffer buffer;
@@ -46,7 +46,7 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
     /**
      * @param handler
      */
-    public Track_TilesParser(final Track_TilesHandler handler) {
+    private Track_TilesParser(final Track_TilesHandler handler) {
         this.handler = handler;
         buffer = new StringBuffer(111);
         context = new java.util.Stack<>();
@@ -61,7 +61,7 @@ public final class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final InputSource input, final Track_TilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
+    private static void parse(final InputSource input, final Track_TilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
         parse(input, new Track_TilesParser(handler));
     }
 

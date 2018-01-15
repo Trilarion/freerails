@@ -42,15 +42,15 @@ import java.util.List;
 public class LoadGameJPanel extends JPanel implements View {
 
     private static final long serialVersionUID = -6810248272441137826L;
-    ModelRoot modelRoot;
-    ActionListener close;
+    private ModelRoot modelRoot;
+    private ActionListener close;
 
-    JButton cancelButton;
-    JLabel jLabel1;
-    JList jList1;
-    JScrollPane jScrollPane1;
-    JButton okButton;
-    JButton refreshButton;
+    private JButton cancelButton;
+    private JLabel label1;
+    private JList list1;
+    private JScrollPane jScrollPane1;
+    private JButton okButton;
+    private JButton refreshButton;
     private List<String> lastFiles;
 
     /**
@@ -66,18 +66,18 @@ public class LoadGameJPanel extends JPanel implements View {
         GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new JScrollPane();
-        jList1 = new JList();
-        jLabel1 = new JLabel();
+        list1 = new JList();
+        label1 = new JLabel();
         okButton = new JButton();
         cancelButton = new JButton();
         refreshButton = new JButton();
 
         setLayout(new GridBagLayout());
 
-        jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jList1.addListSelectionListener(this::jList1ValueChanged);
+        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list1.addListSelectionListener(this::list1ValueChanged);
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(list1);
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -89,13 +89,13 @@ public class LoadGameJPanel extends JPanel implements View {
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(jScrollPane1, gridBagConstraints);
 
-        jLabel1.setText("Please select a game to load.");
+        label1.setText("Please select a game to load.");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
-        add(jLabel1, gridBagConstraints);
+        add(label1, gridBagConstraints);
 
         okButton.setText("OK");
         okButton.addActionListener(this::okButtonActionPerformed);
@@ -136,15 +136,15 @@ public class LoadGameJPanel extends JPanel implements View {
     }
 
     private void okButtonActionPerformed(ActionEvent evt) {
-        String filename = (String) jList1.getSelectedValue();
+        String filename = (String) list1.getSelectedValue();
         MessageToServer message2 = new LoadGameMessageToServer(1, filename);
         modelRoot.sendCommand(message2);
 
         if (null != close) close.actionPerformed(evt);
     }
 
-    private void jList1ValueChanged(ListSelectionEvent evt) {
-        okButton.setEnabled(jList1.getSelectedIndex() != -1);
+    private void list1ValueChanged(ListSelectionEvent evt) {
+        okButton.setEnabled(list1.getSelectedIndex() != -1);
     }
 
     /**
@@ -164,8 +164,8 @@ public class LoadGameJPanel extends JPanel implements View {
         for (int i = 0; i < files.size(); i++) {
             saves[i] = files.get(i);
         }
-        jList1.setListData(saves);
-        okButton.setEnabled(jList1.getSelectedIndex() != -1);
+        list1.setListData(saves);
+        okButton.setEnabled(list1.getSelectedIndex() != -1);
         lastFiles = files;
     }
 

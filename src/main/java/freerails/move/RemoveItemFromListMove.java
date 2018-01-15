@@ -66,7 +66,7 @@ public class RemoveItemFromListMove implements ListMove {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.size(this.principal, listKey) < (index + 1)) {
-            return MoveStatus.moveFailed("w.size(listKey)=" + world.size(this.principal, listKey) + " but index =" + index);
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listKey) + " but index =" + index);
         }
 
         Serializable item2remove = world.get(this.principal, listKey, index);
@@ -85,7 +85,7 @@ public class RemoveItemFromListMove implements ListMove {
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
         if (world.size(this.principal, listKey) < (index + 1)) {
-            return MoveStatus.moveFailed("w.size(listKey)=" + world.size(this.principal, listKey) + " but index =" + index);
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listKey) + " but index =" + index);
         }
 
         if (null != world.get(this.principal, listKey, index)) {

@@ -31,54 +31,53 @@ import freerails.world.train.*;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.NoSuchElementException;
 
 /**
- * This JPanel displays a train's schedule and provides controls that let you
+ * Displays a train's schedule and provides controls that let you
  * edit it.
  */
-
-public class TrainScheduleJPanel extends javax.swing.JPanel implements View, WorldListListener {
+public class TrainSchedulePanel extends JPanel implements View, WorldListListener {
 
     private static final long serialVersionUID = 3762248626113884214L;
-
-    private static final Logger logger = Logger.getLogger(TrainScheduleJPanel.class.getName());
-    javax.swing.JButton addStationJButton;
-    javax.swing.JMenu addWagonJMenu;
-    javax.swing.JMenuItem autoConsistJMenuItem;
-    javax.swing.JMenu changeConsistJMenu;
-    javax.swing.JMenuItem changeStation;
-    javax.swing.JMenuItem dontWaitJMenuItem;
-    javax.swing.JPopupMenu editOrderJPopupMenu;
-    javax.swing.JMenuItem engineOnlyJMenuItem;
-    javax.swing.JMenuItem gotoStationJMenuItem;
-    javax.swing.JScrollPane jScrollPane1;
-    javax.swing.JSeparator jSeparator1;
-    javax.swing.JSeparator jSeparator2;
-    javax.swing.JMenuItem noChangeJMenuItem;
-    javax.swing.JList orders;
-    javax.swing.JButton priorityOrdersJButton;
-    javax.swing.JMenuItem pullUpJMenuItem;
-    javax.swing.JMenuItem pushDownJMenuItem;
-    javax.swing.JMenuItem removeAllJMenuItem;
-    javax.swing.JMenuItem removeLastJMenuItem;
-    javax.swing.JMenuItem removeStationJMenuItem;
-    javax.swing.JMenu removeWagonsJMenu;
-    freerails.client.view.SelectStationJPanel selectStationJPanel1;
-    javax.swing.JPopupMenu selectStationJPopupMenu;
-    freerails.client.view.TrainOrderJPanel trainOrderJPanel1;
-    javax.swing.JMenu waitJMenu;
-    javax.swing.JMenuItem waitUntilFullJMenuItem;
+    private static final Logger logger = Logger.getLogger(TrainSchedulePanel.class.getName());
+    private JButton addStationJButton;
+    private JMenu addWagonJMenu;
+    private JMenuItem autoConsistJMenuItem;
+    private JMenu changeConsistJMenu;
+    private JMenuItem changeStation;
+    private JMenuItem dontWaitJMenuItem;
+    private JPopupMenu editOrderJPopupMenu;
+    private JMenuItem engineOnlyJMenuItem;
+    private JMenuItem gotoStationJMenuItem;
+    private JScrollPane jScrollPane1;
+    private JSeparator jSeparator1;
+    private JSeparator jSeparator2;
+    private JMenuItem noChangeJMenuItem;
+    private JList orders;
+    private JButton priorityOrdersJButton;
+    private JMenuItem pullUpJMenuItem;
+    private JMenuItem pushDownJMenuItem;
+    private JMenuItem removeAllJMenuItem;
+    private JMenuItem removeLastJMenuItem;
+    private JMenuItem removeStationJMenuItem;
+    private JMenu removeWagonsJMenu;
+    private SelectStationPanel selectStationPanel1;
+    private JPopupMenu selectStationJPopupMenu;
+    private TrainOrderPanel trainOrderPanel1;
+    private JMenu waitJMenu;
+    private JMenuItem waitUntilFullJMenuItem;
     private int trainNumber = -1;
     private int scheduleID = -1;
     private TrainOrdersListModel listModel;
     private ModelRoot modelRoot;
     private RendererRoot vl;
 
-    public TrainScheduleJPanel() {
+    public TrainSchedulePanel() {
         initComponents();
     }
 
@@ -86,33 +85,33 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        trainOrderJPanel1 = new freerails.client.view.TrainOrderJPanel();
-        editOrderJPopupMenu = new javax.swing.JPopupMenu();
-        gotoStationJMenuItem = new javax.swing.JMenuItem();
-        changeStation = new javax.swing.JMenuItem();
-        removeStationJMenuItem = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JSeparator();
-        addWagonJMenu = new javax.swing.JMenu();
-        removeWagonsJMenu = new javax.swing.JMenu();
-        removeLastJMenuItem = new javax.swing.JMenuItem();
-        removeAllJMenuItem = new javax.swing.JMenuItem();
-        changeConsistJMenu = new javax.swing.JMenu();
-        noChangeJMenuItem = new javax.swing.JMenuItem();
-        engineOnlyJMenuItem = new javax.swing.JMenuItem();
-        autoConsistJMenuItem = new javax.swing.JMenuItem();
-        waitJMenu = new javax.swing.JMenu();
-        dontWaitJMenuItem = new javax.swing.JMenuItem();
-        waitUntilFullJMenuItem = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JSeparator();
-        pullUpJMenuItem = new javax.swing.JMenuItem();
-        pushDownJMenuItem = new javax.swing.JMenuItem();
-        selectStationJPanel1 = new freerails.client.view.SelectStationJPanel();
-        selectStationJPopupMenu = new javax.swing.JPopupMenu();
-        selectStationJPopupMenu.add(selectStationJPanel1);
-        addStationJButton = new javax.swing.JButton();
-        priorityOrdersJButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        orders = new javax.swing.JList();
+        trainOrderPanel1 = new TrainOrderPanel();
+        editOrderJPopupMenu = new JPopupMenu();
+        gotoStationJMenuItem = new JMenuItem();
+        changeStation = new JMenuItem();
+        removeStationJMenuItem = new JMenuItem();
+        jSeparator1 = new JSeparator();
+        addWagonJMenu = new JMenu();
+        removeWagonsJMenu = new JMenu();
+        removeLastJMenuItem = new JMenuItem();
+        removeAllJMenuItem = new JMenuItem();
+        changeConsistJMenu = new JMenu();
+        noChangeJMenuItem = new JMenuItem();
+        engineOnlyJMenuItem = new JMenuItem();
+        autoConsistJMenuItem = new JMenuItem();
+        waitJMenu = new JMenu();
+        dontWaitJMenuItem = new JMenuItem();
+        waitUntilFullJMenuItem = new JMenuItem();
+        jSeparator2 = new JSeparator();
+        pullUpJMenuItem = new JMenuItem();
+        pushDownJMenuItem = new JMenuItem();
+        selectStationPanel1 = new SelectStationPanel();
+        selectStationJPopupMenu = new JPopupMenu();
+        selectStationJPopupMenu.add(selectStationPanel1);
+        addStationJButton = new JButton();
+        priorityOrdersJButton = new JButton();
+        jScrollPane1 = new JScrollPane();
+        orders = new JList();
 
         gotoStationJMenuItem.setText("Goto station");
         gotoStationJMenuItem.addActionListener(this::gotoStationJMenuItemActionPerformed);
@@ -192,7 +191,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
 
         setLayout(new java.awt.GridBagLayout());
 
-        setBorder(new javax.swing.border.TitledBorder("Schedule"));
+        setBorder(new TitledBorder("Schedule"));
         addStationJButton.setText("Add Station");
         addStationJButton.addActionListener(this::addStationJButtonActionPerformed);
 
@@ -212,8 +211,8 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         add(priorityOrdersJButton, gridBagConstraints);
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(280, 160));
-        orders.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        orders.setCellRenderer(trainOrderJPanel1);
+        orders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        orders.setCellRenderer(trainOrderPanel1);
         orders.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
@@ -415,7 +414,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        trainOrderJPanel1.setup(modelRoot, vl, null);
+        trainOrderPanel1.setup(modelRoot, vl, null);
         this.modelRoot = modelRoot;
         this.vl = vl;
 
@@ -426,14 +425,14 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
             private static final long serialVersionUID = -2096909872676721636L;
 
             public void actionPerformed(ActionEvent e) {
-                sendUpdateMove(selectStationJPanel1.generateNewSchedule());
+                sendUpdateMove(selectStationPanel1.generateNewSchedule());
                 selectStationJPopupMenu.setVisible(false);
                 listModel.fireRefresh();
                 orders.requestFocus();
 
             }
         };
-        selectStationJPanel1.setup(modelRoot, vl, action);
+        selectStationPanel1.setup(modelRoot, vl, action);
     }
 
     public void display(int newTrainNumber) {
@@ -619,7 +618,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
      * scheduled stop is added and when an existing scheduled stop is changed.
      */
     private void showSelectStation(MutableSchedule schedule, int orderNumber) {
-        selectStationJPanel1.display(schedule, orderNumber);
+        selectStationPanel1.display(schedule, orderNumber);
 
         // Show the select station popup in the middle of the window.
         Container topLevelAncestor = getTopLevelAncestor();
@@ -628,7 +627,7 @@ public class TrainScheduleJPanel extends javax.swing.JPanel implements View, Wor
         int x = Math.max((d.width - d2.width) / 2, 0);
         int y = Math.max((d.height - d2.height) / 2, 0);
         selectStationJPopupMenu.show(topLevelAncestor, x, y);
-        selectStationJPanel1.requestFocus();
+        selectStationPanel1.requestFocus();
     }
 
 }

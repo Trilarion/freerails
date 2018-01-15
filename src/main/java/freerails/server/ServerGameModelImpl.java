@@ -49,7 +49,7 @@ public class ServerGameModelImpl implements ServerGameModel {
     /**
      *
      */
-    public World world;
+    private World world;
     private transient SupplyAtStationsUpdater supplyAtStationsUpdater;
     private TrainUpdater tb;
     private String[] passwords;
@@ -73,7 +73,7 @@ public class ServerGameModelImpl implements ServerGameModel {
      * @param w
      * @param serverAutomata
      */
-    public ServerGameModelImpl(World w, List<ServerAutomaton> serverAutomata) {
+    private ServerGameModelImpl(World w, List<ServerAutomaton> serverAutomata) {
         world = w;
         this.serverAutomata = serverAutomata;
 

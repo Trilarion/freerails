@@ -33,14 +33,14 @@ import java.util.Random;
  * WorldDifferences and MapDiffMove to pass changes to the clients.
  */
 // TODO what is random used for? Seed of random generator?
-public class CityTilePositioner {
+class CityTilePositioner {
 
-    final Random random = new Random();
-    final List<TerrainType> urbanTerrainTypes = new ArrayList<>();
-    final Collection<TerrainType> industryTerrainTypes = new ArrayList<>();
-    final List<TerrainType> resourceTerrainTypes = new ArrayList<>();
+    private final Random random = new Random();
+    private final List<TerrainType> urbanTerrainTypes = new ArrayList<>();
+    private final Collection<TerrainType> industryTerrainTypes = new ArrayList<>();
+    private final List<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
-    final World world;
+    private final World world;
 
     /**
      * @param world

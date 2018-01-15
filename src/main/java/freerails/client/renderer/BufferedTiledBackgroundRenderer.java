@@ -38,7 +38,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      * graphics configuration. Such images can be drawn to the screen quickly
      * since no conversion is needed.
      */
-    protected final GraphicsConfiguration defaultConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+    private final GraphicsConfiguration defaultConfig = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     /**
      * The bounds and location of the map region that is stored in the offscreen
      * Image backgroundBuffer.

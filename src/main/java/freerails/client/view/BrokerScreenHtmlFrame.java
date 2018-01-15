@@ -49,7 +49,7 @@ import java.net.URL;
 public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
-    public static BrokerScreenGenerator brokerScreenGenerator;
+    private static BrokerScreenGenerator brokerScreenGenerator;
     private final String template;
     private ModelRoot modelRoot;
 

@@ -140,7 +140,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
         return getDistance(t) + initialPosition - trainLength;
     }
 
-    void checkT(double t) {
+    private void checkT(double t) {
         if (t < 0.0d || t > duration) throw new IllegalArgumentException("t=" + t + ", but duration=" + duration);
     }
 

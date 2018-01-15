@@ -40,7 +40,7 @@ class CityModel {
     final Collection<CityTile> urbanCityTiles = new ArrayList<>();
     final Collection<CityTile> industryCityTiles = new ArrayList<>();
     final List<TerrainType> industriesNotAtCity = new ArrayList<>();
-    final Collection<CityTile> resourceCityTiles = new ArrayList<>();
+    private final Collection<CityTile> resourceCityTiles = new ArrayList<>();
     final List<Point> clearTiles = new ArrayList<>();
     /**
      * The number of stations within this city's bounds.

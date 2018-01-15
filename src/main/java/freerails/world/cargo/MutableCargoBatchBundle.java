@@ -80,7 +80,7 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
          * about it straight away.
          */
         return new Iterator<CargoBatch>() {
-            final int updateIDAtCreation = updateID;
+            private final int updateIDAtCreation = updateID;
 
             public boolean hasNext() {
                 if (updateIDAtCreation != updateID) {

@@ -77,8 +77,8 @@ public class ClientFrame extends JFrame {
         javax.swing.JPanel lhsjPanel = new javax.swing.JPanel();
         javax.swing.JScrollPane mainMapView = gUIComponentFactory.createMainMap();
         javax.swing.JPanel statusjPanel = new javax.swing.JPanel();
-        javax.swing.JLabel datejLabel = gUIComponentFactory.createDateJLabel();
-        javax.swing.JLabel cashjLabel = gUIComponentFactory.createCashJLabel();
+        javax.swing.JLabel datelabel = gUIComponentFactory.createDateJLabel();
+        javax.swing.JLabel cashlabel = gUIComponentFactory.createCashJLabel();
         javax.swing.JMenuBar jMenuBar1 = new javax.swing.JMenuBar();
         javax.swing.JMenu gameMenu = gUIComponentFactory.createGameMenu();
         javax.swing.JMenu buildMenu = gUIComponentFactory.createBuildMenu();
@@ -121,9 +121,9 @@ public class ClientFrame extends JFrame {
         gridBagConstraints.weighty = 1.0;
         lhsjPanel.add(mainMapView, gridBagConstraints);
 
-        statusjPanel.add(datejLabel);
+        statusjPanel.add(datelabel);
 
-        statusjPanel.add(cashjLabel);
+        statusjPanel.add(cashlabel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

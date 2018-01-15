@@ -23,11 +23,11 @@ package freerails.controller;
 
 /**
  */
-public class SharePriceCalculator {
+class SharePriceCalculator {
 
     public int totalShares;
-    public int treasuryStock;
-    public int otherRRStakes;
+    private int treasuryStock;
+    private int otherRRStakes;
     public long profitsLastYear;
     public long networth;
     public long stockholderEquity;

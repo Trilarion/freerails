@@ -28,11 +28,11 @@ import java.util.NoSuchElementException;
  * Finds the nearest city and returns that name, so that a station can be
  * named appropriately.
  */
-public class NearestCityFinder {
+class NearestCityFinder {
 
     private final int x;
     private final int y;
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
 
     /**
      * @param world
@@ -40,7 +40,7 @@ public class NearestCityFinder {
      * @param y
      */
     public NearestCityFinder(ReadOnlyWorld world, int x, int y) {
-        w = world;
+        this.world = world;
         this.x = x;
         this.y = y;
     }
@@ -54,13 +54,13 @@ public class NearestCityFinder {
         double tempDistance;
         City tempCity;
 
-        if (w.size(SKEY.CITIES) > 0) {
-            tempCity = (City) w.get(SKEY.CITIES, 0);
+        if (world.size(SKEY.CITIES) > 0) {
+            tempCity = (City) world.get(SKEY.CITIES, 0);
             cityDistance = getDistance(tempCity.getX(), tempCity.getY());
             cityName = tempCity.getName();
 
-            for (int i = 1; i < w.size(SKEY.CITIES); i++) {
-                tempCity = (City) w.get(SKEY.CITIES, i);
+            for (int i = 1; i < world.size(SKEY.CITIES); i++) {
+                tempCity = (City) world.get(SKEY.CITIES, i);
                 tempDistance = getDistance(tempCity.getX(), tempCity.getY());
 
                 if (tempDistance < cityDistance) {

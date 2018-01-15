@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  *
  */
-public class TrainSummeryModel {
+class TrainSummeryModel {
 
     private static final long MINIMUM_WAIT_TIME = 250;
     private final Map<Integer, Money> lastTrainIncome;

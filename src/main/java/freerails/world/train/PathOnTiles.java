@@ -345,9 +345,9 @@ public strictfp class PathOnTiles implements Serializable {
      */
     public Iterator<Point2D> tiles() {
         return new Iterator<Point2D>() {
-            int index = 0;
+            private int index = 0;
 
-            Point2D next = start;
+            private Point2D next = start;
 
             public boolean hasNext() {
                 return next != null;
@@ -398,9 +398,9 @@ public strictfp class PathOnTiles implements Serializable {
 
         private static final long serialVersionUID = -4128415959622019625L;
         private final LinkedList<Point2D> points;
-        int index;
+        private int index;
 
-        public MyPathIterator(LinkedList<Point2D> points) {
+        private MyPathIterator(LinkedList<Point2D> points) {
             this.points = points;
             index = 0;
         }

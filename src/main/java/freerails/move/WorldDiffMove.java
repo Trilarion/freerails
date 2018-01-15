@@ -362,21 +362,22 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     /**
      *
      */
-    public static class MapDiff implements Serializable {
+    private static class MapDiff implements Serializable {
         private static final long serialVersionUID = -5935670372745313360L;
 
         /**
          *
          */
-        public final int x,
+        private final int x;
 
-        /**
+        private final int /**
          *
          */
         y;
-        final Serializable before, after;
+        private final Serializable before;
+        private final Serializable after;
 
-        MapDiff(Serializable before, Serializable after, Point2D p) {
+        private MapDiff(Serializable before, Serializable after, Point2D p) {
             this.after = after;
             this.before = before;
             x = p.x;

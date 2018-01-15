@@ -31,7 +31,7 @@ import freerails.world.terrain.TileTransition;
 public final class PositionOnTrack implements FreerailsMutableSerializable {
 
     public static final int BITS_FOR_COORDINATE = 14;
-    public static final int BITS_FOR_DIRECTION = 3;
+    private static final int BITS_FOR_DIRECTION = 3;
     public static final int MAX_COORDINATE = (1 << BITS_FOR_COORDINATE) - 1;
     public static final int MAX_DIRECTION = (1 << BITS_FOR_DIRECTION) - 1;
     private static final long serialVersionUID = 3257853198755707184L;

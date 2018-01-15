@@ -167,7 +167,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param activity
      * @return
      */
-    public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path, double speed, double acceleration, TrainActivity activity) {
+    private static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path, double speed, double acceleration, TrainActivity activity) {
         List<Integer> xPointsIntArray = new ArrayList<>();
         List<Integer> yPointsIntArray = new ArrayList<>();
         LineSegment line = new LineSegment();
@@ -201,7 +201,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public static boolean headsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
+    private static boolean headsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
         int aHeadY = a.getY(0);
         int bHeadX = b.getX(0);
@@ -215,7 +215,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public static boolean tailsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
+    private static boolean tailsAreEqual(TrainPositionOnMap a, TrainPositionOnMap b) {
         int aTailX = a.getX(a.getLength() - 1);
         int aTailY = a.getY(a.getLength() - 1);
         int bTailX = b.getX(b.getLength() - 1);
@@ -229,7 +229,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param b
      * @return
      */
-    public static boolean aHeadEqualsBTail(TrainPositionOnMap a, TrainPositionOnMap b) {
+    private static boolean aHeadEqualsBTail(TrainPositionOnMap a, TrainPositionOnMap b) {
         int aHeadX = a.getX(0);
         int aHeadY = a.getY(0);
 

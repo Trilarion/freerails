@@ -33,32 +33,32 @@ import freerails.world.track.TrackRule;
 // TODO Do not use reflection here.
 public class BalanceSheetGenerator {
 
-    public final String year;
+    private final String year;
     public final Stats total;
     public final Stats ytd;
-    final ReadOnlyWorld w;
-    final FreerailsPrincipal principal;
+    private final ReadOnlyWorld world;
+    private final FreerailsPrincipal principal;
     GameTime from;
     GameTime to;
 
     /**
-     * @param w
+     * @param world
      * @param principal
      */
-    public BalanceSheetGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        this.w = w;
+    public BalanceSheetGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        this.world = world;
         this.principal = principal;
-        GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameCalendar cal = (GameCalendar) world.get(ITEM.CALENDAR);
         // Calculate totals
-        GameTime time = w.currentTime();
+        GameTime time = world.currentTime();
         final int startYear = cal.getYear(time.getTicks());
         year = String.valueOf(startYear);
         GameTime startOfYear = new GameTime(cal.getTicks(startYear));
         GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
-        total = new Stats(w, principal, totalTimeInterval);
+        total = new Stats(world, principal, totalTimeInterval);
 
         GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
-        ytd = new Stats(w, principal, ytdTimeInterval);
+        ytd = new Stats(world, principal, ytdTimeInterval);
 
     }
 

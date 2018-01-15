@@ -8,7 +8,7 @@ import java.awt.*;
 
 final class WagonCellRenderer implements ListCellRenderer {
 
-    final RendererRoot rr;
+    private final RendererRoot rr;
     private final Component[] labels;
 
     public WagonCellRenderer(ListModel w2lma, RendererRoot s) {
@@ -29,14 +29,19 @@ final class WagonCellRenderer implements ListCellRenderer {
         }
     }
 
-    public Component getListCellRendererComponent(JList list, Object value, /*
-     * value
-     * to
-     * display
+    /**
+     *
+     * @param list
+     * @param value value to display
+     * @param index cell index
+     * @param isSelected is the cell selected
+     * @param cellHasFocus the list and the cell have the focus
+     * @return
      */
-                                                  int index, /* cell index */
-                                                  boolean isSelected, /* is the cell selected */
-                                                  boolean cellHasFocus) /* the list and the cell have the focus */ {
+    public Component getListCellRendererComponent(JList list, Object value,
+                                                  int index,
+                                                  boolean isSelected,
+                                                  boolean cellHasFocus)  {
         if (index >= 0 && index < labels.length) {
             CargoType cargoType = (CargoType) value;
             String text = "<html><body>" + (isSelected ? "<strong>" : "") + cargoType.getDisplayName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*

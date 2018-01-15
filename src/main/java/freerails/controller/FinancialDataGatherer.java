@@ -56,7 +56,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     @Override
     protected void incrementRunningTotal(int transactionID) {
-        Transaction t = super.w.getTransaction(super.principal, transactionID);
+        Transaction t = super.world.getTransaction(super.principal, transactionID);
 
         if (t instanceof ItemTransaction) {
             ItemTransaction ait = (ItemTransaction) t;
@@ -89,7 +89,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      * @return
      */
     public double nextBondInterestRate() {
-        EconomicClimate ec = (EconomicClimate) w.get(ITEM.ECONOMIC_CLIMATE);
+        EconomicClimate ec = (EconomicClimate) world.get(ITEM.ECONOMIC_CLIMATE);
         return bonds + ec.getBaseInterestRate();
     }
 
@@ -123,7 +123,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      * @return
      */
     public Money netWorth() {
-        NetWorthCalculator nwc = new NetWorthCalculator(w, principal);
+        NetWorthCalculator nwc = new NetWorthCalculator(world, principal);
         GameTime[] times = {GameTime.BIG_BANG, GameTime.DOOMSDAY};
         nwc.setTimes(times);
         return nwc.calculateValue();
@@ -140,10 +140,10 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     public int[] getStockInThisRRs() {
         if (null == stockInThisRRs) {
-            stockInThisRRs = new int[w.getNumberOfPlayers()];
-            for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-                Player p = w.getPlayer(i);
-                FinancialDataGatherer temp = new FinancialDataGatherer(w, p.getPrincipal());
+            stockInThisRRs = new int[world.getNumberOfPlayers()];
+            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+                Player p = world.getPlayer(i);
+                FinancialDataGatherer temp = new FinancialDataGatherer(world, p.getPrincipal());
                 stockInThisRRs[i] = temp.stockInRRs[playerID];
             }
         }

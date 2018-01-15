@@ -250,7 +250,7 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = false;
     }
 
-    int searchStatus() {
+    private int searchStatus() {
         if (buildNewTrack) {
             return path4newTrackFinder.getStatus();
         }

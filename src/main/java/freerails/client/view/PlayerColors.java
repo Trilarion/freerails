@@ -26,7 +26,7 @@ import java.awt.*;
 /**
  * Stores a list of colours to use to represent different players.
  */
-public class PlayerColors {
+class PlayerColors {
 
     private static final Color[] colors = new Color[]{Color.BLUE, Color.GREEN, Color.CYAN, Color.MAGENTA, Color.ORANGE, Color.YELLOW};// Save
 

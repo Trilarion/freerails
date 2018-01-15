@@ -31,9 +31,9 @@ import java.util.ArrayList;
  * JUnit test.
  */
 public class PathWalkerImplTest extends TestCase {
-    PathIterator it;
+    private PathIterator it;
 
-    PathWalker pw;
+    private PathWalker pw;
 
     /**
      * @param arg0
@@ -151,7 +151,7 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(!pw.hasNext());
     }
 
-    void assertHasNextEqualsFalse(ArrayList<Point> points) {
+    private void assertHasNextEqualsFalse(ArrayList<Point> points) {
         PathIterator it2 = PathIteratorImpl
                 .forwardsIterator(points);
 
@@ -164,7 +164,7 @@ public class PathWalkerImplTest extends TestCase {
     /**
      *
      */
-    public void setup() {
+    private void setup() {
         Integer[] xpoints = {0, 100, 100};
         Integer[] ypoints = {0, 0, 100};
         it = new SimplePathIteratorImpl(xpoints, ypoints);

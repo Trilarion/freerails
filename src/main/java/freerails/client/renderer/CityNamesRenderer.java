@@ -36,13 +36,13 @@ import java.awt.*;
  */
 public class CityNamesRenderer implements Painter {
 
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
 
     /**
      * @param world
      */
     public CityNamesRenderer(ReadOnlyWorld world) {
-        w = world;
+        this.world = world;
     }
 
     /**
@@ -54,9 +54,9 @@ public class CityNamesRenderer implements Painter {
         g.setFont(new Font("Arial", 0, 20));
 
         // draw city names onto map
-        int size = w.size(SKEY.CITIES);
+        int size = world.size(SKEY.CITIES);
         for (int i = 0; i < size; i++) {
-            City tempCity = (City) w.get(SKEY.CITIES, i);
+            City tempCity = (City) world.get(SKEY.CITIES, i);
             final int xpos = tempCity.getX() * ClientConfig.TILE_SIZE;
             final int ypos = tempCity.getY() * ClientConfig.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos, ClientConfig.TILE_SIZE * 8, 20);

@@ -50,24 +50,24 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
     private static final Logger logger = Logger.getLogger(ClientOptionsPanel.class.getName());
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
-    ButtonGroup buttonGroup1;
-    JRadioButton fixedSizeButton;
-    JRadioButton fullScreenButton;
-    JLabel jLabel1;
-    JLabel jLabel2;
-    JLabel jLabel3;
-    JList jList1;
-    JPanel jPanel1;
-    JPanel jPanel2;
-    JPanel jPanel3;
-    JPanel jPanel4;
-    JScrollPane jScrollPane1;
-    JTextField playerName;
-    JComboBox playerNames;
-    JTextField remoteIP;
-    JTextField remotePort;
-    JPanel spacer;
-    JRadioButton windowedButton;
+    private ButtonGroup buttonGroup1;
+    private JRadioButton fixedSizeButton;
+    private JRadioButton fullScreenButton;
+    private JLabel label1;
+    private JLabel label2;
+    private JLabel label3;
+    private JList list1;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JPanel jPanel3;
+    private JPanel jPanel4;
+    private JScrollPane jScrollPane1;
+    private JTextField playerName;
+    private JComboBox playerNames;
+    private JTextField remoteIP;
+    private JTextField remotePort;
+    private JPanel spacer;
+    private JRadioButton windowedButton;
     private String[] names;
 
     public ClientOptionsPanel(LauncherInterface owner) {
@@ -134,7 +134,7 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
 
     DisplayMode getDisplayMode() {
         if (fullScreenButton.isSelected()) {
-            MyDisplayMode displayMode = ((MyDisplayMode) jList1.getSelectedValue());
+            MyDisplayMode displayMode = ((MyDisplayMode) list1.getSelectedValue());
             if (logger.isDebugEnabled()) {
                 logger.debug("The selected display mode is " + displayMode.toString());
             }
@@ -199,7 +199,7 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
          * mode can't be changed, in which case the list of selectable display
          * modes will have length 0.
          */
-        if (fullScreenButton.isSelected() && jList1.getModel().getSize() > 0 && jList1.getSelectedIndex() == -1) {
+        if (fullScreenButton.isSelected() && list1.getModel().getSize() > 0 && list1.getSelectedIndex() == -1) {
             owner.setInfoText("Select a display-mode.", MSG_TYPE.ERROR);
             return false;
         }
@@ -235,7 +235,7 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
         fullScreenButton.setEnabled(enabled);
         fixedSizeButton.setEnabled(enabled);
         if (fullScreenButton.isSelected()) {
-            jList1.setEnabled(enabled);
+            list1.setEnabled(enabled);
         }
     }
 
@@ -249,18 +249,18 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
 
         buttonGroup1 = new ButtonGroup();
         jPanel3 = new JPanel();
-        jLabel1 = new JLabel();
+        label1 = new JLabel();
         playerName = new JTextField();
         playerNames = new JComboBox();
         jPanel4 = new JPanel();
-        jLabel2 = new JLabel();
+        label2 = new JLabel();
         remoteIP = new JTextField();
-        jLabel3 = new JLabel();
+        label3 = new JLabel();
         remotePort = new JTextField();
         spacer = new JPanel();
         jPanel1 = new JPanel();
         jScrollPane1 = new JScrollPane();
-        jList1 = new JList();
+        list1 = new JList();
         jPanel2 = new JPanel();
         windowedButton = new JRadioButton();
         fixedSizeButton = new JRadioButton();
@@ -278,8 +278,8 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jPanel3.setBorder(new TitledBorder(new EtchedBorder(), "Player Details"));
-        jLabel1.setText("Player name:");
-        jPanel3.add(jLabel1);
+        label1.setText("Player name:");
+        jPanel3.add(label1);
 
         playerName.setColumns(12);
         playerName.setText(owner.getProperty(LauncherInterface.PLAYER_NAME_PROPERTY));
@@ -296,8 +296,8 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
 
         jPanel4.setBorder(new TitledBorder(new EtchedBorder(), "Remote server address"));
         jPanel4.setEnabled(false);
-        jLabel2.setText("IP Address:");
-        jPanel4.add(jLabel2, new java.awt.GridBagConstraints());
+        label2.setText("IP Address:");
+        jPanel4.add(label2, new java.awt.GridBagConstraints());
 
         remoteIP.setColumns(15);
         remoteIP.setText(owner.getProperty(LauncherInterface.SERVER_IP_ADDRESS_PROPERTY));
@@ -306,13 +306,13 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel4.add(remoteIP, gridBagConstraints);
 
-        jLabel3.setText("port");
+        label3.setText("port");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        jPanel4.add(jLabel3, gridBagConstraints);
+        jPanel4.add(label3, gridBagConstraints);
 
         remotePort.setColumns(5);
         remotePort.setText(owner.getProperty(LauncherInterface.SERVER_PORT_PROPERTY));
@@ -347,16 +347,16 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
             fullscreen = Boolean.valueOf(fullscreenProp);
         }
 
-        jList1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         if (!fullscreen) {
-            jList1.setEnabled(false);
+            list1.setEnabled(false);
         } else {
-            jList1.setEnabled(true);
+            list1.setEnabled(true);
         }
 
-        jList1.addListSelectionListener(this::jList1ValueChanged);
+        list1.addListSelectionListener(this::list1ValueChanged);
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(list1);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -394,7 +394,7 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
 
         DisplayModesComboBoxModels listModel = new DisplayModesComboBoxModels();
         listModel.removeDisplayModesBelow(640, 480, 16);
-        jList1.setModel(listModel);
+        list1.setModel(listModel);
         int pos = 0;
         for (int i = 0; i < listModel.getSize(); i++) {
             if (listModel.getElementAt(i).toString().equals(displayMode)) {
@@ -402,11 +402,11 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
                 break;
             }
         }
-        jList1.setSelectedIndex(pos);
-        jList1.ensureIndexIsVisible(jList1.getSelectedIndex());
+        list1.setSelectedIndex(pos);
+        list1.ensureIndexIsVisible(list1.getSelectedIndex());
     }
 
-    private void jList1ValueChanged(ListSelectionEvent evt) {
+    private void list1ValueChanged(ListSelectionEvent evt) {
         validateInput();
     }
 
@@ -415,7 +415,7 @@ class ClientOptionsPanel extends JPanel implements LauncherPanel {
     }
 
     private void fullScreenButtonStateChanged(ChangeEvent evt) {
-        jList1.setEnabled(fullScreenButton.isSelected());
+        list1.setEnabled(fullScreenButton.isSelected());
         validateInput();
     }
 }

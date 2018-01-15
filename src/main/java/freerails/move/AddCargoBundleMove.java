@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * This Move adds a cargo bundle to the cargo bundle list.
  */
-public class AddCargoBundleMove extends AddItemToListMove {
+class AddCargoBundleMove extends AddItemToListMove {
     private static final long serialVersionUID = 3257288049795674934L;
 
     /**

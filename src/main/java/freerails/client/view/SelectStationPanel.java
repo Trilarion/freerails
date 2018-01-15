@@ -17,7 +17,7 @@
  */
 
 /*
- * SelectStationJPanel.java
+ * SelectStationPanel.java
  *
  */
 
@@ -43,10 +43,10 @@ import java.awt.event.*;
 import java.util.NoSuchElementException;
 
 /**
- * This JPanel lets the user select a station from a map and add it to a train
+ * Lets the user select a station from a map and add it to a train
  * schedule.
  */
-public class SelectStationJPanel extends JPanel implements View {
+public class SelectStationPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3258411750662877488L;
     private ReadOnlyWorld world;
@@ -59,9 +59,9 @@ public class SelectStationJPanel extends JPanel implements View {
     private boolean needsUpdating = true;
     private FreerailsPrincipal principal;
     private CargoWaitingAndDemandedPanel cargoWaitingAndDemandedPanel1;
-    private JLabel jLabel1;
+    private JLabel label1;
     
-    public SelectStationJPanel() {
+    public SelectStationPanel() {
         initComponents();
     }
 
@@ -70,7 +70,7 @@ public class SelectStationJPanel extends JPanel implements View {
         GridBagConstraints gridBagConstraints;
 
         cargoWaitingAndDemandedPanel1 = new CargoWaitingAndDemandedPanel();
-        jLabel1 = new JLabel();
+        label1 = new JLabel();
 
         setLayout(new GridBagLayout());
 
@@ -115,14 +115,14 @@ public class SelectStationJPanel extends JPanel implements View {
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(cargoWaitingAndDemandedPanel1, gridBagConstraints);
 
-        jLabel1.setText("Train #1 Stop 1");
+        label1.setText("Train #1 Stop 1");
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
-        add(jLabel1, gridBagConstraints);
+        add(label1, gridBagConstraints);
 
     }
 
@@ -189,7 +189,7 @@ public class SelectStationJPanel extends JPanel implements View {
         selectedStationID = order.getStationID();
 
         // Set the text on the title JLabel.
-        jLabel1.setText("Stop " + String.valueOf(selectedOrderNumber + 1));
+        label1.setText("Stop " + String.valueOf(selectedOrderNumber + 1));
 
         // Set the station info panel to show the current selected station.
         cargoWaitingAndDemandedPanel1.display(selectedStationID);

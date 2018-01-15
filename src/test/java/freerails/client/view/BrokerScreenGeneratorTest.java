@@ -41,8 +41,8 @@ import junit.framework.TestCase;
  */
 public class BrokerScreenGeneratorTest extends TestCase {
 
-    int playerID;
-    FreerailsPrincipal principal;
+    private int playerID;
+    private FreerailsPrincipal principal;
     private World world;
 
     /**
@@ -50,7 +50,6 @@ public class BrokerScreenGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        // TODO Auto-generated method stub
         super.setUp();
         world = new WorldImpl(10, 10);
         // Set the time..

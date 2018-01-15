@@ -140,7 +140,7 @@ public class StationTypesPopup extends JPopupMenu {
         private final int index;
         private boolean armed;
 
-        public MyChangeListener(StationBuildMenuItem rbMenuItem, Action[] stationChooseActions, int index) {
+        private MyChangeListener(StationBuildMenuItem rbMenuItem, Action[] stationChooseActions, int index) {
             this.rbMenuItem = rbMenuItem;
             this.stationChooseActions = stationChooseActions;
             this.index = index;

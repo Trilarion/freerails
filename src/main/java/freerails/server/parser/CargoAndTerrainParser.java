@@ -52,7 +52,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      *                 is recommended that it could be able to resolve at least the
      *                 DTD.
      */
-    public CargoAndTerrainParser(final CargoAndTerrainHandler handler, final EntityResolver resolver) {
+    private CargoAndTerrainParser(final CargoAndTerrainHandler handler, final EntityResolver resolver) {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
@@ -68,7 +68,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final InputSource input, final CargoAndTerrainHandler handler) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
+    private static void parse(final InputSource input, final CargoAndTerrainHandler handler) throws SAXException, javax.xml.parsers.ParserConfigurationException, java.io.IOException {
         parse(input, new CargoAndTerrainParser(handler, null));
     }
 
@@ -210,7 +210,7 @@ public class CargoAndTerrainParser implements ContentHandler {
      *
      * @return org.xml.sax.ErrorHandler implementation
      */
-    protected ErrorHandler getDefaultErrorHandler() {
+    private ErrorHandler getDefaultErrorHandler() {
         return new ErrorHandler() {
             public void error(SAXParseException exception) throws SAXException {
                 if (context.isEmpty()) {

@@ -40,7 +40,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
     /**
      *
      */
-    public MapViewComponent() {
+    MapViewComponent() {
         setAutoscrolls(true);
     }
 

@@ -36,7 +36,7 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     static final int MODE_SERVER_ONLY = 3;
     private static final long serialVersionUID = 3257850965422913590L;
     private final ButtonModel[] buttonModels = new ButtonModel[4];
-    javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup1;
 
     /*
      * private void validateSettings() { boolean isValid = false; String
@@ -49,11 +49,11 @@ final class LauncherPanel1 extends javax.swing.JPanel {
      * case MODE_JOIN_NETWORK_GAME: isValid = true; break; }
      * owner.setInfoText(infoText, LauncherInterface.WARNING);
      * owner.setNextEnabled(isValid); }
-     */ javax.swing.JRadioButton joinNetworkButton;
-    javax.swing.JPanel paddingJPanel;
-    javax.swing.JRadioButton serverOnlyButton;
-    javax.swing.JRadioButton singlePlayerButton;
-    javax.swing.JRadioButton startNetworkButton;
+     */ private javax.swing.JRadioButton joinNetworkButton;
+    private javax.swing.JPanel paddingJPanel;
+    private javax.swing.JRadioButton serverOnlyButton;
+    private javax.swing.JRadioButton singlePlayerButton;
+    private javax.swing.JRadioButton startNetworkButton;
 
     public LauncherPanel1() {
         initComponents();

@@ -32,22 +32,22 @@ public class SpeedTimeAndStatus implements Serializable {
     /**
      *
      */
-    public final double dt;
+    private final double dt;
 
     /**
      *
      */
-    public final double speed;
+    private final double speed;
 
     /**
      *
      */
-    public final double acceleration;
+    private final double acceleration;
 
     /**
      *
      */
-    public final double s;
+    private final double s;
     private final TrainActivity activity;
 
     SpeedTimeAndStatus(double acceleration, TrainActivity activity, double dt, double s, double speed) {

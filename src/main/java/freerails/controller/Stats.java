@@ -13,16 +13,16 @@ import freerails.world.player.FreerailsPrincipal;
  */
 public class Stats {
 
-    public final Money operatingFunds;
-    public final Money track;
-    public final Money stations;
-    public final Money rollingStock;
-    public final Money industries;
+    private final Money operatingFunds;
+    private final Money track;
+    private final Money stations;
+    private final Money rollingStock;
+    private final Money industries;
     public final Money loans;
     public final Money equity;
-    public Money treasuryStock;
-    public Money otherRrStock;
-    public Money profit;
+    private Money treasuryStock;
+    private Money otherRrStock;
+    private Money profit;
 
     /**
      * @param world
@@ -82,14 +82,14 @@ public class Stats {
     private static class MyTransactionAggregator extends TransactionAggregator {
         private final GameTime[] totalTimeInterval;
 
-        public MyTransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime[] totalTimeInterval) {
+        private MyTransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime[] totalTimeInterval) {
             super(world, principal);
             this.totalTimeInterval = totalTimeInterval;
         }
 
         @Override
         protected boolean condition(int transactionID) {
-            int transactionTicks = w.getTransactionTimeStamp(principal, transactionID).getTicks();
+            int transactionTicks = world.getTransactionTimeStamp(principal, transactionID).getTicks();
 
             int from = totalTimeInterval[0].getTicks();
             int to = totalTimeInterval[1].getTicks();

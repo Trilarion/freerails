@@ -68,17 +68,17 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     private final Icon warningIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_WARNING));
     private final Icon infoIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_INFO));
     private final ProgressPanelModel progressPanel = new ProgressPanelModel(this);
-    javax.swing.JLabel infoLabel;
-    javax.swing.JPanel jPanel1;
-    javax.swing.JButton nextButton;
-    javax.swing.JButton prevButton;
+    private javax.swing.JLabel infoLabel;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JButton prevButton;
     private int currentPage = 0;
     private FreerailsGameServer server;
     private GUIClient client;
     private Properties props;
     private boolean nextIsStart = false;
 
-    public Launcher(boolean quickstart) {
+    private Launcher(boolean quickstart) {
         loadProps();
         initComponents();
 
@@ -414,7 +414,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
      *
      * @param quickstart boolean
      */
-    public void start(boolean quickstart) {
+    private void start(boolean quickstart) {
         setVisible(true);
         if (quickstart) {
             startGame();
@@ -703,7 +703,7 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     /**
      * @param b
      */
-    public void setButtonsVisible(boolean b) {
+    private void setButtonsVisible(boolean b) {
         nextButton.setVisible(b);
         prevButton.setVisible(b);
     }

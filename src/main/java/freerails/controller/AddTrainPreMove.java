@@ -93,7 +93,7 @@ public class AddTrainPreMove implements PreMove {
         return result;
     }
 
-    PathOnTiles initPositionStep1(ReadOnlyWorld w) {
+    private PathOnTiles initPositionStep1(ReadOnlyWorld w) {
         PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(w, point);
         FlatTrackExplorer fte;
         try {
@@ -123,7 +123,7 @@ public class AddTrainPreMove implements PreMove {
         return train.getLength();
     }
 
-    TrainMotion initPositionStep2(PathOnTiles path) {
+    private TrainMotion initPositionStep2(PathOnTiles path) {
         // TODO fix code.
         return new TrainMotion(path, path.steps(), calTrainLength(), ConstantAcceleration.STOPPED);
     }

@@ -38,7 +38,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     private static final long serialVersionUID = 3834311713465185081L;
     final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
 
@@ -48,7 +48,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * @throws NoTrackException
      */
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) throws NoTrackException {
-        w = world;
+        this.world = world;
         FullTerrainTile tile = (FullTerrainTile) world.getTile(p.getX(), p.getY());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
             throw new NoTrackException(p.toString());
@@ -91,13 +91,6 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return possiblePositions;
     }
 
-    /**
-     * @return
-     */
-    public ReadOnlyWorld getWorld() {
-        return w;
-    }
-
     public int getPosition() {
         return currentPosition.toInt();
     }
@@ -123,7 +116,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         }
         TileTransition v = getFirstVectorToTry();
         java.awt.Point p = new java.awt.Point(currentPosition.getX(), currentPosition.getY());
-        FullTerrainTile ft = (FullTerrainTile) w.getTile(p.x, p.y);
+        FullTerrainTile ft = (FullTerrainTile) world.getTile(p.x, p.y);
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();

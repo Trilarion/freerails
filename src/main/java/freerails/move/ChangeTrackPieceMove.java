@@ -61,7 +61,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * @param world
      * @return
      */
-    protected static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
+    static boolean canConnect2OtherRRsTrack(ReadOnlyWorld world) {
         GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
 
         return rules.isCanConnectToOtherRRTrack();
@@ -72,7 +72,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * station is getting removed.
      */
-    protected static MoveStatus check4overlap(World w, Point2D location, TrackPiece trackPiece) {
+    private static MoveStatus check4overlap(World w, Point2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.

@@ -195,19 +195,19 @@ public class WorldImplTest extends TestCase {
     /**
      *
      */
-    public static class TestState implements Serializable {
+    static class TestState implements Serializable {
 
         private static final long serialVersionUID = 5122023949873919060L;
 
         /**
          *
          */
-        public final int x;
+        private final int x;
 
         /**
          * @param x
          */
-        public TestState(int x) {
+        TestState(int x) {
             this.x = x;
         }
 

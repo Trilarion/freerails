@@ -33,9 +33,9 @@ import junit.framework.TestCase;
  * JUnit test for IncomeStatementGenerator.
  */
 public class IncomeStatementGeneratorTest extends TestCase {
-    World w;
+    private World w;
 
-    IncomeStatementGenerator balanceSheetGenerator;
+    private IncomeStatementGenerator balanceSheetGenerator;
 
     /**
      *

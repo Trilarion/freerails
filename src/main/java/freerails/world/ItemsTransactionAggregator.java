@@ -32,7 +32,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     /**
      *
      */
-    public static final int ANY_VALUE = Integer.MIN_VALUE;
+    private static final int ANY_VALUE = Integer.MIN_VALUE;
 
     private int type = ANY_VALUE;
 
@@ -56,7 +56,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      */
     @Override
     protected boolean condition(int transactionID) {
-        Transaction t = w.getTransaction(principal, transactionID);
+        Transaction t = world.getTransaction(principal, transactionID);
 
         if (!(t instanceof ItemTransaction)) {
             return false;
@@ -96,7 +96,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     protected void incrementRunningTotal(int transactionID) {
         super.incrementRunningTotal(transactionID);
 
-        Transaction t = w.getTransaction(principal, transactionID);
+        Transaction t = world.getTransaction(principal, transactionID);
         ItemTransaction itemTransaction = (ItemTransaction) t;
         quantityRunningTotal += itemTransaction.getQuantity();
     }
@@ -146,6 +146,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         /**
          *
          */
-        public Money[] values;
+        private Money[] values;
     }
 }

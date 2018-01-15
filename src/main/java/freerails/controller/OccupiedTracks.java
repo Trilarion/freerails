@@ -33,7 +33,7 @@ import java.util.*;
 public class OccupiedTracks {
 
     public final Map<TrackSection, Integer> occupiedTrackSections;
-    public final Map<Integer, List<TrackSection>> trainToTrackList;
+    private final Map<Integer, List<TrackSection>> trainToTrackList;
 
     /**
      * @param principal

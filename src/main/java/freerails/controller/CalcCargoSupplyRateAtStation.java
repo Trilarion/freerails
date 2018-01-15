@@ -50,7 +50,7 @@ public class CalcCargoSupplyRateAtStation {
     private final Integer[] converts;
     private final int[] demand;
     private final List<CargoElementObject> supplies;
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final int x;
     private final int y;
     private final int stationRadius;
@@ -61,17 +61,17 @@ public class CalcCargoSupplyRateAtStation {
      * @param trackRuleNo the station type.
      */
     public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y, int trackRuleNo) {
-        w = world;
+        this.world = world;
         x = X;
         y = Y;
 
-        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleNo);
+        TrackRule trackRule = (TrackRule) this.world.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
 
         supplies = new ArrayList<>();
         populateSuppliesVector();
 
-        int numCargoTypes = w.size(SKEY.CARGO_TYPES);
+        int numCargoTypes = this.world.size(SKEY.CARGO_TYPES);
         demand = new int[numCargoTypes];
         converts = StationConversion.emptyConversionArray(numCargoTypes);
     }
@@ -92,17 +92,17 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * @return
      */
-    public StationConversion getConversion() {
+    private StationConversion getConversion() {
         return new StationConversion(converts);
     }
 
     /**
      * @return
      */
-    public StationDemand getDemand() {
-        boolean[] demandboolean = new boolean[w.size(SKEY.CARGO_TYPES)];
+    private StationDemand getDemand() {
+        boolean[] demandboolean = new boolean[world.size(SKEY.CARGO_TYPES)];
 
-        for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+        for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
             if (demand[i] >= PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
             }
@@ -112,9 +112,9 @@ public class CalcCargoSupplyRateAtStation {
     }
 
     private void incrementSupplyAndDemand(int i, int j) {
-        int tileTypeNumber = ((FullTerrainTile) w.getTile(i, j)).getTerrainTypeID();
+        int tileTypeNumber = ((FullTerrainTile) world.getTile(i, j)).getTerrainTypeID();
 
-        TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, tileTypeNumber);
+        TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, tileTypeNumber);
 
         // Calculate supply.
         ImmutableList<TileProduction> production = terrainType.getProduction();
@@ -160,8 +160,8 @@ public class CalcCargoSupplyRateAtStation {
         // get the correct list of cargoes from the world object
         CargoElementObject tempCargoElement;
 
-        for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
-            // cT = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+        for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
+            // cT = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             tempCargoElement = new CargoElementObject(0, i);
             supplies.add(tempCargoElement);
         }
@@ -170,11 +170,11 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * @return
      */
-    public List<CargoElementObject> scanAdjacentTiles() {
+    private List<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(x - stationRadius, y - stationRadius, stationDiameter, stationDiameter);
-        Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w.getMapHeight());
+        Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
         if (logger.isDebugEnabled()) {
             logger.debug("stationRadiusRect=" + stationRadiusRect);
@@ -219,7 +219,7 @@ public class CalcCargoSupplyRateAtStation {
      * @param station A Station object to be processed
      */
     public Station calculations(Station station) {
-        Integer[] cargoSupplied = new Integer[w.size(SKEY.CARGO_TYPES)];
+        Integer[] cargoSupplied = new Integer[world.size(SKEY.CARGO_TYPES)];
 
         List<CargoElementObject> supply = scanAdjacentTiles();
 

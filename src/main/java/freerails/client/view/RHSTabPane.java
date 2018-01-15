@@ -42,9 +42,9 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
     private static final long serialVersionUID = 3906926798502965297L;
     private static final Logger LOGGER = Logger.getLogger(RHSTabPane.class.getName());
-    private final TerrainInfoJPanel terrainInfoPanel;
-    private final StationInfoJPanel stationInfoPanel;
-    private final TrainListJPanel trainListPanel;
+    private final TerrainInfoPanel terrainInfoPanel;
+    private final StationInfoPanel stationInfoPanel;
+    private final TrainListPanel trainListPanel;
     private final BuildTrackPanel buildTrackPanel;
     private final int terrainInfoIndex;
     private final int trainListIndex;
@@ -68,9 +68,9 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
         /* set up trainsJTabbedPane */
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        terrainInfoPanel = new TerrainInfoJPanel();
+        terrainInfoPanel = new TerrainInfoPanel();
 
-        trainListPanel = new TrainListJPanel(true);
+        trainListPanel = new TrainListPanel(true);
 
         buildTrackPanel = new BuildTrackPanel();
         trainListPanel.removeButtons();
@@ -94,7 +94,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
         addTab(null, terrainInfoIcon, terrainInfoJScrollPane, "Terrain Info");
         terrainInfoIndex = getTabCount() - 1;
 
-        stationInfoPanel = new StationInfoJPanel();
+        stationInfoPanel = new StationInfoPanel();
         stationInfoPanel.removeCloseButton();
         // Don't show the station info tab until it has been rewritten to take
         // up less space.

@@ -40,12 +40,12 @@ abstract class AbstractInetConnection implements Runnable {
     private final SynchronizedFlag status = new SynchronizedFlag(true);
     private int timeout = 1000 * 5; // 5 seconds.
 
-    public AbstractInetConnection(Socket s) throws IOException {
+    AbstractInetConnection(Socket s) throws IOException {
         inetConnection = new Connection(s);
         open();
     }
 
-    public AbstractInetConnection(String ip, int port) throws IOException {
+    AbstractInetConnection(String ip, int port) throws IOException {
         inetConnection = new Connection(ip, port);
         open();
     }

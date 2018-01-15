@@ -39,7 +39,7 @@ import freerails.world.track.TrackRule;
  * Iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
  */
-public class TrackMaintenanceMoveGenerator {
+class TrackMaintenanceMoveGenerator {
 
     private final MoveReceiver moveReceiver;
 
@@ -56,7 +56,7 @@ public class TrackMaintenanceMoveGenerator {
      * @param category
      * @return
      */
-    public static Move generateMove(World world, FreerailsPrincipal principal, TransactionCategory category) {
+    private static Move generateMove(World world, FreerailsPrincipal principal, TransactionCategory category) {
         if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }

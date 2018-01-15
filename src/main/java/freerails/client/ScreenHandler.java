@@ -32,7 +32,7 @@ import java.awt.image.BufferStrategy;
  */
 public final class ScreenHandler {
 
-    static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    private static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static final Logger logger = Logger.getLogger(ScreenHandler.class.getName());
     private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{new DisplayMode(640, 400, 8, 60), new DisplayMode(800, 600, 16, 60), new DisplayMode(1024, 768, 8, 60), new DisplayMode(1024, 768, 16, 60),};
 

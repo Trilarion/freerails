@@ -36,17 +36,17 @@ import java.util.Collection;
  *
  * @see experimental.TrackTilesGenerator
  */
-public class TrackRenderer {
+class TrackRenderer {
 
-    static final double sleeperLength = 6;
-    static final float sleeperWidth = 2.0f;
-    static final float targetSleeperGap = 2.5f;
-    static final float tileWidth = 30.0f;
-    static final float gauge = 3.0f;
-    static final float doubleTrackGap = 4.0f;
-    final Color sleepersColor = new Color(118, 54, 36);
-    final Color railsColor = new Color(118, 118, 118);
-    final Stroke rail = new BasicStroke(1.0f);
+    private static final double sleeperLength = 6;
+    private static final float sleeperWidth = 2.0f;
+    private static final float targetSleeperGap = 2.5f;
+    private static final float tileWidth = 30.0f;
+    private static final float gauge = 3.0f;
+    private static final float doubleTrackGap = 4.0f;
+    private final Color sleepersColor = new Color(118, 54, 36);
+    private final Color railsColor = new Color(118, 118, 118);
+    private final Stroke rail = new BasicStroke(1.0f);
     private final ImageManager imageManager = new ImageManagerImpl("/freerails/client/graphics/");
     boolean doubleTrack = false;
     Image icon = null;
@@ -58,7 +58,7 @@ public class TrackRenderer {
      * @param shift
      * @return
      */
-    public static Line2D.Double createParallelLine(Line2D.Double line, double shift) {
+    private static Line2D.Double createParallelLine(Line2D.Double line, double shift) {
         Line2D.Double returnValue = new Line2D.Double(line.getP1(), line.getP2());
         double distance = line.getP1().distance(line.getP2());
         double dRatio = shift / distance;
@@ -89,7 +89,7 @@ public class TrackRenderer {
      * Generates the Stroke used to draw the sleepers for track section
      * represented by the specified curve.
      */
-    public static BasicStroke getStroke4Curve(Shape curve) {
+    private static BasicStroke getStroke4Curve(Shape curve) {
         PathIterator fpt = curve.getPathIterator(new AffineTransform(), 0.01);
         double length = 0;
         double[] coords = new double[6];
@@ -173,7 +173,7 @@ public class TrackRenderer {
 
     }
 
-    CubicCurve2D.Double toCurve(TileTransition a) {
+    private CubicCurve2D.Double toCurve(TileTransition a) {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one;
         start = new Point2D.Double();
@@ -186,7 +186,7 @@ public class TrackRenderer {
         return returnValue;
     }
 
-    CubicCurve2D.Double toCurve(TileTransition a, TileTransition b) {
+    private CubicCurve2D.Double toCurve(TileTransition a, TileTransition b) {
         float halfTile = tileWidth / 2;
         Point2D.Double start, end, one, two;
         start = new Point2D.Double();
@@ -202,7 +202,7 @@ public class TrackRenderer {
         return returnValue;
     }
 
-    void paintTrack(Graphics2D g, Iterable<Double> sections) {
+    private void paintTrack(Graphics2D g, Iterable<Double> sections) {
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

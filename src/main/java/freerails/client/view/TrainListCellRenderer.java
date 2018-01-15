@@ -40,14 +40,15 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * This JPanel displays an engine and a number of wagons.
+ * Displays an engine and a number of wagons.
  */
 public class TrainListCellRenderer extends JPanel implements View, ListCellRenderer, WorldListListener {
+
     private static final long serialVersionUID = 3546076964969591093L;
-    private final Color backgoundColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.background");
-    private final Color selectedColor = (java.awt.Color) javax.swing.UIManager.getDefaults().get("List.selectionBackground");
+    private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
+    private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
-    private ReadOnlyWorld w;
+    private ReadOnlyWorld world;
     private RendererRoot vl;
     private int trainNumber = -1;
     private int scheduleOrderNumber;
@@ -97,7 +98,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         showingOrder = false;
         trainNumber = newTrainNumber;
 
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
         display(train.getEngineType(), train.getConsist());
         resetPreferredSize();
     }
@@ -135,10 +136,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
         scheduleOrderNumber = newScheduleOrderID;
 
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
         scheduleID = train.getScheduleID();
 
-        Schedule s = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
+        Schedule s = (ImmutableSchedule) world.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
         TrainOrdersModel order = s.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
@@ -168,14 +169,14 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        w = modelRoot.getWorld();
+        world = modelRoot.getWorld();
         this.vl = vl;
         principal = modelRoot.getPrincipal();
     }
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.row2index(w, KEY.TRAINS, principal, index);
+        int trainID = NonNullElementWorldIterator.row2index(world, KEY.TRAINS, principal, index);
         display(trainID);
 
         if (isSelected) {

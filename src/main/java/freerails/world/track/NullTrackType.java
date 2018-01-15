@@ -138,7 +138,6 @@ public final class NullTrackType implements TrackRule {
     }
 
     public int compareTo(TrackRule o) {
-        // TODO Auto-generated method stub
         return 0;
     }
 

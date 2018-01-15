@@ -192,7 +192,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param w
      * @return
      */
-    public static int findRuleID(TrackRule r, ReadOnlyWorld w) {
+    private static int findRuleID(TrackRule r, ReadOnlyWorld w) {
         for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
             Object o = w.get(SKEY.TRACK_RULES, i);
             if (r.equals(o)) {

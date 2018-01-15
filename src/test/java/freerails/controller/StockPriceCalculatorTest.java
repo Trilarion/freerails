@@ -38,9 +38,9 @@ import junit.framework.TestCase;
  */
 public class StockPriceCalculatorTest extends TestCase {
 
-    World w;
+    private World w;
 
-    StockPriceCalculator calc;
+    private StockPriceCalculator calc;
 
     /**
      * @throws Exception

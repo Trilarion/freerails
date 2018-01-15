@@ -132,7 +132,6 @@ public class LocalConnectionTest extends TestCase {
      */
     @Override
     protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
         super.tearDown();
         server.stop(); // Stop the server thread.
     }
@@ -141,7 +140,7 @@ public class LocalConnectionTest extends TestCase {
         private final LocalConnection connection;
         private boolean keepGoing = true;
 
-        public Server(LocalConnection l) {
+        private Server(LocalConnection l) {
             connection = l;
         }
 
@@ -165,7 +164,7 @@ public class LocalConnectionTest extends TestCase {
             return keepGoing;
         }
 
-        public synchronized void stop() {
+        private synchronized void stop() {
             this.keepGoing = false;
         }
     }

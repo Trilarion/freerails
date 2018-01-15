@@ -30,8 +30,8 @@ import javax.swing.*;
  */
 public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
 
-    private final JLabel datejLabel;
-    private final JLabel cashjLabel;
+    private final JLabel datelabel;
+    private final JLabel cashlabel;
     private final JTabbedPane trainsJPanel;
     private final JMenu displayMenu;
     private final JScrollPane mainMapView;
@@ -48,9 +48,9 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         JPanel mainmapjPanel;
 
         trainsJPanel = new JTabbedPane();
-        datejLabel = new JLabel();
+        datelabel = new JLabel();
         mapOverview = new JPanel();
-        cashjLabel = new JLabel();
+        cashlabel = new JLabel();
         mainMapView = new JScrollPane();
         mainmapjPanel = new JPanel();
         JLabel messageJLabel = new JLabel();
@@ -61,10 +61,10 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
         brokerMenu = new JMenu();
 
         trainsJPanel.setBackground(new java.awt.Color(255, 51, 51));
-        datejLabel.setText("Jun, 1840");
+        datelabel.setText("Jun, 1840");
         mapOverview.setBackground(new java.awt.Color(0, 204, 255));
         mapOverview.setPreferredSize(new java.awt.Dimension(100, 100));
-        cashjLabel.setText("$100,000");
+        cashlabel.setText("$100,000");
         mainmapjPanel.setBackground(new java.awt.Color(153, 244, 51));
         mainMapView.setViewportView(mainmapjPanel);
         messageJLabel.setText("message");
@@ -88,14 +88,14 @@ public class GUIComponentFactoryTestImpl implements GUIComponentFactory {
      * @return
      */
     public JLabel createCashJLabel() {
-        return cashjLabel;
+        return cashlabel;
     }
 
     /**
      * @return
      */
     public JLabel createDateJLabel() {
-        return datejLabel;
+        return datelabel;
     }
 
     /**

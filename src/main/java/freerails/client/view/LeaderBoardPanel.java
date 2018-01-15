@@ -85,7 +85,7 @@ public class LeaderBoardPanel extends JPanel implements View {
     }
 
     /**
-     * This method initializes jList
+     * This method initializes list
      *
      * @return javax.swing.JList
      */

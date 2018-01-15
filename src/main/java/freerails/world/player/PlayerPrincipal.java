@@ -21,7 +21,7 @@ package freerails.world.player;
 /**
  * FreerailsPrincipal that is a player in the game.
  */
-public class PlayerPrincipal extends FreerailsPrincipal {
+class PlayerPrincipal extends FreerailsPrincipal {
 
     private static final long serialVersionUID = 3257563997099537459L;
     private final int id;

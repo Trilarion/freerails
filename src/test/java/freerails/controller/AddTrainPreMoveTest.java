@@ -39,12 +39,12 @@ import freerails.world.train.*;
  */
 public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
-    TrackMoveProducer trackBuilder;
+    private TrackMoveProducer trackBuilder;
 
-    StationBuilder stationBuilder;
+    private StationBuilder stationBuilder;
 
-    FreerailsPrincipal principal;
-    ImmutableSchedule defaultSchedule;
+    private FreerailsPrincipal principal;
+    private ImmutableSchedule defaultSchedule;
     private Point2D stationA;
 
     /**

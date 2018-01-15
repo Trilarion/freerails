@@ -60,7 +60,7 @@ public class RendererRootImpl implements RendererRoot {
 
         trackPieceViewList = loadTrackViews(w, pm);
 
-        // rr = new OldTrainImages(w, imageManager, pm);
+        // rr = new OldTrainImages(world, imageManager, pm);
         loadTrainImages(w, pm);
         preloadSounds(pm);
     }

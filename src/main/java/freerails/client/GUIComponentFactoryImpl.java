@@ -53,9 +53,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
     private final ActionRoot actionRoot;
     private final BuildMenu buildMenu;
-    private final CashLabel cashjLabel;
+    private final CashLabel cashlabel;
     private final ClientFrame clientFrame;
-    private final DateLabel datejLabel;
+    private final DateLabel datelabel;
     private final DialogueBoxController dialogueBoxController;
     private final JScrollPane mainMapScrollPane1;
     private final MapViewComponentConcrete mapViewJComponent;
@@ -97,9 +97,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         mediator.setup(overviewMapContainer, mainMapScrollPane1.getViewport(), mapViewJComponent, r);
 
         trainsJTabPane = new RHSTabPane();
-        datejLabel = new DateLabel();
+        datelabel = new DateLabel();
 
-        cashjLabel = new CashLabel();
+        cashlabel = new CashLabel();
 
         clientFrame = new ClientFrame(this);
         dialogueBoxController = new DialogueBoxController(clientFrame, modelRoot);
@@ -158,7 +158,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @return
      */
     public JLabel createCashJLabel() {
-        return cashjLabel;
+        return cashlabel;
     }
 
     /**
@@ -175,7 +175,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @return
      */
     public JLabel createDateJLabel() {
-        return datejLabel;
+        return datelabel;
     }
 
     /**
@@ -494,8 +494,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         ((OverviewMapComponent) overviewMapContainer).setup(overviewMap);
 
-        datejLabel.setup(modelRoot, vl, null);
-        cashjLabel.setup(modelRoot, vl, null);
+        datelabel.setup(modelRoot, vl, null);
+        cashlabel.setup(modelRoot, vl, null);
         trainsJTabPane.setup(actionRoot, vl, modelRoot);
 
         dialogueBoxController.setup(modelRoot, vl);

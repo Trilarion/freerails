@@ -31,19 +31,19 @@ import freerails.world.player.FreerailsPrincipal;
  */
 public abstract class TransactionAggregator {
 
-    protected final ReadOnlyWorld w;
+    protected final ReadOnlyWorld world;
     protected final FreerailsPrincipal principal;
     private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
-    protected Money[] monetaryTotals;
-    protected int runningTotal = 0;
+    Money[] monetaryTotals;
+    int runningTotal = 0;
     private GameTime[] timeValues = DEFAULT_INTERVAL;
 
     /**
-     * @param w
+     * @param world
      * @param principal
      */
-    public TransactionAggregator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        this.w = w;
+    public TransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        this.world = world;
         this.principal = principal;
     }
 
@@ -86,11 +86,11 @@ public abstract class TransactionAggregator {
         setTotalsArrayLength(timeValues.length - 1);
 
         int timeIndex = 0;
-        int numberOfTransactions = w.getNumberOfTransactions(principal);
+        int numberOfTransactions = world.getNumberOfTransactions(principal);
         setTotalsArrayLength(timeValues.length - 1);
 
         for (int i = 0; i < numberOfTransactions; i++) {
-            GameTime time = w.getTransactionTimeStamp(principal, i);
+            GameTime time = world.getTransactionTimeStamp(principal, i);
             int transactionTime = time.getTicks();
 
             while (timeValues[timeIndex].getTicks() <= transactionTime) {
@@ -138,7 +138,7 @@ public abstract class TransactionAggregator {
      * and sets the running total to zero. Subclasses that aggregate other
      * quantities should override this method and create the appropriate arrays.
      */
-    protected void setTotalsArrayLength(int length) {
+    void setTotalsArrayLength(int length) {
         monetaryTotals = new Money[length];
         runningTotal = 0;
     }
@@ -147,7 +147,7 @@ public abstract class TransactionAggregator {
      * @param transactionID
      */
     protected void incrementRunningTotal(int transactionID) {
-        Transaction t = w.getTransaction(principal, transactionID);
+        Transaction t = world.getTransaction(principal, transactionID);
         runningTotal += t.value().getAmount();
     }
 
@@ -155,7 +155,7 @@ public abstract class TransactionAggregator {
      * Stores the current running total in the totals array at the specified
      * position.
      */
-    protected void storeRunningTotal(int timeIndex) {
+    void storeRunningTotal(int timeIndex) {
         monetaryTotals[timeIndex] = new Money(runningTotal);
     }
 

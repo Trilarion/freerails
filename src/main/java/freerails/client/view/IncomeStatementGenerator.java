@@ -34,34 +34,34 @@ import freerails.world.player.FreerailsPrincipal;
  * Generates the income statement- note, its fields are read using reflection so
  * don't change their names.
  */
-public class IncomeStatementGenerator {
+class IncomeStatementGenerator {
 
-    public final String year;
-    final ReadOnlyWorld world;
-    final FreerailsPrincipal principal;
+    private final String year;
+    private final ReadOnlyWorld world;
+    private final FreerailsPrincipal principal;
     private final GameCalendar cal;
     private final int startyear;
 
     public Money mailTotal;
-    public Money passengersTotal;
-    public Money fastFreightTotal;
-    public Money slowFreightTotal;
-    public Money bulkFreightTotal;
-    public Money interestTotal;
-    public Money trainMaintenanceTotal;
-    public Money trackMaintenanceTotal;
-    public Money stationMaintenanceTotal;
-    public Money profitTotal;
-    public Money mailYtd;
-    public Money passengersYtd;
-    public Money fastFreightYtd;
-    public Money slowFreightYtd;
-    public Money bulkFreightYtd;
-    public Money interestYtd;
-    public Money trainMaintenanceYtd;
-    public Money trackMaintenanceYtd;
-    public Money stationMaintenanceYtd;
-    public Money profitYtd;
+    private Money passengersTotal;
+    private Money fastFreightTotal;
+    private Money slowFreightTotal;
+    private Money bulkFreightTotal;
+    private Money interestTotal;
+    private Money trainMaintenanceTotal;
+    private Money trackMaintenanceTotal;
+    private Money stationMaintenanceTotal;
+    private Money profitTotal;
+    private Money mailYtd;
+    private Money passengersYtd;
+    private Money fastFreightYtd;
+    private Money slowFreightYtd;
+    private Money bulkFreightYtd;
+    private Money interestYtd;
+    private Money trainMaintenanceYtd;
+    private Money trackMaintenanceYtd;
+    private Money stationMaintenanceYtd;
+    private Money profitYtd;
     GameTime from;
     GameTime to;
 

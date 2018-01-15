@@ -123,7 +123,7 @@ public class ServerControlModel implements ModelRootListener {
     /**
      * @return
      */
-    public int getTargetTicksPerSecond() {
+    private int getTargetTicksPerSecond() {
         ReadOnlyWorld world = modelRoot.getWorld();
         return ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
     }
@@ -158,7 +158,7 @@ public class ServerControlModel implements ModelRootListener {
     /**
      *
      */
-    public void setServerControlInterface() {
+    private void setServerControlInterface() {
         // Check that there is a file to load..
         saveGameAction.setEnabled(true);
 
@@ -186,7 +186,7 @@ public class ServerControlModel implements ModelRootListener {
     private class LoadGameAction extends AbstractAction {
         private static final long serialVersionUID = 3616451215278682931L;
 
-        public LoadGameAction() {
+        private LoadGameAction() {
             putValue(NAME, "Load Game");
             putValue(MNEMONIC_KEY, 76);
         }
@@ -215,7 +215,7 @@ public class ServerControlModel implements ModelRootListener {
     private class NewGameAction extends AbstractAction {
         private static final long serialVersionUID = 3690758388631745337L;
 
-        public NewGameAction(String s) {
+        private NewGameAction(String s) {
             if (s == null) {
                 putValue(NAME, "New Game...");
             } else {
@@ -239,7 +239,7 @@ public class ServerControlModel implements ModelRootListener {
     private class SaveGameAction extends AbstractAction {
         private static final long serialVersionUID = 3905808578064562480L;
 
-        public SaveGameAction() {
+        private SaveGameAction() {
             putValue(NAME, "Save Game");
             putValue(MNEMONIC_KEY, 83);
         }
@@ -269,7 +269,7 @@ public class ServerControlModel implements ModelRootListener {
     private class SetTargetTicksPerSecondAction extends AbstractAction {
         private static final long serialVersionUID = 3256437014978048052L;
 
-        final int speed;
+        private final int speed;
 
         /**
          * Same as the constructor above but it enables also to associate a
@@ -282,7 +282,7 @@ public class ServerControlModel implements ModelRootListener {
          *                 <p>
          *                 by MystiqueAgent
          */
-        public SetTargetTicksPerSecondAction(String name, int speed, int keyEvent) {
+        private SetTargetTicksPerSecondAction(String name, int speed, int keyEvent) {
             putValue(NAME, name);
             this.speed = speed;
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));

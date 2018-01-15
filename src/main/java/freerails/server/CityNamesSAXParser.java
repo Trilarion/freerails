@@ -33,7 +33,7 @@ import java.net.URL;
  * Class that calls the object to input the City names and coordinates from an xml
  * file.
  */
-public class CityNamesSAXParser {
+class CityNamesSAXParser {
 
     private CityNamesSAXParser() {
     }

@@ -46,16 +46,16 @@ public class SelectMapPanel extends JPanel implements LauncherPanel {
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
 
-    JPanel jPanel1;
-    JPanel jPanel2;
-    JPanel jPanel3;
-    JPanel jPanel4;
-    JScrollPane jScrollPane1;
-    JScrollPane jScrollPane2;
-    JList newmapsJList;
-    JLabel portLabel;
-    JList savedmapsJList;
-    JTextField serverPort;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JPanel jPanel3;
+    private JPanel jPanel4;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JList newmapsJList;
+    private JLabel portLabel;
+    private JList savedmapsJList;
+    private JTextField serverPort;
 
     SelectMapPanel(LauncherInterface owner) {
         this.owner = owner;

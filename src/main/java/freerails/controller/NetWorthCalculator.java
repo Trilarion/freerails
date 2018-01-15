@@ -41,7 +41,7 @@ public class NetWorthCalculator extends TransactionAggregator {
 
     @Override
     protected boolean condition(int transactionID) {
-        Transaction t = super.w.getTransaction(super.principal, transactionID);
+        Transaction t = super.world.getTransaction(super.principal, transactionID);
 
         if (t instanceof ItemTransaction) {
             return t.getCategory() == TransactionCategory.ISSUE_STOCK;

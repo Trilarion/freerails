@@ -33,38 +33,28 @@ import freerails.world.train.TrainOrdersModel;
 import javax.swing.*;
 
 /**
- * AbstractListModel used by {@link TrainScheduleJPanel} to display the orders
+ * AbstractListModel used by {@link TrainSchedulePanel} to display the orders
  * making up a train schedule.
  */
-public class TrainOrdersListModel extends AbstractListModel {
+class TrainOrdersListModel extends AbstractListModel {
 
-    /**
-     *
-     */
     public static final int DONT_GOTO = 0;
-
-    /**
-     *
-     */
     public static final int GOTO_NOW = 1;
-
-    /**
-     *
-     */
     public static final int GOTO_AFTER_PRIORITY_ORDERS = 2;
+
     private static final long serialVersionUID = 3762537827703009847L;
     private final int trainNumber;
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
 
     /**
-     * @param w
+     * @param world
      * @param trainNumber
      * @param p
      */
-    public TrainOrdersListModel(ReadOnlyWorld w, int trainNumber, FreerailsPrincipal p) {
+    public TrainOrdersListModel(ReadOnlyWorld world, int trainNumber, FreerailsPrincipal p) {
         this.trainNumber = trainNumber;
-        this.w = w;
+        this.world = world;
         principal = p;
         assert (null != getSchedule());
     }
@@ -111,10 +101,10 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     private Schedule getSchedule() {
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
         ImmutableSchedule sched = null;
         if (train != null) {
-            sched = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
+            sched = (ImmutableSchedule) world.get(principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
         }
         return sched;
     }
@@ -152,7 +142,7 @@ public class TrainOrdersListModel extends AbstractListModel {
          * @param order
          * @param trainNumber
          */
-        public TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrdersModel order, int trainNumber) {
+        private TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrdersModel order, int trainNumber) {
             this.isPriorityOrder = isPriorityOrder;
             this.gotoStatus = gotoStatus;
             this.order = order;

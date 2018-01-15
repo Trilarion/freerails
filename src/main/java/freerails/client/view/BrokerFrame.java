@@ -36,17 +36,17 @@ import java.util.StringTokenizer;
 /**
  *
  */
-public class BrokerFrame extends JInternalFrame {
+class BrokerFrame extends JInternalFrame {
 
     private static final long serialVersionUID = 4121409622587815475L;
     private static final Logger logger = Logger.getLogger(BrokerFrame.class.getName());
-    JMenu bonds;
-    JMenuBar brokerMenu;
-    JButton done;
-    JLabel htmlJLabel;
+    private JMenu bonds;
+    private JMenuBar brokerMenu;
+    private JButton done;
+    private JLabel htmlJLabel;
     JMenuItem issueBond;
-    JPanel jPanel1;
-    JScrollPane jScrollPane1;
+    private JPanel jPanel1;
+    private JScrollPane jScrollPane1;
     JMenuItem repayBond;
     JMenu stocks;
 
@@ -60,7 +60,7 @@ public class BrokerFrame extends JInternalFrame {
     /**
      * @param url
      */
-    public BrokerFrame(URL url) {
+    private BrokerFrame(URL url) {
         initComponents();
         setHtml(loadText(url));
     }
@@ -69,7 +69,7 @@ public class BrokerFrame extends JInternalFrame {
      * @param url
      * @param context
      */
-    public BrokerFrame(URL url, HashMap context) {
+    private BrokerFrame(URL url, HashMap context) {
         initComponents();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);
@@ -79,7 +79,7 @@ public class BrokerFrame extends JInternalFrame {
     /**
      * @param html
      */
-    public BrokerFrame(String html) {
+    private BrokerFrame(String html) {
         initComponents();
         setHtml(html);
     }
@@ -108,7 +108,7 @@ public class BrokerFrame extends JInternalFrame {
      * @param context
      * @return
      */
-    public static String populateTokens(String template, Object context) {
+    static String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
         StringBuilder output = new StringBuilder();
 
@@ -139,7 +139,7 @@ public class BrokerFrame extends JInternalFrame {
      * @param vl
      * @param closeAction
      */
-    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
+    void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
         done.setAction(closeAction);
     }
 

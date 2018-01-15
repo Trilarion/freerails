@@ -40,7 +40,7 @@ import java.util.LinkedList;
  * {@code fromServer(.)} when a Move or MoveStatus has been received from
  * the server.
  */
-public class MovePrecommitter {
+class MovePrecommitter {
     private static final Logger logger = Logger.getLogger(MovePrecommitter.class.getName());
     /**
      * List of moves and premoves that have been sent to the server and executed
@@ -221,11 +221,11 @@ public class MovePrecommitter {
     private static class PreMoveAndMove implements Serializable {
         private static final long serialVersionUID = 3256443607635342897L;
 
-        final Move m;
+        private final Move m;
 
-        final PreMove pm;
+        private final PreMove pm;
 
-        PreMoveAndMove(PreMove preMove, Move move) {
+        private PreMoveAndMove(PreMove preMove, Move move) {
             m = move;
             pm = preMove;
         }

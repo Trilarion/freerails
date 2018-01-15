@@ -32,7 +32,7 @@ import java.util.List;
  * Class to parse an xml file that contains city names and coordinates. Upon reading
  * in the data, its stored in KEY.CITIES.
  */
-public class CitySAXParser extends DefaultHandler {
+class CitySAXParser extends DefaultHandler {
 
     private final List<City> cities;
     private final World world;

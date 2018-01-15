@@ -39,7 +39,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
- * This JPanel displays a HTML document read from a URL.
+ * Displays a HTML document read from a URL.
  */
 public class HtmlPanel extends JPanel implements View {
 
@@ -57,7 +57,7 @@ public class HtmlPanel extends JPanel implements View {
         setHtml(loadText(url));
     }
 
-    public HtmlPanel(URL url, HashMap context) {
+    private HtmlPanel(URL url, HashMap context) {
         initComponents();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);

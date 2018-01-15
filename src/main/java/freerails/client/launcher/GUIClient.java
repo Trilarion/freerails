@@ -120,7 +120,6 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
      *
      */
     public void finished() {
-        // TODO Auto-generated method stub
     }
 
     /**
@@ -164,14 +163,12 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
      * @param max
      */
     public void nextStep(int max) {
-        // TODO Auto-generated method stub
     }
 
     /**
      * @param i
      */
     public void setValue(int i) {
-        // TODO Auto-generated method stub
     }
 
     @Override
@@ -187,7 +184,7 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
         }
     }
 
-    void start() {
+    private void start() {
         // Set up world.
         SaveGamesManager gamesManager = new SaveGameManagerImpl();
         FreerailsGameServer server = new FreerailsGameServer(gamesManager);

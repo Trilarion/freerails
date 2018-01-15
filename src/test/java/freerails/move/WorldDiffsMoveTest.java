@@ -39,11 +39,11 @@ import junit.framework.TestCase;
  */
 public class WorldDiffsMoveTest extends TestCase {
 
-    final City city1 = new City("City 1", 8, 4);
-    final City city2 = new City("City 2", 9, 4);
-    World world;
-    WorldDiffs diffs;
-    FreerailsPrincipal fp1;
+    private final City city1 = new City("City 1", 8, 4);
+    private final City city2 = new City("City 2", 9, 4);
+    private World world;
+    private WorldDiffs diffs;
+    private FreerailsPrincipal fp1;
 
     /**
      * @throws Exception
@@ -160,7 +160,7 @@ public class WorldDiffsMoveTest extends TestCase {
         runTests();
     }
 
-    void runTests() {
+    private void runTests() {
         assertFalse(diffs.equals(world));
         WorldDiffMove move = WorldDiffMove.generate(diffs,
                 WorldDiffMove.Cause.Other);

@@ -50,7 +50,7 @@ public class TrackMoveTransactionsGenerator {
      * more to added a unit of track than is refunded when you removed it.
      */
     private final List<Transaction> transactions = new ArrayList<>();
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     /**
      * Number of each of the track types added.
      */
@@ -67,7 +67,7 @@ public class TrackMoveTransactionsGenerator {
      *          transactions for
      */
     public TrackMoveTransactionsGenerator(ReadOnlyWorld world, FreerailsPrincipal p) {
-        w = world;
+        this.world = world;
         principal = p;
     }
 
@@ -76,7 +76,7 @@ public class TrackMoveTransactionsGenerator {
      * @return
      */
     public CompositeMove addTransactions(Move move) {
-        int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
+        int numberOfTrackTypes = world.size(SKEY.TRACK_RULES);
         trackAdded = new int[numberOfTrackTypes];
         trackRemoved = new int[numberOfTrackTypes];
         fixedCostsStations = 0;
@@ -167,7 +167,7 @@ public class TrackMoveTransactionsGenerator {
             int numberAdded = trackAdded[i];
 
             if (0 != numberAdded) {
-                TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+                TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
                 Money total = new Money(-m.getAmount() * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
                 Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
@@ -177,7 +177,7 @@ public class TrackMoveTransactionsGenerator {
             int numberRemoved = trackRemoved[i];
 
             if (0 != numberRemoved) {
-                TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+                TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
 
                 Money total = new Money((m.getAmount() * numberRemoved) / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);

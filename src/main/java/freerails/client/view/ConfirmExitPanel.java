@@ -53,7 +53,7 @@ public class ConfirmExitPanel extends JPanel implements View {
         java.awt.GridBagConstraints gridBagConstraints;
 
         JPanel jPanel1 = new JPanel();
-        JLabel jLabel1 = new JLabel();
+        JLabel label1 = new JLabel();
         JPanel jPanel2 = new JPanel();
         JButton confirmExit = new JButton();
         closeJButton = new JButton();
@@ -61,9 +61,9 @@ public class ConfirmExitPanel extends JPanel implements View {
         setLayout(new java.awt.GridBagLayout());
 
         setPreferredSize(new java.awt.Dimension(240, 140));
-        jLabel1.setText("Are you sure you want to Exit?");
-        jLabel1.setHorizontalTextPosition(SwingConstants.LEFT);
-        jPanel1.add(jLabel1);
+        label1.setText("Are you sure you want to Exit?");
+        label1.setHorizontalTextPosition(SwingConstants.LEFT);
+        jPanel1.add(label1);
 
         add(jPanel1, new java.awt.GridBagConstraints());
 

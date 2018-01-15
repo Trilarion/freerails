@@ -130,7 +130,7 @@ public class MutableSchedule implements Schedule {
      * Inserts an order at the specified position. Note you must call
      * setPriorityOrders() to set the priority orders.
      */
-    public void addOrder(int orderNumber, TrainOrdersModel order) {
+    private void addOrder(int orderNumber, TrainOrdersModel order) {
         orders.add(orderNumber, order);
 
         if (nextScheduledOrder >= orderNumber) {

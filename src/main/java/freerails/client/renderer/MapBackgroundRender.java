@@ -136,17 +136,17 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * This inner class represents a view of the track on the map.
      */
     public final class TrackLayer implements MapLayerRenderer {
-        private final ReadOnlyWorld w;
 
+        private final ReadOnlyWorld world;
         private final RendererRoot rr;
 
         /**
          * @param world
          * @param trackPieceViewList
          */
-        public TrackLayer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
+        private TrackLayer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
             rr = trackPieceViewList;
-            w = world;
+            this.world = world;
         }
 
         /**
@@ -155,7 +155,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param g            The graphics context on which the tiles get painted.
          * @param tilesToPaint The rectangle, measured in tiles, to paint.
          */
-        public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
+        private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
             /*
              * Track can overlap the adjacent terrain tiles by half a tile. This
              * means that we need to paint the track from the tiles bordering
@@ -168,7 +168,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
             for (tile.x = tilesToPaint.x - 1; tile.x < (tilesToPaint.x + tilesToPaint.width + 1); tile.x++) {
                 for (tile.y = tilesToPaint.y - 1; tile.y < (tilesToPaint.y + tilesToPaint.height + 1); tile.y++) {
                     if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                        FullTerrainTile ft = (FullTerrainTile) w.getTile(tile.x, tile.y);
+                        FullTerrainTile ft = (FullTerrainTile) world.getTile(tile.x, tile.y);
                         TrackPiece tp = ft.getTrackPiece();
 
                         int graphicsNumber = tp.getTrackGraphicID();
@@ -230,14 +230,14 @@ public final class MapBackgroundRender implements MapLayerRenderer {
     public final class TerrainLayer implements MapLayerRenderer {
         private final TileRendererList tiles;
 
-        private final ReadOnlyWorld w;
+        private final ReadOnlyWorld world;
 
         /**
          * @param world
          * @param tiles
          */
-        public TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
-            w = world;
+        private TerrainLayer(ReadOnlyWorld world, TileRendererList tiles) {
+            this.world = world;
             this.tiles = tiles;
         }
 
@@ -245,12 +245,12 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param g
          * @param tile
          */
-        public void paintTile(Graphics g, Point tile) {
+        private void paintTile(Graphics g, Point tile) {
             int screenX = tileSize.width * tile.x;
             int screenY = tileSize.height * tile.y;
 
             if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                TerrainTile tt = (TerrainTile) w.getTile(tile.x, tile.y);
+                TerrainTile tt = (TerrainTile) world.getTile(tile.x, tile.y);
 
                 int typeNumber = tt.getTerrainTypeID();
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
@@ -258,7 +258,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
                 if (null == tr) {
                     logger.warn("No tile renderer for " + typeNumber);
                 } else {
-                    tr.renderTile(g, screenX, screenY, tile.x, tile.y, w);
+                    tr.renderTile(g, screenX, screenY, tile.x, tile.y, world);
                 }
             }
         }
@@ -269,7 +269,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param g            The graphics context.
          * @param tilesToPaint The rectangle, measured in tiles, to paint.
          */
-        public void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
+        private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
             Point tile = new Point();
 
             for (tile.x = tilesToPaint.x; tile.x < (tilesToPaint.x + tilesToPaint.width); tile.x++) {

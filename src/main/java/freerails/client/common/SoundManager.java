@@ -177,13 +177,13 @@ public class SoundManager implements ModelRootListener, LineListener {
      */
     private static class Sample {
 
-        byte[] audio;
+        private byte[] audio;
 
-        AudioFormat format;
+        private AudioFormat format;
 
-        DataLine.Info info;
+        private DataLine.Info info;
 
-        int size;
+        private int size;
     }
 
 }

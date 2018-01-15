@@ -27,7 +27,7 @@ import java.util.SortedMap;
 /**
  * @param <T>
  */
-public abstract class ListXDDiffs<T> implements Serializable {
+abstract class ListXDDiffs<T> implements Serializable {
 
     private static final long serialVersionUID = 127789045793369316L;
     private final SortedMap<ListKey, Object> diffs;
@@ -37,19 +37,19 @@ public abstract class ListXDDiffs<T> implements Serializable {
      * @param diffs
      * @param listID
      */
-    public ListXDDiffs(SortedMap<ListKey, Object> diffs, Enum listID) {
+    ListXDDiffs(SortedMap<ListKey, Object> diffs, Enum listID) {
         this.diffs = diffs;
         this.listID = listID;
     }
 
-    static int[] add2Array(int[] dim, int last) {
+    private static int[] add2Array(int[] dim, int last) {
         int[] array = new int[dim.length + 1];
         System.arraycopy(dim, 0, array, 0, dim.length);
         array[array.length - 1] = last;
         return array;
     }
 
-    static int[] removeFromArray(int[] dim) {
+    private static int[] removeFromArray(int[] dim) {
         int[] array = new int[dim.length - 1];
         System.arraycopy(dim, 0, array, 0, dim.length - 1);
         return array;
@@ -76,7 +76,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
      * @param dim
      * @return
      */
-    public int addElement(T element, int... dim) {
+    int addElement(T element, int... dim) {
 
         int sizeBefore = size(dim);
         int[] index = add2Array(dim, sizeBefore);
@@ -104,7 +104,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public T get(int... i) {
+    T get(int... i) {
         checkBounds(i);
         ListKey elementKey = new ListKey(ListKey.Type.Element, listID, i);
         if (diffs.containsKey(elementKey)) {
@@ -124,7 +124,7 @@ public abstract class ListXDDiffs<T> implements Serializable {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public T removeLast(int... dim) {
+    T removeLast(int... dim) {
 
         T toRemove;
         int last = size(dim) - 1;

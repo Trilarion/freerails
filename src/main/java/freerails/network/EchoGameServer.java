@@ -104,7 +104,7 @@ public class EchoGameServer implements GameServer, Runnable {
         }
     }
 
-    synchronized void sendMessage(Serializable m) {
+    private synchronized void sendMessage(Serializable m) {
         /* Send messages. */
         for (ConnectionToClient connection : connections) {
             try {

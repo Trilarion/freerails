@@ -60,7 +60,7 @@ public class MoveTrainPreMove implements PreMove {
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
-    final FreerailsPrincipal principal;
+    private final FreerailsPrincipal principal;
     private final int trainID;
     private final OccupiedTracks occupiedTracks;
 
@@ -132,11 +132,11 @@ public class MoveTrainPreMove implements PreMove {
         // CC:"+cacheCleared);
     }
 
-    static double acceleration(int wagons) {
+    private static double acceleration(int wagons) {
         return 0.5d / (wagons + 1);
     }
 
-    static double topSpeed(int wagons) {
+    private static double topSpeed(int wagons) {
         return 10 / (wagons + 1);
     }
 
@@ -322,7 +322,7 @@ public class MoveTrainPreMove implements PreMove {
 
     }
 
-    TrainMotion nextMotion(ReadOnlyWorld w, TileTransition v) {
+    private TrainMotion nextMotion(ReadOnlyWorld w, TileTransition v) {
         TrainMotion motion = lastMotion(w);
 
         SpeedAgainstTime speeds = nextSpeeds(w, v);

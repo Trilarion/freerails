@@ -193,7 +193,6 @@ public class SimpleComponentFactoryImpl2 implements GUIComponentFactory {
      * @return
      */
     public JMenu createReportsMenu() {
-        // TODO Auto-generated method stub
         return null;
     }
 }

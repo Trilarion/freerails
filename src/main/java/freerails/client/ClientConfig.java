@@ -31,12 +31,12 @@ public class ClientConfig {
     /**
      *
      */
-    public static final String PATH_SOUNDS = "/freerails/client/sounds/";
+    private static final String PATH_SOUNDS = "/freerails/client/sounds/";
 
     /**
      *
      */
-    public static final String PATH_VIEWS = "/freerails/client/view/";
+    private static final String PATH_VIEWS = "/freerails/client/view/";
 
     /**
      *
@@ -46,7 +46,7 @@ public class ClientConfig {
     /**
      *
      */
-    public static final String PATH_ICONS = GRAPHICS_PATH + ICONS_FOLDER_NAME + '/';
+    private static final String PATH_ICONS = GRAPHICS_PATH + ICONS_FOLDER_NAME + '/';
 
     // Sound resource locations
 

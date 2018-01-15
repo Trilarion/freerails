@@ -38,12 +38,12 @@ import java.awt.event.ActionListener;
 public class SaveGamePanel extends JPanel implements View {
 
     private static final long serialVersionUID = 4031907071040752589L;
-    ModelRoot modelRoot;
-    ActionListener close;
-    JButton cancelButton;
-    JTextField fileNameTextField;
-    JLabel jLabel1;
-    JButton oKButton;
+    private ModelRoot modelRoot;
+    private ActionListener close;
+    private JButton cancelButton;
+    private JTextField fileNameTextField;
+    private JLabel label1;
+    private JButton oKButton;
 
     /**
      * Creates new form SaveGamePanel
@@ -61,19 +61,19 @@ public class SaveGamePanel extends JPanel implements View {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new JLabel();
+        label1 = new JLabel();
         fileNameTextField = new JTextField();
         oKButton = new JButton();
         cancelButton = new JButton();
 
         setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Please enter a name for the save game.");
+        label1.setText("Please enter a name for the save game.");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-        add(jLabel1, gridBagConstraints);
+        add(label1, gridBagConstraints);
 
         fileNameTextField.setText("savegame");
         fileNameTextField.addActionListener(SaveGamePanel::fileNameTextFieldActionPerformed);

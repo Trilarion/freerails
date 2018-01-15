@@ -38,15 +38,15 @@ import junit.framework.TestSuite;
  * JUnit test.
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
-    final TileTransition southeast = TileTransition.SOUTH_EAST;
+    private final TileTransition southeast = TileTransition.SOUTH_EAST;
 
-    final TileTransition east = TileTransition.EAST;
+    private final TileTransition east = TileTransition.EAST;
 
-    final TileTransition northeast = TileTransition.NORTH_EAST;
+    private final TileTransition northeast = TileTransition.NORTH_EAST;
 
-    final TileTransition south = TileTransition.SOUTH;
+    private final TileTransition south = TileTransition.SOUTH;
 
-    TrackMoveTransactionsGenerator transactionsGenerator;
+    private TrackMoveTransactionsGenerator transactionsGenerator;
 
     /**
      * @param testName

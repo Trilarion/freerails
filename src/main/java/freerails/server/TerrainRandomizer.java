@@ -35,7 +35,7 @@ import java.util.List;
  * Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
  */
 // TODO only used by MapFactory, should go there
-public class TerrainRandomizer {
+class TerrainRandomizer {
 
     private final List<Integer> terrainTypes;
     private final List<Integer> non_terrainTypes;

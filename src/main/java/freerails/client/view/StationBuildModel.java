@@ -53,6 +53,7 @@ import java.util.Map;
  * </ol>
  */
 public class StationBuildModel {
+
     /*
      * 100 010 001 = 0x111
      */
@@ -159,7 +160,7 @@ public class StationBuildModel {
 
         private final int actionId;
 
-        public StationChooseAction(int actionId) {
+        private StationChooseAction(int actionId) {
             this.actionId = actionId;
         }
 
@@ -201,7 +202,7 @@ public class StationBuildModel {
         public static final String STATION_RADIUS_KEY = "STATION_RADIUS_KEY";
         private static final long serialVersionUID = 3905236827739926833L;
 
-        StationBuildAction() {
+        private StationBuildAction() {
             setEnabled(false);
         }
 

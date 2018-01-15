@@ -43,7 +43,7 @@ public abstract class FreerailsPrincipal implements Principal, Serializable {
     /**
      * @param worldIndex
      */
-    public FreerailsPrincipal(int worldIndex) {
+    FreerailsPrincipal(int worldIndex) {
         this.worldIndex = worldIndex;
     }
 

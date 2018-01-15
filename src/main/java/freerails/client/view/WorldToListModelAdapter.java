@@ -35,10 +35,9 @@ import javax.swing.event.ListDataListener;
  * that can be used by JLists. Currently, change notification is <b>not</b>
  * implemented (null elements are skipped).
  */
-public class WorldToListModelAdapter implements ListModel {
+class WorldToListModelAdapter implements ListModel {
 
-    private final ReadOnlyWorld w;
-
+    private final ReadOnlyWorld world;
     private final NonNullElementWorldIterator elements;
 
     /**
@@ -47,11 +46,11 @@ public class WorldToListModelAdapter implements ListModel {
      */
     public WorldToListModelAdapter(ReadOnlyWorld world, SKEY key) {
 
-        w = world;
+        this.world = world;
 
         if (null == key) throw new NullPointerException();
 
-        if (null == w) throw new NullPointerException();
+        if (null == this.world) throw new NullPointerException();
 
         elements = new NonNullElementWorldIterator(key, world);
     }
@@ -63,13 +62,13 @@ public class WorldToListModelAdapter implements ListModel {
      */
     public WorldToListModelAdapter(ReadOnlyWorld world, KEY key, FreerailsPrincipal p) {
 
-        w = world;
+        this.world = world;
 
         if (null == key) throw new NullPointerException();
 
         if (null == p) throw new NullPointerException();
 
-        if (null == w) throw new NullPointerException();
+        if (null == this.world) throw new NullPointerException();
 
         // Check that the principal exists.
         if (!world.isPlayer(p)) throw new IllegalArgumentException(p.getName());
@@ -87,10 +86,8 @@ public class WorldToListModelAdapter implements ListModel {
     }
 
     public void addListDataListener(ListDataListener l) {
-        // TODO Auto-generated method stub
     }
 
     public void removeListDataListener(ListDataListener l) {
-        // TODO Auto-generated method stub
     }
 }

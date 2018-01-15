@@ -85,7 +85,7 @@ public class TrainUpdater implements ServerAutomaton {
      * @param principal
      * @param world
      */
-    public void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Point2D p, FreerailsPrincipal principal, ReadOnlyWorld world) {
+    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Point2D p, FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();

@@ -209,7 +209,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         private final List<String> typeWaiting;
         private final List<Integer> quantityWaiting;
 
-        public MyAbstractTableModel(List<String> typeWaiting, List<Integer> quantityWaiting) {
+        private MyAbstractTableModel(List<String> typeWaiting, List<Integer> quantityWaiting) {
             this.typeWaiting = typeWaiting;
             this.quantityWaiting = quantityWaiting;
         }

@@ -34,15 +34,15 @@ import java.util.Arrays;
  */
 public class PathOnTrackFinderTest extends TestCase {
 
-    World w;
+    private World w;
 
-    TrackMoveProducer producer;
+    private TrackMoveProducer producer;
 
-    PathOnTrackFinder pathFinder;
+    private PathOnTrackFinder pathFinder;
 
-    StationBuilder stationBuilder;
+    private StationBuilder stationBuilder;
 
-    BuildTrackStrategy bts;
+    private BuildTrackStrategy bts;
 
     /**
      * @throws Exception

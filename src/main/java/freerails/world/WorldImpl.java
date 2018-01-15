@@ -52,7 +52,7 @@ public class WorldImpl implements World {
      * A 3D list: D1 is player, D2 is type, D3 is element.
      */
     List3D<Serializable> lists;
-    Serializable[][] map;
+    private Serializable[][] map;
     List1D<Player> players;
     /**
      * A 2D list: D1 is type, D2 is element.
@@ -451,7 +451,7 @@ public class WorldImpl implements World {
 
     }
 
-    void setupItems() {
+    private void setupItems() {
         set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         time = new GameTime(0);
         set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
@@ -511,7 +511,7 @@ public class WorldImpl implements World {
          */
         public final double startTime;
 
-        ActivityAndTime(Activity act, double time) {
+        private ActivityAndTime(Activity act, double time) {
             this.act = act;
             startTime = time;
         }

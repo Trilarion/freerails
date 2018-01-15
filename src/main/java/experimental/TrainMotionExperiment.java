@@ -49,7 +49,7 @@ import java.util.Random;
  * TODO: Update the trains position when necessary. Make the train stop at
  * intervals, and slowly accelerate.
  */
-public class TrainMotionExperiment extends JComponent {
+class TrainMotionExperiment extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
     private final World world;
@@ -60,7 +60,7 @@ public class TrainMotionExperiment extends JComponent {
     /**
      *
      */
-    public TrainMotionExperiment() {
+    private TrainMotionExperiment() {
         world = MapFixtureFactory2.getCopy();
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
         principal = me.getPrincipal();

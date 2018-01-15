@@ -37,15 +37,15 @@ import java.util.Arrays;
  */
 public class TrackBuildingTest extends TestCase {
 
-    World w;
+    private World w;
 
-    TrackMoveProducer producer;
+    private TrackMoveProducer producer;
 
-    TrackPathFinder pathFinder;
+    private TrackPathFinder pathFinder;
 
-    StationBuilder stationBuilder;
+    private StationBuilder stationBuilder;
 
-    BuildTrackStrategy bts;
+    private BuildTrackStrategy bts;
 
     /**
      * @throws Exception

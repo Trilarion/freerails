@@ -12,13 +12,13 @@ public class ActivityIteratorImpl implements ActivityIterator {
     /**
      *
      */
-    public final int size;
+    private final int size;
     private final List<WorldImpl.ActivityAndTime> currentList;
 
     /**
      *
      */
-    public int activityIndex = 0;
+    private int activityIndex = 0;
     private WorldImpl.ActivityAndTime ant;
 
     /**

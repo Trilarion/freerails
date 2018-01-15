@@ -77,7 +77,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
      * @return
      * @throws PathNotFoundException
      */
-    public List<Integer> findpath(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
+    private List<Integer> findpath(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
         if (logger.isDebugEnabled()) {
             logger.debug(currentPosition.length + " starting points; " + targets.length + " targets.");
         }

@@ -50,7 +50,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
     private static final Logger logger = Logger.getLogger(NetWorthGraphPanel.class.getName());
     private final Font FONT;
     private final Rectangle graphRect = new Rectangle(44, 50, 380, 245);
-    ActionListener submitButtonCallBack = null;
+    private ActionListener submitButtonCallBack = null;
     private JLabel yAxisLabel1 = null;
     private JLabel yAxisLabel3 = null;
     private JLabel yAxisLabel4 = null;

@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  */
-public class TrainStopsHandler implements Serializable {
+class TrainStopsHandler implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
     private static final int NOT_AT_STATION = -1;
@@ -162,7 +162,7 @@ public class TrainStopsHandler implements Serializable {
     /**
      * @return
      */
-    public boolean isTrainFull() {
+    private boolean isTrainFull() {
         TrainAccessor train = new TrainAccessor(worldDiffs, principal, trainId);
         ImmutableList<Integer> spaceAvailable = train.spaceAvailable();
         return Utils.sumOfIntegerImmutableList(spaceAvailable) == 0;
@@ -183,7 +183,7 @@ public class TrainStopsHandler implements Serializable {
         return !isTrainFull() && order.waitUntilFull;
     }
 
-    void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
+    private void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
 
         // train is at a station so do the cargo processing
         DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, worldDiffs, principal, waiting, autoConsist);
@@ -283,7 +283,7 @@ public class TrainStopsHandler implements Serializable {
         loadAndUnloadCargo(stationToGoto, true, autoConsist);
     }
 
-    void updateSchedule() {
+    private void updateSchedule() {
         TrainModel train = (TrainModel) worldDiffs.get(principal, KEY.TRAINS, trainId);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
@@ -312,7 +312,7 @@ public class TrainStopsHandler implements Serializable {
      * Issues a ChangeTrainScheduleMove to set the train to move to the next
      * station.
      */
-    public void updateTarget() {
+    private void updateTarget() {
         scheduledStop();
     }
 

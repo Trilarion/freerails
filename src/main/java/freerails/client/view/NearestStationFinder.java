@@ -29,7 +29,7 @@ import freerails.world.terrain.TileTransition;
  * Provides methods that find the nearest station in a given direction, used by
  * the select station popup window.
  */
-public class NearestStationFinder {
+class NearestStationFinder {
 
     public static final int NOT_FOUND = Integer.MIN_VALUE;
     private final ReadOnlyWorld world;

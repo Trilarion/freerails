@@ -44,7 +44,7 @@ import java.awt.event.MouseEvent;
  * Handles key presses and mouse movements on the map - responsible for moving
  * the cursor etc.
  */
-public class UserInputOnMapController extends KeyAdapter {
+class UserInputOnMapController extends KeyAdapter {
 
     private static final Logger logger = Logger.getLogger(UserInputOnMapController.class.getName());
     private final ModelRoot modelRoot;

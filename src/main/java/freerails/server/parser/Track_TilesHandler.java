@@ -24,7 +24,7 @@ import org.xml.sax.Attributes;
  * Defines methods to handle parsing the track types XML.
  */
 
-public interface Track_TilesHandler {
+interface Track_TilesHandler {
     /**
      * A container element start event handling method.
      *

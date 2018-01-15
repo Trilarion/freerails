@@ -5,7 +5,7 @@ import javax.swing.*;
 class MyAbstractListModel extends AbstractListModel {
 
     private static final long serialVersionUID = -7077093078891444168L;
-    final String[] strings = {"No players are logged on!"};
+    private final String[] strings = {"No players are logged on!"};
 
     public int getSize() {
         return strings.length;

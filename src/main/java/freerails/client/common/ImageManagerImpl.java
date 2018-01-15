@@ -47,7 +47,6 @@ public class ImageManagerImpl implements ImageManager {
      * from with files but not from within jars, which lets bugs slip in.
      */
     private static final String A_REGEX = "^[^///].*";
-    private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
     private static final Pattern pattern = Pattern.compile(A_REGEX);
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private final Map<String, Image> imageHashMap = new HashMap<>();

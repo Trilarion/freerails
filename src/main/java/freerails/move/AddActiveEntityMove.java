@@ -77,7 +77,7 @@ public class AddActiveEntityMove implements Move {
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        if (index != world.size(this.principal)) return MoveStatus.moveFailed("index != w.size(listKey, p)");
+        if (index != world.size(this.principal)) return MoveStatus.moveFailed("index != world.size(listKey, p)");
 
         return MoveStatus.MOVE_OK;
     }
@@ -85,7 +85,7 @@ public class AddActiveEntityMove implements Move {
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
         int expectedSize = index + 1;
         if (expectedSize != world.size(this.principal))
-            return MoveStatus.moveFailed("(index + 1) != w.size(listKey, principal)");
+            return MoveStatus.moveFailed("(index + 1) != world.size(listKey, principal)");
 
         ActivityIterator ai = world.getActivities(this.principal, index);
         if (ai.hasNext()) return MoveStatus.moveFailed("There should be exactly one activity!");

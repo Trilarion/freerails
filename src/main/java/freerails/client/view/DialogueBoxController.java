@@ -63,14 +63,14 @@ public class DialogueBoxController implements WorldListListener {
     private final SelectEnginePanel selectEngine;
     private final MyGlassPanel glassPanel;
     private final NewsPaperPanel newspaper;
-    private final SelectWagonsJPanel selectWagons;
+    private final SelectWagonsPanel selectWagons;
     private final HtmlPanel showControls;
     private final HtmlPanel about;
     private final HtmlPanel how2play;
     private final HtmlPanel javaProperties;
-    private final TerrainInfoJPanel terrainInfo;
-    private final StationInfoJPanel stationInfo;
-    private final TrainDialogueJPanel trainDialogueJPanel;
+    private final TerrainInfoPanel terrainInfo;
+    private final StationInfoPanel stationInfo;
+    private final TrainDialoguePanel trainDialoguePanel;
     private final JFrame frame;
     private ReadOnlyWorld world;
     private ModelRootImpl modelRoot;
@@ -154,18 +154,18 @@ public class DialogueBoxController implements WorldListListener {
         about = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_ABOUT));
         how2play = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_HOW_TO_PLAY));
 
-        terrainInfo = new TerrainInfoJPanel();
-        stationInfo = new StationInfoJPanel();
+        terrainInfo = new TerrainInfoPanel();
+        stationInfo = new StationInfoPanel();
         javaProperties = new HtmlPanel(ShowJavaProperties.getPropertiesHtmlString());
         Dimension d = javaProperties.getPreferredSize();
         d.width += 50;
         javaProperties.setPreferredSize(d);
         newspaper = new NewsPaperPanel();
-        selectWagons = new SelectWagonsJPanel();
+        selectWagons = new SelectWagonsPanel();
         selectEngine = new SelectEnginePanel();
-        trainDialogueJPanel = new TrainDialogueJPanel();
+        trainDialoguePanel = new TrainDialoguePanel();
         /*
-         * 666 needed ?? trainDialogueJPanel.setIgnoreRepaint(true);
+         * 666 needed ?? trainDialoguePanel.setIgnoreRepaint(true);
          * selectEngine.setIgnoreRepaint(true);
          * selectWagons.setIgnoreRepaint(true);
          */
@@ -213,10 +213,10 @@ public class DialogueBoxController implements WorldListListener {
 
         selectWagons.setup(modelRoot, vl, selectWagonsAction);
 
-        trainDialogueJPanel.setup(modelRoot, vl, closeCurrentDialogue);
-        modelRoot.addListListener(trainDialogueJPanel);
-        trainDialogueJPanel.setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
-        trainDialogueJPanel.setCancelButtonActionListener(closeCurrentDialogue);
+        trainDialoguePanel.setup(modelRoot, vl, closeCurrentDialogue);
+        modelRoot.addListListener(trainDialoguePanel);
+        trainDialoguePanel.setTrainDetailsButtonActionListener(trainDetailsButtonActionListener);
+        trainDialoguePanel.setCancelButtonActionListener(closeCurrentDialogue);
     }
 
     /**
@@ -248,8 +248,8 @@ public class DialogueBoxController implements WorldListListener {
         if (!wi.next()) {
             modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
         } else {
-            trainDialogueJPanel.display(wi.getIndex());
-            showContent(trainDialogueJPanel);
+            trainDialoguePanel.display(wi.getIndex());
+            showContent(trainDialoguePanel);
         }
     }
 
@@ -356,7 +356,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param x
      * @param y
      */
-    public void showTerrainInfo(int x, int y) {
+    private void showTerrainInfo(int x, int y) {
         TerrainTile tile = (FullTerrainTile) world.getTile(x, y);
         int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
@@ -381,8 +381,8 @@ public class DialogueBoxController implements WorldListListener {
         closeContent();
 
         if (trainId != -1) {
-            trainDialogueJPanel.display(trainId);
-            showContent(trainDialogueJPanel);
+            trainDialoguePanel.display(trainId);
+            showContent(trainDialoguePanel);
         }
     }
 
@@ -391,7 +391,7 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showTrainList() {
         if (world.size(modelRoot.getPrincipal(), KEY.TRAINS) > 0) {
-            final TrainListJPanel trainList = new TrainListJPanel();
+            final TrainListPanel trainList = new TrainListPanel();
             trainList.setup(modelRoot, vl, closeCurrentDialogue);
             trainList.setShowTrainDetailsActionListener(e -> {
                 int id = trainList.getSelectedTrainID();

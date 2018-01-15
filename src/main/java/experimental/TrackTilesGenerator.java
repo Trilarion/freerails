@@ -37,10 +37,10 @@ import java.util.List;
 /**
  * Generates track graphic image files.
  */
-public class TrackTilesGenerator extends JPanel {
+class TrackTilesGenerator extends JPanel {
 
     private static final long serialVersionUID = 3618982273966487859L;
-    final CubicCurve2D.Double[] track;
+    private final CubicCurve2D.Double[] track;
     private final ImageManagerImpl imageManager = new ImageManagerImpl("/experimental/", "/experimental/");
 
     private final List<TrackRule> rules;
@@ -50,7 +50,7 @@ public class TrackTilesGenerator extends JPanel {
     /**
      *
      */
-    public TrackTilesGenerator() {
+    private TrackTilesGenerator() {
         Point2D.Double start, end, one, two;
         track = new CubicCurve2D.Double[3];
         track[0] = new CubicCurve2D.Double();

@@ -32,9 +32,9 @@ import java.util.LinkedList;
  * by another station. If the name has been used, a minor alteration in the name
  * is required, by adding perhaps "Junction" or "Siding" to the name.
  */
-public class VerifyStationName {
+class VerifyStationName {
 
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final String nameToVerify;
     private final LinkedList<String> stationAlternatives;
 
@@ -43,7 +43,7 @@ public class VerifyStationName {
      * @param name
      */
     public VerifyStationName(ReadOnlyWorld world, String name) {
-        w = world;
+        this.world = world;
         nameToVerify = name;
         stationAlternatives = new LinkedList<>();
 
@@ -92,10 +92,10 @@ public class VerifyStationName {
     private boolean checkStationExists(String name) {
         Station tempStation;
 
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
             while (wi.next()) { // loop over non null stations
                 tempStation = (Station) wi.getElement();

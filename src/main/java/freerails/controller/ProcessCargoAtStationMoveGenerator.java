@@ -38,7 +38,7 @@ import java.util.Iterator;
 /**
  * Generates Moves that pay the player for delivering the cargo.
  */
-public class ProcessCargoAtStationMoveGenerator {
+class ProcessCargoAtStationMoveGenerator {
 
     /**
      * Determines how much the player gets for delivering cargo. Changed from

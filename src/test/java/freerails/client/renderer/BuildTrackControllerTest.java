@@ -43,17 +43,17 @@ import junit.framework.TestCase;
 
 public class BuildTrackControllerTest extends TestCase {
 
-    World w;
+    private World w;
 
-    ModelRootImpl modelRoot;
+    private ModelRootImpl modelRoot;
 
-    BuildTrackController buildTrackController;
+    private BuildTrackController buildTrackController;
 
-    TrackMoveProducer trackBuilder;
+    private TrackMoveProducer trackBuilder;
 
-    int singleTrackRuleID = -1;
+    private int singleTrackRuleID = -1;
 
-    int doubleTrackRuleID = -1;
+    private int doubleTrackRuleID = -1;
 
     /**
      * @throws Exception

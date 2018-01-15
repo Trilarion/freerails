@@ -34,11 +34,11 @@ import junit.framework.TestCase;
  */
 public class StationBuilderTest extends TestCase {
 
-    World w;
+    private World w;
 
-    TrackMoveProducer trackBuilder;
+    private TrackMoveProducer trackBuilder;
 
-    StationBuilder stationBuilder;
+    private StationBuilder stationBuilder;
 
     /**
      * @throws Exception

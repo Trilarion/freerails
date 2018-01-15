@@ -24,7 +24,7 @@ package freerails.client.launcher;
 /**
  */
 
-public interface LauncherPanel {
+interface LauncherPanel {
 
     /**
      * @return

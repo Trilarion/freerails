@@ -59,7 +59,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * @return
      */
-    public final MoveChainFork getMoveFork() {
+    protected final MoveChainFork getMoveFork() {
         return moveFork;
     }
 

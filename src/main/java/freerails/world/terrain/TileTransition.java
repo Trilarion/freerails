@@ -33,7 +33,7 @@ import freerails.world.track.TrackConfigurations;
 public final class TileTransition implements TrackConfigurations {
 
     public static final int TILE_DIAMETER = ClientConfig.TILE_SIZE;
-    public static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER, TILE_DIAMETER);
+    private static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER, TILE_DIAMETER);
     /**
      * North.
      */
@@ -197,7 +197,7 @@ public final class TileTransition implements TrackConfigurations {
     /**
      * Returns true if the values passed could be used to create a valid vector.
      */
-    public static boolean checkValidity(int x, int y) {
+    private static boolean checkValidity(int x, int y) {
         return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1))) && ((x != 0) || (y != 0));
     }
 

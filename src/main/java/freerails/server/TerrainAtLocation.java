@@ -21,7 +21,7 @@ package freerails.server;
 /**
  * Stores a location and terrain type.
  */
-public class TerrainAtLocation {
+class TerrainAtLocation {
 
     private final int x;
     private final int y;

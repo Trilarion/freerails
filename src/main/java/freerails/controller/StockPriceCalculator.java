@@ -48,7 +48,7 @@ public class StockPriceCalculator {
         this.world = world;
     }
 
-    static Money calStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares) {
+    private static Money calStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares) {
         if ((publicShares + otherRRShares) == 0) return new Money(Long.MAX_VALUE);
         long price = 2 * (5 * profitLastyear + netWorth) / (2 * publicShares + otherRRShares);
         return new Money(price);
@@ -120,7 +120,7 @@ public class StockPriceCalculator {
         TransactionAggregator aggregator = new TransactionAggregator(world, pr) {
             @Override
             protected boolean condition(int transactionID) {
-                Transaction t = super.w.getTransaction(super.principal, transactionID);
+                Transaction t = super.world.getTransaction(super.principal, transactionID);
                 return !(t instanceof ItemTransaction);
             }
         };
@@ -128,13 +128,13 @@ public class StockPriceCalculator {
         return aggregator.calculateValue().getAmount();
     }
 
-    int sharesOwnedByPublic(int playerId) {
+    private int sharesOwnedByPublic(int playerId) {
         FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
         FinancialDataGatherer gatherer = new FinancialDataGatherer(world, pr);
         return gatherer.sharesHeldByPublic();
     }
 
-    int sharesOwnedByOtherPlayers(int playerId) {
+    private int sharesOwnedByOtherPlayers(int playerId) {
         FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
         FinancialDataGatherer gatherer = new FinancialDataGatherer(world, pr);
         int[] stakes = gatherer.getStockInThisRRs();
@@ -183,7 +183,7 @@ public class StockPriceCalculator {
          * @param publicShares
          * @param otherRRShares
          */
-        public StockPrice(long netWorth, long profitLastYear, int publicShares, int otherRRShares) {
+        private StockPrice(long netWorth, long profitLastYear, int publicShares, int otherRRShares) {
             currentPrice = calStockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
             sellPrice = calStockPrice(netWorth, profitLastYear, publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares - WorldConstants.STOCK_BUNDLE_SIZE);
             buyPrice = calStockPrice(netWorth, profitLastYear, publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares + WorldConstants.STOCK_BUNDLE_SIZE);

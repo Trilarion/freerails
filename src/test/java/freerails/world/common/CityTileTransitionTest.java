@@ -25,15 +25,15 @@ import junit.framework.TestCase;
  * JUnit test for OneTileMoveVector.
  */
 public class CityTileTransitionTest extends TestCase {
-    final TileTransition n = TileTransition.NORTH;
+    private final TileTransition n = TileTransition.NORTH;
 
-    final TileTransition ne = TileTransition.NORTH_EAST;
+    private final TileTransition ne = TileTransition.NORTH_EAST;
 
-    final TileTransition s = TileTransition.SOUTH;
+    private final TileTransition s = TileTransition.SOUTH;
 
-    final TileTransition sw = TileTransition.SOUTH_WEST;
+    private final TileTransition sw = TileTransition.SOUTH_WEST;
 
-    final TileTransition w = TileTransition.WEST;
+    private final TileTransition w = TileTransition.WEST;
 
     /**
      * @param arg0

@@ -40,19 +40,19 @@ import java.text.DecimalFormat;
 /**
  *
  */
-public class BrokerScreenGenerator {
+class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    public final String playername;
-    public final String year;
-    public final Money cash;
-    public final Money loansTotal;
-    public final Money netWorth;
-    public final Money pricePerShare;
-    public final String publicShares;
-    public final String treasuryStock;
-    public final String othersRRsStockRows;
+    private final String playername;
+    private final String year;
+    private final Money cash;
+    private final Money loansTotal;
+    private final Money netWorth;
+    private final Money pricePerShare;
+    private final String publicShares;
+    private final String treasuryStock;
+    private final String othersRRsStockRows;
 
     /**
      * Creates a new instance of BrokerScreenGenerator

@@ -197,7 +197,7 @@ public class PathOnTilesTest extends TestCase {
         assertFalse(pathIt.hasNext());
     }
 
-    boolean throwsException(Point2D start, TileTransition[] vectors) {
+    private boolean throwsException(Point2D start, TileTransition[] vectors) {
         try {
             new PathOnTiles(start, vectors);
             return false;

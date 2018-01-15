@@ -40,9 +40,9 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class StationNamesRenderer implements Painter {
 
-    static final float[] dash1 = {5.0f};
-    static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-    private final ReadOnlyWorld w;
+    private static final float[] dash1 = {5.0f};
+    private static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+    private final ReadOnlyWorld world;
     private final ModelRoot modelRoot;
     private final int fontSize;
     private final Color bgColor;
@@ -54,7 +54,7 @@ public class StationNamesRenderer implements Painter {
      * @param modelRoot
      */
     public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
-        w = world;
+        this.world = world;
         this.modelRoot = modelRoot;
         fontSize = 10;
         bgColor = Color.BLACK;
@@ -86,11 +86,11 @@ public class StationNamesRenderer implements Painter {
         FontRenderContext frc = g.getFontRenderContext();
         TextLayout layout;
 
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
             // draw station names onto map
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
             while (wi.next()) { // loop over non null stations
                 tempStation = (Station) wi.getElement();
@@ -105,7 +105,7 @@ public class StationNamesRenderer implements Painter {
                 }
                 // First draw station sphere of influence
                 if (showStationBorders) {
-                    FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
+                    FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
                     int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
                     int diameterInPixels = (radius * 2 + 1) * ClientConfig.TILE_SIZE;
                     int radiusX = (x - radius) * ClientConfig.TILE_SIZE;

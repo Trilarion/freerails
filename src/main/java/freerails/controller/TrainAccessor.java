@@ -44,17 +44,17 @@ import java.util.HashSet;
  */
 public class TrainAccessor {
 
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final FreerailsPrincipal p;
     private final int id;
 
     /**
-     * @param w
+     * @param world
      * @param p
      * @param id
      */
-    public TrainAccessor(final ReadOnlyWorld w, final FreerailsPrincipal p, final int id) {
-        this.w = w;
+    public TrainAccessor(final ReadOnlyWorld world, final FreerailsPrincipal p, final int id) {
+        this.world = world;
         this.p = p;
         this.id = id;
     }
@@ -106,8 +106,8 @@ public class TrainAccessor {
         int y = pot.getY();
 
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < w.size(p, KEY.STATIONS); i++) {
-            Station tempPoint = (Station) w.get(p, KEY.STATIONS, i);
+        for (int i = 0; i < world.size(p, KEY.STATIONS); i++) {
+            Station tempPoint = (Station) world.get(p, KEY.STATIONS, i);
 
             if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
                 return i; // train is at the station at location tempPoint
@@ -123,7 +123,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
-        ActivityIterator ai = w.getActivities(p, id);
+        ActivityIterator ai = world.getActivities(p, id);
 
         // goto last
         ai.gotoLastActivity();
@@ -154,7 +154,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainMotion findCurrentMotion(double time) {
-        ActivityIterator ai = w.getActivities(p, id);
+        ActivityIterator ai = world.getActivities(p, id);
         boolean afterFinish = ai.getFinishTime() < time;
         if (afterFinish) {
             ai.gotoLastActivity();
@@ -166,7 +166,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainModel getTrain() {
-        return (TrainModel) w.get(p, KEY.TRAINS, id);
+        return (TrainModel) world.get(p, KEY.TRAINS, id);
     }
 
     /**
@@ -174,7 +174,7 @@ public class TrainAccessor {
      */
     public ImmutableSchedule getSchedule() {
         TrainModel train = getTrain();
-        return (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, train.getScheduleID());
+        return (ImmutableSchedule) world.get(p, KEY.TRAIN_SCHEDULES, train.getScheduleID());
     }
 
     /**
@@ -182,7 +182,7 @@ public class TrainAccessor {
      */
     public CargoBatchBundle getCargoBundle() {
         TrainModel train = getTrain();
-        return (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
+        return (ImmutableCargoBatchBundle) world.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
     }
 
     /**
@@ -196,7 +196,7 @@ public class TrainAccessor {
      * </ol>
      */
     public boolean keepWaiting() {
-        double time = w.currentTime().getTicks();
+        double time = world.currentTime().getTicks();
         int stationId = getStationId(time);
         if (stationId == -1) return false;
         TrainActivity act = getStatus(time);
@@ -214,9 +214,9 @@ public class TrainAccessor {
      * towards.
      */
     public Point2D getTarget() {
-        TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
+        TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, id);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) w.get(p, KEY.TRAIN_SCHEDULES, scheduleID);
+        Schedule schedule = (ImmutableSchedule) world.get(p, KEY.TRAIN_SCHEDULES, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {
@@ -224,7 +224,7 @@ public class TrainAccessor {
             return new Point2D(0, 0);
         }
 
-        Station station = (Station) w.get(p, KEY.STATIONS, stationNumber);
+        Station station = (Station) world.get(p, KEY.STATIONS, stationNumber);
 
         return new Point2D(station.x, station.y);
     }
@@ -265,9 +265,9 @@ public class TrainAccessor {
      */
     public ImmutableList<Integer> spaceAvailable() {
 
-        TrainModel train = (TrainModel) w.get(p, KEY.TRAINS, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) w.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
-        return spaceAvailable2(w, bundleOnTrain, train.getConsist());
+        TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, id);
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
+        return spaceAvailable2(world, bundleOnTrain, train.getConsist());
 
     }
 

@@ -36,7 +36,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
     private final KEY key;
     private final SKEY skey;
-    private final ReadOnlyWorld w;
+    private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
     private int index = BEFORE_FIRST;
     private int row = BEFORE_FIRST;
@@ -58,7 +58,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
         key = null;
         principal = null;
         skey = k;
-        w = world;
+        this.world = world;
     }
 
     /**
@@ -68,7 +68,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      */
     public NonNullElementWorldIterator(KEY k, ReadOnlyWorld world, FreerailsPrincipal p) {
         key = k;
-        w = world;
+        this.world = world;
         principal = p;
         skey = null;
 
@@ -136,16 +136,16 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
     private Serializable listGet(int i) {
         if (null == skey) {
-            return w.get(principal, key, i);
+            return world.get(principal, key, i);
         }
-        return w.get(skey, i);
+        return world.get(skey, i);
     }
 
     private int listSize() {
         if (null == skey) {
-            return w.size(principal, key);
+            return world.size(principal, key);
         }
-        return w.size(skey);
+        return world.size(skey);
     }
 
     public int getIndex() {
@@ -218,7 +218,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param i
      * @return
      */
-    protected boolean testCondition(int i) {
+    private boolean testCondition(int i) {
         return null != listGet(i);
     }
 

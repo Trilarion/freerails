@@ -65,32 +65,14 @@ public class HtmlPanelTest extends TestCase {
 
         Object objectContext = new Object() {
 
-            public Person a = new Person("Tom");
+            public HtmlPanelPerson a = new HtmlPanelPerson("Tom");
 
 
-            public Person b = new Person("Claire");
+            public HtmlPanelPerson b = new HtmlPanelPerson("Claire");
         };
 
         String output = HtmlPanel.populateTokens(template, objectContext);
         assertEquals(expectedOutput, output);
-    }
-
-    /**
-     *
-     */
-    public static class Person {
-
-        /**
-         *
-         */
-        public final String name;
-
-        /**
-         * @param name
-         */
-        public Person(String name) {
-            this.name = name;
-        }
     }
 
 }

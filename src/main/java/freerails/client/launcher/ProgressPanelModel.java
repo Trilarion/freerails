@@ -30,12 +30,13 @@ import freerails.client.ProgressMonitorModel;
  */
 public class ProgressPanelModel extends javax.swing.JPanel implements ProgressMonitorModel {
 
-    static final int numSteps = 5;
+    private static final int numSteps = 5;
     private static final long serialVersionUID = 3256445798203273776L;
-    final LauncherInterface owner;
-    int step, stepSize;
-    javax.swing.JProgressBar progressBar;
-    javax.swing.JLabel splashImage;
+    private final LauncherInterface owner;
+    private int step;
+    private int stepSize;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JLabel splashImage;
 
     /**
      * Creates new form ProgressPanelModel

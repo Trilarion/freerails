@@ -33,13 +33,13 @@ import java.util.NoSuchElementException;
  * This junit TestCase tests NonNullElementWorldIterator.
  */
 public class NonNullElementWorldIteratorTest extends TestCase {
-    World w;
+    private World w;
 
-    Station station1;
+    private Station station1;
 
-    Station station2;
+    private Station station2;
 
-    Station station3;
+    private Station station3;
 
     /**
      * @param args

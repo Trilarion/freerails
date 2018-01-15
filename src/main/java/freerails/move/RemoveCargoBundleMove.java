@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * This move removes a cargo bundle from the cargo bundle list.
  */
-public class RemoveCargoBundleMove extends RemoveItemFromListMove {
+class RemoveCargoBundleMove extends RemoveItemFromListMove {
     private static final long serialVersionUID = 3762247522239723316L;
 
     /**

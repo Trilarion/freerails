@@ -30,19 +30,20 @@ import junit.framework.TestCase;
 /**
  */
 public class MapFixtureFactory2Test extends TestCase {
-    World w1;
+
+    private World world;
 
     /**
      *
      */
     public void testGetCopy() {
         World w2;
-        w1 = MapFixtureFactory2.getCopy();
-        assertNotNull(w1);
+        world = MapFixtureFactory2.getCopy();
+        assertNotNull(world);
         w2 = MapFixtureFactory2.getCopy();
         assertNotNull(w2);
-        assertNotSame(w1, w2);
-        assertEquals(w1, w2);
+        assertNotSame(world, w2);
+        assertEquals(world, w2);
 
     }
 
@@ -51,9 +52,9 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     public void testLists() {
 
-        assertTrue(w1.size(SKEY.CARGO_TYPES) > 0);
-        assertTrue(w1.size(SKEY.TRACK_RULES) > 0);
-        assertTrue(w1.size(SKEY.TERRAIN_TYPES) > 0);
+        assertTrue(world.size(SKEY.CARGO_TYPES) > 0);
+        assertTrue(world.size(SKEY.TRACK_RULES) > 0);
+        assertTrue(world.size(SKEY.TERRAIN_TYPES) > 0);
 
     }
 
@@ -62,8 +63,8 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     public void testMap() {
 
-        assertEquals(w1.getMapWidth(), 50);
-        assertEquals(w1.getMapWidth(), 50);
+        assertEquals(world.getMapWidth(), 50);
+        assertEquals(world.getMapWidth(), 50);
 
     }
 
@@ -72,21 +73,21 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     public void testPlayers() {
 
-        assertEquals(4, w1.getNumberOfPlayers());
+        assertEquals(4, world.getNumberOfPlayers());
     }
 
     /**
      *
      */
     public void testThatStockIsIssued() {
-        FreerailsPrincipal p = w1.getPlayer(0).getPrincipal();
+        FreerailsPrincipal p = world.getPlayer(0).getPrincipal();
         int stock = 0;
-        Money cash = w1.getCurrentBalance(p);
+        Money cash = world.getCurrentBalance(p);
         assertEquals(new Money(1000000), cash);
-        int numberOfTransactions = w1.getNumberOfTransactions(p);
+        int numberOfTransactions = world.getNumberOfTransactions(p);
         assertTrue(numberOfTransactions > 0);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Transaction t = w1.getTransaction(p, i);
+            Transaction t = world.getTransaction(p, i);
             if (t.getCategory() == TransactionCategory.ISSUE_STOCK) {
                 ItemTransaction ait = (ItemTransaction) t;
                 stock += ait.getQuantity();
@@ -100,9 +101,8 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        // TODO Auto-generated method stub
         super.setUp();
-        w1 = MapFixtureFactory2.getCopy();
+        world = MapFixtureFactory2.getCopy();
     }
 
 }

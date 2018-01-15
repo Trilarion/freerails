@@ -168,8 +168,8 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
      * @param oldTrackPiece
      * @param newTrackPiece
      */
-    protected void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece,
-                                        TrackPiece newTrackPiece) {
+    private void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece,
+                                      TrackPiece newTrackPiece) {
         TrackMove move;
         MoveStatus moveStatus;
 

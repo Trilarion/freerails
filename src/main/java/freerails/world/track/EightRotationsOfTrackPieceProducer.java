@@ -29,7 +29,7 @@ import java.awt.*;
  * E.g. if the template is: 010 010 110 it returns: 010 001 100 010 110 111 110
  * 100 000 etc.
  */
-public class EightRotationsOfTrackPieceProducer {
+class EightRotationsOfTrackPieceProducer {
     private EightRotationsOfTrackPieceProducer() {
     }
 

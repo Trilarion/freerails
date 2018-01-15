@@ -33,7 +33,7 @@ import freerails.world.station.Station;
  * cargoes that they supply, demand, and convert.
  */
 // TODO relation to CargoAtStationsUpdater?
-public class SupplyAtStationsUpdater {
+class SupplyAtStationsUpdater {
 
     private final World world;
     private final MoveReceiver moveReceiver;
