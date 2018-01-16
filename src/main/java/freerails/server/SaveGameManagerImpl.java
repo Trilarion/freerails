@@ -127,6 +127,6 @@ public class SaveGameManagerImpl implements SaveGamesManager {
      * @throws IOException
      */
     public Serializable newMap(String name) {
-        return OldWorldImpl.createWorldFromMapFile(name, ProgressMonitorModel.EMPTY_PROGRESSMONITOR);
+        return OldWorldImpl.createWorldFromMapFile(name, ProgressMonitorModel.EMPTY);
     }
 }

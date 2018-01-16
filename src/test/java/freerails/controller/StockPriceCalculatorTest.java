@@ -38,8 +38,7 @@ import junit.framework.TestCase;
  */
 public class StockPriceCalculatorTest extends TestCase {
 
-    private World w;
-
+    private World world;
     private StockPriceCalculator calc;
 
     /**
@@ -48,60 +47,48 @@ public class StockPriceCalculatorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        w = MapFixtureFactory2.getCopy();
-        calc = new StockPriceCalculator(w);
+        world = MapFixtureFactory2.getCopy();
+        calc = new StockPriceCalculator(world);
     }
-
-    /*
-     * Test method for
-     * 'freerails.controller.StockPriceCalculator.isFirstYear(int)'
-     */
 
     /**
      *
      */
-
     public void testIsFirstYear() {
         assertTrue(calc.isFirstYear(0));
-        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
         int tpy = calendar.getTicksPerYear();
-        int currentTicks = w.currentTime().getTicks();
+        int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + tpy + 1);
-        w.setTime(newTime);
+        world.setTime(newTime);
         assertFalse(calc.isFirstYear(0));
         newTime = new GameTime(currentTicks + tpy - 1);
-        w.setTime(newTime);
+        world.setTime(newTime);
         assertTrue(calc.isFirstYear(0));
     }
-
-    /*
-     * Test method for
-     * 'freerails.controller.StockPriceCalculator.netWorth(int)'
-     */
 
     /**
      *
      */
-
     public void testNetWorth() {
         long initialNetworth = 500000;
         assertEquals(initialNetworth, calc.netWorth(0));
-        int currentTicks = w.currentTime().getTicks();
+        int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + 1);
-        w.setTime(newTime);
+        world.setTime(newTime);
         CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
         long income = 100000;
         Transaction t = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
-        FreerailsPrincipal princ = w.getPlayer(0).getPrincipal();
-        w.addTransaction(princ, t);
+        FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
+        world.addTransaction(princ, t);
         assertEquals(initialNetworth, calc.netWorth(0));
 
-        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
         int tpy = calendar.getTicksPerYear();
-        currentTicks = w.currentTime().getTicks();
+        currentTicks = world.currentTime().getTicks();
         newTime = new GameTime(currentTicks + tpy);
-        w.setTime(newTime);
+        world.setTime(newTime);
 
         long expectedNetWorth = initialNetworth + income;
         assertEquals(expectedNetWorth, calc.netWorth(0));
@@ -109,35 +96,30 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     private void advanceTimeOneTick() {
-        int currentTicks = w.currentTime().getTicks();
+        int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + 1);
-        w.setTime(newTime);
+        world.setTime(newTime);
 
     }
 
     private void advanceTimeOneYear() {
-        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
+        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
         int tpy = calendar.getTicksPerYear();
-        int currentTicks = w.currentTime().getTicks();
+        int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + tpy);
-        w.setTime(newTime);
+        world.setTime(newTime);
 
     }
 
-    /*
-     * Test method for
-     * 'freerails.controller.StockPriceCalculator.profitsLastYear(int)'
-     */
 
     /**
      *
      */
-
     public void testProfitsLastYear() {
         assertEquals(0, calc.profitsLastYear(0));
-        int currentTicks = w.currentTime().getTicks();
+        int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + 10);
-        w.setTime(newTime);
+        world.setTime(newTime);
         assertEquals(0, calc.profitsLastYear(0));
 
         long income = 100000;
@@ -153,8 +135,8 @@ public class StockPriceCalculatorTest extends TestCase {
 
         Transaction t = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
-        FreerailsPrincipal princ = w.getPlayer(0).getPrincipal();
-        w.addTransaction(princ, t);
+        FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
+        world.addTransaction(princ, t);
     }
 
     /**

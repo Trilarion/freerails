@@ -35,7 +35,7 @@ import freerails.world.track.TrackRule;
 import junit.framework.TestCase;
 
 /**
- * JUnit test case for TrackMoveTransactionsGenerator.
+ * Test case for TrackMoveTransactionsGenerator.
  */
 public class TrackMoveTransactionsGeneratorTest extends TestCase {
     private World world;

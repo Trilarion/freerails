@@ -31,7 +31,7 @@ import freerails.world.player.Player;
  */
 public class SimpleMoveExecutor implements MoveExecutor {
 
-    private final World w;
+    private final World world;
     private final FreerailsPrincipal p;
 
     /**
@@ -39,8 +39,8 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param playerID
      */
     public SimpleMoveExecutor(World world, int playerID) {
-        w = world;
-        Player player = w.getPlayer(playerID);
+        this.world = world;
+        Player player = this.world.getPlayer(playerID);
         p = player.getPrincipal();
     }
 
@@ -49,7 +49,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus doMove(Move m) {
-        return m.doMove(w, p);
+        return m.doMove(world, p);
     }
 
     /**
@@ -57,8 +57,8 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus doPreMove(PreMove pm) {
-        Move m = pm.generateMove(w);
-        return m.doMove(w, p);
+        Move m = pm.generateMove(world);
+        return m.doMove(world, p);
     }
 
     /**
@@ -66,14 +66,14 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus tryDoMove(Move m) {
-        return m.tryDoMove(w, p);
+        return m.tryDoMove(world, p);
     }
 
     /**
      * @return
      */
     public ReadOnlyWorld getWorld() {
-        return w;
+        return world;
     }
 
     /**

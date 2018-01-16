@@ -26,7 +26,7 @@ import freerails.world.station.Station;
 import freerails.world.top.MapFixtureFactory;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class CompositeMoveTest extends AbstractMoveTestCase {
     private final Station station1 = new Station(1, 1, "station1", 10, 0);

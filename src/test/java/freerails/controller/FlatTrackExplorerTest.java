@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 import java.util.HashSet;
 
 /**
- * JUnit test for FlatTrackExplorer.
+ * Test for FlatTrackExplorer.
  *
  * 24-Nov-2002
  */

@@ -22,7 +22,7 @@ import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for OneTileMoveVector.
+ * Test for OneTileMoveVector.
  */
 public class CityTileTransitionTest extends TestCase {
     private final TileTransition n = TileTransition.NORTH;

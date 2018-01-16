@@ -41,13 +41,14 @@ import junit.framework.TestCase;
  * cargo at a station.
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
+
     private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, 0, 0,
             0, 2);
     private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, 0, 0,
             0, 2);
     private final CargoBatch cargoType0FromStation0 = new CargoBatch(0, 0, 0,
             0, 0);
-    private World w;
+    private World world;
 
     /**
      * @param args
@@ -69,35 +70,35 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     protected void setUp() throws Exception {
         // Set up the world object with three cargo types, one station, and one
         // train.
-        w = new WorldImpl();
+        world = new WorldImpl();
 
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
         // set up the cargo types.
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", CargoCategory.Mail));
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers",
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", CargoCategory.Mail));
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers",
                 CargoCategory.Passengers));
-        w.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods",
+        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods",
                 CargoCategory.Fast_Freight));
 
         // Set up station
         int x = 10;
         int y = 10;
-        int stationCargoBundleId = w.add(MapFixtureFactory.TEST_PRINCIPAL,
+        int stationCargoBundleId = world.add(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.CARGO_BUNDLES, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
         String stationName = "Station 1";
-        Station station = new Station(x, y, stationName, w
+        Station station = new Station(x, y, stationName, world
                 .size(SKEY.CARGO_TYPES), stationCargoBundleId);
-        w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station);
 
         // Set up train
-        int trainCargoBundleId = w.add(MapFixtureFactory.TEST_PRINCIPAL,
+        int trainCargoBundleId = world.add(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.CARGO_BUNDLES, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
 
         // 3 wagons to carry cargo type 0.
         ImmutableList<Integer> wagons = new ImmutableList<>(0, 0, 0);
         TrainModel train = new TrainModel(wagons, trainCargoBundleId);
-        w.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, train);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, train);
     }
 
     /**
@@ -175,7 +176,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         setCargoAtStation(this.cargoType0FromStation0, 110);
 
         // Check that station does not demand cargo type 0.
-        Station station = (Station) w.get(
+        Station station = (Station) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
         assertFalse(station.getDemandForCargo().isCargoDemanded(0));
 
@@ -205,12 +206,12 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      */
     public void testDropOffCargo() {
         // Set the station to demand cargo type 0.
-        Station station = (Station) w.get(
+        Station station = (Station) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
         StationDemand demand = new StationDemand(new boolean[]{true, false,
                 false, false});
         station = new Station(station, demand);
-        w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
+        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
 
         // Check that the station demands what we think it does.
         assertTrue("The station should demand cargo type 0.", station
@@ -306,12 +307,12 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         setCargoAtStation(this.cargoType0FromStation0, 200);
 
         // Set station to demand cargo 0.
-        Station station = (Station) w.get(
+        Station station = (Station) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
         StationDemand demand = new StationDemand(new boolean[]{true, false,
                 false, false});
         station = new Station(station, demand);
-        w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
+        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0, station);
 
         assertTrue(station.getDemandForCargo().isCargoDemanded(0));
         stopAtStation();
@@ -334,19 +335,19 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void addWagons(ImmutableList<Integer> wagons) {
-        TrainModel train = (TrainModel) w.get(MapFixtureFactory.TEST_PRINCIPAL,
+        TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.TRAINS, 0);
         TrainModel newTrain = train.getNewInstance(train.getEngineType(),
                 wagons);
-        w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, 0, newTrain);
+        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, 0, newTrain);
     }
 
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(
-                0, 0, w, MapFixtureFactory.TEST_PRINCIPAL, false, false);
+                0, 0, world, MapFixtureFactory.TEST_PRINCIPAL, false, false);
         Move m = moveGenerator.generateMove();
         if (null != m) {
-            MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+            MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
             assertEquals(MoveStatus.MOVE_OK, ms);
         }
     }
@@ -356,10 +357,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private ImmutableCargoBatchBundle getCargoAtStation() {
-        Station station = (Station) w.get(
+        Station station = (Station) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
 
-        return (ImmutableCargoBatchBundle) w.get(
+        return (ImmutableCargoBatchBundle) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, station
                         .getCargoBundleID());
     }
@@ -369,29 +370,29 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private ImmutableCargoBatchBundle getCargoOnTrain() {
-        TrainModel train = (TrainModel) w.get(MapFixtureFactory.TEST_PRINCIPAL,
+        TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.TRAINS, 0);
 
-        return (ImmutableCargoBatchBundle) w.get(
+        return (ImmutableCargoBatchBundle) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train
                         .getCargoBundleID());
     }
 
     private void setCargoAtStation(CargoBatch cb, int amount) {
-        Station station = (Station) w.get(
+        Station station = (Station) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
         MutableCargoBatchBundle bundle = new MutableCargoBatchBundle(getCargoAtStation());
         bundle.setAmount(cb, amount);
-        w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, station
+        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, station
                 .getCargoBundleID(), bundle.toImmutableCargoBundle());
     }
 
     private void setCargoOnTrain(CargoBatch cb, int amount) {
-        TrainModel train = (TrainModel) w.get(MapFixtureFactory.TEST_PRINCIPAL,
+        TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.TRAINS, 0);
         MutableCargoBatchBundle bundle = new MutableCargoBatchBundle(getCargoOnTrain());
         bundle.setAmount(cb, amount);
-        w.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train
+        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train
                 .getCargoBundleID(), bundle.toImmutableCargoBundle());
     }
 }

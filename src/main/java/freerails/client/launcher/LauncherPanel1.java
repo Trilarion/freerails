@@ -24,36 +24,27 @@
 package freerails.client.launcher;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * The first launcher panel, lets you choose 'single player', 'start network
  * game' etc.
  */
-final class LauncherPanel1 extends javax.swing.JPanel {
+final class LauncherPanel1 extends JPanel {
+
     static final int MODE_SINGLE_PLAYER = 0;
     static final int MODE_START_NETWORK_GAME = 1;
     static final int MODE_JOIN_NETWORK_GAME = 2;
     static final int MODE_SERVER_ONLY = 3;
     private static final long serialVersionUID = 3257850965422913590L;
     private final ButtonModel[] buttonModels = new ButtonModel[4];
-    private javax.swing.ButtonGroup buttonGroup1;
-
-    /*
-     * private void validateSettings() { boolean isValid = false; String
-     * infoText = null;
-     *
-     * switch (getMode()) {
-     *
-     * case MODE_SINGLE_PLAYER: isValid = true; break; case
-     * MODE_START_NETWORK_GAME: case MODE_SERVER_ONLY: isValid = true; break;
-     * case MODE_JOIN_NETWORK_GAME: isValid = true; break; }
-     * owner.setInfoText(infoText, LauncherInterface.WARNING);
-     * owner.setNextEnabled(isValid); }
-     */ private javax.swing.JRadioButton joinNetworkButton;
-    private javax.swing.JPanel paddingJPanel;
-    private javax.swing.JRadioButton serverOnlyButton;
-    private javax.swing.JRadioButton singlePlayerButton;
-    private javax.swing.JRadioButton startNetworkButton;
+    private ButtonGroup buttonGroup1;
+    private JRadioButton joinNetworkButton;
+    private JPanel paddingJPanel;
+    private JRadioButton serverOnlyButton;
+    private JRadioButton singlePlayerButton;
+    private JRadioButton startNetworkButton;
 
     public LauncherPanel1() {
         initComponents();
@@ -77,16 +68,16 @@ final class LauncherPanel1 extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        singlePlayerButton = new javax.swing.JRadioButton();
-        startNetworkButton = new javax.swing.JRadioButton();
-        joinNetworkButton = new javax.swing.JRadioButton();
-        serverOnlyButton = new javax.swing.JRadioButton();
-        paddingJPanel = new javax.swing.JPanel();
+        buttonGroup1 = new ButtonGroup();
+        singlePlayerButton = new JRadioButton();
+        startNetworkButton = new JRadioButton();
+        joinNetworkButton = new JRadioButton();
+        serverOnlyButton = new JRadioButton();
+        paddingJPanel = new JPanel();
 
         setLayout(new java.awt.GridBagLayout());
 
-        setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "Select Game Type"));
+        setBorder(new TitledBorder(new EtchedBorder(), "Select Game Type"));
         buttonGroup1.add(singlePlayerButton);
         singlePlayerButton.setSelected(true);
         singlePlayerButton.setText("Single-Player");

@@ -26,7 +26,7 @@ import freerails.world.player.Player;
 import freerails.world.top.MapFixtureFactory;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class AddTransactionMoveTest extends AbstractMoveTestCase {
 

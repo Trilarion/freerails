@@ -105,8 +105,9 @@ public class ServerControlModel implements ModelRootListener {
         return newGameAction;
     }
 
+    // TODO The action produces a file selector
     /**
-     * @return an action to save a game TODO The action produces a file selector
+     * @return an action to save a game
      * dialog to save the game
      */
     public Action getSaveGameAction() {
@@ -162,11 +163,10 @@ public class ServerControlModel implements ModelRootListener {
         // Check that there is a file to load..
         saveGameAction.setEnabled(true);
 
-        Enumeration<Action> e = targetTicksPerSecondActions.getActions();
         targetTicksPerSecondActions.setPerformActionOnSetSelectedItem(false);
 
-        while (e.hasMoreElements()) {
-            e.nextElement().setEnabled(true);
+        for (Action action: targetTicksPerSecondActions.getActions()) {
+            action.setEnabled(true);
         }
 
         String[] mapNames = NewGameMessageToServer.getMapNames();

@@ -27,7 +27,7 @@ import freerails.world.cargo.MutableCargoBatchBundle;
 import freerails.world.top.MapFixtureFactory;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class RemoveCargoBatchBundleMoveTest extends AbstractMoveTestCase {
 

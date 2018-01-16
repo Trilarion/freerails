@@ -153,7 +153,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         try {
             return connectionToServer.waitForObjectFromServer();
         } catch (IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
         }
 
         throw new IllegalStateException();

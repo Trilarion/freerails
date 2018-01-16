@@ -30,11 +30,11 @@ import freerails.world.top.MapFixtureFactory;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for IncomeStatementGenerator.
+ * Test for IncomeStatementGenerator.
  */
 public class IncomeStatementGeneratorTest extends TestCase {
-    private World w;
 
+    private World world;
     private IncomeStatementGenerator balanceSheetGenerator;
 
     /**
@@ -45,7 +45,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money m = balanceSheetGenerator.mailTotal;
         assertEquals(0, m.getAmount());
 
-        CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, 0);
+        CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, 0);
         assertEquals(CargoCategory.Mail, ct.getCategory());
 
         Money amount = new Money(100);
@@ -57,12 +57,12 @@ public class IncomeStatementGeneratorTest extends TestCase {
     }
 
     private void addTrans(CargoCategory category, Money amount) {
-        for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
-            CargoType ct = (CargoType) w.get(SKEY.CARGO_TYPES, i);
+        for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
+            CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, i);
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, 0, 0, 0, 0);
-                w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
+                world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
                         new CargoDeliveryMoneyTransaction(amount, 10, 0, cb, 1));
                 return;
             }
@@ -76,10 +76,10 @@ public class IncomeStatementGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        w = new WorldImpl();
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        MapFixtureFactory.generateCargoTypesList(w);
-        balanceSheetGenerator = new IncomeStatementGenerator(w,
+        world = new WorldImpl();
+        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        MapFixtureFactory.generateCargoTypesList(world);
+        balanceSheetGenerator = new IncomeStatementGenerator(world,
                 MapFixtureFactory.TEST_PRINCIPAL);
     }
 }

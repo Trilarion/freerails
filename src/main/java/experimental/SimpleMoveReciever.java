@@ -33,14 +33,15 @@ import freerails.world.player.Player;
  * constructor.
  */
 public final class SimpleMoveReciever implements UntriedMoveReceiver {
-    private final World w;
+
+    private final World world;
 
     /**
-     * @param w
+     * @param world
      */
-    public SimpleMoveReciever(World w) {
-        this.w = w;
-        if (null == w) throw new NullPointerException();
+    public SimpleMoveReciever(World world) {
+        this.world = world;
+        if (null == world) throw new NullPointerException();
     }
 
     /**
@@ -48,20 +49,20 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
      * @return
      */
     public MoveStatus tryDoMove(Move move) {
-        return move.tryDoMove(w, Player.AUTHORITATIVE);
+        return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 
     /**
      * @param move
      */
     public void process(Move move) {
-        move.doMove(w, Player.AUTHORITATIVE);
+        move.doMove(world, Player.AUTHORITATIVE);
     }
 
     /**
      * @param pm
      */
     public void processPreMove(PreMove pm) {
-        process(pm.generateMove(w));
+        process(pm.generateMove(world));
     }
 }

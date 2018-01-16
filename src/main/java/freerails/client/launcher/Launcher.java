@@ -46,32 +46,27 @@ import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.util.Properties;
 
+// TODO The code in the switch statements needs reviewing.
 /**
  * Launcher GUI for both the server and/or client.
- *
- * TODO The code in the switch statements needs reviewing.
  */
-
-public class Launcher extends javax.swing.JFrame implements LauncherInterface {
+public class Launcher extends JFrame implements LauncherInterface {
 
     /**
      * server sleeping time in ms (1000/SERVERUPDATE is the frame rate)
      */
     private static final int SERVERUPDATE = 50;
-
-
     private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static final long serialVersionUID = -8224003315973977661L;
-
     private final Component[] wizardPages = new Component[4];
-    private final Icon errorIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_ERROR));
-    private final Icon warningIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_WARNING));
-    private final Icon infoIcon = new javax.swing.ImageIcon(getClass().getResource(ClientConfig.ICON_INFO));
+    private final Icon errorIcon = new ImageIcon(getClass().getResource(ClientConfig.ICON_ERROR));
+    private final Icon warningIcon = new ImageIcon(getClass().getResource(ClientConfig.ICON_WARNING));
+    private final Icon infoIcon = new ImageIcon(getClass().getResource(ClientConfig.ICON_INFO));
     private final ProgressPanelModel progressPanel = new ProgressPanelModel(this);
-    private javax.swing.JLabel infoLabel;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton nextButton;
-    private javax.swing.JButton prevButton;
+    private JLabel infoLabel;
+    private JPanel jPanel1;
+    private JButton nextButton;
+    private JButton prevButton;
     private int currentPage = 0;
     private FreerailsGameServer server;
     private GUIClient client;
@@ -446,10 +441,10 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        nextButton = new javax.swing.JButton();
-        prevButton = new javax.swing.JButton();
-        infoLabel = new javax.swing.JLabel();
+        jPanel1 = new JPanel();
+        nextButton = new JButton();
+        prevButton = new JButton();
+        infoLabel = new JLabel();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -491,11 +486,11 @@ public class Launcher extends javax.swing.JFrame implements LauncherInterface {
         getContentPane().add(prevButton, gridBagConstraints);
 
         infoLabel.setText("Error messages go here!");
-        infoLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        infoLabel.setVerticalAlignment(SwingConstants.TOP);
         infoLabel.setMinimumSize(new java.awt.Dimension(20, 20));
         infoLabel.setPreferredSize(new java.awt.Dimension(20, 20));
         infoLabel.setVerifyInputWhenFocusTarget(false);
-        infoLabel.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        infoLabel.setVerticalTextPosition(SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

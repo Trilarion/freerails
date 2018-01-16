@@ -37,7 +37,7 @@ import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 

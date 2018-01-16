@@ -124,7 +124,6 @@ public class AddTrainPreMove implements PreMove {
     }
 
     private TrainMotion initPositionStep2(PathOnTiles path) {
-        // TODO fix code.
         return new TrainMotion(path, path.steps(), calTrainLength(), ConstantAcceleration.STOPPED);
     }
 

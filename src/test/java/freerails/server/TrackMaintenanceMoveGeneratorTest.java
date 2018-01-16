@@ -33,19 +33,20 @@ import junit.framework.TestCase;
 import java.util.Arrays;
 
 /**
- * JUnit test for TrackMaintenanceMoveGenerator.
+ * Test for TrackMaintenanceMoveGenerator.
  */
 public class TrackMaintenanceMoveGeneratorTest extends TestCase {
-    private World w;
+
+    private World world;
 
     /**
      * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
-        w = new WorldImpl(20, 20);
-        w.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        MapFixtureFactory.generateTrackRuleList(w);
+        world = new WorldImpl(20, 20);
+        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        MapFixtureFactory.generateTrackRuleList(world);
     }
 
     /**
@@ -79,7 +80,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
     private int[] calNumOfEachTrackType() {
         int[] actual;
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                w, MapFixtureFactory.TEST_PRINCIPAL);
+                world, MapFixtureFactory.TEST_PRINCIPAL);
         actual = new int[3];
         aggregator.setType(0);
         actual[0] = aggregator.calculateQuantity();
@@ -99,6 +100,6 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         ItemTransaction t = new ItemTransaction(
                 TransactionCategory.TRACK, trackType, quantity, new Money(
                 trackType));
-        w.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, t);
+        world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, t);
     }
 }

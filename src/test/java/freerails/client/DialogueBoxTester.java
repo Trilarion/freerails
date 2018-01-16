@@ -101,7 +101,7 @@ class DialogueBoxTester extends javax.swing.JFrame {
         w.addPlayer(TEST_PLAYER);
         try {
             vl = new RendererRootImpl(w,
-                    ProgressMonitorModel.EMPTY_PROGRESSMONITOR);
+                    ProgressMonitorModel.EMPTY);
         } catch (IOException e) {
         }
         modelRoot.setup(w, TEST_PLAYER.getPrincipal());

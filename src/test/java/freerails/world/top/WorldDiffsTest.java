@@ -33,7 +33,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 /**
- * JUnit test for WorldDifferences.
+ * Test for WorldDifferences.
  */
 public class WorldDiffsTest extends TestCase {
     private final Player player0 = new Player("player0", 0);

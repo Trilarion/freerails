@@ -43,16 +43,11 @@ import junit.framework.TestCase;
 
 public class BuildTrackControllerTest extends TestCase {
 
-    private World w;
-
+    private World world;
     private ModelRootImpl modelRoot;
-
     private BuildTrackController buildTrackController;
-
     private TrackMoveProducer trackBuilder;
-
     private int singleTrackRuleID = -1;
-
     private int doubleTrackRuleID = -1;
 
     /**
@@ -60,18 +55,18 @@ public class BuildTrackControllerTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        w = MapFixtureFactory2.getCopy();
+        world = MapFixtureFactory2.getCopy();
         modelRoot = new ModelRootImpl();
-        FreerailsPrincipal p = w.getPlayer(0).getPrincipal();
-        modelRoot.setup(w, p);
-        buildTrackController = new BuildTrackController(w, modelRoot);
-        MoveExecutor executor = new SimpleMoveExecutor(w, 0);
-        trackBuilder = new TrackMoveProducer(executor, w, modelRoot);
+        FreerailsPrincipal p = world.getPlayer(0).getPrincipal();
+        modelRoot.setup(world, p);
+        buildTrackController = new BuildTrackController(world, modelRoot);
+        MoveExecutor executor = new SimpleMoveExecutor(world, 0);
+        trackBuilder = new TrackMoveProducer(executor, world, modelRoot);
 
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
 
             final Integer ruleID = i;
-            TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+            TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
 
             if (rule.getTypeName().equals("standard track")) {
                 singleTrackRuleID = ruleID;
@@ -100,12 +95,12 @@ public class BuildTrackControllerTest extends TestCase {
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.
-        FullTerrainTile tile = (FullTerrainTile) w.getTile(10, 10);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(10, 10);
         assertFalse(tile.hasTrack());
         buildTrackController.updateWorld(trackBuilder);
-        tile = (FullTerrainTile) w.getTile(10, 10);
+        tile = (FullTerrainTile) world.getTile(10, 10);
         assertTrue(tile.hasTrack());
-        tile = (FullTerrainTile) w.getTile(20, 10);
+        tile = (FullTerrainTile) world.getTile(20, 10);
         assertTrue(tile.hasTrack());
 
     }
@@ -134,19 +129,19 @@ public class BuildTrackControllerTest extends TestCase {
 
         buildTrackController.updateWorld(trackBuilder);
 
-        FullTerrainTile tile = (FullTerrainTile) w.getTile(10, 10);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(10, 10);
 
         assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) w.getTile(15, 10);
+        tile = (FullTerrainTile) world.getTile(15, 10);
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) w.getTile(17, 10);
+        tile = (FullTerrainTile) world.getTile(17, 10);
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) w.getTile(20, 10);
+        tile = (FullTerrainTile) world.getTile(20, 10);
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 

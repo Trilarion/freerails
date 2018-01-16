@@ -42,11 +42,10 @@ import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO freerails.client.renderer is not the most logical place for this class.
 /**
  * Provides methods to change the proposed track and save it to the
  * real world.
- *
- * TODO freerails.client.renderer is not the most logical place for this class.
  */
 public class BuildTrackController implements GameModel {
 

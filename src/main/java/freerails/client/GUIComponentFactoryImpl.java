@@ -109,8 +109,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             if (move instanceof ChangeGameSpeedMove) {
                 ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
-                for (Enumeration<Action> actionsEnum = speedActions.getActions(); actionsEnum.hasMoreElements(); ) {
-                    Action action = actionsEnum.nextElement();
+                for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
                     if (actionName.equals(actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed()))) {
@@ -278,10 +277,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             public void menuSelected(MenuEvent e) {
                 newGameJMenu.removeAll();
 
-                Enumeration<Action> actions = sc.getMapNames().getActions();
-
-                while (actions.hasMoreElements()) {
-                    JMenuItem mi = new JMenuItem(actions.nextElement());
+                for (Action action: sc.getMapNames().getActions()) {
+                    JMenuItem mi = new JMenuItem(action);
                     newGameJMenu.add(mi);
                 }
             }
@@ -299,10 +296,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         speedActions = sc.getSetTargetTickPerSecondActions();
 
         Enumeration<MappedButtonModel> buttonModels = speedActions.getButtonModels();
-        Enumeration<Action> actions = speedActions.getActions();
 
-        while (buttonModels.hasMoreElements()) {
-            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(actions.nextElement());
+        for (Action action: speedActions.getActions()) {
+            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(action);
             mi.setModel(buttonModels.nextElement());
             group.add(mi);
             gameSpeedSubMenu.add(mi);
@@ -531,11 +527,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         mapViewJComponent.requestFocus();
     }
 
+    // TODO change to often, ~10% of time
     /**
      * Listens for changes on the map, for instance when track is built, and
      * refreshes the map views.
-     *
-     * TODO changes to often, ~10% of time
      */
     public void tilesChanged(Rectangle tilesChanged) {
         if (logger.isDebugEnabled()) {

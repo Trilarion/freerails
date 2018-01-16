@@ -42,7 +42,7 @@ import java.net.URL;
 // TODO what is this good for?
 public class MapFixtureFactory2 {
 
-    private static World w;
+    private static World world;
 
     private MapFixtureFactory2() {
     }
@@ -53,10 +53,10 @@ public class MapFixtureFactory2 {
      * game.
      */
     public static synchronized World getCopy() {
-        if (null == w) {
-            w = generateWorld();
+        if (null == world) {
+            world = generateWorld();
         }
-        return w.defensiveCopy();
+        return world.defensiveCopy();
     }
 
     private static World generateWorld() {

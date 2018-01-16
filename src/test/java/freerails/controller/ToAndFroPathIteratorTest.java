@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * JUnit test for ToAndFroPathIteratorTest.
+ * Test for ToAndFroPathIteratorTest.
  */
 public class ToAndFroPathIteratorTest extends TestCase {
 

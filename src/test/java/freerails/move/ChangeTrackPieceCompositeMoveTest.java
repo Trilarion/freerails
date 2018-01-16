@@ -35,7 +35,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private final TileTransition southeast = TileTransition.SOUTH_EAST;

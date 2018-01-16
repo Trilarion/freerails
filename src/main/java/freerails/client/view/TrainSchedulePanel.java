@@ -344,7 +344,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void priorityOrdersJButtonActionPerformed(java.awt.event.ActionEvent evt) {
         MutableSchedule s = getSchedule();
         try {
-            s.setPriorityOrders(new TrainOrdersModel(getFirstStationID(), null, false, false));// TODO fix bug
+            s.setPriorityOrders(new TrainOrdersModel(getFirstStationID(), null, false, false));
             showSelectStation(s, Schedule.PRIORITY_ORDERS);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");

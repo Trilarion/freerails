@@ -179,8 +179,6 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
         setEnabledAt(trainListIndex, enabled);
     }
 
-    // FIXME surely this is something?
-
     /**
      * @param enabled
      */

@@ -23,7 +23,7 @@ import freerails.world.WorldDiffs;
 import freerails.world.terrain.FullTerrainTile;
 
 /**
- * JUnit test for MapDiffMove.
+ * Test for MapDiffMove.
  */
 public class MapDiffMoveTest extends AbstractMoveTestCase {
 

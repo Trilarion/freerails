@@ -34,10 +34,8 @@ import junit.framework.TestCase;
  */
 public class StationBuilderTest extends TestCase {
 
-    private World w;
-
+    private World world;
     private TrackMoveProducer trackBuilder;
-
     private StationBuilder stationBuilder;
 
     /**
@@ -46,10 +44,10 @@ public class StationBuilderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        w = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(w, 0);
+        world = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(world, 0);
         ModelRoot mr = new ModelRootImpl();
-        trackBuilder = new TrackMoveProducer(me, w, mr);
+        trackBuilder = new TrackMoveProducer(me, world, mr);
         stationBuilder = new StationBuilder(me);
     }
 

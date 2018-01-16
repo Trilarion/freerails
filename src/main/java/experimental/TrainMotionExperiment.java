@@ -43,11 +43,9 @@ import java.awt.*;
 import java.util.Iterator;
 import java.util.Random;
 
+// TODO Update the trains position when necessary. Make the train stop at intervals, and slowly accelerate.
 /**
- * Is a visual test for the train movement code.
- *
- * TODO: Update the trains position when necessary. Make the train stop at
- * intervals, and slowly accelerate.
+ * A visual test for the train movement code.
  */
 class TrainMotionExperiment extends JComponent {
 

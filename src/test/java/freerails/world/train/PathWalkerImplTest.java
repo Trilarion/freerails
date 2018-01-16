@@ -28,7 +28,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class PathWalkerImplTest extends TestCase {
     private PathIterator it;

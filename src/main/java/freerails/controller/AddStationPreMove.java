@@ -42,11 +42,8 @@ import java.util.NoSuchElementException;
 public class AddStationPreMove implements PreMove {
 
     private static final long serialVersionUID = 3258131349411148085L;
-
     private final Point2D p;
-
     private final int ruleNumber;
-
     private final FreerailsPrincipal principal;
 
     private AddStationPreMove(Point2D p, int trackRule, FreerailsPrincipal principal) {

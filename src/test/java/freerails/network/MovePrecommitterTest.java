@@ -36,8 +36,8 @@ import junit.framework.TestCase;
 /**
  */
 public class MovePrecommitterTest extends TestCase {
-    private World w;
 
+    private World world;
     private MovePrecommitter committer;
 
     /**
@@ -45,8 +45,8 @@ public class MovePrecommitterTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        w = new WorldImpl(10, 10);
-        committer = new MovePrecommitter(w);
+        world = new WorldImpl(10, 10);
+        committer = new MovePrecommitter(world);
     }
 
     /**
@@ -58,7 +58,7 @@ public class MovePrecommitterTest extends TestCase {
         assertFalse(oldtime.equals(newTime));
 
         Move m = new TimeTickMove(oldtime, newTime);
-        MoveStatus ms = m.tryDoMove(w, Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);
 
         committer.toServer(m);
@@ -87,7 +87,7 @@ public class MovePrecommitterTest extends TestCase {
         assertFalse(oldtime.equals(newTime));
 
         Move m = new TimeTickMove(oldtime, newTime);
-        MoveStatus ms = m.tryDoMove(w, Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);
 
         committer.toServer(m);
@@ -99,7 +99,7 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(1, committer.precomitted.size());
 
         committer.fromServer(m);
-        assertFalse(m.tryDoMove(w, Player.AUTHORITATIVE).ok);
+        assertFalse(m.tryDoMove(world, Player.AUTHORITATIVE).ok);
 
         /* The move m should now be full committed. */
         assertEquals(1, committer.uncomitted.size());
@@ -136,7 +136,7 @@ public class MovePrecommitterTest extends TestCase {
         assertFalse(oldtime.equals(newTime));
 
         Move m = new TimeTickMove(oldtime, newTime);
-        MoveStatus ms = m.tryDoMove(w, Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);
 
         committer.toServer(m);
@@ -166,7 +166,7 @@ public class MovePrecommitterTest extends TestCase {
 
         /* the following move should fail! */
         Move m = new TimeTickMove(newTime, oldtime);
-        MoveStatus ms = m.tryDoMove(w, Player.AUTHORITATIVE);
+        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
         assertFalse(ms.ok);
 
         committer.toServer(m);
@@ -234,6 +234,6 @@ public class MovePrecommitterTest extends TestCase {
     }
 
     private GameTime getTime() {
-        return w.currentTime();
+        return world.currentTime();
     }
 }

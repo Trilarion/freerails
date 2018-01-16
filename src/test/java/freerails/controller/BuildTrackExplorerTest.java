@@ -38,7 +38,7 @@ import freerails.world.train.PositionOnTrack;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for BuildTrackExplorer.
+ * Test for BuildTrackExplorer.
  */
 public class BuildTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);

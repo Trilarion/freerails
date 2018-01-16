@@ -165,7 +165,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 connection.disconnect();
             }
         } catch (IOException | InterruptedException e) {
-            // TODO Auto-generated catch block
         }
     }
 
@@ -344,7 +343,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             serverGameModel.setWorld(world, passwords);
             setServerGameModel(serverGameModel);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
         }
 
         sendWorldUpdatedCommand();
@@ -390,7 +388,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
             send2All(request);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
         }
     }
 

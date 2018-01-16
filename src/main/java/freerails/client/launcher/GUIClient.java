@@ -137,7 +137,6 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
                     vl = new RendererRootImpl(w, monitor);
                     monitor.finished();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                 }
             }
 

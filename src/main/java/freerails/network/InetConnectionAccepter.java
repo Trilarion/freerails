@@ -85,7 +85,6 @@ public class InetConnectionAccepter implements Runnable {
             try {
                 stop();
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
         }

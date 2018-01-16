@@ -23,7 +23,7 @@ import freerails.world.finances.Money;
 import java.io.Serializable;
 
 /**
- * JUnit test for EchoGameServer.
+ * Test for EchoGameServer.
  */
 public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
     /**

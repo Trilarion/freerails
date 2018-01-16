@@ -74,7 +74,6 @@ public class RendererRootImpl implements RendererRoot {
             try {
                 sm.addClip(soundsFiles[i]);
             } catch (IOException | UnsupportedAudioFileException e) {
-                // TODO Auto-generated catch block
             }
             pm.setValue(i + 1);
         }

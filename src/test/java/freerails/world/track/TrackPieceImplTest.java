@@ -33,14 +33,14 @@ import junit.framework.TestCase;
  */
 public class TrackPieceImplTest extends TestCase {
 
-    private World w;
+    private World world;
 
     /**
      * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
-        w = MapFixtureFactory2.getCopy();
+        world = MapFixtureFactory2.getCopy();
     }
 
     /**
@@ -49,8 +49,8 @@ public class TrackPieceImplTest extends TestCase {
     public void testEqualsObject() {
         TrackConfiguration tc1 = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
 
-        TrackRule rule0 = (TrackRule) w.get(SKEY.TRACK_RULES, 0);
-        TrackRule rule4 = (TrackRule) w.get(SKEY.TRACK_RULES, 4);
+        TrackRule rule0 = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
+        TrackRule rule4 = (TrackRule) world.get(SKEY.TRACK_RULES, 4);
 
         TrackPieceImpl tp1 = new TrackPieceImpl(tc1, rule0, 0, 0);
         assertEquals(tp1, tp1);

@@ -30,7 +30,7 @@ import freerails.world.World;
 public class SimpleServerGameModel implements ServerGameModel {
 
     private static final long serialVersionUID = 3546074757457131826L;
-    private World w;
+    private World world;
     private String[] passwords;
 
     /**
@@ -38,7 +38,7 @@ public class SimpleServerGameModel implements ServerGameModel {
      * @param passwords
      */
     public void setWorld(World world, String[] passwords) {
-        w = world;
+        this.world = world;
         this.passwords = passwords.clone();
     }
 
@@ -46,7 +46,7 @@ public class SimpleServerGameModel implements ServerGameModel {
      * @return
      */
     public World getWorld() {
-        return w;
+        return world;
     }
 
     /**

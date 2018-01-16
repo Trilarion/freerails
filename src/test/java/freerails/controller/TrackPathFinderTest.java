@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 import java.util.List;
 
 /**
- * JUnit test for TrackPathFinder.
+ * Test for TrackPathFinder.
  */
 public class TrackPathFinderTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);

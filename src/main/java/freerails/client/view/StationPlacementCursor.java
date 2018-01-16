@@ -27,6 +27,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+// TODO scroll the area when the mouse hovers at the edge of the map.
 /**
  * Implements a cursor which can be used to place a station on the
  * map. Mode of operation:
@@ -41,8 +42,7 @@ import java.beans.PropertyChangeListener;
  * <li>Cursor fires the actionPerformed causing the station to be built.
  * </ol>
  * When the StationBuildAction is no longer enabled, the owner reverts to the
- * regular cursor type. TODO scroll the area when the mouse hovers at the edge
- * of the map.
+ * regular cursor type.
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 

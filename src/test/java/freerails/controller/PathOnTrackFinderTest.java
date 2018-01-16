@@ -34,14 +34,10 @@ import java.util.Arrays;
  */
 public class PathOnTrackFinderTest extends TestCase {
 
-    private World w;
-
+    private World world;
     private TrackMoveProducer producer;
-
     private PathOnTrackFinder pathFinder;
-
     private StationBuilder stationBuilder;
-
     private BuildTrackStrategy bts;
 
     /**
@@ -50,13 +46,13 @@ public class PathOnTrackFinderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        w = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(w, 0);
+        world = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(world, 0);
         ModelRoot mr = new ModelRootImpl();
-        producer = new TrackMoveProducer(me, w, mr);
-        pathFinder = new PathOnTrackFinder(w);
+        producer = new TrackMoveProducer(me, world, mr);
+        pathFinder = new PathOnTrackFinder(world);
         stationBuilder = new StationBuilder(me);
-        bts = BuildTrackStrategy.getDefault(w);
+        bts = BuildTrackStrategy.getDefault(world);
     }
 
     /**

@@ -36,11 +36,11 @@ import freerails.world.player.Player;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for FinancialDataGatherer.
+ * Test for FinancialDataGatherer.
  */
 public class FinancialDataGathererTest extends TestCase {
-    private World w;
 
+    private World world;
     private Player player;
 
     /**
@@ -49,10 +49,10 @@ public class FinancialDataGathererTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         player = new Player("Player X", 0);
-        w = new WorldImpl();
+        world = new WorldImpl();
 
-        Move addPlayer = AddPlayerMove.generateMove(w, player);
-        MoveStatus ms = addPlayer.doMove(w, Player.AUTHORITATIVE);
+        Move addPlayer = AddPlayerMove.generateMove(world, player);
+        MoveStatus ms = addPlayer.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.ok);
     }
 
@@ -60,14 +60,14 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testCanIssueBond() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player
                 .getPrincipal());
         assertTrue(fdg.canIssueBond()); // 5%
 
         assertTrue(addBond()); // 6%
         assertTrue(addBond()); // 7%
         assertFalse(addBond()); // 8% so can't
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
+        fdg = new FinancialDataGatherer(world, player.getPrincipal());
         assertEquals(8.0, fdg.nextBondInterestRate());
     }
 
@@ -77,8 +77,8 @@ public class FinancialDataGathererTest extends TestCase {
      */
     private boolean addBond() {
         FinancialDataGatherer fdg;
-        w.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
+        world.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
+        fdg = new FinancialDataGatherer(world, player.getPrincipal());
 
         return fdg.canIssueBond();
     }
@@ -87,11 +87,11 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testNextBondInterestRate() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player
                 .getPrincipal());
         assertEquals(5.0, fdg.nextBondInterestRate());
-        w.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
-        fdg = new FinancialDataGatherer(w, player.getPrincipal());
+        world.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
+        fdg = new FinancialDataGatherer(world, player.getPrincipal());
         assertEquals(6.0, fdg.nextBondInterestRate());
     }
 
@@ -100,7 +100,7 @@ public class FinancialDataGathererTest extends TestCase {
      */
     public void testTreasuryStock() {
         FreerailsPrincipal principal = player.getPrincipal();
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w, principal);
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, principal);
         assertEquals(0, fdg.treasuryStock());
 
         int treasuryStock = 10000;
@@ -108,8 +108,8 @@ public class FinancialDataGathererTest extends TestCase {
         int publicStock = totalStock - treasuryStock;
         Transaction t = StockItemTransaction.buyOrSellStock(0, treasuryStock,
                 new Money(5));
-        w.addTransaction(principal, t);
-        fdg = new FinancialDataGatherer(w, principal);
+        world.addTransaction(principal, t);
+        fdg = new FinancialDataGatherer(world, principal);
         assertEquals(treasuryStock, fdg.treasuryStock());
         assertEquals(totalStock, fdg.totalShares());
         assertEquals(publicStock, fdg.sharesHeldByPublic());
@@ -119,12 +119,12 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testBuyingStakesInOtherRRs() {
-        w = new WorldImpl();
+        world = new WorldImpl();
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player("Player " + i, i);
-            Move addPlayer = AddPlayerMove.generateMove(w, players[i]);
-            MoveStatus ms = addPlayer.doMove(w, Player.AUTHORITATIVE);
+            Move addPlayer = AddPlayerMove.generateMove(world, players[i]);
+            MoveStatus ms = addPlayer.doMove(world, Player.AUTHORITATIVE);
             assertTrue(ms.ok);
         }
 
@@ -132,8 +132,8 @@ public class FinancialDataGathererTest extends TestCase {
         int quantity = 10000;
         Transaction t = StockItemTransaction.buyOrSellStock(1, quantity, new Money(
                 5));
-        w.addTransaction(players[0].getPrincipal(), t);
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w, players[0]
+        world.addTransaction(players[0].getPrincipal(), t);
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, players[0]
                 .getPrincipal());
         assertEquals(0, fdg.treasuryStock());
         int acutal = fdg.getStockInRRs()[1];
@@ -144,7 +144,7 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testTotalShares() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(w, player
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player
                 .getPrincipal());
         int expected = WorldConstants.IPO_SIZE;
         assertEquals(expected, fdg.totalShares());

@@ -70,22 +70,22 @@ public class ClientFrame extends JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        javax.swing.JPanel rhsjPanel = new javax.swing.JPanel();
-        javax.swing.JPanel mapOverview = gUIComponentFactory.createOverviewMap();
-        javax.swing.JTabbedPane trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
+        JPanel rhsjPanel = new JPanel();
+        JPanel mapOverview = gUIComponentFactory.createOverviewMap();
+        JTabbedPane trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
 
-        javax.swing.JPanel lhsjPanel = new javax.swing.JPanel();
-        javax.swing.JScrollPane mainMapView = gUIComponentFactory.createMainMap();
-        javax.swing.JPanel statusjPanel = new javax.swing.JPanel();
-        javax.swing.JLabel datelabel = gUIComponentFactory.createDateJLabel();
-        javax.swing.JLabel cashlabel = gUIComponentFactory.createCashJLabel();
-        javax.swing.JMenuBar jMenuBar1 = new javax.swing.JMenuBar();
-        javax.swing.JMenu gameMenu = gUIComponentFactory.createGameMenu();
-        javax.swing.JMenu buildMenu = gUIComponentFactory.createBuildMenu();
-        javax.swing.JMenu brokerMenu1 = gUIComponentFactory.createBrokerMenu();
-        javax.swing.JMenu displayMenu = gUIComponentFactory.createDisplayMenu();
-        javax.swing.JMenu reportsMenu = gUIComponentFactory.createReportsMenu();
-        javax.swing.JMenu helpMenu = gUIComponentFactory.createHelpMenu();
+        JPanel lhsjPanel = new JPanel();
+        JScrollPane mainMapView = gUIComponentFactory.createMainMap();
+        JPanel statusjPanel = new JPanel();
+        JLabel datelabel = gUIComponentFactory.createDateJLabel();
+        JLabel cashlabel = gUIComponentFactory.createCashJLabel();
+        JMenuBar jMenuBar1 = new JMenuBar();
+        JMenu gameMenu = gUIComponentFactory.createGameMenu();
+        JMenu buildMenu = gUIComponentFactory.createBuildMenu();
+        JMenu brokerMenu1 = gUIComponentFactory.createBrokerMenu();
+        JMenu displayMenu = gUIComponentFactory.createDisplayMenu();
+        JMenu reportsMenu = gUIComponentFactory.createReportsMenu();
+        JMenu helpMenu = gUIComponentFactory.createHelpMenu();
 
         getContentPane().setLayout(new java.awt.GridBagLayout());
 

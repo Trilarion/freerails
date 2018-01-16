@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 import java.util.Iterator;
 
 /**
- * JUnit test for PathOnTiles.
+ * Test for PathOnTiles.
  */
 public class PathOnTilesTest extends TestCase {
 

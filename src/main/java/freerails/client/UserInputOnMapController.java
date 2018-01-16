@@ -182,12 +182,6 @@ class UserInputOnMapController extends KeyAdapter {
 
             case KeyEvent.VK_BACK_SPACE:
                 logger.info("Undo building track currently not implemented.");
-
-                // TODO Investigate
-                // MoveStatus ms = trackBuilder.undoLastTrackMove();
-                // if (!ms.isOk()) {
-                // setCursorMessage(ms.message);
-                // }
                 break;
 
             case KeyEvent.VK_I: {
@@ -244,10 +238,6 @@ class UserInputOnMapController extends KeyAdapter {
             }
 
             case KeyEvent.VK_M: {
-                // FIXME broker screen bug maybe?
-                // if the screen is not clicked after the broker screen is closed
-                // and 'M' is pressed
-                // again, the broker screen will never show up again.
                 dialogueBoxController.showBrokerScreen();
                 break;
             }

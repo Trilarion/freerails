@@ -42,7 +42,7 @@ public class SoundManager implements ModelRootListener, LineListener {
 
     private static final Logger logger = Logger.getLogger(SoundManager.class.getName());
     private static final SoundManager soundManager = new SoundManager();
-    private final Map<String, Sample> samples = new HashMap<>();
+    private final Map<String, AudioSample> samples = new HashMap<>();
     private final Deque<Clip> voices = new LinkedList<>();
     private int maxLines;
     private Mixer mixer;
@@ -114,14 +114,14 @@ public class SoundManager implements ModelRootListener, LineListener {
         URL url = getClass().getResource(s);
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(loadStream(url.openStream()));
 
-        Sample sample = new Sample();
+        AudioSample audioSample = new AudioSample();
 
-        sample.format = audioInputStream.getFormat();
-        sample.size = (int) (sample.format.getFrameSize() * audioInputStream.getFrameLength());
-        sample.audio = new byte[sample.size];
-        sample.info = new DataLine.Info(Clip.class, sample.format, sample.size);
-        audioInputStream.read(sample.audio, 0, sample.size);
-        samples.put(s, sample);
+        audioSample.format = audioInputStream.getFormat();
+        audioSample.size = (int) (audioSample.format.getFrameSize() * audioInputStream.getFrameLength());
+        audioSample.audio = new byte[audioSample.size];
+        audioSample.info = new DataLine.Info(Clip.class, audioSample.format, audioSample.size);
+        audioInputStream.read(audioSample.audio, 0, audioSample.size);
+        samples.put(s, audioSample);
     }
 
     /**
@@ -135,11 +135,11 @@ public class SoundManager implements ModelRootListener, LineListener {
                     addClip(s);
                 }
 
-                Sample sample = samples.get(s);
+                AudioSample audioSample = samples.get(s);
 
                 Clip clip;
                 if (voices.size() < maxLines) {
-                    clip = (Clip) mixer.getLine(sample.info);
+                    clip = (Clip) mixer.getLine(audioSample.info);
                 } else {
                     clip = voices.removeFirst();
                     clip.stop();
@@ -147,7 +147,7 @@ public class SoundManager implements ModelRootListener, LineListener {
                     clip.close();
                 }
                 clip.addLineListener(this);
-                clip.open(sample.format, sample.audio, 0, sample.size);
+                clip.open(audioSample.format, audioSample.audio, 0, audioSample.size);
                 clip.loop(loops);
                 voices.add(clip);
             } catch (LineUnavailableException e) {
@@ -175,7 +175,7 @@ public class SoundManager implements ModelRootListener, LineListener {
     /**
      * Stores the audio data and properties of a sample.
      */
-    private static class Sample {
+    private static class AudioSample {
 
         private byte[] audio;
 

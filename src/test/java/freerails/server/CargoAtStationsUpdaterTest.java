@@ -21,7 +21,7 @@ package freerails.server;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for CargoAtStationsUpdater.
+ * Test for CargoAtStationsUpdater.
  */
 public class CargoAtStationsUpdaterTest extends TestCase {
 

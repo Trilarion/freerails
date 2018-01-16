@@ -52,10 +52,7 @@ public class MoveTrainPreMove implements PreMove {
 
     private static final long serialVersionUID = 3545516188269491250L;
     private static final Logger logger = Logger.getLogger(MoveTrainPreMove.class.getName());
-
-    /**
-     * TODO Performance cache must be cleared if track on map is build ! make a change listener!
-     */
+    // TODO Performance cache must be cleared if track on map is build ! make a change listener!
     private static final Map<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
     private static int cacheHit = 0;

@@ -33,7 +33,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.*;
 
 /**
- * JUnit test for MoveTrainPreMove, tests moving round a loop of track.
+ * Test for MoveTrainPreMove, tests moving round a loop of track.
  */
 public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 

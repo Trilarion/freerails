@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class SKEYTest extends TestCase {
 

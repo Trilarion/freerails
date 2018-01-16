@@ -37,14 +37,10 @@ import java.util.Arrays;
  */
 public class TrackBuildingTest extends TestCase {
 
-    private World w;
-
+    private World world;
     private TrackMoveProducer producer;
-
     private TrackPathFinder pathFinder;
-
     private StationBuilder stationBuilder;
-
     private BuildTrackStrategy bts;
 
     /**
@@ -53,14 +49,14 @@ public class TrackBuildingTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        w = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(w, 0);
+        world = MapFixtureFactory2.getCopy();
+        MoveExecutor me = new SimpleMoveExecutor(world, 0);
         ModelRoot mr = new ModelRootImpl();
-        producer = new TrackMoveProducer(me, w, mr);
-        FreerailsPrincipal principle = w.getPlayer(0).getPrincipal();
-        pathFinder = new TrackPathFinder(w, principle);
+        producer = new TrackMoveProducer(me, world, mr);
+        FreerailsPrincipal principle = world.getPlayer(0).getPrincipal();
+        pathFinder = new TrackPathFinder(world, principle);
         stationBuilder = new StationBuilder(me);
-        bts = BuildTrackStrategy.getDefault(w);
+        bts = BuildTrackStrategy.getDefault(world);
     }
 
     /**
@@ -73,7 +69,7 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FullTerrainTile) w.getTile(x, 5))
+                TrackPiece tp = ((FullTerrainTile) world.getTile(x, 5))
                         .getTrackPiece();
                 assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp
                         .getTrackTypeID());
@@ -91,7 +87,7 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(ms.message, ms.ok);
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FullTerrainTile) w.getTile(x, 5))
+                TrackPiece tp = ((FullTerrainTile) world.getTile(x, 5))
                         .getTrackPiece();
                 assertEquals(0, tp.getTrackTypeID());
             }
@@ -111,11 +107,11 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
 
-            TrackPiece tp1 = ((FullTerrainTile) w.getTile(5, 5)).getTrackPiece();
+            TrackPiece tp1 = ((FullTerrainTile) world.getTile(5, 5)).getTrackPiece();
             assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp1
                     .getTrackTypeID());
 
-            TrackPiece tp2 = ((FullTerrainTile) w.getTile(6, 5)).getTrackPiece();
+            TrackPiece tp2 = ((FullTerrainTile) world.getTile(6, 5)).getTrackPiece();
             assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp2
                     .getTrackTypeID());
 
@@ -131,10 +127,10 @@ public class TrackBuildingTest extends TestCase {
             MoveStatus ms = producer.buildTrack(from, path);
             assertTrue(ms.message, ms.ok);
             // Check track has been built.
-            tp1 = ((FullTerrainTile) w.getTile(5, 5)).getTrackPiece();
+            tp1 = ((FullTerrainTile) world.getTile(5, 5)).getTrackPiece();
             assertEquals(0, tp1.getTrackTypeID());
 
-            tp2 = ((FullTerrainTile) w.getTile(6, 5)).getTrackPiece();
+            tp2 = ((FullTerrainTile) world.getTile(6, 5)).getTrackPiece();
             assertEquals(0, tp2.getTrackTypeID());
         } catch (PathNotFoundException e) {
             fail();
@@ -178,7 +174,7 @@ public class TrackBuildingTest extends TestCase {
         try {
 
             int trackTypeID = stationBuilder.getTrackTypeID("double track");
-            bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, w);
+            bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, world);
             producer.setBuildTrackStrategy(bts);
             Point2D a = new Point2D(5, 5);
             Point2D b = new Point2D(6, 5);
@@ -192,7 +188,7 @@ public class TrackBuildingTest extends TestCase {
             MoveStatus ms = producer.buildTrack(a, path);
             assertTrue(ms.ok);
 
-            TrackPiece tp = ((FullTerrainTile) w.getTile(b.x, b.y))
+            TrackPiece tp = ((FullTerrainTile) world.getTile(b.x, b.y))
                     .getTrackPiece();
             assertEquals("We just build double track here.", trackTypeID, tp
                     .getTrackTypeID());

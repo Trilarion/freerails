@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 import java.util.NoSuchElementException;
 
 /**
- * JUnit test for SimpleAStarPathFinder. 27-Nov-2002
+ * Test for SimpleAStarPathFinder. 27-Nov-2002
  */
 public class SimpleAStarPathFinderTest extends TestCase {
     private Map map;

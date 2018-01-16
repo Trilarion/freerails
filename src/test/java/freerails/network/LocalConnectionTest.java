@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 /**
- * JUnit test for NewLocalConnection.
+ * Test for NewLocalConnection.
  */
 public class LocalConnectionTest extends TestCase {
     private final Serializable[] EmptyArray = new Serializable[0];

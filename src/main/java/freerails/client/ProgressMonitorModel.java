@@ -31,17 +31,13 @@ public interface ProgressMonitorModel {
     /**
      *
      */
-    // TODO why do we need a null instance?
-    ProgressMonitorModel EMPTY_PROGRESSMONITOR = new ProgressMonitorModel() {
+    ProgressMonitorModel EMPTY = new ProgressMonitorModel() {
 
-        public void setValue(int i) {
-        }
+        public void setValue(int i) {}
 
-        public void nextStep(int max) {
-        }
+        public void nextStep(int max) { }
 
-        public void finished() {
-        }
+        public void finished() {}
     };
 
     /**

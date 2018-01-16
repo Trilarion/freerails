@@ -32,7 +32,7 @@ import junit.framework.TestSuite;
 import java.util.HashSet;
 
 /**
- * JUnit test.
+ * Test.
  */
 public class TrackConfigurationTest extends TestCase {
 

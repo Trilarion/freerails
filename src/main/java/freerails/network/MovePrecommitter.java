@@ -52,21 +52,21 @@ class MovePrecommitter {
      * executed on the local world object.
      */
     final LinkedList<Serializable> uncomitted = new LinkedList<>();
-    private final World w;
+    private final World world;
     /**
      * Whether the first move on the uncommitted list failed to go through on
      * the last try.
      */
     boolean blocked = false;
 
-    MovePrecommitter(World w) {
-        this.w = w;
+    MovePrecommitter(World world) {
+        this.world = world;
     }
 
     void fromServer(Move m) {
         rollBackPrecommittedMoves();
 
-        MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
         if (!ms.ok) {
             throw new IllegalStateException(ms.message);
@@ -85,7 +85,7 @@ class MovePrecommitter {
             if (!ms.ok) {
                 logger.info("Move rejected by server: " + ms.message);
 
-                MoveStatus undoStatus = m.undoMove(w, Player.AUTHORITATIVE);
+                MoveStatus undoStatus = m.undoMove(world, Player.AUTHORITATIVE);
 
                 if (!undoStatus.ok) {
                     throw new IllegalStateException();
@@ -109,7 +109,7 @@ class MovePrecommitter {
     }
 
     Move fromServer(PreMove pm) {
-        Move generatedMove = pm.generateMove(w);
+        Move generatedMove = pm.generateMove(world);
         fromServer(generatedMove);
 
         return generatedMove;
@@ -124,8 +124,8 @@ class MovePrecommitter {
             if (logger.isDebugEnabled()) {
                 logger.debug("PreMove accepted by server: " + pms.toString());
             }
-            Move m = pm.generateMove(w);
-            MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+            Move m = pm.generateMove(world);
+            MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
             if (!ms.ok) {
                 throw new IllegalStateException();
@@ -145,7 +145,7 @@ class MovePrecommitter {
 
             if (first instanceof Move) {
                 Move m = (Move) first;
-                MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+                MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
                 if (ms.ok) {
                     uncomitted.removeFirst();
@@ -155,8 +155,8 @@ class MovePrecommitter {
                 }
             } else if (first instanceof PreMove) {
                 PreMove pm = (PreMove) first;
-                Move m = pm.generateMove(w);
-                MoveStatus ms = m.doMove(w, Player.AUTHORITATIVE);
+                Move m = pm.generateMove(world);
+                MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
                 if (ms.ok) {
                     uncomitted.removeFirst();
@@ -191,7 +191,7 @@ class MovePrecommitter {
                 throw new IllegalStateException();
             }
 
-            MoveStatus ms = move2undo.undoMove(w, Player.AUTHORITATIVE);
+            MoveStatus ms = move2undo.undoMove(world, Player.AUTHORITATIVE);
 
             if (!ms.ok) {
                 throw new IllegalStateException(ms.message);
@@ -211,7 +211,7 @@ class MovePrecommitter {
         precommitMoves();
 
         if (blocked) {
-            return pm.generateMove(w);
+            return pm.generateMove(world);
         }
         PreMoveAndMove pmam = (PreMoveAndMove) precomitted.getLast();
 

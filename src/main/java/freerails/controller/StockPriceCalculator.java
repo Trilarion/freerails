@@ -117,6 +117,7 @@ public class StockPriceCalculator {
         int ticksAtStartOfLastYear = calendar.getTicks(lastyear);
         GameTime[] interval = {new GameTime(ticksAtStartOfLastYear), new GameTime(ticksAtStartOfyear)};
 
+        // TODO is this anonymous class necessary`?
         TransactionAggregator aggregator = new TransactionAggregator(world, pr) {
             @Override
             protected boolean condition(int transactionID) {

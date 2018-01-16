@@ -33,7 +33,7 @@ import freerails.world.player.Player;
 import junit.framework.TestCase;
 
 /**
- * JUnit test for BalanceSheetGenerator.
+ * Test for BalanceSheetGenerator.
  */
 public class BalanceSheetGeneratorTest extends TestCase {
 
