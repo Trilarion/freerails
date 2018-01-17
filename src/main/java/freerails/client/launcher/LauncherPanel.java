@@ -17,18 +17,96 @@
  */
 
 /*
+ * LauncherPanel.java
  *
  */
+
 package freerails.client.launcher;
 
+import freerails.client.ClientConfig;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+
 /**
+ * The first launcher panel, lets you choose 'single player', 'start network
+ * game' etc.
  */
+final class LauncherPanel extends JPanel {
 
-interface LauncherPanel {
+    private static final long serialVersionUID = 3257850965422913590L;
+    private final ButtonModel[] buttonModels = new ButtonModel[4];
+    private ButtonGroup buttonGroup1;
 
-    /**
-     * @return
-     */
-    boolean validateInput();
+    public LauncherPanel() {
+        GridBagConstraints gridBagConstraints;
+
+        buttonGroup1 = new ButtonGroup();
+        JRadioButton singlePlayerButton = new JRadioButton();
+        JRadioButton startNetworkButton = new JRadioButton();
+        JRadioButton joinNetworkButton = new JRadioButton();
+        JRadioButton serverOnlyButton = new JRadioButton();
+        JPanel paddingJPanel = new JPanel();
+
+        setLayout(new GridBagLayout());
+
+        setBorder(new TitledBorder(new EtchedBorder(), "Select Game Type"));
+        buttonGroup1.add(singlePlayerButton);
+        singlePlayerButton.setSelected(true);
+        singlePlayerButton.setText("Single-Player");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        add(singlePlayerButton, gridBagConstraints);
+
+        buttonGroup1.add(startNetworkButton);
+        startNetworkButton.setText("Start a network game");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        add(startNetworkButton, gridBagConstraints);
+
+        buttonGroup1.add(joinNetworkButton);
+        joinNetworkButton.setText("Join a network game");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        add(joinNetworkButton, gridBagConstraints);
+
+        buttonGroup1.add(serverOnlyButton);
+        serverOnlyButton.setText("Server only");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        add(serverOnlyButton, gridBagConstraints);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(paddingJPanel, gridBagConstraints);
+        buttonModels[ClientConfig.MODE_SINGLE_PLAYER] = singlePlayerButton.getModel();
+        buttonModels[ClientConfig.MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
+        buttonModels[ClientConfig.MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
+        buttonModels[ClientConfig.MODE_SERVER_ONLY] = serverOnlyButton.getModel();
+    }
+
+    int getMode() {
+        for (int i = 0; i < buttonModels.length; i++) {
+            if (buttonGroup1.getSelection() == buttonModels[i]) {
+                return i;
+            }
+        }
+        assert false;
+        return 0;
+    }
+
 
 }

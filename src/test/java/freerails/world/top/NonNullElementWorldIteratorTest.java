@@ -37,7 +37,6 @@ public class NonNullElementWorldIteratorTest extends TestCase {
     private World world;
     private Station station1;
     private Station station2;
-    private Station station3;
 
     /**
      * @param args
@@ -62,7 +61,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
         world = new WorldImpl();
         station1 = new Station(10, 20, "Station1", 4, 0);
         station2 = new Station(15, 16, "Station2", 4, 1);
-        station3 = new Station(30, 50, "Station3", 4, 2);
+        Station station3 = new Station(30, 50, "Station3", 4, 2);
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station1);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);

@@ -21,6 +21,7 @@ package freerails.controller;
 import freerails.util.ImmutableList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.WorldConstants;
 import freerails.world.station.Station;
 import freerails.world.station.StationConversion;
 import freerails.world.station.StationDemand;
@@ -42,11 +43,6 @@ public class CalcCargoSupplyRateAtStation {
 
     private static final Logger logger = Logger.getLogger(CalcCargoSupplyRateAtStation.class.getName());
 
-    /**
-     * The threshold that demand for a cargo must exceed before the station
-     * demands the cargo.
-     */
-    private static final int PREREQUISITE_FOR_DEMAND = 16;
     private final Integer[] converts;
     private final int[] demand;
     private final List<CargoElementObject> supplies;
@@ -60,10 +56,10 @@ public class CalcCargoSupplyRateAtStation {
      *
      * @param trackRuleNo the station type.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y, int trackRuleNo) {
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int x, int y, int trackRuleNo) {
         this.world = world;
-        x = X;
-        y = Y;
+        this.x = x;
+        this.y = y;
 
         TrackRule trackRule = (TrackRule) this.world.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
@@ -79,13 +75,12 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station already exists.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int X, int Y) {
-        this(world, X, Y, findTrackRule(X, Y, world));
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int x, int y) {
+        this(world, x, y, findTrackRule(x, y, world));
     }
 
-    private static int findTrackRule(int xx, int yy, ReadOnlyWorld w) {
-        FullTerrainTile tile = (FullTerrainTile) w.getTile(xx, yy);
-
+    private static int findTrackRule(int x, int y, ReadOnlyWorld world) {
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
         return tile.getTrackPiece().getTrackTypeID();
     }
 
@@ -103,7 +98,7 @@ public class CalcCargoSupplyRateAtStation {
         boolean[] demandboolean = new boolean[world.size(SKEY.CARGO_TYPES)];
 
         for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
-            if (demand[i] >= PREREQUISITE_FOR_DEMAND) {
+            if (demand[i] >= WorldConstants.PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
             }
         }
@@ -140,7 +135,7 @@ public class CalcCargoSupplyRateAtStation {
             // The prerequisite is the number tiles of this type that must
             // be within the station radius before the station demands the
             // cargo.
-            demand[type] += PREREQUISITE_FOR_DEMAND / prerequisite;
+            demand[type] += WorldConstants.PREREQUISITE_FOR_DEMAND / prerequisite;
         }
 
         ImmutableList<TileConversion> conversion = terrainType.getConversion();
@@ -150,7 +145,7 @@ public class CalcCargoSupplyRateAtStation {
 
             // Only one tile that converts the cargo type is needed for the
             // station to demand the cargo type.
-            demand[type] += PREREQUISITE_FOR_DEMAND;
+            demand[type] += WorldConstants.PREREQUISITE_FOR_DEMAND;
             converts[type] = conversion.get(m).getOutput();
         }
     }
@@ -176,18 +171,13 @@ public class CalcCargoSupplyRateAtStation {
         Rectangle stationRadiusRect = new Rectangle(x - stationRadius, y - stationRadius, stationDiameter, stationDiameter);
         Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
-        if (logger.isDebugEnabled()) {
-            logger.debug("stationRadiusRect=" + stationRadiusRect);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("mapRect=" + mapRect);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("tiles2scan=" + tiles2scan);
-        }
 
-        // Look at the terrain type of each tile and retrieve the cargo
-        // supplied.
+        logger.debug("stationRadiusRect=" + stationRadiusRect);
+        logger.debug("mapRect=" + mapRect);
+        logger.debug("tiles2scan=" + tiles2scan);
+
+
+        // Look at the terrain type of each tile and retrieve the cargo supplied.
         // The station radius determines how many tiles each side we look at.
         for (int i = tiles2scan.x; i < (tiles2scan.x + tiles2scan.width); i++) {
             for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height); j++) {

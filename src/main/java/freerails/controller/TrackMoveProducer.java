@@ -96,7 +96,7 @@ public final class TrackMoveProducer {
             returnValue = buildTrack(new Point2D(x, y), aPath);
             x += aPath.deltaX;
             y += aPath.deltaY;
-            if (!returnValue.ok) {
+            if (!returnValue.status) {
                 return returnValue;
             }
         }
@@ -165,7 +165,7 @@ public final class TrackMoveProducer {
                 FullTerrainTile tileA = (FullTerrainTile) w.getTile(from.x, from.y);
                 if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
                     MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
-                    if (!ms.ok) {
+                    if (!ms.status) {
                         return ms;
                     }
                 }
@@ -173,7 +173,7 @@ public final class TrackMoveProducer {
                 FullTerrainTile tileB = (FullTerrainTile) w.getTile(point.x, point.y);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
                     MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
-                    if (!ms.ok) {
+                    if (!ms.status) {
                         return ms;
                     }
                 }
@@ -245,15 +245,15 @@ public final class TrackMoveProducer {
         setBuildMode(i);
     }
 
-    private MoveStatus sendMove(Move m) {
-        MoveStatus ms = executor.doMove(m);
+    private MoveStatus sendMove(Move move) {
+        MoveStatus moveStatus = executor.doMove(move);
 
-        if (ms.isOk()) {
+        if (moveStatus.isStatus()) {
             clearStackIfStale();
-            moveStack.add(m);
+            moveStack.add(move);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     private boolean isStationHere(Point2D p) {

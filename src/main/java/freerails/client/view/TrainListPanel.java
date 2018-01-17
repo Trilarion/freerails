@@ -34,11 +34,10 @@ import freerails.world.player.FreerailsPrincipal;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 /**
- * JPanel that displays a list of trains, used for the train list window and the
+* Displays a list of trains, used for the train list window and the
  * train roaster tab.
  */
 public class TrainListPanel extends JPanel implements View {
@@ -66,18 +65,7 @@ public class TrainListPanel extends JPanel implements View {
      * Creates new form TrainListPanel.
      */
     public TrainListPanel() {
-        initComponents();
-
-    }
-
-    public TrainListPanel(boolean isInRHSJTabPane) {
-        this();
-        rhsjTabPane = isInRHSJTabPane;
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         trainSummaryPanel1 = new TrainSummaryPanel();
         closeJButton = new JButton();
@@ -89,87 +77,92 @@ public class TrainListPanel extends JPanel implements View {
         JLabel maintenanceLabel = new JLabel();
         JLabel incomeLabel = new JLabel();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        setPreferredSize(new java.awt.Dimension(510, 300));
+        setPreferredSize(new Dimension(510, 300));
         closeJButton.setText("Close");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(closeJButton, gridBagConstraints);
 
         showDetails.setText("Show details");
         showDetails.addActionListener(this::showDetailsActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(showDetails, gridBagConstraints);
 
         list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list1.setCellRenderer(trainSummaryPanel1);
         list1.setDoubleBuffered(true);
-        list1.addKeyListener(new java.awt.event.KeyAdapter() {
+        list1.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 list1KeyPressed(e);
             }
         });
         list1.addListSelectionListener(this::list1ValueChanged);
-        list1.addMouseListener(new java.awt.event.MouseAdapter() {
+        list1.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 list1MouseClicked(e);
             }
         });
 
         jScrollPane1.setViewportView(list1);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
 
         trainNumLabel.setText("Train Number");
-        trainNumLabel.setMaximumSize(new java.awt.Dimension(500, 500));
-        trainNumLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        trainNumLabel.setMaximumSize(new Dimension(500, 500));
+        trainNumLabel.setPreferredSize(new Dimension(100, 14));
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(0, 0, 0, 5);
         add(trainNumLabel, gridBagConstraints);
 
         trainHeadingLabel.setText("Headed For");
-        trainHeadingLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        trainHeadingLabel.setPreferredSize(new Dimension(100, 14));
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        gridBagConstraints.insets = new Insets(0, 5, 0, 5);
         add(trainHeadingLabel, gridBagConstraints);
 
         maintenanceLabel.setText("Maintenance YTD");
-        maintenanceLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        maintenanceLabel.setPreferredSize(new Dimension(100, 14));
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        gridBagConstraints.insets = new Insets(0, 5, 0, 5);
         add(maintenanceLabel, gridBagConstraints);
 
         incomeLabel.setText("Income YTD");
-        incomeLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        add(incomeLabel, new java.awt.GridBagConstraints());
+        incomeLabel.setPreferredSize(new Dimension(100, 14));
+        add(incomeLabel, new GridBagConstraints());
 
+    }
+
+    public TrainListPanel(boolean isInRHSJTabPane) {
+        this();
+        rhsjTabPane = isInRHSJTabPane;
     }
 
 
@@ -182,18 +175,18 @@ public class TrainListPanel extends JPanel implements View {
         }
     }
 
-    private void showDetailsActionPerformed(java.awt.event.ActionEvent evt) {
+    private void showDetailsActionPerformed(ActionEvent evt) {
         showTrainDetails.actionPerformed(evt);
     }
 
-    private void list1MouseClicked(java.awt.event.MouseEvent evt) {
+    private void list1MouseClicked(MouseEvent evt) {
         // Add your handling code here:
         if (evt.getClickCount() == 2) {
             showTrainDetails.actionPerformed(null);
         }
     }
 
-    private void list1KeyPressed(java.awt.event.KeyEvent evt) {
+    private void list1KeyPressed(KeyEvent evt) {
         // Add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             showTrainDetails.actionPerformed(null);
@@ -240,10 +233,10 @@ public class TrainListPanel extends JPanel implements View {
     void removeButtons() {
         removeAll();
 
-        java.awt.GridBagConstraints gridBagConstraints;
-        setLayout(new java.awt.GridBagLayout());
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        GridBagConstraints gridBagConstraints;
+        setLayout(new GridBagLayout());
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);

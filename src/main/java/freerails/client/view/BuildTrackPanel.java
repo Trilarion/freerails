@@ -39,6 +39,8 @@ import freerails.world.track.TrackRule;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 
 /**
- * A JPanel that presents toggle buttons that let the player select the build
+ * Presents toggle buttons that let the player select the build
  * mode (build track, upgrade track, build station, bulldoze, and info mode) and
  * select the track/bridge/station type to use.
  */
@@ -75,7 +77,166 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
      * Creates new form BuildTrackPanel
      */
     public BuildTrackPanel() {
-        initComponents();
+        GridBagConstraints gridBagConstraints;
+
+        buildModeButtonGroup = new ButtonGroup();
+        trackButtonGroup = new ButtonGroup();
+        bridgeButtonGroup = new ButtonGroup();
+        stationButtonGroup = new ButtonGroup();
+        tunnelButtonGroup = new ButtonGroup();
+        JPanel buildModeJPanel = new JPanel();
+        addTrack = new JToggleButton();
+        JToggleButton upgradeTrack = new JToggleButton();
+        JToggleButton addStation = new JToggleButton();
+        JToggleButton bulldoze = new JToggleButton();
+        viewMode = new JToggleButton();
+        trackJPanel = new JPanel();
+        JToggleButton viewMode1 = new JToggleButton();
+        bridgesJPanel = new JPanel();
+        JToggleButton viewMode2 = new JToggleButton();
+        tunnelsJPanel = new JPanel();
+        JToggleButton viewMode3 = new JToggleButton();
+        stationsJPanel = new JPanel();
+        JToggleButton viewMode4 = new JToggleButton();
+        JPanel spacer = new JPanel();
+
+        setLayout(new GridBagLayout());
+
+        setFocusable(false);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                formKeyPressed(e);
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                formKeyTyped(e);
+            }
+        });
+
+        buildModeJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
+
+        buildModeButtonGroup.add(addTrack);
+        addTrack.setIcon(getIcon("build track"));
+        addTrack.setSelected(true);
+        addTrack.setToolTipText("Build Track");
+        addTrack.setFocusable(false);
+        addTrack.setPreferredSize(new Dimension(36, 36));
+        addTrack.addActionListener(this::addTrackActionPerformed);
+
+        buildModeJPanel.add(addTrack);
+
+        buildModeButtonGroup.add(upgradeTrack);
+        upgradeTrack.setIcon(getIcon("upgrade track"));
+        upgradeTrack.setToolTipText("Upgrade Track");
+        upgradeTrack.setFocusable(false);
+        upgradeTrack.setPreferredSize(new Dimension(36, 36));
+        upgradeTrack.addActionListener(this::upgradeTrackActionPerformed);
+
+        buildModeJPanel.add(upgradeTrack);
+
+        buildModeButtonGroup.add(addStation);
+        addStation.setIcon(getIcon("build stations"));
+        addStation.setToolTipText("Build Station");
+        addStation.setFocusable(false);
+        addStation.setPreferredSize(new Dimension(36, 36));
+        addStation.addActionListener(this::addStationActionPerformed);
+
+        buildModeJPanel.add(addStation);
+
+        buildModeButtonGroup.add(bulldoze);
+        bulldoze.setIcon(getIcon("bulldozer"));
+        bulldoze.setToolTipText("Remove Track");
+        bulldoze.setFocusable(false);
+        bulldoze.setPreferredSize(new Dimension(36, 36));
+        bulldoze.addActionListener(this::bulldozeActionPerformed);
+
+        buildModeJPanel.add(bulldoze);
+
+        buildModeButtonGroup.add(viewMode);
+        viewMode.setIcon(getIcon("eye"));
+        viewMode.setToolTipText("Don't build anything");
+        viewMode.setFocusable(false);
+        viewMode.setPreferredSize(new Dimension(36, 36));
+        viewMode.addActionListener(this::viewModeActionPerformed);
+
+        buildModeJPanel.add(viewMode);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        add(buildModeJPanel, gridBagConstraints);
+
+        trackJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
+
+        buildModeButtonGroup.add(viewMode1);
+        viewMode1.setIcon(getIcon("turn_off"));
+        viewMode1.setPreferredSize(new Dimension(36, 36));
+        trackJPanel.add(viewMode1);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        add(trackJPanel, gridBagConstraints);
+
+        bridgesJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
+
+        buildModeButtonGroup.add(viewMode2);
+        viewMode2.setIcon(getIcon("turn_off"));
+        viewMode2.setPreferredSize(new Dimension(36, 36));
+        bridgesJPanel.add(viewMode2);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        add(bridgesJPanel, gridBagConstraints);
+
+        tunnelsJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
+
+        buildModeButtonGroup.add(viewMode3);
+        viewMode3.setIcon(getIcon("turn_off"));
+        viewMode3.setPreferredSize(new Dimension(36, 36));
+        tunnelsJPanel.add(viewMode3);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        add(tunnelsJPanel, gridBagConstraints);
+
+        stationsJPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
+
+        buildModeButtonGroup.add(viewMode4);
+        viewMode4.setIcon(getIcon("turn_off"));
+        viewMode4.setPreferredSize(new Dimension(36, 36));
+        stationsJPanel.add(viewMode4);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        add(stationsJPanel, gridBagConstraints);
+
+        spacer.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(spacer, gridBagConstraints);
+
     }
 
     /**
@@ -169,7 +330,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
                     price = rule.getFixedCost();
                     break;
             }
-            toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
+            toggleButton.setPreferredSize(new Dimension(36, 36));
             String tooltip = rule.getTypeName() + " $" + price.toString();
             toggleButton.setToolTipText(tooltip);
             if (!selectionSet.containsKey(category)) {
@@ -212,7 +373,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         JToggleButton toggleButton = new JToggleButton();
         tunnelButtonGroup.add(toggleButton);
         toggleButton.setIcon(getIcon("no_tunnels"));
-        toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
+        toggleButton.setPreferredSize(new Dimension(36, 36));
         toggleButton.addActionListener(e -> {
             selectionSet.put(TrackCategories.tunnel, null);
             setBuildTrackStrategy();
@@ -225,7 +386,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         JToggleButton toggleButton = new JToggleButton();
         bridgeButtonGroup.add(toggleButton);
         toggleButton.setIcon(getIcon("no_bridges"));
-        toggleButton.setPreferredSize(new java.awt.Dimension(36, 36));
+        toggleButton.setPreferredSize(new Dimension(36, 36));
         toggleButton.addActionListener(e -> {
             selectionSet.put(TrackCategories.bridge, null);
             setBuildTrackStrategy();
@@ -248,198 +409,35 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
     }
 
 
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        buildModeButtonGroup = new ButtonGroup();
-        trackButtonGroup = new ButtonGroup();
-        bridgeButtonGroup = new ButtonGroup();
-        stationButtonGroup = new ButtonGroup();
-        tunnelButtonGroup = new ButtonGroup();
-        JPanel buildModeJPanel = new JPanel();
-        addTrack = new JToggleButton();
-        JToggleButton upgradeTrack = new JToggleButton();
-        JToggleButton addStation = new JToggleButton();
-        JToggleButton bulldoze = new JToggleButton();
-        viewMode = new JToggleButton();
-        trackJPanel = new JPanel();
-        JToggleButton viewMode1 = new JToggleButton();
-        bridgesJPanel = new JPanel();
-        JToggleButton viewMode2 = new JToggleButton();
-        tunnelsJPanel = new JPanel();
-        JToggleButton viewMode3 = new JToggleButton();
-        stationsJPanel = new JPanel();
-        JToggleButton viewMode4 = new JToggleButton();
-        JPanel spacer = new JPanel();
-
-        setLayout(new java.awt.GridBagLayout());
-
-        setFocusable(false);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
-                formKeyPressed(e);
-            }
-
-            @Override
-            public void keyTyped(java.awt.event.KeyEvent e) {
-                formKeyTyped(e);
-            }
-        });
-
-        buildModeJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
-
-        buildModeButtonGroup.add(addTrack);
-        addTrack.setIcon(getIcon("build track"));
-        addTrack.setSelected(true);
-        addTrack.setToolTipText("Build Track");
-        addTrack.setFocusable(false);
-        addTrack.setPreferredSize(new java.awt.Dimension(36, 36));
-        addTrack.addActionListener(this::addTrackActionPerformed);
-
-        buildModeJPanel.add(addTrack);
-
-        buildModeButtonGroup.add(upgradeTrack);
-        upgradeTrack.setIcon(getIcon("upgrade track"));
-        upgradeTrack.setToolTipText("Upgrade Track");
-        upgradeTrack.setFocusable(false);
-        upgradeTrack.setPreferredSize(new java.awt.Dimension(36, 36));
-        upgradeTrack.addActionListener(this::upgradeTrackActionPerformed);
-
-        buildModeJPanel.add(upgradeTrack);
-
-        buildModeButtonGroup.add(addStation);
-        addStation.setIcon(getIcon("build stations"));
-        addStation.setToolTipText("Build Station");
-        addStation.setFocusable(false);
-        addStation.setPreferredSize(new java.awt.Dimension(36, 36));
-        addStation.addActionListener(this::addStationActionPerformed);
-
-        buildModeJPanel.add(addStation);
-
-        buildModeButtonGroup.add(bulldoze);
-        bulldoze.setIcon(getIcon("bulldozer"));
-        bulldoze.setToolTipText("Remove Track");
-        bulldoze.setFocusable(false);
-        bulldoze.setPreferredSize(new java.awt.Dimension(36, 36));
-        bulldoze.addActionListener(this::bulldozeActionPerformed);
-
-        buildModeJPanel.add(bulldoze);
-
-        buildModeButtonGroup.add(viewMode);
-        viewMode.setIcon(getIcon("eye"));
-        viewMode.setToolTipText("Don't build anything");
-        viewMode.setFocusable(false);
-        viewMode.setPreferredSize(new java.awt.Dimension(36, 36));
-        viewMode.addActionListener(this::viewModeActionPerformed);
-
-        buildModeJPanel.add(viewMode);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        add(buildModeJPanel, gridBagConstraints);
-
-        trackJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
-
-        buildModeButtonGroup.add(viewMode1);
-        viewMode1.setIcon(getIcon("turn_off"));
-        viewMode1.setPreferredSize(new java.awt.Dimension(36, 36));
-        trackJPanel.add(viewMode1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        add(trackJPanel, gridBagConstraints);
-
-        bridgesJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
-
-        buildModeButtonGroup.add(viewMode2);
-        viewMode2.setIcon(getIcon("turn_off"));
-        viewMode2.setPreferredSize(new java.awt.Dimension(36, 36));
-        bridgesJPanel.add(viewMode2);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        add(bridgesJPanel, gridBagConstraints);
-
-        tunnelsJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
-
-        buildModeButtonGroup.add(viewMode3);
-        viewMode3.setIcon(getIcon("turn_off"));
-        viewMode3.setPreferredSize(new java.awt.Dimension(36, 36));
-        tunnelsJPanel.add(viewMode3);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        add(tunnelsJPanel, gridBagConstraints);
-
-        stationsJPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 2));
-
-        buildModeButtonGroup.add(viewMode4);
-        viewMode4.setIcon(getIcon("turn_off"));
-        viewMode4.setPreferredSize(new java.awt.Dimension(36, 36));
-        stationsJPanel.add(viewMode4);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        add(stationsJPanel, gridBagConstraints);
-
-        spacer.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(spacer, gridBagConstraints);
-
-    }
-
-    private void formKeyTyped(java.awt.event.KeyEvent evt) {
+    private void formKeyTyped(KeyEvent evt) {
         viewMode.doClick();
     }
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {
+    private void formKeyPressed(KeyEvent evt) {
         viewMode.doClick();
     }
 
-    private void viewModeActionPerformed(java.awt.event.ActionEvent evt) {
+    private void viewModeActionPerformed(ActionEvent evt) {
         setVisible(false, false, false, false);
         cancelStationPlacement();
         setTrackBuilderMode(BuildMode.IGNORE_TRACK);
     }
 
-    private void bulldozeActionPerformed(java.awt.event.ActionEvent evt) {
+    private void bulldozeActionPerformed(ActionEvent evt) {
 
         setVisible(false, false, false, false);
         cancelStationPlacement();
         setTrackBuilderMode(BuildMode.REMOVE_TRACK);
     }
 
-    private void addStationActionPerformed(java.awt.event.ActionEvent evt) {
+    private void addStationActionPerformed(ActionEvent evt) {
 
         setVisible(false, false, false, true);
         setTrackBuilderMode(BuildMode.BUILD_STATION);
 
     }
 
-    private void upgradeTrackActionPerformed(java.awt.event.ActionEvent evt) {
+    private void upgradeTrackActionPerformed(ActionEvent evt) {
 
         setVisible(true, true, false, false);
         cancelStationPlacement();
@@ -447,7 +445,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
     }
 
-    private void addTrackActionPerformed(java.awt.event.ActionEvent evt) {
+    private void addTrackActionPerformed(ActionEvent evt) {
 
         setVisible(true, true, true, false);
         cancelStationPlacement();

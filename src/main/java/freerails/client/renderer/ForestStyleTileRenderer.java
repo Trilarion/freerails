@@ -43,11 +43,11 @@ public final class ForestStyleTileRenderer extends freerails.client.renderer.Abs
      * @param imageManager
      * @param rgbValues
      * @param tileModel
-     * @param w
+     * @param world
      * @throws IOException
      */
-    public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld w) throws IOException {
-        super(tileModel, rgbValues, w);
+    public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
+        super(tileModel, rgbValues, world);
         setTileIcons(new Image[4]);
 
         for (int i = 0; i < getTileIcons().length; i++) {
@@ -59,15 +59,15 @@ public final class ForestStyleTileRenderer extends freerails.client.renderer.Abs
     /**
      * @param x
      * @param y
-     * @param w
+     * @param world
      * @return
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
         int iconNumber = 0;
 
         for (int i = 0; i < 2; i++) {
-            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
+            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], world);
             iconNumber = iconNumber << 1;
         }
 

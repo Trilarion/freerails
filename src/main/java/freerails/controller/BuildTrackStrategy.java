@@ -43,19 +43,19 @@ public class BuildTrackStrategy {
     /**
      * Creates a new instance of BuildTrackStrategy
      */
-    private BuildTrackStrategy(int[] r) {
-        rules = r;
+    private BuildTrackStrategy(int[] rules) {
+        this.rules = rules;
     }
 
     /**
      * @param trackTypeID
-     * @param w
+     * @param world
      * @return
      */
-    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld w) {
-        int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
-        int[] newRules = new int[noTerrainTypes];
-        for (int i = 0; i < noTerrainTypes; i++) {
+    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld world) {
+        int numberTerrainTypes = world.size(SKEY.TERRAIN_TYPES);
+        int[] newRules = new int[numberTerrainTypes];
+        for (int i = 0; i < numberTerrainTypes; i++) {
             newRules[i] = trackTypeID;
         }
 
@@ -65,31 +65,31 @@ public class BuildTrackStrategy {
 
     /**
      * @param ruleIDs
-     * @param w
+     * @param world
      * @return
      */
-    public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, ReadOnlyWorld w) {
-        int[] rulesArray = generateRules(ruleIDs, w);
+    public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, ReadOnlyWorld world) {
+        int[] rulesArray = generateRules(ruleIDs, world);
         return new BuildTrackStrategy(rulesArray);
     }
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    public static BuildTrackStrategy getDefault(ReadOnlyWorld w) {
+    public static BuildTrackStrategy getDefault(ReadOnlyWorld world) {
         Collection<Integer> allowable = new ArrayList<>();
-        allowable.add(getCheapest(TrackCategories.track, w));
-        allowable.add(getCheapest(TrackCategories.bridge, w));
-        allowable.add(getCheapest(TrackCategories.tunnel, w));
-        return new BuildTrackStrategy(generateRules(allowable, w));
+        allowable.add(getCheapest(TrackCategories.track, world));
+        allowable.add(getCheapest(TrackCategories.bridge, world));
+        allowable.add(getCheapest(TrackCategories.tunnel, world));
+        return new BuildTrackStrategy(generateRules(allowable, world));
     }
 
-    private static Integer getCheapest(TrackCategories category, ReadOnlyWorld w) {
+    private static Integer getCheapest(TrackCategories category, ReadOnlyWorld world) {
         TrackRule cheapest = null;
         Integer cheapestID = null;
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            TrackRule rule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
             if (rule.getCategory() == category) {
                 if (null == cheapest || cheapest.getPrice().getAmount() > rule.getPrice().getAmount()) {
                     cheapest = rule;
@@ -100,15 +100,15 @@ public class BuildTrackStrategy {
         return cheapestID;
     }
 
-    private static int[] generateRules(Iterable<Integer> allowable, ReadOnlyWorld w) {
-        int noTerrainTypes = w.size(SKEY.TERRAIN_TYPES);
+    private static int[] generateRules(Iterable<Integer> allowable, ReadOnlyWorld world) {
+        int noTerrainTypes = world.size(SKEY.TERRAIN_TYPES);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {
-            TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, i);
+            TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
             newRules[i] = -1; // the default value.
             for (Integer rule : allowable) {
                 if (null != rule) {
-                    TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, rule);
+                    TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, rule);
                     if (trackRule.canBuildOnThisTerrainType(terrainType.getCategory())) {
                         newRules[i] = rule;
                         break;

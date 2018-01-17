@@ -31,23 +31,11 @@ public final class MoveStatus implements Serializable {
     public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
     private static final long serialVersionUID = 3258129171879309624L;
 
-    /**
-     *
-     */
-    public final boolean ok;
-
-    /**
-     *
-     */
+    public final boolean status;
     public final String message;
 
-    private MoveStatus(boolean ok, String message) {
-        Throwable t;
-        if (!ok) {
-            t = new Throwable();
-            t.fillInStackTrace();
-        }
-        this.ok = ok;
+    private MoveStatus(boolean status, String message) {
+        this.status = status;
         this.message = message;
     }
 
@@ -66,14 +54,14 @@ public final class MoveStatus implements Serializable {
 
         final MoveStatus moveStatus = (MoveStatus) obj;
 
-        if (ok != moveStatus.ok) return false;
+        if (status != moveStatus.status) return false;
         return message != null ? message.equals(moveStatus.message) : moveStatus.message == null;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = (ok ? 1 : 0);
+        result = (status ? 1 : 0);
         result = 29 * result + (message != null ? message.hashCode() : 0);
         return result;
     }
@@ -82,7 +70,7 @@ public final class MoveStatus implements Serializable {
      * Avoid creating a duplicate when deserializing.
      */
     private Object readResolve() {
-        if (ok) {
+        if (status) {
             return MOVE_OK;
         }
         return this;
@@ -91,8 +79,8 @@ public final class MoveStatus implements Serializable {
     /**
      * @return
      */
-    public boolean isOk() {
-        return ok;
+    public boolean isStatus() {
+        return status;
     }
 
     @Override

@@ -40,7 +40,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * A JPanel that displays a graph of the net worth of each of the players
+ * Displays a graph of the net worth of each of the players
  * against time.
  */
 public class NetWorthGraphPanel extends JPanel implements View {
@@ -324,9 +324,8 @@ public class NetWorthGraphPanel extends JPanel implements View {
             Player player = world.getPlayer(i);
             String name = player.getName();
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("Adding player " + name + " to net worth graph.");
-            }
+            logger.debug("Adding player " + name + " to net worth graph.");
+
             CompanyDetails cd = new CompanyDetails(name, c);
             GameTime[] times = new GameTime[101];
             for (int year = 0; year < 101; year++) {

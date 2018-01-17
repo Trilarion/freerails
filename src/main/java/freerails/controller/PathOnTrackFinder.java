@@ -102,9 +102,8 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
      */
     public void setupSearch(Point2D from, Point2D target) throws PathNotFoundException {
         startPoint = from;
-        if (logger.isDebugEnabled()) {
-            logger.debug("Find track path from " + from + " to " + target);
-        }
+        logger.debug("Find track path from " + from + " to " + target);
+
         /* Check there is track at both the points. */
         FullTerrainTile tileA = (FullTerrainTile) world.getTile(from.x, from.y);
         FullTerrainTile tileB = (FullTerrainTile) world.getTile(target.x, target.y);

@@ -31,50 +31,44 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * A JPanel that shows the players currently logged in to the server.
+ * Shows the players currently logged in to the server.
  */
 class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
 
     private static final long serialVersionUID = 4049080453489111344L;
     FreerailsGameServer server = null;
     private JList list1;
-    private JScrollPane jScrollPane1;
-    private JLabel title;
 
     /**
      * Creates new form ConnectedPlayersPanel
      */
     public ConnectedPlayersPanel() {
-        initComponents();
-    }
+        GridBagConstraints gridBagConstraints;
 
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        title = new JLabel();
-        jScrollPane1 = new JScrollPane();
+        JLabel title = new JLabel();
+        JScrollPane jScrollPane1 = new JScrollPane();
         list1 = new JList();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
         title.setText("Connected Players");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(title, gridBagConstraints);
 
         list1.setModel(new MyAbstractListModel());
         jScrollPane1.setViewportView(list1);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
 
     }
+
 
     void updateListOfPlayers() {
         if (null != server) {

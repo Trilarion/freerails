@@ -45,28 +45,28 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @param m
+     * @param move
      * @return
      */
-    public MoveStatus doMove(Move m) {
+    public MoveStatus doMove(Move move) {
+        return move.doMove(world, p);
+    }
+
+    /**
+     * @param preMove
+     * @return
+     */
+    public MoveStatus doPreMove(PreMove preMove) {
+        Move m = preMove.generateMove(world);
         return m.doMove(world, p);
     }
 
     /**
-     * @param pm
+     * @param move
      * @return
      */
-    public MoveStatus doPreMove(PreMove pm) {
-        Move m = pm.generateMove(world);
-        return m.doMove(world, p);
-    }
-
-    /**
-     * @param m
-     * @return
-     */
-    public MoveStatus tryDoMove(Move m) {
-        return m.tryDoMove(world, p);
+    public MoveStatus tryDoMove(Move move) {
+        return move.tryDoMove(world, p);
     }
 
     /**

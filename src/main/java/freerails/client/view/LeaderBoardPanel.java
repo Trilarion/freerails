@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * A JPanel that displays the details of the players ordered by net worth.
+ * Displays the details of the players ordered by net worth.
  */
 public class LeaderBoardPanel extends JPanel implements View {
 

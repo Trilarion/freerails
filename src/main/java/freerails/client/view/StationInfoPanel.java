@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -89,76 +90,72 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     };
 
     public StationInfoPanel() {
-        initComponents();
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         label1 = new JLabel();
         nextStation = new JButton();
         previousStation = new JButton();
         close = new JButton();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        setMinimumSize(new java.awt.Dimension(250, 177));
-        label1.setFont(new java.awt.Font("Dialog", 0, 10));
+        setMinimumSize(new Dimension(250, 177));
+        label1.setFont(new Font("Dialog", 0, 10));
         label1.setText("<html>\n<h4 align=\"center\">Supply and Demand at stationName</h4>\n<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\">\n  <tr>\n    <td>&nbsp;</td>\n    <td>Will pay<br>for</td>\n    <td>Supplies<br>(cars per year)</td>\n    <td>Waiting for pickup<br>(car loads)</td>\n  </tr>\n   <tr>\n    <td>Mail</td>\n    <td>Yes</td>\n    <td>&nbsp;</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Passengers</td>\n    <td>No</td>\n    <td>3</td>\n    <td>2.5</td>\n  </tr>\n \n</table>\n\n</html>");
         label1.setVerticalAlignment(SwingConstants.TOP);
         label1.setAlignmentY(0.0F);
         label1.setVerticalTextPosition(SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 8);
+        gridBagConstraints.insets = new Insets(8, 8, 4, 8);
         add(label1, gridBagConstraints);
 
         nextStation.setText("next ->");
-        nextStation.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        nextStation.setMargin(new Insets(0, 0, 0, 0));
         nextStation.addActionListener(this::nextStationActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
         add(nextStation, gridBagConstraints);
 
         previousStation.setText("<- previous");
-        previousStation.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        previousStation.setMargin(new Insets(0, 0, 0, 0));
         previousStation.addActionListener(this::previousStationActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
         add(previousStation, gridBagConstraints);
 
         close.setText("close");
-        close.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        close.setMaximumSize(new java.awt.Dimension(65, 22));
-        close.setMinimumSize(new java.awt.Dimension(65, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        close.setMargin(new Insets(0, 0, 0, 0));
+        close.setMaximumSize(new Dimension(65, 22));
+        close.setMinimumSize(new Dimension(65, 22));
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
+        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
         add(close, gridBagConstraints);
 
     }
 
-    private void previousStationActionPerformed(java.awt.event.ActionEvent evt) {
+
+    private void previousStationActionPerformed(ActionEvent evt) {
 
         // Add your handling code here:
         if (worldIterator.previous()) {
@@ -171,7 +168,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
     }
 
-    private void nextStationActionPerformed(java.awt.event.ActionEvent evt) {
+    private void nextStationActionPerformed(ActionEvent evt) {
 
         // Add your handling code here:
         if (worldIterator.next()) {

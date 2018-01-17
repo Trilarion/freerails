@@ -49,51 +49,45 @@ class TerrainInfoPanel extends JPanel {
     private JLabel terrainName;
 
     public TerrainInfoPanel() {
-        initComponents();
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         terrainImage = new JLabel();
         terrainName = new JLabel();
         terrainDescription = new JLabel();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
         terrainImage.setIcon(new ImageIcon(getClass().getResource("/freerails/client/graphics/terrain/City_0.png")));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(8, 8, 4, 4);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.insets = new Insets(8, 8, 4, 4);
         add(terrainImage, gridBagConstraints);
 
-        terrainName.setFont(new java.awt.Font("Dialog", 1, 14));
+        terrainName.setFont(new Font("Dialog", 1, 14));
         terrainName.setText("City");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 8);
+        gridBagConstraints.insets = new Insets(4, 4, 4, 8);
         add(terrainName, gridBagConstraints);
 
-        terrainDescription.setFont(new java.awt.Font("Dialog", 0, 12));
+        terrainDescription.setFont(new Font("Dialog", 0, 12));
         terrainDescription.setText("<html>\n<p>Right-of-Way costs X per mile. </p>\n<table width=\"75%\" >\n  <tr> \n    <td><strong>Supplies:</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail </td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>2</td>\n  </tr>\n  <tr> \n    <td> <strong>Demands</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Mail</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Passengers</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td><strong>Converts</strong></td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr> \n    <td>Livestock to Food</td>\n    <td>&nbsp;</td>\n  </tr>\n  <tr>\n    <td>Steel to Goods</td>\n    <td>&nbsp;</td>\n  </tr>\n</table>\n</html>");
         terrainDescription.setVerticalAlignment(SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 8, 4, 8);
+        gridBagConstraints.insets = new Insets(4, 8, 4, 8);
         add(terrainDescription, gridBagConstraints);
-
     }
 
-    public void setup(ReadOnlyWorld w, RendererRoot vl) {
-        this.world = w;
+    public void setup(ReadOnlyWorld world, RendererRoot vl) {
+        this.world = world;
         rr = vl;
     }
 

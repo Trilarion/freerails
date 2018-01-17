@@ -38,13 +38,14 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ *
  */
 public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View {
 
     private static final long serialVersionUID = 4121133628006020919L;
     private final TrainSummeryModel model;
-    private final Color backgoundColor = (java.awt.Color) UIManager.getDefaults().get("List.background");
-    private final Color selectedColor = (java.awt.Color) UIManager.getDefaults().get("List.selectionBackground");
+    private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
+    private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private ReadOnlyWorld world;
     private FreerailsPrincipal principal;
@@ -59,7 +60,59 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
      */
     public TrainSummaryPanel() {
         model = new TrainSummeryModel();
-        initComponents();
+        GridBagConstraints gridBagConstraints;
+
+        trainNumLabel = new JLabel();
+        headingLabel = new JLabel();
+        trainMaintenanceCostLabel = new JLabel();
+        trainIncomeLabel = new JLabel();
+
+        setLayout(new GridBagLayout());
+
+        setPreferredSize(new Dimension(500, 50));
+        trainNumLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        trainNumLabel.setText("label1");
+        trainNumLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+        trainNumLabel.setPreferredSize(new Dimension(100, 25));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(0, 0, 0, 10);
+        add(trainNumLabel, gridBagConstraints);
+
+        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        headingLabel.setText("label2");
+        headingLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        headingLabel.setPreferredSize(new Dimension(100, 25));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new Insets(0, 10, 0, 10);
+        add(headingLabel, gridBagConstraints);
+
+        trainMaintenanceCostLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        trainMaintenanceCostLabel.setText("label3");
+        trainMaintenanceCostLabel.setMaximumSize(getMaximumSize());
+        trainMaintenanceCostLabel.setPreferredSize(new Dimension(100, 25));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
+        gridBagConstraints.insets = new Insets(0, 10, 0, 10);
+        add(trainMaintenanceCostLabel, gridBagConstraints);
+
+        trainIncomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        trainIncomeLabel.setText("label1");
+        trainIncomeLabel.setPreferredSize(new Dimension(100, 25));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.insets = new Insets(0, 10, 0, 0);
+        add(trainIncomeLabel, gridBagConstraints);
+
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
@@ -79,7 +132,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         return '$' + m.toString();
     }
 
-    public java.awt.Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
         int trainID = NonNullElementWorldIterator.row2index(world, KEY.TRAINS, principal, index);
         String trainNumText = "#" + (trainID + 1);
@@ -89,18 +142,18 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         trainMaintenanceCostLabel.setText(findMaintenanceCost());
         trainIncomeLabel.setText(findTrainIncome(trainID));
 
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         trainListCellRenderer1.setOpaque(true);
         trainListCellRenderer1.setCenterTrain(false);
         trainListCellRenderer1.display(trainID);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 0, 3, 0);
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(3, 0, 3, 0);
         add(trainListCellRenderer1, gridBagConstraints);
 
         if (isSelected) {
@@ -129,62 +182,4 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         Money m = new Money(cost);
         return '$' + m.toString();
     }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        trainNumLabel = new JLabel();
-        headingLabel = new JLabel();
-        trainMaintenanceCostLabel = new JLabel();
-        trainIncomeLabel = new JLabel();
-
-        setLayout(new java.awt.GridBagLayout());
-
-        setPreferredSize(new java.awt.Dimension(500, 50));
-        trainNumLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        trainNumLabel.setText("label1");
-        trainNumLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-        trainNumLabel.setPreferredSize(new java.awt.Dimension(100, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
-        add(trainNumLabel, gridBagConstraints);
-
-        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        headingLabel.setText("label2");
-        headingLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-        headingLabel.setPreferredSize(new java.awt.Dimension(100, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        add(headingLabel, gridBagConstraints);
-
-        trainMaintenanceCostLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        trainMaintenanceCostLabel.setText("label3");
-        trainMaintenanceCostLabel.setMaximumSize(getMaximumSize());
-        trainMaintenanceCostLabel.setPreferredSize(new java.awt.Dimension(100, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHEAST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        add(trainMaintenanceCostLabel, gridBagConstraints);
-
-        trainIncomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        trainIncomeLabel.setText("label1");
-        trainIncomeLabel.setPreferredSize(new java.awt.Dimension(100, 25));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        add(trainIncomeLabel, gridBagConstraints);
-
-    }
-
 }

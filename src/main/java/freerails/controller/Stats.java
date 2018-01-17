@@ -22,7 +22,6 @@ public class Stats {
     public final Money equity;
     private Money treasuryStock;
     private Money otherRrStock;
-    private Money profit;
 
     /**
      * @param world
@@ -76,7 +75,7 @@ public class Stats {
 
     private void calProfit() {
         long profitValue = operatingFunds.getAmount() + track.getAmount() + stations.getAmount() + rollingStock.getAmount() + industries.getAmount() + loans.getAmount() + equity.getAmount() + treasuryStock.getAmount() + otherRrStock.getAmount();
-        profit = new Money(profitValue);
+        Money profit = new Money(profitValue);
     }
 
     private static class MyTransactionAggregator extends TransactionAggregator {

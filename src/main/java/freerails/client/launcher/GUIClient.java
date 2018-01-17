@@ -50,7 +50,7 @@ import java.io.Serializable;
 /**
  * A swing freerails client.
  */
-public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
+public class GUIClient extends FreerailsClient {
 
     private final ActionRoot actionRoot;
     private final GUIComponentFactoryImpl factory;
@@ -69,7 +69,7 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
      */
     public GUIClient(String name, ProgressMonitorModel fm, int screenMode, DisplayMode dm) {
         this.name = name;
-        monitor = null == fm ? this : fm;
+        monitor = null == fm ? ProgressPanelModel.EMPTY : fm;
         // Set up model root and action root.
         modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(getMoveFork());
@@ -79,9 +79,7 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
 
         // Create GUI components
         factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
-
         JFrame createClientJFrame = factory.createClientJFrame(name);
-
         screenHandler = new ScreenHandler(createClientJFrame, screenMode, dm);
 
     }
@@ -114,12 +112,6 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
             modelRoot.setProperty(Property.TIME, ticks);
         }
 
-    }
-
-    /**
-     *
-     */
-    public void finished() {
     }
 
     /**
@@ -156,18 +148,6 @@ public class GUIClient extends FreerailsClient implements ProgressMonitorModel {
         } catch (Exception e) {
             Launcher.emergencyStop();
         }
-    }
-
-    /**
-     * @param max
-     */
-    public void nextStep(int max) {
-    }
-
-    /**
-     * @param i
-     */
-    public void setValue(int i) {
     }
 
     @Override

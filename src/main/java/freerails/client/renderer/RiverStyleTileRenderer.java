@@ -42,11 +42,11 @@ public final class RiverStyleTileRenderer extends freerails.client.renderer.Abst
      * @param imageManager
      * @param rgbValues
      * @param tileModel
-     * @param w
+     * @param world
      * @throws IOException
      */
-    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld w) throws IOException {
-        super(tileModel, rgbValues, w);
+    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
+        super(tileModel, rgbValues, world);
         setTileIcons(new Image[16]);
 
         for (int i = 0; i < getTileIcons().length; i++) {
@@ -59,12 +59,12 @@ public final class RiverStyleTileRenderer extends freerails.client.renderer.Abst
      * 666 optimize cache
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
         int iconNumber = 0;
 
         for (int i = 0; i < 4; i++) {
             iconNumber = iconNumber << 1;
-            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], w);
+            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], world);
         }
 
         return iconNumber;

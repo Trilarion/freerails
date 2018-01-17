@@ -119,9 +119,7 @@ public final class ScreenHandler {
 
             for (DisplayMode mode1 : modes) {
                 if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth() && mode1.getHeight() == BEST_DISPLAY_MODE.getHeight() && mode1.getBitDepth() == BEST_DISPLAY_MODE.getBitDepth()) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Best display mode is " + (new MyDisplayMode(BEST_DISPLAY_MODE)).toString());
-                    }
+                    logger.debug("Best display mode is " + (new MyDisplayMode(BEST_DISPLAY_MODE)).toString());
 
                     return BEST_DISPLAY_MODE;
                 }

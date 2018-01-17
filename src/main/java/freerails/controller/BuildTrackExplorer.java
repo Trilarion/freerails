@@ -35,7 +35,7 @@ import java.util.NoSuchElementException;
 
 /**
  * GraphExplorer that explorers possible track placements, the int values it returns
- * are encoded PositionOnTrack objects.
+ * are elsencoded PositionOnTrack objects.
  */
 public class BuildTrackExplorer implements GraphExplorer {
 

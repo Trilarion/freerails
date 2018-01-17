@@ -62,11 +62,6 @@ public class SelectStationPanel extends JPanel implements View {
     private JLabel label1;
     
     public SelectStationPanel() {
-        initComponents();
-    }
-
-
-    private void initComponents() {
         GridBagConstraints gridBagConstraints;
 
         cargoWaitingAndDemandedPanel1 = new CargoWaitingAndDemandedPanel();

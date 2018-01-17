@@ -42,12 +42,7 @@ import freerails.world.train.*;
  */
 public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
-    private TrackMoveProducer trackBuilder;
-
-    private StationBuilder stationBuilder;
-
     private FreerailsPrincipal principal;
-    private ImmutableSchedule defaultSchedule;
     private Point2D station1Location;
     private Point2D station2Location;
 
@@ -80,8 +75,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
-        trackBuilder = new TrackMoveProducer(me, world, mr);
-        stationBuilder = new StationBuilder(me);
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(me, world, mr);
+        StationBuilder stationBuilder = new StationBuilder(me);
 
         // Build track.
         stationBuilder
@@ -92,31 +87,31 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         }
         Point2D station0Location = new Point2D(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(station0Location, track);
-        assertTrue(ms0.ok);
+        assertTrue(ms0.status);
 
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(station0Location);
-        assertTrue(ms1.ok);
+        assertTrue(ms1.status);
         station1Location = new Point2D(20, 10);
         MoveStatus ms2 = stationBuilder.buildStation(station1Location);
-        assertTrue(ms2.ok);
+        assertTrue(ms2.status);
         station2Location = new Point2D(28, 10);
         MoveStatus ms3 = stationBuilder.buildStation(station2Location);
-        assertTrue(ms3.ok);
+        assertTrue(ms3.status);
 
         TrainOrdersModel order0 = new TrainOrdersModel(2, null, false, false);
         TrainOrdersModel order1 = new TrainOrdersModel(0, null, false, false);
         MutableSchedule s = new MutableSchedule();
         s.addOrder(order0);
         s.addOrder(order1);
-        defaultSchedule = s.toImmutableSchedule();
+        ImmutableSchedule defaultSchedule = s.toImmutableSchedule();
 
         Point2D start = new Point2D(10, 10);
         AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 start, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
-        assertTrue(ms.ok);
+        assertTrue(ms.status);
     }
 
     /**
@@ -159,7 +154,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
                 new OccupiedTracks(principal, world));
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
-        assertTrue(ms.message, ms.ok);
+        assertTrue(ms.message, ms.status);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         return ta.findCurrentMotion(Integer.MAX_VALUE);
     }
@@ -463,7 +458,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertTrue(preMove.isUpdateDue(world));
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, principal);
-        assertTrue(ms.message, ms.ok);
+        assertTrue(ms.message, ms.status);
         assertFalse(preMove.isUpdateDue(world));
     }
 

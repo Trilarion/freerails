@@ -121,7 +121,7 @@ public class AddTransactionMove implements Move {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryDoMove(world, principal);
 
-        if (ms.ok) {
+        if (ms.status) {
             world.addTransaction(this.principal, transaction);
         }
 
@@ -131,7 +131,7 @@ public class AddTransactionMove implements Move {
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryUndoMove(world, principal);
 
-        if (ms.ok) {
+        if (ms.status) {
             world.removeLastTransaction(this.principal);
         }
 

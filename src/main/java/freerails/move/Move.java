@@ -24,8 +24,7 @@ import freerails.world.player.FreerailsPrincipal;
 import java.io.Serializable;
 
 /**
- * All moves should implement this interface and obey the contract described
- * below.
+ * All moves should implement this interface and obey the contract described below.
  *
  * (1) They should be immutable.
  *
@@ -47,7 +46,7 @@ import java.io.Serializable;
  * terrain type after the change.
  *
  * (6) The tryDoMove and tryUndoMove methods should test whether the move is
- * valid but leave the game world unchanged
+ * valid but leave the game world unchanged.
  *
  * @see MoveStatus
  * @see World

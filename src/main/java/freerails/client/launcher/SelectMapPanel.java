@@ -23,7 +23,7 @@
 
 package freerails.client.launcher;
 
-import freerails.client.launcher.LauncherInterface.MSG_TYPE;
+import freerails.client.ClientConfig;
 import freerails.network.SaveGamesManager;
 import freerails.server.SaveGameManagerImpl;
 
@@ -39,28 +39,103 @@ import javax.swing.event.ListSelectionEvent;
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
  */
-public class SelectMapPanel extends JPanel implements LauncherPanel {
+public class SelectMapPanel extends JPanel {
 
     private static final long serialVersionUID = 3763096353857024568L;
     private static final String SELECT_A_MAP = "Select a map.";
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
 
-    private JPanel jPanel1;
-    private JPanel jPanel2;
     private JPanel jPanel3;
-    private JPanel jPanel4;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
     private JList newmapsJList;
-    private JLabel portLabel;
     private JList savedmapsJList;
     private JTextField serverPort;
 
     SelectMapPanel(LauncherInterface owner) {
         this.owner = owner;
 
-        initComponents();
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        JPanel jPanel1 = new JPanel();
+        JScrollPane jScrollPane1 = new JScrollPane();
+        newmapsJList = new JList();
+        JPanel jPanel4 = new JPanel();
+        JScrollPane jScrollPane2 = new JScrollPane();
+        savedmapsJList = new JList();
+        jPanel3 = new JPanel();
+        JLabel portLabel = new JLabel();
+        serverPort = new JTextField();
+        JPanel jPanel2 = new JPanel();
+
+        setLayout(new java.awt.GridBagLayout());
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "New Game"));
+        jPanel1.setPreferredSize(null);
+        jScrollPane1.setViewportBorder(new BevelBorder(BevelBorder.LOWERED));
+        newmapsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        newmapsJList.addListSelectionListener(this::newmapsJListValueChanged);
+
+        jScrollPane1.setViewportView(newmapsJList);
+
+        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setBorder(new TitledBorder(new EtchedBorder(), "Load game"));
+        jPanel4.setPreferredSize(null);
+        jPanel4.setRequestFocusEnabled(false);
+        jScrollPane2.setViewportBorder(new BevelBorder(BevelBorder.LOWERED));
+        savedmapsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        savedmapsJList.addListSelectionListener(this::savedmapsJListValueChanged);
+
+        jScrollPane2.setViewportView(savedmapsJList);
+
+        jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel4, gridBagConstraints);
+
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jPanel3.setBorder(new TitledBorder(new EtchedBorder(), "Server port"));
+        portLabel.setText("Port:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(portLabel, gridBagConstraints);
+
+        serverPort.setColumns(6);
+        serverPort.setText(this.owner.getProperty(ClientConfig.SERVER_PORT_PROPERTY));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(serverPort, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        jPanel3.add(jPanel2, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jPanel3, gridBagConstraints);
 
         /* initialise the map list */
         SaveGamesManager sgm = new SaveGameManagerImpl();
@@ -132,7 +207,7 @@ public class SelectMapPanel extends JPanel implements LauncherPanel {
     public boolean validateInput() {
         /* Validate map selection. */
         if (getSelection() == MapSelection.NONE) {
-            owner.setInfoText(SELECT_A_MAP, MSG_TYPE.ERROR);
+            owner.setInfoText(SELECT_A_MAP, InfoMessageType.ERROR);
             return false;
         }
 
@@ -140,107 +215,21 @@ public class SelectMapPanel extends JPanel implements LauncherPanel {
         try {
             int port = getServerPort();
             if (port < 0 || port > 65535) {
-                owner.setInfoText(INVALID_PORT, MSG_TYPE.ERROR);
+                owner.setInfoText(INVALID_PORT, InfoMessageType.ERROR);
                 return false;
             }
         } catch (Exception e) {
-            owner.setInfoText(INVALID_PORT, MSG_TYPE.ERROR);
+            owner.setInfoText(INVALID_PORT, InfoMessageType.ERROR);
             return false;
         }
 
-        /* Everything is ok. */
+        /* Everything is status. */
         owner.hideErrorMessages();
-        owner.setProperty(LauncherInterface.SERVER_PORT_PROPERTY, serverPort.getText());
-        owner.saveProps();
+        owner.setProperty(ClientConfig.SERVER_PORT_PROPERTY, serverPort.getText());
+        owner.saveProperties();
         return true;
     }
 
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        jPanel1 = new JPanel();
-        jScrollPane1 = new JScrollPane();
-        newmapsJList = new JList();
-        jPanel4 = new JPanel();
-        jScrollPane2 = new JScrollPane();
-        savedmapsJList = new JList();
-        jPanel3 = new JPanel();
-        portLabel = new JLabel();
-        serverPort = new JTextField();
-        jPanel2 = new JPanel();
-
-        setLayout(new java.awt.GridBagLayout());
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "New Game"));
-        jPanel1.setPreferredSize(null);
-        jScrollPane1.setViewportBorder(new BevelBorder(BevelBorder.LOWERED));
-        newmapsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        newmapsJList.addListSelectionListener(this::newmapsJListValueChanged);
-
-        jScrollPane1.setViewportView(newmapsJList);
-
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(jPanel1, gridBagConstraints);
-
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jPanel4.setBorder(new TitledBorder(new EtchedBorder(), "Load game"));
-        jPanel4.setPreferredSize(null);
-        jPanel4.setRequestFocusEnabled(false);
-        jScrollPane2.setViewportBorder(new BevelBorder(BevelBorder.LOWERED));
-        savedmapsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        savedmapsJList.addListSelectionListener(this::savedmapsJListValueChanged);
-
-        jScrollPane2.setViewportView(savedmapsJList);
-
-        jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(jPanel4, gridBagConstraints);
-
-        jPanel3.setLayout(new java.awt.GridBagLayout());
-
-        jPanel3.setBorder(new TitledBorder(new EtchedBorder(), "Server port"));
-        portLabel.setText("Port:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel3.add(portLabel, gridBagConstraints);
-
-        serverPort.setColumns(6);
-        serverPort.setText(owner.getProperty(LauncherInterface.SERVER_PORT_PROPERTY));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel3.add(serverPort, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        jPanel3.add(jPanel2, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jPanel3, gridBagConstraints);
-
-    }
 
     private void savedmapsJListValueChanged(ListSelectionEvent evt) {
         if (savedmapsJList.getSelectedIndex() != -1) newmapsJList.clearSelection();

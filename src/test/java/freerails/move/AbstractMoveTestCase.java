@@ -60,44 +60,44 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertDoMoveFails(Move m) {
+    void assertDoMoveFails(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+        MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
+        assertTrue("Move went through when it should have failed", !ms.status);
     }
 
     /**
-     * @param m
+     * @param move
      */
-    protected void assertDoMoveIsOk(Move m) {
+    protected void assertDoMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+        MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertDoThenUndoLeavesWorldUnchanged(Move m) {
+    void assertDoThenUndoLeavesWorldUnchanged(Move move) {
         try {
-            World w = world;
-            World before = (World) Utils.cloneBySerialisation(w);
+            World world = this.world;
+            World before = (World) Utils.cloneBySerialisation(world);
 
-            assertEquals(before, w);
+            assertEquals(before, world);
 
-            assertTrue(m.doMove(w, Player.AUTHORITATIVE).ok);
-            World after = (World) Utils.cloneBySerialisation(w);
+            assertTrue(move.doMove(world, Player.AUTHORITATIVE).status);
+            World after = (World) Utils.cloneBySerialisation(world);
             assertFalse(after.equals(before));
 
-            boolean b = m.undoMove(w, Player.AUTHORITATIVE).ok;
+            boolean b = move.undoMove(world, Player.AUTHORITATIVE).status;
             assertTrue(b);
-            assertEquals(before, w);
+            assertEquals(before, world);
         } catch (Exception e) {
             assertTrue(false);
         }
@@ -126,23 +126,23 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertOkAndRepeatable(Move m) {
+    void assertOkAndRepeatable(Move move) {
         assertSetupHasBeenCalled();
 
         // Do move
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
+        assertTryMoveIsOk(move);
+        assertDoMoveIsOk(move);
+        assertTryMoveIsOk(move);
+        assertDoMoveIsOk(move);
 
         // Since it leaves the world unchanged it should also be
         // possible to undo it repeatably
-        assertTryUndoMoveIsOk(m);
-        assertUndoMoveIsOk(m);
-        assertTryUndoMoveIsOk(m);
-        assertUndoMoveIsOk(m);
+        assertTryUndoMoveIsOk(move);
+        assertUndoMoveIsOk(move);
+        assertTryUndoMoveIsOk(move);
+        assertUndoMoveIsOk(move);
     }
 
     /**
@@ -150,20 +150,20 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * removed a piece of track, that piece of track is gone, so we cannot
      * remove it again.
      *
-     * @param m
+     * @param move
      */
-    void assertOkButNotRepeatable(Move m) {
+    void assertOkButNotRepeatable(Move move) {
         assertSetupHasBeenCalled();
 
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
-        assertTryMoveFails(m);
-        assertDoMoveFails(m);
-        assertTryUndoMoveIsOk(m);
-        assertUndoMoveIsOk(m);
-        assertTryUndoMoveFails(m);
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
+        assertTryMoveIsOk(move);
+        assertDoMoveIsOk(move);
+        assertTryMoveFails(move);
+        assertDoMoveFails(move);
+        assertTryUndoMoveIsOk(move);
+        assertUndoMoveIsOk(move);
+        assertTryUndoMoveFails(move);
+        assertTryMoveIsOk(move);
+        assertDoMoveIsOk(move);
     }
 
     private void assertSetupHasBeenCalled() {
@@ -172,27 +172,27 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertTryMoveFails(Move m) {
+    void assertTryMoveFails(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
-        assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
+        MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
+        assertNotNull(moveStatus);
+        assertTrue("Move went through when it should have failed", !moveStatus.status);
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertTryMoveIsOk(Move m) {
+    void assertTryMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryDoMove(world, Player.AUTHORITATIVE);
+        MoveStatus ms = move.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 
-        ms = m.tryDoMove(world, Player.AUTHORITATIVE);
+        ms = move.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(
                 "Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
@@ -200,27 +200,27 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertTryUndoMoveFails(Move m) {
+    void assertTryUndoMoveFails(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
+        MoveStatus ms = move.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
-        assertTrue("Move went through when it should have failed", !ms.ok);
+        assertTrue("Move went through when it should have failed", !ms.status);
     }
 
     /**
-     * @param m
+     * @param move
      */
-    void assertTryUndoMoveIsOk(Move m) {
+    void assertTryUndoMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
+        MoveStatus ms = move.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals("First try failed", MoveStatus.MOVE_OK, ms);
 
-        ms = m.tryUndoMove(world, Player.AUTHORITATIVE);
+        ms = move.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(
                 "Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
@@ -228,12 +228,12 @@ public abstract class AbstractMoveTestCase extends TestCase {
     }
 
     /**
-     * @param m
+     * @param move
      */
-    protected void assertUndoMoveIsOk(Move m) {
+    protected void assertUndoMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
-        MoveStatus ms = m.undoMove(world, Player.AUTHORITATIVE);
+        MoveStatus ms = move.undoMove(world, Player.AUTHORITATIVE);
         assertNotNull(ms);
         assertEquals(MoveStatus.MOVE_OK, ms);
     }

@@ -157,7 +157,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         trackTemplate = trackTemplate & (trackTemplateAbove | trackTemplateBelow);
 
         return trackTemplate == 0;
-        // Things are ok.
+        // Things are status.
     }
 
     /**
@@ -204,7 +204,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         // Check that we are not changing another players track if this is not
         // allowed.
         if (!canConnect2OtherRRsTrack(w)) {
-            // If either the new or old track piece is null, we are ok.
+            // If either the new or old track piece is null, we are status.
             int oldRuleNumber = oldTrackPiece.getTrackTypeID();
             int newRuleNumber = newTrackPiece.getTrackTypeID();
 
@@ -261,7 +261,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         // Check 4 overlapping stations.
         if (newTrackPiece.getTrackRule().isStation()) {
             MoveStatus ms = ChangeTrackPieceMove.check4overlap(w, location, newTrackPiece);
-            if (!ms.ok) return ms;
+            if (!ms.status) return ms;
         }
 
         return MoveStatus.MOVE_OK;
@@ -275,7 +275,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         MoveTrainPreMove.clearCache();
         MoveStatus moveStatus = tryDoMove(world, principal);
 
-        if (!moveStatus.isOk()) {
+        if (!moveStatus.isStatus()) {
             return moveStatus;
         }
         move(world, trackPieceAfter);
@@ -295,7 +295,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         MoveTrainPreMove.clearCache();
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
-        if (!moveStatus.isOk()) {
+        if (!moveStatus.isStatus()) {
             return moveStatus;
         }
         move(world, trackPieceBefore);

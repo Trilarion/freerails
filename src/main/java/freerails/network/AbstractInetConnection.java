@@ -51,9 +51,7 @@ abstract class AbstractInetConnection implements Runnable {
     }
 
     public void disconnect() throws IOException {
-        if (logger.isDebugEnabled()) {
-            logger.debug(this + "Initiating shutdown..");
-        }
+        logger.debug(this + "Initiating shutdown..");
         shutdownOutput();
 
         long waitUntil = System.currentTimeMillis() + timeout;
@@ -75,9 +73,7 @@ abstract class AbstractInetConnection implements Runnable {
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug(this + "Finished shutdown!! --status=" + String.valueOf(status.isOpen()));
-        }
+        logger.debug(this + "Finished shutdown!! --status=" + String.valueOf(status.isOpen()));
     }
 
     public void flush() throws IOException {
@@ -101,9 +97,7 @@ abstract class AbstractInetConnection implements Runnable {
         } catch (IOException | ClassNotFoundException e) {
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug(this + "Reciprocating shutdown..");
-        }
+        logger.debug(this + "Reciprocating shutdown..");
         shutDownInput();
         readerThreadStatus.close();
     }
@@ -119,9 +113,7 @@ abstract class AbstractInetConnection implements Runnable {
     private synchronized void shutDownInput() {
         try {
             inetConnection.shutdownInput();
-            if (logger.isDebugEnabled()) {
-                logger.debug(this + "Shut down input.");
-            }
+            logger.debug(this + "Shut down input.");
 
             if (status.isOpen()) {
                 shutdownOutput();
@@ -138,9 +130,7 @@ abstract class AbstractInetConnection implements Runnable {
 
         status.close();
         inetConnection.shutdownOutput();
-        if (logger.isDebugEnabled()) {
-            logger.debug(this + "Shut down output.");
-        }
+        logger.debug(this + "Shut down output.");
     }
 
     abstract String getThreadName();

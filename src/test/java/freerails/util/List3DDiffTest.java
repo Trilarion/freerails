@@ -33,8 +33,6 @@ public class List3DDiffTest extends TestCase {
 
     private List3DDiff<Object> diffs;
 
-    private SortedMap<ListKey, Object> map;
-
     private List3D<Object> underlying;
 
     /**
@@ -43,7 +41,7 @@ public class List3DDiffTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         underlying = new List3DImpl<>(0, 0);
-        map = new TreeMap<>();
+        SortedMap<ListKey, Object> map = new TreeMap<>();
         diffs = new List3DDiff<>(map, underlying, listid.test);
     }
 

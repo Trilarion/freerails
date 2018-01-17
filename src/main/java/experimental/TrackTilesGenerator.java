@@ -40,7 +40,6 @@ import java.util.List;
 class TrackTilesGenerator extends JPanel {
 
     private static final long serialVersionUID = 3618982273966487859L;
-    private final CubicCurve2D.Double[] track;
     private final ImageManagerImpl imageManager = new ImageManagerImpl("/experimental/", "/experimental/");
 
     private final List<TrackRule> rules;
@@ -52,7 +51,7 @@ class TrackTilesGenerator extends JPanel {
      */
     private TrackTilesGenerator() {
         Point2D.Double start, end, one, two;
-        track = new CubicCurve2D.Double[3];
+        CubicCurve2D.Double[] track = new CubicCurve2D.Double[3];
         track[0] = new CubicCurve2D.Double();
 
         start = new Point2D.Double(150, 300);

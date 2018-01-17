@@ -30,6 +30,8 @@ import freerails.network.MessageToServer;
 import freerails.network.SaveGameMessageToServer;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
@@ -40,74 +42,67 @@ public class SaveGamePanel extends JPanel implements View {
     private static final long serialVersionUID = 4031907071040752589L;
     private ModelRoot modelRoot;
     private ActionListener close;
-    private JButton cancelButton;
     private JTextField fileNameTextField;
-    private JLabel label1;
-    private JButton oKButton;
 
     /**
      * Creates new form SaveGamePanel
      */
     public SaveGamePanel() {
-        initComponents();
-    }
+        GridBagConstraints gridBagConstraints;
 
-    private static void fileNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        label1 = new JLabel();
+        JLabel label1 = new JLabel();
         fileNameTextField = new JTextField();
-        oKButton = new JButton();
-        cancelButton = new JButton();
+        JButton oKButton = new JButton();
+        JButton cancelButton = new JButton();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
         label1.setText("Please enter a name for the save game.");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(label1, gridBagConstraints);
 
         fileNameTextField.setText("savegame");
         fileNameTextField.addActionListener(SaveGamePanel::fileNameTextFieldActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(fileNameTextField, gridBagConstraints);
 
         oKButton.setText("OK");
         oKButton.addActionListener(this::oKButtonActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(oKButton, gridBagConstraints);
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(cancelButton, gridBagConstraints);
 
     }
 
-    private void oKButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private static void fileNameTextFieldActionPerformed(ActionEvent evt) {
+        // TODO add your handling code here:
+        System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
+    }
+
+
+    private void oKButtonActionPerformed(ActionEvent evt) {
 
         String filename = fileNameTextField.getText();
         // Save the current game using the string
@@ -118,7 +113,7 @@ public class SaveGamePanel extends JPanel implements View {
         close.actionPerformed(evt);
     }
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void cancelButtonActionPerformed(ActionEvent evt) {
         close.actionPerformed(evt);
     }
 

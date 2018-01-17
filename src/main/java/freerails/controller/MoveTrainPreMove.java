@@ -140,10 +140,10 @@ public class MoveTrainPreMove implements PreMove {
     /**
      * Returns true if an updated is due.
      */
-    public boolean isUpdateDue(ReadOnlyWorld w) {
-        GameTime currentTime = w.currentTime();
-        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-        ActivityIterator ai = w.getActivities(principal, trainID);
+    public boolean isUpdateDue(ReadOnlyWorld world) {
+        GameTime currentTime = world.currentTime();
+        TrainAccessor ta = new TrainAccessor(world, principal, trainID);
+        ActivityIterator ai = world.getActivities(principal, trainID);
         ai.gotoLastActivity();
 
         double finishTime = ai.getFinishTime();
@@ -157,16 +157,16 @@ public class MoveTrainPreMove implements PreMove {
             int stationId = ta.getStationId(ticks);
             if (stationId == -1) throw new IllegalStateException();
 
-            Station station = (Station) w.get(principal, KEY.STATIONS, stationId);
-            CargoBatchBundle cb = (CargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+            Station station = (Station) world.get(principal, KEY.STATIONS, stationId);
+            CargoBatchBundle cb = (CargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
 
             for (int i = 0; i < spaceAvailable.size(); i++) {
                 int space = spaceAvailable.get(i);
                 int atStation = cb.getAmountOfType(i);
                 if (space * atStation > 0) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("There is cargo to transfer!");
-                    }
+
+                    logger.debug("There is cargo to transfer!");
+
                     return true;
                 }
             }
@@ -176,8 +176,8 @@ public class MoveTrainPreMove implements PreMove {
         return hasFinishedLastActivity;
     }
 
-    private Point2D currentTrainTarget(ReadOnlyWorld w) {
-        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+    private Point2D currentTrainTarget(ReadOnlyWorld world) {
+        TrainAccessor ta = new TrainAccessor(world, principal, trainID);
         return ta.getTarget();
     }
 
@@ -195,27 +195,27 @@ public class MoveTrainPreMove implements PreMove {
     }
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    public Move generateMove(ReadOnlyWorld w) {
+    public Move generateMove(ReadOnlyWorld world) {
 
         // Check that we can generate a move.
-        if (!isUpdateDue(w)) {
+        if (!isUpdateDue(world)) {
             throw new IllegalStateException();
         }
 
-        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
+        TrainAccessor ta = new TrainAccessor(world, principal, trainID);
         TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
 
         TrainActivity activity = tm.getActivity();
 
         switch (activity) {
             case STOPPED_AT_STATION:
-                return moveTrain(w, occupiedTracks);
+                return moveTrain(world, occupiedTracks);
             case READY: {
                 // Are we at a station?
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(w));
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(world));
                 ta.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack pot = tm.getFinalPosition();
                 int x = pot.getX();
@@ -236,7 +236,7 @@ public class MoveTrainPreMove implements PreMove {
 
                     // If we are adding wagons we may need to lengthen the path.
                     if (lastTrainLength < currentTrainLength) {
-                        path = TrainStopsHandler.lengthenPath(w, path, currentTrainLength);
+                        path = TrainStopsHandler.lengthenPath(world, path, currentTrainLength);
                     }
 
                     nextMotion = new TrainMotion(path, currentTrainLength, durationOfStationStop, status);
@@ -247,15 +247,15 @@ public class MoveTrainPreMove implements PreMove {
                     Move cargoMove = stopsHandler.getMoves();
                     return new CompositeMove(trainMove, cargoMove);
                 }
-                return moveTrain(w, occupiedTracks);
+                return moveTrain(world, occupiedTracks);
             }
             case WAITING_FOR_FULL_LOAD: {
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(w));
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(world));
 
                 boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
                 Move cargoMove = stopsHandler.getMoves();
                 if (!waiting4fullLoad) {
-                    Move trainMove = moveTrain(w, occupiedTracks);
+                    Move trainMove = moveTrain(world, occupiedTracks);
                     if (null != trainMove) {
                         return new CompositeMove(trainMove, cargoMove);
                     } else {
@@ -279,8 +279,8 @@ public class MoveTrainPreMove implements PreMove {
         return result;
     }
 
-    private TrainMotion lastMotion(ReadOnlyWorld w) {
-        ActivityIterator ai = w.getActivities(principal, trainID);
+    private TrainMotion lastMotion(ReadOnlyWorld world) {
+        ActivityIterator ai = world.getActivities(principal, trainID);
         ai.gotoLastActivity();
         return (TrainMotion) ai.getActivity();
     }
@@ -356,21 +356,21 @@ public class MoveTrainPreMove implements PreMove {
         return newSpeeds;
     }
 
-    TileTransition nextStep(ReadOnlyWorld w) {
+    TileTransition nextStep(ReadOnlyWorld world) {
         // Find current position.
-        TrainMotion currentMotion = lastMotion(w);
+        TrainMotion currentMotion = lastMotion(world);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
-        Point2D targetPoint = currentTrainTarget(w);
-        return findNextStep(w, currentPosition, targetPoint);
+        Point2D targetPoint = currentTrainTarget(world);
+        return findNextStep(world, currentPosition, targetPoint);
     }
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    public Move stopTrain(ReadOnlyWorld w) {
-        TrainMotion motion = lastMotion(w);
+    public Move stopTrain(ReadOnlyWorld world) {
+        TrainMotion motion = lastMotion(world);
         SpeedAgainstTime stopped = ConstantAcceleration.STOPPED;
         double duration = motion.duration();
 

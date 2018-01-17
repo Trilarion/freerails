@@ -42,12 +42,12 @@ public class TimeTickMove implements Move {
     }
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    public static Move getMove(ReadOnlyWorld w) {
+    public static Move getMove(ReadOnlyWorld world) {
 
-        GameTime oldTime = w.currentTime();
+        GameTime oldTime = world.currentTime();
         GameTime newTime = new GameTime(oldTime.getTicks() + 1);
 
         return new TimeTickMove(oldTime, newTime);
@@ -93,7 +93,7 @@ public class TimeTickMove implements Move {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryDoMove(world, principal);
 
-        if (status.ok) {
+        if (status.status) {
             world.setTime(newTime);
         }
 
@@ -103,7 +103,7 @@ public class TimeTickMove implements Move {
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryUndoMove(world, principal);
 
-        if (status.isOk()) {
+        if (status.isStatus()) {
             world.setTime(oldTime);
         }
 

@@ -86,15 +86,15 @@ public class CompositeMove implements Move {
         // Since whether a move later in the list goes through could
         // depend on whether an earlier move has been executed, we need
         // actually execute moves, then undo them to test whether the
-        // array of moves can be executed ok.
+        // array of moves can be executed status.
         MoveStatus ms = doMove(world, principal);
 
-        if (ms.ok) {
+        if (ms.status) {
             // We just wanted to see if we could do them so we undo them again.
             undoMoves(world, moves.size() - 1, principal);
         }
 
-        // If its not ok, then doMove would have undone the moves so we don't
+        // If its not status, then doMove would have undone the moves so we don't
         // need to undo them.
         return ms;
     }
@@ -102,7 +102,7 @@ public class CompositeMove implements Move {
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = undoMove(world, principal);
 
-        if (ms.isOk()) {
+        if (ms.isStatus()) {
             redoMoves(world, 0, principal);
         }
 
@@ -112,14 +112,14 @@ public class CompositeMove implements Move {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = compositeTest(world);
 
-        if (!ms.ok) {
+        if (!ms.status) {
             return ms;
         }
 
         for (int i = 0; i < moves.size(); i++) {
             ms = moves.get(i).doMove(world, principal);
 
-            if (!ms.ok) {
+            if (!ms.status) {
                 // Undo any moves we have already done.
                 undoMoves(world, i - 1, principal);
 
@@ -136,7 +136,7 @@ public class CompositeMove implements Move {
         for (int i = moves.size() - 1; i >= 0; i--) {
             ms = moves.get(i).undoMove(world, principal);
 
-            if (!ms.ok) {
+            if (!ms.status) {
                 // Redo any moves we have already undone.
                 redoMoves(world, i + 1, principal);
 
@@ -151,7 +151,7 @@ public class CompositeMove implements Move {
         for (int i = number; i >= 0; i--) {
             MoveStatus ms = moves.get(i).undoMove(w, p);
 
-            if (!ms.ok) {
+            if (!ms.status) {
                 throw new IllegalStateException(ms.message);
             }
         }
@@ -161,7 +161,7 @@ public class CompositeMove implements Move {
         for (int i = number; i < moves.size(); i++) {
             MoveStatus ms = moves.get(i).doMove(w, p);
 
-            if (!ms.ok) {
+            if (!ms.status) {
                 throw new IllegalStateException(ms.message);
             }
         }

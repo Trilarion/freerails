@@ -34,12 +34,9 @@ import java.util.LinkedList;
 public class EchoGameServer implements GameServer, Runnable {
 
     private static final Logger logger = Logger.getLogger(EchoGameServer.class.getName());
-
     private final Collection<ConnectionToClient> connections = new ArrayList();
-
     private final SynchronizedFlag status = new SynchronizedFlag(false);
-
-    private final Collection<Serializable> messsages2send = new LinkedList<>();
+    private final Collection<Serializable> messsagesToSend = new LinkedList<>();
 
     private EchoGameServer() {
     }
@@ -109,9 +106,7 @@ public class EchoGameServer implements GameServer, Runnable {
         for (ConnectionToClient connection : connections) {
             try {
                 connection.writeToClient(m);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Sent ok: " + m);
-                }
+                logger.debug("Sent status: " + m);
             } catch (IOException e) {
                 try {
                     if (connection.isOpen()) {
@@ -135,22 +130,21 @@ public class EchoGameServer implements GameServer, Runnable {
                 try {
                     Serializable[] messages = connection.readFromClient();
 
-                    Collections.addAll(messsages2send, messages);
+                    Collections.addAll(messsagesToSend, messages);
                 } catch (IOException e) {
                     try {
                         if (connection.isOpen()) {
                             connection.disconnect();
                         }
                     } catch (IOException e1) {
-                        // 
                         e1.printStackTrace();
                     }
                 }
             }
 
-            /* Send messages. */
+            // Send messages.
 
-            for (Serializable message : messsages2send) {
+            for (Serializable message : messsagesToSend) {
                 sendMessage(message);
             }
         }

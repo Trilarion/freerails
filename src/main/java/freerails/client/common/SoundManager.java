@@ -57,10 +57,7 @@ public class SoundManager implements ModelRootListener, LineListener {
             maxLines = mixer.getMaxLines(info2);
             if (maxLines >= 32) break; // Java Sound Audio Engine, version 1.0 satisfies this.
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Sound Mixer: " + mixer.getMixerInfo() + '(' + maxLines + " voices).");
-        }
-
+        logger.debug("Sound Mixer: " + mixer.getMixerInfo() + '(' + maxLines + " voices).");
     }
 
     /**

@@ -34,7 +34,6 @@ import junit.framework.TestCase;
  */
 public class StationBuilderTest extends TestCase {
 
-    private World world;
     private TrackMoveProducer trackBuilder;
     private StationBuilder stationBuilder;
 
@@ -44,7 +43,7 @@ public class StationBuilderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = MapFixtureFactory2.getCopy();
+        World world = MapFixtureFactory2.getCopy();
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
         ModelRoot mr = new ModelRootImpl();
         trackBuilder = new TrackMoveProducer(me, world, mr);
@@ -59,14 +58,14 @@ public class StationBuilderTest extends TestCase {
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         MoveStatus ms = trackBuilder.buildTrack(new Point2D(10, 10), track);
-        assertTrue(ms.ok);
-        assertTrue(stationBuilder.tryBuildingStation(new Point2D(10, 10)).ok);
-        assertTrue(stationBuilder.tryBuildingStation(new Point2D(13, 10)).ok);
+        assertTrue(ms.status);
+        assertTrue(stationBuilder.tryBuildingStation(new Point2D(10, 10)).status);
+        assertTrue(stationBuilder.tryBuildingStation(new Point2D(13, 10)).status);
         MoveStatus ms1 = stationBuilder.buildStation(new Point2D(10, 10));
-        assertTrue(ms1.ok);
+        assertTrue(ms1.status);
 
         MoveStatus ms2 = stationBuilder.buildStation(new Point2D(13, 10));
-        assertFalse(ms2.ok);
+        assertFalse(ms2.status);
     }
 
 }

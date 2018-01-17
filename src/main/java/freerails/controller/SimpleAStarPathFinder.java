@@ -78,9 +78,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
      * @throws PathNotFoundException
      */
     private List<Integer> findpath(int[] currentPosition, int[] targets, GraphExplorer e) throws PathNotFoundException {
-        if (logger.isDebugEnabled()) {
-            logger.debug(currentPosition.length + " starting points; " + targets.length + " targets.");
-        }
+        logger.debug(currentPosition.length + " starting points; " + targets.length + " targets.");
 
         setupSearch(currentPosition, targets, e);
 
@@ -162,9 +160,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
                     // less than that of the node with the smallest F value on
                     // the open list, then the best path so far is the shortest
                     // path.
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Path successfully found after " + loopCounter + " iterations.");
-                    }
+                    logger.debug("Path successfully found after " + loopCounter + " iterations.");
                     path.add(bestPath);
 
                     int step = bestPath;
@@ -174,9 +170,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
                         path.add(step);
                     }
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Path found!");
-                    }
+                    logger.debug("Path found!");
                     status = PATH_FOUND;
 
                     return;
@@ -197,15 +191,14 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
                     status = SEARCH_PAUSED;
 
                     long totalSearchTime = currentTime - searchStartTime;
-                    throw new PathNotFoundException("No path found yet. " + totalSearchTime + "ms.");
+                    throw new PathNotFoundException("No path found yet. " + totalSearchTime + "moveStatus.");
                 }
             }
         }
 
         status = PATH_NOT_FOUND;
-        if (logger.isDebugEnabled()) {
-            logger.debug("No path found and open list empty after " + loopCounter + " iterations.");
-        }
+        logger.debug("No path found and open list empty after " + loopCounter + " iterations.");
+
         throw new PathNotFoundException("Path not found.");
     }
 

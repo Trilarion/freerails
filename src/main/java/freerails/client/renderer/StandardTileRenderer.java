@@ -38,11 +38,11 @@ public final class StandardTileRenderer extends freerails.client.renderer.Abstra
      * @param imageManager
      * @param rgbValues
      * @param tileModel
-     * @param w
+     * @param world
      * @throws IOException
      */
-    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld w) throws IOException {
-        super(tileModel, rgbValues, w);
+    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
+        super(tileModel, rgbValues, world);
         setTileIcons(new Image[1]);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
     }

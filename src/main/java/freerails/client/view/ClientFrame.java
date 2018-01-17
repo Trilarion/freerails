@@ -27,6 +27,7 @@ import freerails.client.GUIComponentFactory;
 import freerails.client.GUIComponentFactoryTestImpl;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -36,87 +37,60 @@ import java.awt.event.WindowEvent;
 public class ClientFrame extends JFrame {
 
     private static final long serialVersionUID = 3834868100742265142L;
-    private GUIComponentFactory gUIComponentFactory;
 
     /**
      * Creates new form ClientFrame.
      */
-    public ClientFrame(GUIComponentFactory gcf) {
-        setup(gcf);
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String args[]) {
-        new ClientFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
-    }
-
-    /**
-     * Exit the Application.
-     */
-
-    private static void exitForm(WindowEvent evt) {
-        System.exit(0);
-    }
-
-    private void setup(GUIComponentFactory gcf) {
-        gUIComponentFactory = gcf;
-        initComponents();
-        gUIComponentFactory.createDateJLabel();
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+    public ClientFrame(GUIComponentFactory guiComponentFactory) {
+        GridBagConstraints gridBagConstraints;
 
         JPanel rhsjPanel = new JPanel();
-        JPanel mapOverview = gUIComponentFactory.createOverviewMap();
-        JTabbedPane trainsJTabPane1 = gUIComponentFactory.createTrainsJTabPane();
+        JPanel mapOverview = guiComponentFactory.createOverviewMap();
+        JTabbedPane trainsJTabPane1 = guiComponentFactory.createTrainsJTabPane();
 
         JPanel lhsjPanel = new JPanel();
-        JScrollPane mainMapView = gUIComponentFactory.createMainMap();
+        JScrollPane mainMapView = guiComponentFactory.createMainMap();
         JPanel statusjPanel = new JPanel();
-        JLabel datelabel = gUIComponentFactory.createDateJLabel();
-        JLabel cashlabel = gUIComponentFactory.createCashJLabel();
+        JLabel datelabel = guiComponentFactory.createDateJLabel();
+        JLabel cashlabel = guiComponentFactory.createCashJLabel();
         JMenuBar jMenuBar1 = new JMenuBar();
-        JMenu gameMenu = gUIComponentFactory.createGameMenu();
-        JMenu buildMenu = gUIComponentFactory.createBuildMenu();
-        JMenu brokerMenu1 = gUIComponentFactory.createBrokerMenu();
-        JMenu displayMenu = gUIComponentFactory.createDisplayMenu();
-        JMenu reportsMenu = gUIComponentFactory.createReportsMenu();
-        JMenu helpMenu = gUIComponentFactory.createHelpMenu();
+        JMenu gameMenu = guiComponentFactory.createGameMenu();
+        JMenu buildMenu = guiComponentFactory.createBuildMenu();
+        JMenu brokerMenu1 = guiComponentFactory.createBrokerMenu();
+        JMenu displayMenu = guiComponentFactory.createDisplayMenu();
+        JMenu reportsMenu = guiComponentFactory.createReportsMenu();
+        JMenu helpMenu = guiComponentFactory.createHelpMenu();
 
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        getContentPane().setLayout(new GridBagLayout());
 
         addWindowListener(new MyWindowAdapter());
 
-        rhsjPanel.setLayout(new java.awt.GridBagLayout());
+        rhsjPanel.setLayout(new GridBagLayout());
 
-        rhsjPanel.add(mapOverview, new java.awt.GridBagConstraints());
+        rhsjPanel.add(mapOverview, new GridBagConstraints());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         rhsjPanel.add(trainsJTabPane1, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(rhsjPanel, gridBagConstraints);
 
-        lhsjPanel.setLayout(new java.awt.GridBagLayout());
+        lhsjPanel.setLayout(new GridBagLayout());
 
         mainMapView.setAlignmentX(0.0F);
         mainMapView.setAlignmentY(0.0F);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         lhsjPanel.add(mainMapView, gridBagConstraints);
@@ -125,17 +99,17 @@ public class ClientFrame extends JFrame {
 
         statusjPanel.add(cashlabel);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         lhsjPanel.add(statusjPanel, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(lhsjPanel, gridBagConstraints);
@@ -161,7 +135,24 @@ public class ClientFrame extends JFrame {
         setJMenuBar(jMenuBar1);
 
         pack();
+        guiComponentFactory.createDateJLabel();
     }
+
+    /**
+     * @param args
+     */
+    public static void main(String args[]) {
+        new ClientFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
+    }
+
+    /**
+     * Exit the Application.
+     */
+
+    private static void exitForm(WindowEvent evt) {
+        System.exit(0);
+    }
+
 
     private static class MyWindowAdapter extends WindowAdapter {
         @Override

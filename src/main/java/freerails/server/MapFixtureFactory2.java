@@ -76,7 +76,7 @@ public class MapFixtureFactory2 {
             Player p = new Player(name, i);
             AddPlayerMove move = AddPlayerMove.generateMove(world, p);
             MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-            assert (ms.ok);
+            assert (ms.status);
         }
         world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));

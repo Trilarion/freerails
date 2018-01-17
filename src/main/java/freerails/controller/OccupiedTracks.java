@@ -37,23 +37,20 @@ public class OccupiedTracks {
 
     /**
      * @param principal
-     * @param w
+     * @param world
      */
-    public OccupiedTracks(FreerailsPrincipal principal, ReadOnlyWorld w) {
+    public OccupiedTracks(FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         occupiedTrackSections = new HashMap<>();
         trainToTrackList = new HashMap<>();
 
-        for (int i = 0; i < w.size(principal, KEY.TRAINS); i++) {
-            TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, i);
-            if (null == train) continue;
+        for (int i = 0; i < world.size(principal, KEY.TRAINS); i++) {
+            TrainAccessor ta = new TrainAccessor(world, principal, i);
+            GameTime gameTime = world.currentTime();
 
-            TrainAccessor ta = new TrainAccessor(w, principal, i);
-            GameTime gt = w.currentTime();
+            if (ta.isMoving(gameTime.getTicks())) {
 
-            if (ta.isMoving(gt.getTicks())) {
-
-                HashSet<TrackSection> sections = ta.occupiedTrackSection(gt.getTicks());
+                HashSet<TrackSection> sections = ta.occupiedTrackSection(gameTime.getTicks());
                 List<TrackSection> trackList = new ArrayList<>(sections);
                 trainToTrackList.put(i, trackList);
                 for (TrackSection section : sections) {

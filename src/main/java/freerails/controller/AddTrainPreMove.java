@@ -93,11 +93,11 @@ public class AddTrainPreMove implements PreMove {
         return result;
     }
 
-    private PathOnTiles initPositionStep1(ReadOnlyWorld w) {
-        PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(w, point);
+    private PathOnTiles initPositionStep1(ReadOnlyWorld world) {
+        PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(world, point);
         FlatTrackExplorer fte;
         try {
-            fte = new FlatTrackExplorer(w, pp[0]);
+            fte = new FlatTrackExplorer(world, pp[0]);
         } catch (NoTrackException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
@@ -137,32 +137,32 @@ public class AddTrainPreMove implements PreMove {
      * <li>Init. the trains position and motion</li>
      * </ol>
      */
-    public Move generateMove(ReadOnlyWorld w) {
+    public Move generateMove(ReadOnlyWorld world) {
         // Add cargo bundle.
-        int bundleId = w.size(principal, KEY.CARGO_BUNDLES);
+        int bundleId = world.size(principal, KEY.CARGO_BUNDLES);
         ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;
         AddItemToListMove addCargoBundle = new AddItemToListMove(KEY.CARGO_BUNDLES, bundleId, cargo, principal);
 
         // Add schedule
-        int scheduleId = w.size(principal, KEY.TRAIN_SCHEDULES);
+        int scheduleId = world.size(principal, KEY.TRAIN_SCHEDULES);
         AddItemToListMove addSchedule = new AddItemToListMove(KEY.TRAIN_SCHEDULES, scheduleId, schedule, principal);
 
         // Add train to train list.
         TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId, bundleId);
-        int trainId = w.size(principal, KEY.TRAINS);
+        int trainId = world.size(principal, KEY.TRAINS);
         AddItemToListMove addTrain = new AddItemToListMove(KEY.TRAINS, trainId, train, principal);
 
         // Pay for train.
         int quantity = 1;
         /* Determine the price of the train. */
-        EngineType engineType = (EngineType) w.get(SKEY.ENGINE_TYPES, engineTypeId);
+        EngineType engineType = (EngineType) world.get(SKEY.ENGINE_TYPES, engineTypeId);
         Money price = engineType.getPrice();
         Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineTypeId, quantity, new Money(-price.getAmount()));
         AddTransactionMove transactionMove = new AddTransactionMove(principal, transaction);
 
         // Setup and add train position.
 
-        PathOnTiles path = initPositionStep1(w);
+        PathOnTiles path = initPositionStep1(world);
         TrainMotion motion = initPositionStep2(path);
 
         Move addPosition = new AddActiveEntityMove(motion, trainId, principal);

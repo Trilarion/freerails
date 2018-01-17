@@ -81,7 +81,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);
         MoveStatus ms = addPlayerMove.doMove(world, player.getPrincipal());
-        assertTrue(ms.message, ms.ok);
+        assertTrue(ms.message, ms.status);
 
         world.setTime(new GameTime(100));
     }

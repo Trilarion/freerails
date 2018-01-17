@@ -40,9 +40,9 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     private final TerrainType tileModel;
     private Image[] tileIcons;
 
-    AbstractTileRenderer(TerrainType t, int[] rgbValues, ReadOnlyWorld w) {
-        mapWidth = w.getMapWidth();
-        mapHeight = w.getMapHeight();
+    AbstractTileRenderer(TerrainType t, int[] rgbValues, ReadOnlyWorld world) {
+        mapWidth = world.getMapWidth();
+        mapHeight = world.getMapHeight();
 
         tileModel = t;
         typeNumbers = rgbValues;
@@ -62,10 +62,10 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param renderY
      * @param mapX
      * @param mapY
-     * @param w
+     * @param world
      */
-    public void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld w) {
-        Image icon = getIcon(mapX, mapY, w);
+    public void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld world) {
+        Image icon = getIcon(mapX, mapY, world);
 
         if (null != icon) {
             g.drawImage(icon, renderX, renderY, null);
@@ -87,8 +87,8 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * Returns an icon for the tile at x,y, which may depend on the terrain
      * types of of the surrounding tiles.
      */
-    Image getIcon(int x, int y, ReadOnlyWorld w) {
-        int tile = selectTileIcon(x, y, w);
+    Image getIcon(int x, int y, ReadOnlyWorld world) {
+        int tile = selectTileIcon(x, y, world);
 
         if (getTileIcons()[tile] != null) {
             return getTileIcons()[tile];
@@ -96,17 +96,17 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         throw new NullPointerException("Error in TileView.getIcon: icon no. " + tile + "==null");
     }
 
-    int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+    int selectTileIcon(int x, int y, ReadOnlyWorld world) {
         return 0;
     }
 
     // 666 remove wo !
-    int checkTile(int x, int y, ReadOnlyWorld w) {
+    int checkTile(int x, int y, ReadOnlyWorld world) {
         int match = 0;
 
         if ((x < mapWidth) && (x >= 0) && (y < mapHeight) && (y >= 0)) {
             for (int typeNumber : typeNumbers) {
-                TerrainTile tt = (TerrainTile) w.getTile(x, y);
+                TerrainTile tt = (TerrainTile) world.getTile(x, y);
 
                 if (tt.getTerrainTypeID() == typeNumber) {
                     match = 1;

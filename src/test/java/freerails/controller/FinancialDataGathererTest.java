@@ -53,7 +53,7 @@ public class FinancialDataGathererTest extends TestCase {
 
         Move addPlayer = AddPlayerMove.generateMove(world, player);
         MoveStatus ms = addPlayer.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.ok);
+        assertTrue(ms.status);
     }
 
     /**
@@ -125,7 +125,7 @@ public class FinancialDataGathererTest extends TestCase {
             players[i] = new Player("Player " + i, i);
             Move addPlayer = AddPlayerMove.generateMove(world, players[i]);
             MoveStatus ms = addPlayer.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(ms.ok);
+            assertTrue(ms.status);
         }
 
         // Make player #0 buy stock in player #1

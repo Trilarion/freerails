@@ -29,22 +29,22 @@ import freerails.world.player.FreerailsPrincipal;
 public interface MoveExecutor {
 
     /**
-     * @param m
+     * @param move
      * @return
      */
-    MoveStatus doMove(Move m);
+    MoveStatus doMove(Move move);
 
     /**
-     * @param pm
+     * @param preMove
      * @return
      */
-    MoveStatus doPreMove(PreMove pm);
+    MoveStatus doPreMove(PreMove preMove);
 
     /**
-     * @param m
+     * @param move
      * @return
      */
-    MoveStatus tryDoMove(Move m);
+    MoveStatus tryDoMove(Move move);
 
     /**
      * @return

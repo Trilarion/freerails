@@ -39,6 +39,9 @@ import org.apache.log4j.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -52,10 +55,6 @@ import java.util.Properties;
  */
 public class Launcher extends JFrame implements LauncherInterface {
 
-    /**
-     * server sleeping time in ms (1000/SERVERUPDATE is the frame rate)
-     */
-    private static final int SERVERUPDATE = 50;
     private static final Logger logger = Logger.getLogger(Launcher.class.getName());
     private static final long serialVersionUID = -8224003315973977661L;
     private final Component[] wizardPages = new Component[4];
@@ -70,30 +69,85 @@ public class Launcher extends JFrame implements LauncherInterface {
     private int currentPage = 0;
     private FreerailsGameServer server;
     private GUIClient client;
-    private Properties props;
+    private Properties properties;
     private boolean nextIsStart = false;
 
-    private Launcher(boolean quickstart) {
-        loadProps();
-        initComponents();
+    private Launcher() {
+        loadProperties();
+        GridBagConstraints gridBagConstraints;
 
-        wizardPages[0] = new LauncherPanel1();
+        jPanel1 = new JPanel();
+        nextButton = new JButton();
+        prevButton = new JButton();
+        infoLabel = new JLabel();
+
+        getContentPane().setLayout(new GridBagLayout());
+
+        setTitle("Freerails Launcher");
+        addWindowListener(new MyWindowAdapter());
+
+        jPanel1.setLayout(new CardLayout());
+
+        jPanel1.setPreferredSize(new Dimension(400, 300));
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jPanel1, gridBagConstraints);
+
+        nextButton.setText("Next...");
+        nextButton.addActionListener(this::nextButtonActionPerformed);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
+        getContentPane().add(nextButton, gridBagConstraints);
+
+        prevButton.setText("Back...");
+        prevButton.setEnabled(false);
+        prevButton.addActionListener(this::prevButtonActionPerformed);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
+        getContentPane().add(prevButton, gridBagConstraints);
+
+        infoLabel.setText("Error messages go here!");
+        infoLabel.setVerticalAlignment(SwingConstants.TOP);
+        infoLabel.setMinimumSize(new Dimension(20, 20));
+        infoLabel.setPreferredSize(new Dimension(20, 20));
+        infoLabel.setVerifyInputWhenFocusTarget(false);
+        infoLabel.setVerticalTextPosition(SwingConstants.TOP);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new Insets(4, 4, 4, 4);
+        getContentPane().add(infoLabel, gridBagConstraints);
+
+        pack();
+
+        wizardPages[0] = new LauncherPanel();
         wizardPages[1] = new SelectMapPanel(this);
         wizardPages[2] = new ClientOptionsPanel(this);
         wizardPages[3] = new ConnectedPlayersPanel();
 
-        if (!quickstart) {
-            jPanel1.add(wizardPages[0], "0");
-            jPanel1.add(wizardPages[1], "1");
-            jPanel1.add(wizardPages[2], "2");
-            jPanel1.add(wizardPages[3], "3");
-            jPanel1.add(progressPanel, "4");
-            pack();
-        } else {
-            prevButton.setVisible(false);
-            nextButton.setVisible(false);
-            pack();
-        }
+        jPanel1.add(wizardPages[0], "0");
+        jPanel1.add(wizardPages[1], "1");
+        jPanel1.add(wizardPages[2], "2");
+        jPanel1.add(wizardPages[3], "3");
+        jPanel1.add(progressPanel, "4");
+        pack();
         hideAllMessages();
     }
 
@@ -135,9 +189,9 @@ public class Launcher extends JFrame implements LauncherInterface {
                     long startTime = System.currentTimeMillis();
                     server.update();
                     long deltatime = System.currentTimeMillis() - startTime;
-                    if (deltatime < SERVERUPDATE) {
+                    if (deltatime < ClientConfig.SERVERUPDATE) {
                         try {
-                            Thread.sleep(SERVERUPDATE - deltatime);
+                            Thread.sleep(ClientConfig.SERVERUPDATE - deltatime);
                         } catch (InterruptedException e) {
                             // do nothing.
                         }
@@ -154,38 +208,22 @@ public class Launcher extends JFrame implements LauncherInterface {
     }
 
     /**
-     * Runs the game.
+     * Starts the game.
      */
     public static void main(String args[]) {
 
-        // SynchronizedEventQueue.use();
+        // TODO Let the user know if we are using a custom logging config.
 
-        // Let the user know if we are using a custom logging config.
+        // Configure logger and short message
+        PatternLayout patternLayout = new PatternLayout("%r [%t] %-5p %m -- at %l%n");
+        Appender consoleAppender = new ConsoleAppender(patternLayout);
+        Logger rootLogger = LogManager.getRootLogger();
+        rootLogger.addAppender(consoleAppender);
+        rootLogger.setLevel(Level.INFO);
+        logger.debug("Started launcher.");
 
-        try {
-            PatternLayout patternLayout = new PatternLayout("%r [%t] %-5p %m -- at %l%n");
-            Appender consoleAppender = new ConsoleAppender(patternLayout);
-            Logger rootLogger = LogManager.getRootLogger();
-            rootLogger.addAppender(consoleAppender);
-            rootLogger.setLevel(Level.INFO);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return;
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Started launcher.");
-        }
-        boolean quickstart = false;
-        if (args.length > 0) {
-            for (String arg : args) {
-                String QUICKSTART = "-quickstart";
-                if (QUICKSTART.equals(arg)) quickstart = true;
-            }
-
-        }
-        Launcher launcher = new Launcher(quickstart);
-        launcher.start(quickstart);
+        Launcher launcher = new Launcher();
+        launcher.setVisible(true);
     }
 
     /**
@@ -225,13 +263,6 @@ public class Launcher extends JFrame implements LauncherInterface {
         }
     }
 
-    /**
-     * Exit the Application.
-     */
-    private static void exitForm(java.awt.event.WindowEvent evt) {
-        System.exit(0);
-    }
-
     public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
         if (nextIsStart) {
@@ -246,33 +277,33 @@ public class Launcher extends JFrame implements LauncherInterface {
         cl.show(jPanel1, "4");
 
         setButtonsVisible(false);
-        LauncherPanel1 lp = (LauncherPanel1) wizardPages[0];
-        SelectMapPanel msp = (SelectMapPanel) wizardPages[1];
-        ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
+        LauncherPanel launcherPanel = (LauncherPanel) wizardPages[0];
+        SelectMapPanel selectMapPanel = (SelectMapPanel) wizardPages[1];
+        ClientOptionsPanel clientOptionsPanel = (ClientOptionsPanel) wizardPages[2];
         ConnectedPlayersPanel cp = (ConnectedPlayersPanel) wizardPages[3];
 
         boolean recover = false;
         int mode;
 
-        switch (lp.getMode()) {
-            case LauncherPanel1.MODE_SINGLE_PLAYER:
+        switch (launcherPanel.getMode()) {
+            case ClientConfig.MODE_SINGLE_PLAYER:
                 try {
 
-                    mode = cop.getScreenMode();
+                    mode = clientOptionsPanel.getScreenMode();
 
-                    client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
+                    client = new GUIClient(clientOptionsPanel.getPlayerName(), progressPanel, mode, clientOptionsPanel.getDisplayMode());
                     if (isNewGame()) {
                         initServer();
                     }
-                    client.connect(server, cop.getPlayerName(), "password");
+                    client.connect(server, clientOptionsPanel.getPlayerName(), "password");
 
                     setServerGameModel();
                 } catch (Exception e) {
-                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                    setInfoText(e.getMessage(), InfoMessageType.WARNING);
                     recover = true;
                 } finally {
                     if (recover) {
-                        cop.setControlsEnabled(true);
+                        clientOptionsPanel.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setButtonsVisible(true);
                         currentPage = 1;
@@ -282,7 +313,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                 }
                 startThread(server, client);
                 break;
-            case LauncherPanel1.MODE_START_NETWORK_GAME:
+            case ClientConfig.MODE_START_NETWORK_GAME:
                 // LL: I don't think this code ever executes now that there is a
                 // connected players screen.
                 try {
@@ -296,11 +327,11 @@ public class Launcher extends JFrame implements LauncherInterface {
                 } catch (Exception e) {
                     // We end up here if an Exception was thrown when loading a
                     // saved game.
-                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                    setInfoText(e.getMessage(), InfoMessageType.WARNING);
                     recover = true;
                 } finally {
                     if (recover) {
-                        cop.setControlsEnabled(true);
+                        clientOptionsPanel.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
                         currentPage = 1;
@@ -311,34 +342,34 @@ public class Launcher extends JFrame implements LauncherInterface {
                 }
 
                 break;
-            case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
-                mode = cop.getScreenMode();
+            case ClientConfig.MODE_JOIN_NETWORK_GAME:
+                mode = clientOptionsPanel.getScreenMode();
                 try {
 
-                    InetSocketAddress serverInetAddress = cop.getRemoteServerAddress();
+                    InetSocketAddress serverInetAddress = clientOptionsPanel.getRemoteServerAddress();
                     if (null == serverInetAddress) {
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
-                    String playerName = cop.getPlayerName();
-                    client = new GUIClient(playerName, progressPanel, mode, cop.getDisplayMode());
+                    String playerName = clientOptionsPanel.getPlayerName();
+                    client = new GUIClient(playerName, progressPanel, mode, clientOptionsPanel.getDisplayMode());
 
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
-                    setInfoText("Connecting to server...", MSG_TYPE.INFO);
+                    setInfoText("Connecting to server...", InfoMessageType.INFO);
                     LogOnResponse logOnResponse = client.connect(hostname, port, playerName, "password");
                     if (logOnResponse.isSuccessful()) {
-                        setInfoText("Logged on and waiting for game to start.", MSG_TYPE.INFO);
+                        setInfoText("Logged on and waiting for game to start.", InfoMessageType.INFO);
                         startThread(client);
                     } else {
                         recover = true;
-                        setInfoText(logOnResponse.getMessage(), MSG_TYPE.WARNING);
+                        setInfoText(logOnResponse.getMessage(), InfoMessageType.WARNING);
                     }
                 } catch (NullPointerException e) {
-                    setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                    setInfoText(e.getMessage(), InfoMessageType.WARNING);
                     recover = true;
                 } finally {
                     if (recover) {
-                        cop.setControlsEnabled(true);
+                        clientOptionsPanel.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setButtonsVisible(true);
                         cl.show(jPanel1, "2");
@@ -347,20 +378,20 @@ public class Launcher extends JFrame implements LauncherInterface {
                 }
 
                 break;
-            case LauncherPanel1.MODE_SERVER_ONLY:
-                if (msp.validateInput()) {
+            case ClientConfig.MODE_SERVER_ONLY:
+                if (selectMapPanel.validateInput()) {
                     initServer();
                     try {
                         setServerGameModel();
 
-                        prepare2HostNetworkGame(msp.getServerPort());
+                        prepareToHostNetworkGame(selectMapPanel.getServerPort());
                         setNextEnabled(true);
                     } catch (NullPointerException | IOException e) {
-                        setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                        setInfoText(e.getMessage(), InfoMessageType.WARNING);
                         recover = true;
                     } finally {
                         if (recover) {
-                            cop.setControlsEnabled(true);
+                            clientOptionsPanel.setControlsEnabled(true);
                             prevButton.setEnabled(true);
                             setButtonsVisible(true);
                         }
@@ -404,23 +435,10 @@ public class Launcher extends JFrame implements LauncherInterface {
     }
 
     /**
-     * Shows GUI. If {@code quickstart} is {@code true} runs the
-     * game.
-     *
-     * @param quickstart boolean
-     */
-    private void start(boolean quickstart) {
-        setVisible(true);
-        if (quickstart) {
-            startGame();
-        }
-    }
-
-    /**
      * Starts a thread listening for new connections.
      */
-    private void prepare2HostNetworkGame(int port) throws IOException {
-        loadProps();
+    private void prepareToHostNetworkGame(int port) throws IOException {
+        loadProperties();
         if (isNewGame()) {
             initServer();
         }
@@ -438,72 +456,7 @@ public class Launcher extends JFrame implements LauncherInterface {
     }
 
 
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        jPanel1 = new JPanel();
-        nextButton = new JButton();
-        prevButton = new JButton();
-        infoLabel = new JLabel();
-
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        setTitle("Freerails Launcher");
-        addWindowListener(new MyWindowAdapter());
-
-        jPanel1.setLayout(new java.awt.CardLayout());
-
-        jPanel1.setPreferredSize(new java.awt.Dimension(400, 300));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jPanel1, gridBagConstraints);
-
-        nextButton.setText("Next...");
-        nextButton.addActionListener(this::nextButtonActionPerformed);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(nextButton, gridBagConstraints);
-
-        prevButton.setText("Back...");
-        prevButton.setEnabled(false);
-        prevButton.addActionListener(this::prevButtonActionPerformed);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(prevButton, gridBagConstraints);
-
-        infoLabel.setText("Error messages go here!");
-        infoLabel.setVerticalAlignment(SwingConstants.TOP);
-        infoLabel.setMinimumSize(new java.awt.Dimension(20, 20));
-        infoLabel.setPreferredSize(new java.awt.Dimension(20, 20));
-        infoLabel.setVerifyInputWhenFocusTarget(false);
-        infoLabel.setVerticalTextPosition(SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        getContentPane().add(infoLabel, gridBagConstraints);
-
-        pack();
-    }
-
-    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void prevButtonActionPerformed(ActionEvent evt) {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         nextIsStart = false;
         hideAllMessages();
@@ -514,8 +467,8 @@ public class Launcher extends JFrame implements LauncherInterface {
                 prevButton.setEnabled(false);
                 break;
             case 2:
-                LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
-                if (panel.getMode() == LauncherPanel1.MODE_JOIN_NETWORK_GAME) {
+                LauncherPanel panel = (LauncherPanel) wizardPages[0];
+                if (panel.getMode() == ClientConfig.MODE_JOIN_NETWORK_GAME) {
                     currentPage = 0;
                     cl.show(jPanel1, "0");
                     prevButton.setEnabled(false);
@@ -526,10 +479,10 @@ public class Launcher extends JFrame implements LauncherInterface {
         }
     }
 
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void nextButtonActionPerformed(ActionEvent evt) {
         try {
             CardLayout cl = (CardLayout) jPanel1.getLayout();
-            LauncherPanel1 panel = (LauncherPanel1) wizardPages[0];
+            LauncherPanel panel = (LauncherPanel) wizardPages[0];
             SelectMapPanel msp = (SelectMapPanel) wizardPages[1];
             ClientOptionsPanel cop = (ClientOptionsPanel) wizardPages[2];
             hideAllMessages();
@@ -539,28 +492,28 @@ public class Launcher extends JFrame implements LauncherInterface {
                     msp.validateInput();
                     /* Initial game selection page */
                     switch (panel.getMode()) {
-                        case LauncherPanel1.MODE_SERVER_ONLY:
+                        case ClientConfig.MODE_SERVER_ONLY:
                             /* go to map selection screen */
                             cl.next(jPanel1);
                             msp.setServerPortPanelVisible(true);
 
                             currentPage++;
                             break;
-                        case LauncherPanel1.MODE_SINGLE_PLAYER:
+                        case ClientConfig.MODE_SINGLE_PLAYER:
                             /* go to map selection screen */
                             cl.next(jPanel1);
                             msp.setServerPortPanelVisible(false);
                             cop.setRemoteServerPanelVisible(false);
                             currentPage++;
                             break;
-                        case LauncherPanel1.MODE_START_NETWORK_GAME:
+                        case ClientConfig.MODE_START_NETWORK_GAME:
                             /* go to map selection screen */
                             msp.setServerPortPanelVisible(true);
                             cop.setRemoteServerPanelVisible(false);
                             cl.next(jPanel1);
                             currentPage++;
                             break;
-                        case LauncherPanel1.MODE_JOIN_NETWORK_GAME:
+                        case ClientConfig.MODE_JOIN_NETWORK_GAME:
                             /* client display options */
                             nextIsStart = true;
                             cl.show(jPanel1, "2");
@@ -574,7 +527,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                     break;
                 case 1:
                     /* map selection page */
-                    if (panel.getMode() == LauncherPanel1.MODE_SERVER_ONLY) {
+                    if (panel.getMode() == ClientConfig.MODE_SERVER_ONLY) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
                             try {
@@ -582,11 +535,11 @@ public class Launcher extends JFrame implements LauncherInterface {
                                     initServer();
                                     server.loadgame(ServerControlInterface.FREERAILS_SAV);
                                 }
-                                prepare2HostNetworkGame(msp.getServerPort());
+                                prepareToHostNetworkGame(msp.getServerPort());
                             } catch (BindException be) {
                                 // When the port is already in use.
                                 prevButton.setEnabled(true);
-                                setInfoText(be.getMessage(), MSG_TYPE.WARNING);
+                                setInfoText(be.getMessage(), InfoMessageType.WARNING);
                             }
                         }
                     } else {
@@ -609,12 +562,12 @@ public class Launcher extends JFrame implements LauncherInterface {
                     break;
                 case 2:
                     /* display mode selection */
-                    if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
+                    if (panel.getMode() == ClientConfig.MODE_START_NETWORK_GAME) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
                             int mode = cop.getScreenMode();
 
-                            prepare2HostNetworkGame(msp.getServerPort());
+                            prepareToHostNetworkGame(msp.getServerPort());
                             client = new GUIClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
                             client.connect(server, cop.getPlayerName(), "password");
                         }
@@ -630,7 +583,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                         /* Connection status screen */
                         prevButton.setEnabled(false);
                         setServerGameModel();// TODO catch exception
-                        if (panel.getMode() == LauncherPanel1.MODE_START_NETWORK_GAME) {
+                        if (panel.getMode() == ClientConfig.MODE_START_NETWORK_GAME) {
                             startThread(server, client);
                             cl.show(jPanel1, "4");
                         } else {
@@ -641,7 +594,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                         setButtonsVisible(false);
                         setNextEnabled(false);
                     } catch (Exception e) {
-                        setInfoText(e.getMessage(), MSG_TYPE.WARNING);
+                        setInfoText(e.getMessage(), InfoMessageType.WARNING);
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);
                         setNextEnabled(true);
@@ -664,7 +617,7 @@ public class Launcher extends JFrame implements LauncherInterface {
      * @param status
      */
 
-    public void setInfoText(String text, MSG_TYPE status) {
+    public void setInfoText(String text, InfoMessageType status) {
         infoLabel.setText(text);
         switch (status) {
             case ERROR:
@@ -714,36 +667,36 @@ public class Launcher extends JFrame implements LauncherInterface {
         }
     }
 
-    private void loadProps() {
+    private void loadProperties() {
         try {
-            props = new Properties();
-            FileInputStream in = new FileInputStream(PROPERTIES_FILENAME);
-            props.load(in);
+            properties = new Properties();
+            FileInputStream in = new FileInputStream(ClientConfig.PROPERTIES_FILENAME);
+            properties.load(in);
             in.close();
-            if (!props.containsKey(SERVER_PORT_PROPERTY) || !props.containsKey(PLAYER_NAME_PROPERTY) || !props.containsKey(SERVER_IP_ADDRESS_PROPERTY)) {
+            if (!properties.containsKey(ClientConfig.SERVER_PORT_PROPERTY) || !properties.containsKey(ClientConfig.PLAYER_NAME_PROPERTY) || !properties.containsKey(ClientConfig.SERVER_IP_ADDRESS_PROPERTY)) {
                 throw new Exception();
             }
         } catch (Exception e) {
-            props = new Properties();
-            props.setProperty(SERVER_PORT_PROPERTY, "55000");
-            props.setProperty(PLAYER_NAME_PROPERTY, System.getProperty("user.name"));
-            props.setProperty(SERVER_IP_ADDRESS_PROPERTY, "127.0.0.1");
+            properties = new Properties();
+            properties.setProperty(ClientConfig.SERVER_PORT_PROPERTY, "55000");
+            properties.setProperty(ClientConfig.PLAYER_NAME_PROPERTY, System.getProperty("user.name"));
+            properties.setProperty(ClientConfig.SERVER_IP_ADDRESS_PROPERTY, "127.0.0.1");
         }
     }
 
     /**
      *
      */
-    public void saveProps() {
+    public void saveProperties() {
         try {
-            FileOutputStream out = new FileOutputStream(PROPERTIES_FILENAME);
-            props.store(out, "---No Comment---");
+            FileOutputStream out = new FileOutputStream(ClientConfig.PROPERTIES_FILENAME);
+            properties.store(out, "---No Comment---");
             out.close();
 
             // Copy key-value pairs to System.Properties so
             // that they are visible in the game via the
             // show java properties menu item.
-            System.getProperties().putAll(props);
+            System.getProperties().putAll(properties);
 
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
@@ -755,7 +708,7 @@ public class Launcher extends JFrame implements LauncherInterface {
      * @param value
      */
     public void setProperty(String key, String value) {
-        props.setProperty(key, value);
+        properties.setProperty(key, value);
     }
 
     /**
@@ -763,13 +716,13 @@ public class Launcher extends JFrame implements LauncherInterface {
      * @return
      */
     public String getProperty(String key) {
-        return props.getProperty(key);
+        return properties.getProperty(key);
     }
 
-    private static class MyWindowAdapter extends java.awt.event.WindowAdapter {
+    private static class MyWindowAdapter extends WindowAdapter {
         @Override
-        public void windowClosing(java.awt.event.WindowEvent e) {
-            exitForm(e);
+        public void windowClosing(WindowEvent e) {
+            System.exit(0);
         }
     }
 }

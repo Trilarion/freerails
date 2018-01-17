@@ -84,7 +84,7 @@ public class TrackBuildingTest extends TestCase {
                 assertEquals(TileTransition.EAST, path[i]);
             }
             MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.message, ms.ok);
+            assertTrue(ms.message, ms.status);
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
                 TrackPiece tp = ((FullTerrainTile) world.getTile(x, 5))
@@ -125,7 +125,7 @@ public class TrackBuildingTest extends TestCase {
             assertEquals(TileTransition.EAST, path[0]);
 
             MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.message, ms.ok);
+            assertTrue(ms.message, ms.status);
             // Check track has been built.
             tp1 = ((FullTerrainTile) world.getTile(5, 5)).getTrackPiece();
             assertEquals(0, tp1.getTrackTypeID());
@@ -148,11 +148,11 @@ public class TrackBuildingTest extends TestCase {
             Point2D from = new Point2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
             MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.ok);
+            assertTrue(ms.status);
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
             stationBuilder.setStationType(terminalStationType);
             ms = stationBuilder.buildStation(new Point2D(8, 5));
-            assertTrue(ms.ok);
+            assertTrue(ms.status);
             pathFinder.setupSearch(new Point2D(7, 5), new Point2D(9, 5), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
@@ -186,7 +186,7 @@ public class TrackBuildingTest extends TestCase {
             TileTransition[] expectedPath = {TileTransition.EAST};
             assertTrue(Arrays.equals(expectedPath, path));
             MoveStatus ms = producer.buildTrack(a, path);
-            assertTrue(ms.ok);
+            assertTrue(ms.status);
 
             TrackPiece tp = ((FullTerrainTile) world.getTile(b.x, b.y))
                     .getTrackPiece();
@@ -214,7 +214,7 @@ public class TrackBuildingTest extends TestCase {
             Point2D from = new Point2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
             MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.ok);
+            assertTrue(ms.status);
             pathFinder.setupSearch(new Point2D(6, 5), new Point2D(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();

@@ -58,14 +58,14 @@ public class OldWorldImpl {
         TileSetFactory tileFactory = new TileSetFactoryImpl();
         pm.setValue(++progess);
 
-        WorldImpl w = new WorldImpl();
+        WorldImpl world = new WorldImpl();
         pm.setValue(++progess);
 
         pm.setValue(++progess);
-        WagonAndEngineTypesFactory.addTypesToWorld(w);
+        WagonAndEngineTypesFactory.addTypesToWorld(world);
         pm.setValue(++progess);
 
-        tileFactory.addTerrainTileTypesList(w);
+        tileFactory.addTerrainTileTypesList(world);
         pm.setValue(++progess);
 
         URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
@@ -73,35 +73,35 @@ public class OldWorldImpl {
         Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
         pm.setValue(++progess);
 
-        trackSetFactory.addTrackRules(w);
-        pm.setValue(++progess);
+        trackSetFactory.addTrackRules(world);
+        pm.setValue(progess);
 
         // Load the terrain map
         URL map_url = OldWorldImpl.class.getResource("/freerails/data/" + mapName + ".png");
-        MapFactory.setupMap(map_url, w, pm);
+        MapFactory.setupMap(map_url, world, pm);
 
         // Load the city names
         URL cities_xml_url = OldWorldImpl.class.getResource("/freerails/data/" + mapName + "_cities.xml");
 
         try {
-            CityNamesSAXParser.readCityNames(w, cities_xml_url);
+            CityNamesSAXParser.readCityNames(world, cities_xml_url);
         } catch (SAXException ignored) {
         }
 
         // Randomly position the city tiles
-        CityTilePositioner ctp = new CityTilePositioner(w);
+        CityTilePositioner ctp = new CityTilePositioner(world);
         ctp.initCities();
 
         // Set the time..
-        w.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
-        w.setTime(new GameTime(0));
-        w.set(ITEM.GAME_SPEED, new GameSpeed(10));
-        w.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+        world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        world.setTime(new GameTime(0));
+        world.set(ITEM.GAME_SPEED, new GameSpeed(10));
+        world.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
 
         /*
          * Note, money used to get added to player finances here, now it is done
          * when players are added. See AddPlayerMove
          */
-        return w;
+        return world;
     }
 }

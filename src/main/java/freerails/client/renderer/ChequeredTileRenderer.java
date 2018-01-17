@@ -38,11 +38,11 @@ public final class ChequeredTileRenderer extends AbstractTileRenderer {
      * @param imageManager
      * @param rgbValues
      * @param tileModel
-     * @param w
+     * @param world
      * @throws IOException
      */
-    public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld w) throws IOException {
-        super(tileModel, rgbValues, w);
+    public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
+        super(tileModel, rgbValues, world);
         setTileIcons(new Image[2]);
         getTileIcons()[0] = imageManager.getImage(generateRelativeFileName(0));
         getTileIcons()[1] = imageManager.getImage(generateRelativeFileName(1));
@@ -51,11 +51,11 @@ public final class ChequeredTileRenderer extends AbstractTileRenderer {
     /**
      * @param x
      * @param y
-     * @param w
+     * @param world
      * @return
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld w) {
+    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
         return (x + y) % 2;
     }
 

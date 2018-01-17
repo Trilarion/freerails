@@ -449,7 +449,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games). </b>
      */
-    public void setup(RendererRoot vl, ReadOnlyWorld w) throws IOException {
+    public void setup(RendererRoot vl, ReadOnlyWorld world) throws IOException {
         /*
          * Set the cursor position. The initial cursor position is 0,0. However,
          * if a game is loaded or a new game is started and the map size is the
@@ -457,24 +457,24 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
          * it had on the last map.
          */
         Point2D cursorPosition = new Point2D(0, 0);
-        if (null != world) {
-            if (w.getMapWidth() == world.getMapWidth() && w.getMapHeight() == world.getMapHeight()) {
+        if (null != this.world) {
+            if (world.getMapWidth() == this.world.getMapWidth() && world.getMapHeight() == this.world.getMapHeight()) {
                 cursorPosition = (Point2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
             }
         }
-        world = w;
+        this.world = world;
         modelRoot.addMapListener(this);
         modelRoot.addListListener(this);
 
-        if (!vl.validate(world)) {
+        if (!vl.validate(this.world)) {
             throw new IllegalArgumentException("The specified" + " RendererRoot are not compatible with the clients" + "world!");
         }
 
         // create the main and overview maps
-        mainMap = new DetailMapRenderer(world, vl, modelRoot);
+        mainMap = new DetailMapRenderer(this.world, vl, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);
-        overviewMap = ZoomedOutMapRenderer.getInstance(world, maxSize);
+        overviewMap = ZoomedOutMapRenderer.getInstance(this.world, maxSize);
 
         stationTypesPopup.setup(modelRoot, actionRoot, mainMap.getStationRadius());
 
@@ -498,7 +498,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
-        int gameSpeed = ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+        int gameSpeed = ((GameSpeed) this.world.get(ITEM.GAME_SPEED)).getSpeed();
 
         /* Set the selected game speed radio button. */
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
@@ -533,9 +533,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * refreshes the map views.
      */
     public void tilesChanged(Rectangle tilesChanged) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("TilesChanged = " + tilesChanged);
-        }
+        logger.debug("TilesChanged = " + tilesChanged);
+
         // If lots of tiles have changed, do a complete refresh.
         int size = tilesChanged.width * tilesChanged.height;
 

@@ -61,12 +61,12 @@ class BondInterestMoveGenerator {
     }
 
     /**
-     * @param w
+     * @param world
      */
-    public void update(ReadOnlyWorld w) {
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-            Move m = generateMove(w, principal);
+    public void update(ReadOnlyWorld world) {
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Move m = generateMove(world, principal);
             moveReceiver.process(m);
         }
     }

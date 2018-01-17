@@ -42,7 +42,7 @@ public class ChangeCityTileMoveTest extends AbstractMoveTestCase {
         assertTrue(tile.getTerrainTypeID() != 5);
         ChangeTileMove move = new ChangeTileMove(world, p, 5);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.message, ms.ok);
+        assertTrue(ms.message, ms.status);
         tile = (TerrainTile) world.getTile(10, 10);
         assertTrue(tile.getTerrainTypeID() == 5);
     }

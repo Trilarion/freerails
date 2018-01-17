@@ -33,8 +33,7 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.NoSuchElementException;
 
 /**
@@ -47,30 +46,17 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private static final Logger logger = Logger.getLogger(TrainSchedulePanel.class.getName());
     private JButton addStationJButton;
     private JMenu addWagonJMenu;
-    private JMenuItem autoConsistJMenuItem;
-    private JMenu changeConsistJMenu;
-    private JMenuItem changeStation;
-    private JMenuItem dontWaitJMenuItem;
     private JPopupMenu editOrderJPopupMenu;
-    private JMenuItem engineOnlyJMenuItem;
     private JMenuItem gotoStationJMenuItem;
-    private JScrollPane jScrollPane1;
-    private JSeparator jSeparator1;
-    private JSeparator jSeparator2;
-    private JMenuItem noChangeJMenuItem;
     private JList orders;
     private JButton priorityOrdersJButton;
     private JMenuItem pullUpJMenuItem;
     private JMenuItem pushDownJMenuItem;
-    private JMenuItem removeAllJMenuItem;
-    private JMenuItem removeLastJMenuItem;
-    private JMenuItem removeStationJMenuItem;
     private JMenu removeWagonsJMenu;
     private SelectStationPanel selectStationPanel1;
     private JPopupMenu selectStationJPopupMenu;
     private TrainOrderPanel trainOrderPanel1;
     private JMenu waitJMenu;
-    private JMenuItem waitUntilFullJMenuItem;
     private int trainNumber = -1;
     private int scheduleID = -1;
     private TrainOrdersListModel listModel;
@@ -78,31 +64,26 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private RendererRoot vl;
 
     public TrainSchedulePanel() {
-        initComponents();
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         trainOrderPanel1 = new TrainOrderPanel();
         editOrderJPopupMenu = new JPopupMenu();
         gotoStationJMenuItem = new JMenuItem();
-        changeStation = new JMenuItem();
-        removeStationJMenuItem = new JMenuItem();
-        jSeparator1 = new JSeparator();
+        JMenuItem changeStation = new JMenuItem();
+        JMenuItem removeStationJMenuItem = new JMenuItem();
+        JSeparator jSeparator1 = new JSeparator();
         addWagonJMenu = new JMenu();
         removeWagonsJMenu = new JMenu();
-        removeLastJMenuItem = new JMenuItem();
-        removeAllJMenuItem = new JMenuItem();
-        changeConsistJMenu = new JMenu();
-        noChangeJMenuItem = new JMenuItem();
-        engineOnlyJMenuItem = new JMenuItem();
-        autoConsistJMenuItem = new JMenuItem();
+        JMenuItem removeLastJMenuItem = new JMenuItem();
+        JMenuItem removeAllJMenuItem = new JMenuItem();
+        JMenu changeConsistJMenu = new JMenu();
+        JMenuItem noChangeJMenuItem = new JMenuItem();
+        JMenuItem engineOnlyJMenuItem = new JMenuItem();
+        JMenuItem autoConsistJMenuItem = new JMenuItem();
         waitJMenu = new JMenu();
-        dontWaitJMenuItem = new JMenuItem();
-        waitUntilFullJMenuItem = new JMenuItem();
-        jSeparator2 = new JSeparator();
+        JMenuItem dontWaitJMenuItem = new JMenuItem();
+        JMenuItem waitUntilFullJMenuItem = new JMenuItem();
+        JSeparator jSeparator2 = new JSeparator();
         pullUpJMenuItem = new JMenuItem();
         pushDownJMenuItem = new JMenuItem();
         selectStationPanel1 = new SelectStationPanel();
@@ -110,7 +91,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         selectStationJPopupMenu.add(selectStationPanel1);
         addStationJButton = new JButton();
         priorityOrdersJButton = new JButton();
-        jScrollPane1 = new JScrollPane();
+        JScrollPane jScrollPane1 = new JScrollPane();
         orders = new JList();
 
         gotoStationJMenuItem.setText("Goto station");
@@ -189,57 +170,58 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
         editOrderJPopupMenu.add(pushDownJMenuItem);
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
         setBorder(new TitledBorder("Schedule"));
         addStationJButton.setText("Add Station");
         addStationJButton.addActionListener(this::addStationJButtonActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(addStationJButton, gridBagConstraints);
 
         priorityOrdersJButton.setText("Add Priority Orders");
         priorityOrdersJButton.addActionListener(this::priorityOrdersJButtonActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(priorityOrdersJButton, gridBagConstraints);
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(280, 160));
+        jScrollPane1.setPreferredSize(new Dimension(280, 160));
         orders.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         orders.setCellRenderer(trainOrderPanel1);
-        orders.addKeyListener(new java.awt.event.KeyAdapter() {
+        orders.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 ordersKeyPressed(e);
             }
         });
-        orders.addMouseListener(new java.awt.event.MouseAdapter() {
+        orders.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
+            public void mouseClicked(MouseEvent e) {
                 ordersMouseClicked(e);
             }
         });
 
         jScrollPane1.setViewportView(orders);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
+        gridBagConstraints.insets = new Insets(3, 3, 3, 3);
         add(jScrollPane1, gridBagConstraints);
 
     }
 
-    private void ordersKeyPressed(java.awt.event.KeyEvent evt) {
+
+    private void ordersKeyPressed(KeyEvent evt) {
         switch (evt.getKeyCode()) {
             case KeyEvent.VK_O: {
                 // Add priority orders
@@ -308,40 +290,40 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     }
 
-    private void autoConsistJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void autoConsistJMenuItemActionPerformed(ActionEvent evt) {
         setAutoConsist();
     }
 
-    private void changeStationActionPerformed(java.awt.event.ActionEvent evt) {
+    private void changeStationActionPerformed(ActionEvent evt) {
         int orderNumber = orders.getSelectedIndex();
         showSelectStation(getSchedule(), orderNumber);
     }
 
-    private void removeAllJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void removeAllJMenuItemActionPerformed(ActionEvent evt) {
         removeAllWagons();
     }
 
-    private void removeLastJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void removeLastJMenuItemActionPerformed(ActionEvent evt) {
         removeLastWagon();
     }
 
-    private void waitUntilFullJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void waitUntilFullJMenuItemActionPerformed(ActionEvent evt) {
         setWaitUntilFull(true);
     }
 
-    private void dontWaitJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void dontWaitJMenuItemActionPerformed(ActionEvent evt) {
         setWaitUntilFull(false);
     }
 
-    private void engineOnlyJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void engineOnlyJMenuItemActionPerformed(ActionEvent evt) {
         removeAllWagons();
     }
 
-    private void noChangeJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void noChangeJMenuItemActionPerformed(ActionEvent evt) {
         noChange();
     }
 
-    private void priorityOrdersJButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void priorityOrdersJButtonActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         try {
             s.setPriorityOrders(new TrainOrdersModel(getFirstStationID(), null, false, false));
@@ -351,7 +333,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         }
     }
 
-    private void addStationJButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void addStationJButtonActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         try {
             int newOrderNumber = s.addOrder(new TrainOrdersModel(getFirstStationID(), null, false, false)); // TODO fix bug
@@ -361,21 +343,21 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         }
     }
 
-    private void removeStationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void removeStationJMenuItemActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         int i = orders.getSelectedIndex();
         s.removeOrder(i);
         sendUpdateMove(s);
     }
 
-    private void gotoStationJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void gotoStationJMenuItemActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         int i = orders.getSelectedIndex();
         s.setOrderToGoto(i);
         sendUpdateMove(s);
     }
 
-    private void pushDownJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void pushDownJMenuItemActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         int i = orders.getSelectedIndex();
         s.pushDown(i);
@@ -383,7 +365,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         orders.setSelectedIndex(i + 1);
     }
 
-    private void ordersMouseClicked(java.awt.event.MouseEvent evt) {
+    private void ordersMouseClicked(MouseEvent evt) {
         int i = orders.getSelectedIndex();
         MutableSchedule s = getSchedule();
         if (i >= s.getNumOrders()) {
@@ -391,7 +373,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
             // For some reason, the JList hasn't updated yet.
             i = -1;
         }
-        if (-1 != i && java.awt.event.MouseEvent.BUTTON3 == evt.getButton()) {
+        if (-1 != i && MouseEvent.BUTTON3 == evt.getButton()) {
             // If an element is select and the right button is pressed.
             TrainOrdersModel order = s.getOrder(i);
             pullUpJMenuItem.setEnabled(s.canPullUp(i));
@@ -405,7 +387,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         }
     }
 
-    private void pullUpJMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void pullUpJMenuItemActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         int i = orders.getSelectedIndex();
         s.pullUp(i);

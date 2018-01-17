@@ -77,7 +77,7 @@ public class SaveGameManagerImpl implements SaveGamesManager {
 
         long finishTime = System.currentTimeMillis();
         long deltaTime = finishTime - startTime;
-        logger.info("done, " + deltaTime + "ms");
+        logger.info("done, " + deltaTime + "moveStatus");
     }
 
     /**
@@ -113,7 +113,7 @@ public class SaveGameManagerImpl implements SaveGamesManager {
             // }
             long finishTime = System.currentTimeMillis();
             long deltaTime = finishTime - startTime;
-            logger.info("done, " + deltaTime + "ms");
+            logger.info("done, " + deltaTime + "moveStatus");
 
             return game;
         } catch (ClassNotFoundException | InvalidClassException e) {

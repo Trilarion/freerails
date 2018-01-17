@@ -15,6 +15,11 @@ public final class WorldConstants {
     public static final Money BOND_VALUE_REPAY = new Money(-500000);
     private static final int SHARE_BUNDLE_SIZE = 10000;
     public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
+    /**
+     * The threshold that demand for a cargo must exceed before the station
+     * demands the cargo.
+     */
+    public static final int PREREQUISITE_FOR_DEMAND = 16;
 
     private WorldConstants() {
     }

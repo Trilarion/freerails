@@ -259,7 +259,7 @@ class UserInputOnMapController extends KeyAdapter {
             trackBuilder.setBuildTrackStrategy(getBts());
             MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
 
-            if (ms.ok) {
+            if (ms.status) {
                 setCursorMessage("");
                 playAppropriateSound();
             } else {

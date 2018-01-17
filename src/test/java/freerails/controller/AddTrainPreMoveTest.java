@@ -39,10 +39,6 @@ import freerails.world.train.*;
  */
 public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 
-    private TrackMoveProducer trackBuilder;
-
-    private StationBuilder stationBuilder;
-
     private FreerailsPrincipal principal;
     private ImmutableSchedule defaultSchedule;
     private Point2D stationA;
@@ -56,8 +52,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
         principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
-        trackBuilder = new TrackMoveProducer(me, world, mr);
-        stationBuilder = new StationBuilder(me);
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(me, world, mr);
+        StationBuilder stationBuilder = new StationBuilder(me);
 
         // Build track.
         stationBuilder
@@ -65,14 +61,14 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         stationA = new Point2D(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
-        assertTrue(ms0.ok);
+        assertTrue(ms0.status);
 
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(stationA);
-        assertTrue(ms1.ok);
+        assertTrue(ms1.status);
         Point2D stationB = new Point2D(19, 10);
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
-        assertTrue(ms2.ok);
+        assertTrue(ms2.status);
 
         TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
         TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
@@ -105,7 +101,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.ok);
+        assertTrue(ms.status);
 
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         TrainMotion motion = ta.findCurrentMotion(0);
@@ -123,7 +119,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
                 stationA, principal, defaultSchedule);
         Move m = preMove.generateMove(world);
         MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.ok);
+        assertTrue(ms.status);
         ActivityIterator ai = world.getActivities(principal, 0);
         TrainMotion tm = (TrainMotion) ai.getActivity();
         assertEquals(0.0d, tm.duration());
@@ -150,7 +146,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Point2D from = new Point2D(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
-        if (!ms.ok)
+        if (!ms.status)
             throw new IllegalStateException(ms.message);
 
         TrainOrdersModel[] orders = {};
@@ -159,7 +155,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
                 principal, is);
         Move m = addTrain.generateMove(world);
         ms = m.doMove(world, principal);
-        if (!ms.ok)
+        if (!ms.status)
             throw new IllegalStateException(ms.message);
 
         TrainAccessor ta = new TrainAccessor(world, principal, 0);

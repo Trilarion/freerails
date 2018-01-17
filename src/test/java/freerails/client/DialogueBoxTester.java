@@ -47,8 +47,7 @@ import java.io.IOException;
 /**
  * Lets you test dialogue boxes without running the whole game.
  */
-
-class DialogueBoxTester extends javax.swing.JFrame {
+class DialogueBoxTester extends JFrame {
 
     private static final long serialVersionUID = 4050764909631780659L;
     private static final Player TEST_PLAYER = new Player("test player", 0);
@@ -64,21 +63,6 @@ class DialogueBoxTester extends javax.swing.JFrame {
         }
     };
     private final TrainDialoguePanel trainDialoguePanel = new TrainDialoguePanel();
-    private javax.swing.JLabel label1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem showBrokerScreen;
-    private javax.swing.JMenuItem selectEngine;
-    private javax.swing.JMenuItem selectTrainOrders;
-    private javax.swing.JMenuItem selectWagons;
-    private javax.swing.JMenu show;
-    private javax.swing.JMenuItem showCargoWaitingAndDemand;
-    private javax.swing.JMenuItem showControls;
-    private javax.swing.JMenuItem showJavaSystemProperties;
-    private javax.swing.JMenuItem showNetworthGraph;
-    private javax.swing.JMenuItem showStationInfo;
-    private javax.swing.JMenuItem showTerrainInfo;
-    private javax.swing.JMenuItem showTrainList;
-    private javax.swing.JMenuItem throwException;
     private RendererRoot vl;
 
     /**
@@ -86,9 +70,9 @@ class DialogueBoxTester extends javax.swing.JFrame {
      */
     private DialogueBoxTester() {
 
-        World w = new WorldImpl(200, 200);
+        World world = new WorldImpl(200, 200);
 
-        UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(w);
+        UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(world);
 
         modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(new MoveChainFork());
@@ -96,22 +80,22 @@ class DialogueBoxTester extends javax.swing.JFrame {
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         TileSetFactory tileFactory = new TileSetFactoryImpl();
-        tileFactory.addTerrainTileTypesList(w);
-        WagonAndEngineTypesFactory.addTypesToWorld(w);
-        w.addPlayer(TEST_PLAYER);
+        tileFactory.addTerrainTileTypesList(world);
+        WagonAndEngineTypesFactory.addTypesToWorld(world);
+        world.addPlayer(TEST_PLAYER);
         try {
-            vl = new RendererRootImpl(w,
+            vl = new RendererRootImpl(world,
                     ProgressMonitorModel.EMPTY);
         } catch (IOException e) {
         }
-        modelRoot.setup(w, TEST_PLAYER.getPrincipal());
+        modelRoot.setup(world, TEST_PLAYER.getPrincipal());
         ActionRoot actionRoot = new ActionRoot(modelRoot);
         actionRoot.setup(modelRoot, vl);
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
         actionRoot.setDialogueBoxController(dialogueBoxController);
         dialogueBoxController.setDefaultFocusOwner(this);
 
-        int numberOfCargoTypes = w.size(SKEY.CARGO_TYPES);
+        int numberOfCargoTypes = world.size(SKEY.CARGO_TYPES);
         Station bristol = new Station(10, 10, "Bristol",
                 numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
@@ -123,14 +107,14 @@ class DialogueBoxTester extends javax.swing.JFrame {
 
         StationDemand demand = new StationDemand(demandArray);
         bristol = new Station(bristol, demand);
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(50, 100, "Bath",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(50, 100, "Bath",
                 numberOfCargoTypes, 0));
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(40, 10, "Cardiff",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(40, 10, "Cardiff",
                 numberOfCargoTypes, 0));
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(100, 10, "London",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(100, 10, "London",
                 numberOfCargoTypes, 0));
-        w.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(90, 50, "Swansea",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(90, 50, "Swansea",
                 numberOfCargoTypes, 0));
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
@@ -141,7 +125,7 @@ class DialogueBoxTester extends javax.swing.JFrame {
         cb.setAmount(new CargoBatch(1, 10, 10, 9, 0), 140);
         cb.setAmount(new CargoBatch(3, 10, 10, 9, 0), 180);
         cb.setAmount(new CargoBatch(5, 10, 10, 9, 0), 10);
-        w.add(TEST_PRINCIPAL, KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle());
+        world.add(TEST_PRINCIPAL, KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
         TrainOrdersModel order = new TrainOrdersModel(0, new ImmutableList<>(0, 0, 0),
@@ -152,60 +136,41 @@ class DialogueBoxTester extends javax.swing.JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        int scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
+        int scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<>(0, 0),
+        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<>(0, 0),
                 scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
+        scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<>(1, 1),
+        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<>(1, 1),
                 scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = w.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
+        scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
                 .toImmutableSchedule());
-        w.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0,
+        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0,
                 new ImmutableList<>(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);
-        initComponents();
-
-        glassPanel.setSize(800, 600);
-        addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
-        setSize(640, 480);
-
-    }
-
-    public static void main(String args[]) {
-        DialogueBoxTester test = new DialogueBoxTester();
-        test.setVisible(true);
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the FormEditor.
-     */
-    private void initComponents() {
-        label1 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        show = new javax.swing.JMenu();
-        showBrokerScreen = new javax.swing.JMenuItem();
-        selectEngine = new javax.swing.JMenuItem();
-        selectWagons = new javax.swing.JMenuItem();
-        selectTrainOrders = new javax.swing.JMenuItem();
-        showControls = new javax.swing.JMenuItem();
-        showTerrainInfo = new javax.swing.JMenuItem();
-        showStationInfo = new javax.swing.JMenuItem();
-        showTrainList = new javax.swing.JMenuItem();
-        throwException = new javax.swing.JMenuItem();
-        showCargoWaitingAndDemand = new javax.swing.JMenuItem();
-        showJavaSystemProperties = new javax.swing.JMenuItem();
-        showNetworthGraph = new javax.swing.JMenuItem();
+        JLabel label1 = new JLabel();
+        JMenuBar jMenuBar1 = new JMenuBar();
+        JMenu show = new JMenu();
+        JMenuItem showBrokerScreen = new JMenuItem();
+        JMenuItem selectEngine = new JMenuItem();
+        JMenuItem selectWagons = new JMenuItem();
+        JMenuItem selectTrainOrders = new JMenuItem();
+        JMenuItem showControls = new JMenuItem();
+        JMenuItem showTerrainInfo = new JMenuItem();
+        JMenuItem showStationInfo = new JMenuItem();
+        JMenuItem showTrainList = new JMenuItem();
+        JMenuItem throwException = new JMenuItem();
+        JMenuItem showCargoWaitingAndDemand = new JMenuItem();
+        JMenuItem showJavaSystemProperties = new JMenuItem();
+        JMenuItem showNetworthGraph = new JMenuItem();
 
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -220,7 +185,7 @@ class DialogueBoxTester extends javax.swing.JFrame {
             }
         });
 
-        label1.setIcon(new javax.swing.ImageIcon(getClass().getResource(
+        label1.setIcon(new ImageIcon(getClass().getResource(
                 "/freerails/data/south_america.png")));
         label1.setText("Press Esc to close dialogue boxes");
         label1.setMinimumSize(new java.awt.Dimension(640, 480));
@@ -296,7 +261,17 @@ class DialogueBoxTester extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
+        glassPanel.setSize(800, 600);
+        addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
+        setSize(640, 480);
+
     }
+
+    public static void main(String args[]) {
+        DialogueBoxTester test = new DialogueBoxTester();
+        test.setVisible(true);
+    }
+
 
     private void showNetworthGraphActionPerformed(java.awt.event.ActionEvent evt) {
         dialogueBoxController.showNetworthGraph();

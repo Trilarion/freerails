@@ -49,7 +49,6 @@ import java.net.URL;
 public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private static final long serialVersionUID = 3257003246252800050L;
-    private static BrokerScreenGenerator brokerScreenGenerator;
     private final String template;
     private ModelRoot modelRoot;
 
@@ -203,7 +202,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal p = modelRoot.getPrincipal();
 
-        brokerScreenGenerator = new BrokerScreenGenerator(world, p);
+        BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, p);
 
         // this is where the Menu get Enable and Disable by if you own any stock
         // or if the TotalShares are 0

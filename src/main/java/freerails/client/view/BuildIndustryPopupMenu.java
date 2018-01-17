@@ -22,7 +22,6 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.client.view.View;
 import freerails.controller.ModelRoot;
 import freerails.move.*;
 import freerails.world.NonNullElementWorldIterator;
@@ -82,7 +81,7 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                         Move m3 = new CompositeMove(m1, m2);
                         MoveStatus ms = modelRoot.doMove(m3);
 
-                        if (!ms.ok) {
+                        if (!ms.status) {
                             modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, ms.message);
                         }
                     }

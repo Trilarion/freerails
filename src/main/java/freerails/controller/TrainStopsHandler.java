@@ -50,7 +50,6 @@ class TrainStopsHandler implements Serializable {
     private final FreerailsPrincipal principal;
     private final int trainId;
     private final WorldDiffs worldDiffs;
-    private GameTime timeLoadingFinished = new GameTime(0);
 
     /**
      * @param id
@@ -190,14 +189,14 @@ class TrainStopsHandler implements Serializable {
         Move m = transfer.generateMove();
         if (null != m) {
             MoveStatus ms = m.doMove(worldDiffs, principal);
-            if (!ms.ok) throw new IllegalStateException(ms.message);
+            if (!ms.status) throw new IllegalStateException(ms.message);
         }
 
     }
 
     void makeTrainWait(int ticks) {
         GameTime currentTime = worldDiffs.currentTime();
-        timeLoadingFinished = new GameTime(currentTime.getTicks() + ticks);
+        GameTime timeLoadingFinished = new GameTime(currentTime.getTicks() + ticks);
     }
 
     /**
@@ -239,7 +238,7 @@ class TrainStopsHandler implements Serializable {
                 // Create a new Move object.
                 Move trainMove = new NextActivityMove(nextMotion, trainId, principal);
                 MoveStatus ms = trainMove.doMove(worldDiffs, Player.AUTHORITATIVE);
-                if (!ms.ok) throw new IllegalStateException(ms.message);
+                if (!ms.status) throw new IllegalStateException(ms.message);
             }
         }
 

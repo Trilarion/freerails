@@ -71,7 +71,7 @@ public final class TileTransition implements TrackConfigurations {
      * A 3x3 array of OneTileMoveVectors, representing vectors to eight adjacent
      * tiles plus a zero-distance vector.
      */
-    private static final TileTransition[][] vectors;
+    private static final TileTransition[][] vectors = setupVectors();
 
     /**
      * Another array of OneTileMoveVectors representing the 8 compass directions
@@ -80,8 +80,6 @@ public final class TileTransition implements TrackConfigurations {
     private static final TileTransition[] list;
 
     static {
-        vectors = setupVectors();
-
         NORTH = getInstance(0, -1);
         WEST = getInstance(-1, 0);
         SOUTH_EAST = getInstance(1, 1);

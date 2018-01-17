@@ -100,14 +100,14 @@ public class AddActiveEntityMove implements Move {
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryDoMove(world, principal);
-        if (ms.ok) world.addActiveEntity(this.principal, activity);
+        if (ms.status) world.addActiveEntity(this.principal, activity);
 
         return ms;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryUndoMove(world, principal);
-        if (ms.ok) world.removeLastActiveEntity(this.principal);
+        if (ms.status) world.removeLastActiveEntity(this.principal);
 
         return ms;
     }

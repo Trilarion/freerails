@@ -8,17 +8,15 @@ import java.awt.*;
 
 final class WagonCellRenderer implements ListCellRenderer {
 
-    private final RendererRoot rr;
     private final Component[] labels;
 
-    public WagonCellRenderer(ListModel w2lma, RendererRoot s) {
-        rr = s;
+    public WagonCellRenderer(ListModel w2lma, RendererRoot rendererRoot) {
 
         labels = new Component[w2lma.getSize()];
         for (int i = 0; i < w2lma.getSize(); i++) {
             JLabel label = new JLabel();
             label.setFont(new Font("Dialog", 0, 12));
-            Image image = rr.getWagonImages(i).getSideOnImage();
+            Image image = rendererRoot.getWagonImages(i).getSideOnImage();
             int height = image.getHeight(null);
             int width = image.getWidth(null);
             int scale = height / 10;

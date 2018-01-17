@@ -67,7 +67,7 @@ class TrainMotionExperiment extends JComponent {
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Point2D from = new Point2D(5, 5);
         MoveStatus ms = producer.buildTrack(from, trackPath);
-        if (!ms.ok) throw new IllegalStateException(ms.message);
+        if (!ms.status) throw new IllegalStateException(ms.message);
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
@@ -75,7 +75,7 @@ class TrainMotionExperiment extends JComponent {
 
         Move m = addTrain.generateMove(world);
         ms = m.doMove(world, principal);
-        if (!ms.ok) throw new IllegalStateException(ms.message);
+        if (!ms.status) throw new IllegalStateException(ms.message);
 
         startTime = System.currentTimeMillis();
     }
@@ -179,14 +179,14 @@ class TrainMotionExperiment extends JComponent {
     private void updateTrainPosition() {
         Random rand = new Random(System.currentTimeMillis());
         MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
-        Move m;
+        Move move;
         if (rand.nextInt(10) == 0) {
-            m = moveTrain.stopTrain(world);
+            move = moveTrain.stopTrain(world);
         } else {
-            m = moveTrain.generateMove(world);
+            move = moveTrain.generateMove(world);
         }
-        MoveStatus ms = m.doMove(world, principal);
-        if (!ms.ok) throw new IllegalStateException(ms.message);
+        MoveStatus moveStatus = move.doMove(world, principal);
+        if (!moveStatus.status) throw new IllegalStateException(moveStatus.message);
 
         ActivityIterator ai = world.getActivities(principal, 0);
 

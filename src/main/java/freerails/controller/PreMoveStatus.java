@@ -29,10 +29,10 @@ public final class PreMoveStatus implements Serializable {
 
     public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(MoveStatus.MOVE_OK);
     private static final long serialVersionUID = 3978145456646009140L;
-    public final MoveStatus ms;
+    public final MoveStatus moveStatus;
 
-    private PreMoveStatus(MoveStatus ms) {
-        this.ms = ms;
+    private PreMoveStatus(MoveStatus moveStatus) {
+        this.moveStatus = moveStatus;
     }
 
     /**
@@ -48,7 +48,7 @@ public final class PreMoveStatus implements Serializable {
      * @return
      */
     public static Serializable fromMoveStatus(MoveStatus ms) {
-        if (ms.ok) {
+        if (ms.status) {
             return PRE_MOVE_OK;
         }
         return new PreMoveStatus(ms);
@@ -61,19 +61,19 @@ public final class PreMoveStatus implements Serializable {
 
         final PreMoveStatus preMoveStatus = (PreMoveStatus) obj;
 
-        return ms.equals(preMoveStatus.ms);
+        return moveStatus.equals(preMoveStatus.moveStatus);
     }
 
     @Override
     public int hashCode() {
-        return ms.hashCode();
+        return moveStatus.hashCode();
     }
 
     /**
      * Avoid creating a duplicate when deserializing.
      */
     private Object readResolve() {
-        if (ms.ok) {
+        if (moveStatus.status) {
             return PRE_MOVE_OK;
         }
         return this;

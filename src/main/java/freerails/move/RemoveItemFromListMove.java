@@ -99,7 +99,7 @@ public class RemoveItemFromListMove implements ListMove {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryDoMove(world, principal);
 
-        if (ms.isOk()) {
+        if (ms.isStatus()) {
             world.set(this.principal, listKey, index, null);
         }
 
@@ -109,7 +109,7 @@ public class RemoveItemFromListMove implements ListMove {
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryUndoMove(world, principal);
 
-        if (ms.isOk()) {
+        if (ms.isStatus()) {
             world.set(this.principal, listKey, index, item);
         }
 

@@ -34,8 +34,8 @@ import java.io.Serializable;
 public interface PreMove extends Serializable {
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    Move generateMove(ReadOnlyWorld w);
+    Move generateMove(ReadOnlyWorld world);
 }

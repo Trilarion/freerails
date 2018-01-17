@@ -161,9 +161,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                     int playerId = lkey.getIndex()[0];
                     FreerailsPrincipal fp = worldDiffs.getPlayer(playerId).getPrincipal();
                     Object o = worldDiffs.getDiff(lkey);
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(lkey.toString() + " --> " + o.toString());
-                    }
+                    logger.debug(lkey.toString() + " --> " + o.toString());
 
                     switch (lkey.getIndex().length) {
                         case 1: {
@@ -186,14 +184,10 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                             Activity act = aat.act;
                             int activityID = lkey.getIndex()[2];
                             if (entityId >= world.getNumberOfActiveEntities(fp) && 0 == activityID) {
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("AddActiveEntityMove: " + act + " entityId=" + entityId);
-                                }
+                                logger.debug("AddActiveEntityMove: " + act + " entityId=" + entityId);
                                 m = new AddActiveEntityMove(act, entityId, fp);
                             } else {
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("NextActivityMove: " + act + " entityId=" + entityId);
-                                }
+                                logger.debug("NextActivityMove: " + act + " entityId=" + entityId);
                                 m = new NextActivityMove(act, entityId, fp);
                             }
                             tempList.add(m);
@@ -232,11 +226,11 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryMapChanges(world, false);
-        if (!ms.ok) return ms;
+        if (!ms.status) return ms;
 
         ms = listChanges.doMove(world, principal);
 
-        if (ms.isOk()) {
+        if (ms.isStatus()) {
             doMove(world, false);
         }
 
@@ -277,10 +271,10 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
 
-        MoveStatus ms = tryMapChanges(world, false);
-        if (!ms.ok) return ms;
+        MoveStatus moveStatus = tryMapChanges(world, false);
+        if (!moveStatus.status) return moveStatus;
 
-        return ms = listChanges.tryDoMove(world, principal);
+        return listChanges.tryDoMove(world, principal);
     }
 
     private MoveStatus tryMapChanges(ReadOnlyWorld world, boolean undo) {
@@ -298,10 +292,10 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
 
-        MoveStatus ms = tryMapChanges(world, true);
-        if (!ms.ok) return ms;
+        MoveStatus moveStatus = tryMapChanges(world, true);
+        if (!moveStatus.status) return moveStatus;
 
-        return ms = listChanges.tryUndoMove(world, principal);
+        return listChanges.tryUndoMove(world, principal);
     }
 
     /**
@@ -313,11 +307,11 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryMapChanges(world, true);
-        if (!ms.ok) return ms;
+        if (!ms.status) return ms;
 
         ms = listChanges.undoMove(world, principal);
 
-        if (ms.isOk()) {
+        if (ms.isStatus()) {
             doMove(world, true);
         }
 

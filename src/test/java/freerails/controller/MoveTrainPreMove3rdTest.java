@@ -40,9 +40,6 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     private final TileTransition[] line1 = {TileTransition.EAST, TileTransition.NORTH_EAST, TileTransition.EAST, TileTransition.NORTH_EAST, TileTransition.NORTH};
     private final TileTransition[] line2 = {TileTransition.WEST, TileTransition.WEST, TileTransition.SOUTH_WEST, TileTransition.SOUTH, TileTransition.SOUTH_EAST, TileTransition.EAST};
     private final TileTransition[] line3 = {TileTransition.NORTH_WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH, TileTransition.NORTH_EAST};
-    private TrackMoveProducer trackBuilder;
-    private StationBuilder stationBuilder;
-    private FreerailsPrincipal principal;
     private World world;
 
     /**
@@ -52,10 +49,10 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     protected void setUp() throws Exception {
         world = MapFixtureFactory2.getCopy();
         MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        principal = me.getPrincipal();
+        FreerailsPrincipal principal = me.getPrincipal();
         ModelRoot mr = new ModelRootImpl();
-        trackBuilder = new TrackMoveProducer(me, world, mr);
-        stationBuilder = new StationBuilder(me);
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(me, world, mr);
+        StationBuilder stationBuilder = new StationBuilder(me);
 
         // Build track.
         stationBuilder
@@ -63,11 +60,11 @@ public class MoveTrainPreMove3rdTest extends TestCase {
 
         Point2D stationA = new Point2D(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, line1);
-        assertTrue(ms0.ok);
+        assertTrue(ms0.status);
         ms0 = trackBuilder.buildTrack(stationA, line2);
-        assertTrue(ms0.ok);
+        assertTrue(ms0.status);
         ms0 = trackBuilder.buildTrack(stationA, line3);
-        assertTrue(ms0.ok);
+        assertTrue(ms0.status);
 
     }
 

@@ -30,10 +30,12 @@ import freerails.world.player.FreerailsPrincipal;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * JPanel that displays info on a train; it is composed of a
+* Displays info on a train; it is composed of a
  * {@link TrainSchedulePanel} and {@link TrainDescriptionPanel}.
  */
 public class TrainDialoguePanel extends JPanel implements View, WorldListListener {
@@ -51,12 +53,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     private FreerailsPrincipal principal;
 
     public TrainDialoguePanel() {
-        initComponents();
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         newTrainSchedulePanel1 = new TrainSchedulePanel();
         trainDetailsJPanel1 = new TrainDescriptionPanel();
@@ -65,59 +62,60 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainListJButton = new JButton();
         closeJButton = new JButton();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        setPreferredSize(new java.awt.Dimension(510, 400));
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        setPreferredSize(new Dimension(510, 400));
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(newTrainSchedulePanel1, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         add(trainDetailsJPanel1, gridBagConstraints);
 
         previousJButton.setText("last");
         previousJButton.addActionListener(this::previousJButtonActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         add(previousJButton, gridBagConstraints);
 
         nextJButton.setText("next");
         nextJButton.addActionListener(this::nextJButtonActionPerformed);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         add(nextJButton, gridBagConstraints);
 
         trainListJButton.setText("Train list");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         add(trainListJButton, gridBagConstraints);
 
         closeJButton.setText("Close");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         add(closeJButton, gridBagConstraints);
 
     }
 
-    private void previousJButtonActionPerformed(java.awt.event.ActionEvent evt) {
+
+    private void previousJButtonActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         if (worldIterator.previous()) {
             display(worldIterator.getIndex());
@@ -126,7 +124,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         }
     }
 
-    private void nextJButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void nextJButtonActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         if (worldIterator.next()) {
             display(worldIterator.getIndex());

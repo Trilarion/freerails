@@ -103,24 +103,24 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param m
+     * @param move
      * @return
      */
-    public MoveStatus doMove(Move m) {
-        MoveStatus ms = moveReceiver.tryDoMove(m);
-        moveReceiver.process(m);
+    public MoveStatus doMove(Move move) {
+        MoveStatus ms = moveReceiver.tryDoMove(move);
+        moveReceiver.process(move);
 
         return ms;
     }
 
     /**
-     * @param pm
+     * @param preMove
      * @return
      */
-    public MoveStatus doPreMove(PreMove pm) {
-        Move m = pm.generateMove(world);
+    public MoveStatus doPreMove(PreMove preMove) {
+        Move m = preMove.generateMove(world);
         MoveStatus ms = moveReceiver.tryDoMove(m);
-        moveReceiver.processPreMove(pm);
+        moveReceiver.processPreMove(preMove);
 
         return ms;
     }
@@ -219,11 +219,11 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param m
+     * @param move
      * @return
      */
-    public MoveStatus tryDoMove(Move m) {
-        return moveReceiver.tryDoMove(m);
+    public MoveStatus tryDoMove(Move move) {
+        return moveReceiver.tryDoMove(move);
     }
 
     public boolean is(ModelRoot.Property property, Object value) {

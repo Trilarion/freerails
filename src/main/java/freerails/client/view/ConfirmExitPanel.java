@@ -27,9 +27,11 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
- * JPanel that displays confirmation of exiting, used when the exit menu item is
+ * Displays confirmation of exiting, used when the exit menu item is
  * selected or x is pressed.
  */
 public class ConfirmExitPanel extends JPanel implements View {
@@ -41,16 +43,7 @@ public class ConfirmExitPanel extends JPanel implements View {
      * Creates new form ConfirmExitPanel.
      */
     public ConfirmExitPanel() {
-        initComponents();
-    }
-
-
-    private static void confirmExitActionPerformed(java.awt.event.ActionEvent evt) {
-        System.exit(0);
-    }
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         JPanel jPanel1 = new JPanel();
         JLabel label1 = new JLabel();
@@ -58,33 +51,37 @@ public class ConfirmExitPanel extends JPanel implements View {
         JButton confirmExit = new JButton();
         closeJButton = new JButton();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        setPreferredSize(new java.awt.Dimension(240, 140));
+        setPreferredSize(new Dimension(240, 140));
         label1.setText("Are you sure you want to Exit?");
         label1.setHorizontalTextPosition(SwingConstants.LEFT);
         jPanel1.add(label1);
 
-        add(jPanel1, new java.awt.GridBagConstraints());
+        add(jPanel1, new GridBagConstraints());
 
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setLayout(new GridBagLayout());
 
         confirmExit.setText("Exit");
         confirmExit.setContentAreaFilled(false);
         confirmExit.addActionListener(ConfirmExitPanel::confirmExitActionPerformed);
 
-        jPanel2.add(confirmExit, new java.awt.GridBagConstraints());
+        jPanel2.add(confirmExit, new GridBagConstraints());
 
         closeJButton.setText("Cancel");
-        jPanel2.add(closeJButton, new java.awt.GridBagConstraints());
+        jPanel2.add(closeJButton, new GridBagConstraints());
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 15;
-        gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
+        gridBagConstraints.insets = new Insets(3, 0, 0, 0);
         add(jPanel2, gridBagConstraints);
 
+    }
+
+    private static void confirmExitActionPerformed(ActionEvent evt) {
+        System.exit(0);
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {

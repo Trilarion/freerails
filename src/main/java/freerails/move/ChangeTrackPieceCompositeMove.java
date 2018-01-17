@@ -158,12 +158,12 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
     /**
      * @param p
-     * @param w
+     * @param world
      * @return
      */
-    public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld w) {
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            if (w.getPlayer(i).getPrincipal().equals(p)) {
+    public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld world) {
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            if (world.getPlayer(i).getPrincipal().equals(p)) {
                 return i;
             }
         }
@@ -188,14 +188,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     /**
-     * @param r
-     * @param w
+     * @param rule
+     * @param world
      * @return
      */
-    private static int findRuleID(TrackRule r, ReadOnlyWorld w) {
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            Object o = w.get(SKEY.TRACK_RULES, i);
-            if (r.equals(o)) {
+    private static int findRuleID(TrackRule rule, ReadOnlyWorld world) {
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            Object o = world.get(SKEY.TRACK_RULES, i);
+            if (rule.equals(o)) {
                 return i;
             }
         }

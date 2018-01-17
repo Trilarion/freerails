@@ -25,25 +25,43 @@ package freerails.client.launcher;
 
 import freerails.client.ProgressMonitorModel;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
- * A JPanel that displays a splash screen and a progress bar.
+ * Displays a splash screen and a progress bar.
  */
-public class ProgressPanelModel extends javax.swing.JPanel implements ProgressMonitorModel {
+public class ProgressPanelModel extends JPanel implements ProgressMonitorModel {
 
     private static final int numSteps = 5;
     private static final long serialVersionUID = 3256445798203273776L;
     private final LauncherInterface owner;
     private int step;
     private int stepSize;
-    private javax.swing.JProgressBar progressBar;
-    private javax.swing.JLabel splashImage;
+    private JProgressBar progressBar;
 
     /**
      * Creates new form ProgressPanelModel
      */
     public ProgressPanelModel(LauncherInterface owner) {
         this.owner = owner;
-        initComponents();
+        GridBagConstraints gridBagConstraints;
+
+        progressBar = new JProgressBar();
+        JLabel splashImage = new JLabel();
+
+        setLayout(new GridBagLayout());
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new Insets(3, 7, 3, 7);
+        add(progressBar, gridBagConstraints);
+
+        splashImage.setHorizontalAlignment(SwingConstants.CENTER);
+        splashImage.setIcon(new ImageIcon(getClass().getResource("/freerails/client/graphics/splash_screen.jpg")));
+        add(splashImage, new GridBagConstraints());
         progressBar.setMaximum(numSteps * 100);
     }
 
@@ -79,23 +97,4 @@ public class ProgressPanelModel extends javax.swing.JPanel implements ProgressMo
         getTopLevelAncestor().setVisible(false);
     }
 
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        progressBar = new javax.swing.JProgressBar();
-        splashImage = new javax.swing.JLabel();
-
-        setLayout(new java.awt.GridBagLayout());
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(3, 7, 3, 7);
-        add(progressBar, gridBagConstraints);
-
-        splashImage.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        splashImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/freerails/client/graphics/splash_screen.jpg")));
-        add(splashImage, new java.awt.GridBagConstraints());
-    }
 }

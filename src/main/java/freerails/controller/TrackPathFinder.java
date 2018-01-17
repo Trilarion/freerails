@@ -65,9 +65,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
             progress.setValuesFromInt(aPath);
             p = new Point2D(progress.getX(), progress.getY());
             proposedTrack.add(p);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Adding point " + p);
-            }
+
+            logger.debug("Adding point " + p);
         }
 
         return proposedTrack;

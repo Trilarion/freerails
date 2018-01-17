@@ -64,15 +64,11 @@ public class InetConnectionAccepter implements Runnable {
         Thread.currentThread().setName("InetConnectionAccepter, port " + serverSocket.getLocalPort());
 
         try {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Accepting connections on port " + serverSocket.getLocalPort());
-            }
+            logger.debug("Accepting connections on port " + serverSocket.getLocalPort());
 
             while (isKeepRunning()) {
                 Socket socket = serverSocket.accept();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Incoming connection from " + socket.getRemoteSocketAddress());
-                }
+                logger.debug("Incoming connection from " + socket.getRemoteSocketAddress());
 
                 synchronized (this) {
                     synchronized (gameServer) {

@@ -27,6 +27,34 @@ public class ClientConfig {
      *
      */
     public static final String GRAPHICS_PATH = "/freerails/client/graphics/";
+    /**
+     *
+     */
+    public static final String PROPERTIES_FILENAME = "freerails.properties";
+    /**
+     *
+     */
+    public static final String SERVER_IP_ADDRESS_PROPERTY = "freerails.server.ip.address";
+    /**
+     *
+     */
+    public static final String PLAYER_NAME_PROPERTY = "freerails.player.name";
+    /**
+     *
+     */
+    public static final String SERVER_PORT_PROPERTY = "freerails.server.port";
+    /**
+     *
+     */
+    public static final String CLIENT_DISPLAY_PROPERTY = "freerails.client.display";
+    /**
+     *
+     */
+    public static final String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
+    public static final int MODE_SINGLE_PLAYER = 0;
+    public static final int MODE_START_NETWORK_GAME = 1;
+    public static final int MODE_JOIN_NETWORK_GAME = 2;
+    public static final int MODE_SERVER_ONLY = 3;
 
     /**
      *
@@ -174,6 +202,10 @@ public class ClientConfig {
     public static final int SPACING = 3;
     public static final int MAX_HEIGHT = 5 * (WAGON_IMAGE_HEIGHT + SPACING);
     public static final int MAX_WIDTH = 80;
+    /**
+     * server sleeping time in ms (1000/SERVERUPDATE is the frame rate)
+     */
+    public static final int SERVERUPDATE = 50;
 
     private ClientConfig() {
     }

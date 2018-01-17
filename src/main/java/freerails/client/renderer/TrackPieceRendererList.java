@@ -78,14 +78,14 @@ public final class TrackPieceRendererList {
     }
 
     /**
-     * @param w
+     * @param world
      * @return
      */
-    public boolean validate(ReadOnlyWorld w) {
+    public boolean validate(ReadOnlyWorld world) {
         boolean okSoFar = true;
 
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
             Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule.getLegalConfigurationsIterator();
             TrackPieceRenderer trackPieceView = getTrackPieceView(i);
 

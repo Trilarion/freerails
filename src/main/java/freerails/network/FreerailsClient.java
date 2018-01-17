@@ -67,9 +67,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Connects this client to a remote server.
      */
     public final LogOnResponse connect(String address, int port, String username, String password) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Connect to remote server.  " + address + ':' + port);
-        }
+        logger.debug("Connect to remote server.  " + address + ':' + port);
 
         try {
             connectionToServer = new InetConnectionToServer(address, port);
@@ -198,9 +196,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         if (message instanceof MessageToClient) {
             MessageToClient request = (MessageToClient) message;
             MessageStatus status = request.execute(this);
-            if (logger.isDebugEnabled()) {
-                logger.debug(request.toString());
-            }
+            logger.debug(request.toString());
+
             connectionToServer.writeToServer(status);
         } else if (message instanceof Move) {
             Move m = (Move) message;
@@ -217,9 +214,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             PreMoveStatus pms = (PreMoveStatus) message;
             committer.fromServer(pms);
         } else {
-            if (logger.isDebugEnabled()) {
-                logger.debug(message.toString());
-            }
+            logger.debug(message.toString());
         }
     }
 

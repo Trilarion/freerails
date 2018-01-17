@@ -37,7 +37,6 @@ class CityTilePositioner {
 
     private final Random random = new Random();
     private final List<TerrainType> urbanTerrainTypes = new ArrayList<>();
-    private final Collection<TerrainType> industryTerrainTypes = new ArrayList<>();
     private final List<TerrainType> resourceTerrainTypes = new ArrayList<>();
 
     private final World world;
@@ -56,6 +55,7 @@ class CityTilePositioner {
                     urbanTerrainTypes.add(type);
                     break;
                 case 6:
+                    Collection<TerrainType> industryTerrainTypes = new ArrayList<>();
                     industryTerrainTypes.add(type);
                     break;
                 case 7:

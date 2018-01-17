@@ -124,7 +124,7 @@ public class StationBuildModel {
     public boolean canBuildStationHere() {
         java.awt.Point p = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
 
-        return stationBuilder.tryBuildingStation(new Point2D(p.x, p.y)).ok;
+        return stationBuilder.tryBuildingStation(new Point2D(p.x, p.y)).status;
     }
 
     /**
@@ -211,7 +211,7 @@ public class StationBuildModel {
             MoveStatus ms = stationBuilder.buildStation(new Point2D(value.x, value.y));
             String message = null;
 
-            if (ms.isOk()) {
+            if (ms.isStatus()) {
                 stationBuildAction.setEnabled(false);
             } else {
                 message = ms.message;

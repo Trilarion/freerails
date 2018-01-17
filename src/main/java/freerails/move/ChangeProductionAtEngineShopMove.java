@@ -114,7 +114,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryDoMove(world, principal);
 
-        if (status.isOk()) {
+        if (status.isStatus()) {
             Station station = (Station) world.get(this.principal, KEY.STATIONS, stationNumber);
             station = new Station(station, after);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);
@@ -125,7 +125,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryUndoMove(world, principal);
 
-        if (status.isOk()) {
+        if (status.isStatus()) {
             Station station = (Station) world.get(this.principal, KEY.STATIONS, stationNumber);
             station = new Station(station, before);
             world.set(this.principal, KEY.STATIONS, stationNumber, station);

@@ -196,6 +196,6 @@ public class BuildTrackExplorerTest extends TestCase {
                 .generateBuildTrackMove(new Point2D(x, y), direction, rule,
                         rule, world, MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.ok);
+        assertTrue(ms.status);
     }
 }

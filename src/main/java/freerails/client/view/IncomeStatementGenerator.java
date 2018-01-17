@@ -36,32 +36,12 @@ import freerails.world.player.FreerailsPrincipal;
  */
 class IncomeStatementGenerator {
 
-    private final String year;
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
     private final GameCalendar cal;
     private final int startyear;
 
     public Money mailTotal;
-    private Money passengersTotal;
-    private Money fastFreightTotal;
-    private Money slowFreightTotal;
-    private Money bulkFreightTotal;
-    private Money interestTotal;
-    private Money trainMaintenanceTotal;
-    private Money trackMaintenanceTotal;
-    private Money stationMaintenanceTotal;
-    private Money profitTotal;
-    private Money mailYtd;
-    private Money passengersYtd;
-    private Money fastFreightYtd;
-    private Money slowFreightYtd;
-    private Money bulkFreightYtd;
-    private Money interestYtd;
-    private Money trainMaintenanceYtd;
-    private Money trackMaintenanceYtd;
-    private Money stationMaintenanceYtd;
-    private Money profitYtd;
     GameTime from;
     GameTime to;
 
@@ -71,7 +51,7 @@ class IncomeStatementGenerator {
         cal = (GameCalendar) world.get(ITEM.CALENDAR);
         GameTime time = world.currentTime();
         startyear = cal.getYear(time.getTicks());
-        year = String.valueOf(startyear);
+        String year = String.valueOf(startyear);
     }
 
     /**
@@ -168,32 +148,32 @@ class IncomeStatementGenerator {
             }
         }
         this.mailTotal = new Money(mailTotal);
-        this.passengersTotal = new Money(passengersTotal);
-        this.fastFreightTotal = new Money(fastFreightTotal);
-        this.slowFreightTotal = new Money(slowFreightTotal);
-        this.bulkFreightTotal = new Money(bulkFreightTotal);
-        this.mailYtd = new Money(mailYtd);
-        this.passengersYtd = new Money(passengersYtd);
-        this.fastFreightYtd = new Money(fastFreightYtd);
-        this.slowFreightYtd = new Money(slowFreightYtd);
-        this.bulkFreightYtd = new Money(bulkFreightYtd);
+        Money passengersTotal1 = new Money(passengersTotal);
+        Money fastFreightTotal1 = new Money(fastFreightTotal);
+        Money slowFreightTotal1 = new Money(slowFreightTotal);
+        Money bulkFreightTotal1 = new Money(bulkFreightTotal);
+        Money mailYtd1 = new Money(mailYtd);
+        Money passengersYtd1 = new Money(passengersYtd);
+        Money fastFreightYtd1 = new Money(fastFreightYtd);
+        Money slowFreightYtd1 = new Money(slowFreightYtd);
+        Money bulkFreightYtd1 = new Money(bulkFreightYtd);
 
-        this.interestTotal = new Money(interestTotal);
-        this.interestYtd = new Money(interestYtd);
-        this.trainMaintenanceTotal = new Money(trainMaintenanceTotal);
-        this.trainMaintenanceYtd = new Money(trainMaintenanceYtd);
-        this.trackMaintenanceTotal = new Money(trackMaintenanceTotal);
-        this.trackMaintenanceYtd = new Money(trackMaintenanceYtd);
-        this.stationMaintenanceTotal = new Money(stationMaintenanceTotal);
-        this.stationMaintenanceYtd = new Money(stationMaintenanceYtd);
+        Money interestTotal1 = new Money(interestTotal);
+        Money interestYtd1 = new Money(interestYtd);
+        Money trainMaintenanceTotal1 = new Money(trainMaintenanceTotal);
+        Money trainMaintenanceYtd1 = new Money(trainMaintenanceYtd);
+        Money trackMaintenanceTotal1 = new Money(trackMaintenanceTotal);
+        Money trackMaintenanceYtd1 = new Money(trackMaintenanceYtd);
+        Money stationMaintenanceTotal1 = new Money(stationMaintenanceTotal);
+        Money stationMaintenanceYtd1 = new Money(stationMaintenanceYtd);
 
-        long profit = this.mailTotal.getAmount() + this.passengersTotal.getAmount() + this.fastFreightTotal.getAmount() + this.slowFreightTotal.getAmount() + this.bulkFreightTotal.getAmount() + this.interestTotal.getAmount() + this.trainMaintenanceTotal.getAmount() + this.trackMaintenanceTotal.getAmount() + this.stationMaintenanceTotal.getAmount();
+        long profit = this.mailTotal.getAmount() + passengersTotal1.getAmount() + fastFreightTotal1.getAmount() + slowFreightTotal1.getAmount() + bulkFreightTotal1.getAmount() + interestTotal1.getAmount() + trainMaintenanceTotal1.getAmount() + trackMaintenanceTotal1.getAmount() + stationMaintenanceTotal1.getAmount();
 
-        profitTotal = new Money(profit);
+        Money profitTotal = new Money(profit);
 
-        profit = this.mailYtd.getAmount() + this.passengersYtd.getAmount() + this.fastFreightYtd.getAmount() + this.slowFreightYtd.getAmount() + this.bulkFreightYtd.getAmount() + this.interestYtd.getAmount() + this.trainMaintenanceYtd.getAmount() + this.trackMaintenanceYtd.getAmount() + this.stationMaintenanceYtd.getAmount();
+        profit = mailYtd1.getAmount() + passengersYtd1.getAmount() + fastFreightYtd1.getAmount() + slowFreightYtd1.getAmount() + bulkFreightYtd1.getAmount() + interestYtd1.getAmount() + trainMaintenanceYtd1.getAmount() + trackMaintenanceYtd1.getAmount() + stationMaintenanceYtd1.getAmount();
 
-        profitYtd = new Money(profit);
+        Money profitYtd = new Money(profit);
     }
 
     /**

@@ -41,6 +41,7 @@ import java.util.LinkedList;
  * the server.
  */
 class MovePrecommitter {
+
     private static final Logger logger = Logger.getLogger(MovePrecommitter.class.getName());
     /**
      * List of moves and premoves that have been sent to the server and executed
@@ -63,43 +64,38 @@ class MovePrecommitter {
         this.world = world;
     }
 
-    void fromServer(Move m) {
+    void fromServer(Move move) {
         rollBackPrecommittedMoves();
-
-        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
-
-        if (!ms.ok) {
-            throw new IllegalStateException(ms.message);
+        MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+        if (!moveStatus.status) {
+            throw new IllegalStateException(moveStatus.message);
         }
     }
 
     /**
      * Indicates that the server has processed a move we sent.
      */
-    void fromServer(MoveStatus ms) {
+    void fromServer(MoveStatus moveStatus) {
         precommitMoves();
 
         if (!precomitted.isEmpty()) {
             Move m = (Move) precomitted.removeFirst();
 
-            if (!ms.ok) {
-                logger.info("Move rejected by server: " + ms.message);
+            if (!moveStatus.status) {
+                logger.info("Move rejected by server: " + moveStatus.message);
 
                 MoveStatus undoStatus = m.undoMove(world, Player.AUTHORITATIVE);
 
-                if (!undoStatus.ok) {
+                if (!undoStatus.status) {
                     throw new IllegalStateException();
                 }
             } else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Move accepted by server: " + m.toString());
-                }
+                logger.debug("Move accepted by server: " + m.toString());
             }
         } else {
-            if (!ms.ok) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Clear the blockage " + ms.message);
-                }
+            if (!moveStatus.status) {
+                logger.debug("Clear the blockage " + moveStatus.message);
+
                 uncomitted.removeFirst();
                 precommitMoves();
             } else {
@@ -120,18 +116,17 @@ class MovePrecommitter {
 
         PreMove pm = (PreMove) uncomitted.removeFirst();
 
-        if (pms.ms.ok) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("PreMove accepted by server: " + pms.toString());
-            }
+        if (pms.moveStatus.status) {
+            logger.debug("PreMove accepted by server: " + pms.toString());
+
             Move m = pm.generateMove(world);
             MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
-            if (!ms.ok) {
+            if (!ms.status) {
                 throw new IllegalStateException();
             }
         } else {
-            logger.info("PreMove rejected by server: " + pms.ms.message);
+            logger.info("PreMove rejected by server: " + pms.moveStatus.message);
         }
 
         precommitMoves();
@@ -147,7 +142,7 @@ class MovePrecommitter {
                 Move m = (Move) first;
                 MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
-                if (ms.ok) {
+                if (ms.status) {
                     uncomitted.removeFirst();
                     precomitted.addLast(m);
                 } else {
@@ -158,7 +153,7 @@ class MovePrecommitter {
                 Move m = pm.generateMove(world);
                 MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
 
-                if (ms.ok) {
+                if (ms.status) {
                     uncomitted.removeFirst();
 
                     Serializable pmam = new PreMoveAndMove(pm, m);
@@ -193,7 +188,7 @@ class MovePrecommitter {
 
             MoveStatus ms = move2undo.undoMove(world, Player.AUTHORITATIVE);
 
-            if (!ms.ok) {
+            if (!ms.status) {
                 throw new IllegalStateException(ms.message);
             }
 

@@ -23,6 +23,7 @@ import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -40,13 +41,9 @@ class BrokerFrame extends JInternalFrame {
 
     private static final long serialVersionUID = 4121409622587815475L;
     private static final Logger logger = Logger.getLogger(BrokerFrame.class.getName());
-    private JMenu bonds;
-    private JMenuBar brokerMenu;
     private JButton done;
     private JLabel htmlJLabel;
     JMenuItem issueBond;
-    private JPanel jPanel1;
-    private JScrollPane jScrollPane1;
     JMenuItem repayBond;
     JMenu stocks;
 
@@ -54,14 +51,66 @@ class BrokerFrame extends JInternalFrame {
      * Creates new form BrokerFrame
      */
     BrokerFrame() {
-        initComponents();
+        GridBagConstraints gridBagConstraints;
+
+        JScrollPane jScrollPane1 = new JScrollPane();
+        JPanel jPanel1 = new JPanel();
+        htmlJLabel = new JLabel();
+        done = new JButton();
+        JMenuBar brokerMenu = new JMenuBar();
+        JMenu bonds = new JMenu();
+        issueBond = new JMenuItem();
+        repayBond = new JMenuItem();
+        stocks = new JMenu();
+
+        getContentPane().setLayout(new GridBagLayout());
+
+        jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jPanel1.setLayout(new BorderLayout());
+
+        htmlJLabel.setFont(new Font("Dialog", 0, 12));
+        htmlJLabel.setText("sdfa");
+        htmlJLabel.setVerticalAlignment(SwingConstants.TOP);
+        htmlJLabel.setVerticalTextPosition(SwingConstants.TOP);
+        jPanel1.add(htmlJLabel, BorderLayout.CENTER);
+
+        jScrollPane1.setViewportView(jPanel1);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jScrollPane1, gridBagConstraints);
+
+        done.setText("Close");
+        done.setVerifyInputWhenFocusTarget(false);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
+        getContentPane().add(done, gridBagConstraints);
+
+        bonds.setText("Bonds");
+        issueBond.setText("Issue Bond");
+        bonds.add(issueBond);
+
+        repayBond.setText("Repay Bond");
+        bonds.add(repayBond);
+
+        brokerMenu.add(bonds);
+
+        stocks.setText("Stocks");
+        brokerMenu.add(stocks);
+
+        setJMenuBar(brokerMenu);
+        pack();
     }
 
     /**
      * @param url
      */
     private BrokerFrame(URL url) {
-        initComponents();
+        this();
         setHtml(loadText(url));
     }
 
@@ -70,7 +119,7 @@ class BrokerFrame extends JInternalFrame {
      * @param context
      */
     private BrokerFrame(URL url, HashMap context) {
-        initComponents();
+        this();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);
         setHtml(populatedTemplate);
@@ -80,7 +129,7 @@ class BrokerFrame extends JInternalFrame {
      * @param html
      */
     private BrokerFrame(String html) {
-        initComponents();
+        this();
         setHtml(html);
     }
 
@@ -147,61 +196,4 @@ class BrokerFrame extends JInternalFrame {
         htmlJLabel.setText(s);
     }
 
-
-    // ">
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        jScrollPane1 = new JScrollPane();
-        jPanel1 = new JPanel();
-        htmlJLabel = new JLabel();
-        done = new JButton();
-        brokerMenu = new JMenuBar();
-        bonds = new JMenu();
-        issueBond = new JMenuItem();
-        repayBond = new JMenuItem();
-        stocks = new JMenu();
-
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-
-        jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
-        htmlJLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        htmlJLabel.setText("sdfa");
-        htmlJLabel.setVerticalAlignment(SwingConstants.TOP);
-        htmlJLabel.setVerticalTextPosition(SwingConstants.TOP);
-        jPanel1.add(htmlJLabel, java.awt.BorderLayout.CENTER);
-
-        jScrollPane1.setViewportView(jPanel1);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jScrollPane1, gridBagConstraints);
-
-        done.setText("Close");
-        done.setVerifyInputWhenFocusTarget(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-        getContentPane().add(done, gridBagConstraints);
-
-        bonds.setText("Bonds");
-        issueBond.setText("Issue Bond");
-        bonds.add(issueBond);
-
-        repayBond.setText("Repay Bond");
-        bonds.add(repayBond);
-
-        brokerMenu.add(bonds);
-
-        stocks.setText("Stocks");
-        brokerMenu.add(stocks);
-
-        setJMenuBar(brokerMenu);
-        pack();
-    }
 }

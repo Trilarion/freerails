@@ -226,7 +226,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             MoveStatus status = move.doMove(copyOfWorld, principal0);
 
-            assertTrue(status.isOk());
+            assertTrue(status.isStatus());
 
             // client0.write(move);
             client0.process(move);
@@ -302,7 +302,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             Move move = pm.generateMove(copyOfWorld);
             MoveStatus status = move.doMove(copyOfWorld, principal0);
-            assertTrue(status.isOk());
+            assertTrue(status.isStatus());
             client0.processPreMove(pm);
             server.update();
 

@@ -31,27 +31,20 @@ public interface ProgressMonitorModel {
     /**
      *
      */
-    ProgressMonitorModel EMPTY = new ProgressMonitorModel() {
-
-        public void setValue(int i) {}
-
-        public void nextStep(int max) { }
-
-        public void finished() {}
-    };
+    ProgressMonitorModel EMPTY = new ProgressMonitorModel() {};
 
     /**
      * @param i
      */
-    void setValue(int i);
+    default void setValue(int i) {}
 
     /**
      * @param max
      */
-    void nextStep(int max);
+    default void nextStep(int max) {}
 
     /**
      *
      */
-    void finished();
+    default void finished() {}
 }

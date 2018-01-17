@@ -188,7 +188,7 @@ public class BuildTrackController implements GameModel {
                 ms = planBuildingTrack(oldPosition, vector);
             }
 
-            if (ms.ok) {
+            if (ms.status) {
                 setCursorMessage("");
             } else {
                 setCursorMessage(ms.message);
@@ -211,7 +211,7 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = true;
 
         // If track has actually been built, play the build track sound.
-        if (trackBuilder != null && ms.isOk()) {
+        if (trackBuilder != null && ms.isStatus()) {
             if (trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
                 soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
             }
@@ -450,7 +450,7 @@ public class BuildTrackController implements GameModel {
 
                         }// end of switch statement
                         MoveStatus ms = move.doMove(worldDiffs, fp);
-                        okSoFar = ms.ok && okSoFar;
+                        okSoFar = ms.status && okSoFar;
                     }// end of attemptMove
                     locationX += v.deltaX;
                     locationY += v.deltaY;
@@ -481,8 +481,8 @@ public class BuildTrackController implements GameModel {
             if (!builtTrack.isEmpty()) {
                 MoveStatus ms = moveCursorMoreTiles(builtTrack, trackBuilder);
 
-                /* Note, reset() will have been called if ms.ok == false */
-                if (ms.ok) {
+                /* Note, reset() will have been called if moveStatus.status == false */
+                if (ms.status) {
                     actPoint = builtTrack.get(builtTrack.size() - 1);
                     builtTrack = new ArrayList<>();
                 }
@@ -490,8 +490,8 @@ public class BuildTrackController implements GameModel {
         } else {
             trackBuilder.setBuildTrackStrategy(getBts());
             MoveStatus ms = trackBuilder.buildTrack(actPoint, path);
-            // MoveStatus ms = trackBuilder.buildTrack(startPoint, path);
-            if (ms.ok) {
+            // MoveStatus moveStatus = trackBuilder.buildTrack(startPoint, path);
+            if (ms.status) {
                 actPoint = targetPoint;
                 setCursorMessage("");
                 if (BuildMode.REMOVE_TRACK == getBuildMode()) {

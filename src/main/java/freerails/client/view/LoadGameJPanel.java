@@ -45,32 +45,22 @@ public class LoadGameJPanel extends JPanel implements View {
     private ModelRoot modelRoot;
     private ActionListener close;
 
-    private JButton cancelButton;
-    private JLabel label1;
     private JList list1;
-    private JScrollPane jScrollPane1;
     private JButton okButton;
-    private JButton refreshButton;
     private List<String> lastFiles;
 
     /**
      * Creates new form LoadGameJPanel
      */
     public LoadGameJPanel() {
-        initComponents();
-    }
-
-
-    // ">//GEN-BEGIN:initComponents
-    private void initComponents() {
         GridBagConstraints gridBagConstraints;
 
-        jScrollPane1 = new JScrollPane();
+        JScrollPane jScrollPane1 = new JScrollPane();
         list1 = new JList();
-        label1 = new JLabel();
+        JLabel label1 = new JLabel();
         okButton = new JButton();
-        cancelButton = new JButton();
-        refreshButton = new JButton();
+        JButton cancelButton = new JButton();
+        JButton refreshButton = new JButton();
 
         setLayout(new GridBagLayout());
 
@@ -125,6 +115,7 @@ public class LoadGameJPanel extends JPanel implements View {
         add(refreshButton, gridBagConstraints);
 
     }
+
 
     private void refreshButtonActionPerformed(ActionEvent evt) {
         MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);

@@ -126,7 +126,7 @@ public class ChangeItemInListMove implements ListMove {
     private MoveStatus move(Serializable to, Serializable from, World w) {
         MoveStatus ms = tryMove(to, from, w);
 
-        if (ms.ok) {
+        if (ms.status) {
             w.set(principal, listKey, index, to);
         }
 
@@ -145,15 +145,15 @@ public class ChangeItemInListMove implements ListMove {
     /**
      * @param to
      * @param from
-     * @param w
+     * @param world
      * @return
      */
-    private MoveStatus tryMove(Serializable to, Serializable from, ReadOnlyWorld w) {
-        if (index >= w.size(principal, listKey)) {
-            return MoveStatus.moveFailed("world.size(listKey) is " + w.size(principal, listKey) + " but index is " + index);
+    private MoveStatus tryMove(Serializable to, Serializable from, ReadOnlyWorld world) {
+        if (index >= world.size(principal, listKey)) {
+            return MoveStatus.moveFailed("world.size(listKey) is " + world.size(principal, listKey) + " but index is " + index);
         }
 
-        Serializable item2change = w.get(principal, listKey, index);
+        Serializable item2change = world.get(principal, listKey, index);
 
         if (null == item2change) {
             if (null == from) {

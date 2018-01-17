@@ -44,16 +44,6 @@ class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    private final String playername;
-    private final String year;
-    private final Money cash;
-    private final Money loansTotal;
-    private final Money netWorth;
-    private final Money pricePerShare;
-    private final String publicShares;
-    private final String treasuryStock;
-    private final String othersRRsStockRows;
-
     /**
      * Creates a new instance of BrokerScreenGenerator
      */
@@ -61,24 +51,24 @@ class BrokerScreenGenerator {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(w, principal);
 
         int playerId = w.getID(principal);
-        playername = w.getPlayer(playerId).getName();
+        String playername = w.getPlayer(playerId).getName();
 
         GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
         GameTime time = w.currentTime();
         final int startyear = cal.getYear(time.getTicks());
-        year = String.valueOf(startyear);
-        cash = w.getCurrentBalance(principal);
+        String year = String.valueOf(startyear);
+        Money cash = w.getCurrentBalance(principal);
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w, principal);
 
         aggregator.setCategory(TransactionCategory.BOND);
-        loansTotal = aggregator.calculateValue();
+        Money loansTotal = aggregator.calculateValue();
 
-        publicShares = DC.format(dataGatherer.sharesHeldByPublic());
-        netWorth = dataGatherer.netWorth();
+        String publicShares = DC.format(dataGatherer.sharesHeldByPublic());
+        Money netWorth = dataGatherer.netWorth();
         StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
-        pricePerShare = stockPrices[playerId].currentPrice;
-        treasuryStock = DC.format(dataGatherer.treasuryStock());
+        Money pricePerShare = stockPrices[playerId].currentPrice;
+        String treasuryStock = DC.format(dataGatherer.treasuryStock());
 
         StringBuilder otherRRsStakes = new StringBuilder();
         int[] stockInThisRRs = dataGatherer.getStockInThisRRs();
@@ -95,6 +85,6 @@ class BrokerScreenGenerator {
                 otherRRsStakes.append("</tr>");
             }
         }
-        othersRRsStockRows = otherRRsStakes.toString();
+        String othersRRsStockRows = otherRRsStakes.toString();
     }
 }

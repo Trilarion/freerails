@@ -39,12 +39,13 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * A JPanel that displays the cargo waiting and demanded at a station - used on
+ * Displays the cargo waiting and demanded at a station - used on
  * the select station popup window.
  */
 public class CargoWaitingAndDemandedPanel extends JPanel implements View {
@@ -60,12 +61,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
      *
      */
     public CargoWaitingAndDemandedPanel() {
-        initComponents();
-    }
-
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         JScrollPane jScrollPane1 = new JScrollPane();
         JPanel jPanel1 = new JPanel();
@@ -76,30 +72,30 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         demandsJList = new JList();
         JPanel spacer = new JPanel();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        setPreferredSize(new java.awt.Dimension(100, 200));
+        setPreferredSize(new Dimension(100, 200));
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        jPanel1.setLayout(new GridBagLayout());
 
         stationName.setText("Station Name");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new Insets(6, 6, 6, 6);
+        gridBagConstraints.anchor = GridBagConstraints.NORTH;
         jPanel1.add(stationName, gridBagConstraints);
 
         waiting.setText("Waiting");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         jPanel1.add(waiting, gridBagConstraints);
 
         waitingJTable.setBackground(UIManager.getDefaults().getColor("Button.background"));
-        waitingJTable.setFont(new java.awt.Font("Dialog", 0, 10));
+        waitingJTable.setFont(new Font("Dialog", 0, 10));
         waitingJTable.setModel(new DefaultTableModel(new Object[][]{{"Mail", "4"}, {"Passengers", null}}, new String[]{"Title 1", "Title 2"}));
         waitingJTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         waitingJTable.setFocusable(false);
@@ -107,51 +103,52 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         waitingJTable.setRowSelectionAllowed(false);
         waitingJTable.setShowHorizontalLines(false);
         waitingJTable.setShowVerticalLines(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(waitingJTable, gridBagConstraints);
 
         demands.setText("Demands");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
         jPanel1.add(demands, gridBagConstraints);
 
         demandsJList.setBackground(UIManager.getDefaults().getColor("Button.background"));
-        demandsJList.setFont(new java.awt.Font("Dialog", 0, 10));
+        demandsJList.setFont(new Font("Dialog", 0, 10));
         demandsJList.setFocusable(false);
         demandsJList.setRequestFocusEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         jPanel1.add(demandsJList, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanel1.add(spacer, gridBagConstraints);
 
         jScrollPane1.setViewportView(jPanel1);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
 
     }
+
 
     /**
      * @param modelRoot

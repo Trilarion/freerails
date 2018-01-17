@@ -58,7 +58,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
 
         AddPlayerMove apm = AddPlayerMove.generateMove(world, p);
         MoveStatus ms = apm.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.isOk());
+        assertTrue(ms.isStatus());
         playerID = world.getNumberOfPlayers() - 1;
         principal = p.getPrincipal();
     }
@@ -76,7 +76,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
                     WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
             Move move = new AddTransactionMove(principal, t);
             MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(ms.isOk());
+            assertTrue(ms.isStatus());
             // The line below threw an exception that caused bug 1341365.
             BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(
                     world, principal);

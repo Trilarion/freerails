@@ -110,26 +110,18 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     public synchronized void addConnection(ConnectionToClient connection) {
         String[] before = getPlayerNames();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Adding connection..");
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Waiting for login details..");
-        }
+        logger.debug("Adding connection..");
+        logger.debug("Waiting for login details..");
 
         try {
             LogOnRequest request = (LogOnRequest) connection.waitForObjectFromClient();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Trying to login player: " + request.getUsername());
-            }
+            logger.debug("Trying to login player: " + request.getUsername());
 
             LogOnResponse response = logon(request);
             connection.writeToClient(response);
             NameAndPassword p = new NameAndPassword(request.getUsername(), request.getPassword());
             if (response.isSuccessful()) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Login successful");
-                }
+                logger.debug("Login successful");
 
                 synchronized (acceptedConnections) {
                     acceptedConnections.put(p, connection);
@@ -219,9 +211,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     boolean isConfirmed(int player) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("confirmedPlayers.size()=" + confirmedPlayers.size());
-        }
+        logger.debug("confirmedPlayers.size()=" + confirmedPlayers.size());
 
         return confirmedPlayers.contains(players.get(player));
     }
@@ -336,7 +326,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
                 Move addPlayerMove = AddPlayerMove.generateMove(world, p);
                 MoveStatus ms = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
-                if (!ms.ok) throw new IllegalStateException();
+                if (!ms.status) throw new IllegalStateException();
                 passwords[i] = players.get(i).password;
             }
 
@@ -347,9 +337,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
         sendWorldUpdatedCommand();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("newGame");
-        }
+        logger.debug("newGame");
     }
 
     private void removeConnection(NameAndPassword p) throws IOException {
@@ -447,7 +435,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         MoveReceiver moveExecuter = move -> {
             MoveStatus ms = move.doMove(getWorld(), Player.AUTHORITATIVE);
 
-            if (ms.ok) {
+            if (ms.status) {
                 send2All(move);
             } else {
                 logger.warn(ms.message);
@@ -485,9 +473,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                         if (message instanceof MessageToServer) {
                             MessageToServer message2 = (MessageToServer) message;
                             MessageStatus cStatus = message2.execute(this);
-                            if (logger.isDebugEnabled()) {
-                                logger.debug(message2.toString());
-                            }
+                            logger.debug(message2.toString());
                             connection.writeToClient(cStatus);
                         } else if (message instanceof MessageStatus) {
                             MessageStatus messageStatus = (MessageStatus) message;
@@ -499,14 +485,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                                  * version.
                                  */
                                 confirmedPlayers.add(player);
-                                if (logger.isDebugEnabled()) {
-                                    logger.debug("Confirmed player " + player);
-                                }
+                                logger.debug("Confirmed player " + player);
                             }
 
-                            if (logger.isDebugEnabled()) {
-                                logger.debug(message.toString());
-                            }
+                            logger.debug(message.toString());
                         } else if (message instanceof Move || message instanceof PreMove) {
                             Player player2 = getWorld().getPlayer(players.indexOf(player));
                             FreerailsPrincipal principal = player2.getPrincipal();
@@ -523,7 +505,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
                             MoveStatus mStatus = move.tryDoMove(getWorld(), principal);
 
-                            if (mStatus.isOk()) {
+                            if (mStatus.isStatus()) {
                                 move.doMove(getWorld(), principal);
 
                                 /*
@@ -539,9 +521,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                                 connection.writeToClient(PreMoveStatus.fromMoveStatus(mStatus));
                             }
                         } else {
-                            if (logger.isDebugEnabled()) {
-                                logger.debug(message.toString());
-                            }
+                            logger.debug(message.toString());
                         }
                     }
 

@@ -30,7 +30,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * JPanel that displays the map and provides methods to handle scrolling.
+* Displays the map and provides methods to handle scrolling.
  */
 public abstract class MapViewComponent extends JPanel implements Scrollable, MapRenderer {
 

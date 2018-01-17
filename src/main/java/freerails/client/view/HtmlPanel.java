@@ -28,6 +28,7 @@ import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -49,23 +50,51 @@ public class HtmlPanel extends JPanel implements View {
     private JLabel htmlJLabel;
 
     HtmlPanel() {
-        initComponents();
+        GridBagConstraints gridBagConstraints;
+
+        JScrollPane jScrollPane1 = new JScrollPane();
+        htmlJLabel = new JLabel();
+        done = new JButton();
+
+        setLayout(new GridBagLayout());
+
+        setMinimumSize(new Dimension(400, 300));
+        jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        htmlJLabel.setFont(new Font("Dialog", 0, 12));
+        htmlJLabel.setVerticalTextPosition(SwingConstants.TOP);
+        jScrollPane1.setViewportView(htmlJLabel);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
+        add(jScrollPane1, gridBagConstraints);
+
+        done.setText("Close");
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new Insets(7, 7, 7, 7);
+        add(done, gridBagConstraints);
+
     }
 
     public HtmlPanel(URL url) {
-        initComponents();
+        this();
         setHtml(loadText(url));
     }
 
     private HtmlPanel(URL url, HashMap context) {
-        initComponents();
+        this();
         String template = loadText(url);
         String populatedTemplate = populateTokens(template, context);
         setHtml(populatedTemplate);
     }
 
     public HtmlPanel(String html) {
-        initComponents();
+        this();
         setHtml(html);
     }
 
@@ -123,39 +152,6 @@ public class HtmlPanel extends JPanel implements View {
         }
     }
 
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        JScrollPane jScrollPane1 = new JScrollPane();
-        htmlJLabel = new JLabel();
-        done = new JButton();
-
-        setLayout(new java.awt.GridBagLayout());
-
-        setMinimumSize(new java.awt.Dimension(400, 300));
-        jScrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        htmlJLabel.setFont(new java.awt.Font("Dialog", 0, 12));
-        htmlJLabel.setVerticalTextPosition(SwingConstants.TOP);
-        jScrollPane1.setViewportView(htmlJLabel);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-        add(jScrollPane1, gridBagConstraints);
-
-        done.setText("Close");
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(7, 7, 7, 7);
-        add(done, gridBagConstraints);
-
-    }
-
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         done.setAction(closeAction);
     }
@@ -163,6 +159,4 @@ public class HtmlPanel extends JPanel implements View {
     void setHtml(String s) {
         htmlJLabel.setText(s);
     }
-
-
 }

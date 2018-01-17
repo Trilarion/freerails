@@ -85,7 +85,7 @@ public class AddPlayerMove implements Move {
 
     public MoveStatus doMove(World world, FreerailsPrincipal p) {
         MoveStatus ms = tryDoMove(world, p);
-        if (!ms.ok) return ms;
+        if (!ms.status) return ms;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         FreerailsPrincipal principal = playerToAdd.getPrincipal();
@@ -99,7 +99,7 @@ public class AddPlayerMove implements Move {
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus ms = tryUndoMove(world, principal);
-        if (!ms.ok) return ms;
+        if (!ms.status) return ms;
 
         world.removeLastTransaction(playerToAdd.getPrincipal());
         world.removeLastTransaction(playerToAdd.getPrincipal());

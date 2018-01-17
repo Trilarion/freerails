@@ -25,40 +25,10 @@ package freerails.client.launcher;
 public interface LauncherInterface {
 
     /**
-     *
-     */
-    String PROPERTIES_FILENAME = "freerails.properties";
-
-    /**
-     *
-     */
-    String SERVER_IP_ADDRESS_PROPERTY = "freerails.server.ip.address";
-
-    /**
-     *
-     */
-    String PLAYER_NAME_PROPERTY = "freerails.player.name";
-
-    /**
-     *
-     */
-    String SERVER_PORT_PROPERTY = "freerails.server.port";
-
-    /**
-     *
-     */
-    String CLIENT_DISPLAY_PROPERTY = "freerails.client.display";
-
-    /**
-     *
-     */
-    String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
-
-    /**
      * @param text
      * @param status
      */
-    void setInfoText(String text, MSG_TYPE status);
+    void setInfoText(String text, InfoMessageType status);
 
     /**
      * @param enabled
@@ -90,27 +60,6 @@ public interface LauncherInterface {
     /**
      *
      */
-    void saveProps();
-
-    /**
-     *
-     */
-    enum MSG_TYPE {
-
-        /**
-         *
-         */
-        INFO,
-
-        /**
-         *
-         */
-        WARNING,
-
-        /**
-         *
-         */
-        ERROR
-    }
+    void saveProperties();
 
 }

@@ -31,7 +31,6 @@ import java.util.ArrayList;
  * Test.
  */
 public class PathWalkerImplTest extends TestCase {
-    private PathIterator it;
 
     private PathWalker pw;
 
@@ -167,7 +166,7 @@ public class PathWalkerImplTest extends TestCase {
     private void setup() {
         Integer[] xpoints = {0, 100, 100};
         Integer[] ypoints = {0, 0, 100};
-        it = new SimplePathIteratorImpl(xpoints, ypoints);
+        PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
         pw = new PathWalkerImpl(it);
     }
 

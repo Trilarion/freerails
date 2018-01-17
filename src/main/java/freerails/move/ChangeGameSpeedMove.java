@@ -68,7 +68,7 @@ public class ChangeGameSpeedMove implements Move {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryDoMove(world, principal);
 
-        if (status.ok) {
+        if (status.status) {
             world.set(ITEM.GAME_SPEED, newSpeed);
         }
 
@@ -78,7 +78,7 @@ public class ChangeGameSpeedMove implements Move {
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryUndoMove(world, principal);
 
-        if (status.isOk()) {
+        if (status.isStatus()) {
             world.set(ITEM.GAME_SPEED, oldSpeed);
         }
 

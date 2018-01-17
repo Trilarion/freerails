@@ -54,7 +54,34 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     private TrainListCellRenderer trainViewJPanel1;
 
     public TrainDescriptionPanel() {
-        initComponents();
+        GridBagConstraints gridBagConstraints;
+
+        label1 = new JLabel();
+        trainViewJPanel1 = new TrainListCellRenderer();
+
+        setLayout(new GridBagLayout());
+
+        setBorder(new TitledBorder("Current Details"));
+        setPreferredSize(new Dimension(250, 97));
+        label1.setFont(new Font("Dialog", 0, 12));
+        label1.setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
+        label1.setMinimumSize(new Dimension(250, 17));
+        label1.setHorizontalTextPosition(SwingConstants.LEADING);
+        label1.setVerticalTextPosition(SwingConstants.TOP);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(label1, gridBagConstraints);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        add(trainViewJPanel1, gridBagConstraints);
+
     }
 
     @Override
@@ -75,37 +102,6 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         if (train != lastTrain || cb != lastCargoBundle) displayTrain(trainNumber);
     }
 
-
-    private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
-
-        label1 = new JLabel();
-        trainViewJPanel1 = new freerails.client.view.TrainListCellRenderer();
-
-        setLayout(new java.awt.GridBagLayout());
-
-        setBorder(new TitledBorder("Current Details"));
-        setPreferredSize(new java.awt.Dimension(250, 97));
-        label1.setFont(new java.awt.Font("Dialog", 0, 12));
-        label1.setText("<html><head></head><body>Trains X: 20 passengers, 15 tons of mfg goods, 12 sacks of mail, and 7 tons of livestock.</body></html>");
-        label1.setMinimumSize(new java.awt.Dimension(250, 17));
-        label1.setHorizontalTextPosition(SwingConstants.LEADING);
-        label1.setVerticalTextPosition(SwingConstants.TOP);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        add(label1, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        add(trainViewJPanel1, gridBagConstraints);
-
-    }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
 
