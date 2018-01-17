@@ -301,7 +301,16 @@ Addition and removal of cargo at stations
 User Interface
 ++++++++++++++
 
+Main Window
+...........
+
 The main window has a menu bar, the world view, the mini map, and a tabpane.
+
+.. figure:: /images/ui_main_window.png
+   :width: 10 cm
+   :align: center
+
+   Scheme of main window.
 
 The GUI components should display properly when the main window is 640 * 480 pixels or bigger. The table below shows the
 dimensions of the components in terms of the width (W) and height of the main window. The figures do not include space
@@ -386,6 +395,337 @@ Shows wagons in each train and whether they are full or empty, the trains relati
 Double clicking a train on the roster (or pressing enter when the train roster has focus) or on the map
 opens the train report for the train.
 
+Build Tab
+.........
+
+There are 5 build modes (see the table and screenshot below).
+
+.. list-table:: Build modes
+   :header-rows: 1
+
+   * - Build mode
+     - Options visible when mode is selected
+     - Action
+   * - build track
+     - Track type, bridges, and tunnels.
+     - When the cursor is moved, track is built. On clear terrain, the selected track type is built. On rivers, the selected bridge type is built (if a bridge type is selected.) On hills and mountains, tunnel is built if build tunnls is selected.
+   * - upgrade track
+     - Track type and bridges
+     - Track and bridges are upgraded to the selected type when the cursor enters a tile.
+   * - build station
+     - Stations
+     -
+   * - bulldoze
+     - None
+     - When the cursor moves from a tile to a neigbouring tile, any track connecting the two tiles is removed.
+   * - off
+     - None
+     - Nothing is built or removed when the cursor moves.
+
+.. figure:: /images/ui_build_tab.png
+   :width: 8 cm
+   :align: center
+
+   Scheme of build tab.
+
+The Build tab should not accept keyboard focus when the mouse is click on it. This is because doing so would cause
+the world view window to lose focus which is annoying when you are building track using the keyboard.
+When a new game is started or a game is loaded, the build mode should default to 'build track' with single track,
+wooden trestle bridges, and tunnels selected.
+
+Reports and dialog boxes
+++++++++++++++++++++++++
+
+Broker Dialog
+.............
+
+.. figure:: /images/ui_broker_dialog.png
+   :width: 10 cm
+   :align: center
+
+   Example of the broker dialog.
+
+.. figure:: /images/ui_broker_dialog2.png
+   :width: 10 cm
+   :align: center
+
+   Another example of the broker dialog.
+
+Station report
+..............
+
+Shows information on a station.  There will be 3 tabs: 'supply and demand', 'trains', and 'improvements'
+
+.. figure:: /images/ui_station_report_supply_demand_tab.png
+   :width: 10 cm
+   :align: center
+
+   Supply and Demand Tab
+
+The trains tab will list all trains that are scheduled to stop at this station.  Note, if a train is scheduled to
+stop at the stations several times, there will be a row in the table for each scheduled stop.
+
+.. figure:: /images/ui_station_report_trains_tab.png
+   :width: 10 cm
+   :align: center
+
+   Trains Tab
+
+Improvements tab shows the station improvements that have been built at this station and lets you buy additional ones.
+
+Station list
+............
+
+Shows summary details for each of the stations: name, type, cargo waiting, revenue this year.
+
+Train report
+............
+
+.. figure:: /images/ui_train_report.png
+   :width: 10 cm
+   :align: center
+
+   Trains report
+
+Train list
+..........
+
+Shows summary details for each of the trains
+
+.. figure:: /images/ui_train_list.png
+   :width: 10 cm
+   :align: center
+
+   Trains list
+
+Select station
+..............
+
+.. figure:: /images/ui_select_station.png
+   :width: 10 cm
+   :align: center
+
+   Select station
+
+Newspaper
+.........
+
+.. figure:: /images/ui_newspaper.png
+   :width: 10 cm
+   :align: center
+
+   Newspaper
+
+Leaderboard
+...........
+
+.. figure:: /images/ui_leaderboard.png
+   :width: 6 cm
+   :align: center
+
+   Leaderboard
+
+Balance sheet
+.............
+
+.. figure:: /images/ui_balance_sheet_dialog.png
+   :width: 10 cm
+   :align: center
+
+   Balance sheet
+
+Income statement
+................
+
+.. figure:: /images/ui_income_statement.png
+   :width: 10 cm
+   :align: center
+
+   Income statement
+
+Networth graph
+..............
+
+.. figure:: /images/ui_networth_graph.png
+   :width: 10 cm
+   :align: center
+
+   Networth graph
+
+Report bug dialog
+.................
+
+The report bug dialog box is accessible from the help menu. It is also shown when there is an unexpected exception.
+
+It should list the following information and it should be possible to copy and paste the details to the clipboard.
+Property | Value
+
+- tracker.url	http://sourceforge.net/tracker/?group_id=9495&atid=109495
+- java.version	Java System Property
+- java.vm.name	Java System Property
+- os.name	Java System Property
+- os.version	Java System Property
+- jfreerails.build	The timestamp generated by the ant script.
+- jfreerails.compiled.by	The username of the crazy person who ran the ant compile target
+
+The how to report bug dialog should appear as follows...
+
+::
+
+    How to report a bug
+
+    Use the sourceforge.net bug tracker at the following url:
+    {tracker.url}
+
+    Please include:
+      1. Steps to reproduce the bug (attach a  save game if  appropriate).
+      2. What you expected to see.
+      3. What you saw instead (attach a screenshot if appropriate).
+      4. The details below (copy and past them into the bug report).
+        {os.name} {os.version}
+        {java.vm.name} {java.version}
+        Freerails build {jfreerails.build}  compiled by {jfreerails.compiled.by}
+
+And the “Unexpected Exception” version should read ...
+
+::
+
+    Unexpected Exception
+
+    Consider submitting a bug report using the sourceforge.net bug tracker at the following url:
+    {tracker.url}
+
+    Please:
+    1.	Use the following as the title of the bug report:
+        {Exception.type} at {fileaname} line {line.number}
+    2.	Include steps to reproduce the bug (attach a  save game if  appropriate).
+    3.	Copy and paste the details below into the bug report:
+
+    {os.name} {os.version}
+    {java.vm.name} {java.version}
+    Freerails build {jfreerails.build}  compiled by {jfreerails.compiled.by}
+
+    {stacktrace}
+
+Cargo chart
+...........
+
+The cargo chart will show the sources of supply and demand for each of the cargo types. The information will be
+presented in a table as below.  There should be a 'print' button which should... well, its pretty obvious what it should do.
+
+.. figure:: /images/ui_cargo_chart.png
+   :width: 10 cm
+   :align: center
+
+   Cargo chart
+
+Load games
+..........
+
+Displays a list of saved games.  The list comprises all files ending in '.sav' in the directory from which the game
+was run.  If the current game is a network game, the relevant directory is the directory from which the server was
+run.  All players, not just the host, can access the dialogue.
+
+.. figure:: /images/ui_load_game.png
+   :width: 10 cm
+   :align: center
+
+   Load game
+
+The 'OK' button is only enabled when a game is selected.
+Pressing the 'OK' button loads the selected game.
+Pressing the 'Cancel' button closes the dialogue box.
+Pressing the 'Refresh' button updates the list of saved games, taking into account any changes to the filesystem (e.g. any files that have been added, removed, or renamed.)
+
+Launcher
+........
+
+Panel 1: Select Game Type
+
+.. figure:: /images/ui_launcher1.png
+   :width: 10 cm
+   :align: center
+
+   Launcher1
+
+Selection | Next Screen
+
+- Single Player	Select Map (without server port input box)
+- Start a network game	Select Map (with server port input box)
+- Join a network game	Client details (with remote server details showing)
+- Server only	Select Map (with server port input box)
+
+Panel 2: Select Map (and server details)
+
+.. figure:: /images/ui_launcher2.png
+   :width: 10 cm
+   :align: center
+
+   Launcher2
+
+The value of the field “Server port” should be the value entered last time the launcher was run.  On the first run it defaults to 55000.
+
+Selection | Next Screen
+
+- Single Player	Client details (without remote server details showing)
+- Start a network game	Client details (without remote server details showing)
+- Server only	Connected players
+
+Condition | Message or result | When checked
+
+- No saved game available. | The item "Load a saved game" should be disabled | When the panel is created.
+- Port field does not contain a number between, inclusive 0 and 65535 | "A valid port value is between between 0 and 65535." and disable "next" button. | As text is entered.
+- " Start a new map" is selected but no map is selected." | "Select a map". The "next" button should be disabled. | When the radio button selection changes and when the selected map in the map list changes.
+- Can't start server on specified port | Use the message from the exception. The next button should still be enabled. | When the next button is pressed.
+
+Panel 3: Client details (and remote server details)
+
+The following fields should be recalled from the last time the launcher was run.
+Field | Default | Notes
+
+- Player name | The value of system property "user.name" | If a game is being loaded, the text box should not be appear.  Instead there should be a dropdown list with the names of the players from the saved game.
+- IP Address | 127.0.0.1 |
+- port | 5500 |
+
+Selection | Next Screen
+
+- Single Player | Progress bar
+- Start a network game | Connected players
+- Join a network game | Progress bar
+
+.. figure:: /images/ui_launcher3.png
+   :width: 10 cm
+   :align: center
+
+   Launcher3
+
+Condition | Message or result | When checked
+
+- The " Player name" field is empty. | " Enter a player name" and disable " next" button. | As text is entered.
+- Port field does not contain a number between, inclusive 0 and 65535 | " A valid port value is between between 0 and 65535." and disable " next" button. | As text is entered.
+- " Full screen" is selected but no map is selected." | " Select a display mode" . The next button should be disabled. | When the radio button selection changes and when the selected display-mode in the display-mode list changes.
+- The " IP address" field is empty. | " Enter the address of the server" and disable " next" button. | As text is entered.
+- Can't resolve host. | "Can't resolve host." | When next button is pressed.
+- Can't connect to server. | " Can't connect to server." | When next button is pressed.
+- Load game was selected. | The player name textbox should be replaced with a dropdown list of players in the saved game. | When the form is displayed.
+- We are connecting to a remote server which has loaded, but not started a game, and the player name we entered is not a player in the saved game. | "New players can't join a saved game." | When next button is pressed.
+- We are connecting to a remote server but the game has already started. | "New players can't join a game in progress." | When the next button is pressed.
+
+Panel 4: Connected players
+
+.. figure:: /images/ui_launcher4.png
+   :width: 10 cm
+   :align: center
+
+   Launcher4
+
+Panel 5: Progress bar
+
+.. figure:: /images/ui_launcher5.png
+   :width: 10 cm
+   :align: center
+
+   Launcher5
 
 AI
 ++
