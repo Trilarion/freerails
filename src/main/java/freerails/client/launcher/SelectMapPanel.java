@@ -39,7 +39,7 @@ import javax.swing.event.ListSelectionEvent;
  * The Launcher panel that lets you load a game or start a new game with a
  * choice of maps.
  */
-public class SelectMapPanel extends JPanel {
+class SelectMapPanel extends JPanel {
 
     private static final long serialVersionUID = 3763096353857024568L;
     private static final String SELECT_A_MAP = "Select a map.";

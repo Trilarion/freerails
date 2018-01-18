@@ -22,13 +22,13 @@
  */
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.Point2D;
+import freerails.world.WorldConstants;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -102,7 +102,7 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
         super.paintComponent(g);
 
         if (null != mapCursor && isFocusOwner()) {
-            mapCursor.paintCursor(g, new java.awt.Dimension(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE));
+            mapCursor.paintCursor(g, new java.awt.Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE));
         }
 
         if (System.currentTimeMillis() < displayMessageUntil) {

@@ -21,8 +21,6 @@
  */
 package freerails.client.common;
 
-import org.apache.log4j.Logger;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
@@ -52,13 +50,13 @@ public class ImageManagerImpl implements ImageManager {
     private final Map<String, Image> imageHashMap = new HashMap<>();
     private final RenderingHints renderingHints;
     private final Map<String, Image> scaledImagesHashMap = new HashMap<>();
-    private String pathToReadFrom;
+    private final String pathToReadFrom;
 
     /**
-     * @param readpath
+     * @param readPath
      */
-    public ImageManagerImpl(String readpath) {
-        pathToReadFrom = readpath;
+    public ImageManagerImpl(String readPath) {
+        pathToReadFrom = readPath;
         // Attempt to increase quality..
         renderingHints = new RenderingHints(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

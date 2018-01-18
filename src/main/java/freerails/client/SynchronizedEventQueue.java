@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.util;
+package freerails.client;
 
 import freerails.client.launcher.Launcher;
 
@@ -71,16 +71,8 @@ public final class SynchronizedEventQueue extends EventQueue {
             list.put(theEvent, new RuntimeException("X"));
             if (System.currentTimeMillis() - last > 1000) {
                 last = System.currentTimeMillis();
-                // System.out.println(count);
-                // System.out.println("Num
-                // DirtyReg:"+RepaintManagerForActiveRendering.getNumDirtyRequests());
-                // System.out.println("Num
-                // Repaints:"+RepaintManagerForActiveRendering.getNumRepaintRequests());
                 int i = 10;
                 for (Map.Entry<AWTEvent, Throwable> e : list.entrySet()) {
-                    // System.out.println(e.getKey().getClass().getCanonicalName()+"/"+e.getKey().getSource().getClass().getCanonicalName());
-                    // System.out.println(aEvent.paramString());
-                    // e.getValue().printStackTrace();
                     i--;
                     if (i == 0) {
                         break;

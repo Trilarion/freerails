@@ -23,7 +23,7 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ProgressMonitorModel;
+import freerails.server.ProgressMonitorModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +38,7 @@ public class ProgressPanelModel extends JPanel implements ProgressMonitorModel {
     private final LauncherInterface owner;
     private int step;
     private int stepSize;
-    private JProgressBar progressBar;
+    private final JProgressBar progressBar;
 
     /**
      * Creates new form ProgressPanelModel

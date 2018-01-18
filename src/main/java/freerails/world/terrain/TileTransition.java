@@ -22,8 +22,8 @@
  */
 package freerails.world.terrain;
 
-import freerails.client.ClientConfig;
 import freerails.util.Point2D;
+import freerails.world.WorldConstants;
 import freerails.world.track.TrackConfigurations;
 
 /**
@@ -32,8 +32,7 @@ import freerails.world.track.TrackConfigurations;
  */
 public final class TileTransition implements TrackConfigurations {
 
-    public static final int TILE_DIAMETER = ClientConfig.TILE_SIZE;
-    private static final double TILE_DIAGONAL = StrictMath.hypot(TILE_DIAMETER, TILE_DIAMETER);
+    private static final double TILE_DIAGONAL = StrictMath.hypot(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
     /**
      * North.
      */
@@ -126,7 +125,7 @@ public final class TileTransition implements TrackConfigurations {
         deltaX = x;
         deltaY = y;
         flatTrackTemplate = t;
-        length = (x * y) == 0 ? TILE_DIAMETER : TILE_DIAGONAL;
+        length = (x * y) == 0 ? WorldConstants.TILE_SIZE : TILE_DIAGONAL;
     }
 
     private static TileTransition[][] setupVectors() {

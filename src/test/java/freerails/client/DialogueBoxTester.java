@@ -25,6 +25,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
+import freerails.server.ProgressMonitorModel;
 import freerails.server.TileSetFactory;
 import freerails.server.TileSetFactoryImpl;
 import freerails.util.ImmutableList;

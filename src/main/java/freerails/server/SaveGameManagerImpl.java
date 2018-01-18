@@ -21,7 +21,6 @@
  */
 package freerails.server;
 
-import freerails.client.ProgressMonitorModel;
 import freerails.controller.ServerControlInterface;
 import freerails.network.NewGameMessageToServer;
 import freerails.network.SaveGamesManager;

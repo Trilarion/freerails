@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import freerails.client.FreerailsClient;
 import freerails.controller.ClientProperty;
 import freerails.util.ImmutableList;
 

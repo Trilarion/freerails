@@ -18,8 +18,8 @@
 
 package freerails.world.train;
 
-import freerails.client.ClientConfig;
 import freerails.util.LineSegment;
+import freerails.world.WorldConstants;
 import freerails.world.track.PathIterator;
 
 import java.util.Iterator;
@@ -31,7 +31,6 @@ import java.util.Iterator;
 public class TrainPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3256999977816502584L;
-    private static final int tileSize = ClientConfig.TILE_SIZE;
     private final Iterator<Integer> intIterator;
     private final PositionOnTrack p1 = new PositionOnTrack();
     private final PositionOnTrack p2 = new PositionOnTrack();
@@ -50,10 +49,10 @@ public class TrainPathIterator implements PathIterator {
 
     public void nextSegment(LineSegment line) {
         p1.setValuesFromInt(p2.toInt());
-        line.setX1(p1.getX() * tileSize + tileSize / 2);
-        line.setY1(p1.getY() * tileSize + tileSize / 2);
+        line.setX1(p1.getX() * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+        line.setY1(p1.getY() * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
         p2.setValuesFromInt(intIterator.next());
-        line.setX2(p2.getX() * tileSize + tileSize / 2);
-        line.setY2(p2.getY() * tileSize + tileSize / 2);
+        line.setX2(p2.getX() * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+        line.setY2(p2.getY() * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
     }
 }

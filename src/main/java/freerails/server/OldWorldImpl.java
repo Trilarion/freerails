@@ -18,7 +18,6 @@
 
 package freerails.server;
 
-import freerails.client.ProgressMonitorModel;
 import freerails.server.parser.Track_TilesHandlerImpl;
 import freerails.world.ITEM;
 import freerails.world.WorldImpl;

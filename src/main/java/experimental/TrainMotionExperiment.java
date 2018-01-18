@@ -31,6 +31,7 @@ import freerails.util.LineSegment;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
 import freerails.world.World;
+import freerails.world.WorldConstants;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
@@ -108,7 +109,7 @@ class TrainMotionExperiment extends JComponent {
             for (int y = 0; y < world.getMapHeight(); y++) {
                 FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                    g.drawRect(x * TileTransition.TILE_DIAMETER, y * TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER, TileTransition.TILE_DIAMETER);
+                    g.drawRect(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
 
                 }
             }
@@ -139,10 +140,10 @@ class TrainMotionExperiment extends JComponent {
         Iterator<Point2D> it = pathOT.tiles();
         while (it.hasNext()) {
             Point2D tile = it.next();
-            int x = tile.x * TileTransition.TILE_DIAMETER;
-            int y = tile.y * TileTransition.TILE_DIAMETER;
-            int w = TileTransition.TILE_DIAMETER;
-            int h = TileTransition.TILE_DIAMETER;
+            int x = tile.x * WorldConstants.TILE_SIZE;
+            int y = tile.y * WorldConstants.TILE_SIZE;
+            int w = WorldConstants.TILE_SIZE;
+            int h = WorldConstants.TILE_SIZE;
             g.setColor(Color.WHITE);
             g.fillRect(x, y, w, h);
             g.setColor(Color.DARK_GRAY);
@@ -153,10 +154,10 @@ class TrainMotionExperiment extends JComponent {
         it = pathOT.tiles();
         while (it.hasNext()) {
             Point2D tile = it.next();
-            int x = tile.x * TileTransition.TILE_DIAMETER;
-            int y = tile.y * TileTransition.TILE_DIAMETER;
-            int w = TileTransition.TILE_DIAMETER;
-            int h = TileTransition.TILE_DIAMETER;
+            int x = tile.x * WorldConstants.TILE_SIZE;
+            int y = tile.y * WorldConstants.TILE_SIZE;
+            int w = WorldConstants.TILE_SIZE;
+            int h = WorldConstants.TILE_SIZE;
             g.setColor(Color.LIGHT_GRAY);
             g.fillRect(x, y, w, h);
             g.setColor(Color.DARK_GRAY);

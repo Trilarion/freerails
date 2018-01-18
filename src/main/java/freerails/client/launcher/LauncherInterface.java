@@ -22,7 +22,7 @@ package freerails.client.launcher;
  * Exposes the methods on the Launcher that the launcher panels may call.
  */
 
-public interface LauncherInterface {
+interface LauncherInterface {
 
     /**
      * @param text

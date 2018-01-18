@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import freerails.client.FreerailsClient;
 import freerails.controller.*;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;

@@ -23,6 +23,7 @@ import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldConstants;
 import freerails.world.WorldDiffs;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackPiece;
@@ -36,7 +37,7 @@ import java.util.Iterator;
 public class BuildTrackRenderer implements Painter {
 
     private final ModelRoot modelRoot;
-    private final Dimension tileSize = new Dimension(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
+    private final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
     private final RendererRoot rendererRoot;
 
     /**

@@ -23,10 +23,7 @@ package freerails.controller;
 
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
-import freerails.world.ActivityIterator;
-import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.SKEY;
+import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
@@ -142,7 +139,7 @@ public class TrainAccessor {
 
         Point2D start = tm.getPath().getStart();
         int trainLength = tm.getTrainLength();
-        Rectangle trainBox = new Rectangle(start.x * TileTransition.TILE_DIAMETER - trainLength * 2, start.y * TileTransition.TILE_DIAMETER - trainLength * 2, trainLength * 4, trainLength * 4);
+        Rectangle trainBox = new Rectangle(start.x * WorldConstants.TILE_SIZE - trainLength * 2, start.y * WorldConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
             return null; // 666 doesn't work
         }

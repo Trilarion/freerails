@@ -317,17 +317,17 @@ class ClientOptionsPanel extends JPanel {
         return address;
     }
 
-    public boolean validateInput() {
+    private void validateInput() {
         /* Validate player name. */
         if (playerName.getText() == null || playerName.getText().isEmpty()) {
             owner.setInfoText("Please set a name for your player", InfoMessageType.ERROR);
-            return false;
+            return;
         }
 
         /* Validate host name. */
         if (remoteIP.getText() == null || remoteIP.getText().isEmpty()) {
             owner.setInfoText("Please enter a host name", InfoMessageType.ERROR);
-            return false;
+            return;
         }
 
         /* Validate port. */
@@ -335,11 +335,11 @@ class ClientOptionsPanel extends JPanel {
             int port = Integer.parseInt(remotePort.getText());
             if (port < 0 || port > 65535) {
                 owner.setInfoText(INVALID_PORT, InfoMessageType.ERROR);
-                return false;
+                return;
             }
         } catch (Exception e) {
             owner.setInfoText(INVALID_PORT, InfoMessageType.ERROR);
-            return false;
+            return;
         }
 
         /*
@@ -349,7 +349,7 @@ class ClientOptionsPanel extends JPanel {
          */
         if (fullScreenButton.isSelected() && list1.getModel().getSize() > 0 && list1.getSelectedIndex() == -1) {
             owner.setInfoText("Select a display-mode.", InfoMessageType.ERROR);
-            return false;
+            return;
         }
 
         /* Everything is status. */
@@ -363,7 +363,6 @@ class ClientOptionsPanel extends JPanel {
             owner.setProperty(ClientConfig.CLIENT_DISPLAY_PROPERTY, new MyDisplayMode(getDisplayMode()).toString());
         }
         owner.saveProperties();
-        return true;
     }
 
     int getScreenMode() {

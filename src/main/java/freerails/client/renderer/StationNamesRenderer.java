@@ -18,13 +18,9 @@
 
 package freerails.client.renderer;
 
-import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.world.KEY;
-import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.WorldIterator;
+import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
@@ -97,9 +93,9 @@ public class StationNamesRenderer implements Painter {
 
                 int x = tempStation.getStationX();
                 int y = tempStation.getStationY();
-                int xdisp = x * ClientConfig.TILE_SIZE;
-                int ydisp = y * ClientConfig.TILE_SIZE;
-                Rectangle stationBox = new Rectangle(xdisp - ClientConfig.TILE_SIZE * 3, ydisp - ClientConfig.TILE_SIZE * 3, ClientConfig.TILE_SIZE * 7, ClientConfig.TILE_SIZE * 7);
+                int xdisp = x * WorldConstants.TILE_SIZE;
+                int ydisp = y * WorldConstants.TILE_SIZE;
+                Rectangle stationBox = new Rectangle(xdisp - WorldConstants.TILE_SIZE * 3, ydisp - WorldConstants.TILE_SIZE * 3, WorldConstants.TILE_SIZE * 7, WorldConstants.TILE_SIZE * 7);
                 if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
                 }
@@ -107,9 +103,9 @@ public class StationNamesRenderer implements Painter {
                 if (showStationBorders) {
                     FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
                     int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
-                    int diameterInPixels = (radius * 2 + 1) * ClientConfig.TILE_SIZE;
-                    int radiusX = (x - radius) * ClientConfig.TILE_SIZE;
-                    int radiusY = (y - radius) * ClientConfig.TILE_SIZE;
+                    int diameterInPixels = (radius * 2 + 1) * WorldConstants.TILE_SIZE;
+                    int radiusX = (x - radius) * WorldConstants.TILE_SIZE;
+                    int radiusY = (y - radius) * WorldConstants.TILE_SIZE;
                     g.setColor(Color.WHITE);
                     g.setStroke(dashed);
                     g.draw(new RoundRectangle2D.Double(radiusX, radiusY, diameterInPixels, diameterInPixels, 10, 10));
@@ -119,8 +115,8 @@ public class StationNamesRenderer implements Painter {
                 if (showStationNames) {
                     stationName = tempStation.getStationName();
 
-                    positionX = xdisp + ClientConfig.TILE_SIZE / 2;
-                    positionY = ydisp + ClientConfig.TILE_SIZE;
+                    positionX = xdisp + WorldConstants.TILE_SIZE / 2;
+                    positionY = ydisp + WorldConstants.TILE_SIZE;
 
                     layout = new TextLayout(stationName, font, frc);
                     visibleAdvance = layout.getVisibleAdvance();

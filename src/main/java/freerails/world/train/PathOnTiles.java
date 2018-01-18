@@ -25,6 +25,7 @@ import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 import freerails.util.Pair;
 import freerails.util.Point2D;
+import freerails.world.WorldConstants;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.PathIterator;
 
@@ -118,13 +119,13 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
+                return new Point2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
             }
             if (distanceSoFar > distance) {
-                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - distance) / v.getLength());
-                x = x * TileTransition.TILE_DIAMETER - v.deltaX * excess;
-                y = y * TileTransition.TILE_DIAMETER - v.deltaY * excess;
-                return new Point2D(x + TileTransition.TILE_DIAMETER / 2, y + TileTransition.TILE_DIAMETER / 2);
+                int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - distance) / v.getLength());
+                x = x * WorldConstants.TILE_SIZE - v.deltaX * excess;
+                y = y * WorldConstants.TILE_SIZE - v.deltaY * excess;
+                return new Point2D(x + WorldConstants.TILE_SIZE / 2, y + WorldConstants.TILE_SIZE / 2);
             }
         }
         throw new IllegalArgumentException("distance:" + distance + " > getLength():" + vectors.size() + " distanceSoFar:" + distanceSoFar);
@@ -160,13 +161,13 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
+                firstPoint = new Point2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
-                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - firstdistance) / v.getLength());
-                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER / 2;
-                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER / 2;
+                int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - firstdistance) / v.getLength());
+                int nx = x * WorldConstants.TILE_SIZE - v.deltaX * excess + WorldConstants.TILE_SIZE / 2;
+                int ny = y * WorldConstants.TILE_SIZE - v.deltaY * excess + WorldConstants.TILE_SIZE / 2;
                 firstPoint = new Point2D(nx, ny);
                 break;
             }
@@ -182,13 +183,13 @@ public strictfp class PathOnTiles implements Serializable {
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new Point2D(x * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2, y * TileTransition.TILE_DIAMETER + TileTransition.TILE_DIAMETER / 2);
+                secondPoint = new Point2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
-                int excess = (int) (TileTransition.TILE_DIAMETER * (distanceSoFar - lastdistance) / v.getLength());
-                int nx = x * TileTransition.TILE_DIAMETER - v.deltaX * excess + TileTransition.TILE_DIAMETER / 2;
-                int ny = y * TileTransition.TILE_DIAMETER - v.deltaY * excess + TileTransition.TILE_DIAMETER / 2;
+                int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - lastdistance) / v.getLength());
+                int nx = x * WorldConstants.TILE_SIZE - v.deltaX * excess + WorldConstants.TILE_SIZE / 2;
+                int ny = y * WorldConstants.TILE_SIZE - v.deltaY * excess + WorldConstants.TILE_SIZE / 2;
                 secondPoint = new Point2D(nx, ny);
                 break;
             }
@@ -309,8 +310,8 @@ public strictfp class PathOnTiles implements Serializable {
                 break;
             }
             if (distanceSoFar >= offset) {
-                int x = TileTransition.TILE_DIAMETER / 2 + TileTransition.TILE_DIAMETER * tileX;
-                int y = TileTransition.TILE_DIAMETER / 2 + TileTransition.TILE_DIAMETER * tileY;
+                int x = WorldConstants.TILE_SIZE / 2 + WorldConstants.TILE_SIZE * tileX;
+                int y = WorldConstants.TILE_SIZE / 2 + WorldConstants.TILE_SIZE * tileY;
                 points.add(new Point2D(x, y));
             }
 

@@ -38,7 +38,7 @@ final class LauncherPanel extends JPanel {
 
     private static final long serialVersionUID = 3257850965422913590L;
     private final ButtonModel[] buttonModels = new ButtonModel[4];
-    private ButtonGroup buttonGroup1;
+    private final ButtonGroup buttonGroup1;
 
     public LauncherPanel() {
         GridBagConstraints gridBagConstraints;

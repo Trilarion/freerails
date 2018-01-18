@@ -23,7 +23,6 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackSection;
-import freerails.world.train.TrainModel;
 
 import java.util.*;
 

@@ -20,7 +20,6 @@ package freerails.client;
 
 import freerails.client.common.RepaintManagerForActiveRendering;
 import freerails.client.launcher.Launcher;
-import freerails.util.SynchronizedEventQueue;
 import freerails.world.game.GameModel;
 import org.apache.log4j.Logger;
 

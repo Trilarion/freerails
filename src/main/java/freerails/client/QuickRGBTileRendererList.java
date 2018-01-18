@@ -25,6 +25,7 @@ import freerails.client.renderer.TileRenderer;
 import freerails.client.renderer.TileRendererList;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.WorldConstants;
 import freerails.world.terrain.TerrainType;
 
 import java.awt.*;
@@ -61,11 +62,11 @@ public class QuickRGBTileRendererList implements TileRendererList {
      * @return
      */
     public static Image createImageFor(TerrainType t) {
-        Image image = defaultConfiguration.createCompatibleImage(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
+        Image image = defaultConfiguration.createCompatibleImage(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
         Color c = new Color(t.getRGB());
         Graphics g = image.getGraphics();
         g.setColor(c);
-        g.fillRect(0, 0, ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
+        g.fillRect(0, 0, WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
         g.dispose();
 
         return image;

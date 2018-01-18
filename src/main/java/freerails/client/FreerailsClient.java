@@ -16,12 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.client;
 
 import freerails.client.launcher.Launcher;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.network.*;
 import freerails.world.FreerailsMutableSerializable;
 import freerails.world.World;
 import freerails.world.game.GameModel;
@@ -37,6 +38,7 @@ import java.util.Map;
  * A client for FreerailsGameServer.
  */
 public class FreerailsClient implements ClientControlInterface, GameModel, UntriedMoveReceiver, ServerCommandReceiver {
+
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private final Map<String, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveFork;
@@ -46,7 +48,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     protected ConnectionToServer connectionToServer;
     private World world;
-
     private MovePrecommitter committer;
 
     /**
@@ -147,7 +148,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         return properties.get(propertyName.name());
     }
 
-    final Serializable read() {
+    public final Serializable read() {
         try {
             return connectionToServer.waitForObjectFromServer();
         } catch (IOException | InterruptedException e) {
@@ -156,7 +157,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         throw new IllegalStateException();
     }
 
-    final void write(Serializable fs) {
+    public final void write(Serializable fs) {
         try {
             connectionToServer.writeToServer(fs);
         } catch (IOException e) {
@@ -192,7 +193,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Processes a message received from the server.
      */
-    final void processMessage(Serializable message) throws IOException {
+    public final void processMessage(Serializable message) throws IOException {
         if (message instanceof MessageToClient) {
             MessageToClient request = (MessageToClient) message;
             MessageStatus status = request.execute(this);

@@ -186,10 +186,6 @@ public class ClientConfig {
      *
      */
     public static final String GRAPHIC_ARROW_DESELECTED = GRAPHICS_PATH + "deselected_arrow.png";
-    /**
-     * size of a tile (height and width)
-     */
-    public static final int TILE_SIZE = 30;
     public static final int FULL_SCREEN = 0;
     public static final int WINDOWED_MODE = 1;
 

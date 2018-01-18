@@ -22,6 +22,7 @@ import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
 import freerails.client.common.SoundManager;
 import freerails.client.renderer.*;
+import freerails.server.ProgressMonitorModel;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;

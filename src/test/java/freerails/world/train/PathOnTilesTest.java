@@ -24,6 +24,7 @@ package freerails.world.train;
 import freerails.util.LineSegment;
 import freerails.util.Point2D;
 import freerails.util.Pair;
+import freerails.world.WorldConstants;
 import freerails.world.track.PathIterator;
 import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
@@ -72,7 +73,7 @@ public class PathOnTilesTest extends TestCase {
         Point2D start = new Point2D();
         TileTransition[] vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
-        assertEquals(3 * TileTransition.TILE_DIAMETER, path.getTotalDistance(), 0.001);
+        assertEquals(3 * WorldConstants.TILE_SIZE, path.getTotalDistance(), 0.001);
 
     }
 
@@ -171,8 +172,8 @@ public class PathOnTilesTest extends TestCase {
         expected = new Point2D[]{new Point2D(18, 15), new Point2D(45, 15),
                 new Point2D(75, 15), new Point2D(105, 15)};
         for (int j = 0; j < expected.length; j++) {
-            int x = expected[j].x + start.x * TileTransition.TILE_DIAMETER;
-            int y = expected[j].y + start.y * TileTransition.TILE_DIAMETER;
+            int x = expected[j].x + start.x * WorldConstants.TILE_SIZE;
+            int y = expected[j].y + start.y * WorldConstants.TILE_SIZE;
             expected[j] = new Point2D(x, y);
         }
         // for (Point2D point : expected) {

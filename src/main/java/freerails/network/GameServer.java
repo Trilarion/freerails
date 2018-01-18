@@ -23,7 +23,7 @@ import freerails.world.game.GameModel;
 /**
  * Defines a server that can accept connections to clients.
  */
-interface GameServer extends GameModel {
+public interface GameServer extends GameModel {
 
     /**
      * @param connection

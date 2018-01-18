@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 /**
  * Starting point for the whole application.
  */
-public class Start extends Application {
+class Start extends Application {
 
     public static void main(String[] args) {
         launch(args);

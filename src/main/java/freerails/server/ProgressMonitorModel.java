@@ -20,7 +20,7 @@
  * ProgressMonitorModel.java
  *
  */
-package freerails.client;
+package freerails.server;
 
 /**
  * This interface defines callbacks that can be used to let the user know how a

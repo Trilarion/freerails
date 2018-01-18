@@ -40,7 +40,7 @@ import java.util.LinkedList;
  * {@code fromServer(.)} when a Move or MoveStatus has been received from
  * the server.
  */
-class MovePrecommitter {
+public class MovePrecommitter {
 
     private static final Logger logger = Logger.getLogger(MovePrecommitter.class.getName());
     /**
@@ -60,11 +60,11 @@ class MovePrecommitter {
      */
     boolean blocked = false;
 
-    MovePrecommitter(World world) {
+    public MovePrecommitter(World world) {
         this.world = world;
     }
 
-    void fromServer(Move move) {
+    public void fromServer(Move move) {
         rollBackPrecommittedMoves();
         MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
         if (!moveStatus.status) {
@@ -75,7 +75,7 @@ class MovePrecommitter {
     /**
      * Indicates that the server has processed a move we sent.
      */
-    void fromServer(MoveStatus moveStatus) {
+    public void fromServer(MoveStatus moveStatus) {
         precommitMoves();
 
         if (!precomitted.isEmpty()) {
@@ -104,14 +104,14 @@ class MovePrecommitter {
         }
     }
 
-    Move fromServer(PreMove pm) {
+    public Move fromServer(PreMove pm) {
         Move generatedMove = pm.generateMove(world);
         fromServer(generatedMove);
 
         return generatedMove;
     }
 
-    void fromServer(PreMoveStatus pms) {
+    public void fromServer(PreMoveStatus pms) {
         rollBackPrecommittedMoves();
 
         PreMove pm = (PreMove) uncomitted.removeFirst();
@@ -196,12 +196,12 @@ class MovePrecommitter {
         }
     }
 
-    void toServer(Serializable m) {
+    public void toServer(Serializable m) {
         uncomitted.addLast(m);
         precommitMoves();
     }
 
-    Move toServer(PreMove pm) {
+    public Move toServer(PreMove pm) {
         uncomitted.addLast(pm);
         precommitMoves();
 

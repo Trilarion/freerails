@@ -24,7 +24,7 @@ import java.io.Serializable;
  * A client sends an instance of this class to the server when it wishes to log
  * on.
  */
-class LogOnRequest implements Serializable {
+public class LogOnRequest implements Serializable {
 
     private static final long serialVersionUID = 3257854263924240949L;
     private final String username;

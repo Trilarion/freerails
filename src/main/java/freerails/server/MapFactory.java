@@ -21,7 +21,6 @@
  */
 package freerails.server;
 
-import freerails.client.ProgressMonitorModel;
 import freerails.world.SKEY;
 import freerails.world.WorldImpl;
 import freerails.world.terrain.FullTerrainTile;

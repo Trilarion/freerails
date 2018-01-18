@@ -23,10 +23,10 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.ReadOnlyWorld;
+import freerails.world.WorldConstants;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.track.NullTrackType;
@@ -53,7 +53,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * The track layer.
      */
     private final TrackLayer trackLayer;
-    private final Dimension tileSize = new Dimension(ClientConfig.TILE_SIZE, ClientConfig.TILE_SIZE);
+    private final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
     private final Dimension mapSize;
     private final Painter cityNames;
     private final Painter stationNames;
@@ -94,8 +94,8 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * @param visibleRect
      */
     public void paintRect(Graphics g, Rectangle visibleRect) {
-        int tileWidth = ClientConfig.TILE_SIZE;
-        int tileHeight = ClientConfig.TILE_SIZE;
+        int tileWidth = WorldConstants.TILE_SIZE;
+        int tileHeight = WorldConstants.TILE_SIZE;
 
         clipRectangle = g.getClipBounds(clipRectangle);
 
@@ -112,7 +112,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, x, y, width, height);
-        Rectangle visibleRectangle = new Rectangle(x * ClientConfig.TILE_SIZE, y * ClientConfig.TILE_SIZE, width * ClientConfig.TILE_SIZE, height * ClientConfig.TILE_SIZE);
+        Rectangle visibleRectangle = new Rectangle(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, width * WorldConstants.TILE_SIZE, height * WorldConstants.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
     }

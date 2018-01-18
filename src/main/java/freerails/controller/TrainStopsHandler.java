@@ -106,7 +106,7 @@ class TrainStopsHandler implements Serializable {
      * @param y
      * @return
      */
-    public Point2D arrivesAtPoint(int x, int y) {
+    public void arrivesAtPoint(int x, int y) {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
 
         Point2D targetPoint = ta.getTarget();
@@ -120,7 +120,6 @@ class TrainStopsHandler implements Serializable {
                 loadAndUnloadCargo(stationNumber, false, false);
             }
         }
-        return targetPoint;
     }
 
     /**

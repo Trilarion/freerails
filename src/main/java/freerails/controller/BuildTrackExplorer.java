@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
+import freerails.world.WorldConstants;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
@@ -246,7 +247,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (!currentRuleA.equals(ruleA)) {
                 assert (!currentRuleA.isStation()); // We shouldn't be upgrading
                 // a station.
-                cost += ruleA.getFixedCost().getAmount() * TileTransition.TILE_DIAMETER;
+                cost += ruleA.getFixedCost().getAmount() * WorldConstants.TILE_SIZE;
             }
         }
         return cost;

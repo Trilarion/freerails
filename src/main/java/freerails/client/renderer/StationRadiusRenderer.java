@@ -18,11 +18,11 @@
 
 package freerails.client.renderer;
 
-import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ModelRoot.Value;
+import freerails.world.WorldConstants;
 
 import java.awt.*;
 
@@ -40,7 +40,7 @@ public class StationRadiusRenderer implements Painter {
      * Border colour to use when placement is not allowed.
      */
     public static final Color COLOR_CANNOT_BUILD = Color.RED;
-    private static final int tileSize = ClientConfig.TILE_SIZE;
+    private static final int tileSize = WorldConstants.TILE_SIZE;
     private final ModelRoot modelRoot;
     /**
      * Colour of the highlighted border.
