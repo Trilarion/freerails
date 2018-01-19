@@ -22,8 +22,6 @@
 package experimental;
 
 import freerails.client.common.ImageManager;
-import org.apache.log4j.Logger;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -49,9 +47,6 @@ public class ImageManagerImpl implements ImageManager {
      * from with files but not from within jars, which lets bugs slip in.
      */
     private static final String A_REGEX = "^[^///].*";
-
-    private static final Logger logger = Logger.getLogger(ImageManagerImpl.class.getName());
-
     private static final Pattern pattern = Pattern.compile(A_REGEX);
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private final HashMap<String, Image> imageHashMap = new HashMap<>();
@@ -207,7 +202,7 @@ public class ImageManagerImpl implements ImageManager {
             path.mkdirs();
 
             ImageIO.write(i, "png", f);
-            logger.info("Writing " + f);
+            System.out.println("Writing " + f);
         } else {
             throw new NoSuchElementException(relativeFilename);
         }

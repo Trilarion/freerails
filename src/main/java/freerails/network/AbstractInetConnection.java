@@ -146,10 +146,6 @@ abstract class AbstractInetConnection implements Runnable {
         inetConnection.send(object);
     }
 
-    void setTimeOut(int i) {
-        timeout = i;
-    }
-
     Serializable waitForObject() throws InterruptedException, IOException {
         if (status.isOpen()) {
             synchronized (inbound) {

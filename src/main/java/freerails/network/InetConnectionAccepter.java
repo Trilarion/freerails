@@ -47,19 +47,6 @@ public class InetConnectionAccepter implements Runnable {
         serverSocket = new ServerSocket(port);
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        try {
-            GameServer echoGameServer = EchoGameServer.startServer();
-            InetConnectionAccepter accepter = new InetConnectionAccepter(6666, echoGameServer);
-            Thread t = new Thread(accepter);
-            t.start();
-        } catch (IOException e) {
-        }
-    }
-
     public void run() {
         Thread.currentThread().setName("InetConnectionAccepter, port " + serverSocket.getLocalPort());
 

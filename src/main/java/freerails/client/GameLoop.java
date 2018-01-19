@@ -96,8 +96,8 @@ public final class GameLoop implements Runnable {
                         break;
                     }
 
-                    for (GameModel aModel : gameModels) {
-                        aModel.update();
+                    for (GameModel gameModel : gameModels) {
+                        gameModel.update();
                     }
 
                     if (!screenHandler.isMinimised()) {

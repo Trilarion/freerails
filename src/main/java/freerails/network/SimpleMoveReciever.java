@@ -19,7 +19,7 @@
 /*
  *
  */
-package experimental;
+package freerails.network;
 
 import freerails.move.PreMove;
 import freerails.move.Move;

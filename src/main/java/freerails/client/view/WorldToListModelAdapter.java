@@ -38,7 +38,6 @@ import javax.swing.event.ListDataListener;
  */
 class WorldToListModelAdapter implements ListModel {
 
-    private final ReadOnlyWorld world;
     private final NonNullElementWorldIterator elements;
 
     /**
@@ -46,7 +45,6 @@ class WorldToListModelAdapter implements ListModel {
      * @param key
      */
     public WorldToListModelAdapter(ReadOnlyWorld world, SKEY key) {
-        this.world = Utils.verifyNotNull(world);
         Utils.verifyNotNull(key);
         elements = new NonNullElementWorldIterator(key, world);
     }
@@ -57,7 +55,6 @@ class WorldToListModelAdapter implements ListModel {
      * @param principal
      */
     public WorldToListModelAdapter(ReadOnlyWorld world, KEY key, FreerailsPrincipal principal) {
-        this.world = Utils.verifyNotNull(world);
         Utils.verifyNotNull(key);
         Utils.verifyNotNull(principal);
         // Check that the principal exists.

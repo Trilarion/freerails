@@ -49,12 +49,12 @@ import java.util.*;
  */
 public class FreerailsGameServer implements ServerControlInterface, GameServer, Runnable {
 
+    private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     /**
      * Used as a property name for property change events.
      */
     public static final String CONNECTED_PLAYERS = "CONNECTED_PLAYERS";
-
-    private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
+    // TODO give new connections an ID and use it as identification
     private final Map<NameAndPassword, ConnectionToClient> acceptedConnections = new HashMap<>();
     /**
      * The players who have confirmed that they have received the last copy of

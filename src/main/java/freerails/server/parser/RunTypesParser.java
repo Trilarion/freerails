@@ -26,7 +26,7 @@ import freerails.world.WorldImpl;
 import org.apache.log4j.Logger;
 
 /**
- * The main method on this class uses CargoAndTerrainParser to the parse cargo
+ * The main method on this class uses CargoAndTerrainParser to parse cargo
  * and terrain types xml file - use it to test the parser and xml file work
  * together.
  */

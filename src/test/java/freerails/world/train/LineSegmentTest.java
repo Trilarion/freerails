@@ -22,7 +22,7 @@ import freerails.util.LineSegment;
 import junit.framework.TestCase;
 
 /**
- * Junit test.
+ *
  */
 public class LineSegmentTest extends TestCase {
 
@@ -31,13 +31,6 @@ public class LineSegmentTest extends TestCase {
      */
     public LineSegmentTest(String arg0) {
         super(arg0);
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(LineSegmentTest.class);
     }
 
     /**

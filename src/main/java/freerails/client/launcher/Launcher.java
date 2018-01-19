@@ -314,8 +314,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                 startThread(server, client);
                 break;
             case ClientConfig.MODE_START_NETWORK_GAME:
-                // LL: I don't think this code ever executes now that there is a
-                // connected players screen.
+                // LL: I don't think this code ever executes now that there is a connected players screen.
                 try {
                     setServerGameModel();
                     currentPage = 3;
@@ -325,8 +324,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                     cl.show(jPanel1, "3");
                     setNextEnabled(false);
                 } catch (Exception e) {
-                    // We end up here if an Exception was thrown when loading a
-                    // saved game.
+                    // We end up here if an Exception was thrown when loading a saved game.
                     setInfoText(e.getMessage(), InfoMessageType.WARNING);
                     recover = true;
                 } finally {

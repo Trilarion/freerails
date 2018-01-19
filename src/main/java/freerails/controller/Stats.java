@@ -69,13 +69,6 @@ public class Stats {
                 otherRrStock = new Money(quantity * stockPrices[playerId].currentPrice.getAmount() + otherRrStock.getAmount());
             }
         }
-        calProfit();
-
-    }
-
-    private void calProfit() {
-        long profitValue = operatingFunds.getAmount() + track.getAmount() + stations.getAmount() + rollingStock.getAmount() + industries.getAmount() + loans.getAmount() + equity.getAmount() + treasuryStock.getAmount() + otherRrStock.getAmount();
-        Money profit = new Money(profitValue);
     }
 
     private static class MyTransactionAggregator extends TransactionAggregator {

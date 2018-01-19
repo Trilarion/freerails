@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import experimental.SimpleMoveReciever;
+import freerails.network.SimpleMoveReciever;
 import freerails.client.common.ModelRootImpl;
 import freerails.client.common.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;

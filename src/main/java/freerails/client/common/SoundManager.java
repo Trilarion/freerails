@@ -67,21 +67,6 @@ public class SoundManager implements ModelRootListener, LineListener {
         return soundManager;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        for (int i = 0; i < 100; i++) {
-            soundManager.playSound(ClientConfig.SOUND_CASH, 10);
-
-            try {
-                Thread.sleep(40);
-            } catch (InterruptedException ignored) {
-            }
-        }
-    }
-
     private static ByteArrayInputStream loadStream(InputStream inputstream) throws IOException {
         ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
         byte[] data = new byte[1024];

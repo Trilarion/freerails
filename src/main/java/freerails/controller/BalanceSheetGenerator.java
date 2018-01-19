@@ -35,8 +35,6 @@ public class BalanceSheetGenerator {
 
     public final Stats total;
     public final Stats ytd;
-    GameTime from;
-    GameTime to;
 
     /**
      * @param world
@@ -47,7 +45,6 @@ public class BalanceSheetGenerator {
         // Calculate totals
         GameTime time = world.currentTime();
         final int startYear = cal.getYear(time.getTicks());
-        String year = String.valueOf(startYear);
         GameTime startOfYear = new GameTime(cal.getTicks(startYear));
         GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
         total = new Stats(world, principal, totalTimeInterval);

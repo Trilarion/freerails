@@ -85,14 +85,6 @@ public class GUIClient extends FreerailsClient {
 
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        GUIClient client = new GUIClient("Test", null, ClientConfig.WINDOWED_MODE, null);
-        client.start();
-    }
-
     @Override
     protected void clientUpdates() {
         if (factory.isSetup()) {
@@ -162,32 +154,5 @@ public class GUIClient extends FreerailsClient {
             default:
                 break;
         }
-    }
-
-    private void start() {
-        // Set up world.
-        SaveGamesManager gamesManager = new SaveGameManagerImpl();
-        FreerailsGameServer server = new FreerailsGameServer(gamesManager);
-        String mapName = gamesManager.getNewMapNames()[0];
-
-        ServerGameModel serverGameModel = new ServerGameModelImpl();
-        server.setServerGameModel(serverGameModel);
-
-        connect(server, name, "password");
-
-        server.newGame(mapName);
-
-        while (null == getWorld()) {
-            update();
-            server.update();
-        }
-
-        GameModel[] models = new GameModel[]{this, server};
-
-        // Start the game loop
-        GameLoop gameLoop = new GameLoop(screenHandler, models);
-
-        Thread t = new Thread(gameLoop);
-        t.start();
     }
 }

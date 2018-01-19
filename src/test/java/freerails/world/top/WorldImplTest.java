@@ -34,7 +34,7 @@ import junit.framework.TestCase;
 import java.io.Serializable;
 
 /**
- * Junit test.
+ *
  */
 public class WorldImplTest extends TestCase {
     private final Serializable fs = new TestState(1);

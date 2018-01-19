@@ -24,7 +24,7 @@ import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
 
 /**
- * Junit test.
+ *
  */
 public class TrainPositionOnMapTest extends TestCase {
 

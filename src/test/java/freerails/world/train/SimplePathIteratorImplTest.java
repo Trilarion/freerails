@@ -24,7 +24,7 @@ import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
 
 /**
- * Junit test.
+ *
  */
 public class SimplePathIteratorImplTest extends TestCase {
 
@@ -33,13 +33,6 @@ public class SimplePathIteratorImplTest extends TestCase {
      */
     public SimplePathIteratorImplTest(String arg0) {
         super(arg0);
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(SimplePathIteratorImplTest.class);
     }
 
     /**

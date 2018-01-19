@@ -28,17 +28,8 @@ import java.util.*;
 public class ShowJavaProperties {
 
     private static final int TABLE_WIDTH = 500;
-    private static final Logger logger = Logger.getLogger(ShowJavaProperties.class.getName());
 
-    private ShowJavaProperties() {
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        logger.info(getPropertiesHtmlString());
-    }
+    private ShowJavaProperties() {}
 
     /**
      * @return

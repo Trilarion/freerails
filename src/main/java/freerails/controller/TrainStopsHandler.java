@@ -194,8 +194,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     public void makeTrainWait(int ticks) {
-        GameTime currentTime = worldDiffs.currentTime();
-        GameTime timeLoadingFinished = new GameTime(currentTime.getTicks() + ticks);
     }
 
     /**

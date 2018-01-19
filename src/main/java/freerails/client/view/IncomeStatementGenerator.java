@@ -42,8 +42,6 @@ class IncomeStatementGenerator {
     private final int startyear;
 
     public Money mailTotal;
-    GameTime from;
-    GameTime to;
 
     IncomeStatementGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
         this.world = world;
@@ -51,7 +49,6 @@ class IncomeStatementGenerator {
         cal = (GameCalendar) world.get(ITEM.CALENDAR);
         GameTime time = world.currentTime();
         startyear = cal.getYear(time.getTicks());
-        String year = String.valueOf(startyear);
     }
 
     /**
@@ -167,13 +164,6 @@ class IncomeStatementGenerator {
         Money stationMaintenanceTotal1 = new Money(stationMaintenanceTotal);
         Money stationMaintenanceYtd1 = new Money(stationMaintenanceYtd);
 
-        long profit = this.mailTotal.getAmount() + passengersTotal1.getAmount() + fastFreightTotal1.getAmount() + slowFreightTotal1.getAmount() + bulkFreightTotal1.getAmount() + interestTotal1.getAmount() + trainMaintenanceTotal1.getAmount() + trackMaintenanceTotal1.getAmount() + stationMaintenanceTotal1.getAmount();
-
-        Money profitTotal = new Money(profit);
-
-        profit = mailYtd1.getAmount() + passengersYtd1.getAmount() + fastFreightYtd1.getAmount() + slowFreightYtd1.getAmount() + bulkFreightYtd1.getAmount() + interestYtd1.getAmount() + trainMaintenanceYtd1.getAmount() + trackMaintenanceYtd1.getAmount() + stationMaintenanceYtd1.getAmount();
-
-        Money profitYtd = new Money(profit);
     }
 
     /**

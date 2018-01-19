@@ -41,21 +41,9 @@ public class PathWalkerImplTest extends TestCase {
         super(arg0);
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(PathWalkerImplTest.class);
-    }
-
     /*
      * Test for boolean canStepForward()
      */
-
-    /**
-     *
-     */
-
     public void testCanStepForward() {
         setup();
 
