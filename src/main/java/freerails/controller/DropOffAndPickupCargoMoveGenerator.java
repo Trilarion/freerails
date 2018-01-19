@@ -177,8 +177,8 @@ class DropOffAndPickupCargoMoveGenerator {
 
         if (autoConsist) {
             int engine = train.getTrain().getEngineType();
-            Move m = ChangeTrainMove.generateMove(trainId, train.getTrain(), engine, consist, principal);
-            moves.add(m);
+            Move move = ChangeTrainMove.generateMove(trainId, train.getTrain(), engine, consist, principal);
+            moves.add(move);
         } else if (waitingForFullLoad) {
             // Only generate a move if there is some cargo to add..
             if (changeOnTrain.beforeEqualsAfter()) return null;

@@ -93,7 +93,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
              */
             TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, ruleNumber);
 
-            /* Count number of possible directions. */
+            // Count number of possible directions.
             List<TileTransition> possibleDirections = new ArrayList<>();
 
             for (int i = 0; i < 8; i++) {
@@ -106,7 +106,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
                 }
             }
 
-            /* Put them into an array. */
+            // Put them into an array.
             targetInts = new int[possibleDirections.size()];
 
             for (int i = 0; i < targetInts.length; i++) {
@@ -115,7 +115,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
                 targetInts[i] = targetPot.toInt();
             }
         } else {
-            /* If there is no track here, we can go in any direction. */
+            // If there is no track here, we can go in any direction.
             targetInts = new int[8];
 
             for (int i = 0; i < 8; i++) {

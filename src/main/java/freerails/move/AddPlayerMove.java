@@ -84,28 +84,28 @@ public class AddPlayerMove implements Move {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal p) {
-        MoveStatus ms = tryDoMove(world, p);
-        if (!ms.status) return ms;
+        MoveStatus moveStatus = tryDoMove(world, p);
+        if (!moveStatus.succeeds()) return moveStatus;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         FreerailsPrincipal principal = playerToAdd.getPrincipal();
         world.addTransaction(principal, BondItemTransaction.issueBond(5));
         // Issue stock
         Money initialStockPrice = new Money(5);
-        Transaction t = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
-        world.addTransaction(principal, t);
-        return ms;
+        Transaction transaction = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
+        world.addTransaction(principal, transaction);
+        return moveStatus;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryUndoMove(world, principal);
-        if (!ms.status) return ms;
+        MoveStatus moveStatus = tryUndoMove(world, principal);
+        if (!moveStatus.succeeds()) return moveStatus;
 
         world.removeLastTransaction(playerToAdd.getPrincipal());
         world.removeLastTransaction(playerToAdd.getPrincipal());
         world.removeLastPlayer();
 
-        return ms;
+        return moveStatus;
     }
 
     private boolean isAlreadyASimilarPlayer(ReadOnlyWorld world) {

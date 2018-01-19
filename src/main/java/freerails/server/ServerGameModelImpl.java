@@ -24,7 +24,6 @@ package freerails.server;
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
-import freerails.network.MoveReceiver;
 import freerails.world.ITEM;
 import freerails.world.World;
 import freerails.world.WorldDiffs;
@@ -159,7 +158,7 @@ public class ServerGameModelImpl implements ServerGameModel {
                     monthEnd();
                 }
 
-                /* calculate "ideal world" time for next tick */
+                // calculate "ideal world" time for next tick
                 nextModelUpdateDue = nextModelUpdateDue + (1000 / gameSpeed);
 
                 // int delay = (int)(nextModelUpdateDue - frameStartTime);

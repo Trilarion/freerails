@@ -35,12 +35,12 @@ public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
      */
     @Override
     public void testMove() {
-        FreerailsPrincipal p = getPrincipal();
+        FreerailsPrincipal principal = getPrincipal();
         Activity a = new WorldImplTest.TestActivity(50);
-        AddActiveEntityMove move = new AddActiveEntityMove(a, 0, p);
+        AddActiveEntityMove move = new AddActiveEntityMove(a, 0, principal);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);
-        AddActiveEntityMove move2 = new AddActiveEntityMove(a, 2, p);
+        AddActiveEntityMove move2 = new AddActiveEntityMove(a, 2, principal);
         assertTryMoveFails(move2);
     }
 

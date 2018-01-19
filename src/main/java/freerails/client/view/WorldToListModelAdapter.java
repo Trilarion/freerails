@@ -21,6 +21,7 @@
  */
 package freerails.client.view;
 
+import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -45,35 +46,24 @@ class WorldToListModelAdapter implements ListModel {
      * @param key
      */
     public WorldToListModelAdapter(ReadOnlyWorld world, SKEY key) {
-
-        this.world = world;
-
-        if (null == key) throw new NullPointerException();
-
-        if (null == this.world) throw new NullPointerException();
-
+        this.world = Utils.verifyNotNull(world);
+        Utils.verifyNotNull(key);
         elements = new NonNullElementWorldIterator(key, world);
     }
 
     /**
      * @param world
      * @param key
-     * @param p
+     * @param principal
      */
-    public WorldToListModelAdapter(ReadOnlyWorld world, KEY key, FreerailsPrincipal p) {
-
-        this.world = world;
-
-        if (null == key) throw new NullPointerException();
-
-        if (null == p) throw new NullPointerException();
-
-        if (null == this.world) throw new NullPointerException();
-
+    public WorldToListModelAdapter(ReadOnlyWorld world, KEY key, FreerailsPrincipal principal) {
+        this.world = Utils.verifyNotNull(world);
+        Utils.verifyNotNull(key);
+        Utils.verifyNotNull(principal);
         // Check that the principal exists.
-        if (!world.isPlayer(p)) throw new IllegalArgumentException(p.getName());
+        if (!world.isPlayer(principal)) throw new IllegalArgumentException(principal.getName());
 
-        elements = new NonNullElementWorldIterator(key, world, p);
+        elements = new NonNullElementWorldIterator(key, world, principal);
     }
 
     public int getSize() {

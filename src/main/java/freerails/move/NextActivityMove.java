@@ -89,14 +89,14 @@ public class NextActivityMove implements Move {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryDoMove(world, principal);
-        if (ms.status) world.add(this.principal, index, activity);
-        return ms;
+        MoveStatus moveStatus = tryDoMove(world, principal);
+        if (moveStatus.succeeds()) world.add(this.principal, index, activity);
+        return moveStatus;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryUndoMove(world, principal);
-        if (ms.status) world.removeLastActivity(this.principal, index);
-        return ms;
+        MoveStatus moveStatus = tryUndoMove(world, principal);
+        if (moveStatus.succeeds()) world.removeLastActivity(this.principal, index);
+        return moveStatus;
     }
 }

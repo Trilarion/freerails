@@ -39,12 +39,11 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new MoneyTransaction(new Money(100),
-                TransactionCategory.MISC_INCOME);
-        Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t);
-        assertTryMoveIsOk(m);
-        assertTryUndoMoveFails(m);
-        assertDoMoveIsOk(m);
+        Transaction transaction = new MoneyTransaction(new Money(100), TransactionCategory.MISC_INCOME);
+        Move move = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, transaction);
+        assertTryMoveIsOk(move);
+        assertTryUndoMoveFails(move);
+        assertDoMoveIsOk(move);
         currentBalance = getWorld().getCurrentBalance(
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(100), currentBalance);
@@ -52,13 +51,11 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         final Player PLAYER_WITHOUT_ACCOUNT = new Player(
                 "PLAYER_WITHOUT_ACCOUNT", 4);
 
-        assertSurvivesSerialisation(m);
+        assertSurvivesSerialisation(move);
 
-        Move m2 = new AddTransactionMove(PLAYER_WITHOUT_ACCOUNT.getPrincipal(),
-                t);
+        Move m2 = new AddTransactionMove(PLAYER_WITHOUT_ACCOUNT.getPrincipal(), transaction);
         assertTryMoveFails(m2);
-
-        assertOkAndRepeatable(m);
+        assertOkAndRepeatable(move);
     }
 
     /**
@@ -69,13 +66,11 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction t = new MoneyTransaction(new Money(-100),
-                TransactionCategory.MISC_INCOME);
-        Move m = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, t,
-                true);
+        Transaction transaction = new MoneyTransaction(new Money(-100), TransactionCategory.MISC_INCOME);
+        Move move = new AddTransactionMove(MapFixtureFactory.TEST_PRINCIPAL, transaction, true);
 
         // This move should fail since there is no money in the account and
         // it is constrained is set to true.
-        assertTryMoveFails(m);
+        assertTryMoveFails(move);
     }
 }

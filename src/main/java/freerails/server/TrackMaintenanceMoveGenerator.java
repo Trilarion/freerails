@@ -23,7 +23,6 @@ package freerails.server;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.network.MoveReceiver;
 import freerails.world.ItemsTransactionAggregator;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -44,10 +43,10 @@ class TrackMaintenanceMoveGenerator {
     private final MoveReceiver moveReceiver;
 
     /**
-     * @param mr
+     * @param moveReceiver
      */
-    public TrackMaintenanceMoveGenerator(MoveReceiver mr) {
-        moveReceiver = mr;
+    public TrackMaintenanceMoveGenerator(MoveReceiver moveReceiver) {
+        this.moveReceiver = moveReceiver;
     }
 
     /**
@@ -79,22 +78,22 @@ class TrackMaintenanceMoveGenerator {
             }
         }
 
-        Transaction t = new MoneyTransaction(new Money(-amount), category);
+        Transaction transaction = new MoneyTransaction(new Money(-amount), category);
 
-        return new AddTransactionMove(principal, t);
+        return new AddTransactionMove(principal, transaction);
     }
 
     /**
-     * @param w
+     * @param world
      */
-    public void update(World w) {
-        for (int i = 0; i < w.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = w.getPlayer(i).getPrincipal();
-            Move m = generateMove(w, principal, TransactionCategory.TRACK_MAINTENANCE);
-            moveReceiver.process(m);
+    public void update(World world) {
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Move move = generateMove(world, principal, TransactionCategory.TRACK_MAINTENANCE);
+            moveReceiver.process(move);
 
-            m = generateMove(w, principal, TransactionCategory.STATION_MAINTENANCE);
-            moveReceiver.process(m);
+            move = generateMove(world, principal, TransactionCategory.STATION_MAINTENANCE);
+            moveReceiver.process(move);
         }
     }
 }

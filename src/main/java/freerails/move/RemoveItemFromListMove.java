@@ -97,23 +97,23 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryDoMove(world, principal);
+        MoveStatus moveStatus = tryDoMove(world, principal);
 
-        if (ms.isStatus()) {
+        if (moveStatus.succeeds()) {
             world.set(this.principal, listKey, index, null);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryUndoMove(world, principal);
+        MoveStatus moveStatus = tryUndoMove(world, principal);
 
-        if (ms.isStatus()) {
+        if (moveStatus.succeeds()) {
             world.set(this.principal, listKey, index, item);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     @Override

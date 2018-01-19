@@ -45,7 +45,7 @@ public class SelectWagonsPanel extends JPanel implements View {
     private final Image stationView;
     private final List<Integer> wagons = new ArrayList<>();
     private int engineType = 0;
-    private RendererRoot rr;
+    private RendererRoot rendererRoot;
     private JLabel label1;
     private JButton okButton;
     private JList wagonTypesJList;
@@ -211,7 +211,7 @@ public class SelectWagonsPanel extends JPanel implements View {
             // train first.
 
             Integer type = wagons.get(i);
-            Image image = rr.getWagonImages(type).getSideOnImage();
+            Image image = rendererRoot.getWagonImages(type).getSideOnImage();
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
@@ -220,7 +220,7 @@ public class SelectWagonsPanel extends JPanel implements View {
 
         // paint the engine
         if (-1 != engineType) { // If an engine is selected.
-            Image image = rr.getEngineImages(engineType).getSideOnImage();
+            Image image = rendererRoot.getEngineImages(engineType).getSideOnImage();
 
             int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);
             x -= scaledWidth;
@@ -238,8 +238,8 @@ public class SelectWagonsPanel extends JPanel implements View {
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
         WorldToListModelAdapter w2lma = new WorldToListModelAdapter(modelRoot.getWorld(), SKEY.CARGO_TYPES);
         wagonTypesJList.setModel(w2lma);
-        rr = vl;
-        ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rr);
+        rendererRoot = vl;
+        ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rendererRoot);
         wagonTypesJList.setCellRenderer(wagonCellRenderer);
         okButton.addActionListener(closeAction);
     }

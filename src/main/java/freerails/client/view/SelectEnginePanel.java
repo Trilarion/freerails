@@ -82,7 +82,7 @@ public class SelectEnginePanel extends JPanel implements View {
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
 
-        list1ValueChanged(null); // Disable the status button if no engine type
+        list1ValueChanged(null); // Disable the success button if no engine type
         // is selected.
     }
 

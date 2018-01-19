@@ -24,7 +24,7 @@ package freerails.world.train;
 import java.io.Serializable;
 
 /**
- * Stores the speed and status of a train immediately after an instant of time.
+ * Stores the speed and success of a train immediately after an instant of time.
  */
 public class SpeedTimeAndStatus implements Serializable {
 

@@ -21,6 +21,7 @@
  */
 package freerails.world;
 
+import freerails.util.Utils;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.io.Serializable;
@@ -47,18 +48,10 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param world
      */
     public NonNullElementWorldIterator(SKEY k, ReadOnlyWorld world) {
-        if (null == k) {
-            throw new NullPointerException();
-        }
-
-        if (null == world) {
-            throw new NullPointerException();
-        }
-
         key = null;
         principal = null;
-        skey = k;
-        this.world = world;
+        skey = Utils.verifyNotNull(k);
+        this.world = Utils.verifyNotNull(world);
     }
 
     /**
@@ -67,22 +60,10 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param p
      */
     public NonNullElementWorldIterator(KEY k, ReadOnlyWorld world, FreerailsPrincipal p) {
-        key = k;
-        this.world = world;
-        principal = p;
+        key = Utils.verifyNotNull(k);
+        this.world = Utils.verifyNotNull(world);
+        principal = Utils.verifyNotNull(p);
         skey = null;
-
-        if (null == k) {
-            throw new NullPointerException();
-        }
-
-        if (null == world) {
-            throw new NullPointerException();
-        }
-
-        if (null == p) {
-            throw new NullPointerException();
-        }
     }
 
     /**

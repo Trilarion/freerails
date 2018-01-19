@@ -19,6 +19,7 @@
 package freerails.network;
 
 import freerails.util.SynchronizedFlag;
+import freerails.util.Utils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -42,8 +43,7 @@ public class InetConnectionAccepter implements Runnable {
      * @throws IOException
      */
     public InetConnectionAccepter(int port, GameServer gameServer) throws IOException {
-        if (null == gameServer) throw new NullPointerException();
-        this.gameServer = gameServer;
+        this.gameServer = Utils.verifyNotNull(gameServer);
         serverSocket = new ServerSocket(port);
     }
 

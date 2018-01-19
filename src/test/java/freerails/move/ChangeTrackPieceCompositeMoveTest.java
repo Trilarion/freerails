@@ -218,7 +218,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                 .generateBuildTrackMove(p, v, rule, rule, getWorld(),
                         MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
-        assertEquals(false, status.isStatus());
+        assertEquals(false, status.succeeds());
     }
 
     private void assertBuildTrackSucceeds(Point2D p, TileTransition v, TrackRule rule) {
@@ -229,7 +229,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
         MoveStatus status = moveAndTransaction.doMove(getWorld(),
                 Player.AUTHORITATIVE);
-        assertEquals(true, status.isStatus());
+        assertEquals(true, status.succeeds());
     }
 
     private void assertRemoveTrackSucceeds(Point2D p, TileTransition v) {
@@ -238,7 +238,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
                     .generateRemoveTrackMove(p, v, getWorld(),
                             MapFixtureFactory.TEST_PRINCIPAL);
             MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
-            assertEquals(true, status.isStatus());
+            assertEquals(true, status.succeeds());
         } catch (Exception e) {
             fail();
         }

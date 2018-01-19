@@ -104,7 +104,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         startPoint = from;
         logger.debug("Find track path from " + from + " to " + target);
 
-        /* Check there is track at both the points. */
+        // Check there is track at both the points.
         FullTerrainTile tileA = (FullTerrainTile) world.getTile(from.x, from.y);
         FullTerrainTile tileB = (FullTerrainTile) world.getTile(target.x, target.y);
         if (!tileA.hasTrack()) {

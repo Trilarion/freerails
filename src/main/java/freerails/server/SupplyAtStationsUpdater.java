@@ -21,7 +21,6 @@ package freerails.server;
 import freerails.controller.CalcCargoSupplyRateAtStation;
 import freerails.move.ChangeStationMove;
 import freerails.move.Move;
-import freerails.network.MoveReceiver;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.World;
@@ -43,9 +42,9 @@ class SupplyAtStationsUpdater {
      *
      * @param world The World object that contains all about the game world
      */
-    public SupplyAtStationsUpdater(World world, MoveReceiver mr) {
+    public SupplyAtStationsUpdater(World world, MoveReceiver moveReceiver) {
         this.world = world;
-        moveReceiver = mr;
+        this.moveReceiver = moveReceiver;
     }
 
     /**

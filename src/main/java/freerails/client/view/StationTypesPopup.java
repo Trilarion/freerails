@@ -61,12 +61,12 @@ public class StationTypesPopup extends JPopupMenu {
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param actionRoot
      * @param srr
      */
-    public void setup(ModelRoot mr, ActionRoot actionRoot, StationRadiusRenderer srr) {
-        modelRoot = mr;
+    public void setup(ModelRoot modelRoot, ActionRoot actionRoot, StationRadiusRenderer srr) {
+        this.modelRoot = modelRoot;
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
         removeAll();

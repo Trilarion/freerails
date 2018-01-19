@@ -30,6 +30,7 @@ import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.finances.Money;
@@ -257,7 +258,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         this.modelRoot = modelRoot;
         stationBuildModel = actionRoot.getStationBuildModel();
         trackMoveProducer = actionRoot.getTrackMoveProducer();
-        if (null == trackMoveProducer) throw new NullPointerException();
+        Utils.verifyNotNull(trackMoveProducer);
 
         selectionSet = new HashMap<>();
 

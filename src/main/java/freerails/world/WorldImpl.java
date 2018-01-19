@@ -127,10 +127,7 @@ public class WorldImpl implements World {
      * @return index of the player
      */
     public int addPlayer(Player player) {
-        if (null == player) {
-            throw new NullPointerException();
-        }
-
+        Utils.verifyNotNull(player);
         int index = players.add(player);
         bankAccounts.addD1();
         currentBalance.add(new Money(0));

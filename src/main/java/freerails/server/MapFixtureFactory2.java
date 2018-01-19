@@ -73,10 +73,10 @@ public class MapFixtureFactory2 {
         // Add 4 players
         for (int i = 0; i < 4; i++) {
             String name = "player" + i;
-            Player p = new Player(name, i);
-            AddPlayerMove move = AddPlayerMove.generateMove(world, p);
-            MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-            assert (ms.status);
+            Player player = new Player(name, i);
+            AddPlayerMove move = AddPlayerMove.generateMove(world, player);
+            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+            assert (moveStatus.succeeds());
         }
         world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));

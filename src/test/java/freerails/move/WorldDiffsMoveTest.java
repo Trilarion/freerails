@@ -168,22 +168,22 @@ public class WorldDiffsMoveTest extends TestCase {
         // Doing the move on the world should also succeed.
         World worldCopy = (World) Utils.cloneBySerialisation(world);
         assertEquals(worldCopy, world);
-        MoveStatus ms = move.tryDoMove(worldCopy, fp1);
+        MoveStatus moveStatus = move.tryDoMove(worldCopy, fp1);
 
-        assertTrue(ms.message, ms.status);
+        assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
 
-        ms = move.doMove(worldCopy, fp1);
-        assertTrue(ms.status);
+        moveStatus = move.doMove(worldCopy, fp1);
+        assertTrue(moveStatus.succeeds());
         assertEquals(worldCopy, diffs);
 
         // Undoing the move on the diffs should succeed.
         WorldDiffs diffsCopy = (WorldDiffs) Utils.cloneBySerialisation(diffs);
         assertEquals(diffsCopy, diffs);
-        ms = move.tryUndoMove(diffsCopy, fp1);
-        assertTrue(ms.message, ms.status);
+        moveStatus = move.tryUndoMove(diffsCopy, fp1);
+        assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
         assertFalse(diffsCopy.equals(world));
-        ms = move.undoMove(diffsCopy, fp1);
-        assertTrue(ms.status);
+        moveStatus = move.undoMove(diffsCopy, fp1);
+        assertTrue(moveStatus.succeeds());
         assertEquals(diffsCopy, world);
 
         // The move should survive serialisation.

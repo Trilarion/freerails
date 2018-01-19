@@ -62,7 +62,7 @@ public final class ImmutableList<E extends Serializable> implements Serializable
      */
     public void containsNulls() throws NullPointerException {
         for (E value : values) {
-            if (null == value) throw new NullPointerException();
+            Utils.verifyNotNull(value);
         }
     }
 

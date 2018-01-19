@@ -104,7 +104,7 @@ public class MutableSchedule implements Schedule {
         }
         orders.remove(orderNumber);
 
-        /* shift current station down */
+        // shift current station down
         if (nextScheduledOrder > orderNumber) {
             nextScheduledOrder--;
         }

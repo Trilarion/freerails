@@ -49,26 +49,25 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setupWorld() {
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        principal = me.getPrincipal();
-        ModelRoot mr = new ModelRootImpl();
-        TrackMoveProducer trackBuilder = new TrackMoveProducer(me, world, mr);
-        StationBuilder stationBuilder = new StationBuilder(me);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        principal = moveExecutor.getPrincipal();
+        ModelRoot modelRoot = new ModelRootImpl();
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        StationBuilder stationBuilder = new StationBuilder(moveExecutor);
 
         // Build track.
-        stationBuilder
-                .setStationType(stationBuilder.getTrackTypeID("terminal"));
+        stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         stationA = new Point2D(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
-        assertTrue(ms0.status);
+        assertTrue(ms0.succeeds());
 
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(stationA);
-        assertTrue(ms1.status);
+        assertTrue(ms1.succeeds());
         Point2D stationB = new Point2D(19, 10);
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
-        assertTrue(ms2.status);
+        assertTrue(ms2.succeeds());
 
         TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
         TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
@@ -86,10 +85,10 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 stationA, principal, defaultSchedule);
-        Move m = preMove.generateMove(world);
-        assertDoMoveIsOk(m);
-        assertUndoMoveIsOk(m);
-        assertSurvivesSerialisation(m);
+        Move move = preMove.generateMove(world);
+        assertDoMoveIsOk(move);
+        assertUndoMoveIsOk(move);
+        assertSurvivesSerialisation(move);
     }
 
     /**
@@ -99,9 +98,9 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
     public void testPathOnTiles() {
         AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 stationA, principal, defaultSchedule);
-        Move m = preMove.generateMove(world);
-        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.status);
+        Move move = preMove.generateMove(world);
+        MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(moveStatus.succeeds());
 
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         TrainMotion motion = ta.findCurrentMotion(0);
@@ -117,9 +116,9 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
     public void testMove2() {
         AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
                 stationA, principal, defaultSchedule);
-        Move m = preMove.generateMove(world);
-        MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.status);
+        Move move = preMove.generateMove(world);
+        MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(moveStatus.succeeds());
         ActivityIterator ai = world.getActivities(principal, 0);
         TrainMotion tm = (TrainMotion) ai.getActivity();
         assertEquals(0.0d, tm.duration());
@@ -138,25 +137,25 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
      */
     public void testGetSchedule() {
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        principal = me.getPrincipal();
-        ModelRoot mr = new ModelRootImpl();
-        TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        principal = moveExecutor.getPrincipal();
+        ModelRoot modelRoot = new ModelRootImpl();
+        TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Point2D from = new Point2D(5, 5);
-        MoveStatus ms = producer.buildTrack(from, trackPath);
-        if (!ms.status)
-            throw new IllegalStateException(ms.message);
+        MoveStatus moveStatus = producer.buildTrack(from, trackPath);
+        if (!moveStatus.succeeds())
+            throw new IllegalStateException(moveStatus.getMessage());
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
         AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
                 principal, is);
-        Move m = addTrain.generateMove(world);
-        ms = m.doMove(world, principal);
-        if (!ms.status)
-            throw new IllegalStateException(ms.message);
+        Move move = addTrain.generateMove(world);
+        moveStatus = move.doMove(world, principal);
+        if (!moveStatus.succeeds())
+            throw new IllegalStateException(moveStatus.getMessage());
 
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         assertNotNull(ta.getTarget());

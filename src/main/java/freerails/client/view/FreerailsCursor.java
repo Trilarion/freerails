@@ -51,13 +51,13 @@ final class FreerailsCursor {
     /**
      * Creates a new FreerailsCursor.
      */
-    public FreerailsCursor(ModelRoot mr, RendererRoot rr) throws IOException {
-        modelRoot = mr;
-        modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
-        buildTrack = rr.getImage("cursor/buildtrack.png");
-        upgradeTrack = rr.getImage("cursor/upgradetrack.png");
-        removeTrack = rr.getImage("cursor/removetrack.png");
-        infoMode = rr.getImage("cursor/infomode.png");
+    public FreerailsCursor(ModelRoot modelRoot, RendererRoot rendererRoot) throws IOException {
+        this.modelRoot = modelRoot;
+        this.modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
+        buildTrack = rendererRoot.getImage("cursor/buildtrack.png");
+        upgradeTrack = rendererRoot.getImage("cursor/upgradetrack.png");
+        removeTrack = rendererRoot.getImage("cursor/removetrack.png");
+        infoMode = rendererRoot.getImage("cursor/infomode.png");
     }
 
     /**
@@ -74,7 +74,7 @@ final class FreerailsCursor {
 
         Point2D cursorMapPosition = (Point2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
 
-        /* Has the cursor moved since we last painted it? */
+        // Has the cursor moved since we last painted it?
         if (!cursorMapPosition.equals(lastCursorPosition)) {
             lastCursorPosition = cursorMapPosition;
             timeArrived = System.currentTimeMillis();

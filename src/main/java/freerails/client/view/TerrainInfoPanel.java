@@ -42,7 +42,7 @@ import java.awt.*;
 class TerrainInfoPanel extends JPanel {
 
     private static final long serialVersionUID = 3258131375164045363L;
-    private RendererRoot rr;
+    private RendererRoot rendererRoot;
     private ReadOnlyWorld world;
     private JLabel terrainDescription;
     private JLabel terrainImage;
@@ -88,7 +88,7 @@ class TerrainInfoPanel extends JPanel {
 
     public void setup(ReadOnlyWorld world, RendererRoot vl) {
         this.world = world;
-        rr = vl;
+        rendererRoot = vl;
     }
 
     public void setTerrainType(int typeNumber) {
@@ -135,7 +135,7 @@ class TerrainInfoPanel extends JPanel {
         terrainDescription.setText(labelString);
         terrainName.setText(type.getDisplayName());
 
-        Image tileIcon = rr.getTileViewWithNumber(typeNumber).getDefaultIcon();
+        Image tileIcon = rendererRoot.getTileViewWithNumber(typeNumber).getDefaultIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));
 
         repaint();

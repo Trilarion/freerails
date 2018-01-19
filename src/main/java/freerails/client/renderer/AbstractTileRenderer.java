@@ -22,6 +22,7 @@
  */
 package freerails.client.renderer;
 
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TerrainType;
@@ -44,16 +45,8 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         mapWidth = world.getMapWidth();
         mapHeight = world.getMapHeight();
 
-        tileModel = t;
-        typeNumbers = rgbValues;
-
-        if (null == t) {
-            throw new NullPointerException();
-        }
-
-        if (null == rgbValues) {
-            throw new NullPointerException();
-        }
+        tileModel = Utils.verifyNotNull(t);
+        typeNumbers = Utils.verifyNotNull(rgbValues);
     }
 
     /**

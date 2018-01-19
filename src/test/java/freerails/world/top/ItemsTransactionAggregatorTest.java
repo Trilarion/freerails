@@ -50,14 +50,13 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         aggregator.setCategory(TransactionCategory.TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
-        Transaction t = new ItemTransaction(TransactionCategory.TRACK, 10, 5,
-                new Money(100));
-        w.addTransaction(fp, t);
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 5, new Money(100));
+        w.addTransaction(fp, transaction);
 
         quant = aggregator.calculateQuantity();
         assertEquals(5, quant);
-        t = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
-        w.addTransaction(fp, t);
+        transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
+        w.addTransaction(fp, transaction);
 
     }
 

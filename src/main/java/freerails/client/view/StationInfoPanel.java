@@ -266,7 +266,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
     @Override
     protected void paintComponent(Graphics g) {
-        /* We need to update if the cargo bundle has changed. */
+        // We need to update if the cargo bundle has changed.
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
 
         /*
@@ -291,7 +291,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         int currentIndex = worldIterator.getIndex();
         if (key == KEY.CARGO_BUNDLES) {
             if (changedIndex == cargoBundleIndex) {
-                /* update our cargo bundle */
+                // update our cargo bundle
                 display();
             }
         } else if (key == KEY.STATIONS) {

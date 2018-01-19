@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.move.*;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -52,21 +53,17 @@ public class AddTrainPreMove implements PreMove {
 
     /**
      * @param e
-     * @param wags
+     * @param wagons
      * @param p
-     * @param fp
-     * @param s
+     * @param principal
+     * @param schedule
      */
-    public AddTrainPreMove(int e, ImmutableList<Integer> wags, Point2D p, FreerailsPrincipal fp, ImmutableSchedule s) {
+    public AddTrainPreMove(int e, ImmutableList<Integer> wagons, Point2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
         engineTypeId = e;
-        wagons = wags;
-        point = p;
-        principal = fp;
-        schedule = s;
-        if (null == wags) throw new NullPointerException();
-        if (null == p) throw new NullPointerException();
-        if (null == fp) throw new NullPointerException();
-        if (null == s) throw new NullPointerException();
+        this.wagons = Utils.verifyNotNull(wagons);
+        point = Utils.verifyNotNull(p);
+        this.principal = Utils.verifyNotNull(principal);
+        this.schedule = Utils.verifyNotNull(schedule);
     }
 
     @Override
@@ -154,7 +151,7 @@ public class AddTrainPreMove implements PreMove {
 
         // Pay for train.
         int quantity = 1;
-        /* Determine the price of the train. */
+        // Determine the price of the train.
         EngineType engineType = (EngineType) world.get(SKEY.ENGINE_TYPES, engineTypeId);
         Money price = engineType.getPrice();
         Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineTypeId, quantity, new Money(-price.getAmount()));

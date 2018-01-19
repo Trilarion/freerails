@@ -86,8 +86,8 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(0, worldDiff.listDiffs());
         assertEquals(1, worldDiff.getNumberOfPlayers());
 
-        Player p = worldDiff.getPlayer(0);
-        assertEquals(player0, p);
+        Player player = worldDiff.getPlayer(0);
+        assertEquals(player0, player);
         assertTrue(worldDiff.isPlayer(player0.getPrincipal()));
 
         // Test adding a player.
@@ -96,8 +96,8 @@ public class WorldDiffsTest extends TestCase {
 
         assertEquals(2, worldDiff.getNumberOfPlayers());
 
-        p = worldDiff.getPlayer(1);
-        assertEquals(player1, p);
+        player = worldDiff.getPlayer(1);
+        assertEquals(player1, player);
         assertTrue(worldDiff.isPlayer(player1.getPrincipal()));
     }
 

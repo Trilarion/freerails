@@ -60,7 +60,7 @@ public class Player implements Serializable {
 
         KeyPairGenerator kpg;
 
-        /* generate our key pair */
+        // generate our key pair
         try {
             kpg = KeyPairGenerator.getInstance("DSA");
             kpg.initialize(1024);

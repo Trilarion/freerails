@@ -576,8 +576,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         assert (scheduleID == train.getScheduleID());
         ImmutableSchedule before = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
-        Move m = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
-        modelRoot.doMove(m);
+        Move move = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
+        modelRoot.doMove(move);
     }
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {

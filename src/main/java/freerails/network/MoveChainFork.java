@@ -19,6 +19,8 @@
 package freerails.network;
 
 import freerails.move.*;
+import freerails.server.MoveReceiver;
+import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.WorldListListener;
 import freerails.world.WorldMapListener;
@@ -65,33 +67,21 @@ public final class MoveChainFork implements MoveReceiver {
      * @param moveReceiver
      */
     public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
-        if (null == moveReceiver) {
-            throw new NullPointerException();
-        }
-
-        moveReceivers.add(moveReceiver);
+        moveReceivers.add(Utils.verifyNotNull(moveReceiver));
     }
 
     /**
      * @param moveReceiver
      */
     public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
-        if (null == moveReceiver) {
-            throw new NullPointerException();
-        }
-
-        splitMoveReceivers.add(moveReceiver);
+        splitMoveReceivers.add(Utils.verifyNotNull(moveReceiver));
     }
 
     /**
      * @param listener
      */
     public void addListListener(WorldListListener listener) {
-        if (null == listener) {
-            throw new NullPointerException();
-        }
-
-        listListeners.add(listener);
+        listListeners.add(Utils.verifyNotNull(listener));
     }
 
     /**
@@ -101,7 +91,6 @@ public final class MoveChainFork implements MoveReceiver {
         for (MoveReceiver m : moveReceivers) {
             m.process(move);
         }
-
         splitMove(move);
     }
 

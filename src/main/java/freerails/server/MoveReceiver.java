@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.server;
 
 import freerails.move.Move;
 

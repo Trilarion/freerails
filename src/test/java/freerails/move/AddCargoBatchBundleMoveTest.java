@@ -44,13 +44,13 @@ public class AddCargoBatchBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, 2, 3, 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move m = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(),
+        Move move = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(),
                 MapFixtureFactory.TEST_PRINCIPAL);
-        assertDoMoveIsOk(m);
+        assertDoMoveIsOk(move);
         assertEquals(getWorld().size(MapFixtureFactory.TEST_PRINCIPAL,
                 KEY.CARGO_BUNDLES), 1);
-        assertUndoMoveIsOk(m);
-        assertSurvivesSerialisation(m);
-        assertOkButNotRepeatable(m);
+        assertUndoMoveIsOk(move);
+        assertSurvivesSerialisation(move);
+        assertOkButNotRepeatable(move);
     }
 }

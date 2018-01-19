@@ -23,7 +23,7 @@ package freerails.controller;
  * graph is stored. Vertices are packed into single int values to avoid the cost of
  * object creation and garbage collection.
  */
-interface GraphExplorer {
+public interface GraphExplorer {
 
     /**
      * Return the current edge.

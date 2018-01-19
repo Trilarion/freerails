@@ -80,16 +80,16 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testThatStockIsIssued() {
-        FreerailsPrincipal p = world.getPlayer(0).getPrincipal();
+        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
         int stock = 0;
-        Money cash = world.getCurrentBalance(p);
+        Money cash = world.getCurrentBalance(principal);
         assertEquals(new Money(1000000), cash);
-        int numberOfTransactions = world.getNumberOfTransactions(p);
+        int numberOfTransactions = world.getNumberOfTransactions(principal);
         assertTrue(numberOfTransactions > 0);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Transaction t = world.getTransaction(p, i);
-            if (t.getCategory() == TransactionCategory.ISSUE_STOCK) {
-                ItemTransaction ait = (ItemTransaction) t;
+            Transaction transaction = world.getTransaction(principal, i);
+            if (transaction.getCategory() == TransactionCategory.ISSUE_STOCK) {
+                ItemTransaction ait = (ItemTransaction) transaction;
                 stock += ait.getQuantity();
             }
         }

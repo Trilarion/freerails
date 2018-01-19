@@ -137,7 +137,7 @@ class SelectMapPanel extends JPanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jPanel3, gridBagConstraints);
 
-        /* initialise the map list */
+        // initialise the map list
         SaveGamesManager sgm = new SaveGameManagerImpl();
         newmapsJList.setListData(sgm.getNewMapNames());
         savedmapsJList.setListData(sgm.getSaveGameNames());
@@ -205,13 +205,13 @@ class SelectMapPanel extends JPanel {
      * @return
      */
     public boolean validateInput() {
-        /* Validate map selection. */
+        // Validate map selection.
         if (getSelection() == MapSelection.NONE) {
             owner.setInfoText(SELECT_A_MAP, InfoMessageType.ERROR);
             return false;
         }
 
-        /* Validate port. */
+        // Validate port.
         try {
             int port = getServerPort();
             if (port < 0 || port > 65535) {
@@ -223,7 +223,7 @@ class SelectMapPanel extends JPanel {
             return false;
         }
 
-        /* Everything is status. */
+        // Everything is success.
         owner.hideErrorMessages();
         owner.setProperty(ClientConfig.SERVER_PORT_PROPERTY, serverPort.getText());
         owner.saveProperties();

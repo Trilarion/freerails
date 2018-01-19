@@ -28,6 +28,7 @@ import freerails.controller.ModelRoot.Property;
 import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TileTransition;
 import org.apache.log4j.Logger;
@@ -64,11 +65,11 @@ class UserInputOnMapController extends KeyAdapter {
     private boolean ignoreDragging = false;
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param ar
      */
-    public UserInputOnMapController(ModelRoot mr, ActionRoot ar) {
-        modelRoot = mr;
+    public UserInputOnMapController(ModelRoot modelRoot, ActionRoot ar) {
+        this.modelRoot = modelRoot;
         actionRoot = ar;
     }
 
@@ -78,18 +79,18 @@ class UserInputOnMapController extends KeyAdapter {
      * @param mv
      * @param trackBuilder
      * @param stPopup
-     * @param mr
+     * @param modelRoot
      * @param dbc
      * @param buildTrack
      */
 
-    public void setup(MapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot mr, DialogueBoxController dbc, BuildTrackController buildTrack) {
+    public void setup(MapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrack) {
         dialogueBoxController = dbc;
         mapView = mv;
         stationTypesPopup = stPopup;
         this.trackBuilder = trackBuilder;
         this.buildTrack = buildTrack;
-        buildIndustryPopupMenu.setup(mr, null, null);
+        buildIndustryPopupMenu.setup(modelRoot, null, null);
 
         /*
          * We attempt to remove listeners before adding them to prevent them
@@ -257,13 +258,13 @@ class UserInputOnMapController extends KeyAdapter {
 
         if (null != trackBuilder && b) {
             trackBuilder.setBuildTrackStrategy(getBts());
-            MoveStatus ms = trackBuilder.buildTrack(oldPosition, vector);
+            MoveStatus moveStatus = trackBuilder.buildTrack(oldPosition, vector);
 
-            if (ms.status) {
+            if (moveStatus.succeeds()) {
                 setCursorMessage("");
                 playAppropriateSound();
             } else {
-                setCursorMessage(ms.message);
+                setCursorMessage(moveStatus.getMessage());
             }
 
         } else {
@@ -287,7 +288,7 @@ class UserInputOnMapController extends KeyAdapter {
         Point2D cursorMapPosition = getCursorPosition();
         Point2D tryThisPoint = new Point2D(cursorMapPosition.x + v.getDx(), cursorMapPosition.y + v.getDy());
 
-        /* Move the cursor. */
+        // Move the cursor.
         if (legalRectangleContains(tryThisPoint)) {
             setCursorPosition(tryThisPoint);
             cursorOneTileMove(cursorMapPosition, v);
@@ -320,8 +321,7 @@ class UserInputOnMapController extends KeyAdapter {
 
     private BuildTrackStrategy getBts() {
         BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
-        if (null == bts) throw new NullPointerException();
-        return bts;
+        return Utils.verifyNotNull(bts);
     }
 
     /**
@@ -335,7 +335,6 @@ class UserInputOnMapController extends KeyAdapter {
         int width = world.getMapWidth();
         int height = world.getMapHeight();
         Rectangle legalRectangle = new Rectangle(0, 0, width, height);
-
         return legalRectangle.contains(tryThisPoint.toPoint());
     }
 

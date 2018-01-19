@@ -101,7 +101,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
                 new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(true, moveStatus.isStatus());
+        assertEquals(true, moveStatus.succeeds());
 
         // As above but with newTrackPiece and oldTrackPiece in the wrong order,
         // should fail.
@@ -109,7 +109,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
                 new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(false, moveStatus.isStatus());
+        assertEquals(false, moveStatus.succeeds());
 
         // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece,
         // should fail.
@@ -117,14 +117,14 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
                 new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(false, moveStatus.isStatus());
+        assertEquals(false, moveStatus.succeeds());
 
         // Try to build track outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
                 new Point2D(100, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(false, moveStatus.isStatus());
+        assertEquals(false, moveStatus.succeeds());
 
         // Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
@@ -133,7 +133,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point2D(0, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertEquals(false, moveStatus.isStatus());
+        assertEquals(false, moveStatus.succeeds());
     }
 
     /**
@@ -177,7 +177,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
                 new Point2D(0, 0));
         moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(true, moveStatus.isStatus());
+        assertEquals(true, moveStatus.succeeds());
         TrackConfiguration actual = ((FullTerrainTile) getWorld().getTile(0, 0))
                 .getTrackPiece().getTrackConfiguration();
         assertEquals(newTrackPiece.getTrackConfiguration(), actual);

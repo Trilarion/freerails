@@ -56,21 +56,21 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     @Override
     protected void incrementRunningTotal(int transactionID) {
-        Transaction t = super.world.getTransaction(super.principal, transactionID);
+        Transaction transaction = super.world.getTransaction(super.principal, transactionID);
 
-        if (t instanceof ItemTransaction) {
-            ItemTransaction ait = (ItemTransaction) t;
+        if (transaction instanceof ItemTransaction) {
+            ItemTransaction ait = (ItemTransaction) transaction;
 
-            if (t instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getType() == -1) {
+            if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getType() == -1) {
                 // If it is a change in the total number of shares issued.
-                StockItemTransaction ist = (StockItemTransaction) t;
+                StockItemTransaction ist = (StockItemTransaction) transaction;
                 totalShares += ist.getQuantity();
 
-            } else if (t instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
+            } else if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
                 //
                 stockInRRs[ait.getType()] += ait.getQuantity();
 
-            } else if (t instanceof BondItemTransaction) {
+            } else if (transaction instanceof BondItemTransaction) {
                 bonds += ait.getQuantity();
             }
         } else {
@@ -142,8 +142,8 @@ public class FinancialDataGatherer extends TransactionAggregator {
         if (null == stockInThisRRs) {
             stockInThisRRs = new int[world.getNumberOfPlayers()];
             for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-                Player p = world.getPlayer(i);
-                FinancialDataGatherer temp = new FinancialDataGatherer(world, p.getPrincipal());
+                Player player = world.getPlayer(i);
+                FinancialDataGatherer temp = new FinancialDataGatherer(world, player.getPrincipal());
                 stockInThisRRs[i] = temp.stockInRRs[playerID];
             }
         }

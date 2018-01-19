@@ -19,6 +19,7 @@
 package freerails.network;
 
 import freerails.util.SynchronizedFlag;
+import freerails.util.Utils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class EchoGameServer implements GameServer, Runnable {
 
     /**
      * Creates an EchoGameServer, starts it in a new Thread, and waits for its
-     * status to change to isOpen before returning.
+     * success to change to isOpen before returning.
      */
     public static EchoGameServer startServer() {
         EchoGameServer server = new EchoGameServer();
@@ -51,7 +52,7 @@ public class EchoGameServer implements GameServer, Runnable {
         t.start();
 
         try {
-            /* Wait for the server to start before returning. */
+            // Wait for the server to start before returning.
             synchronized (server.status) {
                 server.status.wait();
             }
@@ -66,24 +67,17 @@ public class EchoGameServer implements GameServer, Runnable {
      * @param connection
      */
     public synchronized void addConnection(ConnectionToClient connection) {
-        if (null == connection) {
-            throw new NullPointerException();
-        }
-
         if (!status.isOpen()) {
-            throw new IllegalArgumentException();
+            throw new IllegalStateException();
         }
-
-        connections.add(connection);
+        connections.add(Utils.verifyNotNull(connection));
     }
 
     /**
      * @return
      */
     public synchronized int countOpenConnections() {
-
         connections.removeIf(connection -> !connection.isOpen());
-
         return connections.size();
     }
 
@@ -102,11 +96,11 @@ public class EchoGameServer implements GameServer, Runnable {
     }
 
     private synchronized void sendMessage(Serializable m) {
-        /* Send messages. */
+        // Send messages.
         for (ConnectionToClient connection : connections) {
             try {
                 connection.writeToClient(m);
-                logger.debug("Sent status: " + m);
+                logger.debug("Sent success: " + m);
             } catch (IOException e) {
                 try {
                     if (connection.isOpen()) {
@@ -125,7 +119,7 @@ public class EchoGameServer implements GameServer, Runnable {
      */
     public void update() {
         synchronized (this) {
-            /* Read messages. */
+            // Read messages.
             for (ConnectionToClient connection : connections) {
                 try {
                     Serializable[] messages = connection.readFromClient();

@@ -147,6 +147,20 @@ public class Utils {
     }
 
     /**
+     * Ensures that an object reference passed as a parameter to the calling method is not null.
+     *
+     * @param reference an object reference
+     * @param <T>
+     * @return the non-null reference that was checked
+     */
+    public static <T> T verifyNotNull(T reference) throws NullPointerException {
+        if (null == reference) {
+            throw new NullPointerException();
+        }
+        return reference;
+    }
+
+    /**
      * @param values
      * @return
      */

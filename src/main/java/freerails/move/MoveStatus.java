@@ -21,7 +21,7 @@ package freerails.move;
 import java.io.Serializable;
 
 /**
- * Records the success or failure of an attempt to execute a move.
+ * Records the status or failure of an attempt to execute a move.
  */
 public final class MoveStatus implements Serializable {
 
@@ -31,8 +31,8 @@ public final class MoveStatus implements Serializable {
     public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
     private static final long serialVersionUID = 3258129171879309624L;
 
-    public final boolean status;
-    public final String message;
+    private final boolean status;
+    private final String message;
 
     private MoveStatus(boolean status, String message) {
         this.status = status;
@@ -79,12 +79,16 @@ public final class MoveStatus implements Serializable {
     /**
      * @return
      */
-    public boolean isStatus() {
+    public boolean succeeds() {
         return status;
     }
 
     @Override
     public String toString() {
+        return message;
+    }
+
+    public String getMessage() {
         return message;
     }
 }

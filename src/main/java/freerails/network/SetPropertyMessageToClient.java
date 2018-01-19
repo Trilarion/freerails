@@ -21,6 +21,7 @@ package freerails.network;
 import freerails.controller.ClientControlInterface;
 import freerails.controller.ClientProperty;
 import freerails.controller.MessageStatus;
+import freerails.util.Utils;
 
 import java.io.Serializable;
 
@@ -41,10 +42,9 @@ public class SetPropertyMessageToClient implements MessageToClient {
      * @param value
      */
     public SetPropertyMessageToClient(int id, ClientProperty key, Serializable value) {
-        if (null == key || null == value) throw new NullPointerException();
         this.id = id;
-        this.key = key;
-        this.value = value;
+        this.key = Utils.verifyNotNull(key);
+        this.value = Utils.verifyNotNull(value);
     }
 
     @Override

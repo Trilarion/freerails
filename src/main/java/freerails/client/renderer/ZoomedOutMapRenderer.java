@@ -136,7 +136,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
             TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
             one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
         } else {
-            /* black with alpha of 1 */
+            // black with alpha of 1
             one2oneImage.setRGB(tile.x, tile.y, 0xff000000);
         }
 
@@ -149,7 +149,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     private void refresh() {
         isDirty = true;
 
-        /* free up memory used by the old image */
+        // free up memory used by the old image
         if (mapImage != null) {
             mapImage.flush();
         }
@@ -161,7 +161,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         // if (mapGraphics != null) {
         // mapGraphics.dispose();
         // }
-        /* generate a 1:1 map of the terrain layer */
+        // generate a 1:1 map of the terrain layer
         one2oneImage = defaultConfiguration.createCompatibleImage(mapWidth, mapHeight, Transparency.TRANSLUCENT);
         mapImage = defaultConfiguration.createCompatibleImage(imageWidth, imageHeight, Transparency.OPAQUE);
 
@@ -176,7 +176,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
                     TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
                     one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, terrainType.getRGB());
                 } else {
-                    /* black with alpha of 1 */
+                    // black with alpha of 1
                     one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, 0xff000000);
                 }
             }

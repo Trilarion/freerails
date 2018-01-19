@@ -318,19 +318,19 @@ class ClientOptionsPanel extends JPanel {
     }
 
     private void validateInput() {
-        /* Validate player name. */
+        // Validate player name.
         if (playerName.getText() == null || playerName.getText().isEmpty()) {
             owner.setInfoText("Please set a name for your player", InfoMessageType.ERROR);
             return;
         }
 
-        /* Validate host name. */
+        // Validate host name.
         if (remoteIP.getText() == null || remoteIP.getText().isEmpty()) {
             owner.setInfoText("Please enter a host name", InfoMessageType.ERROR);
             return;
         }
 
-        /* Validate port. */
+        // Validate port.
         try {
             int port = Integer.parseInt(remotePort.getText());
             if (port < 0 || port > 65535) {
@@ -352,7 +352,7 @@ class ClientOptionsPanel extends JPanel {
             return;
         }
 
-        /* Everything is status. */
+        // Everything is success.
         owner.hideErrorMessages();
 
         owner.setProperty(ClientConfig.SERVER_PORT_PROPERTY, remotePort.getText());

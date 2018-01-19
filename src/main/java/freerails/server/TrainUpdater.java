@@ -21,9 +21,11 @@ package freerails.server;
 import freerails.controller.*;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
-import freerails.network.MoveReceiver;
+import freerails.move.MoveTrainPreMove;
+import freerails.move.PreMove;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -51,20 +53,14 @@ public class TrainUpdater implements ServerAutomaton {
     private transient MoveReceiver moveReceiver;
 
     /**
-     * @param mr
+     * @param moveReceiver
      */
-    public TrainUpdater(MoveReceiver mr) {
-        moveReceiver = mr;
-
-        if (null == mr) {
-            throw new NullPointerException();
-        }
-
+    public TrainUpdater(MoveReceiver moveReceiver) {
+        this.moveReceiver = Utils.verifyNotNull(moveReceiver);
     }
 
     private static ImmutableSchedule generateInitialSchedule(FreerailsPrincipal principal, ReadOnlyWorld world, boolean autoSchedule) {
         WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
-
         MutableSchedule s = new MutableSchedule();
 
         // Add up to 4 stations to the schedule.
@@ -94,8 +90,8 @@ public class TrainUpdater implements ServerAutomaton {
 
         PreMove addTrain = new AddTrainPreMove(engineTypeId, wagons, p, principal, is);
 
-        Move m = addTrain.generateMove(world);
-        moveReceiver.process(m);
+        Move move = addTrain.generateMove(world);
+        moveReceiver.process(move);
 
     }
 
@@ -165,18 +161,18 @@ public class TrainUpdater implements ServerAutomaton {
                 }
             }
             for (MoveTrainPreMove preMove : movingTrains) {
-                Move m;
+                Move move;
                 try {
-                    m = preMove.generateMove(world);
+                    move = preMove.generateMove(world);
                 } catch (NoTrackException e) {
                     continue; // user deleted track, continue and ignore
                     // train!
                 }
-                moveReceiver.process(m);
+                moveReceiver.process(move);
             }
             for (MoveTrainPreMove preMove : stoppedTrains) {
-                Move m = preMove.generateMove(world);
-                moveReceiver.process(m);
+                Move move = preMove.generateMove(world);
+                moveReceiver.process(move);
             }
         }
 

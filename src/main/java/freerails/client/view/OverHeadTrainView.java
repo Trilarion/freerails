@@ -42,17 +42,17 @@ public class OverHeadTrainView implements Painter {
     private final TrainRenderer trainPainter;
     private final ReadOnlyWorld world;
     private final SoundManager soundManager = SoundManager.getSoundManager();
-    private final ModelRoot mr;
+    private final ModelRoot modelRoot;
 
     /**
      * @param world
-     * @param rr
-     * @param mr
+     * @param rendererRoot
+     * @param modelRoot
      */
-    public OverHeadTrainView(ReadOnlyWorld world, RendererRoot rr, ModelRoot mr) {
+    public OverHeadTrainView(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.world = world;
-        trainPainter = new TrainRenderer(rr);
-        this.mr = mr;
+        trainPainter = new TrainRenderer(rendererRoot);
+        this.modelRoot = modelRoot;
     }
 
     /**
@@ -63,7 +63,7 @@ public class OverHeadTrainView implements Painter {
         g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke(10));
 
-        Double time = (Double) mr.getProperty(Property.TIME);
+        Double time = (Double) modelRoot.getProperty(Property.TIME);
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();

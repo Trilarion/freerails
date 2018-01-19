@@ -46,7 +46,7 @@ public class ShowJavaProperties {
     public static String getPropertiesHtmlString() {
         Properties p = System.getProperties();
         StringBuilder sb = new StringBuilder();
-        /* We set the width of the table so that its text word-wraps. */
+        // We set the width of the table so that its text word-wraps.
         sb.append("<html><h3>Java System Properties</h3><table width =\"" + TABLE_WIDTH + "\" align = \"left\" valign = \"top\">\n");
 
         Enumeration keys = p.keys();

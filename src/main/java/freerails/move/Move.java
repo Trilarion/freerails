@@ -50,7 +50,7 @@ import java.io.Serializable;
  *
  * @see MoveStatus
  * @see World
- * @see freerails.controller.PreMove
+ * @see PreMove
  */
 public interface Move extends Serializable {
 

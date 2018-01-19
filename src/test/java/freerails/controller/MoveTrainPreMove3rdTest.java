@@ -23,6 +23,7 @@ package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
+import freerails.move.MoveTrainPreMove;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.train.PositionOnTrack;
@@ -48,23 +49,23 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        FreerailsPrincipal principal = me.getPrincipal();
-        ModelRoot mr = new ModelRootImpl();
-        TrackMoveProducer trackBuilder = new TrackMoveProducer(me, world, mr);
-        StationBuilder stationBuilder = new StationBuilder(me);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        FreerailsPrincipal principal = moveExecutor.getPrincipal();
+        ModelRoot modelRoot = new ModelRootImpl();
+        TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        StationBuilder stationBuilder = new StationBuilder(moveExecutor);
 
         // Build track.
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
 
         Point2D stationA = new Point2D(10, 10);
-        MoveStatus ms0 = trackBuilder.buildTrack(stationA, line1);
-        assertTrue(ms0.status);
-        ms0 = trackBuilder.buildTrack(stationA, line2);
-        assertTrue(ms0.status);
-        ms0 = trackBuilder.buildTrack(stationA, line3);
-        assertTrue(ms0.status);
+        MoveStatus moveStatus = trackBuilder.buildTrack(stationA, line1);
+        assertTrue(moveStatus.succeeds());
+        moveStatus = trackBuilder.buildTrack(stationA, line2);
+        assertTrue(moveStatus.succeeds());
+        moveStatus = trackBuilder.buildTrack(stationA, line3);
+        assertTrue(moveStatus.succeeds());
 
     }
 

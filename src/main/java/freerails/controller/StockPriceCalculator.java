@@ -121,8 +121,8 @@ public class StockPriceCalculator {
         TransactionAggregator aggregator = new TransactionAggregator(world, pr) {
             @Override
             protected boolean condition(int transactionID) {
-                Transaction t = super.world.getTransaction(super.principal, transactionID);
-                return !(t instanceof ItemTransaction);
+                Transaction transaction = super.world.getTransaction(super.principal, transactionID);
+                return !(transaction instanceof ItemTransaction);
             }
         };
         aggregator.setTimes(interval);

@@ -20,6 +20,7 @@ package freerails.client;
 
 import freerails.client.common.RepaintManagerForActiveRendering;
 import freerails.client.launcher.Launcher;
+import freerails.util.Utils;
 import freerails.world.game.GameModel;
 import org.apache.log4j.Logger;
 
@@ -34,27 +35,23 @@ public final class GameLoop implements Runnable {
     private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
 
     private final ScreenHandler screenHandler;
-    private final GameModel[] model;
+    private final GameModel[] gameModels;
 
     /**
-     * @param s
+     * @param screenHandler
      */
-    public GameLoop(ScreenHandler s) {
-        screenHandler = s;
-        model = new GameModel[0];
+    public GameLoop(ScreenHandler screenHandler) {
+        this.screenHandler = screenHandler;
+        gameModels = new GameModel[0];
     }
 
     /**
-     * @param s
-     * @param gm
+     * @param screenHandler
+     * @param gameModels
      */
-    public GameLoop(ScreenHandler s, GameModel[] gm) {
-        screenHandler = s;
-        model = gm;
-
-        if (null == model) {
-            throw new NullPointerException();
-        }
+    public GameLoop(ScreenHandler screenHandler, GameModel[] gameModels) {
+        this.screenHandler = screenHandler;
+        this.gameModels = Utils.verifyNotNull(gameModels);
     }
 
     public void run() {
@@ -99,7 +96,7 @@ public final class GameLoop implements Runnable {
                         break;
                     }
 
-                    for (GameModel aModel : model) {
+                    for (GameModel aModel : gameModels) {
                         aModel.update();
                     }
 
@@ -169,7 +166,7 @@ public final class GameLoop implements Runnable {
                 //      Thread.sleep(5);
             }
 
-            /* signal that we are done */
+            // signal that we are done
             Integer loopMonitor = 0;
             synchronized (loopMonitor) {
                 loopMonitor.notify();

@@ -97,9 +97,8 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
      * type.
      */
     private void addTrack(int trackType, int quantity) {
-        ItemTransaction t = new ItemTransaction(
-                TransactionCategory.TRACK, trackType, quantity, new Money(
-                trackType));
-        world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, t);
+        ItemTransaction transaction = new ItemTransaction(TransactionCategory.TRACK, trackType, quantity,
+                new Money(trackType));
+        world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, transaction);
     }
 }

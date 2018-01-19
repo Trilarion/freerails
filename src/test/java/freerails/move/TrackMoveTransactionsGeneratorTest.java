@@ -62,7 +62,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
-        TrackMove move;
+        TrackMove trackMove;
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
@@ -72,10 +72,10 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         int owner = ChangeTrackPieceCompositeMove.getOwner(
                 MapFixtureFactory.TEST_PRINCIPAL, world);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
+        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
                 new Point2D(0, 0));
 
-        Move m = transactionGenerator.addTransactions(move);
-        assertNotNull(m);
+        Move move = transactionGenerator.addTransactions(trackMove);
+        assertNotNull(move);
     }
 }

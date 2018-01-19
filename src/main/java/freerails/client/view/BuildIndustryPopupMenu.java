@@ -57,10 +57,10 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
-    public void setup(final ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(final ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         removeAll();
 
         final NonNullElementWorldIterator it = new NonNullElementWorldIterator(SKEY.TERRAIN_TYPES, modelRoot.getWorld());
@@ -75,14 +75,14 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                     private final int terrainType = it.getIndex();
 
                     public void actionPerformed(ActionEvent e) {
-                        Move m1 = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainType);
-                        Transaction t = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainType, 1, Money.changeSign(price));
-                        Move m2 = new AddTransactionMove(modelRoot.getPrincipal(), t);
-                        Move m3 = new CompositeMove(m1, m2);
-                        MoveStatus ms = modelRoot.doMove(m3);
+                        Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainType);
+                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainType, 1, Money.changeSign(price));
+                        Move m2 = new AddTransactionMove(modelRoot.getPrincipal(), transaction);
+                        Move m3 = new CompositeMove(move, m2);
+                        MoveStatus moveStatus = modelRoot.doMove(m3);
 
-                        if (!ms.status) {
-                            modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, ms.message);
+                        if (!moveStatus.succeeds()) {
+                            modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, moveStatus.getMessage());
                         }
                     }
                 });

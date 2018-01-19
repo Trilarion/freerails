@@ -87,13 +87,13 @@ class CityModel {
     }
 
     void loadFromMap(ReadOnlyWorld w, int cityID) {
-        /* Reset lists of tiles. */
+        // Reset lists of tiles.
         urbanCityTiles.clear();
         industryCityTiles.clear();
         clearTiles.clear();
         resourceCityTiles.clear();
 
-        /* Set up the list of industries not at the city. */
+        // Set up the list of industries not at the city.
         industriesNotAtCity.clear();
 
         for (int i = 0; i < w.size(SKEY.TERRAIN_TYPES); i++) {
@@ -106,18 +106,18 @@ class CityModel {
 
         stations = 0;
 
-        /* Identify city's bounds. */
+        // Identify city's bounds.
         Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w.getMapHeight());
         City city = (City) w.get(SKEY.CITIES, cityID);
         Rectangle cityArea = new Rectangle(city.getX() - 3, city.getY() - 3, 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
-        /* Count tile types. */
+        // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
                 FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
 
-                /* Count the number of stations at the city. */
+                // Count the number of stations at the city.
                 if (tile.getTrackPiece().getTrackRule().isStation()) {
                     stations++;
                 }

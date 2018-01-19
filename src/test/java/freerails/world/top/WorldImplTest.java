@@ -95,9 +95,9 @@ public class WorldImplTest extends TestCase {
 
         assertTrue(Utils.equalsBySerialization(original, copy));
 
-        Transaction t = new MoneyTransaction(new Money(100),
+        Transaction transaction = new MoneyTransaction(new Money(100),
                 TransactionCategory.MISC_INCOME);
-        copy.addTransaction(player.getPrincipal(), t);
+        copy.addTransaction(player.getPrincipal(), transaction);
         assertEquals(new Money(100), copy.getCurrentBalance(player
                 .getPrincipal()));
         assertFalse(copy.equals(original));
@@ -174,20 +174,20 @@ public class WorldImplTest extends TestCase {
      */
     public void testBankAccount() {
         WorldImpl world = new WorldImpl();
-        Player p = new Player("Test", 0);
-        int playerID = world.addPlayer(p);
+        Player player = new Player("Test", 0);
+        int playerID = world.addPlayer(player);
         assertEquals(0, playerID);
         FreerailsPrincipal fp = world.getPlayer(playerID).getPrincipal();
-        Transaction t = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(
+        Transaction transaction = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(
                 100));
         assertEquals(new Money(0), world.getCurrentBalance(fp));
-        world.addTransaction(fp, t);
+        world.addTransaction(fp, transaction);
         assertEquals(1, world.getNumberOfTransactions(fp));
         assertEquals(new Money(100), world.getCurrentBalance(fp));
         Transaction t2 = world.getTransaction(fp, 0);
-        assertEquals(t, t2);
+        assertEquals(transaction, t2);
         Transaction t3 = world.removeLastTransaction(fp);
-        assertEquals(t, t3);
+        assertEquals(transaction, t3);
         assertEquals(new Money(0), world.getCurrentBalance(fp));
 
     }

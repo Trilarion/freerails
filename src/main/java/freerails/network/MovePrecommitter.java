@@ -21,7 +21,7 @@
  */
 package freerails.network;
 
-import freerails.controller.PreMove;
+import freerails.move.PreMove;
 import freerails.controller.PreMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -67,8 +67,8 @@ public class MovePrecommitter {
     public void fromServer(Move move) {
         rollBackPrecommittedMoves();
         MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-        if (!moveStatus.status) {
-            throw new IllegalStateException(moveStatus.message);
+        if (!moveStatus.succeeds()) {
+            throw new IllegalStateException(moveStatus.getMessage());
         }
     }
 
@@ -79,22 +79,22 @@ public class MovePrecommitter {
         precommitMoves();
 
         if (!precomitted.isEmpty()) {
-            Move m = (Move) precomitted.removeFirst();
+            Move move = (Move) precomitted.removeFirst();
 
-            if (!moveStatus.status) {
-                logger.info("Move rejected by server: " + moveStatus.message);
+            if (!moveStatus.succeeds()) {
+                logger.info("Move rejected by server: " + moveStatus.getMessage());
 
-                MoveStatus undoStatus = m.undoMove(world, Player.AUTHORITATIVE);
+                MoveStatus undoStatus = move.undoMove(world, Player.AUTHORITATIVE);
 
-                if (!undoStatus.status) {
+                if (!undoStatus.succeeds()) {
                     throw new IllegalStateException();
                 }
             } else {
-                logger.debug("Move accepted by server: " + m.toString());
+                logger.debug("Move accepted by server: " + move.toString());
             }
         } else {
-            if (!moveStatus.status) {
-                logger.debug("Clear the blockage " + moveStatus.message);
+            if (!moveStatus.succeeds()) {
+                logger.debug("Clear the blockage " + moveStatus.getMessage());
 
                 uncomitted.removeFirst();
                 precommitMoves();
@@ -104,29 +104,29 @@ public class MovePrecommitter {
         }
     }
 
-    public Move fromServer(PreMove pm) {
-        Move generatedMove = pm.generateMove(world);
+    public Move fromServer(PreMove preMove) {
+        Move generatedMove = preMove.generateMove(world);
         fromServer(generatedMove);
 
         return generatedMove;
     }
 
-    public void fromServer(PreMoveStatus pms) {
+    public void fromServer(PreMoveStatus preMoveStatus) {
         rollBackPrecommittedMoves();
 
-        PreMove pm = (PreMove) uncomitted.removeFirst();
+        PreMove preMove = (PreMove) uncomitted.removeFirst();
 
-        if (pms.moveStatus.status) {
-            logger.debug("PreMove accepted by server: " + pms.toString());
+        if (preMoveStatus.moveStatus.succeeds()) {
+            logger.debug("PreMove accepted by server: " + preMoveStatus.toString());
 
-            Move m = pm.generateMove(world);
-            MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+            Move move = preMove.generateMove(world);
+            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
 
-            if (!ms.status) {
+            if (!moveStatus.succeeds()) {
                 throw new IllegalStateException();
             }
         } else {
-            logger.info("PreMove rejected by server: " + pms.moveStatus.message);
+            logger.info("PreMove rejected by server: " + preMoveStatus.moveStatus.getMessage());
         }
 
         precommitMoves();
@@ -139,24 +139,24 @@ public class MovePrecommitter {
             Object first = uncomitted.getFirst();
 
             if (first instanceof Move) {
-                Move m = (Move) first;
-                MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+                Move move = (Move) first;
+                MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
 
-                if (ms.status) {
+                if (moveStatus.succeeds()) {
                     uncomitted.removeFirst();
-                    precomitted.addLast(m);
+                    precomitted.addLast(move);
                 } else {
                     blocked = true;
                 }
             } else if (first instanceof PreMove) {
-                PreMove pm = (PreMove) first;
-                Move m = pm.generateMove(world);
-                MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
+                PreMove preMove = (PreMove) first;
+                Move move = preMove.generateMove(world);
+                MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
 
-                if (ms.status) {
+                if (moveStatus.succeeds()) {
                     uncomitted.removeFirst();
 
-                    Serializable pmam = new PreMoveAndMove(pm, m);
+                    Serializable pmam = new PreMoveAndMove(preMove, move);
                     precomitted.addLast(pmam);
                 } else {
                     blocked = true;
@@ -180,16 +180,16 @@ public class MovePrecommitter {
                 obj2add2uncomitted = move2undo;
             } else if (last instanceof PreMoveAndMove) {
                 PreMoveAndMove pmam = (PreMoveAndMove) last;
-                move2undo = pmam.m;
-                obj2add2uncomitted = pmam.pm;
+                move2undo = pmam.move;
+                obj2add2uncomitted = pmam.preMove;
             } else {
                 throw new IllegalStateException();
             }
 
-            MoveStatus ms = move2undo.undoMove(world, Player.AUTHORITATIVE);
+            MoveStatus moveStatus = move2undo.undoMove(world, Player.AUTHORITATIVE);
 
-            if (!ms.status) {
-                throw new IllegalStateException(ms.message);
+            if (!moveStatus.succeeds()) {
+                throw new IllegalStateException(moveStatus.getMessage());
             }
 
             uncomitted.addFirst(obj2add2uncomitted);
@@ -201,28 +201,27 @@ public class MovePrecommitter {
         precommitMoves();
     }
 
-    public Move toServer(PreMove pm) {
-        uncomitted.addLast(pm);
+    public Move toServer(PreMove preMove) {
+        uncomitted.addLast(preMove);
         precommitMoves();
 
         if (blocked) {
-            return pm.generateMove(world);
+            return preMove.generateMove(world);
         }
         PreMoveAndMove pmam = (PreMoveAndMove) precomitted.getLast();
 
-        return pmam.m;
+        return pmam.move;
     }
 
     private static class PreMoveAndMove implements Serializable {
+
         private static final long serialVersionUID = 3256443607635342897L;
-
-        private final Move m;
-
-        private final PreMove pm;
+        private final Move move;
+        private final PreMove preMove;
 
         private PreMoveAndMove(PreMove preMove, Move move) {
-            m = move;
-            pm = preMove;
+            this.move = move;
+            this.preMove = preMove;
         }
 
         @Override
@@ -232,15 +231,15 @@ public class MovePrecommitter {
 
             final PreMoveAndMove preMoveAndMove = (PreMoveAndMove) obj;
 
-            if (m != null ? !m.equals(preMoveAndMove.m) : preMoveAndMove.m != null) return false;
-            return pm != null ? pm.equals(preMoveAndMove.pm) : preMoveAndMove.pm == null;
+            if (move != null ? !move.equals(preMoveAndMove.move) : preMoveAndMove.move != null) return false;
+            return preMove != null ? preMove.equals(preMoveAndMove.preMove) : preMoveAndMove.preMove == null;
         }
 
         @Override
         public int hashCode() {
             int result;
-            result = (m != null ? m.hashCode() : 0);
-            result = 29 * result + (pm != null ? pm.hashCode() : 0);
+            result = (move != null ? move.hashCode() : 0);
+            result = 29 * result + (preMove != null ? preMove.hashCode() : 0);
             return result;
         }
     }

@@ -50,12 +50,12 @@ public class TrackBuildingTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        ModelRoot mr = new ModelRootImpl();
-        producer = new TrackMoveProducer(me, world, mr);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        ModelRoot modelRoot = new ModelRootImpl();
+        producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         FreerailsPrincipal principle = world.getPlayer(0).getPrincipal();
         pathFinder = new TrackPathFinder(world, principle);
-        stationBuilder = new StationBuilder(me);
+        stationBuilder = new StationBuilder(moveExecutor);
         bts = BuildTrackStrategy.getDefault(world);
     }
 
@@ -83,8 +83,8 @@ public class TrackBuildingTest extends TestCase {
             for (int i = 0; i < 5; i++) {
                 assertEquals(TileTransition.EAST, path[i]);
             }
-            MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.message, ms.status);
+            MoveStatus moveStatus = producer.buildTrack(from, path);
+            assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
                 TrackPiece tp = ((FullTerrainTile) world.getTile(x, 5))
@@ -124,8 +124,8 @@ public class TrackBuildingTest extends TestCase {
 
             assertEquals(TileTransition.EAST, path[0]);
 
-            MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.message, ms.status);
+            MoveStatus moveStatus = producer.buildTrack(from, path);
+            assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
             // Check track has been built.
             tp1 = ((FullTerrainTile) world.getTile(5, 5)).getTrackPiece();
             assertEquals(0, tp1.getTrackTypeID());
@@ -147,12 +147,12 @@ public class TrackBuildingTest extends TestCase {
         try {
             Point2D from = new Point2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-            MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.status);
+            MoveStatus moveStatus = producer.buildTrack(from, path);
+            assertTrue(moveStatus.succeeds());
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
             stationBuilder.setStationType(terminalStationType);
-            ms = stationBuilder.buildStation(new Point2D(8, 5));
-            assertTrue(ms.status);
+            moveStatus = stationBuilder.buildStation(new Point2D(8, 5));
+            assertTrue(moveStatus.succeeds());
             pathFinder.setupSearch(new Point2D(7, 5), new Point2D(9, 5), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
@@ -185,8 +185,8 @@ public class TrackBuildingTest extends TestCase {
             TileTransition[] path = pathFinder.pathAsVectors();
             TileTransition[] expectedPath = {TileTransition.EAST};
             assertTrue(Arrays.equals(expectedPath, path));
-            MoveStatus ms = producer.buildTrack(a, path);
-            assertTrue(ms.status);
+            MoveStatus moveStatus = producer.buildTrack(a, path);
+            assertTrue(moveStatus.succeeds());
 
             TrackPiece tp = ((FullTerrainTile) world.getTile(b.x, b.y))
                     .getTrackPiece();
@@ -213,8 +213,8 @@ public class TrackBuildingTest extends TestCase {
         try {
             Point2D from = new Point2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
-            MoveStatus ms = producer.buildTrack(from, path);
-            assertTrue(ms.status);
+            MoveStatus moveStatus = producer.buildTrack(from, path);
+            assertTrue(moveStatus.succeeds());
             pathFinder.setupSearch(new Point2D(6, 5), new Point2D(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();

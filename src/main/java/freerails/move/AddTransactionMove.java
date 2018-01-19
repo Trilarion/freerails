@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.util.Utils;
 import freerails.world.World;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
@@ -42,31 +43,23 @@ public class AddTransactionMove implements Move {
 
     /**
      * @param account
-     * @param t
+     * @param transaction
      */
-    public AddTransactionMove(FreerailsPrincipal account, Transaction t) {
-        if (null == t) {
-            throw new NullPointerException();
-        }
-
+    public AddTransactionMove(FreerailsPrincipal account, Transaction transaction) {
         principal = account;
-        transaction = t;
+        this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = false;
     }
 
     /**
      * @param account
-     * @param t
+     * @param transaction
      * @param constrain
      */
-    public AddTransactionMove(FreerailsPrincipal account, Transaction t, boolean constrain) {
+    public AddTransactionMove(FreerailsPrincipal account, Transaction transaction, boolean constrain) {
         principal = account;
-        transaction = t;
+        this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = constrain;
-
-        if (null == t) {
-            throw new NullPointerException();
-        }
     }
 
     /**
@@ -119,23 +112,23 @@ public class AddTransactionMove implements Move {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryDoMove(world, principal);
+        MoveStatus moveStatus = tryDoMove(world, principal);
 
-        if (ms.status) {
+        if (moveStatus.succeeds()) {
             world.addTransaction(this.principal, transaction);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryUndoMove(world, principal);
+        MoveStatus moveStatus = tryUndoMove(world, principal);
 
-        if (ms.status) {
+        if (moveStatus.succeeds()) {
             world.removeLastTransaction(this.principal);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     @Override

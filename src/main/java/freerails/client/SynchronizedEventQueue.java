@@ -51,7 +51,7 @@ public final class SynchronizedEventQueue extends EventQueue {
      */
     public static synchronized void use() {
         if (!alreadyInUse) {
-            /* set up the synchronized event queue */
+            // set up the synchronized event queue
             EventQueue eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
             eventQueue.push(instance);
             alreadyInUse = true;

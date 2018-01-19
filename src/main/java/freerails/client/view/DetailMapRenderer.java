@@ -42,13 +42,13 @@ public class DetailMapRenderer implements MapRenderer {
 
     /**
      * @param world
-     * @param rr
+     * @param rendererRoot
      * @param modelRoot
      */
-    public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rr, ModelRoot modelRoot) {
-        trainsview = new OverHeadTrainView(world, rr, modelRoot);
+    public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+        trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
-        MapBackgroundRender render = new MapBackgroundRender(world, rr, modelRoot);
+        MapBackgroundRender render = new MapBackgroundRender(world, rendererRoot, modelRoot);
 
         if (OSXWorkaround) {
             // Don't buffer the mapviews background.
@@ -60,9 +60,9 @@ public class DetailMapRenderer implements MapRenderer {
         Dimension mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
         mapSizeInPixels = new Dimension(mapSize.width * WorldConstants.TILE_SIZE, mapSize.height * WorldConstants.TILE_SIZE);
         stationRadius = new StationRadiusRenderer(modelRoot);
-        buildTrackRenderer = new BuildTrackRenderer(rr, modelRoot);
+        buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);
         buildTrackController = new BuildTrackController(world, modelRoot);
-        stationBoxes = new StationBoxRenderer(world, rr, modelRoot);
+        stationBoxes = new StationBoxRenderer(world, rendererRoot, modelRoot);
     }
 
     /**

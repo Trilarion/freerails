@@ -33,13 +33,13 @@ import java.awt.*;
  */
 public class TrainRenderer {
 
-    private final RendererRoot rr;
+    private final RendererRoot rendererRoot;
 
     /**
      * @param trainImages
      */
     public TrainRenderer(RendererRoot trainImages) {
-        rr = trainImages;
+        rendererRoot = trainImages;
     }
 
     /**
@@ -103,9 +103,9 @@ public class TrainRenderer {
         Image image;
 
         if (engine) {
-            image = rr.getEngineImages(type).getOverheadImage(v.getID());
+            image = rendererRoot.getEngineImages(type).getOverheadImage(v.getID());
         } else {
-            image = rr.getWagonImages(type).getOverheadImage(v.getID());
+            image = rendererRoot.getWagonImages(type).getOverheadImage(v.getID());
         }
 
         g.drawImage(image, p.x - 15, p.y - 15, null);

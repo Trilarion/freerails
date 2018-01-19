@@ -31,23 +31,10 @@ import java.awt.*;
 public class SquareCityTileBackgroundRendererTest extends TestCase {
 
     private final MapLayerRenderer renderer = new MapLayerRenderer() {
-
-        public void paintTile(Graphics g, int tileX, int tileY) {
-
-        }
-
-        public void refreshTile(int x, int y) {
-
-        }
-
-        public void refreshAll() {
-
-        }
-
-        public void paintRect(Graphics g, Rectangle visibleRect) {
-
-        }
-
+        public void paintTile(Graphics g, int tileX, int tileY) {}
+        public void refreshTile(int x, int y) {}
+        public void refreshAll() {}
+        public void paintRect(Graphics g, Rectangle visibleRect) {}
     };
 
     /**
@@ -60,8 +47,7 @@ public class SquareCityTileBackgroundRendererTest extends TestCase {
             return;
         }
 
-        SquareTileBackgroundRenderer renderer = new SquareTileBackgroundRenderer(
-                this.renderer);
+        SquareTileBackgroundRenderer renderer = new SquareTileBackgroundRenderer(this.renderer);
         renderer.refreshAll();
         renderer.refreshTile(1, 2);
     }

@@ -26,6 +26,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.UpgradeTrackMove;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldDiffs;
@@ -85,8 +86,7 @@ public class BuildTrackController implements GameModel {
      */
     private BuildTrackStrategy getBts() {
         BuildTrackStrategy btss = (BuildTrackStrategy) modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
-        if (null == btss) throw new NullPointerException();
-        return btss;
+        return Utils.verifyNotNull(btss);
     }
 
     /**
@@ -153,7 +153,7 @@ public class BuildTrackController implements GameModel {
             throw new IllegalStateException(oldPosition.toString() + " and " + track.get(0).toString());
         }
 
-        MoveStatus ms = null;
+        MoveStatus moveStatuss = null;
         int piecesOfNewTrack = 0;
 
         if (null != trackBuilder) {
@@ -183,27 +183,27 @@ public class BuildTrackController implements GameModel {
             piecesOfNewTrack++;
 
             if (trackBuilder != null) {
-                ms = trackBuilder.buildTrack(oldPosition, vector);
+                moveStatuss = trackBuilder.buildTrack(oldPosition, vector);
             } else {
-                ms = planBuildingTrack(oldPosition, vector);
+                moveStatuss = planBuildingTrack(oldPosition, vector);
             }
 
-            if (ms.status) {
+            if (moveStatuss.succeeds()) {
                 setCursorMessage("");
             } else {
-                setCursorMessage(ms.message);
+                setCursorMessage(moveStatuss.getMessage());
                 reset();
 
-                return ms;
+                return moveStatuss;
             }
 
             oldPosition = point;
         }
 
-        /* Check whether there is already track at every point. */
+        // Check whether there is already track at every point.
         if (piecesOfNewTrack == 0) {
             MoveStatus moveFailed = MoveStatus.moveFailed("Track already here");
-            setCursorMessage(moveFailed.message);
+            setCursorMessage(moveFailed.getMessage());
 
             return moveFailed;
         }
@@ -211,13 +211,13 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = true;
 
         // If track has actually been built, play the build track sound.
-        if (trackBuilder != null && ms.isStatus()) {
+        if (trackBuilder != null && moveStatuss.succeeds()) {
             if (trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
                 soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
             }
         }
 
-        return ms;
+        return moveStatuss;
     }
 
     /**
@@ -293,7 +293,7 @@ public class BuildTrackController implements GameModel {
             return;
         }
 
-        /* Check both points are on the map. */
+        // Check both points are on the map.
         if (!realWorld.boundsContain(from.x, from.y) || !realWorld.boundsContain(to.x, to.y)) {
             hide();
 
@@ -448,13 +448,13 @@ public class BuildTrackController implements GameModel {
                             default:
                                 throw new IllegalStateException(mode.toString());
 
-                        }// end of switch statement
-                        MoveStatus ms = move.doMove(worldDiffs, fp);
-                        okSoFar = ms.status && okSoFar;
+                        }
+                        MoveStatus moveStatus = move.doMove(worldDiffs, fp);
+                        okSoFar = moveStatus.succeeds() && okSoFar;
                     }// end of attemptMove
                     locationX += v.deltaX;
                     locationY += v.deltaY;
-                }// end for loop
+                }
                 startPoint = new Point2D(locationX, locationY);
                 isBuildTrackSuccessful = okSoFar;
                 if (okSoFar) {
@@ -479,19 +479,19 @@ public class BuildTrackController implements GameModel {
 
         if (buildNewTrack) {
             if (!builtTrack.isEmpty()) {
-                MoveStatus ms = moveCursorMoreTiles(builtTrack, trackBuilder);
+                MoveStatus moveStatus = moveCursorMoreTiles(builtTrack, trackBuilder);
 
-                /* Note, reset() will have been called if moveStatus.status == false */
-                if (ms.status) {
+                // Note, reset() will have been called if moveStatus.success == false
+                if (moveStatus.succeeds()) {
                     actPoint = builtTrack.get(builtTrack.size() - 1);
                     builtTrack = new ArrayList<>();
                 }
             }
         } else {
             trackBuilder.setBuildTrackStrategy(getBts());
-            MoveStatus ms = trackBuilder.buildTrack(actPoint, path);
-            // MoveStatus moveStatus = trackBuilder.buildTrack(startPoint, path);
-            if (ms.status) {
+            MoveStatus moveStatus = trackBuilder.buildTrack(actPoint, path);
+
+            if (moveStatus.succeeds()) {
                 actPoint = targetPoint;
                 setCursorMessage("");
                 if (BuildMode.REMOVE_TRACK == getBuildMode()) {
@@ -501,7 +501,7 @@ public class BuildTrackController implements GameModel {
                 }
 
             } else {
-                setCursorMessage(ms.message);
+                setCursorMessage(moveStatus.getMessage());
                 reset();
             }
         }

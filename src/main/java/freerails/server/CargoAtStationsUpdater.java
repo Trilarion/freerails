@@ -23,7 +23,6 @@ package freerails.server;
 
 import freerails.move.ChangeCargoBundleMove;
 import freerails.move.Move;
-import freerails.network.MoveReceiver;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -101,8 +100,8 @@ class CargoAtStationsUpdater implements FreerailsServerSerializable {
                     }
                 }
 
-                Move m = new ChangeCargoBundleMove(before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), station.getCargoBundleID(), principal);
-                moveReceiver.process(m);
+                Move move = new ChangeCargoBundleMove(before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), station.getCargoBundleID(), principal);
+                moveReceiver.process(move);
             }
         }
     }

@@ -21,11 +21,13 @@ package freerails.client.common;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
-import freerails.controller.PreMove;
+import freerails.move.PreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.network.*;
+import freerails.server.MoveReceiver;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldListListener;
 import freerails.world.WorldMapListener;
@@ -107,10 +109,10 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @return
      */
     public MoveStatus doMove(Move move) {
-        MoveStatus ms = moveReceiver.tryDoMove(move);
+        MoveStatus moveStatus = moveReceiver.tryDoMove(move);
         moveReceiver.process(move);
 
-        return ms;
+        return moveStatus;
     }
 
     /**
@@ -118,22 +120,18 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @return
      */
     public MoveStatus doPreMove(PreMove preMove) {
-        Move m = preMove.generateMove(world);
-        MoveStatus ms = moveReceiver.tryDoMove(m);
+        Move move = preMove.generateMove(world);
+        MoveStatus moveStatus = moveReceiver.tryDoMove(move);
         moveReceiver.processPreMove(preMove);
 
-        return ms;
+        return moveStatus;
     }
 
     /**
      * @return
      */
     public FreerailsPrincipal getPrincipal() {
-        if (null == playerPrincipal) {
-            throw new NullPointerException();
-        }
-
-        return playerPrincipal;
+        return Utils.verifyNotNull(playerPrincipal);
     }
 
     /**
@@ -201,21 +199,14 @@ public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * world model. Call this when the world model is changed (e.g. new map is
      * loaded)
      */
-    public void setup(ReadOnlyWorld world, FreerailsPrincipal p) {
-        this.world = world;
-        assert p != null;
-        assert world.isPlayer(p);
-        playerPrincipal = p;
-
-        if (null == world) {
-            throw new NullPointerException();
-        }
-
+    public void setup(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        this.world = Utils.verifyNotNull(world);
+        assert principal != null;
+        assert world.isPlayer(principal);
+        playerPrincipal = principal;
         BuildTrackStrategy bts = BuildTrackStrategy.getDefault(world);
         setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);
-
         hasBeenSetup = true;
-
     }
 
     /**

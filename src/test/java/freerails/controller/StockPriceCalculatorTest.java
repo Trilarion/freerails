@@ -78,10 +78,10 @@ public class StockPriceCalculatorTest extends TestCase {
         world.setTime(newTime);
         CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
         long income = 100000;
-        Transaction t = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
+        Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
         FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
-        world.addTransaction(princ, t);
+        world.addTransaction(princ, transaction);
         assertEquals(initialNetworth, calc.netWorth(0));
 
         GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
@@ -133,10 +133,10 @@ public class StockPriceCalculatorTest extends TestCase {
     private void addIncome(long income) {
         CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
 
-        Transaction t = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
+        Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
         FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
-        world.addTransaction(princ, t);
+        world.addTransaction(princ, transaction);
     }
 
     /**

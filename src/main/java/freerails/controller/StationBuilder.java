@@ -71,9 +71,9 @@ public class StationBuilder {
 
         FreerailsPrincipal principal = executor.getPrincipal();
         AddStationPreMove preMove = AddStationPreMove.newStation(p, ruleNumber, principal);
-        Move m = preMove.generateMove(world);
+        Move move = preMove.generateMove(world);
 
-        return executor.tryDoMove(m);
+        return executor.tryDoMove(move);
     }
 
     /**
@@ -83,13 +83,13 @@ public class StationBuilder {
     public MoveStatus buildStation(Point2D p) {
         // Only build a station if there is track at the specified point.
         MoveStatus status = tryBuildingStation(p);
-        if (status.status) {
+        if (status.succeeds()) {
             FreerailsPrincipal principal = executor.getPrincipal();
             AddStationPreMove preMove = AddStationPreMove.newStation(p, ruleNumber, principal);
             return executor.doPreMove(preMove);
         }
 
-        logger.debug(status.message);
+        logger.debug(status.getMessage());
 
         return status;
     }

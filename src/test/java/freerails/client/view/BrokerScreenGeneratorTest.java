@@ -54,13 +54,13 @@ public class BrokerScreenGeneratorTest extends TestCase {
         world = new WorldImpl(10, 10);
         // Set the time..
         world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
-        Player p = MapFixtureFactory.TEST_PLAYER;
+        Player player = MapFixtureFactory.TEST_PLAYER;
 
-        AddPlayerMove apm = AddPlayerMove.generateMove(world, p);
-        MoveStatus ms = apm.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.isStatus());
+        AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
+        MoveStatus moveStatus = apm.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(moveStatus.succeeds());
         playerID = world.getNumberOfPlayers() - 1;
-        principal = p.getPrincipal();
+        principal = player.getPrincipal();
     }
 
     /**
@@ -72,11 +72,11 @@ public class BrokerScreenGeneratorTest extends TestCase {
         for (int i = 0; i < 9; i++) {
             StockPrice stockPrice = new StockPriceCalculator(world).calculate()[playerID];
             Money sharePrice = stockPrice.treasuryBuyPrice;
-            StockItemTransaction t = StockItemTransaction.buyOrSellStock(playerID,
+            StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(playerID,
                     WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
-            Move move = new AddTransactionMove(principal, t);
-            MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(ms.isStatus());
+            Move move = new AddTransactionMove(principal, stockItemTransaction);
+            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+            assertTrue(moveStatus.succeeds());
             // The line below threw an exception that caused bug 1341365.
             BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(
                     world, principal);

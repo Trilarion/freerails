@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  */
-class TrainStopsHandler implements Serializable {
+public class TrainStopsHandler implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
     private static final int NOT_AT_STATION = -1;
@@ -65,7 +65,7 @@ class TrainStopsHandler implements Serializable {
     /**
      * If wagons are added to a train, we need to increase its length.
      */
-    static PathOnTiles lengthenPath(ReadOnlyWorld w, PathOnTiles path, int currentTrainLength) {
+    public static PathOnTiles lengthenPath(ReadOnlyWorld w, PathOnTiles path, int currentTrainLength) {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
@@ -126,9 +126,9 @@ class TrainStopsHandler implements Serializable {
      * @return
      */
     public Move getMoves() {
-        Move m = WorldDiffMove.generate(worldDiffs, WorldDiffMove.Cause.TrainArrives);
+        Move move = WorldDiffMove.generate(worldDiffs, WorldDiffMove.Cause.TrainArrives);
         worldDiffs.reset();
-        return m;
+        return move;
     }
 
     /**
@@ -185,15 +185,15 @@ class TrainStopsHandler implements Serializable {
 
         // train is at a station so do the cargo processing
         DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, worldDiffs, principal, waiting, autoConsist);
-        Move m = transfer.generateMove();
-        if (null != m) {
-            MoveStatus ms = m.doMove(worldDiffs, principal);
-            if (!ms.status) throw new IllegalStateException(ms.message);
+        Move move = transfer.generateMove();
+        if (null != move) {
+            MoveStatus moveStatus = move.doMove(worldDiffs, principal);
+            if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
         }
 
     }
 
-    void makeTrainWait(int ticks) {
+    public void makeTrainWait(int ticks) {
         GameTime currentTime = worldDiffs.currentTime();
         GameTime timeLoadingFinished = new GameTime(currentTime.getTicks() + ticks);
     }
@@ -236,12 +236,12 @@ class TrainStopsHandler implements Serializable {
 
                 // Create a new Move object.
                 Move trainMove = new NextActivityMove(nextMotion, trainId, principal);
-                MoveStatus ms = trainMove.doMove(worldDiffs, Player.AUTHORITATIVE);
-                if (!ms.status) throw new IllegalStateException(ms.message);
+                MoveStatus moveStatus = trainMove.doMove(worldDiffs, Player.AUTHORITATIVE);
+                if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
             }
         }
 
-        /* Add any cargo that is waiting. */
+        // Add any cargo that is waiting.
         loadAndUnloadCargo(schedule.getStationToGoto(), order.waitUntilFull, order.autoConsist);
 
         // Should we stop waiting?
@@ -272,9 +272,9 @@ class TrainStopsHandler implements Serializable {
         boolean autoConsist = schedule.autoConsist();
 
         if (null != wagonsToAdd) {
-            int engine = train.getEngineType();
-            Move m = ChangeTrainMove.generateMove(trainId, train, engine, wagonsToAdd, principal);
-            m.doMove(worldDiffs, principal);
+            int engineType = train.getEngineType();
+            Move move = ChangeTrainMove.generateMove(trainId, train, engineType, wagonsToAdd, principal);
+            move.doMove(worldDiffs, principal);
         }
         updateSchedule();
         int stationToGoto = schedule.getStationToGoto();

@@ -54,7 +54,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
-                /* update the renderer pos */
+                // update the renderer pos
                 Point p = (Point) evt.getNewValue();
                 stationRadiusRenderer.setPosition(p.x, p.y);
 
@@ -123,10 +123,10 @@ public class StationPlacementCursor extends MouseInputAdapter {
         int button = e.getButton();
 
         if (button == MouseEvent.BUTTON1) {
-            /* attempt to build */
+            // attempt to build
             stationBuildModel.getStationBuildAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         } else if (button == MouseEvent.BUTTON3) {
-            /* cancel the build */
+            // cancel the build
             stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         }
     }

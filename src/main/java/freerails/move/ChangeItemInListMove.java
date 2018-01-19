@@ -124,13 +124,13 @@ public class ChangeItemInListMove implements ListMove {
      * @return
      */
     private MoveStatus move(Serializable to, Serializable from, World w) {
-        MoveStatus ms = tryMove(to, from, w);
+        MoveStatus moveStatus = tryMove(to, from, w);
 
-        if (ms.status) {
+        if (moveStatus.succeeds()) {
             w.set(principal, listKey, index, to);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     @Override

@@ -127,27 +127,27 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
     }
 
     /**
-     * @param mv
-     * @param mr
-     * @param rr
+     * @param mapRenderer
+     * @param modelRoot
+     * @param rendererRoot
      * @throws IOException
      */
-    public void setup(MapRenderer mv, ModelRootImpl mr, RendererRoot rr) throws IOException {
-        super.setMapView(mv);
+    public void setup(MapRenderer mapRenderer, ModelRootImpl modelRoot, RendererRoot rendererRoot) throws IOException {
+        super.setMapView(mapRenderer);
 
         setBorder(null);
 
-        mapCursor = new FreerailsCursor(mr, rr);
+        mapCursor = new FreerailsCursor(modelRoot, rendererRoot);
 
-        mr.addPropertyChangeListener(this);
+        modelRoot.addPropertyChangeListener(this);
 
     }
 
     /**
-     * @param mv
+     * @param mapRenderer
      */
-    public void setup(MapRenderer mv) {
-        super.setMapView(mv);
+    public void setup(MapRenderer mapRenderer) {
+        super.setMapView(mapRenderer);
     }
 
     private void react2curorMove(Point2D newPoint, Point2D oldPoint) {

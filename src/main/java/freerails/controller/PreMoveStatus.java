@@ -44,14 +44,14 @@ public final class PreMoveStatus implements Serializable {
     }
 
     /**
-     * @param ms
+     * @param moveStatus
      * @return
      */
-    public static Serializable fromMoveStatus(MoveStatus ms) {
-        if (ms.status) {
+    public static Serializable fromMoveStatus(MoveStatus moveStatus) {
+        if (moveStatus.succeeds()) {
             return PRE_MOVE_OK;
         }
-        return new PreMoveStatus(ms);
+        return new PreMoveStatus(moveStatus);
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class PreMoveStatus implements Serializable {
      * Avoid creating a duplicate when deserializing.
      */
     private Object readResolve() {
-        if (moveStatus.status) {
+        if (moveStatus.succeeds()) {
             return PRE_MOVE_OK;
         }
         return this;

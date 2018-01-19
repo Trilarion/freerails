@@ -18,8 +18,6 @@
 
 package freerails.server;
 
-import freerails.network.MoveReceiver;
-
 import java.io.Serializable;
 
 /**

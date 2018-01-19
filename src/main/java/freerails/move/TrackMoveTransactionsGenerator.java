@@ -89,8 +89,8 @@ public class TrackMoveTransactionsGenerator {
         moves[0] = move;
 
         for (int i = 0; i < transactions.size(); i++) {
-            Transaction t = transactions.get(i);
-            moves[i + 1] = new AddTransactionMove(principal, t, true);
+            Transaction transaction = transactions.get(i);
+            moves[i + 1] = new AddTransactionMove(principal, transaction, true);
         }
 
         return new CompositeMove(moves);
@@ -168,10 +168,10 @@ public class TrackMoveTransactionsGenerator {
 
             if (0 != numberAdded) {
                 TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
-                Money m = rule.getPrice();
-                Money total = new Money(-m.getAmount() * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-                Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
-                transactions.add(t);
+                Money price = rule.getPrice();
+                Money total = new Money(-price.getAmount() * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
+                transactions.add(transaction);
             }
 
             int numberRemoved = trackRemoved[i];
@@ -185,17 +185,17 @@ public class TrackMoveTransactionsGenerator {
                 // You only get half the money back.
                 total = new Money(total.getAmount() / 2);
 
-                Transaction t = new ItemTransaction(TransactionCategory.TRACK, i, -numberRemoved, total);
-                transactions.add(t);
+                Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, -numberRemoved, total);
+                transactions.add(transaction);
             }
         }
         if (0 != fixedCostsStations) {
-            Transaction t = new ItemTransaction(TransactionCategory.STATIONS, -1, -1, new Money(fixedCostsStations));
-            transactions.add(t);
+            Transaction transaction = new ItemTransaction(TransactionCategory.STATIONS, -1, -1, new Money(fixedCostsStations));
+            transactions.add(transaction);
         }
         if (0 != fixedCostsBridges) {
-            Transaction t = new ItemTransaction(TransactionCategory.BRIDGES, -1, -1, new Money(fixedCostsBridges));
-            transactions.add(t);
+            Transaction transaction = new ItemTransaction(TransactionCategory.BRIDGES, -1, -1, new Money(fixedCostsBridges));
+            transactions.add(transaction);
         }
     }
 }

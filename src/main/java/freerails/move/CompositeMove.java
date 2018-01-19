@@ -86,83 +86,83 @@ public class CompositeMove implements Move {
         // Since whether a move later in the list goes through could
         // depend on whether an earlier move has been executed, we need
         // actually execute moves, then undo them to test whether the
-        // array of moves can be executed status.
-        MoveStatus ms = doMove(world, principal);
+        // array of moves can be executed success.
+        MoveStatus moveStatus = doMove(world, principal);
 
-        if (ms.status) {
+        if (moveStatus.succeeds()) {
             // We just wanted to see if we could do them so we undo them again.
             undoMoves(world, moves.size() - 1, principal);
         }
 
-        // If its not status, then doMove would have undone the moves so we don't
+        // If its not success, then doMove would have undone the moves so we don't
         // need to undo them.
-        return ms;
+        return moveStatus;
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = undoMove(world, principal);
+        MoveStatus moveStatus = undoMove(world, principal);
 
-        if (ms.isStatus()) {
+        if (moveStatus.succeeds()) {
             redoMoves(world, 0, principal);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = compositeTest(world);
+        MoveStatus moveStatus = compositeTest(world);
 
-        if (!ms.status) {
-            return ms;
+        if (!moveStatus.succeeds()) {
+            return moveStatus;
         }
 
         for (int i = 0; i < moves.size(); i++) {
-            ms = moves.get(i).doMove(world, principal);
+            moveStatus = moves.get(i).doMove(world, principal);
 
-            if (!ms.status) {
+            if (!moveStatus.succeeds()) {
                 // Undo any moves we have already done.
                 undoMoves(world, i - 1, principal);
 
-                return ms;
+                return moveStatus;
             }
         }
 
-        return ms;
+        return moveStatus;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = MoveStatus.MOVE_OK;
+        MoveStatus moveStatus = MoveStatus.MOVE_OK;
 
         for (int i = moves.size() - 1; i >= 0; i--) {
-            ms = moves.get(i).undoMove(world, principal);
+            moveStatus = moves.get(i).undoMove(world, principal);
 
-            if (!ms.status) {
+            if (!moveStatus.succeeds()) {
                 // Redo any moves we have already undone.
                 redoMoves(world, i + 1, principal);
 
-                return ms;
+                return moveStatus;
             }
         }
 
-        return ms;
+        return moveStatus;
     }
 
     private void undoMoves(World w, int number, FreerailsPrincipal p) {
         for (int i = number; i >= 0; i--) {
-            MoveStatus ms = moves.get(i).undoMove(w, p);
+            MoveStatus moveStatus = moves.get(i).undoMove(w, p);
 
-            if (!ms.status) {
-                throw new IllegalStateException(ms.message);
+            if (!moveStatus.succeeds()) {
+                throw new IllegalStateException(moveStatus.getMessage());
             }
         }
     }
 
     private void redoMoves(World w, int number, FreerailsPrincipal p) {
         for (int i = number; i < moves.size(); i++) {
-            MoveStatus ms = moves.get(i).doMove(w, p);
+            MoveStatus moveStatus = moves.get(i).doMove(w, p);
 
-            if (!ms.status) {
-                throw new IllegalStateException(ms.message);
+            if (!moveStatus.succeeds()) {
+                throw new IllegalStateException(moveStatus.getMessage());
             }
         }
     }

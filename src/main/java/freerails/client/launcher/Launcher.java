@@ -490,31 +490,31 @@ public class Launcher extends JFrame implements LauncherInterface {
             switch (currentPage) {
                 case 0:
                     msp.validateInput();
-                    /* Initial game selection page */
+                    // Initial game selection page
                     switch (panel.getMode()) {
                         case ClientConfig.MODE_SERVER_ONLY:
-                            /* go to map selection screen */
+                            // go to map selection screen
                             cl.next(jPanel1);
                             msp.setServerPortPanelVisible(true);
 
                             currentPage++;
                             break;
                         case ClientConfig.MODE_SINGLE_PLAYER:
-                            /* go to map selection screen */
+                            // go to map selection screen
                             cl.next(jPanel1);
                             msp.setServerPortPanelVisible(false);
                             cop.setRemoteServerPanelVisible(false);
                             currentPage++;
                             break;
                         case ClientConfig.MODE_START_NETWORK_GAME:
-                            /* go to map selection screen */
+                            // go to map selection screen
                             msp.setServerPortPanelVisible(true);
                             cop.setRemoteServerPanelVisible(false);
                             cl.next(jPanel1);
                             currentPage++;
                             break;
                         case ClientConfig.MODE_JOIN_NETWORK_GAME:
-                            /* client display options */
+                            // client display options
                             nextIsStart = true;
                             cl.show(jPanel1, "2");
                             currentPage = 2;
@@ -526,7 +526,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                     prevButton.setEnabled(true);
                     break;
                 case 1:
-                    /* map selection page */
+                    // map selection page
                     if (panel.getMode() == ClientConfig.MODE_SERVER_ONLY) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
@@ -561,7 +561,7 @@ public class Launcher extends JFrame implements LauncherInterface {
 
                     break;
                 case 2:
-                    /* display mode selection */
+                    // display mode selection
                     if (panel.getMode() == ClientConfig.MODE_START_NETWORK_GAME) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
@@ -580,14 +580,14 @@ public class Launcher extends JFrame implements LauncherInterface {
                     break;
                 case 3:
                     try {
-                        /* Connection status screen */
+                        // Connection success screen
                         prevButton.setEnabled(false);
                         setServerGameModel();// TODO catch exception
                         if (panel.getMode() == ClientConfig.MODE_START_NETWORK_GAME) {
                             startThread(server, client);
                             cl.show(jPanel1, "4");
                         } else {
-                            /* Start a stand alone server. */
+                            // Start a stand alone server.
                             startThread(server);
                             setVisible(false);
                         }

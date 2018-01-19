@@ -10,18 +10,18 @@ import java.util.Map;
 
 final class TrainCellRenderer implements ListCellRenderer {
 
-    private final RendererRoot rr;
+    private final RendererRoot rendererRoot;
     private final Map<String, JLabel> savesJLabels;
 
-    public TrainCellRenderer(RendererRoot vl) {
-        rr = vl;
+    public TrainCellRenderer(RendererRoot rendererRoot) {
+        this.rendererRoot = rendererRoot;
         savesJLabels = new HashMap<>();
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
-            /* value to display */
-                                                  int index, /* cell index */
-                                                  boolean isSelected, /* is the cell selected */
+            // value to display
+                                                  int index, // cell index
+                                                  boolean isSelected, // is the cell selected
                                                   boolean cellHasFocus) /* the list and the cell have the focus */ {
 
         EngineType engine = (EngineType) value;
@@ -31,7 +31,7 @@ final class TrainCellRenderer implements ListCellRenderer {
         if (label == null) {
             label = new JLabel(text);
             label.setFont(new Font("Dialog", 0, 12));
-            Image image = rr.getEngineImages(index).getSideOnImage();
+            Image image = rendererRoot.getEngineImages(index).getSideOnImage();
             int height = image.getHeight(null);
             int width = image.getWidth(null);
             int scale = height / 50;

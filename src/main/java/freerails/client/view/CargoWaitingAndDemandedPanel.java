@@ -193,7 +193,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         TableModel tableModel = new MyAbstractTableModel(typeWaiting, quantityWaiting);
         waitingJTable.setModel(tableModel);
 
-        /* The list shows the cargo demanded by the station. */
+        // The list shows the cargo demanded by the station.
         demandsJList.setListData(typeDemanded.toArray());
 
         invalidate();

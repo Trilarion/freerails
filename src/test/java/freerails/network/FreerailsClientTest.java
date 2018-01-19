@@ -34,7 +34,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
      */
     public void testLogon() {
         try {
-            /* Test 1 : connecting a client. */
+            // Test 1 : connecting a client.
             assertEquals("No client connected yet.", 0, server
                     .countOpenConnections());
 
@@ -47,7 +47,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             assertMapsAndSaveGamesReceived(client);
             assertConnectClientsEquals(client, new ImmutableList<>("name"));
 
-            /* Test 2 : a client that has already logged on. */
+            // Test 2 : a client that has already logged on.
             FreerailsClient client2 = new FreerailsClient();
             response = client2.connect(getIpAddress(), getPort(), "name",
                     "password");
@@ -55,21 +55,21 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
                     .isSuccessful());
             assertEquals(1, server.countOpenConnections());
 
-            /* Test 3 : connecting a client. */
+            // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
             response = client3.connect(getIpAddress(), getPort(), "name3",
                     "password");
             assertTrue(response.isSuccessful());
             assertEquals(2, server.countOpenConnections());
 
-            /* read list of connected clients. */
+            // read list of connected clients.
             assertConnectClientsEquals(client,
                     new ImmutableList<>("name", "name3"));
             assertMapsAndSaveGamesReceived(client3);
             assertConnectClientsEquals(client3, new ImmutableList<>("name",
                     "name3"));
 
-            /* Test 4 : disconnect the client from test 1. */
+            // Test 4 : disconnect the client from test 1.
             client.disconnect();
             assertEquals(1, server.countOpenConnections());
         } catch (Exception e) {

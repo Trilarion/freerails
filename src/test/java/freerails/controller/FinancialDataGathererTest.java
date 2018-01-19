@@ -52,8 +52,8 @@ public class FinancialDataGathererTest extends TestCase {
         world = new WorldImpl();
 
         Move addPlayer = AddPlayerMove.generateMove(world, player);
-        MoveStatus ms = addPlayer.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(ms.status);
+        MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(moveStatus.succeeds());
     }
 
     /**
@@ -106,9 +106,8 @@ public class FinancialDataGathererTest extends TestCase {
         int treasuryStock = 10000;
         int totalStock = WorldConstants.IPO_SIZE;
         int publicStock = totalStock - treasuryStock;
-        Transaction t = StockItemTransaction.buyOrSellStock(0, treasuryStock,
-                new Money(5));
-        world.addTransaction(principal, t);
+        Transaction transaction = StockItemTransaction.buyOrSellStock(0, treasuryStock, new Money(5));
+        world.addTransaction(principal, transaction);
         fdg = new FinancialDataGatherer(world, principal);
         assertEquals(treasuryStock, fdg.treasuryStock());
         assertEquals(totalStock, fdg.totalShares());
@@ -124,17 +123,15 @@ public class FinancialDataGathererTest extends TestCase {
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player("Player " + i, i);
             Move addPlayer = AddPlayerMove.generateMove(world, players[i]);
-            MoveStatus ms = addPlayer.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(ms.status);
+            MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
+            assertTrue(moveStatus.succeeds());
         }
 
         // Make player #0 buy stock in player #1
         int quantity = 10000;
-        Transaction t = StockItemTransaction.buyOrSellStock(1, quantity, new Money(
-                5));
-        world.addTransaction(players[0].getPrincipal(), t);
-        FinancialDataGatherer fdg = new FinancialDataGatherer(world, players[0]
-                .getPrincipal());
+        Transaction transaction = StockItemTransaction.buyOrSellStock(1, quantity, new Money(5));
+        world.addTransaction(players[0].getPrincipal(), transaction);
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, players[0].getPrincipal());
         assertEquals(0, fdg.treasuryStock());
         int acutal = fdg.getStockInRRs()[1];
         assertEquals(quantity, acutal);
@@ -144,10 +141,8 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testTotalShares() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player
-                .getPrincipal());
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player.getPrincipal());
         int expected = WorldConstants.IPO_SIZE;
         assertEquals(expected, fdg.totalShares());
     }
-
 }

@@ -32,10 +32,11 @@ import java.io.Serializable;
  * This Move can change a train's engine and wagons.
  */
 public class ChangeTrainMove extends ChangeItemInListMove {
+    
     private static final long serialVersionUID = 3257854272514242873L;
 
-    private ChangeTrainMove(int index, Serializable before, Serializable after, FreerailsPrincipal p) {
-        super(KEY.TRAINS, index, before, after, p);
+    private ChangeTrainMove(int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
+        super(KEY.TRAINS, index, before, after, principal);
     }
 
     /**
@@ -43,12 +44,12 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * @param before
      * @param newEngine
      * @param newWagons
-     * @param p
+     * @param principal
      * @return
      */
-    public static Move generateMove(int id, TrainModel before, int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal p) {
+    public static Move generateMove(int id, TrainModel before, int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal principal) {
         TrainModel after = before.getNewInstance(newEngine, newWagons);
 
-        return new ChangeTrainMove(id, before, after, p);
+        return new ChangeTrainMove(id, before, after, principal);
     }
 }

@@ -65,16 +65,16 @@ public final class MapBackgroundRender implements MapLayerRenderer {
     private Rectangle clipRectangle = new Rectangle();
 
     /**
-     * @param w
-     * @param rr
+     * @param world
+     * @param rendererRoot
      * @param modelRoot
      */
-    public MapBackgroundRender(ReadOnlyWorld w, RendererRoot rr, ModelRoot modelRoot) {
-        trackLayer = new TrackLayer(w, rr);
-        terrainLayer = new TerrainLayer(w, rr);
-        mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
-        cityNames = new CityNamesRenderer(w);
-        stationNames = new StationNamesRenderer(w, modelRoot);
+    public MapBackgroundRender(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+        trackLayer = new TrackLayer(world, rendererRoot);
+        terrainLayer = new TerrainLayer(world, rendererRoot);
+        mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
+        cityNames = new CityNamesRenderer(world);
+        stationNames = new StationNamesRenderer(world, modelRoot);
     }
 
     /**
@@ -138,14 +138,14 @@ public final class MapBackgroundRender implements MapLayerRenderer {
     public final class TrackLayer implements MapLayerRenderer {
 
         private final ReadOnlyWorld world;
-        private final RendererRoot rr;
+        private final RendererRoot rendererRoot;
 
         /**
          * @param world
          * @param trackPieceViewList
          */
         private TrackLayer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
-            rr = trackPieceViewList;
+            rendererRoot = trackPieceViewList;
             this.world = world;
         }
 
@@ -175,7 +175,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
 
                         int ruleNumber = tp.getTrackTypeID();
                         if (ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                            TrackPieceRenderer trackPieceView = rr.getTrackPieceView(ruleNumber);
+                            TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
 
                             trackPieceView.drawTrackPieceIcon(graphicsNumber, g, tile.x, tile.y, tileSize);
                         }

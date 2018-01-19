@@ -20,6 +20,7 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.move.PreMove;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
@@ -32,7 +33,7 @@ import freerails.world.player.Player;
 public class SimpleMoveExecutor implements MoveExecutor {
 
     private final World world;
-    private final FreerailsPrincipal p;
+    private final FreerailsPrincipal principal;
 
     /**
      * @param world
@@ -41,7 +42,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
     public SimpleMoveExecutor(World world, int playerID) {
         this.world = world;
         Player player = this.world.getPlayer(playerID);
-        p = player.getPrincipal();
+        principal = player.getPrincipal();
     }
 
     /**
@@ -49,7 +50,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus doMove(Move move) {
-        return move.doMove(world, p);
+        return move.doMove(world, principal);
     }
 
     /**
@@ -57,8 +58,8 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus doPreMove(PreMove preMove) {
-        Move m = preMove.generateMove(world);
-        return m.doMove(world, p);
+        Move move = preMove.generateMove(world);
+        return move.doMove(world, principal);
     }
 
     /**
@@ -66,7 +67,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus tryDoMove(Move move) {
-        return move.tryDoMove(world, p);
+        return move.tryDoMove(world, principal);
     }
 
     /**
@@ -80,7 +81,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public FreerailsPrincipal getPrincipal() {
-        return p;
+        return principal;
     }
 
 }

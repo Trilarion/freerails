@@ -73,7 +73,7 @@ abstract class AbstractInetConnection implements Runnable {
             }
         }
 
-        logger.debug(this + "Finished shutdown!! --status=" + String.valueOf(status.isOpen()));
+        logger.debug(this + "Finished shutdown!! --success=" + String.valueOf(status.isOpen()));
     }
 
     public void flush() throws IOException {

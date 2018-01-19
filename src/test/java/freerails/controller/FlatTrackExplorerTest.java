@@ -68,8 +68,8 @@ public class FlatTrackExplorerTest extends TestCase {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateBuildTrackMove(points[i], vectors[i], rule, rule,
                             world, MapFixtureFactory.TEST_PRINCIPAL);
-            MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(ms.status);
+            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+            assertTrue(moveStatus.succeeds());
         }
     }
 

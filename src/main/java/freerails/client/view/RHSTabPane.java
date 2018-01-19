@@ -66,7 +66,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
         ImageIcon buildTrackIcon;
         ImageIcon stationInfoIcon;
 
-        /* set up trainsJTabbedPane */
+        // set up trainsJTabbedPane
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         terrainInfoPanel = new TerrainInfoPanel();
 
@@ -108,7 +108,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
         addTab(null, trainListIcon, trainListPanel, "Train List");
         trainListIndex = getTabCount() - 1;
 
-        /* These values were picked by trial and error! */
+        // These values were picked by trial and error!
         setMinimumSize(new Dimension(250, 200));
 
     }

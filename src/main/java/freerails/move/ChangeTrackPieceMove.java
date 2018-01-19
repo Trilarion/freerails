@@ -18,7 +18,6 @@
 
 package freerails.move;
 
-import freerails.controller.MoveTrainPreMove;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
@@ -157,7 +156,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         trackTemplate = trackTemplate & (trackTemplateAbove | trackTemplateBelow);
 
         return trackTemplate == 0;
-        // Things are status.
+        // Things are success.
     }
 
     /**
@@ -204,7 +203,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         // Check that we are not changing another players track if this is not
         // allowed.
         if (!canConnect2OtherRRsTrack(w)) {
-            // If either the new or old track piece is null, we are status.
+            // If either the new or old track piece is null, we are success.
             int oldRuleNumber = oldTrackPiece.getTrackTypeID();
             int newRuleNumber = newTrackPiece.getTrackTypeID();
 
@@ -260,8 +259,8 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         // Check 4 overlapping stations.
         if (newTrackPiece.getTrackRule().isStation()) {
-            MoveStatus ms = ChangeTrackPieceMove.check4overlap(w, location, newTrackPiece);
-            if (!ms.status) return ms;
+            MoveStatus moveStatus = ChangeTrackPieceMove.check4overlap(w, location, newTrackPiece);
+            if (!moveStatus.succeeds()) return moveStatus;
         }
 
         return MoveStatus.MOVE_OK;
@@ -275,7 +274,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         MoveTrainPreMove.clearCache();
         MoveStatus moveStatus = tryDoMove(world, principal);
 
-        if (!moveStatus.isStatus()) {
+        if (!moveStatus.succeeds()) {
             return moveStatus;
         }
         move(world, trackPieceAfter);
@@ -295,7 +294,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         MoveTrainPreMove.clearCache();
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
-        if (!moveStatus.isStatus()) {
+        if (!moveStatus.succeeds()) {
             return moveStatus;
         }
         move(world, trackPieceBefore);
@@ -342,10 +341,10 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof ChangeTrackPieceMove) {
-            ChangeTrackPieceMove m = (ChangeTrackPieceMove) obj;
-            boolean fieldPointEqual = location.equals(m.location);
-            boolean fieldoldTrackPieceEqual = trackPieceBefore.equals(m.trackPieceBefore);
-            boolean fieldnewTrackPieceEqual = trackPieceAfter.equals(m.trackPieceAfter);
+            ChangeTrackPieceMove changeTrackPieceMove = (ChangeTrackPieceMove) obj;
+            boolean fieldPointEqual = location.equals(changeTrackPieceMove.location);
+            boolean fieldoldTrackPieceEqual = trackPieceBefore.equals(changeTrackPieceMove.trackPieceBefore);
+            boolean fieldnewTrackPieceEqual = trackPieceAfter.equals(changeTrackPieceMove.trackPieceAfter);
 
             return fieldPointEqual && fieldoldTrackPieceEqual && fieldnewTrackPieceEqual;
         }

@@ -33,6 +33,7 @@ import freerails.move.Move;
 import freerails.network.MessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.util.ImmutableList;
+import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
@@ -117,8 +118,8 @@ public class DialogueBoxController implements WorldListListener {
                 Integer[] wagonTypes = selectWagons.getWagons();
                 ImmutableList<TrainBlueprint> after = new ImmutableList<>(new TrainBlueprint(engineType, wagonTypes));
 
-                Move m = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
-                modelRoot.doMove(m);
+                Move move = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
+                modelRoot.doMove(move);
             }
             closeContent();
         }
@@ -181,17 +182,15 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void setup(ModelRootImpl mr, RendererRoot vl) {
         modelRoot = mr;
-        this.vl = vl;
+        this.vl = Utils.verifyNotNull(vl);
         modelRoot.addListListener(this); // When a new train gets built, we
         // show the train info etc
 
         world = modelRoot.getWorld();
-
-        if (world == null) throw new NullPointerException();
-
-        if (vl == null) throw new NullPointerException();
+        Utils.verifyNotNull(world);
 
         // Setup the various dialogue boxes.
+
         // setup the terrain info dialogue.
         terrainInfo.setup(world, vl);
 

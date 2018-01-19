@@ -76,11 +76,11 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param vl
      */
-    public TrainListCellRenderer(ModelRoot mr, RendererRoot vl) {
-        setup(mr, vl, null);
+    public TrainListCellRenderer(ModelRoot modelRoot, RendererRoot vl) {
+        setup(modelRoot, vl, null);
         setBackground(backgoundColor);
     }
 

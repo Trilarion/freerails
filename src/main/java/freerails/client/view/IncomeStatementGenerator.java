@@ -80,10 +80,10 @@ class IncomeStatementGenerator {
         int numberOfTransactions = world.getNumberOfTransactions(this.principal);
         for (int i = 0; i < numberOfTransactions; i++) {
             Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(principal, i);
-            Transaction t = transactionAndTimeStamp.getA();
+            Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (t instanceof CargoDeliveryMoneyTransaction) {
-                CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) t;
+            if (transaction instanceof CargoDeliveryMoneyTransaction) {
+                CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) transaction;
                 int cargoType = dcr.getCargoBatch().getCargoType();
                 CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, cargoType);
                 switch (ct.getCategory()) {
@@ -120,29 +120,29 @@ class IncomeStatementGenerator {
                 }
 
             }
-            switch (t.getCategory()) {
+            switch (transaction.getCategory()) {
                 case INTEREST_CHARGE:
-                    interestTotal += t.value().getAmount();
+                    interestTotal += transaction.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        interestYtd += t.value().getAmount();
+                        interestYtd += transaction.value().getAmount();
                     }
                     break;
                 case TRAIN_MAINTENANCE:
-                    trainMaintenanceTotal += t.value().getAmount();
+                    trainMaintenanceTotal += transaction.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        trainMaintenanceYtd += t.value().getAmount();
+                        trainMaintenanceYtd += transaction.value().getAmount();
                     }
                     break;
                 case TRACK_MAINTENANCE:
-                    trackMaintenanceTotal += t.value().getAmount();
+                    trackMaintenanceTotal += transaction.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        trackMaintenanceYtd += t.value().getAmount();
+                        trackMaintenanceYtd += transaction.value().getAmount();
                     }
                     break;
                 case STATION_MAINTENANCE:
-                    stationMaintenanceTotal += t.value().getAmount();
+                    stationMaintenanceTotal += transaction.value().getAmount();
                     if (cal.getYear(time.getTicks()) >= this.startyear) {
-                        stationMaintenanceYtd += t.value().getAmount();
+                        stationMaintenanceYtd += transaction.value().getAmount();
                     }
                     break;
             }
@@ -185,10 +185,10 @@ class IncomeStatementGenerator {
         int numberOfTransactions = world.getNumberOfTransactions(this.principal);
         for (int i = 0; i < numberOfTransactions; i++) {
             Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(principal, i);
-            Transaction t = transactionAndTimeStamp.getA();
+            Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (t instanceof CargoDeliveryMoneyTransaction && cal.getYear(time.getTicks()) >= this.startyear) {
-                CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) t;
+            if (transaction instanceof CargoDeliveryMoneyTransaction && cal.getYear(time.getTicks()) >= this.startyear) {
+                CargoDeliveryMoneyTransaction dcr = (CargoDeliveryMoneyTransaction) transaction;
                 int trainId = dcr.getTrainId();
                 if (trainId < money.length) {
                     amount[trainId] += dcr.value().getAmount();

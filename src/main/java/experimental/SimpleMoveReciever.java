@@ -21,10 +21,11 @@
  */
 package experimental;
 
-import freerails.controller.PreMove;
+import freerails.move.PreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.network.UntriedMoveReceiver;
+import freerails.util.Utils;
 import freerails.world.World;
 import freerails.world.player.Player;
 
@@ -40,8 +41,7 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
      * @param world
      */
     public SimpleMoveReciever(World world) {
-        this.world = world;
-        if (null == world) throw new NullPointerException();
+        this.world = Utils.verifyNotNull(world);
     }
 
     /**
@@ -60,9 +60,9 @@ public final class SimpleMoveReciever implements UntriedMoveReceiver {
     }
 
     /**
-     * @param pm
+     * @param preMove
      */
-    public void processPreMove(PreMove pm) {
-        process(pm.generateMove(world));
+    public void processPreMove(PreMove preMove) {
+        process(preMove.generateMove(world));
     }
 }

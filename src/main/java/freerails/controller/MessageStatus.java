@@ -80,7 +80,7 @@ public class MessageStatus implements Serializable {
     }
 
     /**
-     * Returns the id of the command whose status this object stores.
+     * Returns the id of the command whose success this object stores.
      */
     public int getId() {
         return id;

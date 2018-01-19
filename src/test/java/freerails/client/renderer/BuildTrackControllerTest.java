@@ -57,8 +57,8 @@ public class BuildTrackControllerTest extends TestCase {
     protected void setUp() throws Exception {
         world = MapFixtureFactory2.getCopy();
         modelRoot = new ModelRootImpl();
-        FreerailsPrincipal p = world.getPlayer(0).getPrincipal();
-        modelRoot.setup(world, p);
+        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
+        modelRoot.setup(world, principal);
         buildTrackController = new BuildTrackController(world, modelRoot);
         MoveExecutor executor = new SimpleMoveExecutor(world, 0);
         trackBuilder = new TrackMoveProducer(executor, world, modelRoot);

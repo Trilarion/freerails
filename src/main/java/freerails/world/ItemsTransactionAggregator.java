@@ -56,13 +56,13 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      */
     @Override
     protected boolean condition(int transactionID) {
-        Transaction t = world.getTransaction(principal, transactionID);
+        Transaction transaction = world.getTransaction(principal, transactionID);
 
-        if (!(t instanceof ItemTransaction)) {
+        if (!(transaction instanceof ItemTransaction)) {
             return false;
         }
 
-        ItemTransaction itemTransaction = (ItemTransaction) t;
+        ItemTransaction itemTransaction = (ItemTransaction) transaction;
         boolean isTypeAcceptable = (type == ANY_VALUE) || (type == itemTransaction.getType());
         boolean isCategoryAcceptable = (category == null) || (category == itemTransaction.getCategory());
 
@@ -96,8 +96,8 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     protected void incrementRunningTotal(int transactionID) {
         super.incrementRunningTotal(transactionID);
 
-        Transaction t = world.getTransaction(principal, transactionID);
-        ItemTransaction itemTransaction = (ItemTransaction) t;
+        Transaction transaction = world.getTransaction(principal, transactionID);
+        ItemTransaction itemTransaction = (ItemTransaction) transaction;
         quantityRunningTotal += itemTransaction.getQuantity();
     }
 

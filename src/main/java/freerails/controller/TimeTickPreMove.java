@@ -22,6 +22,7 @@
 package freerails.controller;
 
 import freerails.move.Move;
+import freerails.move.PreMove;
 import freerails.move.TimeTickMove;
 import freerails.world.ReadOnlyWorld;
 

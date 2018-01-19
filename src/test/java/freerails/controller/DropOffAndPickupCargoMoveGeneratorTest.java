@@ -345,10 +345,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(
                 0, 0, world, MapFixtureFactory.TEST_PRINCIPAL, false, false);
-        Move m = moveGenerator.generateMove();
-        if (null != m) {
-            MoveStatus ms = m.doMove(world, Player.AUTHORITATIVE);
-            assertEquals(MoveStatus.MOVE_OK, ms);
+        Move move = moveGenerator.generateMove();
+        if (null != move) {
+            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+            assertEquals(MoveStatus.MOVE_OK, moveStatus);
         }
     }
 
@@ -357,8 +357,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private ImmutableCargoBatchBundle getCargoAtStation() {
-        Station station = (Station) world.get(
-                MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
+        Station station = (Station) world.get(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, 0);
 
         return (ImmutableCargoBatchBundle) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, station

@@ -18,9 +18,10 @@
 
 package freerails.network;
 
-import freerails.controller.PreMove;
+import freerails.move.PreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.server.MoveReceiver;
 
 // TODO what is this good for?
 /**
@@ -35,7 +36,7 @@ public interface UntriedMoveReceiver extends MoveReceiver {
     MoveStatus tryDoMove(Move move);
 
     /**
-     * @param pm
+     * @param preMove
      */
-    void processPreMove(PreMove pm);
+    void processPreMove(PreMove preMove);
 }

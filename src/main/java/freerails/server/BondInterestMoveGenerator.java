@@ -20,7 +20,6 @@ package freerails.server;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.network.MoveReceiver;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldConstants;
 import freerails.world.finances.*;
@@ -35,29 +34,29 @@ class BondInterestMoveGenerator {
     private final MoveReceiver moveReceiver;
 
     /**
-     * @param mr
+     * @param moveReceiver
      */
-    public BondInterestMoveGenerator(MoveReceiver mr) {
-        moveReceiver = mr;
+    public BondInterestMoveGenerator(MoveReceiver moveReceiver) {
+        this.moveReceiver = moveReceiver;
     }
 
-    private static Move generateMove(ReadOnlyWorld w, FreerailsPrincipal principal) {
+    private static Move generateMove(ReadOnlyWorld world, FreerailsPrincipal principal) {
         long interestDue = 0;
 
-        for (int i = 0; i < w.getNumberOfTransactions(principal); i++) {
-            Transaction t = w.getTransaction(principal, i);
+        for (int i = 0; i < world.getNumberOfTransactions(principal); i++) {
+            Transaction transaction = world.getTransaction(principal, i);
 
-            if (t instanceof BondItemTransaction) {
-                BondItemTransaction bt = (BondItemTransaction) t;
-                int interestRate = bt.getType();
+            if (transaction instanceof BondItemTransaction) {
+                BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
+                int interestRate = bondItemTransaction.getType();
                 long bondAmount = WorldConstants.BOND_VALUE_ISSUE.getAmount();
-                interestDue += (interestRate * bondAmount / 100) * bt.getQuantity();
+                interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
             }
         }
 
-        Transaction t = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
+        Transaction transaction = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
 
-        return new AddTransactionMove(principal, t);
+        return new AddTransactionMove(principal, transaction);
     }
 
     /**
@@ -66,8 +65,8 @@ class BondInterestMoveGenerator {
     public void update(ReadOnlyWorld world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
-            Move m = generateMove(world, principal);
-            moveReceiver.process(m);
+            Move move = generateMove(world, principal);
+            moveReceiver.process(move);
         }
     }
 }

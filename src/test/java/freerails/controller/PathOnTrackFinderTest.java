@@ -44,11 +44,11 @@ public class PathOnTrackFinderTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         World world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        ModelRoot mr = new ModelRootImpl();
-        producer = new TrackMoveProducer(me, world, mr);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        ModelRoot modelRoot = new ModelRootImpl();
+        producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         pathFinder = new PathOnTrackFinder(world);
-        StationBuilder stationBuilder = new StationBuilder(me);
+        StationBuilder stationBuilder = new StationBuilder(moveExecutor);
         BuildTrackStrategy bts = BuildTrackStrategy.getDefault(world);
     }
 

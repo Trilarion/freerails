@@ -101,23 +101,23 @@ public class ChangeTileMove implements Move, MapUpdateMove {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryDoMove(world, principal);
+        MoveStatus moveStatus = tryDoMove(world, principal);
 
-        if (ms.isStatus()) {
+        if (moveStatus.succeeds()) {
             world.setTile(x, y, after);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveStatus ms = tryUndoMove(world, principal);
+        MoveStatus moveStatus = tryUndoMove(world, principal);
 
-        if (ms.isStatus()) {
+        if (moveStatus.succeeds()) {
             world.setTile(x, y, before);
         }
 
-        return ms;
+        return moveStatus;
     }
 
     /**

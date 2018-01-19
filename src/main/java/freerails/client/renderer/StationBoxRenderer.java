@@ -80,7 +80,7 @@ public class StationBoxRenderer implements Painter {
         Boolean showCargoWaiting = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
 
         if (showCargoWaiting) {
-            /* We only show the station boxes for the current player. */
+            // We only show the station boxes for the current player.
             FreerailsPrincipal principal = modelRoot.getPrincipal();
             WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 

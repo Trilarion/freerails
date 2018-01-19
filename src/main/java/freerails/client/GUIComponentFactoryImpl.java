@@ -500,7 +500,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         int gameSpeed = ((GameSpeed) this.world.get(ITEM.GAME_SPEED)).getSpeed();
 
-        /* Set the selected game speed radio button. */
+        // Set the selected game speed radio button.
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);
         userMessageGenerator.logSpeed();

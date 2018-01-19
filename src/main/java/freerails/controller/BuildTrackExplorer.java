@@ -22,6 +22,7 @@
 package freerails.controller;
 
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
@@ -313,7 +314,6 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param trackStrategy
      */
     public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
-        if (null == trackStrategy) throw new NullPointerException();
-        buildTrackStrategy = trackStrategy;
+        buildTrackStrategy = Utils.verifyNotNull(trackStrategy);
     }
 }

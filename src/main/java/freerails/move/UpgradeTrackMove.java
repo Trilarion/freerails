@@ -45,17 +45,17 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
      * @return
      */
     public static Move generateMove(TrackPiece before, TrackPiece after, Point2D p) {
-        ChangeTrackPieceMove m = new ChangeTrackPieceMove(before, after, p);
+        ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(before, after, p);
 
-        return new UpgradeTrackMove(m);
+        return new UpgradeTrackMove(changeTrackPieceMove);
     }
 
     /**
      * @return
      */
     public Rectangle getUpdatedTiles() {
-        MapUpdateMove m = (ChangeTrackPieceMove) getMove(0);
+        MapUpdateMove mapUpdateMove = (ChangeTrackPieceMove) getMove(0);
 
-        return m.getUpdatedTiles();
+        return mapUpdateMove.getUpdatedTiles();
     }
 }

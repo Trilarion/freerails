@@ -19,11 +19,9 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.move;
 
-import freerails.move.CompositeMove;
-import freerails.move.Move;
-import freerails.move.NextActivityMove;
+import freerails.controller.*;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
@@ -108,15 +106,13 @@ public class MoveTrainPreMove implements PreMove {
             nextTileTransition = pathAsVectors[0];
             return nextTileTransition;
         } catch (PathNotFoundException e) {
-            // The pathfinder couldn't find a path so we
-            // go in any legal direction.
+            // The pathfinder couldn't find a path so we go in any legal direction.
             GraphExplorer explorer = new FlatTrackExplorer(world, currentPosition);
             explorer.nextEdge();
             int next = explorer.getVertexConnectedByEdge();
             PositionOnTrack nextPosition = new PositionOnTrack(next);
             return nextPosition.cameFrom();
         }
-
     }
 
     /**
@@ -329,7 +325,7 @@ public class MoveTrainPreMove implements PreMove {
         return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
 
-    SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, TileTransition v) {
+    public SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, TileTransition v) {
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         TrainMotion lastMotion = lastMotion(w);
 
@@ -356,7 +352,7 @@ public class MoveTrainPreMove implements PreMove {
         return newSpeeds;
     }
 
-    TileTransition nextStep(ReadOnlyWorld world) {
+    public TileTransition nextStep(ReadOnlyWorld world) {
         // Find current position.
         TrainMotion currentMotion = lastMotion(world);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();

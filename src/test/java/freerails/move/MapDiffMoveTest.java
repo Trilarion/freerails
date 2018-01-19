@@ -43,10 +43,10 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 
-        Move m = new WorldDiffMove(world2, worldDiff, WorldDiffMove.Cause.Other);
-        this.assertDoMoveIsOk(m);
-        this.assertUndoMoveIsOk(m);
-        this.assertDoThenUndoLeavesWorldUnchanged(m);
-        this.assertSurvivesSerialisation(m);
+        Move move = new WorldDiffMove(world2, worldDiff, WorldDiffMove.Cause.Other);
+        this.assertDoMoveIsOk(move);
+        this.assertUndoMoveIsOk(move);
+        this.assertDoThenUndoLeavesWorldUnchanged(move);
+        this.assertSurvivesSerialisation(move);
     }
 }

@@ -44,10 +44,10 @@ public class StationBuilderTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         World world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        ModelRoot mr = new ModelRootImpl();
-        trackBuilder = new TrackMoveProducer(me, world, mr);
-        stationBuilder = new StationBuilder(me);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        ModelRoot modelRoot = new ModelRootImpl();
+        trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
+        stationBuilder = new StationBuilder(moveExecutor);
     }
 
     /**
@@ -57,15 +57,17 @@ public class StationBuilderTest extends TestCase {
         stationBuilder
                 .setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        MoveStatus ms = trackBuilder.buildTrack(new Point2D(10, 10), track);
-        assertTrue(ms.status);
-        assertTrue(stationBuilder.tryBuildingStation(new Point2D(10, 10)).status);
-        assertTrue(stationBuilder.tryBuildingStation(new Point2D(13, 10)).status);
-        MoveStatus ms1 = stationBuilder.buildStation(new Point2D(10, 10));
-        assertTrue(ms1.status);
 
-        MoveStatus ms2 = stationBuilder.buildStation(new Point2D(13, 10));
-        assertFalse(ms2.status);
+        MoveStatus moveStatus = trackBuilder.buildTrack(new Point2D(10, 10), track);
+        assertTrue(moveStatus.succeeds());
+        assertTrue(stationBuilder.tryBuildingStation(new Point2D(10, 10)).succeeds());
+        assertTrue(stationBuilder.tryBuildingStation(new Point2D(13, 10)).succeeds());
+
+        moveStatus = stationBuilder.buildStation(new Point2D(10, 10));
+        assertTrue(moveStatus.succeeds());
+
+        moveStatus = stationBuilder.buildStation(new Point2D(13, 10));
+        assertFalse(moveStatus.succeeds());
     }
 
 }

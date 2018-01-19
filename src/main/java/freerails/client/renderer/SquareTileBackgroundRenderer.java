@@ -23,6 +23,8 @@
  */
 package freerails.client.renderer;
 
+import freerails.util.Utils;
+
 import java.awt.*;
 
 /**
@@ -38,11 +40,7 @@ public final class SquareTileBackgroundRenderer extends BufferedTiledBackgroundR
      * @param mv
      */
     public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
-        if (null == mv) {
-            throw new NullPointerException();
-        }
-
-        mapView = mv;
+        mapView = Utils.verifyNotNull(mv);
     }
 
     /**

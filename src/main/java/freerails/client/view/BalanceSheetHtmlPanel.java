@@ -70,7 +70,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
 
     @Override
     protected void paintComponent(Graphics g) {
-        /* Check to see if the text needs updating before painting. */
+        // Check to see if the text needs updating before painting.
         ReadOnlyWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
         int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);

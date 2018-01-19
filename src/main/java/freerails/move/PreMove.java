@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.move;
 
 import freerails.move.Move;
 import freerails.world.ReadOnlyWorld;

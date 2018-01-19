@@ -21,10 +21,7 @@
  */
 package freerails.world.train;
 
-import freerails.util.ImmutableList;
-import freerails.util.LineSegment;
-import freerails.util.Pair;
-import freerails.util.Point2D;
+import freerails.util.*;
 import freerails.world.WorldConstants;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.PathIterator;
@@ -50,10 +47,9 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
     public PathOnTiles(Point2D start, List<TileTransition> vectorsList) {
-        if (null == start) throw new NullPointerException();
         vectors = new ImmutableList<>(vectorsList);
         vectors.containsNulls();
-        this.start = start;
+        this.start = Utils.verifyNotNull(start);
     }
 
     /**
@@ -62,10 +58,9 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectors[i] for any i;
      */
     public PathOnTiles(Point2D start, TileTransition... vectors) {
-        if (null == start) throw new NullPointerException();
         this.vectors = new ImmutableList<>(vectors);
         this.vectors.containsNulls();
-        this.start = start;
+        this.start = Utils.verifyNotNull(start);
     }
 
     @Override

@@ -52,7 +52,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
     private FreerailsPrincipal principal;
     private Action closeAction;
     private RendererRoot vl;
-    private ModelRoot mr;
+    private ModelRoot modelRoot;
 
     /**
      *
@@ -68,7 +68,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        this.mr = modelRoot;
+        this.modelRoot = modelRoot;
         this.vl = vl;
         this.closeAction = closeAction;
         world = modelRoot.getWorld();
@@ -110,7 +110,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         TrainOrderJPanelSingle panelSingle = lines.get(tm);
         if (panelSingle == null) {
             panelSingle = new TrainOrderJPanelSingle();
-            panelSingle.setup(mr, vl, closeAction);
+            panelSingle.setup(modelRoot, vl, closeAction);
 
             panelSingle.stationNameJLabel.setText(stationName);
             panelSingle.ordersJLabel.setText(waitUntilFull);
@@ -126,7 +126,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
                 panelSingle.setBackground(backgoundColor);
             }
 
-            // Set goto status.
+            // Set goto success.
             switch (trainOrders.gotoStatus) {
                 case TrainOrdersListModel.DONT_GOTO:
                     panelSingle.gotoIcon.setIcon(dontGoto);

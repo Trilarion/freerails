@@ -20,6 +20,7 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.move.PreMove;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 

@@ -25,6 +25,8 @@ import freerails.client.common.ModelRootImpl;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.move.MoveTrainPreMove;
+import freerails.move.PreMove;
 import freerails.server.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
@@ -61,22 +63,22 @@ class TrainMotionExperiment extends JComponent {
      */
     private TrainMotionExperiment() {
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor me = new SimpleMoveExecutor(world, 0);
-        principal = me.getPrincipal();
-        ModelRoot mr = new ModelRootImpl();
-        TrackMoveProducer producer = new TrackMoveProducer(me, world, mr);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        principal = moveExecutor.getPrincipal();
+        ModelRoot modelRoot = new ModelRootImpl();
+        TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Point2D from = new Point2D(5, 5);
-        MoveStatus ms = producer.buildTrack(from, trackPath);
-        if (!ms.status) throw new IllegalStateException(ms.message);
+        MoveStatus moveStatus = producer.buildTrack(from, trackPath);
+        if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
         TrainOrdersModel[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
         PreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from, principal, is);
 
-        Move m = addTrain.generateMove(world);
-        ms = m.doMove(world, principal);
-        if (!ms.status) throw new IllegalStateException(ms.message);
+        Move move = addTrain.generateMove(world);
+        moveStatus = move.doMove(world, principal);
+        if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
         startTime = System.currentTimeMillis();
     }
@@ -187,7 +189,7 @@ class TrainMotionExperiment extends JComponent {
             move = moveTrain.generateMove(world);
         }
         MoveStatus moveStatus = move.doMove(world, principal);
-        if (!moveStatus.status) throw new IllegalStateException(moveStatus.message);
+        if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
         ActivityIterator ai = world.getActivities(principal, 0);
 

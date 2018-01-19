@@ -23,7 +23,8 @@ import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
-import freerails.network.MoveReceiver;
+import freerails.server.MoveReceiver;
+import freerails.util.Utils;
 import freerails.world.ITEM;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -51,16 +52,12 @@ public class UserMessageGenerator implements MoveReceiver {
     private ActionRoot actionRoot;
 
     /**
-     * @param mr
+     * @param modelRoot
      * @param actionRoot
      */
-    public UserMessageGenerator(ModelRoot mr, ActionRoot actionRoot) {
-        if (null == mr || null == actionRoot) {
-            throw new NullPointerException();
-        }
-
-        this.actionRoot = actionRoot;
-        modelRoot = mr;
+    public UserMessageGenerator(ModelRoot modelRoot, ActionRoot actionRoot) {
+        this.actionRoot = Utils.verifyNotNull(actionRoot);
+        this.modelRoot = Utils.verifyNotNull(modelRoot);
     }
 
     /**
@@ -94,17 +91,17 @@ public class UserMessageGenerator implements MoveReceiver {
         List<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
         CompositeMove listChanges = wdm.getListChanges();
         for (int i = 0; i < listChanges.size(); i++) {
-            Move m = listChanges.getMoves().get(i);
-            if (m instanceof AddTransactionMove) {
-                AddTransactionMove atm = (AddTransactionMove) m;
+            Move move = listChanges.getMoves().get(i);
+            if (move instanceof AddTransactionMove) {
+                AddTransactionMove atm = (AddTransactionMove) move;
                 if (!atm.getPrincipal().equals(modelRoot.getPrincipal())) {
                     // We don't want to know about other players' income!
                     return;
                 }
 
-                Transaction t = atm.getTransaction();
-                if (t instanceof CargoDeliveryMoneyTransaction) {
-                    CargoDeliveryMoneyTransaction receipt = (CargoDeliveryMoneyTransaction) t;
+                Transaction transaction = atm.getTransaction();
+                if (transaction instanceof CargoDeliveryMoneyTransaction) {
+                    CargoDeliveryMoneyTransaction receipt = (CargoDeliveryMoneyTransaction) transaction;
                     cargoDelivered.add(receipt);
                 }
             }

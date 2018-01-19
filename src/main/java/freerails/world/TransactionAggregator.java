@@ -147,8 +147,8 @@ public abstract class TransactionAggregator {
      * @param transactionID
      */
     protected void incrementRunningTotal(int transactionID) {
-        Transaction t = world.getTransaction(principal, transactionID);
-        runningTotal += t.value().getAmount();
+        Transaction transaction = world.getTransaction(principal, transactionID);
+        runningTotal += transaction.value().getAmount();
     }
 
     /**

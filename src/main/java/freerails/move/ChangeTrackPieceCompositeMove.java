@@ -22,7 +22,6 @@
  */
 package freerails.move;
 
-import freerails.controller.MoveTrainPreMove;
 import freerails.util.Point2D;
 import freerails.world.*;
 import freerails.world.finances.TransactionCategory;
@@ -139,14 +138,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
             oldTrackPiece = NullTrackPiece.getInstance();
         }
 
-        ChangeTrackPieceMove m = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
+        ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 
         // If we are removing a station, we also need to remove the station from
         // the station list.
         if (oldTrackPiece.getTrackRule().isStation() && !newTrackPiece.getTrackRule().isStation()) {
-            return RemoveStationMove.getInstance(w, m, principal);
+            return RemoveStationMove.getInstance(w, changeTrackPieceMove, principal);
         }
-        return m;
+        return changeTrackPieceMove;
     }
 
     private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackRule trackRule, int owner, int ruleNumber) {

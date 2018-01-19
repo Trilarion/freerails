@@ -21,6 +21,7 @@ package freerails.controller;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.util.Point2D;
+import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.game.GameTime;
@@ -42,7 +43,7 @@ import java.util.Stack;
  */
 public final class TrackMoveProducer {
 
-    private final ModelRoot mr;
+    private final ModelRoot modelRoot;
     private final MoveExecutor executor;
     private final Collection<Move> moveStack = new Stack<>();
     /**
@@ -54,12 +55,11 @@ public final class TrackMoveProducer {
     /**
      * @param executor
      * @param world
-     * @param mr
+     * @param modelRoot
      */
-    public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world, ModelRoot mr) {
-        if (null == mr) throw new NullPointerException();
+    public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world, ModelRoot modelRoot) {
         this.executor = executor;
-        this.mr = mr;
+        this.modelRoot = Utils.verifyNotNull(modelRoot);
         FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
@@ -67,12 +67,12 @@ public final class TrackMoveProducer {
     }
 
     /**
-     * @param mr
+     * @param modelRoot
      */
-    public TrackMoveProducer(ModelRoot mr) {
-        executor = mr;
-        if (null == mr) throw new NullPointerException();
-        this.mr = mr;
+    public TrackMoveProducer(ModelRoot modelRoot) {
+        Utils.verifyNotNull(modelRoot);
+        executor = modelRoot;
+        this.modelRoot = modelRoot;
 
         ReadOnlyWorld world = executor.getWorld();
 
@@ -96,7 +96,7 @@ public final class TrackMoveProducer {
             returnValue = buildTrack(new Point2D(x, y), aPath);
             x += aPath.deltaX;
             y += aPath.deltaY;
-            if (!returnValue.status) {
+            if (!returnValue.succeeds()) {
                 return returnValue;
             }
         }
@@ -164,17 +164,17 @@ public final class TrackMoveProducer {
                 // upgrade the from tile if necessary.
                 FullTerrainTile tileA = (FullTerrainTile) w.getTile(from.x, from.y);
                 if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
-                    MoveStatus ms = upgradeTrack(from, ruleIDs[0]);
-                    if (!ms.status) {
-                        return ms;
+                    MoveStatus moveStatus = upgradeTrack(from, ruleIDs[0]);
+                    if (!moveStatus.succeeds()) {
+                        return moveStatus;
                     }
                 }
                 Point2D point = new Point2D(from.x + trackVector.getDx(), from.y + trackVector.getDy());
                 FullTerrainTile tileB = (FullTerrainTile) w.getTile(point.x, point.y);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
-                    MoveStatus ms = upgradeTrack(point, ruleIDs[1]);
-                    if (!ms.status) {
-                        return ms;
+                    MoveStatus moveStatus = upgradeTrack(point, ruleIDs[1]);
+                    if (!moveStatus.succeeds()) {
+                        return moveStatus;
                     }
                 }
                 return MoveStatus.MOVE_OK;
@@ -195,7 +195,7 @@ public final class TrackMoveProducer {
     private MoveStatus upgradeTrack(Point2D point, int trackRuleID) {
         ReadOnlyWorld w = executor.getWorld();
         TrackPiece before = ((FullTerrainTile) w.getTile(point.x, point.y)).getTrackPiece();
-        /* Check whether there is track here. */
+        // Check whether there is track here.
         if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
             return MoveStatus.moveFailed("No track to upgrade.");
         }
@@ -205,7 +205,7 @@ public final class TrackMoveProducer {
         TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleID);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
 
-        /* We don't want to 'upgrade' a station to track. See bug 874416. */
+        // We don't want to 'upgrade' a station to track. See bug 874416.
         if (before.getTrackRule().isStation()) {
             return MoveStatus.moveFailed("No need to upgrade track at station.");
         }
@@ -248,7 +248,7 @@ public final class TrackMoveProducer {
     private MoveStatus sendMove(Move move) {
         MoveStatus moveStatus = executor.doMove(move);
 
-        if (moveStatus.isStatus()) {
+        if (moveStatus.succeeds()) {
             clearStackIfStale();
             moveStack.add(move);
         }
@@ -263,7 +263,7 @@ public final class TrackMoveProducer {
     }
 
     private BuildTrackStrategy getBuildTrackStrategy() {
-        return (BuildTrackStrategy) mr.getProperty(Property.BUILD_TRACK_STRATEGY);
+        return (BuildTrackStrategy) modelRoot.getProperty(Property.BUILD_TRACK_STRATEGY);
     }
 
     /**
@@ -271,21 +271,21 @@ public final class TrackMoveProducer {
      */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 
-        mr.setProperty(Property.BUILD_TRACK_STRATEGY, buildTrackStrategy);
+        modelRoot.setProperty(Property.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
     /**
      * @return
      */
     private BuildMode getBuildMode() {
-        return (BuildMode) mr.getProperty(Property.TRACK_BUILDER_MODE);
+        return (BuildMode) modelRoot.getProperty(Property.TRACK_BUILDER_MODE);
     }
 
     /**
      * @param buildMode
      */
     private void setBuildMode(BuildMode buildMode) {
-        mr.setProperty(Property.TRACK_BUILDER_MODE, buildMode);
+        modelRoot.setProperty(Property.TRACK_BUILDER_MODE, buildMode);
     }
 
 }

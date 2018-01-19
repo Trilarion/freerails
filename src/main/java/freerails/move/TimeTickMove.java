@@ -93,7 +93,7 @@ public class TimeTickMove implements Move {
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryDoMove(world, principal);
 
-        if (status.status) {
+        if (status.succeeds()) {
             world.setTime(newTime);
         }
 
@@ -103,7 +103,7 @@ public class TimeTickMove implements Move {
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
         MoveStatus status = tryUndoMove(world, principal);
 
-        if (status.isStatus()) {
+        if (status.succeeds()) {
             world.setTime(oldTime);
         }
 
