@@ -74,7 +74,7 @@ public class UserMessageGenerator implements MoveReceiver {
 
         if (move instanceof WorldDiffMove) {
             WorldDiffMove wdm = (WorldDiffMove) move;
-            if (wdm.getCause() == WorldDiffMove.Cause.TrainArrives) {
+            if (wdm.getCause() == WorldDiffMoveCause.TrainArrives) {
                 trainArrives(wdm);
             }
 
@@ -141,14 +141,9 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(formatter.format(revenue));
             modelRoot.setProperty(Property.QUICK_MESSAGE, message.toString());
             // Play the sound of cash coming in. The greater the
-            // revenue,
-            // the more loops of the sample we play.
+            // revenue, the more loops of the sample we play.
             int loops = (int) revenue / 4000;
-
-            try {
-                soundManager.playSound(ClientConfig.SOUND_CASH, loops);
-            } catch (Exception ignored) {
-            }
+            soundManager.playSound(ClientConfig.SOUND_CASH, loops);
         }
     }
 

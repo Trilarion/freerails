@@ -23,7 +23,7 @@ package freerails.server;
 
 import freerails.world.ItemsTransactionAggregator;
 import freerails.world.World;
-import freerails.world.WorldImpl;
+import freerails.world.FullWorld;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;
@@ -44,7 +44,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl(20, 20);
+        world = new FullWorld(20, 20);
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(world);
     }

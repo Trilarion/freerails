@@ -18,8 +18,9 @@
 
 package freerails.network;
 
+import freerails.server.ServerGameModel;
 import freerails.util.Utils;
-import freerails.world.WorldImpl;
+import freerails.world.FullWorld;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,9 +29,9 @@ import java.util.HashMap;
 /**
  * Stores saved games in memory rather than on disk.
  */
-public class SaveGamesManager4UnitTests implements SaveGamesManager {
-    private final String[] mapsAvailable = {"map1", "map2"};
+public class SaveGamesManagerForUnitTests implements SaveGamesManager {
 
+    private final String[] mapsAvailable = {"map1", "map2"};
     private final HashMap<String, Serializable> savedGames = new HashMap<>();
 
     /**
@@ -71,10 +72,9 @@ public class SaveGamesManager4UnitTests implements SaveGamesManager {
      * @return
      * @throws IOException
      */
-    public Serializable loadGame(String name) throws IOException {
+    public ServerGameModel loadGame(String name) throws IOException {
         Serializable o = savedGames.get(name);
-
-        return Utils.cloneBySerialisation(o);
+        return (ServerGameModel) Utils.cloneBySerialisation(o);
     }
 
     /**
@@ -83,6 +83,6 @@ public class SaveGamesManager4UnitTests implements SaveGamesManager {
      * @throws IOException
      */
     public Serializable newMap(String name) throws IOException {
-        return new WorldImpl(10, 10);
+        return new FullWorld(10, 10);
     }
 }

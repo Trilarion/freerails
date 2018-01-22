@@ -22,9 +22,9 @@
 package freerails.controller;
 
 import freerails.util.Point2D;
+import freerails.world.FullWorld;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
-import freerails.world.WorldImpl;
 import freerails.world.player.Player;
 import freerails.world.top.MapFixtureFactory;
 import junit.framework.TestCase;
@@ -36,14 +36,14 @@ import java.util.List;
  */
 public class TrackPathFinderTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
-    private WorldImpl world;
+    private FullWorld world;
 
     /**
      * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl(20, 20);
+        world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);

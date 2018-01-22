@@ -18,9 +18,9 @@
 
 package freerails.client.view;
 
+import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
@@ -76,7 +76,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl();
+        world = new FullWorld();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateCargoTypesList(world);
         balanceSheetGenerator = new IncomeStatementGenerator(world,

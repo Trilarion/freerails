@@ -52,7 +52,6 @@ class CityNamesSAXParser {
         try {
             SAXParser saxParser = factory.newSAXParser();
             saxParser.parse(is, handler);
-        } catch (IOException | ParserConfigurationException ignored) {
-        }
+        } catch (IOException | ParserConfigurationException ignored) {}
     }
 }

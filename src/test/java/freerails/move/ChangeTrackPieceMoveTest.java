@@ -24,10 +24,10 @@
 package freerails.move;
 
 import freerails.util.Point2D;
+import freerails.world.FullWorld;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.SKEY;
-import freerails.world.WorldImpl;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.top.MapFixtureFactory;
@@ -70,7 +70,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() {
         setHasSetupBeenCalled(true);
-        setWorld(new WorldImpl(20, 20));
+        setWorld(new FullWorld(20, 20));
         getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }

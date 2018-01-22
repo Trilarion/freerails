@@ -74,7 +74,10 @@ public class RendererRootImpl implements RendererRoot {
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
                 sm.addClip(soundsFiles[i]);
-            } catch (IOException | UnsupportedAudioFileException e) {
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (UnsupportedAudioFileException e) {
+                e.printStackTrace();
             }
             pm.setValue(i + 1);
         }
@@ -130,6 +133,7 @@ public class RendererRootImpl implements RendererRoot {
             TileRenderer tr;
             pm.setValue(++progress);
 
+            // TODO not a nice hack, unhack
             try {
                 // XXX hack to make rivers flow into ocean and harbours & ocean
                 // treat harbours as the same type.

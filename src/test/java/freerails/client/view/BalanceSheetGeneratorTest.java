@@ -74,7 +74,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
 
-        world = new WorldImpl(10, 10);
+        world = new FullWorld(10, 10);
         player = new Player("Player X", world.getNumberOfPlayers());
         world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));

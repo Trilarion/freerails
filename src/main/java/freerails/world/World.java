@@ -33,9 +33,7 @@ import java.io.Serializable;
  * as an address space independent way to reference the element. If you want to
  * remove an element from a list, you should set it to null, e.g.
  *
- *
  * {@code world.set(KEY.TRAINS, 5, null, player);}
- *
  *
  * Code that loops through lists should handle null values gracefully
  */

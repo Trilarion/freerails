@@ -77,7 +77,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() {
         super.setHasSetupBeenCalled(true);
-        setWorld(new WorldImpl(10, 10));
+        setWorld(new FullWorld(10, 10));
         getWorld().set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
         getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(getWorld());

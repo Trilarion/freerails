@@ -25,10 +25,9 @@ import freerails.controller.ServerControlInterface;
  * Request to start a game on a new map.
  */
 public class NewGameMessageToServer implements MessageToServer {
+
     private static final long serialVersionUID = 3256723961743422513L;
-
     private final int id;
-
     private final String mapName;
 
     /**

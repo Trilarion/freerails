@@ -26,7 +26,7 @@ import freerails.world.ActivityIterator;
 import freerails.world.game.GameTime;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.WorldImplTest;
+import freerails.world.top.FullWorldTest;
 
 /**
  *
@@ -38,12 +38,12 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     @Override
     public void testMove() {
-        World w = getWorld();
+        World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();
-        Activity act = new WorldImplTest.TestActivity(50);
-        w.addActiveEntity(principal, act);
+        Activity act = new FullWorldTest.TestActivity(50);
+        world.addActiveEntity(principal, act);
 
-        Activity act2 = new WorldImplTest.TestActivity(60);
+        Activity act2 = new FullWorldTest.TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertSurvivesSerialisation(move);
         assertOkAndRepeatable(move);
@@ -54,12 +54,12 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        World w = getWorld();
+        World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();
-        Activity act = new WorldImplTest.TestActivity(50);
-        w.addActiveEntity(principal, act);
+        Activity act = new FullWorldTest.TestActivity(50);
+        world.addActiveEntity(principal, act);
 
-        Activity act2 = new WorldImplTest.TestActivity(60);
+        Activity act2 = new FullWorldTest.TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertDoThenUndoLeavesWorldUnchanged(move);
 
@@ -69,18 +69,18 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testStackingOfActivities() {
-        World w = getWorld();
+        World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();
-        Activity act = new WorldImplTest.TestActivity(50);
-        w.addActiveEntity(principal, act);
+        Activity act = new FullWorldTest.TestActivity(50);
+        world.addActiveEntity(principal, act);
 
-        Activity act2 = new WorldImplTest.TestActivity(60);
+        Activity act2 = new FullWorldTest.TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertDoMoveIsOk(move);
 
         GameTime currentTime = new GameTime(0);
-        assertEquals(currentTime, w.currentTime());
-        ActivityIterator it = w.getActivities(principal, 0);
+        assertEquals(currentTime, world.currentTime());
+        ActivityIterator it = world.getActivities(principal, 0);
 
         assertEquals(it.getActivity(), act);
         assertEquals(it.getStartTime(), currentTime.getTicks(), 0.00001);

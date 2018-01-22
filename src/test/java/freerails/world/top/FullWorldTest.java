@@ -23,9 +23,9 @@ package freerails.world.top;
 
 import freerails.util.Utils;
 import freerails.world.Activity;
+import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -36,25 +36,25 @@ import java.io.Serializable;
 /**
  *
  */
-public class WorldImplTest extends TestCase {
+public class FullWorldTest extends TestCase {
     private final Serializable fs = new TestState(1);
 
     /**
      *
      */
     public void testGet() {
-        WorldImpl w = new WorldImpl();
-        w.add(SKEY.TERRAIN_TYPES, fs);
-        assertEquals(w.get(SKEY.TERRAIN_TYPES, 0), fs);
+        FullWorld fullWorld = new FullWorld();
+        fullWorld.add(SKEY.TERRAIN_TYPES, fs);
+        assertEquals(fullWorld.get(SKEY.TERRAIN_TYPES, 0), fs);
     }
 
     /**
      *
      */
     public void testConstructor() {
-        World w = new WorldImpl();
-        assertEquals("The width should be zero", 0, w.getMapWidth());
-        assertEquals("The height should be zero", 0, w.getMapHeight());
+        World world = new FullWorld();
+        assertEquals("The width should be zero", 0, world.getMapWidth());
+        assertEquals("The height should be zero", 0, world.getMapHeight());
     }
 
     /**
@@ -64,7 +64,7 @@ public class WorldImplTest extends TestCase {
     public void testDefensiveCopy() {
         World original;
         World copy;
-        original = new WorldImpl();
+        original = new FullWorld();
         copy = original.defensiveCopy();
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
@@ -83,7 +83,7 @@ public class WorldImplTest extends TestCase {
     public void testEquals() {
         World original;
         World copy;
-        original = new WorldImpl();
+        original = new FullWorld();
         copy = original.defensiveCopy();
 
         Player player = new Player("Name", 0);
@@ -110,7 +110,7 @@ public class WorldImplTest extends TestCase {
     public void testEquals2() {
         World original;
         World copy, copy2;
-        original = new WorldImpl();
+        original = new FullWorld();
         copy = original.defensiveCopy();
         copy2 = original.defensiveCopy();
         // Test adding players.
@@ -130,27 +130,27 @@ public class WorldImplTest extends TestCase {
      *
      */
     public void testActivityLists() {
-        World w = new WorldImpl();
+        World world = new FullWorld();
         Player player = new Player("Name", 0);
-        w.addPlayer(player);
+        world.addPlayer(player);
         FreerailsPrincipal principal = player.getPrincipal();
 
         // Test adding activities.
-        assertEquals(0, w.size(principal));
+        assertEquals(0, world.size(principal));
         Activity act = new TestActivity(30);
-        int actIndex = w.addActiveEntity(principal, act);
+        int actIndex = world.addActiveEntity(principal, act);
         assertEquals(0, actIndex);
-        assertEquals(1, w.size(principal));
-        actIndex = w.addActiveEntity(principal, act);
+        assertEquals(1, world.size(principal));
+        actIndex = world.addActiveEntity(principal, act);
         assertEquals(1, actIndex);
-        assertEquals(2, w.size(principal));
+        assertEquals(2, world.size(principal));
 
         // Then removing them.
         Activity expected = new TestActivity(30);
         assertEquals(expected, act);
-        Activity actual = w.removeLastActiveEntity(principal);
+        Activity actual = world.removeLastActiveEntity(principal);
         assertEquals(actual, expected);
-        assertEquals(1, w.size(principal));
+        assertEquals(1, world.size(principal));
 
     }
 
@@ -158,22 +158,22 @@ public class WorldImplTest extends TestCase {
      *
      */
     public void testBoundsContain() {
-        World w = new WorldImpl();
-        assertFalse(w.boundsContain(1, 1));
-        assertFalse(w.boundsContain(0, 0));
-        assertFalse(w.boundsContain(-1, -1));
-        w = new WorldImpl(5, 10);
-        assertTrue(w.boundsContain(0, 0));
-        assertTrue(w.boundsContain(4, 9));
-        assertFalse(w.boundsContain(-1, -1));
-        assertFalse(w.boundsContain(5, 10));
+        World world = new FullWorld();
+        assertFalse(world.boundsContain(1, 1));
+        assertFalse(world.boundsContain(0, 0));
+        assertFalse(world.boundsContain(-1, -1));
+        world = new FullWorld(5, 10);
+        assertTrue(world.boundsContain(0, 0));
+        assertTrue(world.boundsContain(4, 9));
+        assertFalse(world.boundsContain(-1, -1));
+        assertFalse(world.boundsContain(5, 10));
     }
 
     /**
      *
      */
     public void testBankAccount() {
-        WorldImpl world = new WorldImpl();
+        FullWorld world = new FullWorld();
         Player player = new Player("Test", 0);
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);

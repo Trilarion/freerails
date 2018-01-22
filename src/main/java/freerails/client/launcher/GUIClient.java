@@ -29,16 +29,10 @@ import freerails.controller.ClientProperty;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.client.FreerailsClient;
-import freerails.network.FreerailsGameServer;
-import freerails.network.SaveGamesManager;
 import freerails.server.ProgressMonitorModel;
-import freerails.server.SaveGameManagerImpl;
-import freerails.server.ServerGameModel;
-import freerails.server.ServerGameModelImpl;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.World;
-import freerails.world.game.GameModel;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
 import freerails.world.player.Player;
@@ -59,18 +53,18 @@ public class GUIClient extends FreerailsClient {
     private final ProgressMonitorModel monitor;
     private final String name;
     private final ScreenHandler screenHandler;
-    private RendererRoot vl;
+    private RendererRoot rendererRoot;
 
     /**
      * @param name
-     * @param fm
+     * @param progressMonitorModel
      * @param screenMode
-     * @param dm
+     * @param displayMode
      * @throws IOException
      */
-    public GUIClient(String name, ProgressMonitorModel fm, int screenMode, DisplayMode dm) {
+    public GUIClient(String name, ProgressMonitorModel progressMonitorModel, int screenMode, DisplayMode displayMode) {
         this.name = name;
-        monitor = null == fm ? ProgressPanelModel.EMPTY : fm;
+        monitor = null == progressMonitorModel ? ProgressPanelModel.EMPTY : progressMonitorModel;
         // Set up model root and action root.
         modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(getMoveFork());
@@ -81,8 +75,7 @@ public class GUIClient extends FreerailsClient {
         // Create GUI components
         factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);
         JFrame createClientJFrame = factory.createClientJFrame(name);
-        screenHandler = new ScreenHandler(createClientJFrame, screenMode, dm);
-
+        screenHandler = new ScreenHandler(createClientJFrame, screenMode, displayMode);
     }
 
     @Override
@@ -117,12 +110,9 @@ public class GUIClient extends FreerailsClient {
     @Override
     protected void newWorld(World w) {
         try {
-            if (null == vl || !vl.validate(w)) {
-                try {
-                    vl = new RendererRootImpl(w, monitor);
+            if (null == rendererRoot || !rendererRoot.validate(w)) {
+                    rendererRoot = new RendererRootImpl(w, monitor);
                     monitor.finished();
-                } catch (IOException e) {
-                }
             }
 
             // Should be a smarter way of doing this..
@@ -135,9 +125,9 @@ public class GUIClient extends FreerailsClient {
             }
 
             modelRoot.setProperty(ModelRoot.Property.SERVER, connectionToServer.getServerDetails());
-            actionRoot.setup(modelRoot, vl);
+            actionRoot.setup(modelRoot, rendererRoot);
 
-            factory.setup(vl, w);
+            factory.setup(rendererRoot, w);
         } catch (Exception e) {
             Launcher.emergencyStop();
         }

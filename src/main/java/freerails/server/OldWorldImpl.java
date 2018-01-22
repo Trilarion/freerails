@@ -18,9 +18,9 @@
 
 package freerails.server;
 
-import freerails.server.parser.Track_TilesHandlerImpl;
+import freerails.server.parser.TrackTilesHandlerImpl;
+import freerails.world.FullWorld;
 import freerails.world.ITEM;
-import freerails.world.WorldImpl;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
@@ -34,7 +34,7 @@ import java.net.URL;
 /**
  * Sets up a World object.
  */
-// TODO difference to world.WorldImpl?
+// TODO difference to world.FullWorld?
 public class OldWorldImpl {
 
     private OldWorldImpl() {
@@ -57,7 +57,7 @@ public class OldWorldImpl {
         TileSetFactory tileFactory = new TileSetFactoryImpl();
         pm.setValue(++progess);
 
-        WorldImpl world = new WorldImpl();
+        FullWorld world = new FullWorld();
         pm.setValue(++progess);
 
         pm.setValue(++progess);
@@ -69,7 +69,7 @@ public class OldWorldImpl {
 
         URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
 
-        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
+        TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
         pm.setValue(++progess);
 
         trackSetFactory.addTrackRules(world);
@@ -84,8 +84,7 @@ public class OldWorldImpl {
 
         try {
             CityNamesSAXParser.readCityNames(world, cities_xml_url);
-        } catch (SAXException ignored) {
-        }
+        } catch (SAXException ignored) {}
 
         // Randomly position the city tiles
         CityTilePositioner ctp = new CityTilePositioner(world);

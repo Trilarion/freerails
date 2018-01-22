@@ -39,7 +39,7 @@ import java.util.HashSet;
  */
 public class FlatTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
-    private WorldImpl world;
+    private FullWorld world;
 
     /**
      * @param arg0
@@ -53,7 +53,7 @@ public class FlatTrackExplorerTest extends TestCase {
      */
     @Override
     protected void setUp() {
-        world = new WorldImpl(20, 20);
+        world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);

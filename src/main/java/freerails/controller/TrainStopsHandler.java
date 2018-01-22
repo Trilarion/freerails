@@ -27,8 +27,7 @@ import freerails.util.Point2D;
 import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.WorldDiffs;
-import freerails.world.game.GameTime;
+import freerails.world.FullWorldDiffs;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.Station;
@@ -49,14 +48,14 @@ public class TrainStopsHandler implements Serializable {
     private static final long serialVersionUID = 3257567287094882872L;
     private final FreerailsPrincipal principal;
     private final int trainId;
-    private final WorldDiffs worldDiffs;
+    private final FullWorldDiffs worldDiffs;
 
     /**
      * @param id
      * @param p
      * @param w
      */
-    public TrainStopsHandler(int id, FreerailsPrincipal p, WorldDiffs w) {
+    public TrainStopsHandler(int id, FreerailsPrincipal p, FullWorldDiffs w) {
         trainId = id;
         principal = p;
         worldDiffs = w;
@@ -126,7 +125,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public Move getMoves() {
-        Move move = WorldDiffMove.generate(worldDiffs, WorldDiffMove.Cause.TrainArrives);
+        Move move = WorldDiffMove.generate(worldDiffs, WorldDiffMoveCause.TrainArrives);
         worldDiffs.reset();
         return move;
     }

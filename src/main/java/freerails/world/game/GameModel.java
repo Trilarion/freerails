@@ -23,5 +23,8 @@ package freerails.world.game;
  */
 public interface GameModel {
 
+    /**
+     *
+     */
     void update();
 }

@@ -42,11 +42,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private final Map<String, Serializable> properties = new HashMap<>();
-    private final MoveChainFork moveFork;
-
-    /**
-     *
-     */
+    private final MoveChainFork moveFork = new MoveChainFork();;
     protected ConnectionToServer connectionToServer;
     private World world;
     private MovePrecommitter committer;
@@ -54,9 +50,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      *
      */
-    public FreerailsClient() {
-        moveFork = new MoveChainFork();
-    }
+    public FreerailsClient() {}
 
     /**
      * @return
@@ -131,11 +125,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * Subclasses should override this method if they need to respond the the
+     * Subclasses should override this method if they need to respond to the
      * world being changed.
      */
-    protected void newWorld(World w) {
-    }
+    protected void newWorld(World w) {}
 
     public void setProperty(ClientProperty propertyName, Serializable value) {
         properties.put(propertyName.name(), value);

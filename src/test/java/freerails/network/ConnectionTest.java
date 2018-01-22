@@ -28,17 +28,17 @@ public class ConnectionTest extends AbstractEchoGameServerTestCase {
      */
     public void testConnecting() {
         try {
-            assertEquals(0, echoGameServer.countOpenConnections());
+            assertEquals(0, echoGameServer.getNumberOpenConnections());
 
             Connection connection = new Connection(ipAddress, server
                     .getLocalPort());
             connection.open();
-            assertEquals(1, echoGameServer.countOpenConnections());
+            assertEquals(1, echoGameServer.getNumberOpenConnections());
 
             Connection connection2 = new Connection(ipAddress, server
                     .getLocalPort());
             connection2.open();
-            assertEquals(2, echoGameServer.countOpenConnections());
+            assertEquals(2, echoGameServer.getNumberOpenConnections());
         } catch (Exception e) {
             fail();
         }

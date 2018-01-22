@@ -18,9 +18,9 @@
 
 package freerails.world.top;
 
+import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;
@@ -60,7 +60,7 @@ public class MapFixtureFactory {
      */
     public static World getWorld(int w, int h) {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        World world = new WorldImpl(w, h);
+        World world = new FullWorld(w, h);
         generateTerrainTypesList(world);
         generateCargoTypesList(world);
 

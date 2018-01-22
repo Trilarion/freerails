@@ -22,9 +22,9 @@ import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Point2D;
+import freerails.world.FullWorldDiffs;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldConstants;
-import freerails.world.WorldDiffs;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackPiece;
 
@@ -50,11 +50,11 @@ public class BuildTrackRenderer implements Painter {
 
     }
 
-    private WorldDiffs getWorldDiffs() {
+    private FullWorldDiffs getWorldDiffs() {
         if (modelRoot == null) {
             return null;
         }
-        return (WorldDiffs) modelRoot.getProperty(ModelRoot.Property.PROPOSED_TRACK);
+        return (FullWorldDiffs) modelRoot.getProperty(ModelRoot.Property.PROPOSED_TRACK);
     }
 
     /**
@@ -63,7 +63,7 @@ public class BuildTrackRenderer implements Painter {
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
-        WorldDiffs worldDiffs = getWorldDiffs();
+        FullWorldDiffs worldDiffs = getWorldDiffs();
         if (null != worldDiffs) {
             for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D point = iter.next();

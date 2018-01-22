@@ -67,9 +67,7 @@ abstract class AbstractInetConnection implements Runnable {
 
                 try {
                     readerThreadStatus.wait(timeout);
-                } catch (InterruptedException e) {
-                    // do nothing.
-                }
+                } catch (InterruptedException e) {}
             }
         }
 
@@ -94,8 +92,7 @@ abstract class AbstractInetConnection implements Runnable {
                     inbound.notifyAll();
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
-        }
+        } catch (IOException | ClassNotFoundException e) {}
 
         logger.debug(this + "Reciprocating shutdown..");
         shutDownInput();

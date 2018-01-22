@@ -22,7 +22,7 @@
 package freerails.server;
 
 import freerails.world.SKEY;
-import freerails.world.WorldImpl;
+import freerails.world.FullWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainType;
@@ -50,7 +50,7 @@ final class MapFactory {
      */
     private static final List<Integer> countryTypes = new ArrayList();
     private static final List<Integer> non_countryTypes = new ArrayList();
-    private static WorldImpl world;
+    private static FullWorld world;
 
     private MapFactory() {
     }
@@ -60,7 +60,7 @@ final class MapFactory {
      * @param w
      * @param pm
      */
-    public static void setupMap(URL map_url, WorldImpl w, ProgressMonitorModel pm) {
+    public static void setupMap(URL map_url, FullWorld w, ProgressMonitorModel pm) {
         // Setup progress monitor..
         pm.setValue(0);
 

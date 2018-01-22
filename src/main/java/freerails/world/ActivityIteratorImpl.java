@@ -13,19 +13,19 @@ public class ActivityIteratorImpl implements ActivityIterator {
      *
      */
     private final int size;
-    private final List<WorldImpl.ActivityAndTime> currentList;
+    private final List<FullWorld.ActivityAndTime> currentList;
 
     /**
      *
      */
     private int activityIndex = 0;
-    private WorldImpl.ActivityAndTime ant;
+    private FullWorld.ActivityAndTime ant;
 
     /**
      * @param playerIndex
      * @param index
      */
-    public ActivityIteratorImpl(WorldImpl world, int playerIndex, int index) {
+    public ActivityIteratorImpl(FullWorld world, int playerIndex, int index) {
         currentList = world.activityLists.get(playerIndex, index);
         size = currentList.size();
         ant = currentList.get(activityIndex);

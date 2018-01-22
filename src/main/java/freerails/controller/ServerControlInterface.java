@@ -47,7 +47,6 @@ public interface ServerControlInterface {
     /**
      *
      */
-
     void stopGame();
 
     /**

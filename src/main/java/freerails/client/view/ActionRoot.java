@@ -41,10 +41,10 @@ public class ActionRoot {
     private TrackMoveProducer trackMoveProducer;
 
     /**
-     * @param mr
+     * @param modelRoot
      */
-    public ActionRoot(ModelRootImpl mr) {
-        serverControls = new ServerControlModel(mr);
+    public ActionRoot(ModelRootImpl modelRoot) {
+        serverControls = new ServerControlModel(modelRoot);
     }
 
     /**

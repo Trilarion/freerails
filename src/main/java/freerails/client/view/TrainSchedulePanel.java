@@ -420,10 +420,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     public void display(int newTrainNumber) {
         trainNumber = newTrainNumber;
         FreerailsPrincipal principal = modelRoot.getPrincipal();
-        ReadOnlyWorld w = modelRoot.getWorld();
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, newTrainNumber);
+        ReadOnlyWorld world = modelRoot.getWorld();
+        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, newTrainNumber);
         scheduleID = train.getScheduleID();
-        listModel = new TrainOrdersListModel(w, newTrainNumber, principal);
+        listModel = new TrainOrdersListModel(world, newTrainNumber, principal);
         orders.setModel(listModel);
         orders.setFixedCellWidth(250);
         listModel.fireRefresh();
@@ -440,9 +440,9 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     private MutableSchedule getSchedule() {
         FreerailsPrincipal principal = modelRoot.getPrincipal();
-        ReadOnlyWorld w = modelRoot.getWorld();
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
-        ImmutableSchedule immutableSchedule = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
+        ReadOnlyWorld world = modelRoot.getWorld();
+        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
+        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(principal, KEY.TRAIN_SCHEDULES, train.getScheduleID());
         return new MutableSchedule(immutableSchedule);
     }
 
@@ -570,11 +570,11 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     private void sendUpdateMove(MutableSchedule mutableSchedule) {
         FreerailsPrincipal principal = modelRoot.getPrincipal();
-        ReadOnlyWorld w = modelRoot.getWorld();
-        TrainModel train = (TrainModel) w.get(principal, KEY.TRAINS, trainNumber);
+        ReadOnlyWorld world = modelRoot.getWorld();
+        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
         // int scheduleID = train.getScheduleID();
         assert (scheduleID == train.getScheduleID());
-        ImmutableSchedule before = (ImmutableSchedule) w.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
+        ImmutableSchedule before = (ImmutableSchedule) world.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move move = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
         modelRoot.doMove(move);

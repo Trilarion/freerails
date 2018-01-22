@@ -22,8 +22,8 @@ import freerails.util.ImmutableList;
 import freerails.util.ListKey;
 import freerails.util.Point2D;
 import freerails.world.*;
-import freerails.world.WorldDiffs.LISTID;
-import freerails.world.WorldImpl.ActivityAndTime;
+import freerails.world.FullWorldDiffs.LISTID;
+import freerails.world.FullWorld.ActivityAndTime;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 import org.apache.log4j.Logger;
@@ -45,7 +45,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
 
     private static final Logger logger = Logger.getLogger(WorldDiffMove.class.getName());
     private static final long serialVersionUID = 3905245632406239544L;
-    private final Cause cause;
+    private final WorldDiffMoveCause cause;
     private final ImmutableList<MapDiff> diffs;
     private final CompositeMove listChanges;
     private final int x, y, w, h;
@@ -56,7 +56,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
      * @param cause
      * @throws UnsupportedOperationException
      */
-    public WorldDiffMove(ReadOnlyWorld world, WorldDiffs worldDiffs, Cause cause) throws UnsupportedOperationException {
+    public WorldDiffMove(ReadOnlyWorld world, FullWorldDiffs worldDiffs, WorldDiffMoveCause cause) throws UnsupportedOperationException {
         this.cause = cause;
 
         Iterator<Point2D> mit = worldDiffs.getMapDiffs();
@@ -94,7 +94,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         while (lit.hasNext()) {
             ListKey lkey = lit.next();
 
-            WorldDiffs.LISTID listId = (LISTID) lkey.getListID();
+            FullWorldDiffs.LISTID listId = (LISTID) lkey.getListID();
             switch (listId) {
                 case LISTS: {
                     int playerId = lkey.getIndex()[0];
@@ -212,15 +212,15 @@ public class WorldDiffMove implements Move, MapUpdateMove {
      * @param cause
      * @return
      */
-    public static WorldDiffMove generate(WorldDiffs diffs, Cause cause) {
+    public static WorldDiffMove generate(FullWorldDiffs diffs, WorldDiffMoveCause cause) {
         return new WorldDiffMove(diffs.getUnderlying(), diffs, cause);
     }
 
     private void doMove(World world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
-            Serializable tile = undo ? diff.before : diff.after;
-            world.setTile(diff.x, diff.y, tile);
+            Serializable tile = undo ? diff.getBefore() : diff.getAfter();
+            world.setTile(diff.getP().x, diff.getP().y, tile);
         }
     }
 
@@ -280,8 +280,8 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     private MoveStatus tryMapChanges(ReadOnlyWorld world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
-            Serializable actual = world.getTile(diff.x, diff.y);
-            Serializable expected = undo ? diff.after : diff.before;
+            Serializable actual = world.getTile(diff.getP().x, diff.getP().y);
+            Serializable expected = undo ? diff.getAfter() : diff.getBefore();
             if (!actual.equals(expected)) {
                 return MoveStatus.moveFailed("expected =" + expected + ", actual = " + actual);
             }
@@ -321,7 +321,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     /**
      * @return
      */
-    public Cause getCause() {
+    public WorldDiffMoveCause getCause() {
         return cause;
     }
 
@@ -332,73 +332,4 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         return listChanges;
     }
 
-    /**
-     *
-     */
-    public enum Cause {
-
-        /**
-         *
-         */
-        TrainArrives,
-
-        /**
-         *
-         */
-        Other,
-
-        /**
-         *
-         */
-        YearEnd
-    }
-
-    /**
-     *
-     */
-    private static class MapDiff implements Serializable {
-        private static final long serialVersionUID = -5935670372745313360L;
-
-        /**
-         *
-         */
-        private final int x;
-
-        private final int /**
-         *
-         */
-        y;
-        private final Serializable before;
-        private final Serializable after;
-
-        private MapDiff(Serializable before, Serializable after, Point2D p) {
-            this.after = after;
-            this.before = before;
-            x = p.x;
-            y = p.y;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (!(obj instanceof MapDiff)) return false;
-
-            final MapDiff diff = (MapDiff) obj;
-
-            if (x != diff.x) return false;
-            if (y != diff.y) return false;
-            if (!after.equals(diff.after)) return false;
-            return before.equals(diff.before);
-        }
-
-        @Override
-        public int hashCode() {
-            int result;
-            result = x;
-            result = 29 * result + y;
-            result = 29 * result + before.hashCode();
-            result = 29 * result + after.hashCode();
-            return result;
-        }
-    }
 }

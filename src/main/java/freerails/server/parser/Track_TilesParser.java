@@ -27,7 +27,7 @@ import java.io.IOException;
 
 /**
  * The class reads XML documents according to specified DTD and translates all
- * related events into Track_TilesHandler events.
+ * related events into TrackTilesHandler events.
  *
  * Usage sample:
  *
@@ -40,13 +40,13 @@ final class Track_TilesParser implements org.xml.sax.ContentHandler {
 
     private static final Logger logger = Logger.getLogger(Track_TilesParser.class.getName());
     private final java.lang.StringBuffer buffer;
-    private final Track_TilesHandler handler;
+    private final TrackTilesHandler handler;
     private final java.util.Stack<Object[]> context;
 
     /**
      * @param handler
      */
-    private Track_TilesParser(final Track_TilesHandler handler) {
+    private Track_TilesParser(final TrackTilesHandler handler) {
         this.handler = handler;
         buffer = new StringBuffer(111);
         context = new java.util.Stack<>();
@@ -61,7 +61,7 @@ final class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    private static void parse(final InputSource input, final Track_TilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
+    private static void parse(final InputSource input, final TrackTilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
         parse(input, new Track_TilesParser(handler));
     }
 
@@ -74,7 +74,7 @@ final class Track_TilesParser implements org.xml.sax.ContentHandler {
      * @throws javax.xml.parsers.ParserConfigurationException a parser satisfying requested configuration can not be
      *                                                        created.
      */
-    public static void parse(final java.net.URL url, final Track_TilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
+    public static void parse(final java.net.URL url, final TrackTilesHandler handler) throws SAXException, ParserConfigurationException, IOException {
         parse(new InputSource(url.toExternalForm()), handler);
     }
 

@@ -32,12 +32,12 @@ public class CityModelTest extends TestCase {
      * Tests generating populated CityModel from cities on the map.
      */
     public void testLoadFromMap() {
-        World w = MapFixtureFactory.getWorld(100, 100);
+        World world = MapFixtureFactory.getWorld(100, 100);
         City newYork = new City("New York", 10, 20);
-        w.add(SKEY.CITIES, newYork);
+        world.add(SKEY.CITIES, newYork);
 
         CityModel city = new CityModel();
-        city.loadFromMap(w, 0);
+        city.loadFromMap(world, 0);
         assertEquals(0, city.industryCityTiles.size());
         assertEquals(0, city.urbanCityTiles.size());
         assertEquals("A city is a 7*7 area", 49, city.clearTiles.size());

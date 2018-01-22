@@ -21,6 +21,7 @@
  */
 package freerails.util;
 
+import java.awt.*;
 import java.io.Serializable;
 
 /**
@@ -45,6 +46,11 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
         this.y = y;
     }
 
+    public Point2D(Point2D p) {
+        x = p.x;
+        y = p.y;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -59,13 +65,13 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
     /**
      * @return
      */
-    public java.awt.Point toPoint() {
-        return new java.awt.Point(x, y);
+    public Point toPoint() {
+        return new Point(x, y);
     }
 
     @Override
     public int hashCode() {
-        return x * 1000 + y;
+        return x * 29 + y;
     }
 
     @Override

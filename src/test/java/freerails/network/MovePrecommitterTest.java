@@ -29,7 +29,7 @@ import freerails.move.MoveStatus;
 import freerails.move.TimeTickMove;
 import freerails.world.game.GameTime;
 import freerails.world.World;
-import freerails.world.WorldImpl;
+import freerails.world.FullWorld;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 
@@ -45,7 +45,7 @@ public class MovePrecommitterTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl(10, 10);
+        world = new FullWorld(10, 10);
         committer = new MovePrecommitter(world);
     }
 

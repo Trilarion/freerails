@@ -55,6 +55,7 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
      * -2 := invert mouse, scroll twice as fast
      */
     private static final int LINEAR_ACCEL = -1;
+    // TODO do we really need the robot here, try to do without the robot
     /**
      * A {@link Robot} to compensate mouse cursor movement.
      */

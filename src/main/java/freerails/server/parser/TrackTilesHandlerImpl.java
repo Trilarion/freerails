@@ -27,6 +27,8 @@ import freerails.world.terrain.TerrainCategory;
 import freerails.world.track.*;
 import org.xml.sax.Attributes;
 
+import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,10 +41,10 @@ import java.util.List;
  * @see Track_TilesParser
  */
 // TODO difference between interface and implementation
-public class Track_TilesHandlerImpl implements Track_TilesHandler {
+public class TrackTilesHandlerImpl implements TrackTilesHandler {
 
     private List<TrackRule> ruleList;
-    private freerails.world.track.TrackRuleProperties trackRuleProperties;
+    private TrackRuleProperties trackRuleProperties;
     private ValidTrackConfigurations validTrackConfigurations;
     private ArrayList<String> legalTemplates;
     private HashSet<TerrainCategory> terrainTypes;
@@ -52,11 +54,10 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
     /**
      * @param trackXmlUrl
      */
-    public Track_TilesHandlerImpl(java.net.URL trackXmlUrl) {
+    public TrackTilesHandlerImpl(URL trackXmlUrl) {
         try {
             Track_TilesParser.parse(trackXmlUrl, this);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     public void start_CanOnlyBuildOnTheseTerrainTypes(final Attributes meta) {
@@ -96,7 +97,7 @@ public class Track_TilesHandlerImpl implements Track_TilesHandler {
          * by the the BufferedImage that stores the map. See
          * freerails.common.Map
          */
-        rGBvalue = new java.awt.Color(rGBvalue).getRGB();
+        rGBvalue = new Color(rGBvalue).getRGB();
 
         TrackCategories category = TrackCategories.valueOf(meta.getValue("category"));
 

@@ -25,9 +25,9 @@ import freerails.controller.*;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
+import freerails.world.FullWorldDiffs;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.WorldDiffs;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
@@ -211,7 +211,7 @@ public class MoveTrainPreMove implements PreMove {
                 return moveTrain(world, occupiedTracks);
             case READY: {
                 // Are we at a station?
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(world));
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new FullWorldDiffs(world));
                 ta.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack pot = tm.getFinalPosition();
                 int x = pot.getX();
@@ -246,7 +246,7 @@ public class MoveTrainPreMove implements PreMove {
                 return moveTrain(world, occupiedTracks);
             }
             case WAITING_FOR_FULL_LOAD: {
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new WorldDiffs(world));
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new FullWorldDiffs(world));
 
                 boolean waiting4fullLoad = stopsHandler.refreshWaitingForFullLoad();
                 Move cargoMove = stopsHandler.getMoves();

@@ -35,7 +35,7 @@ import java.io.Serializable;
  * An implementation of World that uses standard java.util collections
  * internally.
  */
-public class WorldImpl implements World {
+public class FullWorld implements World {
 
     private static final long serialVersionUID = 3544393612684505393L;
     /**
@@ -63,7 +63,7 @@ public class WorldImpl implements World {
     /**
      *
      */
-    public WorldImpl() {
+    public FullWorld() {
         this(0, 0);
     }
 
@@ -71,7 +71,7 @@ public class WorldImpl implements World {
      * @param mapWidth
      * @param mapHeight
      */
-    public WorldImpl(int mapWidth, int mapHeight) {
+    public FullWorld(int mapWidth, int mapHeight) {
         activityLists = new List3DImpl<>(0, 0);
         bankAccounts = new List2DImpl<>(0);
         currentBalance = new List1DImpl<>();
@@ -184,8 +184,8 @@ public class WorldImpl implements World {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof WorldImpl) {
-            WorldImpl test = (WorldImpl) obj;
+        if (obj instanceof FullWorld) {
+            FullWorld test = (FullWorld) obj;
 
             // Compare players
             int numberOfPlayers = getNumberOfPlayers();

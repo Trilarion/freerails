@@ -32,13 +32,13 @@ public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
      */
     public void testConnecting() {
         try {
-            assertEquals(0, echoGameServer.countOpenConnections());
+            assertEquals(0, echoGameServer.getNumberOpenConnections());
 
             InetConnectionToServer con1 = new InetConnectionToServer(ipAddress,
                     server.getLocalPort());
             InetConnectionToServer con2 = new InetConnectionToServer(ipAddress,
                     server.getLocalPort());
-            assertEquals(2, echoGameServer.countOpenConnections());
+            assertEquals(2, echoGameServer.getNumberOpenConnections());
             con1.writeToServer(new Money(99));
             con1.flush();
 

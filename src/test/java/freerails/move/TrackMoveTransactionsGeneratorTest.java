@@ -22,9 +22,9 @@
 package freerails.move;
 
 import freerails.util.Point2D;
+import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.top.MapFixtureFactory;
@@ -47,7 +47,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl(20, 20);
+        world = new FullWorld(20, 20);
         MapFixtureFactory.generateTrackRuleList(world);
         Player player = new Player("test player", 0);
         world.addPlayer(player);

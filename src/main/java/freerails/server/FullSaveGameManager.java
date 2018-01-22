@@ -33,9 +33,9 @@ import java.util.zip.GZIPOutputStream;
 /**
  *
  */
-public class SaveGameManagerImpl implements SaveGamesManager {
+public class FullSaveGameManager implements SaveGamesManager {
 
-    private static final Logger logger = Logger.getLogger(SaveGameManagerImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(FullSaveGameManager.class.getName());
 
     /**
      * @return
@@ -64,7 +64,6 @@ public class SaveGameManagerImpl implements SaveGamesManager {
 
         FileOutputStream out = new FileOutputStream(s);
         GZIPOutputStream zipout = new GZIPOutputStream(out);
-
         ObjectOutput objectOut = new ObjectOutputStream(zipout);
 
         objectOut.writeObject(ServerControlInterface.VERSION);
@@ -76,7 +75,7 @@ public class SaveGameManagerImpl implements SaveGamesManager {
 
         long finishTime = System.currentTimeMillis();
         long deltaTime = finishTime - startTime;
-        logger.info("done, " + deltaTime + "moveStatus");
+        logger.info("done, " + deltaTime);
     }
 
     /**
@@ -84,7 +83,7 @@ public class SaveGameManagerImpl implements SaveGamesManager {
      * @return
      * @throws IOException
      */
-    public Serializable loadGame(String name) throws IOException {
+    public ServerGameModel loadGame(String name) throws IOException {
         long startTime = System.currentTimeMillis();
         logger.info("Loading game..  " + name);
 
@@ -100,16 +99,8 @@ public class SaveGameManagerImpl implements SaveGamesManager {
                 throw new IOException(version_string);
             }
 
-            Serializable game = (Serializable) objectIn.readObject();
+            ServerGameModel game = (ServerGameModel) objectIn.readObject();
 
-            /*
-              load player private data
-             */
-
-            // for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            // Player player = world.getPlayer(i);
-            // player.loadSession(objectIn);
-            // }
             long finishTime = System.currentTimeMillis();
             long deltaTime = finishTime - startTime;
             logger.info("done, " + deltaTime + "moveStatus");

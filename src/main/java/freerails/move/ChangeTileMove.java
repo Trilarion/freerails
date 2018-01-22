@@ -36,6 +36,7 @@ import java.awt.*;
  */
 // TODO what if there is now water on the tile, should this not destroy tracks, cities?
 public class ChangeTileMove implements Move, MapUpdateMove {
+
     private static final long serialVersionUID = 3256726169272662320L;
     private final int x;
     private final int y;

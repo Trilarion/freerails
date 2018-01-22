@@ -48,12 +48,12 @@ public class ServerControlModel implements ModelRootListener {
     private DialogueBoxController dbc;
 
     /**
-     * @param mr
+     * @param modelRoot
      */
-    public ServerControlModel(ModelRootImpl mr) {
-        modelRoot = mr;
+    public ServerControlModel(ModelRootImpl modelRoot) {
+        this.modelRoot = modelRoot;
 
-        mr.addPropertyChangeListener(this);
+        modelRoot.addPropertyChangeListener(this);
         setServerControlInterface();
 
     }

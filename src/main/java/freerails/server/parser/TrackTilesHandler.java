@@ -23,8 +23,7 @@ import org.xml.sax.Attributes;
 /**
  * Defines methods to handle parsing the track types XML.
  */
-
-interface Track_TilesHandler {
+interface TrackTilesHandler {
     /**
      * A container element start event handling method.
      *

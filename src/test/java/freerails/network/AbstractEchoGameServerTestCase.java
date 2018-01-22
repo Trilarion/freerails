@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import freerails.util.SynchronizedFlag;
 import junit.framework.TestCase;
 
 /**
@@ -33,7 +34,23 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
      */
     @Override
     protected synchronized void setUp() throws Exception {
-        echoGameServer = EchoGameServer.startServer();
+        EchoGameServer result;
+        EchoGameServer server1 = new EchoGameServer();
+        Thread t = new Thread(server1);
+        t.start();
+
+        try {
+            // Wait for the server to start before returning.
+            SynchronizedFlag status = server1.getStatus();
+            synchronized (status) {
+                status.wait();
+            }
+
+            result = server1;
+        } catch (InterruptedException e) {
+            throw new IllegalStateException();
+        }
+        echoGameServer = result;
 
         /*
          * There was a problem that occurred intermittently when the unit tests

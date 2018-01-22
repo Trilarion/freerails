@@ -44,13 +44,13 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testSharedLists() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         CargoType mailCT = new CargoType(10, "Mail", CargoCategory.Mail);
         CargoType passengersCT = new CargoType(10, "Passengers",
                 CargoCategory.Passengers);
         underlyingWorld.add(SKEY.CARGO_TYPES, mailCT);
 
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
 
         assertEquals(0, worldDiff.listDiffs());
         assertEquals(1, worldDiff.size(SKEY.CARGO_TYPES));
@@ -79,10 +79,10 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testPlayers() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
 
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(0, worldDiff.listDiffs());
         assertEquals(1, worldDiff.getNumberOfPlayers());
 
@@ -105,13 +105,13 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testNonSharedLists() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
 
         Station station0 = new Station();
         underlyingWorld.add(player0.getPrincipal(), KEY.STATIONS, station0);
 
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(0, worldDiff.listDiffs());
 
         // First, for an existing player
@@ -165,13 +165,13 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testUsingNullElements() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
         Station station0 = new Station();
         Station station1 = null;
         underlyingWorld.add(player0.getPrincipal(), KEY.STATIONS, station0);
         underlyingWorld.add(player0.getPrincipal(), KEY.STATIONS, station1);
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(station0, worldDiff.get(player0.getPrincipal(),
                 KEY.STATIONS, 0));
         assertEquals(station1, worldDiff.get(player0.getPrincipal(),
@@ -184,12 +184,12 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testItem() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         Station station0 = new Station();
         Station station1 = new Station();
         underlyingWorld.set(ITEM.GAME_RULES, station0); // why not!
 
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(station0, worldDiff.get(ITEM.GAME_RULES));
         worldDiff.set(ITEM.GAME_RULES, station1);
         assertEquals(station1, worldDiff.get(ITEM.GAME_RULES));
@@ -199,8 +199,8 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testMap() {
-        WorldImpl underlyingWorld = new WorldImpl(21, 8);
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorld underlyingWorld = new FullWorld(21, 8);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(21, worldDiff.getMapWidth());
         assertEquals(8, worldDiff.getMapHeight());
 
@@ -220,10 +220,10 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testAccount() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
 
-        WorldDiffs worldDiff = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(0, worldDiff.numberOfMapDifferences());
         assertEquals(0, worldDiff.listDiffs());
 
@@ -233,10 +233,10 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testEquals() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
-        WorldDiffs a = new WorldDiffs(underlyingWorld);
-        WorldDiffs b = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs a = new FullWorldDiffs(underlyingWorld);
+        FullWorldDiffs b = new FullWorldDiffs(underlyingWorld);
         assertEquals(a, a);
         assertEquals(a, b);
         assertEquals(a, underlyingWorld);
@@ -247,9 +247,9 @@ public class WorldDiffsTest extends TestCase {
      *
      */
     public void testGetListDiffs() {
-        WorldImpl underlyingWorld = new WorldImpl(10, 10);
+        FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
-        WorldDiffs diffs = new WorldDiffs(underlyingWorld);
+        FullWorldDiffs diffs = new FullWorldDiffs(underlyingWorld);
         City city = new City("Bristol", 10, 4);
         diffs.add(SKEY.CITIES, city);
 
@@ -258,7 +258,7 @@ public class WorldDiffsTest extends TestCase {
         ListKey lk1 = it.next();
         ListKey lk2 = it.next();
         assertFalse(it.hasNext());
-        ListKey expected = new ListKey(ListKey.Type.Element, WorldDiffs.LISTID.SHARED_LISTS, SKEY.CITIES.getKeyID(), 0);
+        ListKey expected = new ListKey(ListKey.Type.Element, FullWorldDiffs.LISTID.SHARED_LISTS, SKEY.CITIES.getKeyID(), 0);
         assertEquals(expected, lk2);
 
     }

@@ -31,7 +31,7 @@ import freerails.world.game.GameCalendar;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.City;
 import freerails.world.top.MapFixtureFactory;
-import freerails.world.top.WorldImplTest.TestActivity;
+import freerails.world.top.FullWorldTest.TestActivity;
 import junit.framework.TestCase;
 
 /**
@@ -42,7 +42,7 @@ public class WorldDiffsMoveTest extends TestCase {
     private final City city1 = new City("City 1", 8, 4);
     private final City city2 = new City("City 2", 9, 4);
     private World world;
-    private WorldDiffs diffs;
+    private FullWorldDiffs diffs;
     private FreerailsPrincipal fp1;
 
     /**
@@ -50,12 +50,12 @@ public class WorldDiffsMoveTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl(10, 10);
+        world = new FullWorld(10, 10);
         // Set the time..
         world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         fp1 = world.getPlayer(0).getPrincipal();
-        diffs = new WorldDiffs(world);
+        diffs = new FullWorldDiffs(world);
     }
 
     /**
@@ -91,7 +91,7 @@ public class WorldDiffsMoveTest extends TestCase {
         diffs.set(fp1, KEY.STATIONS, 1, city2);
         assertEquals(2, diffs.listDiffs());
         WorldDiffMove move = WorldDiffMove.generate(diffs,
-                WorldDiffMove.Cause.Other);
+                WorldDiffMoveCause.Other);
 
         assertEquals(2, move.listDiffs());
 
@@ -163,7 +163,7 @@ public class WorldDiffsMoveTest extends TestCase {
     private void runTests() {
         assertFalse(diffs.equals(world));
         WorldDiffMove move = WorldDiffMove.generate(diffs,
-                WorldDiffMove.Cause.Other);
+                WorldDiffMoveCause.Other);
 
         // Doing the move on the world should also succeed.
         World worldCopy = (World) Utils.cloneBySerialisation(world);
@@ -177,7 +177,7 @@ public class WorldDiffsMoveTest extends TestCase {
         assertEquals(worldCopy, diffs);
 
         // Undoing the move on the diffs should succeed.
-        WorldDiffs diffsCopy = (WorldDiffs) Utils.cloneBySerialisation(diffs);
+        FullWorldDiffs diffsCopy = (FullWorldDiffs) Utils.cloneBySerialisation(diffs);
         assertEquals(diffsCopy, diffs);
         moveStatus = move.tryUndoMove(diffsCopy, fp1);
         assertTrue(moveStatus.getMessage(), moveStatus.succeeds());

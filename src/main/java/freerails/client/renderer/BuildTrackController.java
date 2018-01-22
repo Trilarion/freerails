@@ -27,9 +27,9 @@ import freerails.move.MoveStatus;
 import freerails.move.UpgradeTrackMove;
 import freerails.util.Point2D;
 import freerails.util.Utils;
+import freerails.world.FullWorldDiffs;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.WorldDiffs;
 import freerails.world.game.GameModel;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
@@ -57,7 +57,7 @@ public class BuildTrackController implements GameModel {
     private final FreerailsPrincipal principal;
     private final ReadOnlyWorld realWorld;
     private final SoundManager soundManager = SoundManager.getSoundManager();
-    private final WorldDiffs worldDiffs;
+    private final FullWorldDiffs worldDiffs;
     private boolean buildNewTrack = true;
     private List<Point2D> builtTrack = new ArrayList<>();
     private boolean isBuildTrackSuccessful = false;
@@ -72,7 +72,7 @@ public class BuildTrackController implements GameModel {
      * @param readOnlyWorld ReadOnlyWorld
      */
     public BuildTrackController(ReadOnlyWorld readOnlyWorld, ModelRoot modelRoot) {
-        worldDiffs = new WorldDiffs(readOnlyWorld);
+        worldDiffs = new FullWorldDiffs(readOnlyWorld);
         realWorld = readOnlyWorld;
         path4newTrackFinder = new TrackPathFinder(readOnlyWorld, modelRoot.getPrincipal());
         pathOnExistingTrackFinder = new PathOnTrackFinder(readOnlyWorld);
@@ -340,7 +340,7 @@ public class BuildTrackController implements GameModel {
         visible = show;
     }
 
-    private void setWorldDiffs(WorldDiffs worldDiffs) {
+    private void setWorldDiffs(FullWorldDiffs worldDiffs) {
         modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
     }
 

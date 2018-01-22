@@ -24,10 +24,10 @@ package freerails.controller;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImmutableList;
+import freerails.world.FullWorld;
 import freerails.world.KEY;
 import freerails.world.SKEY;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.cargo.*;
 import freerails.world.player.Player;
 import freerails.world.station.StationDemand;
@@ -70,7 +70,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     protected void setUp() throws Exception {
         // Set up the world object with three cargo types, one station, and one
         // train.
-        world = new WorldImpl();
+        world = new FullWorld();
 
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
 

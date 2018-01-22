@@ -25,7 +25,7 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
 import freerails.network.SaveGamesManager;
-import freerails.server.SaveGameManagerImpl;
+import freerails.server.FullSaveGameManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -138,7 +138,7 @@ class SelectMapPanel extends JPanel {
         add(jPanel3, gridBagConstraints);
 
         // initialise the map list
-        SaveGamesManager sgm = new SaveGameManagerImpl();
+        SaveGamesManager sgm = new FullSaveGameManager();
         newmapsJList.setListData(sgm.getNewMapNames());
         savedmapsJList.setListData(sgm.getSaveGameNames());
         if (sgm.getSaveGameNames().length > 0) {

@@ -110,7 +110,7 @@ public final class TrackMoveProducer {
      */
     public MoveStatus buildTrack(Point2D from, TileTransition trackVector) {
 
-        ReadOnlyWorld w = executor.getWorld();
+        ReadOnlyWorld world = executor.getWorld();
         FreerailsPrincipal principal = executor.getPrincipal();
         switch (getBuildMode()) {
             case IGNORE_TRACK: {
@@ -118,7 +118,7 @@ public final class TrackMoveProducer {
             }
             case REMOVE_TRACK: {
                 try {
-                    ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from, trackVector, w, principal);
+                    ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from, trackVector, world, principal);
 
                     Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -147,22 +147,22 @@ public final class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            TerrainTile tile = (FullTerrainTile) w.getTile(x, y);
+            TerrainTile tile = (FullTerrainTile) world.getTile(x, y);
             int tt = tile.getTerrainTypeID();
             ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
 
             if (ruleIDs[i] == -1) {
-                TerrainType terrainType = (TerrainType) w.get(SKEY.TERRAIN_TYPES, tt);
+                TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, tt);
                 String message = "Non of the selected track types can be built on " + terrainType.getDisplayName();
                 return MoveStatus.moveFailed(message);
             }
-            rules[i] = (TrackRule) w.get(SKEY.TRACK_RULES, ruleIDs[i]);
+            rules[i] = (TrackRule) world.get(SKEY.TRACK_RULES, ruleIDs[i]);
         }
 
         switch (getBuildMode()) {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
-                FullTerrainTile tileA = (FullTerrainTile) w.getTile(from.x, from.y);
+                FullTerrainTile tileA = (FullTerrainTile) world.getTile(from.x, from.y);
                 if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
                     MoveStatus moveStatus = upgradeTrack(from, ruleIDs[0]);
                     if (!moveStatus.succeeds()) {
@@ -170,7 +170,7 @@ public final class TrackMoveProducer {
                     }
                 }
                 Point2D point = new Point2D(from.x + trackVector.getDx(), from.y + trackVector.getDy());
-                FullTerrainTile tileB = (FullTerrainTile) w.getTile(point.x, point.y);
+                FullTerrainTile tileB = (FullTerrainTile) world.getTile(point.x, point.y);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
                     MoveStatus moveStatus = upgradeTrack(point, ruleIDs[1]);
                     if (!moveStatus.succeeds()) {
@@ -180,7 +180,7 @@ public final class TrackMoveProducer {
                 return MoveStatus.MOVE_OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, rules[0], rules[1], w, principal);
+                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, rules[0], rules[1], world, principal);
 
                 Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -193,16 +193,16 @@ public final class TrackMoveProducer {
     }
 
     private MoveStatus upgradeTrack(Point2D point, int trackRuleID) {
-        ReadOnlyWorld w = executor.getWorld();
-        TrackPiece before = ((FullTerrainTile) w.getTile(point.x, point.y)).getTrackPiece();
+        ReadOnlyWorld world = executor.getWorld();
+        TrackPiece before = ((FullTerrainTile) world.getTile(point.x, point.y)).getTrackPiece();
         // Check whether there is track here.
         if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
             return MoveStatus.moveFailed("No track to upgrade.");
         }
 
         FreerailsPrincipal principal = executor.getPrincipal();
-        int owner = ChangeTrackPieceCompositeMove.getOwner(principal, w);
-        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, trackRuleID);
+        int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
+        TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, trackRuleID);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
@@ -222,8 +222,8 @@ public final class TrackMoveProducer {
      * the stack at a time other than the current time.
      */
     private void clearStackIfStale() {
-        ReadOnlyWorld w = executor.getWorld();
-        GameTime currentTime = w.currentTime();
+        ReadOnlyWorld world = executor.getWorld();
+        GameTime currentTime = world.currentTime();
 
         if (!currentTime.equals(lastMoveTime)) {
             moveStack.clear();
@@ -257,8 +257,8 @@ public final class TrackMoveProducer {
     }
 
     private boolean isStationHere(Point2D p) {
-        ReadOnlyWorld w = executor.getWorld();
-        FullTerrainTile tile = (FullTerrainTile) w.getTile(p.x, p.y);
+        ReadOnlyWorld world = executor.getWorld();
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(p.x, p.y);
         return tile.getTrackPiece().getTrackRule().isStation();
     }
 

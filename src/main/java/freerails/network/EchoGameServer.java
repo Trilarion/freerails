@@ -39,29 +39,7 @@ public class EchoGameServer implements GameServer, Runnable {
     private final SynchronizedFlag status = new SynchronizedFlag(false);
     private final Collection<Serializable> messsagesToSend = new LinkedList<>();
 
-    private EchoGameServer() {
-    }
-
-    /**
-     * Creates an EchoGameServer, starts it in a new Thread, and waits for its
-     * success to change to isOpen before returning.
-     */
-    public static EchoGameServer startServer() {
-        EchoGameServer server = new EchoGameServer();
-        Thread t = new Thread(server);
-        t.start();
-
-        try {
-            // Wait for the server to start before returning.
-            synchronized (server.status) {
-                server.status.wait();
-            }
-
-            return server;
-        } catch (InterruptedException e) {
-            throw new IllegalStateException();
-        }
-    }
+    public EchoGameServer() {}
 
     /**
      * @param connection
@@ -76,22 +54,21 @@ public class EchoGameServer implements GameServer, Runnable {
     /**
      * @return
      */
-    public synchronized int countOpenConnections() {
+    public synchronized int getNumberOpenConnections() {
         connections.removeIf(connection -> !connection.isOpen());
         return connections.size();
     }
 
     public void run() {
-        status.open();
 
+        status.open();
         while (status.isOpen()) {
+
             update();
 
             try {
                 Thread.sleep(20);
-            } catch (InterruptedException e) {
-                // do nothing.
-            }
+            } catch (InterruptedException e) {}
         }
     }
 
@@ -118,6 +95,7 @@ public class EchoGameServer implements GameServer, Runnable {
      *
      */
     public void update() {
+
         synchronized (this) {
             // Read messages.
             for (ConnectionToClient connection : connections) {
@@ -137,10 +115,13 @@ public class EchoGameServer implements GameServer, Runnable {
             }
 
             // Send messages.
-
             for (Serializable message : messsagesToSend) {
                 sendMessage(message);
             }
         }
+    }
+
+    public SynchronizedFlag getStatus() {
+        return status;
     }
 }

@@ -43,16 +43,16 @@ import java.io.Serializable;
  * @see FreerailsClientTest
  */
 public class FreerailsClientWithLocalServerTest extends TestCase {
-    private FreerailsGameServer server;
 
-    private SaveGamesManager4UnitTests savedGamesManager;
+    private FreerailsGameServer server;
+    private SaveGamesManagerForUnitTests savedGamesManager;
 
     /**
      * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
-        savedGamesManager = new SaveGamesManager4UnitTests();
+        savedGamesManager = new SaveGamesManagerForUnitTests();
         server = new FreerailsGameServer(savedGamesManager);
     }
 
@@ -63,12 +63,12 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         try {
             // Test 1 : connecting a client.
             assertEquals("No client connected yet.", 0, server
-                    .countOpenConnections());
+                    .getNumberOpenConnections());
 
             FreerailsClient client = new FreerailsClient();
             LogOnResponse response = client.connect(server, "name", "password");
             assertTrue(response.isSuccessful());
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
 
             // Check the client gets its properties updated.
             client.update();
@@ -84,17 +84,17 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             response = client1.connect(server, "name", "password");
             assertFalse("The player is already logged on.", response
                     .isSuccessful());
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
 
             // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
             response = client3.connect(server, "name3", "password");
             assertTrue(response.isSuccessful());
-            assertEquals(2, server.countOpenConnections());
+            assertEquals(2, server.getNumberOpenConnections());
 
             // Test 4 : disconnect the client from test 1.
             client.disconnect();
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
         } catch (Exception e) {
             fail();
         }
@@ -104,7 +104,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
      *
      */
     public void testNewGame() {
-        assertEquals(0, server.countOpenConnections());
+        assertEquals(0, server.getNumberOpenConnections());
 
         // Connect 2 clients.
         FreerailsClient client0 = new FreerailsClient();
@@ -115,7 +115,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         LogOnResponse response1 = client1
                 .connect(server, "client1", "password");
         assertTrue(response1.isSuccessful());
-        assertEquals(2, server.countOpenConnections());
+        assertEquals(2, server.getNumberOpenConnections());
         client0.update();
         client1.update();
 
@@ -173,20 +173,20 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         int playersOnWorldObject = client0.getWorld().getNumberOfPlayers();
         assertEquals(connectedPlayers, playersOnWorldObject);
 
-        World w = client0.getWorld();
-        assertNotNull(w.getPlayer(0));
-        assertNotNull(w.getPlayer(1));
+        World world = client0.getWorld();
+        assertNotNull(world.getPlayer(0));
+        assertNotNull(world.getPlayer(1));
 
         /*
          * Now check that attempts to log on by new players are rejected.
          */
 
-        assertEquals(2, server.countOpenConnections());
+        assertEquals(2, server.getNumberOpenConnections());
         FreerailsClient client = new FreerailsClient();
         LogOnResponse response = client.connect(server, "Late player",
                 "password");
         assertFalse(response.isSuccessful());
-        assertEquals(2, server.countOpenConnections());
+        assertEquals(2, server.getNumberOpenConnections());
 
     }
 
@@ -354,21 +354,21 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             // Start 2nd server with saved game
             server = new FreerailsGameServer(savedGamesManager);
             server.loadgame(savedGameName);
-            assertEquals(0, server.countOpenConnections());
+            assertEquals(0, server.getNumberOpenConnections());
             // Attempt to attach invalid player.
             client0 = new FreerailsClient();
             response0 = client0.connect(server, "client0", "batman");
             assertFalse("bad password", response0.isSuccessful());
-            assertEquals(0, server.countOpenConnections());
+            assertEquals(0, server.getNumberOpenConnections());
 
             response0 = client0.connect(server, "client1", "password");
             assertFalse("bad username", response0.isSuccessful());
-            assertEquals(0, server.countOpenConnections());
+            assertEquals(0, server.getNumberOpenConnections());
 
             response0 = client0.connect(server, "client0", "password");
             assertTrue("Ok, same username and password as before.", response0
                     .isSuccessful());
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
 
         } catch (Exception e) {
             fail();

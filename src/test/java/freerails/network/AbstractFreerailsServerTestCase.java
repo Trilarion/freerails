@@ -18,6 +18,7 @@
 
 package freerails.network;
 
+import freerails.util.SynchronizedFlag;
 import junit.framework.TestCase;
 
 /**
@@ -25,6 +26,7 @@ import junit.framework.TestCase;
  * should extend this class .
  */
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
+
     FreerailsGameServer server;
     private InetConnectionAccepter connectionAccepter;
 
@@ -33,7 +35,24 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
      */
     @Override
     protected synchronized void setUp() throws Exception {
-        server = FreerailsGameServer.startServer(new SaveGamesManager4UnitTests());
+
+        FreerailsGameServer result;
+        FreerailsGameServer server1 = new FreerailsGameServer(new SaveGamesManagerForUnitTests());
+        Thread t = new Thread(server1);
+        t.start();
+
+        try {
+            // Wait for the server to start before returning.
+            SynchronizedFlag status = server1.getStatus();
+            synchronized (status) {
+                status.wait();
+            }
+
+            result = server1;
+        } catch (InterruptedException e) {
+            throw new IllegalStateException();
+        }
+        server = result;
         connectionAccepter = new InetConnectionAccepter(0, server);
 
         Thread serverThread = new Thread(connectionAccepter);

@@ -26,7 +26,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.world.World;
 import freerails.world.WorldConstants;
-import freerails.world.WorldImpl;
+import freerails.world.FullWorld;
 import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.StockItemTransaction;
@@ -49,7 +49,7 @@ public class FinancialDataGathererTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         player = new Player("Player X", 0);
-        world = new WorldImpl();
+        world = new FullWorld();
 
         Move addPlayer = AddPlayerMove.generateMove(world, player);
         MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
@@ -118,7 +118,7 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testBuyingStakesInOtherRRs() {
-        world = new WorldImpl();
+        world = new FullWorld();
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player("Player " + i, i);

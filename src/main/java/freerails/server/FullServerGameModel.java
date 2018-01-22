@@ -24,9 +24,10 @@ package freerails.server;
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
+import freerails.move.WorldDiffMoveCause;
+import freerails.world.FullWorldDiffs;
 import freerails.world.ITEM;
 import freerails.world.World;
-import freerails.world.WorldDiffs;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
@@ -37,45 +38,38 @@ import java.util.List;
 /**
  * A ServerGameModel that contains the automations used in the actual game.
  */
-public class ServerGameModelImpl implements ServerGameModel {
+public class FullServerGameModel implements ServerGameModel {
 
     private static final long serialVersionUID = 3978144352788820021L;
     /**
      * List of the ServerAutomaton objects connected to this game.
      */
     private final List<ServerAutomaton> serverAutomata;
-
-    /**
-     *
-     */
     private World world;
     private transient SupplyAtStationsUpdater supplyAtStationsUpdater;
-    private TrainUpdater tb;
+    private TrainUpdater trainUpdater;
     private String[] passwords;
     /**
      * Number of ticks since the last time we did an infrequent update.
      */
     private int ticksSinceUpdate = 0;
-
     private transient long nextModelUpdateDue;
-
-    private transient MoveReceiver moveExecuter;
+    private transient MoveReceiver moveReceiver;
 
     /**
      *
      */
-    public ServerGameModelImpl() {
-        this(null, new ArrayList());
+    public FullServerGameModel() {
+        this(null, new ArrayList<>());
     }
 
     /**
      * @param w
      * @param serverAutomata
      */
-    private ServerGameModelImpl(World w, List<ServerAutomaton> serverAutomata) {
+    private FullServerGameModel(World w, List<ServerAutomaton> serverAutomata) {
         world = w;
         this.serverAutomata = serverAutomata;
-
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
@@ -83,22 +77,22 @@ public class ServerGameModelImpl implements ServerGameModel {
      * This is called on the last tick of each year.
      */
     private void yearEnd() {
-        TrackMaintenanceMoveGenerator tmmg = new TrackMaintenanceMoveGenerator(moveExecuter);
-        tmmg.update(world);
+        TrackMaintenanceMoveGenerator trackMaintenanceMoveGenerator = new TrackMaintenanceMoveGenerator(moveReceiver);
+        trackMaintenanceMoveGenerator.update(world);
 
-        TrainMaintenanceMoveGenerator trainMaintenanceMoveGenerator = new TrainMaintenanceMoveGenerator(moveExecuter);
+        TrainMaintenanceMoveGenerator trainMaintenanceMoveGenerator = new TrainMaintenanceMoveGenerator(moveReceiver);
         trainMaintenanceMoveGenerator.update(world);
 
-        BondInterestMoveGenerator bondInterestMoveGenerator = new BondInterestMoveGenerator(moveExecuter);
+        BondInterestMoveGenerator bondInterestMoveGenerator = new BondInterestMoveGenerator(moveReceiver);
         bondInterestMoveGenerator.update(world);
 
         // Grow cities.
-        WorldDiffs wd = new WorldDiffs(world);
-        CityTilePositioner ctp = new CityTilePositioner(wd);
-        ctp.growCities();
+        FullWorldDiffs fullWorldDiffs = new FullWorldDiffs(world);
+        CityTilePositioner cityTilePositioner = new CityTilePositioner(fullWorldDiffs);
+        cityTilePositioner.growCities();
 
-        Move move = new WorldDiffMove(world, wd, WorldDiffMove.Cause.YearEnd);
-        moveExecuter.process(move);
+        Move move = new WorldDiffMove(world, fullWorldDiffs, WorldDiffMoveCause.YearEnd);
+        moveReceiver.process(move);
     }
 
     /**
@@ -108,11 +102,11 @@ public class ServerGameModelImpl implements ServerGameModel {
         supplyAtStationsUpdater.update();
 
         CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
-        cargoAtStationsUpdater.update(world, moveExecuter);
+        cargoAtStationsUpdater.update(world, moveReceiver);
     }
 
     private void updateGameTime() {
-        moveExecuter.process(TimeTickMove.getMove(world));
+        moveReceiver.process(TimeTickMove.getMove(world));
     }
 
     /**
@@ -126,7 +120,7 @@ public class ServerGameModelImpl implements ServerGameModel {
              * First do the things that need doing whether or not the game is
              * paused.
              */
-            tb.buildTrains(world);
+            trainUpdater.buildTrains(world);
 
             int gameSpeed = ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
 
@@ -138,7 +132,7 @@ public class ServerGameModelImpl implements ServerGameModel {
                 updateGameTime();
 
                 // now do the other updates
-                tb.moveTrains(world);
+                trainUpdater.moveTrains(world);
 
                 // Check whether we are about to start a new year..
                 GameTime time = world.currentTime();
@@ -194,15 +188,15 @@ public class ServerGameModelImpl implements ServerGameModel {
      * @param moveReceiver
      */
     public void initialize(MoveReceiver moveReceiver) {
-        moveExecuter = moveReceiver;
-        tb = new TrainUpdater(moveReceiver);
+        this.moveReceiver = moveReceiver;
+        trainUpdater = new TrainUpdater(moveReceiver);
         supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveReceiver);
 
         for (ServerAutomaton aServerAutomata : serverAutomata) {
             aServerAutomata.initAutomaton(moveReceiver);
         }
 
-        tb.initAutomaton(moveReceiver);
+        trainUpdater.initAutomaton(moveReceiver);
         nextModelUpdateDue = System.currentTimeMillis();
     }
 

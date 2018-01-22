@@ -67,7 +67,7 @@ import java.util.TreeMap;
  * check every tile. </li>
  * </ol>
  */
-public class WorldDiffs extends WorldImpl {
+public class FullWorldDiffs extends FullWorld {
 
     private static final long serialVersionUID = -5993786533926919956L;
     private final SortedMap<ListKey, Object> listDiff;
@@ -75,18 +75,18 @@ public class WorldDiffs extends WorldImpl {
      * Stores the differences on the map, Point2D are used as keys.
      */
     private final HashMap<Point2D, Object> mapDiff;
-    private final WorldImpl underlying;
+    private final FullWorld underlying;
 
     /**
      * @param row
      */
-    public WorldDiffs(ReadOnlyWorld row) {
+    public FullWorldDiffs(ReadOnlyWorld row) {
 
         listDiff = new TreeMap<>();
         mapDiff = new HashMap<>();
 
         // Bit of a hack but it's not clear there is a better way, LL
-        underlying = (WorldImpl) row;
+        underlying = (FullWorld) row;
 
         activityLists = new List3DDiff<>(listDiff, underlying.activityLists, LISTID.ACTIVITY_LISTS);
         bankAccounts = new List2DDiff<>(listDiff, underlying.bankAccounts, LISTID.BANK_ACCOUNTS);

@@ -30,10 +30,9 @@ import freerails.controller.ServerControlInterface;
 import freerails.network.FreerailsGameServer;
 import freerails.network.InetConnectionAccepter;
 import freerails.network.LogOnResponse;
-import freerails.network.SaveGamesManager;
-import freerails.server.SaveGameManagerImpl;
+import freerails.server.FullSaveGameManager;
 import freerails.server.ServerGameModel;
-import freerails.server.ServerGameModelImpl;
+import freerails.server.FullServerGameModel;
 import freerails.world.game.GameModel;
 import org.apache.log4j.*;
 
@@ -417,19 +416,18 @@ public class Launcher extends JFrame implements LauncherInterface {
     }
 
     private void initServer() {
-        SaveGamesManager gamesManager = new SaveGameManagerImpl();
-        server = new FreerailsGameServer(gamesManager);
-        ServerGameModel serverGameModel = new ServerGameModelImpl();
-        server.setServerGameModel(serverGameModel);
 
+        server = new FreerailsGameServer(new FullSaveGameManager());
+        ServerGameModel serverGameModel = new FullServerGameModel();
+        server.setServerGameModel(serverGameModel);
         /*
          * Set the server field on the connected players panel so that it can
          * keep track of who is connected.
          */
-        ConnectedPlayersPanel cp = (ConnectedPlayersPanel) wizardPages[3];
-        cp.server = server;
-        server.addPropertyChangeListener(cp);
-        cp.updateListOfPlayers();
+        ConnectedPlayersPanel connectedPlayersPanel = (ConnectedPlayersPanel) wizardPages[3];
+        connectedPlayersPanel.server = server;
+        server.addPropertyChangeListener(connectedPlayersPanel);
+        connectedPlayersPanel.updateListOfPlayers();
     }
 
     /**

@@ -18,8 +18,8 @@
 
 package freerails.move;
 
+import freerails.world.FullWorldDiffs;
 import freerails.world.World;
-import freerails.world.WorldDiffs;
 import freerails.world.terrain.FullTerrainTile;
 
 /**
@@ -33,7 +33,7 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
     @Override
     public void testMove() {
         World world2 = this.getWorld();
-        WorldDiffs worldDiff = new WorldDiffs(world2);
+        FullWorldDiffs worldDiff = new FullWorldDiffs(world2);
 
         FullTerrainTile tile = (FullTerrainTile) world2.getTile(2, 2);
         assertNotNull(tile);
@@ -43,7 +43,7 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
         worldDiff.setTile(3, 5, newTile);
         assertEquals(newTile, worldDiff.getTile(3, 5));
 
-        Move move = new WorldDiffMove(world2, worldDiff, WorldDiffMove.Cause.Other);
+        Move move = new WorldDiffMove(world2, worldDiff, WorldDiffMoveCause.Other);
         this.assertDoMoveIsOk(move);
         this.assertUndoMoveIsOk(move);
         this.assertDoThenUndoLeavesWorldUnchanged(move);

@@ -18,6 +18,8 @@
 
 package freerails.network;
 
+import freerails.server.ServerGameModel;
+
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -49,7 +51,7 @@ public interface SaveGamesManager {
      * @return
      * @throws IOException
      */
-    Serializable loadGame(String name) throws IOException;
+    ServerGameModel loadGame(String name) throws IOException;
 
     /**
      * @param name

@@ -42,7 +42,7 @@ import junit.framework.TestCase;
  */
 public class BuildTrackExplorerTest extends TestCase {
     private final Player testPlayer = new Player("test", 0);
-    private WorldImpl world;
+    private FullWorld world;
     private FreerailsPrincipal principle;
 
     /**
@@ -50,7 +50,7 @@ public class BuildTrackExplorerTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        world = new WorldImpl(20, 20);
+        world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         principle = testPlayer.getPrincipal();

@@ -30,9 +30,9 @@ public interface GameServer extends GameModel {
      */
     void addConnection(ConnectionToClient connection);
 
-    /**
+    /**g
      * @return
      */
-    int countOpenConnections();
+    int getNumberOpenConnections();
 
 }

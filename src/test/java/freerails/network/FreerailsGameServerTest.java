@@ -82,6 +82,6 @@ public class FreerailsGameServerTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
-        server = new FreerailsGameServer(new SaveGamesManager4UnitTests());
+        server = new FreerailsGameServer(new SaveGamesManagerForUnitTests());
     }
 }

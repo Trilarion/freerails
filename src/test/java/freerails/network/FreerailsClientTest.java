@@ -36,13 +36,13 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         try {
             // Test 1 : connecting a client.
             assertEquals("No client connected yet.", 0, server
-                    .countOpenConnections());
+                    .getNumberOpenConnections());
 
             FreerailsClient client = new FreerailsClient();
             LogOnResponse response = client.connect(getIpAddress(), getPort(),
                     "name", "password");
             assertTrue(response.isSuccessful());
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
 
             assertMapsAndSaveGamesReceived(client);
             assertConnectClientsEquals(client, new ImmutableList<>("name"));
@@ -53,14 +53,14 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
                     "password");
             assertFalse("The player is already logged on.", response
                     .isSuccessful());
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
 
             // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
             response = client3.connect(getIpAddress(), getPort(), "name3",
                     "password");
             assertTrue(response.isSuccessful());
-            assertEquals(2, server.countOpenConnections());
+            assertEquals(2, server.getNumberOpenConnections());
 
             // read list of connected clients.
             assertConnectClientsEquals(client,
@@ -71,7 +71,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             // Test 4 : disconnect the client from test 1.
             client.disconnect();
-            assertEquals(1, server.countOpenConnections());
+            assertEquals(1, server.getNumberOpenConnections());
         } catch (Exception e) {
             fail();
         }

@@ -51,14 +51,12 @@ public class SimpleServerGameModel implements ServerGameModel {
     /**
      * @param moveReceiver
      */
-    public void initialize(MoveReceiver moveReceiver) {
-    }
+    public void initialize(MoveReceiver moveReceiver) {}
 
     /**
      *
      */
-    public void update() {
-    }
+    public void update() {}
 
     /**
      * @return

@@ -102,9 +102,9 @@ public class StationBuilder {
     }
 
     int getTrackTypeID(String string) {
-        ReadOnlyWorld w = executor.getWorld();
-        for (int i = 0; i < w.size(SKEY.TRACK_RULES); i++) {
-            TrackRule r = (TrackRule) w.get(SKEY.TRACK_RULES, i);
+        ReadOnlyWorld world = executor.getWorld();
+        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+            TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, i);
 
             if (string.equals(r.getTypeName())) {
                 return i;

@@ -22,7 +22,7 @@
  */
 package freerails.server.parser;
 
-import freerails.world.WorldImpl;
+import freerails.world.FullWorld;
 import org.apache.log4j.Logger;
 
 /**
@@ -43,7 +43,7 @@ public class RunTypesParser {
     public static void main(String[] args) {
         try {
             java.net.URL url = RunTypesParser.class.getResource("/freerails/data/cargo_and_terrain.xml");
-            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(new WorldImpl()));
+            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(new FullWorld()));
             logger.info("It worked");
         } catch (Exception ignored) {
         }

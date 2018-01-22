@@ -58,7 +58,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
      */
     @Override
     protected void setUp() {
-        world = new WorldImpl();
+        world = new FullWorld();
         station1 = new Station(10, 20, "Station1", 4, 0);
         station2 = new Station(15, 16, "Station2", 4, 1);
         Station station3 = new Station(30, 50, "Station3", 4, 2);

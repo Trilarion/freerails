@@ -21,9 +21,9 @@
  */
 package freerails.world.top;
 
+import freerails.world.FullWorld;
 import freerails.world.ItemsTransactionAggregator;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
@@ -41,22 +41,22 @@ public class ItemsTransactionAggregatorTest extends TestCase {
      *
      */
     public void test1() {
-        World w = new WorldImpl();
+        World world = new FullWorld();
         Player player = new Player("name", 0);
-        w.addPlayer(player);
-        FreerailsPrincipal fp = w.getPlayer(0).getPrincipal();
+        world.addPlayer(player);
+        FreerailsPrincipal fp = world.getPlayer(0).getPrincipal();
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                w, fp);
+                world, fp);
         aggregator.setCategory(TransactionCategory.TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
         Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 5, new Money(100));
-        w.addTransaction(fp, transaction);
+        world.addTransaction(fp, transaction);
 
         quant = aggregator.calculateQuantity();
         assertEquals(5, quant);
         transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
-        w.addTransaction(fp, transaction);
+        world.addTransaction(fp, transaction);
 
     }
 

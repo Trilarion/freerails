@@ -20,11 +20,11 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
-import freerails.server.parser.Track_TilesHandlerImpl;
+import freerails.server.parser.TrackTilesHandlerImpl;
+import freerails.world.FullWorld;
 import freerails.world.ITEM;
 import freerails.world.SKEY;
 import freerails.world.World;
-import freerails.world.WorldImpl;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
@@ -61,12 +61,12 @@ public class MapFixtureFactory2 {
 
     private static World generateWorld() {
 
-        World world = new WorldImpl(50, 50);
+        World world = new FullWorld(50, 50);
         TileSetFactory tileFactory = new TileSetFactoryImpl();
         WagonAndEngineTypesFactory.addTypesToWorld(world);
         tileFactory.addTerrainTileTypesList(world);
         URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
-        Track_TilesHandlerImpl trackSetFactory = new Track_TilesHandlerImpl(track_xml_url);
+        TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
 
         trackSetFactory.addTrackRules(world);
 

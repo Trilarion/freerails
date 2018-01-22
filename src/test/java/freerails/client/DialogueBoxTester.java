@@ -71,7 +71,7 @@ class DialogueBoxTester extends JFrame {
      */
     private DialogueBoxTester() {
 
-        World world = new WorldImpl(200, 200);
+        World world = new FullWorld(200, 200);
 
         UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(world);
 
