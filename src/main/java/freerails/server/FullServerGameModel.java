@@ -168,7 +168,7 @@ public class FullServerGameModel implements ServerGameModel {
                 // this.wait(1);
                 // }
                 // } catch (InterruptedException e) {
-                // // do nothing
+                //
                 // }
                 ticksSinceUpdate++;
             } else {
@@ -177,7 +177,7 @@ public class FullServerGameModel implements ServerGameModel {
                 // //loop.
                 // Thread.sleep(200);
                 // } catch (InterruptedException e) {
-                // // do nothing
+                //
                 // }
                 nextModelUpdateDue = System.currentTimeMillis();
             }

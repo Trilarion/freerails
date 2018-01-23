@@ -138,9 +138,9 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         PathOnTiles expected = new PathOnTiles(new Point2D(5, 5), TileTransition.SOUTH_WEST);
         assertEquals(expected, tm.getPath());
         PositionOnTrack pot = tm.getFinalPosition();
-        int x = pot.getX();
+        int x = pot.getP().x;
         assertEquals(4, x);
-        int y = pot.getY();
+        int y = pot.getP().y;
         assertEquals(6, y);
         assertEquals(TileTransition.SOUTH_WEST, pot.facing());
 
@@ -272,7 +272,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
      */
     public void testFindNextVector() {
         setupLoopOfTrack();
-        PositionOnTrack pot = PositionOnTrack.createFacing(4, 6, TileTransition.SOUTH_WEST);
+        PositionOnTrack pot = PositionOnTrack.createFacing(new Point2D(4, 6), TileTransition.SOUTH_WEST);
 
         Point2D target = new Point2D();
         TileTransition expected = TileTransition.NORTH_EAST;

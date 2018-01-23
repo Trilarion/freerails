@@ -95,12 +95,12 @@ public class BuildTrackControllerTest extends TestCase {
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(10, 10);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(10, 10));
         assertFalse(tile.hasTrack());
         buildTrackController.updateWorld(trackBuilder);
-        tile = (FullTerrainTile) world.getTile(10, 10);
+        tile = (FullTerrainTile) world.getTile(new Point2D(10, 10));
         assertTrue(tile.hasTrack());
-        tile = (FullTerrainTile) world.getTile(20, 10);
+        tile = (FullTerrainTile) world.getTile(new Point2D(20, 10));
         assertTrue(tile.hasTrack());
 
     }
@@ -129,19 +129,19 @@ public class BuildTrackControllerTest extends TestCase {
 
         buildTrackController.updateWorld(trackBuilder);
 
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(10, 10);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(10, 10));
 
         assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) world.getTile(15, 10);
+        tile = (FullTerrainTile) world.getTile(new Point2D(15, 10));
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) world.getTile(17, 10);
+        tile = (FullTerrainTile) world.getTile(new Point2D(17, 10));
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) world.getTile(20, 10);
+        tile = (FullTerrainTile) world.getTile(new Point2D(20, 10));
 
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 

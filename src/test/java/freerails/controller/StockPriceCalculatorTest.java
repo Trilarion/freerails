@@ -22,6 +22,7 @@
 package freerails.controller;
 
 import freerails.server.MapFixtureFactory2;
+import freerails.util.Point2D;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
 import freerails.world.ITEM;
@@ -76,7 +77,7 @@ public class StockPriceCalculatorTest extends TestCase {
         int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + 1);
         world.setTime(newTime);
-        CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
+        CargoBatch batch = new CargoBatch(0, Point2D.ZERO, 0, 0);
         long income = 100000;
         Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
@@ -131,7 +132,7 @@ public class StockPriceCalculatorTest extends TestCase {
     }
 
     private void addIncome(long income) {
-        CargoBatch batch = new CargoBatch(0, 0, 0, 0, 0);
+        CargoBatch batch = new CargoBatch(0, Point2D.ZERO, 0, 0);
 
         Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);

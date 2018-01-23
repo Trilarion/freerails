@@ -21,6 +21,7 @@
  */
 package freerails.server;
 
+import freerails.util.Point2D;
 import freerails.world.SKEY;
 import freerails.world.FullWorld;
 import freerails.world.terrain.FullTerrainTile;
@@ -123,24 +124,24 @@ final class MapFactory {
                     locations.add(new TerrainAtLocation(x, y, tile.getTerrainTypeID()));
                 }
 
-                w.setTile(x, y, tile);
+                w.setTile(new Point2D(x, y), tile);
             }
         }
 
-        for (TerrainAtLocation rtv : locations) {
-            FullTerrainTile tile = FullTerrainTile.getInstance(rtv.getType());
+        for (TerrainAtLocation terrainAtLocation : locations) {
+            FullTerrainTile tile = FullTerrainTile.getInstance(terrainAtLocation.getType());
 
-            int x = rtv.getX();
-            int y = rtv.getY();
+            int x = terrainAtLocation.getX();
+            int y = terrainAtLocation.getY();
             int val = 3;
 
             double prob = 0.75;
 
-            if (w.boundsContain(x - val, y - val) && w.boundsContain(x + val, y + val)) {
+            if (w.boundsContain(new Point2D(x - val, y - val)) && w.boundsContain(new Point2D(x + val, y + val))) {
                 for (int m = x - val; m < x + val; m++) {
                     for (int n = y - val; n < y + val; n++) {
                         if (Math.random() > prob) {
-                            setTile(m, n, tile);
+                            setTile(new Point2D(m, n), tile);
                         }
                     }
                 }
@@ -148,9 +149,9 @@ final class MapFactory {
         }
     }
 
-    private static void setTile(int x, int y, Serializable tile) {
-        if (!non_countryTypes.contains(((FullTerrainTile) world.getTile(x, y)).getTerrainTypeID())) {
-            world.setTile(x, y, tile);
+    private static void setTile(Point2D p, Serializable tile) {
+        if (!non_countryTypes.contains(((FullTerrainTile) world.getTile(p)).getTerrainTypeID())) {
+            world.setTile(p, tile);
         }
     }
 }

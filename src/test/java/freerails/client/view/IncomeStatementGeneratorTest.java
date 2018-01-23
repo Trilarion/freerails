@@ -18,6 +18,7 @@
 
 package freerails.client.view;
 
+import freerails.util.Point2D;
 import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -61,7 +62,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
             CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, i);
 
             if (ct.getCategory() == category) {
-                CargoBatch cb = new CargoBatch(i, 0, 0, 0, 0);
+                CargoBatch cb = new CargoBatch(i, Point2D.ZERO, 0, 0);
                 world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
                         new CargoDeliveryMoneyTransaction(amount, 10, 0, cb, 1));
                 return;

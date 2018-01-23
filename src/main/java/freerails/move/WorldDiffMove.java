@@ -68,8 +68,8 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             int maxy = 0;
             while (mit.hasNext()) {
                 Point2D p = mit.next();
-                Serializable oldTile = world.getTile(p.x, p.y);
-                Serializable newTile = worldDiffs.getTile(p.x, p.y);
+                Serializable oldTile = world.getTile(p);
+                Serializable newTile = worldDiffs.getTile(p);
                 diffsArrayList.add(new MapDiff(oldTile, newTile, p));
                 minx = Math.min(minx, p.x);
                 miny = Math.min(miny, p.y);
@@ -128,7 +128,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                 }
 
                 case CURRENT_BALANCE:
-                    // Do nothing. The transaction moves should take care of
+                    // The transaction moves should take care of
                     // changing
                     // the values of current balance.
                     break;
@@ -220,7 +220,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
             Serializable tile = undo ? diff.getBefore() : diff.getAfter();
-            world.setTile(diff.getP().x, diff.getP().y, tile);
+            world.setTile(diff.getP(), tile);
         }
     }
 
@@ -280,7 +280,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     private MoveStatus tryMapChanges(ReadOnlyWorld world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
-            Serializable actual = world.getTile(diff.getP().x, diff.getP().y);
+            Serializable actual = world.getTile(diff.getP());
             Serializable expected = undo ? diff.getAfter() : diff.getBefore();
             if (!actual.equals(expected)) {
                 return MoveStatus.moveFailed("expected =" + expected + ", actual = " + actual);

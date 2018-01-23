@@ -18,6 +18,7 @@
 
 package freerails.world;
 
+import freerails.util.Point2D;
 import freerails.world.finances.Transaction;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
@@ -140,7 +141,7 @@ public interface World extends ReadOnlyWorld {
      * Replaces the tile at the specified position on the map with the specified
      * tile.
      */
-    void setTile(int x, int y, Serializable tile);
+    void setTile(Point2D p, Serializable tile);
 
     /**
      * @param t

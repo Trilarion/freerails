@@ -90,11 +90,11 @@ public class AddStationPreMove implements PreMove {
     public Move generateMove(ReadOnlyWorld world) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
 
-        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(p.x, p.y);
+        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(p);
         String cityName;
         String stationName;
 
-        FullTerrainTile ft = (FullTerrainTile) world.getTile(p.x, p.y);
+        FullTerrainTile ft = (FullTerrainTile) world.getTile(p);
         TrackPiece before = ft.getTrackPiece();
         TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, ruleNumber);
 
@@ -149,8 +149,7 @@ public class AddStationPreMove implements PreMove {
                 if (move.getKey().equals(KEY.STATIONS)) {
                     Station station = (Station) move.getAfter();
                     CalcCargoSupplyRateAtStation supplyRate;
-                    supplyRate = new CalcCargoSupplyRateAtStation(world, station.x, station.y, ruleNumber);
-
+                    supplyRate = new CalcCargoSupplyRateAtStation(world, station.p, ruleNumber);
                     Station stationAfter = supplyRate.calculations(station);
                     moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPrincipal());
                 }

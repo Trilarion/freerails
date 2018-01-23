@@ -147,7 +147,7 @@ public final class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            TerrainTile tile = (FullTerrainTile) world.getTile(x, y);
+            TerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(x, y));
             int tt = tile.getTerrainTypeID();
             ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
 
@@ -162,7 +162,7 @@ public final class TrackMoveProducer {
         switch (getBuildMode()) {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
-                FullTerrainTile tileA = (FullTerrainTile) world.getTile(from.x, from.y);
+                FullTerrainTile tileA = (FullTerrainTile) world.getTile(from);
                 if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
                     MoveStatus moveStatus = upgradeTrack(from, ruleIDs[0]);
                     if (!moveStatus.succeeds()) {
@@ -170,7 +170,7 @@ public final class TrackMoveProducer {
                     }
                 }
                 Point2D point = new Point2D(from.x + trackVector.getDx(), from.y + trackVector.getDy());
-                FullTerrainTile tileB = (FullTerrainTile) world.getTile(point.x, point.y);
+                FullTerrainTile tileB = (FullTerrainTile) world.getTile(point);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
                     MoveStatus moveStatus = upgradeTrack(point, ruleIDs[1]);
                     if (!moveStatus.succeeds()) {
@@ -194,7 +194,7 @@ public final class TrackMoveProducer {
 
     private MoveStatus upgradeTrack(Point2D point, int trackRuleID) {
         ReadOnlyWorld world = executor.getWorld();
-        TrackPiece before = ((FullTerrainTile) world.getTile(point.x, point.y)).getTrackPiece();
+        TrackPiece before = ((FullTerrainTile) world.getTile(point)).getTrackPiece();
         // Check whether there is track here.
         if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
             return MoveStatus.moveFailed("No track to upgrade.");
@@ -258,7 +258,7 @@ public final class TrackMoveProducer {
 
     private boolean isStationHere(Point2D p) {
         ReadOnlyWorld world = executor.getWorld();
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(p.x, p.y);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
         return tile.getTrackPiece().getTrackRule().isStation();
     }
 

@@ -59,7 +59,7 @@ public class TrackPathFinderTest extends TestCase {
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer
                     .getPrincipal());
-            List l = pathFinder.generatePath(new Point2D(0, 0), new Point2D(0,
+            List l = pathFinder.generatePath(Point2D.ZERO, new Point2D(0,
                     5), bts);
             assertEquals(5, l.size());
 

@@ -234,7 +234,7 @@ class DropOffAndPickupCargoMoveGenerator {
 
                 if (converted.convertsCargo(cargoType)) {
                     int newCargoType = converted.getConversion(cargoType);
-                    CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.x, station.y, 0, stationId);
+                    CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.p, 0, stationId);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }
 

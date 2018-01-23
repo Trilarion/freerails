@@ -132,13 +132,11 @@ public class FullWorldDiffs extends FullWorld {
     }
 
     @Override
-    public Serializable getTile(int x, int y) {
-        Point2D p = new Point2D(x, y);
-
+    public Serializable getTile(Point2D p) {
         if (mapDiff.containsKey(p)) {
             return (Serializable) mapDiff.get(p);
         }
-        return underlying.getTile(x, y);
+        return underlying.getTile(p);
     }
 
     /**
@@ -167,10 +165,9 @@ public class FullWorldDiffs extends FullWorld {
     }
 
     @Override
-    public void setTile(int x, int y, Serializable element) {
-        Point2D p = new Point2D(x, y);
+    public void setTile(Point2D p, Serializable element) {
 
-        if (Utils.equal(underlying.getTile(x, y), element)) {
+        if (Utils.equal(underlying.getTile(p), element)) {
             if (mapDiff.containsKey(p)) {
                 mapDiff.remove(p);
 

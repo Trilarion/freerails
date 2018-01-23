@@ -35,7 +35,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * Test.
+ *
  */
 public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private final TileTransition southeast = TileTransition.SOUTH_EAST;
@@ -105,12 +105,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         // Remove only track piece built.
         assertRemoveTrackSucceeds(new Point2D(0, 5), east);
         TrackConfiguration trackConfiguration = ((FullTerrainTile) getWorld()
-                .getTile(0, 5)).getTrackPiece().getTrackConfiguration();
+                .getTile(new Point2D(0, 5))).getTrackPiece().getTrackConfiguration();
         TrackConfiguration expected = NullTrackPiece.getInstance()
                 .getTrackConfiguration();
         assertEquals(expected, trackConfiguration);
         TrackConfiguration trackConfiguration2 = ((FullTerrainTile) getWorld()
-                .getTile(1, 5)).getTrackPiece().getTrackConfiguration();
+                .getTile(new Point2D(1, 5))).getTrackPiece().getTrackConfiguration();
 
         assertEquals(expected, trackConfiguration2);
     }
@@ -158,16 +158,16 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         // Now change the owner of the track piece at (1, 6);
         int anotherPlayer = 999;
-        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(1, 6);
+        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(new Point2D(1, 6));
         TrackPiece tp = oldTile.getTrackPiece();
         TrackPiece newTrackPiece = new TrackPieceImpl(tp
                 .getTrackConfiguration(), tp.getTrackRule(), anotherPlayer,
                 TRACK_RULE_ID);
         FullTerrainTile newTile = FullTerrainTile.getInstance(oldTile
                 .getTerrainTypeID(), newTrackPiece);
-        world.setTile(1, 6, newTile);
+        world.setTile(new Point2D(1, 6), newTile);
         assertBuildTrackFails(new Point2D(1, 6), east, trackRule);
-        world.setTile(1, 6, oldTile);
+        world.setTile(new Point2D(1, 6), oldTile);
         assertBuildTrackSucceeds(new Point2D(1, 6), east, trackRule);
     }
 
@@ -175,7 +175,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testBuildTrack() {
-        Point2D pointA = new Point2D(0, 0);
+        Point2D pointA = Point2D.ZERO;
         Point2D pointB = new Point2D(1, 1);
         Point2D pointC = new Point2D(1, 0);
 
@@ -249,7 +249,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      */
     @Override
     public void testMove() {
-        Point2D pointA = new Point2D(0, 0);
+        Point2D pointA = Point2D.ZERO;
         TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove

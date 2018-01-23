@@ -176,7 +176,7 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
      * @param tileX
      * @param tileY
      */
-    public void paintTile(Graphics g, int tileX, int tileY) {
+    public void paintTile(Graphics g, Point2D p) {
         throw new UnsupportedOperationException();
     }
 
@@ -184,7 +184,7 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
      * @param x
      * @param y
      */
-    public void refreshTile(int x, int y) {
+    public void refreshTile(Point2D p) {
         throw new UnsupportedOperationException();
     }
 

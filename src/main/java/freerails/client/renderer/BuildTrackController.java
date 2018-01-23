@@ -98,7 +98,7 @@ public class BuildTrackController implements GameModel {
         // Check for null & make a defensive copy
         point = null == point ? new Point2D() : point;
 
-        if (!modelRoot.getWorld().boundsContain(point.x, point.y)) {
+        if (!modelRoot.getWorld().boundsContain(point)) {
             throw new IllegalStateException(String.valueOf(point));
         }
 
@@ -173,7 +173,7 @@ public class BuildTrackController implements GameModel {
             TileTransition vector = TileTransition.getInstance(point.x - oldPosition.x, point.y - oldPosition.y);
 
             // If there is already track between the two tiles, do nothing
-            FullTerrainTile tile = (FullTerrainTile) realWorld.getTile(oldPosition.x, oldPosition.y);
+            FullTerrainTile tile = (FullTerrainTile) realWorld.getTile(oldPosition);
 
             if (tile.getTrackPiece().getTrackConfiguration().contains(vector)) {
                 oldPosition = point;
@@ -225,12 +225,13 @@ public class BuildTrackController implements GameModel {
      * direction on the worldDiff object.
      */
     private MoveStatus planBuildingTrack(Point2D point, TileTransition vector) {
-        TerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point.x, point.y);
+        TerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point);
         BuildTrackStrategy bts = getBts();
         int trackTypeAID = bts.getRule(tileA.getTerrainTypeID());
         TrackRule trackRuleA = (TrackRule) worldDiffs.get(SKEY.TRACK_RULES, trackTypeAID);
 
-        TerrainTile tileB = (FullTerrainTile) worldDiffs.getTile(point.x + vector.deltaX, point.y + vector.deltaY);
+        // TODO addition of Point2D
+        TerrainTile tileB = (FullTerrainTile) worldDiffs.getTile(new Point2D(point.x + vector.deltaX, point.y + vector.deltaY));
         int trackTypeBID = bts.getRule(tileB.getTerrainTypeID());
         TrackRule trackRuleB = (TrackRule) worldDiffs.get(SKEY.TRACK_RULES, trackTypeBID);
 
@@ -294,7 +295,7 @@ public class BuildTrackController implements GameModel {
         }
 
         // Check both points are on the map.
-        if (!realWorld.boundsContain(from.x, from.y) || !realWorld.boundsContain(to.x, to.y)) {
+        if (!realWorld.boundsContain(from) || !realWorld.boundsContain(to)) {
             hide();
 
             return;
@@ -419,7 +420,7 @@ public class BuildTrackController implements GameModel {
                             case UPGRADE_TRACK:
 
                                 int owner = ChangeTrackPieceCompositeMove.getOwner(fp, worldDiffs);
-                                FullTerrainTile tile = (FullTerrainTile) worldDiffs.getTile(locationX, locationY);
+                                FullTerrainTile tile = (FullTerrainTile) worldDiffs.getTile(new Point2D(locationX, locationY));
                                 int tt = tile.getTerrainTypeID();
                                 int trackRuleID = getBts().getRule(tt);
 

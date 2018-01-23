@@ -424,7 +424,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param principal
      */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-        // do nothing
+
     }
 
     /**
@@ -456,7 +456,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
          * same as the last map size, then the cursor should take the position
          * it had on the last map.
          */
-        Point2D cursorPosition = new Point2D(0, 0);
+        Point2D cursorPosition = Point2D.ZERO;
         if (null != this.world) {
             if (world.getMapWidth() == this.world.getMapWidth() && world.getMapHeight() == this.world.getMapHeight()) {
                 cursorPosition = (Point2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
@@ -542,17 +542,16 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             mainMap.refreshAll();
             overviewMap.refreshAll();
         } else {
-            java.awt.Point tile = new java.awt.Point();
-
             // Fix for bug 967673 (Crash when building track close to edge of
             // map).
             Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
             tilesChanged = tilesChanged.intersection(mapRect);
 
-            for (tile.x = tilesChanged.x; tile.x < (tilesChanged.x + tilesChanged.width); tile.x++) {
-                for (tile.y = tilesChanged.y; tile.y < (tilesChanged.y + tilesChanged.height); tile.y++) {
-                    mainMap.refreshTile(tile.x, tile.y);
-                    overviewMap.refreshTile(tile.x, tile.y);
+            for (int tileX = tilesChanged.x; tileX < (tilesChanged.x + tilesChanged.width); tileX++) {
+                for (int tileY = tilesChanged.y; tileY < (tilesChanged.y + tilesChanged.height); tileY++) {
+                    Point2D p = new Point2D(tileX, tileY);
+                    mainMap.refreshTile(p);
+                    overviewMap.refreshTile(p);
                 }
             }
         }

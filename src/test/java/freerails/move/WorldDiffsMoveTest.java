@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.util.Point2D;
 import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.finances.ItemTransaction;
@@ -63,8 +64,8 @@ public class WorldDiffsMoveTest extends TestCase {
      */
     public void testChangingMap() {
 
-        diffs.setTile(4, 0, city1);
-        diffs.setTile(8, 5, city2);
+        diffs.setTile(new Point2D(4, 0), city1);
+        diffs.setTile(new Point2D(8, 5), city2);
 
         runTests();
     }

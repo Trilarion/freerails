@@ -18,6 +18,8 @@
 
 package freerails.world.cargo;
 
+import freerails.util.Point2D;
+
 import java.io.Serializable;
 
 /**
@@ -29,9 +31,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     // TODO Why is cargoType an int here and not CargoCategory or CargoType??
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoType;
-    // TODO Use a Point2D instead of X ands Y
-    private final int sourceX;
-    private final int sourceY;
+    private final Point2D sourceP;
     // TODO call it originalStationID
     private final int stationOfOrigin;
     private final long creationTime;
@@ -43,10 +43,9 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      * @param time
      * @param origin
      */
-    public CargoBatch(int cargoType, int x, int y, long time, int origin) {
+    public CargoBatch(int cargoType, Point2D p, long time, int origin) {
         this.cargoType = cargoType;
-        sourceX = x;
-        sourceY = y;
+        sourceP = p;
         creationTime = time;
         stationOfOrigin = origin;
     }
@@ -68,15 +67,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     /**
      * @return
      */
-    public int getSourceX() {
-        return sourceX;
-    }
-
-    /**
-     * @return
-     */
-    public int getSourceY() {
-        return sourceY;
+    public Point2D getSourceP() {
+        return sourceP;
     }
 
     @Override
@@ -84,7 +76,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (obj instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) obj;
 
-            return test.cargoType == cargoType && test.sourceX == sourceX && test.sourceY == sourceY && test.creationTime == creationTime && test.stationOfOrigin == stationOfOrigin;
+            return test.cargoType == cargoType && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.stationOfOrigin == stationOfOrigin;
         }
         return false;
     }
@@ -93,8 +85,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     public int hashCode() {
         int result = 17;
         result = 37 * result + cargoType;
-        result = 37 * result + sourceX;
-        result = 37 * result + sourceY;
+        result = 37 * result + sourceP.hashCode();
         result = 37 * result + stationOfOrigin;
         result = 37 * result + (int) (creationTime ^ (creationTime >>> 32));
 
@@ -105,8 +96,9 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
         if (cargoType != o.cargoType) return cargoType - o.cargoType;
         if (stationOfOrigin != o.stationOfOrigin) return stationOfOrigin - o.stationOfOrigin;
-        if (sourceX != o.sourceX) return sourceX - o.sourceX;
-        if (sourceY != o.sourceY) return sourceY - o.sourceY;
+        // TODO compareTo for Point2D?
+        if (sourceP.x != o.sourceP.x) return sourceP.x - o.sourceP.x;
+        if (sourceP.y != o.sourceP.y) return sourceP.y - o.sourceP.y;
         return 0;
     }
 }

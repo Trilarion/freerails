@@ -33,6 +33,7 @@
  */
 package freerails.client.renderer;
 
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.FullTerrainTile;
@@ -57,7 +58,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
     private final ReadOnlyWorld world;
     private final AffineTransform affineTransform;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-    private BufferedImage one2oneImage;
+    private BufferedImage oneToOneImage;
     private BufferedImage mapImage;
     private boolean isDirty = true;
 
@@ -123,21 +124,21 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
 
             mapGraphics.setClip(0, 0, imageWidth, imageHeight);
             mapGraphics.clearRect(0, 0, imageWidth, imageHeight);
-            mapGraphics.drawImage(one2oneImage, affineTransform, null);
+            mapGraphics.drawImage(oneToOneImage, affineTransform, null);
             isDirty = false;
         }
     }
 
-    private void refreshTile(Point tile) {
-        FullTerrainTile tt = (FullTerrainTile) world.getTile(tile.x, tile.y);
+    public void refreshTile(Point2D tile) {
+        FullTerrainTile tt = (FullTerrainTile) world.getTile(tile);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeID();
             TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
-            one2oneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
+            oneToOneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
         } else {
             // black with alpha of 1
-            one2oneImage.setRGB(tile.x, tile.y, 0xff000000);
+            oneToOneImage.setRGB(tile.x, tile.y, 0xff000000);
         }
 
         isDirty = true;
@@ -154,30 +155,29 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
             mapImage.flush();
         }
 
-        if (one2oneImage != null) {
-            one2oneImage.flush();
+        if (oneToOneImage != null) {
+            oneToOneImage.flush();
         }
 
         // if (mapGraphics != null) {
         // mapGraphics.dispose();
         // }
         // generate a 1:1 map of the terrain layer
-        one2oneImage = defaultConfiguration.createCompatibleImage(mapWidth, mapHeight, Transparency.TRANSLUCENT);
+        oneToOneImage = defaultConfiguration.createCompatibleImage(mapWidth, mapHeight, Transparency.TRANSLUCENT);
         mapImage = defaultConfiguration.createCompatibleImage(imageWidth, imageHeight, Transparency.OPAQUE);
 
-        Point tile = new Point();
 
-        for (tile.x = mapX; tile.x < mapWidth + mapX; tile.x++) {
-            for (tile.y = mapY; tile.y < mapHeight + mapY; tile.y++) {
-                FullTerrainTile tt = (FullTerrainTile) world.getTile(tile.x, tile.y);
+        for (int tileX = mapX; tileX < mapWidth + mapX; tileX++) {
+            for (int tileY = mapY; tileY < mapHeight + mapY; tileY++) {
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Point2D(tileX, tileY));
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();
                     TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
-                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, terrainType.getRGB());
+                    oneToOneImage.setRGB(tileX - mapX, tileY - mapY, terrainType.getRGB());
                 } else {
                     // black with alpha of 1
-                    one2oneImage.setRGB(tile.x - mapX, tile.y - mapY, 0xff000000);
+                    oneToOneImage.setRGB(tileX - mapX, tileY - mapY, 0xff000000);
                 }
             }
         }
@@ -185,14 +185,9 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         renderOffScreenImage();
     }
 
-    /*
-     * @see NewMapView#getMapSizeInPixels()
-     */
-
     /**
      * @return
      */
-
     public Dimension getMapSizeInPixels() {
         return new Dimension(imageWidth, imageHeight);
     }
@@ -202,16 +197,8 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
      * @param tileX
      * @param tileY
      */
-    public void paintTile(Graphics g, int tileX, int tileY) {
+    public void paintTile(Graphics g, Point2D tileP) {
         g.drawImage(mapImage, 0, 0, null);
-    }
-
-    /**
-     * @param x
-     * @param y
-     */
-    public void refreshTile(int x, int y) {
-        refreshTile(new Point(x, y));
     }
 
     /**

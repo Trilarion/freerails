@@ -18,6 +18,7 @@
 
 package freerails.world.top;
 
+import freerails.util.Point2D;
 import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -54,19 +55,19 @@ public class MapFixtureFactory {
      * Returns a world object with a map of the specified size with the terrain
      * and cargo types setup.
      *
-     * @param w
-     * @param h
+     * @param width
+     * @param height
      * @return
      */
-    public static World getWorld(int w, int h) {
+    public static World getWorld(int width, int height) {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        World world = new FullWorld(w, h);
+        World world = new FullWorld(width, height);
         generateTerrainTypesList(world);
         generateCargoTypesList(world);
 
-        for (int x = 0; x < w; x++) {
-            for (int y = 0; y < w; y++) {
-                world.setTile(x, y, tile);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < width; y++) {
+                world.setTile(new Point2D(x, y), tile);
             }
         }
 

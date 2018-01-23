@@ -204,13 +204,13 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(21, worldDiff.getMapWidth());
         assertEquals(8, worldDiff.getMapHeight());
 
-        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(2, 2);
+        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(new Point2D(2, 2));
         assertNotNull(tile);
-        assertEquals(tile, worldDiff.getTile(2, 2));
+        assertEquals(tile, worldDiff.getTile(new Point2D(2, 2)));
 
         FullTerrainTile newTile = FullTerrainTile.getInstance(999);
-        worldDiff.setTile(3, 5, newTile);
-        assertEquals(newTile, worldDiff.getTile(3, 5));
+        worldDiff.setTile(new Point2D(3, 5), newTile);
+        assertEquals(newTile, worldDiff.getTile(new Point2D(3, 5)));
 
         Iterator<Point2D> it = worldDiff.getMapDiffs();
         assertEquals(new Point2D(3, 5), it.next());

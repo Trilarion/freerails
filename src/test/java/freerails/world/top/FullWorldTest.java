@@ -21,6 +21,7 @@
  */
 package freerails.world.top;
 
+import freerails.util.Point2D;
 import freerails.util.Utils;
 import freerails.world.Activity;
 import freerails.world.FullWorld;
@@ -159,14 +160,14 @@ public class FullWorldTest extends TestCase {
      */
     public void testBoundsContain() {
         World world = new FullWorld();
-        assertFalse(world.boundsContain(1, 1));
-        assertFalse(world.boundsContain(0, 0));
-        assertFalse(world.boundsContain(-1, -1));
+        assertFalse(world.boundsContain(new Point2D(1, 1)));
+        assertFalse(world.boundsContain(Point2D.ZERO));
+        assertFalse(world.boundsContain(new Point2D(-1, -1)));
         world = new FullWorld(5, 10);
-        assertTrue(world.boundsContain(0, 0));
-        assertTrue(world.boundsContain(4, 9));
-        assertFalse(world.boundsContain(-1, -1));
-        assertFalse(world.boundsContain(5, 10));
+        assertTrue(world.boundsContain(Point2D.ZERO));
+        assertTrue(world.boundsContain(new Point2D(4, 9)));
+        assertFalse(world.boundsContain(new Point2D(-1, -1)));
+        assertFalse(world.boundsContain(new Point2D(5, 10)));
     }
 
     /**

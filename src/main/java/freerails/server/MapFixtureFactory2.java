@@ -21,6 +21,7 @@ package freerails.server;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.server.parser.TrackTilesHandlerImpl;
+import freerails.util.Point2D;
 import freerails.world.FullWorld;
 import freerails.world.ITEM;
 import freerails.world.SKEY;
@@ -95,7 +96,7 @@ public class MapFixtureFactory2 {
         FullTerrainTile tile = FullTerrainTile.getInstance(clearTypeID);
         for (int x = 0; x < world.getMapWidth(); x++) {
             for (int y = 0; y < world.getMapHeight(); y++) {
-                world.setTile(x, y, tile);
+                world.setTile(new Point2D(x, y), tile);
             }
         }
 

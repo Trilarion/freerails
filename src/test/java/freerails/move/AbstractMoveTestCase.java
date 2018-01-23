@@ -295,7 +295,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertTrackHere(int x, int y) {
 
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(x, y));
         assertTrue(tile.hasTrack());
     }
 

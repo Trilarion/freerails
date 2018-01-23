@@ -138,9 +138,7 @@ public final class GameLoop implements Runnable {
                         // The window is minimised so we don't need to keep
                         // updating.
                         Thread.sleep(200);
-                    } catch (Exception e) {
-                        // do nothing.
-                    }
+                    } catch (Exception e) {}
                 } else if (ClientConfig.LIMIT_FRAME_RATE) {
                     long deltatime = System.currentTimeMillis() - frameStartTime;
 

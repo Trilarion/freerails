@@ -31,6 +31,7 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;
     public final int x, y;
+    public static final Point2D ZERO = new Point2D(0, 0);
 
     public Point2D() {
         x = 0;
@@ -47,6 +48,11 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
     }
 
     public Point2D(Point2D p) {
+        x = p.x;
+        y = p.y;
+    }
+
+    public Point2D(Point p) {
         x = p.x;
         y = p.y;
     }

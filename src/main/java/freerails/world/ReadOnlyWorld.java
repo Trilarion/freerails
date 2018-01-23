@@ -19,6 +19,7 @@
 package freerails.world;
 
 import freerails.util.Pair;
+import freerails.util.Point2D;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.game.GameTime;
@@ -61,7 +62,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
      * @param y
      * @return
      */
-    boolean boundsContain(int x, int y);
+    boolean boundsContain(Point2D p);
 
     /**
      * @param p
@@ -149,7 +150,7 @@ public interface ReadOnlyWorld extends FreerailsMutableSerializable {
     /**
      * Returns the tile at the specified position on the map.
      */
-    Serializable getTile(int x, int y);
+    Serializable getTile(Point2D p);
 
     /**
      * @param p

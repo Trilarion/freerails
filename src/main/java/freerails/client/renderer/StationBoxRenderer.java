@@ -86,8 +86,8 @@ public class StationBoxRenderer implements Painter {
 
             while (wi.next()) { // loop over non null stations
                 Station station = (Station) wi.getElement();
-                int positionX = (station.getStationX() * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE / 2;
-                int positionY = (station.getStationY() * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE * 2;
+                int positionX = (station.getStationP().x * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE / 2;
+                int positionY = (station.getStationP().y * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
                     g.setColor(bgColor);

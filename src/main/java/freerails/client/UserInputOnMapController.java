@@ -169,12 +169,12 @@ class UserInputOnMapController extends KeyAdapter {
 
             case KeyEvent.VK_F8: {
                 // Check whether we can built a station here before proceeding.
-                if (stationTypesPopup.canBuiltStationHere(cursorPosition.toPoint())) {
+                if (stationTypesPopup.canBuiltStationHere(cursorPosition)) {
                     float scale = mapView.getScale();
                     Dimension tileSize = new Dimension((int) scale, (int) scale);
                     int x = cursorPosition.x * tileSize.width;
                     int y = cursorPosition.y * tileSize.height;
-                    stationTypesPopup.showMenu(mapView, x, y, cursorPosition.toPoint());
+                    stationTypesPopup.showMenu(mapView, x, y, cursorPosition);
                 } else {
                     modelRoot.setProperty(Property.QUICK_MESSAGE, "Can't" + " build station here!");
                 }
@@ -186,7 +186,7 @@ class UserInputOnMapController extends KeyAdapter {
                 break;
 
             case KeyEvent.VK_I: {
-                dialogueBoxController.showStationOrTerrainInfo(cursorPosition.x, cursorPosition.y);
+                dialogueBoxController.showStationOrTerrainInfo(cursorPosition);
                 break;
             }
 
@@ -200,7 +200,7 @@ class UserInputOnMapController extends KeyAdapter {
                 Dimension tileSize = new Dimension((int) scale, (int) scale);
                 int x = cursorPosition.x * tileSize.width;
                 int y = cursorPosition.y * tileSize.height;
-                buildIndustryPopupMenu.setCursorLocation(cursorPosition.toPoint());
+                buildIndustryPopupMenu.setCursorLocation(cursorPosition);
                 buildIndustryPopupMenu.show(mapView, x, y);
 
                 break;
@@ -315,7 +315,7 @@ class UserInputOnMapController extends KeyAdapter {
                 soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
                 break;
             default:
-                // do nothing
+
         }
     }
 

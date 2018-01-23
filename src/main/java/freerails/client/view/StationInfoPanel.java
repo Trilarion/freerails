@@ -159,7 +159,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.previous()) {
-            Point2D p = new Point2D(((Station) worldIterator.getElement()).getStationX(), ((Station) worldIterator.getElement()).getStationY());
+            Point2D p = ((Station) worldIterator.getElement()).getStationP();
             modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
 
             display();
@@ -172,7 +172,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.next()) {
-            Point2D p = new Point2D(((Station) worldIterator.getElement()).getStationX(), ((Station) worldIterator.getElement()).getStationY());
+            Point2D p = ((Station) worldIterator.getElement()).getStationP();
             modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
             display();
         } else {
@@ -212,7 +212,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             Station station = (Station) world.get(modelRoot.getPrincipal(), KEY.STATIONS, stationNumber);
-            FullTerrainTile tile = (FullTerrainTile) world.getTile(station.x, station.y);
+            FullTerrainTile tile = (FullTerrainTile) world.getTile(station.p);
             String stationTypeName = tile.getTrackPiece().getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
             CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station.getCargoBundleID());

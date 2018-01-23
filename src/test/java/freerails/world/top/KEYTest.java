@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * Test.
+ *
  */
 public class KEYTest extends TestCase {
 

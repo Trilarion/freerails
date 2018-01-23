@@ -37,24 +37,24 @@ import java.util.NoSuchElementException;
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     private static final long serialVersionUID = 3834311713465185081L;
-    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(0, 0, TileTransition.NORTH);
+    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Point2D.ZERO, TileTransition.NORTH);
     private final ReadOnlyWorld world;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
 
     /**
      * @param world
-     * @param p
+     * @param positionOnTrack
      * @throws NoTrackException
      */
-    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack p) throws NoTrackException {
+    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(p.getX(), p.getY());
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(positionOnTrack.getP());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-            throw new NoTrackException(p.toString());
+            throw new NoTrackException(positionOnTrack.toString());
         }
 
-        currentPosition = PositionOnTrack.createComingFrom(p.getX(), p.getY(), p.cameFrom());
+        currentPosition = PositionOnTrack.createComingFrom(positionOnTrack.getP(), positionOnTrack.cameFrom());
     }
 
     /**
@@ -64,13 +64,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * center of the tile)
      */
     public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w, Point2D p) {
-        TrackPiece tp = ((FullTerrainTile) w.getTile(p.x, p.y)).getTrackPiece();
+        TrackPiece tp = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();
 
         // Count the number of possible positions.
         int n = 0;
-
         for (TileTransition vector1 : vectors) {
             if (conf.contains(vector1.get9bitTemplate())) {
                 n++;
@@ -80,10 +79,9 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         PositionOnTrack[] possiblePositions = new PositionOnTrack[n];
 
         n = 0;
-
         for (TileTransition vector : vectors) {
             if (conf.contains(vector.get9bitTemplate())) {
-                possiblePositions[n] = PositionOnTrack.createComingFrom(p.x, p.y, vector.getOpposite());
+                possiblePositions[n] = PositionOnTrack.createComingFrom(p, vector.getOpposite());
                 n++;
             }
         }
@@ -115,8 +113,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             throw new NoSuchElementException();
         }
         TileTransition v = getFirstVectorToTry();
-        java.awt.Point p = new java.awt.Point(currentPosition.getX(), currentPosition.getY());
-        FullTerrainTile ft = (FullTerrainTile) world.getTile(p.x, p.y);
+        FullTerrainTile ft = (FullTerrainTile) world.getTile(currentPosition.getP());
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();
@@ -140,11 +137,10 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         TileTransition branchDirection = TileTransition.getInstance(i);
         currentBranch.setCameFrom(branchDirection);
 
-        int x = currentPosition.getX() + branchDirection.deltaX;
-        int y = currentPosition.getY() + branchDirection.deltaY;
-
-        currentBranch.setX(x);
-        currentBranch.setY(y);
+        // TODO addition of two points
+        int x = currentPosition.getP().x + branchDirection.deltaX;
+        int y = currentPosition.getP().y + branchDirection.deltaY;
+        currentBranch.setP(new Point2D(x, y));
 
         beforeFirst = false;
     }

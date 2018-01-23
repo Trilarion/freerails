@@ -76,8 +76,8 @@ public class MoveTrainPreMove implements PreMove {
      * @throws NoTrackException if no track
      */
     public static TileTransition findNextStep(ReadOnlyWorld world, PositionOnTrack currentPosition, Point2D target) {
-        int startPos = PositionOnTrack.toInt(currentPosition.getX(), currentPosition.getY());
-        int endPos = PositionOnTrack.toInt(target.x, target.y);
+        int startPos = PositionOnTrack.toInt(currentPosition.getP());
+        int endPos = PositionOnTrack.toInt(target);
         HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
         TileTransition nextTileTransition;
         if (destPaths != null) {
@@ -94,8 +94,7 @@ public class MoveTrainPreMove implements PreMove {
         PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
         try {
-            Point2D location = new Point2D(currentPosition.getX(), currentPosition.getY());
-            pathFinder.setupSearch(location, target);
+            pathFinder.setupSearch(currentPosition.getP(), target);
             pathFinder.search(-1);
             TileTransition[] pathAsVectors = pathFinder.pathAsVectors();
             List<Integer> pathAsInts = pathFinder.pathAsInts();
@@ -213,17 +212,16 @@ public class MoveTrainPreMove implements PreMove {
                 // Are we at a station?
                 TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new FullWorldDiffs(world));
                 ta.getStationId(Integer.MAX_VALUE);
-                PositionOnTrack pot = tm.getFinalPosition();
-                int x = pot.getX();
-                int y = pot.getY();
-                boolean atStation = stopsHandler.getStationID(x, y) >= 0;
+                PositionOnTrack positionOnTrack = tm.getFinalPosition();
+                Point2D p = positionOnTrack.getP();
+                boolean atStation = stopsHandler.getStationID(p) >= 0;
 
                 TrainMotion nextMotion;
                 if (atStation) {
                     // We have just arrived at a station.
                     double durationOfStationStop = 10;
 
-                    stopsHandler.arrivesAtPoint(x, y);
+                    stopsHandler.arrivesAtPoint(p);
 
                     TrainActivity status = stopsHandler.isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD : TrainActivity.STOPPED_AT_STATION;
                     PathOnTiles path = tm.getPath();
@@ -286,15 +284,14 @@ public class MoveTrainPreMove implements PreMove {
         TileTransition nextVector = nextStep(w);
 
         TrainMotion motion = lastMotion(w);
-        PositionOnTrack pot = motion.getFinalPosition();
-        Point2D tile = new Point2D(pot.getX(), pot.getY());
-        TrackSection desiredTrackSection = new TrackSection(nextVector, tile);
+        PositionOnTrack positionOnTrack = motion.getFinalPosition();
+        TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getP());
 
         // Check whether the desired track section is single or double track.
         Point2D tileA = desiredTrackSection.tileA();
         Point2D tileB = desiredTrackSection.tileB();
-        FullTerrainTile fta = (FullTerrainTile) w.getTile(tileA.x, tileA.y);
-        FullTerrainTile ftb = (FullTerrainTile) w.getTile(tileB.x, tileB.y);
+        FullTerrainTile fta = (FullTerrainTile) w.getTile(tileA);
+        FullTerrainTile ftb = (FullTerrainTile) w.getTile(tileB);
         TrackPiece tpa = fta.getTrackPiece();
         TrackPiece tpb = ftb.getTrackPiece();
         int tracks = 1;

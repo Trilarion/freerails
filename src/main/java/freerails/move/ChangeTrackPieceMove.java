@@ -37,12 +37,10 @@ import java.awt.*;
  * This Move adds, removes, or upgrades the track on a single tile.
  */
 public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
+
     private static final long serialVersionUID = 4120849958418591801L;
-
     final TrackPiece trackPieceBefore;
-
     private final TrackPiece trackPieceAfter;
-
     private final Point2D location;
 
     /**
@@ -92,18 +90,19 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
                  * matter if the radii overlap.
                  */
 
-                if (location.x == station.x && location.y == station.y) {
+                if (location.equals(station.p)) {
                     continue;
                 }
 
-                FullTerrainTile tile = (FullTerrainTile) w.getTile(station.x, station.y);
+                FullTerrainTile tile = (FullTerrainTile) w.getTile(station.p);
                 TrackRule otherStationType = tile.getTrackPiece().getTrackRule();
                 assert otherStationType.isStation();
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                int xDistance = station.x - location.x;
-                int yDistance = station.y - location.y;
+                // TODO point2d diff
+                int xDistance = station.p.x - location.x;
+                int yDistance = station.p.y - location.y;
 
                 // Do radii overlap?
                 boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);
@@ -136,7 +135,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         // Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
-            FullTerrainTile ft = (FullTerrainTile) w.getTile(point.x, point.y - 1);
+            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Point2D(point.x, point.y - 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateAbove = tp.getTrackGraphicID();
         } else {
@@ -144,7 +143,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         }
 
         if ((point.y + 1) < mapSize.height) {
-            FullTerrainTile ft = (FullTerrainTile) w.getTile(point.x, point.y + 1);
+            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Point2D(point.x, point.y + 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateBelow = tp.getTrackGraphicID();
         } else {
@@ -196,7 +195,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     private MoveStatus tryMove(World w, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
         // Check that location is on the map.
-        if (!w.boundsContain(location.x, location.y)) {
+        if (!w.boundsContain(location)) {
             return MoveStatus.moveFailed("Tried to build track outside the map.");
         }
 
@@ -219,7 +218,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         // Check that the current track piece at this.location is
         // the same as this.oldTrackPiece.
-        TrackPiece currentTrackPieceAtLocation = ((FullTerrainTile) w.getTile(location.x, location.y)).getTrackPiece();
+        TrackPiece currentTrackPieceAtLocation = ((FullTerrainTile) w.getTile(location)).getTrackPiece();
 
         TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
         TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
@@ -247,7 +246,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
             return MoveStatus.moveFailed("Illegal track configuration - diagonal conflict");
         }
 
-        int terrainType = ((FullTerrainTile) w.getTile(location.x, location.y)).getTerrainTypeID();
+        int terrainType = ((FullTerrainTile) w.getTile(location)).getTerrainTypeID();
         TerrainType tt = (TerrainType) w.get(SKEY.TERRAIN_TYPES, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getCategory())) {
@@ -284,10 +283,10 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
     private void move(World w, TrackPiece newTrackPiece) {
         // FIXME why is oldTrackPiece not used???
-        TerrainTile oldTile = (FullTerrainTile) w.getTile(location.x, location.y);
+        TerrainTile oldTile = (FullTerrainTile) w.getTile(location);
         int terrain = oldTile.getTerrainTypeID();
         FullTerrainTile newTile = FullTerrainTile.getInstance(terrain, newTrackPiece);
-        w.setTile(location.x, location.y, newTile);
+        w.setTile(location, newTile);
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {

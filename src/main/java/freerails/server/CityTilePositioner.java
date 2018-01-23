@@ -153,7 +153,7 @@ class CityTilePositioner {
                         break;
 
                     default:
-                        // do nothing, 30% chance
+                        // Do nothing. 30% chance
                         break;
                 }
                 city.writeToMap(world);

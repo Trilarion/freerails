@@ -67,7 +67,7 @@ public class BuildTrackRenderer implements Painter {
         if (null != worldDiffs) {
             for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D point = iter.next();
-                FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point.x, point.y);
+                FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point);
                 TrackPiece tp = fp.getTrackPiece();
 
                 int graphicsNumber = tp.getTrackGraphicID();
@@ -87,8 +87,8 @@ public class BuildTrackRenderer implements Painter {
                 Point2D p = iter.next();
                 int x = p.x * tileSize.width + (tileSize.width - ClientConfig.SMALL_DOT_WIDTH) / 2;
                 int y = p.y * tileSize.width + (tileSize.height - ClientConfig.SMALL_DOT_WIDTH) / 2;
-                FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p.x, p.y);
-                FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p.x, p.y);
+                FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
+                FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p);
 
                 boolean trackRemoved = !after.getTrackPiece().getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
                 Color dotColor = trackRemoved ? Color.RED : Color.WHITE;

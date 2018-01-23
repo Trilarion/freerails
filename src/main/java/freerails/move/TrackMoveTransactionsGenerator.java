@@ -131,12 +131,8 @@ public class TrackMoveTransactionsGenerator {
                     fixedCostsBridges -= newTrackRule.getFixedCost().getAmount();
                     break;
                 }
-                default: {
-                    // Do nothing.
-                }
-
+                default: {}
             }
-
         }
 
         if (ruleAfter == ruleBefore) {

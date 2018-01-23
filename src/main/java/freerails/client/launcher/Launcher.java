@@ -191,9 +191,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                     if (deltatime < ClientConfig.SERVERUPDATE) {
                         try {
                             Thread.sleep(ClientConfig.SERVERUPDATE - deltatime);
-                        } catch (InterruptedException e) {
-                            // do nothing.
-                        }
+                        } catch (InterruptedException e) {}
                     }
                 }
 
@@ -246,7 +244,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                     try {
                         Thread.sleep(20);
                     } catch (InterruptedException e) {
-                        // do nothing
+
                     }
                 }
                 GameModel[] models = new GameModel[]{guiClient};
@@ -405,8 +403,7 @@ public class Launcher extends JFrame implements LauncherInterface {
             SelectMapPanel msp2 = (SelectMapPanel) wizardPages[1];
             server.newGame(msp2.getNewMapName());
             cop.limitPlayerNames(null);
-        }  // Do nothing since the server is already set up.
-
+        }   // Do nothing since the server is already set up.
     }
 
     private boolean isNewGame() {

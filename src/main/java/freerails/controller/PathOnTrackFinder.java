@@ -73,9 +73,10 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         int y = startPoint.y;
         for (int i = 0; i < path.size(); i++) {
             PositionOnTrack p2 = new PositionOnTrack(path.get(i));
-            vectors[i] = TileTransition.getInstance(p2.getX() - x, p2.getY() - y);
-            x = p2.getX();
-            y = p2.getY();
+            // TODO point2d difference
+            vectors[i] = TileTransition.getInstance(p2.getP().x - x, p2.getP().y - y);
+            x = p2.getP().x;
+            y = p2.getP().y;
         }
         return vectors;
     }
@@ -105,8 +106,8 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         logger.debug("Find track path from " + from + " to " + target);
 
         // Check there is track at both the points.
-        FullTerrainTile tileA = (FullTerrainTile) world.getTile(from.x, from.y);
-        FullTerrainTile tileB = (FullTerrainTile) world.getTile(target.x, target.y);
+        FullTerrainTile tileA = (FullTerrainTile) world.getTile(from);
+        FullTerrainTile tileB = (FullTerrainTile) world.getTile(target);
         if (!tileA.hasTrack()) {
             throw new PathNotFoundException("No track at " + from.x + ", " + from.y + '.');
         }

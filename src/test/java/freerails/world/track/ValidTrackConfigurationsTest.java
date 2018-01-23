@@ -34,7 +34,7 @@ import junit.framework.TestSuite;
 import java.util.ArrayList;
 
 /**
- * Test.
+ *
  */
 public class ValidTrackConfigurationsTest extends TestCase {
 

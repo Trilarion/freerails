@@ -37,7 +37,7 @@ import freerails.world.track.TrackPieceImpl;
 import freerails.world.track.TrackRule;
 
 /**
- * Test.
+ *
  */
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
@@ -89,7 +89,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(0, 0))
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Point2D.ZERO))
                 .getTrackPiece();
 
         final int trackRuleID = 0;
@@ -98,7 +98,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point2D(0, 0));
+                Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.succeeds());
@@ -106,7 +106,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         // As above but with newTrackPiece and oldTrackPiece in the wrong order,
         // should fail.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                new Point2D(0, 0));
+                Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.succeeds());
@@ -114,7 +114,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece,
         // should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece,
-                new Point2D(0, 0));
+                Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(false, moveStatus.succeeds());
@@ -131,7 +131,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point2D(0, 0));
+                Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(false, moveStatus.succeeds());
     }
@@ -155,7 +155,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(0, 0))
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Point2D.ZERO))
                 .getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
@@ -174,11 +174,11 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         MoveStatus moveStatus;
 
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point2D(0, 0));
+                Point2D.ZERO);
         moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.succeeds());
-        TrackConfiguration actual = ((FullTerrainTile) getWorld().getTile(0, 0))
+        TrackConfiguration actual = ((FullTerrainTile) getWorld().getTile(Point2D.ZERO))
                 .getTrackPiece().getTrackConfiguration();
         assertEquals(newTrackPiece.getTrackConfiguration(), actual);
     }
@@ -192,14 +192,14 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(0, 0))
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Point2D.ZERO))
                 .getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                new Point2D(0, 0));
+                Point2D.ZERO);
 
         assertSurvivesSerialisation(move);
 

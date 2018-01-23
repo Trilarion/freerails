@@ -149,15 +149,12 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
             Point2D p = (Point2D) after;
 
-            int x = p.x;
-            int y = p.y;
-
             // Select priority element at location
             LOGGER.debug("Let's try to show the station.");
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that
-            int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
+            int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, p);
             if (stationNumberAtLocation > -1) {
                 LOGGER.info("stationNumber: " + stationNumberAtLocation);
                 stationInfoPanel.setStation(stationNumberAtLocation);
@@ -165,7 +162,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
                 LOGGER.info("Default behaviour show terrain.");
-                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p.x, p.y)).getTerrainTypeID());
+                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p)).getTerrainTypeID());
                 setSelectedIndex(terrainInfoIndex);
             }
 

@@ -167,8 +167,9 @@ public class FullWorld implements World {
      * @param y
      * @return
      */
-    public boolean boundsContain(int x, int y) {
-        return x >= 0 && x < getMapWidth() && y >= 0 && y < getMapHeight();
+    public boolean boundsContain(Point2D p) {
+        // TODO use compareTo instead
+        return p.x >= 0 && p.x < getMapWidth() && p.y >= 0 && p.y < getMapHeight();
     }
 
     /**
@@ -218,7 +219,8 @@ public class FullWorld implements World {
             }
             for (int x = 0; x < getMapWidth(); x++) {
                 for (int y = 0; y < getMapHeight(); y++) {
-                    if (!getTile(x, y).equals(test.getTile(x, y))) {
+                    Point2D p = new Point2D(x, y);
+                    if (!getTile(p).equals(test.getTile(p))) {
                         return false;
                     }
                 }
@@ -308,8 +310,8 @@ public class FullWorld implements World {
         return players.get(i);
     }
 
-    public Serializable getTile(int x, int y) {
-        return map[x][y];
+    public Serializable getTile(Point2D p) {
+        return map[p.x][p.y];
     }
 
     /**
@@ -436,8 +438,8 @@ public class FullWorld implements World {
         sharedLists.set(key.getKeyID(), index, element);
     }
 
-    public void setTile(int x, int y, Serializable tile) {
-        map[x][y] = tile;
+    public void setTile(Point2D p, Serializable tile) {
+        map[p.x][p.y] = tile;
     }
 
     /**

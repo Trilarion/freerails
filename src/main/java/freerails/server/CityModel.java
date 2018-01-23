@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -54,11 +55,10 @@ class CityModel {
             type++;
         }
 
-        int x = cityTile.p.x;
-        int y = cityTile.p.y;
-        FullTerrainTile fTile = (FullTerrainTile) w.getTile(x, y);
+        Point2D p = new Point2D(cityTile.p);
+        FullTerrainTile fTile = (FullTerrainTile) w.getTile(p);
         fTile = FullTerrainTile.getInstance(type, fTile.getTrackPiece());
-        w.setTile(x, y, fTile);
+        w.setTile(p, fTile);
     }
 
     void addTile(TerrainType type) {
@@ -115,7 +115,7 @@ class CityModel {
         // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                FullTerrainTile tile = (FullTerrainTile) w.getTile(x, y);
+                FullTerrainTile tile = (FullTerrainTile) w.getTile(new Point2D(x, y));
 
                 // Count the number of stations at the city.
                 if (tile.getTrackPiece().getTrackRule().isStation()) {

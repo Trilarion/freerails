@@ -144,7 +144,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         for (int i = 0; i < 5; i++) {
             TrainMotion tm = moveTrain();
             PositionOnTrack pot = tm.getFinalPosition();
-            assertEquals(14 + i, pot.getX());
+            assertEquals(14 + i, pot.getP().x);
             assertEquals(TrainActivity.READY, tm.getActivity());
             assertTrue(tm.getSpeedAtEnd() > 0);
         }
@@ -185,16 +185,16 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         do {
             trainMotion = moveTrain();
             pot = trainMotion.getFinalPosition();
-        } while (pot.getX() < station1Location.x);
-        assertEquals(station1Location.x, pot.getX());
-        assertEquals(station1Location.y, pot.getY());
+        } while (pot.getP().x < station1Location.x);
+        assertEquals(station1Location.x, pot.getP().x);
+        assertEquals(station1Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, trainMotion.getActivity());
 
         // The next train motion should represent the stop at the station.
         trainMotion = moveTrain();
         pot = trainMotion.getFinalPosition();
-        assertEquals(station1Location.x, pot.getX());
-        assertEquals(station1Location.y, pot.getY());
+        assertEquals(station1Location.x, pot.getP().x);
+        assertEquals(station1Location.y, pot.getP().y);
         assertEquals(TrainActivity.STOPPED_AT_STATION, trainMotion.getActivity());
 
         // 80 Units of cargo should have been transferred to the train!
@@ -205,8 +205,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Then the train should continue.
         trainMotion = moveTrain();
         pot = trainMotion.getFinalPosition();
-        assertEquals(station1Location.x + 1, pot.getX());
-        assertEquals(station1Location.y, pot.getY());
+        assertEquals(station1Location.x + 1, pot.getP().x);
+        assertEquals(station1Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, trainMotion.getActivity());
 
     }
@@ -216,7 +216,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
      */
     private void addCargoAtStation(int stationId, int amount) {
 
-        CargoBatch cb = new CargoBatch(0, 6, 6, 0, stationId);
+        CargoBatch cb = new CargoBatch(0, new Point2D(6, 6), 0, stationId);
         MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
         mb.addCargo(cb, amount);
         Station station1Model = (Station) world.get(principal,
@@ -243,10 +243,10 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         do {
             trainMotion = moveTrain();
             pot = trainMotion.getFinalPosition();
-            x = pot.getX();
+            x = pot.getP().x;
         } while (x < station2Location.x);
         assertEquals(station2Location.x, x);
-        assertEquals(station2Location.y, pot.getY());
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, trainMotion.getActivity());
 
         // The train should be heading for station 1.
@@ -261,8 +261,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // The next train motion should represent the stop at the station.
         trainMotion = moveTrain();
         pot = trainMotion.getFinalPosition();
-        assertEquals(station2Location.x, pot.getX());
-        assertEquals(station2Location.y, pot.getY());
+        assertEquals(station2Location.x, pot.getP().x);
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.STOPPED_AT_STATION, trainMotion.getActivity());
 
         // The train should be heading for station 0.
@@ -280,8 +280,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Then the train should continue.
         trainMotion = moveTrain();
         pot = trainMotion.getFinalPosition();
-        assertEquals(station2Location.x - 1, pot.getX());
-        assertEquals(station2Location.y, pot.getY());
+        assertEquals(station2Location.x - 1, pot.getP().x);
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, trainMotion.getActivity());
 
     }
@@ -302,8 +302,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         tm = moveTrain();
         pot = tm.getFinalPosition();
 
-        assertEquals(station2Location.x - 1, pot.getX());
-        assertEquals(station2Location.y, pot.getY());
+        assertEquals(station2Location.x - 1, pot.getP().x);
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, tm.getActivity());
 
     }
@@ -330,9 +330,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         do {
             tm = moveTrain();
             pot = tm.getFinalPosition();
-        } while (pot.getX() < station2Location.x);
-        assertEquals(station2Location.x, pot.getX());
-        assertEquals(station2Location.y, pot.getY());
+        } while (pot.getP().x < station2Location.x);
+        assertEquals(station2Location.x, pot.getP().x);
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, tm.getActivity());
 
         // The train should now stop at the station
@@ -341,7 +341,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         tm = moveTrain();
         pot = tm.getFinalPosition();
 
-        assertEquals(station2Location.y, pot.getY());
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.WAITING_FOR_FULL_LOAD, tm.getActivity());
 
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
@@ -375,8 +375,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Then the train should continue.
         tm = moveTrain();
         pot = tm.getFinalPosition();
-        assertEquals(station2Location.x - 1, pot.getX());
-        assertEquals(station2Location.y, pot.getY());
+        assertEquals(station2Location.x - 1, pot.getP().x);
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, tm.getActivity());
 
     }
@@ -412,7 +412,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         int cargoBundleId = station0.getCargoBundleID();
         MutableCargoBatchBundle mcb = new MutableCargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
-        mcb.addCargo(new CargoBatch(0, 0, 0, 0, 0), AMOUNT_OF_CARGO);
+        mcb.addCargo(new CargoBatch(0, Point2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
         world.set(principal, KEY.CARGO_BUNDLES, cargoBundleId, mcb
                 .toImmutableCargoBundle());
 
@@ -434,9 +434,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         do {
             tm = moveTrain();
             pot = tm.getFinalPosition();
-        } while (pot.getX() < station1Location.x);
-        assertEquals(station1Location.x, pot.getX());
-        assertEquals(station1Location.y, pot.getY());
+        } while (pot.getP().x < station1Location.x);
+        assertEquals(station1Location.x, pot.getP().x);
+        assertEquals(station1Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, tm.getActivity());
         tm = moveTrain();
         pot = tm.getFinalPosition();
@@ -486,9 +486,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         do {
             tm = moveTrain();
             pot = tm.getFinalPosition();
-        } while (pot.getX() < station2Location.x);
-        assertEquals(station2Location.x, pot.getX());
-        assertEquals(station2Location.y, pot.getY());
+        } while (pot.getP().x < station2Location.x);
+        assertEquals(station2Location.x, pot.getP().x);
+        assertEquals(station2Location.y, pot.getP().y);
         assertEquals(TrainActivity.READY, tm.getActivity());
 
         TrainModel train = ta.getTrain();

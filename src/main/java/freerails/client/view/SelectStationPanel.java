@@ -25,6 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
+import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -207,10 +208,11 @@ public class SelectStationPanel extends JPanel implements View {
         NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
         while (it.next()) {
             Station station = (Station) it.getElement();
-            if (station.x < topLeftX) topLeftX = station.x;
-            if (station.y < topLeftY) topLeftY = station.y;
-            if (station.x > bottomRightX) bottomRightX = station.x;
-            if (station.y > bottomRightY) bottomRightY = station.y;
+            // TODO min, max of two Points2D
+            if (station.p.x < topLeftX) topLeftX = station.p.x;
+            if (station.p.y < topLeftY) topLeftY = station.p.y;
+            if (station.p.x > bottomRightX) bottomRightX = station.p.x;
+            if (station.p.y > bottomRightY) bottomRightY = station.p.y;
         }
         // Add some padding.
         topLeftX -= 10;
@@ -245,7 +247,7 @@ public class SelectStationPanel extends JPanel implements View {
         g2.setColor(Color.BLACK);
         for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, world.getMapWidth()); x++) {
             for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, world.getMapHeight()); y++) {
-                FullTerrainTile tt = (FullTerrainTile) world.getTile(x, y);
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Point2D(x, y));
                 if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;
@@ -269,9 +271,9 @@ public class SelectStationPanel extends JPanel implements View {
              * to draw the station.
              */
             Station station = (Station) it.getElement();
-            double x = station.x - visableMapTiles.x;
+            double x = station.p.x - visableMapTiles.x;
             x = x * scale;
-            double y = station.y - visableMapTiles.y;
+            double y = station.p.y - visableMapTiles.y;
             y = y * scale;
             int xInt = (int) x;
             int yInt = (int) y;

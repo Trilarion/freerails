@@ -108,15 +108,12 @@ public class TrainUpdater implements ServerAutomaton {
                 if (null != station) {
 
                     ImmutableList<TrainBlueprint> production = station.getProduction();
-
                     if (production.size() > 0) {
-
-                        Point2D p = new Point2D(station.x, station.y);
 
                         for (int j = 0; j < production.size(); j++) {
                             int engineType = production.get(j).getEngineType();
                             ImmutableList<Integer> wagonTypes = production.get(j).getWagonTypes();
-                            buildTrain(engineType, wagonTypes, p, principal, world);
+                            buildTrain(engineType, wagonTypes, station.p, principal, world);
                         }
 
                         Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, principal);

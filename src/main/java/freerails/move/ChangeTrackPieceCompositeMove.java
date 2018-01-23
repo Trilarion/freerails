@@ -94,8 +94,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
         int owner = getOwner(principle, w);
 
-        if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = ((FullTerrainTile) w.getTile(p.x, p.y)).getTrackPiece();
+        if (w.boundsContain(p)) {
+            oldTrackPiece = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
@@ -116,8 +116,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        if (w.boundsContain(p.x, p.y)) {
-            oldTrackPiece = ((FullTerrainTile) w.getTile(p.x, p.y)).getTrackPiece();
+        if (w.boundsContain(p)) {
+            oldTrackPiece = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);

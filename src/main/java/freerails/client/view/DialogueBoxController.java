@@ -33,6 +33,7 @@ import freerails.move.Move;
 import freerails.network.MessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.util.ImmutableList;
+import freerails.util.Point2D;
 import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
@@ -355,8 +356,8 @@ public class DialogueBoxController implements WorldListListener {
      * @param x
      * @param y
      */
-    private void showTerrainInfo(int x, int y) {
-        TerrainTile tile = (FullTerrainTile) world.getTile(x, y);
+    private void showTerrainInfo(Point2D p) {
+        TerrainTile tile = (FullTerrainTile) world.getTile(p);
         int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
     }
@@ -520,12 +521,12 @@ public class DialogueBoxController implements WorldListListener {
      * @param x
      * @param y
      */
-    public void showStationOrTerrainInfo(int x, int y) {
-        int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, x, y);
+    public void showStationOrTerrainInfo(Point2D p) {
+        int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);
         } else {
-            showTerrainInfo(x, y);
+            showTerrainInfo(p);
         }
 
 
@@ -537,7 +538,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param principal
      */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-        // do nothing
+
     }
 
     /**
@@ -565,6 +566,6 @@ public class DialogueBoxController implements WorldListListener {
      * @param principal
      */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-        // do nothing
+
     }
 }

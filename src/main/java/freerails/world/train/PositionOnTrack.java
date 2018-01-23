@@ -18,6 +18,7 @@
 
 package freerails.world.train;
 
+import freerails.util.Point2D;
 import freerails.world.FreerailsMutableSerializable;
 import freerails.world.terrain.TileTransition;
 
@@ -39,14 +40,12 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * The direction from which we entered the tile.
      */
     private TileTransition cameFrom = TileTransition.NORTH;
-    private int x = 0;
-    private int y = 0;
+    private Point2D p = Point2D.ZERO;
 
     /**
      *
      */
-    public PositionOnTrack() {
-    }
+    public PositionOnTrack() {}
 
     /**
      * @param i
@@ -55,18 +54,16 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         setValuesFromInt(i);
     }
 
-    private PositionOnTrack(int x, int y, TileTransition direction) {
-        if (x > MAX_COORDINATE || x < 0) {
-            throw new IllegalArgumentException("x=" + x);
+    private PositionOnTrack(Point2D p, TileTransition direction) {
+        if (p.x > MAX_COORDINATE || p.x < 0) {
+            throw new IllegalArgumentException("x=" + p.x);
         }
 
-        if (y > MAX_COORDINATE || y < 0) {
-            throw new IllegalArgumentException("y=" + y);
+        if (p.y > MAX_COORDINATE || p.y < 0) {
+            throw new IllegalArgumentException("y=" + p.y);
         }
 
-        this.x = x;
-        this.y = y;
-
+        this.p = p;
         cameFrom = direction;
     }
 
@@ -76,8 +73,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param direction
      * @return
      */
-    public static PositionOnTrack createComingFrom(int x, int y, TileTransition direction) {
-        return new PositionOnTrack(x, y, direction);
+    public static PositionOnTrack createComingFrom(Point2D p, TileTransition direction) {
+        return new PositionOnTrack(p, direction);
     }
 
     /**
@@ -86,8 +83,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param direction
      * @return
      */
-    public static PositionOnTrack createFacing(int x, int y, TileTransition direction) {
-        return new PositionOnTrack(x, y, direction.getOpposite());
+    public static PositionOnTrack createFacing(Point2D p, TileTransition direction) {
+        return new PositionOnTrack(p, direction.getOpposite());
     }
 
     /**
@@ -107,8 +104,8 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param y
      * @return
      */
-    public static int toInt(int x, int y) {
-        return x | (y << BITS_FOR_COORDINATE);
+    public static int toInt(Point2D p) {
+        return p.x | (p.y << BITS_FOR_COORDINATE);
     }
 
     /**
@@ -127,7 +124,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         if (obj instanceof PositionOnTrack) {
             PositionOnTrack other = (PositionOnTrack) obj;
 
-            return other.cameFrom() == cameFrom() && other.x == x && other.y == y;
+            return other.cameFrom() == cameFrom() && p.equals(other.p);
         }
         return false;
     }
@@ -143,46 +140,25 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @return the position on the track which is in the opposite direction.
      */
     public PositionOnTrack getOpposite() {
-        int newX = x - cameFrom.deltaX;
-        int newY = y - cameFrom.deltaY;
+        int newX = p.x - cameFrom.deltaX;
+        int newY = p.y - cameFrom.deltaY;
         TileTransition newDirection = cameFrom.getOpposite();
 
-        return createComingFrom(newX, newY, newDirection);
+        return createComingFrom(new Point2D(newX, newY), newDirection);
     }
 
-    /**
-     * @return
-     */
-    public int getX() {
-        return x;
+    public void setP(Point2D p) {
+        this.p = p;
     }
 
-    /**
-     * @param x
-     */
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    /**
-     * @return
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * @param y
-     */
-    public void setY(int y) {
-        this.y = y;
+    public Point2D getP() {
+        return p;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = x;
-        result = 29 * result + y;
+        result = p.hashCode();
         result = 29 * result + cameFrom.hashCode();
 
         return result;
@@ -199,10 +175,11 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param i
      */
     public void setValuesFromInt(int i) {
-        x = i & MAX_COORDINATE;
+        int x = i & MAX_COORDINATE;
 
         int shiftedY = i & (MAX_COORDINATE << BITS_FOR_COORDINATE);
-        y = shiftedY >> BITS_FOR_COORDINATE;
+        int y = shiftedY >> BITS_FOR_COORDINATE;
+        p = new Point2D(x, y);
 
         int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORDINATE));
         int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORDINATE);
@@ -213,8 +190,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param tileTransition
      */
     public void move(TileTransition tileTransition) {
-        x += tileTransition.deltaX;
-        y += tileTransition.deltaY;
+        p = new Point2D(p.x + tileTransition.deltaX, p.y + tileTransition.deltaY);
         cameFrom = tileTransition.getOpposite();
     }
 
@@ -222,7 +198,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @return an integer representing this PositionOnTrack object
      */
     public int toInt() {
-        int i = x | (y << BITS_FOR_COORDINATE);
+        int i = p.x | (p.y << BITS_FOR_COORDINATE);
 
         int directionAsInt = cameFrom.getID();
         int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORDINATE));
@@ -233,7 +209,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 
     @Override
     public String toString() {
-
-        return "PositionOnTrack: " + x + ", " + y + " facing " + cameFrom.getOpposite().toString();
+        return "PositionOnTrack: " + p + " facing " + cameFrom.getOpposite().toString();
     }
 }

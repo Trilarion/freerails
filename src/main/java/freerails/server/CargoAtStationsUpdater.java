@@ -87,7 +87,7 @@ class CargoAtStationsUpdater implements FreerailsServerSerializable {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cb = new CargoBatch(i, station.x, station.y, 0, stationNumber);
+                        CargoBatch cb = new CargoBatch(i, station.p, 0, stationNumber);
                         int amountAlready = after.getAmount(cb);
 
                         // Obtain the month

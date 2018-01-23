@@ -23,6 +23,7 @@
  */
 package freerails.client.renderer;
 
+import freerails.util.Point2D;
 import freerails.util.Utils;
 
 import java.awt.*;
@@ -67,22 +68,22 @@ public final class SquareTileBackgroundRenderer extends BufferedTiledBackgroundR
      * @param tileX
      * @param tileY
      */
-    public void paintTile(Graphics g, int tileX, int tileY) {
-        mapView.paintTile(g, tileX, tileY);
+    public void paintTile(Graphics g, Point2D tileP) {
+        mapView.paintTile(g, tileP);
     }
 
     /**
      * @param x
      * @param y
      */
-    public void refreshTile(int x, int y) {
+    public void refreshTile(Point2D p) {
         // The backgroundBuffer gets created on the first call to
         // backgroundBuffer.paintRect(..)
         // so we need a check here to avoid a null pointer exception.
         if (null != super.backgroundBuffer) {
             Graphics gg = bg.create();
             gg.translate(-bufferRect.x, -bufferRect.y);
-            mapView.paintTile(gg, x, y);
+            mapView.paintTile(gg, p);
             gg.dispose();
         }
     }

@@ -19,6 +19,7 @@
 package freerails.world.station;
 
 import freerails.util.ImmutableList;
+import freerails.util.Point2D;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -30,9 +31,7 @@ import java.util.Arrays;
 public class Station implements Serializable {
 
     private static final long serialVersionUID = 3256442503979874355L;
-    // TODO position as Point2D
-    public final int x;
-    public final int y;
+    public final Point2D p;
     private final String name;
     private final StationSupply supply;
     private final StationDemand demandForCargo;
@@ -57,8 +56,7 @@ public class Station implements Serializable {
         name = s.name;
         production = s.production;
         supply = s.supply;
-        x = s.x;
-        y = s.y;
+        p = s.p;
     }
 
     /**
@@ -68,10 +66,9 @@ public class Station implements Serializable {
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
      */
-    public Station(int x, int y, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(Point2D p, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
         name = stationName;
-        this.x = x;
-        this.y = y;
+        this.p = p;
         this.cargoBundleNumber = cargoBundleNumber;
 
         // TODO array creation necessary here?
@@ -81,18 +78,15 @@ public class Station implements Serializable {
         production = new ImmutableList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationConversion.emptyInstance(numberOfCargoTypes);
-
     }
 
     // TODO are these meaningful values
-
     /**
      *
      */
     public Station() {
         name = "No name";
-        x = 0;
-        y = 0;
+        p = Point2D.ZERO;
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new Integer[0]);
         cargoConversion = new StationConversion(new Integer[0]);
@@ -113,8 +107,7 @@ public class Station implements Serializable {
         cargoConversion = s.cargoConversion;
         name = s.name;
         supply = s.supply;
-        x = s.x;
-        y = s.y;
+        p = s.p;
     }
 
     // TODO possible misuse, see above
@@ -130,8 +123,7 @@ public class Station implements Serializable {
         name = s.name;
         production = s.production;
         supply = s.supply;
-        x = s.x;
-        y = s.y;
+        p = s.p;
     }
 
     // TODO possible misuse, see above
@@ -148,8 +140,7 @@ public class Station implements Serializable {
         cargoConversion = s.cargoConversion;
         name = s.name;
         production = s.production;
-        x = s.x;
-        y = s.y;
+        p = s.p;
     }
 
     @Override
@@ -158,8 +149,7 @@ public class Station implements Serializable {
         if (!(obj instanceof Station)) return false;
         final Station station = (Station) obj;
         if (cargoBundleNumber != station.cargoBundleNumber) return false;
-        if (x != station.x) return false;
-        if (y != station.y) return false;
+        if (!p.equals(station.p)) return false;
         if (cargoConversion != null ? !cargoConversion.equals(station.cargoConversion) : station.cargoConversion != null)
             return false;
         if (demandForCargo != null ? !demandForCargo.equals(station.demandForCargo) : station.demandForCargo != null)
@@ -172,8 +162,7 @@ public class Station implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = x;
-        result = 29 * result + y;
+        result = p.hashCode();
         result = 29 * result + (name != null ? name.hashCode() : 0);
         result = 29 * result + (supply != null ? supply.hashCode() : 0);
         result = 29 * result + (demandForCargo != null ? demandForCargo.hashCode() : 0);
@@ -200,15 +189,8 @@ public class Station implements Serializable {
     /**
      * @return
      */
-    public int getStationX() {
-        return x;
-    }
-
-    /**
-     * @return
-     */
-    public int getStationY() {
-        return y;
+    public Point2D getStationP() {
+        return p;
     }
 
     /**

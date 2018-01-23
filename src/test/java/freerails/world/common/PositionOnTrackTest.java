@@ -18,6 +18,7 @@
 
 package freerails.world.common;
 
+import freerails.util.Point2D;
 import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
@@ -61,11 +62,8 @@ public class PositionOnTrackTest extends TestCase {
      *
      */
     public void testToInt() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
-                TileTransition.NORTH);
-        PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 30,
-                TileTransition.NORTH);
-
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(new Point2D(10, 20), TileTransition.NORTH);
+        PositionOnTrack p2 = PositionOnTrack.createComingFrom(new Point2D(10, 30), TileTransition.NORTH);
         assertTrue(p1.toInt() != p2.toInt());
     }
 
@@ -73,52 +71,38 @@ public class PositionOnTrackTest extends TestCase {
      *
      */
     public void testSetValuesFromInt() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
-                TileTransition.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(new Point2D(10, 20), TileTransition.NORTH);
 
         int i = p1.toInt();
-        PositionOnTrack p2 = PositionOnTrack
-                .createComingFrom(60, 70, TileTransition.EAST);
+        PositionOnTrack p2 = PositionOnTrack.createComingFrom(new Point2D(60, 70), TileTransition.EAST);
         assertTrue(!p1.equals(p2));
         p2.setValuesFromInt(i);
 
         assertEquals(p1, p2);
 
-        TileTransition v = TileTransition.getInstance(7); // 7 is the
-        // maximum
-        // vector
-        // number.
+        TileTransition v = TileTransition.getInstance(7); // 7 is the maximum vector number.
 
-        p1 = PositionOnTrack.createComingFrom(PositionOnTrack.MAX_COORDINATE,
-                PositionOnTrack.MAX_COORDINATE, v);
-
+        p1 = PositionOnTrack.createComingFrom(new Point2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE), v);
         i = p1.toInt();
     }
 
     /*
      * Test for boolean equals(Object)
      */
-
-    /**
-     *
-     */
-
     public void testEqualsObject() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 20,
-                TileTransition.NORTH);
-        PositionOnTrack p2 = PositionOnTrack.createComingFrom(10, 20,
-                TileTransition.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(new Point2D(10, 20), TileTransition.NORTH);
+        PositionOnTrack p2 = PositionOnTrack.createComingFrom(new Point2D(10, 20), TileTransition.NORTH);
         assertEquals(p1, p2);
 
-        p1 = PositionOnTrack.createComingFrom(10, 50, TileTransition.NORTH);
-        p2 = PositionOnTrack.createComingFrom(10, 20, TileTransition.NORTH);
+        p1 = PositionOnTrack.createComingFrom(new Point2D(10, 50), TileTransition.NORTH);
+        p2 = PositionOnTrack.createComingFrom(new Point2D(10, 20), TileTransition.NORTH);
 
         assertTrue(!p1.equals(p2));
     }
 
     private void assertNoException(int x, int y, TileTransition v) {
         try {
-            PositionOnTrack.createComingFrom(x, y, v);
+            PositionOnTrack.createComingFrom(new Point2D(x, y), v);
         } catch (Exception e) {
             assertTrue(false);
         }
@@ -126,7 +110,7 @@ public class PositionOnTrackTest extends TestCase {
 
     private void assertException(int x, int y, TileTransition v) {
         try {
-            PositionOnTrack.createComingFrom(x, y, v);
+            PositionOnTrack.createComingFrom(new Point2D(x, y), v);
             assertTrue(false);
         } catch (Exception e) {
         }
@@ -136,13 +120,11 @@ public class PositionOnTrackTest extends TestCase {
      *
      */
     public void testGetOpposite() {
-        PositionOnTrack p1 = PositionOnTrack.createComingFrom(10, 10,
-                TileTransition.NORTH);
+        PositionOnTrack p1 = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.NORTH);
         PositionOnTrack p2 = p1.getOpposite();
         assertNotNull(p2);
 
-        PositionOnTrack p3 = PositionOnTrack.createComingFrom(10, 11,
-                TileTransition.SOUTH);
+        PositionOnTrack p3 = PositionOnTrack.createComingFrom(new Point2D(10, 11), TileTransition.SOUTH);
         assertEquals(p3, p2);
     }
 }

@@ -25,6 +25,7 @@ package freerails.client.renderer;
 
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldConstants;
 import freerails.world.terrain.FullTerrainTile;
@@ -82,9 +83,9 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * @param tileX
      * @param tileY
      */
-    public void paintTile(Graphics g, int tileX, int tileY) {
-        terrainLayer.paintTile(g, tileX, tileY);
-        trackLayer.paintTile(g, tileX, tileY);
+    public void paintTile(Graphics g, Point2D tileP) {
+        terrainLayer.paintTile(g, tileP);
+        trackLayer.paintTile(g, tileP);
         cityNames.paint((Graphics2D) g, null);
         stationNames.paint((Graphics2D) g, null);
     }
@@ -111,7 +112,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
 
     private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
-        trackLayer.paintRectangleOfTiles(g, x, y, width, height);
+        trackLayer.paintRectangleOfTiles(g, new Point2D(x, y), width, height);
         Rectangle visibleRectangle = new Rectangle(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, width * WorldConstants.TILE_SIZE, height * WorldConstants.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
@@ -121,16 +122,12 @@ public final class MapBackgroundRender implements MapLayerRenderer {
      * @param x
      * @param y
      */
-    public void refreshTile(int x, int y) {
-        // Do nothing
-    }
+    public void refreshTile(Point2D p) {}
 
     /**
      *
      */
-    public void refreshAll() {
-        // Do nothing
-    }
+    public void refreshAll() {}
 
     /**
      * This inner class represents a view of the track on the map.
@@ -163,12 +160,10 @@ public final class MapBackgroundRender implements MapLayerRenderer {
              * unnecessary painting, we set the clip to expose only the rectangle
              * of tilesToPaint.
              */
-            Point tile = new Point();
-
-            for (tile.x = tilesToPaint.x - 1; tile.x < (tilesToPaint.x + tilesToPaint.width + 1); tile.x++) {
-                for (tile.y = tilesToPaint.y - 1; tile.y < (tilesToPaint.y + tilesToPaint.height + 1); tile.y++) {
-                    if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                        FullTerrainTile ft = (FullTerrainTile) world.getTile(tile.x, tile.y);
+            for (int tileX = tilesToPaint.x - 1; tileX < (tilesToPaint.x + tilesToPaint.width + 1); tileX++) {
+                for (int tileY = tilesToPaint.y - 1; tileY < (tilesToPaint.y + tilesToPaint.height + 1); tileY++) {
+                    if ((tileX >= 0) && (tileX < mapSize.width) && (tileY >= 0) && (tileY < mapSize.height)) {
+                        FullTerrainTile ft = (FullTerrainTile) world.getTile(new Point2D(tileX, tileY));
                         TrackPiece tp = ft.getTrackPiece();
 
                         int graphicsNumber = tp.getTrackGraphicID();
@@ -177,7 +172,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
                         if (ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                             TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
 
-                            trackPieceView.drawTrackPieceIcon(graphicsNumber, g, tile.x, tile.y, tileSize);
+                            trackPieceView.drawTrackPieceIcon(graphicsNumber, g, tileX, tileY, tileSize);
                         }
                     }
                 }
@@ -189,25 +184,24 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param tileX
          * @param tileY
          */
-        public void paintTile(Graphics g, int tileX, int tileY) {
+        public void paintTile(Graphics g, Point2D tileP) {
             /*
              * Since track tiles overlap the adjacent terrain tiles, we create a
              * temporary Graphics object that only lets us draw on the selected
              * tile.
              */
-            paintRectangleOfTiles(g, new Rectangle(tileX, tileY, 1, 1));
+            paintRectangleOfTiles(g, new Rectangle(tileP.x, tileP.y, 1, 1));
         }
 
-        private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
-            paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
+        private void paintRectangleOfTiles(Graphics g, Point2D p, int width, int height) {
+            paintRectangleOfTiles(g, new Rectangle(p.x, p.y, width, height));
         }
 
         /**
          * @param x
          * @param y
          */
-        public void refreshTile(int x, int y) {
-        }
+        public void refreshTile(Point2D p) {}
 
         /**
          * @param g
@@ -245,12 +239,12 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param g
          * @param tile
          */
-        private void paintTile(Graphics g, Point tile) {
+        public void paintTile(Graphics g, Point2D tile) {
             int screenX = tileSize.width * tile.x;
             int screenY = tileSize.height * tile.y;
 
             if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                TerrainTile tt = (TerrainTile) world.getTile(tile.x, tile.y);
+                TerrainTile tt = (TerrainTile) world.getTile(tile);
 
                 int typeNumber = tt.getTerrainTypeID();
                 TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
@@ -270,11 +264,9 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param tilesToPaint The rectangle, measured in tiles, to paint.
          */
         private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
-            Point tile = new Point();
-
-            for (tile.x = tilesToPaint.x; tile.x < (tilesToPaint.x + tilesToPaint.width); tile.x++) {
-                for (tile.y = tilesToPaint.y; tile.y < (tilesToPaint.y + tilesToPaint.height); tile.y++) {
-                    terrainLayer.paintTile(g, tile);
+            for (int tileX = tilesToPaint.x; tileX < (tilesToPaint.x + tilesToPaint.width); tileX++) {
+                for (int tileY = tilesToPaint.y; tileY < (tilesToPaint.y + tilesToPaint.height); tileY++) {
+                    terrainLayer.paintTile(g, new Point2D(tileX, tileY));
                 }
             }
         }
@@ -287,16 +279,7 @@ public final class MapBackgroundRender implements MapLayerRenderer {
             throw new UnsupportedOperationException("Method not yet implemented.");
         }
 
-        /**
-         * @param g
-         * @param tileX
-         * @param tileY
-         */
-        public void paintTile(Graphics g, int tileX, int tileY) {
-            paintTile(g, new Point(tileX, tileY));
-        }
-
-        private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
+         private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
             paintRectangleOfTiles(g, new Rectangle(x, y, width, height));
         }
 
@@ -304,13 +287,11 @@ public final class MapBackgroundRender implements MapLayerRenderer {
          * @param x
          * @param y
          */
-        public void refreshTile(int x, int y) {
-        }
+        public void refreshTile(Point2D p) {}
 
         /**
          *
          */
-        public void refreshAll() {
-        }
+        public void refreshAll() {}
     }
 }

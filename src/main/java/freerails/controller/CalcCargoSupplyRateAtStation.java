@@ -19,6 +19,7 @@
 package freerails.controller;
 
 import freerails.util.ImmutableList;
+import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
@@ -47,8 +48,7 @@ public class CalcCargoSupplyRateAtStation {
     private final int[] demand;
     private final List<CargoElementObject> supplies;
     private final ReadOnlyWorld world;
-    private final int x;
-    private final int y;
+    private final Point2D p;
     private final int stationRadius;
 
     /**
@@ -56,10 +56,9 @@ public class CalcCargoSupplyRateAtStation {
      *
      * @param trackRuleNo the station type.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int x, int y, int trackRuleNo) {
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Point2D p, int trackRuleNo) {
         this.world = world;
-        this.x = x;
-        this.y = y;
+        this.p = p;
 
         TrackRule trackRule = (TrackRule) this.world.get(SKEY.TRACK_RULES, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
@@ -75,12 +74,12 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station already exists.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, int x, int y) {
-        this(world, x, y, findTrackRule(x, y, world));
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Point2D p) {
+        this(world, p, findTrackRule(p, world));
     }
 
-    private static int findTrackRule(int x, int y, ReadOnlyWorld world) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
+    private static int findTrackRule(Point2D p, ReadOnlyWorld world) {
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
         return tile.getTrackPiece().getTrackTypeID();
     }
 
@@ -106,8 +105,8 @@ public class CalcCargoSupplyRateAtStation {
         return new StationDemand(demandboolean);
     }
 
-    private void incrementSupplyAndDemand(int i, int j) {
-        int tileTypeNumber = ((FullTerrainTile) world.getTile(i, j)).getTerrainTypeID();
+    private void incrementSupplyAndDemand(Point2D p) {
+        int tileTypeNumber = ((FullTerrainTile) world.getTile(p)).getTerrainTypeID();
 
         TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, tileTypeNumber);
 
@@ -168,7 +167,7 @@ public class CalcCargoSupplyRateAtStation {
     private List<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
-        Rectangle stationRadiusRect = new Rectangle(x - stationRadius, y - stationRadius, stationDiameter, stationDiameter);
+        Rectangle stationRadiusRect = new Rectangle(p.x - stationRadius, p.y - stationRadius, stationDiameter, stationDiameter);
         Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 
@@ -181,7 +180,7 @@ public class CalcCargoSupplyRateAtStation {
         // The station radius determines how many tiles each side we look at.
         for (int i = tiles2scan.x; i < (tiles2scan.x + tiles2scan.width); i++) {
             for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height); j++) {
-                incrementSupplyAndDemand(i, j);
+                incrementSupplyAndDemand(new Point2D(i, j));
             }
         }
 

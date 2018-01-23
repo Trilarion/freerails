@@ -71,7 +71,7 @@ public class TrainStopsHandler implements Serializable {
         List<TileTransition> tileTransitions = new ArrayList<>();
         Point2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
-        PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start.x, start.y, firstTileTransition);
+        PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start, firstTileTransition);
 
         while (extraDistanceNeeded > 0) {
 
@@ -95,8 +95,7 @@ public class TrainStopsHandler implements Serializable {
             tileTransitions.add(tileTransition);
         }
 
-        Point2D newStart = new Point2D(nextPot.getX(), nextPot.getY());
-        path = new PathOnTiles(newStart, tileTransitions);
+        path = new PathOnTiles(nextPot.getP(), tileTransitions);
         return path;
     }
 
@@ -105,16 +104,16 @@ public class TrainStopsHandler implements Serializable {
      * @param y
      * @return
      */
-    public void arrivesAtPoint(int x, int y) {
+    public void arrivesAtPoint(Point2D p) {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
 
         Point2D targetPoint = ta.getTarget();
 
-        if (x == targetPoint.x && y == targetPoint.y) {
+        if (p.equals(targetPoint)) {
             updateTarget();
             targetPoint = ta.getTarget();
         } else {
-            int stationNumber = getStationID(x, y);
+            int stationNumber = getStationID(p);
             if (NOT_AT_STATION != stationNumber) {
                 loadAndUnloadCargo(stationNumber, false, false);
             }
@@ -134,12 +133,12 @@ public class TrainStopsHandler implements Serializable {
      * @return the number of the station the train is currently at, or -1 if no
      * current station.
      */
-    public int getStationID(int x, int y) {
+    public int getStationID(Point2D p) {
         // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < worldDiffs.size(principal, KEY.STATIONS); i++) {
             Station tempPoint = (Station) worldDiffs.get(principal, KEY.STATIONS, i);
 
-            if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
+            if (null != tempPoint && p.equals(tempPoint.p)) {
                 return i; // train is at the station at location tempPoint
             }
         }

@@ -18,6 +18,8 @@
 
 package freerails.client.renderer;
 
+import freerails.util.Point2D;
+
 import java.awt.*;
 
 /**
@@ -56,7 +58,7 @@ public class BlankMapRenderer implements MapRenderer {
      * @param tileX
      * @param tileY
      */
-    public void paintTile(Graphics g, int tileX, int tileY) {
+    public void paintTile(Graphics g, Point2D tileP) {
         paintRect(g, null);
     }
 
@@ -64,7 +66,7 @@ public class BlankMapRenderer implements MapRenderer {
      * @param x
      * @param y
      */
-    public void refreshTile(int x, int y) {}
+    public void refreshTile(Point2D p) {}
 
     /**
      * @param g

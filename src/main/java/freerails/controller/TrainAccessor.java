@@ -99,14 +99,13 @@ public class TrainAccessor {
 
         TrainMotion tm = findCurrentMotion(time);
         PositionOnTrack pot = tm.getFinalPosition();
-        int x = pot.getX();
-        int y = pot.getY();
+        Point2D pp = pot.getP();
 
         // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < world.size(p, KEY.STATIONS); i++) {
             Station tempPoint = (Station) world.get(p, KEY.STATIONS, i);
 
-            if (null != tempPoint && (x == tempPoint.x) && (y == tempPoint.y)) {
+            if (null != tempPoint && pp.equals(tempPoint.p)) {
                 return i; // train is at the station at location tempPoint
             }
         }
@@ -218,12 +217,11 @@ public class TrainAccessor {
 
         if (-1 == stationNumber) {
             // There are no stations on the schedule.
-            return new Point2D(0, 0);
+            return Point2D.ZERO;
         }
 
         Station station = (Station) world.get(p, KEY.STATIONS, stationNumber);
-
-        return new Point2D(station.x, station.y);
+        return station.p;
     }
 
     /**

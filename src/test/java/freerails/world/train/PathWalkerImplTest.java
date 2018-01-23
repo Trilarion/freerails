@@ -28,7 +28,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Test.
+ *
  */
 public class PathWalkerImplTest extends TestCase {
 

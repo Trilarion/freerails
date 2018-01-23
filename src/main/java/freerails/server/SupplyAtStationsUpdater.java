@@ -58,7 +58,7 @@ class SupplyAtStationsUpdater {
             while (iterator.next()) {
                 Station stationBefore = (Station) iterator.getElement();
                 CalcCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalcCargoSupplyRateAtStation(world, stationBefore.x, stationBefore.y);
+                supplyRate = new CalcCargoSupplyRateAtStation(world, stationBefore.p);
 
                 Station stationAfter = supplyRate.calculations(stationBefore);
 

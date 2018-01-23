@@ -233,9 +233,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
                 addStationJButtonActionPerformed(null);
                 break;
             }
-            default: {
-                // do nothing.
-            }
+            default: {}
         }
 
         int orderNumber = orders.getSelectedIndex();
@@ -282,9 +280,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
                 setWaitUntilFull(!order.waitUntilFull);
                 break;
             }
-            default: {
-                // do nothing.
-            }
+            default: {}
         }
         listModel.fireRefresh();
 
@@ -587,13 +583,9 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         }
     }
 
-    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
-        // do nothing.
-    }
+    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {}
 
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-        // do nothing.
-    }
+    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {}
 
     /**
      * Show the popup that lets the user select a station, called when a new

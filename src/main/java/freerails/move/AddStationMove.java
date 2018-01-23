@@ -53,7 +53,7 @@ public class AddStationMove extends CompositeMove {
         int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
         int stationNumber = w.size(principal, KEY.STATIONS);
-        Station station = new Station(p.x, p.y, stationName, w.size(SKEY.CARGO_TYPES), cargoBundleNumber);
+        Station station = new Station(p, stationName, w.size(SKEY.CARGO_TYPES), cargoBundleNumber);
 
         Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber, station, principal);
 
