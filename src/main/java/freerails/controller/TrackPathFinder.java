@@ -62,7 +62,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
         for (Integer aPath : path) {
             positionOnTrack.setValuesFromInt(aPath);
-            Point2D p = positionOnTrack.getP();
+            Point2D p = positionOnTrack.getLocation();
             proposedTrack.add(p);
             logger.debug("Adding point " + p);
         }
@@ -171,8 +171,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
         for (int i = 0; i < size; i++) {
             progress.setValuesFromInt(path.get(i));
             // TODO point2d difference
-            int x2 = progress.getP().x;
-            int y2 = progress.getP().y;
+            int x2 = progress.getLocation().x;
+            int y2 = progress.getLocation().y;
             vectors[i] = TileTransition.getInstance(x2 - x, y2 - y);
             x = x2;
             y = y2;

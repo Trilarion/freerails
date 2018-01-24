@@ -79,8 +79,8 @@ class NearestStationFinder {
             Station station = (Station) it.getElement();
 
             // TODO diff of Point2D
-            int deltaX = x - station.p.x;
-            int deltaY = y - station.p.y;
+            int deltaX = x - station.location.x;
+            int deltaY = y - station.location.y;
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
             int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
@@ -109,8 +109,8 @@ class NearestStationFinder {
         while (it.next()) {
             Station station = (Station) it.getElement();
             // TODO diff of Point2D
-            int deltaX = station.p.x - currentStation.p.x;
-            int deltaY = station.p.y - currentStation.p.y;
+            int deltaX = station.location.x - currentStation.location.x;
+            int deltaY = station.location.y - currentStation.location.y;
             int distanceSquared = deltaX * deltaX + deltaY * deltaY;
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != it.getIndex();

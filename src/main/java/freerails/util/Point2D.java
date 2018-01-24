@@ -47,11 +47,6 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
         this.y = y;
     }
 
-    public Point2D(Point2D p) {
-        x = p.x;
-        y = p.y;
-    }
-
     public Point2D(Point p) {
         x = p.x;
         y = p.y;

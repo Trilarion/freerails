@@ -48,7 +48,7 @@ public class StationHelper {
             for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
                 Station station = (Station) world.get(principal, KEY.STATIONS, i);
 
-                if (null != station && p.equals(station.p)) {
+                if (null != station && p.equals(station.location)) {
                     return i;
                 }
             }

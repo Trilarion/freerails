@@ -209,10 +209,10 @@ public class SelectStationPanel extends JPanel implements View {
         while (it.next()) {
             Station station = (Station) it.getElement();
             // TODO min, max of two Points2D
-            if (station.p.x < topLeftX) topLeftX = station.p.x;
-            if (station.p.y < topLeftY) topLeftY = station.p.y;
-            if (station.p.x > bottomRightX) bottomRightX = station.p.x;
-            if (station.p.y > bottomRightY) bottomRightY = station.p.y;
+            if (station.location.x < topLeftX) topLeftX = station.location.x;
+            if (station.location.y < topLeftY) topLeftY = station.location.y;
+            if (station.location.x > bottomRightX) bottomRightX = station.location.x;
+            if (station.location.y > bottomRightY) bottomRightY = station.location.y;
         }
         // Add some padding.
         topLeftX -= 10;
@@ -271,9 +271,9 @@ public class SelectStationPanel extends JPanel implements View {
              * to draw the station.
              */
             Station station = (Station) it.getElement();
-            double x = station.p.x - visableMapTiles.x;
+            double x = station.location.x - visableMapTiles.x;
             x = x * scale;
-            double y = station.p.y - visableMapTiles.y;
+            double y = station.location.y - visableMapTiles.y;
             y = y * scale;
             int xInt = (int) x;
             int yInt = (int) y;

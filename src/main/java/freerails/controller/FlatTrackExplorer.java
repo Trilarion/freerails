@@ -49,12 +49,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      */
     public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(positionOnTrack.getP());
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(positionOnTrack.getLocation());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
             throw new NoTrackException(positionOnTrack.toString());
         }
 
-        currentPosition = PositionOnTrack.createComingFrom(positionOnTrack.getP(), positionOnTrack.cameFrom());
+        currentPosition = PositionOnTrack.createComingFrom(positionOnTrack.getLocation(), positionOnTrack.cameFrom());
     }
 
     /**
@@ -113,7 +113,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             throw new NoSuchElementException();
         }
         TileTransition v = getFirstVectorToTry();
-        FullTerrainTile ft = (FullTerrainTile) world.getTile(currentPosition.getP());
+        FullTerrainTile ft = (FullTerrainTile) world.getTile(currentPosition.getLocation());
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getList();
@@ -138,9 +138,9 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         currentBranch.setCameFrom(branchDirection);
 
         // TODO addition of two points
-        int x = currentPosition.getP().x + branchDirection.deltaX;
-        int y = currentPosition.getP().y + branchDirection.deltaY;
-        currentBranch.setP(new Point2D(x, y));
+        int x = currentPosition.getLocation().x + branchDirection.deltaX;
+        int y = currentPosition.getLocation().y + branchDirection.deltaY;
+        currentBranch.setLocation(new Point2D(x, y));
 
         beforeFirst = false;
     }

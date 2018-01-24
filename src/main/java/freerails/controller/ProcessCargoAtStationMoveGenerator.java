@@ -66,7 +66,7 @@ class ProcessCargoAtStationMoveGenerator {
         while (batches.hasNext()) {
             CargoBatch batch = batches.next();
             // TODO own function for that
-            double distanceSquared = (batch.getSourceP().x - thisStation.p.x) * (batch.getSourceP().x - thisStation.p.x) + (batch.getSourceP().y - thisStation.p.y) * (batch.getSourceP().y - thisStation.p.y);
+            double distanceSquared = (batch.getSourceP().x - thisStation.location.x) * (batch.getSourceP().x - thisStation.location.x) + (batch.getSourceP().y - thisStation.location.y) * (batch.getSourceP().y - thisStation.location.y);
             double dist = Math.sqrt(distanceSquared);
             int quantity = bundle.getAmount(batch);
 

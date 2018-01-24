@@ -131,18 +131,18 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         setupLoopOfTrack();
 
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
-        TrainMotion tm = ta.findCurrentMotion(3);
+        TrainMotion trainMotion = ta.findCurrentMotion(3);
 
-        assertEquals(0.0d, tm.duration());
+        assertEquals(0.0d, trainMotion.duration());
 
         PathOnTiles expected = new PathOnTiles(new Point2D(5, 5), TileTransition.SOUTH_WEST);
-        assertEquals(expected, tm.getPath());
-        PositionOnTrack pot = tm.getFinalPosition();
-        int x = pot.getP().x;
+        assertEquals(expected, trainMotion.getPath());
+        PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
+        int x = positionOnTrack.getLocation().x;
         assertEquals(4, x);
-        int y = pot.getP().y;
+        int y = positionOnTrack.getLocation().y;
         assertEquals(6, y);
-        assertEquals(TileTransition.SOUTH_WEST, pot.facing());
+        assertEquals(TileTransition.SOUTH_WEST, positionOnTrack.facing());
 
         MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
                 new OccupiedTracks(principal, world));
@@ -154,7 +154,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         assertTrue(moveStatus.succeeds());
 
         TrainMotion tm2 = ta.findCurrentMotion(3);
-        assertFalse(tm.equals(tm2));
+        assertFalse(trainMotion.equals(tm2));
 
         expected = new PathOnTiles(new Point2D(5, 5), TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
         assertEquals(expected, tm2.getPath());
@@ -164,7 +164,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         // stepping thu code in debugger.
         assertTrackHere(tm2.getTiles(tm2.duration()));
 
-        pot = tm2.getFinalPosition();
+        positionOnTrack = tm2.getFinalPosition();
         assertEquals(4, x);
         assertEquals(6, y);
         // assertEquals(SOUTH, pot.facing());
@@ -272,27 +272,27 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
      */
     public void testFindNextVector() {
         setupLoopOfTrack();
-        PositionOnTrack pot = PositionOnTrack.createFacing(new Point2D(4, 6), TileTransition.SOUTH_WEST);
+        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Point2D(4, 6), TileTransition.SOUTH_WEST);
 
         Point2D target = new Point2D();
         TileTransition expected = TileTransition.NORTH_EAST;
         assertEquals(expected, MoveTrainPreMove
-                .findNextStep(world, pot, target));
-        pot.move(expected);
+                .findNextStep(world, positionOnTrack, target));
+        positionOnTrack.move(expected);
         expected = TileTransition.EAST;
         assertEquals(expected, MoveTrainPreMove
-                .findNextStep(world, pot, target));
-        pot.move(expected);
+                .findNextStep(world, positionOnTrack, target));
+        positionOnTrack.move(expected);
 
         expected = TileTransition.SOUTH_EAST;
         assertEquals(expected, MoveTrainPreMove
-                .findNextStep(world, pot, target));
-        pot.move(expected);
+                .findNextStep(world, positionOnTrack, target));
+        positionOnTrack.move(expected);
 
         expected = TileTransition.SOUTH;
         assertEquals(expected, MoveTrainPreMove
-                .findNextStep(world, pot, target));
-        pot.move(expected);
+                .findNextStep(world, positionOnTrack, target));
+        positionOnTrack.move(expected);
 
     }
 

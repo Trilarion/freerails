@@ -124,11 +124,11 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         assertEquals(0.0d, tm.duration());
         assertEquals(0.0d, tm.getSpeedAtEnd());
         assertEquals(0.0d, tm.getDistance(0));
-        PositionOnTrack pot = tm.getFinalPosition();
-        assertNotNull(pot);
-        assertEquals(TileTransition.EAST, pot.facing());
-        assertEquals(13, pot.getP().x);
-        assertEquals(10, pot.getP().y);
+        PositionOnTrack positionOnTrack = tm.getFinalPosition();
+        assertNotNull(positionOnTrack);
+        assertEquals(TileTransition.EAST, positionOnTrack.facing());
+        assertEquals(13, positionOnTrack.getLocation().x);
+        assertEquals(10, positionOnTrack.getLocation().y);
 
     }
 

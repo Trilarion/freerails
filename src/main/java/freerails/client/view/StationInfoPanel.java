@@ -212,7 +212,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             Station station = (Station) world.get(modelRoot.getPrincipal(), KEY.STATIONS, stationNumber);
-            FullTerrainTile tile = (FullTerrainTile) world.getTile(station.p);
+            FullTerrainTile tile = (FullTerrainTile) world.getTile(station.location);
             String stationTypeName = tile.getTrackPiece().getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
             CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(modelRoot.getPrincipal(), KEY.CARGO_BUNDLES, station.getCargoBundleID());

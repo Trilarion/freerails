@@ -149,7 +149,7 @@ public class AddStationPreMove implements PreMove {
                 if (move.getKey().equals(KEY.STATIONS)) {
                     Station station = (Station) move.getAfter();
                     CalcCargoSupplyRateAtStation supplyRate;
-                    supplyRate = new CalcCargoSupplyRateAtStation(world, station.p, ruleNumber);
+                    supplyRate = new CalcCargoSupplyRateAtStation(world, station.location, ruleNumber);
                     Station stationAfter = supplyRate.calculations(station);
                     moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPrincipal());
                 }

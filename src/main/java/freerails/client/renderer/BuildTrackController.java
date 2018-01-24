@@ -384,7 +384,6 @@ public class BuildTrackController implements GameModel {
             }
         } catch (PathNotFoundException e) {
             setCursorMessage(e.getMessage());
-
             return;
         }
 

@@ -119,27 +119,27 @@ final class MapFactory {
                 }
 
                 tile = FullTerrainTile.getInstance(terrainRandomizer.getNewType(type));
-
+                Point2D location = new Point2D(x, y);
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
-                    locations.add(new TerrainAtLocation(x, y, tile.getTerrainTypeID()));
+                    locations.add(new TerrainAtLocation(location, tile.getTerrainTypeID()));
                 }
 
-                w.setTile(new Point2D(x, y), tile);
+                w.setTile(location, tile);
             }
         }
 
         for (TerrainAtLocation terrainAtLocation : locations) {
             FullTerrainTile tile = FullTerrainTile.getInstance(terrainAtLocation.getType());
 
-            int x = terrainAtLocation.getX();
-            int y = terrainAtLocation.getY();
+            Point2D location = terrainAtLocation.getLocation();
             int val = 3;
 
             double prob = 0.75;
 
-            if (w.boundsContain(new Point2D(x - val, y - val)) && w.boundsContain(new Point2D(x + val, y + val))) {
-                for (int m = x - val; m < x + val; m++) {
-                    for (int n = y - val; n < y + val; n++) {
+            // TODO Point2D arigthmetics
+            if (w.boundsContain(new Point2D(location.x - val, location.y - val)) && w.boundsContain(new Point2D(location.x + val, location.y + val))) {
+                for (int m = location.x - val; m < location.x + val; m++) {
+                    for (int n = location.y - val; n < location.y + val; n++) {
                         if (Math.random() > prob) {
                             setTile(new Point2D(m, n), tile);
                         }

@@ -90,19 +90,19 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
                  * matter if the radii overlap.
                  */
 
-                if (location.equals(station.p)) {
+                if (location.equals(station.location)) {
                     continue;
                 }
 
-                FullTerrainTile tile = (FullTerrainTile) w.getTile(station.p);
+                FullTerrainTile tile = (FullTerrainTile) w.getTile(station.location);
                 TrackRule otherStationType = tile.getTrackPiece().getTrackRule();
                 assert otherStationType.isStation();
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
                 // TODO point2d diff
-                int xDistance = station.p.x - location.x;
-                int yDistance = station.p.y - location.y;
+                int xDistance = station.location.x - location.x;
+                int yDistance = station.location.y - location.y;
 
                 // Do radii overlap?
                 boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);

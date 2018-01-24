@@ -31,7 +31,7 @@ import java.util.Arrays;
 public class Station implements Serializable {
 
     private static final long serialVersionUID = 3256442503979874355L;
-    public final Point2D p;
+    public final Point2D location;
     private final String name;
     private final StationSupply supply;
     private final StationDemand demandForCargo;
@@ -56,7 +56,7 @@ public class Station implements Serializable {
         name = s.name;
         production = s.production;
         supply = s.supply;
-        p = s.p;
+        location = s.location;
     }
 
     /**
@@ -66,9 +66,9 @@ public class Station implements Serializable {
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
      */
-    public Station(Point2D p, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(Point2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
         name = stationName;
-        this.p = p;
+        this.location = location;
         this.cargoBundleNumber = cargoBundleNumber;
 
         // TODO array creation necessary here?
@@ -86,7 +86,7 @@ public class Station implements Serializable {
      */
     public Station() {
         name = "No name";
-        p = Point2D.ZERO;
+        location = Point2D.ZERO;
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new Integer[0]);
         cargoConversion = new StationConversion(new Integer[0]);
@@ -107,7 +107,7 @@ public class Station implements Serializable {
         cargoConversion = s.cargoConversion;
         name = s.name;
         supply = s.supply;
-        p = s.p;
+        location = s.location;
     }
 
     // TODO possible misuse, see above
@@ -123,7 +123,7 @@ public class Station implements Serializable {
         name = s.name;
         production = s.production;
         supply = s.supply;
-        p = s.p;
+        location = s.location;
     }
 
     // TODO possible misuse, see above
@@ -140,7 +140,7 @@ public class Station implements Serializable {
         cargoConversion = s.cargoConversion;
         name = s.name;
         production = s.production;
-        p = s.p;
+        location = s.location;
     }
 
     @Override
@@ -149,7 +149,7 @@ public class Station implements Serializable {
         if (!(obj instanceof Station)) return false;
         final Station station = (Station) obj;
         if (cargoBundleNumber != station.cargoBundleNumber) return false;
-        if (!p.equals(station.p)) return false;
+        if (!location.equals(station.location)) return false;
         if (cargoConversion != null ? !cargoConversion.equals(station.cargoConversion) : station.cargoConversion != null)
             return false;
         if (demandForCargo != null ? !demandForCargo.equals(station.demandForCargo) : station.demandForCargo != null)
@@ -162,7 +162,7 @@ public class Station implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = p.hashCode();
+        result = location.hashCode();
         result = 29 * result + (name != null ? name.hashCode() : 0);
         result = 29 * result + (supply != null ? supply.hashCode() : 0);
         result = 29 * result + (demandForCargo != null ? demandForCargo.hashCode() : 0);
@@ -190,7 +190,7 @@ public class Station implements Serializable {
      * @return
      */
     public Point2D getStationP() {
-        return p;
+        return location;
     }
 
     /**

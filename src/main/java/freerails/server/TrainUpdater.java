@@ -113,7 +113,7 @@ public class TrainUpdater implements ServerAutomaton {
                         for (int j = 0; j < production.size(); j++) {
                             int engineType = production.get(j).getEngineType();
                             ImmutableList<Integer> wagonTypes = production.get(j).getWagonTypes();
-                            buildTrain(engineType, wagonTypes, station.p, principal, world);
+                            buildTrain(engineType, wagonTypes, station.location, principal, world);
                         }
 
                         Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, principal);

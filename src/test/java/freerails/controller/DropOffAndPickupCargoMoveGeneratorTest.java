@@ -43,7 +43,7 @@ import junit.framework.TestCase;
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
-    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, new Point2D(Point2D.ZERO),
+    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, Point2D.ZERO,
             0, 2);
     private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, Point2D.ZERO,0, 2);
     private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new Point2D(0,0),0, 0);

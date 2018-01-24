@@ -17,7 +17,7 @@ class MapDiff implements Serializable {
     MapDiff(Serializable before, Serializable after, Point2D p) {
         this.after = after;
         this.before = before;
-        this.p = new Point2D(p);
+        this.p = p;
     }
 
     @Override

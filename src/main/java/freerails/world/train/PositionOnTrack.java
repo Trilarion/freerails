@@ -40,7 +40,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * The direction from which we entered the tile.
      */
     private TileTransition cameFrom = TileTransition.NORTH;
-    private Point2D p = Point2D.ZERO;
+    private Point2D location = Point2D.ZERO;
 
     /**
      *
@@ -54,16 +54,16 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         setValuesFromInt(i);
     }
 
-    private PositionOnTrack(Point2D p, TileTransition direction) {
-        if (p.x > MAX_COORDINATE || p.x < 0) {
-            throw new IllegalArgumentException("x=" + p.x);
+    private PositionOnTrack(Point2D location, TileTransition direction) {
+        if (location.x > MAX_COORDINATE || location.x < 0) {
+            throw new IllegalArgumentException("x=" + location.x);
         }
 
-        if (p.y > MAX_COORDINATE || p.y < 0) {
-            throw new IllegalArgumentException("y=" + p.y);
+        if (location.y > MAX_COORDINATE || location.y < 0) {
+            throw new IllegalArgumentException("y=" + location.y);
         }
 
-        this.p = p;
+        this.location = location;
         cameFrom = direction;
     }
 
@@ -124,7 +124,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
         if (obj instanceof PositionOnTrack) {
             PositionOnTrack other = (PositionOnTrack) obj;
 
-            return other.cameFrom() == cameFrom() && p.equals(other.p);
+            return other.cameFrom() == cameFrom() && location.equals(other.location);
         }
         return false;
     }
@@ -140,25 +140,25 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @return the position on the track which is in the opposite direction.
      */
     public PositionOnTrack getOpposite() {
-        int newX = p.x - cameFrom.deltaX;
-        int newY = p.y - cameFrom.deltaY;
+        int newX = location.x - cameFrom.deltaX;
+        int newY = location.y - cameFrom.deltaY;
         TileTransition newDirection = cameFrom.getOpposite();
 
         return createComingFrom(new Point2D(newX, newY), newDirection);
     }
 
-    public void setP(Point2D p) {
-        this.p = p;
+    public void setLocation(Point2D location) {
+        this.location = location;
     }
 
-    public Point2D getP() {
-        return p;
+    public Point2D getLocation() {
+        return location;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = p.hashCode();
+        result = location.hashCode();
         result = 29 * result + cameFrom.hashCode();
 
         return result;
@@ -179,7 +179,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 
         int shiftedY = i & (MAX_COORDINATE << BITS_FOR_COORDINATE);
         int y = shiftedY >> BITS_FOR_COORDINATE;
-        p = new Point2D(x, y);
+        location = new Point2D(x, y);
 
         int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORDINATE));
         int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORDINATE);
@@ -190,7 +190,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @param tileTransition
      */
     public void move(TileTransition tileTransition) {
-        p = new Point2D(p.x + tileTransition.deltaX, p.y + tileTransition.deltaY);
+        location = new Point2D(location.x + tileTransition.deltaX, location.y + tileTransition.deltaY);
         cameFrom = tileTransition.getOpposite();
     }
 
@@ -198,7 +198,7 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
      * @return an integer representing this PositionOnTrack object
      */
     public int toInt() {
-        int i = p.x | (p.y << BITS_FOR_COORDINATE);
+        int i = location.x | (location.y << BITS_FOR_COORDINATE);
 
         int directionAsInt = cameFrom.getID();
         int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORDINATE));
@@ -209,6 +209,6 @@ public final class PositionOnTrack implements FreerailsMutableSerializable {
 
     @Override
     public String toString() {
-        return "PositionOnTrack: " + p + " facing " + cameFrom.getOpposite().toString();
+        return "PositionOnTrack: " + location + " facing " + cameFrom.getOpposite().toString();
     }
 }

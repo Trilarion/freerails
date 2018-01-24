@@ -76,7 +76,7 @@ public class MoveTrainPreMove implements PreMove {
      * @throws NoTrackException if no track
      */
     public static TileTransition findNextStep(ReadOnlyWorld world, PositionOnTrack currentPosition, Point2D target) {
-        int startPos = PositionOnTrack.toInt(currentPosition.getP());
+        int startPos = PositionOnTrack.toInt(currentPosition.getLocation());
         int endPos = PositionOnTrack.toInt(target);
         HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
         TileTransition nextTileTransition;
@@ -94,7 +94,7 @@ public class MoveTrainPreMove implements PreMove {
         PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
         try {
-            pathFinder.setupSearch(currentPosition.getP(), target);
+            pathFinder.setupSearch(currentPosition.getLocation(), target);
             pathFinder.search(-1);
             TileTransition[] pathAsVectors = pathFinder.pathAsVectors();
             List<Integer> pathAsInts = pathFinder.pathAsInts();
@@ -213,7 +213,7 @@ public class MoveTrainPreMove implements PreMove {
                 TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new FullWorldDiffs(world));
                 ta.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack positionOnTrack = tm.getFinalPosition();
-                Point2D p = positionOnTrack.getP();
+                Point2D p = positionOnTrack.getLocation();
                 boolean atStation = stopsHandler.getStationID(p) >= 0;
 
                 TrainMotion nextMotion;
@@ -285,7 +285,7 @@ public class MoveTrainPreMove implements PreMove {
 
         TrainMotion motion = lastMotion(w);
         PositionOnTrack positionOnTrack = motion.getFinalPosition();
-        TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getP());
+        TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getLocation());
 
         // Check whether the desired track section is single or double track.
         Point2D tileA = desiredTrackSection.tileA();

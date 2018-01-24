@@ -167,7 +167,6 @@ public class BuildTrackControllerTest extends TestCase {
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);
-
     }
 
 }

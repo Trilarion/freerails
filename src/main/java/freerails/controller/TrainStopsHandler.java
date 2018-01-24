@@ -95,7 +95,7 @@ public class TrainStopsHandler implements Serializable {
             tileTransitions.add(tileTransition);
         }
 
-        path = new PathOnTiles(nextPot.getP(), tileTransitions);
+        path = new PathOnTiles(nextPot.getLocation(), tileTransitions);
         return path;
     }
 
@@ -138,7 +138,7 @@ public class TrainStopsHandler implements Serializable {
         for (int i = 0; i < worldDiffs.size(principal, KEY.STATIONS); i++) {
             Station tempPoint = (Station) worldDiffs.get(principal, KEY.STATIONS, i);
 
-            if (null != tempPoint && p.equals(tempPoint.p)) {
+            if (null != tempPoint && p.equals(tempPoint.location)) {
                 return i; // train is at the station at location tempPoint
             }
         }

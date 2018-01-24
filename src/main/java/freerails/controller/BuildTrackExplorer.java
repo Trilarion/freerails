@@ -97,7 +97,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.
         TileTransition opposite2current = currentPosition.cameFrom().getOpposite();
-        Point2D currentP = currentPosition.getP();
+        Point2D currentP = currentPosition.getLocation();
         int directionWeCameFrom = opposite2current.getID();
         int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
         int directionWeCameFromMinus = (directionWeCameFrom + 7) % 8;
@@ -230,7 +230,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         int cost = (int) Math.round(DISTANCE_COST * length);
 
         if (!usingExistingTrack) {
-            Point2D p = currentPosition.getP();
+            Point2D p = currentPosition.getLocation();
             int[] x = {p.x, p.x + edgeDirection.deltaX};
             int[] y = {p.y, p.y + edgeDirection.deltaY};
             TrackRule ruleA = getAppropriateTrackRule(new Point2D(x[0], y[0]));
@@ -304,7 +304,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TileTransition direction = TileTransition.getInstance(directionInt);
 
         currentBranch.setCameFrom(direction);
-        currentBranch.setP(new Point2D(currentPosition.getP().x + direction.getDx(), currentPosition.getP().y + direction.getDy()));
+        currentBranch.setLocation(new Point2D(currentPosition.getLocation().x + direction.getDx(), currentPosition.getLocation().y + direction.getDy()));
 
         directionInt++;
         beforeFirst = false;

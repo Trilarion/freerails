@@ -191,7 +191,7 @@ class UserInputOnMapController extends KeyAdapter {
             }
 
             case KeyEvent.VK_C: {
-                mapView.centerOnTile(cursorPosition.toPoint());
+                mapView.centerOnTile(cursorPosition);
                 break;
             }
 

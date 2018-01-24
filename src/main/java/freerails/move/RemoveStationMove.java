@@ -52,7 +52,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         while (wi.next()) {
             Station station = (Station) wi.getElement();
 
-            if (station.p.equals(removeTrackMove.getLocation())) {
+            if (station.location.equals(removeTrackMove.getLocation())) {
                 // We have found the station!
                 stationIndex = wi.getIndex();
                 break;

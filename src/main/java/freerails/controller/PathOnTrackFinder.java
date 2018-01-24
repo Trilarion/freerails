@@ -74,9 +74,9 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         for (int i = 0; i < path.size(); i++) {
             PositionOnTrack p2 = new PositionOnTrack(path.get(i));
             // TODO point2d difference
-            vectors[i] = TileTransition.getInstance(p2.getP().x - x, p2.getP().y - y);
-            x = p2.getP().x;
-            y = p2.getP().y;
+            vectors[i] = TileTransition.getInstance(p2.getLocation().x - x, p2.getLocation().y - y);
+            x = p2.getLocation().x;
+            y = p2.getLocation().y;
         }
         return vectors;
     }

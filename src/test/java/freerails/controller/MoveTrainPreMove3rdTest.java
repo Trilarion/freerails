@@ -82,12 +82,12 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         FullTerrainTile tile = (FullTerrainTile) world
                 .getTile(target1);
         assertTrue(tile.hasTrack());
-        PositionOnTrack pot = PositionOnTrack.createFacing(new Point2D(10, 10), TileTransition.EAST);
+        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Point2D(10, 10), TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
-            TileTransition actual = MoveTrainPreMove.findNextStep(world, pot, target1);
+            TileTransition actual = MoveTrainPreMove.findNextStep(world, positionOnTrack, target1);
             assertEquals(String.valueOf(i), expected, actual);
-            pot.move(expected);
+            positionOnTrack.move(expected);
         }
     }
 
