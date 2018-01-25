@@ -28,7 +28,6 @@ import freerails.client.view.ActionRoot;
 import freerails.controller.ClientProperty;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.client.FreerailsClient;
 import freerails.server.ProgressMonitorModel;
 import freerails.world.ITEM;
 import freerails.world.ReadOnlyWorld;

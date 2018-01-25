@@ -24,8 +24,8 @@
 package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
-import freerails.network.SaveGamesManager;
-import freerails.server.FullSaveGameManager;
+import freerails.savegames.SaveGamesManager;
+import freerails.savegames.FullSaveGameManager;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

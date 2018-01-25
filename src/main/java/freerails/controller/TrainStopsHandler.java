@@ -191,8 +191,8 @@ public class TrainStopsHandler implements Serializable {
 
     }
 
-    public void makeTrainWait(int ticks) {
-    }
+    // TODO not yet implemented
+    public void makeTrainWait(int ticks) {}
 
     /**
      * @return

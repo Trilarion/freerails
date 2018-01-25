@@ -18,7 +18,6 @@
 
 package freerails.client.common;
 
-import freerails.client.ClientConfig;
 import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 

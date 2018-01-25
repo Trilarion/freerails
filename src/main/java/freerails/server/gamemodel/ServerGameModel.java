@@ -19,50 +19,39 @@
 /*
  *
  */
-package freerails.server;
+package freerails.server.gamemodel;
 
+import freerails.server.MoveReceiver;
 import freerails.world.World;
+import freerails.server.gamemodel.GameModel;
+
+import java.io.Serializable;
 
 /**
- * A ServerGameModel that has a world object but no automation.
+ * Defines methods on a GameModel that let the server load and initiate, and
+ * save it.
  */
-public class SimpleServerGameModel implements ServerGameModel {
-
-    private static final long serialVersionUID = 3546074757457131826L;
-    private World world;
-    private String[] passwords;
+public interface ServerGameModel extends GameModel, Serializable {
 
     /**
      * @param world
      * @param passwords
      */
-    public void setWorld(World world, String[] passwords) {
-        this.world = world;
-        this.passwords = passwords.clone();
-    }
+    void setWorld(World world, String[] passwords);
 
     /**
      * @return
      */
-    public World getWorld() {
-        return world;
-    }
+    World getWorld();
+
+    /**
+     * @return
+     */
+    String[] getPasswords();
 
     /**
      * @param moveReceiver
      */
-    public void initialize(MoveReceiver moveReceiver) {}
-
-    /**
-     *
-     */
-    public void update() {}
-
-    /**
-     * @return
-     */
-    public String[] getPasswords() {
-        return passwords.clone();
-    }
+    void initialize(MoveReceiver moveReceiver);
 
 }

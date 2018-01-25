@@ -16,37 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.savegames;
 
-import freerails.server.ServerGameModel;
+import freerails.server.gamemodel.ServerGameModel;
 import freerails.util.Utils;
 import freerails.world.FullWorld;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Stores saved games in memory rather than on disk.
  */
-public class SaveGamesManagerForUnitTests implements SaveGamesManager {
+public class UnitTestSaveGamesManager implements SaveGamesManager {
 
     private final String[] mapsAvailable = {"map1", "map2"};
-    private final HashMap<String, Serializable> savedGames = new HashMap<>();
+    private final Map<String, Serializable> savedGames = new HashMap<>();
 
     /**
      * @return
      */
     public String[] getSaveGameNames() {
-        Object[] keys = savedGames.keySet().toArray();
-
-        String[] names = new String[keys.length];
-
-        for (int i = 0; i < names.length; i++) {
-            names[i] = (String) keys[i];
-        }
-
-        return names;
+        return savedGames.keySet().toArray(new String[0]);
     }
 
     /**
@@ -57,14 +50,14 @@ public class SaveGamesManagerForUnitTests implements SaveGamesManager {
     }
 
     /**
-     * @param w
      * @param s
+     * @param w
      * @throws IOException
      */
-    public void saveGame(Serializable w, String s) throws IOException {
+    public void saveGame(String s, Serializable w) throws IOException {
         // Make a copy so that the saved version's state cannot be changed.
         Serializable copy = Utils.cloneBySerialisation(w);
-        this.savedGames.put(s, copy);
+        savedGames.put(s, copy);
     }
 
     /**

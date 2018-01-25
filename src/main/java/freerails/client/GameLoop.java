@@ -21,7 +21,7 @@ package freerails.client;
 import freerails.client.common.RepaintManagerForActiveRendering;
 import freerails.client.launcher.Launcher;
 import freerails.util.Utils;
-import freerails.world.game.GameModel;
+import freerails.server.gamemodel.GameModel;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

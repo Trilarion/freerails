@@ -29,7 +29,7 @@ import freerails.world.player.FreerailsPrincipal;
  * Iterates over the entries in the bank account and counts the number
  * of outstanding bonds, then calculates the interest due.
  */
-class BondInterestMoveGenerator {
+public class BondInterestMoveGenerator {
 
     private final MoveReceiver moveReceiver;
 

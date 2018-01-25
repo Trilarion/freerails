@@ -23,10 +23,10 @@ import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.PreMove;
-import freerails.server.FullSaveGameManager;
+import freerails.savegames.SaveGamesManager;
 import freerails.server.MoveReceiver;
-import freerails.server.ServerGameModel;
-import freerails.server.SimpleServerGameModel;
+import freerails.server.gamemodel.ServerGameModel;
+import freerails.server.gamemodel.SimpleServerGameModel;
 import freerails.util.ImmutableList;
 import freerails.util.SynchronizedFlag;
 import freerails.world.World;
@@ -342,7 +342,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         logger.info("save game as " + saveGameName);
 
         try {
-            saveGamesManager.saveGame(serverGameModel, saveGameName);
+            saveGamesManager.saveGame(saveGameName, serverGameModel);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -398,6 +398,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         sendToAll(command);
     }
 
+    // TODO this is very convoluted with ServerGameModel and MoveReceiver cyclically referencing each other
     /**
      * @param serverGameModel
      */

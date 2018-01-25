@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.savegames;
 
-import freerails.server.ServerGameModel;
+import freerails.server.gamemodel.ServerGameModel;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -40,11 +40,11 @@ public interface SaveGamesManager {
     String[] getNewMapNames();
 
     /**
-     * @param w
      * @param s
+     * @param w
      * @throws IOException
      */
-    void saveGame(Serializable w, String s) throws IOException;
+    void saveGame(String s, Serializable w) throws IOException;
 
     /**
      * @param name

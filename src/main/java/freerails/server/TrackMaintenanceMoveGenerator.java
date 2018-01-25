@@ -38,7 +38,7 @@ import freerails.world.track.TrackRule;
  * Iterates over the entries in the BankAccount and counts the number
  * of units of each track type, then calculates the cost of maintenance.
  */
-class TrackMaintenanceMoveGenerator {
+public class TrackMaintenanceMoveGenerator {
 
     private final MoveReceiver moveReceiver;
 

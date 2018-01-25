@@ -99,7 +99,7 @@ public class TrainUpdater implements ServerAutomaton {
      * Iterator over the stations and build trains at any that have their
      * production field set.
      */
-    void buildTrains(ReadOnlyWorld world) {
+    public void buildTrains(ReadOnlyWorld world) {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
@@ -129,7 +129,7 @@ public class TrainUpdater implements ServerAutomaton {
 
     }
 
-    void moveTrains(ReadOnlyWorld world) {
+    public void moveTrains(ReadOnlyWorld world) {
         int time = world.currentTime().getTicks();
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {

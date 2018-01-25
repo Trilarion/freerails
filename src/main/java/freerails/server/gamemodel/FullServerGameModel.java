@@ -19,12 +19,13 @@
 /*
  *
  */
-package freerails.server;
+package freerails.server.gamemodel;
 
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.WorldDiffMove;
 import freerails.move.WorldDiffMoveCause;
+import freerails.server.*;
 import freerails.world.FullWorldDiffs;
 import freerails.world.ITEM;
 import freerails.world.World;
@@ -44,7 +45,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * List of the ServerAutomaton objects connected to this game.
      */
-    private final List<ServerAutomaton> serverAutomata;
+    private final List<ServerAutomaton> serverAutomata = new ArrayList<>();
     private World world;
     private transient SupplyAtStationsUpdater supplyAtStationsUpdater;
     private TrainUpdater trainUpdater;
@@ -60,17 +61,95 @@ public class FullServerGameModel implements ServerGameModel {
      *
      */
     public FullServerGameModel() {
-        this(null, new ArrayList<>());
+        nextModelUpdateDue = System.currentTimeMillis();
     }
 
     /**
-     * @param w
-     * @param serverAutomata
+     *
      */
-    private FullServerGameModel(World w, List<ServerAutomaton> serverAutomata) {
-        world = w;
-        this.serverAutomata = serverAutomata;
+    public synchronized void update() {
+        long frameStartTime = System.currentTimeMillis();
+
+        while (nextModelUpdateDue <= frameStartTime) {
+            // First do the things that need doing whether or not the game is paused.
+
+            trainUpdater.buildTrains(world);
+
+            int gameSpeed = ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+
+            if (gameSpeed > 0) {
+                // update the time first, since other updates might need to know the current time.
+                moveReceiver.process(TimeTickMove.getMove(world));
+
+                // now do the other updates like moving the trains
+                trainUpdater.moveTrains(world);
+
+                // Check whether we are about to start a new year..
+                GameTime time = world.currentTime();
+                GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
+                int yearNextTick = calendar.getYear(time.getTicks() + 1);
+                int yearThisTick = calendar.getYear(time.getTicks());
+
+                if (yearThisTick != yearNextTick) {
+                    yearEnd();
+                }
+
+                // And a new month..
+                int monthThisTick = calendar.getMonth(time.getTicks());
+                int monthNextTick = calendar.getMonth(time.getTicks() + 1);
+
+                if (monthNextTick != monthThisTick) {
+                    monthEnd();
+                }
+
+                // calculate "ideal world" time for next tick
+                nextModelUpdateDue = nextModelUpdateDue + (1000 / gameSpeed);
+
+                ticksSinceUpdate++;
+            } else {
+                nextModelUpdateDue = System.currentTimeMillis();
+            }
+        }
+    }
+
+    /**
+     * @param moveReceiver
+     */
+    public void initialize(MoveReceiver moveReceiver) {
+        this.moveReceiver = moveReceiver;
+        trainUpdater = new TrainUpdater(moveReceiver);
+        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveReceiver);
+
+        for (ServerAutomaton serverAutomaton : serverAutomata) {
+            serverAutomaton.initAutomaton(moveReceiver);
+        }
+
+        trainUpdater.initAutomaton(moveReceiver);
         nextModelUpdateDue = System.currentTimeMillis();
+    }
+
+    /**
+     * @return
+     */
+    public World getWorld() {
+        return world;
+    }
+
+    /**
+     * @param world
+     * @param passwords
+     */
+    public void setWorld(World world, String[] passwords) {
+        this.world = world;
+        this.passwords = passwords.clone();
+        serverAutomata.clear();
+    }
+
+    /**
+     * @return
+     */
+    public String[] getPasswords() {
+        return passwords.clone();
     }
 
     /**
@@ -105,122 +184,4 @@ public class FullServerGameModel implements ServerGameModel {
         cargoAtStationsUpdater.update(world, moveReceiver);
     }
 
-    private void updateGameTime() {
-        moveReceiver.process(TimeTickMove.getMove(world));
-    }
-
-    /**
-     *
-     */
-    public synchronized void update() {
-        long frameStartTime = System.currentTimeMillis();
-
-        while (nextModelUpdateDue <= frameStartTime) {
-            /*
-             * First do the things that need doing whether or not the game is
-             * paused.
-             */
-            trainUpdater.buildTrains(world);
-
-            int gameSpeed = ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
-
-            if (gameSpeed > 0) {
-                /*
-                 * Update the time first, since other updates might need to know
-                 * the current time.
-                 */
-                updateGameTime();
-
-                // now do the other updates
-                trainUpdater.moveTrains(world);
-
-                // Check whether we are about to start a new year..
-                GameTime time = world.currentTime();
-                GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
-                int yearNextTick = calendar.getYear(time.getTicks() + 1);
-                int yearThisTick = calendar.getYear(time.getTicks());
-
-                if (yearThisTick != yearNextTick) {
-                    yearEnd();
-                }
-
-                // And a new month..
-                int monthThisTick = calendar.getMonth(time.getTicks());
-                int monthNextTick = calendar.getMonth(time.getTicks() + 1);
-
-                if (monthNextTick != monthThisTick) {
-                    monthEnd();
-                }
-
-                // calculate "ideal world" time for next tick
-                nextModelUpdateDue = nextModelUpdateDue + (1000 / gameSpeed);
-
-                // int delay = (int)(nextModelUpdateDue - frameStartTime);
-                //
-                // /* wake up any waiting client threads - we could be
-                // * more aggressive, and only notify them if delay > 0? */
-                // this.notifyAll();
-                //
-                // try {
-                // if (delay > 0) {
-                // this.wait(delay);
-                // } else {
-                // this.wait(1);
-                // }
-                // } catch (InterruptedException e) {
-                //
-                // }
-                ticksSinceUpdate++;
-            } else {
-                // try {
-                // //When the game is frozen we don't want to be spinning in a
-                // //loop.
-                // Thread.sleep(200);
-                // } catch (InterruptedException e) {
-                //
-                // }
-                nextModelUpdateDue = System.currentTimeMillis();
-            }
-        }
-    }
-
-    /**
-     * @param moveReceiver
-     */
-    public void initialize(MoveReceiver moveReceiver) {
-        this.moveReceiver = moveReceiver;
-        trainUpdater = new TrainUpdater(moveReceiver);
-        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveReceiver);
-
-        for (ServerAutomaton aServerAutomata : serverAutomata) {
-            aServerAutomata.initAutomaton(moveReceiver);
-        }
-
-        trainUpdater.initAutomaton(moveReceiver);
-        nextModelUpdateDue = System.currentTimeMillis();
-    }
-
-    /**
-     * @return
-     */
-    public World getWorld() {
-        return world;
-    }
-
-    /**
-     * @param world
-     * @param passwords
-     */
-    public void setWorld(World world, String[] passwords) {
-        this.world = world;
-        serverAutomata.clear();
-        this.passwords = passwords.clone();
-    }
-
-    /**
-     * @return
-     */
-    public String[] getPasswords() {
-        return passwords.clone();
-    }
 }

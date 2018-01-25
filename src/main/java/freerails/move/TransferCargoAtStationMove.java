@@ -27,22 +27,14 @@ import java.util.List;
 
 public class TransferCargoAtStationMove extends CompositeMove {
 
-    /**
-     *
-     */
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
-
-    /**
-     *
-     */
     public static final int CHANGE_AT_STATION_INDEX = 0;
     private static final long serialVersionUID = 3257291318215456563L;
 
     /**
      * @param movesArrayList
-     * @param waiting
      */
-    public TransferCargoAtStationMove(List<Move> movesArrayList, boolean waiting) {
+    public TransferCargoAtStationMove(List<Move> movesArrayList) {
         super(movesArrayList);
     }
 

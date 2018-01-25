@@ -24,6 +24,7 @@ import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.PreMove;
+import freerails.savegames.UnitTestSaveGamesManager;
 import freerails.util.ImmutableList;
 import freerails.world.World;
 import freerails.world.finances.Money;
@@ -45,14 +46,14 @@ import java.io.Serializable;
 public class FreerailsClientWithLocalServerTest extends TestCase {
 
     private FreerailsGameServer server;
-    private SaveGamesManagerForUnitTests savedGamesManager;
+    private UnitTestSaveGamesManager savedGamesManager;
 
     /**
      * @throws Exception
      */
     @Override
     protected void setUp() throws Exception {
-        savedGamesManager = new SaveGamesManagerForUnitTests();
+        savedGamesManager = new UnitTestSaveGamesManager();
         server = new FreerailsGameServer(savedGamesManager);
     }
 
@@ -336,17 +337,14 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             client0.update();
 
             // Start game
-            ImmutableList<String> mapNames = (ImmutableList<String>) client0
-                    .getProperty(ClientProperty.MAPS_AVAILABLE);
-            MessageToServer newGameMessage2 = new NewGameMessageToServer(
-                    commandID++, mapNames.get(0));
+            ImmutableList<String> mapNames = (ImmutableList<String>) client0.getProperty(ClientProperty.MAPS_AVAILABLE);
+            MessageToServer newGameMessage2 = new NewGameMessageToServer(commandID++, mapNames.get(0));
             MessageStatus cm = newGameMessage2.execute(server);
             assertTrue(cm.isSuccessful());
 
             // Save game and stop server
             String savedGameName = "game1";
-            MessageToServer saveGameMessage2 = new SaveGameMessageToServer(
-                    commandID++, savedGameName);
+            MessageToServer saveGameMessage2 = new SaveGameMessageToServer(commandID++, savedGameName);
             cm = saveGameMessage2.execute(server);
             assertTrue(cm.isSuccessful());
             server.stopGame();

@@ -30,9 +30,6 @@ import java.io.IOException;
  */
 public interface ServerControlInterface {
 
-    String FREERAILS_SAV = "freerails.sav";
-    String VERSION = "CVS";
-
     /**
      * @param saveGameName
      * @throws IOException

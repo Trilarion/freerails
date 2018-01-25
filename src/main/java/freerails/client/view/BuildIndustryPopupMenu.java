@@ -34,7 +34,6 @@ import freerails.world.finances.TransactionCategory;
 import freerails.world.terrain.TerrainType;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -26,14 +26,13 @@ package freerails.client.launcher;
 import freerails.client.ClientConfig;
 import freerails.client.GameLoop;
 import freerails.client.ScreenHandler;
-import freerails.controller.ServerControlInterface;
 import freerails.network.FreerailsGameServer;
 import freerails.network.InetConnectionAccepter;
 import freerails.network.LogOnResponse;
-import freerails.server.FullSaveGameManager;
-import freerails.server.ServerGameModel;
-import freerails.server.FullServerGameModel;
-import freerails.world.game.GameModel;
+import freerails.savegames.FullSaveGameManager;
+import freerails.server.gamemodel.ServerGameModel;
+import freerails.server.gamemodel.FullServerGameModel;
+import freerails.server.gamemodel.GameModel;
 import org.apache.log4j.*;
 
 import javax.swing.*;
@@ -526,7 +525,7 @@ public class Launcher extends JFrame implements LauncherInterface {
                             try {
                                 if (!isNewGame()) {
                                     initServer();
-                                    server.loadgame(ServerControlInterface.FREERAILS_SAV);
+                                    server.loadgame("freerails.sav");
                                 }
                                 prepareToHostNetworkGame(msp.getServerPort());
                             } catch (BindException be) {

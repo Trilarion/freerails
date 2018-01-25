@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.game;
+package freerails.server.gamemodel;
 
 /**
  * Defines a standard method to update the game world.

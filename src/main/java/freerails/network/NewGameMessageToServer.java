@@ -39,11 +39,6 @@ public class NewGameMessageToServer implements MessageToServer {
         mapName = s;
     }
 
-    // TODO This would be better implemented in a config file, or better still dynamically determined by scanning the directory.
-    public static String[] getMapNames() {
-        return new String[]{"South America", "Small South America"};
-    }
-
     /**
      * @param server
      * @return

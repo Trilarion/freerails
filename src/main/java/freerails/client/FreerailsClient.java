@@ -26,7 +26,7 @@ import freerails.move.PreMove;
 import freerails.network.*;
 import freerails.world.FreerailsMutableSerializable;
 import freerails.world.World;
-import freerails.world.game.GameModel;
+import freerails.server.gamemodel.GameModel;
 import freerails.world.player.Player;
 import org.apache.log4j.Logger;
 

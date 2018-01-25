@@ -184,7 +184,7 @@ class DropOffAndPickupCargoMoveGenerator {
             if (changeOnTrain.beforeEqualsAfter()) return null;
         }
 
-        TransferCargoAtStationMove move = new TransferCargoAtStationMove(moves, waitingForFullLoad);
+        TransferCargoAtStationMove move = new TransferCargoAtStationMove(moves);
 
         assert move.getChangeAtStation() == changeAtStation;
         assert move.getChangeOnTrain() == changeOnTrain;

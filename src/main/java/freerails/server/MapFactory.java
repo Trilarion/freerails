@@ -45,7 +45,7 @@ import java.util.Map;
  * Implemented Terrain Randomisation to randomly position the terrain types for
  * each tile on the map.
  */
-final class MapFactory {
+public final class MapFactory {
     /*
      * create a vector to keep track of what terrain types to 'clump'
      */

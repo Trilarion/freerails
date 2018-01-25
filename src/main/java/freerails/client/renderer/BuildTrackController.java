@@ -30,7 +30,7 @@ import freerails.util.Utils;
 import freerails.world.FullWorldDiffs;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.game.GameModel;
+import freerails.server.gamemodel.GameModel;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainTile;

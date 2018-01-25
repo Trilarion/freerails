@@ -27,7 +27,7 @@ import java.io.Serializable;
  * to the game when deserialized.
  */
 // TODO where are they really used?
-interface ServerAutomaton extends Serializable {
+public interface ServerAutomaton extends Serializable {
 
     /**
      * Initializes the automaton with a connection to the MoveExecutor.
