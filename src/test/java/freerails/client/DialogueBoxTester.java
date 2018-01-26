@@ -25,9 +25,8 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.network.MoveChainFork;
 import freerails.network.UntriedMoveReceiver;
+import freerails.savegames.FullSaveGameManager;
 import freerails.server.ProgressMonitorModel;
-import freerails.server.TileSetFactory;
-import freerails.server.TileSetFactoryImpl;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
@@ -81,8 +80,7 @@ class DialogueBoxTester extends JFrame {
         modelRoot.setMoveReceiver(dummyReceiver);
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        TileSetFactory tileFactory = new TileSetFactoryImpl();
-        tileFactory.addTerrainTileTypesList(world);
+        FullSaveGameManager.addTerrainTileTypesList(world);
         WagonAndEngineTypesFactory.addTypesToWorld(world);
         world.addPlayer(TEST_PLAYER);
         try {

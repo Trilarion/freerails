@@ -23,17 +23,25 @@ package freerails.savegames;
 
 import freerails.server.*;
 import freerails.server.gamemodel.ServerGameModel;
+import freerails.server.parser.CargoAndTerrainHandlerImpl;
+import freerails.server.parser.CargoAndTerrainParser;
 import freerails.server.parser.TrackTilesHandlerImpl;
 import freerails.world.FullWorld;
 import freerails.world.ITEM;
+import freerails.world.World;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
 import freerails.world.train.WagonAndEngineTypesFactory;
 import org.apache.log4j.Logger;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
@@ -46,6 +54,21 @@ public class FullSaveGameManager implements SaveGamesManager {
 
     public static final String VERSION = "CVS";
     private static final Logger logger = Logger.getLogger(FullSaveGameManager.class.getName());
+
+    /**
+     * Adds cargo and terrain types defined in an XML file to a World
+     *
+     * @param world
+     */
+    public static void addTerrainTileTypesList(World world) {
+        try {
+            URL url = FullSaveGameManager.class.getResource("/freerails/data/cargo_and_terrain.xml");
+
+            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(world));
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
     /**
      * @return
@@ -65,10 +88,10 @@ public class FullSaveGameManager implements SaveGamesManager {
     }
 
     // TODO This would be better implemented in a config file, or better still dynamically determined by scanning the directory.
+
     public static String[] getMapNames() {
         return new String[]{"South America", "Small South America"};
     }
-
     /**
      * @param filePath
      * @param w
@@ -125,58 +148,48 @@ public class FullSaveGameManager implements SaveGamesManager {
     }
 
     /**
+     * Note, the map name is converted to lower case and any spaces are replaced
+     * with underscores.
+     *
      * @param filePath
      * @return
      * @throws IOException
      */
-    public Serializable newMap(String filePath) {
-        return createWorldFromMapFile(filePath, ProgressMonitorModel.EMPTY);
-    }
-
-    /**
-     * Note, the map name is converted to lower case and any spaces are replaced
-     * with underscores.
-     */
-    private static Serializable createWorldFromMapFile(String mapName, ProgressMonitorModel pm) {
+    public World newMap(String filePath) {
+        String mapName = filePath;
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
 
-        pm.setValue(0);
-        pm.nextStep(7);
-
-        int progess = 0;
-
-        TileSetFactory tileFactory = new TileSetFactoryImpl();
-        pm.setValue(++progess);
-
         FullWorld world = new FullWorld();
-        pm.setValue(++progess);
 
-        pm.setValue(++progess);
         WagonAndEngineTypesFactory.addTypesToWorld(world);
-        pm.setValue(++progess);
 
-        tileFactory.addTerrainTileTypesList(world);
-        pm.setValue(++progess);
+        addTerrainTileTypesList(world);
 
         URL track_xml_url = FullSaveGameManager.class.getResource("/freerails/data/track_tiles.xml");
 
         TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
-        pm.setValue(++progess);
 
         trackSetFactory.addTrackRules(world);
-        pm.setValue(progess);
 
         // Load the terrain map
         URL map_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + ".png");
-        MapFactory.setupMap(map_url, world, pm);
+        MapFactory.setupMap(map_url, world, ProgressMonitorModel.EMPTY);
 
         // Load the city names
         URL cities_xml_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + "_cities.xml");
 
         try {
-            CityNamesSAXParser.readCityNames(world, cities_xml_url);
+            InputSource is = new InputSource(cities_xml_url.toString());
+
+            DefaultHandler handler = new CitySAXParser(world);
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+
+            try {
+                SAXParser saxParser = factory.newSAXParser();
+                saxParser.parse(is, handler);
+            } catch (IOException | ParserConfigurationException ignored) {}
         } catch (SAXException ignored) {}
 
         // Randomly position the city tiles
@@ -195,4 +208,5 @@ public class FullSaveGameManager implements SaveGamesManager {
          */
         return world;
     }
+
 }

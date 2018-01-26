@@ -82,7 +82,12 @@ public class Launcher extends JFrame implements LauncherInterface {
         getContentPane().setLayout(new GridBagLayout());
 
         setTitle("Freerails Launcher");
-        addWindowListener(new MyWindowAdapter());
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
 
         jPanel1.setLayout(new CardLayout());
 
@@ -161,9 +166,8 @@ public class Launcher extends JFrame implements LauncherInterface {
                     server.update();
                 }
 
-                GameModel[] models = new GameModel[]{client};
                 ScreenHandler screenHandler = client.getScreenHandler();
-                Runnable gameLoop = new GameLoop(screenHandler, models);
+                Runnable gameLoop = new GameLoop(screenHandler, client);
                 // screenHandler.apply();
                 gameLoop.run();
             };
@@ -246,9 +250,8 @@ public class Launcher extends JFrame implements LauncherInterface {
 
                     }
                 }
-                GameModel[] models = new GameModel[]{guiClient};
                 ScreenHandler screenHandler = guiClient.getScreenHandler();
-                Runnable gameLoop = new GameLoop(screenHandler, models);
+                Runnable gameLoop = new GameLoop(screenHandler, guiClient);
                 gameLoop.run();
             };
 
@@ -284,7 +287,6 @@ public class Launcher extends JFrame implements LauncherInterface {
         switch (launcherPanel.getMode()) {
             case ClientConfig.MODE_SINGLE_PLAYER:
                 try {
-
                     mode = clientOptionsPanel.getScreenMode();
 
                     client = new GUIClient(clientOptionsPanel.getPlayerName(), progressPanel, mode, clientOptionsPanel.getDisplayMode());
@@ -407,15 +409,13 @@ public class Launcher extends JFrame implements LauncherInterface {
 
     private boolean isNewGame() {
         SelectMapPanel msp2 = (SelectMapPanel) wizardPages[1];
-
         return msp2.getSelection() == MapSelection.NEW_GAME;
     }
 
     private void initServer() {
 
         server = new FreerailsGameServer(new FullSaveGameManager());
-        ServerGameModel serverGameModel = new FullServerGameModel();
-        server.setServerGameModel(serverGameModel);
+        server.setServerGameModel(new FullServerGameModel());
         /*
          * Set the server field on the connected players panel so that it can
          * keep track of who is connected.
@@ -711,10 +711,4 @@ public class Launcher extends JFrame implements LauncherInterface {
         return properties.getProperty(key);
     }
 
-    private static class MyWindowAdapter extends WindowAdapter {
-        @Override
-        public void windowClosing(WindowEvent e) {
-            System.exit(0);
-        }
-    }
 }

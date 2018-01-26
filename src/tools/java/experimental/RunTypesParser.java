@@ -17,32 +17,33 @@
  */
 
 /*
+ * RunTypesParser.java
  *
  */
-package freerails.server;
+package experimental;
 
 import freerails.server.parser.CargoAndTerrainHandlerImpl;
 import freerails.server.parser.CargoAndTerrainParser;
-import freerails.server.parser.RunTypesParser;
-import freerails.world.World;
+import freerails.world.FullWorld;
 
 /**
- * Adds cargo and terrain types defined in an XML file to a World
- * object.
+ * The main method on this class uses CargoAndTerrainParser to parse cargo
+ * and terrain types xml file - use it to test the parser and xml file work
+ * together.
  */
-// TODO difference interface and implementation
-public class TileSetFactoryImpl implements TileSetFactory {
+public class RunTypesParser {
+
+    private RunTypesParser() {}
 
     /**
-     * @param world
+     * @param args
      */
-    public void addTerrainTileTypesList(World world) {
+    public static void main(String[] args) {
         try {
             java.net.URL url = RunTypesParser.class.getResource("/freerails/data/cargo_and_terrain.xml");
-
-            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(world));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
+            CargoAndTerrainParser.parse(url, new CargoAndTerrainHandlerImpl(new FullWorld()));
+            System.out.println("It worked");
+        } catch (Exception ignored) {
         }
     }
 }

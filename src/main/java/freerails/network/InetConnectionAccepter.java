@@ -53,7 +53,7 @@ public class InetConnectionAccepter implements Runnable {
         try {
             logger.debug("Accepting connections on port " + serverSocket.getLocalPort());
 
-            while (isKeepRunning()) {
+            while (keepRunning.isOpen()) {
                 Socket socket = serverSocket.accept();
                 logger.debug("Incoming connection from " + socket.getRemoteSocketAddress());
 
@@ -79,14 +79,6 @@ public class InetConnectionAccepter implements Runnable {
     public synchronized void stop() throws IOException {
         keepRunning.close();
         serverSocket.close();
-
-        // Commented out since it causes exceptions to be thrown, fixes bug
-        // 979831
-        // gameServer.stop();
-    }
-
-    private boolean isKeepRunning() {
-        return keepRunning.isOpen();
     }
 
     /**

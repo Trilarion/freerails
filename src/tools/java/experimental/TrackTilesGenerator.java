@@ -61,7 +61,7 @@ class TrackTilesGenerator extends JPanel {
         track[1] = TrackRenderer.createAdjacentCurve(track[0], 0, 0);
         track[2] = TrackRenderer.createAdjacentCurve(track[0], -60, -60);
         tr = new TrackRenderer();
-        URL track_xml_url = OldWorldImpl.class.getResource("/freerails/data/track_tiles.xml");
+        URL track_xml_url = TrackTilesGenerator.class.getResource("/freerails/data/track_tiles.xml");
 
         TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
         rules = trackSetFactory.getRuleList();

@@ -21,6 +21,8 @@ package freerails.server.parser;
 import org.apache.log4j.Logger;
 import org.xml.sax.*;
 
+import java.util.Stack;
+
 /**
  * The class reads XML documents according to specified DTD and translates all
  * related events into CargoAndTerrainHandler events.
@@ -39,9 +41,9 @@ public class CargoAndTerrainParser implements ContentHandler {
 
     private static final Logger logger = Logger.getLogger(CargoAndTerrainParser.class.getName());
 
-    private final java.lang.StringBuffer buffer;
+    private final StringBuffer buffer;
     private final CargoAndTerrainHandler handler;
-    private final java.util.Stack<Object[]> context;
+    private final Stack<Object[]> context;
     private final EntityResolver resolver;
 
     /**
@@ -56,7 +58,7 @@ public class CargoAndTerrainParser implements ContentHandler {
         this.handler = handler;
         this.resolver = resolver;
         buffer = new StringBuffer(111);
-        context = new java.util.Stack<>();
+        context = new Stack<>();
     }
 
     /**
@@ -105,25 +107,22 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void setDocumentLocator(Locator locator) {
-    }
+    public final void setDocumentLocator(Locator locator) {}
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void startDocument() {
-    }
+    public final void startDocument() {}
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void endDocument() {
-    }
+    public final void endDocument() {}
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, Attributes atts) throws SAXException {
+    public final void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
         dispatch(true);
         context.push(new Object[]{qName, new org.xml.sax.helpers.AttributesImpl(atts)});
 
@@ -149,7 +148,7 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) throws SAXException {
+    public final void endElement(String uri, String localName, String qName) throws SAXException {
         dispatch(false);
         context.pop();
 
@@ -170,31 +169,29 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void ignorableWhitespace(char[] ch, int start, int length) {
+    public final void ignorableWhitespace(char[] ch, int start, int length) {}
+
+    /**
+     * This SAX interface method is implemented by the parser.
+     */
+    public final void processingInstruction(String target, String data) {}
+
+    /**
+     * This SAX interface method is implemented by the parser.
+     */
+    public final void startPrefixMapping(final String prefix, final String uri) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void processingInstruction(java.lang.String target, java.lang.String data) {
+    public final void endPrefixMapping(final String prefix) {
     }
 
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void startPrefixMapping(final java.lang.String prefix, final java.lang.String uri) {
-    }
-
-    /**
-     * This SAX interface method is implemented by the parser.
-     */
-    public final void endPrefixMapping(final java.lang.String prefix) {
-    }
-
-    /**
-     * This SAX interface method is implemented by the parser.
-     */
-    public final void skippedEntity(java.lang.String name) {
+    public final void skippedEntity(String name) {
     }
 
     private void dispatch(final boolean fireOnlyIfMixed) {

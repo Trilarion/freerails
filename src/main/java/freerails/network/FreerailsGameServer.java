@@ -288,7 +288,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         confirmedPlayers.clear();
 
         try {
-            World world = (World) saveGamesManager.newMap(mapName);
+            World world = saveGamesManager.newMap(mapName);
 
             String[] passwords = new String[players.size()];
 

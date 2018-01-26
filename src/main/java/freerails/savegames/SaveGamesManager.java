@@ -19,6 +19,7 @@
 package freerails.savegames;
 
 import freerails.server.gamemodel.ServerGameModel;
+import freerails.world.World;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -58,5 +59,5 @@ public interface SaveGamesManager {
      * @return
      * @throws IOException
      */
-    Serializable newMap(String name) throws IOException;
+    World newMap(String name) throws IOException;
 }

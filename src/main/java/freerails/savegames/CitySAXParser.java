@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.savegames;
 
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -32,54 +32,56 @@ import java.util.List;
  * Class to parse an xml file that contains city names and coordinates. Upon reading
  * in the data, its stored in KEY.CITIES.
  */
-class CitySAXParser extends DefaultHandler {
+public class CitySAXParser extends DefaultHandler {
 
     private final List<City> cities;
     private final World world;
 
     /**
-     * @param w
+     * @param world
      * @throws SAXException
      */
-    public CitySAXParser(World w) {
-        world = w;
-        cities = new ArrayList();
+    public CitySAXParser(World world) {
+        this.world = world;
+        cities = new ArrayList<>();
     }
 
     @Override
     public void endDocument() {
-        for (City tempCity : cities) {
-            world.add(SKEY.CITIES, new City(tempCity.getName(), tempCity.getX(), tempCity.getY()));
+        for (City city : cities) {
+            world.add(SKEY.CITIES, new City(city.getName(), city.getX(), city.getY()));
         }
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) {
 
+        // TODO are these initializations really needed
         String cityName = null;
-        int x = 0;
-        int y;
+        int x=0, y;
 
+        // TODO when can attributes be null
         if (attributes != null) {
             for (int i = 0; i < attributes.getLength(); i++) {
-                String aName = attributes.getLocalName(i); // Attr name
+                String attributeName = attributes.getLocalName(i); // Attr name
 
-                if (aName.isEmpty()) {
-                    aName = attributes.getQName(i);
+                if (attributeName.isEmpty()) {
+                    attributeName = attributes.getQName(i);
                 }
 
                 // put values in City obj
-                if (aName.equals("name")) {
+                if (attributeName.equals("name")) {
                     cityName = attributes.getValue(i);
                 }
 
-                if (aName.equals("x")) {
+                if (attributeName.equals("x")) {
                     x = Integer.parseInt(attributes.getValue(i));
                 }
 
-                if (aName.equals("y")) {
+                if (attributeName.equals("y")) {
                     y = Integer.parseInt(attributes.getValue(i));
 
+                    // TODO is it clear that y always comes last?
                     City city = new City(cityName, x, y);
                     cities.add(city);
                 }

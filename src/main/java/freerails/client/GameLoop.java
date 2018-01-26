@@ -35,23 +35,23 @@ public final class GameLoop implements Runnable {
     private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
 
     private final ScreenHandler screenHandler;
-    private final GameModel[] gameModels;
+    private final GameModel gameModel;
 
     /**
      * @param screenHandler
      */
     public GameLoop(ScreenHandler screenHandler) {
         this.screenHandler = screenHandler;
-        gameModels = new GameModel[0];
+        this.gameModel = null;
     }
 
     /**
      * @param screenHandler
      * @param gameModels
      */
-    public GameLoop(ScreenHandler screenHandler, GameModel[] gameModels) {
+    public GameLoop(ScreenHandler screenHandler, GameModel gameModel) {
         this.screenHandler = screenHandler;
-        this.gameModels = Utils.verifyNotNull(gameModels);
+        this.gameModel = Utils.verifyNotNull(gameModel);
     }
 
     public void run() {
@@ -96,7 +96,7 @@ public final class GameLoop implements Runnable {
                         break;
                     }
 
-                    for (GameModel gameModel : gameModels) {
+                    if (null != gameModel) {
                         gameModel.update();
                     }
 

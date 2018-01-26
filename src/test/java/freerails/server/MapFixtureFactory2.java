@@ -20,6 +20,7 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
+import freerails.savegames.FullSaveGameManager;
 import freerails.server.parser.TrackTilesHandlerImpl;
 import freerails.util.Point2D;
 import freerails.world.FullWorld;
@@ -40,13 +41,11 @@ import java.net.URL;
 /**
  * Stores a static world object and provides copies to clients.
  */
-// TODO what is this good for?
 public class MapFixtureFactory2 {
 
     private static World world;
 
-    private MapFixtureFactory2() {
-    }
+    private MapFixtureFactory2() {}
 
     /**
      * Returns a world object with a map of size 50*50, 4 players, and track,
@@ -63,9 +62,8 @@ public class MapFixtureFactory2 {
     private static World generateWorld() {
 
         World world = new FullWorld(50, 50);
-        TileSetFactory tileFactory = new TileSetFactoryImpl();
         WagonAndEngineTypesFactory.addTypesToWorld(world);
-        tileFactory.addTerrainTileTypesList(world);
+        FullSaveGameManager.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
 

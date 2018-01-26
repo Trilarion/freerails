@@ -109,7 +109,7 @@ class TrainMotionExperiment extends JComponent {
         g.setColor(Color.GREEN);
         for (int x = 0; x < world.getMapWidth(); x++) {
             for (int y = 0; y < world.getMapHeight(); y++) {
-                FullTerrainTile tile = (FullTerrainTile) world.getTile(x, y);
+                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(x, y));
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                     g.drawRect(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
 

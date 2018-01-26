@@ -21,6 +21,7 @@ package freerails.savegames;
 import freerails.server.gamemodel.ServerGameModel;
 import freerails.util.Utils;
 import freerails.world.FullWorld;
+import freerails.world.World;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -75,7 +76,7 @@ public class UnitTestSaveGamesManager implements SaveGamesManager {
      * @return
      * @throws IOException
      */
-    public Serializable newMap(String name) throws IOException {
+    public World newMap(String name) throws IOException {
         return new FullWorld(10, 10);
     }
 }
