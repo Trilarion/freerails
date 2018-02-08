@@ -27,7 +27,6 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.MoveTrainPreMove;
 import freerails.move.PreMove;
-import freerails.server.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 import freerails.util.Point2D;

@@ -32,13 +32,6 @@ import java.util.List;
 public class ToAndFroPathIteratorTest extends TestCase {
 
     /**
-     * @param arg0
-     */
-    public ToAndFroPathIteratorTest(String arg0) {
-        super(arg0);
-    }
-
-    /**
      *
      */
     public void testNextSegment() {

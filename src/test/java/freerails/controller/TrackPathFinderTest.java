@@ -26,7 +26,7 @@ import freerails.world.FullWorld;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.player.Player;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 import junit.framework.TestCase;
 
 import java.util.List;
@@ -35,6 +35,7 @@ import java.util.List;
  * Test for TrackPathFinder.
  */
 public class TrackPathFinderTest extends TestCase {
+
     private final Player testPlayer = new Player("test", 0);
     private FullWorld world;
 

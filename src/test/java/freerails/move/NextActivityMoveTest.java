@@ -26,7 +26,7 @@ import freerails.world.ActivityIterator;
 import freerails.world.game.GameTime;
 import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.top.FullWorldTest;
+import freerails.world.FullWorldTest;
 
 /**
  *

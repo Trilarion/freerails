@@ -16,12 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.top;
+package freerails.world;
 
 import freerails.util.Point2D;
-import freerails.world.FullWorld;
-import freerails.world.SKEY;
-import freerails.world.World;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;

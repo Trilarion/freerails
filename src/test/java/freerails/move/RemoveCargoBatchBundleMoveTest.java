@@ -25,7 +25,7 @@ import freerails.util.Point2D;
 import freerails.world.KEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBatchBundle;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 
 /**
  *

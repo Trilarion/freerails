@@ -35,11 +35,11 @@ public class MiscTest extends TestCase {
      *
      */
     public void testCityModel() {
-        City cm1 = new City("London", 20, 70);
-        City cm2 = new City("Cardiff", 20, 70);
-        testHashCodeAndEquals(cm1);
-        testHashCodeAndEquals(cm2);
-        assertDifferent(cm1, cm2);
+        City city1 = new City("London", 20, 70);
+        City city2 = new City("Cardiff", 20, 70);
+        testHashCodeAndEquals(city1);
+        testHashCodeAndEquals(city2);
+        assertDifferent(city1, city2);
     }
 
     /**

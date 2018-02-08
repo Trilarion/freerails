@@ -22,9 +22,10 @@ import freerails.savegames.UnitTestSaveGamesManager;
 import junit.framework.TestCase;
 
 /**
- * Junit test for FreerailsGameServer - tests logging on.
+ * Test for FreerailsGameServer - tests logging on.
  */
 public class FreerailsGameServerTest extends TestCase {
+
     private FreerailsGameServer server;
 
     /**

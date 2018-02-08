@@ -23,20 +23,22 @@ import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 /**
- *
+ * Test for TrackSection.
  */
 public class TrackSectionTest extends TestCase {
 
     /**
      *
      */
-    public void testEqualsObject() {
-        TrackSection a = new TrackSection(TileTransition.EAST, new Point2D(10, 5));
-        TrackSection b = new TrackSection(TileTransition.WEST, new Point2D(11, 5));
-        assertEquals(a, a);
-        assertEquals(b, b);
-        assertEquals(a, b);
-        assertEquals(b, a);
+    public void testEquals() {
+        TrackSection sectionA = new TrackSection(TileTransition.EAST, new Point2D(10, 5));
+        TrackSection sectionB = new TrackSection(TileTransition.WEST, new Point2D(11, 5));
+
+        // should all be equal
+        assertEquals(sectionA, sectionA);
+        assertEquals(sectionB, sectionB);
+        assertEquals(sectionA, sectionB);
+        assertEquals(sectionB, sectionA);
 
     }
 

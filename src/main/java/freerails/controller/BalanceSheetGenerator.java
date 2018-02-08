@@ -30,7 +30,6 @@ import freerails.world.track.TrackRule;
  * Generates the balance sheet - note, its fields are read using reflection so
  * don't change their names.
  */
-// TODO Do not use reflection here.
 public class BalanceSheetGenerator {
 
     public final Stats total;

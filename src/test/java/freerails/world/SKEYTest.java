@@ -19,9 +19,8 @@
 /*
  *
  */
-package freerails.world.top;
+package freerails.world;
 
-import freerails.world.SKEY;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;

@@ -25,7 +25,7 @@ import java.util.*;
 
 /**
  * A simple A* pathfinder implementation. It uses int's to avoid the cost of
- * object creation and garbage collection. 26-Nov-2002
+ * object creation and garbage collection.
  */
 public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinder {
 

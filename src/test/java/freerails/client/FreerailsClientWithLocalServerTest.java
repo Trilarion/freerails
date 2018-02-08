@@ -16,14 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.client;
 
 import freerails.client.FreerailsClient;
+import freerails.client.FreerailsClientTest;
 import freerails.controller.*;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.PreMove;
+import freerails.network.*;
 import freerails.savegames.UnitTestSaveGamesManager;
 import freerails.util.ImmutableList;
 import freerails.world.World;

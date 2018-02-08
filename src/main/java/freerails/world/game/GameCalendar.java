@@ -28,7 +28,6 @@ import java.text.DecimalFormat;
 public final class GameCalendar implements Serializable {
 
     private static final long serialVersionUID = 3257568421033226805L;
-    private static final DecimalFormat decimalFormat = new DecimalFormat("00");
     private final int ticksPerYear;
     private final int startYear;
 
@@ -55,9 +54,8 @@ public final class GameCalendar implements Serializable {
      * @return
      */
     public String getYearAsString(int ticks) {
-        int i = getYear(ticks);
-
-        return String.valueOf(i);
+        int year = getYear(ticks);
+        return String.valueOf(year);
     }
 
     /**
@@ -74,7 +72,6 @@ public final class GameCalendar implements Serializable {
      */
     public int getTicks(int year) {
         int deltaYear = year - startYear;
-
         return deltaYear * ticksPerYear;
     }
 
@@ -88,92 +85,58 @@ public final class GameCalendar implements Serializable {
         int ticksPerMinute = ticksPerYear / (24 * 60);
         int minute = ticksPerMinute == 0 ? 0 : (i % (ticksPerMinute * 60));
 
+        final DecimalFormat decimalFormat = new DecimalFormat("00");
         return decimalFormat.format(hour) + ':' + decimalFormat.format(minute);
     }
 
     /**
-     * @param i
+     * @param ticks
      * @return
      */
-    public String getYearAndMonth(int i) {
-        int month = getMonth(i);
-        String monthAbrev = null;
+    public String getYearAndMonth(int ticks) {
+        int month = getMonth(ticks);
+        String shortNameOfMonth = null;
 
         switch (month) {
-            case 0: {
-                monthAbrev = "Jan";
-
+            case 0:
+                shortNameOfMonth = "Jan";
                 break;
-            }
-
-            case 1: {
-                monthAbrev = "Feb";
-
+            case 1:
+                shortNameOfMonth = "Feb";
                 break;
-            }
-
-            case 2: {
-                monthAbrev = "Mar";
-
+            case 2:
+                shortNameOfMonth = "Mar";
                 break;
-            }
-
-            case 3: {
-                monthAbrev = "Apr";
-
+            case 3:
+                shortNameOfMonth = "Apr";
                 break;
-            }
-
-            case 4: {
-                monthAbrev = "May";
-
+            case 4:
+                shortNameOfMonth = "May";
                 break;
-            }
-
-            case 5: {
-                monthAbrev = "Jun";
-
+            case 5:
+                shortNameOfMonth = "Jun";
                 break;
-            }
-
-            case 6: {
-                monthAbrev = "Jul";
-
+            case 6:
+                shortNameOfMonth = "Jul";
                 break;
-            }
-
-            case 7: {
-                monthAbrev = "Aug";
-
+            case 7:
+                shortNameOfMonth = "Aug";
                 break;
-            }
-
-            case 8: {
-                monthAbrev = "Sep";
-
+            case 8:
+                shortNameOfMonth = "Sep";
                 break;
-            }
-
-            case 9: {
-                monthAbrev = "Oct";
-
+            case 9:
+                shortNameOfMonth = "Oct";
                 break;
-            }
-
-            case 10: {
-                monthAbrev = "Nov";
-
+            case 10:
+                shortNameOfMonth = "Nov";
                 break;
-            }
-
-            case 11: {
-                monthAbrev = "Dec";
-
+            case 11:
+                shortNameOfMonth = "Dec";
                 break;
-            }
         }
 
-        return monthAbrev + ' ' + getYearAsString(i);
+        return shortNameOfMonth + ' ' + getYearAsString(ticks);
     }
 
     /**

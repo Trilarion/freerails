@@ -19,14 +19,10 @@
 /*
  *
  */
-package freerails.world.top;
+package freerails.world;
 
 import freerails.util.Point2D;
 import freerails.util.Utils;
-import freerails.world.Activity;
-import freerails.world.FullWorld;
-import freerails.world.SKEY;
-import freerails.world.World;
 import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
@@ -35,9 +31,10 @@ import junit.framework.TestCase;
 import java.io.Serializable;
 
 /**
- *
+ * Test for FullWorld.
  */
 public class FullWorldTest extends TestCase {
+
     private final Serializable fs = new TestState(1);
 
     /**

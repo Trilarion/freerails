@@ -29,13 +29,6 @@ import junit.framework.TestCase;
 public class TrainPositionOnMapTest extends TestCase {
 
     /**
-     * @param arg0
-     */
-    public TrainPositionOnMapTest(String arg0) {
-        super(arg0);
-    }
-
-    /**
      *
      */
     public void testGetLength() {

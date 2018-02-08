@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.world.finances.*;
 import freerails.world.player.Player;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 
 /**
  *

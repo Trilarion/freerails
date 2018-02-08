@@ -27,7 +27,7 @@ import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Money;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 import junit.framework.TestCase;
 
 /**

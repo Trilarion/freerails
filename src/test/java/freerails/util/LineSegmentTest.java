@@ -16,22 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.train;
+package freerails.util;
 
-import freerails.util.LineSegment;
 import junit.framework.TestCase;
 
 /**
  *
  */
 public class LineSegmentTest extends TestCase {
-
-    /**
-     * @param arg0
-     */
-    public LineSegmentTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      *

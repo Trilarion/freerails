@@ -23,21 +23,12 @@ import junit.framework.TestCase;
 import java.util.NoSuchElementException;
 
 /**
- * Test for SimpleAStarPathFinder. 27-Nov-2002
+ * Test for SimpleAStarPathFinder.
  */
 public class SimpleAStarPathFinderTest extends TestCase {
+
     private Map map;
-
     private SimpleAStarPathFinder pathFinder;
-
-    /**
-     * Constructor for SimpleAStarPathFinderTest.
-     *
-     * @param arg0 arg0
-     */
-    public SimpleAStarPathFinderTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      *
@@ -106,75 +97,75 @@ public class SimpleAStarPathFinderTest extends TestCase {
         map.nextEdge();
         assertEquals(5, map.getVertexConnectedByEdge());
     }
-}
 
-class Node {
-    int[] edges;
+    static class Map implements GraphExplorer {
+        // Look at SimpleAStarPathFinderTest.svg to see it
+        private final Node[] nodes = new Node[]{
+                new Node(new int[]{1}, new int[]{11}), // 0
+                new Node(new int[]{0, 5, 2}, new int[]{11, 4, 8}), // 1 //
+                // try
+                // {11,4,4}
+                new Node(new int[]{5, 3, 4, 1}, new int[]{5, 10, 12, 8}), // 2
+                // //try{5,10,12,4}
+                new Node(new int[]{2}, new int[]{10}), // 3
+                new Node(new int[]{5, 2}, new int[]{18, 12}), // 4
+                new Node(new int[]{1, 6, 4, 2}, new int[]{4, 3, 18, 5}), // 5
+                new Node(new int[]{5, 7}, new int[]{3, 4}), // 6
+                new Node(new int[]{6}, new int[]{4}), // 7
+        };
 
-    int[] distances;
+        private int position = 0;
 
-    Node(int[] e, int[] d) {
-        if (e.length != d.length) {
-            throw new IllegalArgumentException("e.length=" + e.length
-                    + ", e.length=" + e.length);
+        private int branch = -1;
+
+        public int getPosition() {
+            return this.position;
         }
 
-        edges = e;
-        distances = d;
-    }
-}
+        public void setPosition(int vertex) {
+            this.position = vertex;
+            this.branch = -1;
+        }
 
-class Map implements GraphExplorer {
-    // Look at SimpleAStarPathFinderTest.svg to see it
-    private final Node[] nodes = new Node[]{
-            new Node(new int[]{1}, new int[]{11}), // 0
-            new Node(new int[]{0, 5, 2}, new int[]{11, 4, 8}), // 1 //
-            // try
-            // {11,4,4}
-            new Node(new int[]{5, 3, 4, 1}, new int[]{5, 10, 12, 8}), // 2
-            // //try{5,10,12,4}
-            new Node(new int[]{2}, new int[]{10}), // 3
-            new Node(new int[]{5, 2}, new int[]{18, 12}), // 4
-            new Node(new int[]{1, 6, 4, 2}, new int[]{4, 3, 18, 5}), // 5
-            new Node(new int[]{5, 7}, new int[]{3, 4}), // 6
-            new Node(new int[]{6}, new int[]{4}), // 7
-    };
+        public void nextEdge() {
+            if (hasNextEdge()) {
+                branch++;
+            } else {
+                throw new NoSuchElementException();
+            }
+        }
 
-    private int position = 0;
+        public int getVertexConnectedByEdge() {
+            return nodes[position].edges[branch];
+        }
 
-    private int branch = -1;
+        public int getEdgeCost() {
+            return nodes[position].distances[branch];
+        }
 
-    public int getPosition() {
-        return this.position;
-    }
+        public boolean hasNextEdge() {
+            return nodes[position].edges.length > (branch + 1);
+        }
 
-    public void setPosition(int vertex) {
-        this.position = vertex;
-        this.branch = -1;
+        public void moveForward() {
+            this.setPosition(this.getVertexConnectedByEdge());
+        }
+
     }
 
-    public void nextEdge() {
-        if (hasNextEdge()) {
-            branch++;
-        } else {
-            throw new NoSuchElementException();
+    static class Node {
+        int[] edges;
+
+        int[] distances;
+
+        Node(int[] e, int[] d) {
+            if (e.length != d.length) {
+                throw new IllegalArgumentException("e.length=" + e.length
+                        + ", e.length=" + e.length);
+            }
+
+            edges = e;
+            distances = d;
         }
     }
-
-    public int getVertexConnectedByEdge() {
-        return nodes[position].edges[branch];
-    }
-
-    public int getEdgeCost() {
-        return nodes[position].distances[branch];
-    }
-
-    public boolean hasNextEdge() {
-        return nodes[position].edges.length > (branch + 1);
-    }
-
-    public void moveForward() {
-        this.setPosition(this.getVertexConnectedByEdge());
-    }
-
 }

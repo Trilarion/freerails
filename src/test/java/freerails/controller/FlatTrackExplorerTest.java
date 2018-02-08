@@ -25,7 +25,6 @@ import freerails.world.*;
 import freerails.world.game.GameRules;
 import freerails.world.player.Player;
 import freerails.world.terrain.TileTransition;
-import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
 import freerails.world.train.PositionOnTrack;
 import junit.framework.TestCase;
@@ -34,19 +33,11 @@ import java.util.HashSet;
 
 /**
  * Test for FlatTrackExplorer.
- *
- * 24-Nov-2002
  */
 public class FlatTrackExplorerTest extends TestCase {
+
     private final Player testPlayer = new Player("test", 0);
     private FullWorld world;
-
-    /**
-     * @param arg0
-     */
-    public FlatTrackExplorerTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      *

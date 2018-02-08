@@ -28,7 +28,7 @@ import junit.framework.TestCase;
  */
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
 
-    FreerailsGameServer server;
+    public FreerailsGameServer server;
     private InetConnectionAccepter connectionAccepter;
 
     /**
@@ -68,11 +68,11 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
         connectionAccepter.stop();
     }
 
-    int getPort() {
+    public int getPort() {
         return connectionAccepter.getLocalPort();
     }
 
-    String getIpAddress() {
+    public String getIpAddress() {
         return "127.0.0.1";
     }
 }

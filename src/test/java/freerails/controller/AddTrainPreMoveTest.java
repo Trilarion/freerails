@@ -35,7 +35,7 @@ import freerails.world.player.Player;
 import freerails.world.train.*;
 
 /**
- * Junit test for AddTrainPreMove.
+ * Test for AddTrainPreMove.
  */
 public class AddTrainPreMoveTest extends AbstractMoveTestCase {
 

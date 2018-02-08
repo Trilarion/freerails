@@ -26,8 +26,6 @@ import freerails.util.Point2D;
 import freerails.world.player.Player;
 import freerails.world.terrain.TerrainTile;
 
-import java.awt.*;
-
 /**
  *
  */

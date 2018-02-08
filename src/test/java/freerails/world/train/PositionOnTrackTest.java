@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.common;
+package freerails.world.train;
 
 import freerails.util.Point2D;
 import freerails.world.train.PositionOnTrack;
@@ -24,17 +24,9 @@ import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 /**
- * Junit test for PositionOnTrack.
+ * Test for PositionOnTrack.
  */
 public class PositionOnTrackTest extends TestCase {
-    /**
-     * Constructor for PositionOnTrackTest.
-     *
-     * @param arg0 arg0
-     */
-    public PositionOnTrackTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      *

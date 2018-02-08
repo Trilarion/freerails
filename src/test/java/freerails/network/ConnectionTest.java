@@ -19,7 +19,7 @@
 package freerails.network;
 
 /**
- * Junit test for NewInetConnection.
+ * Test for NewInetConnection.
  */
 public class ConnectionTest extends AbstractEchoGameServerTestCase {
 

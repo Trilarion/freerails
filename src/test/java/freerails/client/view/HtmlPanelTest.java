@@ -75,4 +75,19 @@ public class HtmlPanelTest extends TestCase {
         assertEquals(expectedOutput, output);
     }
 
+    static public class HtmlPanelPerson {
+
+        /**
+         *
+         */
+        public final String name;
+
+        /**
+         * @param name
+         */
+        HtmlPanelPerson(String name) {
+            this.name = name;
+        }
+    }
+
 }

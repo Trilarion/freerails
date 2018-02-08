@@ -16,40 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world.common;
+package freerails.world.terrain;
 
-import freerails.world.terrain.TileTransition;
 import junit.framework.TestCase;
 
 /**
  * Test for OneTileMoveVector.
  */
 public class CityTileTransitionTest extends TestCase {
-    private final TileTransition n = TileTransition.NORTH;
-
-    private final TileTransition ne = TileTransition.NORTH_EAST;
-
-    private final TileTransition s = TileTransition.SOUTH;
-
-    private final TileTransition sw = TileTransition.SOUTH_WEST;
-
-    private final TileTransition w = TileTransition.WEST;
-
-    /**
-     * @param arg0
-     */
-    public CityTileTransitionTest(String arg0) {
-        super(arg0);
-    }
 
     /**
      *
      */
     public void testGetDirection() {
         double d = 0;
-        assertTrue(d == n.getDirection());
+        assertTrue(d == TileTransition.NORTH.getDirection());
         d = 2 * Math.PI / 8 * 1;
-        assertTrue(d == ne.getDirection());
+        assertTrue(d == TileTransition.NORTH_EAST.getDirection());
     }
 
     /**
@@ -64,19 +47,19 @@ public class CityTileTransitionTest extends TestCase {
             assertEquals(v, v2);
         }
 
-        assertNearest(n, 0, -1);
-        assertNearest(n, 0, -99);
-        assertNearest(n, 2, -5);
-        assertNearest(n, -2, -5);
-        assertNearest(s, 2, 5);
+        assertNearest(TileTransition.NORTH, 0, -1);
+        assertNearest(TileTransition.NORTH, 0, -99);
+        assertNearest(TileTransition.NORTH, 2, -5);
+        assertNearest(TileTransition.NORTH, -2, -5);
+        assertNearest(TileTransition.SOUTH, 2, 5);
 
-        assertNearest(w, -5, -1);
+        assertNearest(TileTransition.WEST, -5, -1);
 
-        assertNearest(sw, -4, 3);
+        assertNearest(TileTransition.SOUTH_WEST, -4, 3);
 
-        assertNearest(ne, 10, -6);
+        assertNearest(TileTransition.NORTH_EAST, 10, -6);
 
-        assertNearest(ne, 10, -6);
+        assertNearest(TileTransition.NORTH_EAST, 10, -6);
     }
 
     private void assertNearest(TileTransition v, int dx, int dy) {

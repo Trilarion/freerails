@@ -27,7 +27,7 @@ import freerails.world.FullWorld;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

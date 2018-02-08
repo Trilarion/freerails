@@ -28,13 +28,6 @@ import junit.framework.TestCase;
 public class BinaryNumberFormatterTest extends TestCase {
 
     /**
-     * @param arg0
-     */
-    public BinaryNumberFormatterTest(String arg0) {
-        super(arg0);
-    }
-
-    /**
      *
      */
     public void testBinaryFormat() {

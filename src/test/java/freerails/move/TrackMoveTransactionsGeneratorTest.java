@@ -27,7 +27,7 @@ import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackPieceImpl;
@@ -38,8 +38,8 @@ import junit.framework.TestCase;
  * Test case for TrackMoveTransactionsGenerator.
  */
 public class TrackMoveTransactionsGeneratorTest extends TestCase {
-    private World world;
 
+    private World world;
     private TrackMoveTransactionsGenerator transactionGenerator;
 
     /**

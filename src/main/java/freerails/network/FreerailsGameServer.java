@@ -186,7 +186,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         return playerNames;
     }
 
-    boolean isConfirmed(int player) {
+    public boolean isConfirmed(int player) {
         logger.debug("confirmedPlayers.size()=" + confirmedPlayers.size());
         return confirmedPlayers.contains(players.get(player));
     }

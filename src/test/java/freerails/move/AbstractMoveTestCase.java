@@ -29,7 +29,6 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
-import freerails.world.top.MapFixtureFactory;
 import freerails.world.train.PathOnTiles;
 import junit.framework.TestCase;
 

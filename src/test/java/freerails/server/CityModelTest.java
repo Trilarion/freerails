@@ -21,7 +21,7 @@ package freerails.server;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.terrain.City;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 import junit.framework.TestCase;
 
 /**

@@ -33,7 +33,7 @@ import freerails.world.cargo.*;
 import freerails.world.player.Player;
 import freerails.world.station.StationDemand;
 import freerails.world.station.Station;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 import freerails.world.train.TrainModel;
 import junit.framework.TestCase;
 

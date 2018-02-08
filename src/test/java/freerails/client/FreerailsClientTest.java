@@ -16,10 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network;
+package freerails.client;
 
 import freerails.client.FreerailsClient;
 import freerails.controller.ClientProperty;
+import freerails.network.AbstractFreerailsServerTestCase;
+import freerails.network.LogOnResponse;
+import freerails.network.MessageToClient;
 import freerails.util.ImmutableList;
 
 import java.io.IOException;

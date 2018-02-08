@@ -26,7 +26,7 @@ import freerails.world.KEY;
 import freerails.world.train.WagonAndEngineTypesFactory;
 import freerails.world.station.TrainBlueprint;
 import freerails.world.station.Station;
-import freerails.world.top.MapFixtureFactory;
+import freerails.world.MapFixtureFactory;
 
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.

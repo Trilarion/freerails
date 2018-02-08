@@ -19,11 +19,8 @@
 /*
  *
  */
-package freerails.world.top;
+package freerails.world;
 
-import freerails.world.FullWorld;
-import freerails.world.ItemsTransactionAggregator;
-import freerails.world.World;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;

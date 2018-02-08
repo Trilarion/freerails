@@ -19,9 +19,8 @@
 /*
  *
  */
-package freerails.client.view;
+package freerails.controller;
 
-import freerails.controller.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -38,7 +37,6 @@ import junit.framework.TestCase;
 public class BalanceSheetGeneratorTest extends TestCase {
 
     private Player player;
-
     private World world;
 
     /**

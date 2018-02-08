@@ -19,10 +19,9 @@
 /*
  *
  */
-package freerails.world.top;
+package freerails.world;
 
 import freerails.util.Point2D;
-import freerails.world.*;
 import freerails.world.station.Station;
 import junit.framework.Test;
 import junit.framework.TestCase;

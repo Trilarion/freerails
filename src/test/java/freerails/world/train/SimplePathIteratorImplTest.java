@@ -29,13 +29,6 @@ import junit.framework.TestCase;
 public class SimplePathIteratorImplTest extends TestCase {
 
     /**
-     * @param arg0
-     */
-    public SimplePathIteratorImplTest(String arg0) {
-        super(arg0);
-    }
-
-    /**
      *
      */
     public void testHasNext() {

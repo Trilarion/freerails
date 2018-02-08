@@ -32,7 +32,6 @@ import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TileTransition;
 import freerails.world.terrain.TileTypeImpl;
-import freerails.world.top.MapFixtureFactory;
 import freerails.world.track.TrackRule;
 import freerails.world.train.PositionOnTrack;
 import junit.framework.TestCase;
@@ -41,6 +40,7 @@ import junit.framework.TestCase;
  * Test for BuildTrackExplorer.
  */
 public class BuildTrackExplorerTest extends TestCase {
+
     private final Player testPlayer = new Player("test", 0);
     private FullWorld world;
     private FreerailsPrincipal principle;

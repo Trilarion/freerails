@@ -29,6 +29,7 @@ import java.util.Arrays;
  * Test for NewLocalConnection.
  */
 public class LocalConnectionTest extends TestCase {
+
     private final Serializable[] EmptyArray = new Serializable[0];
     private LocalConnection localConnection;
     private Server server;
