@@ -29,30 +29,10 @@ import junit.framework.TestCase;
  *
  */
 public class TrainMotionTest extends TestCase {
-    /*
-     *
-     * this= TrainMotion (id=49) activity= SpeedTimeAndStatus$TrainActivity
-     * (id=107) name= "READY" ordinal= 1 distanceEngineWillTravel= 30.0
-     * duration= 3.9936298481613424 initialPosition= 42.42640687119285 path=
-     * PathOnTiles (id=48) start= Point2D (id=73) x= 14 y= 5 vectors= ImmutableList<E>
-     * (id=75) elementData= FreerailsSerializable[2] (id=77) [0]= TileTransition (id=79)
-     * deltaX= 1 deltaY= 1 flatTrackTemplate= 256 length= 42.42640687119285 [1]=
-     * TileTransition (id=82) deltaX= 1 deltaY= 0 flatTrackTemplate= 32 length= 30.0
-     * speeds= CompositeSpeedAgainstTime (id=111) duration= 10.972888751347389
-     * totalDistance= 97.57359312880715 values= ImmutableList<E> (id=114) elementData=
-     * FreerailsSerializable[2] (id=118) [0]= ConstantAcceleration (id=119) a= 0.5 dt=
-     * 6.972888751347389 u= 6.5135556243263055 [1]= ConstantAcceleration (id=121) a= 0.0 dt=
-     * 4.0 u= 10.0 trainLength= 24 t= 3.9936298481613424 offset=
-     * 48.42640687119287 length= 24.0
-     *
-     * 72.42640687119285
-     */
 
     /**
      *
      */
-
-
     public void test4Bug1266695() {
         // The figures are copied from the debugger.
         Point2D start = new Point2D(14, 5);
@@ -63,8 +43,7 @@ public class TrainMotionTest extends TestCase {
                 6.972888751347389d);
         ConstantAcceleration constantAcceleration1 = ConstantAcceleration.uat(10.0, 0.0d, 4.0d);
 
-        SpeedAgainstTime speeds = new CompositeSpeedAgainstTime(constantAcceleration0,
-                constantAcceleration1);
+        SpeedAgainstTime speeds = new CompositeSpeedAgainstTime(constantAcceleration0, constantAcceleration1);
 
         double expectedTotalDistance = 97.57359312880715d; // Copied from
         // debugger.
@@ -79,8 +58,7 @@ public class TrainMotionTest extends TestCase {
         int engineStep = 1;
         int trainLength = 24;
 
-        TrainMotion motion = new TrainMotion(path, engineStep, trainLength,
-                speeds);
+        TrainMotion motion = new TrainMotion(path, engineStep, trainLength, speeds);
 
         double expectedInitialPosition = 42.42640687119285;
         double actualInitialPosition = motion.getInitialPosition();
@@ -93,9 +71,6 @@ public class TrainMotionTest extends TestCase {
         assertTrue(tooLongDuration > actualDuration);
 
         // This method used to throw an exception
-
         Object o = motion.getState(actualDuration);
-
     }
-
 }

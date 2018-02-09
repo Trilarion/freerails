@@ -49,7 +49,6 @@ public class PathOnTilesTest extends TestCase {
         assertTrue(throwsException(start, vectors));
         vectors = new TileTransition[]{TileTransition.NORTH, TileTransition.SOUTH};
         assertFalse(throwsException(start, vectors));
-
     }
 
     /**
@@ -74,7 +73,6 @@ public class PathOnTilesTest extends TestCase {
         TileTransition[] vectors = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles path = new PathOnTiles(start, vectors);
         assertEquals(3 * WorldConstants.TILE_SIZE, path.getTotalDistance(), 0.001);
-
     }
 
     /**
@@ -94,7 +92,6 @@ public class PathOnTilesTest extends TestCase {
         expected = new Point2D(60, 15);
         actual = path.getPoint(45);
         assertEquals(expected, actual);
-
     }
 
     /**
@@ -117,7 +114,6 @@ public class PathOnTilesTest extends TestCase {
         actual = path.getPoint(30, 45);
         assertEquals(expected45, actual.getA());
         assertEquals(expected60, actual.getB());
-
     }
 
     /**
@@ -182,7 +178,6 @@ public class PathOnTilesTest extends TestCase {
         // }
         assertEquals(Integer.valueOf(expected.length), pathIt.getB());
         checkPath(pathIt.getA(), expected);
-
     }
 
     private void checkPath(PathIterator pathIt, Point2D[] expected) {
@@ -211,15 +206,14 @@ public class PathOnTilesTest extends TestCase {
      *
      */
     public void testTiles() {
-        PathOnTiles path = new PathOnTiles(new Point2D(5, 5), TileTransition.SOUTH_WEST,
-                TileTransition.NORTH_EAST);
-        Iterator<Point2D> it = path.tiles();
+        Point2D p1 = new Point2D(5,5);
+        PathOnTiles path = new PathOnTiles(p1, TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
+        Iterator<Point2D> it = path.tilesIterator();
 
-        assertEquals(new Point2D(5, 5), it.next());
+        assertEquals(p1, it.next());
         assertEquals(new Point2D(4, 6), it.next());
-        assertEquals(new Point2D(5, 5), it.next());
+        assertEquals(p1, it.next());
         assertFalse(it.hasNext());
-
     }
 
 }

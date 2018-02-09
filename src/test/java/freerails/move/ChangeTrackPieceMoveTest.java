@@ -42,29 +42,6 @@ import freerails.world.track.TrackRule;
 public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
     /**
-     * @param testName
-     */
-    public ChangeTrackPieceMoveTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * @return
-     */
-    public static junit.framework.Test suite() {
-
-        return new junit.framework.TestSuite(
-                ChangeTrackPieceMoveTest.class);
-    }
-
-    /**
      *
      */
     @Override
@@ -79,8 +56,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testTryDoMove() {
-        setUp();
-
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
@@ -89,66 +64,50 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Point2D.ZERO))
-                .getTrackPiece();
+        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Point2D.ZERO)).getTrackPiece();
 
         final int trackRuleID = 0;
-        final TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES,
-                trackRuleID);
+        final TrackRule r = (TrackRule) getWorld().get(SKEY.TRACK_RULES, trackRuleID);
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                Point2D.ZERO);
+        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.succeeds());
 
         // As above but with newTrackPiece and oldTrackPiece in the wrong order,
         // should fail.
-        move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                Point2D.ZERO);
+        move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(false, moveStatus.succeeds());
+        assertFalse(moveStatus.succeeds());
 
         // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece,
         // should fail.
-        move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece,
-                Point2D.ZERO);
+        move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece, Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(false, moveStatus.succeeds());
+        assertFalse(moveStatus.succeeds());
 
         // Try to build track outside the map.
-        move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece,
-                new Point2D(100, 0));
+        move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, new Point2D(100, 0));
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(false, moveStatus.succeeds());
+        assertFalse(moveStatus.succeeds());
 
         // Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
-        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                Point2D.ZERO);
+        move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Point2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertEquals(false, moveStatus.succeeds());
-    }
-
-    /**
-     *
-     */
-    public void testTryUndoMove() {
-        setUp();
+        assertFalse(moveStatus.succeeds());
     }
 
     /**
      *
      */
     public void testDoMove() {
-        setUp();
-
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
@@ -168,8 +127,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
      * @param oldTrackPiece
      * @param newTrackPiece
      */
-    private void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece,
-                                      TrackPiece newTrackPiece) {
+    private void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
         TrackMove move;
         MoveStatus moveStatus;
 
@@ -186,7 +144,6 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;

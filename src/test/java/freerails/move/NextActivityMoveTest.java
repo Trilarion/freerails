@@ -36,7 +36,6 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();

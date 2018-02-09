@@ -37,8 +37,7 @@ public class PositionOnTrackTest extends TestCase {
         assertEquals(PositionOnTrack.MAX_DIRECTION, 7);
 
         assertNoException(0, 0, TileTransition.EAST);
-        assertNoException(PositionOnTrack.MAX_COORDINATE,
-                PositionOnTrack.MAX_COORDINATE, TileTransition.NORTH_WEST);
+        assertNoException(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE, TileTransition.NORTH_WEST);
 
         assertException(-1, 0, TileTransition.EAST);
         assertException(0, -1, TileTransition.EAST);

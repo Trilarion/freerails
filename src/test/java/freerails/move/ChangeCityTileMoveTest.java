@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.player.Player;
 import freerails.world.terrain.TerrainTile;
@@ -34,7 +34,6 @@ public class ChangeCityTileMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         Point2D p = new Point2D(10, 10);
         TerrainTile tile = (TerrainTile) world.getTile(p);
@@ -53,7 +52,6 @@ public class ChangeCityTileMoveTest extends AbstractMoveTestCase {
         Point2D p = new Point2D(10, 10);
         ChangeTileMove move = new ChangeTileMove(world, p, 5);
         assertSurvivesSerialisation(move);
-
     }
 
     /**

@@ -55,21 +55,16 @@ public class TrackPathFinderTest extends TestCase {
      */
     public void testGeneratePath() {
         try {
-            BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(
-                    0, world);
+            BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
-            TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer
-                    .getPrincipal());
-            List l = pathFinder.generatePath(Point2D.ZERO, new Point2D(0,
-                    5), bts);
+            TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer.getPrincipal());
+            List l = pathFinder.generatePath(Point2D.ZERO, new Point2D(0,5), bts);
             assertEquals(5, l.size());
 
-            List list2 = pathFinder.generatePath(new Point2D(5, 5),
-                    new Point2D(5, 10), bts);
+            List list2 = pathFinder.generatePath(new Point2D(5, 5),new Point2D(5, 10), bts);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new Point2D(5, 10), new Point2D(5,
-                    5), bts);
+            list2 = pathFinder.generatePath(new Point2D(5, 10), new Point2D(5,5), bts);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
             fail();

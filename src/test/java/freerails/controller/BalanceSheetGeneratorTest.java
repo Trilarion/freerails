@@ -43,11 +43,8 @@ public class BalanceSheetGeneratorTest extends TestCase {
      *
      */
     public void testBondsFigure() {
-
-        BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
-                player.getPrincipal());
-        Money expectedBondValue = new Money(WorldConstants.BOND_VALUE_ISSUE
-                .getAmount());
+        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
+        Money expectedBondValue = new Money(WorldConstants.BOND_VALUE_ISSUE.getAmount());
         assertEquals(Money.changeSign(expectedBondValue), generator.total.loans);
         assertEquals(Money.changeSign(expectedBondValue), generator.ytd.loans);
     }
@@ -55,13 +52,9 @@ public class BalanceSheetGeneratorTest extends TestCase {
     /**
      *
      */
-    public void testStochHolderEquityFigure() {
-
-        BalanceSheetGenerator generator = new BalanceSheetGenerator(world,
-                player.getPrincipal());
-
+    public void testStockHolderEquityFigure() {
+        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
         Money expectStockHolderEquity = new Money(-500000);
-
         assertEquals(expectStockHolderEquity, generator.total.equity);
 
     }

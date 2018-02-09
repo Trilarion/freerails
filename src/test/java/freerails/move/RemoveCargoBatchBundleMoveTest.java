@@ -35,7 +35,6 @@ public class RemoveCargoBatchBundleMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         MutableCargoBatchBundle bundleA;
         MutableCargoBatchBundle bundleB;
@@ -45,14 +44,12 @@ public class RemoveCargoBatchBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, new Point2D(2, 3), 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move move = new RemoveCargoBundleMove(0, bundleB.toImmutableCargoBundle(),
-                MapFixtureFactory.TEST_PRINCIPAL);
+        Move move = new RemoveCargoBundleMove(0, bundleB.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
         assertSurvivesSerialisation(move);
 
         assertTryMoveFails(move);
         assertTryUndoMoveFails(move);
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES,
-                bundleA.toImmutableCargoBundle());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, bundleA.toImmutableCargoBundle());
         assertTryMoveIsOk(move);
 
         assertOkButNotRepeatable(move);

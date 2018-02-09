@@ -33,7 +33,6 @@ public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         FreerailsPrincipal principal = getPrincipal();
         Activity a = new FullWorldTest.TestActivity(50);

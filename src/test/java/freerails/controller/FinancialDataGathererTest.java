@@ -60,8 +60,7 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testCanIssueBond() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player
-                .getPrincipal());
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player.getPrincipal());
         assertTrue(fdg.canIssueBond()); // 5%
 
         assertTrue(addBond()); // 6%
@@ -76,23 +75,20 @@ public class FinancialDataGathererTest extends TestCase {
      * avoid copy & paste in testCanIssueBond().
      */
     private boolean addBond() {
-        FinancialDataGatherer fdg;
         world.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
-        fdg = new FinancialDataGatherer(world, player.getPrincipal());
-
-        return fdg.canIssueBond();
+        FinancialDataGatherer financialDataGatherer = new FinancialDataGatherer(world, player.getPrincipal());
+        return financialDataGatherer.canIssueBond();
     }
 
     /**
      *
      */
     public void testNextBondInterestRate() {
-        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player
-                .getPrincipal());
-        assertEquals(5.0, fdg.nextBondInterestRate());
+        FinancialDataGatherer financialDataGatherer = new FinancialDataGatherer(world, player.getPrincipal());
+        assertEquals(5.0, financialDataGatherer.nextBondInterestRate());
         world.addTransaction(player.getPrincipal(), BondItemTransaction.issueBond(5));
-        fdg = new FinancialDataGatherer(world, player.getPrincipal());
-        assertEquals(6.0, fdg.nextBondInterestRate());
+        financialDataGatherer = new FinancialDataGatherer(world, player.getPrincipal());
+        assertEquals(6.0, financialDataGatherer.nextBondInterestRate());
     }
 
     /**

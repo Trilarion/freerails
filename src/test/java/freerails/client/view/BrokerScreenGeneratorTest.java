@@ -77,8 +77,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(moveStatus.succeeds());
             // The line below threw an exception that caused bug 1341365.
-            BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(
-                    world, principal);
+            BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, principal);
             assertNotNull(brokerScreenGenerator);
         }
 

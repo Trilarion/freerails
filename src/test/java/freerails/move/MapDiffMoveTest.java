@@ -31,7 +31,6 @@ public class MapDiffMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         World world2 = this.getWorld();
         FullWorldDiffs worldDiff = new FullWorldDiffs(world2);

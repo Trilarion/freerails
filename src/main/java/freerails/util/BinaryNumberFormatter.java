@@ -20,7 +20,7 @@
  * BinaryNumberFormatter.java
  *
  */
-package freerails.client.common;
+package freerails.util;
 
 /**
  * Used to generate file names for track and terrain images.

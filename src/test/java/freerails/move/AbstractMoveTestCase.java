@@ -39,16 +39,10 @@ import java.io.Serializable;
  */
 public abstract class AbstractMoveTestCase extends TestCase {
 
-    /**
-     *
-     */
     protected World world;
     private boolean hasSetupBeenCalled = false;
 
-    /**
-     *
-     */
-    protected AbstractMoveTestCase() {
+    public AbstractMoveTestCase() {
     }
 
     /**
@@ -280,12 +274,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
         // Set the time..
         world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-    }
-
-    /**
-     *
-     */
-    public void testMove() {
     }
 
     /**

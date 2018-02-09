@@ -16,8 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.common;
-
+package freerails.util;
 
 import junit.framework.TestCase;
 

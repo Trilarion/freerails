@@ -107,11 +107,11 @@ public class TrainStopsHandler implements Serializable {
     public void arrivesAtPoint(Point2D p) {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
 
-        Point2D targetPoint = ta.getTarget();
+        Point2D targetPoint = ta.getTargetLocation();
 
         if (p.equals(targetPoint)) {
             updateTarget();
-            targetPoint = ta.getTarget();
+            targetPoint = ta.getTargetLocation();
         } else {
             int stationNumber = getStationID(p);
             if (NOT_AT_STATION != stationNumber) {

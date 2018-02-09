@@ -21,7 +21,7 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.common.BinaryNumberFormatter;
+import freerails.util.BinaryNumberFormatter;
 import freerails.client.common.ImageManager;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TerrainType;

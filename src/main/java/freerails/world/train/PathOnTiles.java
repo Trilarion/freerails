@@ -339,7 +339,7 @@ public strictfp class PathOnTiles implements Serializable {
     /**
      * @return
      */
-    public Iterator<Point2D> tiles() {
+    public Iterator<Point2D> tilesIterator() {
         // TODO no anonymous class here
         return new Iterator<Point2D>() {
             private int index = 0;

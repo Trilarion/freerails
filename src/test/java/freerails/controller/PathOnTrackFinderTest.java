@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
@@ -115,8 +115,6 @@ public class PathOnTrackFinderTest extends TestCase {
             pathFinder.setupSearch(new Point2D(10, 10), end);
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
-
         }
     }
-
 }

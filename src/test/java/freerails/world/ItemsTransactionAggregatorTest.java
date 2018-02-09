@@ -41,19 +41,18 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         World world = new FullWorld();
         Player player = new Player("name", 0);
         world.addPlayer(player);
-        FreerailsPrincipal fp = world.getPlayer(0).getPrincipal();
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                world, fp);
+        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
         Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 5, new Money(100));
-        world.addTransaction(fp, transaction);
+        world.addTransaction(principal, transaction);
 
         quant = aggregator.calculateQuantity();
         assertEquals(5, quant);
         transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
-        world.addTransaction(fp, transaction);
+        world.addTransaction(principal, transaction);
 
     }
 

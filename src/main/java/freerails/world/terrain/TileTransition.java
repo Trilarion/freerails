@@ -32,68 +32,50 @@ import freerails.world.track.TrackConfigurations;
  */
 public final class TileTransition implements TrackConfigurations {
 
-    private static final double TILE_DIAGONAL = StrictMath.hypot(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
-    /**
-     * North.
-     */
-    public static final TileTransition NORTH;
-    /**
-     * West.
-     */
-    public static final TileTransition WEST;
-    /**
-     * South East.
-     */
-    public static final TileTransition SOUTH_EAST;
-    /**
-     * North-East.
-     */
-    public static final TileTransition NORTH_EAST;
-    /**
-     * East.
-     */
-    public static final TileTransition EAST;
-    /**
-     * South.
-     */
-    public static final TileTransition SOUTH;
-    /**
-     * South West.
-     */
-    public static final TileTransition SOUTH_WEST;
-    /**
-     * North West.
-     */
-    public static final TileTransition NORTH_WEST;
+    // TODO TileDirection could become an enum and TileTransition vectors some composite
+
     private static final long serialVersionUID = 3256444698640921912L;
+
     /**
      * A 3x3 array of OneTileMoveVectors, representing vectors to eight adjacent
      * tiles plus a zero-distance vector.
      */
-    private static final TileTransition[][] vectors = setupVectors();
+    private static final TileTransition[][] vectors;
+
+    static {
+        vectors = new TileTransition[3][3];
+
+        int t = 1;
+        for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                if ((0 != x) || (0 != y)) {
+                    vectors[x + 1][y + 1] = new TileTransition(x, y, t);
+                }
+                t = t << 1;
+            }
+        }
+    }
+
+    public static final TileTransition NORTH = getInstance(0, -1);
+    public static final TileTransition NORTH_WEST = getInstance(-1, -1);
+    public static final TileTransition WEST = getInstance(-1, 0);
+    public static final TileTransition SOUTH_WEST = getInstance(-1, 1);
+    public static final TileTransition SOUTH = getInstance(0, 1);
+    public static final TileTransition SOUTH_EAST = getInstance(1, 1);
+    public static final TileTransition EAST = getInstance(1, 0);
+    public static final TileTransition NORTH_EAST = getInstance(1, -1);
 
     /**
-     * Another array of OneTileMoveVectors representing the 8 compass directions
-     * going clockwise from North.
+     * Another array of TileTransitions representing the 8 compass directions going clockwise from North.
      */
     private static final TileTransition[] list;
 
     static {
-        NORTH = getInstance(0, -1);
-        WEST = getInstance(-1, 0);
-        SOUTH_EAST = getInstance(1, 1);
-        NORTH_EAST = getInstance(1, -1);
-        EAST = getInstance(1, 0);
-        SOUTH = getInstance(0, 1);
-        SOUTH_WEST = getInstance(-1, 1);
-        NORTH_WEST = getInstance(-1, -1);
-
         list = new TileTransition[8];
         list[0] = NORTH;
         list[1] = NORTH_EAST;
         list[2] = EAST;
         list[3] = SOUTH_EAST;
-
         list[4] = SOUTH;
         list[5] = SOUTH_WEST;
         list[6] = WEST;
@@ -125,24 +107,7 @@ public final class TileTransition implements TrackConfigurations {
         deltaX = x;
         deltaY = y;
         flatTrackTemplate = t;
-        length = (x * y) == 0 ? WorldConstants.TILE_SIZE : TILE_DIAGONAL;
-    }
-
-    private static TileTransition[][] setupVectors() {
-        int t = 1;
-        TileTransition[][] tvectors = new TileTransition[3][3];
-
-        for (int y = -1; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                if ((0 != x) || (0 != y)) {
-                    tvectors[x + 1][y + 1] = new TileTransition(x, y, t);
-                }
-
-                t = t << 1;
-            }
-        }
-
-        return tvectors;
+        length = (x * y) == 0 ? WorldConstants.TILE_SIZE : WorldConstants.TILE_DIAGONAL_SIZE;
     }
 
     /**

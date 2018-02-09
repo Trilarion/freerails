@@ -37,7 +37,7 @@ import java.util.NoSuchElementException;
 
 /**
  * GraphExplorer that explorers possible track placements, the int values it returns
- * are elsencoded PositionOnTrack objects.
+ * are encoded PositionOnTrack objects.
  */
 public class BuildTrackExplorer implements GraphExplorer {
 
@@ -83,8 +83,6 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * Tests whether we can build track in the direction specified by
      * m_direction.
-     *
-     *
      *
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
@@ -198,6 +196,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         return true;
     }
 
+    /**
+     *
+     * @param p
+     * @return
+     */
     private TrackRule getAppropriateTrackRule(Point2D p) {
         final FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
         TrackRule rule;

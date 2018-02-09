@@ -35,8 +35,8 @@ import java.util.Iterator;
  * Test for WorldDifferences.
  */
 public class WorldDiffsTest extends TestCase {
-    private final Player player0 = new Player("player0", 0);
 
+    private final Player player0 = new Player("player0", 0);
     private final Player player1 = new Player("player1", 1);
 
     /**
@@ -157,7 +157,6 @@ public class WorldDiffsTest extends TestCase {
         worldDiff.set(player1.getPrincipal(), KEY.STATIONS, 0, station2);
 
         worldDiff.add(player1.getPrincipal(), KEY.STATIONS, station1);
-
     }
 
     /**
@@ -225,7 +224,6 @@ public class WorldDiffsTest extends TestCase {
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
         assertEquals(0, worldDiff.numberOfMapDifferences());
         assertEquals(0, worldDiff.listDiffs());
-
     }
 
     /**
@@ -259,6 +257,5 @@ public class WorldDiffsTest extends TestCase {
         assertFalse(it.hasNext());
         ListKey expected = new ListKey(ListKey.Type.Element, FullWorldDiffs.LISTID.SHARED_LISTS, SKEY.CITIES.getKeyID(), 0);
         assertEquals(expected, lk2);
-
     }
 }

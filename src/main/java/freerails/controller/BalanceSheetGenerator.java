@@ -73,7 +73,7 @@ public class BalanceSheetGenerator {
 
             aggregator.setType(i);
             aggregator.setTimes(times);
-            ItemsTransactionAggregator.QuantitiesAndValues qnv = aggregator.calculateQuantitiesAndValues();
+            QuantitiesAndValues qnv = aggregator.calculateQuantitiesAndValues();
             int quantity = qnv.quantities[0];
             amount += trackValue * quantity / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
 

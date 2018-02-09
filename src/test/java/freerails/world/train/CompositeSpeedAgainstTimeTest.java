@@ -54,11 +54,9 @@ public class CompositeSpeedAgainstTimeTest extends TestCase {
             int numberOfParts = r.nextInt(10) + 1;
             SpeedAgainstTime[] parts = new SpeedAgainstTime[numberOfParts];
             for (int j = 0; j < numberOfParts; j++) {
-                parts[j] = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r
-                        .nextDouble());
+                parts[j] = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r.nextDouble());
             }
-            CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(
-                    parts);
+            CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(parts);
             ConstantAccelerationTest.checkContract(csat);
         }
     }

@@ -39,7 +39,7 @@ import java.util.*;
  * Provides access to the World object and other data that is shared by GUI
  * components (for instance the cursor's position).
  */
-public final class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
+public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
 
     private final Map<Property, Object> properties = new HashMap<>();
     private final Collection<ModelRootListener> listeners = new ArrayList<>();

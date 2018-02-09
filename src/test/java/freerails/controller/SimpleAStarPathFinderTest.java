@@ -98,7 +98,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
         assertEquals(5, map.getVertexConnectedByEdge());
     }
 
-    static class Map implements GraphExplorer {
+    private static class Map implements GraphExplorer {
         // Look at SimpleAStarPathFinderTest.svg to see it
         private final Node[] nodes = new Node[]{
                 new Node(new int[]{1}, new int[]{11}), // 0
@@ -153,15 +153,14 @@ public class SimpleAStarPathFinderTest extends TestCase {
 
     }
 
-    static class Node {
-        int[] edges;
+    private static class Node {
 
+        int[] edges;
         int[] distances;
 
         Node(int[] e, int[] d) {
             if (e.length != d.length) {
-                throw new IllegalArgumentException("e.length=" + e.length
-                        + ", e.length=" + e.length);
+                throw new IllegalArgumentException("e.length=" + e.length  + ", e.length=" + e.length);
             }
 
             edges = e;

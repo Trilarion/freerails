@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.move.MoveTrainPreMove;
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
@@ -56,8 +56,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);
 
         // Build track.
-        stationBuilder
-                .setStationType(stationBuilder.getTrackTypeID("terminal"));
+        stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
 
         Point2D stationA = new Point2D(10, 10);
         MoveStatus moveStatus = trackBuilder.buildTrack(stationA, line1);
@@ -66,7 +65,6 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         assertTrue(moveStatus.succeeds());
         moveStatus = trackBuilder.buildTrack(stationA, line3);
         assertTrue(moveStatus.succeeds());
-
     }
 
     /**
@@ -79,8 +77,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
     }
 
     private void findPath2Target(Point2D target1, TileTransition[] expectedPath) {
-        FullTerrainTile tile = (FullTerrainTile) world
-                .getTile(target1);
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(target1);
         assertTrue(tile.hasTrack());
         PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Point2D(10, 10), TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {

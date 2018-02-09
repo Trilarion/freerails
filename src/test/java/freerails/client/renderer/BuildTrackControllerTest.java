@@ -28,7 +28,7 @@ import freerails.controller.MoveExecutor;
 import freerails.controller.SimpleMoveExecutor;
 import freerails.controller.TrackMoveProducer;
 import freerails.controller.BuildMode;
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -113,38 +113,30 @@ public class BuildTrackControllerTest extends TestCase {
         testBuildTrack();
 
         // Change the strategy.
-        BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(
-                doubleTrackRuleID, modelRoot.getWorld());
+        BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(doubleTrackRuleID, modelRoot.getWorld());
 
         trackBuilder.setBuildTrackStrategy(bts);
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.
         modelRoot.setProperty(Property.CURSOR_POSITION, new Point2D(15, 10));
-        buildTrackController
-                .setProposedTrack(new Point2D(20, 10), trackBuilder);
+        buildTrackController.setProposedTrack(new Point2D(20, 10), trackBuilder);
         buildTrackController.updateUntilComplete();
-
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);
 
         FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(10, 10));
-
         assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
         tile = (FullTerrainTile) world.getTile(new Point2D(15, 10));
-
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
         tile = (FullTerrainTile) world.getTile(new Point2D(17, 10));
-
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
         tile = (FullTerrainTile) world.getTile(new Point2D(20, 10));
-
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
-
     }
 
     /**
@@ -163,7 +155,6 @@ public class BuildTrackControllerTest extends TestCase {
         buildTrackController.setProposedTrack(to, trackBuilder);
 
         buildTrackController.updateUntilComplete();
-
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);

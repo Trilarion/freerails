@@ -43,21 +43,18 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(pathWalker.canStepForward());
         pathWalker.stepForward(500); // The path length is 200;
         moveToNextLimit();
-
         assertTrue(!pathWalker.canStepForward());
 
         setup();
         assertTrue(pathWalker.canStepForward());
         pathWalker.stepForward(10);
         assertTrue(pathWalker.canStepForward());
-
         LineSegment line = new LineSegment();
         assertTrue(pathWalker.hasNext());
         pathWalker.nextSegment(line);
         assertLineEquals(0, 0, 10, 0, line);
         assertTrue(!pathWalker.hasNext());
         assertTrue(pathWalker.canStepForward());
-
         pathWalker.stepForward(500); // The path length is 200;
         assertTrue(pathWalker.hasNext());
         pathWalker.nextSegment(line);
@@ -65,13 +62,11 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(pathWalker.hasNext());
         pathWalker.nextSegment(line);
         assertLineEquals(100, 0, 100, 100, line);
-
         assertTrue(!pathWalker.canStepForward());
     }
 
     private void moveToNextLimit() {
         LineSegment line = new LineSegment();
-
         while (pathWalker.hasNext()) {
             pathWalker.nextSegment(line);
         }
@@ -87,7 +82,6 @@ public class PathWalkerImplTest extends TestCase {
         assertTrue(!pathWalker.hasNext());
         pathWalker.stepForward(10);
         assertTrue(pathWalker.hasNext());
-
         pathWalker.nextSegment(line);
         assertLineEquals(0, 0, 10, 0, line);
         assertTrue(!pathWalker.hasNext());
@@ -108,20 +102,14 @@ public class PathWalkerImplTest extends TestCase {
          * Now test with underlying pathIterators with few elements.
          */
         ArrayList<Point> points = new ArrayList<>();
-
         assertHasNextEqualsFalse(points);
-
         points = new ArrayList<>();
         points.add(new Point(0, 0));
-
         assertHasNextEqualsFalse(points);
-
         points = new ArrayList<>();
         points.add(new Point(0, 0));
         points.add(new Point(100, 0));
-
-        PathIterator it2 = PathIteratorImpl
-                .forwardsIterator(points);
+        PathIterator it2 = PathIteratorImpl.forwardsIterator(points);
         assertTrue(it2.hasNext());
         pathWalker = new PathWalkerImpl(it2);
         assertTrue(!pathWalker.hasNext());
@@ -132,9 +120,7 @@ public class PathWalkerImplTest extends TestCase {
     }
 
     private void assertHasNextEqualsFalse(ArrayList<Point> points) {
-        PathIterator it2 = PathIteratorImpl
-                .forwardsIterator(points);
-
+        PathIterator it2 = PathIteratorImpl.forwardsIterator(points);
         assertTrue(!it2.hasNext());
         pathWalker = new PathWalkerImpl(it2);
         pathWalker.stepForward(100);

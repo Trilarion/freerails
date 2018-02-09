@@ -39,41 +39,17 @@ import java.util.ArrayList;
 public class ValidTrackConfigurationsTest extends TestCase {
 
     /**
-     * @param testName
-     */
-    public ValidTrackConfigurationsTest(java.lang.String testName) {
-        super(testName);
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * @return
-     */
-    public static Test suite() {
-        return new TestSuite(ValidTrackConfigurationsTest.class);
-    }
-
-    /**
      *
      */
     public void testTrackPieceIsLegal() {
         ArrayList<String> templates = new ArrayList<>();
-
         templates.add("000111000");
 
-        ValidTrackConfigurations ltc = new ValidTrackConfigurations(-1,
-                templates);
+        ValidTrackConfigurations validTrackConfigurations = new ValidTrackConfigurations(-1, templates);
 
-        TrackConfiguration template = TrackConfiguration
-                .getFlatInstance("010010010");
-        assertEquals(true, ltc.trackConfigurationIsLegal(template));
+        TrackConfiguration template = TrackConfiguration.getFlatInstance("010010010");
+        assertEquals(true, validTrackConfigurations.trackConfigurationIsLegal(template));
         template = TrackConfiguration.getFlatInstance("010111000");
-        assertEquals(false, ltc.trackConfigurationIsLegal(template));
+        assertFalse(validTrackConfigurations.trackConfigurationIsLegal(template));
     }
 }

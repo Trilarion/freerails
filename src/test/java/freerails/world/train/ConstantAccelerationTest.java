@@ -31,6 +31,46 @@ import java.util.Random;
 public class ConstantAccelerationTest extends TestCase {
 
     /**
+     *
+     */
+    public void testTandS() {
+        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 5);
+        double s = acc1.getDistance();
+        SpeedAgainstTime acc2 = ConstantAcceleration.uas(0, 10, s);
+        assertEquals(acc1, acc2);
+
+        acc1 = ConstantAcceleration.uat(10, 0, 5);
+        assertEquals(50, acc1.getDistance(), 0.00001);
+        acc2 = ConstantAcceleration.uas(10, 0, acc1.getDistance());
+        assertEquals(acc1, acc2);
+
+    }
+
+    /**
+     *
+     */
+    public void testEquals() {
+        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 4);
+        SpeedAgainstTime acc2 = ConstantAcceleration.uat(0, 10, 4);
+        assertEquals(acc1, acc2);
+    }
+
+    /**
+     *
+     */
+    public void testContract() {
+        Random r = new Random(88);
+        for (int i = 0; i < 1000; i++) {
+            ConstantAcceleration acc1 = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r
+                    .nextDouble());
+            checkContract(acc1);
+            ConstantAcceleration acc2 = ConstantAcceleration.uas(r.nextDouble(), r.nextDouble(), r
+                    .nextDouble());
+            checkContract(acc2);
+        }
+    }
+
+    /**
      * Checks the specified object satisfies the contract defined by the
      * interface SpeedAgainstTime.
      *
@@ -70,6 +110,11 @@ public class ConstantAccelerationTest extends TestCase {
 
     }
 
+    /**
+     *
+     * @param sat
+     * @param t
+     */
     private static void checkCalcSCalcVandCalcA(SpeedAgainstTime sat, double t) {
         boolean exceptionExpected = (t < 0) || (t > sat.getTime());
         try {
@@ -97,6 +142,11 @@ public class ConstantAccelerationTest extends TestCase {
 
     }
 
+    /**
+     *
+     * @param sat
+     * @param s
+     */
     private static void checkCalcT(SpeedAgainstTime sat, double s) {
         boolean exceptionExpected = (s < 0) || (s > sat.getDistance());
         try {
@@ -106,46 +156,6 @@ public class ConstantAccelerationTest extends TestCase {
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);
-        }
-    }
-
-    /**
-     *
-     */
-    public void testTandS() {
-        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 5);
-        double s = acc1.getDistance();
-        SpeedAgainstTime acc2 = ConstantAcceleration.uas(0, 10, s);
-        assertEquals(acc1, acc2);
-
-        acc1 = ConstantAcceleration.uat(10, 0, 5);
-        assertEquals(50, acc1.getDistance(), 0.00001);
-        acc2 = ConstantAcceleration.uas(10, 0, acc1.getDistance());
-        assertEquals(acc1, acc2);
-
-    }
-
-    /**
-     *
-     */
-    public void testEquals() {
-        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 4);
-        SpeedAgainstTime acc2 = ConstantAcceleration.uat(0, 10, 4);
-        assertEquals(acc1, acc2);
-    }
-
-    /**
-     *
-     */
-    public void testContract() {
-        Random r = new Random(88);
-        for (int i = 0; i < 1000; i++) {
-            ConstantAcceleration acc1 = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r
-                    .nextDouble());
-            checkContract(acc1);
-            ConstantAcceleration acc2 = ConstantAcceleration.uas(r.nextDouble(), r.nextDouble(), r
-                    .nextDouble());
-            checkContract(acc2);
         }
     }
 

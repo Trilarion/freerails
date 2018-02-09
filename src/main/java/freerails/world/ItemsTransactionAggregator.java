@@ -29,25 +29,18 @@ import freerails.world.player.FreerailsPrincipal;
  */
 public class ItemsTransactionAggregator extends TransactionAggregator {
 
-    /**
-     *
-     */
     private static final int ANY_VALUE = Integer.MIN_VALUE;
-
     private int type = ANY_VALUE;
-
     private TransactionCategory category = null;
-
     private int[] quantities;
-
     private int quantityRunningTotal;
 
     /**
-     * @param w
+     * @param world
      * @param principal
      */
-    public ItemsTransactionAggregator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        super(w, principal);
+    public ItemsTransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        super(world, principal);
     }
 
     /**
@@ -74,7 +67,6 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      */
     public int calculateQuantity() {
         QuantitiesAndValues qnv = calculateQuantitiesAndValues();
-
         return qnv.quantities[0];
     }
 
@@ -132,19 +124,4 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         this.type = type;
     }
 
-    /**
-     * Stores the quantities and monetary values of a series of items.
-     */
-    public static class QuantitiesAndValues {
-
-        /**
-         *
-         */
-        public int[] quantities;
-
-        /**
-         *
-         */
-        private Money[] values;
-    }
 }

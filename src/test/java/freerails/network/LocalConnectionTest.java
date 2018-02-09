@@ -161,10 +161,6 @@ public class LocalConnectionTest extends TestCase {
             }
         }
 
-        private synchronized boolean isKeepGoing() {
-            return keepGoing;
-        }
-
         private synchronized void stop() {
             this.keepGoing = false;
         }

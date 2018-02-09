@@ -16,17 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.world;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.FullSaveGameManager;
 import freerails.server.parser.TrackTilesHandlerImpl;
 import freerails.util.Point2D;
-import freerails.world.FullWorld;
-import freerails.world.ITEM;
-import freerails.world.SKEY;
-import freerails.world.World;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
 import freerails.world.game.GameSpeed;
@@ -59,6 +55,10 @@ public class MapFixtureFactory2 {
         return world.defensiveCopy();
     }
 
+    /**
+     *
+     * @return
+     */
     private static World generateWorld() {
 
         World world = new FullWorld(50, 50);

@@ -39,21 +39,6 @@ public class NonNullElementWorldIteratorTest extends TestCase {
     private Station station2;
 
     /**
-     * @param args
-     */
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * @return
-     */
-    public static Test suite() {
-
-        return new TestSuite(NonNullElementWorldIteratorTest.class);
-    }
-
-    /**
      *
      */
     @Override
@@ -103,17 +88,17 @@ public class NonNullElementWorldIteratorTest extends TestCase {
      *
      */
     public void testGotoIndex() {
-        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world,
+        WorldIterator worldIterator = new NonNullElementWorldIterator(KEY.STATIONS, world,
                 MapFixtureFactory.TEST_PRINCIPAL);
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
-        assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
+        assertEquals(WorldIterator.BEFORE_FIRST, worldIterator.getRowID());
+        assertEquals(WorldIterator.BEFORE_FIRST, worldIterator.getIndex());
 
-        wi.gotoIndex(2);
-        assertEquals(2, wi.getIndex());
-        assertEquals(1, wi.getRowID());
+        worldIterator.gotoIndex(2);
+        assertEquals(2, worldIterator.getIndex());
+        assertEquals(1, worldIterator.getRowID());
 
         try {
-            wi.gotoIndex(100);
+            worldIterator.gotoIndex(100);
             assertTrue(false);
         } catch (NoSuchElementException e) {
         }

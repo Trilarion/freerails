@@ -138,7 +138,7 @@ class TrainMotionExperiment extends JComponent {
         TrainPositionOnMap pos = (TrainPositionOnMap) ai.getState(ticks);
 
         PathOnTiles pathOT = motion.getPath();
-        Iterator<Point2D> it = pathOT.tiles();
+        Iterator<Point2D> it = pathOT.tilesIterator();
         while (it.hasNext()) {
             Point2D tile = it.next();
             int x = tile.x * WorldConstants.TILE_SIZE;
@@ -152,7 +152,7 @@ class TrainMotionExperiment extends JComponent {
         }
 
         pathOT = motion.getTiles(t);
-        it = pathOT.tiles();
+        it = pathOT.tilesIterator();
         while (it.hasNext()) {
             Point2D tile = it.next();
             int x = tile.x * WorldConstants.TILE_SIZE;

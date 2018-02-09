@@ -16,10 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.world;
 
-import freerails.world.SKEY;
-import freerails.world.World;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
@@ -32,6 +30,14 @@ import junit.framework.TestCase;
 public class MapFixtureFactory2Test extends TestCase {
 
     private World world;
+
+    /**
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        world = MapFixtureFactory2.getCopy();
+    }
 
     /**
      *
@@ -62,17 +68,14 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testMap() {
-
         assertEquals(world.getMapWidth(), 50);
         assertEquals(world.getMapWidth(), 50);
-
     }
 
     /**
      *
      */
     public void testPlayers() {
-
         assertEquals(4, world.getNumberOfPlayers());
     }
 
@@ -95,14 +98,4 @@ public class MapFixtureFactory2Test extends TestCase {
         }
         assertEquals(100000, stock);
     }
-
-    /**
-     * @throws Exception
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        world = MapFixtureFactory2.getCopy();
-    }
-
 }

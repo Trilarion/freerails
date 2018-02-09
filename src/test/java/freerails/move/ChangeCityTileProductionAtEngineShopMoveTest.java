@@ -34,9 +34,7 @@ import freerails.world.MapFixtureFactory;
 public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
     private ImmutableList<TrainBlueprint> after;
-
     private int engineType;
-
     private Integer[] wagons;
 
     /**
@@ -45,12 +43,9 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
-                new Station());
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
-                new Station());
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS,
-                new Station());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, new Station());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, new Station());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, new Station());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         WagonAndEngineTypesFactory.addTypesToWorld(getWorld());
@@ -63,27 +58,23 @@ public class ChangeCityTileProductionAtEngineShopMoveTest extends AbstractMoveTe
     /**
      *
      */
-    @Override
     public void testMove() {
         ImmutableList<TrainBlueprint> before = new ImmutableList<>();
 
         ChangeProductionAtEngineShopMove m;
 
         // Should fail because current production at station 0 is null;
-        m = new ChangeProductionAtEngineShopMove(after, before, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        m = new ChangeProductionAtEngineShopMove(after, before, 0, MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         // Should fail because station 6 does not exist.
-        m = new ChangeProductionAtEngineShopMove(before, after, 6,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        m = new ChangeProductionAtEngineShopMove(before, after, 6, MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         // Should go through
-        m = new ChangeProductionAtEngineShopMove(before, after, 0,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        m = new ChangeProductionAtEngineShopMove(before, after, 0, MapFixtureFactory.TEST_PRINCIPAL);
         assertTryMoveIsOk(m);
         assertDoMoveIsOk(m);
         assertTryUndoMoveIsOk(m);

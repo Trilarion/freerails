@@ -28,6 +28,7 @@ import junit.framework.TestCase;
  * JUnit Test for CityEconomic.
  */
 public class CityModelTest extends TestCase {
+
     /**
      * Tests generating populated CityModel from cities on the map.
      */

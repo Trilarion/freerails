@@ -173,7 +173,7 @@ public class MoveTrainPreMove implements PreMove {
 
     private Point2D currentTrainTarget(ReadOnlyWorld world) {
         TrainAccessor ta = new TrainAccessor(world, principal, trainID);
-        return ta.getTarget();
+        return ta.getTargetLocation();
     }
 
     // 666 optimize

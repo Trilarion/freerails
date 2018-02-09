@@ -21,7 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
@@ -93,25 +93,27 @@ public class StockPriceCalculatorTest extends TestCase {
 
         long expectedNetWorth = initialNetworth + income;
         assertEquals(expectedNetWorth, calc.netWorth(0));
-
     }
 
+    /**
+     *
+     */
     private void advanceTimeOneTick() {
         int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + 1);
         world.setTime(newTime);
-
     }
 
+    /**
+     *
+     */
     private void advanceTimeOneYear() {
         GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
         int tpy = calendar.getTicksPerYear();
         int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + tpy);
         world.setTime(newTime);
-
     }
-
 
     /**
      *
@@ -128,14 +130,15 @@ public class StockPriceCalculatorTest extends TestCase {
         assertEquals(0, calc.profitsLastYear(0));
         advanceTimeOneYear();
         assertEquals(income, calc.profitsLastYear(0));
-
     }
 
+    /**
+     *
+     * @param income
+     */
     private void addIncome(long income) {
         CargoBatch batch = new CargoBatch(0, Point2D.ZERO, 0, 0);
-
-        Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
-                batch, 0);
+        Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0, batch, 0);
         FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
         world.addTransaction(princ, transaction);
     }
@@ -156,5 +159,4 @@ public class StockPriceCalculatorTest extends TestCase {
         stockPrice = calc.calculate()[0].currentPrice;
         assertEquals(new Money(11), stockPrice);
     }
-
 }

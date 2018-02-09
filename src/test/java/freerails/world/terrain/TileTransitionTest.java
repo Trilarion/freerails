@@ -21,9 +21,9 @@ package freerails.world.terrain;
 import junit.framework.TestCase;
 
 /**
- * Test for OneTileMoveVector.
+ * Test for TileTransition.
  */
-public class CityTileTransitionTest extends TestCase {
+public class TileTransitionTest extends TestCase {
 
     /**
      *
@@ -52,13 +52,9 @@ public class CityTileTransitionTest extends TestCase {
         assertNearest(TileTransition.NORTH, 2, -5);
         assertNearest(TileTransition.NORTH, -2, -5);
         assertNearest(TileTransition.SOUTH, 2, 5);
-
         assertNearest(TileTransition.WEST, -5, -1);
-
         assertNearest(TileTransition.SOUTH_WEST, -4, 3);
-
         assertNearest(TileTransition.NORTH_EAST, 10, -6);
-
         assertNearest(TileTransition.NORTH_EAST, 10, -6);
     }
 

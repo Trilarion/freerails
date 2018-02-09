@@ -34,6 +34,7 @@ import java.util.HashSet;
  * Is used to generate fixtures for Junit tests.
  */
 public class MapFixtureFactory {
+
     /**
      * Only subclasses should use these constants.
      */
@@ -42,8 +43,7 @@ public class MapFixtureFactory {
     /**
      *
      */
-    public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER
-            .getPrincipal();
+    public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
 
     private MapFixtureFactory() {
     }

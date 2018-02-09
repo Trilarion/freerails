@@ -77,10 +77,13 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
         assertTrue(Arrays.equals(expected, actual));
     }
 
+    /**
+     *
+     * @return
+     */
     private int[] calNumOfEachTrackType() {
         int[] actual;
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(
-                world, MapFixtureFactory.TEST_PRINCIPAL);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, MapFixtureFactory.TEST_PRINCIPAL);
         actual = new int[3];
         aggregator.setType(0);
         actual[0] = aggregator.calculateQuantity();

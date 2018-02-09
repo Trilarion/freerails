@@ -57,8 +57,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                    .generateBuildTrackMove(points[i], vectors[i], rule, rule,
-                            world, MapFixtureFactory.TEST_PRINCIPAL);
+                    .generateBuildTrackMove(points[i], vectors[i], rule, rule, world, MapFixtureFactory.TEST_PRINCIPAL);
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(moveStatus.succeeds());
         }
@@ -87,8 +86,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10),
-                TileTransition.SOUTH_WEST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.SOUTH_WEST);
         fte = new FlatTrackExplorer(world, p);
 
         // There should be 3 branches.

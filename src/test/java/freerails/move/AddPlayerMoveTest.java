@@ -32,7 +32,6 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    @Override
     public void testMove() {
         Player newPlayer = new Player("New Player");
         assertTrue("Check reflexivity of Player.equals(.)", Utils
@@ -40,7 +39,6 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
         AddPlayerMove move = AddPlayerMove.generateMove(getWorld(), newPlayer);
         assertSurvivesSerialisation(move);
         assertDoThenUndoLeavesWorldUnchanged(move);
-
     }
 
     /**
@@ -51,7 +49,6 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
 
         AddPlayerMove move = AddPlayerMove.generateMove(getWorld(), newPlayer);
         assertOkButNotRepeatable(move);
-
     }
 
 }

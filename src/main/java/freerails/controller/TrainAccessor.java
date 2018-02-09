@@ -209,7 +209,7 @@ public class TrainAccessor {
      * @return the location of the station the train is currently heading
      * towards.
      */
-    public Point2D getTarget() {
+    public Point2D getTargetLocation() {
         TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, id);
         int scheduleID = train.getScheduleID();
         Schedule schedule = (ImmutableSchedule) world.get(p, KEY.TRAIN_SCHEDULES, scheduleID);

@@ -17,6 +17,7 @@ public final class WorldConstants {
      * size of a tile (height and width)
      */
     public static final int TILE_SIZE = 30;
+    public static final double TILE_DIAGONAL_SIZE = StrictMath.hypot(TILE_SIZE, TILE_SIZE);
     private static final int SHARE_BUNDLE_SIZE = 10000;
     public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
     /**

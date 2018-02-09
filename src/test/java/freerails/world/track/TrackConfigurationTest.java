@@ -37,35 +37,13 @@ import java.util.HashSet;
 public class TrackConfigurationTest extends TestCase {
 
     /**
-     * @param testName
-     */
-    public TrackConfigurationTest(java.lang.String testName) {
-        super(testName);
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * @return
-     */
-    public static Test suite() {
-
-        return new TestSuite(TrackConfigurationTest.class);
-    }
-
-    /**
      *
      */
     public void testAdd() {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
         TrackConfiguration b = TrackConfiguration.add(a, TileTransition.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("100010000"), b);
-        assertEquals(false, a == b);
+        assertFalse(a == b);
     }
 
     /**
@@ -80,8 +58,7 @@ public class TrackConfigurationTest extends TestCase {
             TrackConfiguration tc = TrackConfiguration.getFlatInstance(v);
             assertEquals(v.get9bitTemplate(), tc.get9bitTemplate());
             assertEquals(v.get8bitTemplate(), tc.get8bitTemplate());
-            TrackConfiguration tc2 = TrackConfiguration.from9bitTemplate(v
-                    .get9bitTemplate());
+            TrackConfiguration tc2 = TrackConfiguration.from9bitTemplate(v.get9bitTemplate());
             assertEquals(tc, tc2);
         }
 
@@ -119,8 +96,7 @@ public class TrackConfigurationTest extends TestCase {
         a = TrackConfiguration.getFlatInstance("000000000");
         assertEquals("no tile center", a.toString());
 
-        // Check that no two track configurations have the same String
-        // representation.
+        // Check that no two track configurations have the same String representation.
         HashSet<String> strings = new HashSet<>();
 
         for (int i = 0; i < 512; i++) {
@@ -130,7 +106,6 @@ public class TrackConfigurationTest extends TestCase {
             if (strings.contains(toString)) {
                 fail(toString + ' ' + i);
             }
-
             strings.add(toString);
         }
     }

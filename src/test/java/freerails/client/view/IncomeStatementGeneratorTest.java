@@ -80,7 +80,6 @@ public class IncomeStatementGeneratorTest extends TestCase {
         world = new FullWorld();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateCargoTypesList(world);
-        balanceSheetGenerator = new IncomeStatementGenerator(world,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PRINCIPAL);
     }
 }

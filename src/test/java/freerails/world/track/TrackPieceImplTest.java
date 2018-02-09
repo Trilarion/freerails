@@ -21,12 +21,13 @@
  */
 package freerails.world.track;
 
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Utils;
 import freerails.world.SKEY;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 /**
  *
@@ -55,10 +56,8 @@ public class TrackPieceImplTest extends TestCase {
         TrackPieceImpl tp1 = new TrackPieceImpl(tc1, rule0, 0, 0);
         assertEquals(tp1, tp1);
         TrackPieceImpl tp2 = new TrackPieceImpl(tc1, rule4, 0, 4);
-        assertFalse(tp1.equals(tp2));
-        TrackPieceImpl tp1Clone = (TrackPieceImpl) Utils
-                .cloneBySerialisation(tp1);
+        Assert.assertNotEquals(tp1, tp2);
+        TrackPieceImpl tp1Clone = (TrackPieceImpl) Utils.cloneBySerialisation(tp1);
         assertEquals(tp1, tp1Clone);
     }
-
 }

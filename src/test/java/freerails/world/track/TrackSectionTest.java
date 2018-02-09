@@ -39,7 +39,5 @@ public class TrackSectionTest extends TestCase {
         assertEquals(sectionB, sectionB);
         assertEquals(sectionA, sectionB);
         assertEquals(sectionB, sectionA);
-
     }
-
 }

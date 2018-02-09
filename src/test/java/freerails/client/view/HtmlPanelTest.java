@@ -45,10 +45,7 @@ public class HtmlPanelTest extends TestCase {
         assertEquals(expectedOutput, output);
 
         Object objectContext = new Object() {
-
             public String name = "Luke";
-
-
             public String question = "how are you?";
         };
 
@@ -64,10 +61,7 @@ public class HtmlPanelTest extends TestCase {
         String expectedOutput = "Hey Tom I would like you to meet Claire";
 
         Object objectContext = new Object() {
-
             public HtmlPanelPerson a = new HtmlPanelPerson("Tom");
-
-
             public HtmlPanelPerson b = new HtmlPanelPerson("Claire");
         };
 

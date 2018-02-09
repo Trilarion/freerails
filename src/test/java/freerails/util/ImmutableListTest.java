@@ -41,7 +41,6 @@ public class ImmutableListTest extends TestCase {
         assertEquals(ai, ci);
     }
 
-
     /**
      *
      */

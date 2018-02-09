@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
@@ -54,8 +54,7 @@ public class StationBuilderTest extends TestCase {
      *
      */
     public void testBuildStation() {
-        stationBuilder
-                .setStationType(stationBuilder.getTrackTypeID("terminal"));
+        stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
 
         MoveStatus moveStatus = trackBuilder.buildTrack(new Point2D(10, 10), track);

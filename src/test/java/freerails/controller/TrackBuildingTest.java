@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
-import freerails.server.MapFixtureFactory2;
+import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;

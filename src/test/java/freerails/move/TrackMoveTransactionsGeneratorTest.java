@@ -51,8 +51,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         MapFixtureFactory.generateTrackRuleList(world);
         Player player = new Player("test player", 0);
         world.addPlayer(player);
-        transactionGenerator = new TrackMoveTransactionsGenerator(world, player
-                .getPrincipal());
+        transactionGenerator = new TrackMoveTransactionsGenerator(world, player.getPrincipal());
     }
 
     /**
@@ -69,11 +68,9 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         oldTrackPiece = ((FullTerrainTile) world.getTile(Point2D.ZERO)).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
-        int owner = ChangeTrackPieceCompositeMove.getOwner(
-                MapFixtureFactory.TEST_PRINCIPAL, world);
+        int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL, world);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
-        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                Point2D.ZERO);
+        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Point2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);
         assertNotNull(move);

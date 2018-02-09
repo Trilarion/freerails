@@ -38,12 +38,10 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     public void testLogon() {
         try {
             // Test 1 : connecting a client.
-            assertEquals("No client connected yet.", 0, server
-                    .getNumberOpenConnections());
+            assertEquals("No client connected yet.", 0, server.getNumberOpenConnections());
 
             FreerailsClient client = new FreerailsClient();
-            LogOnResponse response = client.connect(getIpAddress(), getPort(),
-                    "name", "password");
+            LogOnResponse response = client.connect(getIpAddress(), getPort(),"name", "password");
             assertTrue(response.isSuccessful());
             assertEquals(1, server.getNumberOpenConnections());
 
@@ -52,25 +50,20 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             // Test 2 : a client that has already logged on.
             FreerailsClient client2 = new FreerailsClient();
-            response = client2.connect(getIpAddress(), getPort(), "name",
-                    "password");
-            assertFalse("The player is already logged on.", response
-                    .isSuccessful());
+            response = client2.connect(getIpAddress(), getPort(), "name","password");
+            assertFalse("The player is already logged on.", response.isSuccessful());
             assertEquals(1, server.getNumberOpenConnections());
 
             // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
-            response = client3.connect(getIpAddress(), getPort(), "name3",
-                    "password");
+            response = client3.connect(getIpAddress(), getPort(), "name3","password");
             assertTrue(response.isSuccessful());
             assertEquals(2, server.getNumberOpenConnections());
 
             // read list of connected clients.
-            assertConnectClientsEquals(client,
-                    new ImmutableList<>("name", "name3"));
+            assertConnectClientsEquals(client, new ImmutableList<>("name", "name3"));
             assertMapsAndSaveGamesReceived(client3);
-            assertConnectClientsEquals(client3, new ImmutableList<>("name",
-                    "name3"));
+            assertConnectClientsEquals(client3, new ImmutableList<>("name", "name3"));
 
             // Test 4 : disconnect the client from test 1.
             client.disconnect();
@@ -80,14 +73,12 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         }
     }
 
-    private void assertConnectClientsEquals(FreerailsClient client,
-                                            ImmutableList<String> expectedPlayerNames) throws IOException,
-            InterruptedException {
+    private void assertConnectClientsEquals(FreerailsClient client, ImmutableList<String> expectedPlayerNames)
+            throws IOException, InterruptedException {
         MessageToClient messageToClient = (MessageToClient) client.read();
         messageToClient.execute(client);
 
-        ImmutableList<String> actualPlayerNames = (ImmutableList<String>) client
-                .getProperty(ClientProperty.CONNECTED_CLIENTS);
+        ImmutableList<String> actualPlayerNames = (ImmutableList<String>) client.getProperty(ClientProperty.CONNECTED_CLIENTS);
         assertNotNull(actualPlayerNames);
         assertEquals(expectedPlayerNames, actualPlayerNames);
     }
