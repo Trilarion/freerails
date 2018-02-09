@@ -50,7 +50,6 @@ public class TrainImages {
             String overheadOnFileName = TrainImages.generateOverheadFilename(name, direction);
             overheadImages[direction] = imageManager.getImage(overheadOnFileName);
         }
-
     }
 
     /**
@@ -59,7 +58,7 @@ public class TrainImages {
      * @return
      */
     private static String generateOverheadFilename(String name, int i) {
-        TileTransition[] vectors = TileTransition.getList();
+        TileTransition[] vectors = TileTransition.getTransitions();
 
         return "trains" + File.separator + "overhead" + File.separator + name + '_' + vectors[i].toAbrvString() + ".png";
     }

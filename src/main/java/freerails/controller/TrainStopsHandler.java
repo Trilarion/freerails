@@ -86,7 +86,6 @@ public class TrainStopsHandler implements Serializable {
             TileTransition cameFrom = nextPot.facing();
             tileTransitions.add(0, cameFrom);
             extraDistanceNeeded -= cameFrom.getLength();
-
         }
 
         // Add existing tileTransitions
@@ -175,7 +174,7 @@ public class TrainStopsHandler implements Serializable {
         if (orderToGoto < 0) {
             return false;
         }
-        TrainOrdersModel order = schedule.getOrder(orderToGoto);
+        TrainOrders order = schedule.getOrder(orderToGoto);
         return !isTrainFull() && order.waitUntilFull;
     }
 
@@ -188,7 +187,6 @@ public class TrainStopsHandler implements Serializable {
             MoveStatus moveStatus = move.doMove(worldDiffs, principal);
             if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
         }
-
     }
 
     // TODO not yet implemented
@@ -206,7 +204,7 @@ public class TrainStopsHandler implements Serializable {
         if (stationId < 0) throw new IllegalStateException();
 
         // The train's orders may have changed...
-        TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
+        TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
 
         // Should we go to another station?
         if (stationId != order.stationId) {
@@ -284,7 +282,7 @@ public class TrainStopsHandler implements Serializable {
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         Station station;
 
-        TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
+        TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
         boolean waiting4FullLoad = order.waitUntilFull && !isTrainFull();
 
         if (!waiting4FullLoad) {

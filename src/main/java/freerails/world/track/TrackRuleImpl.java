@@ -83,7 +83,6 @@ public final class TrackRuleImpl implements TrackRule {
         }
         long dPrice = properties.getPrice().getAmount() - o.getPrice().getAmount();
         return (int) dPrice;
-
     }
 
     @Override

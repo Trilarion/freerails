@@ -75,7 +75,6 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
                 it.remove();
             }
         }
-
     }
 
     public Object getSelectedItem() {

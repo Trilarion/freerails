@@ -70,7 +70,6 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
             }
         }
         return true;
-
     }
 
     public Iterator<CargoBatch> cargoBatchIterator() {

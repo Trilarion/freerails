@@ -36,6 +36,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
      */
     @Override
     protected synchronized void setUp() throws Exception {
+        super.setUp();
 
         FreerailsGameServer result;
         FreerailsGameServer server1 = new FreerailsGameServer(new UnitTestSaveGamesManager());
@@ -65,6 +66,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
      */
     @Override
     protected synchronized void tearDown() throws Exception {
+        super.tearDown();
         connectionAccepter.stop();
     }
 

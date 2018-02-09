@@ -108,7 +108,6 @@ public class RendererRootImpl implements RendererRoot {
             engineImages.add(ti);
             pm.setValue(++progress);
         }
-
     }
 
     private TrackPieceRendererList loadTrackViews(ReadOnlyWorld w, ProgressMonitorModel pm) throws IOException {
@@ -192,7 +191,6 @@ public class RendererRootImpl implements RendererRoot {
             try {
                 tr = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                 tileRenderers.add(tr);
-
             } catch (IOException io) {
                 // If the image is missing, we generate it.
                 logger.warn("No tile renderer for " + t.getTerrainTypeName());
@@ -205,7 +203,6 @@ public class RendererRootImpl implements RendererRoot {
                 try {
                     tr = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, t, w);
                     tileRenderers.add(tr);
-
                 } catch (IOException io2) {
                     io2.printStackTrace();
                     throw new IllegalStateException();

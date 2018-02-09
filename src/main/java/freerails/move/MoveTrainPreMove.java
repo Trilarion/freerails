@@ -258,7 +258,6 @@ public class MoveTrainPreMove implements PreMove {
                 }
                 stopsHandler.makeTrainWait(30);
                 return cargoMove;
-
             }
             default:
                 throw new UnsupportedOperationException(activity.toString());
@@ -309,20 +308,19 @@ public class MoveTrainPreMove implements PreMove {
         // Create a new train motion object.
         TrainMotion nextMotion = nextMotion(w, nextVector);
         return new NextActivityMove(nextMotion, trainID, principal);
-
     }
 
     private TrainMotion nextMotion(ReadOnlyWorld w, TileTransition v) {
         TrainMotion motion = lastMotion(w);
 
-        SpeedAgainstTime speeds = nextSpeeds(w, v);
+        Motion speeds = nextSpeeds(w, v);
 
         PathOnTiles currentTiles = motion.getTiles(motion.duration());
-        PathOnTiles pathOnTiles = currentTiles.addSteps(v);
+        PathOnTiles pathOnTiles = currentTiles.addStep(v);
         return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
 
-    public SpeedAgainstTime nextSpeeds(ReadOnlyWorld w, TileTransition v) {
+    public Motion nextSpeeds(ReadOnlyWorld w, TileTransition v) {
         TrainAccessor ta = new TrainAccessor(w, principal, trainID);
         TrainMotion lastMotion = lastMotion(w);
 
@@ -333,17 +331,17 @@ public class MoveTrainPreMove implements PreMove {
         double a0 = acceleration(wagons);
         double topSpeed = topSpeed(wagons);
 
-        SpeedAgainstTime newSpeeds;
+        Motion newSpeeds;
         if (u < topSpeed) {
             double t = (topSpeed - u) / a0;
-            SpeedAgainstTime a = ConstantAcceleration.uat(u, a0, t);
+            Motion a = ConstantAccelerationMotion.fromSpeedAccelerationTime(u, a0, t);
             t = s / topSpeed + 1; // Slightly overestimate the time
-            SpeedAgainstTime b = ConstantAcceleration.uat(topSpeed, 0, t);
-            newSpeeds = new CompositeSpeedAgainstTime(a, b);
+            Motion b = ConstantAccelerationMotion.fromSpeedAccelerationTime(topSpeed, 0, t);
+            newSpeeds = new CompositeMotion(a, b);
         } else {
             double t;
             t = s / topSpeed + 1; // Slightly overestimate the time
-            newSpeeds = ConstantAcceleration.uat(topSpeed, 0, t);
+            newSpeeds = ConstantAccelerationMotion.fromSpeedAccelerationTime(topSpeed, 0, t);
         }
 
         return newSpeeds;
@@ -364,7 +362,7 @@ public class MoveTrainPreMove implements PreMove {
      */
     public Move stopTrain(ReadOnlyWorld world) {
         TrainMotion motion = lastMotion(world);
-        SpeedAgainstTime stopped = ConstantAcceleration.STOPPED;
+        Motion stopped = ConstantAccelerationMotion.STOPPED;
         double duration = motion.duration();
 
         int trainLength = motion.getTrainLength();

@@ -43,7 +43,8 @@ public class FlatTrackExplorerTest extends TestCase {
      *
      */
     @Override
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
@@ -67,8 +68,6 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException
      */
     public void testGetFirstVectorToTry() throws NoTrackException {
-        setUp();
-
         PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.SOUTH_WEST);
         FlatTrackExplorer fte = new FlatTrackExplorer(world, p);
         TileTransition v = fte.getFirstVectorToTry();
@@ -82,8 +81,6 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException if no track
      */
     public void testGetPossibleDirections() throws NoTrackException {
-        setUp();
-
         FlatTrackExplorer fte;
 
         PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.SOUTH_WEST);
@@ -114,8 +111,6 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException if no track
      */
     public void testMoveTrackExplorer() throws NoTrackException {
-        setUp();
-
         FlatTrackExplorer fte;
 
         PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.EAST);
@@ -153,10 +148,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException
      */
     public void testHasNext() throws NoTrackException {
-        setUp();
-
-        FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.EAST));
+        FlatTrackExplorer explorer = new FlatTrackExplorer(world, PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.EAST));
         assertTrue(explorer.hasNextEdge());
     }
 
@@ -164,8 +156,6 @@ public class FlatTrackExplorerTest extends TestCase {
      *
      */
     public void testNoTrack() {
-        setUp();
-
         try {
             FlatTrackExplorer explorer = new FlatTrackExplorer(world,
                     PositionOnTrack.createComingFrom(new Point2D(4, 7), TileTransition.EAST));
@@ -179,10 +169,7 @@ public class FlatTrackExplorerTest extends TestCase {
      *
      */
     public void testGetPossiblePositions() {
-        setUp();
-
-        PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(
-                world, new Point2D(10, 10));
+        PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world, new Point2D(10, 10));
         assertNotNull(positions);
         assertEquals(3, positions.length);
 

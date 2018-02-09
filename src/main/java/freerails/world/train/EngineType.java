@@ -57,7 +57,6 @@ public final class EngineType implements Serializable {
         return engineTypeName.equals(other.engineTypeName)
 
                 && powerAtDrawbar == other.powerAtDrawbar && price.equals(other.price) && maintenance.equals(other.maintenance) && maxSpeed == other.maxSpeed;
-
     }
 
     /**
@@ -98,7 +97,6 @@ public final class EngineType implements Serializable {
         result = 29 * result + maintenance.hashCode();
         result = 29 * result + maxSpeed;
         return result;
-
     }
 
     @Override

@@ -36,6 +36,7 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = MapFixtureFactory2.getCopy();
     }
 
@@ -50,7 +51,6 @@ public class MapFixtureFactory2Test extends TestCase {
         assertNotNull(w2);
         assertNotSame(world, w2);
         assertEquals(world, w2);
-
     }
 
     /**
@@ -61,7 +61,6 @@ public class MapFixtureFactory2Test extends TestCase {
         assertTrue(world.size(SKEY.CARGO_TYPES) > 0);
         assertTrue(world.size(SKEY.TRACK_RULES) > 0);
         assertTrue(world.size(SKEY.TERRAIN_TYPES) > 0);
-
     }
 
     /**

@@ -171,7 +171,6 @@ public class DialogueBoxController implements WorldListListener {
          * selectEngine.setIgnoreRepaint(true);
          * selectWagons.setIgnoreRepaint(true);
          */
-
     }
 
     /**
@@ -412,7 +411,6 @@ public class DialogueBoxController implements WorldListListener {
         final NetWorthGraphPanel worthGraph = new NetWorthGraphPanel();
         worthGraph.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(worthGraph);
-
     }
 
     /**
@@ -423,7 +421,6 @@ public class DialogueBoxController implements WorldListListener {
         LeaderBoardPanel leaderBoardPanel = new LeaderBoardPanel();
         leaderBoardPanel.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(leaderBoardPanel);
-
     }
 
     /**
@@ -529,7 +526,6 @@ public class DialogueBoxController implements WorldListListener {
             showTerrainInfo(p);
         }
 
-
     }
 
     /**
@@ -538,7 +534,6 @@ public class DialogueBoxController implements WorldListListener {
      * @param principal
      */
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-
     }
 
     /**
@@ -566,6 +561,5 @@ public class DialogueBoxController implements WorldListListener {
      * @param principal
      */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-
     }
 }

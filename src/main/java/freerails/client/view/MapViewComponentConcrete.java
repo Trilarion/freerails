@@ -141,7 +141,6 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
         mapCursor = new FreerailsCursor(modelRoot, rendererRoot);
 
         modelRoot.addPropertyChangeListener(this);
-
     }
 
     /**

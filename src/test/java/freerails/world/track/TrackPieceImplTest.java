@@ -21,8 +21,8 @@
  */
 package freerails.world.track;
 
+import freerails.util.TestUtils;
 import freerails.world.MapFixtureFactory2;
-import freerails.util.Utils;
 import freerails.world.SKEY;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
@@ -41,6 +41,7 @@ public class TrackPieceImplTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = MapFixtureFactory2.getCopy();
     }
 
@@ -48,16 +49,18 @@ public class TrackPieceImplTest extends TestCase {
      *
      */
     public void testEqualsObject() {
-        TrackConfiguration tc1 = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
 
         TrackRule rule0 = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
         TrackRule rule4 = (TrackRule) world.get(SKEY.TRACK_RULES, 4);
 
-        TrackPieceImpl tp1 = new TrackPieceImpl(tc1, rule0, 0, 0);
-        assertEquals(tp1, tp1);
-        TrackPieceImpl tp2 = new TrackPieceImpl(tc1, rule4, 0, 4);
-        Assert.assertNotEquals(tp1, tp2);
-        TrackPieceImpl tp1Clone = (TrackPieceImpl) Utils.cloneBySerialisation(tp1);
-        assertEquals(tp1, tp1Clone);
+        TrackPieceImpl trackPiece1 = new TrackPieceImpl(trackConfiguration, rule0, 0, 0);
+        assertEquals(trackPiece1, trackPiece1);
+
+        TrackPieceImpl trackPiece2 = new TrackPieceImpl(trackConfiguration, rule4, 0, 4);
+        Assert.assertNotEquals(trackPiece1, trackPiece2);
+
+        TestUtils.assertCloneBySerializationBehavesWell(trackPiece1);
+        TestUtils.assertCloneBySerializationBehavesWell(trackPiece2);
     }
 }

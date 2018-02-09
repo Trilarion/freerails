@@ -50,7 +50,6 @@ public class BalanceSheetGenerator {
 
         GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
         ytd = new Stats(world, principal, ytdTimeInterval);
-
     }
 
     /**
@@ -76,7 +75,6 @@ public class BalanceSheetGenerator {
             QuantitiesAndValues qnv = aggregator.calculateQuantitiesAndValues();
             int quantity = qnv.quantities[0];
             amount += trackValue * quantity / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
-
         }
 
         return new Money(amount);

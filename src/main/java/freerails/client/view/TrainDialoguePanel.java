@@ -111,7 +111,6 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
         add(closeJButton, gridBagConstraints);
-
     }
 
 

@@ -36,7 +36,7 @@ import freerails.world.station.TrainBlueprint;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,7 +65,7 @@ public class TrainUpdater implements ServerAutomaton {
 
         // Add up to 4 stations to the schedule.
         while (wi.next() && s.getNumOrders() < 5) {
-            TrainOrdersModel orders = new TrainOrdersModel(wi.getIndex(), null, false, autoSchedule);
+            TrainOrders orders = new TrainOrders(wi.getIndex(), null, false, autoSchedule);
             s.addOrder(orders);
         }
 
@@ -92,7 +92,6 @@ public class TrainUpdater implements ServerAutomaton {
 
         Move move = addTrain.generateMove(world);
         moveReceiver.process(move);
-
     }
 
     /**
@@ -126,7 +125,6 @@ public class TrainUpdater implements ServerAutomaton {
 
     public void initAutomaton(MoveReceiver moveReceiver) {
         this.moveReceiver = moveReceiver;
-
     }
 
     public void moveTrains(ReadOnlyWorld world) {
@@ -154,7 +152,6 @@ public class TrainUpdater implements ServerAutomaton {
                     } else {
                         stoppedTrains.add(moveTrain);
                     }
-
                 }
             }
             for (MoveTrainPreMove preMove : movingTrains) {
@@ -172,6 +169,5 @@ public class TrainUpdater implements ServerAutomaton {
                 moveReceiver.process(move);
             }
         }
-
     }
 }

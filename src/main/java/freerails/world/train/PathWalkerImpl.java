@@ -115,7 +115,6 @@ public class PathWalkerImpl implements PathWalker {
         lastX = line.getX2();
         lastY = line.getY2();
         beforeFirst = false;
-
     }
 
     private void endInMiddleOfSegment(LineSegment line) {

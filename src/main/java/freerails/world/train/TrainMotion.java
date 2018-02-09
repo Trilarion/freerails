@@ -49,7 +49,7 @@ import java.util.ArrayList;
  * </ol>
  *
  * @see freerails.world.train.PathOnTiles
- * @see freerails.world.train.CompositeSpeedAgainstTime
+ * @see CompositeMotion
  */
 public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
 
@@ -57,7 +57,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     private final double duration, distanceEngineWillTravel;
     private final double initialPosition;
     private final PathOnTiles path;
-    private final SpeedAgainstTime speeds;
+    private final Motion speeds;
     private final int trainLength;
     private final TrainActivity activity;
 
@@ -76,7 +76,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      *                                  {@code (path.getLength() - initialPosition) > speeds.getTotalDistance()}.
      */
 
-    public TrainMotion(PathOnTiles path, int engineStep, int trainLength, SpeedAgainstTime speeds) {
+    public TrainMotion(PathOnTiles path, int engineStep, int trainLength, Motion speeds) {
         if (trainLength < TrainModel.WAGON_LENGTH || trainLength > TrainModel.MAX_TRAIN_LENGTH)
             throw new IllegalArgumentException();
         this.path = path;
@@ -90,14 +90,14 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             throw new IllegalArgumentException("The engine's initial position is not far enough along the path for " + "the train's initial position to be specified.");
         double totalPathDistance = path.getTotalDistance();
         distanceEngineWillTravel = totalPathDistance - initialPosition;
-        if (distanceEngineWillTravel > speeds.getDistance())
+        if (distanceEngineWillTravel > speeds.getTotalDistance())
             throw new IllegalArgumentException("The train's speed is not defined for the whole of the journey.");
 
         if (distanceEngineWillTravel == 0) {
             duration = 0.0d;
         } else {
-            double tempDuration = speeds.calculateTime(distanceEngineWillTravel);
-            while ((speeds.calculateDistance(tempDuration) - distanceEngineWillTravel) > 0) {
+            double tempDuration = speeds.calculateTimeAtDistance(distanceEngineWillTravel);
+            while ((speeds.calculateDistanceAtTime(tempDuration) - distanceEngineWillTravel) > 0) {
                 tempDuration -= Math.ulp(tempDuration);
             }
             duration = tempDuration;
@@ -119,7 +119,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
         activity = act;
         distanceEngineWillTravel = 0;
         initialPosition = path.getTotalDistance();
-        speeds = ConstantAcceleration.STOPPED;
+        speeds = ConstantAccelerationMotion.STOPPED;
         this.duration = duration;
     }
 
@@ -173,8 +173,8 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      */
     public double getDistance(double t) {
         checkT(t);
-        t = Math.min(t, speeds.getTime());
-        return speeds.calculateDistance(t);
+        t = Math.min(t, speeds.getTotalTime());
+        return speeds.calculateDistanceAtTime(t);
     }
 
     /**
@@ -188,8 +188,8 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      * @return
      */
     public double getSpeedAtEnd() {
-        double finalT = speeds.getTime();
-        return speeds.calcVelocity(finalT);
+        double finalT = speeds.getTotalTime();
+        return speeds.calculateSpeedAtTime(finalT);
     }
 
     /**
@@ -200,11 +200,11 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      * @throws IllegalArgumentException if t is outside the interval
      */
     public TrainPositionOnMap getState(double dt) {
-        dt = Math.min(dt, speeds.getTime());
+        dt = Math.min(dt, speeds.getTotalTime());
         double offset = calcOffSet(dt);
         Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength); // 666
-        double speed = speeds.calcVelocity(dt);
-        double acceleration = speeds.calcAcceleration(dt);
+        double speed = speeds.calculateSpeedAtTime(dt);
+        double acceleration = speeds.calculateAccelerationAtTime(dt);
         return TrainPositionOnMap.createInSameDirectionAsPathReversed(pathIt, speed, acceleration, activity);
     }
 
@@ -218,7 +218,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      */
     public PathOnTiles getTiles(double t) {
         checkT(t);
-        t = Math.min(t, speeds.getTime());
+        t = Math.min(t, speeds.getTotalTime());
         double start = calcOffSet(t);
         double end = start + trainLength;
         ArrayList<TileTransition> tileTransitions = new ArrayList<>();
@@ -234,7 +234,6 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             distanceSoFar += tileTransition.getLength();
 
             if (distanceSoFar < start) stepsBeforeStart++;
-
         }
 
         int lastStep = path.steps() - stepsAfterEnd;

@@ -56,7 +56,6 @@ public class OpenListTest extends TestCase {
         assertEquals(4, openList.smallestF());
         openList.popNodeWithSmallestF();
         assertEquals(5, openList.smallestF());
-
     }
 
     /**

@@ -25,9 +25,7 @@
 package freerails.world.track;
 
 import freerails.world.terrain.TileTransition;
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import java.util.HashSet;
 
@@ -43,7 +41,7 @@ public class TrackConfigurationTest extends TestCase {
         TrackConfiguration a = TrackConfiguration.getFlatInstance("000010000");
         TrackConfiguration b = TrackConfiguration.add(a, TileTransition.NORTH_WEST);
         assertEquals(TrackConfiguration.getFlatInstance("100010000"), b);
-        assertFalse(a == b);
+        assertFalse(a.equals(b));
     }
 
     /**
@@ -51,57 +49,57 @@ public class TrackConfigurationTest extends TestCase {
      */
     public void testGet8And9bitTemplate() {
         for (int i = 0; i < 512; i++) {
-            TrackConfiguration tc = TrackConfiguration.from9bitTemplate(i);
-            assertEquals(i, tc.get9bitTemplate());
+            TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(i);
+            assertEquals(i, trackConfiguration.get9bitTemplate());
         }
-        for (TileTransition v : TileTransition.getList()) {
-            TrackConfiguration tc = TrackConfiguration.getFlatInstance(v);
-            assertEquals(v.get9bitTemplate(), tc.get9bitTemplate());
-            assertEquals(v.get8bitTemplate(), tc.get8bitTemplate());
-            TrackConfiguration tc2 = TrackConfiguration.from9bitTemplate(v.get9bitTemplate());
-            assertEquals(tc, tc2);
-        }
+        for (TileTransition tileTransition : TileTransition.getTransitions()) {
+            TrackConfiguration trackConfiguration1 = TrackConfiguration.getFlatInstance(tileTransition);
+            assertEquals(tileTransition.get9bitTemplate(), trackConfiguration1.get9bitTemplate());
+            assertEquals(tileTransition.get8bitTemplate(), trackConfiguration1.get8bitTemplate());
 
+            TrackConfiguration trackConfiguration2 = TrackConfiguration.from9bitTemplate(tileTransition.get9bitTemplate());
+            assertEquals(trackConfiguration1, trackConfiguration2);
+        }
     }
 
     /**
      *
      */
     public void testGetLength() {
-        TrackConfiguration a = TrackConfiguration.getFlatInstance("010010000");
-        TrackConfiguration b = TrackConfiguration.getFlatInstance("010010010");
-        assertEquals(30, a.getLength());
-        assertEquals(60, b.getLength());
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("010010000");
+        assertEquals(30, trackConfiguration.getLength());
+        trackConfiguration = TrackConfiguration.getFlatInstance("010010010");
+        assertEquals(60, trackConfiguration.getLength());
     }
 
     /**
      *
      */
     public void testSubtract() {
-        TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
-        TrackConfiguration b = TrackConfiguration.subtract(a, TileTransition.NORTH_WEST);
-        assertEquals(TrackConfiguration.getFlatInstance("000010000"), b);
+        TrackConfiguration trackConfiguration1 = TrackConfiguration.getFlatInstance("100010000");
+        TrackConfiguration trackConfiguration2 = TrackConfiguration.subtract(trackConfiguration1, TileTransition.NORTH_WEST);
+        assertEquals(TrackConfiguration.getFlatInstance("000010000"), trackConfiguration2);
     }
 
     /**
      *
      */
     public void testToString() {
-        TrackConfiguration a = TrackConfiguration.getFlatInstance("100010000");
-        assertEquals("tile center, north west", a.toString());
-        a = TrackConfiguration.getFlatInstance(TileTransition.NORTH_WEST);
-        assertEquals("no tile center, north west", a.toString());
-        a = TrackConfiguration.getFlatInstance("000010000");
-        assertEquals("tile center", a.toString());
-        a = TrackConfiguration.getFlatInstance("000000000");
-        assertEquals("no tile center", a.toString());
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("100010000");
+        assertEquals("tile center, north west", trackConfiguration.toString());
+        trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH_WEST);
+        assertEquals("no tile center, north west", trackConfiguration.toString());
+        trackConfiguration = TrackConfiguration.getFlatInstance("000010000");
+        assertEquals("tile center", trackConfiguration.toString());
+        trackConfiguration = TrackConfiguration.getFlatInstance("000000000");
+        assertEquals("no tile center", trackConfiguration.toString());
 
         // Check that no two track configurations have the same String representation.
         HashSet<String> strings = new HashSet<>();
 
         for (int i = 0; i < 512; i++) {
-            TrackConfiguration test = TrackConfiguration.from9bitTemplate(i);
-            String toString = test.toString();
+            trackConfiguration = TrackConfiguration.from9bitTemplate(i);
+            String toString = trackConfiguration.toString();
 
             if (strings.contains(toString)) {
                 fail(toString + ' ' + i);

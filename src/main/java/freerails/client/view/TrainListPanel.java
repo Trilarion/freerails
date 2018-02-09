@@ -52,7 +52,6 @@ public class TrainListPanel extends JPanel implements View {
     // renderer, if not use the
     // trainsummaryjpanel
     private ActionListener showTrainDetails = e -> {
-
     };
     private JButton closeJButton;
     private JList list1;
@@ -157,7 +156,6 @@ public class TrainListPanel extends JPanel implements View {
         incomeLabel.setText("Income YTD");
         incomeLabel.setPreferredSize(new Dimension(100, 14));
         add(incomeLabel, new GridBagConstraints());
-
     }
 
     public TrainListPanel(boolean isInRHSJTabPane) {
@@ -214,7 +212,6 @@ public class TrainListPanel extends JPanel implements View {
 
     void setShowTrainDetailsActionListener(ActionListener l) {
         showTrainDetails = l;
-
     }
 
     int getSelectedTrainID() {
@@ -240,7 +237,6 @@ public class TrainListPanel extends JPanel implements View {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
-
     }
 
     /**

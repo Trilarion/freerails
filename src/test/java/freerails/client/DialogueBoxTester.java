@@ -38,7 +38,7 @@ import freerails.world.station.StationDemand;
 import freerails.world.station.Station;
 import freerails.world.train.MutableSchedule;
 import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 import freerails.world.train.WagonAndEngineTypesFactory;
 
 import javax.swing.*;
@@ -126,11 +126,11 @@ class DialogueBoxTester extends JFrame {
         world.add(TEST_PRINCIPAL, KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
-        TrainOrdersModel order = new TrainOrdersModel(0, new ImmutableList<>(0, 0, 0),
+        TrainOrders order = new TrainOrders(0, new ImmutableList<>(0, 0, 0),
                 false, false);
-        TrainOrdersModel order2 = new TrainOrdersModel(1, new ImmutableList<>(1, 2, 0,
+        TrainOrders order2 = new TrainOrders(1, new ImmutableList<>(1, 2, 0,
                 0, 0), true, false);
-        TrainOrdersModel order3 = new TrainOrdersModel(2, null, true, false);
+        TrainOrders order3 = new TrainOrders(2, null, true, false);
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
@@ -192,55 +192,55 @@ class DialogueBoxTester extends JFrame {
 
         show.setText("Show");
         showBrokerScreen.setText("Broker Screen");
-        showBrokerScreen.addActionListener(e -> newspaperActionPerformed(e));
+        showBrokerScreen.addActionListener(this::newspaperActionPerformed);
 
         show.add(showBrokerScreen);
 
         selectEngine.setText("Select Engine");
-        selectEngine.addActionListener(e -> selectEngineActionPerformed(e));
+        selectEngine.addActionListener(this::selectEngineActionPerformed);
 
         show.add(selectEngine);
 
         selectWagons.setText("Select Wagons");
-        selectWagons.addActionListener(e -> selectWagonsActionPerformed(e));
+        selectWagons.addActionListener(this::selectWagonsActionPerformed);
 
         show.add(selectWagons);
 
         selectTrainOrders.setText("Train Orders");
         selectTrainOrders
-                .addActionListener(e -> selectTrainOrdersActionPerformed(e));
+                .addActionListener(this::selectTrainOrdersActionPerformed);
 
         show.add(selectTrainOrders);
 
         showControls.setText("Show game controls");
-        showControls.addActionListener(e -> showControlsActionPerformed(e));
+        showControls.addActionListener(this::showControlsActionPerformed);
 
         show.add(showControls);
 
         showTerrainInfo.setText("Show Terrain Info");
-        showTerrainInfo.addActionListener(e -> showTerrainInfoActionPerformed(e));
+        showTerrainInfo.addActionListener(this::showTerrainInfoActionPerformed);
 
         show.add(showTerrainInfo);
 
         showStationInfo.setText("Show Station Info");
-        showStationInfo.addActionListener(e -> showStationInfoActionPerformed(e));
+        showStationInfo.addActionListener(this::showStationInfoActionPerformed);
 
         show.add(showStationInfo);
 
         showTrainList.setText("Train List");
-        showTrainList.addActionListener(e -> showTrainListActionPerformed(e));
+        showTrainList.addActionListener(this::showTrainListActionPerformed);
 
         show.add(showTrainList);
 
         showCargoWaitingAndDemand.setText("Cargo waiting & demand");
         showCargoWaitingAndDemand
-                .addActionListener(e -> showCargoWaitingAndDemandActionPerformed(e));
+                .addActionListener(this::showCargoWaitingAndDemandActionPerformed);
 
         show.add(showCargoWaitingAndDemand);
 
         showJavaSystemProperties.setText("Java System Properties");
         showJavaSystemProperties
-                .addActionListener(e -> showJavaSystemPropertiesActionPerformed(e));
+                .addActionListener(this::showJavaSystemPropertiesActionPerformed);
 
         throwException.setText("Throw Exception");
         throwException.addActionListener(e -> {
@@ -251,7 +251,7 @@ class DialogueBoxTester extends JFrame {
 
         showNetworthGraph.setText("Show net worth graph");
         showNetworthGraph
-                .addActionListener(e -> showNetworthGraphActionPerformed(e));
+                .addActionListener(this::showNetworthGraphActionPerformed);
 
         show.add(showNetworthGraph);
 
@@ -262,7 +262,6 @@ class DialogueBoxTester extends JFrame {
         glassPanel.setSize(800, 600);
         addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
         setSize(640, 480);
-
     }
 
     public static void main(String args[]) {

@@ -287,25 +287,23 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         newPlayersAllowed = false;
         confirmedPlayers.clear();
 
-        try {
-            World world = saveGamesManager.newMap(mapName);
+        World world = saveGamesManager.newMap(mapName);
 
-            String[] passwords = new String[players.size()];
+        String[] passwords = new String[players.size()];
 
-            // Add players to world.
-            for (int i = 0; i < players.size(); i++) {
-                String name = players.get(i).username;
-                Player player = new Player(name, i);
+        // Add players to world.
+        for (int i = 0; i < players.size(); i++) {
+            String name = players.get(i).username;
+            Player player = new Player(name, i);
 
-                Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-                MoveStatus moveStatus = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
-                if (!moveStatus.succeeds()) throw new IllegalStateException();
-                passwords[i] = players.get(i).password;
-            }
+            Move addPlayerMove = AddPlayerMove.generateMove(world, player);
+            MoveStatus moveStatus = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
+            if (!moveStatus.succeeds()) throw new IllegalStateException();
+            passwords[i] = players.get(i).password;
+        }
 
-            serverGameModel.setWorld(world, passwords);
-            setServerGameModel(serverGameModel);
-        } catch (IOException e) {}
+        serverGameModel.setWorld(world, passwords);
+        setServerGameModel(serverGameModel);
 
         sendWorldUpdatedCommand();
         logger.debug("newGame");
@@ -497,7 +495,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             logger.debug(message.toString());
                         }
                     }
-
                 } else {
                     // Remove connection.
                     removeConnection(player);

@@ -48,6 +48,7 @@ public class FinancialDataGathererTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         player = new Player("Player X", 0);
         world = new FullWorld();
 

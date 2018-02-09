@@ -67,8 +67,8 @@ public class UserMessageGenerator implements MoveReceiver {
         if (move instanceof CompositeMove) {
             List<Move> moves = ((CompositeMove) move).getMoves();
 
-            for (int i = 0; i < moves.size(); i++) {
-                process(moves.get(i));
+            for (Move move1 : moves) {
+                process(move1);
             }
         }
 
@@ -77,7 +77,6 @@ public class UserMessageGenerator implements MoveReceiver {
             if (wdm.getCause() == WorldDiffMoveCause.TrainArrives) {
                 trainArrives(wdm);
             }
-
         } else if (move instanceof ChangeGameSpeedMove) {
             logSpeed();
         }

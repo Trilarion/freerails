@@ -27,7 +27,6 @@ import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
 
@@ -128,7 +127,14 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         // int trackTemplate = (1 << (3 * (1 + tv.getY()) + (1 + tv.getX())));
         int trackTemplateAbove;
         int trackTemplateBelow;
-        int cornersTemplate = TrackConfiguration.stringTemplate2Int("101000101");
+        String templateString = "101000101";
+        // Hack - so that result is as expected by earlier written code.
+        StringBuffer strb = new StringBuffer(templateString);
+        strb = strb.reverse();
+        templateString = strb.toString();
+
+        // End of hack
+        int cornersTemplate = Integer.parseInt(templateString, 2);
         trackTemplate = trackTemplate & cornersTemplate;
 
         Dimension mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());

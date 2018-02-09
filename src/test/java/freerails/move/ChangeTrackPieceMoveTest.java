@@ -45,7 +45,8 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
      *
      */
     @Override
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         setHasSetupBeenCalled(true);
         setWorld(new FullWorld(20, 20));
         getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);

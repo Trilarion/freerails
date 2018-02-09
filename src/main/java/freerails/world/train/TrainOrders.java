@@ -29,7 +29,7 @@ import java.io.Serializable;
 /**
  * Encapsulates the orders for a train.
  */
-public class TrainOrdersModel implements Serializable {
+public class TrainOrders implements Serializable {
 
     private static final long serialVersionUID = 3616453397155559472L;
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
@@ -50,7 +50,7 @@ public class TrainOrdersModel implements Serializable {
      * @param wait
      * @param auto
      */
-    public TrainOrdersModel(int station, ImmutableList<Integer> newConsist, boolean wait, boolean auto) {
+    public TrainOrders(int station, ImmutableList<Integer> newConsist, boolean wait, boolean auto) {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
@@ -63,14 +63,14 @@ public class TrainOrdersModel implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainOrdersModel)) return false;
+        if (!(obj instanceof TrainOrders)) return false;
 
-        final TrainOrdersModel trainOrdersModel = (TrainOrdersModel) obj;
+        final TrainOrders trainOrders = (TrainOrders) obj;
 
-        if (autoConsist != trainOrdersModel.autoConsist) return false;
-        if (stationId != trainOrdersModel.stationId) return false;
-        if (waitUntilFull != trainOrdersModel.waitUntilFull) return false;
-        return consist != null ? consist.equals(trainOrdersModel.consist) : trainOrdersModel.consist == null;
+        if (autoConsist != trainOrders.autoConsist) return false;
+        if (stationId != trainOrders.stationId) return false;
+        if (waitUntilFull != trainOrders.waitUntilFull) return false;
+        return consist != null ? consist.equals(trainOrders.consist) : trainOrders.consist == null;
     }
 
     @Override

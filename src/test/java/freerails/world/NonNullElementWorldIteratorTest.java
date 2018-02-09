@@ -23,9 +23,7 @@ package freerails.world;
 
 import freerails.util.Point2D;
 import freerails.world.station.Station;
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import java.util.NoSuchElementException;
 
@@ -42,7 +40,8 @@ public class NonNullElementWorldIteratorTest extends TestCase {
      *
      */
     @Override
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld();
         station1 = new Station(new Point2D(10, 20), "Station1", 4, 0);
         station2 = new Station(new Point2D(15, 16), "Station2", 4, 1);

@@ -40,7 +40,7 @@ public class TileTransitionTest extends TestCase {
      */
     public void testGetNearestVector() {
         // Each vector should be the nearest to itself!
-        TileTransition[] vectors = TileTransition.getList();
+        TileTransition[] vectors = TileTransition.getTransitions();
 
         for (TileTransition v : vectors) {
             TileTransition v2 = TileTransition.getNearestVector(v.deltaX, v.deltaY);

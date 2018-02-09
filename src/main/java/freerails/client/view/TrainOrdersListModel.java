@@ -28,7 +28,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 
 import javax.swing.*;
 
@@ -79,7 +79,7 @@ class TrainOrdersListModel extends AbstractListModel {
         }
 
         boolean isPriorityOrders = 0 == index && s.hasPriorityOrders();
-        TrainOrdersModel order = getSchedule().getOrder(index);
+        TrainOrders order = getSchedule().getOrder(index);
 
         return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
     }
@@ -129,7 +129,7 @@ class TrainOrdersListModel extends AbstractListModel {
         /**
          *
          */
-        public final TrainOrdersModel order;
+        public final TrainOrders order;
 
         /**
          *
@@ -142,7 +142,7 @@ class TrainOrdersListModel extends AbstractListModel {
          * @param order
          * @param trainNumber
          */
-        private TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrdersModel order, int trainNumber) {
+        private TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrders order, int trainNumber) {
             this.isPriorityOrder = isPriorityOrder;
             this.gotoStatus = gotoStatus;
             this.order = order;

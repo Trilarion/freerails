@@ -60,7 +60,7 @@ public class StationBuildModel {
     private static final int trackTemplate = TrackConfiguration.from9bitTemplate(0x111).get9bitTemplate();
 
     /**
-     * Vector of StationBuildAction. Actions which represent stations which can
+     * List of StationBuildAction. Actions which represent stations which can
      * be built
      */
     private final List<Action> stationChooseActions = new ArrayList<>();
@@ -218,7 +218,6 @@ public class StationBuildModel {
             }
 
             modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, message);
-
         }
     }
 }

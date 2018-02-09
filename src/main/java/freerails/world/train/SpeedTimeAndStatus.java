@@ -21,56 +21,43 @@
  */
 package freerails.world.train;
 
+import freerails.util.Utils;
+
 import java.io.Serializable;
 
 /**
  * Stores the speed and success of a train immediately after an instant of time.
  */
+// TODO only used once, do we really need it
 public class SpeedTimeAndStatus implements Serializable {
 
     private static final long serialVersionUID = 1769385261436134444L;
-    /**
-     *
-     */
     private final double dt;
-
-    /**
-     *
-     */
     private final double speed;
-
-    /**
-     *
-     */
     private final double acceleration;
-
-    /**
-     *
-     */
     private final double s;
     private final TrainActivity activity;
 
-    SpeedTimeAndStatus(double acceleration, TrainActivity activity, double dt, double s, double speed) {
-        if (dt < 0) throw new IllegalArgumentException(String.valueOf(dt));
+    SpeedTimeAndStatus(double speed, double acceleration, double distance, double time, TrainActivity activity) {
+        if (time < 0) throw new IllegalArgumentException(String.valueOf(time));
         this.acceleration = acceleration;
-        this.activity = activity;
-        this.dt = dt;
-        this.s = s;
+        this.dt = time;
+        this.s = distance;
         this.speed = speed;
+        this.activity = Utils.verifyNotNull(activity);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof SpeedTimeAndStatus)) return false;
+        final SpeedTimeAndStatus other = (SpeedTimeAndStatus) obj;
 
-        final SpeedTimeAndStatus speedTimeAndStatus = (SpeedTimeAndStatus) obj;
-
-        if (acceleration != speedTimeAndStatus.acceleration) return false;
-        if (dt != speedTimeAndStatus.dt) return false;
-        if (s != speedTimeAndStatus.s) return false;
-        if (speed != speedTimeAndStatus.speed) return false;
-        return activity != null ? activity == speedTimeAndStatus.activity : speedTimeAndStatus.activity == null;
+        if (acceleration != other.acceleration) return false;
+        if (dt != other.dt) return false;
+        if (s != other.s) return false;
+        if (speed != other.speed) return false;
+        return activity != null ? activity == other.activity : other.activity == null;
     }
 
     @Override

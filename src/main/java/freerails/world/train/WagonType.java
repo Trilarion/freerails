@@ -63,7 +63,6 @@ public class WagonType implements Serializable {
         result = 29 * result + typeName.hashCode();
 
         return result;
-
     }
 
     @Override

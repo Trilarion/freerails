@@ -110,7 +110,6 @@ public class ActivityIteratorImpl implements ActivityIterator {
         }
         activityIndex--;
         ant = currentList.get(activityIndex);
-
     }
 
 }

@@ -34,7 +34,8 @@ public class SimpleAStarPathFinderTest extends TestCase {
      *
      */
     @Override
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         this.map = new Map();
         pathFinder = new SimpleAStarPathFinder();
     }
@@ -43,8 +44,6 @@ public class SimpleAStarPathFinderTest extends TestCase {
      *
      */
     public void testFindpath() {
-        setUp();
-
         int i = pathFinder.findstep(0, new int[]{1}, map);
         assertEquals(1, i);
 
@@ -77,7 +76,6 @@ public class SimpleAStarPathFinderTest extends TestCase {
      *
      */
     public void testExplorer() {
-        setUp();
         assertEquals(0, map.getPosition());
         assertTrue(map.hasNextEdge());
         map.nextEdge();
@@ -150,7 +148,6 @@ public class SimpleAStarPathFinderTest extends TestCase {
         public void moveForward() {
             this.setPosition(this.getVertexConnectedByEdge());
         }
-
     }
 
     private static class Node {

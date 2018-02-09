@@ -230,7 +230,6 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         public int hashCode() {
             return waitUntilFull.hashCode() + stationName.hashCode() + selected.hashCode() + gotoStatus + orderText.hashCode();
         }
-
     }
 
     private final class TrainOrderJPanelSingle extends JPanel implements View {
@@ -302,9 +301,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
             trainViewJPanel.setHeight(15);
             trainViewJPanel.setup(modelRoot, vl, null);
             principal = modelRoot.getPrincipal();
-
         }
-
     }
 
 }

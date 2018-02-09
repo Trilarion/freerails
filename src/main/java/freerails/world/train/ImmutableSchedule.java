@@ -33,7 +33,7 @@ import java.io.Serializable;
 public class ImmutableSchedule implements Schedule, Serializable {
 
     private static final long serialVersionUID = 3977858458324318264L;
-    private final ImmutableList<TrainOrdersModel> orders;
+    private final ImmutableList<TrainOrders> orders;
     private final int nextScheduledOrder;
     private final boolean hasPriorityOrders;
 
@@ -42,7 +42,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      * @param gotoStation
      * @param hasPriorityOrders
      */
-    public ImmutableSchedule(TrainOrdersModel[] orders, int gotoStation, boolean hasPriorityOrders) {
+    public ImmutableSchedule(TrainOrders[] orders, int gotoStation, boolean hasPriorityOrders) {
         this.orders = new ImmutableList<>(orders);
         nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;
@@ -61,7 +61,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      * @param i
      * @return
      */
-    public TrainOrdersModel getOrder(int i) {
+    public TrainOrders getOrder(int i) {
         return orders.get(i);
     }
 
@@ -75,12 +75,12 @@ public class ImmutableSchedule implements Schedule, Serializable {
         if (-1 == orderToGoto) {
             return -1;
         }
-        TrainOrdersModel order = orders.get(orderToGoto);
+        TrainOrders order = orders.get(orderToGoto);
         return order.getStationID();
     }
 
     public ImmutableList<Integer> getWagonsToAdd() {
-        TrainOrdersModel order = orders.get(getOrderToGoto());
+        TrainOrders order = orders.get(getOrderToGoto());
         return order.consist;
     }
 
@@ -108,7 +108,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      */
     public boolean stopsAtStation(int stationNumber) {
         for (int i = 0; i < getNumOrders(); i++) {
-            TrainOrdersModel order = getOrder(i);
+            TrainOrders order = getOrder(i);
 
             if (order.getStationID() == stationNumber) {
                 return true;
@@ -129,7 +129,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
     }
 
     public boolean autoConsist() {
-        TrainOrdersModel order = orders.get(getOrderToGoto());
+        TrainOrders order = orders.get(getOrderToGoto());
         return order.autoConsist;
     }
 }

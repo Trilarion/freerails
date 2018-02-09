@@ -35,7 +35,6 @@ public class TimeTickPreMove implements PreMove {
     private static final long serialVersionUID = 3690479125647208760L;
 
     private TimeTickPreMove() {
-
     }
 
     /**

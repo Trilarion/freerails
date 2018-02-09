@@ -23,7 +23,7 @@ import freerails.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +106,7 @@ class TrainSummeryModel {
             }
         }
         lastStationUpdate = currentTime;
-        TrainOrdersModel orders = null;
+        TrainOrders orders = null;
         TrainOrdersListModel ordersList = new TrainOrdersListModel(world, trainNum, principal);
         int size = ordersList.getSize();
         for (int i = 0; i < size; ++i) {
@@ -120,6 +120,5 @@ class TrainSummeryModel {
         String stationName = station.getStationName();
         lastStations.put(trainNum, stationName);
         return stationName;
-
     }
 }

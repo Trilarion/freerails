@@ -113,7 +113,6 @@ public class LoadGameJPanel extends JPanel implements View {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(refreshButton, gridBagConstraints);
-
     }
 
 

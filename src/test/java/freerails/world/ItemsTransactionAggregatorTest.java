@@ -53,7 +53,6 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         assertEquals(5, quant);
         transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
         world.addTransaction(principal, transaction);
-
     }
 
 }

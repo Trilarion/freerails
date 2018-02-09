@@ -66,7 +66,6 @@ class TrackTilesGenerator extends JPanel {
         TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
         rules = trackSetFactory.getRuleList();
         generateTiles();
-
     }
 
     /**
@@ -84,7 +83,6 @@ class TrackTilesGenerator extends JPanel {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
     }
 
     private static Point2D.Double controlPoint(Point2D.Double from) {
@@ -129,7 +127,6 @@ class TrackTilesGenerator extends JPanel {
                     imageManager.setImage(fileName, smallImage);
                 }
             }
-
         }
         try {
             imageManager.writeAllImages();
@@ -175,14 +172,11 @@ class TrackTilesGenerator extends JPanel {
                         g2.translate(60, 0);
                     } catch (IOException e) {
                     }
-
                 }
             }
 
             g.translate(0, 60);
-
         }
-
     }
 
 }

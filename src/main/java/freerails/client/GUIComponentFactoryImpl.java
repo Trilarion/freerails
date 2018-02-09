@@ -122,7 +122,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         });
         userMessageGenerator = new UserMessageGenerator(modelRoot, actionRoot);
         modelRoot.addCompleteMoveReceiver(userMessageGenerator);
-
     }
 
     private void countStations() {
@@ -424,7 +423,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param principal
      */
     public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
-
     }
 
     /**

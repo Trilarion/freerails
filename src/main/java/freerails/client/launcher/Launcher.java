@@ -196,7 +196,6 @@ public class Launcher extends JFrame implements LauncherInterface {
                         } catch (InterruptedException e) {}
                     }
                 }
-
             };
 
             Thread t = new Thread(r, "FreerailsGameServer");
@@ -246,7 +245,6 @@ public class Launcher extends JFrame implements LauncherInterface {
                     try {
                         Thread.sleep(20);
                     } catch (InterruptedException e) {
-
                     }
                 }
                 ScreenHandler screenHandler = guiClient.getScreenHandler();
@@ -391,7 +389,6 @@ public class Launcher extends JFrame implements LauncherInterface {
                             setButtonsVisible(true);
                         }
                     }
-
                 }
         }// End of switch statement
     }
@@ -626,7 +623,6 @@ public class Launcher extends JFrame implements LauncherInterface {
             default:
                 throw new IllegalArgumentException(String.valueOf(status));
         }
-
     }
 
     /**
@@ -636,7 +632,6 @@ public class Launcher extends JFrame implements LauncherInterface {
         infoLabel.setText(null);
         infoLabel.setIcon(null);
         nextButton.setEnabled(true);
-
     }
 
     /**
@@ -688,7 +683,6 @@ public class Launcher extends JFrame implements LauncherInterface {
             // that they are visible in the game via the
             // show java properties menu item.
             System.getProperties().putAll(properties);
-
         } catch (Exception e) {
             logger.warn(e.getMessage(), e);
         }

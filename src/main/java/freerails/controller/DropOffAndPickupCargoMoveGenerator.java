@@ -35,7 +35,7 @@ import freerails.world.station.StationConversion;
 import freerails.world.station.StationDemand;
 import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 import freerails.world.train.WagonType;
 
 import java.io.Serializable;
@@ -92,7 +92,7 @@ class DropOffAndPickupCargoMoveGenerator {
 
             assert (train.equals(world.get(principal, KEY.TRAINS, trainId)));
             Schedule schedule = train.getSchedule();
-            TrainOrdersModel order = schedule.getOrder(schedule.getOrderToGoto());
+            TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
 
             int nextStationId = order.stationId;
 

@@ -44,6 +44,7 @@ public class TrackPathFinderTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);

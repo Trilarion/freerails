@@ -104,8 +104,8 @@ public class TrackMoveTransactionsGenerator {
             CompositeMove cm = (CompositeMove) move;
             List<Move> moves = cm.getMoves();
 
-            for (int i = 0; i < moves.size(); i++) {
-                unpackMove(moves.get(i));
+            for (Move move1 : moves) {
+                unpackMove(move1);
             }
         }
     }

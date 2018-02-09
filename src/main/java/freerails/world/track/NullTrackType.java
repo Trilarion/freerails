@@ -82,7 +82,7 @@ public final class NullTrackType implements TrackRule {
      * @return
      */
     public boolean trackPieceIsLegal(TrackConfiguration config) {
-        return testTrackPieceLegality(config.getTrackGraphicsID());
+        return testTrackPieceLegality(config.getConfiguration());
     }
 
     /**

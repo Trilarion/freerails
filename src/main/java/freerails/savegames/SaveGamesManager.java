@@ -59,5 +59,5 @@ public interface SaveGamesManager {
      * @return
      * @throws IOException
      */
-    World newMap(String name) throws IOException;
+    World newMap(String name);
 }

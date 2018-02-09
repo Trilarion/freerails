@@ -38,24 +38,7 @@ import java.util.Map;
 
 public class QuickRGBTileRendererList implements TileRendererList {
 
-    private static final java.awt.GraphicsConfiguration defaultConfiguration = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-
-    /**
-     * @param world
-     */
-    public QuickRGBTileRendererList(ReadOnlyWorld world) {
-        int numberOfTerrainTypes = world.size(SKEY.TERRAIN_TYPES);
-        int[] rgbValues = new int[numberOfTerrainTypes];
-        Image[] images = new Image[numberOfTerrainTypes];
-
-        for (int i = 0; i < numberOfTerrainTypes; i++) {
-            TerrainType t = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
-            rgbValues[i] = t.getRGB();
-            images[i] = createImageFor(t);
-            Map<Integer, Integer> rgb2index = new HashMap<>();
-            rgb2index.put(t.getRGB(), i);
-        }
-    }
+    private static final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
     /**
      * @param t

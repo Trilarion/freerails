@@ -45,7 +45,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final Collection<ModelRootListener> listeners = new ArrayList<>();
     public boolean hasBeenSetup = false;
     private MoveChainFork moveFork = new MoveChainFork();
-    private UntriedMoveReceiver moveReceiver = new MyUntriedMoveReceiver();
+    private UntriedMoveReceiver moveReceiver;
     private FreerailsPrincipal playerPrincipal;
     private ServerCommandReceiver serverCommandReceiver;
     private ReadOnlyWorld world;
@@ -184,7 +184,6 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         for (ModelRootListener listener : listeners) {
             listener.propertyChange(property, oldValue, newValue);
         }
-
     }
 
     /**

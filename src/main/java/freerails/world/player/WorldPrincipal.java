@@ -48,6 +48,5 @@ class WorldPrincipal extends FreerailsPrincipal {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof WorldPrincipal && (principalName.equals(((WorldPrincipal) obj).principalName));
-
     }
 }

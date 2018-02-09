@@ -27,22 +27,22 @@ import freerails.world.Activity;
 /**
  *
  */
-public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>, SpeedAgainstTime {
+public class CompositeMotion implements Activity<SpeedTimeAndStatus>, Motion {
 
     private static final long serialVersionUID = 3146586143114534610L;
-    private final ImmutableList<SpeedAgainstTime> values;
+    private final ImmutableList<Motion> values;
     private final double finalT, finalS;
 
     /**
      * @param accs
      */
-    public CompositeSpeedAgainstTime(SpeedAgainstTime... accs) {
+    public CompositeMotion(Motion... accs) {
         values = new ImmutableList<>(accs);
-        values.containsNulls();
+        values.verifyNoneNull();
         double tempDuration = 0, tempTotalDistance = 0;
-        for (SpeedAgainstTime acc : accs) {
-            tempDuration += acc.getTime();
-            tempTotalDistance += acc.getDistance();
+        for (Motion acc : accs) {
+            tempDuration += acc.getTotalTime();
+            tempTotalDistance += acc.getTotalDistance();
         }
         finalT = tempDuration;
         finalS = tempTotalDistance;
@@ -51,9 +51,9 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>, 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof CompositeSpeedAgainstTime)) return false;
+        if (!(obj instanceof CompositeMotion)) return false;
 
-        final CompositeSpeedAgainstTime compositeSpeedAgainstTime = (CompositeSpeedAgainstTime) obj;
+        final CompositeMotion compositeSpeedAgainstTime = (CompositeMotion) obj;
 
         if (finalT != compositeSpeedAgainstTime.finalT) return false;
         if (finalS != compositeSpeedAgainstTime.finalS) return false;
@@ -91,77 +91,77 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>, 
         double speed;
 
         TandI tai = getIndex(dt);
-        SpeedAgainstTime acc = values.get(tai.i);
-        speed = acc.calcVelocity(tai.offset);
-        acceleration = acc.calcAcceleration(tai.offset);
-        s = acc.calculateDistance(tai.offset);
+        Motion acc = values.get(tai.i);
+        speed = acc.calculateSpeedAtTime(tai.offset);
+        acceleration = acc.calculateAccelerationAtTime(tai.offset);
+        s = acc.calculateDistanceAtTime(tai.offset);
 
-        return new SpeedTimeAndStatus(acceleration, activity, dt, s, speed);
+        return new SpeedTimeAndStatus(speed, acceleration, s, dt, activity);
     }
 
-    public double calculateDistance(double time) {
+    public double calculateDistanceAtTime(double time) {
         if (time == finalT) return finalS;
         checkT(time);
         TandI tai = getIndex(time);
         double s = 0;
         for (int i = 0; i < tai.i; i++) {
-            SpeedAgainstTime acc = values.get(i);
-            s += acc.getDistance();
+            Motion acc = values.get(i);
+            s += acc.getTotalDistance();
         }
-        SpeedAgainstTime acc = values.get(tai.i);
-        if (tai.offset >= acc.getTime()) {
+        Motion acc = values.get(tai.i);
+        if (tai.offset >= acc.getTotalTime()) {
             // Note, it is possible for tai.offset > acc.getTransaction()
             // even though we called checkT(t) above
-            s += acc.getDistance();
+            s += acc.getTotalDistance();
         } else {
-            s += acc.calculateDistance(tai.offset);
+            s += acc.calculateDistanceAtTime(tai.offset);
         }
         return s;
     }
 
-    public double calculateTime(double distance) {
+    public double calculateTimeAtDistance(double distance) {
         if (distance == finalS) return finalT;
         if (distance > finalS) throw new IllegalArgumentException(String.valueOf(distance));
 
         double sSoFar = 0;
         double tSoFar = 0;
         int i = 0;
-        SpeedAgainstTime acc = values.get(i);
+        Motion acc = values.get(i);
 
-        while ((sSoFar + acc.getDistance()) < distance) {
-            sSoFar += acc.getDistance();
-            tSoFar += acc.getTime();
+        while ((sSoFar + acc.getTotalDistance()) < distance) {
+            sSoFar += acc.getTotalDistance();
+            tSoFar += acc.getTotalTime();
             i++;
             acc = values.get(i);
         }
         double sOffset = distance - sSoFar;
-        if (sOffset >= acc.getDistance()) {
-            tSoFar += acc.getTime();
+        if (sOffset >= acc.getTotalDistance()) {
+            tSoFar += acc.getTotalTime();
         } else {
-            tSoFar += acc.calculateTime(sOffset);
+            tSoFar += acc.calculateTimeAtDistance(sOffset);
         }
         return tSoFar;
     }
 
-    public double calcVelocity(double time) {
+    public double calculateSpeedAtTime(double time) {
         checkT(time);
         TandI tai = getIndex(time);
-        SpeedAgainstTime acc = values.get(tai.i);
-        return acc.calcVelocity(tai.offset);
+        Motion acc = values.get(tai.i);
+        return acc.calculateSpeedAtTime(tai.offset);
     }
 
-    public double calcAcceleration(double time) {
+    public double calculateAccelerationAtTime(double time) {
         checkT(time);
         TandI tai = getIndex(time);
-        SpeedAgainstTime acc = values.get(tai.i);
-        return acc.calcAcceleration(tai.offset);
+        Motion acc = values.get(tai.i);
+        return acc.calculateAccelerationAtTime(tai.offset);
     }
 
-    public double getTime() {
+    public double getTotalTime() {
         return finalT;
     }
 
-    public double getDistance() {
+    public double getTotalDistance() {
         return finalS;
     }
 
@@ -169,13 +169,13 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>, 
         checkT(t);
         double tSoFar = 0;
         for (int i = 0; i < values.size(); i++) {
-            SpeedAgainstTime acc = values.get(i);
+            Motion acc = values.get(i);
 
-            if (t <= (tSoFar + acc.getTime())) {
+            if (t <= (tSoFar + acc.getTotalTime())) {
                 double offset = t - tSoFar;
                 return new TandI(i, offset);
             }
-            tSoFar += acc.getTime();
+            tSoFar += acc.getTotalTime();
         }
         // Should never happen since we call checkT() above!
         throw new IllegalStateException(String.valueOf(t));
@@ -197,7 +197,6 @@ public class CompositeSpeedAgainstTime implements Activity<SpeedTimeAndStatus>, 
             this.i = i;
             offset = t;
         }
-
     }
 
 }

@@ -237,7 +237,6 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(spacer, gridBagConstraints);
-
     }
 
     /**
@@ -312,7 +311,6 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
                     toggleButton.addActionListener(e -> {
                         selectionSet.put(TrackCategories.tunnel, ruleID);
                         setBuildTrackStrategy();
-
                     });
                     price = rule.getPrice();
                     tunnelsJPanel.add(toggleButton);
@@ -338,7 +336,6 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
                 selectionSet.put(category, i);
                 toggleButton.setSelected(true);
             }
-
         }
         addNoTunnelsButton();
         addNoBridgesButton();
@@ -435,7 +432,6 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
         setVisible(false, false, false, true);
         setTrackBuilderMode(BuildMode.BUILD_STATION);
-
     }
 
     private void upgradeTrackActionPerformed(ActionEvent evt) {
@@ -443,7 +439,6 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         setVisible(true, true, false, false);
         cancelStationPlacement();
         setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
-
     }
 
     private void addTrackActionPerformed(ActionEvent evt) {

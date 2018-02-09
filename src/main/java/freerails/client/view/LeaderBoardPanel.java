@@ -81,7 +81,6 @@ public class LeaderBoardPanel extends JPanel implements View {
         addMouseListener(mouseAdapter);
         playersList.addMouseListener(mouseAdapter);
         setSize(getPreferredSize());
-
     }
 
     /**

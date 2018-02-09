@@ -84,7 +84,6 @@ public class List1DDiff<T> extends ListXDDiffs<T> implements List1D<T> {
      */
     public void set(int i, T element) {
         super.set(element, i);
-
     }
 
     @Override

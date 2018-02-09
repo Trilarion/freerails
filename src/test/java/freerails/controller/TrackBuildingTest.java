@@ -94,7 +94,6 @@ public class TrackBuildingTest extends TestCase {
         } catch (PathNotFoundException e) {
             fail();
         }
-
     }
 
     /**
@@ -135,7 +134,6 @@ public class TrackBuildingTest extends TestCase {
         } catch (PathNotFoundException e) {
             fail();
         }
-
     }
 
     /**

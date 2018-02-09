@@ -53,6 +53,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         // Set up the world object with three cargo types, one station, and one
         // train.
         world = new FullWorld();
@@ -294,7 +295,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         assertEquals(expectedOnTrain.toImmutableCargoBundle(), getCargoOnTrain());
         assertEquals(expectedAtStation.toImmutableCargoBundle(), getCargoAtStation());
-
     }
 
     private void removeAllWagonsFromTrain() {

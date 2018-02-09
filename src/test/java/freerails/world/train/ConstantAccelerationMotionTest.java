@@ -28,31 +28,32 @@ import java.util.Random;
 /**
  *
  */
-public class ConstantAccelerationTest extends TestCase {
+public class ConstantAccelerationMotionTest extends TestCase {
 
     /**
      *
      */
     public void testTandS() {
-        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 5);
-        double s = acc1.getDistance();
-        SpeedAgainstTime acc2 = ConstantAcceleration.uas(0, 10, s);
-        assertEquals(acc1, acc2);
+        Motion accelerationMotion1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(0, 10, 5);
 
-        acc1 = ConstantAcceleration.uat(10, 0, 5);
-        assertEquals(50, acc1.getDistance(), 0.00001);
-        acc2 = ConstantAcceleration.uas(10, 0, acc1.getDistance());
-        assertEquals(acc1, acc2);
+        double distance1 = accelerationMotion1.getTotalDistance();
+        Motion accelerationMotion2 = ConstantAccelerationMotion.fromSpeedAccelerationDistance(0, 10, distance1);
+        assertEquals(accelerationMotion1, accelerationMotion2);
 
+        accelerationMotion1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(10, 0, 5);
+        assertEquals(50, accelerationMotion1.getTotalDistance(), 0.00001);
+
+        accelerationMotion2 = ConstantAccelerationMotion.fromSpeedAccelerationDistance(10, 0, accelerationMotion1.getTotalDistance());
+        assertEquals(accelerationMotion1, accelerationMotion2);
     }
 
     /**
      *
      */
     public void testEquals() {
-        SpeedAgainstTime acc1 = ConstantAcceleration.uat(0, 10, 4);
-        SpeedAgainstTime acc2 = ConstantAcceleration.uat(0, 10, 4);
-        assertEquals(acc1, acc2);
+        Motion accelerationMotion1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(0, 10, 4);
+        Motion accelerationMotion2 = ConstantAccelerationMotion.fromSpeedAccelerationTime(0, 10, 4);
+        assertEquals(accelerationMotion1, accelerationMotion2);
     }
 
     /**
@@ -60,26 +61,24 @@ public class ConstantAccelerationTest extends TestCase {
      */
     public void testContract() {
         Random r = new Random(88);
-        for (int i = 0; i < 1000; i++) {
-            ConstantAcceleration acc1 = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r
-                    .nextDouble());
+        for (int i = 0; i < 2000; i++) {
+            ConstantAccelerationMotion acc1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(r.nextDouble(), r.nextDouble(), r.nextDouble());
             checkContract(acc1);
-            ConstantAcceleration acc2 = ConstantAcceleration.uas(r.nextDouble(), r.nextDouble(), r
-                    .nextDouble());
+            ConstantAccelerationMotion acc2 = ConstantAccelerationMotion.fromSpeedAccelerationDistance(r.nextDouble(), r.nextDouble(), r.nextDouble());
             checkContract(acc2);
         }
     }
 
     /**
      * Checks the specified object satisfies the contract defined by the
-     * interface SpeedAgainstTime.
+     * interface Motion.
      *
      * @param sat
      */
-    public static void checkContract(SpeedAgainstTime sat) {
-        double s = sat.getDistance();
+    public static void checkContract(Motion sat) {
+        double s = sat.getTotalDistance();
         double ulps = Math.ulp(s);
-        double t = sat.getTime();
+        double t = sat.getTotalTime();
         double ulpt = Math.ulp(t);
 
         // Check calculateDistance()
@@ -90,9 +89,9 @@ public class ConstantAccelerationTest extends TestCase {
         for (double d = 0; d < 1.0d; d += 0.1d) {
             checkCalcSCalcVandCalcA(sat, t * d);
         }
-        double actualS = sat.calculateDistance(0);
+        double actualS = sat.calculateDistanceAtTime(0);
         assertEquals(0.0d, actualS);
-        actualS = sat.calculateDistance(t);
+        actualS = sat.calculateDistanceAtTime(t);
         assertEquals(s, actualS);
 
         // Check calculateTime()
@@ -103,11 +102,10 @@ public class ConstantAccelerationTest extends TestCase {
         for (double d = 0; d < 1.0d; d += 0.1d) {
             checkCalcT(sat, s * d);
         }
-        double actualT = sat.calculateTime(0);
+        double actualT = sat.calculateTimeAtDistance(0);
         assertEquals(0.0d, actualT);
-        actualT = sat.calculateTime(s);
+        actualT = sat.calculateTimeAtDistance(s);
         assertEquals(t, actualT);
-
     }
 
     /**
@@ -115,31 +113,30 @@ public class ConstantAccelerationTest extends TestCase {
      * @param sat
      * @param t
      */
-    private static void checkCalcSCalcVandCalcA(SpeedAgainstTime sat, double t) {
-        boolean exceptionExpected = (t < 0) || (t > sat.getTime());
+    private static void checkCalcSCalcVandCalcA(Motion sat, double t) {
+        boolean exceptionExpected = (t < 0) || (t > sat.getTotalTime());
         try {
-            double actualS = sat.calculateDistance(t);
+            double actualS = sat.calculateDistanceAtTime(t);
             assertTrue(actualS >= 0);
-            assertTrue(actualS <= sat.getDistance());
+            assertTrue(actualS <= sat.getTotalDistance());
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);
         }
         // Also check getV and getA
         try {
-            double v = sat.calcVelocity(t);
+            double v = sat.calculateSpeedAtTime(t);
             assertTrue(v >= 0);
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);
         }
         try {
-            sat.calcAcceleration(t);
+            sat.calculateAccelerationAtTime(t);
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);
         }
-
     }
 
     /**
@@ -147,12 +144,12 @@ public class ConstantAccelerationTest extends TestCase {
      * @param sat
      * @param s
      */
-    private static void checkCalcT(SpeedAgainstTime sat, double s) {
-        boolean exceptionExpected = (s < 0) || (s > sat.getDistance());
+    private static void checkCalcT(Motion sat, double s) {
+        boolean exceptionExpected = (s < 0) || (s > sat.getTotalDistance());
         try {
-            double actualT = sat.calculateTime(s);
+            double actualT = sat.calculateTimeAtDistance(s);
             assertTrue(actualT >= 0);
-            assertTrue(actualT <= sat.getTime());
+            assertTrue(actualT <= sat.getTotalTime());
             assertFalse(exceptionExpected);
         } catch (IllegalArgumentException e) {
             assertTrue(exceptionExpected);

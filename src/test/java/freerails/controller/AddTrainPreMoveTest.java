@@ -69,8 +69,8 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.succeeds());
 
-        TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
-        TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
+        TrainOrders order0 = new TrainOrders(0, null, false, false);
+        TrainOrders order1 = new TrainOrders(1, null, false, false);
         MutableSchedule s = new MutableSchedule();
         s.addOrder(order0);
         s.addOrder(order1);
@@ -142,7 +142,7 @@ public class AddTrainPreMoveTest extends AbstractMoveTestCase {
         if (!moveStatus.succeeds())
             throw new IllegalStateException(moveStatus.getMessage());
 
-        TrainOrdersModel[] orders = {};
+        TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
         AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from, principal, is);
         Move move = addTrain.generateMove(world);

@@ -92,7 +92,6 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
             if (underlyingList.sizeD1() <= dim[0]) return -1;
             if (underlyingList.sizeD2(dim[0]) <= dim[1]) return -1;
             return underlyingList.sizeD3(dim[0], dim[1]);
-
         }
         throw new IllegalArgumentException(String.valueOf(dim.length));
     }
@@ -102,7 +101,6 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
      */
     public void removeLastD1() {
         super.removeLastList();
-
     }
 
     /**
@@ -129,7 +127,6 @@ public class List3DDiff<T> extends ListXDDiffs<T> implements List3D<T> {
      */
     public void set(int d1, int d2, int d3, T element) {
         super.set(element, d1, d2, d3);
-
     }
 
     /**

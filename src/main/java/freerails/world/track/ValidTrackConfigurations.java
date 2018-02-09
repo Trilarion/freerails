@@ -27,22 +27,22 @@ import java.util.*;
 public final class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
-    private final Set<TrackConfiguration> legalConfigs;
+    private final Set<TrackConfiguration> legalTrackConfigurations;
     private final int maximumConsecutivePieces;
 
     /**
      * @param max
-     * @param legalTrackTemplatesArrayList
+     * @param legalTrackTemplateStrings
      */
-    public ValidTrackConfigurations(int max, Iterable<String> legalTrackTemplatesArrayList) {
+    public ValidTrackConfigurations(int max, Iterable<String> legalTrackTemplateStrings) {
         maximumConsecutivePieces = max;
 
-        Set<TrackConfiguration> temp = new HashSet<>();
+        Set<TrackConfiguration> trackConfigurations = new HashSet<>();
         // Iterate over the track templates.
-        for (String trackTemplateString : legalTrackTemplatesArrayList) {
-            processTemplate(trackTemplateString, temp);
+        for (String trackTemplateString : legalTrackTemplateStrings) {
+            processTemplate(trackTemplateString, trackConfigurations);
         }
-        legalConfigs = Collections.unmodifiableSet(temp);
+        legalTrackConfigurations = Collections.unmodifiableSet(trackConfigurations);
     }
 
     /**
@@ -55,7 +55,7 @@ public final class ValidTrackConfigurations implements Serializable {
         for (String aLegalTrackTemplatesArray : legalTrackTemplatesArray) {
             processTemplate(aLegalTrackTemplatesArray, temp);
         }
-        legalConfigs = Collections.unmodifiableSet(temp);
+        legalTrackConfigurations = Collections.unmodifiableSet(temp);
     }
 
     private static void processTemplate(String trackTemplateString, Collection<TrackConfiguration> temp) {
@@ -82,7 +82,7 @@ public final class ValidTrackConfigurations implements Serializable {
         if (obj instanceof ValidTrackConfigurations) {
             ValidTrackConfigurations test = (ValidTrackConfigurations) obj;
 
-            return maximumConsecutivePieces == test.maximumConsecutivePieces && legalConfigs.equals(test.legalConfigs);
+            return maximumConsecutivePieces == test.maximumConsecutivePieces && legalTrackConfigurations.equals(test.legalTrackConfigurations);
         }
         return false;
     }
@@ -91,14 +91,14 @@ public final class ValidTrackConfigurations implements Serializable {
      * @return
      */
     public Iterator<TrackConfiguration> getLegalConfigurationsIterator() {
-        return legalConfigs.iterator();
+        return legalTrackConfigurations.iterator();
     }
 
     @Override
     public int hashCode() {
         int result;
         result = maximumConsecutivePieces;
-        result = 29 * result + (legalConfigs != null ? legalConfigs.hashCode() : 0);
+        result = 29 * result + (legalTrackConfigurations != null ? legalTrackConfigurations.hashCode() : 0);
 
         return result;
     }
@@ -108,6 +108,6 @@ public final class ValidTrackConfigurations implements Serializable {
      * @return
      */
     public boolean trackConfigurationIsLegal(TrackConfiguration trackConfiguration) {
-        return legalConfigs.contains(trackConfiguration);
+        return legalTrackConfigurations.contains(trackConfiguration);
     }
 }

@@ -37,7 +37,6 @@ import java.util.Iterator;
 public class BuildTrackRenderer implements Painter {
 
     private final ModelRoot modelRoot;
-    private final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
     private final RendererRoot rendererRoot;
 
     /**
@@ -47,7 +46,6 @@ public class BuildTrackRenderer implements Painter {
     public BuildTrackRenderer(RendererRoot trackPieceViewList, ModelRoot modelRoot) {
         this.modelRoot = modelRoot;
         rendererRoot = trackPieceViewList;
-
     }
 
     private FullWorldDiffs getWorldDiffs() {
@@ -68,13 +66,13 @@ public class BuildTrackRenderer implements Painter {
             for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D point = iter.next();
                 FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point);
-                TrackPiece tp = fp.getTrackPiece();
+                TrackPiece trackPiece = fp.getTrackPiece();
 
-                int graphicsNumber = tp.getTrackGraphicID();
+                int graphicsNumber = trackPiece.getTrackGraphicID();
 
-                int ruleNumber = tp.getTrackTypeID();
-                freerails.client.renderer.TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
-                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x, point.y, tileSize);
+                int ruleNumber = trackPiece.getTrackTypeID();
+                TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
+                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x, point.y, ClientConfig.tileSize);
             }
 
             ReadOnlyWorld realWorld = modelRoot.getWorld();
@@ -85,8 +83,8 @@ public class BuildTrackRenderer implements Painter {
              */
             for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Point2D p = iter.next();
-                int x = p.x * tileSize.width + (tileSize.width - ClientConfig.SMALL_DOT_WIDTH) / 2;
-                int y = p.y * tileSize.width + (tileSize.height - ClientConfig.SMALL_DOT_WIDTH) / 2;
+                int x = p.x * ClientConfig.tileSize.width + (ClientConfig.tileSize.width - ClientConfig.SMALL_DOT_WIDTH) / 2;
+                int y = p.y * ClientConfig.tileSize.height + (ClientConfig.tileSize.height - ClientConfig.SMALL_DOT_WIDTH) / 2;
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
                 FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p);
 
@@ -96,7 +94,6 @@ public class BuildTrackRenderer implements Painter {
                 g.fillOval(x, y, ClientConfig.SMALL_DOT_WIDTH, ClientConfig.SMALL_DOT_WIDTH);
             }
         }
-
     }
 
 }

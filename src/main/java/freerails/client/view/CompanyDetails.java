@@ -31,6 +31,5 @@ class CompanyDetails {
         for (int i = 0; i < 100; i++) {
             value[i] = Integer.MIN_VALUE;
         }
-
     }
 }

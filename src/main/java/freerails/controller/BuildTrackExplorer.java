@@ -211,7 +211,6 @@ public class BuildTrackExplorer implements GraphExplorer {
                 return null; // Can't build on this terrain!
             }
             rule = (TrackRule) world.get(SKEY.TRACK_RULES, trackRuleID);
-
         } else {
             rule = tile.getTrackPiece().getTrackRule();
         }

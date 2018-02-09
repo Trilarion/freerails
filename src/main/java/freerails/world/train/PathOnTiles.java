@@ -27,10 +27,7 @@ import freerails.world.terrain.TileTransition;
 import freerails.world.track.PathIterator;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * An immutable class that stores a path made up of OneTileMoveVectors.
@@ -46,9 +43,9 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectorsList
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
-    public PathOnTiles(Point2D start, List<TileTransition> vectorsList) {
-        vectors = new ImmutableList<>(vectorsList);
-        vectors.containsNulls();
+    public PathOnTiles(Point2D start, List<TileTransition> tileTransitions) {
+        vectors = new ImmutableList<>(tileTransitions);
+        vectors.verifyNoneNull();
         this.start = Utils.verifyNotNull(start);
     }
 
@@ -57,9 +54,10 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectors
      * @throws NullPointerException if null == vectors[i] for any i;
      */
-    public PathOnTiles(Point2D start, TileTransition... vectors) {
-        this.vectors = new ImmutableList<>(vectors);
-        this.vectors.containsNulls();
+    // TODO remove this constructor only used from tests
+    public PathOnTiles(Point2D start, TileTransition... tileTransitions) {
+        this.vectors = new ImmutableList<>(tileTransitions);
+        this.vectors.verifyNoneNull();
         this.start = Utils.verifyNotNull(start);
     }
 
@@ -67,11 +65,9 @@ public strictfp class PathOnTiles implements Serializable {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof PathOnTiles)) return false;
-
-        final PathOnTiles pathOnTiles = (PathOnTiles) obj;
-
-        if (!start.equals(pathOnTiles.start)) return false;
-        return vectors.equals(pathOnTiles.vectors);
+        final PathOnTiles other = (PathOnTiles) obj;
+        if (!start.equals(other.start)) return false;
+        return vectors.equals(other.vectors);
     }
 
     /**
@@ -267,17 +263,17 @@ public strictfp class PathOnTiles implements Serializable {
     }
 
     /**
-     * @param newTileTransitions
+     * @param newTileTransition
      * @return
      */
-    public PathOnTiles addSteps(TileTransition... newTileTransitions) {
+    public PathOnTiles addStep(TileTransition newTileTransition) {
         int oldLength = vectors.size();
-        TileTransition[] newPath = new TileTransition[oldLength + newTileTransitions.length];
+        TileTransition[] newPath = new TileTransition[oldLength + 1];
         for (int i = 0; i < oldLength; i++) {
             newPath[i] = vectors.get(i);
         }
-        System.arraycopy(newTileTransitions, 0, newPath, oldLength, newTileTransitions.length);
-        return new PathOnTiles(start, newPath);
+        newPath[oldLength] = newTileTransition;
+        return new PathOnTiles(start, Arrays.asList(newPath));
     }
 
     /**
@@ -314,7 +310,6 @@ public strictfp class PathOnTiles implements Serializable {
             tileX += v.deltaX;
             tileY += v.deltaY;
             distanceSoFar += v.getLength();
-
         }
 
         Pair<Point2D, Point2D> point = getPoint(offset, offset + length);
@@ -372,7 +367,6 @@ public strictfp class PathOnTiles implements Serializable {
             public void remove() {
                 throw new UnsupportedOperationException();
             }
-
         };
     }
 
@@ -420,6 +414,5 @@ public strictfp class PathOnTiles implements Serializable {
 
             index++;
         }
-
     }
 }

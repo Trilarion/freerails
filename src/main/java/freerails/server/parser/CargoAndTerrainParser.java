@@ -148,7 +148,7 @@ public class CargoAndTerrainParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void endElement(String uri, String localName, String qName) throws SAXException {
+    public final void endElement(String uri, String localName, String qName) {
         dispatch(false);
         context.pop();
 

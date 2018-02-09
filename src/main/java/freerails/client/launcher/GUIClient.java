@@ -96,7 +96,6 @@ public class GUIClient extends FreerailsClient {
             }
             modelRoot.setProperty(Property.TIME, ticks);
         }
-
     }
 
     /**

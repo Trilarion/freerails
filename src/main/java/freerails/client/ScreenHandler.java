@@ -205,7 +205,6 @@ public final class ScreenHandler {
         });
 
         isInUse = true;
-
     }
 
     private synchronized void createBufferStrategy() {

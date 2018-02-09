@@ -167,7 +167,7 @@ public final class TileTransition implements TrackConfigurations {
      * @return a copy of the list of 8 OneTileMoveVectors going clockwise from
      * North.
      */
-    public static TileTransition[] getList() {
+    public static TileTransition[] getTransitions() {
         return list.clone(); // defensive copy.
     }
 

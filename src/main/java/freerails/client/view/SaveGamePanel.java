@@ -93,7 +93,6 @@ public class SaveGamePanel extends JPanel implements View {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(cancelButton, gridBagConstraints);
-
     }
 
     private static void fileNameTextFieldActionPerformed(ActionEvent evt) {

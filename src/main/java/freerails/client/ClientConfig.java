@@ -18,6 +18,10 @@
 
 package freerails.client;
 
+import freerails.world.WorldConstants;
+
+import java.awt.*;
+
 /**
  * Important constants
  */
@@ -202,6 +206,8 @@ public class ClientConfig {
      * server sleeping time in ms (1000/SERVERUPDATE is the frame rate)
      */
     public static final int SERVERUPDATE = 50;
+
+    public static final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
 
     private ClientConfig() {
     }

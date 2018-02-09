@@ -98,8 +98,8 @@ public final class MoveChainFork implements MoveReceiver {
         if (move instanceof CompositeMove) {
             List<Move> moves = ((CompositeMove) move).getMoves();
 
-            for (int i = 0; i < moves.size(); i++) {
-                splitMove(moves.get(i));
+            for (Move move1 : moves) {
+                splitMove(move1);
             }
         } else {
             for (MoveReceiver m : splitMoveReceivers) {

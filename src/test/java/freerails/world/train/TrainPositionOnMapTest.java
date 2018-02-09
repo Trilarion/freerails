@@ -19,8 +19,10 @@
 package freerails.world.train;
 
 import freerails.util.LineSegment;
+import freerails.util.TestUtils;
 import freerails.world.track.PathIterator;
 import freerails.world.track.SimplePathIteratorImpl;
+import junit.framework.Test;
 import junit.framework.TestCase;
 
 /**
@@ -32,82 +34,75 @@ public class TrainPositionOnMapTest extends TestCase {
      *
      */
     public void testGetLength() {
-        TrainPositionOnMap a;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30, 40}, new Integer[]{11, 22, 33, 44});
-        assertEquals(4, a.getLength());
+        TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30, 40}, new Integer[]{11, 22, 33, 44});
+        assertEquals(4, trainPositionOnMap.getLength());
     }
 
     /**
      *
      */
     public void testGetPoint() {
-        TrainPositionOnMap a;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
 
-        assertEquals(a.getX(0), 10);
-        assertEquals(a.getY(0), 11);
+        assertEquals(trainPositionOnMap.getX(0), 10);
+        assertEquals(trainPositionOnMap.getY(0), 11);
 
-        assertEquals(a.getX(1), 20);
-        assertEquals(a.getY(1), 22);
+        assertEquals(trainPositionOnMap.getX(1), 20);
+        assertEquals(trainPositionOnMap.getY(1), 22);
     }
 
     /**
      *
      */
     public void testPath() {
-        TrainPositionOnMap a;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30, 40}, new Integer[]{11, 22, 33, 44});
+        TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30, 40}, new Integer[]{11, 22, 33, 44});
 
-        PathIterator path = a.path();
-        LineSegment line = new LineSegment();
-        assertTrue(path.hasNext());
-        path.nextSegment(line);
-        assertEquals(line, new LineSegment(10, 11, 20, 22));
-        assertTrue(path.hasNext());
-        path.nextSegment(line);
-        assertEquals(line, new LineSegment(20, 22, 30, 33));
-        assertTrue(path.hasNext());
-        path.nextSegment(line);
-        assertEquals(line, new LineSegment(30, 33, 40, 44));
-        assertTrue(!path.hasNext());
+        PathIterator pathIterator = trainPositionOnMap.path();
+        LineSegment segment = new LineSegment();
+        assertTrue(pathIterator.hasNext());
+
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(10,11,20,22,segment);
+        assertTrue(pathIterator.hasNext());
+
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(20,22,30,33, segment);
+        assertTrue(pathIterator.hasNext());
+
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(30,33,40,44,segment);
+        assertTrue(!pathIterator.hasNext());
     }
 
     /**
      *
      */
     public void testReversePath() {
-        TrainPositionOnMap a;
-        a = TrainPositionOnMap.createInstance(new Integer[]{40, 30, 20, 10}, new Integer[]{44, 33, 22, 11});
+        TrainPositionOnMap trainPositionOnMap = TrainPositionOnMap.createInstance(new Integer[]{40, 30, 20, 10}, new Integer[]{44, 33, 22, 11});
 
-        PathIterator path = a.reversePath();
-        LineSegment line = new LineSegment();
-        assertTrue(path.hasNext());
-        path.nextSegment(line);
-        assertEquals(line, new LineSegment(10, 11, 20, 22));
-        assertTrue(path.hasNext());
-        path.nextSegment(line);
-        assertEquals(line, new LineSegment(20, 22, 30, 33));
-        assertTrue(path.hasNext());
-        path.nextSegment(line);
-        assertEquals(line, new LineSegment(30, 33, 40, 44));
-        assertTrue(!path.hasNext());
+        PathIterator pathIterator = trainPositionOnMap.reversePath();
+        LineSegment segment = new LineSegment();
+        assertTrue(pathIterator.hasNext());
+
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(10,11,20,22,segment);
+        assertTrue(pathIterator.hasNext());
+
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(20,22,30,33,segment);
+        assertTrue(pathIterator.hasNext());
+
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(30,33,40,44,segment);
+        assertTrue(!pathIterator.hasNext());
     }
 
     /**
      * Test for TrainPosition createInstance(int[], int[])
      */
     public void testCreateInstanceIArrayIArray() {
-        try {
-            TrainPositionOnMap.createInstance(new Integer[]{40, 30, 20, 10}, new Integer[]{44, 33, 22, 11});
-        } catch (Exception e) {
-            assertTrue(false);
-        }
-
-        try {
-            TrainPositionOnMap.createInstance(new Integer[]{40, 30, 20}, new Integer[]{44, 33, 22, 11});
-            assertTrue(false);
-        } catch (Exception e) {
-        }
+        TrainPositionOnMap.createInstance(new Integer[]{40, 30, 20, 10}, new Integer[]{44, 33, 22, 11});
+        TestUtils.assertThrows(() -> TrainPositionOnMap.createInstance(new Integer[]{40, 30, 20}, new Integer[]{44, 33, 22, 11}));
     }
 
     /**
@@ -122,23 +117,17 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap g;
         TrainPositionOnMap i;
         TrainPositionOnMap j;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{
-                11, 22});
-        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{
-                22, 33});
-        c = TrainPositionOnMap.createInstance(new Integer[]{10, 30}, new Integer[]{
-                11, 33});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{22, 33});
+        c = TrainPositionOnMap.createInstance(new Integer[]{10, 30}, new Integer[]{11, 33});
 
         d = b.addToHead(a);
         assertEquals(d, c);
 
-        f = TrainPositionOnMap.createInstance(new Integer[]{40, 50}, new Integer[]{
-                44, 55});
-        g = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 40},
-                new Integer[]{11, 33, 44});
+        f = TrainPositionOnMap.createInstance(new Integer[]{40, 50}, new Integer[]{44, 55});
+        g = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 40}, new Integer[]{11, 33, 44});
 
-        i = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 50},
-                new Integer[]{11, 33, 55});
+        i = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 50},  new Integer[]{11, 33, 55});
         j = f.addToHead(g);
         assertEquals(i, j);
     }
@@ -150,12 +139,9 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{
-                11, 22});
-        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{
-                22, 33});
-        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40}, new Integer[]{
-                33, 44});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{22, 33});
+        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40}, new Integer[]{33, 44});
 
         assertTrue(b.canAddToHead(a));
         assertTrue(!a.canAddToHead(b));
@@ -179,23 +165,16 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap g;
         TrainPositionOnMap i;
         TrainPositionOnMap j;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{
-                11, 22});
-        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{
-                22, 33});
-        c = TrainPositionOnMap.createInstance(new Integer[]{10, 30}, new Integer[]{
-                11, 33});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{22, 33});
+        c = TrainPositionOnMap.createInstance(new Integer[]{10, 30}, new Integer[]{11, 33});
 
         d = a.addToTail(b);
         assertEquals(d, c);
 
-        f = TrainPositionOnMap.createInstance(new Integer[]{40, 50}, new Integer[]{
-                44, 55});
-        g = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 40},
-                new Integer[]{11, 33, 44});
-
-        i = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 50},
-                new Integer[]{11, 33, 55});
+        f = TrainPositionOnMap.createInstance(new Integer[]{40, 50}, new Integer[]{ 44, 55});
+        g = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 40}, new Integer[]{11, 33, 44});
+        i = TrainPositionOnMap.createInstance(new Integer[]{10, 30, 50}, new Integer[]{11, 33, 55});
         j = g.addToTail(f);
         assertEquals(i, j);
     }
@@ -207,12 +186,9 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{
-                11, 22});
-        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{
-                22, 33});
-        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40}, new Integer[]{
-                33, 44});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        b = TrainPositionOnMap.createInstance(new Integer[]{20, 30}, new Integer[]{22, 33});
+        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40}, new Integer[]{33, 44});
 
         assertTrue(!b.canAddToTail(a));
         assertTrue(a.canAddToTail(b));
@@ -231,12 +207,9 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 50},
-                new Integer[]{11, 22, 44, 55});
-        b = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30},
-                new Integer[]{11, 22, 33});
-        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40, 50},
-                new Integer[]{33, 44, 55});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 50}, new Integer[]{11, 22, 44, 55});
+        b = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30}, new Integer[]{11, 22, 33});
+        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40, 50}, new Integer[]{33, 44, 55});
 
         assertTrue(!b.canRemoveFromHead(a));
         assertTrue(a.canRemoveFromHead(b));
@@ -256,14 +229,9 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap c;
         TrainPositionOnMap e;
         TrainPositionOnMap f;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 50, 60},
-                new Integer[]{11, 22, 44, 55, 66});
-
-        c = TrainPositionOnMap.createInstance(new Integer[]{48, 50, 60},
-                new Integer[]{49, 55, 66});
-
-        e = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 48},
-                new Integer[]{11, 22, 44, 49});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 50, 60}, new Integer[]{11, 22, 44, 55, 66});
+        c = TrainPositionOnMap.createInstance(new Integer[]{48, 50, 60}, new Integer[]{49, 55, 66});
+        e = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 48}, new Integer[]{11, 22, 44, 49});
 
         f = a.removeFromTail(c);
         assertEquals(e, f);
@@ -276,12 +244,9 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 50},
-                new Integer[]{11, 22, 44, 55});
-        b = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30},
-                new Integer[]{11, 22, 33});
-        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40, 50},
-                new Integer[]{33, 44, 55});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 40, 50}, new Integer[]{11, 22, 44, 55});
+        b = TrainPositionOnMap.createInstance(new Integer[]{10, 20, 30}, new Integer[]{11, 22, 33});
+        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40, 50}, new Integer[]{33, 44, 55});
 
         assertTrue(!b.canRemoveFromTail(a));
         assertTrue(!a.canRemoveFromTail(b));
@@ -300,12 +265,9 @@ public class TrainPositionOnMapTest extends TestCase {
         TrainPositionOnMap a;
         TrainPositionOnMap b;
         TrainPositionOnMap c;
-        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{
-                11, 22});
-        b = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{
-                11, 22});
-        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40}, new Integer[]{
-                33, 44});
+        a = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        b = TrainPositionOnMap.createInstance(new Integer[]{10, 20}, new Integer[]{11, 22});
+        c = TrainPositionOnMap.createInstance(new Integer[]{30, 40}, new Integer[]{33, 44});
 
         assertTrue(a != null);
         assertTrue(!a.equals(new Object()));
@@ -319,8 +281,7 @@ public class TrainPositionOnMapTest extends TestCase {
      * Test for TrainPosition createInstance(PathIterator)
      */
     public void testCreateInstanceFreerailsPathIterator() {
-        PathIterator path = new SimplePathIteratorImpl(new Integer[]{40,
-                30, 20, 10}, new Integer[]{44, 33, 22, 11});
+        PathIterator path = new SimplePathIteratorImpl(new Integer[]{40, 30, 20, 10}, new Integer[]{44, 33, 22, 11});
         TrainPositionOnMap a = TrainPositionOnMap
                 .createInSameDirectionAsPath(path);
 
@@ -343,10 +304,8 @@ public class TrainPositionOnMapTest extends TestCase {
      *
      */
     public void testCreateInOppositeDirectionToPath() {
-        PathIterator path = new SimplePathIteratorImpl(new Integer[]{40,
-                30, 20, 10}, new Integer[]{44, 33, 22, 11});
-        TrainPositionOnMap a = TrainPositionOnMap.createInSameDirectionAsPath(
-                path).reverse();
+        PathIterator path = new SimplePathIteratorImpl(new Integer[]{40, 30, 20, 10}, new Integer[]{44, 33, 22, 11});
+        TrainPositionOnMap a = TrainPositionOnMap.createInSameDirectionAsPath(path).reverse();
 
         assertEquals(a.getLength(), 4);
 

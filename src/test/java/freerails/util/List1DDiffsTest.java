@@ -41,6 +41,7 @@ public class List1DDiffsTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         list = new List1DImpl<>();
         map = new TreeMap<>();
         diffs = new List1DDiff<>(map, list, test.test);
@@ -60,7 +61,6 @@ public class List1DDiffsTest extends TestCase {
         assertEquals(1, map.size());
         diffs.set(String.valueOf(1), 0);
         assertEquals(0, map.size());
-
     }
 
     /**
@@ -155,7 +155,6 @@ public class List1DDiffsTest extends TestCase {
         assertEquals(1, diffs.size());
 
         assertEquals("fork=1", 1, map.size());
-
     }
 
     /**

@@ -85,7 +85,6 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         URL url = BrokerScreenHtmlFrame.class.getResource(ClientConfig.VIEW_BROKER);
         template = loadText(url);
         setSize(550, 300);
-
     }
 
     /**
@@ -195,7 +194,6 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         int outstandingBonds = thisDataGatherer.getBonds();
         repayBondAction.setEnabled(outstandingBonds > 0);
         issueBondAction.setEnabled(outstandingBonds < 4);
-
     }
 
     private void updateHtml() {

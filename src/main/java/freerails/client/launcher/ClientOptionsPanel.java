@@ -237,12 +237,10 @@ class ClientOptionsPanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {
                 validateInput();
             }
-
         };
         remotePort.getDocument().addDocumentListener(documentListener);
         remoteIP.getDocument().addDocumentListener(documentListener);
         playerName.getDocument().addDocumentListener(documentListener);
-
     }
 
     /**
@@ -279,7 +277,6 @@ class ClientOptionsPanel extends JPanel {
         int index = playerNames.getSelectedIndex();
         if (index < 0) return null; // no selection.
         return names[index];
-
     }
 
     DisplayMode getDisplayMode() {

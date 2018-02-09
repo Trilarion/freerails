@@ -80,7 +80,6 @@ public class BrokerScreenGeneratorTest extends TestCase {
             BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, principal);
             assertNotNull(brokerScreenGenerator);
         }
-
     }
 
 }

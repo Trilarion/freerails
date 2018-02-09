@@ -219,7 +219,6 @@ public class NonNullElementWorldIterator implements WorldIterator {
             while (this.row != row) {
                 previous();
             }
-
         }
     }
 }

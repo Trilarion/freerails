@@ -19,6 +19,7 @@
 package freerails.world.train;
 
 import freerails.util.LineSegment;
+import freerails.util.TestUtils;
 import freerails.world.track.PathIterator;
 import freerails.world.track.SimplePathIteratorImpl;
 import junit.framework.TestCase;
@@ -35,10 +36,10 @@ public class SimplePathIteratorImplTest extends TestCase {
         Integer[] xpoints = {0, 100};
         Integer[] ypoints = {0, 0};
 
-        PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
-        assertTrue(it.hasNext());
-        it.nextSegment(new LineSegment(0, 0, 0, 0));
-        assertTrue(!it.hasNext());
+        PathIterator pathIterator = new SimplePathIteratorImpl(xpoints, ypoints);
+        assertTrue(pathIterator.hasNext());
+        pathIterator.nextSegment(new LineSegment(0, 0, 0, 0));
+        assertTrue(!pathIterator.hasNext());
     }
 
     /**
@@ -48,22 +49,16 @@ public class SimplePathIteratorImplTest extends TestCase {
         Integer[] xpoints = {1, 2, 3};
         Integer[] ypoints = {4, 5, 6};
 
-        PathIterator it = new SimplePathIteratorImpl(xpoints, ypoints);
-        assertTrue(it.hasNext());
+        PathIterator pathIterator = new SimplePathIteratorImpl(xpoints, ypoints);
+        assertTrue(pathIterator.hasNext());
 
-        LineSegment line = new LineSegment(0, 0, 0, 0);
-        it.nextSegment(line);
-        assertLineEquals(1, 4, 2, 5, line);
-        assertTrue(it.hasNext());
-        it.nextSegment(line);
-        assertLineEquals(2, 5, 3, 6, line);
-        assertTrue(!it.hasNext());
+        LineSegment segment = new LineSegment(0, 0, 0, 0);
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(1, 4, 2, 5, segment);
+        assertTrue(pathIterator.hasNext());
+        pathIterator.nextSegment(segment);
+        TestUtils.assertLineSegmentEquals(2, 5, 3, 6, segment);
+        assertTrue(!pathIterator.hasNext());
     }
 
-    private void assertLineEquals(int x1, int y1, int x2, int y2, LineSegment line) {
-        assertEquals(x1, line.getX1());
-        assertEquals(x2, line.getX2());
-        assertEquals(y1, line.getY1());
-        assertEquals(y2, line.getY2());
-    }
 }

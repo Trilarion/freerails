@@ -78,7 +78,6 @@ public class HtmlPanel extends JPanel implements View {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new Insets(7, 7, 7, 7);
         add(done, gridBagConstraints);
-
     }
 
     public HtmlPanel(URL url) {
@@ -124,7 +123,6 @@ public class HtmlPanel extends JPanel implements View {
                     } catch (Exception e) {
                         throw new NoSuchElementException(token);
                     }
-
                 }
                 output.append(value);
             }

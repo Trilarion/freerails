@@ -172,7 +172,6 @@ public class NetWorthGraphPanel extends JPanel implements View {
             }
         });
         add(yAxisLabel4, null);
-
     }
 
     @Override
@@ -226,7 +225,6 @@ public class NetWorthGraphPanel extends JPanel implements View {
 
         g2.drawLine(graphRect.x, graphRect.y, graphRect.x, graphRect.y + graphRect.height);
         g2.drawLine(graphRect.x, graphRect.y + graphRect.height, graphRect.x + graphRect.width, graphRect.y + graphRect.height);
-
     }
 
     /**
@@ -297,7 +295,6 @@ public class NetWorthGraphPanel extends JPanel implements View {
         yAxisLabel2.setText(getYScaleString(quarterScale * 2));
         yAxisLabel3.setText(getYScaleString(quarterScale * 3));
         yAxisLabel4.setText(getYScaleString(quarterScale * 4));
-
     }
 
     /**
@@ -340,11 +337,9 @@ public class NetWorthGraphPanel extends JPanel implements View {
                 cd.value[year] = values[year].getAmount();
             }
             companies.add(cd);
-
         }
 
         setAppropriateScale();
-
     }
 
 } // @jve:decl-index=0:visual-constraint="10,10"

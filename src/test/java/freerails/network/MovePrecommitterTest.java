@@ -45,6 +45,7 @@ public class MovePrecommitterTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld(10, 10);
         committer = new MovePrecommitter(world);
     }

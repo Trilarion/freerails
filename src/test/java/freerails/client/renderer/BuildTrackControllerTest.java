@@ -55,6 +55,7 @@ public class BuildTrackControllerTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = MapFixtureFactory2.getCopy();
         modelRoot = new ModelRootImpl();
         FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
@@ -74,7 +75,6 @@ public class BuildTrackControllerTest extends TestCase {
             if (rule.getTypeName().equals("double track")) {
                 doubleTrackRuleID = ruleID;
             }
-
         }
         assertFalse(singleTrackRuleID == -1);
         assertFalse(doubleTrackRuleID == -1);
@@ -102,7 +102,6 @@ public class BuildTrackControllerTest extends TestCase {
         assertTrue(tile.hasTrack());
         tile = (FullTerrainTile) world.getTile(new Point2D(20, 10));
         assertTrue(tile.hasTrack());
-
     }
 
     /**

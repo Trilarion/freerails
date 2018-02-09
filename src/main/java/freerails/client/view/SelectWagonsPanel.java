@@ -164,7 +164,6 @@ public class SelectWagonsPanel extends JPanel implements View {
         if (KeyEvent.VK_ENTER == evt.getKeyCode()) {
             addwagon();
         }
-
     }
 
     // Adds the wagon selected in the list to the train consist.
@@ -176,7 +175,6 @@ public class SelectWagonsPanel extends JPanel implements View {
             updateMaxWagonsText();
             repaint();
         }
-
     }
 
     private void updateMaxWagonsText() {
@@ -215,7 +213,6 @@ public class SelectWagonsPanel extends JPanel implements View {
             int scaledWidth = image.getWidth(null) * SCALED_IMAGE_HEIGHT / image.getHeight(null);
             x -= scaledWidth;
             g.drawImage(image, x, y, scaledWidth, SCALED_IMAGE_HEIGHT, null);
-
         }
 
         // paint the engine

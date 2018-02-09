@@ -32,17 +32,18 @@ public class MutableScheduleTest extends TestCase {
      *
      */
     public void test1() {
-        TrainOrdersModel order0 = new TrainOrdersModel(0, null, false, false);
-        TrainOrdersModel order1 = new TrainOrdersModel(1, null, false, false);
+        TrainOrders trainOrders1 = new TrainOrders(0, null, false, false);
+        TrainOrders trainOrders2 = new TrainOrders(1, null, false, false);
+
         MutableSchedule mutableSchedule = new MutableSchedule();
-        mutableSchedule.addOrder(order0);
-        mutableSchedule.addOrder(order1);
+        mutableSchedule.addOrder(trainOrders1);
+        mutableSchedule.addOrder(trainOrders2);
+
         int stationToGoto = mutableSchedule.getStationToGoto();
         assertEquals(0, stationToGoto);
 
-        // ImmutableSchedule is = s.toImmutableSchedule();
-        //				
-        // int i = is.getStationToGoto();
+        ImmutableSchedule immutableSchedule = mutableSchedule.toImmutableSchedule();
+        assertEquals(0, immutableSchedule.getStationToGoto());
     }
 
 }

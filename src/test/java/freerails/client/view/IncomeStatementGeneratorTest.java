@@ -77,6 +77,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateCargoTypesList(world);

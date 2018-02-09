@@ -52,12 +52,10 @@ class OpenList implements Serializable {
             queue.remove(old);
 
             map.remove(node);
-
         }
         OpenListEntry entry = new OpenListEntry(f, node);
         queue.offer(entry);
         map.put(node, entry);
-
     }
 
     boolean contains(int node) {

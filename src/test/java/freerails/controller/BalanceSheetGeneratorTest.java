@@ -56,7 +56,6 @@ public class BalanceSheetGeneratorTest extends TestCase {
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
         Money expectStockHolderEquity = new Money(-500000);
         assertEquals(expectStockHolderEquity, generator.total.equity);
-
     }
 
     /**
@@ -64,6 +63,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
 
         world = new FullWorld(10, 10);
         player = new Player("Player X", world.getNumberOfPlayers());

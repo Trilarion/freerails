@@ -52,7 +52,7 @@ public class Utils {
      * @return
      */
     public static <T> List<T> immutableList(T[] mutableArray) {
-        List<T> copiedList = new ArrayList<T>(Arrays.asList(mutableArray));
+        List<T> copiedList = new ArrayList<>(Arrays.asList(mutableArray));
         return Collections.unmodifiableList(copiedList);
     }
 
@@ -63,8 +63,8 @@ public class Utils {
      */
     public static boolean equalsBySerialization(Serializable a, Serializable b) {
 
-        byte[] bytesA = write2ByteArray(a);
-        byte[] bytesB = write2ByteArray(b);
+        byte[] bytesA = writeToByteArray(a);
+        byte[] bytesB = writeToByteArray(b);
         if (bytesA.length != bytesB.length) return false;
 
         for (int i = 0; i < bytesA.length; i++) {
@@ -75,39 +75,51 @@ public class Utils {
     }
 
     /**
-     * @param m
+     * @param serializable
      * @return
      */
-    public static Serializable cloneBySerialisation(Serializable m) {
-        try {
-            byte[] bytes = write2ByteArray(m);
-
-            ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-            ObjectInputStream objectIn = new ObjectInputStream(in);
-            Serializable o;
-
-            o = (Serializable) objectIn.readObject();
-            return o;
-        } catch (ClassNotFoundException | IOException e) {
-            // Should never happen.
-            throw new IllegalStateException();
-        }
-
+    public static Serializable cloneBySerialisation(Serializable serializable) {
+        byte[] bytes = writeToByteArray(serializable);
+        return readFromByteArray(bytes);
     }
 
-    private static byte[] write2ByteArray(Serializable m) {
+    /**
+     *
+     * @param bytes
+     * @return
+     */
+    private static Serializable readFromByteArray(byte[] bytes) {
 
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Serializable serializable;
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        ObjectInputStream objectInputStream = null;
         try {
-            ObjectOutput objectOut = new ObjectOutputStream(out);
-            objectOut.writeObject(m);
-            objectOut.flush();
-        } catch (IOException e) {
-            // Should never happen.
-            throw new IllegalStateException();
+            objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            serializable = (Serializable) objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new IllegalStateException(e);
         }
 
-        return out.toByteArray();
+        return serializable;
+    }
+
+    /**
+     *
+     * @param serializable
+     * @return
+     */
+    private static byte[] writeToByteArray(Serializable serializable) {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ObjectOutput objectOutput = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutput.writeObject(serializable);
+            objectOutput.flush();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+
+        return byteArrayOutputStream.toByteArray();
     }
 
     /**

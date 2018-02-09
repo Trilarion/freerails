@@ -41,7 +41,7 @@ public final class TrackConfiguration implements TrackConfigurations {
 
         // Calculate length.
         int tempLength = 0;
-        TileTransition[] vectors = TileTransition.getList();
+        TileTransition[] vectors = TileTransition.getTransitions();
 
         for (TileTransition vector : vectors) {
             if (contains(vector.get9bitTemplate())) {
@@ -56,11 +56,6 @@ public final class TrackConfiguration implements TrackConfigurations {
      * @return the superposition of two track templates
      */
     public static TrackConfiguration add(TrackConfigurations c, TrackConfigurations v) {
-        /*
-         * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
-         * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate | (1 <<
-         * (3 * y + x));
-         */
         int newTemplate = c.get9bitTemplate() | v.get9bitTemplate();
 
         return from9bitTemplate(newTemplate);
@@ -87,7 +82,14 @@ public final class TrackConfiguration implements TrackConfigurations {
      * @return
      */
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
-        int i = TrackConfiguration.stringTemplate2Int(trackTemplate);
+        String templateString = trackTemplate;
+        // Hack - so that result is as expected by earlier written code.
+        StringBuffer strb = new StringBuffer(templateString);
+        strb = strb.reverse();
+        templateString = strb.toString();
+
+        // End of hack
+        int i = Integer.parseInt(templateString, 2);
 
         return flatTrackConfigurations.get(i);
     }
@@ -103,31 +105,11 @@ public final class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @param templateString
-     * @return
-     */
-    public static int stringTemplate2Int(String templateString) {
-        // Hack - so that result is as expected by earlier written code.
-        StringBuffer strb = new StringBuffer(templateString);
-        strb = strb.reverse();
-        templateString = strb.toString();
-
-        // End of hack
-        return Integer.parseInt(templateString, 2);
-    }
-
-    /**
      * @return the TrackConfiguration representing the track section c minus the
      * track sections represented by v.
      */
     public static TrackConfiguration subtract(TrackConfigurations c, TrackConfigurations v) {
-        /*
-         * int x=v.getX()+1; int y=v.getY()+1; int oldTemplate
-         * =c.getTrackGraphicsNumber(); int newTemplate = oldTemplate ^ (1 <<
-         * (3 * y + x));
-         */
         int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
-
         return from9bitTemplate(newTemplate);
     }
 
@@ -150,7 +132,7 @@ public final class TrackConfiguration implements TrackConfigurations {
      */
     public int get8bitTemplate() {
         int newTemplate = 0;
-        TileTransition[] vectors = TileTransition.getList();
+        TileTransition[] vectors = TileTransition.getTransitions();
 
         for (TileTransition vector : vectors) {
             if (contains(vector)) {
@@ -179,7 +161,7 @@ public final class TrackConfiguration implements TrackConfigurations {
     /**
      * @return
      */
-    public int getTrackGraphicsID() {
+    public int getConfiguration() {
         return configuration;
     }
 

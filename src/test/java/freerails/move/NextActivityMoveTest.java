@@ -46,7 +46,6 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
         Move move = new NextActivityMove(act2, 0, principal);
         assertSurvivesSerialisation(move);
         assertOkAndRepeatable(move);
-
     }
 
     /**
@@ -61,7 +60,6 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
         Activity act2 = new FullWorldTest.TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertDoThenUndoLeavesWorldUnchanged(move);
-
     }
 
     /**

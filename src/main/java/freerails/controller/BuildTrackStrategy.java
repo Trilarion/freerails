@@ -60,7 +60,6 @@ public class BuildTrackStrategy {
         }
 
         return new BuildTrackStrategy(newRules);
-
     }
 
     /**
@@ -115,7 +114,6 @@ public class BuildTrackStrategy {
                     }
                 }
             }
-
         }
         return newRules;
     }

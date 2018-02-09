@@ -115,7 +115,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                             m = new AddItemToListMove(k, elementId, element, fp);
                         }
                         tempList.add(m);
-
                     } else {
                         assert (lkey.getType() == ListKey.Type.EndPoint);
                         Integer newSize = (Integer) worldDiffs.getDiff(lkey);
@@ -146,7 +145,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                         Transaction transaction = worldDiffs.getTransaction(fp, elementId);
                         move = new AddTransactionMove(fp, transaction);
                         tempList.add(move);
-
                     } else {
                         assert (lkey.getType() == ListKey.Type.EndPoint);
                         Integer newSize = (Integer) worldDiffs.getDiff(lkey);
@@ -169,7 +167,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                             // Do nothing. Adding the activities will increase the
                             // size of the list.
                             break;
-
                         }
                         case 2:
                             assert (lkey.getType() == ListKey.Type.EndPoint);
@@ -197,7 +194,6 @@ public class WorldDiffMove implements Move, MapUpdateMove {
                             throw new UnsupportedOperationException(listId.toString());
                     }
                     break;
-
                 }
                 default:
                     throw new UnsupportedOperationException(listId.toString());

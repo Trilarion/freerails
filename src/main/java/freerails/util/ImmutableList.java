@@ -20,12 +20,13 @@ package freerails.util;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Immutable list encapsulation with some convenience methods.
  */
-public final class ImmutableList<E extends Serializable> implements Serializable {
+public final class ImmutableList<E extends Serializable> implements Serializable, Iterable<E> {
 
     private static final long serialVersionUID = 2669191159273299313L;
     private final E[] values;
@@ -33,6 +34,7 @@ public final class ImmutableList<E extends Serializable> implements Serializable
     /**
      * @param items
      */
+    @SafeVarargs
     public ImmutableList(E... items) {
         values = items.clone();
     }
@@ -60,7 +62,7 @@ public final class ImmutableList<E extends Serializable> implements Serializable
     /**
      * @throws NullPointerException
      */
-    public void containsNulls() throws NullPointerException {
+    public void verifyNoneNull() throws NullPointerException {
         for (E value : values) {
             Utils.verifyNotNull(value);
         }
@@ -74,10 +76,31 @@ public final class ImmutableList<E extends Serializable> implements Serializable
     }
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    public E get(int i) {
-        return values[i];
+    public E get(int index) {
+        return values[index];
+    }
+
+    /**
+     * Read-only iterator, no checks. Works here, because the list is immutable.
+     *
+     * @return
+     */
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index < values.length;
+            }
+
+            @Override
+            public E next() {
+                return values[index++];
+            }
+        };
     }
 }

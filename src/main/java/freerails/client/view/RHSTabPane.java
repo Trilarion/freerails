@@ -110,7 +110,6 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
         // These values were picked by trial and error!
         setMinimumSize(new Dimension(250, 200));
-
     }
 
     /**
@@ -126,11 +125,9 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
         terrainInfoPanel.setup(world, vl);
         stationInfoPanel.setup(modelRoot, vl, null);
 
-        ActionListener showTrain = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int id = trainListPanel.getSelectedTrainID();
-                actionRoot.getDialogueBoxController().showTrainOrders(id);
-            }
+        ActionListener showTrain = e -> {
+            int id = trainListPanel.getSelectedTrainID();
+            actionRoot.getDialogueBoxController().showTrainOrders(id);
         };
 
         trainListPanel.setShowTrainDetailsActionListener(showTrain);
@@ -165,7 +162,6 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
                 terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p)).getTerrainTypeID());
                 setSelectedIndex(terrainInfoIndex);
             }
-
         }
     }
 

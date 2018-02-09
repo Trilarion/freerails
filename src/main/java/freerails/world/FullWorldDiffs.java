@@ -170,7 +170,6 @@ public class FullWorldDiffs extends FullWorld {
         if (Utils.equal(underlying.getTile(p), element)) {
             if (mapDiff.containsKey(p)) {
                 mapDiff.remove(p);
-
             }
         } else {
             mapDiff.put(p, element);

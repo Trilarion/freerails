@@ -26,7 +26,17 @@ import java.io.Serializable;
 /**
  *
  */
-public interface SpeedAgainstTime extends Serializable {
+public interface Motion extends Serializable {
+
+    /**
+     * @return The time taken to travel the distance given by getDistance().
+     */
+    double getTotalTime();
+
+    /**
+     * @return The distance traveled during at time given by getTime().
+     */
+    double getTotalDistance();
 
     /**
      * Returns the distance travelled at time t. The returned value, s,
@@ -39,9 +49,9 @@ public interface SpeedAgainstTime extends Serializable {
      * </ol>
      *
      * @return distance
-     * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
+     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getTime()
      */
-    double calculateDistance(double time);
+    double calculateDistanceAtTime(double time);
 
     /**
      * Returns the time taken to travel distance s. The returned value, t,
@@ -54,28 +64,17 @@ public interface SpeedAgainstTime extends Serializable {
      * </ol>
      *
      * @return time
-     * @throws IllegalArgumentException iff s &lt; 0 or s &gt; getDistance()
+     * @throws IllegalArgumentException if s &lt; 0 or s &gt; getDistance()
      */
-    double calculateTime(double distance);
+    double calculateTimeAtDistance(double distance);
 
     /**
-     * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
+     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getTime()
      */
-    double calcVelocity(double time);
+    double calculateSpeedAtTime(double time);
 
     /**
-     * @throws IllegalArgumentException iff t &lt; 0 or t &gt; getTime()
+     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getTime()
      */
-    double calcAcceleration(double time);
-
-    /**
-     * @return The time taken to travel the distance given by getDistance().
-     */
-    double getTime();
-
-    /**
-     * @return The distance traveled during at time given by getTime().
-     */
-    double getDistance();
-
+    double calculateAccelerationAtTime(double time);
 }

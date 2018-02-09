@@ -115,7 +115,6 @@ class IncomeStatementGenerator {
                         }
                         break;
                 }
-
             }
             switch (transaction.getCategory()) {
                 case INTEREST_CHARGE:
@@ -163,7 +162,6 @@ class IncomeStatementGenerator {
         Money trackMaintenanceYtd1 = new Money(trackMaintenanceYtd);
         Money stationMaintenanceTotal1 = new Money(stationMaintenanceTotal);
         Money stationMaintenanceYtd1 = new Money(stationMaintenanceYtd);
-
     }
 
     /**

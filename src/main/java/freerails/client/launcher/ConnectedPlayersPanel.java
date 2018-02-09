@@ -66,7 +66,6 @@ class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
-
     }
 
 

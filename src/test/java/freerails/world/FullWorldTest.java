@@ -99,7 +99,6 @@ public class FullWorldTest extends TestCase {
         assertEquals(new Money(100), copy.getCurrentBalance(player
                 .getPrincipal()));
         assertFalse(copy.equals(original));
-
     }
 
     /**
@@ -121,7 +120,6 @@ public class FullWorldTest extends TestCase {
         assertTrue(copy2.equals(copy));
         copy.addPlayer(a);
         assertTrue(copy.equals(original));
-
     }
 
     /**
@@ -149,7 +147,6 @@ public class FullWorldTest extends TestCase {
         Activity actual = world.removeLastActiveEntity(principal);
         assertEquals(actual, expected);
         assertEquals(1, world.size(principal));
-
     }
 
     /**
@@ -187,7 +184,6 @@ public class FullWorldTest extends TestCase {
         Transaction t3 = world.removeLastTransaction(fp);
         assertEquals(transaction, t3);
         assertEquals(new Money(0), world.getCurrentBalance(fp));
-
     }
 
     /**
@@ -225,7 +221,6 @@ public class FullWorldTest extends TestCase {
         public int hashCode() {
             return x;
         }
-
     }
 
     /**
@@ -280,6 +275,5 @@ public class FullWorldTest extends TestCase {
         public String toString() {
             return getClass().getName() + '{' + duration + '}';
         }
-
     }
 }

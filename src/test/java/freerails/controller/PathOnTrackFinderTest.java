@@ -109,7 +109,6 @@ public class PathOnTrackFinderTest extends TestCase {
             pathFinder.setupSearch(start, new Point2D(10, 10));
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
-
         }
         try {
             pathFinder.setupSearch(new Point2D(10, 10), end);

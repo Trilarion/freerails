@@ -262,6 +262,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         this.hasSetupBeenCalled = true;
         setupWorld();
     }

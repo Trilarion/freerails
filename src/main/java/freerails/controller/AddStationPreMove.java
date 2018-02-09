@@ -114,7 +114,6 @@ public class AddStationPreMove implements PreMove {
 
                 VerifyStationName vSN = new VerifyStationName(world, cityName);
                 stationName = vSN.getName();
-
             } catch (NoSuchElementException e) {
                 // there are no cities, this should never happen during a proper
                 // game. However

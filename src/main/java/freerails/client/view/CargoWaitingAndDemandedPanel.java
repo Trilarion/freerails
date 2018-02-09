@@ -146,7 +146,6 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane1, gridBagConstraints);
-
     }
 
 

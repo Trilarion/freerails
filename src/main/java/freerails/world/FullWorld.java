@@ -447,7 +447,6 @@ public class FullWorld implements World {
      */
     public void setTime(GameTime t) {
         time = t;
-
     }
 
     private void setupItems() {
@@ -533,7 +532,6 @@ public class FullWorld implements World {
             result = 29 * result + (int) startTime;
             return result;
         }
-
     }
 
 }

@@ -24,20 +24,21 @@ package freerails.world.track;
 public final class TrackPieceImpl implements TrackPiece {
 
     private static final long serialVersionUID = 4049080423458027569L;
-    private final TrackConfiguration configuration;
-    private final TrackRule trackType;
+    private final TrackConfiguration trackConfiguration;
+    private final TrackRule trackRule;
     private final int ownerID;
     private final int ruleNumber;
 
     /**
-     * @param c
-     * @param type
+     * @param trackConfiguration
+     * @param trackRule
      * @param owner
      * @param rule
      */
-    public TrackPieceImpl(TrackConfiguration c, TrackRule type, int owner, int rule) {
-        configuration = c;
-        trackType = type;
+    // TODO is rule number really needed?
+    public TrackPieceImpl(TrackConfiguration trackConfiguration, TrackRule trackRule, int owner, int rule) {
+        this.trackConfiguration = trackConfiguration;
+        this.trackRule = trackRule;
         ownerID = owner;
         ruleNumber = rule;
     }
@@ -51,15 +52,15 @@ public final class TrackPieceImpl implements TrackPiece {
 
         if (ownerID != that.ownerID) return false;
         if (ruleNumber != that.ruleNumber) return false;
-        if (!configuration.equals(that.configuration)) return false;
-        return trackType.equals(that.trackType);
+        if (!trackConfiguration.equals(that.trackConfiguration)) return false;
+        return trackRule.equals(that.trackRule);
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = configuration.hashCode();
-        result = 29 * result + trackType.hashCode();
+        result = trackConfiguration.hashCode();
+        result = 29 * result + trackRule.hashCode();
         result = 29 * result + ownerID;
         result = 29 * result + ruleNumber;
         return result;
@@ -69,21 +70,21 @@ public final class TrackPieceImpl implements TrackPiece {
      * @return
      */
     public int getTrackGraphicID() {
-        return configuration.getTrackGraphicsID();
+        return trackConfiguration.getConfiguration();
     }
 
     /**
      * @return
      */
     public TrackRule getTrackRule() {
-        return trackType;
+        return trackRule;
     }
 
     /**
      * @return
      */
     public TrackConfiguration getTrackConfiguration() {
-        return configuration;
+        return trackConfiguration;
     }
 
     /**
@@ -96,6 +97,7 @@ public final class TrackPieceImpl implements TrackPiece {
     /**
      * @return
      */
+    // TODO abuse of rule number?
     public int getTrackTypeID() {
         return ruleNumber;
     }

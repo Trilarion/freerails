@@ -42,7 +42,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     @Override
-    protected void setUp() {
+    protected void setUp() throws Exception {
+        super.setUp();
         super.setHasSetupBeenCalled(true);
         setWorld(new FullWorld(10, 10));
         getWorld().set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
@@ -193,8 +194,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private void assertRemoveTrackSucceeds(Point2D p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                    .generateRemoveTrackMove(p, v, getWorld(),
-                            MapFixtureFactory.TEST_PRINCIPAL);
+                    .generateRemoveTrackMove(p, v, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
             MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
             assertEquals(true, status.succeeds());
         } catch (Exception e) {
@@ -205,17 +205,17 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    public void testMove() {
+    public void testMove() throws Exception {
         Point2D pointA = Point2D.ZERO;
         TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                .generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackRule,
-                        trackRule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
+                .generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackRule, trackRule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
 
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);
 
+        // TODO do we really need to call setUp again here?
         setUp();
         assertDoThenUndoLeavesWorldUnchanged(move);
     }

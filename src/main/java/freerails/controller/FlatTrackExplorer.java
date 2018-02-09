@@ -66,7 +66,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w, Point2D p) {
         TrackPiece tp = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
-        TileTransition[] vectors = TileTransition.getList();
+        TileTransition[] vectors = TileTransition.getTransitions();
 
         // Count the number of possible positions.
         int n = 0;
@@ -116,7 +116,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         FullTerrainTile ft = (FullTerrainTile) world.getTile(currentPosition.getLocation());
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
-        TileTransition[] vectors = TileTransition.getList();
+        TileTransition[] vectors = TileTransition.getTransitions();
 
         int i = v.getID();
 

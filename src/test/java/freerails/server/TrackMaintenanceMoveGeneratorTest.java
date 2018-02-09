@@ -44,6 +44,7 @@ public class TrackMaintenanceMoveGeneratorTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld(20, 20);
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(world);

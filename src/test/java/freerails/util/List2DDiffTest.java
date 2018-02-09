@@ -40,6 +40,7 @@ public class List2DDiffTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         underlying = new List2DImpl<>(0);
         map = new TreeMap<>();
         diffs = new List2DDiff<>(map, underlying, listid.test);
@@ -73,7 +74,6 @@ public class List2DDiffTest extends TestCase {
         underlying.addD2(0, String.valueOf(1));
         assertEquals(String.valueOf(1), underlying.get(0, 0));
         assertEquals(String.valueOf(1), diffs.get(0, 0));
-
     }
 
     /*
@@ -138,7 +138,6 @@ public class List2DDiffTest extends TestCase {
         assertEquals(4, diffs.sizeD2(0));
         assertEquals(String.valueOf(3), diffs.get(0, 2));
         assertEquals(String.valueOf(4), diffs.get(0, 3));
-
     }
 
     /*
@@ -176,7 +175,6 @@ public class List2DDiffTest extends TestCase {
         assertEquals(0, diffs.sizeD2(0));
         diffs.addDimension(0);
         assertEquals(1, diffs.sizeD2(0));
-
     }
 
     /**
@@ -230,7 +228,6 @@ public class List2DDiffTest extends TestCase {
             fail();
         } catch (Exception e) {
         }
-
     }
 
     /**
@@ -248,7 +245,6 @@ public class List2DDiffTest extends TestCase {
         assertEquals(2, diffs.sizeD1());
         assertEquals(2, underlying.sizeD1());
         assertEquals(0, map.size());
-
     }
 
     /**
@@ -280,7 +276,6 @@ public class List2DDiffTest extends TestCase {
         assertEquals(2, diffs.sizeD1());
         assertEquals(2, underlying.sizeD1());
         assertEquals(0, map.size());
-
     }
 
     /**
@@ -292,7 +287,6 @@ public class List2DDiffTest extends TestCase {
         diffs.removeLastD2(0);
         diffs.addD2(0, 1);
         assertEquals(0, map.size());
-
     }
 
     /**
@@ -323,7 +317,6 @@ public class List2DDiffTest extends TestCase {
         assertEquals(1, diffs.get(0, 1));
         diffs.set(0, 1, null);
         assertEquals(null, diffs.get(0, 1));
-
     }
 
     enum listid {

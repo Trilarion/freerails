@@ -58,8 +58,6 @@ import java.io.Serializable;
 public interface ReadOnlyWorld extends FreerailsMutableSerializable {
 
     /**
-     * @param x
-     * @param y
      * @return
      */
     boolean boundsContain(Point2D p);

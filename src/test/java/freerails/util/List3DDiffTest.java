@@ -40,6 +40,7 @@ public class List3DDiffTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         underlying = new List3DImpl<>(0, 0);
         SortedMap<ListKey, Object> map = new TreeMap<>();
         diffs = new List3DDiff<>(map, underlying, listid.test);
@@ -97,7 +98,6 @@ public class List3DDiffTest extends TestCase {
         diffs.addD3(1, 1, 3);
         assertEquals(2, diffs.get(1, 1, 1));
         assertEquals(3, diffs.get(1, 1, 2));
-
     }
 
     /*
@@ -114,7 +114,6 @@ public class List3DDiffTest extends TestCase {
         assertEquals(2, diffs.getUnderlyingSize());
         assertEquals(0, diffs.getUnderlyingSize(1));
         assertEquals(0, diffs.getUnderlyingSize(0));
-
     }
 
     /*
@@ -132,9 +131,7 @@ public class List3DDiffTest extends TestCase {
             diffs.removeLastD1();
             fail();
         } catch (Exception e) {
-
         }
-
     }
 
     /*
@@ -155,9 +152,7 @@ public class List3DDiffTest extends TestCase {
             diffs.removeLastD2(0);
             fail();
         } catch (Exception e) {
-
         }
-
     }
 
     /*
@@ -180,9 +175,7 @@ public class List3DDiffTest extends TestCase {
             diffs.removeLastD3(0, 0);
             fail();
         } catch (Exception e) {
-
         }
-
     }
 
     /*
@@ -199,7 +192,6 @@ public class List3DDiffTest extends TestCase {
         assertEquals(11, diffs.get(0, 0, 0));
         diffs.set(0, 0, 1, 22);
         assertEquals(22, diffs.get(0, 0, 1));
-
     }
 
     /*
@@ -216,7 +208,6 @@ public class List3DDiffTest extends TestCase {
         underlying.addD3(0, 0, 4);
         underlying.addD3(0, 0, 4);
         assertEquals(2, diffs.sizeD3(0, 0));
-
     }
 
     /*

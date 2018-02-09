@@ -128,7 +128,7 @@ class TrackRenderer {
         //
         // g.drawString(title, 10, 10);
 
-        TileTransition[] directions = TileTransition.getList();
+        TileTransition[] directions = TileTransition.getTransitions();
         Collection<Double> sections = new ArrayList<>();
         int matches = 0;
         for (int i = 0; i < directions.length - 2; i++) {
@@ -149,9 +149,7 @@ class TrackRenderer {
                         }
 
                         matches++;
-
                     }
-
                 }
             }
         }
@@ -170,7 +168,6 @@ class TrackRenderer {
             }
         }
         paintTrack(g2, sections);
-
     }
 
     private CubicCurve2D.Double toCurve(TileTransition a) {
@@ -228,7 +225,6 @@ class TrackRenderer {
             g.draw(rail1);
             g.draw(rail2);
         }
-
     }
 
     private Point2D.Double controlPoint(Point2D.Double from) {

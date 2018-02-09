@@ -99,7 +99,7 @@ final class Track_TilesParser implements org.xml.sax.ContentHandler {
     public void endDocument() {
     }
 
-    public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, org.xml.sax.Attributes atts) throws SAXException {
+    public void startElement(java.lang.String uri, java.lang.String localName, java.lang.String qName, org.xml.sax.Attributes atts) {
         dispatch(true);
         context.push(new Object[]{qName, new org.xml.sax.helpers.AttributesImpl(atts)});
 
@@ -128,7 +128,7 @@ final class Track_TilesParser implements org.xml.sax.ContentHandler {
         }
     }
 
-    public void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) throws SAXException {
+    public void endElement(java.lang.String uri, java.lang.String localName, java.lang.String qName) {
         dispatch(false);
         context.pop();
 

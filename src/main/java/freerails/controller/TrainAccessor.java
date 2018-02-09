@@ -79,7 +79,6 @@ public class TrainAccessor {
             spaceAvailable[cargoType] = spaceAvailable[cargoType] - onTrain.getAmountOfType(cargoType);
         }
         return new ImmutableList<>(spaceAvailable);
-
     }
 
     /**
@@ -198,7 +197,7 @@ public class TrainAccessor {
         TrainActivity act = getStatus(time);
         if (act != TrainActivity.WAITING_FOR_FULL_LOAD) return false;
         ImmutableSchedule shedule = getSchedule();
-        TrainOrdersModel order = shedule.getOrder(shedule.getOrderToGoto());
+        TrainOrders order = shedule.getOrder(shedule.getOrderToGoto());
         if (order.stationId != stationId) return false;
         if (!order.waitUntilFull) return false;
         TrainModel train = getTrain();
@@ -263,7 +262,6 @@ public class TrainAccessor {
         TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, id);
         CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(p, KEY.CARGO_BUNDLES, train.getCargoBundleID());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
-
     }
 
 }

@@ -36,7 +36,7 @@ public class LineSegment implements Serializable {
         }
     }
 
-    // TODO mutable use getter and setter
+    // TODO mutable use getter and setter and make immutable! (similar to Point2D)
     private int x1;
     private int x2;
     private int y1;

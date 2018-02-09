@@ -77,7 +77,6 @@ public final class SynchronizedEventQueue extends EventQueue {
                     if (i == 0) {
                         break;
                     }
-
                 }
                 count = 0;
                 list.clear();

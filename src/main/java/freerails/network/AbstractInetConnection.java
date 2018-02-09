@@ -38,7 +38,7 @@ abstract class AbstractInetConnection implements Runnable {
     private final Connection inetConnection;
     private final SynchronizedFlag readerThreadStatus = new SynchronizedFlag(false);
     private final SynchronizedFlag status = new SynchronizedFlag(true);
-    private int timeout = 1000 * 5; // 5 seconds.
+    private static final int TIMEOUT = 1000 * 5; // 5 seconds.
 
     AbstractInetConnection(Socket s) throws IOException {
         inetConnection = new Connection(s);
@@ -54,7 +54,7 @@ abstract class AbstractInetConnection implements Runnable {
         logger.debug(this + "Initiating shutdown..");
         shutdownOutput();
 
-        long waitUntil = System.currentTimeMillis() + timeout;
+        long waitUntil = System.currentTimeMillis() + TIMEOUT;
 
         synchronized (readerThreadStatus) {
             while (readerThreadStatus.isOpen()) {
@@ -66,7 +66,7 @@ abstract class AbstractInetConnection implements Runnable {
                 }
 
                 try {
-                    readerThreadStatus.wait(timeout);
+                    readerThreadStatus.wait(TIMEOUT);
                 } catch (InterruptedException e) {}
             }
         }

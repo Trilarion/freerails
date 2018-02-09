@@ -110,7 +110,6 @@ public class AddTrainPreMove implements PreMove {
             TileTransition v = p.cameFrom();
             distanceTravelled += v.getLength();
             tileTransitions.add(v);
-
         }
         return new PathOnTiles(point, tileTransitions);
     }
@@ -121,7 +120,7 @@ public class AddTrainPreMove implements PreMove {
     }
 
     private TrainMotion initPositionStep2(PathOnTiles path) {
-        return new TrainMotion(path, path.steps(), calTrainLength(), ConstantAcceleration.STOPPED);
+        return new TrainMotion(path, path.steps(), calTrainLength(), ConstantAccelerationMotion.STOPPED);
     }
 
     /**

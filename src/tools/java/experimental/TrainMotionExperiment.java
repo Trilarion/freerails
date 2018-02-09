@@ -71,7 +71,7 @@ class TrainMotionExperiment extends JComponent {
         MoveStatus moveStatus = producer.buildTrack(from, trackPath);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
-        TrainOrdersModel[] orders = {};
+        TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
         PreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from, principal, is);
 
@@ -111,7 +111,6 @@ class TrainMotionExperiment extends JComponent {
                 FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(x, y));
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                     g.drawRect(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
-
                 }
             }
         }
@@ -123,7 +122,6 @@ class TrainMotionExperiment extends JComponent {
         while (ticks > finishTime) {
 
             updateTrainPosition();
-
         }
 
         ActivityIterator ai = world.getActivities(principal, 0);
@@ -175,7 +173,6 @@ class TrainMotionExperiment extends JComponent {
 
         int speed = (int) Math.round(pos.getSpeed());
         g.drawString("Speed: " + speed, 260, 60);
-
     }
 
     private void updateTrainPosition() {

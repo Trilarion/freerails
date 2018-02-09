@@ -44,7 +44,6 @@ public class UtilsTest extends TestCase {
         assertTrue(Utils.equalsBySerialization(b, b));
         assertTrue(Utils.equalsBySerialization(c, c));
         assertFalse(Utils.equalsBySerialization(a, c));
-
     }
 
 }

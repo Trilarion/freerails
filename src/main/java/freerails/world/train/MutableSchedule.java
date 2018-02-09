@@ -33,9 +33,9 @@ import java.util.List;
  */
 public class MutableSchedule implements Schedule {
     /**
-     * Vector of TrainOrdersModel.
+     * Vector of TrainOrders.
      */
-    private final List<TrainOrdersModel> orders = new ArrayList();
+    private final List<TrainOrders> orders = new ArrayList();
     private int nextScheduledOrder = -1;
 
     /**
@@ -66,7 +66,7 @@ public class MutableSchedule implements Schedule {
      * @return
      */
     public ImmutableSchedule toImmutableSchedule() {
-        TrainOrdersModel[] ordersArray = new TrainOrdersModel[orders.size()];
+        TrainOrders[] ordersArray = new TrainOrders[orders.size()];
 
         for (int i = 0; i < ordersArray.length; i++) {
             ordersArray[i] = orders.get(i);
@@ -78,7 +78,7 @@ public class MutableSchedule implements Schedule {
     /**
      * @param order
      */
-    public void setPriorityOrders(TrainOrdersModel order) {
+    public void setPriorityOrders(TrainOrders order) {
         if (hasPriorityOrders) {
             // Replace existing priority orders.
             orders.set(PRIORITY_ORDERS, order);
@@ -130,7 +130,7 @@ public class MutableSchedule implements Schedule {
      * Inserts an order at the specified position. Note you must call
      * setPriorityOrders() to set the priority orders.
      */
-    private void addOrder(int orderNumber, TrainOrdersModel order) {
+    private void addOrder(int orderNumber, TrainOrders order) {
         orders.add(orderNumber, order);
 
         if (nextScheduledOrder >= orderNumber) {
@@ -146,7 +146,7 @@ public class MutableSchedule implements Schedule {
      * @param order
      * @return
      */
-    public int addOrder(TrainOrdersModel order) {
+    public int addOrder(TrainOrders order) {
         if (!canAddOrder()) {
             throw new IllegalStateException();
         }
@@ -161,7 +161,7 @@ public class MutableSchedule implements Schedule {
      * @param orderNumber
      * @param order
      */
-    public void setOrder(int orderNumber, TrainOrdersModel order) {
+    public void setOrder(int orderNumber, TrainOrders order) {
         if (orderNumber >= orders.size()) {
             orders.add(order);
         } else {
@@ -173,7 +173,7 @@ public class MutableSchedule implements Schedule {
      * @param i
      * @return
      */
-    public TrainOrdersModel getOrder(int i) {
+    public TrainOrders getOrder(int i) {
         return orders.get(i);
     }
 
@@ -279,7 +279,7 @@ public class MutableSchedule implements Schedule {
         }
 
         boolean isGoingToThisStation = nextScheduledOrder == orderNumber;
-        TrainOrdersModel order = getOrder(orderNumber);
+        TrainOrders order = getOrder(orderNumber);
         removeOrder(orderNumber);
         addOrder(orderNumber - 1, order);
 
@@ -297,7 +297,7 @@ public class MutableSchedule implements Schedule {
         }
 
         boolean isGoingToThisStation = nextScheduledOrder == orderNumber;
-        TrainOrdersModel order = getOrder(orderNumber);
+        TrainOrders order = getOrder(orderNumber);
         removeOrder(orderNumber);
         addOrder(orderNumber + 1, order);
 
@@ -337,7 +337,7 @@ public class MutableSchedule implements Schedule {
         int i = 0;
 
         while (i < getNumOrders()) {
-            TrainOrdersModel order = getOrder(i);
+            TrainOrders order = getOrder(i);
 
             if (order.getStationID() == stationNumber) {
                 removeOrder(i);

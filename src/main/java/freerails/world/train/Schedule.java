@@ -35,7 +35,7 @@ public interface Schedule {
      * @param i
      * @return
      */
-    TrainOrdersModel getOrder(int i);
+    TrainOrders getOrder(int i);
 
     /**
      * Returns the number of the order the train is currently carry out.

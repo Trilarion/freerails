@@ -28,20 +28,20 @@ import java.util.Random;
 /**
  *
  */
-public class CompositeSpeedAgainstTimeTest extends TestCase {
+public class CompositeMotionTest extends TestCase {
 
     /**
      *
      */
     public void testBounds() {
-        SpeedAgainstTime sat = ConstantAcceleration.uas(10, 2, 400.0d);
-        CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(sat);
+        Motion sat = ConstantAccelerationMotion.fromSpeedAccelerationDistance(10, 2, 400.0d);
+        CompositeMotion csat = new CompositeMotion(sat);
         double t = csat.duration();
-        double t2 = csat.calculateTime(400.0d);
+        double t2 = csat.calculateTimeAtDistance(400.0d);
         assertEquals(t, t2);
-        double s = csat.calculateDistance(t);
+        double s = csat.calculateDistanceAtTime(t);
         assertEquals(400.0d, s);
-        double t3 = csat.calculateTime(0.0d);
+        double t3 = csat.calculateTimeAtDistance(0.0d);
         assertEquals(0.0d, t3);
     }
 
@@ -52,12 +52,12 @@ public class CompositeSpeedAgainstTimeTest extends TestCase {
         Random r = new Random(123);
         for (int i = 0; i < 1000; i++) {
             int numberOfParts = r.nextInt(10) + 1;
-            SpeedAgainstTime[] parts = new SpeedAgainstTime[numberOfParts];
+            Motion[] parts = new Motion[numberOfParts];
             for (int j = 0; j < numberOfParts; j++) {
-                parts[j] = ConstantAcceleration.uat(r.nextDouble(), r.nextDouble(), r.nextDouble());
+                parts[j] = ConstantAccelerationMotion.fromSpeedAccelerationTime(r.nextDouble(), r.nextDouble(), r.nextDouble());
             }
-            CompositeSpeedAgainstTime csat = new CompositeSpeedAgainstTime(parts);
-            ConstantAccelerationTest.checkContract(csat);
+            CompositeMotion csat = new CompositeMotion(parts);
+            ConstantAccelerationMotionTest.checkContract(csat);
         }
     }
 

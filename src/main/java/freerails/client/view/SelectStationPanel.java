@@ -35,7 +35,7 @@ import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.NullTrackPiece;
 import freerails.world.train.MutableSchedule;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -119,7 +119,6 @@ public class SelectStationPanel extends JPanel implements View {
         gridBagConstraints.anchor = GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
         add(label1, gridBagConstraints);
-
     }
 
     private void formComponentShown(ComponentEvent evt) {
@@ -174,14 +173,13 @@ public class SelectStationPanel extends JPanel implements View {
             cargoWaitingAndDemandedPanel1.display(selectedStationID);
             validate();
             repaint();
-
         }
     }
 
     public void display(MutableSchedule newSchedule, int orderNumber) {
         schedule = newSchedule;
         selectedOrderNumber = orderNumber;
-        TrainOrdersModel order = newSchedule.getOrder(selectedOrderNumber);
+        TrainOrders order = newSchedule.getOrder(selectedOrderNumber);
         selectedStationID = order.getStationID();
 
         // Set the text on the title JLabel.
@@ -313,9 +311,9 @@ public class SelectStationPanel extends JPanel implements View {
     }
 
     public MutableSchedule generateNewSchedule() {
-        TrainOrdersModel oldOrders, newOrders;
+        TrainOrders oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
-        newOrders = new TrainOrdersModel(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
+        newOrders = new TrainOrders(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
         schedule.setOrder(selectedOrderNumber, newOrders);
         return schedule;
     }

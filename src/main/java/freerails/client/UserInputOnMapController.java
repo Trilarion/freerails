@@ -248,9 +248,7 @@ class UserInputOnMapController extends KeyAdapter {
                 setIgnoreKeyEvents(true);
                 break;
             }
-
         } // End switch
-
     }
 
     private void cursorOneTileMove(Point2D oldPosition, TileTransition vector) {
@@ -266,7 +264,6 @@ class UserInputOnMapController extends KeyAdapter {
             } else {
                 setCursorMessage(moveStatus.getMessage());
             }
-
         } else {
             logger.warn("No track builder available!");
         }
@@ -315,7 +312,6 @@ class UserInputOnMapController extends KeyAdapter {
                 soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
                 break;
             default:
-
         }
     }
 
@@ -390,13 +386,11 @@ class UserInputOnMapController extends KeyAdapter {
                 if (isBuildTrackModeSet) {
                     buildTrack.show();
                 }
-
             } else if (SwingUtilities.isRightMouseButton(e)) {
                 // Cancel building track.
                 buildTrack.hide();
                 ignoreDragging = true;
                 setIgnoreKeyEvents(false);
-
             }
         }
 
@@ -482,9 +476,7 @@ class UserInputOnMapController extends KeyAdapter {
                 buildTrack.setProposedTrack(to, trackBuilder);
                 mapView.requestFocus();
             }
-
         }
-
     }
 
 }

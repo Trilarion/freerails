@@ -410,7 +410,6 @@ public class BuildTrackController implements GameModel {
                                 try {
                                     move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(new Point2D(locationX, locationY), v, worldDiffs, fp);
                                     break;
-
                                 } catch (Exception e1) {
                                     e1.printStackTrace();
                                     break attemptMove;
@@ -447,7 +446,6 @@ public class BuildTrackController implements GameModel {
 
                             default:
                                 throw new IllegalStateException(mode.toString());
-
                         }
                         MoveStatus moveStatus = move.doMove(worldDiffs, fp);
                         okSoFar = moveStatus.succeeds() && okSoFar;
@@ -499,7 +497,6 @@ public class BuildTrackController implements GameModel {
                 } else {
                     soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
                 }
-
             } else {
                 setCursorMessage(moveStatus.getMessage());
                 reset();

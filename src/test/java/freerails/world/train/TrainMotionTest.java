@@ -39,20 +39,20 @@ public class TrainMotionTest extends TestCase {
         TileTransition[] vectors = {TileTransition.getInstance(1, 1), TileTransition.getInstance(1, 0)};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
-        ConstantAcceleration constantAcceleration0 = ConstantAcceleration.uat(6.5135556243263055d, 0.5d,
+        ConstantAccelerationMotion constantAccelerationMovement0 = ConstantAccelerationMotion.fromSpeedAccelerationTime(6.5135556243263055d, 0.5d,
                 6.972888751347389d);
-        ConstantAcceleration constantAcceleration1 = ConstantAcceleration.uat(10.0, 0.0d, 4.0d);
+        ConstantAccelerationMotion constantAccelerationMovement1 = ConstantAccelerationMotion.fromSpeedAccelerationTime(10.0, 0.0d, 4.0d);
 
-        SpeedAgainstTime speeds = new CompositeSpeedAgainstTime(constantAcceleration0, constantAcceleration1);
+        Motion speeds = new CompositeMotion(constantAccelerationMovement0, constantAccelerationMovement1);
 
         double expectedTotalDistance = 97.57359312880715d; // Copied from
         // debugger.
-        double actualTotalDistance = speeds.getDistance();
+        double actualTotalDistance = speeds.getTotalDistance();
 
         assertEquals(expectedTotalDistance, actualTotalDistance, 0.0d);
 
         double expectedDuration = 10.972888751347389d;
-        double actualDuration = speeds.getTime();
+        double actualDuration = speeds.getTotalTime();
         assertEquals(expectedDuration, actualDuration, 0.0d);
 
         int engineStep = 1;

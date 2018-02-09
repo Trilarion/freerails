@@ -25,8 +25,6 @@ import freerails.network.LogOnResponse;
 import freerails.network.MessageToClient;
 import freerails.util.ImmutableList;
 
-import java.io.IOException;
-
 /**
  * Tests FreerailsClient with a network server.
  */
@@ -73,8 +71,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         }
     }
 
-    private void assertConnectClientsEquals(FreerailsClient client, ImmutableList<String> expectedPlayerNames)
-            throws IOException, InterruptedException {
+    private void assertConnectClientsEquals(FreerailsClient client, ImmutableList<String> expectedPlayerNames) {
         MessageToClient messageToClient = (MessageToClient) client.read();
         messageToClient.execute(client);
 
@@ -83,8 +80,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         assertEquals(expectedPlayerNames, actualPlayerNames);
     }
 
-    private void assertMapsAndSaveGamesReceived(FreerailsClient client)
-            throws IOException, InterruptedException {
+    private void assertMapsAndSaveGamesReceived(FreerailsClient client) {
         // 2 commands to read.
         MessageToClient messageToClient = (MessageToClient) client.read();
         messageToClient.execute(client);

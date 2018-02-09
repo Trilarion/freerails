@@ -81,7 +81,6 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         add(trainViewJPanel1, gridBagConstraints);
-
     }
 
     @Override

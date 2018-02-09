@@ -48,6 +48,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         FreerailsPrincipal principal = moveExecutor.getPrincipal();

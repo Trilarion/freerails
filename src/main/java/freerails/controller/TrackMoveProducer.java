@@ -63,7 +63,6 @@ public final class TrackMoveProducer {
         FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
-
     }
 
     /**
@@ -79,7 +78,6 @@ public final class TrackMoveProducer {
         FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
-
     }
 
     /**
@@ -136,7 +134,6 @@ public final class TrackMoveProducer {
                  * build.
                  */
                 break;
-
         }
         assert (getBuildMode() == BuildMode.BUILD_TRACK || getBuildMode() == BuildMode.UPGRADE_TRACK);
 
@@ -189,7 +186,6 @@ public final class TrackMoveProducer {
             default:
                 throw new IllegalArgumentException(String.valueOf(getBuildMode()));
         }
-
     }
 
     private MoveStatus upgradeTrack(Point2D point, int trackRuleID) {

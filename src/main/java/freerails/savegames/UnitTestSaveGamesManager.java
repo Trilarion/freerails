@@ -55,7 +55,7 @@ public class UnitTestSaveGamesManager implements SaveGamesManager {
      * @param w
      * @throws IOException
      */
-    public void saveGame(String s, Serializable w) throws IOException {
+    public void saveGame(String s, Serializable w) {
         // Make a copy so that the saved version's state cannot be changed.
         Serializable copy = Utils.cloneBySerialisation(w);
         savedGames.put(s, copy);
@@ -66,7 +66,7 @@ public class UnitTestSaveGamesManager implements SaveGamesManager {
      * @return
      * @throws IOException
      */
-    public ServerGameModel loadGame(String name) throws IOException {
+    public ServerGameModel loadGame(String name) {
         Serializable o = savedGames.get(name);
         return (ServerGameModel) Utils.cloneBySerialisation(o);
     }
@@ -76,7 +76,7 @@ public class UnitTestSaveGamesManager implements SaveGamesManager {
      * @return
      * @throws IOException
      */
-    public World newMap(String name) throws IOException {
+    public World newMap(String name) {
         return new FullWorld(10, 10);
     }
 }

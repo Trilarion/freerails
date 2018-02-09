@@ -56,7 +56,6 @@ public class ServerControlModel implements ModelRootListener {
 
         modelRoot.addPropertyChangeListener(this);
         setServerControlInterface();
-
     }
 
     /**
@@ -143,7 +142,6 @@ public class ServerControlModel implements ModelRootListener {
         // default:
         // break;
         // }
-
     }
 
     /**
@@ -180,7 +178,6 @@ public class ServerControlModel implements ModelRootListener {
         selectMapActions = new ActionAdapter(actions);
 
         newGameAction.setEnabled(true);
-
     }
 
     private class LoadGameAction extends AbstractAction {
@@ -232,7 +229,6 @@ public class ServerControlModel implements ModelRootListener {
                 MessageToServer message2 = new NewGameMessageToServer(1, mapName);
                 modelRoot.sendCommand(message2);
             }
-
         }
     }
 
@@ -261,9 +257,7 @@ public class ServerControlModel implements ModelRootListener {
              * catch (Exception except) {
              *  }
              */
-
         }
-
     }
 
     private class SetTargetTicksPerSecondAction extends AbstractAction {
@@ -293,7 +287,6 @@ public class ServerControlModel implements ModelRootListener {
             if (speed == 0) { // pausing/unpausing
 
                 speed2set = -1 * getTargetTicksPerSecond();
-
             }
             modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(), new GameSpeed(speed2set)));
         }

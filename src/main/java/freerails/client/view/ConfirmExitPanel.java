@@ -77,7 +77,6 @@ public class ConfirmExitPanel extends JPanel implements View {
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.insets = new Insets(3, 0, 0, 0);
         add(jPanel2, gridBagConstraints);
-
     }
 
     private static void confirmExitActionPerformed(ActionEvent evt) {

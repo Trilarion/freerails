@@ -26,7 +26,6 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.MoveTrainPreMove;
-import freerails.world.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.*;
@@ -69,6 +68,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
       </ol>
      */
     protected void setUp() throws Exception {
+        super.setUp();
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         principal = moveExecutor.getPrincipal();
@@ -98,8 +98,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MoveStatus ms3 = stationBuilder.buildStation(station2Location);
         assertTrue(ms3.succeeds());
 
-        TrainOrdersModel order0 = new TrainOrdersModel(2, null, false, false);
-        TrainOrdersModel order1 = new TrainOrdersModel(0, null, false, false);
+        TrainOrders order0 = new TrainOrders(2, null, false, false);
+        TrainOrders order1 = new TrainOrders(0, null, false, false);
         MutableSchedule s = new MutableSchedule();
         s.addOrder(order0);
         s.addOrder(order1);
@@ -124,7 +124,6 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(TileTransition.EAST, nextStep());
         moveTrain();
         assertEquals(TileTransition.EAST, nextStep());
-
     }
 
     /**
@@ -309,7 +308,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     private void putTrainAtStationWaiting4FullLoad() {
         // Set wait until full on schedule.
         ImmutableList<Integer> newConsist = new ImmutableList<>(0, 0);
-        TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist,true,false);
+        TrainOrders order0 = new TrainOrders(2, newConsist,true,false);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
         schedule.setOrder(0, order0);
@@ -358,7 +357,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
         // Now change the train's orders.
         ImmutableList<Integer> newConsist = new ImmutableList<>(0, 0);
-        TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist,false,false);
+        TrainOrders order0 = new TrainOrders(2, newConsist,false,false);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
         schedule.setOrder(0, order0);
@@ -390,8 +389,8 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         world.set(principal, KEY.TRAINS, 0, model);
 
         // Change trains schedule to auto consist.
-        TrainOrdersModel order0 = new TrainOrdersModel(1, null, false, true);
-        TrainOrdersModel order1 = new TrainOrdersModel(2, null, false, true);
+        TrainOrders order0 = new TrainOrders(1, null, false, true);
+        TrainOrders order1 = new TrainOrders(2, null, false, true);
         MutableSchedule s = new MutableSchedule();
         s.addOrder(order0);
         s.addOrder(order1);
@@ -461,7 +460,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     public void testLengtheningTrain() {
         // Set the train to add wagons at station2.
         ImmutableList<Integer> newConsist = new ImmutableList<>(0, 0, 0, 0, 0, 0);
-        TrainOrdersModel order0 = new TrainOrdersModel(2, newConsist,false,false);
+        TrainOrders order0 = new TrainOrders(2, newConsist,false,false);
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
         MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
         schedule.setOrder(0, order0);

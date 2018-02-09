@@ -33,7 +33,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.ImmutableSchedule;
 import freerails.world.train.Schedule;
 import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrdersModel;
+import freerails.world.train.TrainOrders;
 
 import javax.swing.*;
 import java.awt.*;
@@ -123,7 +123,6 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
             } catch (IOException e) {
                 throw new IllegalArgumentException(wagonFilename);
             }
-
         }
     }
 
@@ -140,7 +139,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         scheduleID = train.getScheduleID();
 
         Schedule s = (ImmutableSchedule) world.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
-        TrainOrdersModel order = s.getOrder(newScheduleOrderID);
+        TrainOrders order = s.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
         if (null != order.consist) {

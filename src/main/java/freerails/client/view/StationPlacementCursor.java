@@ -92,7 +92,6 @@ public class StationPlacementCursor extends MouseInputAdapter {
         stationBuildModel = actionRoot.getStationBuildModel();
         stationRadiusRenderer = srr;
         buildEnabled = stationBuildModel.getStationBuildAction().isEnabled();
-
     }
 
     /**

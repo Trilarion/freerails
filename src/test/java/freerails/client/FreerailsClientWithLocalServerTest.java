@@ -55,6 +55,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         savedGamesManager = new UnitTestSaveGamesManager();
         server = new FreerailsGameServer(savedGamesManager);
     }
@@ -179,7 +180,6 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         LogOnResponse response = client.connect(server, "Late player","password");
         assertFalse(response.isSuccessful());
         assertEquals(2, server.getNumberOpenConnections());
-
     }
 
     /**
@@ -352,10 +352,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             assertTrue("Ok, same username and password as before.", response0
                     .isSuccessful());
             assertEquals(1, server.getNumberOpenConnections());
-
         } catch (Exception e) {
             fail();
         }
-
     }
 }

@@ -69,7 +69,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     private final ComponentListener componentListener = new ComponentAdapter() {
         @Override
         public void componentHidden(ComponentEvent e) {
-
         }
 
         @Override
@@ -151,7 +150,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new Insets(4, 4, 4, 4);
         add(close, gridBagConstraints);
-
     }
 
 
@@ -178,7 +176,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         } else {
             throw new IllegalStateException();
         }
-
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
@@ -251,7 +248,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
                     table1.append("<td align=center>").append(waiting).append("</td>");
                     table1.append("</tr>");
                 }
-
             }
             table1.append("</table>");
             table1.append("</html>");
@@ -313,7 +309,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
                 display();
             }
         }
-
     }
 
     public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {

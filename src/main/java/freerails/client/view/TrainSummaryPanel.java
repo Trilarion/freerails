@@ -112,7 +112,6 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.insets = new Insets(0, 10, 0, 0);
         add(trainIncomeLabel, gridBagConstraints);
-
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {

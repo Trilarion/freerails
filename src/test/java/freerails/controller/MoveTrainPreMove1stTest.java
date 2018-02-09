@@ -66,8 +66,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.succeeds());
 
-        TrainOrdersModel order0 = new TrainOrdersModel(1, null, false, false);
-        TrainOrdersModel order1 = new TrainOrdersModel(0, null, false, false);
+        TrainOrders order0 = new TrainOrders(1, null, false, false);
+        TrainOrders order1 = new TrainOrders(0, null, false, false);
         MutableSchedule s = new MutableSchedule();
         s.addOrder(order0);
         s.addOrder(order1);
@@ -96,13 +96,13 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
      */
     public void testNextSpeeds() {
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
-        SpeedAgainstTime speeds = preMove.nextSpeeds(world, TileTransition.EAST);
+        Motion speeds = preMove.nextSpeeds(world, TileTransition.EAST);
         assertNotNull(speeds);
-        assertEquals(speeds.calcVelocity(0), 0.0d);
-        assertTrue(speeds.getDistance() >= TileTransition.EAST.getLength());
-        double t = speeds.getTime();
+        assertEquals(speeds.calculateSpeedAtTime(0), 0.0d);
+        assertTrue(speeds.getTotalDistance() >= TileTransition.EAST.getLength());
+        double t = speeds.getTotalTime();
         assertTrue(t > 0);
-        assertTrue(speeds.calcVelocity(t) > 0);
+        assertTrue(speeds.calculateSpeedAtTime(t) > 0);
     }
 
     /**
@@ -188,7 +188,6 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
-
     }
 
     private void setupLoopOfTrack() {
@@ -203,7 +202,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         MoveStatus moveStatus = producer.buildTrack(from, trackPath);
         assertTrue(moveStatus.succeeds());
 
-        TrainOrdersModel[] orders = {};
+        TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
         AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
                 principal, is);
@@ -218,7 +217,6 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         PathOnTiles expected = new PathOnTiles(from, TileTransition.SOUTH_WEST);
         PathOnTiles actual = motion.getTiles(motion.duration());
         assertEquals(expected, actual);
-
     }
 
     /**
@@ -230,7 +228,6 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
         Move move = moveTrain.generateMove(world);
         assertTrue(move.doMove(world, principal).succeeds());
-
     }
 
     /**

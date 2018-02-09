@@ -27,9 +27,7 @@
  */
 package freerails.world.track;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import java.util.ArrayList;
 
@@ -47,9 +45,10 @@ public class ValidTrackConfigurationsTest extends TestCase {
 
         ValidTrackConfigurations validTrackConfigurations = new ValidTrackConfigurations(-1, templates);
 
-        TrackConfiguration template = TrackConfiguration.getFlatInstance("010010010");
-        assertEquals(true, validTrackConfigurations.trackConfigurationIsLegal(template));
-        template = TrackConfiguration.getFlatInstance("010111000");
-        assertFalse(validTrackConfigurations.trackConfigurationIsLegal(template));
+        TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("010010010");
+        assertEquals(true, validTrackConfigurations.trackConfigurationIsLegal(trackConfiguration));
+
+        trackConfiguration = TrackConfiguration.getFlatInstance("010111000");
+        assertFalse(validTrackConfigurations.trackConfigurationIsLegal(trackConfiguration));
     }
 }

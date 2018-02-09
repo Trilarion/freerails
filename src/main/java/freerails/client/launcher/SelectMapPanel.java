@@ -162,7 +162,6 @@ class SelectMapPanel extends JPanel {
             public void changedUpdate(DocumentEvent e) {
                 validateInput();
             }
-
         });
     }
 

@@ -42,11 +42,9 @@ public class PositionOnTrackTest extends TestCase {
         assertException(-1, 0, TileTransition.EAST);
         assertException(0, -1, TileTransition.EAST);
 
-        assertException(PositionOnTrack.MAX_COORDINATE + 1,
-                PositionOnTrack.MAX_COORDINATE, TileTransition.NORTH_WEST);
+        assertException(PositionOnTrack.MAX_COORDINATE + 1, PositionOnTrack.MAX_COORDINATE, TileTransition.NORTH_WEST);
 
-        assertException(PositionOnTrack.MAX_COORDINATE,
-                PositionOnTrack.MAX_COORDINATE + 1, TileTransition.NORTH_WEST);
+        assertException(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE + 1, TileTransition.NORTH_WEST);
     }
 
     /**
@@ -91,6 +89,7 @@ public class PositionOnTrackTest extends TestCase {
         assertTrue(!p1.equals(p2));
     }
 
+    // TODO replace with TestUtils
     private void assertNoException(int x, int y, TileTransition v) {
         try {
             PositionOnTrack.createComingFrom(new Point2D(x, y), v);

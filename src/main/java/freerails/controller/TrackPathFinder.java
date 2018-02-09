@@ -178,7 +178,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
             y = y2;
         }
         return vectors;
-
     }
 
     /**

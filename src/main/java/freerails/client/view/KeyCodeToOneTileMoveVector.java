@@ -53,7 +53,6 @@ class KeyCodeToOneTileMoveVector {
         keycode2vector.put(KeyEvent.VK_HOME, TileTransition.NORTH_WEST);
         keycode2vector.put(KeyEvent.VK_UP, TileTransition.NORTH);
         keycode2vector.put(KeyEvent.VK_PAGE_UP, TileTransition.NORTH_EAST);
-
     }
 
     private KeyCodeToOneTileMoveVector() {

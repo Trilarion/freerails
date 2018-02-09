@@ -37,6 +37,7 @@ public class ListXDTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         list1d = new List1DImpl<>();
         list2d = new List2DImpl<>(5);
         list3d = new List3DImpl<>(3, 2);
@@ -60,7 +61,6 @@ public class ListXDTest extends TestCase {
         assertEquals(5, list2d.sizeD1());
         assertEquals(1, list2d.sizeD2(2));
         assertEquals(0, list2d.sizeD2(0));
-
     }
 
     /**
@@ -145,7 +145,6 @@ public class ListXDTest extends TestCase {
         while (list3d.sizeD2(playerId) > 0) {
             list3d.removeLastD2(playerId);
         }
-
     }
 
 }

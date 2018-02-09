@@ -42,7 +42,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private final Map<String, Serializable> properties = new HashMap<>();
-    private final MoveChainFork moveFork = new MoveChainFork();;
+    private final MoveChainFork moveFork = new MoveChainFork();
     protected ConnectionToServer connectionToServer;
     private World world;
     private MovePrecommitter committer;
@@ -181,7 +181,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * instead of overriding update().
      */
     protected void clientUpdates() {
-
     }
 
     /**

@@ -50,6 +50,7 @@ public class WorldDiffsMoveTest extends TestCase {
      */
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         world = new FullWorld(10, 10);
         // Set the time..
         world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
@@ -78,7 +79,6 @@ public class WorldDiffsMoveTest extends TestCase {
         diffs.set(fp1, KEY.STATIONS, 0, city2);
         diffs.set(fp1, KEY.STATIONS, 1, city2);
         runTests();
-
     }
 
     /**
@@ -94,7 +94,6 @@ public class WorldDiffsMoveTest extends TestCase {
                 WorldDiffMoveCause.Other);
 
         assertEquals(2, move.listDiffs());
-
     }
 
     /**
@@ -122,7 +121,6 @@ public class WorldDiffsMoveTest extends TestCase {
         diffs.addTransaction(fp1, t2);
         diffs.addTransaction(fp1, t3);
         runTests();
-
     }
 
     /**
@@ -190,7 +188,6 @@ public class WorldDiffsMoveTest extends TestCase {
         Object moveCopy = Utils.cloneBySerialisation(move);
         assertEquals(moveCopy, move);
         assertEquals(moveCopy.hashCode(), move.hashCode());
-
     }
 
 }

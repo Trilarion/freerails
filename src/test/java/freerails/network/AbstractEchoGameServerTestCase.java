@@ -35,6 +35,7 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
      */
     @Override
     protected synchronized void setUp() throws Exception {
+        super.setUp();
         EchoGameServer result;
         EchoGameServer server1 = new EchoGameServer();
         Thread t = new Thread(server1);
@@ -71,6 +72,7 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
      */
     @Override
     protected synchronized void tearDown() throws Exception {
+        super.tearDown();
         server.stop();
     }
 }
