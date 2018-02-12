@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.controller.pathfinding;
 
 /**
  * Thrown when a path cannot be found.

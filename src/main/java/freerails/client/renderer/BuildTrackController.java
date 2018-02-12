@@ -21,6 +21,7 @@ package freerails.client.renderer;
 import freerails.client.ClientConfig;
 import freerails.client.common.SoundManager;
 import freerails.controller.*;
+import freerails.controller.pathfinding.*;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -250,7 +251,7 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = false;
     }
 
-    private int searchStatus() {
+    private PathFinderStatus searchStatus() {
         if (buildNewTrack) {
             return path4newTrackFinder.getStatus();
         }
@@ -280,7 +281,7 @@ public class BuildTrackController implements GameModel {
          * If we have just found the route between the two points, don't waste
          * time doing it again.
          */
-        if (null != targetPoint && null != startPoint && targetPoint.equals(to) && startPoint.equals(from) && searchStatus() != IncrementalPathFinder.SEARCH_NOT_STARTED) {
+        if (null != targetPoint && null != startPoint && targetPoint.equals(to) && startPoint.equals(from) && searchStatus() != PathFinderStatus.SEARCH_NOT_STARTED) {
             return;
         }
 
@@ -357,7 +358,7 @@ public class BuildTrackController implements GameModel {
      */
     public void update() {
         // update search for path if necessary.
-        if (searchStatus() == IncrementalPathFinder.SEARCH_PAUSED) {
+        if (searchStatus() == PathFinderStatus.SEARCH_PAUSED) {
             updateSearch();
         }
     }
@@ -366,7 +367,7 @@ public class BuildTrackController implements GameModel {
      *
      */
     public void updateUntilComplete() {
-        while (searchStatus() != IncrementalPathFinder.PATH_FOUND) {
+        while (searchStatus() != PathFinderStatus.PATH_FOUND) {
             updateSearch();
         }
     }
@@ -387,7 +388,7 @@ public class BuildTrackController implements GameModel {
             return;
         }
 
-        if (searchStatus() == IncrementalPathFinder.PATH_FOUND) {
+        if (searchStatus() == PathFinderStatus.PATH_FOUND) {
             if (buildNewTrack) {
                 builtTrack = path4newTrackFinder.pathAsPoints();
                 moveCursorMoreTiles(builtTrack);

@@ -24,7 +24,6 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.PreMove;
 import freerails.network.*;
-import freerails.world.FreerailsMutableSerializable;
 import freerails.world.World;
 import freerails.server.gamemodel.GameModel;
 import freerails.world.player.Player;
@@ -118,8 +117,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         }
     }
 
-    public final void setGameModel(FreerailsMutableSerializable world) {
-        this.world = (World) world;
+    public final void setGameModel(World world) {
+        this.world = world;
         committer = new MovePrecommitter(this.world);
         newWorld(this.world);
     }

@@ -18,7 +18,6 @@
 
 package freerails.world.train;
 
-import freerails.world.FreerailsMutableSerializable;
 import freerails.world.track.PathIterator;
 
 /**
@@ -26,7 +25,7 @@ import freerails.world.track.PathIterator;
  * whose length the caller specifies. E.g. it could be used to get the sub
  * section of a path that a train travels during an given time interval.
  */
-public interface PathWalker extends PathIterator, FreerailsMutableSerializable {
+public interface PathWalker extends PathIterator {
     /**
      * Returns true if we have not reached the end of the path.
      */

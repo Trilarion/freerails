@@ -351,7 +351,6 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL, KEY.TRAINS, 0);
         MutableCargoBatchBundle bundle = new MutableCargoBatchBundle(getCargoOnTrain());
         bundle.setAmount(cb, amount);
-        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train
-                .getCargoBundleID(), bundle.toImmutableCargoBundle());
+        world.set(MapFixtureFactory.TEST_PRINCIPAL, KEY.CARGO_BUNDLES, train.getCargoBundleID(), bundle.toImmutableCargoBundle());
     }
 }

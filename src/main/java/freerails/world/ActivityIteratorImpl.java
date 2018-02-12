@@ -65,7 +65,7 @@ public class ActivityIteratorImpl implements ActivityIterator {
      */
     public Serializable getState(double absoluteTime) {
         double dt = absoluteToRelativeTime(absoluteTime);
-        return ant.act.getState(dt);
+        return ant.act.getStateAtTime(dt);
     }
 
     /**

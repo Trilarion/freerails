@@ -30,45 +30,40 @@ import freerails.world.Activity;
 public class CompositeMotion implements Activity<SpeedTimeAndStatus>, Motion {
 
     private static final long serialVersionUID = 3146586143114534610L;
-    private final ImmutableList<Motion> values;
-    private final double finalT, finalS;
+    private final ImmutableList<Motion> motions;
+    private final double totalTime, totalDistance;
 
     /**
-     * @param accs
+     * @param motions
      */
-    public CompositeMotion(Motion... accs) {
-        values = new ImmutableList<>(accs);
-        values.verifyNoneNull();
-        double tempDuration = 0, tempTotalDistance = 0;
-        for (Motion acc : accs) {
-            tempDuration += acc.getTotalTime();
-            tempTotalDistance += acc.getTotalDistance();
+    public CompositeMotion(Motion... motions) {
+        this.motions = new ImmutableList<>(motions);
+        this.motions.verifyNoneNull();
+        double time = 0, distance = 0;
+        for (Motion motion : motions) {
+            time += motion.getTotalTime();
+            distance += motion.getTotalDistance();
         }
-        finalT = tempDuration;
-        finalS = tempTotalDistance;
+        totalTime = time;
+        totalDistance = distance;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof CompositeMotion)) return false;
+        final CompositeMotion other = (CompositeMotion) obj;
 
-        final CompositeMotion compositeSpeedAgainstTime = (CompositeMotion) obj;
-
-        if (finalT != compositeSpeedAgainstTime.finalT) return false;
-        if (finalS != compositeSpeedAgainstTime.finalS) return false;
-        return values.equals(compositeSpeedAgainstTime.values);
+        if (totalTime != other.totalTime) return false;
+        if (totalDistance != other.totalDistance) return false;
+        return motions.equals(other.motions);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = values.hashCode();
-        temp = finalT != +0.0d ? Double.doubleToLongBits(finalT) : 0L;
-        result = 29 * result + (int) (temp ^ (temp >>> 32));
-        temp = finalS != +0.0d ? Double.doubleToLongBits(finalS) : 0L;
-        result = 29 * result + (int) (temp ^ (temp >>> 32));
+        int result = motions.hashCode();
+        result = 29 * Double.hashCode(totalTime);
+        result = 29 * Double.hashCode(totalDistance);
         return result;
     }
 
@@ -76,126 +71,129 @@ public class CompositeMotion implements Activity<SpeedTimeAndStatus>, Motion {
      * @return
      */
     public double duration() {
-        return finalT;
+        return totalTime;
     }
 
     /**
-     * @param dt
+     * @param time
      * @return
      */
-    public SpeedTimeAndStatus getState(final double dt) {
-        checkT(dt);
+    public SpeedTimeAndStatus getStateAtTime(final double time) {
+        checkTime(time);
         double acceleration;
-        TrainActivity activity = TrainActivity.READY;
-        double s;
+        double distance;
         double speed;
 
-        TandI tai = getIndex(dt);
-        Motion acc = values.get(tai.i);
-        speed = acc.calculateSpeedAtTime(tai.offset);
-        acceleration = acc.calculateAccelerationAtTime(tai.offset);
-        s = acc.calculateDistanceAtTime(tai.offset);
+        SubTime subTime = getIndex(time);
+        Motion motion = motions.get(subTime.idx);
+        speed = motion.calculateSpeedAtTime(subTime.time);
+        acceleration = motion.calculateAccelerationAtTime(subTime.time);
+        distance = motion.calculateDistanceAtTime(subTime.time);
 
-        return new SpeedTimeAndStatus(speed, acceleration, s, dt, activity);
+        return new SpeedTimeAndStatus(speed, acceleration, distance, time, TrainState.READY);
     }
 
     public double calculateDistanceAtTime(double time) {
-        if (time == finalT) return finalS;
-        checkT(time);
-        TandI tai = getIndex(time);
-        double s = 0;
-        for (int i = 0; i < tai.i; i++) {
-            Motion acc = values.get(i);
-            s += acc.getTotalDistance();
+        checkTime(time);
+        if (time == totalTime) return totalDistance;
+        SubTime subTime = getIndex(time);
+        // first add up all total distances of completed motions
+        double distance = 0;
+        for (int i = 0; i < subTime.idx; i++) {
+            Motion motion = motions.get(i);
+            distance += motion.getTotalDistance();
         }
-        Motion acc = values.get(tai.i);
-        if (tai.offset >= acc.getTotalTime()) {
-            // Note, it is possible for tai.offset > acc.getTransaction()
-            // even though we called checkT(t) above
-            s += acc.getTotalDistance();
-        } else {
-            s += acc.calculateDistanceAtTime(tai.offset);
-        }
-        return s;
+        // then add fractional distance of the actual motion
+        Motion motion = motions.get(subTime.idx);
+        distance += motion.calculateDistanceAtTime(subTime.time);
+        return distance;
     }
 
     public double calculateTimeAtDistance(double distance) {
-        if (distance == finalS) return finalT;
-        if (distance > finalS) throw new IllegalArgumentException(String.valueOf(distance));
+        if (distance == totalDistance) return totalTime;
+        // TODO checkDistance
+        if (distance > totalDistance) throw new IllegalArgumentException(String.valueOf(distance));
 
-        double sSoFar = 0;
-        double tSoFar = 0;
-        int i = 0;
-        Motion acc = values.get(i);
+        double distanceSoFar = 0;
+        double timeSoFar = 0;
 
-        while ((sSoFar + acc.getTotalDistance()) < distance) {
-            sSoFar += acc.getTotalDistance();
-            tSoFar += acc.getTotalTime();
-            i++;
-            acc = values.get(i);
+        // determine how many full completed motions there are
+        int idx = 0;
+        Motion motion = motions.get(idx);
+        while ((distanceSoFar + motion.getTotalDistance()) < distance) {
+            distanceSoFar += motion.getTotalDistance();
+            timeSoFar += motion.getTotalTime();
+            idx++;
+            motion = motions.get(idx);
         }
-        double sOffset = distance - sSoFar;
-        if (sOffset >= acc.getTotalDistance()) {
-            tSoFar += acc.getTotalTime();
+        // there is an uncompleted motion, get time for it and add
+        double sOffset = distance - distanceSoFar;
+        if (sOffset >= motion.getTotalDistance()) {
+            timeSoFar += motion.getTotalTime();
         } else {
-            tSoFar += acc.calculateTimeAtDistance(sOffset);
+            timeSoFar += motion.calculateTimeAtDistance(sOffset);
         }
-        return tSoFar;
+        return timeSoFar;
     }
 
     public double calculateSpeedAtTime(double time) {
-        checkT(time);
-        TandI tai = getIndex(time);
-        Motion acc = values.get(tai.i);
-        return acc.calculateSpeedAtTime(tai.offset);
+        checkTime(time);
+        SubTime subTime = getIndex(time);
+        Motion motion = motions.get(subTime.idx);
+        return motion.calculateSpeedAtTime(subTime.time);
     }
 
     public double calculateAccelerationAtTime(double time) {
-        checkT(time);
-        TandI tai = getIndex(time);
-        Motion acc = values.get(tai.i);
-        return acc.calculateAccelerationAtTime(tai.offset);
+        checkTime(time);
+        SubTime subTime = getIndex(time);
+        Motion motion = motions.get(subTime.idx);
+        return motion.calculateAccelerationAtTime(subTime.time);
     }
 
     public double getTotalTime() {
-        return finalT;
+        return totalTime;
     }
 
     public double getTotalDistance() {
-        return finalS;
+        return totalDistance;
     }
 
-    private TandI getIndex(double t) {
-        checkT(t);
-        double tSoFar = 0;
-        for (int i = 0; i < values.size(); i++) {
-            Motion acc = values.get(i);
+    /**
+     *
+     * @param time
+     * @return
+     */
+    private SubTime getIndex(double time) {
+        checkTime(time);
+        double timeSoFar = 0;
+        for (int idx = 0; idx < motions.size(); idx++) {
+            Motion motion = motions.get(idx);
 
-            if (t <= (tSoFar + acc.getTotalTime())) {
-                double offset = t - tSoFar;
-                return new TandI(i, offset);
+            if (time <= (timeSoFar + motion.getTotalTime())) {
+                double offset = time - timeSoFar;
+                return new SubTime(idx, offset);
             }
-            tSoFar += acc.getTotalTime();
+            timeSoFar += motion.getTotalTime();
         }
         // Should never happen since we call checkT() above!
-        throw new IllegalStateException(String.valueOf(t));
+        throw new IllegalStateException(String.valueOf(time));
     }
 
-    private void checkT(double t) {
-        if (t < 0.0d || t > finalT) throw new IllegalArgumentException("t=" + t + ", but duration=" + finalT);
+    private void checkTime(double time) {
+        if (time < 0.0d || time > totalTime) throw new IllegalArgumentException("t=" + time + ", but duration=" + totalTime);
     }
 
     /**
      * Used to enable 2 values to be returned from the method getIndex(double t)
      */
-    private static class TandI {
-        private final double offset;
+    private static class SubTime {
 
-        private final int i;
+        private final double time;
+        private final int idx;
 
-        private TandI(int i, double t) {
-            this.i = i;
-            offset = t;
+        private SubTime(int idx, double time) {
+            this.idx = idx;
+            this.time = time;
         }
     }
 

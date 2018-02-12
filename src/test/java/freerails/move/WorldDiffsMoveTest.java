@@ -31,7 +31,7 @@ import freerails.world.finances.TransactionCategory;
 import freerails.world.game.GameCalendar;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.City;
-import freerails.world.FullWorldTest.TestActivity;
+import freerails.world.TestActivity;
 import junit.framework.TestCase;
 
 /**
@@ -90,9 +90,7 @@ public class WorldDiffsMoveTest extends TestCase {
         diffs.set(fp1, KEY.STATIONS, 0, city2);
         diffs.set(fp1, KEY.STATIONS, 1, city2);
         assertEquals(2, diffs.listDiffs());
-        WorldDiffMove move = WorldDiffMove.generate(diffs,
-                WorldDiffMoveCause.Other);
-
+        WorldDiffMove move = WorldDiffMove.generate(diffs, WorldDiffMoveCause.Other);
         assertEquals(2, move.listDiffs());
     }
 
@@ -111,12 +109,9 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testAddingTransaction() {
-        Transaction t1 = new ItemTransaction(TransactionCategory.BOND, 1, 1, new Money(
-                100));
-        Transaction t2 = new ItemTransaction(TransactionCategory.BOND, 2, 2, new Money(
-                1000));
-        Transaction t3 = new ItemTransaction(TransactionCategory.BOND, 3, 3, new Money(
-                10000));
+        Transaction t1 = new ItemTransaction(TransactionCategory.BOND, 1, 1, new Money(100));
+        Transaction t2 = new ItemTransaction(TransactionCategory.BOND, 2, 2, new Money(1000));
+        Transaction t3 = new ItemTransaction(TransactionCategory.BOND, 3, 3, new Money(10000));
         world.addTransaction(fp1, t1);
         diffs.addTransaction(fp1, t2);
         diffs.addTransaction(fp1, t3);
@@ -160,8 +155,7 @@ public class WorldDiffsMoveTest extends TestCase {
 
     private void runTests() {
         assertFalse(diffs.equals(world));
-        WorldDiffMove move = WorldDiffMove.generate(diffs,
-                WorldDiffMoveCause.Other);
+        WorldDiffMove move = WorldDiffMove.generate(diffs, WorldDiffMoveCause.Other);
 
         // Doing the move on the world should also succeed.
         World worldCopy = (World) Utils.cloneBySerialisation(world);

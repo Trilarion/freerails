@@ -19,8 +19,9 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.controller.pathfinding;
 
+import freerails.controller.pathfinding.OpenList;
 import junit.framework.TestCase;
 
 /**

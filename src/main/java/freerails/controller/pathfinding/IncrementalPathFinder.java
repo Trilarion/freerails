@@ -16,13 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.world;
-
-import java.io.Serializable;
+/*
+ *
+ */
+package freerails.controller.pathfinding;
 
 /**
- * This interface tags mutable serializable classes.
+ * Defines part of the contract for a pathfinder whose search can be completed
+ * in several steps.
  */
-// TODO what is it good for?, can be exist without it?
-public interface FreerailsMutableSerializable extends Serializable {
+public interface IncrementalPathFinder {
+
+    /**
+     * @return
+     */
+    PathFinderStatus getStatus();
+
+    /**
+     * @param maxDuration
+     * @throws PathNotFoundException
+     */
+    void search(long maxDuration) throws PathNotFoundException;
+
+    /**
+     *
+     */
+    void abandonSearch();
 }

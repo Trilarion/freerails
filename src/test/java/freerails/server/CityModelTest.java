@@ -25,7 +25,7 @@ import freerails.world.MapFixtureFactory;
 import junit.framework.TestCase;
 
 /**
- * JUnit Test for CityEconomic.
+ * Test for CityModel
  */
 public class CityModelTest extends TestCase {
 
@@ -34,14 +34,14 @@ public class CityModelTest extends TestCase {
      */
     public void testLoadFromMap() {
         World world = MapFixtureFactory.getWorld(100, 100);
-        City newYork = new City("New York", 10, 20);
-        world.add(SKEY.CITIES, newYork);
+        City city = new City("New York", 10, 20);
+        world.add(SKEY.CITIES, city);
 
-        CityModel city = new CityModel();
-        city.loadFromMap(world, 0);
-        assertEquals(0, city.industryCityTiles.size());
-        assertEquals(0, city.urbanCityTiles.size());
-        assertEquals("A city is a 7*7 area", 49, city.clearTiles.size());
+        CityModel cityModel = new CityModel();
+        cityModel.loadFromMap(world, 0);
+        assertEquals(0, cityModel.industryCityTiles.size());
+        assertEquals(0, cityModel.urbanCityTiles.size());
+        assertEquals("A city is a 7*7 area", 49, cityModel.clearTiles.size());
     }
 
 }

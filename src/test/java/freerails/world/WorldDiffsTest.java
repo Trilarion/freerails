@@ -45,8 +45,7 @@ public class WorldDiffsTest extends TestCase {
     public void testSharedLists() {
         FullWorld underlyingWorld = new FullWorld(10, 10);
         CargoType mailCT = new CargoType(10, "Mail", CargoCategory.Mail);
-        CargoType passengersCT = new CargoType(10, "Passengers",
-                CargoCategory.Passengers);
+        CargoType passengersCT = new CargoType(10, "Passengers", CargoCategory.Passengers);
         underlyingWorld.add(SKEY.CARGO_TYPES, mailCT);
 
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
@@ -58,8 +57,7 @@ public class WorldDiffsTest extends TestCase {
         assertEquals("The mail cargotype should be accessible.", mailCT, f);
         worldDiff.add(SKEY.CARGO_TYPES, passengersCT);
         assertEquals(2, worldDiff.size(SKEY.CARGO_TYPES));
-        assertEquals("2 Diffs: the length of the list + the actual element", 2,
-                worldDiff.listDiffs());
+        assertEquals("2 Diffs: the length of the list + the actual element", 2, worldDiff.listDiffs());
         f = worldDiff.removeLast(SKEY.CARGO_TYPES);
         assertEquals(passengersCT, f);
 

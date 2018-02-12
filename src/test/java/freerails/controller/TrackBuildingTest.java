@@ -19,6 +19,10 @@
 package freerails.controller;
 
 import freerails.client.common.ModelRootImpl;
+import freerails.controller.pathfinding.IncrementalPathFinder;
+import freerails.controller.pathfinding.PathFinderStatus;
+import freerails.controller.pathfinding.PathNotFoundException;
+import freerails.controller.pathfinding.TrackPathFinder;
 import freerails.move.MoveStatus;
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
@@ -76,8 +80,7 @@ public class TrackBuildingTest extends TestCase {
             }
             pathFinder.setupSearch(from, to, bts);
             pathFinder.search(-1);
-            assertEquals(pathFinder.getStatus(),
-                    IncrementalPathFinder.PATH_FOUND);
+            assertEquals(pathFinder.getStatus(), PathFinderStatus.PATH_FOUND);
             TileTransition[] path = pathFinder.pathAsVectors();
             assertEquals(path.length, 5);
             for (int i = 0; i < 5; i++) {
@@ -87,8 +90,7 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FullTerrainTile) world.getTile(new Point2D(x, 5)))
-                        .getTrackPiece();
+                TrackPiece tp = ((FullTerrainTile) world.getTile(new Point2D(x, 5))).getTrackPiece();
                 assertEquals(0, tp.getTrackTypeID());
             }
         } catch (PathNotFoundException e) {
@@ -116,8 +118,7 @@ public class TrackBuildingTest extends TestCase {
 
             pathFinder.setupSearch(from, to, bts);
             pathFinder.search(-1);
-            assertEquals(pathFinder.getStatus(),
-                    IncrementalPathFinder.PATH_FOUND);
+            assertEquals(pathFinder.getStatus(), PathFinderStatus.PATH_FOUND);
             TileTransition[] path = pathFinder.pathAsVectors();
             assertEquals(path.length, 1);
 

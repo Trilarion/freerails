@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.network.MessageToClient;
-import freerails.world.FreerailsMutableSerializable;
+import freerails.world.World;
 
 import java.io.Serializable;
 
@@ -34,7 +34,7 @@ public interface ClientControlInterface {
     /**
      * Called when a new game is started or a game is loaded.
      */
-    void setGameModel(FreerailsMutableSerializable world);
+    void setGameModel(World world);
 
     /**
      * Sets a property, for example, the list of saved games.

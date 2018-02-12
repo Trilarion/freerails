@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.controller.pathfinding;
 
+import freerails.controller.GraphExplorer;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -35,7 +36,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     private final Collection<Integer> startingPositions = new HashSet<>();
     private final HashMap<Integer, Integer> closedList = new HashMap<>();
     private final HashMap<Integer, Integer> shortestPath = new HashMap<>();
-    private int status = SEARCH_NOT_STARTED;
+    private PathFinderStatus status = PathFinderStatus.SEARCH_NOT_STARTED;
     private List<Integer> path = new ArrayList<>();
     private int bestPath;
     private int bestPathF;
@@ -45,7 +46,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     /**
      * @return
      */
-    public int getStatus() {
+    public PathFinderStatus getStatus() {
         return status;
     }
 
@@ -66,7 +67,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
         try {
             return findpath(new int[]{currentPosition}, targets, tempExplorer).get(0);
         } catch (PathNotFoundException e) {
-            return PATH_NOT_FOUND;
+            return PathFinderStatus.PATH_NOT_FOUND.id;
         }
     }
 
@@ -81,9 +82,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
         logger.debug(currentPosition.length + " starting points; " + targets.length + " targets.");
 
         setupSearch(currentPosition, targets, e);
-
         search(-1);
-
         return path;
     }
 
@@ -152,7 +151,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
                 }
             }
 
-            if (PATH_NOT_FOUND != bestPath) {
+            if (PathFinderStatus.PATH_NOT_FOUND.id != bestPath) {
                 int SmallestFOnOpenList = openList.smallestF();
 
                 if (bestPathF <= SmallestFOnOpenList) {
@@ -171,7 +170,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
                     }
 
                     logger.debug("Path found!");
-                    status = PATH_FOUND;
+                    status = PathFinderStatus.PATH_FOUND;
 
                     return;
                 }
@@ -188,7 +187,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
                 long deltatime = currentTime - iterationStartTime;
 
                 if (deltatime > maxDuration) {
-                    status = SEARCH_PAUSED;
+                    status = PathFinderStatus.SEARCH_PAUSED;
 
                     long totalSearchTime = currentTime - searchStartTime;
                     throw new PathNotFoundException("No path found yet. " + totalSearchTime + "moveStatus.");
@@ -196,7 +195,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
             }
         }
 
-        status = PATH_NOT_FOUND;
+        status = PathFinderStatus.PATH_NOT_FOUND;
         logger.debug("No path found and open list empty after " + loopCounter + " iterations.");
 
         throw new PathNotFoundException("Path not found.");
@@ -219,7 +218,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
 
             for (int aCurrentPosition : currentPosition) {
                 if (target == aCurrentPosition) {
-                    status = PATH_NOT_FOUND;
+                    status = PathFinderStatus.PATH_NOT_FOUND;
                     throw new PathNotFoundException("Already at target!");
                 }
             }
@@ -237,7 +236,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
         path.clear();
         searchStartTime = 0;
 
-        bestPath = PATH_NOT_FOUND;
+        bestPath = PathFinderStatus.PATH_NOT_FOUND.id;
         bestPathF = Integer.MAX_VALUE;
         // initialize the open list
         openList.clear();
@@ -249,6 +248,6 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
 
         startingPositions.clear();
 
-        status = SEARCH_NOT_STARTED;
+        status = PathFinderStatus.SEARCH_NOT_STARTED;
     }
 }

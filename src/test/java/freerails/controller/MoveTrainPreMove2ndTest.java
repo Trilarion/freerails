@@ -145,7 +145,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
             TrainMotion tm = moveTrain();
             PositionOnTrack positionOnTrack = tm.getFinalPosition();
             assertEquals(14 + i, positionOnTrack.getLocation().x);
-            assertEquals(TrainActivity.READY, tm.getActivity());
+            assertEquals(TrainState.READY, tm.getActivity());
             assertTrue(tm.getSpeedAtEnd() > 0);
         }
     }
@@ -192,14 +192,14 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station1Location.x);
         assertEquals(station1Location.x, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
 
         // The next train motion should represent the stop at the station.
         trainMotion = moveTrain();
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station1Location.x, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.STOPPED_AT_STATION, trainMotion.getActivity());
+        assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getActivity());
 
         // 80 Units of cargo should have been transferred to the train!
         CargoBatchBundle onTrain = trainAccessor.getCargoBundle();
@@ -211,7 +211,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station1Location.x + 1, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
     }
 
     /**
@@ -248,7 +248,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         } while (x < station2Location.x);
         assertEquals(station2Location.x, x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
 
         // The train should be heading for station 1.
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
@@ -262,7 +262,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station2Location.x, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.STOPPED_AT_STATION, trainMotion.getActivity());
+        assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getActivity());
 
         // The train should be heading for station 0.
         Schedule schedule2 = ta.getSchedule();
@@ -281,7 +281,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
     }
 
     /**
@@ -302,7 +302,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
 
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
     }
 
     private void putTrainAtStationWaiting4FullLoad() {
@@ -329,7 +329,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station2Location.x);
         assertEquals(station2Location.x, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
 
         // The train should now stop at the station
         // and wait for a full load.
@@ -338,7 +338,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
 
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.WAITING_FOR_FULL_LOAD, trainMotion.getActivity());
+        assertEquals(TrainState.WAITING_FOR_FULL_LOAD, trainMotion.getActivity());
 
         MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
                 new OccupiedTracks(principal, world));
@@ -371,7 +371,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
     }
 
     /**
@@ -428,7 +428,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station1Location.x);
         assertEquals(station1Location.x, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
         trainMotion = moveTrain();
         positionOnTrack = trainMotion.getFinalPosition();
 
@@ -477,7 +477,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station2Location.x);
         assertEquals(station2Location.x, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainActivity.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getActivity());
 
         TrainModel train = ta.getTrain();
         assertEquals(2, train.getNumberOfWagons());

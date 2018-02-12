@@ -19,9 +19,13 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.controller.pathfinding;
 
 import freerails.client.common.ModelRootImpl;
+import freerails.controller.*;
+import freerails.controller.pathfinding.IncrementalPathFinder;
+import freerails.controller.pathfinding.PathNotFoundException;
+import freerails.controller.pathfinding.PathOnTrackFinder;
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Point2D;
 import freerails.world.terrain.TileTransition;
@@ -63,8 +67,7 @@ public class PathOnTrackFinderTest extends TestCase {
         try {
             pathFinder.setupSearch(start, end);
             pathFinder.search(-1);
-            assertEquals(IncrementalPathFinder.PATH_FOUND, pathFinder
-                    .getStatus());
+            assertEquals(PathFinderStatus.PATH_FOUND, pathFinder.getStatus());
             TileTransition[] pathFound = pathFinder.pathAsVectors();
             assertTrue(Arrays.equals(path, pathFound));
         } catch (PathNotFoundException e) {
@@ -83,8 +86,7 @@ public class PathOnTrackFinderTest extends TestCase {
         try {
             pathFinder.setupSearch(start, end);
             pathFinder.search(-1);
-            assertEquals(IncrementalPathFinder.PATH_FOUND, pathFinder
-                    .getStatus());
+            assertEquals(PathFinderStatus.PATH_FOUND, pathFinder.getStatus());
             TileTransition[] pathFound = pathFinder.pathAsVectors();
             assertTrue(Arrays.equals(path, pathFound));
         } catch (PathNotFoundException e) {

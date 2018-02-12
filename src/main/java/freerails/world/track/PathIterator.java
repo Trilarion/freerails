@@ -19,7 +19,6 @@
 package freerails.world.track;
 
 import freerails.util.LineSegment;
-import freerails.world.FreerailsMutableSerializable;
 
 /**
  * This interface lets the caller retrieve a path made up of a series of
@@ -28,7 +27,7 @@ import freerails.world.FreerailsMutableSerializable;
  * track.
  */
 // TODO what is it good for?
-public interface PathIterator extends FreerailsMutableSerializable {
+public interface PathIterator {
 
     /**
      * Tests whether the path has another segment.

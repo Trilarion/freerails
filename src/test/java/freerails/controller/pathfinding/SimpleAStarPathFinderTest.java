@@ -16,8 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.controller.pathfinding;
 
+import freerails.controller.GraphExplorer;
+import freerails.controller.pathfinding.IncrementalPathFinder;
+import freerails.controller.pathfinding.SimpleAStarPathFinder;
 import junit.framework.TestCase;
 
 import java.util.NoSuchElementException;
@@ -66,7 +69,7 @@ public class SimpleAStarPathFinderTest extends TestCase {
         assertEquals(2, i);
 
         i = pathFinder.findstep(4, new int[]{4}, map);
-        assertEquals(IncrementalPathFinder.PATH_NOT_FOUND, i);
+        assertEquals(PathFinderStatus.PATH_NOT_FOUND.id, i);
 
         i = pathFinder.findstep(2, new int[]{1}, map);
         assertEquals(1, i);

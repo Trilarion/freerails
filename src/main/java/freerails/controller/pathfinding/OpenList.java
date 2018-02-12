@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.controller.pathfinding;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.PriorityQueue;
 /**
  * An OpenList for SimpleAStarPathFinder.
  */
-class OpenList implements Serializable {
+public class OpenList implements Serializable {
 
     private static final long serialVersionUID = 3257282539419611442L;
     private final Map<Integer, OpenListEntry> map = new HashMap<>();
@@ -48,9 +48,7 @@ class OpenList implements Serializable {
 
         if (map.containsKey(node)) {
             OpenListEntry old = map.get(node);
-
             queue.remove(old);
-
             map.remove(node);
         }
         OpenListEntry entry = new OpenListEntry(f, node);
@@ -73,6 +71,7 @@ class OpenList implements Serializable {
         OpenListEntry removed = map.remove(node);
 
         if (null == removed) {
+            // TODO ??
             System.out.println("Shizer, size =" + queue.size());
         }
         return node;

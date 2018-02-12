@@ -22,7 +22,7 @@
  */
 package freerails.client.view;
 
-import freerails.controller.MyDisplayMode;
+import freerails.controller.DisplayModeWithName;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
@@ -37,20 +37,20 @@ import java.util.List;
  */
 public class DisplayModesComboBoxModels implements ComboBoxModel {
 
-    private final List<MyDisplayMode> modes = new ArrayList<>();
-    private MyDisplayMode selection;
+    private final List<DisplayModeWithName> modes = new ArrayList<>();
+    private DisplayModeWithName selection;
 
     /**
      *
      */
     public DisplayModesComboBoxModels() {
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
-        DisplayMode currentMode = defaultConfiguration.getDevice().getDisplayMode();
-        selection = new MyDisplayMode(currentMode);
+        java.awt.DisplayMode currentMode = defaultConfiguration.getDevice().getDisplayMode();
+        selection = new DisplayModeWithName(currentMode);
 
-        DisplayMode[] displayModes = defaultConfiguration.getDevice().getDisplayModes();
-        for (DisplayMode displayMode : displayModes) {
-            MyDisplayMode mode = new MyDisplayMode(displayMode);
+        java.awt.DisplayMode[] displayModes = defaultConfiguration.getDevice().getDisplayModes();
+        for (java.awt.DisplayMode displayMode : displayModes) {
+            DisplayModeWithName mode = new DisplayModeWithName(displayMode);
             modes.add(mode);
         }
     }
@@ -60,17 +60,17 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
      * width, height, or bitdepth below the specified values.
      */
     public void removeDisplayModesBelow(int width, int height, int bitDepth) {
-        Iterator<MyDisplayMode> it = modes.iterator();
+        Iterator<DisplayModeWithName> it = modes.iterator();
         while (it.hasNext()) {
-            MyDisplayMode mode = it.next();
-            DisplayMode displayMode = mode.displayMode;
+            DisplayModeWithName mode = it.next();
+            java.awt.DisplayMode displayMode = mode.displayMode;
             final boolean tooNarrow = displayMode.getWidth() < width;
             final boolean tooShort = displayMode.getHeight() < height;
             /*
              * Note, displayMode.getBitDepth() may return
-             * DisplayMode.BIT_DEPTH_MULTI, which is -1.
+             * DisplayModeWithName.BIT_DEPTH_MULTI, which is -1.
              */
-            final boolean tooFewColours = (displayMode.getBitDepth() < bitDepth) && (displayMode.getBitDepth() != DisplayMode.BIT_DEPTH_MULTI);
+            final boolean tooFewColours = (displayMode.getBitDepth() < bitDepth) && (displayMode.getBitDepth() != java.awt.DisplayMode.BIT_DEPTH_MULTI);
             if (tooNarrow || tooShort || tooFewColours) {
                 it.remove();
             }
@@ -82,13 +82,13 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
     }
 
     public void setSelectedItem(Object anItem) {
-        selection = (MyDisplayMode) anItem;
+        selection = (DisplayModeWithName) anItem;
     }
 
     public void addListDataListener(ListDataListener l) {
     }
 
-    public MyDisplayMode getElementAt(int index) {
+    public DisplayModeWithName getElementAt(int index) {
         return modes.get(index);
     }
 

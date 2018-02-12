@@ -25,7 +25,7 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
 import freerails.client.view.DisplayModesComboBoxModels;
-import freerails.controller.MyDisplayMode;
+import freerails.controller.DisplayModeWithName;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -279,11 +279,11 @@ class ClientOptionsPanel extends JPanel {
         return names[index];
     }
 
-    DisplayMode getDisplayMode() {
+    java.awt.DisplayMode getDisplayMode() {
         if (fullScreenButton.isSelected()) {
-            MyDisplayMode displayMode = ((MyDisplayMode) list1.getSelectedValue());
-            logger.debug("The selected display mode is " + displayMode.toString());
-            return displayMode.displayMode;
+            DisplayModeWithName displayModeWithName = ((DisplayModeWithName) list1.getSelectedValue());
+            logger.debug("The selected display mode is " + displayModeWithName.toString());
+            return displayModeWithName.displayMode;
         }
         return null;
     }
@@ -357,7 +357,7 @@ class ClientOptionsPanel extends JPanel {
         owner.setProperty(ClientConfig.SERVER_IP_ADDRESS_PROPERTY, remoteIP.getText());
         owner.setProperty(ClientConfig.CLIENT_FULLSCREEN_PROPERTY, Boolean.toString(fullScreenButton.isSelected()));
         if (getDisplayMode() != null) {
-            owner.setProperty(ClientConfig.CLIENT_DISPLAY_PROPERTY, new MyDisplayMode(getDisplayMode()).toString());
+            owner.setProperty(ClientConfig.CLIENT_DISPLAY_PROPERTY, new DisplayModeWithName(getDisplayMode()).toString());
         }
         owner.saveProperties();
     }

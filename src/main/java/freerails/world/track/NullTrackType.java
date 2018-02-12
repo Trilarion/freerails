@@ -120,14 +120,14 @@ public final class NullTrackType implements TrackRule {
      * @return
      */
     public Money getPrice() {
-        return new Money(0);
+        return Money.ZERO;
     }
 
     /**
      * @return
      */
     public Money getMaintenanceCost() {
-        return new Money(0);
+        return Money.ZERO;
     }
 
     /**
@@ -153,6 +153,6 @@ public final class NullTrackType implements TrackRule {
      * @return
      */
     public Money getFixedCost() {
-        return Money.ZERO_MONEY;
+        return Money.ZERO;
     }
 }

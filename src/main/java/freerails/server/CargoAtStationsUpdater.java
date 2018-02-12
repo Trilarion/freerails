@@ -51,16 +51,17 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
     /**
      * Call this method once a month.
      */
-    public void update(World w, MoveReceiver moveReceiver) {
-        for (int k = 0; k < w.getNumberOfPlayers(); k++) {
-            FreerailsPrincipal principal = w.getPlayer(k).getPrincipal();
+    public void update(World world, MoveReceiver moveReceiver) {
 
-            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
+        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
+            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+
+            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
             while (nonNullStations.next()) {
                 Station station = (Station) nonNullStations.getElement();
                 StationSupply supply = station.getSupply();
-                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) w.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
                 MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
                 MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
                 int stationNumber = nonNullStations.getIndex();
@@ -82,7 +83,7 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
                     }
                 }
 
-                for (int i = 0; i < w.size(SKEY.CARGO_TYPES); i++) {
+                for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
@@ -90,11 +91,11 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
                         int amountAlready = after.getAmount(cb);
 
                         // Obtain the month
-                        GameTime time = w.currentTime();
-                        GameCalendar calendar = (GameCalendar) w.get(ITEM.CALENDAR);
+                        GameTime time = world.currentTime();
+                        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
                         int month = calendar.getMonth(time.getTicks());
 
-                        int amountAfter = calculateAmountToAdd(amountSupplied, month) + amountAlready;
+                        int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
                         after.setAmount(cb, amountAfter);
                     }
                 }
@@ -105,11 +106,15 @@ public class CargoAtStationsUpdater implements FreerailsServerSerializable {
         }
     }
 
-    int calculateAmountToAdd(int amountSuppliedPerYear, int month) {
-        // Note, jan is month 0.
-        int totalAtMonthEnd = amountSuppliedPerYear * (month + 1) / 12;
-        int totalAtMonthStart = amountSuppliedPerYear * (month) / 12;
-
-        return totalAtMonthEnd - totalAtMonthStart;
+    /**
+     * If, say, 14 units get added each year, some month we should add 1 and
+     * others we should add 2 such that over the year exactly 14 units get
+     * added.
+     *
+     * Note: January is 0
+     */
+    public int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
+        // This calculation actually delivers the requirement of rounding sometimes up and sometimes down.
+        return amountSuppliedPerYear * (month + 1) / 12 - amountSuppliedPerYear * (month) / 12;
     }
 }

@@ -71,6 +71,6 @@ public class TrainMotionTest extends TestCase {
         assertTrue(tooLongDuration > actualDuration);
 
         // This method used to throw an exception
-        Object o = motion.getState(actualDuration);
+        Object o = motion.getStateAtTime(actualDuration);
     }
 }

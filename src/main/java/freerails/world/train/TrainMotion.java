@@ -59,7 +59,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     private final PathOnTiles path;
     private final Motion speeds;
     private final int trainLength;
-    private final TrainActivity activity;
+    private final TrainState activity;
 
     /**
      * Creates a new TrainMotion instance.
@@ -103,7 +103,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             duration = tempDuration;
         }
 
-        activity = TrainActivity.READY;
+        activity = TrainState.READY;
         sanityCheck();
     }
 
@@ -113,7 +113,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      * @param duration
      * @param act
      */
-    public TrainMotion(PathOnTiles path, int trainLength, double duration, TrainActivity act) {
+    public TrainMotion(PathOnTiles path, int trainLength, double duration, TrainState act) {
         this.path = path;
         this.trainLength = trainLength;
         activity = act;
@@ -195,16 +195,16 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * Returns the train's position at the specified time.
      *
-     * @param dt the time.
+     * @param time the time.
      * @return the train's position.
      * @throws IllegalArgumentException if t is outside the interval
      */
-    public TrainPositionOnMap getState(double dt) {
-        dt = Math.min(dt, speeds.getTotalTime());
-        double offset = calcOffSet(dt);
+    public TrainPositionOnMap getStateAtTime(double time) {
+        time = Math.min(time, speeds.getTotalTime());
+        double offset = calcOffSet(time);
         Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength); // 666
-        double speed = speeds.calculateSpeedAtTime(dt);
-        double acceleration = speeds.calculateAccelerationAtTime(dt);
+        double speed = speeds.calculateSpeedAtTime(time);
+        double acceleration = speeds.calculateAccelerationAtTime(time);
         return TrainPositionOnMap.createInSameDirectionAsPathReversed(pathIt, speed, acceleration, activity);
     }
 
@@ -281,7 +281,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * @return
      */
-    public TrainActivity getActivity() {
+    public TrainState getActivity() {
         return activity;
     }
 

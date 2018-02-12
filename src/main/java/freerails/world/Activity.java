@@ -34,9 +34,9 @@ public interface Activity<E extends Serializable> extends Serializable {
     double duration();
 
     /**
-     * @param dt
+     * @param time
      * @return
      */
-    E getState(double dt);
+    E getStateAtTime(double time);
 
 }

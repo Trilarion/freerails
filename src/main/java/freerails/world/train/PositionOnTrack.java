@@ -19,7 +19,6 @@
 package freerails.world.train;
 
 import freerails.util.Point2D;
-import freerails.world.FreerailsMutableSerializable;
 import freerails.world.terrain.TileTransition;
 
 /**
@@ -29,7 +28,7 @@ import freerails.world.terrain.TileTransition;
  * came from), it provides methods to encode and decode its field values to and
  * from a single int.
  */
-public final class PositionOnTrack implements FreerailsMutableSerializable {
+public final class PositionOnTrack {
 
     public static final int BITS_FOR_COORDINATE = 14;
     private static final int BITS_FOR_DIRECTION = 3;

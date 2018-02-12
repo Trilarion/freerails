@@ -85,7 +85,7 @@ public class TrainAccessor {
      * @param time
      * @return
      */
-    public TrainActivity getStatus(double time) {
+    public TrainState getStatus(double time) {
         TrainMotion tm = findCurrentMotion(time);
         return tm.getActivity();
     }
@@ -141,7 +141,7 @@ public class TrainAccessor {
         if (!view.intersects(trainBox)) {
             return null; // 666 doesn't work
         }
-        return tm.getState(dt);
+        return tm.getStateAtTime(dt);
     }
 
     /**
@@ -194,8 +194,8 @@ public class TrainAccessor {
         double time = world.currentTime().getTicks();
         int stationId = getStationId(time);
         if (stationId == -1) return false;
-        TrainActivity act = getStatus(time);
-        if (act != TrainActivity.WAITING_FOR_FULL_LOAD) return false;
+        TrainState act = getStatus(time);
+        if (act != TrainState.WAITING_FOR_FULL_LOAD) return false;
         ImmutableSchedule shedule = getSchedule();
         TrainOrders order = shedule.getOrder(shedule.getOrderToGoto());
         if (order.stationId != stationId) return false;

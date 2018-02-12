@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.controller.MyDisplayMode;
+import freerails.controller.DisplayModeWithName;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -34,12 +34,12 @@ public final class ScreenHandler {
 
     private static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static final Logger logger = Logger.getLogger(ScreenHandler.class.getName());
-    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{new DisplayMode(640, 400, 8, 60), new DisplayMode(800, 600, 16, 60), new DisplayMode(1024, 768, 8, 60), new DisplayMode(1024, 768, 16, 60),};
+    private static final java.awt.DisplayMode[] BEST_DISPLAY_MODES = new java.awt.DisplayMode[]{new java.awt.DisplayMode(640, 400, 8, 60), new java.awt.DisplayMode(800, 600, 16, 60), new java.awt.DisplayMode(1024, 768, 8, 60), new java.awt.DisplayMode(1024, 768, 16, 60),};
 
     public final JFrame frame;
     private final int mode;
     private BufferStrategy bufferStrategy;
-    private DisplayMode displayMode;
+    private java.awt.DisplayMode displayMode;
     private boolean isInUse = false;
     /**
      * Whether the window is minimised.
@@ -51,7 +51,7 @@ public final class ScreenHandler {
      * @param mode
      * @param displayMode
      */
-    public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
+    public ScreenHandler(JFrame f, int mode, java.awt.DisplayMode displayMode) {
         this.displayMode = displayMode;
         frame = f;
         this.mode = mode;
@@ -66,7 +66,7 @@ public final class ScreenHandler {
         this.mode = mode;
     }
 
-    private static void goFullScreen(JFrame frame, DisplayMode displayMode) {
+    private static void goFullScreen(JFrame frame, java.awt.DisplayMode displayMode) {
 
         setRepaintOffAndDisableDoubleBuffering(frame);
 
@@ -87,7 +87,7 @@ public final class ScreenHandler {
                 displayMode = getBestDisplayMode();
             }
 
-            logger.info("Setting display mode to:  " + (new MyDisplayMode(displayMode).toString()));
+            logger.info("Setting display mode to:  " + (new DisplayModeWithName(displayMode).toString()));
             device.setDisplayMode(displayMode);
         }
 
@@ -113,13 +113,13 @@ public final class ScreenHandler {
         }
     }
 
-    private static DisplayMode getBestDisplayMode() {
-        for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
-            DisplayMode[] modes = device.getDisplayModes();
+    private static java.awt.DisplayMode getBestDisplayMode() {
+        for (java.awt.DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
+            java.awt.DisplayMode[] modes = device.getDisplayModes();
 
-            for (DisplayMode mode1 : modes) {
+            for (java.awt.DisplayMode mode1 : modes) {
                 if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth() && mode1.getHeight() == BEST_DISPLAY_MODE.getHeight() && mode1.getBitDepth() == BEST_DISPLAY_MODE.getBitDepth()) {
-                    logger.debug("Best display mode is " + (new MyDisplayMode(BEST_DISPLAY_MODE)).toString());
+                    logger.debug("Best display mode is " + (new DisplayModeWithName(BEST_DISPLAY_MODE)).toString());
 
                     return BEST_DISPLAY_MODE;
                 }

@@ -29,10 +29,11 @@ public class CargoAtStationsUpdaterTest extends TestCase {
      *
      */
     public void testCalculateAmountToAdd() {
-        CargoAtStationsUpdater cargoGenerator = new CargoAtStationsUpdater();
+        CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
 
-        int amount = cargoGenerator.calculateAmountToAdd(12, 0);
+        int amount = cargoAtStationsUpdater.calculateAmountToAddPerMonth(12, 1);
         assertEquals(1, amount);
+
         assertCorrectTotalAddedOverYear(0);
         assertCorrectTotalAddedOverYear(12);
         assertCorrectTotalAddedOverYear(14);
@@ -46,12 +47,11 @@ public class CargoAtStationsUpdaterTest extends TestCase {
      * added.
      */
     private void assertCorrectTotalAddedOverYear(final int unitPerYear) {
-        CargoAtStationsUpdater cargoGenerator = new CargoAtStationsUpdater();
+        CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
         int amountAddedThisSoFar = 0;
 
         for (int i = 0; i < 12; i++) {
-            amountAddedThisSoFar += cargoGenerator.calculateAmountToAdd(
-                    unitPerYear, i);
+            amountAddedThisSoFar += cargoAtStationsUpdater.calculateAmountToAddPerMonth(unitPerYear, i);
         }
 
         assertEquals(unitPerYear, amountAddedThisSoFar);

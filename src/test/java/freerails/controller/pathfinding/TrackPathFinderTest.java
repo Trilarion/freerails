@@ -19,8 +19,11 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.controller.pathfinding;
 
+import freerails.controller.BuildTrackStrategy;
+import freerails.controller.pathfinding.PathNotFoundException;
+import freerails.controller.pathfinding.TrackPathFinder;
 import freerails.util.Point2D;
 import freerails.world.FullWorld;
 import freerails.world.game.GameRules;

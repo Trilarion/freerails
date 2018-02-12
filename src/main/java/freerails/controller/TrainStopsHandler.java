@@ -225,7 +225,7 @@ public class TrainStopsHandler implements Serializable {
                 TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = tm.getPath();
                 path = lengthenPath(worldDiffs, path, oldLength);
-                TrainActivity status = isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD : TrainActivity.STOPPED_AT_STATION;
+                TrainState status = isWaiting4FullLoad() ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
                 // Create a new Move object.

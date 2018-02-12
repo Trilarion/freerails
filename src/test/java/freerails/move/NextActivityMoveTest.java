@@ -21,12 +21,9 @@
  */
 package freerails.move;
 
-import freerails.world.Activity;
-import freerails.world.ActivityIterator;
+import freerails.world.*;
 import freerails.world.game.GameTime;
-import freerails.world.World;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.FullWorldTest;
 
 /**
  *
@@ -39,10 +36,10 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
     public void testMove() {
         World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();
-        Activity act = new FullWorldTest.TestActivity(50);
+        Activity act = new TestActivity(50);
         world.addActiveEntity(principal, act);
 
-        Activity act2 = new FullWorldTest.TestActivity(60);
+        Activity act2 = new TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertSurvivesSerialisation(move);
         assertOkAndRepeatable(move);
@@ -54,10 +51,10 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
     public void testMove2() {
         World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();
-        Activity act = new FullWorldTest.TestActivity(50);
+        Activity act = new TestActivity(50);
         world.addActiveEntity(principal, act);
 
-        Activity act2 = new FullWorldTest.TestActivity(60);
+        Activity act2 = new TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertDoThenUndoLeavesWorldUnchanged(move);
     }
@@ -68,10 +65,10 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
     public void testStackingOfActivities() {
         World world = getWorld();
         FreerailsPrincipal principal = getPrincipal();
-        Activity act = new FullWorldTest.TestActivity(50);
+        Activity act = new TestActivity(50);
         world.addActiveEntity(principal, act);
 
-        Activity act2 = new FullWorldTest.TestActivity(60);
+        Activity act2 = new TestActivity(60);
         Move move = new NextActivityMove(act2, 0, principal);
         assertDoMoveIsOk(move);
 

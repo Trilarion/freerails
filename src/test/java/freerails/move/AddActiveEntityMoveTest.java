@@ -22,8 +22,8 @@
 package freerails.move;
 
 import freerails.world.Activity;
+import freerails.world.TestActivity;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.FullWorldTest;
 
 /**
  *
@@ -35,7 +35,7 @@ public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() {
         FreerailsPrincipal principal = getPrincipal();
-        Activity a = new FullWorldTest.TestActivity(50);
+        Activity a = new TestActivity(50);
         AddActiveEntityMove move = new AddActiveEntityMove(a, 0, principal);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);

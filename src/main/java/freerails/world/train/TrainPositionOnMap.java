@@ -95,9 +95,9 @@ public class TrainPositionOnMap implements Serializable {
     private final ImmutableList<Integer> xpoints;
     private final ImmutableList<Integer> ypoints;
     private final double speed, acceleration;
-    private final TrainActivity activity;
+    private final TrainState activity;
 
-    private TrainPositionOnMap(Integer[] xs, Integer[] ys, double speed, double acceleration, TrainActivity activity) {
+    private TrainPositionOnMap(Integer[] xs, Integer[] ys, double speed, double acceleration, TrainState activity) {
         if (xs.length != ys.length) {
             throw new IllegalArgumentException();
         }
@@ -115,7 +115,7 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public static TrainPositionOnMap createInstance(Integer[] xpoints, Integer[] ypoints) {
-        return new TrainPositionOnMap(xpoints, ypoints, 0.0d, 0.0d, TrainActivity.READY);
+        return new TrainPositionOnMap(xpoints, ypoints, 0.0d, 0.0d, TrainState.READY);
     }
 
     /**
@@ -123,7 +123,7 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path) {
-        return createInSameDirectionAsPath(path, 0.0d, 0.0d, TrainActivity.READY);
+        return createInSameDirectionAsPath(path, 0.0d, 0.0d, TrainState.READY);
     }
 
     /**
@@ -133,7 +133,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param activity
      * @return
      */
-    public static TrainPositionOnMap createInSameDirectionAsPathReversed(Pair<PathIterator, Integer> path, double speed, double acceleration, TrainActivity activity) {
+    public static TrainPositionOnMap createInSameDirectionAsPathReversed(Pair<PathIterator, Integer> path, double speed, double acceleration, TrainState activity) {
 
         LineSegment line = new LineSegment();
         PathIterator pathIt = path.getA();
@@ -167,7 +167,7 @@ public class TrainPositionOnMap implements Serializable {
      * @param activity
      * @return
      */
-    private static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path, double speed, double acceleration, TrainActivity activity) {
+    private static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path, double speed, double acceleration, TrainState activity) {
         List<Integer> xPointsIntArray = new ArrayList<>();
         List<Integer> yPointsIntArray = new ArrayList<>();
         LineSegment line = new LineSegment();

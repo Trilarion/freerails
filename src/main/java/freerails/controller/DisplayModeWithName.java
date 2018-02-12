@@ -17,28 +17,25 @@
  */
 
 /*
- * MyDisplayMode.java
+ * DisplayModeWithName.java
  *
  */
 package freerails.controller;
 
-import java.awt.*;
-
 /**
- * Stores a DisplayMode and provides a customised implementation of toString
- * that can be used in menus.
+ * Stores a DisplayModeWithName and provides a customised implementation of toString that can be used in menus.
  */
-public class MyDisplayMode {
+public class DisplayModeWithName {
 
     /**
      *
      */
-    public final DisplayMode displayMode;
+    public final java.awt.DisplayMode displayMode;
 
     /**
      * @param displayMode
      */
-    public MyDisplayMode(DisplayMode displayMode) {
+    public DisplayModeWithName(java.awt.DisplayMode displayMode) {
         this.displayMode = displayMode;
     }
 
@@ -54,10 +51,10 @@ public class MyDisplayMode {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MyDisplayMode) {
-            MyDisplayMode test = (MyDisplayMode) obj;
+        if (obj instanceof DisplayModeWithName) {
+            DisplayModeWithName other = (DisplayModeWithName) obj;
 
-            return test.displayMode.equals(displayMode);
+            return other.displayMode.equals(displayMode);
         }
         return false;
     }

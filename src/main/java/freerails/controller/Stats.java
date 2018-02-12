@@ -51,9 +51,8 @@ public class Stats {
         aggregator.setCategory(TransactionCategory.ISSUE_STOCK);
         equity = aggregator.calculateValue();
 
-        // If we don't initialize this variable
-        // we get a NPE when we don't own any stock in others RRs
-        otherRrStock = new Money(0);
+        // If we don't initialize this variable we get a NPE when we don't own any stock in others RRs
+        otherRrStock = Money.ZERO;
 
         int thisPlayerId = world.getID(principal);
 

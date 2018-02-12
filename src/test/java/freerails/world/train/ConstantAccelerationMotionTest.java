@@ -77,15 +77,13 @@ public class ConstantAccelerationMotionTest extends TestCase {
      */
     public static void checkContract(Motion sat) {
         double s = sat.getTotalDistance();
-        double ulps = Math.ulp(s);
         double t = sat.getTotalTime();
-        double ulpt = Math.ulp(t);
 
         // Check calculateDistance()
         checkCalcSCalcVandCalcA(sat, 0 - Double.MIN_VALUE);
-        checkCalcSCalcVandCalcA(sat, t + ulpt);
+        checkCalcSCalcVandCalcA(sat, t + Math.ulp(t));
         checkCalcSCalcVandCalcA(sat, 0 + Double.MIN_VALUE);
-        checkCalcSCalcVandCalcA(sat, t - ulpt);
+        checkCalcSCalcVandCalcA(sat, t - Math.ulp(t));
         for (double d = 0; d < 1.0d; d += 0.1d) {
             checkCalcSCalcVandCalcA(sat, t * d);
         }
@@ -96,9 +94,9 @@ public class ConstantAccelerationMotionTest extends TestCase {
 
         // Check calculateTime()
         checkCalcT(sat, 0 - Double.MIN_VALUE);
-        checkCalcT(sat, s + ulps);
+        checkCalcT(sat, s + Math.ulp(s));
         checkCalcT(sat, 0 + Double.MIN_VALUE);
-        checkCalcT(sat, s - ulps);
+        checkCalcT(sat, s - Math.ulp(s));
         for (double d = 0; d < 1.0d; d += 0.1d) {
             checkCalcT(sat, s * d);
         }

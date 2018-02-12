@@ -55,7 +55,7 @@ import java.io.Serializable;
  *
  * Code that loops through lists should handle null values gracefully
  */
-public interface ReadOnlyWorld extends FreerailsMutableSerializable {
+public interface ReadOnlyWorld extends Serializable {
 
     /**
      * @return

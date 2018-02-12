@@ -29,6 +29,15 @@ public class FreerailsGameServerTest extends TestCase {
     private FreerailsGameServer server;
 
     /**
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        server = new FreerailsGameServer(new UnitTestSaveGamesManager());
+    }
+
+    /**
      *
      */
     public void testLogon() {
@@ -75,16 +84,6 @@ public class FreerailsGameServerTest extends TestCase {
 
         LogOnRequest request6 = new LogOnRequest("Name", "batman");
         response = server.logon(request6);
-        assertFalse("Player 0 has logged off, but the password is wrong.",
-                response.isSuccessful());
-    }
-
-    /**
-     * @throws Exception
-     */
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        server = new FreerailsGameServer(new UnitTestSaveGamesManager());
+        assertFalse("Player 0 has logged off, but the password is wrong.", response.isSuccessful());
     }
 }

@@ -35,7 +35,7 @@ import java.io.Serializable;
  */
 public class FullWorldTest extends TestCase {
 
-    private final Serializable fs = new TestState(1);
+    private static final Serializable fs = new TestState(1);
 
     /**
      *
@@ -93,11 +93,9 @@ public class FullWorldTest extends TestCase {
 
         assertTrue(Utils.equalsBySerialization(original, copy));
 
-        Transaction transaction = new MoneyTransaction(new Money(100),
-                TransactionCategory.MISC_INCOME);
+        Transaction transaction = new MoneyTransaction(new Money(100), TransactionCategory.MISC_INCOME);
         copy.addTransaction(player.getPrincipal(), transaction);
-        assertEquals(new Money(100), copy.getCurrentBalance(player
-                .getPrincipal()));
+        assertEquals(new Money(100), copy.getCurrentBalance(player.getPrincipal()));
         assertFalse(copy.equals(original));
     }
 
@@ -172,108 +170,17 @@ public class FullWorldTest extends TestCase {
         Player player = new Player("Test", 0);
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);
-        FreerailsPrincipal fp = world.getPlayer(playerID).getPrincipal();
-        Transaction transaction = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(
-                100));
-        assertEquals(new Money(0), world.getCurrentBalance(fp));
-        world.addTransaction(fp, transaction);
-        assertEquals(1, world.getNumberOfTransactions(fp));
-        assertEquals(new Money(100), world.getCurrentBalance(fp));
-        Transaction t2 = world.getTransaction(fp, 0);
+        FreerailsPrincipal principal = world.getPlayer(playerID).getPrincipal();
+        Transaction transaction = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(100));
+        assertEquals(new Money(0), world.getCurrentBalance(principal));
+        world.addTransaction(principal, transaction);
+        assertEquals(1, world.getNumberOfTransactions(principal));
+        assertEquals(new Money(100), world.getCurrentBalance(principal));
+        Transaction t2 = world.getTransaction(principal, 0);
         assertEquals(transaction, t2);
-        Transaction t3 = world.removeLastTransaction(fp);
+        Transaction t3 = world.removeLastTransaction(principal);
         assertEquals(transaction, t3);
-        assertEquals(new Money(0), world.getCurrentBalance(fp));
+        assertEquals(new Money(0), world.getCurrentBalance(principal));
     }
 
-    /**
-     *
-     */
-    static class TestState implements Serializable {
-
-        private static final long serialVersionUID = 5122023949873919060L;
-
-        /**
-         *
-         */
-        private final int x;
-
-        /**
-         * @param x
-         */
-        TestState(int x) {
-            this.x = x;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!(obj instanceof TestState))
-                return false;
-
-            final TestState testState = (TestState) obj;
-
-            return x == testState.x;
-        }
-
-        @Override
-        public int hashCode() {
-            return x;
-        }
-    }
-
-    /**
-     *
-     */
-    public static class TestActivity implements Activity {
-
-        private static final long serialVersionUID = 1298936498785131183L;
-
-        private final double duration;
-
-        /**
-         * @param duration
-         */
-        public TestActivity(int duration) {
-            this.duration = duration;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (!(obj instanceof TestActivity))
-                return false;
-
-            final TestActivity testActivity = (TestActivity) obj;
-
-            return !(duration != testActivity.duration);
-        }
-
-        @Override
-        public int hashCode() {
-            return (int) duration;
-        }
-
-        /**
-         * @return
-         */
-        public double duration() {
-            return duration;
-        }
-
-        /**
-         * @param dt
-         * @return
-         */
-        public Serializable getState(double dt) {
-            return new TestState((int) dt);
-        }
-
-        @Override
-        public String toString() {
-            return getClass().getName() + '{' + duration + '}';
-        }
-    }
 }

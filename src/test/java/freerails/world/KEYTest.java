@@ -35,8 +35,7 @@ public class KEYTest extends TestCase {
      *
      */
     public void testGetNumberOfKeys() {
-        // There were 4 keys when a wrote this test,
-        // but I expect the number to increase.
+        // There were 4 keys when a wrote this test, but I expect the number to increase.
         assertTrue(KEY.getNumberOfKeys() >= 4);
     }
 
@@ -51,14 +50,11 @@ public class KEYTest extends TestCase {
             int modifiers = field.getModifiers();
 
             if (!name.equals("shared")) {
-                assertTrue("All the fields of KEY should be static", Modifier
-                        .isStatic(modifiers));
+                assertTrue("All the fields of KEY should be static", Modifier.isStatic(modifiers));
             }
 
-            assertTrue("All the fields of KEY should be public", Modifier
-                    .isPublic(modifiers));
-            assertTrue("All the fields of KEY should be final", Modifier
-                    .isFinal(modifiers));
+            assertTrue("All the fields of KEY should be public", Modifier.isPublic(modifiers));
+            assertTrue("All the fields of KEY should be final", Modifier.isFinal(modifiers));
 
             try {
                 if (Modifier.isStatic(modifiers)) {

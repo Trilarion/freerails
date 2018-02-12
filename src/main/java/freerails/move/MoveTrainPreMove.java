@@ -22,6 +22,8 @@
 package freerails.move;
 
 import freerails.controller.*;
+import freerails.controller.pathfinding.PathNotFoundException;
+import freerails.controller.pathfinding.PathOnTrackFinder;
 import freerails.util.ImmutableList;
 import freerails.util.Point2D;
 import freerails.world.ActivityIterator;
@@ -145,8 +147,8 @@ public class MoveTrainPreMove implements PreMove {
         double ticks = currentTime.getTicks();
 
         boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
-        TrainActivity trainActivity = ta.getStatus(finishTime);
-        if (trainActivity == TrainActivity.WAITING_FOR_FULL_LOAD) {
+        TrainState trainState = ta.getStatus(finishTime);
+        if (trainState == TrainState.WAITING_FOR_FULL_LOAD) {
             // Check whether there is any cargo that can be added to the train.
             ImmutableList<Integer> spaceAvailable = ta.spaceAvailable();
             int stationId = ta.getStationId(ticks);
@@ -203,7 +205,7 @@ public class MoveTrainPreMove implements PreMove {
         TrainAccessor ta = new TrainAccessor(world, principal, trainID);
         TrainMotion tm = ta.findCurrentMotion(Double.MAX_VALUE);
 
-        TrainActivity activity = tm.getActivity();
+        TrainState activity = tm.getActivity();
 
         switch (activity) {
             case STOPPED_AT_STATION:
@@ -223,7 +225,7 @@ public class MoveTrainPreMove implements PreMove {
 
                     stopsHandler.arrivesAtPoint(p);
 
-                    TrainActivity status = stopsHandler.isWaiting4FullLoad() ? TrainActivity.WAITING_FOR_FULL_LOAD : TrainActivity.STOPPED_AT_STATION;
+                    TrainState status = stopsHandler.isWaiting4FullLoad() ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
                     PathOnTiles path = tm.getPath();
                     int lastTrainLength = tm.getTrainLength();
                     int currentTrainLength = stopsHandler.getTrainLength();

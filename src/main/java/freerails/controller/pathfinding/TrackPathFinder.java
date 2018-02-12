@@ -19,8 +19,10 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.controller.pathfinding;
 
+import freerails.controller.BuildTrackExplorer;
+import freerails.controller.BuildTrackStrategy;
 import freerails.util.Point2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -144,7 +146,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @return
      */
-    public int getStatus() {
+    public PathFinderStatus getStatus() {
         return pathFinder.getStatus();
     }
 
