@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBatchBundle;
@@ -40,8 +40,8 @@ public class RemoveCargoBatchBundleMoveTest extends AbstractMoveTestCase {
         MutableCargoBatchBundle bundleB;
         bundleA = new MutableCargoBatchBundle();
         bundleB = new MutableCargoBatchBundle();
-        bundleA.setAmount(new CargoBatch(1, new Point2D(2, 3), 4, 0), 5);
-        bundleB.setAmount(new CargoBatch(1, new Point2D(2, 3), 4, 0), 5);
+        bundleA.setAmount(new CargoBatch(1, new Vector2D(2, 3), 4, 0), 5);
+        bundleB.setAmount(new CargoBatch(1, new Vector2D(2, 3), 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
         Move move = new RemoveCargoBundleMove(0, bundleB.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);

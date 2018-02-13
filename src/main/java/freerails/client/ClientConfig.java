@@ -209,6 +209,8 @@ public class ClientConfig {
 
     public static final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
 
+    public static final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
+
     private ClientConfig() {
     }
 }

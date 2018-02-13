@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.FullWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -66,12 +66,12 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) world.getTile(Point2D.ZERO)).getTrackPiece();
+        oldTrackPiece = ((FullTerrainTile) world.getTile(Vector2D.ZERO)).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
         int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL, world);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
-        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Point2D.ZERO);
+        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vector2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);
         assertNotNull(move);

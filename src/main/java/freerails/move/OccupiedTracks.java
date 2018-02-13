@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.move;
 
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackSection;
+import freerails.world.train.TrainAccessor;
 
 import java.util.*;
 

@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -39,7 +39,7 @@ import java.awt.*;
 public class ChangeTileMove implements Move, MapUpdateMove {
 
     private static final long serialVersionUID = 3256726169272662320L;
-    private final Point2D p;
+    private final Vector2D p;
     private final FullTerrainTile before;
     private final FullTerrainTile after;
 
@@ -48,7 +48,7 @@ public class ChangeTileMove implements Move, MapUpdateMove {
      * @param p
      * @param terrainTypeAfter
      */
-    public ChangeTileMove(ReadOnlyWorld w, Point2D p, int terrainTypeAfter) {
+    public ChangeTileMove(ReadOnlyWorld w, Vector2D p, int terrainTypeAfter) {
         this.p = p;
         before = (FullTerrainTile) w.getTile(this.p);
         after = FullTerrainTile.getInstance(terrainTypeAfter, before.getTrackPiece());

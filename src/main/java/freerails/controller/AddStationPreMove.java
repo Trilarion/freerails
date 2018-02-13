@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.move.*;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -42,11 +42,11 @@ import java.util.NoSuchElementException;
 public class AddStationPreMove implements PreMove {
 
     private static final long serialVersionUID = 3258131349411148085L;
-    private final Point2D p;
+    private final Vector2D p;
     private final int ruleNumber;
     private final FreerailsPrincipal principal;
 
-    private AddStationPreMove(Point2D p, int trackRule, FreerailsPrincipal principal) {
+    private AddStationPreMove(Vector2D p, int trackRule, FreerailsPrincipal principal) {
         this.p = p;
         ruleNumber = trackRule;
         this.principal = principal;
@@ -58,7 +58,7 @@ public class AddStationPreMove implements PreMove {
      * @param principal
      * @return
      */
-    public static AddStationPreMove newStation(Point2D p, int trackRule, FreerailsPrincipal principal) {
+    public static AddStationPreMove newStation(Vector2D p, int trackRule, FreerailsPrincipal principal) {
         return new AddStationPreMove(p, trackRule, principal);
     }
 

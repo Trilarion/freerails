@@ -28,7 +28,7 @@ import freerails.network.UntriedMoveReceiver;
 import freerails.savegames.FullSaveGameManager;
 import freerails.server.ProgressMonitorModel;
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.MutableCargoBatchBundle;
@@ -95,7 +95,7 @@ class DialogueBoxTester extends JFrame {
         dialogueBoxController.setDefaultFocusOwner(this);
 
         int numberOfCargoTypes = world.size(SKEY.CARGO_TYPES);
-        Station bristol = new Station(new Point2D(10, 10), "Bristol", numberOfCargoTypes, 0);
+        Station bristol = new Station(new Vector2D(10, 10), "Bristol", numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 
         // Make the stations demand all cargo..
@@ -106,23 +106,23 @@ class DialogueBoxTester extends JFrame {
         StationDemand demand = new StationDemand(demandArray);
         bristol = new Station(bristol, demand);
         world.add(TEST_PRINCIPAL, KEY.STATIONS, bristol);
-        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Point2D(50, 100), "Bath",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Vector2D(50, 100), "Bath",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Point2D(40, 10), "Cardiff",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Vector2D(40, 10), "Cardiff",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Point2D(100, 10), "London",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Vector2D(100, 10), "London",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Point2D(90, 50), "Swansea",
+        world.add(TEST_PRINCIPAL, KEY.STATIONS, new Station(new Vector2D(90, 50), "Swansea",
                 numberOfCargoTypes, 0));
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
         // same one.
         MutableCargoBatchBundle cb = new MutableCargoBatchBundle();
-        cb.setAmount(new CargoBatch(0, new Point2D(10, 10), 8, 0), 80);
-        cb.setAmount(new CargoBatch(0, new Point2D(10, 10), 9, 0), 60);
-        cb.setAmount(new CargoBatch(1, new Point2D(10, 10), 9, 0), 140);
-        cb.setAmount(new CargoBatch(3, new Point2D(10, 10), 9, 0), 180);
-        cb.setAmount(new CargoBatch(5, new Point2D(10, 10), 9, 0), 10);
+        cb.setAmount(new CargoBatch(0, new Vector2D(10, 10), 8, 0), 80);
+        cb.setAmount(new CargoBatch(0, new Vector2D(10, 10), 9, 0), 60);
+        cb.setAmount(new CargoBatch(1, new Vector2D(10, 10), 9, 0), 140);
+        cb.setAmount(new CargoBatch(3, new Vector2D(10, 10), 9, 0), 180);
+        cb.setAmount(new CargoBatch(5, new Vector2D(10, 10), 9, 0), 10);
         world.add(TEST_PRINCIPAL, KEY.CARGO_BUNDLES, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();

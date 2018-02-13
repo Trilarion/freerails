@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.BlankMapRenderer;
 import freerails.client.renderer.MapRenderer;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,7 +108,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
     /**
      * @param tile
      */
-    public void centerOnTile(Point2D tile) {
+    public void centerOnTile(Vector2D tile) {
         float scale = mapView.getScale();
         Rectangle visRect = new Rectangle(getVisibleRect());
         visRect.x = (int) (tile.x * scale - (visRect.width / 2));

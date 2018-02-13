@@ -18,9 +18,7 @@
 
 package freerails.controller.pathfinding;
 
-import freerails.controller.GraphExplorer;
-import freerails.controller.pathfinding.IncrementalPathFinder;
-import freerails.controller.pathfinding.SimpleAStarPathFinder;
+import freerails.controller.explorer.GraphExplorer;
 import junit.framework.TestCase;
 
 import java.util.NoSuchElementException;

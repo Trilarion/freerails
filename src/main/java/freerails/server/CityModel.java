@@ -18,7 +18,7 @@
 
 package freerails.server;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.World;
@@ -55,7 +55,7 @@ class CityModel {
             type++;
         }
 
-        Point2D p = new Point2D(cityTile.p);
+        Vector2D p = Vector2D.fromPoint(cityTile.p);
         FullTerrainTile fTile = (FullTerrainTile) w.getTile(p);
         fTile = FullTerrainTile.getInstance(type, fTile.getTrackPiece());
         w.setTile(p, fTile);
@@ -109,13 +109,14 @@ class CityModel {
         // Identify city's bounds.
         Rectangle mapRect = new Rectangle(0, 0, w.getMapWidth(), w.getMapHeight());
         City city = (City) w.get(SKEY.CITIES, cityID);
-        Rectangle cityArea = new Rectangle(city.getX() - 3, city.getY() - 3, 7, 7);
+        Vector2D topleft = Vector2D.subtract(city.getLocation(), new Vector2D(-3,-3));
+        Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
         // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                FullTerrainTile tile = (FullTerrainTile) w.getTile(new Point2D(x, y));
+                FullTerrainTile tile = (FullTerrainTile) w.getTile(new Vector2D(x, y));
 
                 // Count the number of stations at the city.
                 if (tile.getTrackPiece().getTrackRule().isStation()) {

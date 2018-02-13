@@ -18,7 +18,7 @@
 
 package freerails.controller.pathfinding;
 
-import freerails.controller.GraphExplorer;
+import freerails.controller.explorer.GraphExplorer;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;

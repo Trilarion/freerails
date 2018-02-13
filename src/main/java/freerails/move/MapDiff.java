@@ -1,6 +1,6 @@
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 
 import java.io.Serializable;
 
@@ -12,9 +12,9 @@ class MapDiff implements Serializable {
     private static final long serialVersionUID = -5935670372745313360L;
     private final Serializable before;
     private final Serializable after;
-    private final Point2D p;
+    private final Vector2D p;
 
-    MapDiff(Serializable before, Serializable after, Point2D p) {
+    MapDiff(Serializable before, Serializable after, Vector2D p) {
         this.after = after;
         this.before = before;
         this.p = p;
@@ -50,7 +50,7 @@ class MapDiff implements Serializable {
         return after;
     }
 
-    public Point2D getP() {
+    public Vector2D getP() {
         return p;
     }
 }

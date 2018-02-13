@@ -31,7 +31,7 @@ public interface TileRendererList {
      */
     TileRenderer getTileViewWithNumber(int i);
 
-    // TODO What???
+    // TODO Is this function needed?
     /**
      * Checks whether this tile view list has tile views for all the terrain
      * types in the specified list.

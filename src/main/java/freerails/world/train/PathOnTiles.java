@@ -35,7 +35,7 @@ import java.util.*;
 public strictfp class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
-    private final Point2D start;
+    private final Vector2D start;
     private final ImmutableList<TileTransition> vectors;
 
     /**
@@ -43,7 +43,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectorsList
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
-    public PathOnTiles(Point2D start, List<TileTransition> tileTransitions) {
+    public PathOnTiles(Vector2D start, List<TileTransition> tileTransitions) {
         vectors = new ImmutableList<>(tileTransitions);
         vectors.verifyNoneNull();
         this.start = Utils.verifyNotNull(start);
@@ -55,7 +55,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectors[i] for any i;
      */
     // TODO remove this constructor only used from tests
-    public PathOnTiles(Point2D start, TileTransition... tileTransitions) {
+    public PathOnTiles(Vector2D start, TileTransition... tileTransitions) {
         this.vectors = new ImmutableList<>(tileTransitions);
         this.vectors.verifyNoneNull();
         this.start = Utils.verifyNotNull(start);
@@ -98,7 +98,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
-    public Point2D getPoint(double distance) {
+    public Vector2D getPoint(double distance) {
         if (0 > distance) throw new IllegalArgumentException("distance:" + distance + " < 0");
 
         int x = start.x;
@@ -110,13 +110,13 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new Point2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+                return new Vector2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
             }
             if (distanceSoFar > distance) {
                 int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - distance) / v.getLength());
                 x = x * WorldConstants.TILE_SIZE - v.deltaX * excess;
                 y = y * WorldConstants.TILE_SIZE - v.deltaY * excess;
-                return new Point2D(x + WorldConstants.TILE_SIZE / 2, y + WorldConstants.TILE_SIZE / 2);
+                return new Vector2D(x + WorldConstants.TILE_SIZE / 2, y + WorldConstants.TILE_SIZE / 2);
             }
         }
         throw new IllegalArgumentException("distance:" + distance + " > getLength():" + vectors.size() + " distanceSoFar:" + distanceSoFar);
@@ -129,7 +129,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws IllegalArgumentException if distance &lt; 0
      * @throws IllegalArgumentException if distance &gt; getLength()
      */
-    public Pair<Point2D, Point2D> getPoint(double firstdistance, double lastdistance) {
+    public Pair<Vector2D, Vector2D> getPoint(double firstdistance, double lastdistance) {
         if (0 > firstdistance) {
             throw new IllegalArgumentException("firstdistance:" + firstdistance + " < 0");
         }
@@ -142,7 +142,7 @@ public strictfp class PathOnTiles implements Serializable {
         int x = start.x;
         int y = start.y;
         double distanceSoFar = 0;
-        Point2D firstPoint = null;
+        Vector2D firstPoint = null;
         int i;
         TileTransition v = null;
         final int vectorsSize = vectors.size();
@@ -152,14 +152,14 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new Point2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+                firstPoint = new Vector2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
                 int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - firstdistance) / v.getLength());
                 int nx = x * WorldConstants.TILE_SIZE - v.deltaX * excess + WorldConstants.TILE_SIZE / 2;
                 int ny = y * WorldConstants.TILE_SIZE - v.deltaY * excess + WorldConstants.TILE_SIZE / 2;
-                firstPoint = new Point2D(nx, ny);
+                firstPoint = new Vector2D(nx, ny);
                 break;
             }
         }
@@ -169,19 +169,19 @@ public strictfp class PathOnTiles implements Serializable {
         if (firstdistance == lastdistance) {
             return new Pair<>(firstPoint, firstPoint);
         }
-        Point2D secondPoint = null;
+        Vector2D secondPoint = null;
 
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new Point2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+                secondPoint = new Vector2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
                 int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - lastdistance) / v.getLength());
                 int nx = x * WorldConstants.TILE_SIZE - v.deltaX * excess + WorldConstants.TILE_SIZE / 2;
                 int ny = y * WorldConstants.TILE_SIZE - v.deltaY * excess + WorldConstants.TILE_SIZE / 2;
-                secondPoint = new Point2D(nx, ny);
+                secondPoint = new Vector2D(nx, ny);
                 break;
             }
             i++;
@@ -204,7 +204,7 @@ public strictfp class PathOnTiles implements Serializable {
     /**
      * @return
      */
-    public Point2D getStart() {
+    public Vector2D getStart() {
         return start;
     }
 
@@ -229,7 +229,7 @@ public strictfp class PathOnTiles implements Serializable {
         }
         int i = vectors.size() - 1;
         TileTransition finalTileTransition = vectors.get(i);
-        return PositionOnTrack.createFacing(new Point2D(x, y), finalTileTransition);
+        return PositionOnTrack.createFacing(new Vector2D(x, y), finalTileTransition);
     }
 
     /**
@@ -290,8 +290,8 @@ public strictfp class PathOnTiles implements Serializable {
         if ((offset + length) > getTotalDistance())
             throw new IllegalArgumentException(offset + " + " + length + " > " + getTotalDistance());
 
-        final LinkedList<Point2D> points = new LinkedList<>();
-        Point2D tile = start;
+        final LinkedList<Vector2D> points = new LinkedList<>();
+        Vector2D tile = start;
         int tileX = tile.x;
         int tileY = tile.y;
         int distanceSoFar = 0;
@@ -303,7 +303,7 @@ public strictfp class PathOnTiles implements Serializable {
             if (distanceSoFar >= offset) {
                 int x = WorldConstants.TILE_SIZE / 2 + WorldConstants.TILE_SIZE * tileX;
                 int y = WorldConstants.TILE_SIZE / 2 + WorldConstants.TILE_SIZE * tileY;
-                points.add(new Point2D(x, y));
+                points.add(new Vector2D(x, y));
             }
 
             TileTransition v = vectors.get(i);
@@ -312,9 +312,9 @@ public strictfp class PathOnTiles implements Serializable {
             distanceSoFar += v.getLength();
         }
 
-        Pair<Point2D, Point2D> point = getPoint(offset, offset + length);
+        Pair<Vector2D, Vector2D> point = getPoint(offset, offset + length);
 
-        Point2D first = point.getA();
+        Vector2D first = point.getA();
 
         if (points.isEmpty()) {
             points.addFirst(first);
@@ -322,7 +322,7 @@ public strictfp class PathOnTiles implements Serializable {
             points.addFirst(first);
         }
 
-        Point2D last = point.getB();
+        Vector2D last = point.getB();
 
         if (!points.getLast().equals(last)) {
             points.addLast(last);
@@ -334,28 +334,28 @@ public strictfp class PathOnTiles implements Serializable {
     /**
      * @return
      */
-    public Iterator<Point2D> tilesIterator() {
+    public Iterator<Vector2D> tilesIterator() {
         // TODO no anonymous class here
-        return new Iterator<Point2D>() {
+        return new Iterator<Vector2D>() {
             private int index = 0;
 
-            private Point2D next = start;
+            private Vector2D next = start;
 
             public boolean hasNext() {
                 return next != null;
             }
 
-            public Point2D next() {
+            public Vector2D next() {
                 if (next == null) throw new NoSuchElementException();
 
-                Point2D returnValue = next;
+                Vector2D returnValue = next;
                 int x = next.x;
                 int y = next.y;
                 if (index < vectors.size()) {
                     TileTransition s = vectors.get(index);
                     x += s.deltaX;
                     y += s.deltaY;
-                    next = new Point2D(x, y);
+                    next = new Vector2D(x, y);
                 } else {
                     next = null;
                 }
@@ -388,10 +388,10 @@ public strictfp class PathOnTiles implements Serializable {
     private static class MyPathIterator implements PathIterator {
 
         private static final long serialVersionUID = -4128415959622019625L;
-        private final LinkedList<Point2D> points;
+        private final LinkedList<Vector2D> points;
         private int index;
 
-        private MyPathIterator(LinkedList<Point2D> points) {
+        private MyPathIterator(LinkedList<Vector2D> points) {
             this.points = points;
             index = 0;
         }
@@ -404,11 +404,11 @@ public strictfp class PathOnTiles implements Serializable {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            Point2D a = points.get(index);
+            Vector2D a = points.get(index);
             line.setX1(a.x);
             line.setY1(a.y);
 
-            Point2D b = points.get(index + 1);
+            Vector2D b = points.get(index + 1);
             line.setX2(b.x);
             line.setY2(b.y);
 

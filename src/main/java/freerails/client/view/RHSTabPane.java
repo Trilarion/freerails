@@ -24,14 +24,13 @@ import freerails.client.common.ModelRootListener;
 import freerails.client.common.StationHelper;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
@@ -144,7 +143,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     public void propertyChange(ModelRoot.Property prop, Object before, Object after) {
         if (prop == ModelRoot.Property.CURSOR_POSITION) {
 
-            Point2D p = (Point2D) after;
+            Vector2D p = (Vector2D) after;
 
             // Select priority element at location
             LOGGER.debug("Let's try to show the station.");

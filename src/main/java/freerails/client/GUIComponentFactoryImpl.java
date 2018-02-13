@@ -21,7 +21,7 @@ package freerails.client;
 import freerails.client.common.ActionAdapter;
 import freerails.client.common.ActionAdapter.MappedButtonModel;
 import freerails.client.common.ModelRootImpl;
-import freerails.client.renderer.BuildTrackController;
+import freerails.controller.BuildTrackController;
 import freerails.client.renderer.MapRenderer;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.ZoomedOutMapRenderer;
@@ -29,7 +29,7 @@ import freerails.client.view.*;
 import freerails.controller.ModelRoot;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.LocalConnection;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.game.GameSpeed;
 import freerails.world.player.FreerailsPrincipal;
@@ -454,10 +454,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
          * same as the last map size, then the cursor should take the position
          * it had on the last map.
          */
-        Point2D cursorPosition = Point2D.ZERO;
+        Vector2D cursorPosition = Vector2D.ZERO;
         if (null != this.world) {
             if (world.getMapWidth() == this.world.getMapWidth() && world.getMapHeight() == this.world.getMapHeight()) {
-                cursorPosition = (Point2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
+                cursorPosition = (Vector2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
             }
         }
         this.world = world;
@@ -547,7 +547,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
             for (int tileX = tilesChanged.x; tileX < (tilesChanged.x + tilesChanged.width); tileX++) {
                 for (int tileY = tilesChanged.y; tileY < (tilesChanged.y + tilesChanged.height); tileY++) {
-                    Point2D p = new Point2D(tileX, tileY);
+                    Vector2D p = new Vector2D(tileX, tileY);
                     mainMap.refreshTile(p);
                     overviewMap.refreshTile(p);
                 }

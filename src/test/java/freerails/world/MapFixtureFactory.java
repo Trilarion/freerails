@@ -18,7 +18,7 @@
 
 package freerails.world;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;
@@ -64,7 +64,7 @@ public class MapFixtureFactory {
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < width; y++) {
-                world.setTile(new Point2D(x, y), tile);
+                world.setTile(new Vector2D(x, y), tile);
             }
         }
 

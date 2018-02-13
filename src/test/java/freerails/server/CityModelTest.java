@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+import freerails.util.Vector2D;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.terrain.City;
@@ -34,7 +35,7 @@ public class CityModelTest extends TestCase {
      */
     public void testLoadFromMap() {
         World world = MapFixtureFactory.getWorld(100, 100);
-        City city = new City("New York", 10, 20);
+        City city = new City("New York", new Vector2D(10, 20));
         world.add(SKEY.CITIES, city);
 
         CityModel cityModel = new CityModel();

@@ -20,7 +20,7 @@ package freerails.move;
 
 import freerails.util.ImmutableList;
 import freerails.util.ListKey;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.FullWorldDiffs.LISTID;
 import freerails.world.FullWorld.ActivityAndTime;
@@ -59,7 +59,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
     public WorldDiffMove(ReadOnlyWorld world, FullWorldDiffs worldDiffs, WorldDiffMoveCause cause) throws UnsupportedOperationException {
         this.cause = cause;
 
-        Iterator<Point2D> mit = worldDiffs.getMapDiffs();
+        Iterator<Vector2D> mit = worldDiffs.getMapDiffs();
         ArrayList<MapDiff> diffsArrayList = new ArrayList<>();
         if (mit.hasNext()) {
             int minx = Integer.MAX_VALUE;
@@ -67,7 +67,7 @@ public class WorldDiffMove implements Move, MapUpdateMove {
             int maxx = 0;
             int maxy = 0;
             while (mit.hasNext()) {
-                Point2D p = mit.next();
+                Vector2D p = mit.next();
                 Serializable oldTile = world.getTile(p);
                 Serializable newTile = worldDiffs.getTile(p);
                 diffsArrayList.add(new MapDiff(oldTile, newTile, p));

@@ -23,11 +23,8 @@ package freerails.controller.pathfinding;
 
 import freerails.client.common.ModelRootImpl;
 import freerails.controller.*;
-import freerails.controller.pathfinding.IncrementalPathFinder;
-import freerails.controller.pathfinding.PathNotFoundException;
-import freerails.controller.pathfinding.PathOnTrackFinder;
 import freerails.world.MapFixtureFactory2;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
 import junit.framework.TestCase;
@@ -61,8 +58,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testPathAsVectors1() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
-        Point2D start = new Point2D(5, 5);
-        Point2D end = TileTransition.move(start, path);
+        Vector2D start = new Vector2D(5, 5);
+        Vector2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -80,8 +77,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testPathAsVectors2() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.NORTH_EAST};
-        Point2D start = new Point2D(5, 5);
-        Point2D end = TileTransition.move(start, path);
+        Vector2D start = new Vector2D(5, 5);
+        Vector2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -99,8 +96,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testSetupSearch() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
-        Point2D start = new Point2D(5, 5);
-        Point2D end = TileTransition.move(start, path);
+        Vector2D start = new Vector2D(5, 5);
+        Vector2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -108,12 +105,12 @@ public class PathOnTrackFinderTest extends TestCase {
             fail("Track at both of the points so no exception should be thrown");
         }
         try {
-            pathFinder.setupSearch(start, new Point2D(10, 10));
+            pathFinder.setupSearch(start, new Vector2D(10, 10));
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
         }
         try {
-            pathFinder.setupSearch(new Point2D(10, 10), end);
+            pathFinder.setupSearch(new Vector2D(10, 10), end);
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
         }

@@ -25,7 +25,7 @@ import freerails.client.common.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.move.MoveTrainPreMove;
 import freerails.world.MapFixtureFactory2;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
 import freerails.world.World;
@@ -59,7 +59,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         // Build track.
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
 
-        Point2D stationA = new Point2D(10, 10);
+        Vector2D stationA = new Vector2D(10, 10);
         MoveStatus moveStatus = trackBuilder.buildTrack(stationA, line1);
         assertTrue(moveStatus.succeeds());
         moveStatus = trackBuilder.buildTrack(stationA, line2);
@@ -72,15 +72,15 @@ public class MoveTrainPreMove3rdTest extends TestCase {
      *
      */
     public void testFindingPath() {
-        findPath2Target(new Point2D(14, 7), line1);
-        findPath2Target(new Point2D(9, 13), line2);
-        findPath2Target(new Point2D(9, 13), line2);
+        findPath2Target(new Vector2D(14, 7), line1);
+        findPath2Target(new Vector2D(9, 13), line2);
+        findPath2Target(new Vector2D(9, 13), line2);
     }
 
-    private void findPath2Target(Point2D target1, TileTransition[] expectedPath) {
+    private void findPath2Target(Vector2D target1, TileTransition[] expectedPath) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(target1);
         assertTrue(tile.hasTrack());
-        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Point2D(10, 10), TileTransition.EAST);
+        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vector2D(10, 10), TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
             TileTransition actual = MoveTrainPreMove.findNextStep(world, positionOnTrack, target1);

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.controller.explorer;
 
 /**
  * This interface lets the caller explorer a graph while hiding the way the

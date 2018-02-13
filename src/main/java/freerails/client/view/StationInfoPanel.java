@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.CargoType;
@@ -157,7 +157,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.previous()) {
-            Point2D p = ((Station) worldIterator.getElement()).getStationP();
+            Vector2D p = ((Station) worldIterator.getElement()).getStationP();
             modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
 
             display();
@@ -170,7 +170,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.next()) {
-            Point2D p = ((Station) worldIterator.getElement()).getStationP();
+            Vector2D p = ((Station) worldIterator.getElement()).getStationP();
             modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
             display();
         } else {

@@ -18,13 +18,15 @@
 
 package freerails.controller;
 
+import freerails.controller.explorer.FlatTrackExplorer;
 import freerails.move.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
 import freerails.world.player.Player;
 import freerails.world.terrain.TileTransition;
+import freerails.world.track.NoTrackException;
 import freerails.world.track.TrackRule;
 import freerails.world.train.PositionOnTrack;
 import junit.framework.TestCase;
@@ -53,8 +55,8 @@ public class FlatTrackExplorerTest extends TestCase {
         TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
 
         TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
-        Point2D p = new Point2D(10, 10);
-        Point2D[] points = {p, p, p};
+        Vector2D p = new Vector2D(10, 10);
+        Vector2D[] points = {p, p, p};
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
@@ -68,7 +70,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException
      */
     public void testGetFirstVectorToTry() throws NoTrackException {
-        PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.SOUTH_WEST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.SOUTH_WEST);
         FlatTrackExplorer fte = new FlatTrackExplorer(world, p);
         TileTransition v = fte.getFirstVectorToTry();
         assertEquals(TileTransition.EAST, v);
@@ -83,7 +85,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testGetPossibleDirections() throws NoTrackException {
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.SOUTH_WEST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.SOUTH_WEST);
         fte = new FlatTrackExplorer(world, p);
 
         // There should be 3 branches.
@@ -113,7 +115,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testMoveTrackExplorer() throws NoTrackException {
         FlatTrackExplorer fte;
 
-        PositionOnTrack p = PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.EAST);
+        PositionOnTrack p = PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.EAST);
         fte = new FlatTrackExplorer(world, p);
 
         PositionOnTrack pos = new PositionOnTrack(fte.getPosition());
@@ -148,7 +150,7 @@ public class FlatTrackExplorerTest extends TestCase {
      * @throws NoTrackException
      */
     public void testHasNext() throws NoTrackException {
-        FlatTrackExplorer explorer = new FlatTrackExplorer(world, PositionOnTrack.createComingFrom(new Point2D(10, 10), TileTransition.EAST));
+        FlatTrackExplorer explorer = new FlatTrackExplorer(world, PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.EAST));
         assertTrue(explorer.hasNextEdge());
     }
 
@@ -158,7 +160,7 @@ public class FlatTrackExplorerTest extends TestCase {
     public void testNoTrack() {
         try {
             FlatTrackExplorer explorer = new FlatTrackExplorer(world,
-                    PositionOnTrack.createComingFrom(new Point2D(4, 7), TileTransition.EAST));
+                    PositionOnTrack.createComingFrom(new Vector2D(4, 7), TileTransition.EAST));
             fail("Expected an Exception");
         } catch (NoTrackException e) {
             // ignore
@@ -169,7 +171,7 @@ public class FlatTrackExplorerTest extends TestCase {
      *
      */
     public void testGetPossiblePositions() {
-        PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world, new Point2D(10, 10));
+        PositionOnTrack[] positions = FlatTrackExplorer.getPossiblePositions(world, new Vector2D(10, 10));
         assertNotNull(positions);
         assertEquals(3, positions.length);
 

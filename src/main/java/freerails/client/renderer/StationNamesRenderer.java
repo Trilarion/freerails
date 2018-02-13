@@ -20,7 +20,7 @@ package freerails.client.renderer;
 
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
@@ -102,7 +102,7 @@ public class StationNamesRenderer implements Painter {
                 }
                 // First draw station sphere of influence
                 if (showStationBorders) {
-                    FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(x, y));
+                    FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(x, y));
                     int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
                     int diameterInPixels = (radius * 2 + 1) * WorldConstants.TILE_SIZE;
                     int radiusX = (x - radius) * WorldConstants.TILE_SIZE;

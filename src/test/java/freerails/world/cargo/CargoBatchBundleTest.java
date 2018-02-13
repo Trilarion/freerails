@@ -21,7 +21,7 @@
  */
 package freerails.world.cargo;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import junit.framework.TestCase;
 
@@ -40,8 +40,8 @@ public class CargoBatchBundleTest extends TestCase {
         MutableCargoBatchBundle bundle1 = new MutableCargoBatchBundle();
         MutableCargoBatchBundle bundle2 = new MutableCargoBatchBundle();
 
-        CargoBatch batch1 = new CargoBatch(1, new Point2D(2, 3), 4, 5);
-        CargoBatch batch2 = new CargoBatch(4, new Point2D(2, 3), 4, 5);
+        CargoBatch batch1 = new CargoBatch(1, new Vector2D(2, 3), 4, 5);
+        CargoBatch batch2 = new CargoBatch(4, new Vector2D(2, 3), 4, 5);
 
         // add some cargo to the bundle1
         int quantity1 = 10;

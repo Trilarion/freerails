@@ -20,7 +20,7 @@ package freerails.client;
 
 import freerails.client.common.ImageManager;
 import freerails.client.common.ImageManagerImpl;
-import freerails.client.common.SoundManager;
+import freerails.client.common.sound.SoundManager;
 import freerails.client.renderer.*;
 import freerails.server.ProgressMonitorModel;
 import freerails.world.ReadOnlyWorld;

@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.track.TrackPiece;
 
 import java.awt.*;
@@ -44,7 +44,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
      * @param p
      * @return
      */
-    public static Move generateMove(TrackPiece before, TrackPiece after, Point2D p) {
+    public static Move generateMove(TrackPiece before, TrackPiece after, Vector2D p) {
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(before, after, p);
 
         return new UpgradeTrackMove(changeTrackPieceMove);

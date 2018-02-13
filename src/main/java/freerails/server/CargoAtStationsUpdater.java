@@ -33,13 +33,14 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.station.StationSupply;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Loops over the list of stations and adds cargo depending on what
  * the surrounding tiles supply.
  */
-public class CargoAtStationsUpdater implements FreerailsServerSerializable {
+public class CargoAtStationsUpdater implements Serializable {
 
     private static final long serialVersionUID = 3834596504072959796L;
 

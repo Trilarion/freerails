@@ -24,6 +24,7 @@
 package freerails.client.renderer;
 
 import freerails.client.common.Painter;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
@@ -57,8 +58,9 @@ public class CityNamesRenderer implements Painter {
         int size = world.size(SKEY.CITIES);
         for (int i = 0; i < size; i++) {
             City tempCity = (City) world.get(SKEY.CITIES, i);
-            final int xpos = tempCity.getX() * WorldConstants.TILE_SIZE;
-            final int ypos = tempCity.getY() * WorldConstants.TILE_SIZE + 10;
+            Vector2D location = tempCity.getLocation();
+            final int xpos = location.x * WorldConstants.TILE_SIZE;
+            final int ypos = location.y * WorldConstants.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos, WorldConstants.TILE_SIZE * 8, 20);
             if (newVisibleRectangle != null && !newVisibleRectangle.intersects(cityNameBox)) {
                 continue;

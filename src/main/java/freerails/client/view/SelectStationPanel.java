@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -166,7 +166,7 @@ public class SelectStationPanel extends JPanel implements View {
         y = y / scale + visableMapTiles.y;
 
         NearestStationFinder stationFinder = new NearestStationFinder(world, principal);
-        int station = stationFinder.findNearestStation((int) x, (int) y);
+        int station = stationFinder.findNearestStation(new Vector2D((int)x, (int)y));
 
         if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
             selectedStationID = station;
@@ -245,7 +245,7 @@ public class SelectStationPanel extends JPanel implements View {
         g2.setColor(Color.BLACK);
         for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, world.getMapWidth()); x++) {
             for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, world.getMapHeight()); y++) {
-                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Point2D(x, y));
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vector2D(x, y));
                 if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;

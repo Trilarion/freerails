@@ -18,6 +18,8 @@
 
 package freerails.client.view;
 
+import freerails.client.ClientConfig;
+import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.ReadOnlyWorld;
@@ -45,14 +47,13 @@ class NearestStationFinder {
     }
 
     /**
-     * Returns true if the angle between direction and the vector (deltaX,
-     * deltaY) is less than 45 degrees.
+     * Returns true if the angle between direction and the vector (deltaX, deltaY) is less than 45 degrees.
      */
-    private static boolean isInRightDirection(TileTransition direction, int deltaX, int deltaY) {
+    private static boolean isInRightDirection(TileTransition direction, Vector2D delta) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
-        boolean sameXDirection = (direction.deltaX * deltaX) > 0;
-        boolean sameYDirection = (direction.deltaY * deltaY > 0);
-        boolean deltaXisLongerThanDeltaY = deltaX * deltaX < deltaY * deltaY;
+        boolean sameXDirection = (direction.deltaX * delta.x) > 0;
+        boolean sameYDirection = (direction.deltaY * delta.y > 0);
+        boolean deltaXisLongerThanDeltaY = delta.x * delta.x < delta.y * delta.y;
 
         if (isDiagonal) {
             return sameXDirection && sameYDirection;
@@ -64,11 +65,10 @@ class NearestStationFinder {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      * @return
      */
-    public int findNearestStation(int x, int y) {
+    public int findNearestStation(Vector2D p) {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
@@ -78,13 +78,10 @@ class NearestStationFinder {
         while (it.next()) {
             Station station = (Station) it.getElement();
 
-            // TODO diff of Point2D
-            int deltaX = x - station.location.x;
-            int deltaY = y - station.location.y;
-            int distanceSquared = deltaX * deltaX + deltaY * deltaY;
+            Vector2D delta = Vector2D.subtract(p, station.location);
+            int distanceSquared = delta.x * delta.x + delta.y * delta.y;
 
-            int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
-            if (distanceSquared < distanceToClosestSquared && MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
+            if (distanceSquared < distanceToClosestSquared && ClientConfig.MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
                 distanceToClosestSquared = distanceSquared;
                 nearestStation = it.getIndex();
             }
@@ -108,13 +105,11 @@ class NearestStationFinder {
 
         while (it.next()) {
             Station station = (Station) it.getElement();
-            // TODO diff of Point2D
-            int deltaX = station.location.x - currentStation.location.x;
-            int deltaY = station.location.y - currentStation.location.y;
-            int distanceSquared = deltaX * deltaX + deltaY * deltaY;
+            Vector2D delta = Vector2D.subtract(station.location, currentStation.location);
+            int distanceSquared = delta.x * delta.x + delta.y * delta.y;
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != it.getIndex();
-            boolean inRightDirection = isInRightDirection(direction, deltaX, deltaY);
+            boolean inRightDirection = isInRightDirection(direction, delta);
 
             if (closer && inRightDirection && notTheSameStation) {
                 distanceToClosestSquared = distanceSquared;

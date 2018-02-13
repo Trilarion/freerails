@@ -18,8 +18,8 @@
 
 package freerails.client;
 
-import freerails.client.common.SoundManager;
-import freerails.client.renderer.BuildTrackController;
+import freerails.client.common.sound.SoundManager;
+import freerails.controller.BuildTrackController;
 import freerails.client.view.*;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
@@ -27,7 +27,7 @@ import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TileTransition;
@@ -115,7 +115,7 @@ class UserInputOnMapController extends KeyAdapter {
                 return;
             }
         }
-        Point2D cursorPosition = getCursorPosition();
+        Vector2D cursorPosition = getCursorPosition();
 
         switch (keyCode) {
 
@@ -251,7 +251,7 @@ class UserInputOnMapController extends KeyAdapter {
         } // End switch
     }
 
-    private void cursorOneTileMove(Point2D oldPosition, TileTransition vector) {
+    private void cursorOneTileMove(Vector2D oldPosition, TileTransition vector) {
         boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
 
         if (null != trackBuilder && b) {
@@ -269,7 +269,7 @@ class UserInputOnMapController extends KeyAdapter {
         }
     }
 
-    private void moveCursorJump(Point2D tryThisPoint) {
+    private void moveCursorJump(Vector2D tryThisPoint) {
         setCursorMessage("");
 
         if (legalRectangleContains(tryThisPoint)) {
@@ -282,8 +282,8 @@ class UserInputOnMapController extends KeyAdapter {
     private void moveCursorOneTile(TileTransition v) {
         setCursorMessage(null);
 
-        Point2D cursorMapPosition = getCursorPosition();
-        Point2D tryThisPoint = new Point2D(cursorMapPosition.x + v.getDx(), cursorMapPosition.y + v.getDy());
+        Vector2D cursorMapPosition = getCursorPosition();
+        Vector2D tryThisPoint = Vector2D.add(cursorMapPosition, v.getD());
 
         // Move the cursor.
         if (legalRectangleContains(tryThisPoint)) {
@@ -326,22 +326,22 @@ class UserInputOnMapController extends KeyAdapter {
      * @param tryThisPoint Point2D
      * @return boolean
      */
-    private boolean legalRectangleContains(Point2D tryThisPoint) {
+    private boolean legalRectangleContains(Vector2D tryThisPoint) {
         ReadOnlyWorld world = modelRoot.getWorld();
         int width = world.getMapWidth();
         int height = world.getMapHeight();
         Rectangle legalRectangle = new Rectangle(0, 0, width, height);
-        return legalRectangle.contains(tryThisPoint.toPoint());
+        return legalRectangle.contains(Vector2D.toPoint(tryThisPoint));
     }
 
-    private Point2D getCursorPosition() {
-        Point2D point = (Point2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
+    private Vector2D getCursorPosition() {
+        Vector2D point = (Vector2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
         // Check for null
-        point = null == point ? new Point2D() : point;
+        point = null == point ? new Vector2D() : point;
         return point;
     }
 
-    private void setCursorPosition(Point2D p) {
+    private void setCursorPosition(Vector2D p) {
         // Make a defensive copy.
         modelRoot.setProperty(Property.CURSOR_POSITION, p);
     }
@@ -372,7 +372,7 @@ class UserInputOnMapController extends KeyAdapter {
                 Dimension tileSize = new Dimension((int) mapView.getScale(), (int) mapView.getScale());
 
                 // only jump - no track building
-                moveCursorJump(new Point2D(e.getX() / tileSize.width, e.getY() / tileSize.height));
+                moveCursorJump(new Vector2D(e.getX() / tileSize.width, e.getY() / tileSize.height));
 
                 mapView.requestFocus();
                 pressedInside = true;
@@ -415,7 +415,7 @@ class UserInputOnMapController extends KeyAdapter {
 
                     if (getCursorPosition().x != tileX || getCursorPosition().y != tileY) {
                         // copy WorldDifferences from buildTrack to World
-                        Point2D newPosition = buildTrack.updateWorld(trackBuilder);
+                        Vector2D newPosition = buildTrack.updateWorld(trackBuilder);
                         setCursorPosition(newPosition);
                     }
                 }
@@ -472,7 +472,7 @@ class UserInputOnMapController extends KeyAdapter {
                     mapView.scrollRectToVisible(r);
                 }
 
-                Point2D to = new Point2D(tileX, tileY);
+                Vector2D to = new Vector2D(tileX, tileY);
                 buildTrack.setProposedTrack(to, trackBuilder);
                 mapView.requestFocus();
             }

@@ -18,6 +18,7 @@
 
 package freerails.controller;
 
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.City;
@@ -30,6 +31,7 @@ import java.util.NoSuchElementException;
  */
 class NearestCityFinder {
 
+    // TODO use Vector2D
     private final int x;
     private final int y;
     private final ReadOnlyWorld world;
@@ -56,12 +58,12 @@ class NearestCityFinder {
 
         if (world.size(SKEY.CITIES) > 0) {
             tempCity = (City) world.get(SKEY.CITIES, 0);
-            cityDistance = getDistance(tempCity.getX(), tempCity.getY());
+            cityDistance = getDistance(tempCity.getLocation());
             cityName = tempCity.getName();
 
             for (int i = 1; i < world.size(SKEY.CITIES); i++) {
                 tempCity = (City) world.get(SKEY.CITIES, i);
-                tempDistance = getDistance(tempCity.getX(), tempCity.getY());
+                tempDistance = getDistance(tempCity.getLocation());
 
                 if (tempDistance < cityDistance) {
                     cityDistance = tempDistance;
@@ -75,10 +77,11 @@ class NearestCityFinder {
         throw new NoSuchElementException();
     }
 
-    private double getDistance(int cityX, int cityY) {
+    private double getDistance(Vector2D cityLocation) {
         double distance;
-        double a = (x - cityX) * (x - cityX);
-        double b = (y - cityY) * (y - cityY);
+        // TODO Vector arigthmetics, is this code duplicated
+        double a = (x - cityLocation.x) * (x - cityLocation.x);
+        double b = (y - cityLocation.y) * (y - cityLocation.y);
 
         distance = Math.sqrt(a + b);
 

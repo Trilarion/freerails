@@ -23,13 +23,10 @@ import freerails.client.GameLoop;
 import freerails.client.ScreenHandler;
 import freerails.client.common.ModelRootImpl;
 import freerails.controller.*;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.MoveTrainPreMove;
-import freerails.move.PreMove;
+import freerails.move.*;
 import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ActivityIterator;
 import freerails.world.World;
 import freerails.world.WorldConstants;
@@ -67,7 +64,7 @@ class TrainMotionExperiment extends JComponent {
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
-        Point2D from = new Point2D(5, 5);
+        Vector2D from = new Vector2D(5, 5);
         MoveStatus moveStatus = producer.buildTrack(from, trackPath);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
@@ -108,7 +105,7 @@ class TrainMotionExperiment extends JComponent {
         g.setColor(Color.GREEN);
         for (int x = 0; x < world.getMapWidth(); x++) {
             for (int y = 0; y < world.getMapHeight(); y++) {
-                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Point2D(x, y));
+                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(x, y));
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                     g.drawRect(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
                 }
@@ -136,9 +133,9 @@ class TrainMotionExperiment extends JComponent {
         TrainPositionOnMap pos = (TrainPositionOnMap) ai.getState(ticks);
 
         PathOnTiles pathOT = motion.getPath();
-        Iterator<Point2D> it = pathOT.tilesIterator();
+        Iterator<Vector2D> it = pathOT.tilesIterator();
         while (it.hasNext()) {
-            Point2D tile = it.next();
+            Vector2D tile = it.next();
             int x = tile.x * WorldConstants.TILE_SIZE;
             int y = tile.y * WorldConstants.TILE_SIZE;
             int w = WorldConstants.TILE_SIZE;
@@ -152,7 +149,7 @@ class TrainMotionExperiment extends JComponent {
         pathOT = motion.getTiles(t);
         it = pathOT.tilesIterator();
         while (it.hasNext()) {
-            Point2D tile = it.next();
+            Vector2D tile = it.next();
             int x = tile.x * WorldConstants.TILE_SIZE;
             int y = tile.y * WorldConstants.TILE_SIZE;
             int w = WorldConstants.TILE_SIZE;

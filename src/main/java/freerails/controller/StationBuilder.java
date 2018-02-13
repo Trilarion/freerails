@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
@@ -66,7 +66,7 @@ public class StationBuilder {
      * @param p
      * @return
      */
-    public MoveStatus tryBuildingStation(Point2D p) {
+    public MoveStatus tryBuildingStation(Vector2D p) {
         ReadOnlyWorld world = executor.getWorld();
 
         FreerailsPrincipal principal = executor.getPrincipal();
@@ -80,7 +80,7 @@ public class StationBuilder {
      * @param p
      * @return
      */
-    public MoveStatus buildStation(Point2D p) {
+    public MoveStatus buildStation(Vector2D p) {
         // Only build a station if there is track at the specified point.
         MoveStatus status = tryBuildingStation(p);
         if (status.succeeds()) {

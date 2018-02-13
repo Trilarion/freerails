@@ -21,6 +21,7 @@
  */
 package freerails.client.view;
 
+import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.NetWorthCalculator;

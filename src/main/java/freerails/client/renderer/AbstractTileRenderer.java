@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.TerrainTile;
@@ -100,7 +100,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
 
         if ((x < mapWidth) && (x >= 0) && (y < mapHeight) && (y >= 0)) {
             for (int typeNumber : typeNumbers) {
-                TerrainTile tt = (TerrainTile) world.getTile(new Point2D(x, y));
+                TerrainTile tt = (TerrainTile) world.getTile(new Vector2D(x, y));
 
                 if (tt.getTerrainTypeID() == typeNumber) {
                     match = 1;

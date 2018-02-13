@@ -20,8 +20,9 @@ package freerails.client.view;
 
 import freerails.client.common.Painter;
 import freerails.client.renderer.*;
+import freerails.controller.BuildTrackController;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldConstants;
 
@@ -96,10 +97,8 @@ public class DetailMapRenderer implements MapRenderer {
 
     /**
      * @param g
-     * @param tileX
-     * @param tileY
      */
-    public void paintTile(Graphics g, Point2D tileP) {
+    public void paintTile(Graphics g, Vector2D tileP) {
         background.paintTile(g, tileP);
         trainsview.paint((Graphics2D) g, null);
         stationRadius.paint((Graphics2D) g, null);
@@ -109,10 +108,8 @@ public class DetailMapRenderer implements MapRenderer {
     }
 
     /**
-     * @param x
-     * @param y
      */
-    public void refreshTile(Point2D p) {
+    public void refreshTile(Vector2D p) {
         background.refreshTile(p);
     }
 

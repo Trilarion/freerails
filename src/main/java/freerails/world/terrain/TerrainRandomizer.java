@@ -16,11 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.world.terrain;
 
 import java.util.List;
-
-// TODO maybe shift to world
 
 /**
  * Class to randomly select a terrain type for a terrain tile.
@@ -35,7 +33,7 @@ import java.util.List;
  * Hills (Hill) 21) Foothills (Hill) 22) Mountain (Hill)
  */
 // TODO only used by MapFactory, should go there
-class TerrainRandomizer {
+public class TerrainRandomizer {
 
     private final List<Integer> terrainTypes;
     private final List<Integer> non_terrainTypes;

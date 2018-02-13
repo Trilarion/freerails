@@ -21,10 +21,9 @@ package freerails.client.renderer;
 import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.FullWorldDiffs;
 import freerails.world.ReadOnlyWorld;
-import freerails.world.WorldConstants;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackPiece;
 
@@ -63,8 +62,8 @@ public class BuildTrackRenderer implements Painter {
 
         FullWorldDiffs worldDiffs = getWorldDiffs();
         if (null != worldDiffs) {
-            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
-                Point2D point = iter.next();
+            for (Iterator<Vector2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
+                Vector2D point = iter.next();
                 FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point);
                 TrackPiece trackPiece = fp.getTrackPiece();
 
@@ -81,8 +80,8 @@ public class BuildTrackRenderer implements Painter {
              * are white if track has been added or upgraded and red if it has
              * been removed.
              */
-            for (Iterator<Point2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
-                Point2D p = iter.next();
+            for (Iterator<Vector2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
+                Vector2D p = iter.next();
                 int x = p.x * ClientConfig.tileSize.width + (ClientConfig.tileSize.width - ClientConfig.SMALL_DOT_WIDTH) / 2;
                 int y = p.y * ClientConfig.tileSize.height + (ClientConfig.tileSize.height - ClientConfig.SMALL_DOT_WIDTH) / 2;
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);

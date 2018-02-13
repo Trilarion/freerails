@@ -330,7 +330,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void addStationJButtonActionPerformed(ActionEvent evt) {
         MutableSchedule s = getSchedule();
         try {
-            int newOrderNumber = s.addOrder(new TrainOrders(getFirstStationID(), null, false, false)); // TODO fix bug
+            // TODO fix bug? which bug?
+            int newOrderNumber = s.addOrder(new TrainOrders(getFirstStationID(), null, false, false));
             showSelectStation(s, newOrderNumber);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");

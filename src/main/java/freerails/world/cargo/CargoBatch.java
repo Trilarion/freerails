@@ -18,7 +18,7 @@
 
 package freerails.world.cargo;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 
 import java.io.Serializable;
 
@@ -31,7 +31,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     // TODO Why is cargoType an int here and not CargoCategory or CargoType??
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoType;
-    private final Point2D sourceP;
+    private final Vector2D sourceP;
     // TODO call it originalStationID
     private final int stationOfOrigin;
     private final long creationTime;
@@ -43,7 +43,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
      * @param time
      * @param origin
      */
-    public CargoBatch(int cargoType, Point2D p, long time, int origin) {
+    public CargoBatch(int cargoType, Vector2D p, long time, int origin) {
         this.cargoType = cargoType;
         sourceP = p;
         creationTime = time;
@@ -67,7 +67,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     /**
      * @return
      */
-    public Point2D getSourceP() {
+    public Vector2D getSourceP() {
         return sourceP;
     }
 

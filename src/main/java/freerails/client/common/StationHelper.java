@@ -19,7 +19,7 @@
 package freerails.client.common;
 
 import freerails.controller.MoveExecutor;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
@@ -38,7 +38,7 @@ public class StationHelper {
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(ReadOnlyWorld world, MoveExecutor modelRoot, Point2D p) {
+    public static int getStationNumberAtLocation(ReadOnlyWorld world, MoveExecutor modelRoot, Vector2D p) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();

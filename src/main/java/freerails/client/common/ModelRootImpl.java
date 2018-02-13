@@ -18,6 +18,7 @@
 
 package freerails.client.common;
 
+import freerails.client.common.sound.SoundManager;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
@@ -26,7 +27,7 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.network.*;
 import freerails.server.MoveReceiver;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.WorldListListener;
@@ -54,7 +55,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      *
      */
     public ModelRootImpl() {
-        properties.put(Property.CURSOR_POSITION, new Point2D());
+        properties.put(Property.CURSOR_POSITION, new Vector2D());
         properties.put(Property.SHOW_STATION_NAMES, Boolean.TRUE);
         properties.put(Property.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
         properties.put(Property.SHOW_STATION_BORDERS, Boolean.TRUE);

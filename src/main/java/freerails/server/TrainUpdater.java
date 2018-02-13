@@ -19,12 +19,9 @@
 package freerails.server;
 
 import freerails.controller.*;
-import freerails.move.ChangeProductionAtEngineShopMove;
-import freerails.move.Move;
-import freerails.move.MoveTrainPreMove;
-import freerails.move.PreMove;
+import freerails.move.*;
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
@@ -33,10 +30,8 @@ import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.station.TrainBlueprint;
-import freerails.world.train.ImmutableSchedule;
-import freerails.world.train.MutableSchedule;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrders;
+import freerails.world.track.NoTrackException;
+import freerails.world.train.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,7 +76,7 @@ public class TrainUpdater implements ServerAutomaton {
      * @param principal
      * @param world
      */
-    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Point2D p, FreerailsPrincipal principal, ReadOnlyWorld world) {
+    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Vector2D p, FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();

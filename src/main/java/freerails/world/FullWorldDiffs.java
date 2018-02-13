@@ -74,7 +74,7 @@ public class FullWorldDiffs extends FullWorld {
     /**
      * Stores the differences on the map, Point2D are used as keys.
      */
-    private final HashMap<Point2D, Object> mapDiff;
+    private final HashMap<Vector2D, Object> mapDiff;
     private final FullWorld underlying;
 
     /**
@@ -102,7 +102,7 @@ public class FullWorldDiffs extends FullWorld {
      * The iterator returns instances of java.awt.Point2D that store the
      * coordinates of tiles that are different to the underlying world object.
      */
-    public Iterator<Point2D> getMapDiffs() {
+    public Iterator<Vector2D> getMapDiffs() {
         return mapDiff.keySet().iterator();
     }
 
@@ -132,7 +132,7 @@ public class FullWorldDiffs extends FullWorld {
     }
 
     @Override
-    public Serializable getTile(Point2D p) {
+    public Serializable getTile(Vector2D p) {
         if (mapDiff.containsKey(p)) {
             return (Serializable) mapDiff.get(p);
         }
@@ -165,7 +165,7 @@ public class FullWorldDiffs extends FullWorld {
     }
 
     @Override
-    public void setTile(Point2D p, Serializable element) {
+    public void setTile(Vector2D p, Serializable element) {
 
         if (Utils.equal(underlying.getTile(p), element)) {
             if (mapDiff.containsKey(p)) {

@@ -21,11 +21,12 @@
  */
 package freerails.server;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.SKEY;
 import freerails.world.FullWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
+import freerails.world.terrain.TerrainRandomizer;
 import freerails.world.terrain.TerrainType;
 
 import javax.swing.*;
@@ -119,7 +120,7 @@ public final class MapFactory {
                 }
 
                 tile = FullTerrainTile.getInstance(terrainRandomizer.getNewType(type));
-                Point2D location = new Point2D(x, y);
+                Vector2D location = new Vector2D(x, y);
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
                     locations.add(new TerrainAtLocation(location, tile.getTerrainTypeID()));
                 }
@@ -131,17 +132,17 @@ public final class MapFactory {
         for (TerrainAtLocation terrainAtLocation : locations) {
             FullTerrainTile tile = FullTerrainTile.getInstance(terrainAtLocation.getType());
 
-            Point2D location = terrainAtLocation.getLocation();
+            Vector2D location = terrainAtLocation.getLocation();
             int val = 3;
+            Vector2D v = new Vector2D(val, val);
 
             double prob = 0.75;
 
-            // TODO Point2D arigthmetics
-            if (w.boundsContain(new Point2D(location.x - val, location.y - val)) && w.boundsContain(new Point2D(location.x + val, location.y + val))) {
+            if (w.boundsContain(Vector2D.subtract(location, v)) && w.boundsContain(Vector2D.add(location, v))) {
                 for (int m = location.x - val; m < location.x + val; m++) {
                     for (int n = location.y - val; n < location.y + val; n++) {
                         if (Math.random() > prob) {
-                            setTile(new Point2D(m, n), tile);
+                            setTile(new Vector2D(m, n), tile);
                         }
                     }
                 }
@@ -149,7 +150,7 @@ public final class MapFactory {
         }
     }
 
-    private static void setTile(Point2D p, Serializable tile) {
+    private static void setTile(Vector2D p, Serializable tile) {
         if (!non_countryTypes.contains(((FullTerrainTile) world.getTile(p)).getTerrainTypeID())) {
             world.setTile(p, tile);
         }

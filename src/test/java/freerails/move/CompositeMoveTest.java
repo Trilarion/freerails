@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.station.Station;
 import freerails.world.MapFixtureFactory;
@@ -30,10 +30,10 @@ import freerails.world.MapFixtureFactory;
  *
  */
 public class CompositeMoveTest extends AbstractMoveTestCase {
-    private final Station station1 = new Station(new Point2D(1, 1), "station1", 10, 0);
-    private final Station station2 = new Station(new Point2D(2, 3), "station2", 10, 0);
-    private final Station station3 = new Station(new Point2D(3, 3), "station3", 10, 0);
-    private final Station station4 = new Station(new Point2D(4, 4), "station4", 10, 0);
+    private final Station station1 = new Station(new Vector2D(1, 1), "station1", 10, 0);
+    private final Station station2 = new Station(new Vector2D(2, 3), "station2", 10, 0);
+    private final Station station3 = new Station(new Vector2D(3, 3), "station3", 10, 0);
+    private final Station station4 = new Station(new Vector2D(4, 4), "station4", 10, 0);
 
     /**
      *

@@ -27,7 +27,7 @@ import freerails.client.common.ModelRootListener;
 import freerails.client.renderer.MapRenderer;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.WorldConstants;
 
 import javax.swing.*;
@@ -150,7 +150,7 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
         super.setMapView(mapRenderer);
     }
 
-    private void react2curorMove(Point2D newPoint, Point2D oldPoint) {
+    private void react2curorMove(Vector2D newPoint, Vector2D oldPoint) {
         float scale = getMapView().getScale();
         Dimension tileSize = new Dimension((int) scale, (int) scale);
         Rectangle vr = getVisibleRect();
@@ -172,18 +172,15 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
 
     /**
      * @param g
-     * @param tileX
-     * @param tileY
      */
-    public void paintTile(Graphics g, Point2D p) {
+    public void paintTile(Graphics g, Vector2D p) {
         throw new UnsupportedOperationException();
     }
 
     /**
-     * @param x
-     * @param y
+     *
      */
-    public void refreshTile(Point2D p) {
+    public void refreshTile(Vector2D p) {
         throw new UnsupportedOperationException();
     }
 
@@ -236,11 +233,11 @@ public final class MapViewComponentConcrete extends MapViewComponent implements 
 
         switch (p) {
             case CURSOR_POSITION:
-                Point2D newPoint = (Point2D) newValue;
-                Point2D oldPoint = (Point2D) oldValue;
+                Vector2D newPoint = (Vector2D) newValue;
+                Vector2D oldPoint = (Vector2D) oldValue;
 
                 if (null == oldPoint) {
-                    oldPoint = new Point2D();
+                    oldPoint = new Vector2D();
                 }
 
                 react2curorMove(newPoint, oldPoint);

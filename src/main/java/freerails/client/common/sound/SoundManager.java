@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.common;
+package freerails.client.common.sound;
 
+import freerails.client.common.ModelRootListener;
 import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+// TODO make this only dependent on java, not on freerails
 /**
  * Is responsible for loading and playing sounds. Samples are read
  * into a byte arrays so that they don't need to be loaded from disk each time

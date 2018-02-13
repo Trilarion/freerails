@@ -22,52 +22,46 @@
 package freerails.util;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 
 /**
- * An immutable point.
+ * Immutable vector with two integer coordinates and some arithmetic convenience functions.
+ *
+ * Mostly used for locations (points) or differences of locations (vectors).
  */
-public final class Point2D implements Serializable, Comparable<Point2D> {
+public final class Vector2D implements Serializable, Comparable<Vector2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;
-    public final int x, y;
-    public static final Point2D ZERO = new Point2D(0, 0);
+    public static final Vector2D ZERO = new Vector2D(0, 0);
+    public final int x;
+    public final int y;
 
-    public Point2D() {
-        x = 0;
-        y = 0;
-    }
 
     /**
      * @param x
      * @param y
      */
-    public Point2D(int x, int y) {
+    public Vector2D(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Point2D(Point p) {
-        x = p.x;
-        y = p.y;
+    /**
+     *
+     */
+    public Vector2D() {
+        this(0,0);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Point2D)) return false;
+        if (!(obj instanceof Vector2D)) return false;
 
-        final Point2D point = (Point2D) obj;
+        final Vector2D other = (Vector2D) obj;
 
-        if (x != point.x) return false;
-        return y == point.y;
-    }
-
-    /**
-     * @return
-     */
-    public Point toPoint() {
-        return new Point(x, y);
+        return x == other.x && y == other.y;
     }
 
     @Override
@@ -80,8 +74,24 @@ public final class Point2D implements Serializable, Comparable<Point2D> {
         return "Point2D{" + x + ", " + y + '}';
     }
 
-    public int compareTo(Point2D o) {
+    public static Vector2D add(Vector2D a, Vector2D b) {
+        return new Vector2D(a.x + b.x, a.y + b.y);
+    }
+
+    public static Vector2D subtract(Vector2D a, Vector2D b) {
+        return new Vector2D(a.x - b.x, a.y - b.y);
+    }
+
+    public int compareTo(Vector2D o) {
         if (o.y != y) return y - o.y;
         else return x - o.x;
+    }
+
+    public static Vector2D fromPoint(Point p) {
+        return new Vector2D(p.x, p.y);
+    }
+
+    public static Point toPoint(Vector2D p) {
+        return new Point(p.x, p.y);
     }
 }

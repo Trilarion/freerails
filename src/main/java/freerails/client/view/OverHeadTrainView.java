@@ -20,12 +20,12 @@ package freerails.client.view;
 
 import freerails.client.ClientConfig;
 import freerails.client.common.Painter;
-import freerails.client.common.SoundManager;
+import freerails.client.common.sound.SoundManager;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.controller.TrainAccessor;
+import freerails.world.train.TrainAccessor;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;

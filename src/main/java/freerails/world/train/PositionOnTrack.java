@@ -18,7 +18,7 @@
 
 package freerails.world.train;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.terrain.TileTransition;
 
 /**
@@ -39,7 +39,7 @@ public final class PositionOnTrack {
      * The direction from which we entered the tile.
      */
     private TileTransition cameFrom = TileTransition.NORTH;
-    private Point2D location = Point2D.ZERO;
+    private Vector2D location = Vector2D.ZERO;
 
     /**
      *
@@ -53,7 +53,7 @@ public final class PositionOnTrack {
         setValuesFromInt(i);
     }
 
-    private PositionOnTrack(Point2D location, TileTransition direction) {
+    private PositionOnTrack(Vector2D location, TileTransition direction) {
         if (location.x > MAX_COORDINATE || location.x < 0) {
             throw new IllegalArgumentException("x=" + location.x);
         }
@@ -72,7 +72,7 @@ public final class PositionOnTrack {
      * @param direction
      * @return
      */
-    public static PositionOnTrack createComingFrom(Point2D p, TileTransition direction) {
+    public static PositionOnTrack createComingFrom(Vector2D p, TileTransition direction) {
         return new PositionOnTrack(p, direction);
     }
 
@@ -82,7 +82,7 @@ public final class PositionOnTrack {
      * @param direction
      * @return
      */
-    public static PositionOnTrack createFacing(Point2D p, TileTransition direction) {
+    public static PositionOnTrack createFacing(Vector2D p, TileTransition direction) {
         return new PositionOnTrack(p, direction.getOpposite());
     }
 
@@ -103,7 +103,7 @@ public final class PositionOnTrack {
      * @param y
      * @return
      */
-    public static int toInt(Point2D p) {
+    public static int toInt(Vector2D p) {
         return p.x | (p.y << BITS_FOR_COORDINATE);
     }
 
@@ -143,14 +143,14 @@ public final class PositionOnTrack {
         int newY = location.y - cameFrom.deltaY;
         TileTransition newDirection = cameFrom.getOpposite();
 
-        return createComingFrom(new Point2D(newX, newY), newDirection);
+        return createComingFrom(new Vector2D(newX, newY), newDirection);
     }
 
-    public void setLocation(Point2D location) {
+    public void setLocation(Vector2D location) {
         this.location = location;
     }
 
-    public Point2D getLocation() {
+    public Vector2D getLocation() {
         return location;
     }
 
@@ -178,7 +178,7 @@ public final class PositionOnTrack {
 
         int shiftedY = i & (MAX_COORDINATE << BITS_FOR_COORDINATE);
         int y = shiftedY >> BITS_FOR_COORDINATE;
-        location = new Point2D(x, y);
+        location = new Vector2D(x, y);
 
         int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORDINATE));
         int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORDINATE);
@@ -189,7 +189,7 @@ public final class PositionOnTrack {
      * @param tileTransition
      */
     public void move(TileTransition tileTransition) {
-        location = new Point2D(location.x + tileTransition.deltaX, location.y + tileTransition.deltaY);
+        location = new Vector2D(location.x + tileTransition.deltaX, location.y + tileTransition.deltaY);
         cameFrom = tileTransition.getOpposite();
     }
 

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.world.track;
 
 /**
- * throw this exception if a track is expected, but none was laid on the tile
+ * Throw this exception if a track was expected, but none was laid on a terrain tile.
  */
 public class NoTrackException extends RuntimeException {
 

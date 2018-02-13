@@ -71,7 +71,7 @@ public class OpenList implements Serializable {
         OpenListEntry removed = map.remove(node);
 
         if (null == removed) {
-            // TODO ??
+            // TODO throwing an exception maybe?
             System.out.println("Shizer, size =" + queue.size());
         }
         return node;

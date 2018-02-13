@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.controller.explorer;
 
-import freerails.util.Point2D;
+import freerails.world.track.NoTrackException;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
@@ -37,7 +38,7 @@ import java.util.NoSuchElementException;
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     private static final long serialVersionUID = 3834311713465185081L;
-    final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Point2D.ZERO, TileTransition.NORTH);
+    public final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vector2D.ZERO, TileTransition.NORTH);
     private final ReadOnlyWorld world;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
@@ -63,7 +64,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * possible orientations at this position (heading towards the
      * center of the tile)
      */
-    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w, Point2D p) {
+    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w, Vector2D p) {
         TrackPiece tp = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
@@ -136,11 +137,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
         TileTransition branchDirection = TileTransition.getInstance(i);
         currentBranch.setCameFrom(branchDirection);
-
-        // TODO addition of two points
-        int x = currentPosition.getLocation().x + branchDirection.deltaX;
-        int y = currentPosition.getLocation().y + branchDirection.deltaY;
-        currentBranch.setLocation(new Point2D(x, y));
+        currentBranch.setLocation(Vector2D.add(currentPosition.getLocation(), branchDirection.getD()));
 
         beforeFirst = false;
     }
@@ -172,7 +169,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return oppositeToCurrentDirection.getID() != currentBranchDirection.getID();
     }
 
-    TileTransition getFirstVectorToTry() {
+    public TileTransition getFirstVectorToTry() {
         if (beforeFirst) {
             // Return the vector that is 45 degrees clockwise from the opposite
             // of the current position.

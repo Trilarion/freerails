@@ -18,6 +18,8 @@
 
 package freerails.world.terrain;
 
+import freerails.util.Vector2D;
+
 import java.io.Serializable;
 
 /**
@@ -30,19 +32,15 @@ public class City implements Serializable {
 
     private static final long serialVersionUID = 3256720697500709428L;
     private final String name;
-    private final int x;
-    private final int y;
-    // TODO replace x, y by Pair<> or Point2D<>
+    private final Vector2D location;
 
     /**
      * @param name
-     * @param x
-     * @param y
+     * @param location
      */
-    public City(String name, int x, int y) {
+    public City(String name, Vector2D location) {
         this.name = name;
-        this.x = x;
-        this.y = y;
+        this.location = location;
     }
 
     @Override
@@ -50,19 +48,16 @@ public class City implements Serializable {
         if (this == obj) return true;
         if (!(obj instanceof City)) return false;
 
-        final City city = (City) obj;
+        final City other = (City) obj;
 
-        if (x != city.x) return false;
-        if (y != city.y) return false;
-        return name.equals(city.name);
+        if (!location.equals(other.location)) return false;
+        return name.equals(other.name);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = name.hashCode();
-        result = 29 * result + x;
-        result = 29 * result + y;
+        int result = name.hashCode();
+        result += 29 * location.hashCode();
         return result;
     }
 
@@ -74,21 +69,15 @@ public class City implements Serializable {
     }
 
     /**
+     *
      * @return
      */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * @return
-     */
-    public int getY() {
-        return y;
+    public Vector2D getLocation() {
+        return location;
     }
 
     @Override
     public String toString() {
-        return name + ' ' + x + ", " + y;
+        return name + ' ' + location.x + ", " + location.y;
     }
 }

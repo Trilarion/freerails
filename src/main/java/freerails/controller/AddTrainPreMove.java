@@ -21,9 +21,10 @@
  */
 package freerails.controller;
 
+import freerails.controller.explorer.FlatTrackExplorer;
 import freerails.move.*;
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -35,6 +36,7 @@ import freerails.world.finances.Transaction;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.TileTransition;
+import freerails.world.track.NoTrackException;
 import freerails.world.train.*;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class AddTrainPreMove implements PreMove {
     private static final long serialVersionUID = 4050201951105069624L;
     private final int engineTypeId;
     private final ImmutableList<Integer> wagons;
-    private final Point2D point;
+    private final Vector2D point;
     private final FreerailsPrincipal principal;
     private final ImmutableSchedule schedule;
 
@@ -58,7 +60,7 @@ public class AddTrainPreMove implements PreMove {
      * @param principal
      * @param schedule
      */
-    public AddTrainPreMove(int e, ImmutableList<Integer> wagons, Point2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
+    public AddTrainPreMove(int e, ImmutableList<Integer> wagons, Vector2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
         engineTypeId = e;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);

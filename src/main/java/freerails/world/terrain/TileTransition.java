@@ -22,7 +22,7 @@
  */
 package freerails.world.terrain;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.WorldConstants;
 import freerails.world.track.TrackConfigurations;
 
@@ -56,14 +56,14 @@ public final class TileTransition implements TrackConfigurations {
         }
     }
 
-    public static final TileTransition NORTH = getInstance(0, -1);
-    public static final TileTransition NORTH_WEST = getInstance(-1, -1);
-    public static final TileTransition WEST = getInstance(-1, 0);
-    public static final TileTransition SOUTH_WEST = getInstance(-1, 1);
-    public static final TileTransition SOUTH = getInstance(0, 1);
-    public static final TileTransition SOUTH_EAST = getInstance(1, 1);
-    public static final TileTransition EAST = getInstance(1, 0);
-    public static final TileTransition NORTH_EAST = getInstance(1, -1);
+    public static final TileTransition NORTH = getInstance(new Vector2D(0, -1));
+    public static final TileTransition NORTH_WEST = getInstance(new Vector2D(-1, -1));
+    public static final TileTransition WEST = getInstance(new Vector2D(-1, 0));
+    public static final TileTransition SOUTH_WEST = getInstance(new Vector2D(-1, 1));
+    public static final TileTransition SOUTH = getInstance(new Vector2D(0, 1));
+    public static final TileTransition SOUTH_EAST = getInstance(new Vector2D(1, 1));
+    public static final TileTransition EAST = getInstance(new Vector2D(1, 0));
+    public static final TileTransition NORTH_EAST = getInstance(new Vector2D(1, -1));
 
     /**
      * Another array of TileTransitions representing the 8 compass directions going clockwise from North.
@@ -115,14 +115,14 @@ public final class TileTransition implements TrackConfigurations {
      * @param path
      * @return
      */
-    public static Point2D move(Point2D p, TileTransition... path) {
+    public static Vector2D move(Vector2D p, TileTransition... path) {
         int x = p.x;
         int y = p.y;
         for (TileTransition v : path) {
             x += v.deltaX;
             y += v.deltaY;
         }
-        return new Point2D(x, y);
+        return new Vector2D(x, y);
     }
 
     /**
@@ -138,22 +138,20 @@ public final class TileTransition implements TrackConfigurations {
      * @param b
      * @return
      */
-    public static boolean checkValidity(Point2D a, Point2D b) {
+    public static boolean checkValidity(Vector2D a, Vector2D b) {
         int dx = b.x - a.x;
         int dy = b.y - a.y;
         return checkValidity(dx, dy);
     }
 
     /**
-     * @param dx
-     * @param dy
      * @return
      */
-    public static TileTransition getInstance(int dx, int dy) {
-        if ((((dx < -1) || (dx > 1)) || ((dy < -1) || (dy > 1))) || ((dx == 0) && (dy == 0))) {
-            throw new IllegalArgumentException(dx + " and " + dy + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
+    public static TileTransition getInstance(Vector2D d) {
+        if ((((d.x < -1) || (d.x > 1)) || ((d.y < -1) || (d.y > 1))) || ((d.x == 0) && (d.y == 0))) {
+            throw new IllegalArgumentException(d.x + " and " + d.y + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         }
-        return vectors[dx + 1][dy + 1];
+        return vectors[d.x + 1][d.y + 1];
     }
 
     /**
@@ -224,19 +222,7 @@ public final class TileTransition implements TrackConfigurations {
         }
     }
 
-    /**
-     * Returns the X component of the vector.
-     */
-    public int getDx() {
-        return deltaX;
-    }
-
-    /**
-     * Returns the Y component of the vector.
-     */
-    public int getDy() {
-        return deltaY;
-    }
+    public Vector2D getD() { return new Vector2D(deltaX, deltaY); }
 
     /**
      * Returns a new oneTileMoveVector whose direction is opposite to that the
@@ -245,7 +231,7 @@ public final class TileTransition implements TrackConfigurations {
      * @return A oneTileMoveVector.
      */
     public TileTransition getOpposite() {
-        return getInstance(deltaX * -1, deltaY * -1);
+        return getInstance(new Vector2D(-deltaX , -deltaY ));
     }
 
     /**
@@ -337,8 +323,8 @@ public final class TileTransition implements TrackConfigurations {
      * @param from
      * @return
      */
-    public Point2D createRelocatedPoint(Point2D from) {
-        return new Point2D(from.x + deltaX, from.y + deltaY);
+    public Vector2D createRelocatedPoint(Vector2D from) {
+        return new Vector2D(from.x + deltaX, from.y + deltaY);
     }
 
     public boolean contains(TrackConfigurations ftt) {
@@ -384,7 +370,7 @@ public final class TileTransition implements TrackConfigurations {
     }
 
     private Object readResolve() {
-        return TileTransition.getInstance(deltaX, deltaY);
+        return TileTransition.getInstance(new Vector2D(deltaX, deltaY));
     }
 
     /**

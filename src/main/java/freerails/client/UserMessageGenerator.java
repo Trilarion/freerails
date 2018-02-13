@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.client.common.SoundManager;
+import freerails.client.common.sound.SoundManager;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;

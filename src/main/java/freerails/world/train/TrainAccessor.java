@@ -19,10 +19,10 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.world.train;
 
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -30,7 +30,6 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackSection;
-import freerails.world.train.*;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -98,7 +97,7 @@ public class TrainAccessor {
 
         TrainMotion tm = findCurrentMotion(time);
         PositionOnTrack positionOnTrack = tm.getFinalPosition();
-        Point2D pp = positionOnTrack.getLocation();
+        Vector2D pp = positionOnTrack.getLocation();
 
         // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < world.size(p, KEY.STATIONS); i++) {
@@ -135,7 +134,7 @@ public class TrainAccessor {
         dt = Math.min(dt, ai.getDuration());
         TrainMotion tm = (TrainMotion) ai.getActivity();
 
-        Point2D start = tm.getPath().getStart();
+        Vector2D start = tm.getPath().getStart();
         int trainLength = tm.getTrainLength();
         Rectangle trainBox = new Rectangle(start.x * WorldConstants.TILE_SIZE - trainLength * 2, start.y * WorldConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
@@ -208,7 +207,7 @@ public class TrainAccessor {
      * @return the location of the station the train is currently heading
      * towards.
      */
-    public Point2D getTargetLocation() {
+    public Vector2D getTargetLocation() {
         TrainModel train = (TrainModel) world.get(p, KEY.TRAINS, id);
         int scheduleID = train.getScheduleID();
         Schedule schedule = (ImmutableSchedule) world.get(p, KEY.TRAIN_SCHEDULES, scheduleID);
@@ -216,7 +215,7 @@ public class TrainAccessor {
 
         if (-1 == stationNumber) {
             // There are no stations on the schedule.
-            return Point2D.ZERO;
+            return Vector2D.ZERO;
         }
 
         Station station = (Station) world.get(p, KEY.STATIONS, stationNumber);
@@ -231,12 +230,12 @@ public class TrainAccessor {
         TrainMotion tm = findCurrentMotion(time);
         PathOnTiles path = tm.getPath();
         HashSet<TrackSection> sections = new HashSet<>();
-        Point2D start = path.getStart();
+        Vector2D start = path.getStart();
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {
             TileTransition s = path.getStep(i);
-            Point2D tile = new Point2D(x, y);
+            Vector2D tile = new Vector2D(x, y);
             x += s.deltaX;
             y += s.deltaY;
             sections.add(new TrackSection(s, tile));

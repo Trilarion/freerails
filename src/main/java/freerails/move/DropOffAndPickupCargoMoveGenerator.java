@@ -16,12 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.move;
 
-import freerails.move.ChangeCargoBundleMove;
-import freerails.move.ChangeTrainMove;
-import freerails.move.Move;
-import freerails.move.TransferCargoAtStationMove;
 import freerails.util.ImmutableList;
 import freerails.world.KEY;
 import freerails.world.ReadOnlyWorld;
@@ -33,10 +29,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.station.StationConversion;
 import freerails.world.station.StationDemand;
-import freerails.world.train.Schedule;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainOrders;
-import freerails.world.train.WagonType;
+import freerails.world.train.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,7 +42,7 @@ import java.util.List;
  * it stops at - it also handles cargo conversions that occur when cargo is
  * dropped off.
  */
-class DropOffAndPickupCargoMoveGenerator {
+public class DropOffAndPickupCargoMoveGenerator {
 
     private final ReadOnlyWorld world;
     private final TrainAccessor train;

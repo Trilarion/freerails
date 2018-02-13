@@ -33,7 +33,7 @@
  */
 package freerails.client.renderer;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.FullTerrainTile;
@@ -129,7 +129,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
         }
     }
 
-    public void refreshTile(Point2D tile) {
+    public void refreshTile(Vector2D tile) {
         FullTerrainTile tt = (FullTerrainTile) world.getTile(tile);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
@@ -169,7 +169,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
 
         for (int tileX = mapX; tileX < mapWidth + mapX; tileX++) {
             for (int tileY = mapY; tileY < mapHeight + mapY; tileY++) {
-                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Point2D(tileX, tileY));
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vector2D(tileX, tileY));
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();
@@ -197,7 +197,7 @@ public final class ZoomedOutMapRenderer implements MapRenderer {
      * @param tileX
      * @param tileY
      */
-    public void paintTile(Graphics g, Point2D tileP) {
+    public void paintTile(Graphics g, Vector2D tileP) {
         g.drawImage(mapImage, 0, 0, null);
     }
 

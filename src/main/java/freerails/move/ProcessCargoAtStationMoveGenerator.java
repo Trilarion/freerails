@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.move;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
@@ -38,7 +38,7 @@ import java.util.Iterator;
 /**
  * Generates Moves that pay the player for delivering the cargo.
  */
-class ProcessCargoAtStationMoveGenerator {
+public class ProcessCargoAtStationMoveGenerator {
 
     /**
      * Determines how much the player gets for delivering cargo. Changed from

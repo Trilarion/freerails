@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
 import freerails.world.player.FreerailsPrincipal;
@@ -31,6 +31,7 @@ import freerails.world.track.TrackPiece;
 import freerails.world.track.TrackRule;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 /**
  * This Move adds, removes, or upgrades the track on a single tile.
@@ -40,14 +41,14 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     private static final long serialVersionUID = 4120849958418591801L;
     final TrackPiece trackPieceBefore;
     private final TrackPiece trackPieceAfter;
-    private final Point2D location;
+    private final Vector2D location;
 
     /**
      * @param before
      * @param after
      * @param p
      */
-    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Point2D p) {
+    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Vector2D p) {
         trackPieceBefore = before;
         trackPieceAfter = after;
         location = p;
@@ -68,7 +69,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * station is getting removed.
      */
-    private static MoveStatus check4overlap(World w, Point2D location, TrackPiece trackPiece) {
+    private static MoveStatus check4overlap(World w, Vector2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
@@ -100,12 +101,11 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
                 // TODO point2d diff
-                int xDistance = station.location.x - location.x;
-                int yDistance = station.location.y - location.y;
+                Vector2D delta = Vector2D.subtract(station.location, location);
 
                 // Do radii overlap?
-                boolean xOverlap = sumOfRadiiSquared >= (xDistance * xDistance);
-                boolean yOverlap = sumOfRadiiSquared >= (yDistance * yDistance);
+                boolean xOverlap = sumOfRadiiSquared >= delta.x * delta.x;
+                boolean yOverlap = sumOfRadiiSquared >= delta.y * delta.y;
 
                 if (xOverlap && yOverlap) {
                     String message = "Too close to " + station.getStationName();
@@ -118,7 +118,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         return MoveStatus.MOVE_OK;
     }
 
-    private static boolean noDiagonalTrackConflicts(Point2D point, int trackTemplate, World w) {
+    private static boolean noDiagonalTrackConflicts(Vector2D point, int trackTemplate, World w) {
         /*
          * This method is needs replacing. It only deals with flat track pieces,
          * and is rather hard to make sense of. LL
@@ -141,7 +141,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
 
         // Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
-            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Point2D(point.x, point.y - 1));
+            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Vector2D(point.x, point.y - 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateAbove = tp.getTrackGraphicID();
         } else {
@@ -149,7 +149,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
         }
 
         if ((point.y + 1) < mapSize.height) {
-            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Point2D(point.x, point.y + 1));
+            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Vector2D(point.x, point.y + 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateBelow = tp.getTrackGraphicID();
         } else {
@@ -167,7 +167,7 @@ public final class ChangeTrackPieceMove implements TrackMove, MapUpdateMove {
     /**
      * @return
      */
-    public Point2D getLocation() {
+    public Vector2D getLocation() {
         return location;
     }
 

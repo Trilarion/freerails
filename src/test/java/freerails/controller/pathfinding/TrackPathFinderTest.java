@@ -22,9 +22,7 @@
 package freerails.controller.pathfinding;
 
 import freerails.controller.BuildTrackStrategy;
-import freerails.controller.pathfinding.PathNotFoundException;
-import freerails.controller.pathfinding.TrackPathFinder;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.FullWorld;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
@@ -62,13 +60,13 @@ public class TrackPathFinderTest extends TestCase {
             BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer.getPrincipal());
-            List l = pathFinder.generatePath(Point2D.ZERO, new Point2D(0,5), bts);
+            List l = pathFinder.generatePath(Vector2D.ZERO, new Vector2D(0,5), bts);
             assertEquals(5, l.size());
 
-            List list2 = pathFinder.generatePath(new Point2D(5, 5),new Point2D(5, 10), bts);
+            List list2 = pathFinder.generatePath(new Vector2D(5, 5),new Vector2D(5, 10), bts);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new Point2D(5, 10), new Point2D(5,5), bts);
+            list2 = pathFinder.generatePath(new Vector2D(5, 10), new Vector2D(5,5), bts);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
             fail();

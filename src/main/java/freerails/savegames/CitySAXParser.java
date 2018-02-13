@@ -18,6 +18,7 @@
 
 package freerails.savegames;
 
+import freerails.util.Vector2D;
 import freerails.world.SKEY;
 import freerails.world.World;
 import freerails.world.terrain.City;
@@ -49,7 +50,8 @@ public class CitySAXParser extends DefaultHandler {
     @Override
     public void endDocument() {
         for (City city : cities) {
-            world.add(SKEY.CITIES, new City(city.getName(), city.getX(), city.getY()));
+            // TODO why the copying here?
+            world.add(SKEY.CITIES, new City(city.getName(), city.getLocation()));
         }
     }
 
@@ -82,7 +84,7 @@ public class CitySAXParser extends DefaultHandler {
                     y = Integer.parseInt(attributes.getValue(i));
 
                     // TODO is it clear that y always comes last?
-                    City city = new City(cityName, x, y);
+                    City city = new City(cityName, new Vector2D(x, y));
                     cities.add(city);
                 }
             }

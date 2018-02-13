@@ -19,7 +19,7 @@
 package freerails.world;
 
 import freerails.util.Pair;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.world.finances.Money;
 import freerails.world.finances.Transaction;
 import freerails.world.game.GameTime;
@@ -60,7 +60,7 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * @return
      */
-    boolean boundsContain(Point2D p);
+    boolean boundsContain(Vector2D p);
 
     /**
      * @param p
@@ -148,7 +148,7 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * Returns the tile at the specified position on the map.
      */
-    Serializable getTile(Point2D p);
+    Serializable getTile(Vector2D p);
 
     /**
      * @param p

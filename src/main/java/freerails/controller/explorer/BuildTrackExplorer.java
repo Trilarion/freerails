@@ -19,9 +19,10 @@
 /*
  *
  */
-package freerails.controller;
+package freerails.controller.explorer;
 
-import freerails.util.Point2D;
+import freerails.controller.BuildTrackStrategy;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -42,8 +43,8 @@ import java.util.NoSuchElementException;
 public class BuildTrackExplorer implements GraphExplorer {
 
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
-    private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Point2D.ZERO, TileTransition.NORTH);
-    private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(Point2D.ZERO, TileTransition.NORTH);
+    private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vector2D.ZERO, TileTransition.NORTH);
+    private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(Vector2D.ZERO, TileTransition.NORTH);
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principle;
     private boolean beforeFirst = true;
@@ -64,7 +65,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param principle
      * @param start
      */
-    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle, Point2D start) {
+    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle, Vector2D start) {
         world = w;
         this.principle = principle;
         PositionOnTrack pos;
@@ -95,7 +96,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.
         TileTransition opposite2current = currentPosition.cameFrom().getOpposite();
-        Point2D currentP = currentPosition.getLocation();
+        Vector2D currentP = currentPosition.getLocation();
         int directionWeCameFrom = opposite2current.getID();
         int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
         int directionWeCameFromMinus = (directionWeCameFrom + 7) % 8;
@@ -106,11 +107,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check that we are not going off the map.
         TileTransition directionOfNextTile = TileTransition.getInstance(directionInt);
-
-        // TODO addition of Point2D
-        int newX = currentP.x + directionOfNextTile.getDx();
-        int newY = currentP.y + directionOfNextTile.getDy();
-        Point2D newP = new Point2D(newX, newY);
+        Vector2D newP = Vector2D.add(currentP, directionOfNextTile.getD());
 
         if (!world.boundsContain(newP)) {
             return false;
@@ -163,11 +160,11 @@ public class BuildTrackExplorer implements GraphExplorer {
             int y2check = currentP.y + directionOfNextTile.deltaY;
 
             // We did a bounds check above.
-            assert (world.boundsContain(new Point2D(currentP.x, y2check)));
+            assert (world.boundsContain(new Vector2D(currentP.x, y2check)));
 
-            FullTerrainTile tile2Check = (FullTerrainTile) world.getTile(new Point2D(currentP.x, y2check));
+            FullTerrainTile tile2Check = (FullTerrainTile) world.getTile(new Vector2D(currentP.x, y2check));
             TrackConfiguration config2check = tile2Check.getTrackPiece().getTrackConfiguration();
-            TileTransition vector2check = TileTransition.getInstance(directionOfNextTile.deltaX, -directionOfNextTile.deltaY);
+            TileTransition vector2check = TileTransition.getInstance(new Vector2D(directionOfNextTile.deltaX, -directionOfNextTile.deltaY));
 
             if (config2check.contains(vector2check)) {
                 // then we have a diagonal conflict.
@@ -201,7 +198,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param p
      * @return
      */
-    private TrackRule getAppropriateTrackRule(Point2D p) {
+    private TrackRule getAppropriateTrackRule(Vector2D p) {
         final FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
         TrackRule rule;
         if (!tile.hasTrack()) {
@@ -232,11 +229,11 @@ public class BuildTrackExplorer implements GraphExplorer {
         int cost = (int) Math.round(DISTANCE_COST * length);
 
         if (!usingExistingTrack) {
-            Point2D p = currentPosition.getLocation();
+            Vector2D p = currentPosition.getLocation();
             int[] x = {p.x, p.x + edgeDirection.deltaX};
             int[] y = {p.y, p.y + edgeDirection.deltaY};
-            TrackRule ruleA = getAppropriateTrackRule(new Point2D(x[0], y[0]));
-            TrackRule ruleB = getAppropriateTrackRule(new Point2D(x[1], y[1]));
+            TrackRule ruleA = getAppropriateTrackRule(new Vector2D(x[0], y[0]));
+            TrackRule ruleB = getAppropriateTrackRule(new Vector2D(x[1], y[1]));
             /*
              * If there is a station at either of the points, don't include its
              * price in the cost calculation since it has already been paid.
@@ -246,7 +243,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             long priceB = ruleB.getPrice().getAmount();
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
-            FullTerrainTile a = (FullTerrainTile) world.getTile(new Point2D(x[0], y[0]));
+            FullTerrainTile a = (FullTerrainTile) world.getTile(new Vector2D(x[0], y[0]));
             TrackRule currentRuleA = a.getTrackPiece().getTrackRule();
             if (!currentRuleA.equals(ruleA)) {
                 assert (!currentRuleA.isStation()); // We shouldn't be upgrading
@@ -306,7 +303,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TileTransition direction = TileTransition.getInstance(directionInt);
 
         currentBranch.setCameFrom(direction);
-        currentBranch.setLocation(new Point2D(currentPosition.getLocation().x + direction.getDx(), currentPosition.getLocation().y + direction.getDy()));
+        currentBranch.setLocation(Vector2D.add(currentPosition.getLocation(), direction.getD()));
 
         directionInt++;
         beforeFirst = false;

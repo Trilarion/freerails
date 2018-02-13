@@ -19,7 +19,7 @@
 package freerails.world.station;
 
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 public class Station implements Serializable {
 
     private static final long serialVersionUID = 3256442503979874355L;
-    public final Point2D location;
+    public final Vector2D location;
     private final String name;
     private final StationSupply supply;
     private final StationDemand demandForCargo;
@@ -66,7 +66,7 @@ public class Station implements Serializable {
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
      */
-    public Station(Point2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(Vector2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
         name = stationName;
         this.location = location;
         this.cargoBundleNumber = cargoBundleNumber;
@@ -86,7 +86,7 @@ public class Station implements Serializable {
      */
     public Station() {
         name = "No name";
-        location = Point2D.ZERO;
+        location = Vector2D.ZERO;
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new Integer[0]);
         cargoConversion = new StationConversion(new Integer[0]);
@@ -189,7 +189,7 @@ public class Station implements Serializable {
     /**
      * @return
      */
-    public Point2D getStationP() {
+    public Vector2D getStationP() {
         return location;
     }
 

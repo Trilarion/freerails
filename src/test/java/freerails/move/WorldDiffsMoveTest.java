@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.finances.ItemTransaction;
@@ -39,8 +39,8 @@ import junit.framework.TestCase;
  */
 public class WorldDiffsMoveTest extends TestCase {
 
-    private final City city1 = new City("City 1", 8, 4);
-    private final City city2 = new City("City 2", 9, 4);
+    private final City city1 = new City("City 1", new Vector2D(8, 4));
+    private final City city2 = new City("City 2", new Vector2D(9, 4));
     private World world;
     private FullWorldDiffs diffs;
     private FreerailsPrincipal fp1;
@@ -64,8 +64,8 @@ public class WorldDiffsMoveTest extends TestCase {
      */
     public void testChangingMap() {
 
-        diffs.setTile(new Point2D(4, 0), city1);
-        diffs.setTile(new Point2D(8, 5), city2);
+        diffs.setTile(new Vector2D(4, 0), city1);
+        diffs.setTile(new Vector2D(8, 5), city2);
 
         runTests();
     }

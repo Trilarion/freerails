@@ -18,7 +18,7 @@
 
 package freerails.world;
 
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.ListKey;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
@@ -200,16 +200,16 @@ public class WorldDiffsTest extends TestCase {
         assertEquals(21, worldDiff.getMapWidth());
         assertEquals(8, worldDiff.getMapHeight());
 
-        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(new Point2D(2, 2));
+        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(new Vector2D(2, 2));
         assertNotNull(tile);
-        assertEquals(tile, worldDiff.getTile(new Point2D(2, 2)));
+        assertEquals(tile, worldDiff.getTile(new Vector2D(2, 2)));
 
         FullTerrainTile newTile = FullTerrainTile.getInstance(999);
-        worldDiff.setTile(new Point2D(3, 5), newTile);
-        assertEquals(newTile, worldDiff.getTile(new Point2D(3, 5)));
+        worldDiff.setTile(new Vector2D(3, 5), newTile);
+        assertEquals(newTile, worldDiff.getTile(new Vector2D(3, 5)));
 
-        Iterator<Point2D> it = worldDiff.getMapDiffs();
-        assertEquals(new Point2D(3, 5), it.next());
+        Iterator<Vector2D> it = worldDiff.getMapDiffs();
+        assertEquals(new Vector2D(3, 5), it.next());
     }
 
     /**
@@ -245,7 +245,7 @@ public class WorldDiffsTest extends TestCase {
         FullWorld underlyingWorld = new FullWorld(10, 10);
         underlyingWorld.addPlayer(player0);
         FullWorldDiffs diffs = new FullWorldDiffs(underlyingWorld);
-        City city = new City("Bristol", 10, 4);
+        City city = new City("Bristol", new Vector2D(10, 4));
         diffs.add(SKEY.CITIES, city);
 
         Iterator<ListKey> it = diffs.getListDiffs();

@@ -21,9 +21,9 @@
  */
 package freerails.controller.pathfinding;
 
-import freerails.controller.FlatTrackExplorer;
-import freerails.controller.NoTrackException;
-import freerails.util.Point2D;
+import freerails.controller.explorer.FlatTrackExplorer;
+import freerails.world.track.NoTrackException;
+import freerails.util.Vector2D;
 import freerails.world.ReadOnlyWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
@@ -42,7 +42,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld world;
-    private Point2D startPoint;
+    private Vector2D startPoint;
 
     /**
      * @param world
@@ -71,14 +71,11 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     public TileTransition[] pathAsVectors() {
         List<Integer> path = pathFinder.retrievePath();
         TileTransition[] vectors = new TileTransition[path.size()];
-        int x = startPoint.x;
-        int y = startPoint.y;
+        Vector2D p = startPoint;
         for (int i = 0; i < path.size(); i++) {
             PositionOnTrack p2 = new PositionOnTrack(path.get(i));
-            // TODO point2d difference
-            vectors[i] = TileTransition.getInstance(p2.getLocation().x - x, p2.getLocation().y - y);
-            x = p2.getLocation().x;
-            y = p2.getLocation().y;
+            vectors[i] = TileTransition.getInstance(Vector2D.subtract(p2.getLocation(), p));
+            p = p2.getLocation();
         }
         return vectors;
     }
@@ -103,7 +100,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
      * @param target
      * @throws PathNotFoundException
      */
-    public void setupSearch(Point2D from, Point2D target) throws PathNotFoundException {
+    public void setupSearch(Vector2D from, Vector2D target) throws PathNotFoundException {
         startPoint = from;
         logger.debug("Find track path from " + from + " to " + target);
 

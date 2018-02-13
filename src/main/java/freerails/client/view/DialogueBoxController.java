@@ -33,7 +33,7 @@ import freerails.move.Move;
 import freerails.network.MessageToServer;
 import freerails.network.RefreshListOfGamesMessageToServer;
 import freerails.util.ImmutableList;
-import freerails.util.Point2D;
+import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
@@ -355,7 +355,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param x
      * @param y
      */
-    private void showTerrainInfo(Point2D p) {
+    private void showTerrainInfo(Vector2D p) {
         TerrainTile tile = (FullTerrainTile) world.getTile(p);
         int terrainType = tile.getTerrainTypeID();
         showTerrainInfo(terrainType);
@@ -518,7 +518,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param x
      * @param y
      */
-    public void showStationOrTerrainInfo(Point2D p) {
+    public void showStationOrTerrainInfo(Vector2D p) {
         int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);
