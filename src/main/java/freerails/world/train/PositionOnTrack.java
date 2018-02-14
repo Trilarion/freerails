@@ -28,7 +28,7 @@ import freerails.world.terrain.TileTransition;
  * came from), it provides methods to encode and decode its field values to and
  * from a single int.
  */
-public final class PositionOnTrack {
+public class PositionOnTrack {
 
     public static final int BITS_FOR_COORDINATE = 14;
     private static final int BITS_FOR_DIRECTION = 3;

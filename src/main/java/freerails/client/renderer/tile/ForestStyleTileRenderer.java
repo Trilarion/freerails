@@ -31,10 +31,9 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * Looks to see whether the tiles to the left and right of the same type when
- * deciding which tile icon to use.
+ * Looks to see whether the tiles to the left and right of the same type when deciding which tile icon to use.
  */
-public final class ForestStyleTileRenderer extends AbstractTileRenderer {
+public class ForestStyleTileRenderer extends AbstractTileRenderer {
 
     private static final int[] X_LOOK_AT = {-1, 1};
     private static final int[] Y_LOOK_AT = {0, 0};

@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * Records the success or failure of an attempt to execute a move.
  */
-public final class PreMoveStatus implements Serializable {
+public class PreMoveStatus implements Serializable {
 
     public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(MoveStatus.MOVE_OK);
     private static final long serialVersionUID = 3978145456646009140L;

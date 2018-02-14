@@ -228,7 +228,7 @@ public class DialogueBoxController implements WorldListListener {
     public void showSelectSavedGame2Load() {
         MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
         modelRoot.sendCommand(refreshGames);
-        LoadGameJPanel loadGameJPane = new LoadGameJPanel();
+        LoadGamePanel loadGameJPane = new LoadGamePanel();
         loadGameJPane.setup(modelRoot, vl, closeCurrentDialogue);
         showContent(loadGameJPane);
     }
@@ -347,8 +347,7 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      */
     private void showTerrainInfo(Vector2D p) {
         TerrainTile tile = (FullTerrainTile) world.getTile(p);
@@ -510,8 +509,7 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      */
     public void showStationOrTerrainInfo(Vector2D p) {
         int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPrincipal(), p);

@@ -25,7 +25,7 @@ import java.io.Serializable;
 /**
  * Stores some of the properties of a track type.
  */
-public final class TrackRuleProperties implements Serializable {
+public class TrackRuleProperties implements Serializable {
 
     private static final long serialVersionUID = 3618704101752387641L;
     private final boolean enableDoubleTrack;

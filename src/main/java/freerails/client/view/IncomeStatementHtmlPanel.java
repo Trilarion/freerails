@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.client.model.IncomeStatementGenerator;
+import freerails.world.finances.IncomeStatementGenerator;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.world.ReadOnlyWorld;

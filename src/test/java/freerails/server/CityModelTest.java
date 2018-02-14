@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+import freerails.server.gamemodel.CityModel;
 import freerails.util.Vector2D;
 import freerails.world.SKEY;
 import freerails.world.world.World;

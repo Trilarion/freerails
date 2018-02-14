@@ -86,7 +86,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
 
     /**
-     * @param gamesManager
+     * @param saveGamesManager
      */
     public FreerailsGameServer(SaveGamesManager saveGamesManager) {
         this.saveGamesManager = saveGamesManager;
@@ -226,10 +226,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         newPlayersAllowed = false;
         confirmedPlayers.clear();
 
-        ServerGameModel loadedGame = saveGamesManager.loadGame(saveGameName);
-        String[] passwords = loadedGame.getPasswords();
-        World world = loadedGame.getWorld();
-        assert passwords.length == world.getNumberOfPlayers();
+        ServerGameModel serverGameModel = saveGamesManager.loadGame(saveGameName);
+        String[] passwords = serverGameModel.getPasswords();
+        World world = serverGameModel.getWorld();
+        assert(passwords.length == world.getNumberOfPlayers());
         ArrayList<NameAndPassword> newPlayers = new ArrayList<>();
         for (int i = 0; i < passwords.length; i++) {
             Player player = world.getPlayer(i);
@@ -246,7 +246,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             }
         }
         players = newPlayers;
-        setServerGameModel(loadedGame);
+        setServerGameModel(serverGameModel);
         sendWorldUpdatedCommand();
     }
 

@@ -221,7 +221,7 @@ public class TrainListPanel extends JPanel implements View {
          * been removed are not shown on the list.
          */
         int row = list1.getSelectedIndex();
-        return NonNullElementWorldIterator.row2index(world, KEY.TRAINS, principal, row);
+        return NonNullElementWorldIterator.rowToIndex(world, KEY.TRAINS, principal, row);
     }
 
 

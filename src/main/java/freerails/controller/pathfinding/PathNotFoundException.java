@@ -26,8 +26,6 @@ package freerails.controller.pathfinding;
  */
 public class PathNotFoundException extends Exception {
 
-    private static final long serialVersionUID = 4121409601112717368L;
-
     /**
      * @param message message
      * @param cause   cause
@@ -36,6 +34,18 @@ public class PathNotFoundException extends Exception {
         super(message, cause);
     }
 
+    /**
+     * 
+     * @param cause
+     */
+    public PathNotFoundException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     *
+     * @param message
+     */
     public PathNotFoundException(String message) {
         super(message);
     }

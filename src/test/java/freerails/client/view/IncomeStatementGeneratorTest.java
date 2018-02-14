@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.model.IncomeStatementGenerator;
+import freerails.world.finances.IncomeStatementGenerator;
 import freerails.util.Vector2D;
 import freerails.world.world.FullWorld;
 import freerails.world.SKEY;

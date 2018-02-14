@@ -23,6 +23,7 @@
 
 package freerails.client.view;
 
+import freerails.client.KeyCodeToOneTileMoveVector;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;

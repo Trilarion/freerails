@@ -46,28 +46,28 @@ public class BuildTrackExplorer implements GraphExplorer {
     private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vector2D.ZERO, TileTransition.NORTH);
     private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(Vector2D.ZERO, TileTransition.NORTH);
     private final ReadOnlyWorld world;
-    private final FreerailsPrincipal principle;
+    private final FreerailsPrincipal principal;
     private boolean beforeFirst = true;
     private int directionInt = 0;
     private BuildTrackStrategy buildTrackStrategy;
     private boolean usingExistingTrack = false;
 
     /**
-     * @param w
-     * @param principle
+     * @param world
+     * @param principal
      */
-    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle) {
-        this(w, principle, null);
+    public BuildTrackExplorer(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        this(world, principal, null);
     }
 
     /**
-     * @param w
-     * @param principle
+     * @param world
+     * @param principal
      * @param start
      */
-    public BuildTrackExplorer(ReadOnlyWorld w, FreerailsPrincipal principle, Vector2D start) {
-        world = w;
-        this.principle = principle;
+    public BuildTrackExplorer(ReadOnlyWorld world, FreerailsPrincipal principal, Vector2D start) {
+        this.world = world;
+        this.principal = principal;
         PositionOnTrack pos;
 
         if (null == start) {
@@ -78,7 +78,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         currentPosition.setValuesFromInt(pos.toInt());
         directionInt = 0;
-        buildTrackStrategy = BuildTrackStrategy.getDefault(w);
+        buildTrackStrategy = BuildTrackStrategy.getDefault(world);
     }
 
     /**
@@ -121,7 +121,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
-            if (nextTile.getTrackPiece().getOwnerID() != world.getID(principle)) {
+            if (nextTile.getTrackPiece().getOwnerID() != world.getID(principal)) {
                 return false;
             }
         }

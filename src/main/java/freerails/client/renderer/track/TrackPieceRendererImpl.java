@@ -32,18 +32,18 @@ import java.io.IOException;
 /**
  * Renders a track piece.
  */
-public final class TrackPieceRendererImpl implements TrackPieceRenderer {
+public class TrackPieceRendererImpl implements TrackPieceRenderer {
 
     private final Image[] trackPieceIcons = new Image[512];
 
     /**
-     * @param w
+     * @param world
      * @param imageManager
      * @param typeNumber
      * @throws IOException
      */
-    public TrackPieceRendererImpl(ReadOnlyWorld w, ImageManager imageManager, int typeNumber) throws IOException {
-        TrackRule trackRule = (TrackRule) w.get(SKEY.TRACK_RULES, typeNumber);
+    public TrackPieceRendererImpl(ReadOnlyWorld world, ImageManager imageManager, int typeNumber) throws IOException {
+        TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, typeNumber);
         String typeName = trackRule.getTypeName();
 
         for (int i = 0; i < 512; i++) {

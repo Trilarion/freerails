@@ -45,7 +45,7 @@ import java.awt.*;
  * the map view. At present it is composed of two layers: the terrain layer and
  * the track layer.
  */
-public final class MapBackgroundRender implements MapLayerRenderer {
+public class MapBackgroundRender implements MapLayerRenderer {
 
     private static final Logger logger = Logger.getLogger(MapBackgroundRender.class.getName());
 

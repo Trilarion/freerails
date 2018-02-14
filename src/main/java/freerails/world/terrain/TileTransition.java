@@ -30,7 +30,7 @@ import freerails.world.track.TrackConfigurations;
  * Represents a movement from a tile to any one of the surrounding
  * eight tiles.
  */
-public final class TileTransition implements TrackConfigurations {
+public class TileTransition implements TrackConfigurations {
 
     // TODO TileDirection could become an enum and TileTransition vectors some composite
 

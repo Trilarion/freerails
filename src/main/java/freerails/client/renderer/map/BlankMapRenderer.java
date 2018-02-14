@@ -55,16 +55,14 @@ public class BlankMapRenderer implements MapRenderer {
 
     /**
      * @param g
-     * @param tileX
-     * @param tileY
+     * @param tileP
      */
     public void paintTile(Graphics g, Vector2D tileP) {
         paintRect(g, null);
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      */
     public void refreshTile(Vector2D p) {}
 

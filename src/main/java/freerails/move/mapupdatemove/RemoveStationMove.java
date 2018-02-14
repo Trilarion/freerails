@@ -49,8 +49,8 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         super(moves);
     }
 
-    public static TrackMove getInstance(ReadOnlyWorld w, ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
-        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
+    public static TrackMove getInstance(ReadOnlyWorld world, ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
+        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
         int stationIndex = -1;
 
         while (wi.next()) {
@@ -67,13 +67,13 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
             throw new IllegalArgumentException("Could find a station at " + removeTrackMove.getLocation().x + ", " + removeTrackMove.getLocation().y);
         }
 
-        Station station2remove = (Station) w.get(principal, KEY.STATIONS, stationIndex);
+        Station station2remove = (Station) world.get(principal, KEY.STATIONS, stationIndex);
         ArrayList<Move> moves = new ArrayList<>();
         moves.add(removeTrackMove);
         moves.add(new RemoveItemFromListMove(KEY.STATIONS, stationIndex, station2remove, principal));
 
         // Now update any train schedules that include this station.
-        WorldIterator schedules = new NonNullElementWorldIterator(KEY.TRAIN_SCHEDULES, w, principal);
+        WorldIterator schedules = new NonNullElementWorldIterator(KEY.TRAIN_SCHEDULES, world, principal);
 
         while (schedules.next()) {
             ImmutableSchedule schedule = (ImmutableSchedule) schedules.getElement();

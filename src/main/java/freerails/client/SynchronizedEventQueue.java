@@ -18,19 +18,20 @@
 
 package freerails.client;
 
-import freerails.client.launcher.Launcher;
+import freerails.client.launcher.LauncherFrame;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+// TODO use some modern Java for it, make it independent of the Launcher
 /**
  * This event queue is synchronized on the MUTEX. This lets one control when
  * events can be dispatched.
  *
  * Note, changed to be a singleton to get it working on pre 1.4.2 VMs.
  */
-public final class SynchronizedEventQueue extends EventQueue {
+public class SynchronizedEventQueue extends EventQueue {
 
     public static final Object MUTEX = new Object();
     private static final SynchronizedEventQueue instance = new SynchronizedEventQueue();
@@ -95,7 +96,7 @@ public final class SynchronizedEventQueue extends EventQueue {
                  * If something goes wrong, lets kill the game straight away to
                  * avoid hard-to-track-down bugs.
                  */
-                Launcher.emergencyStop();
+                LauncherFrame.emergencyStop();
             }
         }
     }

@@ -23,7 +23,6 @@ import freerails.util.Utils;
 import java.io.Serializable;
 
 // TODO what about enums instead?
-
 /**
  * Provides a set of items to access the items of which there can only
  * be one instance in the game world (for example, the current time).

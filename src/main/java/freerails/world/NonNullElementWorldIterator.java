@@ -68,17 +68,17 @@ public class NonNullElementWorldIterator implements WorldIterator {
     }
 
     /**
-     * @param w
+     * @param world
      * @param key
-     * @param p
+     * @param principal
      * @param row
      * @return
      */
-    public static int row2index(ReadOnlyWorld w, KEY key, FreerailsPrincipal p, int row) {
+    public static int rowToIndex(ReadOnlyWorld world, KEY key, FreerailsPrincipal principal, int row) {
         int count = 0;
-        for (int i = 0; i < w.size(p, key); i++) {
+        for (int i = 0; i < world.size(principal, key); i++) {
 
-            if (w.get(p, key, i) != null) {
+            if (world.get(principal, key, i) != null) {
                 if (count == row) {
                     return i;
                 }

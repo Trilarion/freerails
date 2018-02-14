@@ -39,12 +39,12 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     /**
-     * @param w
+     * @param world
      * @param newGameSpeed
      * @return
      */
-    public static Move getMove(ReadOnlyWorld w, GameSpeed newGameSpeed) {
-        return new ChangeGameSpeedMove((GameSpeed) w.get(ITEM.GAME_SPEED), newGameSpeed);
+    public static Move getMove(ReadOnlyWorld world, GameSpeed newGameSpeed) {
+        return new ChangeGameSpeedMove((GameSpeed) world.get(ITEM.GAME_SPEED), newGameSpeed);
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {

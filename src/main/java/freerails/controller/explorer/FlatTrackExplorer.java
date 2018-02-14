@@ -59,13 +59,13 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     /**
-     * @param p location of track to consider.
+     * @param location location of track to consider.
      * @return an array of PositionOnTrack objects describing the set of
      * possible orientations at this position (heading towards the
      * center of the tile)
      */
-    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld w, Vector2D p) {
-        TrackPiece tp = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
+    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld world, Vector2D location) {
+        TrackPiece tp = ((FullTerrainTile) world.getTile(location)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
 
@@ -82,7 +82,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         n = 0;
         for (TileTransition vector : vectors) {
             if (conf.contains(vector.get9bitTemplate())) {
-                possiblePositions[n] = PositionOnTrack.createComingFrom(p, vector.getOpposite());
+                possiblePositions[n] = PositionOnTrack.createComingFrom(location, vector.getOpposite());
                 n++;
             }
         }

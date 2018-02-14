@@ -22,7 +22,6 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.renderer.RendererRoot;
 import freerails.client.view.View;
 import freerails.controller.ModelRoot;
 import freerails.util.ImmutableList;
@@ -176,7 +175,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.row2index(world, KEY.TRAINS, principal, index);
+        int trainID = NonNullElementWorldIterator.rowToIndex(world, KEY.TRAINS, principal, index);
         display(trainID);
 
         if (isSelected) {

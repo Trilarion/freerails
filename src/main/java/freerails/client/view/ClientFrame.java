@@ -24,7 +24,6 @@
 package freerails.client.view;
 
 import freerails.client.componentfactory.GUIComponentFactory;
-import freerails.client.componentfactory.GUIComponentFactoryTestImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -139,16 +138,8 @@ public class ClientFrame extends JFrame {
     }
 
     /**
-     * @param args
-     */
-    public static void main(String args[]) {
-        new ClientFrame(new GUIComponentFactoryTestImpl()).setVisible(true);
-    }
-
-    /**
      * Exit the Application.
      */
-
     private static void exitForm(WindowEvent evt) {
         System.exit(0);
     }

@@ -32,7 +32,7 @@ import freerails.world.player.Player;
  * An UntriedMoveReceiver that executes moves on the world object passed to its
  * constructor.
  */
-public final class SimpleMoveReciever implements UntriedMoveReceiver {
+public class SimpleMoveReciever implements UntriedMoveReceiver {
 
     private final World world;
 

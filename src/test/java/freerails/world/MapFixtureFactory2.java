@@ -21,7 +21,7 @@ package freerails.world;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.FullSaveGameManager;
-import freerails.server.parser.TrackTilesHandlerImpl;
+import freerails.savegames.TrackTilesXmlHandlerImpl;
 import freerails.util.Vector2D;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameRules;
@@ -67,7 +67,7 @@ public class MapFixtureFactory2 {
         WagonAndEngineTypesFactory.addTypesToWorld(world);
         FullSaveGameManager.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
-        TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
+        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
 
         trackSetFactory.addTrackRules(world);
 

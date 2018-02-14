@@ -31,7 +31,7 @@ import java.util.Iterator;
  * The type of a Null track piece. TODO maybe it would be simpler to get rid of
  * this and just check against null!
  */
-public final class NullTrackType implements TrackRule {
+public class NullTrackType implements TrackRule {
 
     /**
      *

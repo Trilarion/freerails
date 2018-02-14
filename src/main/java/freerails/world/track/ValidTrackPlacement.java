@@ -30,7 +30,7 @@ import java.util.Set;
  * Encapsulates the rules governing where, that is, on what terrain,
  * track of a given type can be built.
  */
-public final class ValidTrackPlacement implements Serializable {
+public class ValidTrackPlacement implements Serializable {
 
     private static final long serialVersionUID = 3616445687756437049L;
     private final Set<TerrainCategory> terrainTypes;

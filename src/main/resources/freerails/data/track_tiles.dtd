@@ -53,7 +53,7 @@
         <!ATTLIST TrackType
                 RGBvalue CDATA #REQUIRED
                 doubleTrack (true|false)  #REQUIRED
-                maxConsecuativePieces CDATA #REQUIRED
+                maxConsecutivePieces CDATA #REQUIRED
                 category (track|tunnel|bridge|station) #REQUIRED
                 stationRadius (0|1|2|3) #IMPLIED
                 fixedCost CDATA #IMPLIED

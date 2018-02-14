@@ -30,10 +30,9 @@ import java.awt.*;
 import java.io.IOException;
 
 /**
- * Selects a tile icon to use based on the type of the tiles to the North, East,
- * South and West.
+ * Selects a tile icon to use based on the type of the tiles to the North, East, South and West.
  */
-public final class RiverStyleTileRenderer extends AbstractTileRenderer {
+public class RiverStyleTileRenderer extends AbstractTileRenderer {
 
     private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};

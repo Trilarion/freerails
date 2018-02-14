@@ -72,7 +72,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * station is getting removed.
      */
-    private static MoveStatus check4overlap(World w, Vector2D location, TrackPiece trackPiece) {
+    private static MoveStatus checkForOverlap(World world, Vector2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
@@ -80,9 +80,9 @@ public final class ChangeTrackPieceMove implements TrackMove {
         TrackRule thisStationType = trackPiece.getTrackRule();
         assert thisStationType.isStation();
 
-        for (int player = 0; player < w.getNumberOfPlayers(); player++) {
-            FreerailsPrincipal principal = w.getPlayer(player).getPrincipal();
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, w, principal);
+        for (int player = 0; player < world.getNumberOfPlayers(); player++) {
+            FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
+            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
 
             while (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -97,7 +97,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
                     continue;
                 }
 
-                FullTerrainTile tile = (FullTerrainTile) w.getTile(station.location);
+                FullTerrainTile tile = (FullTerrainTile) world.getTile(station.location);
                 TrackRule otherStationType = tile.getTrackPiece().getTrackRule();
                 assert otherStationType.isStation();
 
@@ -201,15 +201,15 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return tryMove(world, trackPieceBefore, trackPieceAfter);
     }
 
-    private MoveStatus tryMove(World w, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
+    private MoveStatus tryMove(World world, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
         // Check that location is on the map.
-        if (!w.boundsContain(location)) {
+        if (!world.boundsContain(location)) {
             return MoveStatus.moveFailed("Tried to build track outside the map.");
         }
 
         // Check that we are not changing another players track if this is not
         // allowed.
-        if (!canConnectToOtherRRsTrack(w)) {
+        if (!canConnectToOtherRRsTrack(world)) {
             // If either the new or old track piece is null, we are success.
             int oldRuleNumber = oldTrackPiece.getTrackTypeID();
             int newRuleNumber = newTrackPiece.getTrackTypeID();
@@ -226,7 +226,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
         // Check that the current track piece at this.location is
         // the same as this.oldTrackPiece.
-        TrackPiece currentTrackPieceAtLocation = ((FullTerrainTile) w.getTile(location)).getTrackPiece();
+        TrackPiece currentTrackPieceAtLocation = ((FullTerrainTile) world.getTile(location)).getTrackPiece();
 
         TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
         TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
@@ -250,12 +250,12 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         // Check for diagonal conflicts.
-        if (!(noDiagonalTrackConflicts(location, oldTrackPiece.getTrackGraphicID(), w) && noDiagonalTrackConflicts(location, newTrackPiece.getTrackGraphicID(), w))) {
+        if (!(noDiagonalTrackConflicts(location, oldTrackPiece.getTrackGraphicID(), world) && noDiagonalTrackConflicts(location, newTrackPiece.getTrackGraphicID(), world))) {
             return MoveStatus.moveFailed("Illegal track configuration - diagonal conflict");
         }
 
-        int terrainType = ((FullTerrainTile) w.getTile(location)).getTerrainTypeID();
-        TerrainType tt = (TerrainType) w.get(SKEY.TERRAIN_TYPES, terrainType);
+        int terrainType = ((FullTerrainTile) world.getTile(location)).getTerrainTypeID();
+        TerrainType tt = (TerrainType) world.get(SKEY.TERRAIN_TYPES, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getCategory())) {
             String thisTrackType = newTrackPiece.getTrackRule().getTypeName();
@@ -266,7 +266,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
         // Check 4 overlapping stations.
         if (newTrackPiece.getTrackRule().isStation()) {
-            MoveStatus moveStatus = ChangeTrackPieceMove.check4overlap(w, location, newTrackPiece);
+            MoveStatus moveStatus = ChangeTrackPieceMove.checkForOverlap(world, location, newTrackPiece);
             if (!moveStatus.succeeds()) return moveStatus;
         }
 
@@ -289,12 +289,12 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return moveStatus;
     }
 
-    private void move(World w, TrackPiece newTrackPiece) {
+    private void move(World world, TrackPiece newTrackPiece) {
         // FIXME why is oldTrackPiece not used???
-        TerrainTile oldTile = (FullTerrainTile) w.getTile(location);
+        TerrainTile oldTile = (FullTerrainTile) world.getTile(location);
         int terrain = oldTile.getTerrainTypeID();
         FullTerrainTile newTile = FullTerrainTile.getInstance(terrain, newTrackPiece);
-        w.setTile(location, newTile);
+        world.setTile(location, newTile);
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {

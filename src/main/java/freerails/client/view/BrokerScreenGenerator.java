@@ -44,29 +44,30 @@ class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
+    // TODO is the code here ever really used?
     /**
      * Creates a new instance of BrokerScreenGenerator
      */
-    public BrokerScreenGenerator(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        FinancialDataGatherer dataGatherer = new FinancialDataGatherer(w, principal);
+    public BrokerScreenGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, principal);
 
-        int playerId = w.getID(principal);
-        String playername = w.getPlayer(playerId).getName();
+        int playerId = world.getID(principal);
+        String playername = world.getPlayer(playerId).getName();
 
-        GameCalendar cal = (GameCalendar) w.get(ITEM.CALENDAR);
-        GameTime time = w.currentTime();
+        GameCalendar cal = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameTime time = world.currentTime();
         final int startyear = cal.getYear(time.getTicks());
         String year = String.valueOf(startyear);
-        Money cash = w.getCurrentBalance(principal);
+        Money cash = world.getCurrentBalance(principal);
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(w, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
 
         aggregator.setCategory(TransactionCategory.BOND);
         Money loansTotal = aggregator.calculateValue();
 
         String publicShares = DC.format(dataGatherer.sharesHeldByPublic());
         Money netWorth = dataGatherer.netWorth();
-        StockPrice[] stockPrices = (new StockPriceCalculator(w)).calculate();
+        StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();
         Money pricePerShare = stockPrices[playerId].currentPrice;
         String treasuryStock = DC.format(dataGatherer.treasuryStock());
 
@@ -75,7 +76,7 @@ class BrokerScreenGenerator {
 
         for (int i = 0; i < stockInThisRRs.length; i++) {
             if (i != playerId && stockInThisRRs[i] > 0) {
-                String otherRRName = w.getPlayer(i).getName();
+                String otherRRName = world.getPlayer(i).getName();
                 String otherRRStake = DC.format(stockInThisRRs[i]);
                 otherRRsStakes.append("<tr> ");
                 otherRRsStakes.append("<td> </td>");

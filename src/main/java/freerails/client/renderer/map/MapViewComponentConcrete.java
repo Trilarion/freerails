@@ -41,7 +41,7 @@ import java.util.StringTokenizer;
  * Displays the map, the cursor, and user messages (which are stored on the
  * ModelRoot under the keys QUICK_MESSAGE and PERMANENT_MESSAGE).
  */
-public final class MapViewComponentConcrete extends MapViewComponent implements ModelRootListener {
+public class MapViewComponentConcrete extends MapViewComponent implements ModelRootListener {
 
     private static final long serialVersionUID = 3834868087706236208L;
     private static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);

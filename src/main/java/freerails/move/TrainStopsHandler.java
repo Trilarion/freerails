@@ -70,7 +70,7 @@ public class TrainStopsHandler implements Serializable {
     /**
      * If wagons are added to a train, we need to increase its length.
      */
-    public static PathOnTiles lengthenPath(ReadOnlyWorld w, PathOnTiles path, int currentTrainLength) {
+    public static PathOnTiles lengthenPath(ReadOnlyWorld world, PathOnTiles path, int currentTrainLength) {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
@@ -83,7 +83,7 @@ public class TrainStopsHandler implements Serializable {
 
             FlatTrackExplorer fte;
             try {
-                fte = new FlatTrackExplorer(w, nextPot);
+                fte = new FlatTrackExplorer(world, nextPot);
             } catch (NoTrackException e) {
                 throw new IllegalArgumentException(e.getMessage(), e);
             }

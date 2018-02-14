@@ -18,6 +18,7 @@
 
 package freerails.client.renderer.map;
 
+import freerails.client.renderer.track.BuildTrackRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.view.OverHeadTrainView;

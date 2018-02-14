@@ -62,15 +62,15 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param direction
      * @param ruleA
      * @param ruleB
-     * @param w
+     * @param world
      * @param principal
      * @return
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vector2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, ReadOnlyWorld w, FreerailsPrincipal principal) {
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vector2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, ReadOnlyWorld world, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a;
         ChangeTrackPieceMove b;
-        a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, w, principal);
-        b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, w, principal);
+        a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, world, principal);
+        b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, world, principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
@@ -78,39 +78,39 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     /**
      * @param from
      * @param direction
-     * @param w
+     * @param world
      * @param principal
      * @return
      * @throws Exception
      */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vector2D from, TileTransition direction, ReadOnlyWorld w, FreerailsPrincipal principal) throws Exception {
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vector2D from, TileTransition direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
         TrackMove a;
         TrackMove b;
 
-        a = getRemoveTrackChangeTrackPieceMove(from, direction, w, principal);
-        b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), w, principal);
+        a = getRemoveTrackChangeTrackPieceMove(from, direction, world, principal);
+        b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
 
     // utility method.
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, TrackRule trackRule, ReadOnlyWorld w, FreerailsPrincipal principle) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, TrackRule trackRule, ReadOnlyWorld world, FreerailsPrincipal principal) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        int owner = getOwner(principle, w);
+        int owner = getOwner(principal, world);
 
-        if (w.boundsContain(p)) {
-            oldTrackPiece = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
+        if (world.boundsContain(p)) {
+            oldTrackPiece = ((FullTerrainTile) world.getTile(p)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
                 newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
             } else {
-                newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, w));
+                newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, world));
             }
         } else {
-            newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, w));
+            newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, world));
             oldTrackPiece = NullTrackPiece.getInstance();
         }
 
@@ -118,18 +118,18 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, ReadOnlyWorld w, FreerailsPrincipal principal) throws Exception {
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        if (w.boundsContain(p)) {
-            oldTrackPiece = ((FullTerrainTile) w.getTile(p)).getTrackPiece();
+        if (world.boundsContain(p)) {
+            oldTrackPiece = ((FullTerrainTile) world.getTile(p)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-                    int owner = getOwner(principal, w);
+                    int owner = getOwner(principal, world);
                     newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();
@@ -149,7 +149,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         // If we are removing a station, we also need to remove the station from
         // the station list.
         if (oldTrackPiece.getTrackRule().isStation() && !newTrackPiece.getTrackRule().isStation()) {
-            return RemoveStationMove.getInstance(w, changeTrackPieceMove, principal);
+            return RemoveStationMove.getInstance(world, changeTrackPieceMove, principal);
         }
         return changeTrackPieceMove;
     }

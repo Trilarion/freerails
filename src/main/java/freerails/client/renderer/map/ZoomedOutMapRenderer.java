@@ -47,7 +47,7 @@ import java.awt.image.BufferedImage;
 /**
  * Draws the overview map.
  */
-public final class ZoomedOutMapRenderer implements MapRenderer {
+public class ZoomedOutMapRenderer implements MapRenderer {
 
     private final int imageWidth;
     private final int imageHeight;

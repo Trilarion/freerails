@@ -135,7 +135,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.row2index(world, KEY.TRAINS, principal, index);
+        int trainID = NonNullElementWorldIterator.rowToIndex(world, KEY.TRAINS, principal, index);
         String trainNumText = "#" + (trainID + 1);
 
         trainNumLabel.setText(trainNumText);

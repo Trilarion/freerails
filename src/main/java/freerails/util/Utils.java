@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * A bunch of static methods.
  */
-public class Utils {
+public final class Utils {
 
     private Utils() {
     }

@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer.track;
 
-import freerails.server.ProgressMonitorModel;
+import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ui.ImageManager;
 import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
@@ -38,31 +38,31 @@ import java.util.Iterator;
 /**
  * A list of TrackPieceRenderer.
  */
-public final class TrackPieceRendererList {
+public class TrackPieceRendererList {
 
     private static final Logger logger = Logger.getLogger(TrackPieceRendererList.class.getName());
     private final TrackPieceRenderer[] trackPieceViewArray;
 
     /**
-     * @param w
+     * @param world
      * @param imageManager
-     * @param pm
+     * @param progressMonitorModel
      * @throws IOException
      */
-    public TrackPieceRendererList(ReadOnlyWorld w, ImageManager imageManager, ProgressMonitorModel pm) throws IOException {
+    public TrackPieceRendererList(ReadOnlyWorld world, ImageManager imageManager, ProgressMonitorModel progressMonitorModel) throws IOException {
         // Setup progress monitor..
 
-        pm.nextStep(w.size(SKEY.TRACK_RULES));
+        progressMonitorModel.nextStep(world.size(SKEY.TRACK_RULES));
 
         int progress = 0;
-        pm.setValue(progress);
+        progressMonitorModel.setValue(progress);
 
-        int numberOfTrackTypes = w.size(SKEY.TRACK_RULES);
+        int numberOfTrackTypes = world.size(SKEY.TRACK_RULES);
         trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
 
         for (int i = 0; i < numberOfTrackTypes; i++) {
-            trackPieceViewArray[i] = new TrackPieceRendererImpl(w, imageManager, i);
-            pm.setValue(++progress);
+            trackPieceViewArray[i] = new TrackPieceRendererImpl(world, imageManager, i);
+            progressMonitorModel.setValue(++progress);
         }
     }
 

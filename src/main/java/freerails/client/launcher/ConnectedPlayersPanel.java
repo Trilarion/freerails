@@ -38,7 +38,7 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
 
     private static final long serialVersionUID = 4049080453489111344L;
     FreerailsGameServer server = null;
-    private JList list1;
+    private JList<String> list1;
 
     /**
      * Creates new form ConnectedPlayersPanel
@@ -48,7 +48,7 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
 
         JLabel title = new JLabel();
         JScrollPane jScrollPane1 = new JScrollPane();
-        list1 = new JList();
+        list1 = new JList<>();
 
         setLayout(new GridBagLayout());
 

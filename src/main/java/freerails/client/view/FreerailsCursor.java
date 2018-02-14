@@ -33,7 +33,7 @@ import java.io.IOException;
  * Paints the cursor on the map, note the cursor's position is stored on the
  * ModelRoot under the key CURSOR_POSITION.
  */
-public final class FreerailsCursor {
+public class FreerailsCursor {
 
     private final Image buildTrack, upgradeTrack, removeTrack, infoMode;
     private final ModelRoot modelRoot;

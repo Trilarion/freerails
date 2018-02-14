@@ -41,18 +41,18 @@ public interface SaveGamesManager {
     String[] getNewMapNames();
 
     /**
-     * @param s
-     * @param w
+     * @param path
+     * @param serializable
      * @throws IOException
      */
-    void saveGame(String s, Serializable w) throws IOException;
+    void saveGame(String path, Serializable serializable) throws IOException;
 
     /**
-     * @param name
+     * @param path
      * @return
      * @throws IOException
      */
-    ServerGameModel loadGame(String name) throws IOException;
+    ServerGameModel loadGame(String path) throws IOException;
 
     /**
      * @param name

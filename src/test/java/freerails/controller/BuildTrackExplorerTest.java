@@ -45,7 +45,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private final Player testPlayer = new Player("test", 0);
     private FullWorld world;
-    private FreerailsPrincipal principle;
+    private FreerailsPrincipal principal;
 
     /**
      * @throws Exception
@@ -56,7 +56,7 @@ public class BuildTrackExplorerTest extends TestCase {
         world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
-        principle = testPlayer.getPrincipal();
+        principal = testPlayer.getPrincipal();
         MapFixtureFactory.generateTrackRuleList(world);
     }
 
@@ -70,7 +70,7 @@ public class BuildTrackExplorerTest extends TestCase {
         // Test starting in the middle of the map.
         start = PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.NORTH);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 9, explorer);
         assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
@@ -124,7 +124,7 @@ public class BuildTrackExplorerTest extends TestCase {
         // Test starting in the middle of the map.
         start = PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.NORTH);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
         // We miss out SW, S, and SE since we don't want to double back on
@@ -152,7 +152,7 @@ public class BuildTrackExplorerTest extends TestCase {
         // If we enter 10, 10 from the south, we should be able to build track S
         // & SW.
         PositionOnTrack start = PositionOnTrack.createComingFrom(new Vector2D(10, 10), TileTransition.SOUTH);
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principle);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
         explorer.setPosition(start.toInt());
         // SE is going along existing track
         assertNextVertexIs(TileTransition.SOUTH_EAST, 11, 11, explorer);

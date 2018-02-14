@@ -20,7 +20,7 @@ dependencies {
     toolsCompile sourceSets.main.output, sourceSets.test.output
 }
 
-mainClassName = 'freerails.client.launcher.Launcher'
+mainClassName = 'freerails.client.launcher.LauncherFrame'
 
 jar {
     manifest {

@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A list of TileRenderer stored in an array and created from an ArrayList.
  */
-public final class TileRendererListImpl implements TileRendererList {
+public class TileRendererListImpl implements TileRendererList {
     private final TileRenderer[] tiles;
 
     /**

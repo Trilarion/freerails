@@ -25,7 +25,7 @@ import java.text.DecimalFormat;
  * Converts time measured in ticks since the game began into time
  * represented as <i>Month, Year</i> and <i>hour:minute</i>.
  */
-public final class GameCalendar implements Serializable {
+public class GameCalendar implements Serializable {
 
     private static final long serialVersionUID = 3257568421033226805L;
     private final int ticksPerYear;

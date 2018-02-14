@@ -39,7 +39,7 @@ import java.util.List;
  * A central point at which a client may register to receive moves which have
  * been committed.
  */
-public final class MoveChainFork implements MoveReceiver {
+public class MoveChainFork implements MoveReceiver {
 
     private final Collection<MoveReceiver> moveReceivers = new ArrayList<>();
     private final Collection<MoveReceiver> splitMoveReceivers = new ArrayList<>();

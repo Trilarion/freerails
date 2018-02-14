@@ -37,7 +37,7 @@ import java.util.HashSet;
  * component to the parent window, so are not painted when paintComponents is
  * called from the game loop.
  */
-public final class RepaintManagerForActiveRendering extends RepaintManager {
+public class RepaintManagerForActiveRendering extends RepaintManager {
 
     /**
      * The JFrame(s) that are being actively rendered in the game loop(s).

@@ -19,6 +19,7 @@ package freerails.client.model;
 
 import freerails.client.model.TrainOrdersListModel.TrainOrdersListElement;
 import freerails.world.KEY;
+import freerails.world.finances.IncomeStatementGenerator;
 import freerails.world.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.player.FreerailsPrincipal;

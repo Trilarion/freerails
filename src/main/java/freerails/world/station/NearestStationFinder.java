@@ -37,12 +37,12 @@ public class NearestStationFinder {
     private final FreerailsPrincipal principal;
 
     /**
-     * @param w
-     * @param player
+     * @param world
+     * @param principal
      */
-    public NearestStationFinder(ReadOnlyWorld w, FreerailsPrincipal player) {
-        world = w;
-        principal = player;
+    public NearestStationFinder(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        this.world = world;
+        this.principal = principal;
     }
 
     /**

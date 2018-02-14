@@ -35,7 +35,7 @@ import java.util.Iterator;
  * maximum number of consecutive nodes of this type (used for bridges and
  * tunnels).
  */
-public final class TrackRuleImpl implements TrackRule {
+public class TrackRuleImpl implements TrackRule {
 
     private static final long serialVersionUID = 3257281414171801401L;
     private final ValidTrackConfigurations validTrackConfigurations;

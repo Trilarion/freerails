@@ -24,7 +24,7 @@ import java.util.*;
 /**
  * Stores the legal track configurations for a type of track.
  */
-public final class ValidTrackConfigurations implements Serializable {
+public class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
     private final Set<TrackConfiguration> legalTrackConfigurations;

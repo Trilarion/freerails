@@ -39,14 +39,14 @@ public class FinancialDataGatherer extends TransactionAggregator {
     private int[] stockInThisRRs;
 
     /**
-     * @param w
+     * @param world
      * @param principal
      */
-    public FinancialDataGatherer(ReadOnlyWorld w, FreerailsPrincipal principal) {
-        super(w, principal);
-        stockInRRs = new int[w.getNumberOfPlayers()];
+    public FinancialDataGatherer(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        super(world, principal);
+        stockInRRs = new int[world.getNumberOfPlayers()];
         calculateValues();
-        playerID = w.getID(principal);
+        playerID = world.getID(principal);
     }
 
     /**

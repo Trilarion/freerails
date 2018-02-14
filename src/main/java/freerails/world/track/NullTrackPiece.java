@@ -28,7 +28,7 @@ package freerails.world.track;
  * A track piece that doesn't exist - using this avoids needing to check against
  * null before calling the methods on a track piece.
  */
-public final class NullTrackPiece implements TrackPiece {
+public class NullTrackPiece implements TrackPiece {
 
     private static final long serialVersionUID = 3258413915376268599L;
     private static final TrackPiece nullTrackPiece = new NullTrackPiece();

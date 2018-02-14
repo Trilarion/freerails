@@ -40,18 +40,18 @@ import java.awt.*;
 public class ChangeTileMove implements MapUpdateMove {
 
     private static final long serialVersionUID = 3256726169272662320L;
-    private final Vector2D p;
+    private final Vector2D location;
     private final FullTerrainTile before;
     private final FullTerrainTile after;
 
     /**
-     * @param w
-     * @param p
+     * @param world
+     * @param location
      * @param terrainTypeAfter
      */
-    public ChangeTileMove(ReadOnlyWorld w, Vector2D p, int terrainTypeAfter) {
-        this.p = p;
-        before = (FullTerrainTile) w.getTile(this.p);
+    public ChangeTileMove(ReadOnlyWorld world, Vector2D location, int terrainTypeAfter) {
+        this.location = location;
+        before = (FullTerrainTile) world.getTile(this.location);
         after = FullTerrainTile.getInstance(terrainTypeAfter, before.getTrackPiece());
     }
 
@@ -62,7 +62,7 @@ public class ChangeTileMove implements MapUpdateMove {
 
         final ChangeTileMove changeTileMove = (ChangeTileMove) obj;
 
-        if (!p.equals(changeTileMove.p)) return false;
+        if (!location.equals(changeTileMove.location)) return false;
         if (!after.equals(changeTileMove.after)) return false;
         return before.equals(changeTileMove.before);
     }
@@ -70,14 +70,14 @@ public class ChangeTileMove implements MapUpdateMove {
     @Override
     public int hashCode() {
         int result;
-        result = p.hashCode();
+        result = location.hashCode();
         result = 29 * result + before.hashCode();
         result = 29 * result + after.hashCode();
         return result;
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        FullTerrainTile actual = (FullTerrainTile) world.getTile(p);
+        FullTerrainTile actual = (FullTerrainTile) world.getTile(location);
         TerrainType type = (TerrainType) world.get(SKEY.TERRAIN_TYPES, actual.getTerrainTypeID());
 
         if (type.getCategory() != TerrainCategory.Country) {
@@ -91,7 +91,7 @@ public class ChangeTileMove implements MapUpdateMove {
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        FullTerrainTile actual = (FullTerrainTile) world.getTile(p);
+        FullTerrainTile actual = (FullTerrainTile) world.getTile(location);
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;
         }
@@ -102,7 +102,7 @@ public class ChangeTileMove implements MapUpdateMove {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.setTile(p, after);
+            world.setTile(location, after);
         }
 
         return moveStatus;
@@ -112,7 +112,7 @@ public class ChangeTileMove implements MapUpdateMove {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.setTile(p, before);
+            world.setTile(location, before);
         }
 
         return moveStatus;
@@ -123,6 +123,6 @@ public class ChangeTileMove implements MapUpdateMove {
      */
     public Rectangle getUpdatedTiles() {
 
-        return new Rectangle(p.x, p.y, 1, 1);
+        return new Rectangle(location.x, location.y, 1, 1);
     }
 }

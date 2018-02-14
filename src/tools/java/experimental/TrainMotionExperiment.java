@@ -19,8 +19,8 @@
 package experimental;
 
 import freerails.client.ClientConfig;
-import freerails.client.GameLoop;
-import freerails.client.ScreenHandler;
+import freerails.client.launcher.GameLoop;
+import freerails.client.launcher.ScreenHandler;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.move.*;

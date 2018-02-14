@@ -23,7 +23,7 @@
 
 package freerails.client.launcher;
 
-import freerails.server.ProgressMonitorModel;
+import freerails.util.ui.ProgressMonitorModel;
 
 import javax.swing.*;
 import java.awt.*;

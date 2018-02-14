@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * Records the status or failure of an attempt to execute a move.
  */
-public final class MoveStatus implements Serializable {
+public class MoveStatus implements Serializable {
 
     /**
      *

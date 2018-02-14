@@ -82,13 +82,13 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return tryMove(world, before);
     }
 
-    private MoveStatus tryMove(World w, ImmutableList<TrainBlueprint> stateA) {
+    private MoveStatus tryMove(World world, ImmutableList<TrainBlueprint> stateA) {
         // Check that the specified station exists.
-        if (!w.boundsContain(principal, KEY.STATIONS, stationNumber)) {
+        if (!world.boundsContain(principal, KEY.STATIONS, stationNumber)) {
             return MoveStatus.moveFailed(stationNumber + " " + principal);
         }
 
-        Station station = (Station) w.get(principal, KEY.STATIONS, stationNumber);
+        Station station = (Station) world.get(principal, KEY.STATIONS, stationNumber);
 
         if (null == station) {
             return MoveStatus.moveFailed(stationNumber + " " + principal + " is does null");

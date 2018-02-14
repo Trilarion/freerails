@@ -32,7 +32,7 @@ import java.io.IOException;
 /**
  * Paints a tile for which there only one tile icon.
  */
-public final class StandardTileRenderer extends AbstractTileRenderer {
+public class StandardTileRenderer extends AbstractTileRenderer {
 
     /**
      * @param imageManager

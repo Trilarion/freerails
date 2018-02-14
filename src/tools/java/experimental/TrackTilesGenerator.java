@@ -19,7 +19,7 @@
 package experimental;
 
 import freerails.client.renderer.track.TrackPieceRendererImpl;
-import freerails.server.parser.TrackTilesHandlerImpl;
+import freerails.savegames.TrackTilesXmlHandlerImpl;
 import freerails.world.track.TrackCategories;
 import freerails.world.track.TrackConfiguration;
 import freerails.world.track.TrackRule;
@@ -63,7 +63,7 @@ class TrackTilesGenerator extends JPanel {
         tr = new TrackRenderer();
         URL track_xml_url = TrackTilesGenerator.class.getResource("/freerails/data/track_tiles.xml");
 
-        TrackTilesHandlerImpl trackSetFactory = new TrackTilesHandlerImpl(track_xml_url);
+        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
         rules = trackSetFactory.getRuleList();
         generateTiles();
     }

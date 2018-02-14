@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.client.launcher.Launcher;
+import freerails.client.launcher.LauncherFrame;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -177,7 +177,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
             clientUpdates();
         } catch (IOException e) {
-            Launcher.emergencyStop();
+            LauncherFrame.emergencyStop();
         }
     }
 

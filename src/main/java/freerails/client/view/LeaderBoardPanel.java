@@ -115,11 +115,11 @@ public class LeaderBoardPanel extends JPanel implements View {
         submitButtonCallBack = closeAction;
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {
             PlayerDetails details = new PlayerDetails();
-            FreerailsPrincipal principle = world.getPlayer(player).getPrincipal();
-            details.name = principle.getName();
-            WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, world, principle);
+            FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
+            details.name = principal.getName();
+            WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
             details.stations = stations.size();
-            TransactionAggregator networth = new NetWorthCalculator(world, principle);
+            TransactionAggregator networth = new NetWorthCalculator(world, principal);
             details.networth = networth.calculateValue();
             values.add(details);
         }

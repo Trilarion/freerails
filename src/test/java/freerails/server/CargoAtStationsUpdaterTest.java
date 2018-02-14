@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+import freerails.server.gamemodel.CargoAtStationsUpdater;
 import junit.framework.TestCase;
 
 /**

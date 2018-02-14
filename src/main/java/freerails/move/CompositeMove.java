@@ -147,9 +147,9 @@ public class CompositeMove implements Move {
         return moveStatus;
     }
 
-    private void undoMoves(World w, int number, FreerailsPrincipal p) {
+    private void undoMoves(World world, int number, FreerailsPrincipal principal) {
         for (int i = number; i >= 0; i--) {
-            MoveStatus moveStatus = moves.get(i).undoMove(w, p);
+            MoveStatus moveStatus = moves.get(i).undoMove(world, principal);
 
             if (!moveStatus.succeeds()) {
                 throw new IllegalStateException(moveStatus.getMessage());
@@ -157,9 +157,9 @@ public class CompositeMove implements Move {
         }
     }
 
-    private void redoMoves(World w, int number, FreerailsPrincipal p) {
+    private void redoMoves(World world, int number, FreerailsPrincipal principal) {
         for (int i = number; i < moves.size(); i++) {
-            MoveStatus moveStatus = moves.get(i).doMove(w, p);
+            MoveStatus moveStatus = moves.get(i).doMove(world, principal);
 
             if (!moveStatus.succeeds()) {
                 throw new IllegalStateException(moveStatus.getMessage());

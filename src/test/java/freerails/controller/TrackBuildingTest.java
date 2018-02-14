@@ -56,8 +56,8 @@ public class TrackBuildingTest extends TestCase {
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         ModelRoot modelRoot = new ModelRootImpl();
         producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
-        FreerailsPrincipal principle = world.getPlayer(0).getPrincipal();
-        pathFinder = new TrackPathFinder(world, principle);
+        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
+        pathFinder = new TrackPathFinder(world, principal);
         stationBuilder = new StationBuilder(moveExecutor);
         bts = BuildTrackStrategy.getDefault(world);
     }

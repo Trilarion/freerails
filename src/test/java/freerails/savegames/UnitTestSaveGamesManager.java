@@ -51,23 +51,23 @@ public class UnitTestSaveGamesManager implements SaveGamesManager {
     }
 
     /**
-     * @param s
-     * @param w
+     * @param path
+     * @param serializable
      * @throws IOException
      */
-    public void saveGame(String s, Serializable w) {
+    public void saveGame(String path, Serializable serializable) {
         // Make a copy so that the saved version's state cannot be changed.
-        Serializable copy = Utils.cloneBySerialisation(w);
-        savedGames.put(s, copy);
+        Serializable copy = Utils.cloneBySerialisation(serializable);
+        savedGames.put(path, copy);
     }
 
     /**
-     * @param name
+     * @param path
      * @return
      * @throws IOException
      */
-    public ServerGameModel loadGame(String name) {
-        Serializable o = savedGames.get(name);
+    public ServerGameModel loadGame(String path) {
+        Serializable o = savedGames.get(path);
         return (ServerGameModel) Utils.cloneBySerialisation(o);
     }
 

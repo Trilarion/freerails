@@ -48,15 +48,15 @@ public class ProcessCargoAtStationMoveGenerator {
     }
 
     /**
-     * @param w
+     * @param world
      * @param bundle
      * @param stationID
-     * @param p
+     * @param principal
      * @param trainId
      * @return
      */
-    public static ArrayList<Move> processCargo(ReadOnlyWorld w, CargoBatchBundle bundle, int stationID, FreerailsPrincipal p, int trainId) {
-        Station thisStation = (Station) w.get(p, KEY.STATIONS, stationID);
+    public static ArrayList<Move> processCargo(ReadOnlyWorld world, CargoBatchBundle bundle, int stationID, FreerailsPrincipal principal, int trainId) {
+        Station thisStation = (Station) world.get(principal, KEY.STATIONS, stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
         ArrayList<Move> moves = new ArrayList<>();
@@ -71,7 +71,7 @@ public class ProcessCargoAtStationMoveGenerator {
             double amount = quantity * Math.log(dist) * MAGIC_NUMBER;
             Money money = new Money((long) amount);
             CargoDeliveryMoneyTransaction receipt = new CargoDeliveryMoneyTransaction(money, quantity, stationID, batch, trainId);
-            moves.add(new AddTransactionMove(p, receipt));
+            moves.add(new AddTransactionMove(principal, receipt));
         }
 
         return moves;

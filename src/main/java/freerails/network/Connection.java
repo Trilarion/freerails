@@ -71,7 +71,7 @@ class Connection {
                 throw new IllegalStateException(s);
             }
         } catch (ClassNotFoundException e) {
-            throw new IOException(e.getMessage());
+            throw new IOException(e);
         }
     }
 

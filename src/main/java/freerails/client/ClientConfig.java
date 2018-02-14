@@ -25,7 +25,7 @@ import java.awt.*;
 /**
  * Important constants
  */
-public class ClientConfig {
+public final class ClientConfig {
 
     /**
      *
@@ -196,8 +196,8 @@ public class ClientConfig {
     public static final int FIXED_SIZE_WINDOWED_MODE = 2;
     public static final int BIG_DOT_WIDTH = 12;
     public static final int SMALL_DOT_WIDTH = 6;
-    static final boolean LIMIT_FRAME_RATE = false;
-    static final int TARGET_FPS = 40;
+    public static final boolean LIMIT_FRAME_RATE = false;
+    public static final int TARGET_FPS = 40;
     public static final int WAGON_IMAGE_HEIGHT = 10;
     public static final int SPACING = 3;
     public static final int MAX_HEIGHT = 5 * (WAGON_IMAGE_HEIGHT + SPACING);

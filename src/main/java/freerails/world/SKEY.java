@@ -22,6 +22,7 @@ import freerails.util.Utils;
 
 import java.io.Serializable;
 
+// TODO enums are a great idea here
 /**
  * Provides a set of keys to access the lists of elements in the game
  * world that are shared by all players.

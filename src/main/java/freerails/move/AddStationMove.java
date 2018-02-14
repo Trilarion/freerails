@@ -44,18 +44,18 @@ public class AddStationMove extends CompositeMove {
     }
 
     /**
-     * @param w
+     * @param world
      * @param stationName
-     * @param p
+     * @param location
      * @param upgradeTrackMove
      * @param principal
      * @return
      */
-    public static AddStationMove generateMove(ReadOnlyWorld w, String stationName, Vector2D p, Move upgradeTrackMove, FreerailsPrincipal principal) {
-        int cargoBundleNumber = w.size(principal, KEY.CARGO_BUNDLES);
+    public static AddStationMove generateMove(ReadOnlyWorld world, String stationName, Vector2D location, Move upgradeTrackMove, FreerailsPrincipal principal) {
+        int cargoBundleNumber = world.size(principal, KEY.CARGO_BUNDLES);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
-        int stationNumber = w.size(principal, KEY.STATIONS);
-        Station station = new Station(p, stationName, w.size(SKEY.CARGO_TYPES), cargoBundleNumber);
+        int stationNumber = world.size(principal, KEY.STATIONS);
+        Station station = new Station(location, stationName, world.size(SKEY.CARGO_TYPES), cargoBundleNumber);
 
         Move addStation = new AddItemToListMove(KEY.STATIONS, stationNumber, station, principal);
 

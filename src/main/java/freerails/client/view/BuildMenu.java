@@ -29,7 +29,7 @@ import javax.swing.*;
 /**
  * The menu that lets you select a track type.
  */
-public final class BuildMenu extends JMenu {
+public class BuildMenu extends JMenu {
 
     private static final long serialVersionUID = 3617850859305055542L;
 

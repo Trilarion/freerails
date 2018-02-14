@@ -29,7 +29,7 @@ import java.util.List;
  * Instances of this class cannot be created and must be obtained via the static
  * methods herein.
  */
-public final class TrackConfiguration implements TrackConfigurations {
+public class TrackConfiguration implements TrackConfigurations {
 
     private static final long serialVersionUID = 3618695301330974512L;
     private static final List<TrackConfiguration> flatTrackConfigurations = setupConfigurations();

@@ -18,14 +18,16 @@
 
 package freerails.client;
 
+import freerails.client.renderer.RendererRootImpl;
 import freerails.network.movereceiver.SimpleMoveReciever;
+import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.network.movereceiver.MoveChainFork;
 import freerails.network.movereceiver.UntriedMoveReceiver;
 import freerails.savegames.FullSaveGameManager;
-import freerails.server.ProgressMonitorModel;
+import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.world.*;
@@ -43,7 +45,7 @@ import freerails.world.world.FullWorld;
 import freerails.world.world.World;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 /**
@@ -135,16 +137,12 @@ class DialogueBoxTester extends JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        int scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
-                .toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<>(0, 0),
-                scheduleID));
+        int scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
+        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(0, new ImmutableList<>(0, 0), scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule
-                .toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<>(1, 1),
-                scheduleID));
+        scheduleID = world.add(TEST_PRINCIPAL, KEY.TRAIN_SCHEDULES, schedule.toImmutableSchedule());
+        world.add(TEST_PRINCIPAL, KEY.TRAINS, new TrainModel(1, new ImmutableList<>(1, 1), scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
@@ -171,15 +169,15 @@ class DialogueBoxTester extends JFrame {
         JMenuItem showJavaSystemProperties = new JMenuItem();
         JMenuItem showNetworthGraph = new JMenuItem();
 
-        addKeyListener(new java.awt.event.KeyAdapter() {
+        addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 formKeyPressed(e);
             }
         });
-        addWindowListener(new java.awt.event.WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
+            public void windowClosing(WindowEvent e) {
                 exitForm(e);
             }
         });
@@ -271,12 +269,11 @@ class DialogueBoxTester extends JFrame {
     }
 
 
-    private void showNetworthGraphActionPerformed(java.awt.event.ActionEvent evt) {
+    private void showNetworthGraphActionPerformed(ActionEvent evt) {
         dialogueBoxController.showNetworthGraph();
     }
 
-    private void showJavaSystemPropertiesActionPerformed(
-            java.awt.event.ActionEvent evt) {
+    private void showJavaSystemPropertiesActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         String s = ShowJavaProperties.getPropertiesHtmlString();
         HtmlPanel htmlPanel = new HtmlPanel(s);
@@ -284,14 +281,14 @@ class DialogueBoxTester extends JFrame {
         dialogueBoxController.showContent(htmlPanel);
     }
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {
-        if (java.awt.event.KeyEvent.VK_ESCAPE == evt.getKeyCode()) {
+    private void formKeyPressed(KeyEvent evt) {
+        if (KeyEvent.VK_ESCAPE == evt.getKeyCode()) {
             dialogueBoxController.closeContent();
         }
     }
 
     private void showCargoWaitingAndDemandActionPerformed(
-            java.awt.event.ActionEvent evt) {
+            ActionEvent evt) {
         // Add your handling code here:
         CargoWaitingAndDemandedPanel panel = new CargoWaitingAndDemandedPanel();
         panel.setup(modelRoot, vl, closeCurrentDialogue);
@@ -300,46 +297,46 @@ class DialogueBoxTester extends JFrame {
         dialogueBoxController.showContent(panel);
     }
 
-    private void showTrainListActionPerformed(java.awt.event.ActionEvent evt) {
+    private void showTrainListActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showTrainList();
     }
 
-    private void showStationInfoActionPerformed(java.awt.event.ActionEvent evt) {
+    private void showStationInfoActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         int stationNumber = 0;
         dialogueBoxController.showStationInfo(stationNumber);
     }
 
-    private void showTerrainInfoActionPerformed(java.awt.event.ActionEvent evt) {
+    private void showTerrainInfoActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         int terrainType = 0;
         dialogueBoxController.showTerrainInfo(terrainType);
     }
 
-    private void showControlsActionPerformed(java.awt.event.ActionEvent evt) {
+    private void showControlsActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showGameControls();
     }
 
-    private void selectTrainOrdersActionPerformed(java.awt.event.ActionEvent evt) {
+    private void selectTrainOrdersActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         trainDialoguePanel.setup(modelRoot, vl, closeCurrentDialogue);
         trainDialoguePanel.display(0);
         dialogueBoxController.showContent(trainDialoguePanel);
     }
 
-    private void selectWagonsActionPerformed(java.awt.event.ActionEvent evt) {
+    private void selectWagonsActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showSelectWagons();
     }
 
-    private void selectEngineActionPerformed(java.awt.event.ActionEvent evt) {
+    private void selectEngineActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showSelectEngine();
     }
 
-    private void newspaperActionPerformed(java.awt.event.ActionEvent evt) {
+    private void newspaperActionPerformed(ActionEvent evt) {
         // Add your handling code here:
         dialogueBoxController.showBrokerScreen();
         // dialogueBoxController.showNewspaper("New headline!");
@@ -348,7 +345,7 @@ class DialogueBoxTester extends JFrame {
     /**
      * Exit the Application.
      */
-    private void exitForm(java.awt.event.WindowEvent evt) {
+    private void exitForm(WindowEvent evt) {
         System.exit(0);
     }
 

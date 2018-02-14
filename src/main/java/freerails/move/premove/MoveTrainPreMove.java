@@ -286,19 +286,19 @@ public class MoveTrainPreMove implements PreMove {
         return (TrainMotion) ai.getActivity();
     }
 
-    private Move moveTrain(ReadOnlyWorld w, OccupiedTracks occupiedTracks) {
+    private Move moveTrain(ReadOnlyWorld world, OccupiedTracks occupiedTracks) {
         // Find the next vector.
-        TileTransition nextVector = nextStep(w);
+        TileTransition nextVector = nextStep(world);
 
-        TrainMotion motion = lastMotion(w);
+        TrainMotion motion = lastMotion(world);
         PositionOnTrack positionOnTrack = motion.getFinalPosition();
         TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getLocation());
 
         // Check whether the desired track section is single or double track.
         Vector2D tileA = desiredTrackSection.tileA();
         Vector2D tileB = desiredTrackSection.tileB();
-        FullTerrainTile fta = (FullTerrainTile) w.getTile(tileA);
-        FullTerrainTile ftb = (FullTerrainTile) w.getTile(tileB);
+        FullTerrainTile fta = (FullTerrainTile) world.getTile(tileA);
+        FullTerrainTile ftb = (FullTerrainTile) world.getTile(tileB);
         TrackPiece tpa = fta.getTrackPiece();
         TrackPiece tpb = ftb.getTrackPiece();
         int tracks = 1;
@@ -310,30 +310,30 @@ public class MoveTrainPreMove implements PreMove {
             if (trains >= tracks) {
                 // We need to wait for the track ahead to clear.
                 occupiedTracks.stopTrain(trainID);
-                return stopTrain(w);
+                return stopTrain(world);
             }
         }
         // Create a new train motion object.
-        TrainMotion nextMotion = nextMotion(w, nextVector);
+        TrainMotion nextMotion = nextMotion(world, nextVector);
         return new NextActivityMove(nextMotion, trainID, principal);
     }
 
-    private TrainMotion nextMotion(ReadOnlyWorld w, TileTransition v) {
-        TrainMotion motion = lastMotion(w);
+    private TrainMotion nextMotion(ReadOnlyWorld world, TileTransition tileTransition) {
+        TrainMotion motion = lastMotion(world);
 
-        Motion speeds = nextSpeeds(w, v);
+        Motion speeds = nextSpeeds(world, tileTransition);
 
         PathOnTiles currentTiles = motion.getTiles(motion.duration());
-        PathOnTiles pathOnTiles = currentTiles.addStep(v);
+        PathOnTiles pathOnTiles = currentTiles.addStep(tileTransition);
         return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
 
-    public Motion nextSpeeds(ReadOnlyWorld w, TileTransition v) {
-        TrainAccessor ta = new TrainAccessor(w, principal, trainID);
-        TrainMotion lastMotion = lastMotion(w);
+    public Motion nextSpeeds(ReadOnlyWorld world, TileTransition tileTransition) {
+        TrainAccessor ta = new TrainAccessor(world, principal, trainID);
+        TrainMotion lastMotion = lastMotion(world);
 
         double u = lastMotion.getSpeedAtEnd();
-        double s = v.getLength();
+        double s = tileTransition.getLength();
 
         int wagons = ta.getTrain().getNumberOfWagons();
         double a0 = acceleration(wagons);

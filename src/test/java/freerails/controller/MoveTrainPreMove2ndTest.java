@@ -49,14 +49,14 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     private Vector2D station1Location;
     private Vector2D station2Location;
 
-    static void incrTime(World w, FreerailsPrincipal p) {
-        ActivityIterator ai = w.getActivities(p, 0);
-        while (ai.hasNext())
-            ai.nextActivity();
+    static void incrTime(World world, FreerailsPrincipal principal) {
+        ActivityIterator activityIterator = world.getActivities(principal, 0);
+        while (activityIterator.hasNext())
+            activityIterator.nextActivity();
 
-        double finishTime = ai.getFinishTime();
+        double finishTime = activityIterator.getFinishTime();
         GameTime newTime = new GameTime((int) Math.floor(finishTime));
-        w.setTime(newTime);
+        world.setTime(newTime);
     }
 
 
