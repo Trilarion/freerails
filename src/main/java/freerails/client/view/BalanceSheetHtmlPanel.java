@@ -22,7 +22,7 @@ import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.BalanceSheetGenerator;
 import freerails.controller.ModelRoot;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 
 import javax.swing.*;
@@ -50,12 +50,12 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
 
     /**
      * @param m
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
     @Override
-    public void setup(ModelRoot m, RendererRoot vl, Action closeAction) {
-        super.setup(m, vl, closeAction);
+    public void setup(ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
+        super.setup(m, rendererRoot, closeAction);
         this.modelRoot = m;
         updateHtml();
     }

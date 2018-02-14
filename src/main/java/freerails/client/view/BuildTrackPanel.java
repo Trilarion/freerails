@@ -24,14 +24,15 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.client.common.ImageManager;
-import freerails.client.common.ImageManagerImpl;
+import freerails.util.ui.ImageManager;
+import freerails.util.ui.ImageManagerImpl;
+import freerails.client.model.StationBuildModel;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.finances.Money;
 import freerails.world.track.TrackCategories;

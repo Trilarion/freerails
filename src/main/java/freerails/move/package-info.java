@@ -35,15 +35,15 @@
  * </tr>
  * <tr>
  * <td>adds an item to a list</td>
- * <td>{@link freerails.move.AddItemToListMove}</td>
+ * <td>{@link freerails.move.listmove.AddItemToListMove}</td>
  * </tr>
  * <tr>
  * <td>removes an item from a list</td>
- * <td>{@link freerails.move.RemoveItemFromListMove}</td>
+ * <td>{@link freerails.move.listmove.RemoveItemFromListMove}</td>
  * </tr>
  * <tr>
  * <td>changes an item in a list</td>
- * <td>{@link freerails.move.ChangeItemInListMove}</td>
+ * <td>{@link freerails.move.listmove.ChangeItemInListMove}</td>
  * </tr>
  * <tr>
  * <td>does several things</td>
@@ -53,7 +53,7 @@
  * (3) Consider writing a junit testcase for the move, and if you do, make the
  * testcase a extend freerails.move.AbstractMoveTestCase.</p>
  * (4) If the move depends on properties stored on the world object, consider
- * extending {@link freerails.move.PreMove}.</p>
+ * extending {@link freerails.move.premove.PreMove}.</p>
  * &nbsp;</p>
  */
 package freerails.move;

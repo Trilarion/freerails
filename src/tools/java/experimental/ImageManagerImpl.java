@@ -21,7 +21,7 @@
  */
 package experimental;
 
-import freerails.client.common.ImageManager;
+import freerails.util.ui.ImageManager;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.RenderedImage;

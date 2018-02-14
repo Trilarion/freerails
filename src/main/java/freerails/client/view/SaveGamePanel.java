@@ -26,8 +26,8 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.network.MessageToServer;
-import freerails.network.SaveGameMessageToServer;
+import freerails.network.message.MessageToServer;
+import freerails.network.message.SaveGameMessageToServer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,10 +118,10 @@ public class SaveGamePanel extends JPanel implements View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         close = closeAction;
         this.modelRoot = modelRoot;
     }

@@ -24,10 +24,11 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -102,9 +103,9 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     }
 
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
 
-        trainViewJPanel1.setup(modelRoot, vl, closeAction);
+        trainViewJPanel1.setup(modelRoot, rendererRoot, closeAction);
         trainViewJPanel1.setHeight(30);
         trainViewJPanel1.setCenterTrain(true);
         world = modelRoot.getWorld();

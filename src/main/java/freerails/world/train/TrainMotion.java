@@ -26,6 +26,9 @@ import freerails.util.Vector2D;
 import freerails.world.Activity;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.PathIterator;
+import freerails.world.train.motion.CompositeMotion;
+import freerails.world.train.motion.ConstantAccelerationMotion;
+import freerails.world.train.motion.Motion;
 
 import java.util.ArrayList;
 
@@ -202,7 +205,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     public TrainPositionOnMap getStateAtTime(double time) {
         time = Math.min(time, speeds.getTotalTime());
         double offset = calcOffSet(time);
-        Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength); // 666
+        Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength);
         double speed = speeds.calculateSpeedAtTime(time);
         double acceleration = speeds.calculateAccelerationAtTime(time);
         return TrainPositionOnMap.createInSameDirectionAsPathReversed(pathIt, speed, acceleration, activity);

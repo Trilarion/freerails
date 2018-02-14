@@ -25,8 +25,10 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
-import freerails.world.terrain.TileTypeImpl;
+import freerails.world.terrain.TerrainTypeImpl;
 import freerails.world.track.*;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 
 import java.util.HashSet;
 
@@ -154,15 +156,15 @@ public class MapFixtureFactory {
      * Adds hard coded terrain types.
      */
     private static void generateTerrainTypesList(World world) {
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
+        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
                 TerrainCategory.Country, "Grassland"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
+        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
                 TerrainCategory.Urban, "City"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
+        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
                 TerrainCategory.Resource, "Mine"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
+        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
                 TerrainCategory.Industry, "Factory"));
-        world.add(SKEY.TERRAIN_TYPES, new TileTypeImpl(
+        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
                 TerrainCategory.Ocean, "Ocean"));
     }
 }

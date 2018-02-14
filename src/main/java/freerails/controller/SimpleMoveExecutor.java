@@ -20,9 +20,9 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.PreMove;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.World;
+import freerails.move.premove.PreMove;
+import freerails.world.world.ReadOnlyWorld;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 

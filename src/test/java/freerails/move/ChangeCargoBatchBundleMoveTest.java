@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.cargo.CargoBatch;

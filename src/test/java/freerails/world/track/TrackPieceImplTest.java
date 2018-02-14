@@ -25,7 +25,7 @@ import freerails.util.TestUtils;
 import freerails.world.MapFixtureFactory2;
 import freerails.world.SKEY;
 import freerails.world.terrain.TileTransition;
-import freerails.world.World;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 import org.junit.Assert;
 

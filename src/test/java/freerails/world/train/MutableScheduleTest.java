@@ -21,6 +21,8 @@
  */
 package freerails.world.train;
 
+import freerails.world.train.schedule.ImmutableSchedule;
+import freerails.world.train.schedule.MutableSchedule;
 import junit.framework.TestCase;
 
 /**

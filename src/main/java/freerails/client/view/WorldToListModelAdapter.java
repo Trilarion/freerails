@@ -24,7 +24,7 @@ package freerails.client.view;
 import freerails.util.Utils;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
 

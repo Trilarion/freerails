@@ -48,7 +48,7 @@ public class StockItemTransaction extends ItemTransaction {
      */
     public static Transaction issueStock(int playerId, int quantity, Money pricePerShare) {
         // Issue Stock of the Player
-        Money amount = new Money(pricePerShare.getAmount() * quantity);
+        Money amount = Money.multiply(pricePerShare, quantity);
         return new StockItemTransaction(TransactionCategory.ISSUE_STOCK, playerId, quantity, amount);
     }
 
@@ -60,7 +60,7 @@ public class StockItemTransaction extends ItemTransaction {
      */
     public static StockItemTransaction buyOrSellStock(int playerId, int quantity, Money stockPrice) {
         // Buys another Players Stock, Uses another Category
-        Money value = new Money(stockPrice.getAmount() * quantity * -1);
+        Money value = Money.multiply(stockPrice, -quantity);
         return new StockItemTransaction(TransactionCategory.TRANSFER_STOCK, playerId, quantity, value);
     }
 }

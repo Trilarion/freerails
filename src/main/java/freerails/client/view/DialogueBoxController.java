@@ -23,15 +23,14 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.client.common.ModelRootImpl;
-import freerails.client.common.MyGlassPanel;
-import freerails.client.common.StationHelper;
+import freerails.client.ModelRootImpl;
+import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
-import freerails.network.MessageToServer;
-import freerails.network.RefreshListOfGamesMessageToServer;
+import freerails.network.message.MessageToServer;
+import freerails.network.message.RefreshListOfGamesMessageToServer;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
@@ -41,6 +40,7 @@ import freerails.world.station.Station;
 import freerails.world.station.TrainBlueprint;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainTile;
+import freerails.world.world.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -166,11 +166,6 @@ public class DialogueBoxController implements WorldListListener {
         selectWagons = new SelectWagonsPanel();
         selectEngine = new SelectEnginePanel();
         trainDialoguePanel = new TrainDialoguePanel();
-        /*
-         * 666 needed ?? trainDialoguePanel.setIgnoreRepaint(true);
-         * selectEngine.setIgnoreRepaint(true);
-         * selectWagons.setIgnoreRepaint(true);
-         */
     }
 
     /**
@@ -519,7 +514,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param y
      */
     public void showStationOrTerrainInfo(Vector2D p) {
-        int stationNumberAtLocation = StationHelper.getStationNumberAtLocation(world, modelRoot, p);
+        int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPrincipal(), p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);
         } else {

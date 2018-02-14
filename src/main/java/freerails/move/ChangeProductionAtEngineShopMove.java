@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.util.ImmutableList;
 import freerails.world.KEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.station.TrainBlueprint;

@@ -34,7 +34,6 @@ public class StationConversion implements Serializable {
     private final ImmutableList<Integer> convertedTo;
 
     // TODO provide as map
-
     /**
      * @param convertedTo
      */
@@ -43,7 +42,6 @@ public class StationConversion implements Serializable {
     }
 
     // TODO is this really needed
-
     /**
      * @param numberOfCargoTypes
      * @return
@@ -53,7 +51,6 @@ public class StationConversion implements Serializable {
     }
 
     // TODO eliminate this
-
     /**
      * @param numberOfCargoTypes
      * @return
@@ -68,7 +65,6 @@ public class StationConversion implements Serializable {
     }
 
     // TODO what is the cargoNumber and do we need it? Maybe a cargo type?
-
     /**
      * @param cargoNumber
      * @return
@@ -78,7 +74,6 @@ public class StationConversion implements Serializable {
     }
 
     // TODO what is the meaning of the return value?
-
     /**
      * @param cargoNumber
      * @return

@@ -22,18 +22,23 @@
 package freerails.move;
 
 import freerails.controller.explorer.FlatTrackExplorer;
+import freerails.move.listmove.ChangeTrainMove;
+import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.world.track.NoTrackException;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.FullWorldDiffs;
+import freerails.world.world.ReadOnlyWorld;
+import freerails.world.world.FullWorldDiffs;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.Station;
 import freerails.world.terrain.TileTransition;
 import freerails.world.train.*;
+import freerails.world.train.schedule.ImmutableSchedule;
+import freerails.world.train.schedule.MutableSchedule;
+import freerails.world.train.schedule.Schedule;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;

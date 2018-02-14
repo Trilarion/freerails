@@ -20,7 +20,7 @@ package freerails.savegames;
 
 import freerails.util.Vector2D;
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.terrain.City;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

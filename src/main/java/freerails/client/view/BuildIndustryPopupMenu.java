@@ -24,6 +24,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.move.*;
+import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vector2D;
 import freerails.world.NonNullElementWorldIterator;
 import freerails.world.SKEY;
@@ -75,7 +76,7 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
                     public void actionPerformed(ActionEvent e) {
                         Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainType);
-                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainType, 1, Money.changeSign(price));
+                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainType, 1, Money.opposite(price));
                         Move m2 = new AddTransactionMove(modelRoot.getPrincipal(), transaction);
                         Move m3 = new CompositeMove(move, m2);
                         MoveStatus moveStatus = modelRoot.doMove(m3);

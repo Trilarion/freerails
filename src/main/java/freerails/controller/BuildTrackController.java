@@ -19,16 +19,16 @@
 package freerails.controller;
 
 import freerails.client.ClientConfig;
-import freerails.client.common.sound.SoundManager;
+import freerails.client.SoundManager;
 import freerails.controller.pathfinding.*;
-import freerails.move.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.UpgradeTrackMove;
+import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.FullWorldDiffs;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.FullWorldDiffs;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.server.gamemodel.GameModel;
 import freerails.world.player.FreerailsPrincipal;

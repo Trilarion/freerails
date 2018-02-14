@@ -38,8 +38,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
     /**
      * @param cargoType
-     * @param x
-     * @param y
+     * @param p
      * @param time
      * @param origin
      */
@@ -96,9 +95,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
         if (cargoType != o.cargoType) return cargoType - o.cargoType;
         if (stationOfOrigin != o.stationOfOrigin) return stationOfOrigin - o.stationOfOrigin;
-        // TODO compareTo for Point2D?
-        if (sourceP.x != o.sourceP.x) return sourceP.x - o.sourceP.x;
-        if (sourceP.y != o.sourceP.y) return sourceP.y - o.sourceP.y;
+        if (!sourceP.equals(o.sourceP)) return sourceP.compareTo(o.sourceP);
         return 0;
     }
 }

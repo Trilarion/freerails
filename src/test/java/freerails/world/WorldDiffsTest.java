@@ -26,6 +26,8 @@ import freerails.world.player.Player;
 import freerails.world.station.Station;
 import freerails.world.terrain.City;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.world.FullWorld;
+import freerails.world.world.FullWorldDiffs;
 import junit.framework.TestCase;
 
 import java.io.Serializable;

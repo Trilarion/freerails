@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.client.common.Painter;
+import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ModelRoot.Value;

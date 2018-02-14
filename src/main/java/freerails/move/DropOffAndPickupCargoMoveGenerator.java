@@ -18,9 +18,11 @@
 
 package freerails.move;
 
+import freerails.move.listmove.ChangeCargoBundleMove;
+import freerails.move.listmove.ChangeTrainMove;
 import freerails.util.ImmutableList;
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -30,6 +32,7 @@ import freerails.world.station.Station;
 import freerails.world.station.StationConversion;
 import freerails.world.station.StationDemand;
 import freerails.world.train.*;
+import freerails.world.train.schedule.Schedule;
 
 import java.io.Serializable;
 import java.util.ArrayList;

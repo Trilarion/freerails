@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.move.listmove.AddItemToListMove;
 import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.station.Station;

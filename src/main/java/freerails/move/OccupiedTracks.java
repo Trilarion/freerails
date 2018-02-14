@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackSection;

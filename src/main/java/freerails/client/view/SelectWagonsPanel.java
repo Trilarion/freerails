@@ -24,6 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.WagonCellRenderer;
 import freerails.controller.ModelRoot;
 import freerails.world.SKEY;
 import freerails.world.train.TrainModel;
@@ -229,14 +230,14 @@ public class SelectWagonsPanel extends JPanel implements View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         WorldToListModelAdapter w2lma = new WorldToListModelAdapter(modelRoot.getWorld(), SKEY.CARGO_TYPES);
         wagonTypesJList.setModel(w2lma);
-        rendererRoot = vl;
-        ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, rendererRoot);
+        this.rendererRoot = rendererRoot;
+        ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, this.rendererRoot);
         wagonTypesJList.setCellRenderer(wagonCellRenderer);
         okButton.addActionListener(closeAction);
     }

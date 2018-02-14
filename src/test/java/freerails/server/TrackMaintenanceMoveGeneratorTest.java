@@ -21,9 +21,9 @@
  */
 package freerails.server;
 
-import freerails.world.ItemsTransactionAggregator;
-import freerails.world.World;
-import freerails.world.FullWorld;
+import freerails.world.finances.ItemsTransactionAggregator;
+import freerails.world.world.World;
+import freerails.world.world.FullWorld;
 import freerails.world.finances.ItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;

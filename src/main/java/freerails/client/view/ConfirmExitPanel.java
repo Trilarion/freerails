@@ -83,7 +83,7 @@ public class ConfirmExitPanel extends JPanel implements View {
         System.exit(0);
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         closeJButton.setAction(closeAction);
     }
 }

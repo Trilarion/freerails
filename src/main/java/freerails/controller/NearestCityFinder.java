@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.util.Vector2D;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.City;
 
@@ -29,22 +29,18 @@ import java.util.NoSuchElementException;
  * Finds the nearest city and returns that name, so that a station can be
  * named appropriately.
  */
-class NearestCityFinder {
+public class NearestCityFinder {
 
-    // TODO use Vector2D
-    private final int x;
-    private final int y;
+    private final Vector2D location;
     private final ReadOnlyWorld world;
 
     /**
      * @param world
-     * @param x
-     * @param y
+     * @param location
      */
-    public NearestCityFinder(ReadOnlyWorld world, int x, int y) {
+    public NearestCityFinder(ReadOnlyWorld world, Vector2D location) {
         this.world = world;
-        this.x = x;
-        this.y = y;
+        this.location = location;
     }
 
     /**
@@ -78,13 +74,7 @@ class NearestCityFinder {
     }
 
     private double getDistance(Vector2D cityLocation) {
-        double distance;
-        // TODO Vector arigthmetics, is this code duplicated
-        double a = (x - cityLocation.x) * (x - cityLocation.x);
-        double b = (y - cityLocation.y) * (y - cityLocation.y);
-
-        distance = Math.sqrt(a + b);
-
-        return distance;
+        Vector2D delta = Vector2D.subtract(location, cityLocation);
+        return delta.norm();
     }
 }

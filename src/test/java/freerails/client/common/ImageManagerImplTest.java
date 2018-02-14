@@ -19,6 +19,7 @@
 package freerails.client.common;
 
 
+import freerails.util.ui.ImageManagerImpl;
 import junit.framework.TestCase;
 
 /**

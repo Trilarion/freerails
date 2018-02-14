@@ -20,7 +20,7 @@ package freerails.server;
 
 import freerails.util.Vector2D;
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.terrain.City;
 import freerails.world.MapFixtureFactory;
 import junit.framework.TestCase;

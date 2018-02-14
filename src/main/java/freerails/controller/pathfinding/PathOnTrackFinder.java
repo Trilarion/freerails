@@ -24,7 +24,7 @@ package freerails.controller.pathfinding;
 import freerails.controller.explorer.FlatTrackExplorer;
 import freerails.world.track.NoTrackException;
 import freerails.util.Vector2D;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.train.PositionOnTrack;

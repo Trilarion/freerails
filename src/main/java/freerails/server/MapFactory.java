@@ -23,7 +23,7 @@ package freerails.server;
 
 import freerails.util.Vector2D;
 import freerails.world.SKEY;
-import freerails.world.FullWorld;
+import freerails.world.world.FullWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TerrainRandomizer;

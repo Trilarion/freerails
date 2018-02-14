@@ -18,13 +18,12 @@
 
 package freerails.client;
 
-import freerails.network.SimpleMoveReciever;
-import freerails.client.common.ModelRootImpl;
-import freerails.client.common.MyGlassPanel;
+import freerails.network.movereceiver.SimpleMoveReciever;
+import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
-import freerails.network.MoveChainFork;
-import freerails.network.UntriedMoveReceiver;
+import freerails.network.movereceiver.MoveChainFork;
+import freerails.network.movereceiver.UntriedMoveReceiver;
 import freerails.savegames.FullSaveGameManager;
 import freerails.server.ProgressMonitorModel;
 import freerails.util.ImmutableList;
@@ -36,10 +35,12 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
 import freerails.world.station.StationDemand;
 import freerails.world.station.Station;
-import freerails.world.train.MutableSchedule;
+import freerails.world.train.schedule.MutableSchedule;
 import freerails.world.train.TrainModel;
 import freerails.world.train.TrainOrders;
 import freerails.world.train.WagonAndEngineTypesFactory;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

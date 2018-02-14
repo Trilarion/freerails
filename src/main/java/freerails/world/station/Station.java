@@ -20,6 +20,11 @@ package freerails.world.station;
 
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
+import freerails.world.KEY;
+import freerails.world.player.FreerailsPrincipal;
+import freerails.world.terrain.FullTerrainTile;
+import freerails.world.track.TrackRule;
+import freerails.world.world.ReadOnlyWorld;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -60,8 +65,7 @@ public class Station implements Serializable {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param location
      * @param stationName
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
@@ -95,7 +99,6 @@ public class Station implements Serializable {
     }
 
     // TODO this might be a misuse, just add production as method instead, copy should not be necessary
-
     /**
      * @param s
      * @param production
@@ -111,7 +114,6 @@ public class Station implements Serializable {
     }
 
     // TODO possible misuse, see above
-
     /**
      * @param s
      * @param demandForCargo
@@ -127,7 +129,6 @@ public class Station implements Serializable {
     }
 
     // TODO possible misuse, see above
-
     /**
      * @param s
      * @param supply
@@ -141,6 +142,27 @@ public class Station implements Serializable {
         name = s.name;
         production = s.production;
         location = s.location;
+    }
+
+    /**
+     * Return Station number if station exists at location or -1
+     */
+    public static int getStationNumberAtLocation(ReadOnlyWorld world, FreerailsPrincipal principal, Vector2D p) {
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
+
+        TrackRule trackRule = tile.getTrackPiece().getTrackRule();
+        if (trackRule.isStation() && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
+
+            for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
+                Station station = (Station) world.get(principal, KEY.STATIONS, i);
+
+                if (null != station && p.equals(station.location)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+        // Don't show terrain...
     }
 
     @Override

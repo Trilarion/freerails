@@ -21,9 +21,8 @@
  */
 package freerails.server.gamemodel;
 
-import freerails.server.MoveReceiver;
-import freerails.world.World;
-import freerails.server.gamemodel.GameModel;
+import freerails.network.movereceiver.MoveReceiver;
+import freerails.world.world.World;
 
 import java.io.Serializable;
 

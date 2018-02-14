@@ -112,10 +112,10 @@ public class NewsPaperPanel extends JPanel implements View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         callBack = closeAction;
     }
 

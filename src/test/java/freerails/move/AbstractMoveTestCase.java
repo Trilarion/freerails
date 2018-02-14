@@ -30,6 +30,8 @@ import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.train.PathOnTiles;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -145,7 +147,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      * @param move
      */
-    void assertOkButNotRepeatable(Move move) {
+    public void assertOkButNotRepeatable(Move move) {
         assertSetupHasBeenCalled();
 
         assertTryMoveIsOk(move);
@@ -167,7 +169,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param move
      */
-    void assertTryMoveFails(Move move) {
+    public void assertTryMoveFails(Move move) {
         assertSetupHasBeenCalled();
 
         MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
@@ -178,7 +180,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param move
      */
-    void assertTryMoveIsOk(Move move) {
+    public void assertTryMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
         MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
@@ -195,7 +197,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param move
      */
-    void assertTryUndoMoveFails(Move move) {
+    public void assertTryUndoMoveFails(Move move) {
         assertSetupHasBeenCalled();
 
         MoveStatus moveStatus = move.tryUndoMove(world, Player.AUTHORITATIVE);
@@ -206,7 +208,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param move
      */
-    void assertTryUndoMoveIsOk(Move move) {
+    public void assertTryUndoMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
         MoveStatus moveStatus = move.tryUndoMove(world, Player.AUTHORITATIVE);
@@ -223,7 +225,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param move
      */
-    protected void assertUndoMoveIsOk(Move move) {
+    public void assertUndoMoveIsOk(Move move) {
         assertSetupHasBeenCalled();
 
         MoveStatus moveStatus = move.undoMove(world, Player.AUTHORITATIVE);
@@ -235,7 +237,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
         return world.getPlayer(0).getPrincipal();
     }
 
-    World getWorld() {
+    public World getWorld() {
         return world;
     }
 

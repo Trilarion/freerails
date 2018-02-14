@@ -34,6 +34,7 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.train.WagonType;
+import freerails.world.world.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -178,7 +179,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         worldIterator = new NonNullElementWorldIterator(KEY.STATIONS, modelRoot.getWorld(), modelRoot.getPrincipal());
         addComponentListener(componentListener);
         world = modelRoot.getWorld();

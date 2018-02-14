@@ -18,12 +18,14 @@
 
 package freerails.client;
 
-import freerails.client.common.ImageManager;
-import freerails.client.common.ImageManagerImpl;
-import freerails.client.common.sound.SoundManager;
+import freerails.util.ui.ImageManager;
+import freerails.util.ui.ImageManagerImpl;
 import freerails.client.renderer.*;
+import freerails.client.renderer.tile.*;
+import freerails.client.renderer.track.TrackPieceRenderer;
+import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.server.ProgressMonitorModel;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.TerrainCategory;

@@ -18,8 +18,8 @@
 
 package freerails.move;
 
-import freerails.world.ReadOnlyWorld;
-import freerails.world.World;
+import freerails.world.world.ReadOnlyWorld;
+import freerails.world.world.World;
 import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
 import freerails.world.finances.StockItemTransaction;

@@ -23,6 +23,7 @@ package freerails.client.view;
 
 import java.awt.*;
 
+// TODO store this somewhere else (in the save game maybe)
 /**
  * Stores a list of colours to use to represent different players.
  */

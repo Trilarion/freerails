@@ -18,9 +18,10 @@
 
 package freerails.client.view;
 
+import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.move.ChangeTrainScheduleMove;
+import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.move.Move;
 import freerails.util.ImmutableList;
 import freerails.util.Utils;
@@ -28,6 +29,10 @@ import freerails.world.*;
 import freerails.world.cargo.CargoType;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.train.*;
+import freerails.world.train.schedule.ImmutableSchedule;
+import freerails.world.train.schedule.MutableSchedule;
+import freerails.world.train.schedule.Schedule;
+import freerails.world.world.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -390,10 +395,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         orders.setSelectedIndex(i - 1);
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        trainOrderPanel1.setup(modelRoot, vl, null);
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
+        trainOrderPanel1.setup(modelRoot, rendererRoot, null);
         this.modelRoot = modelRoot;
-        this.vl = vl;
+        this.vl = rendererRoot;
 
         // This actionListener is fired by the select station popup when a
         // station is selected.
@@ -408,7 +413,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
                 orders.requestFocus();
             }
         };
-        selectStationPanel1.setup(modelRoot, vl, action);
+        selectStationPanel1.setup(modelRoot, rendererRoot, action);
     }
 
     public void display(int newTrainNumber) {

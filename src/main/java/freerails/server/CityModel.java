@@ -19,9 +19,9 @@
 package freerails.server;
 
 import freerails.util.Vector2D;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.terrain.City;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
@@ -36,7 +36,7 @@ import java.util.Random;
 /**
  * Lets the server analyse and alter cities.
  */
-class CityModel {
+public class CityModel {
 
     final Collection<CityTile> urbanCityTiles = new ArrayList<>();
     final Collection<CityTile> industryCityTiles = new ArrayList<>();

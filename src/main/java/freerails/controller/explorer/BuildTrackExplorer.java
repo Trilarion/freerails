@@ -24,7 +24,7 @@ package freerails.controller.explorer;
 import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
 import freerails.world.player.FreerailsPrincipal;
@@ -239,8 +239,9 @@ public class BuildTrackExplorer implements GraphExplorer {
              * price in the cost calculation since it has already been paid.
              * Otherwise, add the cost of building the track.
              */
-            long priceA = ruleA.getPrice().getAmount();
-            long priceB = ruleB.getPrice().getAmount();
+            // TODO use Money arithmetics
+            long priceA = ruleA.getPrice().amount;
+            long priceB = ruleB.getPrice().amount;
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
             FullTerrainTile a = (FullTerrainTile) world.getTile(new Vector2D(x[0], y[0]));
@@ -248,7 +249,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (!currentRuleA.equals(ruleA)) {
                 assert (!currentRuleA.isStation()); // We shouldn't be upgrading
                 // a station.
-                cost += ruleA.getFixedCost().getAmount() * WorldConstants.TILE_SIZE;
+                cost += ruleA.getFixedCost().amount * WorldConstants.TILE_SIZE;
             }
         }
         return cost;

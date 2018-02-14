@@ -23,9 +23,10 @@ package freerails.server;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
+import freerails.network.movereceiver.MoveReceiver;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.WorldIterator;
 import freerails.world.finances.Money;
 import freerails.world.finances.MoneyTransaction;

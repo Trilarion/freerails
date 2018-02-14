@@ -19,7 +19,7 @@
 package freerails.server;
 
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.terrain.TerrainType;
 
 import java.util.ArrayList;

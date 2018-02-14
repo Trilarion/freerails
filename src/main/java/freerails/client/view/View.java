@@ -30,13 +30,13 @@ import javax.swing.*;
  * Defines a standard method to initiate GUI components that need access to the
  * ModelRoot.
  */
-interface View {
+public interface View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
 
-    void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction);
+    void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction);
 }

@@ -24,7 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.TerrainType;

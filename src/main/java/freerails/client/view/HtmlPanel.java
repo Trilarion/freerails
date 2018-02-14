@@ -150,7 +150,7 @@ public class HtmlPanel extends JPanel implements View {
         }
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         done.setAction(closeAction);
     }
 

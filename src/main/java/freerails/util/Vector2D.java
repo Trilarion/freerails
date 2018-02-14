@@ -22,7 +22,6 @@
 package freerails.util;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.Serializable;
 
 /**
@@ -69,9 +68,13 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
         return x * 29 + y;
     }
 
+    public double norm() {
+        return Math.sqrt(x * x + y * y);
+    }
+
     @Override
     public String toString() {
-        return "Point2D{" + x + ", " + y + '}';
+        return "Vector2D{" + x + ", " + y + '}';
     }
 
     public static Vector2D add(Vector2D a, Vector2D b) {

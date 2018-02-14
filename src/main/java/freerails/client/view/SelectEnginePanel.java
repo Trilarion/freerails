@@ -24,6 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.TrainCellRenderer;
 import freerails.controller.ModelRoot;
 import freerails.world.SKEY;
 
@@ -100,14 +101,14 @@ public class SelectEnginePanel extends JPanel implements View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
 
         list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), SKEY.ENGINE_TYPES));
-        list1.setCellRenderer(new TrainCellRenderer(vl));
+        list1.setCellRenderer(new TrainCellRenderer(rendererRoot));
         okButton.addActionListener(closeAction);
     }
 

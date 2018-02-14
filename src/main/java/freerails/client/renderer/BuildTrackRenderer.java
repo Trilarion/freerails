@@ -19,11 +19,12 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConfig;
-import freerails.client.common.Painter;
+import freerails.util.ui.Painter;
+import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.FullWorldDiffs;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.FullWorldDiffs;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.TrackPiece;
 

@@ -20,9 +20,11 @@ package freerails.controller;
 
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;

@@ -30,6 +30,9 @@ import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackSection;
+import freerails.world.train.schedule.ImmutableSchedule;
+import freerails.world.train.schedule.Schedule;
+import freerails.world.world.ReadOnlyWorld;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -138,7 +141,7 @@ public class TrainAccessor {
         int trainLength = tm.getTrainLength();
         Rectangle trainBox = new Rectangle(start.x * WorldConstants.TILE_SIZE - trainLength * 2, start.y * WorldConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
-            return null; // 666 doesn't work
+            return null; // TODO doesn't work
         }
         return tm.getStateAtTime(dt);
     }

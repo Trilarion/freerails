@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 // TODO this activity iterator can do far too much, use a standard iterator instead and put the extra features into an activity
-
 /**
  *
  */

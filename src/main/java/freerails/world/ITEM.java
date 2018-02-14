@@ -51,11 +51,11 @@ public class ITEM implements Serializable {
         numberOfKeys++;
     }
 
-    static int getNumberOfKeys() {
+    public static int getNumberOfKeys() {
         return ITEM.class.getFields().length;
     }
 
-    int getKeyID() {
+    public int getKeyID() {
         return keyID;
     }
 

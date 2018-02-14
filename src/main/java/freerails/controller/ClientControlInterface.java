@@ -18,8 +18,8 @@
 
 package freerails.controller;
 
-import freerails.network.MessageToClient;
-import freerails.world.World;
+import freerails.network.message.MessageToClient;
+import freerails.world.world.World;
 
 import java.io.Serializable;
 

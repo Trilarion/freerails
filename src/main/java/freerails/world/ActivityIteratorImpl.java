@@ -1,5 +1,7 @@
 package freerails.world;
 
+import freerails.world.world.FullWorld;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.NoSuchElementException;

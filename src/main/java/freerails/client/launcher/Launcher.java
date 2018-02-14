@@ -26,7 +26,7 @@ package freerails.client.launcher;
 import freerails.client.ClientConfig;
 import freerails.client.GameLoop;
 import freerails.client.ScreenHandler;
-import freerails.network.FreerailsGameServer;
+import freerails.network.gameserver.FreerailsGameServer;
 import freerails.network.InetConnectionAccepter;
 import freerails.network.LogOnResponse;
 import freerails.savegames.FullSaveGameManager;

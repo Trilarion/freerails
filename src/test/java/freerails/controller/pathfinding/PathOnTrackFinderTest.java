@@ -21,12 +21,12 @@
  */
 package freerails.controller.pathfinding;
 
-import freerails.client.common.ModelRootImpl;
+import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.world.terrain.TileTransition;
-import freerails.world.World;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

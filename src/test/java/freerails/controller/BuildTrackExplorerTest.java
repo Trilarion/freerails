@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.controller.explorer.BuildTrackExplorer;
-import freerails.move.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.world.*;
@@ -32,9 +32,10 @@ import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.terrain.TileTransition;
-import freerails.world.terrain.TileTypeImpl;
+import freerails.world.terrain.TerrainTypeImpl;
 import freerails.world.track.TrackRule;
 import freerails.world.train.PositionOnTrack;
+import freerails.world.world.FullWorld;
 import junit.framework.TestCase;
 
 /**
@@ -103,7 +104,7 @@ public class BuildTrackExplorerTest extends TestCase {
     public void test2() {
         // Check the the Ocean type is where we think it is.
         int occeanTypeNumber = 4;
-        TileTypeImpl ocean = (TileTypeImpl) world.get(SKEY.TERRAIN_TYPES,
+        TerrainTypeImpl ocean = (TerrainTypeImpl) world.get(SKEY.TERRAIN_TYPES,
                 occeanTypeNumber);
         assertEquals(TerrainCategory.Ocean, ocean.getCategory());
 

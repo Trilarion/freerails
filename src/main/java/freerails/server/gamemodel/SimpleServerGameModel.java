@@ -21,9 +21,8 @@
  */
 package freerails.server.gamemodel;
 
-import freerails.server.MoveReceiver;
-import freerails.server.gamemodel.ServerGameModel;
-import freerails.world.World;
+import freerails.network.movereceiver.MoveReceiver;
+import freerails.world.world.World;
 
 // TODO not sure this is really needed
 /**

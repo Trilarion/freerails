@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.world.player.Player;

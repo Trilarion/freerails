@@ -31,6 +31,8 @@ import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TerrainType;
 import freerails.world.train.WagonAndEngineTypesFactory;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 
 import java.net.URL;
 

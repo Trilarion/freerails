@@ -18,10 +18,11 @@
 
 package freerails.client.view;
 
+import freerails.client.model.IncomeStatementGenerator;
 import freerails.util.Vector2D;
-import freerails.world.FullWorld;
+import freerails.world.world.FullWorld;
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
@@ -44,7 +45,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
     public void testCalExpense() {
         balanceSheetGenerator.calculateAll();
         Money m = balanceSheetGenerator.mailTotal;
-        assertEquals(0, m.getAmount());
+        assertEquals(0, m.amount);
 
         CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, 0);
         assertEquals(CargoCategory.Mail, ct.getCategory());

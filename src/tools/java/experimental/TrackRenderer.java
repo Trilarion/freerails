@@ -18,8 +18,8 @@
 
 package experimental;
 
-import freerails.client.common.ImageManager;
-import freerails.client.common.ImageManagerImpl;
+import freerails.util.ui.ImageManager;
+import freerails.util.ui.ImageManagerImpl;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.TrackConfigurations;
 

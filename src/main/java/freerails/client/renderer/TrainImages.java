@@ -21,7 +21,7 @@
  */
 package freerails.client.renderer;
 
-import freerails.client.common.ImageManager;
+import freerails.util.ui.ImageManager;
 import freerails.world.terrain.TileTransition;
 
 import java.awt.*;

@@ -21,8 +21,8 @@
  */
 package freerails.client.view;
 
-import freerails.controller.StockPriceCalculator;
-import freerails.controller.StockPriceCalculator.StockPrice;
+import freerails.world.finances.StockPriceCalculator;
+import freerails.world.finances.StockPrice;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
@@ -33,6 +33,8 @@ import freerails.world.finances.StockItemTransaction;
 import freerails.world.game.GameCalendar;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 /**

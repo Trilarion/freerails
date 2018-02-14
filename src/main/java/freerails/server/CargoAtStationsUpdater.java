@@ -21,8 +21,9 @@
  */
 package freerails.server;
 
-import freerails.move.ChangeCargoBundleMove;
+import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.move.Move;
+import freerails.network.movereceiver.MoveReceiver;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
@@ -32,6 +33,7 @@ import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.station.StationSupply;
+import freerails.world.world.World;
 
 import java.io.Serializable;
 import java.util.Iterator;

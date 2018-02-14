@@ -29,6 +29,8 @@ import freerails.world.finances.Money;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
 import freerails.world.player.Player;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 /**
@@ -44,9 +46,9 @@ public class BalanceSheetGeneratorTest extends TestCase {
      */
     public void testBondsFigure() {
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
-        Money expectedBondValue = new Money(WorldConstants.BOND_VALUE_ISSUE.getAmount());
-        assertEquals(Money.changeSign(expectedBondValue), generator.total.loans);
-        assertEquals(Money.changeSign(expectedBondValue), generator.ytd.loans);
+        Money expectedBondValue = WorldConstants.BOND_VALUE_ISSUE;
+        assertEquals(Money.opposite(expectedBondValue), generator.total.loans);
+        assertEquals(Money.opposite(expectedBondValue), generator.ytd.loans);
     }
 
     /**

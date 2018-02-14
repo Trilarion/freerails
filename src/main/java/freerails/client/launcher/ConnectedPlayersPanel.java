@@ -23,7 +23,8 @@
 
 package freerails.client.launcher;
 
-import freerails.network.FreerailsGameServer;
+import freerails.network.gameserver.FreerailsGameServer;
+import freerails.util.ui.MyAbstractListModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +34,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Shows the players currently logged in to the server.
  */
-class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
+public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListener {
 
     private static final long serialVersionUID = 4049080453489111344L;
     FreerailsGameServer server = null;

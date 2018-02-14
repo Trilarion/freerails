@@ -22,7 +22,7 @@
 package freerails.server.parser;
 
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.terrain.TerrainCategory;
 import freerails.world.track.*;
 import org.xml.sax.Attributes;

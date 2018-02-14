@@ -21,16 +21,13 @@
  */
 package freerails.client;
 
-import freerails.client.renderer.TileRenderer;
-import freerails.client.renderer.TileRendererList;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.SKEY;
+import freerails.client.renderer.tile.TileRenderer;
+import freerails.client.renderer.tile.TileRendererList;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.WorldConstants;
 import freerails.world.terrain.TerrainType;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Simple implementation of TileRendererList, for testing purposes only.

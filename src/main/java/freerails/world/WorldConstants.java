@@ -1,7 +1,5 @@
 package freerails.world;
 
-// TODO not many constants here
-
 import freerails.world.finances.Money;
 
 /**

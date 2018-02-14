@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.world.Activity;
 import freerails.world.ActivityIterator;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 
 /**

@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.client.common.RepaintManagerForActiveRendering;
+import freerails.util.ui.RepaintManagerForActiveRendering;
 import freerails.client.launcher.Launcher;
 import freerails.util.Utils;
 import freerails.server.gamemodel.GameModel;

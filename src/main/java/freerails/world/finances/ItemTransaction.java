@@ -34,7 +34,7 @@ public class ItemTransaction implements Transaction {
     private final int type;
 
 
-    // TODO what is the difference between category and type
+    // TODO what is the difference between category and type??
 
     /**
      * @param category
@@ -59,7 +59,7 @@ public class ItemTransaction implements Transaction {
         return false;
     }
 
-    public Money value() {
+    public Money price() {
         return amount;
     }
 

@@ -23,12 +23,15 @@ package freerails.server.gamemodel;
 
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
-import freerails.move.WorldDiffMove;
+import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.move.WorldDiffMoveCause;
+import freerails.network.movereceiver.MoveReceiver;
 import freerails.server.*;
-import freerails.world.FullWorldDiffs;
+import freerails.server.automaton.ServerAutomaton;
+import freerails.server.automaton.TrainUpdater;
+import freerails.world.world.FullWorldDiffs;
 import freerails.world.ITEM;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;

@@ -18,16 +18,17 @@
 
 package freerails.client;
 
-import freerails.client.common.sound.SoundManager;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
-import freerails.server.MoveReceiver;
+import freerails.move.mapupdatemove.WorldDiffMove;
+import freerails.network.movereceiver.MoveReceiver;
 import freerails.util.Utils;
 import freerails.world.ITEM;
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.finances.Money;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoType;
@@ -119,11 +120,11 @@ public class UserMessageGenerator implements MoveReceiver {
             Station station = (Station) world.get(modelRoot.getPrincipal(), KEY.STATIONS, stationId);
             message.append(station.getStationName());
             message.append('\n');
-            long revenue = 0;
+            Money revenue = Money.ZERO;
             int[] cargoQuantities = new int[modelRoot.getWorld().size(SKEY.CARGO_TYPES)];
             for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
-                revenue += receipt.value().getAmount();
+                revenue = Money.add(revenue, receipt.price());
                 cargoQuantities[batch.getCargoType()] = receipt.getQuantity();
             }
             for (int i = 0; i < cargoQuantities.length; i++) {
@@ -137,11 +138,11 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
             }
             message.append("Revenue $");
-            message.append(formatter.format(revenue));
+            message.append(formatter.format(revenue.amount));
             modelRoot.setProperty(Property.QUICK_MESSAGE, message.toString());
             // Play the sound of cash coming in. The greater the
             // revenue, the more loops of the sample we play.
-            int loops = (int) revenue / 4000;
+            int loops = (int) revenue.amount / 4000;
             soundManager.playSound(ClientConfig.SOUND_CASH, loops);
         }
     }

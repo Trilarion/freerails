@@ -18,11 +18,10 @@
 
 package freerails.client;
 
-import freerails.client.FreerailsClient;
 import freerails.controller.ClientProperty;
 import freerails.network.AbstractFreerailsServerTestCase;
 import freerails.network.LogOnResponse;
-import freerails.network.MessageToClient;
+import freerails.network.message.MessageToClient;
 import freerails.util.ImmutableList;
 
 /**

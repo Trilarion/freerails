@@ -26,6 +26,8 @@ import freerails.util.Utils;
 import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 import java.io.Serializable;

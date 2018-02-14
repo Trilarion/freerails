@@ -23,6 +23,8 @@
  */
 package freerails.move;
 
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.game.GameRules;
@@ -30,6 +32,7 @@ import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.*;
+import freerails.world.world.FullWorld;
 
 /**
  *
@@ -112,7 +115,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testCannotConnect2OtherRRsTrack() {
-        assertFalse(ChangeTrackPieceMove.canConnect2OtherRRsTrack(world));
+        assertFalse(ChangeTrackPieceMove.canConnectToOtherRRsTrack(world));
         final int TRACK_RULE_ID = 0;
         TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, TRACK_RULE_ID);
 

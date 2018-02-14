@@ -21,8 +21,10 @@
  */
 package freerails.controller;
 
-import freerails.client.common.ModelRootImpl;
+import freerails.client.ModelRootImpl;
 import freerails.move.*;
+import freerails.move.premove.AddTrainPreMove;
+import freerails.move.premove.MoveTrainPreMove;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.world.*;
@@ -33,6 +35,10 @@ import freerails.world.station.StationDemand;
 import freerails.world.station.Station;
 import freerails.world.terrain.TileTransition;
 import freerails.world.train.*;
+import freerails.world.train.schedule.ImmutableSchedule;
+import freerails.world.train.schedule.MutableSchedule;
+import freerails.world.train.schedule.Schedule;
+import freerails.world.world.World;
 
 /**
  * Unit test for MoveTrainPreMove, tests stopping at stations.

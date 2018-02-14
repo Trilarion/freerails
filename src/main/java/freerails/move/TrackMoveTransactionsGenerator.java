@@ -21,7 +21,8 @@
  */
 package freerails.move;
 
-import freerails.world.ReadOnlyWorld;
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
 import freerails.world.finances.ItemTransaction;
@@ -124,11 +125,13 @@ public class TrackMoveTransactionsGenerator {
             TrackCategories category = newTrackRule.getCategory();
             switch (category) {
                 case station: {
-                    fixedCostsStations -= newTrackRule.getFixedCost().getAmount();
+                    // TODO Money arithmetics
+                    fixedCostsStations -= newTrackRule.getFixedCost().amount;
                     break;
                 }
                 case bridge: {
-                    fixedCostsBridges -= newTrackRule.getFixedCost().getAmount();
+                    // TODO Money arithmetics
+                    fixedCostsBridges -= newTrackRule.getFixedCost().amount;
                     break;
                 }
                 default: {}
@@ -165,7 +168,8 @@ public class TrackMoveTransactionsGenerator {
             if (0 != numberAdded) {
                 TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
                 Money price = rule.getPrice();
-                Money total = new Money(-price.getAmount() * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                // TODO Money arithmetics
+                Money total = new Money(-price.amount * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
                 Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
                 transactions.add(transaction);
             }
@@ -175,11 +179,11 @@ public class TrackMoveTransactionsGenerator {
             if (0 != numberRemoved) {
                 TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
                 Money m = rule.getPrice();
-
-                Money total = new Money((m.getAmount() * numberRemoved) / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                // TODO Money arithmetics
+                Money total = new Money((m.amount * numberRemoved) / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
-                total = new Money(total.getAmount() / 2);
+                total = Money.divide(total, 2);
 
                 Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, -numberRemoved, total);
                 transactions.add(transaction);

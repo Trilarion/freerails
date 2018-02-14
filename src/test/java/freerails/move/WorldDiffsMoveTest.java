@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.world.*;
@@ -32,6 +33,9 @@ import freerails.world.game.GameCalendar;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.City;
 import freerails.world.TestActivity;
+import freerails.world.world.FullWorld;
+import freerails.world.world.FullWorldDiffs;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 /**

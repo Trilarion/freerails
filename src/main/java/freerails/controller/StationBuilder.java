@@ -20,8 +20,9 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.move.premove.AddStationPreMove;
 import freerails.util.Vector2D;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.track.TrackRule;

@@ -21,12 +21,11 @@
  */
 package freerails.world;
 
-import freerails.world.finances.ItemTransaction;
-import freerails.world.finances.Money;
-import freerails.world.finances.Transaction;
-import freerails.world.finances.TransactionCategory;
+import freerails.world.finances.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.player.Player;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 /**

@@ -26,11 +26,11 @@ import java.net.Socket;
  * gracefully.
  */
 class Connection {
+
     private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
     private final Socket socket;
     // Note compression commented out since it was causing junit tests to fail.
-    // Not
-    // sure why. LL
+    // Not sure why. LL
     // private DeflaterOutputStream deflaterOutputStream;
     // private InflaterInputStream inflaterInputStream;
     private ObjectOutputStream objectOutputStream;

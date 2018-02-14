@@ -45,7 +45,7 @@ import java.net.InetSocketAddress;
  * The Launcher panel that lets you choose fullscreen or windowed mode and the
  * screen resolution etc.
  */
-class ClientOptionsPanel extends JPanel {
+public class ClientOptionsPanel extends JPanel {
 
     private static final long serialVersionUID = 3256721779883325748L;
     private static final Logger logger = Logger.getLogger(ClientOptionsPanel.class.getName());

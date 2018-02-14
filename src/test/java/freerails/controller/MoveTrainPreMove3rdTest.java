@@ -21,14 +21,14 @@
  */
 package freerails.controller;
 
-import freerails.client.common.ModelRootImpl;
+import freerails.client.ModelRootImpl;
 import freerails.move.MoveStatus;
-import freerails.move.MoveTrainPreMove;
+import freerails.move.premove.MoveTrainPreMove;
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.world.train.PositionOnTrack;
 import freerails.world.terrain.TileTransition;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
 import junit.framework.TestCase;

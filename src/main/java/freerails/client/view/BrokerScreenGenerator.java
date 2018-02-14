@@ -23,12 +23,12 @@
 
 package freerails.client.view;
 
-import freerails.controller.FinancialDataGatherer;
-import freerails.controller.StockPriceCalculator;
-import freerails.controller.StockPriceCalculator.StockPrice;
+import freerails.world.finances.FinancialDataGatherer;
+import freerails.world.finances.StockPriceCalculator;
+import freerails.world.finances.StockPrice;
 import freerails.world.ITEM;
-import freerails.world.ItemsTransactionAggregator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.finances.ItemsTransactionAggregator;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.finances.TransactionCategory;
 import freerails.world.game.GameCalendar;

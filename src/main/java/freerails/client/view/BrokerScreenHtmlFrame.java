@@ -25,13 +25,13 @@ package freerails.client.view;
 
 import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.FinancialDataGatherer;
+import freerails.world.finances.FinancialDataGatherer;
 import freerails.controller.ModelRoot;
-import freerails.controller.StockPriceCalculator;
-import freerails.controller.StockPriceCalculator.StockPrice;
+import freerails.world.finances.StockPriceCalculator;
+import freerails.world.finances.StockPrice;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.WorldConstants;
 import freerails.world.finances.BondItemTransaction;
 import freerails.world.finances.Money;
@@ -89,12 +89,12 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     /**
      * @param m
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
     @Override
-    public void setup(final ModelRoot m, RendererRoot vl, Action closeAction) {
-        super.setup(m, vl, closeAction);
+    public void setup(final ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
+        super.setup(m, rendererRoot, closeAction);
         financialDataGatherer = new FinancialDataGatherer(m.getWorld(), m.getPrincipal());
         this.modelRoot = m;
 
@@ -160,7 +160,8 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, principal);
 
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
-        long highestAffordablePrice = world.getCurrentBalance(principal).getAmount() / WorldConstants.STOCK_BUNDLE_SIZE;
+        // TODO use Money arithmetic
+        long highestAffordablePrice = world.getCurrentBalance(principal).amount / WorldConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
         for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
             Player temp = modelRoot.getWorld().getPlayer(playerId);
@@ -185,7 +186,8 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
             }
 
             // Don't let the player buy stock if they cannot afford it.
-            if (stockPrices[playerId].currentPrice.getAmount() > highestAffordablePrice) {
+            // TODO use Money arithmetic
+            if (stockPrices[playerId].currentPrice.amount > highestAffordablePrice) {
                 buyStock[playerId].setEnabled(false);
             }
         }

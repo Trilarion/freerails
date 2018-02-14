@@ -20,6 +20,7 @@ package freerails.world.finances;
 
 import freerails.world.WorldConstants;
 
+// TODO get rid of this and just use an ItemTransaction with category BOND
 /**
  * A Transaction that adds or removes a Bond.
  */

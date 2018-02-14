@@ -18,6 +18,8 @@
 
 package freerails.move;
 
+import freerails.move.listmove.ChangeCargoBundleMove;
+
 import java.util.List;
 
 /**

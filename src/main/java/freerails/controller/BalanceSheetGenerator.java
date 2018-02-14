@@ -19,12 +19,10 @@
 package freerails.controller;
 
 import freerails.world.*;
-import freerails.world.finances.Money;
-import freerails.world.finances.TransactionCategory;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.TrackRule;
+import freerails.world.world.ReadOnlyWorld;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so
@@ -50,34 +48,6 @@ public class BalanceSheetGenerator {
 
         GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
         ytd = new Stats(world, principal, ytdTimeInterval);
-    }
-
-    /**
-     * @param world
-     * @param principal
-     * @param startTime
-     * @return
-     */
-    public static Money calTrackTotal(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime startTime) {
-
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
-        aggregator.setCategory(TransactionCategory.TRACK);
-        long amount = 0;
-
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
-            long trackValue = trackRule.getPrice().getAmount();
-
-            GameTime[] times = new GameTime[]{startTime, GameTime.DOOMSDAY};
-
-            aggregator.setType(i);
-            aggregator.setTimes(times);
-            QuantitiesAndValues qnv = aggregator.calculateQuantitiesAndValues();
-            int quantity = qnv.quantities[0];
-            amount += trackValue * quantity / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
-        }
-
-        return new Money(amount);
     }
 
 }

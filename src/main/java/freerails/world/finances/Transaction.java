@@ -30,7 +30,7 @@ public interface Transaction extends Serializable {
     /**
      * Positive means credit.
      */
-    Money value();
+    Money price();
 
     // TODO what is this category good for
 

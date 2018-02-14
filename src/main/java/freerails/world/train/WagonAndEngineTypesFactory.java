@@ -22,7 +22,7 @@
 package freerails.world.train;
 
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.finances.Money;
 
 /**

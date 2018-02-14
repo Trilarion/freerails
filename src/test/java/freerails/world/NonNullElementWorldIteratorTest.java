@@ -23,6 +23,8 @@ package freerails.world;
 
 import freerails.util.Vector2D;
 import freerails.world.station.Station;
+import freerails.world.world.FullWorld;
+import freerails.world.world.World;
 import junit.framework.TestCase;
 
 import java.util.NoSuchElementException;

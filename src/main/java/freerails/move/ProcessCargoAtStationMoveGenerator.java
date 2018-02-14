@@ -21,10 +21,8 @@
  */
 package freerails.move;
 
-import freerails.move.AddTransactionMove;
-import freerails.move.Move;
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.cargo.CargoBatchBundle;
 import freerails.world.finances.CargoDeliveryMoneyTransaction;

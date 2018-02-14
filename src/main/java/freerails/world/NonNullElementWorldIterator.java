@@ -23,6 +23,7 @@ package freerails.world;
 
 import freerails.util.Utils;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.world.ReadOnlyWorld;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;

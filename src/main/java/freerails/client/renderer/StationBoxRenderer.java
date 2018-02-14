@@ -19,7 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConfig;
-import freerails.client.common.Painter;
+import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.world.*;
 import freerails.world.cargo.CargoBatchBundle;
@@ -29,6 +29,7 @@ import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.train.WagonType;
+import freerails.world.world.ReadOnlyWorld;
 
 import java.awt.*;
 import java.io.IOException;

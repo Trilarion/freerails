@@ -23,7 +23,6 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
 // TODO What is the difference between Player and PlayerPrincipal?
-
 /**
  * Represents a player within the game. The player model is such that a user can
  * start a client, create a new player on the server and start playing. They can

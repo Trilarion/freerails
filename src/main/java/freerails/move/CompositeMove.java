@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public class CompositeMove implements Move {
     /**
      * This method lets sub classes look at the moves.
      */
-    final Move getMove(int i) {
+    public final Move getMove(int i) {
         return moves.get(i);
     }
 
@@ -171,7 +171,7 @@ public class CompositeMove implements Move {
      * Subclasses may override this method to perform tests which pass or fail
      * depending on the combination of moves making up this composite move.
      */
-    MoveStatus compositeTest(World w) {
+    public MoveStatus compositeTest(World w) {
         return MoveStatus.MOVE_OK;
     }
 

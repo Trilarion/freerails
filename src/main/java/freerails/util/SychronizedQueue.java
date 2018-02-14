@@ -23,7 +23,6 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 // TODO perhaps an arrayList is better (-> profile it)
-
 /**
  * Intended to let objects be safely passed between threads.
  */

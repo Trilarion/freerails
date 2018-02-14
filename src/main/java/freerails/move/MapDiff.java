@@ -7,14 +7,14 @@ import java.io.Serializable;
 /**
  *
  */
-class MapDiff implements Serializable {
+public class MapDiff implements Serializable {
 
     private static final long serialVersionUID = -5935670372745313360L;
     private final Serializable before;
     private final Serializable after;
     private final Vector2D p;
 
-    MapDiff(Serializable before, Serializable after, Vector2D p) {
+    public MapDiff(Serializable before, Serializable after, Vector2D p) {
         this.after = after;
         this.before = before;
         this.p = p;

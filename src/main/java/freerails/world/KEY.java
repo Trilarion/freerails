@@ -65,7 +65,7 @@ public class KEY implements Serializable {
         return keys[keyNum];
     }
 
-    int getKeyID() {
+    public int getKeyID() {
         return keyID;
     }
 

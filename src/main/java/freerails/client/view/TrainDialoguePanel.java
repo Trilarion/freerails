@@ -27,6 +27,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
+import freerails.world.world.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -132,9 +133,9 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         }
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        newTrainSchedulePanel1.setup(modelRoot, vl, closeAction);
-        trainDetailsJPanel1.setup(modelRoot, vl, closeAction);
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
+        newTrainSchedulePanel1.setup(modelRoot, rendererRoot, closeAction);
+        trainDetailsJPanel1.setup(modelRoot, rendererRoot, closeAction);
         setCancelButtonActionListener(closeAction);
         principal = modelRoot.getPrincipal();
         world = modelRoot.getWorld();

@@ -23,8 +23,8 @@
 
 package freerails.client.view;
 
-import freerails.client.GUIComponentFactory;
-import freerails.client.GUIComponentFactoryTestImpl;
+import freerails.client.componentfactory.GUIComponentFactory;
+import freerails.client.componentfactory.GUIComponentFactoryTestImpl;
 
 import javax.swing.*;
 import java.awt.*;

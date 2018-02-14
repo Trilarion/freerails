@@ -19,7 +19,7 @@
 package freerails.server.parser;
 
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.cargo.CargoCategory;
 import freerails.world.cargo.CargoType;
 import freerails.world.terrain.*;
@@ -132,7 +132,7 @@ public class CargoAndTerrainHandlerImpl implements CargoAndTerrainHandler {
             converts[i] = typeConverts.get(i);
         }
 
-        Serializable tileType = new TileTypeImpl(tileRGB, tileCategory, tileID, tileROW, produces, consumes, converts, tileBuildCost);
+        Serializable tileType = new TerrainTypeImpl(tileRGB, tileCategory, tileID, tileROW, produces, consumes, converts, tileBuildCost);
 
         world.add(SKEY.TERRAIN_TYPES, tileType);
     }

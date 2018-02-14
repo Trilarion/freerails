@@ -28,13 +28,14 @@ import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.station.NearestStationFinder;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.terrain.TileTransition;
 import freerails.world.track.NullTrackPiece;
-import freerails.world.train.MutableSchedule;
+import freerails.world.train.schedule.MutableSchedule;
 import freerails.world.train.TrainOrders;
 
 import javax.swing.*;
@@ -303,8 +304,8 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-        cargoWaitingAndDemandedPanel1.setup(modelRoot, vl, null);
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
+        cargoWaitingAndDemandedPanel1.setup(modelRoot, rendererRoot, null);
         world = modelRoot.getWorld();
         submitButtonCallBack = closeAction;
         principal = modelRoot.getPrincipal();

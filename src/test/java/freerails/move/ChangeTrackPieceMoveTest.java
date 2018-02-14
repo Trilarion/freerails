@@ -23,8 +23,10 @@
  */
 package freerails.move;
 
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vector2D;
-import freerails.world.FullWorld;
+import freerails.world.world.FullWorld;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.SKEY;

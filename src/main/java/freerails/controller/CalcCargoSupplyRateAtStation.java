@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.WorldConstants;
 import freerails.world.station.Station;

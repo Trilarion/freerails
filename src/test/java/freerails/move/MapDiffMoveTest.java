@@ -18,9 +18,10 @@
 
 package freerails.move;
 
+import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.util.Vector2D;
-import freerails.world.FullWorldDiffs;
-import freerails.world.World;
+import freerails.world.world.FullWorldDiffs;
+import freerails.world.world.World;
 import freerails.world.terrain.FullTerrainTile;
 
 /**

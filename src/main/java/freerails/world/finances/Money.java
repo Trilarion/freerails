@@ -25,12 +25,12 @@ import java.text.DecimalFormat;
 /**
  * Represents an immutable amount of Money.
  */
-public final class Money implements Serializable {
+public final class Money implements Serializable, Comparable<Money> {
 
-    public static final Money ZERO = new Money(0);
     private static final long serialVersionUID = 3258697615163338805L;
+    public static final Money ZERO = new Money(0);
     private static final DecimalFormat df = new DecimalFormat("#,###");
-    private final long amount;
+    public final long amount;
 
     /**
      * @param amount
@@ -40,22 +40,69 @@ public final class Money implements Serializable {
     }
 
     /**
+     *
+     * @param moneyA
+     * @param moneyB
      * @return
      */
-    public static Money changeSign(Money money) {
-        return new Money(-money.amount);
+    public static Money add(Money moneyA, Money moneyB) {
+        return new Money(moneyA.amount + moneyB.amount);
     }
 
     /**
+     *
+     * @param moneyA
+     * @param moneyB
      * @return
      */
-    public long getAmount() {
-        return amount;
+    public static Money subtract(Money moneyA, Money moneyB) {
+        return new Money(moneyA.amount - moneyB.amount);
+    }
+
+    /**
+     *
+     * @param money
+     * @param factor
+     * @return
+     */
+    public static Money multiply(Money money, long factor) {
+        return new Money(factor * money.amount);
+    }
+
+    /**
+     *
+     * Note: An integer division (rounding towards zero) is performed.
+     *
+     * @param money
+     * @param factor
+     * @return
+     */
+    public static Money divide(Money money, long factor) {
+        return new Money(factor / money.amount);
+    }
+
+    /**
+     * Convenience function.
+     *
+     * @param money
+     * @return
+     */
+    public static Money opposite(Money money) {
+        return Money.multiply(money, -1);
     }
 
     @Override
     public int hashCode() {
-        return (int) (amount ^ (amount >>> 32));
+        return Long.hashCode(amount);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Money)) return false;
+
+        final Money other = (Money) obj;
+        return amount == other.amount;
     }
 
     // TODO add currency here (not in the client)
@@ -64,13 +111,13 @@ public final class Money implements Serializable {
         return df.format(amount);
     }
 
+    /**
+     *
+     * @param o
+     * @return
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Money) {
-            Money test = (Money) obj;
-
-            return test.amount == amount;
-        }
-        return false;
+    public int compareTo(Money o) {
+        return Long.signum(amount - o.amount);
     }
 }

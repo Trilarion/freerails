@@ -18,13 +18,14 @@
 
 package freerails.client.renderer;
 
-import freerails.client.common.Painter;
+import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.world.*;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 import freerails.world.terrain.FullTerrainTile;
+import freerails.world.world.ReadOnlyWorld;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;

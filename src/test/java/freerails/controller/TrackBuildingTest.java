@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.client.common.ModelRootImpl;
+import freerails.client.ModelRootImpl;
 import freerails.controller.pathfinding.PathFinderStatus;
 import freerails.controller.pathfinding.PathNotFoundException;
 import freerails.controller.pathfinding.TrackPathFinder;
@@ -26,7 +26,7 @@ import freerails.move.MoveStatus;
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.world.terrain.TileTransition;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.track.NullTrackType;

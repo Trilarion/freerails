@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.controller.explorer.FlatTrackExplorer;
-import freerails.move.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.world.*;
@@ -29,6 +29,7 @@ import freerails.world.terrain.TileTransition;
 import freerails.world.track.NoTrackException;
 import freerails.world.track.TrackRule;
 import freerails.world.train.PositionOnTrack;
+import freerails.world.world.FullWorld;
 import junit.framework.TestCase;
 
 import java.util.HashSet;

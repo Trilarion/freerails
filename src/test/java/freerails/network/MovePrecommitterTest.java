@@ -21,15 +21,15 @@
  */
 package freerails.network;
 
-import freerails.move.PreMove;
-import freerails.controller.PreMoveStatus;
-import freerails.controller.TimeTickPreMove;
+import freerails.move.premove.PreMove;
+import freerails.move.PreMoveStatus;
+import freerails.move.premove.TimeTickPreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.TimeTickMove;
 import freerails.world.game.GameTime;
-import freerails.world.World;
-import freerails.world.FullWorld;
+import freerails.world.world.World;
+import freerails.world.world.FullWorld;
 import freerails.world.player.Player;
 import junit.framework.TestCase;
 

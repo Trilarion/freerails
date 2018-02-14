@@ -23,7 +23,7 @@
 
 package freerails.controller;
 
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.terrain.TerrainType;
 import freerails.world.track.TrackCategories;
@@ -90,7 +90,7 @@ public class BuildTrackStrategy {
         for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
             TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
             if (rule.getCategory() == category) {
-                if (null == cheapest || cheapest.getPrice().getAmount() > rule.getPrice().getAmount()) {
+                if (null == cheapest || cheapest.getPrice().amount > rule.getPrice().amount) {
                     cheapest = rule;
                     cheapestID = i;
                 }

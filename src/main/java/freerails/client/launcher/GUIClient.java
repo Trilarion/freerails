@@ -22,7 +22,7 @@
 package freerails.client.launcher;
 
 import freerails.client.*;
-import freerails.client.common.ModelRootImpl;
+import freerails.client.componentfactory.GUIComponentFactoryImpl;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ClientProperty;
@@ -30,8 +30,8 @@ import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.server.ProgressMonitorModel;
 import freerails.world.ITEM;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.World;
+import freerails.world.world.ReadOnlyWorld;
+import freerails.world.world.World;
 import freerails.world.game.GameSpeed;
 import freerails.world.game.GameTime;
 import freerails.world.player.Player;

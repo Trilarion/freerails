@@ -18,7 +18,7 @@
 
 package experimental;
 
-import freerails.client.renderer.TrackPieceRendererImpl;
+import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.server.parser.TrackTilesHandlerImpl;
 import freerails.world.track.TrackCategories;
 import freerails.world.track.TrackConfiguration;

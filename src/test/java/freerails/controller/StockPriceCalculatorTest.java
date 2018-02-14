@@ -23,10 +23,11 @@ package freerails.controller;
 
 import freerails.world.MapFixtureFactory2;
 import freerails.util.Vector2D;
+import freerails.world.finances.StockPriceCalculator;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
 import freerails.world.ITEM;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.cargo.CargoBatch;
 import freerails.world.finances.CargoDeliveryMoneyTransaction;
 import freerails.world.finances.Money;

@@ -18,11 +18,13 @@
 
 package freerails.client.view;
 
-import freerails.client.common.ModelRootImpl;
+import freerails.client.ModelRootImpl;
+import freerails.client.model.ServerControlModel;
+import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.StationBuilder;
 import freerails.controller.TrackMoveProducer;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 
 import javax.swing.*;

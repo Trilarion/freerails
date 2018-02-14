@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
@@ -32,7 +32,7 @@ import java.util.LinkedList;
  * by another station. If the name has been used, a minor alteration in the name
  * is required, by adding perhaps "Junction" or "Siding" to the name.
  */
-class VerifyStationName {
+public class VerifyStationName {
 
     private final ReadOnlyWorld world;
     private final String nameToVerify;

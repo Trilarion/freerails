@@ -23,12 +23,14 @@
 
 package freerails.client.view;
 
+import freerails.client.model.TrainSummeryModel;
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
 import freerails.world.ITEM;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.finances.Money;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
@@ -114,10 +116,10 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         add(trainIncomeLabel, gridBagConstraints);
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         principal = modelRoot.getPrincipal();
         world = modelRoot.getWorld();
-        trainListCellRenderer1 = new TrainListCellRenderer(modelRoot, vl);
+        trainListCellRenderer1 = new TrainListCellRenderer(modelRoot, rendererRoot);
         trainListCellRenderer1.setHeight(15);
         model.setWorld(world, principal);
     }

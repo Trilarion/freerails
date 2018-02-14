@@ -24,10 +24,12 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
+import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 
@@ -44,12 +46,12 @@ public class TrainOrderPanel implements View, ListCellRenderer {
     private final Icon gotoNow = new ImageIcon(TrainOrderPanel.class.getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));
     private final Icon gotoAfterPriorityOrders = new ImageIcon(TrainOrderPanel.class.getResource(ClientConfig.GRAPHIC_ARROW_DESELECTED));
     private final ImageIcon dontGoto = null;
-    private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
+    public final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
-    private final Map<TrainOrderModel, TrainOrderJPanelSingle> lines;
-    private ReadOnlyWorld world;
-    private FreerailsPrincipal principal;
+    private final Map<TrainOrderModel, TrainOrderPanelSingle> lines;
+    public ReadOnlyWorld world;
+    public FreerailsPrincipal principal;
     private Action closeAction;
     private RendererRoot vl;
     private ModelRoot modelRoot;
@@ -64,12 +66,12 @@ public class TrainOrderPanel implements View, ListCellRenderer {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         this.modelRoot = modelRoot;
-        this.vl = vl;
+        this.vl = rendererRoot;
         this.closeAction = closeAction;
         world = modelRoot.getWorld();
         principal = modelRoot.getPrincipal();
@@ -107,9 +109,9 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         }
 
         TrainOrderModel tm = new TrainOrderModel(stationName, waitUntilFull, select, trainOrders.gotoStatus, orderText);
-        TrainOrderJPanelSingle panelSingle = lines.get(tm);
+        TrainOrderPanelSingle panelSingle = lines.get(tm);
         if (panelSingle == null) {
-            panelSingle = new TrainOrderJPanelSingle();
+            panelSingle = new TrainOrderPanelSingle(this);
             panelSingle.setup(modelRoot, vl, closeAction);
 
             panelSingle.stationNameJLabel.setText(stationName);
@@ -171,7 +173,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         return panelSingle;
     }
 
-    // 666 model still not correct ...
+    // TODO model still not correct ...
 
     /**
      * contains all data which is displayed for one station (order). This is
@@ -229,78 +231,6 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         @Override
         public int hashCode() {
             return waitUntilFull.hashCode() + stationName.hashCode() + selected.hashCode() + gotoStatus + orderText.hashCode();
-        }
-    }
-
-    private final class TrainOrderJPanelSingle extends JPanel implements View {
-
-        private static final long serialVersionUID = 3516604388665786813L;
-            private JPanel consistChangeJPanel;
-        private JLabel gotoIcon;
-        private JLabel noChangeJLabel;
-        private JLabel ordersJLabel;
-        private JLabel stationNameJLabel;
-
-        private TrainOrderJPanelSingle() {
-            GridBagConstraints gridBagConstraints;
-
-            gotoIcon = new JLabel();
-            consistChangeJPanel = new TrainListCellRenderer();
-            noChangeJLabel = new JLabel();
-            stationNameJLabel = new JLabel();
-            ordersJLabel = new JLabel();
-
-            setLayout(new GridBagLayout());
-
-            gotoIcon.setIcon(new ImageIcon(getClass().getResource(ClientConfig.GRAPHIC_ARROW_SELECTED)));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.gridy = 0;
-            gridBagConstraints.gridheight = 2;
-            gridBagConstraints.anchor = GridBagConstraints.WEST;
-            add(gotoIcon, gridBagConstraints);
-
-            consistChangeJPanel.setLayout(new GridBagLayout());
-
-            noChangeJLabel.setText("No Change");
-            consistChangeJPanel.add(noChangeJLabel, new GridBagConstraints());
-
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 1;
-            gridBagConstraints.gridy = 1;
-            gridBagConstraints.gridwidth = 2;
-            gridBagConstraints.fill = GridBagConstraints.BOTH;
-            gridBagConstraints.anchor = GridBagConstraints.WEST;
-            gridBagConstraints.weightx = 1.0;
-            add(consistChangeJPanel, gridBagConstraints);
-
-            stationNameJLabel.setText("Some Station");
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 1;
-            gridBagConstraints.gridy = 0;
-            gridBagConstraints.anchor = GridBagConstraints.WEST;
-            gridBagConstraints.insets = new Insets(0, 5, 0, 5);
-            add(stationNameJLabel, gridBagConstraints);
-
-            ordersJLabel.setText("wait until full / don't wait");
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 2;
-            gridBagConstraints.gridy = 0;
-            gridBagConstraints.ipadx = 6;
-            gridBagConstraints.anchor = GridBagConstraints.EAST;
-            gridBagConstraints.insets = new Insets(0, 6, 0, 5);
-            add(ordersJLabel, gridBagConstraints);
-
-            setBackground(backgoundColor);
-        }
-
-
-        public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
-            world = modelRoot.getWorld();
-            TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;
-            trainViewJPanel.setHeight(15);
-            trainViewJPanel.setup(modelRoot, vl, null);
-            principal = modelRoot.getPrincipal();
         }
     }
 

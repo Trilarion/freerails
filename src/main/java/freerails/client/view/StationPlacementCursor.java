@@ -18,7 +18,9 @@
 
 package freerails.client.view;
 
+import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.StationRadiusRenderer;
+import freerails.client.renderer.map.MapViewComponent;
 
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;

@@ -22,10 +22,10 @@
  */
 package experimental;
 
-import freerails.client.GUIComponentFactory;
-import freerails.client.renderer.BlankMapRenderer;
+import freerails.client.componentfactory.GUIComponentFactory;
+import freerails.client.renderer.map.BlankMapRenderer;
 import freerails.client.view.MainMapAndOverviewMapMediator;
-import freerails.client.view.MapViewComponentConcrete;
+import freerails.client.renderer.map.MapViewComponentConcrete;
 import freerails.client.view.OverviewMapComponent;
 
 import javax.swing.*;

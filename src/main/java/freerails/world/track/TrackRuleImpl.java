@@ -72,8 +72,7 @@ public final class TrackRuleImpl implements TrackRule {
     }
 
     /**
-     * If the specified object is a track rule, comparison is by category then
-     * price.
+     * If the specified object is a track rule, comparison is by category then price.
      */
     public int compareTo(TrackRule o) {
 
@@ -81,8 +80,7 @@ public final class TrackRuleImpl implements TrackRule {
         if (comp != 0) {
             return -comp;
         }
-        long dPrice = properties.getPrice().getAmount() - o.getPrice().getAmount();
-        return (int) dPrice;
+        return properties.getPrice().compareTo(o.getPrice());
     }
 
     @Override

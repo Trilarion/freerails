@@ -27,27 +27,27 @@ package freerails.world.finances;
 public class MoneyTransaction implements Transaction {
 
     private static final long serialVersionUID = 3258416144497782835L;
-    private final Money value;
+    private final Money money;
     private final TransactionCategory category;
 
     /**
-     * @param value
+     * @param money
      * @param category
      */
-    public MoneyTransaction(Money value, TransactionCategory category) {
-        this.value = value;
+    public MoneyTransaction(Money money, TransactionCategory category) {
+        this.money = money;
         this.category = category;
     }
 
-    public Money value() {
-        return value;
+    public Money price() {
+        return money;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MoneyTransaction) {
             MoneyTransaction other = (MoneyTransaction) obj;
-            return other.value.equals(value) && category == other.category;
+            return other.money.equals(money) && category == other.category;
         }
         return false;
     }
@@ -62,7 +62,7 @@ public class MoneyTransaction implements Transaction {
     @Override
     public int hashCode() {
         int result;
-        result = value.hashCode();
+        result = money.hashCode();
         result = 29 * result + category.hashCode();
         return result;
     }

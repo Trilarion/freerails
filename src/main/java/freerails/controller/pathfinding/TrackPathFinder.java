@@ -24,7 +24,7 @@ package freerails.controller.pathfinding;
 import freerails.controller.explorer.BuildTrackExplorer;
 import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.terrain.FullTerrainTile;

@@ -19,11 +19,12 @@
 package freerails.server;
 
 import freerails.controller.CalcCargoSupplyRateAtStation;
-import freerails.move.ChangeStationMove;
+import freerails.move.listmove.ChangeStationMove;
 import freerails.move.Move;
+import freerails.network.movereceiver.MoveReceiver;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.FreerailsPrincipal;
 import freerails.world.station.Station;
 

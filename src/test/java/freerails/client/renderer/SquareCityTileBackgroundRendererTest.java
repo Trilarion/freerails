@@ -21,6 +21,8 @@
  */
 package freerails.client.renderer;
 
+import freerails.client.renderer.map.MapLayerRenderer;
+import freerails.client.renderer.map.SquareTileBackgroundRenderer;
 import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
@@ -31,12 +33,7 @@ import java.awt.*;
  */
 public class SquareCityTileBackgroundRendererTest extends TestCase {
 
-    private final MapLayerRenderer renderer = new MapLayerRenderer() {
-        public void paintTile(Graphics g, Vector2D tileP) {}
-        public void refreshTile(Vector2D p) {}
-        public void refreshAll() {}
-        public void paintRect(Graphics g, Rectangle visibleRect) {}
-    };
+    private final MapLayerRenderer renderer = new TestMapLayerRenderer();
 
     /**
      * Testcase to reproduce bug [ 1303162 ] Unexpected Exception:

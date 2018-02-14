@@ -24,10 +24,11 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
 import freerails.world.KEY;
 import freerails.world.NonNullElementWorldIterator;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.WorldIterator;
 import freerails.world.player.FreerailsPrincipal;
 
@@ -191,13 +192,13 @@ public class TrainListPanel extends JPanel implements View {
         }
     }
 
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
-        trainSummaryPanel1.setup(modelRoot, vl, null);
+        trainSummaryPanel1.setup(modelRoot, rendererRoot, null);
 
         if (rhsjTabPane) {
             list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), KEY.TRAINS, modelRoot.getPrincipal()));
-            TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, vl);
+            TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, rendererRoot);
             list1.setCellRenderer(trainView);
             trainView.setHeight(trainViewHeight);
         }

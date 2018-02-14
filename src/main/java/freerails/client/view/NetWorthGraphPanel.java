@@ -24,10 +24,10 @@ package freerails.client.view;
 import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.controller.NetWorthCalculator;
+import freerails.world.finances.NetWorthCalculator;
 import freerails.world.ITEM;
-import freerails.world.ReadOnlyWorld;
-import freerails.world.TransactionAggregator;
+import freerails.world.world.ReadOnlyWorld;
+import freerails.world.finances.TransactionAggregator;
 import freerails.world.finances.Money;
 import freerails.world.game.GameCalendar;
 import freerails.world.game.GameTime;
@@ -300,10 +300,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
 
     /**
      * @param modelRoot
-     * @param vl
+     * @param rendererRoot
      * @param closeAction
      */
-    public void setup(ModelRoot modelRoot, RendererRoot vl, Action closeAction) {
+    public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         submitButtonCallBack = closeAction;
         ReadOnlyWorld world = modelRoot.getWorld();
         companies = new ArrayList<>();
@@ -324,7 +324,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
 
             logger.debug("Adding player " + name + " to net worth graph.");
 
-            CompanyDetails cd = new CompanyDetails(name, c);
+            CompanyDetails companyDetails = new CompanyDetails(name, c);
             GameTime[] times = new GameTime[101];
             for (int year = 0; year < 101; year++) {
                 int ticks = calender.getTicks(startYear + year - 1);
@@ -335,9 +335,9 @@ public class NetWorthGraphPanel extends JPanel implements View {
             Money[] values = aggregator.calculateValues();
             int stopYear = currentYear - startYear + 1;
             for (int year = 0; year < stopYear; year++) {
-                cd.value[year] = values[year].getAmount();
+                companyDetails.value[year] = values[year].amount;
             }
-            companies.add(cd);
+            companies.add(companyDetails);
         }
 
         setAppropriateScale();

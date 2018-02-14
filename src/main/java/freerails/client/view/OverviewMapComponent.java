@@ -18,8 +18,8 @@
 
 package freerails.client.view;
 
-import freerails.client.renderer.BlankMapRenderer;
-import freerails.client.renderer.MapRenderer;
+import freerails.client.renderer.map.BlankMapRenderer;
+import freerails.client.renderer.map.MapRenderer;
 
 import javax.swing.*;
 import java.awt.*;

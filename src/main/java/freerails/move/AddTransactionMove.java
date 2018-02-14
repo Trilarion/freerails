@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.finances.Transaction;
 import freerails.world.player.FreerailsPrincipal;
 
@@ -82,8 +82,9 @@ public class AddTransactionMove implements Move {
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         if (world.isPlayer(this.principal)) {
             if (cashConstrained) {
-                long bankBalance = world.getCurrentBalance(this.principal).getAmount();
-                long transactionAmount = transaction.value().getAmount();
+                // TODO Money arithmetics
+                long bankBalance = world.getCurrentBalance(this.principal).amount;
+                long transactionAmount = transaction.price().amount;
                 long balanceAfter = bankBalance + transactionAmount;
 
                 if (transactionAmount < 0 && balanceAfter < 0) {

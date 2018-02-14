@@ -21,11 +21,11 @@
  */
 package freerails.network;
 
-import freerails.move.PreMove;
-import freerails.controller.PreMoveStatus;
+import freerails.move.premove.PreMove;
+import freerails.move.PreMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.Player;
 import org.apache.log4j.Logger;
 

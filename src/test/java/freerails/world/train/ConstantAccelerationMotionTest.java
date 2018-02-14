@@ -21,6 +21,8 @@
  */
 package freerails.world.train;
 
+import freerails.world.train.motion.ConstantAccelerationMotion;
+import freerails.world.train.motion.Motion;
 import junit.framework.TestCase;
 
 import java.util.Random;

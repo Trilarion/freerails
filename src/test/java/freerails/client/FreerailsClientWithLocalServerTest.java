@@ -18,17 +18,22 @@
 
 package freerails.client;
 
-import freerails.client.FreerailsClient;
-import freerails.client.FreerailsClientTest;
 import freerails.controller.*;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.PreMove;
+import freerails.move.PreMoveStatus;
+import freerails.move.premove.PreMove;
+import freerails.move.premove.TimeTickPreMove;
 import freerails.network.*;
+import freerails.network.gameserver.FreerailsGameServer;
+import freerails.network.message.MessageToClient;
+import freerails.network.message.MessageToServer;
+import freerails.network.message.NewGameMessageToServer;
+import freerails.network.message.SaveGameMessageToServer;
 import freerails.savegames.UnitTestSaveGamesManager;
 import freerails.util.ImmutableList;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.finances.Money;
 import freerails.world.finances.MoneyTransaction;
 import freerails.world.finances.Transaction;

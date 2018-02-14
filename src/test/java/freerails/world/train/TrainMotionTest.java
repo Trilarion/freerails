@@ -23,6 +23,9 @@ package freerails.world.train;
 
 import freerails.util.Vector2D;
 import freerails.world.terrain.TileTransition;
+import freerails.world.train.motion.CompositeMotion;
+import freerails.world.train.motion.ConstantAccelerationMotion;
+import freerails.world.train.motion.Motion;
 import junit.framework.TestCase;
 
 /**

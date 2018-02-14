@@ -23,7 +23,7 @@ package freerails.controller.pathfinding;
 
 import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
-import freerails.world.FullWorld;
+import freerails.world.world.FullWorld;
 import freerails.world.game.GameRules;
 import freerails.world.ITEM;
 import freerails.world.player.Player;

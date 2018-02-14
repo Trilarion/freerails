@@ -18,7 +18,9 @@
 
 package freerails.client;
 
-import freerails.client.common.sound.SoundManager;
+import freerails.client.model.ServerControlModel;
+import freerails.client.model.StationBuildModel;
+import freerails.client.renderer.map.MapViewComponent;
 import freerails.controller.BuildTrackController;
 import freerails.client.view.*;
 import freerails.controller.BuildMode;
@@ -29,7 +31,7 @@ import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.terrain.TileTransition;
 import org.apache.log4j.Logger;
 
@@ -45,7 +47,7 @@ import java.awt.event.MouseEvent;
  * Handles key presses and mouse movements on the map - responsible for moving
  * the cursor etc.
  */
-class UserInputOnMapController extends KeyAdapter {
+public class UserInputOnMapController extends KeyAdapter {
 
     private static final Logger logger = Logger.getLogger(UserInputOnMapController.class.getName());
     private final ModelRoot modelRoot;

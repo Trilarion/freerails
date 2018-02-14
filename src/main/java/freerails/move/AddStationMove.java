@@ -21,9 +21,11 @@
  */
 package freerails.move;
 
+import freerails.move.listmove.AddCargoBundleMove;
+import freerails.move.listmove.AddItemToListMove;
 import freerails.util.Vector2D;
 import freerails.world.KEY;
-import freerails.world.ReadOnlyWorld;
+import freerails.world.world.ReadOnlyWorld;
 import freerails.world.SKEY;
 import freerails.world.cargo.ImmutableCargoBatchBundle;
 import freerails.world.player.FreerailsPrincipal;

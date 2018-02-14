@@ -106,7 +106,7 @@ public final class NullTrackType implements TrackRule {
 
     @Override
     public int hashCode() {
-        return 666;
+        return 0;
     }
 
     /**

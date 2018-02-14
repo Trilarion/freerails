@@ -18,8 +18,8 @@
 
 package freerails.move;
 
-import freerails.world.ReadOnlyWorld;
-import freerails.world.World;
+import freerails.world.world.ReadOnlyWorld;
+import freerails.world.world.World;
 import freerails.world.game.GameTime;
 import freerails.world.player.FreerailsPrincipal;
 

@@ -21,10 +21,13 @@
  */
 package freerails.move;
 
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vector2D;
-import freerails.world.FullWorld;
+import freerails.world.world.FullWorld;
 import freerails.world.SKEY;
-import freerails.world.World;
+import freerails.world.world.World;
 import freerails.world.player.Player;
 import freerails.world.terrain.FullTerrainTile;
 import freerails.world.MapFixtureFactory;
