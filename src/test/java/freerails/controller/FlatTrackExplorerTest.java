@@ -19,6 +19,8 @@
 package freerails.controller;
 
 import freerails.controller.explorer.FlatTrackExplorer;
+import freerails.model.world.ITEM;
+import freerails.model.world.WorldSharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
@@ -53,7 +55,7 @@ public class FlatTrackExplorerTest extends TestCase {
         world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
 
-        TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
+        TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
 
         TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
         Vector2D p = new Vector2D(10, 10);

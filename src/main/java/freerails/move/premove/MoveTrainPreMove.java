@@ -30,7 +30,7 @@ import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.model.ActivityIterator;
 import freerails.model.world.FullWorldDiffs;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.game.GameTime;
@@ -160,8 +160,8 @@ public class MoveTrainPreMove implements PreMove {
             int stationId = ta.getStationId(ticks);
             if (stationId == -1) throw new IllegalStateException();
 
-            Station station = (Station) world.get(principal, KEY.STATIONS, stationId);
-            CargoBatchBundle cb = (CargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+            Station station = (Station) world.get(principal, WorldKey.Stations, stationId);
+            CargoBatchBundle cb = (CargoBatchBundle) world.get(principal, WorldKey.CargoBundles, station.getCargoBundleID());
 
             for (int i = 0; i < spaceAvailable.size(); i++) {
                 int space = spaceAvailable.get(i);

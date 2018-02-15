@@ -21,6 +21,8 @@
  */
 package freerails.model;
 
+import freerails.model.world.WorldSharedKey;
+import freerails.model.world.WorldKey;
 import freerails.util.Utils;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.ReadOnlyWorld;
@@ -36,8 +38,8 @@ import java.util.NoSuchElementException;
  */
 public class NonNullElementWorldIterator implements WorldIterator {
 
-    private final KEY key;
-    private final SKEY skey;
+    private final WorldKey worldKey;
+    private final WorldSharedKey worldSharedKey;
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
     private int index = BEFORE_FIRST;
@@ -48,10 +50,10 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param k
      * @param world
      */
-    public NonNullElementWorldIterator(SKEY k, ReadOnlyWorld world) {
-        key = null;
+    public NonNullElementWorldIterator(WorldSharedKey k, ReadOnlyWorld world) {
+        worldKey = null;
         principal = null;
-        skey = Utils.verifyNotNull(k);
+        worldSharedKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
     }
 
@@ -60,25 +62,25 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param world
      * @param p
      */
-    public NonNullElementWorldIterator(KEY k, ReadOnlyWorld world, FreerailsPrincipal p) {
-        key = Utils.verifyNotNull(k);
+    public NonNullElementWorldIterator(WorldKey k, ReadOnlyWorld world, FreerailsPrincipal p) {
+        worldKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
         principal = Utils.verifyNotNull(p);
-        skey = null;
+        worldSharedKey = null;
     }
 
     /**
      * @param world
-     * @param key
+     * @param worldKey
      * @param principal
      * @param row
      * @return
      */
-    public static int rowToIndex(ReadOnlyWorld world, KEY key, FreerailsPrincipal principal, int row) {
+    public static int rowToIndex(ReadOnlyWorld world, WorldKey worldKey, FreerailsPrincipal principal, int row) {
         int count = 0;
-        for (int i = 0; i < world.size(principal, key); i++) {
+        for (int i = 0; i < world.size(principal, worldKey); i++) {
 
-            if (world.get(principal, key, i) != null) {
+            if (world.get(principal, worldKey, i) != null) {
                 if (count == row) {
                     return i;
                 }
@@ -117,17 +119,17 @@ public class NonNullElementWorldIterator implements WorldIterator {
     }
 
     private Serializable listGet(int i) {
-        if (null == skey) {
-            return world.get(principal, key, i);
+        if (null == worldSharedKey) {
+            return world.get(principal, worldKey, i);
         }
-        return world.get(skey, i);
+        return world.get(worldSharedKey, i);
     }
 
     private int listSize() {
-        if (null == skey) {
-            return world.size(principal, key);
+        if (null == worldSharedKey) {
+            return world.size(principal, worldKey);
         }
-        return world.size(skey);
+        return world.size(worldSharedKey);
     }
 
     public int getIndex() {

@@ -19,15 +19,14 @@
 /*
  *
  */
-package freerails.model;
+package freerails.model.world;
 
+import freerails.model.Activity;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.finances.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.world.FullWorld;
-import freerails.model.world.World;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -44,8 +43,8 @@ public class FullWorldTest extends TestCase {
      */
     public void testGet() {
         FullWorld fullWorld = new FullWorld();
-        fullWorld.add(SKEY.TERRAIN_TYPES, fs);
-        assertEquals(fullWorld.get(SKEY.TERRAIN_TYPES, 0), fs);
+        fullWorld.add(WorldSharedKey.TerrainTypes, fs);
+        assertEquals(fullWorld.get(WorldSharedKey.TerrainTypes, 0), fs);
     }
 
     /**
@@ -69,12 +68,12 @@ public class FullWorldTest extends TestCase {
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
 
-        copy.add(SKEY.TERRAIN_TYPES, fs);
+        copy.add(WorldSharedKey.TerrainTypes, fs);
 
         assertFalse(original.equals(copy));
         assertFalse(copy.equals(original));
-        assertEquals(1, copy.size(SKEY.TERRAIN_TYPES));
-        assertEquals(0, original.size(SKEY.TERRAIN_TYPES));
+        assertEquals(1, copy.size(WorldSharedKey.TerrainTypes));
+        assertEquals(0, original.size(WorldSharedKey.TerrainTypes));
     }
 
     /**

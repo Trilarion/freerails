@@ -23,6 +23,7 @@ import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.world.World;
 import junit.framework.TestCase;
 
@@ -59,9 +60,9 @@ public class MapFixtureFactory2Test extends TestCase {
      */
     public void testLists() {
 
-        assertTrue(world.size(SKEY.CARGO_TYPES) > 0);
-        assertTrue(world.size(SKEY.TRACK_RULES) > 0);
-        assertTrue(world.size(SKEY.TERRAIN_TYPES) > 0);
+        assertTrue(world.size(WorldSharedKey.CargoTypes) > 0);
+        assertTrue(world.size(WorldSharedKey.TrackRules) > 0);
+        assertTrue(world.size(WorldSharedKey.TerrainTypes) > 0);
     }
 
     /**

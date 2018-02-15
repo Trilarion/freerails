@@ -23,6 +23,7 @@ package freerails.client.view;
 
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
+import freerails.model.world.ITEM;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;

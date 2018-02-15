@@ -27,8 +27,8 @@ import freerails.client.model.TrainSummeryModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.model.ITEM;
-import freerails.model.KEY;
+import freerails.model.world.ITEM;
+import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.Money;
@@ -135,7 +135,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.rowToIndex(world, KEY.TRAINS, principal, index);
+        int trainID = NonNullElementWorldIterator.rowToIndex(world, WorldKey.Trains, principal, index);
         String trainNumText = "#" + (trainID + 1);
 
         trainNumLabel.setText(trainNumText);

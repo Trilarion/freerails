@@ -27,7 +27,7 @@ import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.terrain.TerrainType;
@@ -88,15 +88,15 @@ public class RendererRootImpl implements RendererRoot {
 
     private void loadTrainImages(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         // Setup progress monitor..
-        final int numberOfWagonTypes = world.size(SKEY.CARGO_TYPES);
-        final int numberOfEngineTypes = world.size(SKEY.ENGINE_TYPES);
+        final int numberOfWagonTypes = world.size(WorldSharedKey.CargoTypes);
+        final int numberOfEngineTypes = world.size(WorldSharedKey.EngineTypes);
         progressMonitorModel.nextStep(numberOfWagonTypes + numberOfEngineTypes);
         int progress = 0;
         progressMonitorModel.setValue(progress);
 
         // Load wagon images.
         for (int i = 0; i < numberOfWagonTypes; i++) {
-            CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
+            CargoType cargoType = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
             String name = cargoType.getName();
             TrainImages ti = new TrainImages(imageManager, name);
             wagonImages.add(ti);
@@ -105,7 +105,7 @@ public class RendererRootImpl implements RendererRoot {
 
         // Load engine images
         for (int i = 0; i < numberOfEngineTypes; i++) {
-            EngineType engineType = (EngineType) world.get(SKEY.ENGINE_TYPES, i);
+            EngineType engineType = (EngineType) world.get(WorldSharedKey.EngineTypes, i);
             String engineTypeName = engineType.getEngineTypeName();
             TrainImages ti = new TrainImages(imageManager, engineTypeName);
             engineImages.add(ti);
@@ -122,14 +122,14 @@ public class RendererRootImpl implements RendererRoot {
 
         // Setup progress monitor..
 
-        int numberOfTypes = world.size(SKEY.TERRAIN_TYPES);
+        int numberOfTypes = world.size(WorldSharedKey.TerrainTypes);
         progressMonitorModel.nextStep(numberOfTypes);
 
         int progress = 0;
         progressMonitorModel.setValue(progress);
 
         for (int i = 0; i < numberOfTypes; i++) {
-            TerrainType t = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
+            TerrainType t = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
             int[] typesTreatedAsTheSame = new int[]{i};
 
             TileRenderer tileRenderer;
@@ -146,7 +146,7 @@ public class RendererRootImpl implements RendererRoot {
                     int count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType) world.get(SKEY.TERRAIN_TYPES, j);
+                        TerrainType t2 = (TerrainType) world.get(WorldSharedKey.TerrainTypes, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
                         if (terrainCategory == TerrainCategory.Ocean || terrainCategory == thisTerrainCategory) {
@@ -158,7 +158,7 @@ public class RendererRootImpl implements RendererRoot {
                     count = 0;
 
                     for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType) world.get(SKEY.TERRAIN_TYPES, j);
+                        TerrainType t2 = (TerrainType) world.get(WorldSharedKey.TerrainTypes, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
                         if (terrainCategory == TerrainCategory.Ocean || terrainCategory == thisTerrainCategory) {
@@ -217,7 +217,7 @@ public class RendererRootImpl implements RendererRoot {
         TileRenderer occeanTileRenderer = null;
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType) world.get(SKEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType) world.get(WorldSharedKey.TerrainTypes, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Ocean")) {
@@ -228,11 +228,11 @@ public class RendererRootImpl implements RendererRoot {
         }
 
         for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType) world.get(SKEY.TERRAIN_TYPES, j);
+            TerrainType t2 = (TerrainType) world.get(WorldSharedKey.TerrainTypes, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Harbour")) {
-                TerrainType t = (TerrainType) world.get(SKEY.TERRAIN_TYPES, j);
+                TerrainType t = (TerrainType) world.get(WorldSharedKey.TerrainTypes, j);
                 TileRenderer tr = new SpecialTileRenderer(imageManager, new int[]{j}, t, occeanTileRenderer, world);
                 tileRenderers.set(j, tr);
                 break;

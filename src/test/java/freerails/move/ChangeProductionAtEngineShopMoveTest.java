@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.util.ImmutableList;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.train.WagonAndEngineTypesFactory;
 import freerails.model.station.TrainBlueprint;
 import freerails.model.station.Station;
@@ -43,9 +43,9 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, new Station());
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, new Station());
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, new Station());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, new Station());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, new Station());
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, new Station());
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
         WagonAndEngineTypesFactory.addTypesToWorld(getWorld());

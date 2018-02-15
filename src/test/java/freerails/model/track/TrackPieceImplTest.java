@@ -23,7 +23,7 @@ package freerails.model.track;
 
 import freerails.util.TestUtils;
 import freerails.model.MapFixtureFactory2;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import junit.framework.TestCase;
@@ -51,8 +51,8 @@ public class TrackPieceImplTest extends TestCase {
     public void testEqualsObject() {
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
 
-        TrackRule rule0 = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
-        TrackRule rule4 = (TrackRule) world.get(SKEY.TRACK_RULES, 4);
+        TrackRule rule0 = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
+        TrackRule rule4 = (TrackRule) world.get(WorldSharedKey.TrackRules, 4);
 
         TrackPieceImpl trackPiece1 = new TrackPieceImpl(trackConfiguration, rule0, 0, 0);
         assertEquals(trackPiece1, trackPiece1);

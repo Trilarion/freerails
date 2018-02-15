@@ -26,7 +26,7 @@ import freerails.controller.*;
 import freerails.controller.ModelRoot.Property;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
@@ -60,10 +60,10 @@ public class BuildTrackControllerTest extends TestCase {
         MoveExecutor executor = new SimpleMoveExecutor(world, 0);
         trackBuilder = new TrackMoveProducer(executor, world, modelRoot);
 
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
+        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
 
             final Integer ruleID = i;
-            TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+            TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
 
             if (rule.getTypeName().equals("standard track")) {
                 singleTrackRuleID = ruleID;

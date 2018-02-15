@@ -25,7 +25,7 @@ package freerails.client.renderer;
 import freerails.client.view.View;
 import freerails.controller.ModelRoot;
 import freerails.util.ImmutableList;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldListListener;
@@ -98,7 +98,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         showingOrder = false;
         trainNumber = newTrainNumber;
 
-        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, trainNumber);
         display(train.getEngineType(), train.getConsist());
         resetPreferredSize();
     }
@@ -135,10 +135,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
         scheduleOrderNumber = newScheduleOrderID;
 
-        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, trainNumber);
         scheduleID = train.getScheduleID();
 
-        Schedule s = (ImmutableSchedule) world.get(principal, KEY.TRAIN_SCHEDULES, scheduleID);
+        Schedule s = (ImmutableSchedule) world.get(principal, WorldKey.TrainSchedules, scheduleID);
         TrainOrders order = s.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
@@ -175,7 +175,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.rowToIndex(world, KEY.TRAINS, principal, index);
+        int trainID = NonNullElementWorldIterator.rowToIndex(world, WorldKey.Trains, principal, index);
         display(trainID);
 
         if (isSelected) {
@@ -220,35 +220,35 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param key
+     * @param worldKey
      * @param index
      * @param principal
      */
-    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
+    public void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal) {
         if (showingOrder) {
-            if (KEY.TRAIN_SCHEDULES == key && scheduleID == index) {
+            if (WorldKey.TrainSchedules == worldKey && scheduleID == index) {
                 display(trainNumber, scheduleOrderNumber);
             }
         } else {
-            if (KEY.TRAINS == key && trainNumber == index) {
+            if (WorldKey.Trains == worldKey && trainNumber == index) {
                 display(trainNumber);
             }
         }
     }
 
     /**
-     * @param key
+     * @param worldKey
      * @param index
      * @param principal
      */
-    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal) {
     }
 
     /**
-     * @param key
+     * @param worldKey
      * @param index
      * @param principal
      */
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal) {
     }
 }

@@ -19,9 +19,9 @@
 package freerails.model.finances;
 
 import freerails.util.Pair;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -79,7 +79,7 @@ public class IncomeStatementGenerator {
             if (transaction instanceof CargoDeliveryMoneyTransaction) {
                 CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
                 int cargoType = cargoDeliveryMoneyTransaction.getCargoBatch().getCargoType();
-                CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, cargoType);
+                CargoType ct = (CargoType) world.get(WorldSharedKey.CargoTypes, cargoType);
                 switch (ct.getCategory()) {
                     case Bulk_Freight:
                         bulkFreightTotal += cargoDeliveryMoneyTransaction.price().amount;

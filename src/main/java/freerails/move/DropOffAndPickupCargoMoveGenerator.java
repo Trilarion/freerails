@@ -21,9 +21,9 @@ package freerails.move;
 import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.move.listmove.ChangeTrainMove;
 import freerails.util.ImmutableList;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.MutableCargoBatchBundle;
@@ -86,16 +86,16 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (autoConsist) {
             List<WagonLoad> wagonsAvailable = new ArrayList<>();
 
-            assert (train.equals(world.get(principal, KEY.TRAINS, trainId)));
+            assert (train.equals(world.get(principal, WorldKey.Trains, trainId)));
             Schedule schedule = train.getSchedule();
             TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
 
             int nextStationId = order.stationId;
 
-            Station station = (Station) this.world.get(principal, KEY.STATIONS, nextStationId);
+            Station station = (Station) this.world.get(principal, WorldKey.Stations, nextStationId);
             StationDemand demand = station.getDemandForCargo();
 
-            for (int i = 0; i < this.world.size(SKEY.CARGO_TYPES); i++) {
+            for (int i = 0; i < this.world.size(WorldSharedKey.CargoTypes); i++) {
                 // If this cargo is demanded at the next scheduled station.
                 if (demand.isCargoDemanded(i)) {
                     int amount = stationAfter.getAmountOfType(i);
@@ -189,19 +189,19 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     private void getBundles() {
-        TrainModel trainModel = ((TrainModel) world.get(principal, KEY.TRAINS, trainId));
+        TrainModel trainModel = ((TrainModel) world.get(principal, WorldKey.Trains, trainId));
         trainBundleId = trainModel.getCargoBundleID();
         trainBefore = getCopyOfBundle(trainBundleId);
         trainAfter = getCopyOfBundle(trainBundleId);
 
-        Station station = ((Station) world.get(principal, KEY.STATIONS, stationId));
+        Station station = ((Station) world.get(principal, WorldKey.Stations, stationId));
         stationBundleId = station.getCargoBundleID();
         stationAfter = getCopyOfBundle(stationBundleId);
         stationBefore = getCopyOfBundle(stationBundleId);
     }
 
     private MutableCargoBatchBundle getCopyOfBundle(int id) {
-        Serializable fs = world.get(principal, KEY.CARGO_BUNDLES, id);
+        Serializable fs = world.get(principal, WorldKey.CargoBundles, id);
         ImmutableCargoBatchBundle ibundle = (ImmutableCargoBatchBundle) fs;
 
         return new MutableCargoBatchBundle(ibundle);
@@ -209,7 +209,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
     private void processTrainBundle() {
         Iterator<CargoBatch> batches = trainAfter.toImmutableCargoBundle().cargoBatchIterator();
-        Station station = (Station) world.get(principal, KEY.STATIONS, stationId);
+        Station station = (Station) world.get(principal, WorldKey.Stations, stationId);
         MutableCargoBatchBundle cargoDroppedOff = new MutableCargoBatchBundle();
 
         // Unload the cargo that the station demands

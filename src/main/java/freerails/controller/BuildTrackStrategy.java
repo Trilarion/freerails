@@ -24,7 +24,7 @@
 package freerails.controller;
 
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.terrain.TerrainType;
 import freerails.model.track.TrackCategories;
 import freerails.model.track.TrackRule;
@@ -53,7 +53,7 @@ public class BuildTrackStrategy {
      * @return
      */
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld world) {
-        int numberTerrainTypes = world.size(SKEY.TERRAIN_TYPES);
+        int numberTerrainTypes = world.size(WorldSharedKey.TerrainTypes);
         int[] newRules = new int[numberTerrainTypes];
         for (int i = 0; i < numberTerrainTypes; i++) {
             newRules[i] = trackTypeID;
@@ -87,8 +87,8 @@ public class BuildTrackStrategy {
     private static Integer getCheapest(TrackCategories category, ReadOnlyWorld world) {
         TrackRule cheapest = null;
         Integer cheapestID = null;
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
+            TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
             if (rule.getCategory() == category) {
                 if (null == cheapest || cheapest.getPrice().amount > rule.getPrice().amount) {
                     cheapest = rule;
@@ -100,14 +100,14 @@ public class BuildTrackStrategy {
     }
 
     private static int[] generateRules(Iterable<Integer> allowable, ReadOnlyWorld world) {
-        int noTerrainTypes = world.size(SKEY.TERRAIN_TYPES);
+        int noTerrainTypes = world.size(WorldSharedKey.TerrainTypes);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {
-            TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
+            TerrainType terrainType = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
             newRules[i] = -1; // the default value.
             for (Integer rule : allowable) {
                 if (null != rule) {
-                    TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, rule);
+                    TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, rule);
                     if (trackRule.canBuildOnThisTerrainType(terrainType.getCategory())) {
                         newRules[i] = rule;
                         break;

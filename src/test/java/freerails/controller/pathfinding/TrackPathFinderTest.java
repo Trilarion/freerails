@@ -25,7 +25,7 @@ import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.model.world.FullWorld;
 import freerails.model.game.GameRules;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;

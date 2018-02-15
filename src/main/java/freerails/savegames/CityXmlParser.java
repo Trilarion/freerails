@@ -19,7 +19,7 @@
 package freerails.savegames;
 
 import freerails.util.Vector2D;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.City;
 import org.xml.sax.Attributes;
@@ -51,7 +51,7 @@ public class CityXmlParser extends DefaultHandler {
     public void endDocument() {
         for (City city : cities) {
             // TODO why the copying here?
-            world.add(SKEY.CITIES, new City(city.getName(), city.getLocation()));
+            world.add(WorldSharedKey.Cities, new City(city.getName(), city.getLocation()));
         }
     }
 

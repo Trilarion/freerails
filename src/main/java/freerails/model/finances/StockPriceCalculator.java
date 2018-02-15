@@ -21,7 +21,7 @@
  */
 package freerails.model.finances;
 
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;

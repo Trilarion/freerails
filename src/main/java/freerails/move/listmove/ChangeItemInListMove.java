@@ -23,7 +23,7 @@ package freerails.move.listmove;
 
 import freerails.move.MoveStatus;
 import freerails.util.Utils;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
@@ -37,7 +37,7 @@ import java.io.Serializable;
 public class ChangeItemInListMove implements ListMove {
 
     private static final long serialVersionUID = -4457694821370844051L;
-    private final KEY listKey;
+    private final WorldKey listWorldKey;
     private final int index;
     private final Serializable before;
     private final Serializable after;
@@ -50,11 +50,11 @@ public class ChangeItemInListMove implements ListMove {
      * @param after
      * @param p
      */
-    public ChangeItemInListMove(KEY k, int index, Serializable before, Serializable after, FreerailsPrincipal p) {
+    public ChangeItemInListMove(WorldKey k, int index, Serializable before, Serializable after, FreerailsPrincipal p) {
         this.before = before;
         this.after = after;
         this.index = index;
-        listKey = k;
+        listWorldKey = k;
         principal = p;
     }
 
@@ -86,7 +86,7 @@ public class ChangeItemInListMove implements ListMove {
                 return false;
             }
 
-            return listKey == test.listKey;
+            return listWorldKey == test.listWorldKey;
         }
         return false;
     }
@@ -95,8 +95,8 @@ public class ChangeItemInListMove implements ListMove {
         return index;
     }
 
-    public KEY getKey() {
-        return listKey;
+    public WorldKey getKey() {
+        return listWorldKey;
     }
 
     /**
@@ -109,7 +109,7 @@ public class ChangeItemInListMove implements ListMove {
     @Override
     public int hashCode() {
         int result;
-        result = listKey.hashCode();
+        result = listWorldKey.hashCode();
         result = 29 * result + index;
         result = 29 * result + (before != null ? before.hashCode() : 0);
         result = 29 * result + (after != null ? after.hashCode() : 0);
@@ -128,7 +128,7 @@ public class ChangeItemInListMove implements ListMove {
         MoveStatus moveStatus = tryMove(to, from, w);
 
         if (moveStatus.succeeds()) {
-            w.set(principal, listKey, index, to);
+            w.set(principal, listWorldKey, index, to);
         }
 
         return moveStatus;
@@ -150,11 +150,11 @@ public class ChangeItemInListMove implements ListMove {
      * @return
      */
     private MoveStatus tryMove(Serializable to, Serializable from, ReadOnlyWorld world) {
-        if (index >= world.size(principal, listKey)) {
-            return MoveStatus.moveFailed("world.size(listKey) is " + world.size(principal, listKey) + " but index is " + index);
+        if (index >= world.size(principal, listWorldKey)) {
+            return MoveStatus.moveFailed("world.size(listKey) is " + world.size(principal, listWorldKey) + " but index is " + index);
         }
 
-        Serializable item2change = world.get(principal, listKey, index);
+        Serializable item2change = world.get(principal, listWorldKey, index);
 
         if (null == item2change) {
             if (null == from) {

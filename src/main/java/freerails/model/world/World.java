@@ -20,9 +20,6 @@ package freerails.model.world;
 
 import freerails.util.Vector2D;
 import freerails.model.Activity;
-import freerails.model.ITEM;
-import freerails.model.KEY;
-import freerails.model.SKEY;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -38,7 +35,7 @@ import java.io.Serializable;
  * as an address space independent way to reference the element. If you want to
  * remove an element from a list, you should set it to null, e.g.
  *
- * {@code world.set(KEY.TRAINS, 5, null, player);}
+ * {@code world.set(KEY.Trains, 5, null, player);}
  *
  * Code that loops through lists should handle null values gracefully
  */
@@ -62,13 +59,13 @@ public interface World extends ReadOnlyWorld {
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
-    int add(FreerailsPrincipal principal, KEY key, Serializable element);
+    int add(FreerailsPrincipal principal, WorldKey worldKey, Serializable element);
 
     /**
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
-    int add(SKEY key, Serializable element);
+    int add(WorldSharedKey key, Serializable element);
 
     /**
      * @param player
@@ -103,12 +100,12 @@ public interface World extends ReadOnlyWorld {
     /**
      * Removes the last element from the specified list.
      */
-    Serializable removeLast(FreerailsPrincipal principal, KEY key);
+    Serializable removeLast(FreerailsPrincipal principal, WorldKey worldKey);
 
     /**
      * Removes the last element from the specified list.
      */
-    Serializable removeLast(SKEY key);
+    Serializable removeLast(WorldSharedKey key);
 
     /**
      * Removes and returns the last transaction added the the specified
@@ -132,14 +129,14 @@ public interface World extends ReadOnlyWorld {
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
-    void set(FreerailsPrincipal principal, KEY key, int index, Serializable element);
+    void set(FreerailsPrincipal principal, WorldKey worldKey, int index, Serializable element);
 
     /**
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
 
-    void set(SKEY key, int index, Serializable element);
+    void set(WorldSharedKey key, int index, Serializable element);
 
     /**
      * Replaces the tile at the specified position on the map with the specified

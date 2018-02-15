@@ -22,7 +22,7 @@ import freerails.controller.CalcCargoSupplyRateAtStation;
 import freerails.move.listmove.ChangeStationMove;
 import freerails.move.Move;
 import freerails.network.movereceiver.MoveReceiver;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
@@ -54,7 +54,7 @@ public class SupplyAtStationsUpdater {
     public void update() {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
-            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
 
             while (iterator.next()) {
                 Station stationBefore = (Station) iterator.getElement();

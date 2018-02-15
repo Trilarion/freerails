@@ -19,6 +19,8 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConfig;
+import freerails.model.world.WorldSharedKey;
+import freerails.model.world.WorldKey;
 import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.model.*;
@@ -60,7 +62,7 @@ public class StationBoxRenderer implements Painter {
         Image wagonImage = vl.getWagonImages(0).getSideOnImage();
         wagonImageWidth = wagonImage.getWidth(null) * ClientConfig.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
-        int nrOfCargoTypes = this.world.size(SKEY.CARGO_TYPES);
+        int nrOfCargoTypes = this.world.size(WorldSharedKey.CargoTypes);
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
             String wagonFilename = vl.getWagonImages(i).sideOnFileName;
@@ -83,7 +85,7 @@ public class StationBoxRenderer implements Painter {
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.
             FreerailsPrincipal principal = modelRoot.getPrincipal();
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
 
             while (wi.next()) { // loop over non null stations
                 Station station = (Station) wi.getElement();
@@ -97,7 +99,7 @@ public class StationBoxRenderer implements Painter {
                     g.setStroke(new BasicStroke(1.0f));
                     g.drawRect(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
 
-                    CargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+                    CargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, WorldKey.CargoBundles, station.getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cb);
                     for (int category = 0; category < CargoCategory.getNumberOfCategories(); category++) {
                         int alternateWidth = (ClientConfig.MAX_WIDTH - 2 * ClientConfig.SPACING) / (carsLoads[category].length + 1);
@@ -123,11 +125,11 @@ public class StationBoxRenderer implements Painter {
      */
     private int[][] calculateCarLoads(CargoBatchBundle cb) {
         int categories = CargoCategory.getNumberOfCategories();
-        int numCargoTypes = world.size(SKEY.CARGO_TYPES);
+        int numCargoTypes = world.size(WorldSharedKey.CargoTypes);
         int[] numberOfCarLoads = new int[categories];
         int[][] cars = new int[categories][numCargoTypes];
         for (int i = 0; i < numCargoTypes; i++) {
-            CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, i);
+            CargoType ct = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
             int carsOfThisCargo = cb.getAmountOfType(i) / WagonType.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
             cars[ct.getCategory().getID()][i] += carsOfThisCargo;

@@ -25,7 +25,7 @@ import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.network.movereceiver.MoveReceiver;
 import freerails.model.finances.ItemsTransactionAggregator;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.world.World;
 import freerails.model.WorldConstants;
 import freerails.model.finances.Money;
@@ -66,8 +66,8 @@ public class TrackMaintenanceMoveGenerator {
 
         long amount = 0;
 
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
+            TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
             // TODO Money arithmetics
             long maintenanceCost = trackRule.getMaintenanceCost().amount;
 

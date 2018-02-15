@@ -1,11 +1,11 @@
-package freerails.model;
+package freerails.model.world;
 
 import java.io.Serializable;
 
 /**
  *
  */
-class TestState implements Serializable {
+public class TestState implements Serializable {
 
     private static final long serialVersionUID = 5122023949873919060L;
 
@@ -17,7 +17,7 @@ class TestState implements Serializable {
     /**
      * @param x
      */
-    TestState(int x) {
+    public TestState(int x) {
         this.x = x;
     }
 

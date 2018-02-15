@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.model.finances.FinancialDataGatherer;
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.Money;

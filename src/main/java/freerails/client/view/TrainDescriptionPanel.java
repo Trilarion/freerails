@@ -26,10 +26,10 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
@@ -94,10 +94,10 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     }
 
     private void updateIfNecessary() {
-        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, trainNumber);
 
         int cargoBundleID = train.getCargoBundleID();
-        Serializable cb = world.get(principal, KEY.CARGO_BUNDLES, cargoBundleID);
+        Serializable cb = world.get(principal, WorldKey.CargoBundles, cargoBundleID);
 
         if (train != lastTrain || cb != lastCargoBundle) displayTrain(trainNumber);
     }
@@ -114,22 +114,22 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
 
     public void displayTrain(int newTrainNumber) {
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.TRAINS, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(WorldKey.Trains, world, principal);
         it.gotoIndex(newTrainNumber);
 
         trainNumber = newTrainNumber;
 
         trainViewJPanel1.display(newTrainNumber);
-        TrainModel train = (TrainModel) world.get(principal, KEY.TRAINS, newTrainNumber);
+        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, newTrainNumber);
 
         int cargoBundleID = train.getCargoBundleID();
-        ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, cargoBundleID);
+        ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, WorldKey.CargoBundles, cargoBundleID);
         StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
         int numberOfTypesInBundle = 0;
-        for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
+        for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
             int amount = cb.getAmountOfType(i);
             if (0 != amount) {
-                CargoType ct = (CargoType) world.get(SKEY.CARGO_TYPES, i);
+                CargoType ct = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
                 String cargoTypeName = ct.getDisplayName();
                 if (0 != numberOfTypesInBundle) {
                     s.append("; ");

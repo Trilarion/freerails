@@ -26,7 +26,7 @@ import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.model.finances.NetWorthCalculator;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.TransactionAggregator;
 import freerails.model.finances.Money;

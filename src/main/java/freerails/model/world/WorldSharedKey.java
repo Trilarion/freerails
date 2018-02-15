@@ -16,27 +16,45 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move.listmove;
+package freerails.model.world;
 
-import freerails.model.world.WorldKey;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.util.Utils;
 
 import java.io.Serializable;
 
 /**
- * This Move changes the properties of a station.
+ * Provides a set of keys to access the lists of elements in the game
+ * world that are shared by all players.
  */
-public final class ChangeStationMove extends ChangeItemInListMove {
+public enum WorldSharedKey {
 
-    private static final long serialVersionUID = 3833469496064160307L;
+    TerrainTypes(0), WagonTypes(1), CargoTypes(2), Cities(3), EngineTypes(4), TrackRules(5);
+
+    private final int id;
+
+    WorldSharedKey(int id) {
+        this.id = id;
+    }
 
     /**
-     * @param index
-     * @param before
-     * @param after
-     * @param p
+     * @return
      */
-    public ChangeStationMove(int index, Serializable before, Serializable after, FreerailsPrincipal p) {
-        super(WorldKey.Stations, index, before, after, p);
+    public static int getNumberOfKeys() {
+        return values().length;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getId() {
+        return id;
+    }
+
+    public static WorldSharedKey getById(int id) {
+        for (WorldSharedKey key : values()) {
+            if (key.id == id) return key;
+        }
+        throw new IllegalArgumentException();
     }
 }

@@ -18,6 +18,8 @@
 
 package freerails.model;
 
+import freerails.model.world.ITEM;
+import freerails.model.world.WorldSharedKey;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.FullSaveGameManager;
@@ -86,8 +88,8 @@ public class MapFixtureFactory2 {
 
         int clearTypeID = 0;
         // Fill the world with clear terrain.
-        for (int i = 0; i < world.size(SKEY.TERRAIN_TYPES); i++) {
-            TerrainType tt = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TerrainTypes); i++) {
+            TerrainType tt = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
             if ("Clear".equals(tt.getTerrainTypeName())) {
                 clearTypeID = i;
                 break;

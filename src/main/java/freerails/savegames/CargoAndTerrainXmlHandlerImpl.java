@@ -19,7 +19,7 @@
 package freerails.savegames;
 
 import freerails.util.ui.UiUtils;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoType;
@@ -122,7 +122,7 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
 
         Serializable tileType = new TerrainTypeImpl(tileRGB, tileCategory, tileID, tileROW, produces, consumes, converts, tileBuildCost);
 
-        world.add(SKEY.TERRAIN_TYPES, tileType);
+        world.add(WorldSharedKey.TerrainTypes, tileType);
     }
 
     public void handleCargo(final Attributes attributes) {
@@ -131,9 +131,9 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
         int unitWeight = Integer.parseInt(attributes.getValue("unitWeight"));
         Serializable cargoType = new CargoType(unitWeight, cargoID, CargoCategory.valueOf(cargoCategory));
 
-        int cargoNumber = world.size(SKEY.CARGO_TYPES);
+        int cargoNumber = world.size(WorldSharedKey.CargoTypes);
         cargoNameTocargoTypeNumber.put(cargoID, cargoNumber);
-        world.add(SKEY.CARGO_TYPES, cargoType);
+        world.add(WorldSharedKey.CargoTypes, cargoType);
     }
 
     public void handleConsumptions(final Attributes attributes) throws SAXException {

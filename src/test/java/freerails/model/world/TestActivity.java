@@ -1,4 +1,6 @@
-package freerails.model;
+package freerails.model.world;
+
+import freerails.model.Activity;
 
 import java.io.Serializable;
 

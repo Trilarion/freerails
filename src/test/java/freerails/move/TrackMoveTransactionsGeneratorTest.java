@@ -26,7 +26,7 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vector2D;
 import freerails.model.world.FullWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
@@ -71,7 +71,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = ((FullTerrainTile) world.getTile(Vector2D.ZERO)).getTrackPiece();
 
-        TrackRule r = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
+        TrackRule r = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
         int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL, world);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vector2D.ZERO);

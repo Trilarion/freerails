@@ -21,9 +21,6 @@ package freerails.model.world;
 import freerails.util.Pair;
 import freerails.util.Vector2D;
 import freerails.model.ActivityIterator;
-import freerails.model.ITEM;
-import freerails.model.KEY;
-import freerails.model.SKEY;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameTime;
@@ -40,8 +37,8 @@ import java.io.Serializable;
  * <ul>
  * <li>A list of players.</li>
  * <li>A 2D grid - the map.</li>
- * <li>A series of lists that are accessible using the keys defined in {@link SKEY}</li>
- * <li>Another series of lists indexed by player and accessible using the keys defined in {@link KEY}</li>
+ * <li>A series of lists that are accessible using the keys defined in {@link WorldSharedKey}</li>
+ * <li>Another series of lists indexed by player and accessible using the keys defined in {@link WorldKey}</li>
  * <li>A collection items accessible using the keys defined in {@link ITEM}</li>
  * <li>A list of financial transactions for each of the players</li>
  * </ul>
@@ -49,7 +46,7 @@ import java.io.Serializable;
  * Example: the following code gets player1's train #5.
  *
  *
- * {@code TrainModel t = (TrainModel)world.get(KEY.TRAINS, 5, player1);}
+ * {@code TrainModel t = (TrainModel)world.get(KEY.Trains, 5, player1);}
  *
  *
  * The motivation for accessing lists using keys is that one does not need to
@@ -72,7 +69,7 @@ public interface ReadOnlyWorld extends Serializable {
      * @param index
      * @return
      */
-    boolean boundsContain(FreerailsPrincipal p, KEY k, int index);
+    boolean boundsContain(FreerailsPrincipal p, WorldKey k, int index);
 
     /**
      * @return
@@ -89,13 +86,13 @@ public interface ReadOnlyWorld extends Serializable {
      * Returns the element at the specified position in the specified list.
      */
 
-    Serializable get(FreerailsPrincipal p, KEY key, int index);
+    Serializable get(FreerailsPrincipal p, WorldKey worldKey, int index);
 
     /**
      * Returns the element at the specified position in the specified list.
      */
 
-    Serializable get(SKEY key, int index);
+    Serializable get(WorldSharedKey key, int index);
 
     /**
      * @param p
@@ -184,12 +181,12 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(FreerailsPrincipal p, KEY key);
+    int size(FreerailsPrincipal p, WorldKey worldKey);
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(SKEY key);
+    int size(WorldSharedKey key);
 
     /**
      * Returns number of active entities belonging to the specified principal.

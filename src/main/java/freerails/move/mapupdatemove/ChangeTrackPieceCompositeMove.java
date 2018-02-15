@@ -22,10 +22,11 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.world.ITEM;
+import freerails.model.world.WorldSharedKey;
 import freerails.move.*;
 import freerails.move.premove.MoveTrainPreMove;
 import freerails.util.Vector2D;
-import freerails.model.*;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameRules;
@@ -198,8 +199,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @return
      */
     private static int findRuleID(TrackRule rule, ReadOnlyWorld world) {
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            Object o = world.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
+            Object o = world.get(WorldSharedKey.TrackRules, i);
             if (rule.equals(o)) {
                 return i;
             }

@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoBatchBundle;
@@ -56,7 +56,7 @@ public class ProcessCargoAtStationMoveGenerator {
      * @return
      */
     public static ArrayList<Move> processCargo(ReadOnlyWorld world, CargoBatchBundle bundle, int stationID, FreerailsPrincipal principal, int trainId) {
-        Station thisStation = (Station) world.get(principal, KEY.STATIONS, stationID);
+        Station thisStation = (Station) world.get(principal, WorldKey.Stations, stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 
         ArrayList<Move> moves = new ArrayList<>();

@@ -5,6 +5,7 @@ import freerails.model.track.TrackRule;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.WorldSharedKey;
 
 /**
  *
@@ -80,8 +81,8 @@ public class Stats {
         aggregator.setCategory(TransactionCategory.TRACK);
         long amount = 0;
 
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
+            TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
             // TODO Money arithmetics
             long trackValue = trackRule.getPrice().amount;
 

@@ -22,6 +22,8 @@
 package freerails.controller;
 
 import freerails.controller.explorer.BuildTrackExplorer;
+import freerails.model.world.ITEM;
+import freerails.model.world.WorldSharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
@@ -104,13 +106,13 @@ public class BuildTrackExplorerTest extends TestCase {
     public void test2() {
         // Check the the Ocean type is where we think it is.
         int occeanTypeNumber = 4;
-        TerrainTypeImpl ocean = (TerrainTypeImpl) world.get(SKEY.TERRAIN_TYPES,
+        TerrainTypeImpl ocean = (TerrainTypeImpl) world.get(WorldSharedKey.TerrainTypes,
                 occeanTypeNumber);
         assertEquals(TerrainCategory.Ocean, ocean.getCategory());
 
         // Check that track cannot be built on ocean.
-        for (int i = 0; i < world.size(SKEY.TRACK_RULES); i++) {
-            TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
+            TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
             assertFalse(rule.canBuildOnThisTerrainType(ocean.getCategory()));
         }
 
@@ -189,7 +191,7 @@ public class BuildTrackExplorerTest extends TestCase {
     }
 
     private void buildTrack(int x, int y, TileTransition direction) {
-        TrackRule rule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
+        TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(new Vector2D(x, y), direction, rule,
                         rule, world, MapFixtureFactory.TEST_PRINCIPAL);

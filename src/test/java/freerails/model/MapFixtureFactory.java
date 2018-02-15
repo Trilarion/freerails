@@ -18,6 +18,7 @@
 
 package freerails.model;
 
+import freerails.model.world.WorldSharedKey;
 import freerails.util.Vector2D;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoType;
@@ -126,11 +127,11 @@ public class MapFixtureFactory {
 
         // Add track rules to world
         for (TrackRule aTrackRulesArray : trackRulesArray) {
-            world.add(SKEY.TRACK_RULES, aTrackRulesArray);
+            world.add(WorldSharedKey.TrackRules, aTrackRulesArray);
         }
 
         // Add the terrain types if necessary.
-        if (world.size(SKEY.TERRAIN_TYPES) == 0) {
+        if (world.size(WorldSharedKey.TerrainTypes) == 0) {
             generateTerrainTypesList(world);
         }
     }
@@ -141,14 +142,14 @@ public class MapFixtureFactory {
      * @param world
      */
     public static void generateCargoTypesList(World world) {
-        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Mail", CargoCategory.Mail));
-        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Passengers",
+        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Mail", CargoCategory.Mail));
+        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Passengers",
                 CargoCategory.Passengers));
-        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Goods",
+        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Goods",
                 CargoCategory.Fast_Freight));
-        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Steel",
+        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Steel",
                 CargoCategory.Slow_Freight));
-        world.add(SKEY.CARGO_TYPES, new CargoType(0, "Coal",
+        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Coal",
                 CargoCategory.Bulk_Freight));
     }
 
@@ -156,15 +157,15 @@ public class MapFixtureFactory {
      * Adds hard coded terrain types.
      */
     private static void generateTerrainTypesList(World world) {
-        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
+        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Country, "Grassland"));
-        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
+        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Urban, "City"));
-        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
+        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Resource, "Mine"));
-        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
+        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Industry, "Factory"));
-        world.add(SKEY.TERRAIN_TYPES, new TerrainTypeImpl(
+        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Ocean, "Ocean"));
     }
 }

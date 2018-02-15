@@ -23,6 +23,8 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.world.ITEM;
+import freerails.model.world.WorldSharedKey;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -63,7 +65,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     public void testRemoveTrack() {
         getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
 
-        TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 0);
 
         assertBuildTrackSucceeds(new Vector2D(0, 5), TileTransition.EAST, trackRule);
 
@@ -91,7 +93,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      * track.
      */
     public void testMustConnect2ExistingTrack() {
-        TrackRule trackRule = (TrackRule) world.get(SKEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
 
         int numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(0, numberOfTransactions);
@@ -119,7 +121,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     public void testCannotConnect2OtherRRsTrack() {
         assertFalse(ChangeTrackPieceMove.canConnectToOtherRRsTrack(world));
         final int TRACK_RULE_ID = 0;
-        TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, TRACK_RULE_ID);
+        TrackRule trackRule = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, TRACK_RULE_ID);
 
         assertBuildTrackSucceeds(new Vector2D(0, 6), TileTransition.EAST, trackRule);
         // Now change the owner of the track piece at (1, 6);
@@ -143,7 +145,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         Vector2D pointB = new Vector2D(1, 1);
         Vector2D pointC = new Vector2D(1, 0);
 
-        TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 0);
 
         // First track piece built
         assertBuildTrackSucceeds(pointA, TileTransition.SOUTH_EAST, trackRule);
@@ -174,7 +176,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         // Not allowed on this terrain type, from existing track.
         assertBuildTrackFails(new Vector2D(2, 0), TileTransition.NORTH_EAST,
-                (TrackRule) getWorld().get(SKEY.TRACK_RULES, 1));
+                (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 1));
     }
 
     private void assertBuildTrackFails(Vector2D p, TileTransition v, TrackRule rule) {
@@ -212,7 +214,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() throws Exception {
         Vector2D pointA = Vector2D.ZERO;
-        TrackRule trackRule = (TrackRule) getWorld().get(SKEY.TRACK_RULES, 0);
+        TrackRule trackRule = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackRule, trackRule, getWorld(), MapFixtureFactory.TEST_PRINCIPAL);

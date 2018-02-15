@@ -25,10 +25,10 @@ import freerails.server.CityTilePositioner;
 import freerails.server.ServerGameModel;
 import freerails.util.Vector2D;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.terrain.*;
 import freerails.model.world.FullWorld;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.world.World;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
@@ -107,15 +107,15 @@ public class FullSaveGameManager implements SaveGamesManager {
 
         Map<Integer, Integer> rgb2TerrainType = new HashMap<>();
 
-        for (int i = 0; i < world.size(SKEY.TERRAIN_TYPES); i++) {
-            TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.TerrainTypes); i++) {
+            TerrainType terrainType = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
             rgb2TerrainType.put(terrainType.getRGB(), i);
         }
 
         TerrainType terrainTypeTile;
 
-        for (int c = 0; c < world.size(SKEY.TERRAIN_TYPES); c++) {
-            terrainTypeTile = (TerrainType) world.get(SKEY.TERRAIN_TYPES, c);
+        for (int c = 0; c < world.size(WorldSharedKey.TerrainTypes); c++) {
+            terrainTypeTile = (TerrainType) world.get(WorldSharedKey.TerrainTypes, c);
 
             if (terrainTypeTile.getCategory() == TerrainCategory.Country) {
                 if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {

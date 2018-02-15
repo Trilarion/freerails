@@ -22,7 +22,7 @@
 package freerails.move.listmove;
 
 import freerails.move.MoveStatus;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -34,19 +34,19 @@ import java.io.Serializable;
 public class AddItemToListMove implements ListMove {
 
     private static final long serialVersionUID = 3256721779916747824L;
-    private final KEY listKey;
+    private final WorldKey listWorldKey;
     private final int index;
     private final FreerailsPrincipal principal;
     private final Serializable item;
 
     /**
-     * @param key
+     * @param worldKey
      * @param i
      * @param item
      * @param p
      */
-    public AddItemToListMove(KEY key, int i, Serializable item, FreerailsPrincipal p) {
-        listKey = key;
+    public AddItemToListMove(WorldKey worldKey, int i, Serializable item, FreerailsPrincipal p) {
+        listWorldKey = worldKey;
         index = i;
         this.item = item;
         principal = p;
@@ -59,7 +59,7 @@ public class AddItemToListMove implements ListMove {
     @Override
     public int hashCode() {
         int result;
-        result = listKey.hashCode();
+        result = listWorldKey.hashCode();
         result = 29 * result + index;
         result = 29 * result + principal.hashCode();
         result = 29 * result + (item != null ? item.hashCode() : 0);
@@ -67,13 +67,13 @@ public class AddItemToListMove implements ListMove {
         return result;
     }
 
-    public KEY getKey() {
-        return listKey;
+    public WorldKey getKey() {
+        return listWorldKey;
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        if (world.size(this.principal, listKey) != index) {
-            return MoveStatus.moveFailed("Expected size of " + listKey.toString() + " list is " + index + " but actual size is " + world.size(this.principal, listKey));
+        if (world.size(this.principal, listWorldKey) != index) {
+            return MoveStatus.moveFailed("Expected size of " + listWorldKey.toString() + " list is " + index + " but actual size is " + world.size(this.principal, listWorldKey));
         }
 
         return MoveStatus.MOVE_OK;
@@ -82,8 +82,8 @@ public class AddItemToListMove implements ListMove {
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
         int expectListSize = index + 1;
 
-        if (world.size(this.principal, listKey) != expectListSize) {
-            return MoveStatus.moveFailed("Expected size of " + listKey.toString() + " list is " + expectListSize + " but actual size is " + world.size(this.principal, listKey));
+        if (world.size(this.principal, listWorldKey) != expectListSize) {
+            return MoveStatus.moveFailed("Expected size of " + listWorldKey.toString() + " list is " + expectListSize + " but actual size is " + world.size(this.principal, listWorldKey));
         }
 
         return MoveStatus.MOVE_OK;
@@ -93,7 +93,7 @@ public class AddItemToListMove implements ListMove {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.add(this.principal, listKey, item);
+            world.add(this.principal, listWorldKey, item);
         }
 
         return moveStatus;
@@ -103,7 +103,7 @@ public class AddItemToListMove implements ListMove {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.removeLast(this.principal, listKey);
+            world.removeLast(this.principal, listWorldKey);
         }
 
         return moveStatus;
@@ -126,7 +126,7 @@ public class AddItemToListMove implements ListMove {
                 return false;
             }
 
-            return listKey == test.listKey;
+            return listWorldKey == test.listWorldKey;
         }
         return false;
     }
@@ -138,7 +138,7 @@ public class AddItemToListMove implements ListMove {
     @Override
     public String toString() {
 
-        return getClass().getName() + "\n list=" + listKey.toString() + "\n index =" + index + "\n item =" + item;
+        return getClass().getName() + "\n list=" + listWorldKey.toString() + "\n index =" + index + "\n item =" + item;
     }
 
     /**

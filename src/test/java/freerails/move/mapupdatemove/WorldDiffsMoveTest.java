@@ -21,6 +21,7 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.WorldDiffMoveCause;
 import freerails.util.Vector2D;
@@ -33,9 +34,6 @@ import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameCalendar;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.City;
-import freerails.model.world.FullWorld;
-import freerails.model.world.FullWorldDiffs;
-import freerails.model.world.World;
 import junit.framework.TestCase;
 
 /**
@@ -78,10 +76,10 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testChangingElementInList1() {
-        world.add(fp1, KEY.STATIONS, city1);
-        world.add(fp1, KEY.STATIONS, city1);
-        diffs.set(fp1, KEY.STATIONS, 0, city2);
-        diffs.set(fp1, KEY.STATIONS, 1, city2);
+        world.add(fp1, WorldKey.Stations, city1);
+        world.add(fp1, WorldKey.Stations, city1);
+        diffs.set(fp1, WorldKey.Stations, 0, city2);
+        diffs.set(fp1, WorldKey.Stations, 1, city2);
         runTests();
     }
 
@@ -89,10 +87,10 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testChangingElementInList2() {
-        world.add(fp1, KEY.STATIONS, city1);
-        world.add(fp1, KEY.STATIONS, city1);
-        diffs.set(fp1, KEY.STATIONS, 0, city2);
-        diffs.set(fp1, KEY.STATIONS, 1, city2);
+        world.add(fp1, WorldKey.Stations, city1);
+        world.add(fp1, WorldKey.Stations, city1);
+        diffs.set(fp1, WorldKey.Stations, 0, city2);
+        diffs.set(fp1, WorldKey.Stations, 1, city2);
         assertEquals(2, diffs.listDiffs());
         WorldDiffMove move = WorldDiffMove.generate(diffs, WorldDiffMoveCause.Other);
         assertEquals(2, move.listDiffs());
@@ -102,10 +100,10 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testAddingElementToList() {
-        world.add(fp1, KEY.STATIONS, city1);
-        diffs.add(fp1, KEY.STATIONS, city2);
-        diffs.add(fp1, KEY.STATIONS, city2);
-        diffs.add(fp1, KEY.STATIONS, city2);
+        world.add(fp1, WorldKey.Stations, city1);
+        diffs.add(fp1, WorldKey.Stations, city2);
+        diffs.add(fp1, WorldKey.Stations, city2);
+        diffs.add(fp1, WorldKey.Stations, city2);
         runTests();
     }
 

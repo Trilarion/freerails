@@ -25,7 +25,7 @@ import freerails.move.listmove.ListMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.move.mapupdatemove.MapUpdateMove;
 import freerails.util.Utils;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.WorldListListener;
 import freerails.model.WorldMapListener;
 import freerails.model.player.FreerailsPrincipal;
@@ -146,21 +146,21 @@ public class MoveChainFork implements MoveReceiver {
         }
     }
 
-    private void sendItemAdded(KEY key, int index, FreerailsPrincipal p) {
+    private void sendItemAdded(WorldKey worldKey, int index, FreerailsPrincipal p) {
         for (WorldListListener l : listListeners) {
-            l.itemAdded(key, index, p);
+            l.itemAdded(worldKey, index, p);
         }
     }
 
-    private void sendItemRemoved(KEY key, int index, FreerailsPrincipal p) {
+    private void sendItemRemoved(WorldKey worldKey, int index, FreerailsPrincipal p) {
         for (WorldListListener l : listListeners) {
-            l.itemRemoved(key, index, p);
+            l.itemRemoved(worldKey, index, p);
         }
     }
 
-    private void sendListUpdated(KEY key, int index, FreerailsPrincipal p) {
+    private void sendListUpdated(WorldKey worldKey, int index, FreerailsPrincipal p) {
         for (WorldListListener l : listListeners) {
-            l.listUpdated(key, index, p);
+            l.listUpdated(worldKey, index, p);
         }
     }
 }

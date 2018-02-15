@@ -23,7 +23,7 @@ package freerails.move.listmove;
 
 import freerails.move.Move;
 import freerails.util.ImmutableList;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.TrainModel;
 
@@ -37,7 +37,7 @@ public class ChangeTrainMove extends ChangeItemInListMove {
     private static final long serialVersionUID = 3257854272514242873L;
 
     private ChangeTrainMove(int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
-        super(KEY.TRAINS, index, before, after, principal);
+        super(WorldKey.Trains, index, before, after, principal);
     }
 
     /**

@@ -30,7 +30,7 @@ import freerails.controller.ClientProperty;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;

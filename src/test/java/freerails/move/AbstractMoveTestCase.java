@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.world.ITEM;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.*;

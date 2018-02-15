@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.model.world.ITEM;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;

@@ -25,9 +25,9 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
@@ -163,16 +163,16 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
      * @param newStationID
      */
     public void display(int newStationID) {
-        Station station = (Station) world.get(principal, KEY.STATIONS, newStationID);
+        Station station = (Station) world.get(principal, WorldKey.Stations, newStationID);
         stationName.setText(station.getStationName());
-        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(principal, KEY.CARGO_BUNDLES, station.getCargoBundleID());
+        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(principal, WorldKey.CargoBundles, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
         final List<String> typeWaiting = new ArrayList<>();
         final List<Integer> quantityWaiting = new ArrayList<>();
         final Collection<String> typeDemanded = new ArrayList<>();
-        for (int i = 0; i < world.size(SKEY.CARGO_TYPES); i++) {
-            CargoType cargoType = (CargoType) world.get(SKEY.CARGO_TYPES, i);
+        for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
+            CargoType cargoType = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
             int amountWaiting = cargoWaiting.getAmountOfType(i);
 
             if (0 != amountWaiting) {

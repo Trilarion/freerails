@@ -77,9 +77,9 @@ public class FullWorld implements World {
         bankAccounts = new List2DImpl<>(0);
         currentBalance = new List1DImpl<>();
         items = new List1DImpl<>(ITEM.getNumberOfKeys());
-        lists = new List3DImpl<>(0, KEY.getNumberOfKeys());
+        lists = new List3DImpl<>(0, WorldKey.getNumberOfKeys());
         players = new List1DImpl<>();
-        sharedLists = new List2DImpl<>(SKEY.getNumberOfKeys());
+        sharedLists = new List2DImpl<>(WorldSharedKey.getNumberOfKeys());
         time = GameTime.BIG_BANG;
         setupItems();
         setupMap(mapWidth, mapHeight);
@@ -101,13 +101,13 @@ public class FullWorld implements World {
         activityLists.addD3(playerIndex, index, ant);
     }
 
-    public int add(FreerailsPrincipal principal, KEY key, Serializable element) {
+    public int add(FreerailsPrincipal principal, WorldKey worldKey, Serializable element) {
         int playerIndex = principal.getWorldIndex();
-        return lists.addD3(playerIndex, key.getKeyID(), element);
+        return lists.addD3(playerIndex, worldKey.getId(), element);
     }
 
-    public int add(SKEY key, Serializable element) {
-        return sharedLists.addD2(key.getKeyID(), element);
+    public int add(WorldSharedKey key, Serializable element) {
+        return sharedLists.addD2(key.getId(), element);
     }
 
     /**
@@ -134,7 +134,7 @@ public class FullWorld implements World {
         currentBalance.add(new Money(0));
 
         lists.addD1();
-        for (int i = 0; i < KEY.getNumberOfKeys(); i++) {
+        for (int i = 0; i < WorldKey.getNumberOfKeys(); i++) {
             lists.addD2(index);
         }
         activityLists.addD1();
@@ -157,7 +157,7 @@ public class FullWorld implements World {
      * @param index
      * @return
      */
-    public boolean boundsContain(FreerailsPrincipal p, KEY k, int index) {
+    public boolean boundsContain(FreerailsPrincipal p, WorldKey k, int index) {
         if (!isPlayer(p)) {
             return false;
         } else return index >= 0 && index < size(p, k);
@@ -232,17 +232,17 @@ public class FullWorld implements World {
         return false;
     }
 
-    public Serializable get(FreerailsPrincipal p, KEY key, int index) {
+    public Serializable get(FreerailsPrincipal p, WorldKey worldKey, int index) {
         int playerIndex = p.getWorldIndex();
-        return lists.get(playerIndex, key.getKeyID(), index);
+        return lists.get(playerIndex, worldKey.getId(), index);
     }
 
     public Serializable get(ITEM item) {
         return items.get(item.getKeyID());
     }
 
-    public Serializable get(SKEY key, int index) {
-        return sharedLists.get(key.getKeyID(), index);
+    public Serializable get(WorldSharedKey key, int index) {
+        return sharedLists.get(key.getId(), index);
     }
 
     /**
@@ -363,14 +363,14 @@ public class FullWorld implements World {
         return p.getWorldIndex() >= 0 && p.getWorldIndex() < players.size();
     }
 
-    public Serializable removeLast(FreerailsPrincipal principal, KEY key) {
+    public Serializable removeLast(FreerailsPrincipal principal, WorldKey worldKey) {
         int playerIndex = principal.getWorldIndex();
-        return lists.removeLastD3(playerIndex, key.getKeyID());
+        return lists.removeLastD3(playerIndex, worldKey.getId());
     }
 
-    public Serializable removeLast(SKEY key) {
+    public Serializable removeLast(WorldSharedKey key) {
 
-        return sharedLists.removeLastD2(key.getKeyID());
+        return sharedLists.removeLastD2(key.getId());
     }
 
     /**
@@ -425,17 +425,17 @@ public class FullWorld implements World {
         return transactionRecord.getTransaction();
     }
 
-    public void set(FreerailsPrincipal principal, KEY key, int index, Serializable element) {
+    public void set(FreerailsPrincipal principal, WorldKey worldKey, int index, Serializable element) {
         int playerIndex = principal.getWorldIndex();
-        lists.set(playerIndex, key.getKeyID(), index, element);
+        lists.set(playerIndex, worldKey.getId(), index, element);
     }
 
     public void set(ITEM item, Serializable element) {
         items.set(item.getKeyID(), element);
     }
 
-    public void set(SKEY key, int index, Serializable element) {
-        sharedLists.set(key.getKeyID(), index, element);
+    public void set(WorldSharedKey key, int index, Serializable element) {
+        sharedLists.set(key.getId(), index, element);
     }
 
     public void setTile(Vector2D p, Serializable tile) {
@@ -474,13 +474,13 @@ public class FullWorld implements World {
         return activityLists.sizeD2(playerIndex);
     }
 
-    public int size(FreerailsPrincipal p, KEY key) {
+    public int size(FreerailsPrincipal p, WorldKey worldKey) {
         int playerIndex = p.getWorldIndex();
-        return lists.sizeD3(playerIndex, key.getKeyID());
+        return lists.sizeD3(playerIndex, worldKey.getId());
     }
 
-    public int size(SKEY key) {
-        return sharedLists.sizeD2(key.getKeyID());
+    public int size(WorldSharedKey key) {
+        return sharedLists.sizeD2(key.getId());
     }
 
     /**

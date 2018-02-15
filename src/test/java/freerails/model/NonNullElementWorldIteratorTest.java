@@ -21,6 +21,8 @@
  */
 package freerails.model;
 
+import freerails.model.world.WorldSharedKey;
+import freerails.model.world.WorldKey;
 import freerails.util.Vector2D;
 import freerails.model.station.Station;
 import freerails.model.world.FullWorld;
@@ -49,19 +51,19 @@ public class NonNullElementWorldIteratorTest extends TestCase {
         station2 = new Station(new Vector2D(15, 16), "Station2", 4, 1);
         Station station3 = new Station(new Vector2D(30, 50), "Station3", 4, 2);
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station1);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station2);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, null);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS, station3);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, station1);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, null);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, station2);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, null);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, null);
+        world.add(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations, station3);
     }
 
     /**
      *
      */
     public void testNext() {
-        WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world,
+        WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world,
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
@@ -81,7 +83,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
         assertEquals(1, wi.getRowID());
         assertEquals(station2, wi.getElement());
 
-        WorldIterator wi2 = new NonNullElementWorldIterator(SKEY.TRACK_RULES, world);
+        WorldIterator wi2 = new NonNullElementWorldIterator(WorldSharedKey.TrackRules, world);
         assertTrue(!wi2.next());
     }
 
@@ -89,7 +91,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
      *
      */
     public void testGotoIndex() {
-        WorldIterator worldIterator = new NonNullElementWorldIterator(KEY.STATIONS, world,
+        WorldIterator worldIterator = new NonNullElementWorldIterator(WorldKey.Stations, world,
                 MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, worldIterator.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, worldIterator.getIndex());

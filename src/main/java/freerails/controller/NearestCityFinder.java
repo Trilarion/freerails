@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.terrain.City;
 
 import java.util.NoSuchElementException;
@@ -52,13 +52,13 @@ public class NearestCityFinder {
         double tempDistance;
         City tempCity;
 
-        if (world.size(SKEY.CITIES) > 0) {
-            tempCity = (City) world.get(SKEY.CITIES, 0);
+        if (world.size(WorldSharedKey.Cities) > 0) {
+            tempCity = (City) world.get(WorldSharedKey.Cities, 0);
             cityDistance = getDistance(tempCity.getLocation());
             cityName = tempCity.getName();
 
-            for (int i = 1; i < world.size(SKEY.CITIES); i++) {
-                tempCity = (City) world.get(SKEY.CITIES, i);
+            for (int i = 1; i < world.size(WorldSharedKey.Cities); i++) {
+                tempCity = (City) world.get(WorldSharedKey.Cities, i);
                 tempDistance = getDistance(tempCity.getLocation());
 
                 if (tempDistance < cityDistance) {

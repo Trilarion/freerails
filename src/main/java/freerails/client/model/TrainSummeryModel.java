@@ -18,7 +18,7 @@
 package freerails.client.model;
 
 import freerails.client.model.TrainOrdersListModel.TrainOrdersListElement;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.Money;
@@ -117,7 +117,7 @@ public class TrainSummeryModel {
                 break;
             }
         }
-        Station station = (Station) world.get(principal, KEY.STATIONS, orders.getStationID());
+        Station station = (Station) world.get(principal, WorldKey.Stations, orders.getStationID());
         String stationName = station.getStationName();
         lastStations.put(trainNum, stationName);
         return stationName;

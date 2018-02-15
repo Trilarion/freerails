@@ -35,7 +35,7 @@ package freerails.client.renderer.map;
 
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainType;
 import freerails.model.track.NullTrackPiece;
@@ -134,7 +134,7 @@ public class ZoomedOutMapRenderer implements MapRenderer {
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeID();
-            TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
+            TerrainType terrainType = (TerrainType) world.get(WorldSharedKey.TerrainTypes, typeNumber);
             oneToOneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
         } else {
             // black with alpha of 1
@@ -173,7 +173,7 @@ public class ZoomedOutMapRenderer implements MapRenderer {
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();
-                    TerrainType terrainType = (TerrainType) world.get(SKEY.TERRAIN_TYPES, typeNumber);
+                    TerrainType terrainType = (TerrainType) world.get(WorldSharedKey.TerrainTypes, typeNumber);
                     oneToOneImage.setRGB(tileX - mapX, tileY - mapY, terrainType.getRGB());
                 } else {
                     // black with alpha of 1

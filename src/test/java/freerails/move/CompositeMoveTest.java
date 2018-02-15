@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.move.listmove.AddItemToListMove;
 import freerails.util.Vector2D;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
 
@@ -42,18 +42,18 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() {
         Move[] moves = new Move[4];
-        moves[0] = new AddItemToListMove(KEY.STATIONS, 0, station1, MapFixtureFactory.TEST_PRINCIPAL);
-        moves[1] = new AddItemToListMove(KEY.STATIONS, 1, station2, MapFixtureFactory.TEST_PRINCIPAL);
-        moves[2] = new AddItemToListMove(KEY.STATIONS, 2, station3, MapFixtureFactory.TEST_PRINCIPAL);
-        moves[3] = new AddItemToListMove(KEY.STATIONS, 3, station4, MapFixtureFactory.TEST_PRINCIPAL);
+        moves[0] = new AddItemToListMove(WorldKey.Stations, 0, station1, MapFixtureFactory.TEST_PRINCIPAL);
+        moves[1] = new AddItemToListMove(WorldKey.Stations, 1, station2, MapFixtureFactory.TEST_PRINCIPAL);
+        moves[2] = new AddItemToListMove(WorldKey.Stations, 2, station3, MapFixtureFactory.TEST_PRINCIPAL);
+        moves[3] = new AddItemToListMove(WorldKey.Stations, 3, station4, MapFixtureFactory.TEST_PRINCIPAL);
         Move compositeMove = new CompositeMove(moves);
         assertSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);
         assertEquals("The stations should not have been add yet.", 0,
-                getWorld().size(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS));
+                getWorld().size(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations));
         assertDoMoveIsOk(compositeMove);
         assertEquals("The stations should have been add now.", 4, getWorld()
-                .size(MapFixtureFactory.TEST_PRINCIPAL, KEY.STATIONS));
+                .size(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.Stations));
         assertTryUndoMoveIsOk(compositeMove);
         assertUndoMoveIsOk(compositeMove);
         assertOkButNotRepeatable(compositeMove);

@@ -18,6 +18,7 @@
 
 package freerails.client.renderer;
 
+import freerails.model.world.WorldKey;
 import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
@@ -34,7 +35,7 @@ import java.awt.geom.RoundRectangle2D;
 
 /**
  * Class to render the station names and spheres of influence on the game map.
- * Names are retrieved from the KEY.STATIONS object. Updated to also show station sphere of influence.
+ * Names are retrieved from the KEY.Stations object. Updated to also show station sphere of influence.
  */
 public class StationNamesRenderer implements Painter {
 
@@ -88,7 +89,7 @@ public class StationNamesRenderer implements Painter {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
             // draw station names onto map
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
 
             while (wi.next()) { // loop over non null stations
                 tempStation = (Station) wi.getElement();

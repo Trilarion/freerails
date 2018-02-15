@@ -18,6 +18,7 @@
 
 package freerails.move.mapupdatemove;
 
+import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.move.listmove.ChangeItemInListMove;
@@ -25,13 +26,9 @@ import freerails.util.ImmutableList;
 import freerails.util.ListKey;
 import freerails.util.Vector2D;
 import freerails.model.*;
-import freerails.model.world.FullWorldDiffs;
-import freerails.model.world.FullWorldDiffsListID;
 import freerails.model.world.FullWorld.ActivityAndTime;
 import freerails.model.finances.Transaction;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.World;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -105,7 +102,7 @@ public class WorldDiffMove implements MapUpdateMove {
                 case LISTS: {
                     int playerId = lkey.getIndex()[0];
                     FreerailsPrincipal principal = worldDiffs.getPlayer(playerId).getPrincipal();
-                    KEY k = KEY.getKey(lkey.getIndex()[1]);
+                    WorldKey k = WorldKey.getById(lkey.getIndex()[1]);
                     if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
                         int elementId = lkey.getIndex()[2];

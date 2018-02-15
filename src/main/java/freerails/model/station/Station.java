@@ -20,7 +20,7 @@ package freerails.model.station;
 
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.TrackRule;
@@ -153,8 +153,8 @@ public class Station implements Serializable {
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
         if (trackRule.isStation() && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
 
-            for (int i = 0; i < world.size(principal, KEY.STATIONS); i++) {
-                Station station = (Station) world.get(principal, KEY.STATIONS, i);
+            for (int i = 0; i < world.size(principal, WorldKey.Stations); i++) {
+                Station station = (Station) world.get(principal, WorldKey.Stations, i);
 
                 if (null != station && p.equals(station.location)) {
                     return i;

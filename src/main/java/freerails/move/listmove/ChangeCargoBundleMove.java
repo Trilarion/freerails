@@ -22,7 +22,7 @@
 package freerails.move.listmove;
 
 import freerails.move.Move;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.player.FreerailsPrincipal;
 
 import java.io.Serializable;
@@ -42,6 +42,6 @@ public class ChangeCargoBundleMove extends ChangeItemInListMove {
      * @param p
      */
     public ChangeCargoBundleMove(Serializable before, Serializable after, int bundleNumber, FreerailsPrincipal p) {
-        super(KEY.CARGO_BUNDLES, bundleNumber, before, after, p);
+        super(WorldKey.CargoBundles, bundleNumber, before, after, p);
     }
 }

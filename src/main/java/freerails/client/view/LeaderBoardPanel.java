@@ -29,6 +29,7 @@ import freerails.model.finances.Money;
 import freerails.model.finances.PlayerDetails;
 import freerails.model.finances.TransactionAggregator;
 import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
 
 import javax.swing.*;
@@ -117,7 +118,7 @@ public class LeaderBoardPanel extends JPanel implements View {
             PlayerDetails details = new PlayerDetails();
             FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
             details.name = principal.getName();
-            WorldIterator stations = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+            WorldIterator stations = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
             details.stations = stations.size();
             TransactionAggregator networth = new NetWorthCalculator(world, principal);
             details.networth = networth.calculateValue();

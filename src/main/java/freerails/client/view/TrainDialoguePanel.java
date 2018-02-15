@@ -27,6 +27,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.WorldKey;
 import freerails.model.world.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
@@ -142,7 +143,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     }
 
     public void display(int trainNumber) {
-        worldIterator = new NonNullElementWorldIterator(KEY.TRAINS, world, principal);
+        worldIterator = new NonNullElementWorldIterator(WorldKey.Trains, world, principal);
         worldIterator.gotoIndex(trainNumber);
         if (worldIterator.getRowID() > 0) {
             previousJButton.setEnabled(true);
@@ -160,14 +161,14 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
-    public void listUpdated(KEY key, int index, FreerailsPrincipal principal) {
-        newTrainSchedulePanel1.listUpdated(key, index, principal);
+    public void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+        newTrainSchedulePanel1.listUpdated(worldKey, index, principal);
     }
 
-    public void itemAdded(KEY key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal) {
     }
 
-    public void itemRemoved(KEY key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal) {
     }
 
     void setTrainDetailsButtonActionListener(ActionListener l) {

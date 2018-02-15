@@ -19,7 +19,7 @@
 package freerails.model.station;
 
 import freerails.util.Vector2D;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
@@ -71,7 +71,7 @@ public class NearestStationFinder {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
         int nearestStation = NOT_FOUND;
 
         while (it.next()) {
@@ -96,9 +96,9 @@ public class NearestStationFinder {
      */
     public int findNearestStationInDirection(int startStation, TileTransition direction) {
         int distanceToClosestSquared = Integer.MAX_VALUE;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
 
-        Station currentStation = (Station) world.get(principal, KEY.STATIONS, startStation);
+        Station currentStation = (Station) world.get(principal, WorldKey.Stations, startStation);
 
         int nearestStation = NOT_FOUND;
 

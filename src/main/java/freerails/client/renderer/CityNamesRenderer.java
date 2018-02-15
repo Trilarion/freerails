@@ -26,7 +26,7 @@ package freerails.client.renderer;
 import freerails.util.ui.Painter;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.SKEY;
+import freerails.model.world.WorldSharedKey;
 import freerails.model.WorldConstants;
 import freerails.model.terrain.City;
 
@@ -55,9 +55,9 @@ public class CityNamesRenderer implements Painter {
         g.setFont(new Font("Arial", 0, 20));
 
         // draw city names onto map
-        int size = world.size(SKEY.CITIES);
+        int size = world.size(WorldSharedKey.Cities);
         for (int i = 0; i < size; i++) {
-            City tempCity = (City) world.get(SKEY.CITIES, i);
+            City tempCity = (City) world.get(WorldSharedKey.Cities, i);
             Vector2D location = tempCity.getLocation();
             final int xpos = location.x * WorldConstants.TILE_SIZE;
             final int ypos = location.y * WorldConstants.TILE_SIZE + 10;

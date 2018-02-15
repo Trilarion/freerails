@@ -19,8 +19,9 @@
 /*
  *
  */
-package freerails.model;
+package freerails.model.world;
 
+import freerails.model.world.WorldSharedKey;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
@@ -29,50 +30,44 @@ import java.lang.reflect.Modifier;
 /**
  *
  */
-public class KEYTest extends TestCase {
+public class WorldSharedKeyTest extends TestCase {
 
     /**
      *
      */
     public void testGetNumberOfKeys() {
-        // There were 4 keys when a wrote this test, but I expect the number to increase.
-        assertTrue(KEY.getNumberOfKeys() >= 4);
+        assertTrue(WorldSharedKey.getNumberOfKeys() > 5);
     }
 
     /**
      *
      */
-    public void testThatAllTheFieldsDefinedInKEYAreInstancesOFKEY() {
-        Field[] fields = KEY.class.getFields();
+    public void testThatAllTheFieldsDefinedInSKEYAreInstancesOFSKEY() {
+        Field[] fields = WorldSharedKey.class.getFields();
 
         for (Field field : fields) {
             String name = field.getName();
             int modifiers = field.getModifiers();
 
             if (!name.equals("shared")) {
-                assertTrue("All the fields of KEY should be static", Modifier.isStatic(modifiers));
+                assertTrue("All the fields of SKEY should be static", Modifier
+                        .isStatic(modifiers));
             }
 
-            assertTrue("All the fields of KEY should be public", Modifier.isPublic(modifiers));
-            assertTrue("All the fields of KEY should be final", Modifier.isFinal(modifiers));
+            assertTrue("All the fields of SKEY should be public", Modifier
+                    .isPublic(modifiers));
+            assertTrue("All the fields of SKEY should be final", Modifier
+                    .isFinal(modifiers));
 
             try {
                 if (Modifier.isStatic(modifiers)) {
                     Object o = field.get(null);
-                    assertTrue("All the fields of KEY should be instances of"
-                            + " KEY", o instanceof KEY);
+                    assertTrue("All the fields of SKEY should be instances of"
+                            + " SKEY", o instanceof WorldSharedKey);
                 }
             } catch (IllegalAccessException e) {
                 assertTrue(false);
             }
         }
-    }
-
-    /**
-     *
-     */
-    public void testToString() {
-
-        assertEquals("Key.toString() should return the field name", "TRAINS", KEY.TRAINS.toString());
     }
 }

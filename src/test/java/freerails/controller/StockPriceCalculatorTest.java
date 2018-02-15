@@ -26,7 +26,7 @@ import freerails.util.Vector2D;
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.ITEM;
+import freerails.model.world.ITEM;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;

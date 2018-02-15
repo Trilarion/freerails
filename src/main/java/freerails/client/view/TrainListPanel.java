@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.model.KEY;
+import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldIterator;
@@ -197,7 +197,7 @@ public class TrainListPanel extends JPanel implements View {
         trainSummaryPanel1.setup(modelRoot, rendererRoot, null);
 
         if (rhsjTabPane) {
-            list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), KEY.TRAINS, modelRoot.getPrincipal()));
+            list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), WorldKey.Trains, modelRoot.getPrincipal()));
             TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, rendererRoot);
             list1.setCellRenderer(trainView);
             trainView.setHeight(trainViewHeight);
@@ -221,7 +221,7 @@ public class TrainListPanel extends JPanel implements View {
          * been removed are not shown on the list.
          */
         int row = list1.getSelectedIndex();
-        return NonNullElementWorldIterator.rowToIndex(world, KEY.TRAINS, principal, row);
+        return NonNullElementWorldIterator.rowToIndex(world, WorldKey.Trains, principal, row);
     }
 
 
@@ -250,10 +250,10 @@ public class TrainListPanel extends JPanel implements View {
     @Override
     public void paint(Graphics g) {
         if (null != world) {
-            WorldIterator trains = new NonNullElementWorldIterator(KEY.TRAINS, world, principal);
+            WorldIterator trains = new NonNullElementWorldIterator(WorldKey.Trains, world, principal);
             int newNumberOfTrains = trains.size();
             if (newNumberOfTrains != lastNumberOfTrains) {
-                list1.setModel(new WorldToListModelAdapter(world, KEY.TRAINS, principal));
+                list1.setModel(new WorldToListModelAdapter(world, WorldKey.Trains, principal));
                 if (newNumberOfTrains > 0) {
                     list1.setSelectedIndex(0);
                 }

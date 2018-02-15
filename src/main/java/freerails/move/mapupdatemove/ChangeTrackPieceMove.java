@@ -18,6 +18,7 @@
 
 package freerails.move.mapupdatemove;
 
+import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.premove.MoveTrainPreMove;
 import freerails.util.Vector2D;
@@ -31,8 +32,6 @@ import freerails.model.terrain.TerrainType;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackRule;
-import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.World;
 
 import java.awt.*;
 
@@ -82,7 +81,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {
             FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
-            WorldIterator wi = new NonNullElementWorldIterator(KEY.STATIONS, world, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
 
             while (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -255,7 +254,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         int terrainType = ((FullTerrainTile) world.getTile(location)).getTerrainTypeID();
-        TerrainType tt = (TerrainType) world.get(SKEY.TERRAIN_TYPES, terrainType);
+        TerrainType tt = (TerrainType) world.get(WorldSharedKey.TerrainTypes, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getCategory())) {
             String thisTrackType = newTrackPiece.getTrackRule().getTypeName();
