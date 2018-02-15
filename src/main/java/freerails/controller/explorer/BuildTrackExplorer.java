@@ -25,7 +25,7 @@ import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.WorldConstants;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
@@ -207,7 +207,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (trackRuleID == -1) {
                 return null; // Can't build on this terrain!
             }
-            rule = (TrackRule) world.get(WorldSharedKey.TrackRules, trackRuleID);
+            rule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
         } else {
             rule = tile.getTrackPiece().getTrackRule();
         }

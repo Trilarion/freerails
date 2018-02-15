@@ -33,7 +33,6 @@ import java.util.Map;
  */
 public class TestSaveGamesManager implements SaveGamesManager {
 
-    private final String[] mapsAvailable = {"map1", "map2"};
     private final Map<String, Serializable> savedGames = new HashMap<>();
 
     /**
@@ -41,13 +40,6 @@ public class TestSaveGamesManager implements SaveGamesManager {
      */
     public String[] getSaveGameNames() {
         return savedGames.keySet().toArray(new String[0]);
-    }
-
-    /**
-     * @return
-     */
-    public String[] getNewMapNames() {
-        return mapsAvailable.clone();
     }
 
     /**
@@ -69,14 +61,5 @@ public class TestSaveGamesManager implements SaveGamesManager {
     public ServerGameModel loadGame(String path) {
         Serializable o = savedGames.get(path);
         return (ServerGameModel) Utils.cloneBySerialisation(o);
-    }
-
-    /**
-     * @param name
-     * @return
-     * @throws IOException
-     */
-    public World newMap(String name) {
-        return new FullWorld(10, 10);
     }
 }

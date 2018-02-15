@@ -46,7 +46,7 @@ public class TrackPathFinderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(20, 20);
+        world = new FullWorld(new Vector2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);

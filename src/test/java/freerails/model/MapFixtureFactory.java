@@ -18,7 +18,7 @@
 
 package freerails.model;
 
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.util.Vector2D;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoType;
@@ -55,18 +55,17 @@ public class MapFixtureFactory {
      * Returns a world object with a map of the specified size with the terrain
      * and cargo types setup.
      *
-     * @param width
-     * @param height
+     * @param mapSize
      * @return
      */
-    public static World getWorld(int width, int height) {
+    public static World getWorld(Vector2D mapSize) {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        World world = new FullWorld(width, height);
+        World world = new FullWorld(mapSize);
         generateTerrainTypesList(world);
         generateCargoTypesList(world);
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < width; y++) {
+        for (int x = 0; x < mapSize.x; x++) {
+            for (int y = 0; y < mapSize.y; y++) {
                 world.setTile(new Vector2D(x, y), tile);
             }
         }
@@ -127,11 +126,11 @@ public class MapFixtureFactory {
 
         // Add track rules to world
         for (TrackRule aTrackRulesArray : trackRulesArray) {
-            world.add(WorldSharedKey.TrackRules, aTrackRulesArray);
+            world.add(SharedKey.TrackRules, aTrackRulesArray);
         }
 
         // Add the terrain types if necessary.
-        if (world.size(WorldSharedKey.TerrainTypes) == 0) {
+        if (world.size(SharedKey.TerrainTypes) == 0) {
             generateTerrainTypesList(world);
         }
     }
@@ -142,14 +141,14 @@ public class MapFixtureFactory {
      * @param world
      */
     public static void generateCargoTypesList(World world) {
-        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Mail", CargoCategory.Mail));
-        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Passengers",
+        world.add(SharedKey.CargoTypes, new CargoType(0, "Mail", CargoCategory.Mail));
+        world.add(SharedKey.CargoTypes, new CargoType(0, "Passengers",
                 CargoCategory.Passengers));
-        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Goods",
+        world.add(SharedKey.CargoTypes, new CargoType(0, "Goods",
                 CargoCategory.Fast_Freight));
-        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Steel",
+        world.add(SharedKey.CargoTypes, new CargoType(0, "Steel",
                 CargoCategory.Slow_Freight));
-        world.add(WorldSharedKey.CargoTypes, new CargoType(0, "Coal",
+        world.add(SharedKey.CargoTypes, new CargoType(0, "Coal",
                 CargoCategory.Bulk_Freight));
     }
 
@@ -157,15 +156,15 @@ public class MapFixtureFactory {
      * Adds hard coded terrain types.
      */
     private static void generateTerrainTypesList(World world) {
-        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
+        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Country, "Grassland"));
-        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
+        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Urban, "City"));
-        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
+        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Resource, "Mine"));
-        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
+        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Industry, "Factory"));
-        world.add(WorldSharedKey.TerrainTypes, new TerrainTypeImpl(
+        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
                 TerrainCategory.Ocean, "Ocean"));
     }
 }

@@ -24,9 +24,9 @@ package freerails.move;
 import freerails.move.listmove.AddCargoBundleMove;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.util.Vector2D;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -52,12 +52,12 @@ public class AddStationMove extends CompositeMove {
      * @return
      */
     public static AddStationMove generateMove(ReadOnlyWorld world, String stationName, Vector2D location, Move upgradeTrackMove, FreerailsPrincipal principal) {
-        int cargoBundleNumber = world.size(principal, WorldKey.CargoBundles);
+        int cargoBundleNumber = world.size(principal, PlayerKey.CargoBundles);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
-        int stationNumber = world.size(principal, WorldKey.Stations);
-        Station station = new Station(location, stationName, world.size(WorldSharedKey.CargoTypes), cargoBundleNumber);
+        int stationNumber = world.size(principal, PlayerKey.Stations);
+        Station station = new Station(location, stationName, world.size(SharedKey.CargoTypes), cargoBundleNumber);
 
-        Move addStation = new AddItemToListMove(WorldKey.Stations, stationNumber, station, principal);
+        Move addStation = new AddItemToListMove(PlayerKey.Stations, stationNumber, station, principal);
 
         return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
     }

@@ -26,7 +26,7 @@ import freerails.network.movereceiver.MoveReceiver;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldIterator;
@@ -61,7 +61,7 @@ public class TrainUpdater implements Serializable {
     }
 
     private static ImmutableSchedule generateInitialSchedule(FreerailsPrincipal principal, ReadOnlyWorld world, boolean autoSchedule) {
-        WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
         MutableSchedule s = new MutableSchedule();
 
         // Add up to 4 stations to the schedule.
@@ -103,8 +103,8 @@ public class TrainUpdater implements Serializable {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
-            for (int i = 0; i < world.size(principal, WorldKey.Stations); i++) {
-                Station station = (Station) world.get(principal, WorldKey.Stations, i);
+            for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
+                Station station = (Station) world.get(principal, PlayerKey.Stations, i);
                 if (null != station) {
 
                     ImmutableList<TrainBlueprint> production = station.getProduction();
@@ -136,9 +136,9 @@ public class TrainUpdater implements Serializable {
             // we process moving trains first.
             Collection<MoveTrainPreMove> movingTrains = new ArrayList<>();
             Collection<MoveTrainPreMove> stoppedTrains = new ArrayList<>();
-            for (int i = 0; i < world.size(principal, WorldKey.Trains); i++) {
+            for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
 
-                TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, i);
+                TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, i);
                 if (null == train) continue;
 
                 MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal, occupiedTracks);

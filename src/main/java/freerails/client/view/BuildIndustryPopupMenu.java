@@ -27,7 +27,7 @@ import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vector2D;
 import freerails.model.NonNullElementWorldIterator;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
@@ -63,7 +63,7 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
     public void setup(final ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         removeAll();
 
-        final NonNullElementWorldIterator it = new NonNullElementWorldIterator(WorldSharedKey.TerrainTypes, modelRoot.getWorld());
+        final NonNullElementWorldIterator it = new NonNullElementWorldIterator(SharedKey.TerrainTypes, modelRoot.getWorld());
 
         while (it.next()) {
             TerrainType type = (TerrainType) it.getElement();

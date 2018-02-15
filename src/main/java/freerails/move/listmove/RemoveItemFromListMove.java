@@ -22,7 +22,7 @@
 package freerails.move.listmove;
 
 import freerails.move.MoveStatus;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -35,13 +35,13 @@ public class RemoveItemFromListMove implements ListMove {
 
     private static final long serialVersionUID = 3906091169698953521L;
     private final Serializable item;
-    private final WorldKey listWorldKey;
+    private final PlayerKey listPlayerKey;
     private final int index;
     private final FreerailsPrincipal principal;
 
-    public RemoveItemFromListMove(WorldKey k, int i, Serializable item, FreerailsPrincipal p) {
+    public RemoveItemFromListMove(PlayerKey k, int i, Serializable item, FreerailsPrincipal p) {
         this.item = item;
-        listWorldKey = k;
+        listPlayerKey = k;
         index = i;
         principal = p;
     }
@@ -54,23 +54,23 @@ public class RemoveItemFromListMove implements ListMove {
     public int hashCode() {
         int result;
         result = (item != null ? item.hashCode() : 0);
-        result = 29 * result + listWorldKey.hashCode();
+        result = 29 * result + listPlayerKey.hashCode();
         result = 29 * result + index;
         result = 29 * result + principal.hashCode();
 
         return result;
     }
 
-    public WorldKey getKey() {
-        return listWorldKey;
+    public PlayerKey getKey() {
+        return listPlayerKey;
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        if (world.size(this.principal, listWorldKey) < (index + 1)) {
-            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listWorldKey) + " but index =" + index);
+        if (world.size(this.principal, listPlayerKey) < (index + 1)) {
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listPlayerKey) + " but index =" + index);
         }
 
-        Serializable item2remove = world.get(this.principal, listWorldKey, index);
+        Serializable item2remove = world.get(this.principal, listPlayerKey, index);
 
         if (null == item2remove) {
             return MoveStatus.moveFailed("The item at position " + index + " has already been removed.");
@@ -85,12 +85,12 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        if (world.size(this.principal, listWorldKey) < (index + 1)) {
-            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listWorldKey) + " but index =" + index);
+        if (world.size(this.principal, listPlayerKey) < (index + 1)) {
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listPlayerKey) + " but index =" + index);
         }
 
-        if (null != world.get(this.principal, listWorldKey, index)) {
-            String reason = "The item at position " + index + " in the list (" + world.get(this.principal, listWorldKey, index).toString() + ") is not the expected item (null).";
+        if (null != world.get(this.principal, listPlayerKey, index)) {
+            String reason = "The item at position " + index + " in the list (" + world.get(this.principal, listPlayerKey, index).toString() + ") is not the expected item (null).";
 
             return MoveStatus.moveFailed(reason);
         }
@@ -101,7 +101,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.set(this.principal, listWorldKey, index, null);
+            world.set(this.principal, listPlayerKey, index, null);
         }
 
         return moveStatus;
@@ -111,7 +111,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.set(this.principal, listWorldKey, index, item);
+            world.set(this.principal, listPlayerKey, index, item);
         }
 
         return moveStatus;
@@ -130,7 +130,7 @@ public class RemoveItemFromListMove implements ListMove {
                 return false;
             }
 
-            return listWorldKey == test.listWorldKey;
+            return listPlayerKey == test.listPlayerKey;
         }
         return false;
     }

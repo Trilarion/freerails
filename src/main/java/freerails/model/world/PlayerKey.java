@@ -18,21 +18,16 @@
 
 package freerails.model.world;
 
-import freerails.util.Utils;
-
-import java.io.Serializable;
-
 /**
- * Provides a set of keys to access the lists of elements in the game
- * world that are shared by all players.
+ * Provides a set of keys to access the lists of elements in the game world that are indexed by player.
  */
-public enum WorldSharedKey {
+public enum PlayerKey {
 
-    TerrainTypes(0), WagonTypes(1), CargoTypes(2), Cities(3), EngineTypes(4), TrackRules(5);
+    Trains(0), Stations(1), CargoBundles(2), TrainSchedules(3);
 
     private final int id;
 
-    WorldSharedKey(int id) {
+    PlayerKey(int id) {
         this.id = id;
     }
 
@@ -51,8 +46,8 @@ public enum WorldSharedKey {
         return id;
     }
 
-    public static WorldSharedKey getById(int id) {
-        for (WorldSharedKey key : values()) {
+    public static PlayerKey getById(int id) {
+        for (PlayerKey key : values()) {
             if (key.id == id) return key;
         }
         throw new IllegalArgumentException();

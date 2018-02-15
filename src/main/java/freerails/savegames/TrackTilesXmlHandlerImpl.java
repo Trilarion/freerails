@@ -21,7 +21,7 @@
  */
 package freerails.savegames;
 
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.*;
@@ -164,7 +164,7 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
      */
     public void addTrackRules(World w) {
         for (TrackRule r : ruleList) {
-            w.add(WorldSharedKey.TrackRules, r);
+            w.add(SharedKey.TrackRules, r);
         }
     }
 

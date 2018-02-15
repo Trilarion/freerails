@@ -37,8 +37,8 @@ import java.io.Serializable;
  * <ul>
  * <li>A list of players.</li>
  * <li>A 2D grid - the map.</li>
- * <li>A series of lists that are accessible using the keys defined in {@link WorldSharedKey}</li>
- * <li>Another series of lists indexed by player and accessible using the keys defined in {@link WorldKey}</li>
+ * <li>A series of lists that are accessible using the keys defined in {@link SharedKey}</li>
+ * <li>Another series of lists indexed by player and accessible using the keys defined in {@link PlayerKey}</li>
  * <li>A collection items accessible using the keys defined in {@link WorldItem}</li>
  * <li>A list of financial transactions for each of the players</li>
  * </ul>
@@ -61,15 +61,15 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * @return
      */
-    boolean boundsContain(Vector2D p);
+    boolean boundsContain(Vector2D location);
 
     /**
-     * @param p
-     * @param k
+     * @param principal
+     * @param key
      * @param index
      * @return
      */
-    boolean boundsContain(FreerailsPrincipal p, WorldKey k, int index);
+    boolean boundsContain(FreerailsPrincipal principal, PlayerKey key, int index);
 
     /**
      * @return
@@ -80,38 +80,38 @@ public interface ReadOnlyWorld extends Serializable {
      * Returns the element mapped to the specified item.
      */
 
-    Serializable get(WorldItem worldItem);
+    Serializable get(WorldItem item);
 
     /**
      * Returns the element at the specified position in the specified list.
      */
 
-    Serializable get(FreerailsPrincipal p, WorldKey worldKey, int index);
+    Serializable get(FreerailsPrincipal principal, PlayerKey key, int index);
 
     /**
      * Returns the element at the specified position in the specified list.
      */
 
-    Serializable get(WorldSharedKey key, int index);
+    Serializable get(SharedKey key, int index);
 
     /**
-     * @param p
+     * @param principal
      * @param index
      * @return
      */
-    ActivityIterator getActivities(FreerailsPrincipal p, int index);
+    ActivityIterator getActivities(FreerailsPrincipal principal, int index);
 
     /**
-     * @param p
+     * @param principal
      * @return
      */
-    Money getCurrentBalance(FreerailsPrincipal p);
+    Money getCurrentBalance(FreerailsPrincipal principal);
 
     /**
-     * @param p
+     * @param principal
      * @return
      */
-    int getID(FreerailsPrincipal p);
+    int getID(FreerailsPrincipal principal);
 
     /**
      * Returns the height of the map in tiles.
@@ -129,16 +129,16 @@ public interface ReadOnlyWorld extends Serializable {
     int getNumberOfPlayers();
 
     /**
-     * @param p
+     * @param principal
      * @return
      */
-    int getNumberOfTransactions(FreerailsPrincipal p);
+    int getNumberOfTransactions(FreerailsPrincipal principal);
 
     /**
-     * @param p
+     * @param principal
      * @return
      */
-    int getNumberOfActiveEntities(FreerailsPrincipal p);
+    int getNumberOfActiveEntities(FreerailsPrincipal principal);
 
     /**
      * @param i
@@ -149,47 +149,47 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * Returns the tile at the specified position on the map.
      */
-    Serializable getTile(Vector2D p);
+    Serializable getTile(Vector2D location);
 
     /**
-     * @param p
+     * @param principal
      * @param i
      * @return
      */
-    Transaction getTransaction(FreerailsPrincipal p, int i);
+    Transaction getTransaction(FreerailsPrincipal principal, int i);
 
     /**
-     * @param p
+     * @param principal
      * @param i
      * @return
      */
-    GameTime getTransactionTimeStamp(FreerailsPrincipal p, int i);
+    GameTime getTransactionTimeStamp(FreerailsPrincipal principal, int i);
 
     /**
-     * @param p
+     * @param principal
      * @param i
      * @return
      */
-    Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal p, int i);
+    Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal principal, int i);
 
     /**
-     * @param p
+     * @param principal
      * @return
      */
-    boolean isPlayer(FreerailsPrincipal p);
+    boolean isPlayer(FreerailsPrincipal principal);
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(FreerailsPrincipal p, WorldKey worldKey);
+    int size(FreerailsPrincipal principal, PlayerKey key);
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(WorldSharedKey key);
+    int size(SharedKey key);
 
     /**
      * Returns number of active entities belonging to the specified principal.
      */
-    int size(FreerailsPrincipal p);
+    int size(FreerailsPrincipal principal);
 }

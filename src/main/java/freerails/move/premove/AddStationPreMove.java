@@ -29,9 +29,9 @@ import freerails.move.listmove.AddItemToListMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vector2D;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.FullTerrainTile;
@@ -102,7 +102,7 @@ public class AddStationPreMove implements PreMove {
 
         FullTerrainTile ft = (FullTerrainTile) world.getTile(p);
         TrackPiece before = ft.getTrackPiece();
-        TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, ruleNumber);
+        TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, ruleNumber);
@@ -124,7 +124,7 @@ public class AddStationPreMove implements PreMove {
                 // game. However
                 // some of the unit tests create stations when there are no
                 // cities.
-                stationName = "Central Station #" + world.size(principal, WorldKey.Stations);
+                stationName = "Central Station #" + world.size(principal, PlayerKey.Stations);
             }
 
             // check the terrain to see if we can build a station on it...
@@ -150,7 +150,7 @@ public class AddStationPreMove implements PreMove {
             if (moves[i] instanceof AddItemToListMove) {
                 AddItemToListMove move = (AddItemToListMove) moves[i];
 
-                if (move.getKey().equals(WorldKey.Stations)) {
+                if (move.getKey().equals(PlayerKey.Stations)) {
                     Station station = (Station) move.getAfter();
                     CalcCargoSupplyRateAtStation supplyRate;
                     supplyRate = new CalcCargoSupplyRateAtStation(world, station.location, ruleNumber);

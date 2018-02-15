@@ -30,6 +30,7 @@ public class GameTime implements Serializable, Comparable<GameTime> {
     /**
      * The first possible time.
      */
+    // TODO BIG_BAND AND DOOMSDAY really used?
     public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
     /**
      * The last possible time.

@@ -21,7 +21,7 @@ package freerails.controller;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.WorldConstants;
 import freerails.model.station.Station;
 import freerails.model.station.StationConversion;
@@ -60,13 +60,13 @@ public class CalcCargoSupplyRateAtStation {
         this.world = world;
         this.p = p;
 
-        TrackRule trackRule = (TrackRule) this.world.get(WorldSharedKey.TrackRules, trackRuleNo);
+        TrackRule trackRule = (TrackRule) this.world.get(SharedKey.TrackRules, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
 
         supplies = new ArrayList<>();
         populateSuppliesVector();
 
-        int numCargoTypes = this.world.size(WorldSharedKey.CargoTypes);
+        int numCargoTypes = this.world.size(SharedKey.CargoTypes);
         demand = new int[numCargoTypes];
         converts = StationConversion.emptyConversionArray(numCargoTypes);
     }
@@ -94,9 +94,9 @@ public class CalcCargoSupplyRateAtStation {
      * @return
      */
     private StationDemand getDemand() {
-        boolean[] demandboolean = new boolean[world.size(WorldSharedKey.CargoTypes)];
+        boolean[] demandboolean = new boolean[world.size(SharedKey.CargoTypes)];
 
-        for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
+        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
             if (demand[i] >= WorldConstants.PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
             }
@@ -108,7 +108,7 @@ public class CalcCargoSupplyRateAtStation {
     private void incrementSupplyAndDemand(Vector2D p) {
         int tileTypeNumber = ((FullTerrainTile) world.getTile(p)).getTerrainTypeID();
 
-        TerrainType terrainType = (TerrainType) world.get(WorldSharedKey.TerrainTypes, tileTypeNumber);
+        TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tileTypeNumber);
 
         // Calculate supply.
         ImmutableList<TileProduction> production = terrainType.getProduction();
@@ -154,7 +154,7 @@ public class CalcCargoSupplyRateAtStation {
         // get the correct list of cargoes from the world object
         CargoElementObject tempCargoElement;
 
-        for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
+        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
             // cT = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             tempCargoElement = new CargoElementObject(0, i);
             supplies.add(tempCargoElement);
@@ -208,7 +208,7 @@ public class CalcCargoSupplyRateAtStation {
      * @param station A Station object to be processed
      */
     public Station calculations(Station station) {
-        Integer[] cargoSupplied = new Integer[world.size(WorldSharedKey.CargoTypes)];
+        Integer[] cargoSupplied = new Integer[world.size(SharedKey.CargoTypes)];
 
         List<CargoElementObject> supply = scanAdjacentTiles();
 

@@ -32,6 +32,7 @@ import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 import freerails.model.world.FullWorld;
 import freerails.model.world.World;
+import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
 /**
@@ -68,7 +69,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        world = new FullWorld(10, 10);
+        world = new FullWorld(new Vector2D(10, 10));
         player = new Player("Player X", world.getNumberOfPlayers());
         world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));

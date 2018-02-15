@@ -25,8 +25,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.model.world.WorldSharedKey;
-import freerails.model.world.WorldKey;
+import freerails.model.world.SharedKey;
+import freerails.model.world.PlayerKey;
 import freerails.util.Vector2D;
 import freerails.model.*;
 import freerails.model.cargo.CargoBatchBundle;
@@ -182,7 +182,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        worldIterator = new NonNullElementWorldIterator(WorldKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+        worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
         addComponentListener(componentListener);
         world = modelRoot.getWorld();
         this.modelRoot = modelRoot;
@@ -211,11 +211,11 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         int stationNumber = worldIterator.getIndex();
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
-            Station station = (Station) world.get(modelRoot.getPrincipal(), WorldKey.Stations, stationNumber);
+            Station station = (Station) world.get(modelRoot.getPrincipal(), PlayerKey.Stations, stationNumber);
             FullTerrainTile tile = (FullTerrainTile) world.getTile(station.location);
             String stationTypeName = tile.getTrackPiece().getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
-            CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(modelRoot.getPrincipal(), WorldKey.CargoBundles, station.getCargoBundleID());
+            CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(modelRoot.getPrincipal(), PlayerKey.CargoBundles, station.getCargoBundleID());
 
             StringBuilder table1 = new StringBuilder();
 
@@ -229,10 +229,10 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
             table1.append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>");
 
-            for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
+            for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
 
                 // get the values
-                CargoType cargoType = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
+                CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, i);
                 String demanded = (station.getDemandForCargo().isCargoDemanded(i) ? "Yes" : "No");
 
                 int amountSupplied = station.getSupply().getSupply(i);
@@ -272,8 +272,8 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
          * Avoid a array out of bounds exception when there are no stations and
          * the stations tab is visible.
          */
-        if (world.boundsContain(playerPrincipal, WorldKey.CargoBundles, cargoBundleIndex)) {
-            Serializable currentCargoBundle = world.get(playerPrincipal, WorldKey.CargoBundles, cargoBundleIndex);
+        if (world.boundsContain(playerPrincipal, PlayerKey.CargoBundles, cargoBundleIndex)) {
+            Serializable currentCargoBundle = world.get(playerPrincipal, PlayerKey.CargoBundles, cargoBundleIndex);
             if (lastCargoBundle != currentCargoBundle) {
                 display();
                 lastCargoBundle = currentCargoBundle;
@@ -282,18 +282,18 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         super.paintComponent(g);
     }
 
-    private void reactToUpdate(WorldKey worldKey, int changedIndex, boolean isAddition) {
+    private void reactToUpdate(PlayerKey playerKey, int changedIndex, boolean isAddition) {
         if (!isVisible()) {
             return;
         }
 
         int currentIndex = worldIterator.getIndex();
-        if (worldKey == WorldKey.CargoBundles) {
+        if (playerKey == PlayerKey.CargoBundles) {
             if (changedIndex == cargoBundleIndex) {
                 // update our cargo bundle
                 display();
             }
-        } else if (worldKey == WorldKey.Stations) {
+        } else if (playerKey == PlayerKey.Stations) {
             worldIterator.reset();
             if (currentIndex != WorldIterator.BEFORE_FIRST) {
                 if (currentIndex < worldIterator.size()) {
@@ -314,16 +314,16 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
     }
 
-    public void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(worldKey, index, false);
+    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(playerKey, index, false);
     }
 
-    public void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(worldKey, index, true);
+    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(playerKey, index, true);
     }
 
-    public void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(worldKey, index, false);
+    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(playerKey, index, false);
     }
 
     void removeCloseButton() {

@@ -21,7 +21,7 @@ package freerails.server;
 import freerails.model.terrain.CityTile;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.City;
 import freerails.model.terrain.FullTerrainTile;
@@ -52,7 +52,7 @@ public class CityModel {
     private static void writeTile(World world, CityTile cityTile) {
         int type = 0;
 
-        while (!world.get(WorldSharedKey.TerrainTypes, type).equals(cityTile.terrainType)) {
+        while (!world.get(SharedKey.TerrainTypes, type).equals(cityTile.terrainType)) {
             type++;
         }
 
@@ -96,8 +96,8 @@ public class CityModel {
         // Set up the list of industries not at the city.
         industriesNotAtCity.clear();
 
-        for (int i = 0; i < world.size(WorldSharedKey.TerrainTypes); i++) {
-            TerrainType type = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
+        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
+            TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, i);
 
             if (type.getCategory() == TerrainCategory.Industry) {
                 industriesNotAtCity.add(type);
@@ -108,7 +108,7 @@ public class CityModel {
 
         // Identify city's bounds.
         Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
-        City city = (City) world.get(WorldSharedKey.Cities, cityID);
+        City city = (City) world.get(SharedKey.Cities, cityID);
         Vector2D topleft = Vector2D.subtract(city.getLocation(), new Vector2D(-3,-3));
         Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);
         cityArea = cityArea.intersection(mapRect);
@@ -124,7 +124,7 @@ public class CityModel {
                 }
 
                 int terrainTypeNumber = tile.getTerrainTypeID();
-                TerrainType type = (TerrainType) world.get(WorldSharedKey.TerrainTypes, terrainTypeNumber);
+                TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, terrainTypeNumber);
 
                 Vector2D location = new Vector2D(x, y);
                 switch (type.getCategory()) {

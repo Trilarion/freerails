@@ -24,7 +24,7 @@ package freerails.move.listmove;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.util.Vector2D;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.MutableCargoBatchBundle;
 import freerails.model.MapFixtureFactory;
@@ -48,7 +48,7 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
 
         Move move = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
         assertDoMoveIsOk(move);
-        assertEquals(getWorld().size(MapFixtureFactory.TEST_PRINCIPAL, WorldKey.CargoBundles), 1);
+        assertEquals(getWorld().size(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.CargoBundles), 1);
         assertUndoMoveIsOk(move);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);

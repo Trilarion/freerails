@@ -19,16 +19,16 @@
 package freerails.client;
 
 import freerails.client.renderer.RendererRootImpl;
-import freerails.model.world.WorldSharedKey;
-import freerails.model.world.WorldKey;
+import freerails.model.world.SharedKey;
+import freerails.model.world.PlayerKey;
 import freerails.network.movereceiver.SimpleMoveReciever;
+import freerails.savegames.MapCreator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.network.movereceiver.MoveChainFork;
 import freerails.network.movereceiver.UntriedMoveReceiver;
-import freerails.savegames.FullSaveGameManager;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
@@ -74,7 +74,7 @@ class DialogueBoxTester extends JFrame {
      */
     private DialogueBoxTester() {
 
-        World world = new FullWorld(200, 200);
+        World world = new FullWorld(new Vector2D(200, 200));
 
         UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(world);
 
@@ -83,7 +83,7 @@ class DialogueBoxTester extends JFrame {
         modelRoot.setMoveReceiver(dummyReceiver);
 
         WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        FullSaveGameManager.addTerrainTileTypesList(world);
+        MapCreator.addTerrainTileTypesList(world);
         WagonAndEngineTypesFactory.addTypesToWorld(world);
         world.addPlayer(TEST_PLAYER);
         try {
@@ -98,7 +98,7 @@ class DialogueBoxTester extends JFrame {
         actionRoot.setDialogueBoxController(dialogueBoxController);
         dialogueBoxController.setDefaultFocusOwner(this);
 
-        int numberOfCargoTypes = world.size(WorldSharedKey.CargoTypes);
+        int numberOfCargoTypes = world.size(SharedKey.CargoTypes);
         Station bristol = new Station(new Vector2D(10, 10), "Bristol", numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 
@@ -109,14 +109,14 @@ class DialogueBoxTester extends JFrame {
 
         StationDemand demand = new StationDemand(demandArray);
         bristol = new Station(bristol, demand);
-        world.add(TEST_PRINCIPAL, WorldKey.Stations, bristol);
-        world.add(TEST_PRINCIPAL, WorldKey.Stations, new Station(new Vector2D(50, 100), "Bath",
+        world.add(TEST_PRINCIPAL, PlayerKey.Stations, bristol);
+        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vector2D(50, 100), "Bath",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, WorldKey.Stations, new Station(new Vector2D(40, 10), "Cardiff",
+        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vector2D(40, 10), "Cardiff",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, WorldKey.Stations, new Station(new Vector2D(100, 10), "London",
+        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vector2D(100, 10), "London",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, WorldKey.Stations, new Station(new Vector2D(90, 50), "Swansea",
+        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vector2D(90, 50), "Swansea",
                 numberOfCargoTypes, 0));
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
@@ -127,7 +127,7 @@ class DialogueBoxTester extends JFrame {
         cb.setAmount(new CargoBatch(1, new Vector2D(10, 10), 9, 0), 140);
         cb.setAmount(new CargoBatch(3, new Vector2D(10, 10), 9, 0), 180);
         cb.setAmount(new CargoBatch(5, new Vector2D(10, 10), 9, 0), 10);
-        world.add(TEST_PRINCIPAL, WorldKey.CargoBundles, cb.toImmutableCargoBundle());
+        world.add(TEST_PRINCIPAL, PlayerKey.CargoBundles, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
         TrainOrders order = new TrainOrders(0, new ImmutableList<>(0, 0, 0),
@@ -138,18 +138,18 @@ class DialogueBoxTester extends JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        int scheduleID = world.add(TEST_PRINCIPAL, WorldKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, WorldKey.Trains, new TrainModel(0, new ImmutableList<>(0, 0), scheduleID));
+        int scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new TrainModel(0, new ImmutableList<>(0, 0), scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = world.add(TEST_PRINCIPAL, WorldKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, WorldKey.Trains, new TrainModel(1, new ImmutableList<>(1, 1), scheduleID));
+        scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new TrainModel(1, new ImmutableList<>(1, 1), scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = world.add(TEST_PRINCIPAL, WorldKey.TrainSchedules, schedule
+        scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule
                 .toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, WorldKey.Trains, new TrainModel(0,
+        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new TrainModel(0,
                 new ImmutableList<>(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();

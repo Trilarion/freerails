@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.util.ImmutableList;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -84,11 +84,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     private MoveStatus tryMove(World world, ImmutableList<TrainBlueprint> stateA) {
         // Check that the specified station exists.
-        if (!world.boundsContain(principal, WorldKey.Stations, stationNumber)) {
+        if (!world.boundsContain(principal, PlayerKey.Stations, stationNumber)) {
             return MoveStatus.moveFailed(stationNumber + " " + principal);
         }
 
-        Station station = (Station) world.get(principal, WorldKey.Stations, stationNumber);
+        Station station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
 
         if (null == station) {
             return MoveStatus.moveFailed(stationNumber + " " + principal + " is does null");
@@ -115,9 +115,9 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.succeeds()) {
-            Station station = (Station) world.get(this.principal, WorldKey.Stations, stationNumber);
+            Station station = (Station) world.get(this.principal, PlayerKey.Stations, stationNumber);
             station = new Station(station, after);
-            world.set(this.principal, WorldKey.Stations, stationNumber, station);
+            world.set(this.principal, PlayerKey.Stations, stationNumber, station);
         }
         return status;
     }
@@ -126,9 +126,9 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.succeeds()) {
-            Station station = (Station) world.get(this.principal, WorldKey.Stations, stationNumber);
+            Station station = (Station) world.get(this.principal, PlayerKey.Stations, stationNumber);
             station = new Station(station, before);
-            world.set(this.principal, WorldKey.Stations, stationNumber, station);
+            world.set(this.principal, PlayerKey.Stations, stationNumber, station);
         }
         return status;
     }

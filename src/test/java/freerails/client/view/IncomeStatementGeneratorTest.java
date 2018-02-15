@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.util.Vector2D;
 import freerails.model.world.FullWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoCategory;
@@ -47,7 +47,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money m = balanceSheetGenerator.mailTotal;
         assertEquals(0, m.amount);
 
-        CargoType ct = (CargoType) world.get(WorldSharedKey.CargoTypes, 0);
+        CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, 0);
         assertEquals(CargoCategory.Mail, ct.getCategory());
 
         Money amount = new Money(100);
@@ -59,8 +59,8 @@ public class IncomeStatementGeneratorTest extends TestCase {
     }
 
     private void addTrans(CargoCategory category, Money amount) {
-        for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
-            CargoType ct = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
+        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
+            CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, i);
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vector2D.ZERO, 0, 0);

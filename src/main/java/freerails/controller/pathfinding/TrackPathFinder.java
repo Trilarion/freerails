@@ -25,7 +25,7 @@ import freerails.controller.explorer.BuildTrackExplorer;
 import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -91,7 +91,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
              * If there is already track here, we need to check what directions
              * we can build in without creating an illegal track config.
              */
-            TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, ruleNumber);
+            TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 
             // Count number of possible directions.
             List<TileTransition> possibleDirections = new ArrayList<>();

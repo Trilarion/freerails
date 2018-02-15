@@ -22,10 +22,10 @@
 package freerails.client.view;
 
 import freerails.util.Utils;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 
 import javax.swing.*;
@@ -44,23 +44,23 @@ class WorldToListModelAdapter implements ListModel {
      * @param world
      * @param key
      */
-    public WorldToListModelAdapter(ReadOnlyWorld world, WorldSharedKey key) {
+    public WorldToListModelAdapter(ReadOnlyWorld world, SharedKey key) {
         Utils.verifyNotNull(key);
         elements = new NonNullElementWorldIterator(key, world);
     }
 
     /**
      * @param world
-     * @param worldKey
+     * @param playerKey
      * @param principal
      */
-    public WorldToListModelAdapter(ReadOnlyWorld world, WorldKey worldKey, FreerailsPrincipal principal) {
-        Utils.verifyNotNull(worldKey);
+    public WorldToListModelAdapter(ReadOnlyWorld world, PlayerKey playerKey, FreerailsPrincipal principal) {
+        Utils.verifyNotNull(playerKey);
         Utils.verifyNotNull(principal);
         // Check that the principal exists.
         if (!world.isPlayer(principal)) throw new IllegalArgumentException(principal.getName());
 
-        elements = new NonNullElementWorldIterator(worldKey, world, principal);
+        elements = new NonNullElementWorldIterator(playerKey, world, principal);
     }
 
     public int getSize() {

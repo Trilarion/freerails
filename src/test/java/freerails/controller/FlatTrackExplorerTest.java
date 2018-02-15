@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.controller.explorer.FlatTrackExplorer;
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
@@ -50,12 +50,12 @@ public class FlatTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(20, 20);
+        world = new FullWorld(new Vector2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
 
-        TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
+        TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, 0);
 
         TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
         Vector2D p = new Vector2D(10, 10);

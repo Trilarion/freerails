@@ -33,7 +33,6 @@ import freerails.model.player.FreerailsPrincipal;
  *
  * @see NextActivityMove
  */
-
 public class AddActiveEntityMove implements Move {
 
     private static final long serialVersionUID = 8732702087937675013L;

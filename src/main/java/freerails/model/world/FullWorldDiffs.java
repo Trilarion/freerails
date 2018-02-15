@@ -133,11 +133,11 @@ public class FullWorldDiffs extends FullWorld {
     }
 
     @Override
-    public Serializable getTile(Vector2D p) {
-        if (mapDiff.containsKey(p)) {
-            return (Serializable) mapDiff.get(p);
+    public Serializable getTile(Vector2D location) {
+        if (mapDiff.containsKey(location)) {
+            return (Serializable) mapDiff.get(location);
         }
-        return underlying.getTile(p);
+        return underlying.getTile(location);
     }
 
     /**

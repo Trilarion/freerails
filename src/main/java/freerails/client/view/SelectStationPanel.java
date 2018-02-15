@@ -27,7 +27,7 @@ import freerails.client.KeyCodeToOneTileMoveVector;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.station.NearestStationFinder;
 import freerails.model.world.ReadOnlyWorld;
@@ -205,7 +205,7 @@ public class SelectStationPanel extends JPanel implements View {
         int bottomRightX = Integer.MIN_VALUE;
         int bottomRightY = Integer.MIN_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
         while (it.next()) {
             Station station = (Station) it.getElement();
             // TODO min, max of two Points2D
@@ -241,7 +241,7 @@ public class SelectStationPanel extends JPanel implements View {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
         // Draw track
         g2.setColor(Color.BLACK);

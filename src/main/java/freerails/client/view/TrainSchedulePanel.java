@@ -21,8 +21,8 @@ package freerails.client.view;
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.model.world.WorldSharedKey;
-import freerails.model.world.WorldKey;
+import freerails.model.world.SharedKey;
+import freerails.model.world.PlayerKey;
 import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.move.Move;
 import freerails.util.ImmutableList;
@@ -422,7 +422,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         trainNumber = newTrainNumber;
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld world = modelRoot.getWorld();
-        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, newTrainNumber);
+        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, newTrainNumber);
         scheduleID = train.getScheduleID();
         listModel = new TrainOrdersListModel(world, newTrainNumber, principal);
         orders.setModel(listModel);
@@ -442,8 +442,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private MutableSchedule getSchedule() {
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld world = modelRoot.getWorld();
-        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, trainNumber);
-        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(principal, WorldKey.TrainSchedules, train.getScheduleID());
+        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
         return new MutableSchedule(immutableSchedule);
     }
 
@@ -452,7 +452,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
      * exists: this method returns the id of the first station that exists.
      */
     private int getFirstStationID() {
-        WorldIterator stations = new NonNullElementWorldIterator(WorldKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
         if (stations.next()) {
             return stations.getIndex();
         }
@@ -461,7 +461,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); // Remove existing menu items.
-        NonNullElementWorldIterator cargoTypes = new NonNullElementWorldIterator(WorldSharedKey.CargoTypes, modelRoot.getWorld());
+        NonNullElementWorldIterator cargoTypes = new NonNullElementWorldIterator(SharedKey.CargoTypes, modelRoot.getWorld());
 
         while (cargoTypes.next()) {
             final CargoType wagonType = (CargoType) cargoTypes.getElement();
@@ -572,25 +572,25 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void sendUpdateMove(MutableSchedule mutableSchedule) {
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld world = modelRoot.getWorld();
-        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
         // int scheduleID = train.getScheduleID();
         assert (scheduleID == train.getScheduleID());
-        ImmutableSchedule before = (ImmutableSchedule) world.get(principal, WorldKey.TrainSchedules, scheduleID);
+        ImmutableSchedule before = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move move = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
         modelRoot.doMove(move);
     }
 
-    public void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal) {
-        if (WorldKey.TrainSchedules == worldKey && scheduleID == index) {
+    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+        if (PlayerKey.TrainSchedules == playerKey && scheduleID == index) {
             listModel.fireRefresh();
             enableButtons();
         }
     }
 
-    public void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal) {}
+    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {}
 
-    public void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal) {}
+    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {}
 
     /**
      * Show the popup that lets the user select a station, called when a new

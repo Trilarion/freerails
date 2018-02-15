@@ -28,7 +28,7 @@ import freerails.model.track.NoTrackException;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.FullWorldDiffs;
 import freerails.model.player.FreerailsPrincipal;
@@ -138,8 +138,8 @@ public class TrainStopsHandler implements Serializable {
      */
     public int getStationID(Vector2D p) {
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < worldDiffs.size(principal, WorldKey.Stations); i++) {
-            Station tempPoint = (Station) worldDiffs.get(principal, WorldKey.Stations, i);
+        for (int i = 0; i < worldDiffs.size(principal, PlayerKey.Stations); i++) {
+            Station tempPoint = (Station) worldDiffs.get(principal, PlayerKey.Stations, i);
 
             if (null != tempPoint && p.equals(tempPoint.location)) {
                 return i; // train is at the station at location tempPoint
@@ -171,9 +171,9 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public boolean isWaiting4FullLoad() {
-        TrainModel train = (TrainModel) worldDiffs.get(principal, WorldKey.Trains, trainId);
+        TrainModel train = (TrainModel) worldDiffs.get(principal, PlayerKey.Trains, trainId);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, WorldKey.TrainSchedules, scheduleID);
+        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, PlayerKey.TrainSchedules, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {
             return false;
@@ -222,7 +222,7 @@ public class TrainStopsHandler implements Serializable {
             int oldLength = ta.getTrain().getLength();
             int engineType = ta.getTrain().getEngineType();
             TrainModel newTrain = ta.getTrain().getNewInstance(engineType, order.consist);
-            worldDiffs.set(principal, WorldKey.Trains, trainId, newTrain);
+            worldDiffs.set(principal, PlayerKey.Trains, trainId, newTrain);
             int newLength = newTrain.getLength();
             // has the trains length increased?
             if (newLength > oldLength) {
@@ -258,8 +258,8 @@ public class TrainStopsHandler implements Serializable {
 
     private void scheduledStop() {
 
-        TrainModel train = (TrainModel) worldDiffs.get(principal, WorldKey.Trains, trainId);
-        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, WorldKey.TrainSchedules, train.getScheduleID());
+        TrainModel train = (TrainModel) worldDiffs.get(principal, PlayerKey.Trains, trainId);
+        Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
 
         ImmutableList<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -280,9 +280,9 @@ public class TrainStopsHandler implements Serializable {
     }
 
     private void updateSchedule() {
-        TrainModel train = (TrainModel) worldDiffs.get(principal, WorldKey.Trains, trainId);
+        TrainModel train = (TrainModel) worldDiffs.get(principal, PlayerKey.Trains, trainId);
         int scheduleID = train.getScheduleID();
-        ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(principal, WorldKey.TrainSchedules, scheduleID);
+        ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(principal, PlayerKey.TrainSchedules, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         Station station;
 
@@ -293,10 +293,10 @@ public class TrainStopsHandler implements Serializable {
             schedule.gotoNextStation();
 
             ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
-            worldDiffs.set(principal, WorldKey.TrainSchedules, scheduleID, newSchedule);
+            worldDiffs.set(principal, PlayerKey.TrainSchedules, scheduleID, newSchedule);
 
             int stationNumber = schedule.getStationToGoto();
-            station = (Station) worldDiffs.get(principal, WorldKey.Stations, stationNumber);
+            station = (Station) worldDiffs.get(principal, PlayerKey.Stations, stationNumber);
 
             if (null == station) {
                 logger.warn("null == station, train " + trainId + " doesn't know where to go next!");

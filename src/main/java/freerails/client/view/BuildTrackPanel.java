@@ -33,7 +33,7 @@ import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackCategories;
 import freerails.model.track.TrackRule;
@@ -276,10 +276,10 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         // Add the new set of buttons.
         ReadOnlyWorld world = modelRoot.getWorld();
 
-        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
+        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             JToggleButton toggleButton = new JToggleButton();
             final Integer ruleID = i;
-            TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
+            TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
             TrackCategories category = rule.getCategory();
             Money price = null;
             switch (category) {

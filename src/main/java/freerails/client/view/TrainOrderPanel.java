@@ -28,7 +28,7 @@ import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -82,7 +82,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
 
         // Set station name
         int stationNumber = trainOrders.order.stationId;
-        Station station = (Station) world.get(principal, WorldKey.Stations, stationNumber);
+        Station station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
         String stationName = station.getStationName();
 
         // Set wait until full

@@ -26,7 +26,7 @@ import freerails.client.renderer.TrainRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.model.train.TrainAccessor;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.TrainModel;
@@ -68,8 +68,8 @@ public class OverHeadTrainView implements Painter {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
-            for (int i = 0; i < world.size(principal, WorldKey.Trains); i++) {
-                TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, i);
+            for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
+                TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, i);
 
                 // TrainPositionOnMap pos = (TrainPositionOnMap) world.get(
                 // principal, KEY.TRAIN_POSITIONS, i);

@@ -37,11 +37,6 @@ public interface SaveGamesManager {
     String[] getSaveGameNames();
 
     /**
-     * @return
-     */
-    String[] getNewMapNames();
-
-    /**
      * @param path
      * @param serializable
      * @throws IOException
@@ -54,11 +49,4 @@ public interface SaveGamesManager {
      * @throws IOException
      */
     ServerGameModel loadGame(String path) throws IOException;
-
-    /**
-     * @param name
-     * @return
-     * @throws IOException
-     */
-    World newMap(String name);
 }

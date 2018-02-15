@@ -44,9 +44,7 @@ public class AddPlayerMove implements Move {
      * @return
      */
     public static AddPlayerMove generateMove(ReadOnlyWorld world, Player player) {
-        /*
-          create a new player with a corresponding Principal
-         */
+        // create a new player with a corresponding Principal
         Player player2add = new Player(player.getName(), world.getNumberOfPlayers());
 
         return new AddPlayerMove(player2add);

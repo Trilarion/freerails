@@ -53,19 +53,19 @@ public interface World extends ReadOnlyWorld {
      * @param index
      * @param element
      */
-    void add(FreerailsPrincipal principal, int index, Activity element);
+    void addActivity(FreerailsPrincipal principal, int index, Activity element);
 
     /**
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
-    int add(FreerailsPrincipal principal, WorldKey worldKey, Serializable element);
+    int add(FreerailsPrincipal principal, PlayerKey playerKey, Serializable element);
 
     /**
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
-    int add(WorldSharedKey key, Serializable element);
+    int add(SharedKey key, Serializable element);
 
     /**
      * @param player
@@ -100,12 +100,12 @@ public interface World extends ReadOnlyWorld {
     /**
      * Removes the last element from the specified list.
      */
-    Serializable removeLast(FreerailsPrincipal principal, WorldKey worldKey);
+    Serializable removeLast(FreerailsPrincipal principal, PlayerKey playerKey);
 
     /**
      * Removes the last element from the specified list.
      */
-    Serializable removeLast(WorldSharedKey key);
+    Serializable removeLast(SharedKey key);
 
     /**
      * Removes and returns the last transaction added the the specified
@@ -129,14 +129,14 @@ public interface World extends ReadOnlyWorld {
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
-    void set(FreerailsPrincipal principal, WorldKey worldKey, int index, Serializable element);
+    void set(FreerailsPrincipal principal, PlayerKey playerKey, int index, Serializable element);
 
     /**
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
 
-    void set(WorldSharedKey key, int index, Serializable element);
+    void set(SharedKey key, int index, Serializable element);
 
     /**
      * Replaces the tile at the specified position on the map with the specified

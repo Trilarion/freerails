@@ -28,7 +28,7 @@ import freerails.controller.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackRule;
@@ -84,8 +84,8 @@ public class StationBuildModel {
         this.modelRoot = modelRoot;
 
         ReadOnlyWorld world = this.modelRoot.getWorld();
-        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
-            final TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
+        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
+            final TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
 
             if (trackRule.isStation()) {
                 TrackPieceRenderer renderer = rendererRoot.getTrackPieceView(i);
@@ -167,7 +167,7 @@ public class StationBuildModel {
         public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
 
-            TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(WorldSharedKey.TrackRules, actionId);
+            TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(SharedKey.TrackRules, actionId);
 
             // Show the relevant station radius when the station type's menu
             // item

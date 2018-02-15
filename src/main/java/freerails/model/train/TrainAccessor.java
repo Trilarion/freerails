@@ -21,8 +21,8 @@
  */
 package freerails.model.train;
 
-import freerails.model.world.WorldSharedKey;
-import freerails.model.world.WorldKey;
+import freerails.model.world.SharedKey;
+import freerails.model.world.PlayerKey;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.model.*;
@@ -69,7 +69,7 @@ public class TrainAccessor {
     public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld row, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
-        final int NUM_CARGO_TYPES = row.size(WorldSharedKey.CargoTypes);
+        final int NUM_CARGO_TYPES = row.size(SharedKey.CargoTypes);
         Integer[] spaceAvailable = new Integer[NUM_CARGO_TYPES];
         Arrays.fill(spaceAvailable, 0);
 
@@ -105,8 +105,8 @@ public class TrainAccessor {
         Vector2D pp = positionOnTrack.getLocation();
 
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < world.size(p, WorldKey.Stations); i++) {
-            Station tempPoint = (Station) world.get(p, WorldKey.Stations, i);
+        for (int i = 0; i < world.size(p, PlayerKey.Stations); i++) {
+            Station tempPoint = (Station) world.get(p, PlayerKey.Stations, i);
 
             if (null != tempPoint && pp.equals(tempPoint.location)) {
                 return i; // train is at the station at location tempPoint
@@ -165,7 +165,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainModel getTrain() {
-        return (TrainModel) world.get(p, WorldKey.Trains, id);
+        return (TrainModel) world.get(p, PlayerKey.Trains, id);
     }
 
     /**
@@ -173,7 +173,7 @@ public class TrainAccessor {
      */
     public ImmutableSchedule getSchedule() {
         TrainModel train = getTrain();
-        return (ImmutableSchedule) world.get(p, WorldKey.TrainSchedules, train.getScheduleID());
+        return (ImmutableSchedule) world.get(p, PlayerKey.TrainSchedules, train.getScheduleID());
     }
 
     /**
@@ -181,7 +181,7 @@ public class TrainAccessor {
      */
     public CargoBatchBundle getCargoBundle() {
         TrainModel train = getTrain();
-        return (ImmutableCargoBatchBundle) world.get(p, WorldKey.CargoBundles, train.getCargoBundleID());
+        return (ImmutableCargoBatchBundle) world.get(p, PlayerKey.CargoBundles, train.getCargoBundleID());
     }
 
     /**
@@ -213,9 +213,9 @@ public class TrainAccessor {
      * towards.
      */
     public Vector2D getTargetLocation() {
-        TrainModel train = (TrainModel) world.get(p, WorldKey.Trains, id);
+        TrainModel train = (TrainModel) world.get(p, PlayerKey.Trains, id);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) world.get(p, WorldKey.TrainSchedules, scheduleID);
+        Schedule schedule = (ImmutableSchedule) world.get(p, PlayerKey.TrainSchedules, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {
@@ -223,7 +223,7 @@ public class TrainAccessor {
             return Vector2D.ZERO;
         }
 
-        Station station = (Station) world.get(p, WorldKey.Stations, stationNumber);
+        Station station = (Station) world.get(p, PlayerKey.Stations, stationNumber);
         return station.location;
     }
 
@@ -263,8 +263,8 @@ public class TrainAccessor {
      */
     public ImmutableList<Integer> spaceAvailable() {
 
-        TrainModel train = (TrainModel) world.get(p, WorldKey.Trains, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(p, WorldKey.CargoBundles, train.getCargoBundleID());
+        TrainModel train = (TrainModel) world.get(p, PlayerKey.Trains, id);
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(p, PlayerKey.CargoBundles, train.getCargoBundleID());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
     }
 

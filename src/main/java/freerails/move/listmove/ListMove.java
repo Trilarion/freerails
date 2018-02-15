@@ -19,7 +19,7 @@
 package freerails.move.listmove;
 
 import freerails.move.Move;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.player.FreerailsPrincipal;
 
 /**
@@ -31,7 +31,7 @@ public interface ListMove extends Move {
     /**
      * @return the type of object which was changed
      */
-    WorldKey getKey();
+    PlayerKey getKey();
 
     /**
      * @return the index of the item which changed.

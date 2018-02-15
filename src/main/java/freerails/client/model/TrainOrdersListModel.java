@@ -23,7 +23,7 @@
 package freerails.client.model;
 
 import freerails.client.view.TrainSchedulePanel;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.schedule.ImmutableSchedule;
@@ -102,10 +102,10 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     private Schedule getSchedule() {
-        TrainModel train = (TrainModel) world.get(principal, WorldKey.Trains, trainNumber);
+        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
         ImmutableSchedule sched = null;
         if (train != null) {
-            sched = (ImmutableSchedule) world.get(principal, WorldKey.TrainSchedules, train.getScheduleID());
+            sched = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
         }
         return sched;
     }

@@ -25,7 +25,7 @@ import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.move.listmove.RemoveItemFromListMove;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldIterator;
@@ -50,7 +50,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
     }
 
     public static TrackMove getInstance(ReadOnlyWorld world, ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
-        WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
         int stationIndex = -1;
 
         while (wi.next()) {
@@ -67,13 +67,13 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
             throw new IllegalArgumentException("Could find a station at " + removeTrackMove.getLocation().x + ", " + removeTrackMove.getLocation().y);
         }
 
-        Station station2remove = (Station) world.get(principal, WorldKey.Stations, stationIndex);
+        Station station2remove = (Station) world.get(principal, PlayerKey.Stations, stationIndex);
         ArrayList<Move> moves = new ArrayList<>();
         moves.add(removeTrackMove);
-        moves.add(new RemoveItemFromListMove(WorldKey.Stations, stationIndex, station2remove, principal));
+        moves.add(new RemoveItemFromListMove(PlayerKey.Stations, stationIndex, station2remove, principal));
 
         // Now update any train schedules that include this station.
-        WorldIterator schedules = new NonNullElementWorldIterator(WorldKey.TrainSchedules, world, principal);
+        WorldIterator schedules = new NonNullElementWorldIterator(PlayerKey.TrainSchedules, world, principal);
 
         while (schedules.next()) {
             ImmutableSchedule schedule = (ImmutableSchedule) schedules.getElement();

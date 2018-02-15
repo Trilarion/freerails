@@ -21,10 +21,7 @@ package freerails.util;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * A bunch of static methods.
@@ -215,5 +212,14 @@ public final class Utils {
             values[listA.size() + i] = listB.get(i);
         }
         return new ImmutableList<>(values);
+    }
+
+    /**
+     *
+     * @param collection
+     * @param <T>
+     */
+    public static <T> void removeLast(Collection<T> collection) {
+        collection.remove(collection.size() - 1);
     }
 }

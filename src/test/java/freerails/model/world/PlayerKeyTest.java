@@ -29,21 +29,21 @@ import java.lang.reflect.Modifier;
 /**
  *
  */
-public class WorldKeyTest extends TestCase {
+public class PlayerKeyTest extends TestCase {
 
     /**
      *
      */
     public void testGetNumberOfKeys() {
         // There were 4 keys when a wrote this test, but I expect the number to increase.
-        assertTrue(WorldKey.getNumberOfKeys() >= 4);
+        assertTrue(PlayerKey.getNumberOfKeys() >= 4);
     }
 
     /**
      *
      */
     public void testThatAllTheFieldsDefinedInKEYAreInstancesOFKEY() {
-        Field[] fields = WorldKey.class.getFields();
+        Field[] fields = PlayerKey.class.getFields();
 
         for (Field field : fields) {
             String name = field.getName();
@@ -60,7 +60,7 @@ public class WorldKeyTest extends TestCase {
                 if (Modifier.isStatic(modifiers)) {
                     Object o = field.get(null);
                     assertTrue("All the fields of KEY should be instances of"
-                            + " KEY", o instanceof WorldKey);
+                            + " KEY", o instanceof PlayerKey);
                 }
             } catch (IllegalAccessException e) {
                 assertTrue(false);
@@ -73,6 +73,6 @@ public class WorldKeyTest extends TestCase {
      */
     public void testToString() {
 
-        assertEquals("Key.toString() should return the field name", "Trains", WorldKey.Trains.toString());
+        assertEquals("Key.toString() should return the field name", "Trains", PlayerKey.Trains.toString());
     }
 }

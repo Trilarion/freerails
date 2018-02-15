@@ -22,8 +22,8 @@
 package freerails.server;
 
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldSharedKey;
-import freerails.model.world.WorldKey;
+import freerails.model.world.SharedKey;
+import freerails.model.world.PlayerKey;
 import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.move.Move;
 import freerails.network.movereceiver.MoveReceiver;
@@ -62,12 +62,12 @@ public class CargoAtStationsUpdater implements Serializable {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
-            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             while (nonNullStations.next()) {
                 Station station = (Station) nonNullStations.getElement();
                 StationSupply supply = station.getSupply();
-                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(principal, WorldKey.CargoBundles, station.getCargoBundleID());
+                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
                 MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
                 MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
                 int stationNumber = nonNullStations.getIndex();
@@ -89,7 +89,7 @@ public class CargoAtStationsUpdater implements Serializable {
                     }
                 }
 
-                for (int i = 0; i < world.size(WorldSharedKey.CargoTypes); i++) {
+                for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {

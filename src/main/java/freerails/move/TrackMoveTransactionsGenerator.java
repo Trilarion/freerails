@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.WorldConstants;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
@@ -77,7 +77,7 @@ public class TrackMoveTransactionsGenerator {
      * @return
      */
     public CompositeMove addTransactions(Move move) {
-        int numberOfTrackTypes = world.size(WorldSharedKey.TrackRules);
+        int numberOfTrackTypes = world.size(SharedKey.TrackRules);
         trackAdded = new int[numberOfTrackTypes];
         trackRemoved = new int[numberOfTrackTypes];
         fixedCostsStations = 0;
@@ -166,7 +166,7 @@ public class TrackMoveTransactionsGenerator {
             int numberAdded = trackAdded[i];
 
             if (0 != numberAdded) {
-                TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
+                TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
                 Money price = rule.getPrice();
                 // TODO Money arithmetics
                 Money total = new Money(-price.amount * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
@@ -177,7 +177,7 @@ public class TrackMoveTransactionsGenerator {
             int numberRemoved = trackRemoved[i];
 
             if (0 != numberRemoved) {
-                TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
+                TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
                 Money m = rule.getPrice();
                 // TODO Money arithmetics
                 Money total = new Money((m.amount * numberRemoved) / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);

@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldIterator;
@@ -95,7 +95,7 @@ public class VerifyStationName {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
-            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             while (wi.next()) { // loop over non null stations
                 tempStation = (Station) wi.getElement();

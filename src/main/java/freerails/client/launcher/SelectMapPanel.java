@@ -24,6 +24,7 @@
 package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
+import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.savegames.FullSaveGameManager;
 
@@ -138,8 +139,8 @@ class SelectMapPanel extends JPanel {
         add(jPanel3, gridBagConstraints);
 
         // initialise the map list
+        newmapsJList.setListData(MapCreator.getAvailableMapNames());
         SaveGamesManager sgm = new FullSaveGameManager();
-        newmapsJList.setListData(sgm.getNewMapNames());
         savedmapsJList.setListData(sgm.getSaveGameNames());
         if (sgm.getSaveGameNames().length > 0) {
             savedmapsJList.setSelectedIndex(0);

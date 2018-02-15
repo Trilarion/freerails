@@ -43,8 +43,8 @@ public class FullWorldTest extends TestCase {
      */
     public void testGet() {
         FullWorld fullWorld = new FullWorld();
-        fullWorld.add(WorldSharedKey.TerrainTypes, fs);
-        assertEquals(fullWorld.get(WorldSharedKey.TerrainTypes, 0), fs);
+        fullWorld.add(SharedKey.TerrainTypes, fs);
+        assertEquals(fullWorld.get(SharedKey.TerrainTypes, 0), fs);
     }
 
     /**
@@ -68,12 +68,12 @@ public class FullWorldTest extends TestCase {
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
 
-        copy.add(WorldSharedKey.TerrainTypes, fs);
+        copy.add(SharedKey.TerrainTypes, fs);
 
         assertFalse(original.equals(copy));
         assertFalse(copy.equals(original));
-        assertEquals(1, copy.size(WorldSharedKey.TerrainTypes));
-        assertEquals(0, original.size(WorldSharedKey.TerrainTypes));
+        assertEquals(1, copy.size(SharedKey.TerrainTypes));
+        assertEquals(0, original.size(SharedKey.TerrainTypes));
     }
 
     /**
@@ -156,7 +156,7 @@ public class FullWorldTest extends TestCase {
         assertFalse(world.boundsContain(new Vector2D(1, 1)));
         assertFalse(world.boundsContain(Vector2D.ZERO));
         assertFalse(world.boundsContain(new Vector2D(-1, -1)));
-        world = new FullWorld(5, 10);
+        world = new FullWorld(new Vector2D(5, 10));
         assertTrue(world.boundsContain(Vector2D.ZERO));
         assertTrue(world.boundsContain(new Vector2D(4, 9)));
         assertFalse(world.boundsContain(new Vector2D(-1, -1)));

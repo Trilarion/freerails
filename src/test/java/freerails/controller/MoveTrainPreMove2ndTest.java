@@ -22,8 +22,8 @@
 package freerails.controller;
 
 import freerails.client.ModelRootImpl;
-import freerails.model.world.WorldSharedKey;
-import freerails.model.world.WorldKey;
+import freerails.model.world.SharedKey;
+import freerails.model.world.PlayerKey;
 import freerails.move.*;
 import freerails.move.premove.AddTrainPreMove;
 import freerails.move.premove.MoveTrainPreMove;
@@ -227,10 +227,10 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         CargoBatch cb = new CargoBatch(0, new Vector2D(6, 6), 0, stationId);
         MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
         mb.addCargo(cb, amount);
-        Station station1Model = (Station) world.get(principal, WorldKey.Stations, stationId);
+        Station station1Model = (Station) world.get(principal, PlayerKey.Stations, stationId);
         ImmutableCargoBatchBundle cargoAtStationBefore = mb.toImmutableCargoBundle();
         int station1BundleId = station1Model.getCargoBundleID();
-        world.set(principal, WorldKey.CargoBundles, station1BundleId, cargoAtStationBefore);
+        world.set(principal, PlayerKey.CargoBundles, station1BundleId, cargoAtStationBefore);
     }
 
     /**
@@ -318,7 +318,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
         schedule.setOrder(0, order0);
         ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
-        world.set(principal, WorldKey.TrainSchedules, 0, imSchedule);
+        world.set(principal, PlayerKey.TrainSchedules, 0, imSchedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
         assertTrue(ta.getSchedule().getOrder(0).waitUntilFull);
 
@@ -367,7 +367,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
         schedule.setOrder(0, order0);
         ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
-        world.set(principal, WorldKey.TrainSchedules, 0, imSchedule);
+        world.set(principal, PlayerKey.TrainSchedules, 0, imSchedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
         assertFalse(ta.getSchedule().getOrder(0).waitUntilFull);
 
@@ -391,7 +391,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         // Remove all wagons from the train.
         TrainModel model = ta.getTrain();
         model = model.getNewInstance(model.getEngineType(), new ImmutableList<>());
-        world.set(principal, WorldKey.Trains, 0, model);
+        world.set(principal, PlayerKey.Trains, 0, model);
 
         // Change trains schedule to auto consist.
         TrainOrders order0 = new TrainOrders(1, null, false, true);
@@ -399,27 +399,27 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MutableSchedule s = new MutableSchedule();
         s.addOrder(order0);
         s.addOrder(order1);
-        world.set(principal, WorldKey.TrainSchedules, 0, s.toImmutableSchedule());
+        world.set(principal, PlayerKey.TrainSchedules, 0, s.toImmutableSchedule());
 
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
         // Add 35 unit of cargo #0 to station 1.
         Station station0 = (Station) world.get(principal,
-                WorldKey.Stations, 1);
+                PlayerKey.Stations, 1);
         int cargoBundleId = station0.getCargoBundleID();
         MutableCargoBatchBundle mcb = new MutableCargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
         mcb.addCargo(new CargoBatch(0, Vector2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
-        world.set(principal, WorldKey.CargoBundles, cargoBundleId, mcb
+        world.set(principal, PlayerKey.CargoBundles, cargoBundleId, mcb
                 .toImmutableCargoBundle());
 
         // Make station2 demand cargo #0;
-        boolean[] boolArray = new boolean[world.size(WorldSharedKey.CargoTypes)];
+        boolean[] boolArray = new boolean[world.size(SharedKey.CargoTypes)];
         boolArray[0] = true;
         StationDemand demand = new StationDemand(boolArray);
-        Station station2 = (Station) world.get(principal, WorldKey.Stations, 2);
+        Station station2 = (Station) world.get(principal, PlayerKey.Stations, 2);
         Station stationWithNewDemand = new Station(station2, demand);
-        world.set(principal, WorldKey.Stations, 2, stationWithNewDemand);
+        world.set(principal, PlayerKey.Stations, 2, stationWithNewDemand);
 
         // The train should be bound for station 1.
         assertEquals(1, ta.getSchedule().getStationToGoto());
@@ -470,7 +470,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
         schedule.setOrder(0, order0);
         ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
-        world.set(principal, WorldKey.TrainSchedules, 0, imSchedule);
+        world.set(principal, PlayerKey.TrainSchedules, 0, imSchedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
         // Move the train to the station.

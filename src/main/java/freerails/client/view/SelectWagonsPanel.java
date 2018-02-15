@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.WagonCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.train.TrainModel;
 
 import javax.swing.*;
@@ -234,7 +234,7 @@ public class SelectWagonsPanel extends JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        WorldToListModelAdapter w2lma = new WorldToListModelAdapter(modelRoot.getWorld(), WorldSharedKey.CargoTypes);
+        WorldToListModelAdapter w2lma = new WorldToListModelAdapter(modelRoot.getWorld(), SharedKey.CargoTypes);
         wagonTypesJList.setModel(w2lma);
         this.rendererRoot = rendererRoot;
         ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, this.rendererRoot);

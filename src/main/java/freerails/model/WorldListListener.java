@@ -22,7 +22,7 @@
 package freerails.model;
 
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 
 /**
  * Classes that need to be notified of changes to the lists on the world object
@@ -31,23 +31,23 @@ import freerails.model.world.WorldKey;
 public interface WorldListListener {
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal);
+    void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal);
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal);
+    void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal);
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal);
+    void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal);
 }

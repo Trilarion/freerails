@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -44,7 +44,7 @@ public class OccupiedTracks {
         occupiedTrackSections = new HashMap<>();
         trainToTrackList = new HashMap<>();
 
-        for (int i = 0; i < world.size(principal, WorldKey.Trains); i++) {
+        for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
             TrainAccessor ta = new TrainAccessor(world, principal, i);
             GameTime gameTime = world.currentTime();
 

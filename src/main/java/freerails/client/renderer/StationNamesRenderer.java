@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
@@ -89,7 +89,7 @@ public class StationNamesRenderer implements Painter {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
             // draw station names onto map
-            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             while (wi.next()) { // loop over non null stations
                 tempStation = (Station) wi.getElement();

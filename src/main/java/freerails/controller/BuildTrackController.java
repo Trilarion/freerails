@@ -29,7 +29,7 @@ import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.FullWorldDiffs;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.server.GameModel;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
@@ -227,11 +227,11 @@ public class BuildTrackController implements GameModel {
         TerrainTile tileA = (FullTerrainTile) worldDiffs.getTile(point);
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
         int trackTypeAID = buildTrackStrategy.getRule(tileA.getTerrainTypeID());
-        TrackRule trackRuleA = (TrackRule) worldDiffs.get(WorldSharedKey.TrackRules, trackTypeAID);
+        TrackRule trackRuleA = (TrackRule) worldDiffs.get(SharedKey.TrackRules, trackTypeAID);
 
         TerrainTile tileB = (FullTerrainTile) worldDiffs.getTile(Vector2D.add(point, vector.getD()));
         int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeID());
-        TrackRule trackRuleB = (TrackRule) worldDiffs.get(WorldSharedKey.TrackRules, trackTypeBID);
+        TrackRule trackRuleB = (TrackRule) worldDiffs.get(SharedKey.TrackRules, trackTypeBID);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, vector, trackRuleA, trackRuleB, worldDiffs, principal);
 
@@ -424,7 +424,7 @@ public class BuildTrackController implements GameModel {
                                     break attemptMove;
                                 }
 
-                                TrackRule trackRule = (TrackRule) worldDiffs.get(WorldSharedKey.TrackRules, trackRuleID);
+                                TrackRule trackRule = (TrackRule) worldDiffs.get(SharedKey.TrackRules, trackRuleID);
                                 TrackPiece after = new TrackPieceImpl(tile.getTrackPiece().getTrackConfiguration(), trackRule, owner, trackRuleID);
 
                                 /*

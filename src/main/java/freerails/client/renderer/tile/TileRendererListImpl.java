@@ -24,7 +24,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 
 import java.util.List;
 
@@ -55,6 +55,6 @@ public class TileRendererListImpl implements TileRendererList {
 
     public boolean validate(ReadOnlyWorld world) {
         // There should a TileRenderer for each terrain type.
-        return world.size(WorldSharedKey.TerrainTypes) == tiles.length;
+        return world.size(SharedKey.TerrainTypes) == tiles.length;
     }
 }

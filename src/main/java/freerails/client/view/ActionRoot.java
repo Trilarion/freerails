@@ -25,7 +25,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.controller.StationBuilder;
 import freerails.controller.TrackMoveProducer;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -100,7 +100,7 @@ public class ActionRoot {
 
         ReadOnlyWorld world = modelRoot.getWorld();
 
-        if (world.size(WorldSharedKey.TrackRules) > 0) {
+        if (world.size(SharedKey.TrackRules) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
             stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), vl, modelRoot);
         }

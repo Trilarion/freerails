@@ -274,7 +274,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      */
     protected void setupWorld() {
-        this.world = new FullWorld(10, 10);
+        this.world = new FullWorld(new Vector2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);

@@ -24,7 +24,7 @@ package freerails.client.view;
 
 import freerails.client.ClientConfig;
 import freerails.client.ModelRootImpl;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot.Property;
@@ -110,7 +110,7 @@ public class DialogueBoxController implements WorldListListener {
         private static final long serialVersionUID = -1672545312581874156L;
 
         public void actionPerformed(ActionEvent e) {
-            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
 
             if (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -238,7 +238,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Trains, world, modelRoot.getPrincipal());
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Trains, world, modelRoot.getPrincipal());
 
         if (!wi.next()) {
             modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
@@ -252,7 +252,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, modelRoot.getPrincipal());
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, modelRoot.getPrincipal());
 
         if (!wi.next()) {
             modelRoot.setProperty(Property.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
@@ -384,7 +384,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainList() {
-        if (world.size(modelRoot.getPrincipal(), WorldKey.Trains) > 0) {
+        if (world.size(modelRoot.getPrincipal(), PlayerKey.Trains) > 0) {
             final TrainListPanel trainList = new TrainListPanel();
             trainList.setup(modelRoot, vl, closeCurrentDialogue);
             trainList.setShowTrainDetailsActionListener(e -> {
@@ -523,37 +523,37 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    public void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
     }
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    public void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
          * After building station show supply and demand
          */
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
-        if (WorldKey.Trains == worldKey && rightPrincipal) {
+        if (PlayerKey.Trains == playerKey && rightPrincipal) {
             showTrainOrders(index);
-        } else if (WorldKey.Stations == worldKey && rightPrincipal) {
+        } else if (PlayerKey.Stations == playerKey && rightPrincipal) {
             showStationInfo(index);
         }
     }
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    public void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
     }
 }

@@ -25,7 +25,7 @@ package freerails.client.renderer.track;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackRule;
@@ -52,12 +52,12 @@ public class TrackPieceRendererList {
     public TrackPieceRendererList(ReadOnlyWorld world, ImageManager imageManager, ProgressMonitorModel progressMonitorModel) throws IOException {
         // Setup progress monitor..
 
-        progressMonitorModel.nextStep(world.size(WorldSharedKey.TrackRules));
+        progressMonitorModel.nextStep(world.size(SharedKey.TrackRules));
 
         int progress = 0;
         progressMonitorModel.setValue(progress);
 
-        int numberOfTrackTypes = world.size(WorldSharedKey.TrackRules);
+        int numberOfTrackTypes = world.size(SharedKey.TrackRules);
         trackPieceViewArray = new TrackPieceRenderer[numberOfTrackTypes];
 
         for (int i = 0; i < numberOfTrackTypes; i++) {
@@ -84,8 +84,8 @@ public class TrackPieceRendererList {
     public boolean validate(ReadOnlyWorld world) {
         boolean okSoFar = true;
 
-        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
-            TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
+        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
+            TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
             Iterator<TrackConfiguration> legalConfigurationsIterator = trackRule.getLegalConfigurationsIterator();
             TrackPieceRenderer trackPieceView = getTrackPieceView(i);
 

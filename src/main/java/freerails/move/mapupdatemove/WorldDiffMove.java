@@ -102,7 +102,7 @@ public class WorldDiffMove implements MapUpdateMove {
                 case LISTS: {
                     int playerId = lkey.getIndex()[0];
                     FreerailsPrincipal principal = worldDiffs.getPlayer(playerId).getPrincipal();
-                    WorldKey k = WorldKey.getById(lkey.getIndex()[1]);
+                    PlayerKey k = PlayerKey.getById(lkey.getIndex()[1]);
                     if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
                         int elementId = lkey.getIndex()[2];

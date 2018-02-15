@@ -21,7 +21,6 @@
  */
 package freerails.model.world;
 
-import freerails.model.world.WorldSharedKey;
 import junit.framework.TestCase;
 
 import java.lang.reflect.Field;
@@ -30,20 +29,20 @@ import java.lang.reflect.Modifier;
 /**
  *
  */
-public class WorldSharedKeyTest extends TestCase {
+public class SharedKeyTest extends TestCase {
 
     /**
      *
      */
     public void testGetNumberOfKeys() {
-        assertTrue(WorldSharedKey.getNumberOfKeys() > 5);
+        assertTrue(SharedKey.getNumberOfKeys() > 5);
     }
 
     /**
      *
      */
     public void testThatAllTheFieldsDefinedInSKEYAreInstancesOFSKEY() {
-        Field[] fields = WorldSharedKey.class.getFields();
+        Field[] fields = SharedKey.class.getFields();
 
         for (Field field : fields) {
             String name = field.getName();
@@ -63,7 +62,7 @@ public class WorldSharedKeyTest extends TestCase {
                 if (Modifier.isStatic(modifiers)) {
                     Object o = field.get(null);
                     assertTrue("All the fields of SKEY should be instances of"
-                            + " SKEY", o instanceof WorldSharedKey);
+                            + " SKEY", o instanceof SharedKey);
                 }
             } catch (IllegalAccessException e) {
                 assertTrue(false);

@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainType;
 import freerails.model.terrain.TileConsumption;
@@ -93,7 +93,7 @@ class TerrainInfoPanel extends JPanel {
 
     public void setTerrainType(int typeNumber) {
 
-        TerrainType type = (TerrainType) world.get(WorldSharedKey.TerrainTypes, typeNumber);
+        TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, typeNumber);
 
         String row = "<p>Right-of-Way costs $" + type.getRightOfWay() + " per mile. </p>";
         StringBuilder tableString = new StringBuilder();
@@ -107,7 +107,7 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosProduced; i++) {
                     TileProduction p = type.getProduction().get(i);
-                    CargoType c = (CargoType) world.get(WorldSharedKey.CargoTypes, p.getCargoType());
+                    CargoType c = (CargoType) world.get(SharedKey.CargoTypes, p.getCargoType());
                     String supply = String.valueOf(p.getRate() / WagonType.UNITS_OF_CARGO_PER_WAGON);
                     tableString.append("<tr> <td>").append(c.getDisplayName()).append(" </td><td>").append(supply).append("</td></tr>");
                 }
@@ -116,7 +116,7 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConsumed; i++) {
                     TileConsumption p = type.getConsumption().get(i);
-                    CargoType c = (CargoType) world.get(WorldSharedKey.CargoTypes, p.getCargoType());
+                    CargoType c = (CargoType) world.get(SharedKey.CargoTypes, p.getCargoType());
                     tableString.append("<tr> <td>").append(c.getDisplayName()).append(" </td><td>&nbsp;</td></tr>");
                 }
             }
@@ -124,8 +124,8 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConverted; i++) {
                     TileConversion p = type.getConversion().get(i);
-                    CargoType input = (CargoType) world.get(WorldSharedKey.CargoTypes, p.getInput());
-                    CargoType output = (CargoType) world.get(WorldSharedKey.CargoTypes, p.getOutput());
+                    CargoType input = (CargoType) world.get(SharedKey.CargoTypes, p.getInput());
+                    CargoType output = (CargoType) world.get(SharedKey.CargoTypes, p.getOutput());
                     tableString.append("<tr> <td colspan=\"2\">").append(input.getDisplayName()).append(" to ").append(output.getDisplayName()).append("</td></tr>");
                 }
             }

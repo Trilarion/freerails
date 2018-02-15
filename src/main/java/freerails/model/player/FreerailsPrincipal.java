@@ -36,7 +36,7 @@ import java.security.Principal;
 public abstract class FreerailsPrincipal implements Principal, Serializable {
 
     private static final long serialVersionUID = 4673561105333981501L;
-    // TODO what is the meaning of the world index?
+    // TODO what is the meaning of the world index? (positin in player list and the other lists)
     private final int worldIndex;
 
     /**

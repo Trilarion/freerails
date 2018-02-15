@@ -18,7 +18,7 @@
 
 package freerails.server;
 
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.TerrainType;
 
@@ -48,8 +48,8 @@ public class CityTilePositioner {
         this.world = world;
 
         // get the different types of Urban/Industry/Resource terrain
-        for (int i = 0; i < world.size(WorldSharedKey.TerrainTypes); i++) {
-            TerrainType type = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
+        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
+            TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, i);
             switch (type.getCategory().ordinal()) {
                 case 0:
                     urbanTerrainTypes.add(type);
@@ -66,7 +66,7 @@ public class CityTilePositioner {
     }
 
     public void initCities() {
-        final int numCities = world.size(WorldSharedKey.Cities);
+        final int numCities = world.size(SharedKey.Cities);
         CityModel[] cities = new CityModel[numCities];
 
         for (int cityId = 0; cityId < numCities; cityId++) {
@@ -119,7 +119,7 @@ public class CityTilePositioner {
     }
 
     public void growCities() {
-        final int numCities = world.size(WorldSharedKey.Cities);
+        final int numCities = world.size(SharedKey.Cities);
 
         /*
          * At some stage this will be refined to take into account how much

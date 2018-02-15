@@ -26,10 +26,10 @@ import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.network.movereceiver.MoveReceiver;
 import freerails.util.Utils;
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.finances.Money;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoType;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
@@ -117,11 +117,11 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(trainId + 1); // So that the first train
             // is #1, not #0.
             message.append(" arrives at ");
-            Station station = (Station) world.get(modelRoot.getPrincipal(), WorldKey.Stations, stationId);
+            Station station = (Station) world.get(modelRoot.getPrincipal(), PlayerKey.Stations, stationId);
             message.append(station.getStationName());
             message.append('\n');
             Money revenue = Money.ZERO;
-            int[] cargoQuantities = new int[modelRoot.getWorld().size(WorldSharedKey.CargoTypes)];
+            int[] cargoQuantities = new int[modelRoot.getWorld().size(SharedKey.CargoTypes)];
             for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
                 revenue = Money.add(revenue, receipt.price());
@@ -130,7 +130,7 @@ public class UserMessageGenerator implements MoveReceiver {
             for (int i = 0; i < cargoQuantities.length; i++) {
                 int j = cargoQuantities[i];
                 if (j > 0) {
-                    CargoType cargoType = (CargoType) world.get(WorldSharedKey.CargoTypes, i);
+                    CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, i);
                     message.append(j);
                     message.append(' ');
                     message.append(cargoType.getDisplayName());

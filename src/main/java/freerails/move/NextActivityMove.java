@@ -90,7 +90,7 @@ public class NextActivityMove implements Move {
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
         MoveStatus moveStatus = tryDoMove(world, principal);
-        if (moveStatus.succeeds()) world.add(this.principal, index, activity);
+        if (moveStatus.succeeds()) world.addActivity(this.principal, index, activity);
         return moveStatus;
     }
 

@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.controller.explorer.BuildTrackExplorer;
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
@@ -55,7 +55,7 @@ public class BuildTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(20, 20);
+        world = new FullWorld(new Vector2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();
@@ -106,13 +106,13 @@ public class BuildTrackExplorerTest extends TestCase {
     public void test2() {
         // Check the the Ocean type is where we think it is.
         int occeanTypeNumber = 4;
-        TerrainTypeImpl ocean = (TerrainTypeImpl) world.get(WorldSharedKey.TerrainTypes,
+        TerrainTypeImpl ocean = (TerrainTypeImpl) world.get(SharedKey.TerrainTypes,
                 occeanTypeNumber);
         assertEquals(TerrainCategory.Ocean, ocean.getCategory());
 
         // Check that track cannot be built on ocean.
-        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
-            TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, i);
+        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
+            TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
             assertFalse(rule.canBuildOnThisTerrainType(ocean.getCategory()));
         }
 
@@ -191,7 +191,7 @@ public class BuildTrackExplorerTest extends TestCase {
     }
 
     private void buildTrack(int x, int y, TileTransition direction) {
-        TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);
+        TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, 0);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                 .generateBuildTrackMove(new Vector2D(x, y), direction, rule,
                         rule, world, MapFixtureFactory.TEST_PRINCIPAL);

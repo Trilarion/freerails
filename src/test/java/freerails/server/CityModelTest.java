@@ -19,7 +19,7 @@
 package freerails.server;
 
 import freerails.util.Vector2D;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.City;
 import freerails.model.MapFixtureFactory;
@@ -34,9 +34,9 @@ public class CityModelTest extends TestCase {
      * Tests generating populated CityModel from cities on the map.
      */
     public void testLoadFromMap() {
-        World world = MapFixtureFactory.getWorld(100, 100);
+        World world = MapFixtureFactory.getWorld(new Vector2D(100, 100));
         City city = new City("New York", new Vector2D(10, 20));
-        world.add(WorldSharedKey.Cities, city);
+        world.add(SharedKey.Cities, city);
 
         CityModel cityModel = new CityModel();
         cityModel.loadFromMap(world, 0);

@@ -81,7 +81,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {
             FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
-            WorldIterator wi = new NonNullElementWorldIterator(WorldKey.Stations, world, principal);
+            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             while (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -254,7 +254,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         int terrainType = ((FullTerrainTile) world.getTile(location)).getTerrainTypeID();
-        TerrainType tt = (TerrainType) world.get(WorldSharedKey.TerrainTypes, terrainType);
+        TerrainType tt = (TerrainType) world.get(SharedKey.TerrainTypes, terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getCategory())) {
             String thisTrackType = newTrackPiece.getTrackRule().getTypeName();

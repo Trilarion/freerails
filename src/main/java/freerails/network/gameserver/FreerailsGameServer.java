@@ -28,6 +28,7 @@ import freerails.network.*;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.SetPropertyMessageToClient;
 import freerails.network.message.SetWorldMessageToClient;
+import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.network.movereceiver.MoveReceiver;
 import freerails.server.ServerGameModel;
@@ -81,6 +82,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * Don't default 0 to avoid
      * mistaken confirmations.
      */
+    // TODO new players allowed used meaningfully
     private boolean newPlayersAllowed = true;
     private ArrayList<NameAndPassword> players = new ArrayList<>();
     private ServerGameModel serverGameModel = new SimpleServerGameModel();
@@ -115,7 +117,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 }
 
                 // Just send to the new client.
-                Serializable setMaps = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(saveGamesManager.getNewMapNames()));
+                Serializable setMaps = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
 
                 ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
                 Serializable setSaveGames = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, savedGameNames);
@@ -292,7 +294,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         newPlayersAllowed = false;
         confirmedPlayers.clear();
 
-        World world = saveGamesManager.newMap(mapName);
+        World world = MapCreator.newMap(mapName);
 
         String[] passwords = new String[players.size()];
 
@@ -513,7 +515,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      *
      */
     public void refreshSavedGames() {
-        Serializable setMaps = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(saveGamesManager.getNewMapNames()));
+        Serializable setMaps = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
         ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
         Serializable setSaveGames = new SetPropertyMessageToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, savedGameNames);
         sendToAll(setMaps);

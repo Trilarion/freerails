@@ -36,6 +36,7 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.world.FullWorld;
 import freerails.model.world.World;
+import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
 /**
@@ -53,7 +54,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(10, 10);
+        world = new FullWorld(new Vector2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         Player player = MapFixtureFactory.TEST_PLAYER;

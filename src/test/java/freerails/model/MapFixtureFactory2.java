@@ -19,10 +19,10 @@
 package freerails.model;
 
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
-import freerails.savegames.FullSaveGameManager;
+import freerails.savegames.MapCreator;
 import freerails.savegames.TrackTilesXmlHandlerImpl;
 import freerails.util.Vector2D;
 import freerails.model.game.GameCalendar;
@@ -65,9 +65,9 @@ public class MapFixtureFactory2 {
      */
     private static World generateWorld() {
 
-        World world = new FullWorld(50, 50);
+        World world = new FullWorld(new Vector2D(50, 50));
         WagonAndEngineTypesFactory.addTypesToWorld(world);
-        FullSaveGameManager.addTerrainTileTypesList(world);
+        MapCreator.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
 
@@ -88,8 +88,8 @@ public class MapFixtureFactory2 {
 
         int clearTypeID = 0;
         // Fill the world with clear terrain.
-        for (int i = 0; i < world.size(WorldSharedKey.TerrainTypes); i++) {
-            TerrainType tt = (TerrainType) world.get(WorldSharedKey.TerrainTypes, i);
+        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
+            TerrainType tt = (TerrainType) world.get(SharedKey.TerrainTypes, i);
             if ("Clear".equals(tt.getTerrainTypeName())) {
                 clearTypeID = i;
                 break;

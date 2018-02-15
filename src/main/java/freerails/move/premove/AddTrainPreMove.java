@@ -27,9 +27,9 @@ import freerails.move.listmove.AddItemToListMove;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
@@ -140,23 +140,23 @@ public class AddTrainPreMove implements PreMove {
      */
     public Move generateMove(ReadOnlyWorld world) {
         // Add cargo bundle.
-        int bundleId = world.size(principal, WorldKey.CargoBundles);
+        int bundleId = world.size(principal, PlayerKey.CargoBundles);
         ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;
-        AddItemToListMove addCargoBundle = new AddItemToListMove(WorldKey.CargoBundles, bundleId, cargo, principal);
+        AddItemToListMove addCargoBundle = new AddItemToListMove(PlayerKey.CargoBundles, bundleId, cargo, principal);
 
         // Add schedule
-        int scheduleId = world.size(principal, WorldKey.TrainSchedules);
-        AddItemToListMove addSchedule = new AddItemToListMove(WorldKey.TrainSchedules, scheduleId, schedule, principal);
+        int scheduleId = world.size(principal, PlayerKey.TrainSchedules);
+        AddItemToListMove addSchedule = new AddItemToListMove(PlayerKey.TrainSchedules, scheduleId, schedule, principal);
 
         // Add train to train list.
         TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId, bundleId);
-        int trainId = world.size(principal, WorldKey.Trains);
-        AddItemToListMove addTrain = new AddItemToListMove(WorldKey.Trains, trainId, train, principal);
+        int trainId = world.size(principal, PlayerKey.Trains);
+        AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, principal);
 
         // Pay for train.
         int quantity = 1;
         // Determine the price of the train.
-        EngineType engineType = (EngineType) world.get(WorldSharedKey.EngineTypes, engineTypeId);
+        EngineType engineType = (EngineType) world.get(SharedKey.EngineTypes, engineTypeId);
         Money price = engineType.getPrice();
         Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineTypeId, quantity, Money.opposite(price));
         AddTransactionMove transactionMove = new AddTransactionMove(principal, transaction);

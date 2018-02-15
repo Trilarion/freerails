@@ -25,7 +25,7 @@ import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
@@ -151,11 +151,11 @@ public class TrackMoveProducer {
             ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
 
             if (ruleIDs[i] == -1) {
-                TerrainType terrainType = (TerrainType) world.get(WorldSharedKey.TerrainTypes, tt);
+                TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tt);
                 String message = "Non of the selected track types can be built on " + terrainType.getDisplayName();
                 return MoveStatus.moveFailed(message);
             }
-            rules[i] = (TrackRule) world.get(WorldSharedKey.TrackRules, ruleIDs[i]);
+            rules[i] = (TrackRule) world.get(SharedKey.TrackRules, ruleIDs[i]);
         }
 
         switch (getBuildMode()) {
@@ -200,7 +200,7 @@ public class TrackMoveProducer {
 
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
-        TrackRule trackRule = (TrackRule) world.get(WorldSharedKey.TrackRules, trackRuleID);
+        TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
 
         // We don't want to 'upgrade' a station to track. See bug 874416.

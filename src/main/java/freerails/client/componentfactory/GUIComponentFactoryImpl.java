@@ -21,7 +21,7 @@ package freerails.client.componentfactory;
 import freerails.client.UserInputOnMapController;
 import freerails.client.UserMessageGenerator;
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldKey;
+import freerails.model.world.PlayerKey;
 import freerails.util.ui.ActionAdapter;
 import freerails.util.ui.ActionAdapter.MappedButtonModel;
 import freerails.client.ModelRootImpl;
@@ -133,7 +133,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     private void countStations() {
-        WorldIterator stations = new NonNullElementWorldIterator(WorldKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
         enabled = stations.size() > 0;
@@ -143,7 +143,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     private void countTrains() {
-        WorldIterator trains = new NonNullElementWorldIterator(WorldKey.Trains, modelRoot.getWorld(), modelRoot.getPrincipal());
+        WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, modelRoot.getWorld(), modelRoot.getPrincipal());
         boolean enabled;
 
         enabled = trains.size() > 0;
@@ -411,39 +411,39 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    public void itemAdded(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
-        if (WorldKey.Trains == worldKey && rightPrincipal) {
+        if (PlayerKey.Trains == playerKey && rightPrincipal) {
             countTrains();
-        } else if (WorldKey.Stations == worldKey && rightPrincipal) {
+        } else if (PlayerKey.Stations == playerKey && rightPrincipal) {
             countStations();
         }
     }
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    public void itemRemoved(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
     }
 
     /**
-     * @param worldKey
+     * @param playerKey
      * @param index
      * @param principal
      */
-    public void listUpdated(WorldKey worldKey, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
-        if (WorldKey.Trains == worldKey && rightPrincipal) {
+        if (PlayerKey.Trains == playerKey && rightPrincipal) {
             countTrains();
-        } else if (WorldKey.Stations == worldKey && rightPrincipal) {
+        } else if (PlayerKey.Stations == playerKey && rightPrincipal) {
             countStations();
         }
     }

@@ -30,7 +30,7 @@ import freerails.util.Vector2D;
 import freerails.model.world.FullWorld;
 import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.MapFixtureFactory;
@@ -51,7 +51,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         setHasSetupBeenCalled(true);
-        setWorld(new FullWorld(20, 20));
+        setWorld(new FullWorld(new Vector2D(20, 20)));
         getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }
@@ -71,7 +71,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Vector2D.ZERO)).getTrackPiece();
 
         final int trackRuleID = 0;
-        final TrackRule r = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, trackRuleID);
+        final TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, trackRuleID);
 
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vector2D.ZERO);
@@ -120,7 +120,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Vector2D.ZERO)).getTrackPiece();
 
-        TrackRule r = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 0);
+        TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
 
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
@@ -155,7 +155,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Vector2D.ZERO))
                 .getTrackPiece();
 
-        TrackRule r = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 0);
+        TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
 
         Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,

@@ -53,7 +53,7 @@ public class WorldDiffsMoveTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(10, 10);
+        world = new FullWorld(new Vector2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
@@ -76,10 +76,10 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testChangingElementInList1() {
-        world.add(fp1, WorldKey.Stations, city1);
-        world.add(fp1, WorldKey.Stations, city1);
-        diffs.set(fp1, WorldKey.Stations, 0, city2);
-        diffs.set(fp1, WorldKey.Stations, 1, city2);
+        world.add(fp1, PlayerKey.Stations, city1);
+        world.add(fp1, PlayerKey.Stations, city1);
+        diffs.set(fp1, PlayerKey.Stations, 0, city2);
+        diffs.set(fp1, PlayerKey.Stations, 1, city2);
         runTests();
     }
 
@@ -87,10 +87,10 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testChangingElementInList2() {
-        world.add(fp1, WorldKey.Stations, city1);
-        world.add(fp1, WorldKey.Stations, city1);
-        diffs.set(fp1, WorldKey.Stations, 0, city2);
-        diffs.set(fp1, WorldKey.Stations, 1, city2);
+        world.add(fp1, PlayerKey.Stations, city1);
+        world.add(fp1, PlayerKey.Stations, city1);
+        diffs.set(fp1, PlayerKey.Stations, 0, city2);
+        diffs.set(fp1, PlayerKey.Stations, 1, city2);
         assertEquals(2, diffs.listDiffs());
         WorldDiffMove move = WorldDiffMove.generate(diffs, WorldDiffMoveCause.Other);
         assertEquals(2, move.listDiffs());
@@ -100,10 +100,10 @@ public class WorldDiffsMoveTest extends TestCase {
      *
      */
     public void testAddingElementToList() {
-        world.add(fp1, WorldKey.Stations, city1);
-        diffs.add(fp1, WorldKey.Stations, city2);
-        diffs.add(fp1, WorldKey.Stations, city2);
-        diffs.add(fp1, WorldKey.Stations, city2);
+        world.add(fp1, PlayerKey.Stations, city1);
+        diffs.add(fp1, PlayerKey.Stations, city2);
+        diffs.add(fp1, PlayerKey.Stations, city2);
+        diffs.add(fp1, PlayerKey.Stations, city2);
         runTests();
     }
 
@@ -127,9 +127,9 @@ public class WorldDiffsMoveTest extends TestCase {
         Activity act = new TestActivity(30);
         int row = world.addActiveEntity(fp1, act);
         act = new TestActivity(40);
-        world.add(fp1, row, act);
+        world.addActivity(fp1, row, act);
         act = new TestActivity(50);
-        diffs.add(fp1, row, act);
+        diffs.addActivity(fp1, row, act);
         runTests();
     }
 
@@ -140,17 +140,17 @@ public class WorldDiffsMoveTest extends TestCase {
         Activity act = new TestActivity(30);
         int row = world.addActiveEntity(fp1, act);
         act = new TestActivity(40);
-        world.add(fp1, row, act);
+        world.addActivity(fp1, row, act);
         act = new TestActivity(50);
-        diffs.add(fp1, row, act);
+        diffs.addActivity(fp1, row, act);
         act = new TestActivity(60);
         row = diffs.addActiveEntity(fp1, act);
         act = new TestActivity(70);
-        diffs.add(fp1, row, act);
+        diffs.addActivity(fp1, row, act);
         act = new TestActivity(80);
         row = diffs.addActiveEntity(fp1, act);
         act = new TestActivity(90);
-        diffs.add(fp1, row, act);
+        diffs.addActivity(fp1, row, act);
 
         runTests();
     }

@@ -18,6 +18,7 @@
 
 package freerails.client.model;
 
+import freerails.savegames.MapCreator;
 import freerails.util.ui.ActionAdapter;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
@@ -26,7 +27,6 @@ import freerails.controller.ModelRoot.Property;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.NewGameMessageToServer;
-import freerails.savegames.FullSaveGameManager;
 import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameSpeed;
@@ -168,7 +168,7 @@ public class ServerControlModel implements ModelRootListener {
             action.setEnabled(true);
         }
 
-        String[] mapNames = FullSaveGameManager.getMapNames();
+        String[] mapNames = MapCreator.getAvailableMapNames();
         Action[] actions = new Action[mapNames.length];
 
         for (int j = 0; j < actions.length; j++) {

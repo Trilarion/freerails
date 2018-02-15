@@ -23,7 +23,7 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.world.WorldItem;
-import freerails.model.world.WorldSharedKey;
+import freerails.model.world.SharedKey;
 import freerails.move.*;
 import freerails.move.premove.MoveTrainPreMove;
 import freerails.util.Vector2D;
@@ -199,8 +199,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @return
      */
     private static int findRuleID(TrackRule rule, ReadOnlyWorld world) {
-        for (int i = 0; i < world.size(WorldSharedKey.TrackRules); i++) {
-            Object o = world.get(WorldSharedKey.TrackRules, i);
+        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
+            Object o = world.get(SharedKey.TrackRules, i);
             if (rule.equals(o)) {
                 return i;
             }
