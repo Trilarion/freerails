@@ -39,7 +39,7 @@ import java.io.Serializable;
  * <li>A 2D grid - the map.</li>
  * <li>A series of lists that are accessible using the keys defined in {@link WorldSharedKey}</li>
  * <li>Another series of lists indexed by player and accessible using the keys defined in {@link WorldKey}</li>
- * <li>A collection items accessible using the keys defined in {@link ITEM}</li>
+ * <li>A collection items accessible using the keys defined in {@link WorldItem}</li>
  * <li>A list of financial transactions for each of the players</li>
  * </ul>
  *
@@ -80,7 +80,7 @@ public interface ReadOnlyWorld extends Serializable {
      * Returns the element mapped to the specified item.
      */
 
-    Serializable get(ITEM item);
+    Serializable get(WorldItem worldItem);
 
     /**
      * Returns the element at the specified position in the specified list.

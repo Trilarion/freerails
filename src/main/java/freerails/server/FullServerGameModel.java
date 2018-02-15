@@ -27,7 +27,7 @@ import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.move.WorldDiffMoveCause;
 import freerails.network.movereceiver.MoveReceiver;
 import freerails.model.world.FullWorldDiffs;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.World;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameSpeed;
@@ -66,7 +66,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             trainUpdater.buildTrains(world);
 
-            int gameSpeed = ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+            int gameSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed)).getSpeed();
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
@@ -77,7 +77,7 @@ public class FullServerGameModel implements ServerGameModel {
 
                 // Check whether we are about to start a new year..
                 GameTime time = world.currentTime();
-                GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
+                GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
                 int yearNextTick = calendar.getYear(time.getTicks() + 1);
                 int yearThisTick = calendar.getYear(time.getTicks());
 

@@ -27,7 +27,7 @@ import freerails.client.model.TrainSummeryModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
@@ -176,7 +176,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
     private String findMaintenanceCost() {
 
         GameTime time = world.currentTime();
-        GameCalendar gameCalendar = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameCalendar gameCalendar = (GameCalendar) world.get(WorldItem.Calendar);
         double month = gameCalendar.getMonth(time.getTicks());
         long cost = (long) (month / 12 * 5000);
 

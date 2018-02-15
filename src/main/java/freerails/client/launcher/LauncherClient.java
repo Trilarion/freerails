@@ -30,7 +30,7 @@ import freerails.controller.ClientProperty;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
@@ -87,7 +87,7 @@ public class LauncherClient extends FreerailsClient {
             long lastTick = getLastTickTime();
             double dt = currentTime - lastTick;
             ReadOnlyWorld world2 = modelRoot.getWorld();
-            GameSpeed gameSpeed = (GameSpeed) world2.get(ITEM.GAME_SPEED);
+            GameSpeed gameSpeed = (GameSpeed) world2.get(WorldItem.GameSpeed);
             GameTime currentGameTime = world2.currentTime();
             double ticks = currentGameTime.getTicks();
             if (!gameSpeed.isPaused()) {

@@ -22,7 +22,7 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.move.*;
 import freerails.move.premove.MoveTrainPreMove;
@@ -188,7 +188,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     private static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
-        GameRules rules = (GameRules) world.get(ITEM.GAME_RULES);
+        GameRules rules = (GameRules) world.get(WorldItem.GameRules);
 
         return rules.isMustConnectToExistingTrack();
     }

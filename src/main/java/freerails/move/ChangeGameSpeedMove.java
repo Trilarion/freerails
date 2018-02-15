@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
@@ -44,20 +44,20 @@ public class ChangeGameSpeedMove implements Move {
      * @return
      */
     public static Move getMove(ReadOnlyWorld world, GameSpeed newGameSpeed) {
-        return new ChangeGameSpeedMove((GameSpeed) world.get(ITEM.GAME_SPEED), newGameSpeed);
+        return new ChangeGameSpeedMove((GameSpeed) world.get(WorldItem.GameSpeed), newGameSpeed);
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        if (world.get(ITEM.GAME_SPEED).equals(oldSpeed)) {
+        if (world.get(WorldItem.GameSpeed).equals(oldSpeed)) {
             return MoveStatus.MOVE_OK;
         }
-        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + ((GameSpeed) world.get(WorldItem.GameSpeed)).getSpeed();
 
         return MoveStatus.moveFailed(string);
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        GameSpeed speed = ((GameSpeed) world.get(ITEM.GAME_SPEED));
+        GameSpeed speed = ((GameSpeed) world.get(WorldItem.GameSpeed));
 
         if (speed.equals(newSpeed)) {
             return MoveStatus.MOVE_OK;
@@ -69,7 +69,7 @@ public class ChangeGameSpeedMove implements Move {
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.succeeds()) {
-            world.set(ITEM.GAME_SPEED, newSpeed);
+            world.set(WorldItem.GameSpeed, newSpeed);
         }
 
         return status;
@@ -79,7 +79,7 @@ public class ChangeGameSpeedMove implements Move {
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.succeeds()) {
-            world.set(ITEM.GAME_SPEED, oldSpeed);
+            world.set(WorldItem.GameSpeed, oldSpeed);
         }
 
         return status;

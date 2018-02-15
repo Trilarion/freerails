@@ -18,7 +18,7 @@
 
 package freerails.model;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
@@ -81,10 +81,10 @@ public class MapFixtureFactory2 {
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assert (moveStatus.succeeds());
         }
-        world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));
-        world.set(ITEM.GAME_SPEED, new GameSpeed(10));
-        world.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+        world.set(WorldItem.GameSpeed, new GameSpeed(10));
+        world.set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
 
         int clearTypeID = 0;
         // Fill the world with clear terrain.

@@ -21,7 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -70,7 +70,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         world = new FullWorld(10, 10);
         player = new Player("Player X", world.getNumberOfPlayers());
-        world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);

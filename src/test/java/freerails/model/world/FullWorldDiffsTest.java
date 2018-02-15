@@ -183,12 +183,12 @@ public class FullWorldDiffsTest extends TestCase {
         FullWorld underlyingWorld = new FullWorld(10, 10);
         Station station0 = new Station();
         Station station1 = new Station();
-        underlyingWorld.set(ITEM.GAME_RULES, station0); // why not!
+        underlyingWorld.set(WorldItem.GameRules, station0); // why not!
 
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
-        assertEquals(station0, worldDiff.get(ITEM.GAME_RULES));
-        worldDiff.set(ITEM.GAME_RULES, station1);
-        assertEquals(station1, worldDiff.get(ITEM.GAME_RULES));
+        assertEquals(station0, worldDiff.get(WorldItem.GameRules));
+        worldDiff.set(WorldItem.GameRules, station1);
+        assertEquals(station1, worldDiff.get(WorldItem.GameRules));
     }
 
     /**

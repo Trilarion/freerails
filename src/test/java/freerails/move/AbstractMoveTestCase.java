@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.*;
@@ -276,7 +276,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     protected void setupWorld() {
         this.world = new FullWorld(10, 10);
         // Set the time..
-        world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
+        world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
     }
 

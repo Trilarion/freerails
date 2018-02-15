@@ -26,7 +26,7 @@ import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.model.finances.NetWorthCalculator;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.TransactionAggregator;
 import freerails.model.finances.Money;
@@ -308,7 +308,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
         submitButtonCallBack = closeAction;
         ReadOnlyWorld world = modelRoot.getWorld();
         companies = new ArrayList<>();
-        GameCalendar calender = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameCalendar calender = (GameCalendar) world.get(WorldItem.Calendar);
         int startYear = calender.getYear(0);
         int endYear = startYear + 100;
         GameTime currentTime = world.currentTime();

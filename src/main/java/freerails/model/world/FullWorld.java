@@ -76,7 +76,7 @@ public class FullWorld implements World {
         activityLists = new List3DImpl<>(0, 0);
         bankAccounts = new List2DImpl<>(0);
         currentBalance = new List1DImpl<>();
-        items = new List1DImpl<>(ITEM.getNumberOfKeys());
+        items = new List1DImpl<>(WorldItem.getNumberOfKeys());
         lists = new List3DImpl<>(0, WorldKey.getNumberOfKeys());
         players = new List1DImpl<>();
         sharedLists = new List2DImpl<>(WorldSharedKey.getNumberOfKeys());
@@ -237,8 +237,8 @@ public class FullWorld implements World {
         return lists.get(playerIndex, worldKey.getId(), index);
     }
 
-    public Serializable get(ITEM item) {
-        return items.get(item.getKeyID());
+    public Serializable get(WorldItem worldItem) {
+        return items.get(worldItem.getId());
     }
 
     public Serializable get(WorldSharedKey key, int index) {
@@ -430,8 +430,8 @@ public class FullWorld implements World {
         lists.set(playerIndex, worldKey.getId(), index, element);
     }
 
-    public void set(ITEM item, Serializable element) {
-        items.set(item.getKeyID(), element);
+    public void set(WorldItem worldItem, Serializable element) {
+        items.set(worldItem.getId(), element);
     }
 
     public void set(WorldSharedKey key, int index, Serializable element) {
@@ -450,9 +450,9 @@ public class FullWorld implements World {
     }
 
     private void setupItems() {
-        set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         time = new GameTime(0);
-        set(ITEM.ECONOMIC_CLIMATE, EconomicClimate.MODERATION);
+        set(WorldItem.EconomicClimate, EconomicClimate.MODERATION);
     }
 
     /**

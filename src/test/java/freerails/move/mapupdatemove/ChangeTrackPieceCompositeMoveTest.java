@@ -23,7 +23,7 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
@@ -53,7 +53,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         super.setUp();
         super.setHasSetupBeenCalled(true);
         setWorld(new FullWorld(10, 10));
-        getWorld().set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+        getWorld().set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
         getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(getWorld());
         transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(), MapFixtureFactory.TEST_PRINCIPAL);
@@ -63,7 +63,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testRemoveTrack() {
-        getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
 
         TrackRule trackRule = (TrackRule) getWorld().get(WorldSharedKey.TrackRules, 0);
 

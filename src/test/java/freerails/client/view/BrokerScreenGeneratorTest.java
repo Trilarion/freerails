@@ -23,7 +23,7 @@ package freerails.client.view;
 
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
@@ -55,7 +55,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
         super.setUp();
         world = new FullWorld(10, 10);
         // Set the time..
-        world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
+        world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         Player player = MapFixtureFactory.TEST_PLAYER;
 
         AddPlayerMove apm = AddPlayerMove.generateMove(world, player);

@@ -123,7 +123,7 @@ public interface World extends ReadOnlyWorld {
      * Replaces the element mapped to the specified item with the specified
      * element.
      */
-    void set(ITEM item, Serializable element);
+    void set(WorldItem worldItem, Serializable element);
 
     /**
      * Replaces the element at the specified position in the specified list with

@@ -22,7 +22,7 @@
 package freerails.controller;
 
 import freerails.controller.explorer.BuildTrackExplorer;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
@@ -57,7 +57,7 @@ public class BuildTrackExplorerTest extends TestCase {
         super.setUp();
         world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
-        world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();
         MapFixtureFactory.generateTrackRuleList(world);
     }

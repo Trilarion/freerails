@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.controller.explorer.FlatTrackExplorer;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
@@ -52,7 +52,7 @@ public class FlatTrackExplorerTest extends TestCase {
         super.setUp();
         world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
-        world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
 
         TrackRule rule = (TrackRule) world.get(WorldSharedKey.TrackRules, 0);

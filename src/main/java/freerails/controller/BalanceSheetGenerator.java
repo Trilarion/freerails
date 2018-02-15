@@ -22,7 +22,7 @@ import freerails.model.*;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 
 /**
@@ -39,7 +39,7 @@ public class BalanceSheetGenerator {
      * @param principal
      */
     public BalanceSheetGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
-        GameCalendar cal = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameCalendar cal = (GameCalendar) world.get(WorldItem.Calendar);
         // Calculate totals
         GameTime time = world.currentTime();
         final int startYear = cal.getYear(time.getTicks());

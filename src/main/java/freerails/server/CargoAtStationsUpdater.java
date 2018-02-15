@@ -21,7 +21,7 @@
  */
 package freerails.server;
 
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.model.world.WorldKey;
 import freerails.move.listmove.ChangeCargoBundleMove;
@@ -98,7 +98,7 @@ public class CargoAtStationsUpdater implements Serializable {
 
                         // Obtain the month
                         GameTime time = world.currentTime();
-                        GameCalendar calendar = (GameCalendar) world.get(ITEM.CALENDAR);
+                        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
                         int month = calendar.getMonth(time.getTicks());
 
                         int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;

@@ -25,7 +25,7 @@ import freerails.move.*;
 import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.network.movereceiver.MoveReceiver;
 import freerails.util.Utils;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldKey;
 import freerails.model.finances.Money;
 import freerails.model.world.ReadOnlyWorld;
@@ -152,7 +152,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     public void logSpeed() {
         ReadOnlyWorld world = modelRoot.getWorld();
-        GameSpeed speed = ((GameSpeed) world.get(ITEM.GAME_SPEED));
+        GameSpeed speed = ((GameSpeed) world.get(WorldItem.GameSpeed));
         int gameSpeed = speed.getSpeed();
 
         if (gameSpeed <= 0) {

@@ -23,7 +23,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -50,7 +50,7 @@ public class DateLabel extends JLabel implements View {
     protected void paintComponent(Graphics g) {
         if (null != world) {
             GameTime time = world.currentTime();
-            GameCalendar gameCalendar = (GameCalendar) world.get(ITEM.CALENDAR);
+            GameCalendar gameCalendar = (GameCalendar) world.get(WorldItem.Calendar);
             String s = gameCalendar.getYearAndMonth(time.getTicks());
             super.setText(s);
         }

@@ -29,7 +29,7 @@ import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.model.world.FullWorld;
 import freerails.model.game.GameRules;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldSharedKey;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
@@ -52,7 +52,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         super.setUp();
         setHasSetupBeenCalled(true);
         setWorld(new FullWorld(20, 20));
-        getWorld().set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }
 

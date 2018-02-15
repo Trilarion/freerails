@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.model.finances.FinancialDataGatherer;
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.Money;
@@ -54,7 +54,7 @@ class BrokerScreenGenerator {
         int playerId = world.getID(principal);
         String playername = world.getPlayer(playerId).getName();
 
-        GameCalendar cal = (GameCalendar) world.get(ITEM.CALENDAR);
+        GameCalendar cal = (GameCalendar) world.get(WorldItem.Calendar);
         GameTime time = world.currentTime();
         final int startyear = cal.getYear(time.getTicks());
         String year = String.valueOf(startyear);

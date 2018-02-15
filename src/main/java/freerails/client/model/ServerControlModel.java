@@ -27,7 +27,7 @@ import freerails.move.ChangeGameSpeedMove;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.NewGameMessageToServer;
 import freerails.savegames.FullSaveGameManager;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameSpeed;
 
@@ -126,7 +126,7 @@ public class ServerControlModel implements ModelRootListener {
      */
     private int getTargetTicksPerSecond() {
         ReadOnlyWorld world = modelRoot.getWorld();
-        return ((GameSpeed) world.get(ITEM.GAME_SPEED)).getSpeed();
+        return ((GameSpeed) world.get(WorldItem.GameSpeed)).getSpeed();
     }
 
     /**

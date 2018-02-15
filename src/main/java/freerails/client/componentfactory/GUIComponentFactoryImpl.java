@@ -20,7 +20,7 @@ package freerails.client.componentfactory;
 
 import freerails.client.UserInputOnMapController;
 import freerails.client.UserMessageGenerator;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.WorldKey;
 import freerails.util.ui.ActionAdapter;
 import freerails.util.ui.ActionAdapter.MappedButtonModel;
@@ -504,7 +504,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
-        int gameSpeed = ((GameSpeed) this.world.get(ITEM.GAME_SPEED)).getSpeed();
+        int gameSpeed = ((GameSpeed) this.world.get(WorldItem.GameSpeed)).getSpeed();
 
         // Set the selected game speed radio button.
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);

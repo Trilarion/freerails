@@ -28,7 +28,7 @@ import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldSharedKey;
 import freerails.model.terrain.*;
 import freerails.model.world.FullWorld;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.world.World;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
@@ -309,10 +309,10 @@ public class FullSaveGameManager implements SaveGamesManager {
         cityTilePositioner.initCities();
 
         // Set the time..
-        world.set(ITEM.CALENDAR, new GameCalendar(1200, 1840));
+        world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));
-        world.set(ITEM.GAME_SPEED, new GameSpeed(10));
-        world.set(ITEM.GAME_RULES, GameRules.DEFAULT_RULES);
+        world.set(WorldItem.GameSpeed, new GameSpeed(10));
+        world.set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
 
         /*
          * Note, money used to get added to player finances here, now it is done

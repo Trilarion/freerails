@@ -55,7 +55,7 @@ public class WorldDiffsMoveTest extends TestCase {
         super.setUp();
         world = new FullWorld(10, 10);
         // Set the time..
-        world.set(ITEM.CALENDAR, new GameCalendar(12000, 1840));
+        world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         fp1 = world.getPlayer(0).getPrincipal();
         diffs = new FullWorldDiffs(world);

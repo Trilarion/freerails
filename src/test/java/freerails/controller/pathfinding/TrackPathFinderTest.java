@@ -25,7 +25,7 @@ import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.model.world.FullWorld;
 import freerails.model.game.GameRules;
-import freerails.model.world.ITEM;
+import freerails.model.world.WorldItem;
 import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
@@ -48,7 +48,7 @@ public class TrackPathFinderTest extends TestCase {
         super.setUp();
         world = new FullWorld(20, 20);
         world.addPlayer(testPlayer);
-        world.set(ITEM.GAME_RULES, GameRules.NO_RESTRICTIONS);
+        world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
     }
 
