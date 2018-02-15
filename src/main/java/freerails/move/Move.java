@@ -19,8 +19,8 @@
 package freerails.move;
 
 import freerails.move.premove.PreMove;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
 
 import java.io.Serializable;
 

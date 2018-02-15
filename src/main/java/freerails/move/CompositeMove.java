@@ -22,8 +22,8 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
 
 import java.util.List;
 

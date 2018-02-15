@@ -25,8 +25,8 @@ import freerails.client.view.OverHeadTrainView;
 import freerails.controller.BuildTrackController;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.WorldConstants;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.WorldConstants;
 
 import java.awt.*;
 

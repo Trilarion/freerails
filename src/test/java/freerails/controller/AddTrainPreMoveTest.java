@@ -26,16 +26,16 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.premove.AddTrainPreMove;
-import freerails.world.MapFixtureFactory2;
+import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.world.ActivityIterator;
-import freerails.world.terrain.TileTransition;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
-import freerails.world.train.*;
-import freerails.world.train.schedule.ImmutableSchedule;
-import freerails.world.train.schedule.MutableSchedule;
+import freerails.model.ActivityIterator;
+import freerails.model.terrain.TileTransition;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
+import freerails.model.train.*;
+import freerails.model.train.schedule.ImmutableSchedule;
+import freerails.model.train.schedule.MutableSchedule;
 
 /**
  * Test for AddTrainPreMove.

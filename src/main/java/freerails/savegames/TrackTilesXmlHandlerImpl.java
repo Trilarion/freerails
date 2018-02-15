@@ -21,10 +21,10 @@
  */
 package freerails.savegames;
 
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.terrain.TerrainCategory;
-import freerails.world.track.*;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.terrain.TerrainCategory;
+import freerails.model.track.*;
 import org.xml.sax.Attributes;
 
 import java.awt.*;
@@ -133,7 +133,7 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
     }
 
     public void endTrackType() {
-        TrackRule trackRuleImpl = new freerails.world.track.TrackRuleImpl(trackRuleProperties, validTrackConfigurations, validTrackPlacement);
+        TrackRule trackRuleImpl = new freerails.model.track.TrackRuleImpl(trackRuleProperties, validTrackConfigurations, validTrackPlacement);
         ruleList.add(trackRuleImpl);
 
         validTrackConfigurations = null;

@@ -25,12 +25,12 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
-import freerails.world.train.TrainAccessor;
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainPositionOnMap;
+import freerails.model.train.TrainAccessor;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.train.TrainModel;
+import freerails.model.train.TrainPositionOnMap;
 
 import java.awt.*;
 

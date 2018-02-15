@@ -19,9 +19,9 @@
 package freerails.controller;
 
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.terrain.City;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.terrain.City;
 
 import java.util.NoSuchElementException;
 

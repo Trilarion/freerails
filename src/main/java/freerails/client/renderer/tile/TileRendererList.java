@@ -18,8 +18,7 @@
 
 package freerails.client.renderer.tile;
 
-import freerails.client.renderer.tile.TileRenderer;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.world.ReadOnlyWorld;
 
 /**
  * A list of TileRenderer.

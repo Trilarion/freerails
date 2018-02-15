@@ -21,9 +21,9 @@
  */
 package freerails.move;
 
-import freerails.world.finances.*;
-import freerails.world.player.Player;
-import freerails.world.MapFixtureFactory;
+import freerails.model.finances.*;
+import freerails.model.player.Player;
+import freerails.model.MapFixtureFactory;
 
 /**
  *

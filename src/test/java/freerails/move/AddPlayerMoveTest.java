@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.player.Player;
+import freerails.model.player.Player;
 
 /**
  *
@@ -34,8 +34,7 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() {
         Player newPlayer = new Player("New Player");
-        assertTrue("Check reflexivity of Player.equals(.)", Utils
-                .equalsBySerialization(newPlayer, newPlayer));
+        assertTrue("Check reflexivity of Player.equals(.)", Utils.equalsBySerialization(newPlayer, newPlayer));
         AddPlayerMove move = AddPlayerMove.generateMove(getWorld(), newPlayer);
         assertSurvivesSerialisation(move);
         assertDoThenUndoLeavesWorldUnchanged(move);

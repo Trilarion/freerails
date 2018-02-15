@@ -22,7 +22,7 @@ import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.StationRadiusRenderer;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.terrain.FullTerrainTile;
+import freerails.model.terrain.FullTerrainTile;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

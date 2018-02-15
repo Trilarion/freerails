@@ -22,10 +22,10 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.premove.AddStationPreMove;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.util.NoSuchElementException;

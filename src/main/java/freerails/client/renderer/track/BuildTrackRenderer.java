@@ -21,13 +21,12 @@ package freerails.client.renderer.track;
 import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
-import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.world.FullWorldDiffs;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.track.TrackPiece;
+import freerails.model.world.FullWorldDiffs;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.track.TrackPiece;
 
 import java.awt.*;
 import java.util.Iterator;

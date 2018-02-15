@@ -20,7 +20,7 @@ package freerails.network.message;
 
 import freerails.controller.ClientControlInterface;
 import freerails.controller.MessageStatus;
-import freerails.world.world.World;
+import freerails.model.world.World;
 
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a

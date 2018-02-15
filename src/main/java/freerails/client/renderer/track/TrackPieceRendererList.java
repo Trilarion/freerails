@@ -24,11 +24,11 @@ package freerails.client.renderer.track;
 
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ui.ImageManager;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.track.NullTrackType;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

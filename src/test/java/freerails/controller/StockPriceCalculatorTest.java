@@ -21,18 +21,18 @@
  */
 package freerails.controller;
 
-import freerails.world.MapFixtureFactory2;
+import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
-import freerails.world.finances.StockPriceCalculator;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameTime;
-import freerails.world.ITEM;
-import freerails.world.world.World;
-import freerails.world.cargo.CargoBatch;
-import freerails.world.finances.CargoDeliveryMoneyTransaction;
-import freerails.world.finances.Money;
-import freerails.world.finances.Transaction;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.finances.StockPriceCalculator;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameTime;
+import freerails.model.ITEM;
+import freerails.model.world.World;
+import freerails.model.cargo.CargoBatch;
+import freerails.model.finances.CargoDeliveryMoneyTransaction;
+import freerails.model.finances.Money;
+import freerails.model.finances.Transaction;
+import freerails.model.player.FreerailsPrincipal;
 import junit.framework.TestCase;
 
 /**

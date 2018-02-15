@@ -24,14 +24,14 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.cargo.CargoType;
-import freerails.world.terrain.TerrainType;
-import freerails.world.terrain.TileConsumption;
-import freerails.world.terrain.TileConversion;
-import freerails.world.terrain.TileProduction;
-import freerails.world.train.WagonType;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.cargo.CargoType;
+import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.TileConsumption;
+import freerails.model.terrain.TileConversion;
+import freerails.model.terrain.TileProduction;
+import freerails.model.train.WagonType;
 
 import javax.swing.*;
 import java.awt.*;

@@ -25,15 +25,15 @@ import freerails.client.ModelRootImpl;
 import freerails.move.*;
 import freerails.move.premove.AddTrainPreMove;
 import freerails.move.premove.MoveTrainPreMove;
-import freerails.world.MapFixtureFactory2;
+import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.world.terrain.TileTransition;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.train.*;
-import freerails.world.train.motion.Motion;
-import freerails.world.train.schedule.ImmutableSchedule;
-import freerails.world.train.schedule.MutableSchedule;
+import freerails.model.terrain.TileTransition;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.train.*;
+import freerails.model.train.motion.Motion;
+import freerails.model.train.schedule.ImmutableSchedule;
+import freerails.model.train.schedule.MutableSchedule;
 
 /**
  * Test for MoveTrainPreMove, tests moving round a loop of track.

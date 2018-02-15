@@ -32,11 +32,11 @@ import freerails.controller.BuildTrackStrategy;
 import freerails.controller.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.finances.Money;
-import freerails.world.track.TrackCategories;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.finances.Money;
+import freerails.model.track.TrackCategories;
+import freerails.model.track.TrackRule;
 
 import javax.swing.*;
 import java.awt.*;

@@ -18,17 +18,17 @@
 
 package freerails.client.view;
 
-import freerails.world.finances.IncomeStatementGenerator;
+import freerails.model.finances.IncomeStatementGenerator;
 import freerails.util.Vector2D;
-import freerails.world.world.FullWorld;
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.CargoCategory;
-import freerails.world.cargo.CargoType;
-import freerails.world.finances.CargoDeliveryMoneyTransaction;
-import freerails.world.finances.Money;
-import freerails.world.MapFixtureFactory;
+import freerails.model.world.FullWorld;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.cargo.CargoBatch;
+import freerails.model.cargo.CargoCategory;
+import freerails.model.cargo.CargoType;
+import freerails.model.finances.CargoDeliveryMoneyTransaction;
+import freerails.model.finances.Money;
+import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
 /**

@@ -25,10 +25,10 @@ import freerails.move.listmove.ListMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.move.mapupdatemove.MapUpdateMove;
 import freerails.util.Utils;
-import freerails.world.KEY;
-import freerails.world.WorldListListener;
-import freerails.world.WorldMapListener;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.KEY;
+import freerails.model.WorldListListener;
+import freerails.model.WorldMapListener;
+import freerails.model.player.FreerailsPrincipal;
 
 import java.awt.*;
 import java.util.ArrayList;

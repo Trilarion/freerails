@@ -23,10 +23,8 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.client.renderer.tile.TileRenderer;
-import freerails.client.renderer.tile.TileRendererList;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
 
 import java.util.List;
 

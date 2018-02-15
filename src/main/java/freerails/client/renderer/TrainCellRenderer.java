@@ -1,7 +1,6 @@
 package freerails.client.renderer;
 
-import freerails.client.renderer.RendererRoot;
-import freerails.world.train.EngineType;
+import freerails.model.train.EngineType;
 
 import javax.swing.*;
 import java.awt.*;

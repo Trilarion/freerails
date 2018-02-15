@@ -21,14 +21,14 @@
  */
 package freerails.move;
 
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.cargo.CargoBatch;
-import freerails.world.cargo.CargoBatchBundle;
-import freerails.world.finances.CargoDeliveryMoneyTransaction;
-import freerails.world.finances.Money;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.cargo.CargoBatch;
+import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.finances.CargoDeliveryMoneyTransaction;
+import freerails.model.finances.Money;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
 
 import java.util.ArrayList;
 import java.util.Iterator;

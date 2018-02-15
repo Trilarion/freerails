@@ -24,8 +24,8 @@ import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.StationBuilder;
 import freerails.controller.TrackMoveProducer;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

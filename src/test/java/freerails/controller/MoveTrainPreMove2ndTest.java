@@ -27,18 +27,18 @@ import freerails.move.premove.AddTrainPreMove;
 import freerails.move.premove.MoveTrainPreMove;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.world.*;
-import freerails.world.cargo.*;
-import freerails.world.game.GameTime;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.StationDemand;
-import freerails.world.station.Station;
-import freerails.world.terrain.TileTransition;
-import freerails.world.train.*;
-import freerails.world.train.schedule.ImmutableSchedule;
-import freerails.world.train.schedule.MutableSchedule;
-import freerails.world.train.schedule.Schedule;
-import freerails.world.world.World;
+import freerails.model.*;
+import freerails.model.cargo.*;
+import freerails.model.game.GameTime;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.StationDemand;
+import freerails.model.station.Station;
+import freerails.model.terrain.TileTransition;
+import freerails.model.train.*;
+import freerails.model.train.schedule.ImmutableSchedule;
+import freerails.model.train.schedule.MutableSchedule;
+import freerails.model.train.schedule.Schedule;
+import freerails.model.world.World;
 
 /**
  * Unit test for MoveTrainPreMove, tests stopping at stations.

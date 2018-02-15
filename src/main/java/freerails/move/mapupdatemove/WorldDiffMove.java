@@ -24,14 +24,14 @@ import freerails.move.listmove.ChangeItemInListMove;
 import freerails.util.ImmutableList;
 import freerails.util.ListKey;
 import freerails.util.Vector2D;
-import freerails.world.*;
-import freerails.world.world.FullWorldDiffs;
-import freerails.world.world.FullWorldDiffs.LISTID;
-import freerails.world.world.FullWorld.ActivityAndTime;
-import freerails.world.finances.Transaction;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
+import freerails.model.*;
+import freerails.model.world.FullWorldDiffs;
+import freerails.model.world.FullWorldDiffsListID;
+import freerails.model.world.FullWorld.ActivityAndTime;
+import freerails.model.finances.Transaction;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -95,36 +95,36 @@ public class WorldDiffMove implements MapUpdateMove {
         }
         diffs = new ImmutableList<>(diffsArrayList);
 
-        List<Move> tempList = new ArrayList<>();
+        List<Move> moveList = new ArrayList<>();
         Iterator<ListKey> lit = worldDiffs.getListDiffs();
         while (lit.hasNext()) {
             ListKey lkey = lit.next();
 
-            FullWorldDiffs.LISTID listId = (LISTID) lkey.getListID();
+            FullWorldDiffsListID listId = (FullWorldDiffsListID) lkey.getListID();
             switch (listId) {
                 case LISTS: {
                     int playerId = lkey.getIndex()[0];
-                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId).getPrincipal();
+                    FreerailsPrincipal principal = worldDiffs.getPlayer(playerId).getPrincipal();
                     KEY k = KEY.getKey(lkey.getIndex()[1]);
                     if (lkey.getType() == ListKey.Type.Element) {
                         Move m;
                         int elementId = lkey.getIndex()[2];
 
                         // Are we changing an element?
-                        if (elementId < world.size(fp, k)) {
-                            Serializable before = world.get(fp, k, elementId);
-                            Serializable after = worldDiffs.get(fp, k, elementId);
-                            m = new ChangeItemInListMove(k, elementId, before, after, fp);
+                        if (elementId < world.size(principal, k)) {
+                            Serializable before = world.get(principal, k, elementId);
+                            Serializable after = worldDiffs.get(principal, k, elementId);
+                            m = new ChangeItemInListMove(k, elementId, before, after, principal);
                         } else {
 
-                            Serializable element = worldDiffs.get(fp, k, elementId);
-                            m = new AddItemToListMove(k, elementId, element, fp);
+                            Serializable element = worldDiffs.get(principal, k, elementId);
+                            m = new AddItemToListMove(k, elementId, element, principal);
                         }
-                        tempList.add(m);
+                        moveList.add(m);
                     } else {
                         assert (lkey.getType() == ListKey.Type.EndPoint);
                         Integer newSize = (Integer) worldDiffs.getDiff(lkey);
-                        int oldSize = world.size(fp, k);
+                        int oldSize = world.size(principal, k);
                         if (newSize < oldSize) {
                             throw new UnsupportedOperationException();
                         }
@@ -133,9 +133,7 @@ public class WorldDiffMove implements MapUpdateMove {
                 }
 
                 case CURRENT_BALANCE:
-                    // The transaction moves should take care of
-                    // changing
-                    // the values of current balance.
+                    // The transaction moves should take care of changing the values of current balance.
                     break;
                 case BANK_ACCOUNTS: {
                     int playerId = lkey.getIndex()[0];
@@ -150,7 +148,7 @@ public class WorldDiffMove implements MapUpdateMove {
                         }
                         Transaction transaction = worldDiffs.getTransaction(fp, elementId);
                         move = new AddTransactionMove(fp, transaction);
-                        tempList.add(move);
+                        moveList.add(move);
                     } else {
                         assert (lkey.getType() == ListKey.Type.EndPoint);
                         Integer newSize = (Integer) worldDiffs.getDiff(lkey);
@@ -163,7 +161,7 @@ public class WorldDiffMove implements MapUpdateMove {
                 }
                 case ACTIVITY_LISTS: {
                     int playerId = lkey.getIndex()[0];
-                    FreerailsPrincipal fp = worldDiffs.getPlayer(playerId).getPrincipal();
+                    FreerailsPrincipal principal = worldDiffs.getPlayer(playerId).getPrincipal();
                     Object o = worldDiffs.getDiff(lkey);
                     logger.debug(lkey.toString() + " --> " + o.toString());
 
@@ -186,14 +184,14 @@ public class WorldDiffMove implements MapUpdateMove {
                             ActivityAndTime aat = (ActivityAndTime) worldDiffs.getDiff(lkey);
                             Activity act = aat.act;
                             int activityID = lkey.getIndex()[2];
-                            if (entityId >= world.getNumberOfActiveEntities(fp) && 0 == activityID) {
+                            if (entityId >= world.getNumberOfActiveEntities(principal) && 0 == activityID) {
                                 logger.debug("AddActiveEntityMove: " + act + " entityId=" + entityId);
-                                m = new AddActiveEntityMove(act, entityId, fp);
+                                m = new AddActiveEntityMove(act, entityId, principal);
                             } else {
                                 logger.debug("NextActivityMove: " + act + " entityId=" + entityId);
-                                m = new NextActivityMove(act, entityId, fp);
+                                m = new NextActivityMove(act, entityId, principal);
                             }
-                            tempList.add(m);
+                            moveList.add(m);
                             break;
                         }
                         default:
@@ -206,7 +204,7 @@ public class WorldDiffMove implements MapUpdateMove {
             }
         }
 
-        listChanges = new CompositeMove(tempList);
+        listChanges = new CompositeMove(moveList);
     }
 
     /**

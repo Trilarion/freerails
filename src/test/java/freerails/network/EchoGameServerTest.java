@@ -18,7 +18,7 @@
 
 package freerails.network;
 
-import freerails.world.finances.Money;
+import freerails.model.finances.Money;
 
 import java.io.Serializable;
 

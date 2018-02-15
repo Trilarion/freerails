@@ -24,7 +24,7 @@ package experimental;
 
 import freerails.savegames.CargoAndTerrainXmlHandlerImpl;
 import freerails.savegames.CargoAndTerrainXmlParser;
-import freerails.world.world.FullWorld;
+import freerails.model.world.FullWorld;
 
 /**
  * The main method on this class uses CargoAndTerrainParser to parse cargo

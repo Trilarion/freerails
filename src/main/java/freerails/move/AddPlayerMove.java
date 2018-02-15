@@ -18,14 +18,14 @@
 
 package freerails.move;
 
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
-import freerails.world.finances.BondItemTransaction;
-import freerails.world.finances.Money;
-import freerails.world.finances.StockItemTransaction;
-import freerails.world.finances.Transaction;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
+import freerails.model.finances.BondItemTransaction;
+import freerails.model.finances.Money;
+import freerails.model.finances.StockItemTransaction;
+import freerails.model.finances.Transaction;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * Adds a player to the world.

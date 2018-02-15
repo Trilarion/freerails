@@ -25,8 +25,8 @@ import freerails.move.premove.PreMove;
 import freerails.move.PreMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.world.World;
-import freerails.world.player.Player;
+import freerails.model.world.World;
+import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;

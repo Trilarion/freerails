@@ -23,15 +23,15 @@ package freerails.move;
 
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.*;
-import freerails.world.game.GameCalendar;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TileTransition;
-import freerails.world.train.PathOnTiles;
-import freerails.world.world.FullWorld;
-import freerails.world.world.World;
+import freerails.model.*;
+import freerails.model.game.GameCalendar;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TileTransition;
+import freerails.model.train.PathOnTiles;
+import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -79,7 +79,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param move
      */
-    void assertDoThenUndoLeavesWorldUnchanged(Move move) {
+    public void assertDoThenUndoLeavesWorldUnchanged(Move move) {
         try {
             World world = this.world;
             World before = (World) Utils.cloneBySerialisation(world);
@@ -241,7 +241,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
         return world;
     }
 
-    void setWorld(World world) {
+    public void setWorld(World world) {
         this.world = world;
     }
 
@@ -255,7 +255,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
     /**
      * @param hasSetupBeenCalled
      */
-    void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
+    public void setHasSetupBeenCalled(boolean hasSetupBeenCalled) {
         this.hasSetupBeenCalled = hasSetupBeenCalled;
     }
 

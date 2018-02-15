@@ -24,12 +24,12 @@ package freerails.move;
 import freerails.move.listmove.AddCargoBundleMove;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.util.Vector2D;
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.cargo.ImmutableCargoBatchBundle;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.cargo.ImmutableCargoBatchBundle;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
 
 /**
  * This {@link CompositeMove}adds a station to the station list and adds a

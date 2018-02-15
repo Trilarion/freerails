@@ -18,12 +18,12 @@
 
 package freerails.controller;
 
-import freerails.world.KEY;
-import freerails.world.NonNullElementWorldIterator;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.WorldIterator;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
+import freerails.model.KEY;
+import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.WorldIterator;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
 
 import java.util.LinkedList;
 

@@ -120,16 +120,7 @@ public class ListKey implements Comparable<ListKey>, Serializable {
      *
      */
     public enum Type {
-
-        /**
-         *
-         */
-        Element,
-
-        /**
-         *
-         */
-        EndPoint
+        Element, EndPoint
     }
 
 }

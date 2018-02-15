@@ -21,11 +21,9 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.client.renderer.tile.TileRenderer;
-import freerails.client.renderer.tile.TileRendererList;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.WorldConstants;
-import freerails.world.terrain.TerrainType;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.WorldConstants;
+import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 

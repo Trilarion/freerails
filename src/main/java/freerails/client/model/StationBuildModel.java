@@ -27,11 +27,11 @@ import freerails.controller.ModelRoot;
 import freerails.controller.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.finances.Money;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.finances.Money;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackRule;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

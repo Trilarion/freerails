@@ -19,7 +19,7 @@
 package freerails.network.gameserver;
 
 import freerails.network.ConnectionToClient;
-import freerails.server.gamemodel.GameModel;
+import freerails.server.GameModel;
 
 /**
  * Defines a server that can accept connections to clients.

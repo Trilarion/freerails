@@ -30,9 +30,9 @@ import freerails.network.message.MessageToClient;
 import freerails.network.message.MessageToServer;
 import freerails.network.movereceiver.MoveChainFork;
 import freerails.network.movereceiver.UntriedMoveReceiver;
-import freerails.world.world.World;
-import freerails.server.gamemodel.GameModel;
-import freerails.world.player.Player;
+import freerails.model.world.World;
+import freerails.server.GameModel;
+import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;

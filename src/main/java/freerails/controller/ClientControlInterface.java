@@ -19,7 +19,7 @@
 package freerails.controller;
 
 import freerails.network.message.MessageToClient;
-import freerails.world.world.World;
+import freerails.model.world.World;
 
 import java.io.Serializable;
 

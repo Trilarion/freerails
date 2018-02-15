@@ -25,16 +25,16 @@ package freerails.move.mapupdatemove;
 import freerails.move.*;
 import freerails.move.premove.MoveTrainPreMove;
 import freerails.util.Vector2D;
-import freerails.world.*;
-import freerails.world.finances.ItemsTransactionAggregator;
-import freerails.world.finances.TransactionCategory;
-import freerails.world.game.GameRules;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TileTransition;
-import freerails.world.track.*;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
+import freerails.model.*;
+import freerails.model.finances.ItemsTransactionAggregator;
+import freerails.model.finances.TransactionCategory;
+import freerails.model.game.GameRules;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.*;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
 
 import java.awt.*;
 

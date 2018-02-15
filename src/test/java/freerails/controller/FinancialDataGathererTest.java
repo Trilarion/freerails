@@ -24,12 +24,12 @@ package freerails.controller;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.finances.*;
-import freerails.world.world.World;
-import freerails.world.WorldConstants;
-import freerails.world.world.FullWorld;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
+import freerails.model.finances.*;
+import freerails.model.world.World;
+import freerails.model.WorldConstants;
+import freerails.model.world.FullWorld;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import junit.framework.TestCase;
 
 /**

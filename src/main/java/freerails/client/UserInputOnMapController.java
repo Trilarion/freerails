@@ -31,8 +31,8 @@ import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.terrain.TileTransition;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.terrain.TileTransition;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

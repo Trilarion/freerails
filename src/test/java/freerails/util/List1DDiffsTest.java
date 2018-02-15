@@ -21,7 +21,7 @@
  */
 package freerails.util;
 
-import freerails.world.player.Player;
+import freerails.model.player.Player;
 import junit.framework.TestCase;
 
 import java.util.SortedMap;

@@ -23,7 +23,7 @@ import freerails.client.SynchronizedEventQueue;
 import freerails.client.view.FramePerSecondDisplay;
 import freerails.util.ui.RepaintManagerForActiveRendering;
 import freerails.util.Utils;
-import freerails.server.gamemodel.GameModel;
+import freerails.server.GameModel;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

@@ -20,7 +20,7 @@ package freerails.client.renderer;
 
 import freerails.client.renderer.tile.TileRendererList;
 import freerails.client.renderer.track.TrackPieceRenderer;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.world.ReadOnlyWorld;
 
 import java.awt.*;
 import java.io.IOException;

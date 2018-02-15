@@ -24,9 +24,9 @@ import freerails.client.ModelRootListener;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.station.Station;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.terrain.FullTerrainTile;
+import freerails.model.station.Station;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -143,22 +143,20 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     public void propertyChange(ModelRoot.Property prop, Object before, Object after) {
         if (prop == ModelRoot.Property.CURSOR_POSITION) {
 
-            Vector2D p = (Vector2D) after;
+            Vector2D location = (Vector2D) after;
 
             // Select priority element at location
             LOGGER.debug("Let's try to show the station.");
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that
-            int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPrincipal(), p);
+            int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPrincipal(), location);
             if (stationNumberAtLocation > -1) {
-                LOGGER.info("stationNumber: " + stationNumberAtLocation);
                 stationInfoPanel.setStation(stationNumberAtLocation);
                 setSelectedIndex(stationInfoIndex);
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
-                LOGGER.info("Default behaviour show terrain.");
-                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(p)).getTerrainTypeID());
+                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(location)).getTerrainTypeID());
                 setSelectedIndex(terrainInfoIndex);
             }
         }

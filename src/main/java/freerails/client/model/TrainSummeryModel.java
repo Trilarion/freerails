@@ -18,13 +18,13 @@
 package freerails.client.model;
 
 import freerails.client.model.TrainOrdersListModel.TrainOrdersListElement;
-import freerails.world.KEY;
-import freerails.world.finances.IncomeStatementGenerator;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.finances.Money;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
-import freerails.world.train.TrainOrders;
+import freerails.model.KEY;
+import freerails.model.finances.IncomeStatementGenerator;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.finances.Money;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
+import freerails.model.train.TrainOrders;
 
 import java.util.HashMap;
 import java.util.Map;

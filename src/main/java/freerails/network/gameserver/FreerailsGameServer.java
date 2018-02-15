@@ -30,13 +30,13 @@ import freerails.network.message.SetPropertyMessageToClient;
 import freerails.network.message.SetWorldMessageToClient;
 import freerails.savegames.SaveGamesManager;
 import freerails.network.movereceiver.MoveReceiver;
-import freerails.server.gamemodel.ServerGameModel;
-import freerails.server.gamemodel.SimpleServerGameModel;
+import freerails.server.ServerGameModel;
+import freerails.server.SimpleServerGameModel;
 import freerails.util.ImmutableList;
 import freerails.util.SynchronizedFlag;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import java.beans.PropertyChangeListener;

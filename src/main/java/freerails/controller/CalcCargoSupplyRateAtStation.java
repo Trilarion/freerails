@@ -20,15 +20,15 @@ package freerails.controller;
 
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.WorldConstants;
-import freerails.world.station.Station;
-import freerails.world.station.StationConversion;
-import freerails.world.station.StationDemand;
-import freerails.world.station.StationSupply;
-import freerails.world.terrain.*;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.WorldConstants;
+import freerails.model.station.Station;
+import freerails.model.station.StationConversion;
+import freerails.model.station.StationDemand;
+import freerails.model.station.StationSupply;
+import freerails.model.terrain.*;
+import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

@@ -22,9 +22,9 @@
 package freerails.move;
 
 import freerails.util.Utils;
-import freerails.world.world.World;
-import freerails.world.finances.Transaction;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.World;
+import freerails.model.finances.Transaction;
+import freerails.model.player.FreerailsPrincipal;
 
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the

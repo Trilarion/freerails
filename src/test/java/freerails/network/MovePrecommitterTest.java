@@ -27,10 +27,10 @@ import freerails.move.premove.TimeTickPreMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.TimeTickMove;
-import freerails.world.game.GameTime;
-import freerails.world.world.World;
-import freerails.world.world.FullWorld;
-import freerails.world.player.Player;
+import freerails.model.game.GameTime;
+import freerails.model.world.World;
+import freerails.model.world.FullWorld;
+import freerails.model.player.Player;
 import junit.framework.TestCase;
 
 /**

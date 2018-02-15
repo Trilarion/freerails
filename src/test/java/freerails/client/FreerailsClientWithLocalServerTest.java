@@ -31,15 +31,15 @@ import freerails.network.message.MessageToClient;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.NewGameMessageToServer;
 import freerails.network.message.SaveGameMessageToServer;
-import freerails.savegames.UnitTestSaveGamesManager;
+import freerails.savegames.TestSaveGamesManager;
 import freerails.util.ImmutableList;
-import freerails.world.world.World;
-import freerails.world.finances.Money;
-import freerails.world.finances.MoneyTransaction;
-import freerails.world.finances.Transaction;
-import freerails.world.finances.TransactionCategory;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
+import freerails.model.world.World;
+import freerails.model.finances.Money;
+import freerails.model.finances.MoneyTransaction;
+import freerails.model.finances.Transaction;
+import freerails.model.finances.TransactionCategory;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -53,7 +53,7 @@ import java.io.Serializable;
 public class FreerailsClientWithLocalServerTest extends TestCase {
 
     private FreerailsGameServer server;
-    private UnitTestSaveGamesManager savedGamesManager;
+    private TestSaveGamesManager savedGamesManager;
 
     /**
      * @throws Exception
@@ -61,7 +61,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        savedGamesManager = new UnitTestSaveGamesManager();
+        savedGamesManager = new TestSaveGamesManager();
         server = new FreerailsGameServer(savedGamesManager);
     }
 

@@ -18,11 +18,11 @@
 
 package freerails.controller;
 
-import freerails.world.*;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameTime;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.*;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameTime;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
 
 /**
  * Generates the balance sheet - note, its fields are read using reflection so

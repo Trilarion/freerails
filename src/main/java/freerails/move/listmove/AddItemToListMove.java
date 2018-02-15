@@ -22,9 +22,9 @@
 package freerails.move.listmove;
 
 import freerails.move.MoveStatus;
-import freerails.world.KEY;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.KEY;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
 
 import java.io.Serializable;
 

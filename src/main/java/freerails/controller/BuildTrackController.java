@@ -27,17 +27,17 @@ import freerails.move.MoveStatus;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.world.FullWorldDiffs;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.server.gamemodel.GameModel;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TerrainTile;
-import freerails.world.terrain.TileTransition;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackPieceImpl;
-import freerails.world.track.TrackRule;
+import freerails.model.world.FullWorldDiffs;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.server.GameModel;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackPieceImpl;
+import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class BuildTrackController implements GameModel {
         pathOnExistingTrackFinder = new PathOnTrackFinder(readOnlyWorld);
         this.modelRoot = modelRoot;
         principal = modelRoot.getPrincipal();
-        setWorldDiffs(worldDiffs);
+        this.modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
     }
 
     /**
@@ -332,15 +332,11 @@ public class BuildTrackController implements GameModel {
             return;
         }
         if (show) {
-            setWorldDiffs(worldDiffs);
+            modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
         } else {
-            setWorldDiffs(null);
+            modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, null);
         }
         visible = show;
-    }
-
-    private void setWorldDiffs(FullWorldDiffs worldDiffs) {
-        modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
     }
 
     /**

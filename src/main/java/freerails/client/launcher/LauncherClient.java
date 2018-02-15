@@ -30,12 +30,12 @@ import freerails.controller.ClientProperty;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.world.ITEM;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
-import freerails.world.game.GameSpeed;
-import freerails.world.game.GameTime;
-import freerails.world.player.Player;
+import freerails.model.ITEM;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
+import freerails.model.game.GameSpeed;
+import freerails.model.game.GameTime;
+import freerails.model.player.Player;
 
 import javax.swing.*;
 import java.awt.*;

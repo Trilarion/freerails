@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.network.gameserver.FreerailsGameServer;
-import freerails.savegames.UnitTestSaveGamesManager;
+import freerails.savegames.TestSaveGamesManager;
 import freerails.util.SynchronizedFlag;
 import junit.framework.TestCase;
 
@@ -40,7 +40,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
         super.setUp();
 
         FreerailsGameServer result;
-        FreerailsGameServer server1 = new FreerailsGameServer(new UnitTestSaveGamesManager());
+        FreerailsGameServer server1 = new FreerailsGameServer(new TestSaveGamesManager());
         Thread t = new Thread(server1);
         t.start();
 

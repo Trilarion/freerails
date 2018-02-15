@@ -34,11 +34,11 @@
 package freerails.client.renderer.map;
 
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TerrainType;
-import freerails.world.track.NullTrackPiece;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainType;
+import freerails.model.track.NullTrackPiece;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

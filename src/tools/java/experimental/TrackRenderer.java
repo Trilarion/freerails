@@ -20,8 +20,8 @@ package experimental;
 
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
-import freerails.world.terrain.TileTransition;
-import freerails.world.track.TrackConfigurations;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.TrackConfigurations;
 
 import java.awt.*;
 import java.awt.geom.*;

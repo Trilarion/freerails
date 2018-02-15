@@ -28,8 +28,8 @@ import freerails.network.gameserver.FreerailsGameServer;
 import freerails.network.InetConnectionAccepter;
 import freerails.network.LogOnResponse;
 import freerails.savegames.FullSaveGameManager;
-import freerails.server.gamemodel.FullServerGameModel;
-import freerails.server.gamemodel.GameModel;
+import freerails.server.FullServerGameModel;
+import freerails.server.GameModel;
 import org.apache.log4j.*;
 
 import javax.swing.*;

@@ -22,18 +22,18 @@
 package freerails.move;
 
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.WorldConstants;
-import freerails.world.finances.ItemTransaction;
-import freerails.world.finances.Money;
-import freerails.world.finances.Transaction;
-import freerails.world.finances.TransactionCategory;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackCategories;
-import freerails.world.track.TrackPiece;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.WorldConstants;
+import freerails.model.finances.ItemTransaction;
+import freerails.model.finances.Money;
+import freerails.model.finances.Transaction;
+import freerails.model.finances.TransactionCategory;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.track.NullTrackType;
+import freerails.model.track.TrackCategories;
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackRule;
 
 import java.util.ArrayList;
 import java.util.List;

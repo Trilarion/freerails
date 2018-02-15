@@ -18,12 +18,13 @@
 
 package freerails.savegames;
 
-import freerails.server.gamemodel.ServerGameModel;
-import freerails.world.world.World;
+import freerails.server.ServerGameModel;
+import freerails.model.world.World;
 
 import java.io.IOException;
 import java.io.Serializable;
 
+// TODO move newMap out of SaveGamesManager, not the task!
 /**
  * Defines methods that let the server load and save game states, and get blank
  * maps for new games.

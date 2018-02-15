@@ -26,16 +26,16 @@ import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
-import freerails.world.world.FullWorld;
-import freerails.world.KEY;
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.cargo.*;
-import freerails.world.player.Player;
-import freerails.world.station.StationDemand;
-import freerails.world.station.Station;
-import freerails.world.MapFixtureFactory;
-import freerails.world.train.TrainModel;
+import freerails.model.world.FullWorld;
+import freerails.model.KEY;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.cargo.*;
+import freerails.model.player.Player;
+import freerails.model.station.StationDemand;
+import freerails.model.station.Station;
+import freerails.model.MapFixtureFactory;
+import freerails.model.train.TrainModel;
 import junit.framework.TestCase;
 
 /**

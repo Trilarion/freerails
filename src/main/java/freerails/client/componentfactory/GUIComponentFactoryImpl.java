@@ -35,10 +35,10 @@ import freerails.controller.ModelRoot;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.LocalConnection;
 import freerails.util.Vector2D;
-import freerails.world.*;
-import freerails.world.game.GameSpeed;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.*;
+import freerails.model.game.GameSpeed;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

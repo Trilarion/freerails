@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.tile;
 
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.world.ReadOnlyWorld;
 
 import java.awt.*;
 

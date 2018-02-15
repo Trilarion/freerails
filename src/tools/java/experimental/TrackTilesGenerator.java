@@ -20,9 +20,9 @@ package experimental;
 
 import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.savegames.TrackTilesXmlHandlerImpl;
-import freerails.world.track.TrackCategories;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackRule;
+import freerails.model.track.TrackCategories;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackRule;
 
 import javax.swing.*;
 import java.awt.*;

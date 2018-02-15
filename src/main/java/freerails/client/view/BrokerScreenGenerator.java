@@ -23,17 +23,17 @@
 
 package freerails.client.view;
 
-import freerails.world.finances.FinancialDataGatherer;
-import freerails.world.finances.StockPriceCalculator;
-import freerails.world.finances.StockPrice;
-import freerails.world.ITEM;
-import freerails.world.finances.ItemsTransactionAggregator;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.finances.Money;
-import freerails.world.finances.TransactionCategory;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameTime;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.finances.FinancialDataGatherer;
+import freerails.model.finances.StockPriceCalculator;
+import freerails.model.finances.StockPrice;
+import freerails.model.ITEM;
+import freerails.model.finances.ItemsTransactionAggregator;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.finances.Money;
+import freerails.model.finances.TransactionCategory;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameTime;
+import freerails.model.player.FreerailsPrincipal;
 
 import java.text.DecimalFormat;
 

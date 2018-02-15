@@ -20,10 +20,10 @@ package freerails.client.renderer.track;
 
 import freerails.util.BinaryNumberFormatter;
 import freerails.util.ui.ImageManager;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackRule;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackRule;
 
 import java.awt.*;
 import java.io.File;

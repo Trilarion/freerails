@@ -21,10 +21,10 @@
  */
 package freerails.move;
 
-import freerails.world.Activity;
-import freerails.world.ActivityIterator;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.Activity;
+import freerails.model.ActivityIterator;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
 
 /**
  *

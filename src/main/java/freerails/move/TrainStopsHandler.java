@@ -24,21 +24,21 @@ package freerails.move;
 import freerails.controller.explorer.FlatTrackExplorer;
 import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.mapupdatemove.WorldDiffMove;
-import freerails.world.track.NoTrackException;
+import freerails.model.track.NoTrackException;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.FullWorldDiffs;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
-import freerails.world.station.Station;
-import freerails.world.terrain.TileTransition;
-import freerails.world.train.*;
-import freerails.world.train.schedule.ImmutableSchedule;
-import freerails.world.train.schedule.MutableSchedule;
-import freerails.world.train.schedule.Schedule;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.FullWorldDiffs;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
+import freerails.model.station.Station;
+import freerails.model.terrain.TileTransition;
+import freerails.model.train.*;
+import freerails.model.train.schedule.ImmutableSchedule;
+import freerails.model.train.schedule.MutableSchedule;
+import freerails.model.train.schedule.Schedule;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -58,13 +58,13 @@ public class TrainStopsHandler implements Serializable {
 
     /**
      * @param id
-     * @param p
-     * @param w
+     * @param principal
+     * @param worldDiffs
      */
-    public TrainStopsHandler(int id, FreerailsPrincipal p, FullWorldDiffs w) {
+    public TrainStopsHandler(int id, FreerailsPrincipal principal, FullWorldDiffs worldDiffs) {
         trainId = id;
-        principal = p;
-        worldDiffs = w;
+        this.principal = principal;
+        this.worldDiffs = worldDiffs;
     }
 
     /**

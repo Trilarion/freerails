@@ -24,7 +24,7 @@ package freerails.move.mapupdatemove;
 import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.util.Vector2D;
-import freerails.world.track.TrackPiece;
+import freerails.model.track.TrackPiece;
 
 import java.awt.*;
 

@@ -19,9 +19,9 @@
 package freerails.savegames;
 
 import freerails.util.Vector2D;
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.terrain.City;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.terrain.City;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

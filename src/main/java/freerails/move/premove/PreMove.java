@@ -22,7 +22,7 @@
 package freerails.move.premove;
 
 import freerails.move.Move;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.world.ReadOnlyWorld;
 
 import java.io.Serializable;
 

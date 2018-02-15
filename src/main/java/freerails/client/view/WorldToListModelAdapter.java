@@ -22,11 +22,11 @@
 package freerails.client.view;
 
 import freerails.util.Utils;
-import freerails.world.KEY;
-import freerails.world.NonNullElementWorldIterator;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.KEY;
+import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.player.FreerailsPrincipal;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;

@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.network.gameserver.FreerailsGameServer;
-import freerails.savegames.UnitTestSaveGamesManager;
+import freerails.savegames.TestSaveGamesManager;
 import junit.framework.TestCase;
 
 /**
@@ -35,7 +35,7 @@ public class FreerailsGameServerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        server = new FreerailsGameServer(new UnitTestSaveGamesManager());
+        server = new FreerailsGameServer(new TestSaveGamesManager());
     }
 
     /**

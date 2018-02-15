@@ -21,10 +21,10 @@ package freerails.controller;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.premove.PreMove;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * A MoveExecutor that executes moves on the world object passed to its

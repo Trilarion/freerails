@@ -23,11 +23,11 @@ package freerails.controller.pathfinding;
 
 import freerails.controller.BuildTrackStrategy;
 import freerails.util.Vector2D;
-import freerails.world.world.FullWorld;
-import freerails.world.game.GameRules;
-import freerails.world.ITEM;
-import freerails.world.player.Player;
-import freerails.world.MapFixtureFactory;
+import freerails.model.world.FullWorld;
+import freerails.model.game.GameRules;
+import freerails.model.ITEM;
+import freerails.model.player.Player;
+import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
 import java.util.List;

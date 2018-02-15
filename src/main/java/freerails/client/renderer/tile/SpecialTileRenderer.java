@@ -23,8 +23,8 @@
 package freerails.client.renderer.tile;
 
 import freerails.util.ui.ImageManager;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.terrain.TerrainType;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.terrain.TerrainType;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

@@ -28,7 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.FreerailsCursor;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.WorldConstants;
+import freerails.model.WorldConstants;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;

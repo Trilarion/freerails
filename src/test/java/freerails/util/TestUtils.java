@@ -1,12 +1,14 @@
 package freerails.util;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 
 import java.io.Serializable;
-import java.util.function.Supplier;
 
-public class TestUtils {
+
+/**
+ * Utils for testing.
+ */
+public final class TestUtils {
 
     private TestUtils() {}
 

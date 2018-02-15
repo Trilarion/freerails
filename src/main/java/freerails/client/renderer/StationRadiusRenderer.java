@@ -22,7 +22,7 @@ import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.controller.ModelRoot.Property;
 import freerails.controller.ModelRoot.Value;
-import freerails.world.WorldConstants;
+import freerails.model.WorldConstants;
 
 import java.awt.*;
 

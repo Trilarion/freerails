@@ -19,8 +19,8 @@
 package freerails.move.listmove;
 
 import freerails.move.Move;
-import freerails.world.KEY;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.KEY;
+import freerails.model.player.FreerailsPrincipal;
 
 /**
  * This interface provides information about changes to the lists in the World

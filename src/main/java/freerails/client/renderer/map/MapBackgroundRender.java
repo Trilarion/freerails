@@ -30,12 +30,12 @@ import freerails.client.renderer.tile.TileRendererList;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.WorldConstants;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TerrainTile;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackPiece;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.WorldConstants;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
+import freerails.model.track.NullTrackType;
+import freerails.model.track.TrackPiece;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

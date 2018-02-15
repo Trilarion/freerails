@@ -24,13 +24,13 @@ package freerails.controller;
 import freerails.client.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.move.premove.MoveTrainPreMove;
-import freerails.world.MapFixtureFactory2;
+import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
-import freerails.world.train.PositionOnTrack;
-import freerails.world.terrain.TileTransition;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FullTerrainTile;
+import freerails.model.train.PositionOnTrack;
+import freerails.model.terrain.TileTransition;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.terrain.FullTerrainTile;
 import junit.framework.TestCase;
 
 /**

@@ -18,15 +18,15 @@
 
 package freerails.controller.explorer;
 
-import freerails.world.track.NoTrackException;
+import freerails.model.track.NoTrackException;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TileTransition;
-import freerails.world.track.NullTrackType;
-import freerails.world.track.TrackConfiguration;
-import freerails.world.track.TrackPiece;
-import freerails.world.train.PositionOnTrack;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.NullTrackType;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackPiece;
+import freerails.model.train.PositionOnTrack;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;

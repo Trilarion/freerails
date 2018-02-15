@@ -23,13 +23,13 @@ package freerails.move.mapupdatemove;
 
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.terrain.TerrainCategory;
-import freerails.world.terrain.TerrainType;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainCategory;
+import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 

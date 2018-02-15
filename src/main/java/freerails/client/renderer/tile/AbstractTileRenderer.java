@@ -22,12 +22,11 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.client.renderer.tile.TileRenderer;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.terrain.TerrainTile;
-import freerails.world.terrain.TerrainType;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 import java.io.File;

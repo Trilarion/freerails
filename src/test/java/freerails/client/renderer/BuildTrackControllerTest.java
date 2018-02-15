@@ -24,13 +24,13 @@ package freerails.client.renderer;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.controller.ModelRoot.Property;
-import freerails.world.MapFixtureFactory2;
+import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.track.TrackRule;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.track.TrackRule;
 import junit.framework.TestCase;
 
 /**

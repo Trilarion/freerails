@@ -22,11 +22,11 @@
 package freerails.move;
 
 import freerails.util.ImmutableList;
-import freerails.world.KEY;
-import freerails.world.world.World;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
-import freerails.world.station.TrainBlueprint;
+import freerails.model.KEY;
+import freerails.model.world.World;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
+import freerails.model.station.TrainBlueprint;
 
 /**
  * This Move changes what is being built at an engine shop - when a client wants

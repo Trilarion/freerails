@@ -21,11 +21,11 @@ package freerails.client.renderer;
 import freerails.util.ui.Painter;
 import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
-import freerails.world.*;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
-import freerails.world.terrain.FullTerrainTile;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.*;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
+import freerails.model.terrain.FullTerrainTile;
+import freerails.model.world.ReadOnlyWorld;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;

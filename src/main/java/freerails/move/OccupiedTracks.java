@@ -18,12 +18,12 @@
 
 package freerails.move;
 
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.game.GameTime;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.track.TrackSection;
-import freerails.world.train.TrainAccessor;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.game.GameTime;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.track.TrackSection;
+import freerails.model.train.TrainAccessor;
 
 import java.util.*;
 

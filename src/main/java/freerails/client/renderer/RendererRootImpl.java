@@ -26,12 +26,12 @@ import freerails.client.renderer.tile.*;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.cargo.CargoType;
-import freerails.world.terrain.TerrainCategory;
-import freerails.world.terrain.TerrainType;
-import freerails.world.train.EngineType;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.cargo.CargoType;
+import freerails.model.terrain.TerrainCategory;
+import freerails.model.terrain.TerrainType;
+import freerails.model.train.EngineType;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.UnsupportedAudioFileException;

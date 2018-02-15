@@ -23,13 +23,13 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.finances.NetWorthCalculator;
-import freerails.world.*;
-import freerails.world.finances.Money;
-import freerails.world.finances.PlayerDetails;
-import freerails.world.finances.TransactionAggregator;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.world.ReadOnlyWorld;
+import freerails.model.finances.NetWorthCalculator;
+import freerails.model.*;
+import freerails.model.finances.Money;
+import freerails.model.finances.PlayerDetails;
+import freerails.model.finances.TransactionAggregator;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

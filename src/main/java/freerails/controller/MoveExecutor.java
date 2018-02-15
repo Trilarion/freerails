@@ -21,8 +21,8 @@ package freerails.controller;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.premove.PreMove;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.player.FreerailsPrincipal;
 
 /**
  * Lets the caller try and execute Moves.

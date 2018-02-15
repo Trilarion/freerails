@@ -28,10 +28,10 @@ import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
 
 import javax.swing.*;
 import java.awt.*;

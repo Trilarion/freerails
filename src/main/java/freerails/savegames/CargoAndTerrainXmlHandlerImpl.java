@@ -19,11 +19,11 @@
 package freerails.savegames;
 
 import freerails.util.ui.UiUtils;
-import freerails.world.SKEY;
-import freerails.world.world.World;
-import freerails.world.cargo.CargoCategory;
-import freerails.world.cargo.CargoType;
-import freerails.world.terrain.*;
+import freerails.model.SKEY;
+import freerails.model.world.World;
+import freerails.model.cargo.CargoCategory;
+import freerails.model.cargo.CargoType;
+import freerails.model.terrain.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

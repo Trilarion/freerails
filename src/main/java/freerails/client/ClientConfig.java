@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.world.WorldConstants;
+import freerails.model.WorldConstants;
 
 import java.awt.*;
 

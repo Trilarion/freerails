@@ -23,10 +23,10 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.ITEM;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameTime;
+import freerails.model.ITEM;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameTime;
 
 import javax.swing.*;
 import java.awt.*;

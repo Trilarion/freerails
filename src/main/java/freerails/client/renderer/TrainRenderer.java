@@ -19,12 +19,12 @@
 package freerails.client.renderer;
 
 import freerails.util.LineSegment;
-import freerails.world.terrain.TileTransition;
-import freerails.world.track.PathIterator;
-import freerails.world.train.PathWalker;
-import freerails.world.train.PathWalkerImpl;
-import freerails.world.train.TrainModel;
-import freerails.world.train.TrainPositionOnMap;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.PathIterator;
+import freerails.model.train.PathWalker;
+import freerails.model.train.PathWalkerImpl;
+import freerails.model.train.TrainModel;
+import freerails.model.train.TrainPositionOnMap;
 
 import java.awt.*;
 

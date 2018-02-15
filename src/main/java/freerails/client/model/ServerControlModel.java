@@ -27,9 +27,9 @@ import freerails.move.ChangeGameSpeedMove;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.NewGameMessageToServer;
 import freerails.savegames.FullSaveGameManager;
-import freerails.world.ITEM;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.game.GameSpeed;
+import freerails.model.ITEM;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.game.GameSpeed;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

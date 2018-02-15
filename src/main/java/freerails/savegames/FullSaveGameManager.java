@@ -21,20 +21,20 @@
  */
 package freerails.savegames;
 
-import freerails.server.gamemodel.CityTilePositioner;
-import freerails.server.gamemodel.ServerGameModel;
+import freerails.server.CityTilePositioner;
+import freerails.server.ServerGameModel;
 import freerails.util.Vector2D;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.world.SKEY;
-import freerails.world.terrain.*;
-import freerails.world.world.FullWorld;
-import freerails.world.ITEM;
-import freerails.world.world.World;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameRules;
-import freerails.world.game.GameSpeed;
-import freerails.world.game.GameTime;
-import freerails.world.train.WagonAndEngineTypesFactory;
+import freerails.model.SKEY;
+import freerails.model.terrain.*;
+import freerails.model.world.FullWorld;
+import freerails.model.ITEM;
+import freerails.model.world.World;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameRules;
+import freerails.model.game.GameSpeed;
+import freerails.model.game.GameTime;
+import freerails.model.train.WagonAndEngineTypesFactory;
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

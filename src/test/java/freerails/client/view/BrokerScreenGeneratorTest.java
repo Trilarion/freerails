@@ -21,20 +21,20 @@
  */
 package freerails.client.view;
 
-import freerails.world.finances.StockPriceCalculator;
-import freerails.world.finances.StockPrice;
+import freerails.model.finances.StockPriceCalculator;
+import freerails.model.finances.StockPrice;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.*;
-import freerails.world.finances.Money;
-import freerails.world.finances.StockItemTransaction;
-import freerails.world.game.GameCalendar;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.player.Player;
-import freerails.world.world.FullWorld;
-import freerails.world.world.World;
+import freerails.model.*;
+import freerails.model.finances.Money;
+import freerails.model.finances.StockItemTransaction;
+import freerails.model.game.GameCalendar;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
+import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import junit.framework.TestCase;
 
 /**

@@ -25,15 +25,15 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.KEY;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.SKEY;
-import freerails.world.cargo.CargoBatchBundle;
-import freerails.world.cargo.CargoType;
-import freerails.world.cargo.ImmutableCargoBatchBundle;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.station.Station;
-import freerails.world.train.WagonType;
+import freerails.model.KEY;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.SKEY;
+import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.CargoType;
+import freerails.model.cargo.ImmutableCargoBatchBundle;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.Station;
+import freerails.model.train.WagonType;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;

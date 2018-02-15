@@ -18,11 +18,11 @@
 
 package freerails.move;
 
-import freerails.world.ITEM;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
-import freerails.world.game.GameSpeed;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.ITEM;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
+import freerails.model.game.GameSpeed;
+import freerails.model.player.FreerailsPrincipal;
 
 /**
  * Changes the game speed item on the world object.

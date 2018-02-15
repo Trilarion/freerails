@@ -1,7 +1,6 @@
 package freerails.client.renderer;
 
-import freerails.client.renderer.RendererRoot;
-import freerails.world.cargo.CargoType;
+import freerails.model.cargo.CargoType;
 
 import javax.swing.*;
 import java.awt.*;

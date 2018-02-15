@@ -24,13 +24,13 @@ package freerails.controller;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.world.*;
-import freerails.world.finances.Money;
-import freerails.world.game.GameCalendar;
-import freerails.world.game.GameTime;
-import freerails.world.player.Player;
-import freerails.world.world.FullWorld;
-import freerails.world.world.World;
+import freerails.model.*;
+import freerails.model.finances.Money;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameTime;
+import freerails.model.player.Player;
+import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import junit.framework.TestCase;
 
 /**

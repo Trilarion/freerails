@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainCellRenderer;
 import freerails.controller.ModelRoot;
-import freerails.world.SKEY;
+import freerails.model.SKEY;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

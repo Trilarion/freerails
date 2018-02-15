@@ -23,9 +23,9 @@ package freerails.move.listmove;
 
 import freerails.move.Move;
 import freerails.util.ImmutableList;
-import freerails.world.KEY;
-import freerails.world.player.FreerailsPrincipal;
-import freerails.world.train.TrainModel;
+import freerails.model.KEY;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.train.TrainModel;
 
 import java.io.Serializable;
 

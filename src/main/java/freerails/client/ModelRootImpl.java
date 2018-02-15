@@ -31,10 +31,10 @@ import freerails.network.movereceiver.MoveReceiver;
 import freerails.network.movereceiver.UntriedMoveReceiver;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.WorldListListener;
-import freerails.world.WorldMapListener;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.WorldListListener;
+import freerails.model.WorldMapListener;
+import freerails.model.player.FreerailsPrincipal;
 
 import java.util.*;
 

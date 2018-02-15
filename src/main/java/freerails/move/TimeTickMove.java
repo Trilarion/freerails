@@ -18,10 +18,10 @@
 
 package freerails.move;
 
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.world.World;
-import freerails.world.game.GameTime;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.World;
+import freerails.model.game.GameTime;
+import freerails.model.player.FreerailsPrincipal;
 
 /**
  * Changes the time item on the world object.

@@ -19,11 +19,11 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
-import freerails.world.finances.IncomeStatementGenerator;
+import freerails.model.finances.IncomeStatementGenerator;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.ModelRoot;
-import freerails.world.world.ReadOnlyWorld;
-import freerails.world.player.FreerailsPrincipal;
+import freerails.model.world.ReadOnlyWorld;
+import freerails.model.player.FreerailsPrincipal;
 
 import javax.swing.*;
 import java.awt.*;
