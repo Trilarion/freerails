@@ -19,6 +19,8 @@
 package freerails.controller;
 
 import freerails.client.ClientConfig;
+import freerails.client.ModelRoot;
+import freerails.client.ModelRootProperty;
 import freerails.client.SoundManager;
 import freerails.controller.pathfinding.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
@@ -77,14 +79,14 @@ public class BuildTrackController implements GameModel {
         pathOnExistingTrackFinder = new PathOnTrackFinder(readOnlyWorld);
         this.modelRoot = modelRoot;
         principal = modelRoot.getPrincipal();
-        this.modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
+        this.modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, worldDiffs);
     }
 
     /**
      * Utility method that gets the BuildTrackStrategy from the model root.
      */
     private BuildTrackStrategy getBuildTrackStrategy() {
-        BuildTrackStrategy buildTrackStrategy = (BuildTrackStrategy) modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
+        BuildTrackStrategy buildTrackStrategy = (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
         return Utils.verifyNotNull(buildTrackStrategy);
     }
 
@@ -92,7 +94,7 @@ public class BuildTrackController implements GameModel {
      * Utility method that gets the cursor position from the model root.
      */
     private Vector2D getCursorPosition() {
-        Vector2D point = (Vector2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
+        Vector2D point = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
 
         // Check for null & make a defensive copy
         point = null == point ? new Vector2D() : point;
@@ -259,7 +261,7 @@ public class BuildTrackController implements GameModel {
      * Utility method that sets the CURSOR_MESSAGE property on the model root.
      */
     private void setCursorMessage(String s) {
-        modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, s);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, s);
     }
 
     /**
@@ -324,7 +326,7 @@ public class BuildTrackController implements GameModel {
      */
     private void setTargetPoint(Vector2D newTargetPoint) {
         targetPoint = newTargetPoint;
-        modelRoot.setProperty(ModelRoot.Property.THINKING_POINT, newTargetPoint);
+        modelRoot.setProperty(ModelRootProperty.THINKING_POINT, newTargetPoint);
     }
 
     private void setVisible(boolean show) {
@@ -332,9 +334,9 @@ public class BuildTrackController implements GameModel {
             return;
         }
         if (show) {
-            modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, worldDiffs);
+            modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, worldDiffs);
         } else {
-            modelRoot.setProperty(ModelRoot.Property.PROPOSED_TRACK, null);
+            modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, null);
         }
         visible = show;
     }
@@ -459,7 +461,7 @@ public class BuildTrackController implements GameModel {
 
     private BuildMode getBuildMode() {
         BuildMode mode;
-        mode = (BuildMode) modelRoot.getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
+        mode = (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
         return mode;
     }
 

@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;

@@ -49,22 +49,18 @@ public class TrainMaintenanceMoveGenerator {
         this.moveReceiver = moveReceiver;
     }
 
-    private static Move generateMove(World world, FreerailsPrincipal principal) {
-        WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, principal);
-        int numberOfTrains = trains.size();
-        long amount = numberOfTrains * 5000;
-        Transaction transaction = new MoneyTransaction(new Money(-amount), TransactionCategory.TRAIN_MAINTENANCE);
-
-        return new AddTransactionMove(principal, transaction);
-    }
-
     /**
      * @param world
      */
     public void update(World world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
-            Move move = generateMove(world, principal);
+            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, principal);
+            int numberOfTrains = trains.size();
+            long amount = numberOfTrains * 5000;
+            Transaction transaction = new MoneyTransaction(new Money(-amount), TransactionCategory.TRAIN_MAINTENANCE);
+
+            Move move = new AddTransactionMove(principal, transaction);
             moveReceiver.process(move);
         }
     }

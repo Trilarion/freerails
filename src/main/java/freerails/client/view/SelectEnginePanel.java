@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainCellRenderer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.world.SharedKey;
 
 import javax.swing.*;

@@ -19,9 +19,10 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
+import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.BuildMode;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 
 import java.awt.*;
@@ -53,7 +54,7 @@ public class FreerailsCursor {
      */
     public FreerailsCursor(ModelRoot modelRoot, RendererRoot rendererRoot) throws IOException {
         this.modelRoot = modelRoot;
-        this.modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, null);
+        this.modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, null);
         buildTrack = rendererRoot.getImage("cursor/buildtrack.png");
         upgradeTrack = rendererRoot.getImage("cursor/upgradetrack.png");
         removeTrack = rendererRoot.getImage("cursor/removetrack.png");
@@ -70,9 +71,9 @@ public class FreerailsCursor {
     public void paintCursor(Graphics g, Dimension tileSize) {
         Graphics2D g2 = (Graphics2D) g;
 
-        BuildMode buildMode = (BuildMode) modelRoot.getProperty(ModelRoot.Property.TRACK_BUILDER_MODE);
+        BuildMode buildMode = (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
 
-        Vector2D cursorMapPosition = (Vector2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
+        Vector2D cursorMapPosition = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
 
         // Has the cursor moved since we last painted it?
         if (!cursorMapPosition.equals(lastCursorPosition)) {
@@ -102,7 +103,7 @@ public class FreerailsCursor {
                 break;
         }
 
-        Boolean b = (Boolean) modelRoot.getProperty(ModelRoot.Property.IGNORE_KEY_EVENTS);
+        Boolean b = (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
         long time = System.currentTimeMillis() - timeArrived;
         boolean show = ((time / 500) % 2) == 0;
         if (show && !b) {
@@ -110,7 +111,7 @@ public class FreerailsCursor {
         }
 
         // Second, draw a message below the cursor if appropriate.
-        String message = (String) modelRoot.getProperty(ModelRoot.Property.CURSOR_MESSAGE);
+        String message = (String) modelRoot.getProperty(ModelRootProperty.CURSOR_MESSAGE);
 
         if (null != message && !message.isEmpty()) {
             int fontSize = 12;
@@ -127,7 +128,7 @@ public class FreerailsCursor {
         }
 
         // Draw a big white dot at the target point.
-        Vector2D targetPoint = (Vector2D) modelRoot.getProperty(ModelRoot.Property.THINKING_POINT);
+        Vector2D targetPoint = (Vector2D) modelRoot.getProperty(ModelRootProperty.THINKING_POINT);
         if (null != targetPoint) {
             time = System.currentTimeMillis();
             int dotSize;

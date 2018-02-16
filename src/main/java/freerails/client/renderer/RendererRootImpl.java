@@ -66,13 +66,10 @@ public class RendererRootImpl implements RendererRoot {
 
         // rr = new OldTrainImages(world, imageManager, pm);
         loadTrainImages(world, progressMonitorModel);
-        preloadSounds(progressMonitorModel);
-    }
 
-    private static void preloadSounds(ProgressMonitorModel pm) {
         // Pre-load sounds..
         String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK, ClientConfig.SOUND_CASH, ClientConfig.SOUND_REMOVE_TRACK, ClientConfig.SOUND_WHISTLE};
-        pm.nextStep(soundsFiles.length);
+        progressMonitorModel.nextStep(soundsFiles.length);
         SoundManager sm = SoundManager.getSoundManager();
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
@@ -82,7 +79,7 @@ public class RendererRootImpl implements RendererRoot {
             } catch (UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
-            pm.setValue(i + 1);
+            progressMonitorModel.setValue(i + 1);
         }
     }
 

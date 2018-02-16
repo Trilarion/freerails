@@ -23,7 +23,7 @@ import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.view.OverHeadTrainView;
 import freerails.controller.BuildTrackController;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldConstants;

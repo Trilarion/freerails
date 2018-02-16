@@ -18,9 +18,10 @@
 
 package freerails.client.renderer;
 
+import freerails.client.ModelRootProperty;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.Painter;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
@@ -79,8 +80,8 @@ public class StationNamesRenderer implements Painter {
         int positionX;
         int positionY;
 
-        Boolean showStationNames = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_STATION_NAMES);
-        Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_STATION_BORDERS);
+        Boolean showStationNames = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES);
+        Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_BORDERS);
 
         FontRenderContext frc = g.getFontRenderContext();
         TextLayout layout;

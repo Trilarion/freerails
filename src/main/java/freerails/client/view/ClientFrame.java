@@ -137,18 +137,12 @@ public class ClientFrame extends JFrame {
         guiComponentFactory.createDateJLabel();
     }
 
-    /**
-     * Exit the Application.
-     */
-    private static void exitForm(WindowEvent evt) {
-        System.exit(0);
-    }
-
 
     private static class MyWindowAdapter extends WindowAdapter {
         @Override
         public void windowClosing(WindowEvent e) {
-            exitForm(e);
+            // Exit the application
+            System.exit(0);
         }
     }
 }

@@ -37,22 +37,48 @@ public class MapCreator {
 
     private MapCreator() {}
 
+    // TODO This would be better implemented in a config file, or better still dynamically determined by scanning the directory.
+    public static String[] getAvailableMapNames() {
+        return new String[]{"South America", "Small South America"};
+    }
+
     /**
-     * converts an image file into a map.
+     * Note, the map name is converted to lower case and any spaces are replaced
+     * with underscores.
      *
-     * Implemented Terrain Randomisation to randomly position the terrain types for each tile on the map.
-     *
-     * @param map_url
-     * @param world
-     * @param pm
+     * @param filePath
+     * @return
+     * @throws IOException
      */
-    public static void setupMap(URL map_url, FullWorld world, ProgressMonitorModel pm) {
+    public static World newMap(String filePath) {
+        String mapName = filePath;
+
+        mapName = mapName.toLowerCase();
+        mapName = mapName.replace(' ', '_');
+
+        FullWorld world = new FullWorld();
+
+        WagonAndEngineTypesFactory.addTypesToWorld(world);
+
+        addTerrainTileTypesList(world);
+
+        URL track_xml_url = FullSaveGameManager.class.getResource("/freerails/data/track_tiles.xml");
+
+        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
+
+        trackSetFactory.addTrackRules(world);
+
+        // Load the terrain map
+        URL map_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + ".png");
+
+        // converts an image file into a map.
+        // Implemented Terrain Randomisation to randomly position the terrain types for each tile on the map.
         final List<Integer> countryTypes = new ArrayList();
         final List<Integer> non_countryTypes = new ArrayList();
 
 
         // Setup progress monitor..
-        pm.setValue(0);
+        ProgressMonitorModel.EMPTY.setValue(0);
 
         Image mapImage = (new ImageIcon(map_url)).getImage();
         Rectangle mapRect = new Rectangle(0, 0, mapImage.getWidth(null), mapImage.getHeight(null));
@@ -61,7 +87,7 @@ public class MapCreator {
         g.drawImage(mapImage, 0, 0, null);
         world.setupMap(new Vector2D(mapRect.width, mapRect.height));
 
-        pm.nextStep(mapRect.width);
+        ProgressMonitorModel.EMPTY.nextStep(mapRect.width);
 
         Map<Integer, Integer> rgb2TerrainType = new HashMap<>();
 
@@ -94,7 +120,7 @@ public class MapCreator {
         List<TerrainAtLocation> locations = new ArrayList();
 
         for (int x = 0; x < mapRect.width; x++) {
-            pm.setValue(x);
+            ProgressMonitorModel.EMPTY.setValue(x);
 
             for (int y = 0; y < mapRect.height; y++) {
                 int rgb = mapBufferedImage.getRGB(x, y);
@@ -137,42 +163,6 @@ public class MapCreator {
                 }
             }
         }
-    }
-
-    // TODO This would be better implemented in a config file, or better still dynamically determined by scanning the directory.
-    public static String[] getAvailableMapNames() {
-        return new String[]{"South America", "Small South America"};
-    }
-
-    /**
-     * Note, the map name is converted to lower case and any spaces are replaced
-     * with underscores.
-     *
-     * @param filePath
-     * @return
-     * @throws IOException
-     */
-    public static World newMap(String filePath) {
-        String mapName = filePath;
-
-        mapName = mapName.toLowerCase();
-        mapName = mapName.replace(' ', '_');
-
-        FullWorld world = new FullWorld();
-
-        WagonAndEngineTypesFactory.addTypesToWorld(world);
-
-        addTerrainTileTypesList(world);
-
-        URL track_xml_url = FullSaveGameManager.class.getResource("/freerails/data/track_tiles.xml");
-
-        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
-
-        trackSetFactory.addTrackRules(world);
-
-        // Load the terrain map
-        URL map_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + ".png");
-        setupMap(map_url, world, ProgressMonitorModel.EMPTY);
 
         // Load the city names
         URL cities_xml_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + "_cities.xml");

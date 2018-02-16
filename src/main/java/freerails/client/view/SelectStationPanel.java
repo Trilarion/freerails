@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.KeyCodeToOneTileMoveVector;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
@@ -135,10 +135,10 @@ public class SelectStationPanel extends JPanel implements View {
 
     private void formKeyPressed(KeyEvent evt) {
         try {
-            TileTransition v = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
+            TileTransition tileTransition = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
             // now find nearest station in direction of the vector.
             NearestStationFinder stationFinder = new NearestStationFinder(world, principal);
-            int station = stationFinder.findNearestStationInDirection(selectedStationID, v);
+            int station = stationFinder.findNearestStationInDirection(selectedStationID, tileTransition);
 
             if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
                 selectedStationID = station;

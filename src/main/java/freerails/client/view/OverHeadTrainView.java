@@ -23,8 +23,8 @@ import freerails.util.ui.Painter;
 import freerails.client.SoundManager;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRoot;
+import freerails.client.ModelRootProperty;
 import freerails.model.train.TrainAccessor;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
@@ -63,7 +63,7 @@ public class OverHeadTrainView implements Painter {
         g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke(10));
 
-        Double time = (Double) modelRoot.getProperty(Property.TIME);
+        Double time = (Double) modelRoot.getProperty(ModelRootProperty.TIME);
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();

@@ -21,6 +21,7 @@
  */
 package freerails.controller.pathfinding;
 
+import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;

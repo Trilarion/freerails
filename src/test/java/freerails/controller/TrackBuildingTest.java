@@ -18,6 +18,7 @@
 
 package freerails.controller;
 
+import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.controller.pathfinding.PathFinderStatus;
 import freerails.controller.pathfinding.PathNotFoundException;

@@ -25,8 +25,6 @@ import freerails.controller.BuildTrackController;
 import freerails.client.view.*;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
 import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
@@ -178,7 +176,7 @@ public class UserInputOnMapController extends KeyAdapter {
                     int y = cursorPosition.y * tileSize.height;
                     stationTypesPopup.showMenu(mapView, x, y, cursorPosition);
                 } else {
-                    modelRoot.setProperty(Property.QUICK_MESSAGE, "Can't" + " build station here!");
+                    modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Can't build station here!");
                 }
                 break;
             }
@@ -254,7 +252,7 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     private void cursorOneTileMove(Vector2D oldPosition, TileTransition vector) {
-        boolean b = (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+        boolean b = (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE);
 
         if (null != trackBuilder && b) {
             trackBuilder.setBuildTrackStrategy(getBts());
@@ -318,7 +316,7 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     private BuildTrackStrategy getBts() {
-        BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot.getProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY);
+        BuildTrackStrategy bts = (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
         return Utils.verifyNotNull(bts);
     }
 
@@ -337,27 +335,27 @@ public class UserInputOnMapController extends KeyAdapter {
     }
 
     private Vector2D getCursorPosition() {
-        Vector2D point = (Vector2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
+        Vector2D point = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
         // Check for null
         point = null == point ? new Vector2D() : point;
         return point;
     }
 
-    private void setCursorPosition(Vector2D p) {
+    private void setCursorPosition(Vector2D location) {
         // Make a defensive copy.
-        modelRoot.setProperty(Property.CURSOR_POSITION, p);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, location);
     }
 
-    private void setCursorMessage(String s) {
-        modelRoot.setProperty(Property.CURSOR_MESSAGE, s);
+    private void setCursorMessage(String message) {
+        modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, message);
     }
 
     private boolean isIgnoreKeyEvents() {
-        return (Boolean) modelRoot.getProperty(Property.IGNORE_KEY_EVENTS);
+        return (Boolean) modelRoot.getProperty(ModelRootProperty.IGNORE_KEY_EVENTS);
     }
 
     private void setIgnoreKeyEvents(boolean ignoreKeyEvents) {
-        modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, ignoreKeyEvents);
+        modelRoot.setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, ignoreKeyEvents);
     }
 
     private class CursorMouseAdapter extends MouseInputAdapter {
@@ -441,7 +439,7 @@ public class UserInputOnMapController extends KeyAdapter {
              */
             // TODO pull these next bits out into method
             boolean trackBuildingOn = (trackBuilderMode == BuildMode.BUILD_TRACK) || (trackBuilderMode == BuildMode.REMOVE_TRACK) || (trackBuilderMode == BuildMode.UPGRADE_TRACK);
-            trackBuildingOn = trackBuildingOn && (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE) == ModelRoot.Value.BUILD_TRACK_CURSOR_MODE);
+            trackBuildingOn = trackBuildingOn && (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE);
 
             if (SwingUtilities.isLeftMouseButton(e) && pressedInside && trackBuildingOn && !ignoreDragging) {
 

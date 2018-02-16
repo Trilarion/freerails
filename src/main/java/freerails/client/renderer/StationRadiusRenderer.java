@@ -19,9 +19,9 @@
 package freerails.client.renderer;
 
 import freerails.util.ui.Painter;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
-import freerails.controller.ModelRoot.Value;
+import freerails.client.ModelRoot;
+import freerails.client.ModelRootProperty;
+import freerails.client.ModelRootValue;
 import freerails.model.WorldConstants;
 
 import java.awt.*;
@@ -84,10 +84,10 @@ public class StationRadiusRenderer implements Painter {
      *
      */
     public void show() {
-        if (!modelRoot.is(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE)) {
-            modelRoot.setProperty(Property.PREVIOUS_CURSOR_MODE, modelRoot.getProperty(Property.CURSOR_MODE));
-            modelRoot.setProperty(Property.CURSOR_MODE, Value.PLACE_STATION_CURSOR_MODE);
-            modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.TRUE);
+        if (!modelRoot.getProperty(ModelRootProperty.CURSOR_MODE).equals(ModelRootValue.PLACE_STATION_CURSOR_MODE)) {
+            modelRoot.setProperty(ModelRootProperty.PREVIOUS_CURSOR_MODE, modelRoot.getProperty(ModelRootProperty.CURSOR_MODE));
+            modelRoot.setProperty(ModelRootProperty.CURSOR_MODE, ModelRootValue.PLACE_STATION_CURSOR_MODE);
+            modelRoot.setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.TRUE);
         }
     }
 
@@ -95,12 +95,12 @@ public class StationRadiusRenderer implements Painter {
      *
      */
     public void hide() {
-        ModelRoot.Value lastCursorMode = (ModelRoot.Value) modelRoot.getProperty(ModelRoot.Property.PREVIOUS_CURSOR_MODE);
+        ModelRootValue lastCursorMode = (ModelRootValue) modelRoot.getProperty(ModelRootProperty.PREVIOUS_CURSOR_MODE);
 
-        assert lastCursorMode != Value.PLACE_STATION_CURSOR_MODE;
+        assert lastCursorMode != ModelRootValue.PLACE_STATION_CURSOR_MODE;
 
-        modelRoot.setProperty(ModelRoot.Property.CURSOR_MODE, lastCursorMode);
-        modelRoot.setProperty(Property.IGNORE_KEY_EVENTS, Boolean.FALSE);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_MODE, lastCursorMode);
+        modelRoot.setProperty(ModelRootProperty.IGNORE_KEY_EVENTS, Boolean.FALSE);
     }
 
     /**
@@ -108,7 +108,7 @@ public class StationRadiusRenderer implements Painter {
      * @param newVisibleRectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
-        if (modelRoot.getProperty(ModelRoot.Property.CURSOR_MODE).equals(Value.PLACE_STATION_CURSOR_MODE)) {
+        if (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE).equals(ModelRootValue.PLACE_STATION_CURSOR_MODE)) {
             g.setStroke(new BasicStroke(2.0f));
             g.setColor(borderColor);
 

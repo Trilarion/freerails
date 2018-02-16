@@ -23,7 +23,7 @@ import freerails.util.ui.ActionAdapter;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
 import freerails.client.view.DialogueBoxController;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRootProperty;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.NewGameMessageToServer;
@@ -134,7 +134,7 @@ public class ServerControlModel implements ModelRootListener {
      * @param oldValue
      * @param newValue
      */
-    public void propertyChange(Property p, Object oldValue, Object newValue) {
+    public void propertyChange(ModelRootProperty p, Object oldValue, Object newValue) {
         // switch (p) {
         // case SAVED_GAMES_LIST:
         // updateLoadGameAction();

@@ -24,7 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.PlayerKey;

@@ -24,11 +24,10 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 /**
  * Displays confirmation of exiting, used when the exit menu item is
@@ -64,7 +63,7 @@ public class ConfirmExitPanel extends JPanel implements View {
 
         confirmExit.setText("Exit");
         confirmExit.setContentAreaFilled(false);
-        confirmExit.addActionListener(ConfirmExitPanel::confirmExitActionPerformed);
+        confirmExit.addActionListener(evt -> System.exit(0));
 
         jPanel2.add(confirmExit, new GridBagConstraints());
 
@@ -77,10 +76,6 @@ public class ConfirmExitPanel extends JPanel implements View {
         gridBagConstraints.ipadx = 15;
         gridBagConstraints.insets = new Insets(3, 0, 0, 0);
         add(jPanel2, gridBagConstraints);
-    }
-
-    private static void confirmExitActionPerformed(ActionEvent evt) {
-        System.exit(0);
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {

@@ -19,8 +19,6 @@
 package freerails.client;
 
 import freerails.client.view.ActionRoot;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
 import freerails.move.*;
 import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.network.movereceiver.MoveReceiver;
@@ -139,7 +137,7 @@ public class UserMessageGenerator implements MoveReceiver {
             }
             message.append("Revenue $");
             message.append(formatter.format(revenue.amount));
-            modelRoot.setProperty(Property.QUICK_MESSAGE, message.toString());
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, message.toString());
             // Play the sound of cash coming in. The greater the
             // revenue, the more loops of the sample we play.
             int loops = (int) revenue.amount / 4000;
@@ -156,18 +154,18 @@ public class UserMessageGenerator implements MoveReceiver {
         int gameSpeed = speed.getSpeed();
 
         if (gameSpeed <= 0) {
-            modelRoot.setProperty(Property.PERMANENT_MESSAGE, "Game is paused.");
+            modelRoot.setProperty(ModelRootProperty.PERMANENT_MESSAGE, "Game is paused.");
 
             /*
              * Also hide any other message. It looks silly if it says "Game is
              * paused." and "Game speed: fast" on screen at the same time!
              */
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "");
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "");
         } else {
-            modelRoot.setProperty(Property.PERMANENT_MESSAGE, null);
+            modelRoot.setProperty(ModelRootProperty.PERMANENT_MESSAGE, null);
 
             String gameSpeedDesc = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "Game speed: " + gameSpeedDesc);
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Game speed: " + gameSpeedDesc);
         }
     }
 }

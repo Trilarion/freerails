@@ -32,7 +32,18 @@ import java.util.List;
 public class TrackConfiguration implements TrackConfigurations {
 
     private static final long serialVersionUID = 3618695301330974512L;
-    private static final List<TrackConfiguration> flatTrackConfigurations = setupConfigurations();
+    private static final List<TrackConfiguration> flatTrackConfigurations;
+
+    static {
+        List<TrackConfiguration> configurations = new ArrayList<>(512);
+
+        for (int i = 0; i < 512; i++) {
+            configurations.add(i, new TrackConfiguration(i));
+        }
+
+        flatTrackConfigurations = configurations;
+    }
+
     private final int length;
     private final int configuration;
 
@@ -92,16 +103,6 @@ public class TrackConfiguration implements TrackConfigurations {
         int i = Integer.parseInt(templateString, 2);
 
         return flatTrackConfigurations.get(i);
-    }
-
-    private static List<TrackConfiguration> setupConfigurations() {
-        List<TrackConfiguration> configurations = new ArrayList<>(512);
-
-        for (int i = 0; i < 512; i++) {
-            configurations.add(i, new TrackConfiguration(i));
-        }
-
-        return configurations;
     }
 
     /**

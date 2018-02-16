@@ -73,7 +73,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         try {
             connectionToServer = new InetConnectionToServer(address, port);
         } catch (IOException e) {
-            return LogOnResponse.rejected(e.getMessage());
+            return new LogOnResponse(false, e.getMessage());
         }
 
         try {
@@ -87,7 +87,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            return LogOnResponse.rejected(e.getMessage());
+            return new LogOnResponse(false, e.getMessage());
         }
     }
 
@@ -108,7 +108,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            return LogOnResponse.rejected(e.getMessage());
+            return new LogOnResponse(false, e.getMessage());
         }
     }
 

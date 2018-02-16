@@ -24,9 +24,9 @@ package freerails.client.renderer.map;
 
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
+import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.FreerailsCursor;
-import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.WorldConstants;
 
@@ -229,7 +229,7 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
      * appropriate.
      */
     @Override
-    public void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue) {
+    public void propertyChange(ModelRootProperty p, Object oldValue, Object newValue) {
 
         switch (p) {
             case CURSOR_POSITION:

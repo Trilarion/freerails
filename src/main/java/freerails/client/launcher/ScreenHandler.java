@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -36,12 +38,12 @@ public class ScreenHandler {
 
     private static final GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     private static final Logger logger = Logger.getLogger(ScreenHandler.class.getName());
-    private static final java.awt.DisplayMode[] BEST_DISPLAY_MODES = new java.awt.DisplayMode[]{new java.awt.DisplayMode(640, 400, 8, 60), new java.awt.DisplayMode(800, 600, 16, 60), new java.awt.DisplayMode(1024, 768, 8, 60), new java.awt.DisplayMode(1024, 768, 16, 60),};
+    private static final DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{new DisplayMode(640, 400, 8, 60), new DisplayMode(800, 600, 16, 60), new DisplayMode(1024, 768, 8, 60), new DisplayMode(1024, 768, 16, 60),};
 
     public final JFrame frame;
     private final int mode;
     private BufferStrategy bufferStrategy;
-    private java.awt.DisplayMode displayMode;
+    private DisplayMode displayMode;
     private boolean isInUse = false;
     /**
      * Whether the window is minimised.
@@ -53,7 +55,7 @@ public class ScreenHandler {
      * @param mode
      * @param displayMode
      */
-    public ScreenHandler(JFrame f, int mode, java.awt.DisplayMode displayMode) {
+    public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
         this.displayMode = displayMode;
         frame = f;
         this.mode = mode;
@@ -68,34 +70,6 @@ public class ScreenHandler {
         this.mode = mode;
     }
 
-    private static void goFullScreen(JFrame frame, java.awt.DisplayMode displayMode) {
-
-        setRepaintOffAndDisableDoubleBuffering(frame);
-
-        /*
-         * We need to make the frame not displayable before calling
-         * setUndecorated(true) otherwise a
-         * java.awt.IllegalComponentStateException will get thrown.
-         */
-        if (frame.isDisplayable()) {
-            frame.dispose();
-        }
-
-        frame.setUndecorated(true);
-        device.setFullScreenWindow(frame);
-
-        if (device.isDisplayChangeSupported()) {
-            if (null == displayMode) {
-                displayMode = getBestDisplayMode();
-            }
-
-            logger.info("Setting display mode to:  " + (new DisplayModeWithName(displayMode).toString()));
-            device.setDisplayMode(displayMode);
-        }
-
-        frame.validate();
-    }
-
     private static void setRepaintOffAndDisableDoubleBuffering(Component c) {
         c.setIgnoreRepaint(true);
 
@@ -106,7 +80,7 @@ public class ScreenHandler {
             jComponent.setDoubleBuffered(false);
         }
 
-        if (c instanceof java.awt.Container) {
+        if (c instanceof Container) {
             Component[] children = ((Container) c).getComponents();
 
             for (Component aChildren : children) {
@@ -115,11 +89,11 @@ public class ScreenHandler {
         }
     }
 
-    private static java.awt.DisplayMode getBestDisplayMode() {
-        for (java.awt.DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
-            java.awt.DisplayMode[] modes = device.getDisplayModes();
+    private static DisplayMode getBestDisplayMode() {
+        for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
+            DisplayMode[] modes = device.getDisplayModes();
 
-            for (java.awt.DisplayMode mode1 : modes) {
+            for (DisplayMode mode1 : modes) {
                 if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth() && mode1.getHeight() == BEST_DISPLAY_MODE.getHeight() && mode1.getBitDepth() == BEST_DISPLAY_MODE.getBitDepth()) {
                     logger.debug("Best display mode is " + (new DisplayModeWithName(BEST_DISPLAY_MODE)).toString());
 
@@ -144,7 +118,32 @@ public class ScreenHandler {
     public synchronized void apply() {
         switch (mode) {
             case ClientConfig.FULL_SCREEN: {
-                goFullScreen(frame, displayMode);
+                DisplayMode displayMode1 = displayMode;
+
+                setRepaintOffAndDisableDoubleBuffering(frame);
+
+                /*
+                 * We need to make the frame not displayable before calling
+                 * setUndecorated(true) otherwise a
+                 * IllegalComponentStateException will get thrown.
+                 */
+                if (frame.isDisplayable()) {
+                    frame.dispose();
+                }
+
+                frame.setUndecorated(true);
+                device.setFullScreenWindow(frame);
+
+                if (device.isDisplayChangeSupported()) {
+                    if (null == displayMode1) {
+                        displayMode1 = getBestDisplayMode();
+                    }
+
+                    logger.info("Setting display mode to:  " + (new DisplayModeWithName(displayMode1).toString()));
+                    device.setDisplayMode(displayMode1);
+                }
+
+                frame.validate();
 
                 break;
             }
@@ -167,7 +166,7 @@ public class ScreenHandler {
                 /*
                  * We need to make the frame not displayable before calling
                  * setUndecorated(true) otherwise a
-                 * java.awt.IllegalComponentStateException will get thrown.
+                 * IllegalComponentStateException will get thrown.
                  */
                 if (frame.isDisplayable()) {
                     frame.dispose();
@@ -187,9 +186,9 @@ public class ScreenHandler {
 
         createBufferStrategy();
 
-        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
+        frame.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
+            public void componentResized(ComponentEvent e) {
                 createBufferStrategy();
             }
         });

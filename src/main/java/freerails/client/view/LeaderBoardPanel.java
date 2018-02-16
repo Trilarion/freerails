@@ -22,7 +22,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.finances.NetWorthCalculator;
 import freerails.model.*;
 import freerails.model.finances.Money;

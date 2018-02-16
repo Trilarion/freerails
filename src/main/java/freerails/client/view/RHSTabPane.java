@@ -18,11 +18,8 @@
 
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
-import freerails.client.ModelRootImpl;
-import freerails.client.ModelRootListener;
+import freerails.client.*;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.station.Station;
 import freerails.model.world.ReadOnlyWorld;
@@ -140,8 +137,8 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
      * Updates the Terrain Info Panel if the specified PropertyChangeEvent was
      * triggered by the cursor moving.
      */
-    public void propertyChange(ModelRoot.Property prop, Object before, Object after) {
-        if (prop == ModelRoot.Property.CURSOR_POSITION) {
+    public void propertyChange(ModelRootProperty prop, Object before, Object after) {
+        if (prop == ModelRootProperty.CURSOR_POSITION) {
 
             Vector2D location = (Vector2D) after;
 

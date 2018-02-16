@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.finances.FinancialDataGatherer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
 import freerails.move.AddTransactionMove;

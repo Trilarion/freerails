@@ -18,7 +18,8 @@
 
 package freerails.controller;
 
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRoot;
+import freerails.client.ModelRootProperty;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
@@ -261,7 +262,7 @@ public class TrackMoveProducer {
     }
 
     private BuildTrackStrategy getBuildTrackStrategy() {
-        return (BuildTrackStrategy) modelRoot.getProperty(Property.BUILD_TRACK_STRATEGY);
+        return (BuildTrackStrategy) modelRoot.getProperty(ModelRootProperty.BUILD_TRACK_STRATEGY);
     }
 
     /**
@@ -269,21 +270,21 @@ public class TrackMoveProducer {
      */
     public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
 
-        modelRoot.setProperty(Property.BUILD_TRACK_STRATEGY, buildTrackStrategy);
+        modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
     /**
      * @return
      */
     private BuildMode getBuildMode() {
-        return (BuildMode) modelRoot.getProperty(Property.TRACK_BUILDER_MODE);
+        return (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
     }
 
     /**
      * @param buildMode
      */
     private void setBuildMode(BuildMode buildMode) {
-        modelRoot.setProperty(Property.TRACK_BUILDER_MODE, buildMode);
+        modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, buildMode);
     }
 
 }

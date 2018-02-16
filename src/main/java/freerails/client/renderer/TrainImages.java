@@ -43,32 +43,15 @@ public class TrainImages {
      * @throws IOException
      */
     public TrainImages(ImageManager imageManager, String name) throws IOException {
-        sideOnFileName = TrainImages.generateSideOnFilename(name);
+        sideOnFileName = "trains" + File.separator + "sideon" + File.separator + name + ".png";
         sideOnImage = imageManager.getImage(sideOnFileName);
 
         for (int direction = 0; direction < 8; direction++) {
-            String overheadOnFileName = TrainImages.generateOverheadFilename(name, direction);
+            TileTransition[] vectors = TileTransition.getTransitions();
+
+            String overheadOnFileName = "trains" + File.separator + "overhead" + File.separator + name + '_' + vectors[direction].toAbrvString() + ".png";
             overheadImages[direction] = imageManager.getImage(overheadOnFileName);
         }
-    }
-
-    /**
-     * @param name
-     * @param i
-     * @return
-     */
-    private static String generateOverheadFilename(String name, int i) {
-        TileTransition[] vectors = TileTransition.getTransitions();
-
-        return "trains" + File.separator + "overhead" + File.separator + name + '_' + vectors[i].toAbrvString() + ".png";
-    }
-
-    /**
-     * @param name
-     * @return
-     */
-    private static String generateSideOnFilename(String name) {
-        return "trains" + File.separator + "sideon" + File.separator + name + ".png";
     }
 
     /**

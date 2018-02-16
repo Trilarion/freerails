@@ -24,8 +24,8 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRoot;
+import freerails.client.ModelRootProperty;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.SaveGameMessageToServer;
 
@@ -65,7 +65,10 @@ public class SaveGamePanel extends JPanel implements View {
         add(label1, gridBagConstraints);
 
         fileNameTextField.setText("savegame");
-        fileNameTextField.addActionListener(SaveGamePanel::fileNameTextFieldActionPerformed);
+        fileNameTextField.addActionListener(evt -> {
+            // TODO add your handling code here:
+            System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
+        });
 
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -95,17 +98,12 @@ public class SaveGamePanel extends JPanel implements View {
         add(cancelButton, gridBagConstraints);
     }
 
-    private static void fileNameTextFieldActionPerformed(ActionEvent evt) {
-        // TODO add your handling code here:
-        System.out.println("fileNameTextFieldActionPerformed" + evt.toString());
-    }
-
 
     private void oKButtonActionPerformed(ActionEvent evt) {
 
         String filename = fileNameTextField.getText();
         // Save the current game using the string
-        modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game " + filename);
+        modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Saved game " + filename);
         MessageToServer message2 = new SaveGameMessageToServer(1, filename + ".sav");
 
         modelRoot.sendCommand(message2);

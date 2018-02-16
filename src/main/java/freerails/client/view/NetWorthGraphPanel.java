@@ -24,7 +24,7 @@ package freerails.client.view;
 import freerails.client.model.PlayerColors;
 import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.finances.NetWorthCalculator;
 import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;

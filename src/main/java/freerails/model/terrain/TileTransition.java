@@ -134,6 +134,8 @@ public class TileTransition implements TrackConfigurations {
     }
 
     /**
+     * Returns true if the values passed could be used to create a valid vector.
+     *
      * @param a
      * @param b
      * @return
@@ -141,7 +143,7 @@ public class TileTransition implements TrackConfigurations {
     public static boolean checkValidity(Vector2D a, Vector2D b) {
         int dx = b.x - a.x;
         int dy = b.y - a.y;
-        return checkValidity(dx, dy);
+        return (((dx >= -1) && (dx <= 1)) && ((dy >= -1) && (dy <= 1))) && ((dx != 0) || (dy != 0));
     }
 
     /**
@@ -152,13 +154,6 @@ public class TileTransition implements TrackConfigurations {
             throw new IllegalArgumentException(d.x + " and " + d.y + ": The values passed both must be integers in the range -1 to 1, and not both equal 0.");
         }
         return vectors[d.x + 1][d.y + 1];
-    }
-
-    /**
-     * Returns true if the values passed could be used to create a valid vector.
-     */
-    private static boolean checkValidity(int x, int y) {
-        return (((x >= -1) && (x <= 1)) && ((y >= -1) && (y <= 1))) && ((x != 0) || (y != 0));
     }
 
     /**

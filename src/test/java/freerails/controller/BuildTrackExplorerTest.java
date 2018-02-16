@@ -45,7 +45,7 @@ import junit.framework.TestCase;
  */
 public class BuildTrackExplorerTest extends TestCase {
 
-    private final Player testPlayer = new Player("test", 0);
+    private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
     private FullWorld world;
     private FreerailsPrincipal principal;
 
@@ -145,10 +145,10 @@ public class BuildTrackExplorerTest extends TestCase {
         int x = 10;
 
         for (int i = 0; i < 4; i++) {
-            TileTransition v = TileTransition.SOUTH_EAST;
-            buildTrack(x, y, v);
-            x += v.deltaX;
-            y += v.deltaY;
+            TileTransition tileTransition = TileTransition.SOUTH_EAST;
+            buildTrack(x, y, tileTransition);
+            x += tileTransition.deltaX;
+            y += tileTransition.deltaY;
         }
 
         // If we enter 10, 10 from the south, we should be able to build track S

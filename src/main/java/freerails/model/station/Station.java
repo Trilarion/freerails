@@ -40,7 +40,7 @@ public class Station implements Serializable {
     private final String name;
     private final StationSupply supply;
     private final StationDemand demandForCargo;
-    private final StationConversion cargoConversion;
+    private final StationCargoConversion cargoConversion;
     // TODO what is the cargo bundle number and what is it good for?
     private final int cargoBundleNumber;
     /**
@@ -54,14 +54,14 @@ public class Station implements Serializable {
     /**
      * Makes a copy of the station
      */
-    public Station(Station s, StationConversion cargoConversion) {
+    public Station(Station station, StationCargoConversion cargoConversion) {
         this.cargoConversion = cargoConversion;
-        cargoBundleNumber = s.cargoBundleNumber;
-        demandForCargo = s.demandForCargo;
-        name = s.name;
-        production = s.production;
-        supply = s.supply;
-        location = s.location;
+        cargoBundleNumber = station.cargoBundleNumber;
+        demandForCargo = station.demandForCargo;
+        name = station.name;
+        production = station.production;
+        supply = station.supply;
+        location = station.location;
     }
 
     /**
@@ -81,7 +81,7 @@ public class Station implements Serializable {
         supply = new StationSupply(a);
         production = new ImmutableList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
-        cargoConversion = StationConversion.emptyInstance(numberOfCargoTypes);
+        cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
     }
 
     // TODO are these meaningful values
@@ -93,7 +93,7 @@ public class Station implements Serializable {
         location = Vector2D.ZERO;
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new Integer[0]);
-        cargoConversion = new StationConversion(new Integer[0]);
+        cargoConversion = new StationCargoConversion(new Integer[0]);
         production = new ImmutableList<>();
         cargoBundleNumber = 0;
     }
@@ -147,8 +147,8 @@ public class Station implements Serializable {
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(ReadOnlyWorld world, FreerailsPrincipal principal, Vector2D p) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
+    public static int getStationNumberAtLocation(ReadOnlyWorld world, FreerailsPrincipal principal, Vector2D location) {
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
         if (trackRule.isStation() && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
@@ -156,7 +156,7 @@ public class Station implements Serializable {
             for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
                 Station station = (Station) world.get(principal, PlayerKey.Stations, i);
 
-                if (null != station && p.equals(station.location)) {
+                if (null != station && location.equals(station.location)) {
                     return i;
                 }
             }
@@ -197,7 +197,7 @@ public class Station implements Serializable {
     /**
      * @return
      */
-    public StationConversion getCargoConversion() {
+    public StationCargoConversion getCargoConversion() {
         return cargoConversion;
     }
 

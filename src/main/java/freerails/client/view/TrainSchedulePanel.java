@@ -20,7 +20,7 @@ package freerails.client.view;
 
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.move.listmove.ChangeTrainScheduleMove;

@@ -25,7 +25,7 @@ import java.io.Serializable;
 /**
  * Records which cargo is converted to other cargo at a station.
  */
-public class StationConversion implements Serializable {
+public class StationCargoConversion implements Serializable {
 
     private static final long serialVersionUID = 3690754012076978231L;
     // TODO what about Null as standard value
@@ -37,7 +37,7 @@ public class StationConversion implements Serializable {
     /**
      * @param convertedTo
      */
-    public StationConversion(Integer[] convertedTo) {
+    public StationCargoConversion(Integer[] convertedTo) {
         this.convertedTo = new ImmutableList<>(convertedTo);
     }
 
@@ -46,8 +46,8 @@ public class StationConversion implements Serializable {
      * @param numberOfCargoTypes
      * @return
      */
-    public static StationConversion emptyInstance(int numberOfCargoTypes) {
-        return new StationConversion(emptyConversionArray(numberOfCargoTypes));
+    public static StationCargoConversion emptyInstance(int numberOfCargoTypes) {
+        return new StationCargoConversion(emptyConversionArray(numberOfCargoTypes));
     }
 
     // TODO eliminate this
@@ -94,8 +94,8 @@ public class StationConversion implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof StationConversion) {
-            StationConversion test = (StationConversion) obj;
+        if (obj instanceof StationCargoConversion) {
+            StationCargoConversion test = (StationCargoConversion) obj;
             return convertedTo.equals(test.convertedTo);
         }
         return false;

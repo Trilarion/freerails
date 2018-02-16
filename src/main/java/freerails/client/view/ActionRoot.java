@@ -96,7 +96,6 @@ public class ActionRoot {
      */
     public void setup(ModelRootImpl modelRoot, RendererRoot vl) {
         serverControls.setup(modelRoot, dialogueBoxController);
-        if (!modelRoot.hasBeenSetup) throw new IllegalStateException();
 
         ReadOnlyWorld world = modelRoot.getWorld();
 

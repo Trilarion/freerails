@@ -21,9 +21,10 @@
  */
 package freerails.client.model;
 
+import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.track.TrackPieceRenderer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.controller.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
@@ -217,7 +218,7 @@ public class StationBuildModel {
                 message = moveStatus.getMessage();
             }
 
-            modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, message);
+            modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, message);
         }
     }
 }

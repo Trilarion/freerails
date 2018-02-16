@@ -18,10 +18,11 @@
 
 package freerails.model.player;
 
+import freerails.util.Utils;
+
 import java.io.Serializable;
 import java.security.Principal;
 
-// TODO What is the Java class Principal good for and why do we need it in Freerails?
 /**
  * This interface identifies a principal. This interface may be extended in the
  * future in order to provide faster lookups, rather than using name
@@ -33,17 +34,19 @@ import java.security.Principal;
  * All entities which may own game world objects must be represented by a
  * principal.
  */
-public abstract class FreerailsPrincipal implements Principal, Serializable {
+public class FreerailsPrincipal implements Serializable {
 
     private static final long serialVersionUID = 4673561105333981501L;
-    // TODO what is the meaning of the world index? (positin in player list and the other lists)
-    private final int worldIndex;
+    // TODO what is the meaning of the world index/id? (position in player list and the other lists)
+    private final int id;
+    private final String name;
 
     /**
-     * @param worldIndex
+     * @param id
      */
-    FreerailsPrincipal(int worldIndex) {
-        this.worldIndex = worldIndex;
+    FreerailsPrincipal(int id, String name) {
+        this.id = id;
+        this.name = Utils.verifyNotNull(name);
     }
 
     /**
@@ -52,7 +55,33 @@ public abstract class FreerailsPrincipal implements Principal, Serializable {
      * @return the index in the world structures
      */
     public int getWorldIndex() {
-        return worldIndex;
+        return id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Principal " + id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof FreerailsPrincipal)) return false;
+
+        final FreerailsPrincipal other = (FreerailsPrincipal) obj;
+
+        if (!(id == other.id)) return false;
+        return name.equals(other.name);
     }
 
 }

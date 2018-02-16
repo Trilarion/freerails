@@ -24,7 +24,7 @@ import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.WorldConstants;
 import freerails.model.station.Station;
-import freerails.model.station.StationConversion;
+import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
 import freerails.model.station.StationSupply;
 import freerails.model.terrain.*;
@@ -56,9 +56,9 @@ public class CalcCargoSupplyRateAtStation {
      *
      * @param trackRuleNo the station type.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D p, int trackRuleNo) {
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location, int trackRuleNo) {
         this.world = world;
-        this.p = p;
+        this.p = location;
 
         TrackRule trackRule = (TrackRule) this.world.get(SharedKey.TrackRules, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
@@ -68,26 +68,27 @@ public class CalcCargoSupplyRateAtStation {
 
         int numCargoTypes = this.world.size(SharedKey.CargoTypes);
         demand = new int[numCargoTypes];
-        converts = StationConversion.emptyConversionArray(numCargoTypes);
+        converts = StationCargoConversion.emptyConversionArray(numCargoTypes);
     }
 
     /**
      * Call this constructor if the station already exists.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D p) {
-        this(world, p, findTrackRule(p, world));
+    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location) {
+        this(world, location, findTrackRule(location, world));
     }
 
-    private static int findTrackRule(Vector2D p, ReadOnlyWorld world) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
+    // TODO inline this but be careful because this and super must be on the first line
+    private static int findTrackRule(Vector2D location, ReadOnlyWorld world) {
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
         return tile.getTrackPiece().getTrackTypeID();
     }
 
     /**
      * @return
      */
-    private StationConversion getConversion() {
-        return new StationConversion(converts);
+    private StationCargoConversion getConversion() {
+        return new StationCargoConversion(converts);
     }
 
     /**

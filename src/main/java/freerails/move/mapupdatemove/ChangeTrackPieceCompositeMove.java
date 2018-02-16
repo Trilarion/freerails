@@ -163,13 +163,13 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     /**
-     * @param p
+     * @param principal
      * @param world
      * @return
      */
-    public static int getOwner(FreerailsPrincipal p, ReadOnlyWorld world) {
+    public static int getOwner(FreerailsPrincipal principal, ReadOnlyWorld world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (world.getPlayer(i).getPrincipal().equals(p)) {
+            if (world.getPlayer(i).getPrincipal().equals(principal)) {
                 return i;
             }
         }
@@ -185,12 +185,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         aggregator.setCategory(TransactionCategory.TRACK);
 
         return aggregator.calculateQuantity() > 0;
-    }
-
-    private static boolean mustConnectToExistingTrack(ReadOnlyWorld world) {
-        GameRules rules = (GameRules) world.get(WorldItem.GameRules);
-
-        return rules.isMustConnectToExistingTrack();
     }
 
     /**
@@ -217,7 +211,10 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
     @Override
     public MoveStatus compositeTest(World w) {
-        if (mustConnectToExistingTrack(w)) {
+        // must connect to existing track
+        GameRules rules = (GameRules) w.get(WorldItem.GameRules);
+
+        if (rules.isMustConnectToExistingTrack()) {
             if (hasAnyTrackBeenBuilt(w, builder)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);

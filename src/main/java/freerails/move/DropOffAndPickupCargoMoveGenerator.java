@@ -29,7 +29,7 @@ import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.MutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.station.StationConversion;
+import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
 import freerails.model.train.*;
 import freerails.model.train.schedule.Schedule;
@@ -226,7 +226,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 cargoDroppedOff.addCargo(cb, amount);
 
                 // Now perform any conversions..
-                StationConversion converted = station.getCargoConversion();
+                StationCargoConversion converted = station.getCargoConversion();
 
                 if (converted.convertsCargo(cargoType)) {
                     int newCargoType = converted.getConversion(cargoType);

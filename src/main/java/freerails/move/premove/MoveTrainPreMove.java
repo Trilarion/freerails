@@ -128,16 +128,6 @@ public class MoveTrainPreMove implements PreMove {
     public static void clearCache() {
         pathCache.clear();
         cacheCleared++;
-        // System.out.println("CH:"+cacheHit+" CM:"+cacheMiss+"
-        // CC:"+cacheCleared);
-    }
-
-    private static double acceleration(int wagons) {
-        return 0.5d / (wagons + 1);
-    }
-
-    private static double topSpeed(int wagons) {
-        return 10 / (wagons + 1);
     }
 
     /**
@@ -336,8 +326,8 @@ public class MoveTrainPreMove implements PreMove {
         double s = tileTransition.getLength();
 
         int wagons = ta.getTrain().getNumberOfWagons();
-        double a0 = acceleration(wagons);
-        double topSpeed = topSpeed(wagons);
+        double a0 = 0.5d / (wagons + 1);
+        double topSpeed = (double) (10 / (wagons + 1));
 
         Motion newSpeeds;
         if (u < topSpeed) {

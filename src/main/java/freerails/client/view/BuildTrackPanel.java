@@ -24,12 +24,13 @@
 package freerails.client.view;
 
 import freerails.client.ClientConfig;
+import freerails.client.ModelRootProperty;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
 import freerails.client.model.StationBuildModel;
 import freerails.controller.BuildMode;
 import freerails.controller.BuildTrackStrategy;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
@@ -462,7 +463,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         ruleIDs.add(selectionSet.get(TrackCategories.bridge));
         ruleIDs.add(selectionSet.get(TrackCategories.tunnel));
         BuildTrackStrategy bts = BuildTrackStrategy.getMultipleRuleInstance(ruleIDs, modelRoot.getWorld());
-        modelRoot.setProperty(ModelRoot.Property.BUILD_TRACK_STRATEGY, bts);
+        modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, bts);
     }
 
     private void cancelStationPlacement() {
@@ -472,7 +473,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
     private void setTrackBuilderMode(BuildMode mode) {
         trackMoveProducer.setTrackBuilderMode(mode);
-        modelRoot.setProperty(ModelRoot.Property.TRACK_BUILDER_MODE, mode);
+        modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
     }
 
 

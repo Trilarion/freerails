@@ -30,26 +30,18 @@ public class LogOnResponse implements Serializable {
     private final int playerNumber;
     private final String message;
 
-    private LogOnResponse(boolean success, int i, String s) {
+    public LogOnResponse(boolean success, int i) {
+        assert(success);
         successful = success;
         playerNumber = i;
+        message = null;
+    }
+
+    public LogOnResponse(boolean success, String s) {
+        assert(!success);
+        successful = success;
+        playerNumber = -1;
         message = s;
-    }
-
-    /**
-     * @param playerNumber
-     * @return
-     */
-    public static LogOnResponse accepted(int playerNumber) {
-        return new LogOnResponse(true, playerNumber, null);
-    }
-
-    /**
-     * @param reason
-     * @return
-     */
-    public static LogOnResponse rejected(String reason) {
-        return new LogOnResponse(false, -1, reason);
     }
 
     @Override

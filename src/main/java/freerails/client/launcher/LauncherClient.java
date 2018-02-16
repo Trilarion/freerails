@@ -27,8 +27,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.client.view.ActionRoot;
 import freerails.controller.ClientProperty;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRootProperty;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
@@ -95,7 +94,7 @@ public class LauncherClient extends FreerailsClient {
                 subTicks = Math.min(dt, 1.0d);
                 ticks += subTicks;
             }
-            modelRoot.setProperty(Property.TIME, ticks);
+            modelRoot.setProperty(ModelRootProperty.TIME, ticks);
         }
     }
 
@@ -107,26 +106,26 @@ public class LauncherClient extends FreerailsClient {
     }
 
     @Override
-    protected void newWorld(World w) {
+    protected void newWorld(World world) {
         try {
-            if (null == rendererRoot || !rendererRoot.validate(w)) {
-                    rendererRoot = new RendererRootImpl(w, monitor);
+            if (null == rendererRoot || !rendererRoot.validate(world)) {
+                    rendererRoot = new RendererRootImpl(world, monitor);
                     monitor.finished();
             }
 
             // Should be a smarter way of doing this..
-            for (int player = 0; player < w.getNumberOfPlayers(); player++) {
-                Player p = w.getPlayer(player);
+            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+                Player player = world.getPlayer(i);
 
-                if (p.getName().equals(name)) {
-                    modelRoot.setup(w, p.getPrincipal());
+                if (player.getName().equals(name)) {
+                    modelRoot.setup(world, player.getPrincipal());
                 }
             }
 
-            modelRoot.setProperty(ModelRoot.Property.SERVER, connectionToServer.getServerDetails());
+            modelRoot.setProperty(ModelRootProperty.SERVER, connectionToServer.getServerDetails());
             actionRoot.setup(modelRoot, rendererRoot);
 
-            factory.setup(rendererRoot, w);
+            factory.setup(rendererRoot, world);
         } catch (Exception e) {
             LauncherFrame.emergencyStop();
         }
@@ -137,7 +136,7 @@ public class LauncherClient extends FreerailsClient {
         super.setProperty(propertyName, value);
         switch (propertyName) {
             case SAVED_GAMES:
-                modelRoot.setProperty(Property.SAVED_GAMES_LIST, value);
+                modelRoot.setProperty(ModelRootProperty.SAVED_GAMES_LIST, value);
                 break;
 
             default:

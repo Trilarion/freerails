@@ -3,7 +3,7 @@ package freerails.client.view;
 import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 
 import javax.swing.*;
 import java.awt.*;

@@ -41,33 +41,29 @@ public class BondInterestMoveGenerator {
         this.moveReceiver = moveReceiver;
     }
 
-    private static Move generateMove(ReadOnlyWorld world, FreerailsPrincipal principal) {
-        long interestDue = 0;
-
-        for (int i = 0; i < world.getNumberOfTransactions(principal); i++) {
-            Transaction transaction = world.getTransaction(principal, i);
-
-            if (transaction instanceof BondItemTransaction) {
-                BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
-                int interestRate = bondItemTransaction.getType();
-                // TODO Money arithmetics
-                long bondAmount = WorldConstants.BOND_VALUE_ISSUE.amount;
-                interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
-            }
-        }
-
-        Transaction transaction = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
-
-        return new AddTransactionMove(principal, transaction);
-    }
-
     /**
      * @param world
      */
     public void update(ReadOnlyWorld world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
-            Move move = generateMove(world, principal);
+            long interestDue = 0;
+
+            for (int i1 = 0; i1 < world.getNumberOfTransactions(principal); i1++) {
+                Transaction transaction = world.getTransaction(principal, i1);
+
+                if (transaction instanceof BondItemTransaction) {
+                    BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
+                    int interestRate = bondItemTransaction.getType();
+                    // TODO Money arithmetics
+                    long bondAmount = WorldConstants.BOND_VALUE_ISSUE.amount;
+                    interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
+                }
+            }
+
+            Transaction transaction = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
+
+            Move move = new AddTransactionMove(principal, transaction);
             moveReceiver.process(move);
         }
     }

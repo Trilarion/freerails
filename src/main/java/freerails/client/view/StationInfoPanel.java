@@ -23,8 +23,9 @@
 
 package freerails.client.view;
 
+import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.util.Vector2D;
@@ -161,7 +162,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         // Add your handling code here:
         if (worldIterator.previous()) {
             Vector2D p = ((Station) worldIterator.getElement()).getStationP();
-            modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
+            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
 
             display();
         } else {
@@ -174,7 +175,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         // Add your handling code here:
         if (worldIterator.next()) {
             Vector2D p = ((Station) worldIterator.getElement()).getStationP();
-            modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, p);
+            modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
             display();
         } else {
             throw new IllegalStateException();

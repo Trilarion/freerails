@@ -19,19 +19,31 @@
 /*
  *
  */
-package freerails.client.view;
+package freerails.client;
 
-import freerails.client.ModelRoot;
+import freerails.controller.MoveExecutor;
+import freerails.network.message.MessageToServer;
 
 /**
- * Defines a standard method to initiate GUI components that need access to the
- * ModelRoot <b> and </b> the ActionRoot.
+ * Defines methods and constants that GUI classes can use to access shared data.
  */
-interface ActiveView {
+public interface ModelRoot extends MoveExecutor {
 
     /**
-     * @param modelRoot
-     * @param actionRoot
+     * @param message
      */
-    void setup(ModelRoot modelRoot, ActionRoot actionRoot);
+    void sendCommand(MessageToServer message);
+
+    /**
+     * @param property
+     * @param value
+     */
+    void setProperty(ModelRootProperty property, Object value);
+
+    /**
+     * @param property
+     * @return
+     */
+    Object getProperty(ModelRootProperty property);
+
 }

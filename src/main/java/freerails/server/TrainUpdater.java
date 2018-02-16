@@ -60,21 +60,6 @@ public class TrainUpdater implements Serializable {
         this.moveReceiver = Utils.verifyNotNull(moveReceiver);
     }
 
-    private static ImmutableSchedule generateInitialSchedule(FreerailsPrincipal principal, ReadOnlyWorld world, boolean autoSchedule) {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
-        MutableSchedule s = new MutableSchedule();
-
-        // Add up to 4 stations to the schedule.
-        while (wi.next() && s.getNumOrders() < 5) {
-            TrainOrders orders = new TrainOrders(wi.getIndex(), null, false, autoSchedule);
-            s.addOrder(orders);
-        }
-
-        s.setOrderToGoto(0);
-
-        return s.toImmutableSchedule();
-    }
-
     /**
      * @param engineTypeId
      * @param wagons
@@ -87,7 +72,20 @@ public class TrainUpdater implements Serializable {
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
 
-        ImmutableSchedule is = generateInitialSchedule(principal, world, autoSchedule);
+        // generate initial schedule
+
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        MutableSchedule s = new MutableSchedule();
+
+        // Add up to 4 stations to the schedule.
+        while (wi.next() && s.getNumOrders() < 5) {
+            TrainOrders orders = new TrainOrders(wi.getIndex(), null, false, autoSchedule);
+            s.addOrder(orders);
+        }
+
+        s.setOrderToGoto(0);
+
+        ImmutableSchedule is = s.toImmutableSchedule();
 
         PreMove addTrain = new AddTrainPreMove(engineTypeId, wagons, p, principal, is);
 

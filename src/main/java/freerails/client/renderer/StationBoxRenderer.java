@@ -19,10 +19,11 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConfig;
+import freerails.client.ModelRootProperty;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.Painter;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.*;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.CargoCategory;
@@ -80,7 +81,7 @@ public class StationBoxRenderer implements Painter {
      * @param newVisibleRectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
-        Boolean showCargoWaiting = (Boolean) modelRoot.getProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS);
+        Boolean showCargoWaiting = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_CARGO_AT_STATIONS);
 
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.

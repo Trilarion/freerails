@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -136,7 +136,7 @@ class BrokerFrame extends JInternalFrame {
     /**
      * Load the help text from file.
      */
-    static String loadText(final URL htmlUrl) {
+    public static String loadText(final URL htmlUrl) {
         try {
             InputStream in = htmlUrl.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(in)));
@@ -157,7 +157,7 @@ class BrokerFrame extends JInternalFrame {
      * @param context
      * @return
      */
-    static String populateTokens(String template, Object context) {
+    public static String populateTokens(String template, Object context) {
         StringTokenizer tokenizer = new StringTokenizer(template, "$");
         StringBuilder output = new StringBuilder();
 

@@ -18,7 +18,6 @@
 
 package freerails.client;
 
-import freerails.controller.ModelRoot;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.*;
@@ -145,8 +144,8 @@ public class SoundManager implements ModelRootListener, LineListener {
      * @param oldValue
      * @param newValue
      */
-    public void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue) {
-        if (p == ModelRoot.Property.PLAY_SOUNDS) {
+    public void propertyChange(ModelRootProperty p, Object oldValue, Object newValue) {
+        if (p == ModelRootProperty.PLAY_SOUNDS) {
             playSounds = (Boolean) newValue;
         }
     }

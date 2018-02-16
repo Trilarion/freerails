@@ -41,7 +41,7 @@ import java.util.HashSet;
  */
 public class FlatTrackExplorerTest extends TestCase {
 
-    private final Player testPlayer = new Player("test", 0);
+    private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
     private FullWorld world;
 
     /**

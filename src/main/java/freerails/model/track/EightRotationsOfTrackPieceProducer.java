@@ -47,65 +47,54 @@ class EightRotationsOfTrackPieceProducer {
         for (int i = 0; i < 8; i++) {
             derivedTrackPieces[i] = trackTemplate;
 
-            boolean[][] trackTemplateBooleanArray = getTrackBooleanArray(trackTemplate);
-            trackTemplateBooleanArray = rotateTrackNodeClockwise(trackTemplateBooleanArray);
-            trackTemplate = getTrackGraphicID(trackTemplateBooleanArray);
+            boolean[][] trackBooleanArray = new boolean[3][3];
+
+            for (int y = 0; y < 3; y++) {
+                for (int x = 0; x < 3; x++) {
+                    if (((trackTemplate >> (3 * y + x)) & 1) == 1) {
+                        trackBooleanArray[x][y] = true;
+                    }
+                }
+            }
+
+            boolean[][] trackTemplateBooleanArray = trackBooleanArray;
+            // rotate track node clockwise
+            Point[][] grabValueFrom = new Point[3][];
+            grabValueFrom[0] = new Point[]{new Point(0, 1), new Point(0, 0), new Point(1, 0)};
+            grabValueFrom[1] = new Point[]{new Point(0, 2), new Point(1, 1), new Point(2, 0)};
+            grabValueFrom[2] = new Point[]{new Point(1, 2), new Point(2, 2), new Point(2, 1)};
+
+            /*
+             * I think there is a neater way of doing this, let me know if you know it! Luke
+             */
+            boolean[][] output = new boolean[3][3];
+
+            for (int y1 = 0; y1 < 3; y1++) {
+                for (int x1 = 0; x1 < 3; x1++) {
+                    Point point = grabValueFrom[y1][x1];
+
+                    /*
+                     * y,x because of the way I defined grabValueFrom[][] above.
+                     */
+                    output[x1][y1] = trackTemplateBooleanArray[point.x][point.y];
+                }
+            }
+
+            trackTemplateBooleanArray = output;
+            int trackGraphicNumber = 0;
+
+            for (int y = 0; y < 3; y++) {
+                for (int x = 0; x < 3; x++) {
+                    if (trackTemplateBooleanArray[x][y]) {
+                        trackGraphicNumber = trackGraphicNumber | (1 << (3 * y + x));
+                    }
+                }
+            }
+
+            trackTemplate = trackGraphicNumber;
         }
 
         return derivedTrackPieces;
     }
 
-    private static boolean[][] getTrackBooleanArray(int trackGraphicInt) {
-        boolean[][] trackBooleanArray = new boolean[3][3];
-
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 3; x++) {
-                if (((trackGraphicInt >> (3 * y + x)) & 1) == 1) {
-                    trackBooleanArray[x][y] = true;
-                }
-            }
-        }
-
-        return trackBooleanArray;
-    }
-
-    private static int getTrackGraphicID(boolean[][] railsList) {
-        int trackGraphicNumber = 0;
-
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 3; x++) {
-                if (railsList[x][y]) {
-                    trackGraphicNumber = trackGraphicNumber | (1 << (3 * y + x));
-                }
-            }
-        }
-
-        return trackGraphicNumber;
-    }
-
-    private static boolean[][] rotateTrackNodeClockwise(boolean[][] source) {
-        Point[][] grabValueFrom = new Point[3][];
-        grabValueFrom[0] = new Point[]{new Point(0, 1), new Point(0, 0), new Point(1, 0)};
-        grabValueFrom[1] = new Point[]{new Point(0, 2), new Point(1, 1), new Point(2, 0)};
-        grabValueFrom[2] = new Point[]{new Point(1, 2), new Point(2, 2), new Point(2, 1)};
-
-        /*
-         * I think there is a neater way of doing this, let me know if you know
-         * it! Luke
-         */
-        boolean[][] output = new boolean[3][3];
-
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 3; x++) {
-                Point point = grabValueFrom[y][x];
-
-                /*
-                 * y,x because of the way I defined grabValueFrom[][] above.
-                 */
-                output[x][y] = source[point.x][point.y];
-            }
-        }
-
-        return output;
-    }
 }

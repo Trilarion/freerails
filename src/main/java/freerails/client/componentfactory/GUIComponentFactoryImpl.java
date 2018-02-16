@@ -18,13 +18,11 @@
 
 package freerails.client.componentfactory;
 
-import freerails.client.UserInputOnMapController;
-import freerails.client.UserMessageGenerator;
+import freerails.client.*;
 import freerails.model.world.WorldItem;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.ActionAdapter;
 import freerails.util.ui.ActionAdapter.MappedButtonModel;
-import freerails.client.ModelRootImpl;
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.map.DetailMapRenderer;
 import freerails.client.renderer.map.MapViewComponentConcrete;
@@ -33,7 +31,6 @@ import freerails.client.renderer.map.MapRenderer;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.map.ZoomedOutMapRenderer;
 import freerails.client.view.*;
-import freerails.controller.ModelRoot;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.LocalConnection;
 import freerails.util.Vector2D;
@@ -224,28 +221,28 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         final JCheckBoxMenuItem showCargoMenuItem = new JCheckBoxMenuItem("Show cargo at stations", true);
         displayMenu.add(showCargoMenuItem);
         showCargoMenuItem.addActionListener(e -> {
-            modelRoot.setProperty(ModelRoot.Property.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
+            modelRoot.setProperty(ModelRootProperty.SHOW_CARGO_AT_STATIONS, showCargoMenuItem.isSelected());
             mapViewJComponent.refreshAll();
         });
 
         final JCheckBoxMenuItem showStationNamesMenuItem = new JCheckBoxMenuItem("Show station names", true);
         displayMenu.add(showStationNamesMenuItem);
         showStationNamesMenuItem.addActionListener(e -> {
-            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_NAMES, showStationNamesMenuItem.isSelected());
+            modelRoot.setProperty(ModelRootProperty.SHOW_STATION_NAMES, showStationNamesMenuItem.isSelected());
             mapViewJComponent.refreshAll();
         });
 
         final JCheckBoxMenuItem showStationBordersMenuItem = new JCheckBoxMenuItem("Show sphere-of-influence around stations", true);
         displayMenu.add(showStationBordersMenuItem);
         showStationBordersMenuItem.addActionListener(e -> {
-            modelRoot.setProperty(ModelRoot.Property.SHOW_STATION_BORDERS, showStationBordersMenuItem.isSelected());
+            modelRoot.setProperty(ModelRootProperty.SHOW_STATION_BORDERS, showStationBordersMenuItem.isSelected());
             mapViewJComponent.refreshAll();
         });
 
         final JCheckBoxMenuItem playSoundsMenuItem = new JCheckBoxMenuItem("Play sounds", false);
-        modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS, Boolean.FALSE);
+        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, Boolean.FALSE);
         displayMenu.add(playSoundsMenuItem);
-        playSoundsMenuItem.addActionListener(e -> modelRoot.setProperty(ModelRoot.Property.PLAY_SOUNDS, playSoundsMenuItem.isSelected()));
+        playSoundsMenuItem.addActionListener(e -> modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, playSoundsMenuItem.isSelected()));
         boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
 
         final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem("Show FPS stats", showFps);
@@ -465,7 +462,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         Vector2D cursorPosition = Vector2D.ZERO;
         if (null != this.world) {
             if (world.getMapWidth() == this.world.getMapWidth() && world.getMapHeight() == this.world.getMapHeight()) {
-                cursorPosition = (Vector2D) modelRoot.getProperty(ModelRoot.Property.CURSOR_POSITION);
+                cursorPosition = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
             }
         }
         this.world = world;
@@ -519,7 +516,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         countTrains();
 
         String name = modelRoot.getPrincipal().getName();
-        String serverDetails = (String) modelRoot.getProperty(ModelRoot.Property.SERVER);
+        String serverDetails = (String) modelRoot.getProperty(ModelRootProperty.SERVER);
         String frameTitle;
         if (serverDetails.equals(LocalConnection.SERVER_IN_SAME_JVM)) {
             frameTitle = name + " - Freerails";
@@ -529,7 +526,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         clientFrame.setTitle(frameTitle);
         isSetup = true;
-        modelRoot.setProperty(ModelRoot.Property.CURSOR_POSITION, cursorPosition);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, cursorPosition);
         mapViewJComponent.requestFocus();
     }
 

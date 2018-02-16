@@ -24,7 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

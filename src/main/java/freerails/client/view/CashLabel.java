@@ -22,7 +22,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.finances.Money;
 import freerails.model.player.FreerailsPrincipal;

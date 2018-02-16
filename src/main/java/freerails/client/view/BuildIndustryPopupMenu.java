@@ -21,8 +21,9 @@
  */
 package freerails.client.view;
 
+import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vector2D;
@@ -82,7 +83,7 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                         MoveStatus moveStatus = modelRoot.doMove(m3);
 
                         if (!moveStatus.succeeds()) {
-                            modelRoot.setProperty(ModelRoot.Property.CURSOR_MESSAGE, moveStatus.getMessage());
+                            modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, moveStatus.getMessage());
                         }
                     }
                 });

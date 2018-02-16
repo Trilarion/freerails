@@ -18,6 +18,8 @@
 
 package freerails.model.player;
 
+import freerails.util.Utils;
+
 import java.io.Serializable;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -38,11 +40,11 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Player implements Serializable {
 
-    // TODO What is the meaning of the AUTHORITATIVE principal?
+    // TODO What is the meaning of the AUTHORITATIVE principal? Probably everything what the server does by itself
     /**
      * This Principal can be granted all permissions.
      */
-    public static final FreerailsPrincipal AUTHORITATIVE = new WorldPrincipal("Authoritative Server");
+    public static final FreerailsPrincipal AUTHORITATIVE = new FreerailsPrincipal(-1, "Authoritative Server");
     private static final long serialVersionUID = 4849154251645451999L;
 
     /**
@@ -73,8 +75,9 @@ public class Player implements Serializable {
      * key.
      */
     public Player(String name, int id) {
-        this.name = name;
-        principal = new PlayerPrincipal(id, name);
+        assert(id >= 0);
+        this.name = Utils.verifyNotNull(name);
+        principal = new FreerailsPrincipal(id, name);
     }
 
     @Override

@@ -21,8 +21,6 @@
  */
 package freerails.client;
 
-import freerails.controller.ModelRoot;
-
 /**
  */
 public interface ModelRootListener {
@@ -32,6 +30,6 @@ public interface ModelRootListener {
      * @param oldValue
      * @param newValue
      */
-    void propertyChange(ModelRoot.Property p, Object oldValue, Object newValue);
+    void propertyChange(ModelRootProperty p, Object oldValue, Object newValue);
 
 }

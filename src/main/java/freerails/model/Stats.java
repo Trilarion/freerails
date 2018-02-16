@@ -32,7 +32,7 @@ public class Stats {
 
         operatingFunds = operatingFundsAggregator.calculateValue();
 
-        track = calTrackTotal(world, principal, totalTimeInterval[0]);
+        track = calculateTrackTotal(world, principal, totalTimeInterval[0]);
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setTimes(totalTimeInterval);
@@ -75,7 +75,7 @@ public class Stats {
      * @param startTime
      * @return
      */
-    public static Money calTrackTotal(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime startTime) {
+    public static Money calculateTrackTotal(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime startTime) {
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);

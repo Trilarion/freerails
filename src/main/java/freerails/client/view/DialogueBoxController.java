@@ -27,7 +27,7 @@ import freerails.client.ModelRootImpl;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRootProperty;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.message.MessageToServer;
@@ -241,7 +241,7 @@ public class DialogueBoxController implements WorldListListener {
         WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Trains, world, modelRoot.getPrincipal());
 
         if (!wi.next()) {
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
         } else {
             trainDialoguePanel.display(wi.getIndex());
             showContent(trainDialoguePanel);
@@ -255,7 +255,7 @@ public class DialogueBoxController implements WorldListListener {
         WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, modelRoot.getPrincipal());
 
         if (!wi.next()) {
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
         } else {
             showContent(selectEngine);
         }
@@ -394,7 +394,7 @@ public class DialogueBoxController implements WorldListListener {
 
             showContent(trainList);
         } else {
-            modelRoot.setProperty(Property.QUICK_MESSAGE, "There are" + " no trains to display!");
+            modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "There are" + " no trains to display!");
         }
     }
 

@@ -27,7 +27,7 @@ import freerails.client.ClientConfig;
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;

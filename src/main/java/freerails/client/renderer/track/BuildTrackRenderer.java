@@ -19,9 +19,10 @@
 package freerails.client.renderer.track;
 
 import freerails.client.ClientConfig;
+import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.world.FullWorldDiffs;
 import freerails.model.world.ReadOnlyWorld;
@@ -52,7 +53,7 @@ public class BuildTrackRenderer implements Painter {
         if (modelRoot == null) {
             return null;
         }
-        return (FullWorldDiffs) modelRoot.getProperty(ModelRoot.Property.PROPOSED_TRACK);
+        return (FullWorldDiffs) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
     }
 
     /**

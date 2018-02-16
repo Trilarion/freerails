@@ -23,7 +23,7 @@ package freerails.client.renderer;
 
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRootProperty;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.model.world.SharedKey;
@@ -76,7 +76,7 @@ public class BuildTrackControllerTest extends TestCase {
         assertFalse(doubleTrackRuleID == -1);
 
         // unit tests should be silent!
-        modelRoot.setProperty(Property.PLAY_SOUNDS, false);
+        modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, false);
     }
 
     /**
@@ -84,7 +84,7 @@ public class BuildTrackControllerTest extends TestCase {
      */
     public void testBuildTrack() {
         Vector2D from = new Vector2D(10, 10);
-        modelRoot.setProperty(Property.CURSOR_POSITION, from);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
         Vector2D to = new Vector2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
         buildTrackController.updateUntilComplete();
@@ -114,7 +114,7 @@ public class BuildTrackControllerTest extends TestCase {
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.
-        modelRoot.setProperty(Property.CURSOR_POSITION, new Vector2D(15, 10));
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new Vector2D(15, 10));
         buildTrackController.setProposedTrack(new Vector2D(20, 10), trackBuilder);
         buildTrackController.updateUntilComplete();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
@@ -144,7 +144,7 @@ public class BuildTrackControllerTest extends TestCase {
         // Then remove some of it.
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
         Vector2D from = new Vector2D(15, 10);
-        modelRoot.setProperty(Property.CURSOR_POSITION, from);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
 
         Vector2D to = new Vector2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);

@@ -28,7 +28,7 @@ import freerails.client.renderer.*;
 import freerails.client.renderer.tile.TileRenderer;
 import freerails.client.renderer.tile.TileRendererList;
 import freerails.client.renderer.track.TrackPieceRenderer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldConstants;

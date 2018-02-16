@@ -24,8 +24,8 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.ModelRoot;
-import freerails.controller.ModelRoot.Property;
+import freerails.client.ModelRoot;
+import freerails.client.ModelRootProperty;
 import freerails.network.message.LoadGameMessageToServer;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.RefreshListOfGamesMessageToServer;
@@ -149,7 +149,7 @@ public class LoadGamePanel extends JPanel implements View {
     }
 
     private void updateListOfFiles() {
-        List<String> files = (List<String>) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+        List<String> files = (List<String>) modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
         Object[] saves = new Object[files.size()];
         for (int i = 0; i < files.size(); i++) {
             saves[i] = files.get(i);
@@ -161,7 +161,7 @@ public class LoadGamePanel extends JPanel implements View {
 
     @Override
     protected void paintComponent(Graphics g) {
-        List<String> files = (List<String>) modelRoot.getProperty(Property.SAVED_GAMES_LIST);
+        List<String> files = (List<String>) modelRoot.getProperty(ModelRootProperty.SAVED_GAMES_LIST);
         if (!lastFiles.equals(files)) {
             updateListOfFiles();
         }

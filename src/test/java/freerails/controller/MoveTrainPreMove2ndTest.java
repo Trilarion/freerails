@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
@@ -51,7 +52,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
     private Vector2D station1Location;
     private Vector2D station2Location;
 
-    static void incrTime(World world, FreerailsPrincipal principal) {
+    public static void incrTime(World world, FreerailsPrincipal principal) {
         ActivityIterator activityIterator = world.getActivities(principal, 0);
         while (activityIterator.hasNext())
             activityIterator.nextActivity();

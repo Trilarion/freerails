@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.model.TrainSummeryModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.model.world.WorldItem;
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;

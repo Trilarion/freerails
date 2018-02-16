@@ -23,7 +23,7 @@
 package freerails.client.renderer;
 
 import freerails.client.view.View;
-import freerails.controller.ModelRoot;
+import freerails.client.ModelRoot;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;

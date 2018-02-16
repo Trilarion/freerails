@@ -19,10 +19,12 @@
 package experimental;
 
 import freerails.client.ClientConfig;
+import freerails.client.ModelRoot;
 import freerails.client.launcher.GameLoop;
 import freerails.client.launcher.ScreenHandler;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
+import freerails.model.MapFixtureFactory2;
 import freerails.move.*;
 import freerails.move.premove.AddTrainPreMove;
 import freerails.move.premove.MoveTrainPreMove;
