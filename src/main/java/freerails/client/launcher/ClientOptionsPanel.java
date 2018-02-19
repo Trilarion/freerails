@@ -25,7 +25,7 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
 import freerails.client.view.DisplayModesComboBoxModels;
-import freerails.controller.DisplayModeWithName;
+import freerails.client.model.DisplayModeWithName;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

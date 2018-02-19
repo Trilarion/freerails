@@ -18,10 +18,11 @@
 
 package freerails.server;
 
+import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
-import freerails.move.premove.AddTrainPreMove;
-import freerails.move.premove.MoveTrainPreMove;
-import freerails.move.premove.PreMove;
+import freerails.move.premove.AddTrainMoveGenerator;
+import freerails.move.premove.MoveTrainMoveGenerator;
+import freerails.move.premove.MoveGenerator;
 import freerails.network.movereceiver.MoveReceiver;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
@@ -87,9 +88,9 @@ public class TrainUpdater implements Serializable {
 
         ImmutableSchedule is = s.toImmutableSchedule();
 
-        PreMove addTrain = new AddTrainPreMove(engineTypeId, wagons, p, principal, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(engineTypeId, wagons, p, principal, is);
 
-        Move move = addTrain.generateMove(world);
+        Move move = addTrain.generate(world);
         moveReceiver.process(move);
     }
 
@@ -132,14 +133,14 @@ public class TrainUpdater implements Serializable {
             // to allow an already stationary train to start moving. To achieve
             // this
             // we process moving trains first.
-            Collection<MoveTrainPreMove> movingTrains = new ArrayList<>();
-            Collection<MoveTrainPreMove> stoppedTrains = new ArrayList<>();
+            Collection<MoveTrainMoveGenerator> movingTrains = new ArrayList<>();
+            Collection<MoveTrainMoveGenerator> stoppedTrains = new ArrayList<>();
             for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
 
                 TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, i);
                 if (null == train) continue;
 
-                MoveTrainPreMove moveTrain = new MoveTrainPreMove(i, principal, occupiedTracks);
+                MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(i, principal, occupiedTracks);
                 if (moveTrain.isUpdateDue(world)) {
                     TrainAccessor ta = new TrainAccessor(world, principal, i);
                     if (ta.isMoving(time)) {
@@ -149,18 +150,18 @@ public class TrainUpdater implements Serializable {
                     }
                 }
             }
-            for (MoveTrainPreMove preMove : movingTrains) {
+            for (MoveTrainMoveGenerator preMove : movingTrains) {
                 Move move;
                 try {
-                    move = preMove.generateMove(world);
+                    move = preMove.generate(world);
                 } catch (NoTrackException e) {
                     continue; // user deleted track, continue and ignore
                     // train!
                 }
                 moveReceiver.process(move);
             }
-            for (MoveTrainPreMove preMove : stoppedTrains) {
-                Move move = preMove.generateMove(world);
+            for (MoveTrainMoveGenerator preMove : stoppedTrains) {
+                Move move = preMove.generate(world);
                 moveReceiver.process(move);
             }
         }

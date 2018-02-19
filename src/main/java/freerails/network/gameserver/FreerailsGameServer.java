@@ -22,8 +22,8 @@ import freerails.controller.*;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.PreMoveStatus;
-import freerails.move.premove.PreMove;
+import freerails.move.TryMoveStatus;
+import freerails.move.premove.MoveGenerator;
 import freerails.network.*;
 import freerails.network.message.MessageToServer;
 import freerails.network.message.SetPropertyMessageToClient;
@@ -468,7 +468,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             }
 
                             logger.debug(message.toString());
-                        } else if (message instanceof Move || message instanceof PreMove) {
+                        } else if (message instanceof Move || message instanceof MoveGenerator) {
                             Player player2 = serverGameModel.getWorld().getPlayer(players.indexOf(player));
                             FreerailsPrincipal principal = player2.getPrincipal();
 
@@ -478,8 +478,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             if (isMove) {
                                 move = (Move) message;
                             } else {
-                                PreMove preMove = (PreMove) message;
-                                move = preMove.generateMove(serverGameModel.getWorld());
+                                MoveGenerator moveGenerator = (MoveGenerator) message;
+                                move = moveGenerator.generate(serverGameModel.getWorld());
                             }
 
                             MoveStatus mStatus = move.tryDoMove(serverGameModel.getWorld(), principal);
@@ -497,7 +497,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             if (isMove) {
                                 connection.writeToClient(mStatus);
                             } else {
-                                connection.writeToClient(PreMoveStatus.fromMoveStatus(mStatus));
+                                connection.writeToClient(TryMoveStatus.fromMoveStatus(mStatus));
                             }
                         } else {
                             logger.debug(message.toString());

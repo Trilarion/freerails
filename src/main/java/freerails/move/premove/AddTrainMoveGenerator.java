@@ -47,7 +47,7 @@ import java.util.List;
 
 /**
  */
-public class AddTrainPreMove implements PreMove {
+public class AddTrainMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 4050201951105069624L;
     private final int engineTypeId;
@@ -63,7 +63,7 @@ public class AddTrainPreMove implements PreMove {
      * @param principal
      * @param schedule
      */
-    public AddTrainPreMove(int e, ImmutableList<Integer> wagons, Vector2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
+    public AddTrainMoveGenerator(int e, ImmutableList<Integer> wagons, Vector2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
         engineTypeId = e;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);
@@ -74,9 +74,9 @@ public class AddTrainPreMove implements PreMove {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof AddTrainPreMove)) return false;
+        if (!(obj instanceof AddTrainMoveGenerator)) return false;
 
-        final AddTrainPreMove addTrainPreMove = (AddTrainPreMove) obj;
+        final AddTrainMoveGenerator addTrainPreMove = (AddTrainMoveGenerator) obj;
 
         if (engineTypeId != addTrainPreMove.engineTypeId) return false;
         if (!point.equals(addTrainPreMove.point)) return false;
@@ -138,7 +138,7 @@ public class AddTrainPreMove implements PreMove {
      * <li>Init. the trains position and motion</li>
      * </ol>
      */
-    public Move generateMove(ReadOnlyWorld world) {
+    public Move generate(ReadOnlyWorld world) {
         // Add cargo bundle.
         int bundleId = world.size(principal, PlayerKey.CargoBundles);
         ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;

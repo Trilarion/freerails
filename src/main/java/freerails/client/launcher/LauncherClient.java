@@ -90,8 +90,7 @@ public class LauncherClient extends FreerailsClient {
             GameTime currentGameTime = world2.currentTime();
             double ticks = currentGameTime.getTicks();
             if (!gameSpeed.isPaused()) {
-                double subTicks;
-                subTicks = Math.min(dt, 1.0d);
+                double subTicks = Math.min(dt, 1.0d);
                 ticks += subTicks;
             }
             modelRoot.setProperty(ModelRootProperty.TIME, ticks);

@@ -19,7 +19,7 @@
 package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
-import freerails.controller.DisplayModeWithName;
+import freerails.client.model.DisplayModeWithName;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import org.apache.log4j.Logger;
 

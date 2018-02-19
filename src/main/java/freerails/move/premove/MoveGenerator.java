@@ -31,11 +31,11 @@ import java.io.Serializable;
  * object. The state of a move is often a function of the state of the world
  * object and some other input.
  */
-public interface PreMove extends Serializable {
+public interface MoveGenerator extends Serializable {
 
     /**
      * @param world
      * @return
      */
-    Move generateMove(ReadOnlyWorld world);
+    Move generate(ReadOnlyWorld world);
 }

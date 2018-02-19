@@ -45,7 +45,7 @@ public class TimeTickMove implements Move {
      * @param world
      * @return
      */
-    public static Move getMove(ReadOnlyWorld world) {
+    public static Move generate(ReadOnlyWorld world) {
 
         GameTime oldTime = world.currentTime();
         GameTime newTime = new GameTime(oldTime.getTicks() + 1);

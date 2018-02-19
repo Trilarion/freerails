@@ -1,5 +1,7 @@
-package freerails.model;
+package freerails.model.statistics;
 
+import freerails.model.QuantitiesAndValues;
+import freerails.model.WorldConstants;
 import freerails.model.finances.*;
 import freerails.model.track.TrackRule;
 import freerails.model.world.ReadOnlyWorld;
@@ -10,7 +12,7 @@ import freerails.model.world.SharedKey;
 /**
  *
  */
-public class Stats {
+public class Statistics {
 
     private final Money operatingFunds;
     private final Money track;
@@ -27,7 +29,7 @@ public class Stats {
      * @param principal
      * @param totalTimeInterval
      */
-    public Stats(ReadOnlyWorld world, FreerailsPrincipal principal, final GameTime[] totalTimeInterval) {
+    public Statistics(ReadOnlyWorld world, FreerailsPrincipal principal, final GameTime[] totalTimeInterval) {
         TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, principal, totalTimeInterval);
 
         operatingFunds = operatingFundsAggregator.calculateValue();

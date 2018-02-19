@@ -150,17 +150,17 @@ public class CityModel {
         return urbanCityTiles.size() + industryCityTiles.size() + resourceCityTiles.size();
     }
 
-    public void writeToMap(World w) {
+    public void writeToMap(World world) {
         for (CityTile urbanCityTile : urbanCityTiles) {
-            writeTile(w, urbanCityTile);
+            writeTile(world, urbanCityTile);
         }
 
         for (CityTile industryCityTile : industryCityTiles) {
-            writeTile(w, industryCityTile);
+            writeTile(world, industryCityTile);
         }
 
         for (CityTile resourceCityTile : resourceCityTiles) {
-            writeTile(w, resourceCityTile);
+            writeTile(world, resourceCityTile);
         }
     }
 

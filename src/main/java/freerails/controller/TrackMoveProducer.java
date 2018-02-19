@@ -20,6 +20,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
+import freerails.model.track.*;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
@@ -33,10 +34,6 @@ import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainType;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.NullTrackType;
-import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackPieceImpl;
-import freerails.model.track.TrackRule;
 
 import java.util.Collection;
 import java.util.Stack;
@@ -273,6 +270,7 @@ public class TrackMoveProducer {
         modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
+    // TODO remove modelRoot, instead use BuildMode as an construction time argument
     /**
      * @return
      */

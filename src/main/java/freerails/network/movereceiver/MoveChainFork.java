@@ -25,16 +25,15 @@ import freerails.move.listmove.ListMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.move.mapupdatemove.MapUpdateMove;
 import freerails.util.Utils;
-import freerails.model.world.PlayerKey;
 import freerails.model.WorldListListener;
 import freerails.model.WorldMapListener;
-import freerails.model.player.FreerailsPrincipal;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+// TODO Why are composite moves not always splitted?
 /**
  * A central point at which a client may register to receive moves which have
  * been committed.
@@ -48,23 +47,10 @@ public class MoveChainFork implements MoveReceiver {
     private long lastTickTime = System.currentTimeMillis();
 
     /**
-     *
-     */
-    public MoveChainFork() {
-    }
-
-    /**
      * @return
      */
     public long getLastTickTime() {
         return lastTickTime;
-    }
-
-    /**
-     * @param l
-     */
-    public void addMapListener(WorldMapListener l) {
-        mapListeners.add(l);
     }
 
     /**
@@ -84,6 +70,13 @@ public class MoveChainFork implements MoveReceiver {
     /**
      * @param listener
      */
+    public void addMapListener(WorldMapListener listener) {
+        mapListeners.add(Utils.verifyNotNull(listener));
+    }
+
+    /**
+     * @param listener
+     */
     public void addListListener(WorldListListener listener) {
         listListeners.add(Utils.verifyNotNull(listener));
     }
@@ -92,75 +85,58 @@ public class MoveChainFork implements MoveReceiver {
      * @param move
      */
     public void process(Move move) {
-        for (MoveReceiver m : moveReceivers) {
-            m.process(move);
+        // all move receivers process the move
+        for (MoveReceiver moveReceiver : moveReceivers) {
+            moveReceiver.process(move);
         }
-        splitMove(move);
-    }
-
-    private void splitMove(Move move) {
+        // CompositeMoves are splitted here
         if (move instanceof CompositeMove) {
-            List<Move> moves = ((CompositeMove) move).getMoves();
-
-            for (Move move1 : moves) {
-                splitMove(move1);
+            for (Move subMove : ((CompositeMove) move).getMoves()) {
+                splitMove(subMove);
             }
         } else {
-            for (MoveReceiver m : splitMoveReceivers) {
-                m.process(move);
-            }
+            splitMove(move);
+        }
+    }
 
-            if (move instanceof AddItemToListMove) {
-                ListMove mm = (AddItemToListMove) move;
-                sendItemAdded(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof ChangeItemInListMove) {
-                ListMove mm = (ChangeItemInListMove) move;
-                sendListUpdated(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof RemoveItemFromListMove) {
-                ListMove mm = (RemoveItemFromListMove) move;
-                sendItemRemoved(mm.getKey(), mm.getIndex(), mm.getPrincipal());
-            } else if (move instanceof MapUpdateMove) {
-                Rectangle r = ((MapUpdateMove) move).getUpdatedTiles();
-                if (r.x != 0 && r.y != 0 && r.width != 0 && r.height != 0) {
-                    // System.out.println("TilesChanged = " + r + " "
-                    // + move.getClass().getCanonicalName());
-                    // if (move instanceof WorldDiffMove) {
-                    // WorldDiffMove wm = (WorldDiffMove) move;
-                    // ImmutableList<MapDiff> diffs = wm.getDiffs();
-                    // for (int i = 0; i < diffs.size(); i++) {
-                    // System.out.println(" " + diffs.get(i).x + "/"
-                    // + diffs.get(i).y);
-                    // }
-                    // }
-                    sendMapUpdated(r);
+    /**
+     * No CompositeMove, only single moves.
+     *
+     * @param move
+     */
+    private void splitMove(Move move) {
+
+        // all split move receivers process the move
+        for (MoveReceiver moveReceiver : splitMoveReceivers) {
+            moveReceiver.process(move);
+        }
+
+        if (move instanceof AddItemToListMove) {
+            ListMove listMove = (AddItemToListMove) move;
+            for (WorldListListener listener : listListeners) {
+                listener.itemAdded(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+            }
+        } else if (move instanceof ChangeItemInListMove) {
+            ListMove listMove = (ChangeItemInListMove) move;
+            for (WorldListListener listener : listListeners) {
+                listener.listUpdated(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+            }
+        } else if (move instanceof RemoveItemFromListMove) {
+            ListMove listMove = (RemoveItemFromListMove) move;
+            for (WorldListListener listener : listListeners) {
+                listener.itemRemoved(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+            }
+        } else if (move instanceof MapUpdateMove) {
+            Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();
+            // TODO can r be 0,0,0,0
+            if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {
+                for (WorldMapListener listener : mapListeners) {
+                    listener.tilesChanged(rectangle);
                 }
-            } else if (move instanceof TimeTickMove) {
-                lastTickTime = System.currentTimeMillis();
             }
+        } else if (move instanceof TimeTickMove) {
+            lastTickTime = System.currentTimeMillis();
         }
     }
 
-    private void sendMapUpdated(Rectangle r) {
-        for (WorldMapListener l : mapListeners) {
-            l.tilesChanged(r);
-        }
-    }
-
-    private void sendItemAdded(PlayerKey playerKey, int index, FreerailsPrincipal p) {
-        for (WorldListListener l : listListeners) {
-            l.itemAdded(playerKey, index, p);
-        }
-    }
-
-    private void sendItemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal p) {
-        for (WorldListListener l : listListeners) {
-            l.itemRemoved(playerKey, index, p);
-        }
-    }
-
-    private void sendListUpdated(PlayerKey playerKey, int index, FreerailsPrincipal p) {
-        for (WorldListListener l : listListeners) {
-            l.listUpdated(playerKey, index, p);
-        }
-    }
 }

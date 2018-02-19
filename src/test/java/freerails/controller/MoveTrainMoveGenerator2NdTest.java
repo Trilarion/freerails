@@ -23,11 +23,12 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.track.OccupiedTracks;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.move.*;
-import freerails.move.premove.AddTrainPreMove;
-import freerails.move.premove.MoveTrainPreMove;
+import freerails.move.premove.AddTrainMoveGenerator;
+import freerails.move.premove.MoveTrainMoveGenerator;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.model.*;
@@ -46,7 +47,7 @@ import freerails.model.world.World;
 /**
  * Unit test for MoveTrainPreMove, tests stopping at stations.
  */
-public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
+public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
     private FreerailsPrincipal principal;
     private Vector2D station1Location;
@@ -112,9 +113,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         ImmutableSchedule defaultSchedule = s.toImmutableSchedule();
 
         Vector2D start = new Vector2D(10, 10);
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0),
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(0, new ImmutableList<>(0, 0),
                 start, principal, defaultSchedule);
-        Move move = preMove.generateMove(world);
+        Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
     }
@@ -137,7 +138,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
      * @return
      */
     private TileTransition nextStep() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal,
                 new OccupiedTracks(principal, world));
         return preMove.nextStep(world);
     }
@@ -162,9 +163,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
      */
     private TrainMotion moveTrain() {
         incrTime(world, principal);
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal,
                 new OccupiedTracks(principal, world));
-        Move move = preMove.generateMove(world);
+        Move move = preMove.generate(world);
         MoveStatus ms = move.doMove(world, principal);
         assertTrue(ms.getMessage(), ms.succeeds());
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
@@ -346,7 +347,7 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
         assertEquals(TrainState.WAITING_FOR_FULL_LOAD, trainMotion.getActivity());
 
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal,
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal,
                 new OccupiedTracks(principal, world));
         assertFalse(
                 "The train isn't full and there is no cargo to add, so we should be able to generate a move.",
@@ -451,9 +452,9 @@ public class MoveTrainPreMove2ndTest extends AbstractMoveTestCase {
      *
      */
     public void testCanGenerateMove() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
         assertTrue(preMove.isUpdateDue(world));
-        Move move = preMove.generateMove(world);
+        Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
         assertFalse(preMove.isUpdateDue(world));

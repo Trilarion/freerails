@@ -19,12 +19,9 @@
 package freerails.client;
 
 import freerails.controller.*;
-import freerails.move.AddTransactionMove;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.PreMoveStatus;
-import freerails.move.premove.PreMove;
-import freerails.move.premove.TimeTickPreMove;
+import freerails.move.*;
+import freerails.move.premove.MoveGenerator;
+import freerails.move.premove.TimeTickMoveGenerator;
 import freerails.network.*;
 import freerails.network.gameserver.FreerailsGameServer;
 import freerails.network.message.MessageToClient;
@@ -287,19 +284,17 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             Player player0 = client0.getWorld().getPlayer(0);
             FreerailsPrincipal principal0 = player0.getPrincipal();
 
-            PreMove preMove = TimeTickPreMove.INSTANCE;
-
             World copyOfWorld = client0.getWorld().defensiveCopy();
             assertEquals(copyOfWorld, client0.getWorld());
 
-            Move move = preMove.generateMove(copyOfWorld);
+            Move move = TimeTickMove.generate(copyOfWorld);
             MoveStatus status = move.doMove(copyOfWorld, principal0);
             assertTrue(status.succeeds());
-            client0.processPreMove(preMove);
+            client0.processPreMove(TimeTickMoveGenerator.INSTANCE);
             server.update();
 
-            PreMoveStatus reply = (PreMoveStatus) client0.read();
-            assertEquals(PreMoveStatus.PRE_MOVE_OK, reply);
+            TryMoveStatus reply = (TryMoveStatus) client0.read();
+            assertEquals(TryMoveStatus.TRY_MOVE_OK, reply);
             client0.processMessage(reply);
 
             server.update();

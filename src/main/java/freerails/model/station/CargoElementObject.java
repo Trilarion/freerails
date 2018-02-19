@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.model.station;
 
 /**
  * Small data object to store the rate of supply of a cargo.
  */
-class CargoElementObject {
+public class CargoElementObject {
 
     private final int type;
     private int rate;

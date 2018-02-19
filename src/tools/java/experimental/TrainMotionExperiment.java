@@ -25,10 +25,11 @@ import freerails.client.launcher.ScreenHandler;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
+import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
-import freerails.move.premove.AddTrainPreMove;
-import freerails.move.premove.MoveTrainPreMove;
-import freerails.move.premove.PreMove;
+import freerails.move.premove.AddTrainMoveGenerator;
+import freerails.move.premove.MoveTrainMoveGenerator;
+import freerails.move.premove.MoveGenerator;
 import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 import freerails.util.Vector2D;
@@ -76,9 +77,9 @@ class TrainMotionExperiment extends JComponent {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        PreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from, principal, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ImmutableList<>(), from, principal, is);
 
-        Move move = addTrain.generateMove(world);
+        Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, principal);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
@@ -180,12 +181,12 @@ class TrainMotionExperiment extends JComponent {
 
     private void updateTrainPosition() {
         Random rand = new Random(System.currentTimeMillis());
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
+        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
         Move move;
         if (rand.nextInt(10) == 0) {
             move = moveTrain.stopTrain(world);
         } else {
-            move = moveTrain.generateMove(world);
+            move = moveTrain.generate(world);
         }
         MoveStatus moveStatus = move.doMove(world, principal);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());

@@ -25,6 +25,8 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
+import freerails.model.track.BuildTrackStrategy;
+import freerails.move.StationBuilder;
 import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;

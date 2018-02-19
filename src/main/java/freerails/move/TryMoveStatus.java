@@ -20,16 +20,17 @@ package freerails.move;
 
 import java.io.Serializable;
 
+// TODO not much difference to MoveStatus, maybe merge the two
 /**
  * Records the success or failure of an attempt to execute a move.
  */
-public class PreMoveStatus implements Serializable {
+public class TryMoveStatus implements Serializable {
 
-    public static final PreMoveStatus PRE_MOVE_OK = new PreMoveStatus(MoveStatus.MOVE_OK);
+    public static final TryMoveStatus TRY_MOVE_OK = new TryMoveStatus(MoveStatus.MOVE_OK);
     private static final long serialVersionUID = 3978145456646009140L;
     public final MoveStatus moveStatus;
 
-    private PreMoveStatus(MoveStatus moveStatus) {
+    private TryMoveStatus(MoveStatus moveStatus) {
         this.moveStatus = moveStatus;
     }
 
@@ -37,8 +38,8 @@ public class PreMoveStatus implements Serializable {
      * @param reason
      * @return
      */
-    public static PreMoveStatus failed(String reason) {
-        return new PreMoveStatus(MoveStatus.moveFailed(reason));
+    public static TryMoveStatus failed(String reason) {
+        return new TryMoveStatus(MoveStatus.moveFailed(reason));
     }
 
     /**
@@ -47,19 +48,19 @@ public class PreMoveStatus implements Serializable {
      */
     public static Serializable fromMoveStatus(MoveStatus moveStatus) {
         if (moveStatus.succeeds()) {
-            return PRE_MOVE_OK;
+            return TRY_MOVE_OK;
         }
-        return new PreMoveStatus(moveStatus);
+        return new TryMoveStatus(moveStatus);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof PreMoveStatus)) return false;
+        if (!(obj instanceof TryMoveStatus)) return false;
 
-        final PreMoveStatus preMoveStatus = (PreMoveStatus) obj;
+        final TryMoveStatus tryMoveStatus = (TryMoveStatus) obj;
 
-        return moveStatus.equals(preMoveStatus.moveStatus);
+        return moveStatus.equals(tryMoveStatus.moveStatus);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class PreMoveStatus implements Serializable {
      */
     private Object readResolve() {
         if (moveStatus.succeeds()) {
-            return PRE_MOVE_OK;
+            return TRY_MOVE_OK;
         }
         return this;
     }

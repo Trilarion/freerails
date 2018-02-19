@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.premove.PreMove;
+import freerails.move.premove.MoveGenerator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
@@ -39,6 +39,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param world
      * @param playerID
      */
+    // TODO we really need principal here, have it as argument instead of playerID
     public SimpleMoveExecutor(World world, int playerID) {
         this.world = world;
         Player player = this.world.getPlayer(playerID);
@@ -54,11 +55,11 @@ public class SimpleMoveExecutor implements MoveExecutor {
     }
 
     /**
-     * @param preMove
+     * @param moveGenerator
      * @return
      */
-    public MoveStatus doPreMove(PreMove preMove) {
-        Move move = preMove.generateMove(world);
+    public MoveStatus doPreMove(MoveGenerator moveGenerator) {
+        Move move = moveGenerator.generate(world);
         return move.doMove(world, principal);
     }
 

@@ -25,6 +25,7 @@ import freerails.controller.explorer.FlatTrackExplorer;
 import freerails.controller.explorer.GraphExplorer;
 import freerails.controller.pathfinding.PathNotFoundException;
 import freerails.controller.pathfinding.PathOnTrackFinder;
+import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
@@ -54,10 +55,10 @@ import java.util.Map;
 /**
  * Generates moves for changes in train position and stops at stations.
  */
-public class MoveTrainPreMove implements PreMove {
+public class MoveTrainMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 3545516188269491250L;
-    private static final Logger logger = Logger.getLogger(MoveTrainPreMove.class.getName());
+    private static final Logger logger = Logger.getLogger(MoveTrainMoveGenerator.class.getName());
     // TODO Performance cache must be cleared if track on map is build ! make a change listener!
     private static final Map<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
     private static int cacheCleared = 0;
@@ -72,7 +73,7 @@ public class MoveTrainPreMove implements PreMove {
      * @param p
      * @param occupiedTracks
      */
-    public MoveTrainPreMove(int id, FreerailsPrincipal p, OccupiedTracks occupiedTracks) {
+    public MoveTrainMoveGenerator(int id, FreerailsPrincipal p, OccupiedTracks occupiedTracks) {
         trainID = id;
         principal = p;
         this.occupiedTracks = occupiedTracks;
@@ -179,9 +180,9 @@ public class MoveTrainPreMove implements PreMove {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof MoveTrainPreMove)) return false;
+        if (!(obj instanceof MoveTrainMoveGenerator)) return false;
 
-        final MoveTrainPreMove moveTrainPreMove = (MoveTrainPreMove) obj;
+        final MoveTrainMoveGenerator moveTrainPreMove = (MoveTrainMoveGenerator) obj;
 
         if (trainID != moveTrainPreMove.trainID) return false;
         return principal.equals(moveTrainPreMove.principal);
@@ -191,7 +192,7 @@ public class MoveTrainPreMove implements PreMove {
      * @param world
      * @return
      */
-    public Move generateMove(ReadOnlyWorld world) {
+    public Move generate(ReadOnlyWorld world) {
 
         // Check that we can generate a move.
         if (!isUpdateDue(world)) {

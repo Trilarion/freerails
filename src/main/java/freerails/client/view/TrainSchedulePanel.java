@@ -581,16 +581,16 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         modelRoot.doMove(move);
     }
 
-    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
-        if (PlayerKey.TrainSchedules == playerKey && scheduleID == index) {
+    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+        if (PlayerKey.TrainSchedules == key && scheduleID == index) {
             listModel.fireRefresh();
             enableButtons();
         }
     }
 
-    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {}
+    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {}
 
-    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {}
+    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {}
 
     /**
      * Show the popup that lets the user select a station, called when a new

@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.model.statistics.BalanceSheetGenerator;
 import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;

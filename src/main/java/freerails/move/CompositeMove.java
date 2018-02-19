@@ -86,7 +86,7 @@ public class CompositeMove implements Move {
         // Since whether a move later in the list goes through could
         // depend on whether an earlier move has been executed, we need
         // actually execute moves, then undo them to test whether the
-        // array of moves can be executed success.
+        // array of moves can be executed successfully.
         MoveStatus moveStatus = doMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -171,7 +171,7 @@ public class CompositeMove implements Move {
      * Subclasses may override this method to perform tests which pass or fail
      * depending on the combination of moves making up this composite move.
      */
-    public MoveStatus compositeTest(World w) {
+    public MoveStatus compositeTest(World world) {
         return MoveStatus.MOVE_OK;
     }
 

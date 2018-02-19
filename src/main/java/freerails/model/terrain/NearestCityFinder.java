@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.model.terrain;
 
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;

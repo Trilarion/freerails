@@ -23,9 +23,10 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
-import freerails.move.premove.AddTrainPreMove;
-import freerails.move.premove.MoveTrainPreMove;
+import freerails.move.premove.AddTrainMoveGenerator;
+import freerails.move.premove.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
@@ -39,7 +40,7 @@ import freerails.model.train.schedule.MutableSchedule;
 /**
  * Test for MoveTrainPreMove, tests moving round a loop of track.
  */
-public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
+public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
     private FreerailsPrincipal principal;
 
@@ -77,8 +78,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         ImmutableSchedule defaultSchedule = s.toImmutableSchedule();
 
         Vector2D start = new Vector2D(10, 10);
-        AddTrainPreMove preMove = new AddTrainPreMove(0, new ImmutableList<>(0, 0), start, principal, defaultSchedule);
-        Move move = preMove.generateMove(world);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(0, new ImmutableList<>(0, 0), start, principal, defaultSchedule);
+        Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
     }
@@ -87,7 +88,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
      *
      */
     public void testNextVector() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
         TileTransition actual = preMove.nextStep(world);
         assertNotNull(actual);
         // The train is at station A, so should head east to station B.
@@ -98,7 +99,7 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
      *
      */
     public void testNextSpeeds() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
         Motion speeds = preMove.nextSpeeds(world, TileTransition.EAST);
         assertNotNull(speeds);
         assertEquals(speeds.calculateSpeedAtTime(0), 0.0d);
@@ -112,8 +113,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        MoveTrainPreMove preMove = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
-        Move move = preMove.generateMove(world);
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
+        Move move = preMove.generate(world);
         assertNotNull(move);
         assertSurvivesSerialisation(move);
     }
@@ -140,12 +141,12 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
         assertEquals(6, y);
         assertEquals(TileTransition.SOUTH_WEST, positionOnTrack.facing());
 
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal,
+        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, principal,
                 new OccupiedTracks(principal, world));
 
         assertEquals(TileTransition.NORTH_EAST, moveTrain.nextStep(world));
 
-        move = moveTrain.generateMove(world);
+        move = moveTrain.generate(world);
         moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
 
@@ -169,8 +170,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         assertEquals(TileTransition.EAST, moveTrain.nextStep(world));
 
-        MoveTrainPreMove2ndTest.incrTime(world, principal);
-        move = moveTrain.generateMove(world);
+        MoveTrainMoveGenerator2NdTest.incrTime(world, principal);
+        move = moveTrain.generate(world);
         moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
 
@@ -186,8 +187,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         assertEquals(TileTransition.SOUTH_EAST, moveTrain.nextStep(world));
 
-        MoveTrainPreMove2ndTest.incrTime(world, principal);
-        move = moveTrain.generateMove(world);
+        MoveTrainMoveGenerator2NdTest.incrTime(world, principal);
+        move = moveTrain.generate(world);
 
         moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
@@ -207,10 +208,10 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainPreMove addTrain = new AddTrainPreMove(0, new ImmutableList<>(), from,
+        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(0, new ImmutableList<>(), from,
                 principal, is);
 
-        Move move = addTrain.generateMove(world);
+        Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
@@ -228,8 +229,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
     public void testMovingRoundLoop() {
         setupLoopOfTrack();
 
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
-        Move move = moveTrain.generateMove(world);
+        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
+        Move move = moveTrain.generate(world);
         assertTrue(move.doMove(world, principal).succeeds());
     }
 
@@ -239,8 +240,8 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
     public void testGetTiles() {
         setupLoopOfTrack();
 
-        MoveTrainPreMove moveTrain = new MoveTrainPreMove(0, principal, new OccupiedTracks(principal, world));
-        Move move = moveTrain.generateMove(world);
+        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
+        Move move = moveTrain.generate(world);
         assertTrue(move.doMove(world, principal).succeeds());
 
         TrainAccessor trainAccessor = new TrainAccessor(world, principal, 0);
@@ -266,18 +267,18 @@ public class MoveTrainPreMove1stTest extends AbstractMoveTestCase {
 
         Vector2D target = new Vector2D();
         TileTransition expected = TileTransition.NORTH_EAST;
-        assertEquals(expected, MoveTrainPreMove.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
         expected = TileTransition.EAST;
-        assertEquals(expected, MoveTrainPreMove.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
 
         expected = TileTransition.SOUTH_EAST;
-        assertEquals(expected, MoveTrainPreMove.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
 
         expected = TileTransition.SOUTH;
-        assertEquals(expected, MoveTrainPreMove.findNextStep(world, positionOnTrack, target));
+        assertEquals(expected, MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target));
         positionOnTrack.move(expected);
     }
 

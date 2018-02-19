@@ -220,35 +220,35 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
         if (showingOrder) {
-            if (PlayerKey.TrainSchedules == playerKey && scheduleID == index) {
+            if (PlayerKey.TrainSchedules == key && scheduleID == index) {
                 display(trainNumber, scheduleOrderNumber);
             }
         } else {
-            if (PlayerKey.Trains == playerKey && trainNumber == index) {
+            if (PlayerKey.Trains == key && trainNumber == index) {
                 display(trainNumber);
             }
         }
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 }

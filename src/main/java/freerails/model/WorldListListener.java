@@ -31,23 +31,23 @@ import freerails.model.world.PlayerKey;
 public interface WorldListListener {
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal);
+    void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal);
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal);
+    void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal);
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal);
+    void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal);
 }

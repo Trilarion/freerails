@@ -28,20 +28,20 @@ import freerails.model.world.ReadOnlyWorld;
 /**
  * Generates a TimeTickMove.
  */
-public class TimeTickPreMove implements PreMove {
+public class TimeTickMoveGenerator implements MoveGenerator {
 
-    public static final PreMove INSTANCE = new TimeTickPreMove();
+    public static final MoveGenerator INSTANCE = new TimeTickMoveGenerator();
     private static final long serialVersionUID = 3690479125647208760L;
 
-    private TimeTickPreMove() {
+    private TimeTickMoveGenerator() {
     }
 
     /**
      * @param world
      * @return
      */
-    public Move generateMove(ReadOnlyWorld world) {
-        return TimeTickMove.getMove(world);
+    public Move generate(ReadOnlyWorld world) {
+        return TimeTickMove.generate(world);
     }
 
     protected Object readResolve() {

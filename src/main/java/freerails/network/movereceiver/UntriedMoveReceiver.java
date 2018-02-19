@@ -18,10 +18,9 @@
 
 package freerails.network.movereceiver;
 
-import freerails.move.premove.PreMove;
+import freerails.move.premove.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.network.movereceiver.MoveReceiver;
 
 // TODO what is this good for?
 /**
@@ -36,7 +35,7 @@ public interface UntriedMoveReceiver extends MoveReceiver {
     MoveStatus tryDoMove(Move move);
 
     /**
-     * @param preMove
+     * @param moveGenerator
      */
-    void processPreMove(PreMove preMove);
+    void processPreMove(MoveGenerator moveGenerator);
 }

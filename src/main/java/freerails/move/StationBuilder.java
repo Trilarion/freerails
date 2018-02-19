@@ -16,11 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.move;
 
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.premove.AddStationPreMove;
+import freerails.controller.MoveExecutor;
+import freerails.move.premove.AddStationMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
@@ -33,9 +32,6 @@ import java.util.NoSuchElementException;
 /**
  * Class to build a station at a given point, names station after nearest city.
  * If that name is taken then a "Junction" or "Siding" is added to the name.
- *
- *
- * Updated 12th April 2003 by Scott Bennett to include nearest city names.
  */
 public class StationBuilder {
 
@@ -64,29 +60,29 @@ public class StationBuilder {
     }
 
     /**
-     * @param p
+     * @param location
      * @return
      */
-    public MoveStatus tryBuildingStation(Vector2D p) {
+    public MoveStatus tryBuildingStation(Vector2D location) {
         ReadOnlyWorld world = executor.getWorld();
 
         FreerailsPrincipal principal = executor.getPrincipal();
-        AddStationPreMove preMove = AddStationPreMove.newStation(p, ruleNumber, principal);
-        Move move = preMove.generateMove(world);
+        AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, principal);
+        Move move = preMove.generate(world);
 
         return executor.tryDoMove(move);
     }
 
     /**
-     * @param p
+     * @param location
      * @return
      */
-    public MoveStatus buildStation(Vector2D p) {
+    public MoveStatus buildStation(Vector2D location) {
         // Only build a station if there is track at the specified point.
-        MoveStatus status = tryBuildingStation(p);
+        MoveStatus status = tryBuildingStation(location);
         if (status.succeeds()) {
             FreerailsPrincipal principal = executor.getPrincipal();
-            AddStationPreMove preMove = AddStationPreMove.newStation(p, ruleNumber, principal);
+            AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, principal);
             return executor.doPreMove(preMove);
         }
 
@@ -102,7 +98,7 @@ public class StationBuilder {
         this.ruleNumber = ruleNumber;
     }
 
-    int getTrackTypeID(String string) {
+    public int getTrackTypeID(String string) {
         ReadOnlyWorld world = executor.getWorld();
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, i);

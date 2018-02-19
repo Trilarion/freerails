@@ -20,6 +20,7 @@ package freerails.move;
 
 import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.move.listmove.ChangeTrainMove;
+import freerails.move.listmove.TransferCargoAtStationMove;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;

@@ -315,16 +315,16 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
     }
 
-    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(playerKey, index, false);
+    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, false);
     }
 
-    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(playerKey, index, true);
+    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, true);
     }
 
-    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
-        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(playerKey, index, false);
+    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
+        if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, false);
     }
 
     void removeCloseButton() {

@@ -70,7 +70,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
-                moveReceiver.process(TimeTickMove.getMove(world));
+                moveReceiver.process(TimeTickMove.generate(world));
 
                 // now do the other updates like moving the trains
                 trainUpdater.moveTrains(world);

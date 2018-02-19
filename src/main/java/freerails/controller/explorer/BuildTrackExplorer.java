@@ -21,7 +21,7 @@
  */
 package freerails.controller.explorer;
 
-import freerails.controller.BuildTrackStrategy;
+import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;

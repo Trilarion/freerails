@@ -40,8 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Inspects incoming moves and generates a user message if
- * appropriate. It is also used to trigger sounds.
+ * Inspects incoming moves and generates a user message if appropriate. It is also used to trigger sounds.
  */
 public class UserMessageGenerator implements MoveReceiver {
 
@@ -72,9 +71,9 @@ public class UserMessageGenerator implements MoveReceiver {
         }
 
         if (move instanceof WorldDiffMove) {
-            WorldDiffMove wdm = (WorldDiffMove) move;
-            if (wdm.getCause() == WorldDiffMoveCause.TrainArrives) {
-                trainArrives(wdm);
+            WorldDiffMove worldDiffMove = (WorldDiffMove) move;
+            if (worldDiffMove.getCause() == WorldDiffMoveCause.TrainArrives) {
+                trainArrives(worldDiffMove);
             }
         } else if (move instanceof ChangeGameSpeedMove) {
             logSpeed();

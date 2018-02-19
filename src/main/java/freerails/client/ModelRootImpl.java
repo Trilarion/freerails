@@ -19,8 +19,8 @@
 package freerails.client;
 
 import freerails.controller.BuildMode;
-import freerails.controller.BuildTrackStrategy;
-import freerails.move.premove.PreMove;
+import freerails.model.track.BuildTrackStrategy;
+import freerails.move.premove.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.network.*;
@@ -71,10 +71,10 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param l
+     * @param moveReceiver
      */
-    public void addCompleteMoveReceiver(MoveReceiver l) {
-        moveFork.addCompleteMoveReceiver(l);
+    public void addCompleteMoveReceiver(MoveReceiver moveReceiver) {
+        moveFork.addCompleteMoveReceiver(moveReceiver);
     }
 
     /**
@@ -85,24 +85,24 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param l
+     * @param listener
      */
-    public void addMapListener(WorldMapListener l) {
-        moveFork.addMapListener(l);
+    public void addMapListener(WorldMapListener listener) {
+        moveFork.addMapListener(listener);
     }
 
     /**
-     * @param l
+     * @param listener
      */
-    public void addPropertyChangeListener(ModelRootListener l) {
-        listeners.add(l);
+    public void addPropertyChangeListener(ModelRootListener listener) {
+        listeners.add(listener);
     }
 
     /**
-     * @param l
+     * @param moveReceiver
      */
-    public void addSplitMoveReceiver(MoveReceiver l) {
-        moveFork.addSplitMoveReceiver(l);
+    public void addSplitMoveReceiver(MoveReceiver moveReceiver) {
+        moveFork.addSplitMoveReceiver(moveReceiver);
     }
 
     /**
@@ -117,13 +117,13 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     }
 
     /**
-     * @param preMove
+     * @param moveGenerator
      * @return
      */
-    public MoveStatus doPreMove(PreMove preMove) {
-        Move move = preMove.generateMove(world);
+    public MoveStatus doPreMove(MoveGenerator moveGenerator) {
+        Move move = moveGenerator.generate(world);
         MoveStatus moveStatus = moveReceiver.tryDoMove(move);
-        moveReceiver.processPreMove(preMove);
+        moveReceiver.processPreMove(moveGenerator);
 
         return moveStatus;
     }

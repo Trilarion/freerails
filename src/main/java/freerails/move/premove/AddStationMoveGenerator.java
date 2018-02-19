@@ -21,11 +21,12 @@
  */
 package freerails.move.premove;
 
-import freerails.controller.CalcCargoSupplyRateAtStation;
-import freerails.controller.NearestCityFinder;
-import freerails.controller.VerifyStationName;
+import freerails.model.station.CalculateCargoSupplyRateAtStation;
+import freerails.model.terrain.NearestCityFinder;
+import freerails.model.station.VerifyStationName;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
+import freerails.move.listmove.AddStationMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vector2D;
@@ -45,15 +46,15 @@ import java.util.NoSuchElementException;
 /**
  * Generates a move that adds or upgrades a station.
  */
-public class AddStationPreMove implements PreMove {
+public class AddStationMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 3258131349411148085L;
-    private final Vector2D p;
+    private final Vector2D location;
     private final int ruleNumber;
     private final FreerailsPrincipal principal;
 
-    private AddStationPreMove(Vector2D p, int trackRule, FreerailsPrincipal principal) {
-        this.p = p;
+    private AddStationMoveGenerator(Vector2D location, int trackRule, FreerailsPrincipal principal) {
+        this.location = location;
         ruleNumber = trackRule;
         this.principal = principal;
     }
@@ -64,26 +65,26 @@ public class AddStationPreMove implements PreMove {
      * @param principal
      * @return
      */
-    public static AddStationPreMove newStation(Vector2D p, int trackRule, FreerailsPrincipal principal) {
-        return new AddStationPreMove(p, trackRule, principal);
+    public static AddStationMoveGenerator newStation(Vector2D p, int trackRule, FreerailsPrincipal principal) {
+        return new AddStationMoveGenerator(p, trackRule, principal);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof AddStationPreMove)) return false;
+        if (!(obj instanceof AddStationMoveGenerator)) return false;
 
-        final AddStationPreMove addStationPreMove = (AddStationPreMove) obj;
+        final AddStationMoveGenerator addStationPreMove = (AddStationMoveGenerator) obj;
 
         if (ruleNumber != addStationPreMove.ruleNumber) return false;
-        if (!p.equals(addStationPreMove.p)) return false;
+        if (!location.equals(addStationPreMove.location)) return false;
         return principal.equals(addStationPreMove.principal);
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = p.hashCode();
+        result = location.hashCode();
         result = 29 * result + ruleNumber;
         result = 29 * result + principal.hashCode();
         return result;
@@ -93,27 +94,27 @@ public class AddStationPreMove implements PreMove {
      * @param world
      * @return
      */
-    public Move generateMove(ReadOnlyWorld world) {
+    public Move generate(ReadOnlyWorld world) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
 
-        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(p);
+        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(location);
         String cityName;
         String stationName;
 
-        FullTerrainTile ft = (FullTerrainTile) world.getTile(p);
+        FullTerrainTile ft = (FullTerrainTile) world.getTile(location);
         TrackPiece before = ft.getTrackPiece();
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 
         int owner = ChangeTrackPieceCompositeMove.getOwner(principal, world);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, ruleNumber);
-        Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, p);
+        Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
 
         CompositeMove move;
 
         if (!oldTile.getTrackPiece().getTrackRule().isStation()) {
             // There isn't already a station here, we need to pick a name and
             // add an entry to the station list.
-            NearestCityFinder nearestCityFinder = new NearestCityFinder(world, p);
+            NearestCityFinder nearestCityFinder = new NearestCityFinder(world, location);
             try {
                 cityName = nearestCityFinder.findNearestCity();
 
@@ -128,7 +129,7 @@ public class AddStationPreMove implements PreMove {
             }
 
             // check the terrain to see if we can build a station on it...
-            move = AddStationMove.generateMove(world, stationName, p, upgradeTrackMove, principal);
+            move = AddStationMove.generateMove(world, stationName, location, upgradeTrackMove, principal);
             move = addSupplyAndDemand(move, world);
             move = transactionsGenerator.addTransactions(move);
         } else {
@@ -152,8 +153,8 @@ public class AddStationPreMove implements PreMove {
 
                 if (move.getKey().equals(PlayerKey.Stations)) {
                     Station station = (Station) move.getAfter();
-                    CalcCargoSupplyRateAtStation supplyRate;
-                    supplyRate = new CalcCargoSupplyRateAtStation(world, station.location, ruleNumber);
+                    CalculateCargoSupplyRateAtStation supplyRate;
+                    supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location, ruleNumber);
                     Station stationAfter = supplyRate.calculations(station);
                     moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPrincipal());
                 }

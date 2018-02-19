@@ -16,16 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.model.station;
 
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.station.Station;
 
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class to verify that the chosen name for a station hasn't already been taken
@@ -36,7 +36,7 @@ public class VerifyStationName {
 
     private final ReadOnlyWorld world;
     private final String nameToVerify;
-    private final LinkedList<String> stationAlternatives;
+    private final List<String> stationAlternatives = Arrays.asList("Junction", "Siding", "North", "East", "South", "West");
 
     /**
      * @param world
@@ -45,14 +45,6 @@ public class VerifyStationName {
     public VerifyStationName(ReadOnlyWorld world, String name) {
         this.world = world;
         nameToVerify = name;
-        stationAlternatives = new LinkedList<>();
-
-        stationAlternatives.add("Junction");
-        stationAlternatives.add("Siding");
-        stationAlternatives.add("North");
-        stationAlternatives.add("East");
-        stationAlternatives.add("South");
-        stationAlternatives.add("West");
     }
 
     /**
@@ -63,7 +55,7 @@ public class VerifyStationName {
         boolean found;
         String tempName = null;
 
-        found = checkStationExists(appropriateName);
+        found = existsStationName(appropriateName);
 
         if (!found) {
             return appropriateName;
@@ -72,7 +64,7 @@ public class VerifyStationName {
         // name
         for (String stationAlternative : stationAlternatives) {
             tempName = appropriateName + ' ' + stationAlternative;
-            found = checkStationExists(tempName);
+            found = existsStationName(tempName);
             if (!found) {
                 return tempName;
             }
@@ -83,24 +75,23 @@ public class VerifyStationName {
         while (found) {
             j++;
             tempName = appropriateName + "Station #" + j;
-            found = checkStationExists(tempName);
+            found = existsStationName(tempName);
         }
 
+        // TODO could it be we still don't have a valid one?
         return tempName;
     }
 
-    private boolean checkStationExists(String name) {
-        Station tempStation;
-
+    private boolean existsStationName(String name) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
-            while (wi.next()) { // loop over non null stations
-                tempStation = (Station) wi.getElement();
+            while (worldIterator.next()) { // loop over non null stations
+                Station station = (Station) worldIterator.getElement();
 
-                if ((name).equals(tempStation.getStationName())) {
+                if (name.equals(station.getStationName())) {
                     // station already exists with that name
                     return true;
                 }

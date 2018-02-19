@@ -217,7 +217,7 @@ public class WorldDiffMove implements MapUpdateMove {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
             Serializable tile = undo ? diff.getBefore() : diff.getAfter();
-            world.setTile(diff.getP(), tile);
+            world.setTile(diff.getLocation(), tile);
         }
     }
 
@@ -277,7 +277,7 @@ public class WorldDiffMove implements MapUpdateMove {
     private MoveStatus tryMapChanges(ReadOnlyWorld world, boolean undo) {
         for (int i = 0; i < diffs.size(); i++) {
             MapDiff diff = diffs.get(i);
-            Serializable actual = world.getTile(diff.getP());
+            Serializable actual = world.getTile(diff.getLocation());
             Serializable expected = undo ? diff.getAfter() : diff.getBefore();
             if (!actual.equals(expected)) {
                 return MoveStatus.moveFailed("expected =" + expected + ", actual = " + actual);

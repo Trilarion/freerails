@@ -24,7 +24,7 @@ import freerails.client.renderer.map.MapViewComponent;
 import freerails.controller.BuildTrackController;
 import freerails.client.view.*;
 import freerails.controller.BuildMode;
-import freerails.controller.BuildTrackStrategy;
+import freerails.model.track.BuildTrackStrategy;
 import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;

@@ -523,37 +523,37 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
          * After building station show supply and demand
          */
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
-        if (PlayerKey.Trains == playerKey && rightPrincipal) {
+        if (PlayerKey.Trains == key && rightPrincipal) {
             showTrainOrders(index);
-        } else if (PlayerKey.Stations == playerKey && rightPrincipal) {
+        } else if (PlayerKey.Stations == key && rightPrincipal) {
             showStationInfo(index);
         }
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 }

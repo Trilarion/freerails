@@ -22,8 +22,8 @@ import freerails.client.launcher.LauncherFrame;
 import freerails.controller.*;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.PreMoveStatus;
-import freerails.move.premove.PreMove;
+import freerails.move.TryMoveStatus;
+import freerails.move.premove.MoveGenerator;
 import freerails.network.*;
 import freerails.network.gameserver.GameServer;
 import freerails.network.message.MessageToClient;
@@ -133,7 +133,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Subclasses should override this method if they need to respond to the
      * world being changed.
      */
-    protected void newWorld(World w) {}
+    protected void newWorld(World world) {}
 
     public void setProperty(ClientProperty propertyName, Serializable value) {
         properties.put(propertyName.name(), value);
@@ -205,12 +205,12 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         } else if (message instanceof MoveStatus) {
             MoveStatus moveStatus = (MoveStatus) message;
             committer.fromServer(moveStatus);
-        } else if (message instanceof PreMove) {
-            PreMove preMove = (PreMove) message;
-            Move move = committer.fromServer(preMove);
+        } else if (message instanceof MoveGenerator) {
+            MoveGenerator moveGenerator = (MoveGenerator) message;
+            Move move = committer.fromServer(moveGenerator);
             moveFork.process(move);
-        } else if (message instanceof PreMoveStatus) {
-            PreMoveStatus pms = (PreMoveStatus) message;
+        } else if (message instanceof TryMoveStatus) {
+            TryMoveStatus pms = (TryMoveStatus) message;
             committer.fromServer(pms);
         } else {
             logger.debug(message.toString());
@@ -248,12 +248,12 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * @param preMove
+     * @param moveGenerator
      */
-    public void processPreMove(PreMove preMove) {
-        Move move = committer.toServer(preMove);
+    public void processPreMove(MoveGenerator moveGenerator) {
+        Move move = committer.toServer(moveGenerator);
         moveFork.process(move);
-        write(preMove);
+        write(moveGenerator);
     }
 
     /**

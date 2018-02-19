@@ -74,7 +74,7 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
 
     @Override
     public String toString() {
-        return "Vector2D{" + x + ", " + y + '}';
+        return "(" + x + ", " + y + ")";
     }
 
     public static Vector2D add(Vector2D a, Vector2D b) {

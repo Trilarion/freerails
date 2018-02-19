@@ -25,7 +25,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
-import freerails.controller.StationBuilder;
+import freerails.move.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;

@@ -18,7 +18,7 @@
 
 package freerails.server;
 
-import freerails.controller.CalcCargoSupplyRateAtStation;
+import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.move.listmove.ChangeStationMove;
 import freerails.move.Move;
 import freerails.network.movereceiver.MoveReceiver;
@@ -58,8 +58,8 @@ public class SupplyAtStationsUpdater {
 
             while (iterator.next()) {
                 Station stationBefore = (Station) iterator.getElement();
-                CalcCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalcCargoSupplyRateAtStation(world, stationBefore.location);
+                CalculateCargoSupplyRateAtStation supplyRate;
+                supplyRate = new CalculateCargoSupplyRateAtStation(world, stationBefore.location);
 
                 Station stationAfter = supplyRate.calculations(stationBefore);
 

@@ -19,7 +19,6 @@
 package freerails.move;
 
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
 import freerails.model.player.FreerailsPrincipal;
@@ -33,39 +32,34 @@ public class ChangeGameSpeedMove implements Move {
     private final GameSpeed oldSpeed;
     private final GameSpeed newSpeed;
 
-    private ChangeGameSpeedMove(GameSpeed before, GameSpeed after) {
-        oldSpeed = before;
-        newSpeed = after;
+    public ChangeGameSpeedMove(GameSpeed oldSpeed, GameSpeed newSpeed) {
+        this.oldSpeed = oldSpeed;
+        this.newSpeed = newSpeed;
     }
 
-    /**
-     * @param world
-     * @param newGameSpeed
-     * @return
-     */
-    public static Move getMove(ReadOnlyWorld world, GameSpeed newGameSpeed) {
-        return new ChangeGameSpeedMove((GameSpeed) world.get(WorldItem.GameSpeed), newGameSpeed);
-    }
-
+    // TODO could this also be private?
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        if (world.get(WorldItem.GameSpeed).equals(oldSpeed)) {
+        GameSpeed actualSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed));
+
+        // check that old speed and actual speed are consistent
+        if (actualSpeed.equals(oldSpeed)) {
             return MoveStatus.MOVE_OK;
         }
-        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + ((GameSpeed) world.get(WorldItem.GameSpeed)).getSpeed();
-
+        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + actualSpeed.getSpeed();
         return MoveStatus.moveFailed(string);
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        GameSpeed speed = ((GameSpeed) world.get(WorldItem.GameSpeed));
+        GameSpeed actualSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed));
 
-        if (speed.equals(newSpeed)) {
+        if (actualSpeed.equals(newSpeed)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed("Expected " + newSpeed + ", found " + speed);
+        return MoveStatus.moveFailed("Expected " + newSpeed + ", found " + actualSpeed);
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        // TODO is this the convention to try exactly before?
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.succeeds()) {
@@ -76,6 +70,7 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+        // TODO is this the convention to try exactly before
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.succeeds()) {

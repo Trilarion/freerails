@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.move.premove.PreMove;
+import freerails.move.premove.MoveGenerator;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -51,24 +51,26 @@ import java.io.Serializable;
  *
  * @see MoveStatus
  * @see World
- * @see PreMove
+ * @see MoveGenerator
  */
 public interface Move extends Serializable {
 
+    // TODO when are we trying it, in the beginning of doMove itself or also before
     /**
      * Tests whether this Move can be executed on the specified world object.
      *
-     * This method should leave the world object unchanged.
+     * This method must leave the world object unchanged.
      */
     MoveStatus tryDoMove(World world, FreerailsPrincipal principal);
 
     /**
      * Tests whether this Move can be undone on the specified world object.
      *
-     * This method should leave the world object unchanged.
+     * This method must leave the world object unchanged.
      */
     MoveStatus tryUndoMove(World world, FreerailsPrincipal principal);
 
+    // TODO does this method also has to tryDoMove at the beginning
     /**
      * Executes this move on the specified world object.
      */

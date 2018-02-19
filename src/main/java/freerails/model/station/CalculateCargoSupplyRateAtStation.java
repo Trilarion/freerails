@@ -16,17 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.model.station;
 
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.WorldConstants;
-import freerails.model.station.Station;
-import freerails.model.station.StationCargoConversion;
-import freerails.model.station.StationDemand;
-import freerails.model.station.StationSupply;
 import freerails.model.terrain.*;
 import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
@@ -40,15 +36,15 @@ import java.util.List;
  * Probes the tiles adjacent to a station for what cargo they supply,
  * demand, and convert and then returns a vector of these rates.
  */
-public class CalcCargoSupplyRateAtStation {
+public class CalculateCargoSupplyRateAtStation {
 
-    private static final Logger logger = Logger.getLogger(CalcCargoSupplyRateAtStation.class.getName());
+    private static final Logger logger = Logger.getLogger(CalculateCargoSupplyRateAtStation.class.getName());
 
     private final Integer[] converts;
     private final int[] demand;
     private final List<CargoElementObject> supplies;
     private final ReadOnlyWorld world;
-    private final Vector2D p;
+    private final Vector2D location;
     private final int stationRadius;
 
     /**
@@ -56,9 +52,9 @@ public class CalcCargoSupplyRateAtStation {
      *
      * @param trackRuleNo the station type.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location, int trackRuleNo) {
+    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location, int trackRuleNo) {
         this.world = world;
-        this.p = location;
+        this.location = location;
 
         TrackRule trackRule = (TrackRule) this.world.get(SharedKey.TrackRules, trackRuleNo);
         stationRadius = trackRule.getStationRadius();
@@ -74,7 +70,7 @@ public class CalcCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station already exists.
      */
-    public CalcCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location) {
+    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location) {
         this(world, location, findTrackRule(location, world));
     }
 
@@ -168,7 +164,7 @@ public class CalcCargoSupplyRateAtStation {
     private List<CargoElementObject> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
-        Rectangle stationRadiusRect = new Rectangle(p.x - stationRadius, p.y - stationRadius, stationDiameter, stationDiameter);
+        Rectangle stationRadiusRect = new Rectangle(location.x - stationRadius, location.y - stationRadius, stationDiameter, stationDiameter);
         Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 

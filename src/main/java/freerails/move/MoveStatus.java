@@ -28,7 +28,7 @@ public class MoveStatus implements Serializable {
     /**
      *
      */
-    public static final MoveStatus MOVE_OK = new MoveStatus(true, "Move accepted");
+    public static final MoveStatus MOVE_OK = new MoveStatus(true, null);
     private static final long serialVersionUID = 3258129171879309624L;
 
     private final boolean status;

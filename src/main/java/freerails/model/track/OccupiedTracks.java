@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move;
+package freerails.model.track;
 
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;

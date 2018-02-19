@@ -287,9 +287,10 @@ public class ServerControlModel implements ModelRootListener {
             int speed2set = speed;
             if (speed == 0) { // pausing/unpausing
 
+                // TODO this is not nice, do the conversion of values for the display not like this
                 speed2set = -1 * getTargetTicksPerSecond();
             }
-            modelRoot.doMove(ChangeGameSpeedMove.getMove(modelRoot.getWorld(), new GameSpeed(speed2set)));
+            modelRoot.doMove(new ChangeGameSpeedMove((GameSpeed) modelRoot.getWorld().get(WorldItem.GameSpeed), new GameSpeed(speed2set)));
         }
     }
 

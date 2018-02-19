@@ -21,13 +21,11 @@
  *
  */
 
-package freerails.controller;
+package freerails.model.track;
 
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.terrain.TerrainType;
-import freerails.model.track.TrackCategories;
-import freerails.model.track.TrackRule;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -21,7 +21,7 @@
  */
 package freerails.network.movereceiver;
 
-import freerails.move.premove.PreMove;
+import freerails.move.premove.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.Utils;
@@ -59,9 +59,9 @@ public class SimpleMoveReciever implements UntriedMoveReceiver {
     }
 
     /**
-     * @param preMove
+     * @param moveGenerator
      */
-    public void processPreMove(PreMove preMove) {
-        process(preMove.generateMove(world));
+    public void processPreMove(MoveGenerator moveGenerator) {
+        process(moveGenerator.generate(world));
     }
 }

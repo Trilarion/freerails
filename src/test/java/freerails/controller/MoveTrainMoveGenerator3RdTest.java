@@ -24,7 +24,8 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.move.MoveStatus;
-import freerails.move.premove.MoveTrainPreMove;
+import freerails.move.StationBuilder;
+import freerails.move.premove.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.model.train.PositionOnTrack;
@@ -37,7 +38,7 @@ import junit.framework.TestCase;
 /**
  * Unit test for MoveTrainPreMove, tests path finding.
  */
-public class MoveTrainPreMove3rdTest extends TestCase {
+public class MoveTrainMoveGenerator3RdTest extends TestCase {
 
     private final TileTransition[] line1 = {TileTransition.EAST, TileTransition.NORTH_EAST, TileTransition.EAST, TileTransition.NORTH_EAST, TileTransition.NORTH};
     private final TileTransition[] line2 = {TileTransition.WEST, TileTransition.WEST, TileTransition.SOUTH_WEST, TileTransition.SOUTH, TileTransition.SOUTH_EAST, TileTransition.EAST};
@@ -84,7 +85,7 @@ public class MoveTrainPreMove3rdTest extends TestCase {
         PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vector2D(10, 10), TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
-            TileTransition actual = MoveTrainPreMove.findNextStep(world, positionOnTrack, target1);
+            TileTransition actual = MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target1);
             assertEquals(String.valueOf(i), expected, actual);
             positionOnTrack.move(expected);
         }

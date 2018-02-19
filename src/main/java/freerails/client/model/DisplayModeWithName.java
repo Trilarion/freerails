@@ -20,7 +20,7 @@
  * DisplayModeWithName.java
  *
  */
-package freerails.controller;
+package freerails.client.model;
 
 /**
  * Stores a DisplayModeWithName and provides a customised implementation of toString that can be used in menus.

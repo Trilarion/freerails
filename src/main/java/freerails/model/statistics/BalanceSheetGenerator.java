@@ -16,9 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.model.statistics;
 
-import freerails.model.*;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -31,24 +30,24 @@ import freerails.model.world.ReadOnlyWorld;
  */
 public class BalanceSheetGenerator {
 
-    public final Stats total;
-    public final Stats ytd;
+    public final Statistics total;
+    public final Statistics ytd;
 
     /**
      * @param world
      * @param principal
      */
     public BalanceSheetGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
-        GameCalendar cal = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
         // Calculate totals
         GameTime time = world.currentTime();
-        final int startYear = cal.getYear(time.getTicks());
-        GameTime startOfYear = new GameTime(cal.getTicks(startYear));
+        final int startYear = calendar.getYear(time.getTicks());
+        GameTime startOfYear = new GameTime(calendar.getTicks(startYear));
         GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
-        total = new Stats(world, principal, totalTimeInterval);
+        total = new Statistics(world, principal, totalTimeInterval);
 
         GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
-        ytd = new Stats(world, principal, ytdTimeInterval);
+        ytd = new Statistics(world, principal, ytdTimeInterval);
     }
 
 }

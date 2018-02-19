@@ -20,7 +20,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
-import freerails.move.premove.MoveTrainPreMove;
+import freerails.move.premove.MoveTrainMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
@@ -119,7 +119,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return MoveStatus.MOVE_OK;
     }
 
-    private static boolean noDiagonalTrackConflicts(Vector2D point, int trackTemplate, World w) {
+    private static boolean noDiagonalTrackConflicts(Vector2D point, int trackTemplate, World world) {
         /*
          * This method is needs replacing. It only deals with flat track pieces,
          * and is rather hard to make sense of. LL
@@ -138,11 +138,11 @@ public final class ChangeTrackPieceMove implements TrackMove {
         int cornersTemplate = Integer.parseInt(templateString, 2);
         trackTemplate = trackTemplate & cornersTemplate;
 
-        Dimension mapSize = new Dimension(w.getMapWidth(), w.getMapHeight());
+        Dimension mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
 
         // Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
-            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Vector2D(point.x, point.y - 1));
+            FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vector2D(point.x, point.y - 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateAbove = tp.getTrackGraphicID();
         } else {
@@ -150,7 +150,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         if ((point.y + 1) < mapSize.height) {
-            FullTerrainTile ft = (FullTerrainTile) w.getTile(new Vector2D(point.x, point.y + 1));
+            FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vector2D(point.x, point.y + 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateBelow = tp.getTrackGraphicID();
         } else {
@@ -277,7 +277,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
     }
 
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveTrainPreMove.clearCache();
+        MoveTrainMoveGenerator.clearCache();
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (!moveStatus.succeeds()) {
@@ -297,7 +297,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
     }
 
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveTrainPreMove.clearCache();
+        MoveTrainMoveGenerator.clearCache();
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (!moveStatus.succeeds()) {

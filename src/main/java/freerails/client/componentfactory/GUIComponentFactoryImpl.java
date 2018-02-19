@@ -84,13 +84,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private ReadOnlyWorld world;
 
     /**
-     * @param mr
-     * @param ar
+     * @param modelRoot
+     * @param actionRoot
      */
-    public GUIComponentFactoryImpl(ModelRootImpl mr, ActionRoot ar) {
-        modelRoot = mr;
-        actionRoot = ar;
-        userInputOnMapController = new UserInputOnMapController(modelRoot, ar);
+    public GUIComponentFactoryImpl(ModelRootImpl modelRoot, ActionRoot actionRoot) {
+        this.modelRoot = modelRoot;
+        this.actionRoot = actionRoot;
+        userInputOnMapController = new UserInputOnMapController(this.modelRoot, actionRoot);
         buildMenu = new BuildMenu();
         mapViewJComponent = new MapViewComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
@@ -107,17 +107,17 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         cashlabel = new CashLabel();
 
         clientFrame = new ClientFrame(this);
-        dialogueBoxController = new DialogueBoxController(clientFrame, modelRoot);
-        actionRoot.setDialogueBoxController(dialogueBoxController);
+        dialogueBoxController = new DialogueBoxController(clientFrame, this.modelRoot);
+        this.actionRoot.setDialogueBoxController(dialogueBoxController);
 
-        modelRoot.addSplitMoveReceiver(move -> {
+        this.modelRoot.addSplitMoveReceiver(move -> {
             if (move instanceof ChangeGameSpeedMove) {
                 ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
                 for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
-                    if (actionName.equals(actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed()))) {
+                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed()))) {
                         speedActions.setSelectedItem(actionName);
                     }
 
@@ -125,8 +125,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
                 }
             }
         });
-        userMessageGenerator = new UserMessageGenerator(modelRoot, actionRoot);
-        modelRoot.addCompleteMoveReceiver(userMessageGenerator);
+        userMessageGenerator = new UserMessageGenerator(this.modelRoot, this.actionRoot);
+        this.modelRoot.addCompleteMoveReceiver(userMessageGenerator);
     }
 
     private void countStations() {
@@ -408,39 +408,39 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
-        if (PlayerKey.Trains == playerKey && rightPrincipal) {
+        if (PlayerKey.Trains == key && rightPrincipal) {
             countTrains();
-        } else if (PlayerKey.Stations == playerKey && rightPrincipal) {
+        } else if (PlayerKey.Stations == key && rightPrincipal) {
             countStations();
         }
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 
     /**
-     * @param playerKey
+     * @param key
      * @param index
      * @param principal
      */
-    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
-        if (PlayerKey.Trains == playerKey && rightPrincipal) {
+        if (PlayerKey.Trains == key && rightPrincipal) {
             countTrains();
-        } else if (PlayerKey.Stations == playerKey && rightPrincipal) {
+        } else if (PlayerKey.Stations == key && rightPrincipal) {
             countStations();
         }
     }
@@ -501,8 +501,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
+        // TODO this is so that initially the game speed is displayed, this could also be done just by moves
         int gameSpeed = ((GameSpeed) this.world.get(WorldItem.GameSpeed)).getSpeed();
-
         // Set the selected game speed radio button.
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);

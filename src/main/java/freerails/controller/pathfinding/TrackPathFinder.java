@@ -22,7 +22,7 @@
 package freerails.controller.pathfinding;
 
 import freerails.controller.explorer.BuildTrackExplorer;
-import freerails.controller.BuildTrackStrategy;
+import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;

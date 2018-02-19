@@ -23,6 +23,7 @@ package freerails.model.game;
 
 import java.io.Serializable;
 
+// TODO possible range of values?, maybe split in two properties (boolean pause, speed)
 /**
  * Represents actual game speed. If the game speed {@code speed}
  * is lesser then zero, game is paused. After unpausing, the speed should be

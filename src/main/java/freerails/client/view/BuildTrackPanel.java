@@ -29,7 +29,7 @@ import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
 import freerails.client.model.StationBuildModel;
 import freerails.controller.BuildMode;
-import freerails.controller.BuildTrackStrategy;
+import freerails.model.track.BuildTrackStrategy;
 import freerails.client.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;

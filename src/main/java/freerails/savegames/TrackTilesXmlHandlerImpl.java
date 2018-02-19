@@ -160,11 +160,11 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
     }
 
     /**
-     * @param w
+     * @param world
      */
-    public void addTrackRules(World w) {
-        for (TrackRule r : ruleList) {
-            w.add(SharedKey.TrackRules, r);
+    public void addTrackRules(World world) {
+        for (TrackRule trackRule : ruleList) {
+            world.add(SharedKey.TrackRules, trackRule);
         }
     }
 

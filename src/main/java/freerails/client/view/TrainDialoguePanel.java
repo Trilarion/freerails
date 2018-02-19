@@ -161,14 +161,14 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
-    public void listUpdated(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
-        newTrainSchedulePanel1.listUpdated(playerKey, index, principal);
+    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+        newTrainSchedulePanel1.listUpdated(key, index, principal);
     }
 
-    public void itemAdded(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 
-    public void itemRemoved(PlayerKey playerKey, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
     }
 
     void setTrainDetailsButtonActionListener(ActionListener l) {

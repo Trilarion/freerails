@@ -22,7 +22,7 @@ import freerails.client.ModelRootImpl;
 import freerails.client.model.ServerControlModel;
 import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.RendererRoot;
-import freerails.controller.StationBuilder;
+import freerails.move.StationBuilder;
 import freerails.controller.TrackMoveProducer;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;

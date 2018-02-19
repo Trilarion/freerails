@@ -23,6 +23,7 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.client.SoundManager;
 import freerails.controller.pathfinding.*;
+import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;

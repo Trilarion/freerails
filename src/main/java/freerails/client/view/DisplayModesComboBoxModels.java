@@ -22,7 +22,7 @@
  */
 package freerails.client.view;
 
-import freerails.controller.DisplayModeWithName;
+import freerails.client.model.DisplayModeWithName;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;

@@ -25,7 +25,7 @@ package freerails.move.mapupdatemove;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.*;
-import freerails.move.premove.MoveTrainPreMove;
+import freerails.move.premove.MoveTrainMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.finances.TransactionCategory;
@@ -210,12 +210,12 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     @Override
-    public MoveStatus compositeTest(World w) {
+    public MoveStatus compositeTest(World world) {
         // must connect to existing track
-        GameRules rules = (GameRules) w.get(WorldItem.GameRules);
+        GameRules rules = (GameRules) world.get(WorldItem.GameRules);
 
         if (rules.isMustConnectToExistingTrack()) {
-            if (hasAnyTrackBeenBuilt(w, builder)) {
+            if (hasAnyTrackBeenBuilt(world, builder)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
                     ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);
@@ -238,13 +238,13 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
     @Override
     public MoveStatus doMove(World world, FreerailsPrincipal principal) {
-        MoveTrainPreMove.clearCache();
+        MoveTrainMoveGenerator.clearCache();
         return super.doMove(world, principal);
     }
 
     @Override
     public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
-        MoveTrainPreMove.clearCache();
+        MoveTrainMoveGenerator.clearCache();
         return super.undoMove(world, principal);
     }
 }

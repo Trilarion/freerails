@@ -19,10 +19,10 @@
 /*
  *
  */
-package freerails.move;
+package freerails.move.listmove;
 
-import freerails.move.listmove.AddCargoBundleMove;
-import freerails.move.listmove.AddItemToListMove;
+import freerails.move.CompositeMove;
+import freerails.move.Move;
 import freerails.util.Vector2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;

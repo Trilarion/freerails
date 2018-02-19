@@ -21,9 +21,8 @@
  */
 package freerails.network;
 
-import freerails.move.premove.PreMove;
-import freerails.move.PreMoveStatus;
-import freerails.move.premove.TimeTickPreMove;
+import freerails.move.premove.MoveGenerator;
+import freerails.move.TryMoveStatus;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.TimeTickMove;
@@ -31,6 +30,7 @@ import freerails.model.game.GameTime;
 import freerails.model.world.World;
 import freerails.model.world.FullWorld;
 import freerails.model.player.Player;
+import freerails.move.premove.TimeTickMoveGenerator;
 import freerails.util.Vector2D;
 import junit.framework.TestCase;
 
@@ -186,10 +186,10 @@ public class MovePrecommitterTest extends TestCase {
      *
      */
     public void testPreMoves1() {
-        PreMove preMove = TimeTickPreMove.INSTANCE;
+        MoveGenerator moveGenerator = TimeTickMoveGenerator.INSTANCE;
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.advancedTime();
-        committer.fromServer(preMove);
+        committer.fromServer(moveGenerator);
         assertEquals(newTime, getTime());
     }
 
@@ -197,18 +197,18 @@ public class MovePrecommitterTest extends TestCase {
      *
      */
     public void testPreMoves2() {
-        PreMove preMove = TimeTickPreMove.INSTANCE;
+        MoveGenerator moveGenerator = TimeTickMoveGenerator.INSTANCE;
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.advancedTime();
 
         // Send a premove to the server.
-        committer.toServer(preMove);
+        committer.toServer(moveGenerator);
         assertEquals(0, committer.uncomitted.size());
         assertEquals(1, committer.precomitted.size());
         assertEquals(newTime, getTime());
 
         // The server accepts it..
-        committer.fromServer(PreMoveStatus.PRE_MOVE_OK);
+        committer.fromServer(TryMoveStatus.TRY_MOVE_OK);
         assertEquals(0, committer.uncomitted.size());
         assertEquals(0, committer.precomitted.size());
         assertEquals(newTime, getTime());
@@ -218,18 +218,18 @@ public class MovePrecommitterTest extends TestCase {
      *
      */
     public void testPreMoves3() {
-        PreMove preMove = TimeTickPreMove.INSTANCE;
+        MoveGenerator moveGenerator = TimeTickMoveGenerator.INSTANCE;
         GameTime oldtime = getTime();
         GameTime newTime = oldtime.advancedTime();
 
         // Send a premove to the server.
-        committer.toServer(preMove);
+        committer.toServer(moveGenerator);
         assertEquals(0, committer.uncomitted.size());
         assertEquals(1, committer.precomitted.size());
         assertEquals(newTime, getTime());
 
         // The server rejects it.
-        committer.fromServer(PreMoveStatus.failed("failed"));
+        committer.fromServer(TryMoveStatus.failed("failed"));
         assertEquals(0, committer.uncomitted.size());
         assertEquals(0, committer.precomitted.size());
         assertEquals(oldtime, getTime());

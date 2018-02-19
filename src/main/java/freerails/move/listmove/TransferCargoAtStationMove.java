@@ -16,8 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move;
+package freerails.move.listmove;
 
+import freerails.move.CompositeMove;
+import freerails.move.Move;
 import freerails.move.listmove.ChangeCargoBundleMove;
 
 import java.util.List;

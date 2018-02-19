@@ -31,6 +31,7 @@ import freerails.model.player.Player;
  * Adds a player to the world.
  */
 public class AddPlayerMove implements Move {
+
     private static final long serialVersionUID = 3977580277537322804L;
     private final Player playerToAdd;
 

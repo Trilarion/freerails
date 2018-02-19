@@ -121,14 +121,14 @@ public class ChangeItemInListMove implements ListMove {
     /**
      * @param to
      * @param from
-     * @param w
+     * @param world
      * @return
      */
-    private MoveStatus move(Serializable to, Serializable from, World w) {
-        MoveStatus moveStatus = tryMove(to, from, w);
+    private MoveStatus move(Serializable to, Serializable from, World world) {
+        MoveStatus moveStatus = tryMove(to, from, world);
 
         if (moveStatus.succeeds()) {
-            w.set(principal, listPlayerKey, index, to);
+            world.set(principal, listPlayerKey, index, to);
         }
 
         return moveStatus;

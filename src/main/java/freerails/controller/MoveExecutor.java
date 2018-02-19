@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.premove.PreMove;
+import freerails.move.premove.MoveGenerator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -36,10 +36,10 @@ public interface MoveExecutor {
     MoveStatus doMove(Move move);
 
     /**
-     * @param preMove
+     * @param moveGenerator
      * @return
      */
-    MoveStatus doPreMove(PreMove preMove);
+    MoveStatus doPreMove(MoveGenerator moveGenerator);
 
     /**
      * @param move
