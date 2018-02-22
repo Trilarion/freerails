@@ -25,7 +25,7 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
 import freerails.network.gameserver.FreerailsGameServer;
-import freerails.network.InetConnectionAccepter;
+import freerails.network.IpConnectionAcceptor;
 import freerails.network.LogOnResponse;
 import freerails.savegames.FullSaveGameManager;
 import freerails.server.FullServerGameModel;
@@ -348,7 +348,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     int port = serverInetAddress.getPort();
                     setInfoText("Connecting to server...", InfoMessageType.INFO);
                     LogOnResponse logOnResponse = client.connect(hostname, port, playerName, "password");
-                    if (logOnResponse.isSuccessful()) {
+                    if (logOnResponse.isSuccess()) {
                         setInfoText("Logged on and waiting for game to start.", InfoMessageType.INFO);
                         startThread(client);
                     } else {
@@ -428,7 +428,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         if (isNewGame()) {
             initServer();
         }
-        InetConnectionAccepter accepter = new InetConnectionAccepter(port, server);
+        IpConnectionAcceptor accepter = new IpConnectionAcceptor(server, port);
         /*
          * Note, the thread's name gets set in the run method so there is no
          * point setting it here.
@@ -519,7 +519,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                             try {
                                 if (!isNewGame()) {
                                     initServer();
-                                    server.loadgame("freerails.sav");
+                                    server.loadGame("freerails.sav");
                                 }
                                 prepareToHostNetworkGame(msp.getServerPort());
                             } catch (BindException be) {
@@ -533,7 +533,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                             cop.limitPlayerNames(null);
                         } else {
                             initServer();
-                            server.loadgame(msp.getSaveGameName());
+                            server.loadGame(msp.getSaveGameName());
                             String[] playerNames = server.getPlayerNames();
                             cop.limitPlayerNames(playerNames);
                         }

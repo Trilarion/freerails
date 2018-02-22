@@ -26,7 +26,7 @@ import freerails.client.componentfactory.GUIComponentFactoryImpl;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.client.view.ActionRoot;
-import freerails.controller.ClientProperty;
+import freerails.network.command.ClientProperty;
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldItem;

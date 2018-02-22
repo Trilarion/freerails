@@ -18,10 +18,10 @@
 
 package freerails.client;
 
-import freerails.controller.ClientProperty;
+import freerails.network.command.ClientProperty;
 import freerails.network.AbstractFreerailsServerTestCase;
 import freerails.network.LogOnResponse;
-import freerails.network.message.MessageToClient;
+import freerails.network.command.CommandToClient;
 import freerails.util.ImmutableList;
 
 /**
@@ -39,7 +39,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             FreerailsClient client = new FreerailsClient();
             LogOnResponse response = client.connect(getIpAddress(), getPort(),"name", "password");
-            assertTrue(response.isSuccessful());
+            assertTrue(response.isSuccess());
             assertEquals(1, server.getNumberOpenConnections());
 
             assertMapsAndSaveGamesReceived(client);
@@ -48,13 +48,13 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             // Test 2 : a client that has already logged on.
             FreerailsClient client2 = new FreerailsClient();
             response = client2.connect(getIpAddress(), getPort(), "name","password");
-            assertFalse("The player is already logged on.", response.isSuccessful());
+            assertFalse("The player is already logged on.", response.isSuccess());
             assertEquals(1, server.getNumberOpenConnections());
 
             // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
             response = client3.connect(getIpAddress(), getPort(), "name3","password");
-            assertTrue(response.isSuccessful());
+            assertTrue(response.isSuccess());
             assertEquals(2, server.getNumberOpenConnections());
 
             // read list of connected clients.
@@ -71,8 +71,8 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
     }
 
     private void assertConnectClientsEquals(FreerailsClient client, ImmutableList<String> expectedPlayerNames) {
-        MessageToClient messageToClient = (MessageToClient) client.read();
-        messageToClient.execute(client);
+        CommandToClient commandToClient = (CommandToClient) client.read();
+        commandToClient.execute(client);
 
         ImmutableList<String> actualPlayerNames = (ImmutableList<String>) client.getProperty(ClientProperty.CONNECTED_CLIENTS);
         assertNotNull(actualPlayerNames);
@@ -81,10 +81,10 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
     private void assertMapsAndSaveGamesReceived(FreerailsClient client) {
         // 2 commands to read.
-        MessageToClient messageToClient = (MessageToClient) client.read();
-        messageToClient.execute(client);
-        messageToClient = (MessageToClient) client.read();
-        messageToClient.execute(client);
+        CommandToClient commandToClient = (CommandToClient) client.read();
+        commandToClient.execute(client);
+        commandToClient = (CommandToClient) client.read();
+        commandToClient.execute(client);
 
         Object maps = client.getProperty(ClientProperty.MAPS_AVAILABLE);
         assertNotNull(maps);

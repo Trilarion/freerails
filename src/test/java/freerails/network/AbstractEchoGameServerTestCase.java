@@ -27,8 +27,9 @@ import junit.framework.TestCase;
  */
 public abstract class AbstractEchoGameServerTestCase extends TestCase {
 
+    final int PORT = 14392;
     final String ipAddress = "127.0.0.1";
-    public InetConnectionAccepter server;
+    public IpConnectionAcceptor server;
     EchoGameServer echoGameServer;
 
     /**
@@ -62,7 +63,7 @@ public abstract class AbstractEchoGameServerTestCase extends TestCase {
          * unspecified port whose number we obtain by calling getLocalPort().
          * This making this change, the problem has not occurred.
          */
-        server = new InetConnectionAccepter(0, echoGameServer);
+        server = new IpConnectionAcceptor(echoGameServer, PORT);
 
         Thread serverThread = new Thread(server);
         serverThread.start();

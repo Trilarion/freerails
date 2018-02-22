@@ -28,18 +28,16 @@ import java.io.Serializable;
 public class EchoGameServerTest extends AbstractEchoGameServerTestCase {
 
     /**
-     * Tests connecting to an EchoGameServer using instances of
-     * InetConnectionToServer.
+     * Tests connecting to an EchoGameServer using instances of IpConnectionToServer.
      */
     public void testConnecting() {
         try {
             assertEquals(0, echoGameServer.getNumberOpenConnections());
 
-            InetConnectionToServer con1 = new InetConnectionToServer(ipAddress, server.getLocalPort());
-            InetConnectionToServer con2 = new InetConnectionToServer(ipAddress, server.getLocalPort());
+            IpConnectionToServer con1 = new IpConnectionToServer(ipAddress, PORT);
+            IpConnectionToServer con2 = new IpConnectionToServer(ipAddress, PORT);
             assertEquals(2, echoGameServer.getNumberOpenConnections());
             con1.writeToServer(new Money(99));
-            con1.flush();
 
             Serializable fs = con2.waitForObject();
             assertEquals(new Money(99), fs);

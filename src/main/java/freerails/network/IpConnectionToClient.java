@@ -1,0 +1,54 @@
+/*
+ * FreeRails
+ * Copyright (C) 2000-2018 The FreeRails Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package freerails.network;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.Socket;
+
+/**
+ * Lets the server send messages to a client over the Internet.
+ */
+public class IpConnectionToClient extends AbstractIpConnection implements ConnectionToClient {
+
+    /**
+     * @param s
+     * @throws IOException
+     */
+    public IpConnectionToClient(Socket s) throws IOException {
+        super(s);
+    }
+
+    public Serializable[] readFromClient() throws IOException {
+        return read();
+    }
+
+    public Serializable waitForObjectFromClient() throws IOException, InterruptedException {
+        return waitForObject();
+    }
+
+    public void writeToClient(Serializable object) throws IOException {
+        send(object);
+    }
+
+    @Override
+    String getThreadName() {
+        return "InetConnectionToClient";
+    }
+}

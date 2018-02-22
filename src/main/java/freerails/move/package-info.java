@@ -53,7 +53,7 @@
  * (3) Consider writing a junit testcase for the move, and if you do, make the
  * testcase a extend freerails.move.AbstractMoveTestCase.</p>
  * (4) If the move depends on properties stored on the world object, consider
- * extending {@link freerails.move.premove.MoveGenerator}.</p>
+ * extending {@link freerails.move.generator.MoveGenerator}.</p>
  * &nbsp;</p>
  */
 package freerails.move;

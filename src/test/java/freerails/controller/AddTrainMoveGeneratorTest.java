@@ -27,7 +27,7 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.move.StationBuilder;
-import freerails.move.premove.AddTrainMoveGenerator;
+import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;

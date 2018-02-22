@@ -29,13 +29,13 @@ import java.io.Serializable;
  */
 public class LocalConnection implements ConnectionToClient, ConnectionToServer {
 
-    public static final String SERVER_IN_SAME_JVM = "server in same JVM";
+    public static final String LOCAL_SERVER_DESCRIPTION = "Local server in the same JVM";
     private final SychronizedQueue fromServer = new SychronizedQueue();
     private final SychronizedQueue fromClient = new SychronizedQueue();
-    private final SynchronizedFlag status = new SynchronizedFlag(true);
+    private final SynchronizedFlag openFlag = new SynchronizedFlag(true);
 
     public Serializable[] readFromClient() throws IOException {
-        if (status.isOpen()) {
+        if (openFlag.isSet()) {
             return fromClient.read();
         }
         throw new IOException();
@@ -47,7 +47,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
                 fromClient.wait();
             }
 
-            if (status.isOpen()) {
+            if (openFlag.isSet()) {
                 return fromClient.getFirst();
             }
             throw new IOException();
@@ -55,7 +55,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
     }
 
     public void writeToClient(Serializable object) throws IOException {
-        if (status.isOpen()) {
+        if (openFlag.isSet()) {
             synchronized (fromServer) {
                 fromServer.write(object);
                 fromServer.notifyAll();
@@ -66,14 +66,14 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
     }
 
     public Serializable[] readFromServer() throws IOException {
-        if (status.isOpen()) {
+        if (openFlag.isSet()) {
             return fromServer.read();
         }
         throw new IOException();
     }
 
     public Serializable waitForObjectFromServer() throws IOException, InterruptedException {
-        if (status.isOpen()) {
+        if (openFlag.isSet()) {
             synchronized (fromServer) {
                 if (fromServer.size() == 0) {
                     fromServer.wait();
@@ -86,7 +86,7 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
     }
 
     public void writeToServer(Serializable object) throws IOException {
-        if (status.isOpen()) {
+        if (openFlag.isSet()) {
             synchronized (fromClient) {
                 fromClient.write(object);
                 fromClient.notifyAll();
@@ -97,17 +97,17 @@ public class LocalConnection implements ConnectionToClient, ConnectionToServer {
     }
 
     public boolean isOpen() {
-        return status.isOpen();
+        return openFlag.isSet();
     }
 
     public synchronized void disconnect() {
-        status.close();
+        openFlag.unset();
     }
 
     /**
      * @return
      */
     public String getServerDetails() {
-        return SERVER_IN_SAME_JVM;
+        return LOCAL_SERVER_DESCRIPTION;
     }
 }

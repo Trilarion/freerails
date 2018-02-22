@@ -20,10 +20,10 @@ package freerails.server;
 
 import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
-import freerails.move.premove.AddTrainMoveGenerator;
-import freerails.move.premove.MoveTrainMoveGenerator;
-import freerails.move.premove.MoveGenerator;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.generator.AddTrainMoveGenerator;
+import freerails.move.generator.MoveTrainMoveGenerator;
+import freerails.move.generator.MoveGenerator;
+import freerails.move.receiver.MoveReceiver;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;

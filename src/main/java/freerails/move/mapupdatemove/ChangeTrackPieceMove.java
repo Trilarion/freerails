@@ -20,7 +20,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
-import freerails.move.premove.MoveTrainMoveGenerator;
+import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;

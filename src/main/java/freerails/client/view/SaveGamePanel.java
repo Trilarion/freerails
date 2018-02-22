@@ -26,8 +26,8 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
-import freerails.network.message.MessageToServer;
-import freerails.network.message.SaveGameMessageToServer;
+import freerails.network.command.CommandToServer;
+import freerails.network.command.SaveGameCommandToServer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -104,7 +104,7 @@ public class SaveGamePanel extends JPanel implements View {
         String filename = fileNameTextField.getText();
         // Save the current game using the string
         modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Saved game " + filename);
-        MessageToServer message2 = new SaveGameMessageToServer(1, filename + ".sav");
+        CommandToServer message2 = new SaveGameCommandToServer(1, filename + ".sav");
 
         modelRoot.sendCommand(message2);
         close.actionPerformed(evt);

@@ -21,14 +21,14 @@ package freerails.client;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
-import freerails.network.movereceiver.SimpleMoveReciever;
+import freerails.move.receiver.TestMoveReceiver;
 import freerails.savegames.MapCreator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
-import freerails.network.movereceiver.MoveChainFork;
-import freerails.network.movereceiver.UntriedMoveReceiver;
+import freerails.move.receiver.MoveChainFork;
+import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
@@ -76,7 +76,7 @@ class DialogueBoxTester extends JFrame {
 
         World world = new FullWorld(new Vector2D(200, 200));
 
-        UntriedMoveReceiver dummyReceiver = new SimpleMoveReciever(world);
+        UntriedMoveReceiver dummyReceiver = new TestMoveReceiver(world);
 
         modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(new MoveChainFork());

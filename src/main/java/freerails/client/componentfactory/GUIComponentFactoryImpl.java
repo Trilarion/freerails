@@ -518,7 +518,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         String name = modelRoot.getPrincipal().getName();
         String serverDetails = (String) modelRoot.getProperty(ModelRootProperty.SERVER);
         String frameTitle;
-        if (serverDetails.equals(LocalConnection.SERVER_IN_SAME_JVM)) {
+        if (serverDetails.equals(LocalConnection.LOCAL_SERVER_DESCRIPTION)) {
             frameTitle = name + " - Freerails";
         } else {
             frameTitle = name + " - " + serverDetails + " - Freerails";

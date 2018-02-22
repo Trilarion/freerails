@@ -23,7 +23,7 @@ package freerails.server;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;

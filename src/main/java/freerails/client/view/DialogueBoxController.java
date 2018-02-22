@@ -30,8 +30,8 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRootProperty;
 import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
-import freerails.network.message.MessageToServer;
-import freerails.network.message.RefreshListOfGamesMessageToServer;
+import freerails.network.command.CommandToServer;
+import freerails.network.command.RefreshListOfGamesCommandToServer;
 import freerails.util.ImmutableList;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
@@ -227,7 +227,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectSavedGame2Load() {
-        MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
+        CommandToServer refreshGames = new RefreshListOfGamesCommandToServer(2);
         modelRoot.sendCommand(refreshGames);
         LoadGamePanel loadGameJPane = new LoadGamePanel();
         loadGameJPane.setup(modelRoot, vl, closeCurrentDialogue);

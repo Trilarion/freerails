@@ -21,7 +21,7 @@
  */
 package freerails.server;
 
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.World;
 
 // TODO not sure this is really needed

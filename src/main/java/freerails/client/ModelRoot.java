@@ -22,7 +22,7 @@
 package freerails.client;
 
 import freerails.controller.MoveExecutor;
-import freerails.network.message.MessageToServer;
+import freerails.network.command.CommandToServer;
 
 /**
  * Defines methods and constants that GUI classes can use to access shared data.
@@ -32,7 +32,7 @@ public interface ModelRoot extends MoveExecutor {
     /**
      * @param message
      */
-    void sendCommand(MessageToServer message);
+    void sendCommand(CommandToServer message);
 
     /**
      * @param property

@@ -25,7 +25,7 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.move.MoveStatus;
 import freerails.move.StationBuilder;
-import freerails.move.premove.MoveTrainMoveGenerator;
+import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vector2D;
 import freerails.model.train.PositionOnTrack;

@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.move.premove.MoveGenerator;
+import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 

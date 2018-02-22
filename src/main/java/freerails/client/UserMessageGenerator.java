@@ -21,7 +21,7 @@ package freerails.client;
 import freerails.client.view.ActionRoot;
 import freerails.move.*;
 import freerails.move.mapupdatemove.WorldDiffMove;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.util.Utils;
 import freerails.model.world.WorldItem;
 import freerails.model.world.PlayerKey;

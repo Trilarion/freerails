@@ -26,7 +26,7 @@ import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.move.Move;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.model.*;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;

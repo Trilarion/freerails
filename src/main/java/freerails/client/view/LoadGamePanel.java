@@ -26,9 +26,9 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
-import freerails.network.message.LoadGameMessageToServer;
-import freerails.network.message.MessageToServer;
-import freerails.network.message.RefreshListOfGamesMessageToServer;
+import freerails.network.command.CommandToServer;
+import freerails.network.command.LoadGameCommandToServer;
+import freerails.network.command.RefreshListOfGamesCommandToServer;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -117,7 +117,7 @@ public class LoadGamePanel extends JPanel implements View {
 
 
     private void refreshButtonActionPerformed(ActionEvent evt) {
-        MessageToServer refreshGames = new RefreshListOfGamesMessageToServer(2);
+        CommandToServer refreshGames = new RefreshListOfGamesCommandToServer(2);
         modelRoot.sendCommand(refreshGames);
     }
 
@@ -127,7 +127,7 @@ public class LoadGamePanel extends JPanel implements View {
 
     private void okButtonActionPerformed(ActionEvent evt) {
         String filename = (String) list1.getSelectedValue();
-        MessageToServer message2 = new LoadGameMessageToServer(1, filename);
+        CommandToServer message2 = new LoadGameCommandToServer(1, filename);
         modelRoot.sendCommand(message2);
 
         if (null != close) close.actionPerformed(evt);

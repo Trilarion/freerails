@@ -25,23 +25,23 @@ package freerails.util;
  */
 public class SynchronizedFlag {
 
-    private boolean isOpen;
+    private boolean flag;
 
-    public SynchronizedFlag(boolean b) {
-        isOpen = b;
+    public SynchronizedFlag(boolean flag) {
+        this.flag = flag;
     }
 
-    public synchronized boolean isOpen() {
-        return isOpen;
+    public synchronized boolean isSet() {
+        return flag;
     }
 
-    public synchronized void close() {
-        isOpen = false;
+    public synchronized void unset() {
+        flag = false;
         notifyAll();
     }
 
-    public synchronized void open() {
-        isOpen = true;
+    public synchronized void set() {
+        flag = true;
         notifyAll();
     }
 }

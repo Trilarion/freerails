@@ -18,6 +18,7 @@
 
 package freerails.client.model;
 
+import freerails.network.command.NewGameCommandToServer;
 import freerails.savegames.MapCreator;
 import freerails.util.ui.ActionAdapter;
 import freerails.client.ModelRootImpl;
@@ -25,8 +26,7 @@ import freerails.client.ModelRootListener;
 import freerails.client.view.DialogueBoxController;
 import freerails.client.ModelRootProperty;
 import freerails.move.ChangeGameSpeedMove;
-import freerails.network.message.MessageToServer;
-import freerails.network.message.NewGameMessageToServer;
+import freerails.network.command.CommandToServer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.game.GameSpeed;
@@ -202,7 +202,7 @@ public class ServerControlModel implements ModelRootListener {
              * Games:", "Select game to load", JOptionPane.INFORMATION_MESSAGE,
              * null, saves, saves[0]); String filename =
              * showInputDialog.toString(); // Load the game chosen
-             * MessageToServer message2 = new LoadGameMessageToServer(1,
+             * CommandToServer message2 = new LoadGameCommandToServer(1,
              * filename); modelRoot.sendCommand(message2); } catch (Exception
              * except) { // <Hack> // When no saved game is selected, or one that
              * doesn't exist, // nothing changes // </.Hack> }
@@ -227,7 +227,7 @@ public class ServerControlModel implements ModelRootListener {
             String mapName = e.getActionCommand();
 
             if (mapName != null) {
-                MessageToServer message2 = new NewGameMessageToServer(1, mapName);
+                CommandToServer message2 = new NewGameCommandToServer(1, mapName);
                 modelRoot.sendCommand(message2);
             }
         }
@@ -251,8 +251,8 @@ public class ServerControlModel implements ModelRootListener {
              * modelRoot.getPrincipal().getName()).toString(); // Save the
              * current game using the string
              * modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game " +
-             * filename); MessageToServer message2 = new
-             * SaveGameMessageToServer(1, filename + ".sav");
+             * filename); CommandToServer message2 = new
+             * SaveGameCommandToServer(1, filename + ".sav");
              *
              * modelRoot.sendCommand(message2); loadGameAction.setEnabled(true); }
              * catch (Exception except) {

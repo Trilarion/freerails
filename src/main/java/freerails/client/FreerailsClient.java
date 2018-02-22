@@ -19,17 +19,16 @@
 package freerails.client;
 
 import freerails.client.launcher.LauncherFrame;
-import freerails.controller.*;
 import freerails.move.Move;
+import freerails.move.MovePrecommitter;
 import freerails.move.MoveStatus;
 import freerails.move.TryMoveStatus;
-import freerails.move.premove.MoveGenerator;
+import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
 import freerails.network.gameserver.GameServer;
-import freerails.network.message.MessageToClient;
-import freerails.network.message.MessageToServer;
-import freerails.network.movereceiver.MoveChainFork;
-import freerails.network.movereceiver.UntriedMoveReceiver;
+import freerails.network.command.*;
+import freerails.move.receiver.MoveChainFork;
+import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.model.world.World;
 import freerails.server.GameModel;
 import freerails.model.player.Player;
@@ -71,7 +70,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         logger.debug("Connect to remote server.  " + address + ':' + port);
 
         try {
-            connectionToServer = new InetConnectionToServer(address, port);
+            connectionToServer = new IpConnectionToServer(address, port);
         } catch (IOException e) {
             return new LogOnResponse(false, e.getMessage());
         }
@@ -192,9 +191,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Processes a message received from the server.
      */
     public final void processMessage(Serializable message) throws IOException {
-        if (message instanceof MessageToClient) {
-            MessageToClient request = (MessageToClient) message;
-            MessageStatus status = request.execute(this);
+        if (message instanceof CommandToClient) {
+            CommandToClient request = (CommandToClient) message;
+            CommandStatus status = request.execute(this);
             logger.debug(request.toString());
 
             connectionToServer.writeToServer(status);
@@ -241,16 +240,16 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * @param c
+     * @param message
      */
-    public void sendCommand(MessageToServer c) {
-        write(c);
+    public void sendCommand(CommandToServer message) {
+        write(message);
     }
 
     /**
      * @param moveGenerator
      */
-    public void processPreMove(MoveGenerator moveGenerator) {
+    public void processMoveGenerator(MoveGenerator moveGenerator) {
         Move move = committer.toServer(moveGenerator);
         moveFork.process(move);
         write(moveGenerator);

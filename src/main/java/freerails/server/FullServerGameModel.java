@@ -25,7 +25,7 @@ import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.move.WorldDiffMoveCause;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.FullWorldDiffs;
 import freerails.model.world.WorldItem;
 import freerails.model.world.World;

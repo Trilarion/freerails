@@ -21,16 +21,13 @@
  */
 package freerails.network;
 
-import freerails.move.premove.MoveGenerator;
-import freerails.move.TryMoveStatus;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.TimeTickMove;
+import freerails.move.*;
+import freerails.move.generator.MoveGenerator;
 import freerails.model.game.GameTime;
 import freerails.model.world.World;
 import freerails.model.world.FullWorld;
 import freerails.model.player.Player;
-import freerails.move.premove.TimeTickMoveGenerator;
+import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.util.Vector2D;
 import junit.framework.TestCase;
 

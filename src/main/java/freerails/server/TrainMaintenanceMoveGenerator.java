@@ -23,7 +23,7 @@ package freerails.server;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.World;

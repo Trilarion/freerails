@@ -18,11 +18,12 @@
 
 package freerails.network;
 
+import freerails.util.Utils;
+
 import java.io.Serializable;
 
 /**
- * A client sends an instance of this class to the server when it wishes to log
- * on.
+ * A client sends an instance of this class to the server when it wishes to log on.
  */
 public class LogOnRequest implements Serializable {
 
@@ -30,13 +31,14 @@ public class LogOnRequest implements Serializable {
     private final String username;
     private final String password;
 
+    // TODO what about using LogOnCredentials here?
     /**
-     * @param username
-     * @param password
+     * @param username name of the user (cannot be null)
+     * @param password password (cannot be null)
      */
     public LogOnRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
+        this.username = Utils.verifyNotNull(username);
+        this.password = Utils.verifyNotNull(password);
     }
 
     @Override
@@ -46,15 +48,14 @@ public class LogOnRequest implements Serializable {
 
         final LogOnRequest logOnRequest = (LogOnRequest) obj;
 
-        if (password != null ? !password.equals(logOnRequest.password) : logOnRequest.password != null) return false;
-        return username != null ? username.equals(logOnRequest.username) : logOnRequest.username == null;
+        if (!password.equals(logOnRequest.password)) return false;
+        return username.equals(logOnRequest.username);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = (username != null ? username.hashCode() : 0);
-        result = 29 * result + (password != null ? password.hashCode() : 0);
+        int result = username.hashCode();
+        result = 29 * result + password.hashCode();
         return result;
     }
 

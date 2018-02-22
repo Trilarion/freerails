@@ -18,16 +18,11 @@
 
 package freerails.client;
 
-import freerails.controller.*;
 import freerails.move.*;
-import freerails.move.premove.MoveGenerator;
-import freerails.move.premove.TimeTickMoveGenerator;
+import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.network.*;
 import freerails.network.gameserver.FreerailsGameServer;
-import freerails.network.message.MessageToClient;
-import freerails.network.message.MessageToServer;
-import freerails.network.message.NewGameMessageToServer;
-import freerails.network.message.SaveGameMessageToServer;
+import freerails.network.command.*;
 import freerails.savegames.TestSaveGamesManager;
 import freerails.util.ImmutableList;
 import freerails.model.world.World;
@@ -72,7 +67,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
 
             FreerailsClient client = new FreerailsClient();
             LogOnResponse response = client.connect(server, "name", "password");
-            assertTrue(response.isSuccessful());
+            assertTrue(response.isSuccess());
             assertEquals(1, server.getNumberOpenConnections());
 
             // Check the client gets its properties updated.
@@ -84,13 +79,13 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             // Test 2 : a client that has already logged on.
             FreerailsClient client1 = new FreerailsClient();
             response = client1.connect(server, "name", "password");
-            assertFalse("The player is already logged on.", response.isSuccessful());
+            assertFalse("The player is already logged on.", response.isSuccess());
             assertEquals(1, server.getNumberOpenConnections());
 
             // Test 3 : connecting a client.
             FreerailsClient client3 = new FreerailsClient();
             response = client3.connect(server, "name3", "password");
-            assertTrue(response.isSuccessful());
+            assertTrue(response.isSuccess());
             assertEquals(2, server.getNumberOpenConnections());
 
             // Test 4 : disconnect the client from test 1.
@@ -110,10 +105,10 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         // Connect 2 clients.
         FreerailsClient client0 = new FreerailsClient();
         LogOnResponse response0 = client0.connect(server, "client0", "password");
-        assertTrue(response0.isSuccessful());
+        assertTrue(response0.isSuccess());
         FreerailsClient client1 = new FreerailsClient();
         LogOnResponse response1 = client1.connect(server, "client1", "password");
-        assertTrue(response1.isSuccessful());
+        assertTrue(response1.isSuccess());
         assertEquals(2, server.getNumberOpenConnections());
         client0.update();
         client1.update();
@@ -125,7 +120,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         ImmutableList<String> mapNames = (ImmutableList<String>) client0.getProperty(ClientProperty.MAPS_AVAILABLE);
 
         final int commandID = 66;
-        MessageToServer message2 = new NewGameMessageToServer(commandID, mapNames.get(0));
+        CommandToServer message2 = new NewGameCommandToServer(commandID, mapNames.get(0));
         client0.write(message2);
         assertTrue(server.isNewPlayersAllowed());
         server.update();
@@ -137,11 +132,11 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
          * gets called.
          */
         Serializable obj = client0.read();
-        MessageToClient cc = (MessageToClient) obj;
+        CommandToClient cc = (CommandToClient) obj;
         client0.write(cc.execute(client0));
 
         obj = client0.read();
-        MessageStatus status = (MessageStatus) obj;
+        CommandStatus status = (CommandStatus) obj;
         assertTrue(status.isSuccessful());
         assertEquals(commandID, status.getId());
 
@@ -180,7 +175,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         assertEquals(2, server.getNumberOpenConnections());
         FreerailsClient client = new FreerailsClient();
         LogOnResponse response = client.connect(server, "Late player","password");
-        assertFalse(response.isSuccessful());
+        assertFalse(response.isSuccess());
         assertEquals(2, server.getNumberOpenConnections());
     }
 
@@ -192,16 +187,16 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             // Set up and start a game with 2 clients.
             FreerailsClient client0 = new FreerailsClient();
             LogOnResponse response0 = client0.connect(server, "client0", "password");
-            assertTrue(response0.isSuccessful());
+            assertTrue(response0.isSuccess());
             FreerailsClient client1 = new FreerailsClient();
             LogOnResponse response1 = client1.connect(server, "client1",
                     "password");
-            assertTrue(response1.isSuccessful());
+            assertTrue(response1.isSuccess());
             client0.update();
             client1.update();
 
             ImmutableList<String> mapNames = (ImmutableList<String>) client0.getProperty(ClientProperty.MAPS_AVAILABLE);
-            MessageToServer message2 = new NewGameMessageToServer(99, mapNames.get(0));
+            CommandToServer message2 = new NewGameCommandToServer(99, mapNames.get(0));
             client0.write(message2);
             server.update();
             client0.update();
@@ -250,8 +245,8 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             client1.update();
             assertFalse(world.equals(client1.getWorld()));
             response0 = client0.connect(server, "client0", "password");
-            assertTrue(response0.isSuccessful());
-            assertEquals(0, response0.getPlayerID());
+            assertTrue(response0.isSuccess());
+            assertEquals(0, response0.getId());
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -265,15 +260,15 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             // Set up and start a game with 2 clients.
             FreerailsClient client0 = new FreerailsClient();
             LogOnResponse response0 = client0.connect(server, "client0", "password");
-            assertTrue(response0.isSuccessful());
+            assertTrue(response0.isSuccess());
             FreerailsClient client1 = new FreerailsClient();
             LogOnResponse response1 = client1.connect(server, "client1", "password");
-            assertTrue(response1.isSuccessful());
+            assertTrue(response1.isSuccess());
             client0.update();
             client1.update();
 
             ImmutableList<String> mapNames = (ImmutableList<String>) client0.getProperty(ClientProperty.MAPS_AVAILABLE);
-            MessageToServer message2 = new NewGameMessageToServer(99, mapNames
+            CommandToServer message2 = new NewGameCommandToServer(99, mapNames
                     .get(0));
             client0.write(message2);
             server.update();
@@ -290,7 +285,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             Move move = TimeTickMove.generate(copyOfWorld);
             MoveStatus status = move.doMove(copyOfWorld, principal0);
             assertTrue(status.succeeds());
-            client0.processPreMove(TimeTickMoveGenerator.INSTANCE);
+            client0.processMoveGenerator(TimeTickMoveGenerator.INSTANCE);
             server.update();
 
             TryMoveStatus reply = (TryMoveStatus) client0.read();
@@ -318,39 +313,39 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             FreerailsClient client0 = new FreerailsClient();
             LogOnResponse response0 = client0.connect(server, "client0",
                     "password");
-            assertTrue(response0.isSuccessful());
+            assertTrue(response0.isSuccess());
             client0.update();
 
             // Start game
             ImmutableList<String> mapNames = (ImmutableList<String>) client0.getProperty(ClientProperty.MAPS_AVAILABLE);
-            MessageToServer newGameMessage2 = new NewGameMessageToServer(commandID++, mapNames.get(0));
-            MessageStatus messageStatus = newGameMessage2.execute(server);
-            assertTrue(messageStatus.isSuccessful());
+            CommandToServer newGameMessage2 = new NewGameCommandToServer(commandID++, mapNames.get(0));
+            CommandStatus commandStatus = newGameMessage2.execute(server);
+            assertTrue(commandStatus.isSuccessful());
 
             // Save game and stop server
             String savedGameName = "game1";
-            MessageToServer saveGameMessage2 = new SaveGameMessageToServer(commandID++, savedGameName);
-            messageStatus = saveGameMessage2.execute(server);
-            assertTrue(messageStatus.isSuccessful());
+            CommandToServer saveGameMessage2 = new SaveGameCommandToServer(commandID++, savedGameName);
+            commandStatus = saveGameMessage2.execute(server);
+            assertTrue(commandStatus.isSuccessful());
             server.stopGame();
 
             // Start 2nd server with saved game
             server = new FreerailsGameServer(savedGamesManager);
-            server.loadgame(savedGameName);
+            server.loadGame(savedGameName);
             assertEquals(0, server.getNumberOpenConnections());
             // Attempt to attach invalid player.
             client0 = new FreerailsClient();
             response0 = client0.connect(server, "client0", "batman");
-            assertFalse("bad password", response0.isSuccessful());
+            assertFalse("bad password", response0.isSuccess());
             assertEquals(0, server.getNumberOpenConnections());
 
             response0 = client0.connect(server, "client1", "password");
-            assertFalse("bad username", response0.isSuccessful());
+            assertFalse("bad username", response0.isSuccess());
             assertEquals(0, server.getNumberOpenConnections());
 
             response0 = client0.connect(server, "client0", "password");
             assertTrue("Ok, same username and password as before.", response0
-                    .isSuccessful());
+                    .isSuccess());
             assertEquals(1, server.getNumberOpenConnections());
         } catch (Exception e) {
             fail();

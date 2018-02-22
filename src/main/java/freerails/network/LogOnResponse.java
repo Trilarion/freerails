@@ -26,21 +26,22 @@ import java.io.Serializable;
 public class LogOnResponse implements Serializable {
 
     private static final long serialVersionUID = 3690479099844311344L;
-    private final boolean successful;
-    private final int playerNumber;
+    private final boolean success;
+    private final int id;
     private final String message;
 
-    public LogOnResponse(boolean success, int i) {
+    public LogOnResponse(boolean success, int id) {
         assert(success);
-        successful = success;
-        playerNumber = i;
+        this.success = success;
+        this.id = id;
         message = null;
     }
 
+    // TODO the usage of success is strange, why here always false
     public LogOnResponse(boolean success, String s) {
         assert(!success);
-        successful = success;
-        playerNumber = -1;
+        this.success = success;
+        id = -1;
         message = s;
     }
 
@@ -51,16 +52,16 @@ public class LogOnResponse implements Serializable {
 
         final LogOnResponse logOnResponse = (LogOnResponse) obj;
 
-        if (playerNumber != logOnResponse.playerNumber) return false;
-        if (successful != logOnResponse.successful) return false;
+        if (id != logOnResponse.id) return false;
+        if (success != logOnResponse.success) return false;
         return message != null ? message.equals(logOnResponse.message) : logOnResponse.message == null;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = (successful ? 1 : 0);
-        result = 29 * result + playerNumber;
+        result = Boolean.hashCode(success);
+        result = 29 * result + id;
         result = 29 * result + (message != null ? message.hashCode() : 0);
         return result;
     }
@@ -68,8 +69,8 @@ public class LogOnResponse implements Serializable {
     /**
      * @return
      */
-    public int getPlayerID() {
-        return playerNumber;
+    public int getId() {
+        return id;
     }
 
     /**
@@ -82,7 +83,7 @@ public class LogOnResponse implements Serializable {
     /**
      * @return
      */
-    public boolean isSuccessful() {
-        return successful;
+    public boolean isSuccess() {
+        return success;
     }
 }

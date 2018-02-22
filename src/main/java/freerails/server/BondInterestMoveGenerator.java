@@ -20,7 +20,7 @@ package freerails.server;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.network.movereceiver.MoveReceiver;
+import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldConstants;
 import freerails.model.finances.*;

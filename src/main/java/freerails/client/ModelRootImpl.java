@@ -20,14 +20,14 @@ package freerails.client;
 
 import freerails.controller.BuildMode;
 import freerails.model.track.BuildTrackStrategy;
-import freerails.move.premove.MoveGenerator;
+import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.network.*;
-import freerails.network.message.MessageToServer;
-import freerails.network.movereceiver.MoveChainFork;
-import freerails.network.movereceiver.MoveReceiver;
-import freerails.network.movereceiver.UntriedMoveReceiver;
+import freerails.network.command.CommandToServer;
+import freerails.network.command.ServerCommandReceiver;
+import freerails.move.receiver.MoveChainFork;
+import freerails.move.receiver.MoveReceiver;
+import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
@@ -123,7 +123,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     public MoveStatus doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
         MoveStatus moveStatus = moveReceiver.tryDoMove(move);
-        moveReceiver.processPreMove(moveGenerator);
+        moveReceiver.processMoveGenerator(moveGenerator);
 
         return moveStatus;
     }
@@ -153,7 +153,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @param message
      */
-    public void sendCommand(MessageToServer message) {
+    public void sendCommand(CommandToServer message) {
         if (null != serverCommandReceiver) {
             serverCommandReceiver.sendCommand(message);
         } else {

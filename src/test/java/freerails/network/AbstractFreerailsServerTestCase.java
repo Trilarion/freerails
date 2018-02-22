@@ -25,12 +25,13 @@ import junit.framework.TestCase;
 
 /**
  * Test cases that use FreerailsGameServer <b>and</b> connect over the Internet
- * should extend this class .
+ * should extend this class.
  */
 public abstract class AbstractFreerailsServerTestCase extends TestCase {
 
+    private static final int PORT = 13856;
     public FreerailsGameServer server;
-    private InetConnectionAccepter connectionAccepter;
+    private IpConnectionAcceptor connectionAccepter;
 
     /**
      * @throws Exception
@@ -56,7 +57,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
             throw new IllegalStateException();
         }
         server = result;
-        connectionAccepter = new InetConnectionAccepter(0, server);
+        connectionAccepter = new IpConnectionAcceptor(server, PORT);
 
         Thread serverThread = new Thread(connectionAccepter);
         serverThread.start();
@@ -72,7 +73,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     }
 
     public int getPort() {
-        return connectionAccepter.getLocalPort();
+        return PORT;
     }
 
     public String getIpAddress() {

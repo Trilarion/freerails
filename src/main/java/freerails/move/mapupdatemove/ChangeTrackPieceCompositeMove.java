@@ -25,7 +25,7 @@ package freerails.move.mapupdatemove;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.*;
-import freerails.move.premove.MoveTrainMoveGenerator;
+import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.finances.TransactionCategory;

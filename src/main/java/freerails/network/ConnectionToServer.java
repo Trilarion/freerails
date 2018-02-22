@@ -39,8 +39,7 @@ public interface ConnectionToServer {
     Serializable[] readFromServer() throws IOException;
 
     /**
-     * Returns the next object read from the server, blocking if non is
-     * available.
+     * Returns the next object read from the server, blocking if none is available.
      */
     Serializable waitForObjectFromServer() throws IOException, InterruptedException;
 
