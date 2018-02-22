@@ -130,11 +130,11 @@ public class ServerControlModel implements ModelRootListener {
     }
 
     /**
-     * @param p
+     * @param modelRootProperty
      * @param oldValue
      * @param newValue
      */
-    public void propertyChange(ModelRootProperty p, Object oldValue, Object newValue) {
+    public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
         // switch (p) {
         // case SAVED_GAMES_LIST:
         // updateLoadGameAction();

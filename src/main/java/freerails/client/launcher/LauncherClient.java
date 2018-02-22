@@ -23,6 +23,7 @@ package freerails.client.launcher;
 
 import freerails.client.*;
 import freerails.client.componentfactory.GUIComponentFactoryImpl;
+import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.client.view.ActionRoot;
@@ -69,7 +70,7 @@ public class LauncherClient extends FreerailsClient {
         modelRoot.setMoveFork(getMoveFork());
         modelRoot.setMoveReceiver(this);
         modelRoot.setServerCommandReceiver(this);
-        actionRoot = new ActionRoot(modelRoot);
+        actionRoot = new ActionRoot(new ServerControlModel(modelRoot));
 
         // Create GUI components
         factory = new GUIComponentFactoryImpl(modelRoot, actionRoot);

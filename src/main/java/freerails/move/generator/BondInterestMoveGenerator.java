@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.move.generator;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;

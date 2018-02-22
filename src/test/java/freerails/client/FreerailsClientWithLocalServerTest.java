@@ -24,6 +24,7 @@ import freerails.network.*;
 import freerails.network.gameserver.FreerailsGameServer;
 import freerails.network.command.*;
 import freerails.savegames.TestSaveGamesManager;
+import freerails.server.TestServerGameModel;
 import freerails.util.ImmutableList;
 import freerails.model.world.World;
 import freerails.model.finances.Money;
@@ -55,6 +56,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
         super.setUp();
         savedGamesManager = new TestSaveGamesManager();
         server = new FreerailsGameServer(savedGamesManager);
+        server.setServerGameModel(new TestServerGameModel());
     }
 
     /**
@@ -311,8 +313,7 @@ public class FreerailsClientWithLocalServerTest extends TestCase {
             int commandID = 0;
             // Add client to server.
             FreerailsClient client0 = new FreerailsClient();
-            LogOnResponse response0 = client0.connect(server, "client0",
-                    "password");
+            LogOnResponse response0 = client0.connect(server, "client0", "password");
             assertTrue(response0.isSuccess());
             client0.update();
 

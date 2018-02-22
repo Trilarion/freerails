@@ -34,6 +34,7 @@ import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameSpeed;
 import freerails.model.station.Station;
+import freerails.util.ui.SoundManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ import java.util.List;
 public class UserMessageGenerator implements MoveReceiver {
 
     private final DecimalFormat formatter = new DecimalFormat("#,###,###");
-    private final SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getInstance();
     private ModelRoot modelRoot;
     private ActionRoot actionRoot;
 

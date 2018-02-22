@@ -43,9 +43,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// TODO why should the client not use this? include this in the full server game model
 /**
  * Is used by the server to generate moves that add trains, move
- * trains, and handle stops at stations. Note, the client should not use this
+ * trains, and handle stops at stations.
+ *
+ * Note: The client should not use this
  * class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
  */
@@ -64,11 +67,11 @@ public class TrainUpdater implements Serializable {
     /**
      * @param engineTypeId
      * @param wagons
-     * @param p
+     * @param location
      * @param principal
      * @param world
      */
-    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Vector2D p, FreerailsPrincipal principal, ReadOnlyWorld world) {
+    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Vector2D location, FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -88,7 +91,7 @@ public class TrainUpdater implements Serializable {
 
         ImmutableSchedule is = s.toImmutableSchedule();
 
-        MoveGenerator addTrain = new AddTrainMoveGenerator(engineTypeId, wagons, p, principal, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(engineTypeId, wagons, location, principal, is);
 
         Move move = addTrain.generate(world);
         moveReceiver.process(move);

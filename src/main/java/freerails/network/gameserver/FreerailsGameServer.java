@@ -29,7 +29,6 @@ import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.move.receiver.MoveReceiver;
 import freerails.server.ServerGameModel;
-import freerails.server.SimpleServerGameModel;
 import freerails.util.ImmutableList;
 import freerails.util.SynchronizedFlag;
 import freerails.model.world.World;
@@ -82,7 +81,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     // TODO new players allowed used meaningfully
     private boolean newPlayersAllowed = true;
     private ArrayList<LogOnCredentials> players = new ArrayList<>();
-    private ServerGameModel serverGameModel = new SimpleServerGameModel();
+    private ServerGameModel serverGameModel;
 
     /**
      * @param saveGamesManager
@@ -100,7 +99,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         logger.debug("Waiting for login details..");
 
         try {
-            LogOnRequest request = (LogOnRequest) connection.waitForObjectFromClient();
+            LogOnCredentials request = (LogOnCredentials) connection.waitForObjectFromClient();
             logger.debug("Trying to login player: " + request.getUsername());
 
             LogOnResponse response = logon(request);
@@ -258,31 +257,30 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     * @param lor
+     * @param credentials
      * @return
      */
-    public LogOnResponse logon(LogOnRequest lor) {
-        LogOnCredentials p = new LogOnCredentials(lor.getUsername(), lor.getPassword());
-        boolean isReturningPlayer = isPlayer(lor.getUsername());
+    public LogOnResponse logon(LogOnCredentials credentials) {
+        boolean isReturningPlayer = isPlayer(credentials.getUsername());
 
         if (!newPlayersAllowed && !isReturningPlayer) {
             return new LogOnResponse(false, "New logins not allowed.");
         }
 
-        if (currentlyLoggedOn.contains(p)) {
+        if (currentlyLoggedOn.contains(credentials)) {
             return new LogOnResponse(false, "Already logged on.");
         }
 
         if (isReturningPlayer) {
-            if (!players.contains(p)) {
+            if (!players.contains(credentials)) {
                 return new LogOnResponse(false, "Incorrect password.");
             }
         } else {
-            players.add(p);
+            players.add(credentials);
         }
-        currentlyLoggedOn.add(p);
+        currentlyLoggedOn.add(credentials);
         // return accepted LogOnResponse
-        return new LogOnResponse(true, players.indexOf(p));
+        return new LogOnResponse(true, players.indexOf(credentials));
     }
 
     /**

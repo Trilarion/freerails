@@ -16,11 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.model.terrain;
 
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
-import freerails.model.terrain.TerrainType;
 
 import java.util.ArrayList;
 import java.util.Collection;

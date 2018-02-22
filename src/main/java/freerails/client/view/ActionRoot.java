@@ -31,6 +31,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+// TODO what is this good for, probably can move to somewhere else
 /**
  * Provides access to Actions change the game state and the GUI.
  */
@@ -38,15 +39,15 @@ public class ActionRoot {
 
     private final Action buildTrainDialogAction = new BuildTrainDialogAction();
     private final ServerControlModel serverControls;
-    private DialogueBoxController dialogueBoxController = null;
+    private DialogueBoxController dialogueBoxController;
     private StationBuildModel stationBuildModel;
     private TrackMoveProducer trackMoveProducer;
 
     /**
-     * @param modelRoot
+     * @param serverControls
      */
-    public ActionRoot(ModelRootImpl modelRoot) {
-        serverControls = new ServerControlModel(modelRoot);
+    public ActionRoot(ServerControlModel serverControls) {
+        this.serverControls = serverControls;
     }
 
     /**

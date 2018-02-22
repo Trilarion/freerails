@@ -21,17 +21,29 @@
  */
 package freerails.server;
 
+import freerails.model.NonNullElementWorldIterator;
+import freerails.model.cargo.CargoBatch;
+import freerails.model.cargo.ImmutableCargoBatchBundle;
+import freerails.model.cargo.MutableCargoBatchBundle;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.station.CalculateCargoSupplyRateAtStation;
+import freerails.model.station.Station;
+import freerails.model.station.StationSupply;
+import freerails.model.terrain.CityTilePositioner;
+import freerails.model.world.*;
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
+import freerails.move.generator.BondInterestMoveGenerator;
+import freerails.move.listmove.ChangeCargoBundleMove;
+import freerails.move.listmove.ChangeStationMove;
 import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.move.WorldDiffMoveCause;
 import freerails.move.receiver.MoveReceiver;
-import freerails.model.world.FullWorldDiffs;
-import freerails.model.world.WorldItem;
-import freerails.model.world.World;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
+
+import java.util.Iterator;
 
 /**
  * A ServerGameModel that contains the automations used in the actual game. This is serialized during loading and
@@ -44,7 +56,6 @@ public class FullServerGameModel implements ServerGameModel {
     private TrainUpdater trainUpdater;
     private String[] passwords;
 
-    private transient SupplyAtStationsUpdater supplyAtStationsUpdater;
     private transient long nextModelUpdateDue;
     private transient MoveReceiver moveReceiver;
 
@@ -53,6 +64,79 @@ public class FullServerGameModel implements ServerGameModel {
      */
     public FullServerGameModel() {
         nextModelUpdateDue = System.currentTimeMillis();
+    }
+
+    /**
+     * Call this method once a month.
+     *
+     * Loops over the list of stations and adds cargo depending on what
+     * the surrounding tiles supply.
+     */
+    public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
+
+        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
+            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+
+            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+
+            while (nonNullStations.next()) {
+                Station station = (Station) nonNullStations.getElement();
+                StationSupply supply = station.getSupply();
+                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
+                MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
+                MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
+                int stationNumber = nonNullStations.getIndex();
+
+                /*
+                 * Get the iterator from a copy to avoid a
+                 * ConcurrentModificationException if the amount gets set to
+                 * zero and the CargoBatch removed from the cargo bundle. LL
+                 */
+                Iterator<CargoBatch> it = after.toImmutableCargoBundle().cargoBatchIterator();
+
+                while (it.hasNext()) {
+                    CargoBatch cb = it.next();
+                    int amount = after.getAmount(cb);
+
+                    if (amount > 0) {
+                        // (23/24)^12 = 0.60
+                        after.setAmount(cb, amount * 23 / 24);
+                    }
+                }
+
+                for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
+                    int amountSupplied = supply.getSupply(i);
+
+                    if (amountSupplied > 0) {
+                        CargoBatch cb = new CargoBatch(i, station.location, 0, stationNumber);
+                        int amountAlready = after.getAmount(cb);
+
+                        // Obtain the month
+                        GameTime time = world.currentTime();
+                        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+                        int month = calendar.getMonth(time.getTicks());
+
+                        int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
+                        after.setAmount(cb, amountAfter);
+                    }
+                }
+
+                Move move = new ChangeCargoBundleMove(before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), station.getCargoBundleID(), principal);
+                moveReceiver.process(move);
+            }
+        }
+    }
+
+    /**
+     * If, say, 14 units get added each year, some month we should add 1 and
+     * others we should add 2 such that over the year exactly 14 units get
+     * added.
+     *
+     * Note: January is 0
+     */
+    public static int calculateAmountToAddPerMonth(int amountSuppliedPerYear, int month) {
+        // This calculation actually delivers the requirement of rounding sometimes up and sometimes down.
+        return amountSuppliedPerYear * (month + 1) / 12 - amountSuppliedPerYear * (month) / 12;
     }
 
     /**
@@ -108,7 +192,6 @@ public class FullServerGameModel implements ServerGameModel {
     public void initialize(MoveReceiver moveReceiver) {
         this.moveReceiver = moveReceiver;
         trainUpdater = new TrainUpdater(moveReceiver);
-        supplyAtStationsUpdater = new SupplyAtStationsUpdater(world, moveReceiver);
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
@@ -161,10 +244,32 @@ public class FullServerGameModel implements ServerGameModel {
      * This is called at the start of each new month.
      */
     private void monthEnd() {
-        supplyAtStationsUpdater.update();
+        supplyAtStationsUpdate(world, moveReceiver);
+        cargoAtStationsUpdate(world, moveReceiver);
+    }
 
-        CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
-        cargoAtStationsUpdater.update(world, moveReceiver);
+    /**
+     * Loops through all of the known stations and recalculates the
+     * cargoes that they supply, demand, and convert.
+     */
+    public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+
+            while (iterator.next()) {
+                Station stationBefore = (Station) iterator.getElement();
+                CalculateCargoSupplyRateAtStation supplyRate;
+                supplyRate = new CalculateCargoSupplyRateAtStation(world, stationBefore.location);
+
+                Station stationAfter = supplyRate.calculations(stationBefore);
+
+                if (!stationAfter.equals(stationBefore)) {
+                    Move move = new ChangeStationMove(iterator.getIndex(), stationBefore, stationAfter, principal);
+                    moveReceiver.process(move);
+                }
+            }
+        }
     }
 
 }

@@ -137,8 +137,8 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
      * Updates the Terrain Info Panel if the specified PropertyChangeEvent was
      * triggered by the cursor moving.
      */
-    public void propertyChange(ModelRootProperty prop, Object before, Object after) {
-        if (prop == ModelRootProperty.CURSOR_POSITION) {
+    public void propertyChange(ModelRootProperty modelRootProperty, Object before, Object after) {
+        if (modelRootProperty == ModelRootProperty.CURSOR_POSITION) {
 
             Vector2D location = (Vector2D) after;
 

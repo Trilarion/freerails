@@ -28,11 +28,11 @@ import java.net.Socket;
 public class IpConnectionToClient extends AbstractIpConnection implements ConnectionToClient {
 
     /**
-     * @param s
+     * @param socket
      * @throws IOException
      */
-    public IpConnectionToClient(Socket s) throws IOException {
-        super(s);
+    public IpConnectionToClient(Socket socket) throws IOException {
+        super(socket);
     }
 
     public Serializable[] readFromClient() throws IOException {

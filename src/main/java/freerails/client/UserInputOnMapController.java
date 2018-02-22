@@ -31,6 +31,7 @@ import freerails.util.Vector2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TileTransition;
+import freerails.util.ui.SoundManager;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -52,7 +53,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private final ActionRoot actionRoot;
     private final BuildIndustryPopupMenu buildIndustryPopupMenu = new BuildIndustryPopupMenu();
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
-    private final SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getInstance();
     private MapViewComponent mapView;
     private StationTypesPopup stationTypesPopup;
     private TrackMoveProducer trackBuilder;

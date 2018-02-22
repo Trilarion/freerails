@@ -20,7 +20,7 @@ package freerails.client.view;
 
 import freerails.client.ClientConfig;
 import freerails.util.ui.Painter;
-import freerails.client.SoundManager;
+import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
 import freerails.client.ModelRoot;
@@ -41,7 +41,7 @@ public class OverHeadTrainView implements Painter {
 
     private final TrainRenderer trainPainter;
     private final ReadOnlyWorld world;
-    private final SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getInstance();
     private final ModelRoot modelRoot;
 
     /**

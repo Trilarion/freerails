@@ -26,7 +26,7 @@ import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
 /**
- * Provides methods send objects over the Internet, and connect and disconnect gracefully.
+ * Provides methods send serializable objects over the Internet, and connect and disconnect gracefully.
  */
 class IpConnection {
 

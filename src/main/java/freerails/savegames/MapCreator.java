@@ -10,7 +10,7 @@ import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
-import freerails.server.CityTilePositioner;
+import freerails.model.terrain.CityTilePositioner;
 import freerails.util.Vector2D;
 import freerails.util.ui.ProgressMonitorModel;
 import org.xml.sax.InputSource;

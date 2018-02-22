@@ -76,7 +76,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         }
 
         try {
-            Serializable request = new LogOnRequest(username, password);
+            Serializable request = new LogOnCredentials(username, password);
             connectionToServer.writeToServer(request);
 
             return (LogOnResponse) connectionToServer.waitForObjectFromServer();
@@ -95,7 +95,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     public final LogOnResponse connect(GameServer server, String username, String password) {
         try {
-            Serializable request = new LogOnRequest(username, password);
+            Serializable request = new LogOnCredentials(username, password);
+            //connectionToServer = new IpConnectionToServer("127.0.0.1", 34567);
+            //server.addConnection(new IpConnectionToClient("127.0.0.1", 34567));
             connectionToServer = new LocalConnection();
             connectionToServer.writeToServer(request);
             server.addConnection((LocalConnection) connectionToServer);

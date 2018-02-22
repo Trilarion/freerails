@@ -18,6 +18,7 @@
 
 package freerails.client;
 
+import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
@@ -92,7 +93,7 @@ class DialogueBoxTester extends JFrame {
         } catch (IOException e) {
         }
         modelRoot.setup(world, TEST_PLAYER.getPrincipal());
-        ActionRoot actionRoot = new ActionRoot(modelRoot);
+        ActionRoot actionRoot = new ActionRoot(new ServerControlModel(modelRoot));
         actionRoot.setup(modelRoot, vl);
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
         actionRoot.setDialogueBoxController(dialogueBoxController);

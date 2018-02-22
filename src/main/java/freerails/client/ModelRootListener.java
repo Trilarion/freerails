@@ -26,10 +26,10 @@ package freerails.client;
 public interface ModelRootListener {
 
     /**
-     * @param p
+     * @param modelRootProperty
      * @param oldValue
      * @param newValue
      */
-    void propertyChange(ModelRootProperty p, Object oldValue, Object newValue);
+    void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue);
 
 }

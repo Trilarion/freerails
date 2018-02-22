@@ -34,6 +34,7 @@ import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.player.FreerailsPrincipal;
 
+// TODO does not really follow the movegenerator interface, should it maybe?
 /**
  * Iterates over the entries in the BankAccount and counts the number
  * of trains, then calculates the cost of maintenance.

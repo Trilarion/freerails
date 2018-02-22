@@ -29,8 +29,7 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 
 /**
- * Loops through all of the known stations and recalculates the
- * cargoes that they supply, demand, and convert.
+
  */
 // TODO relation to CargoAtStationsUpdater?
 public class SupplyAtStationsUpdater {
@@ -39,8 +38,6 @@ public class SupplyAtStationsUpdater {
     private final MoveReceiver moveReceiver;
 
     /**
-     * Constructor, currently called from GUIComponentFactory.
-     *
      * @param world The World object that contains all about the game world
      */
     public SupplyAtStationsUpdater(World world, MoveReceiver moveReceiver) {
@@ -48,26 +45,5 @@ public class SupplyAtStationsUpdater {
         this.moveReceiver = moveReceiver;
     }
 
-    /**
-     * Loop through each known station, call calculations method.
-     */
-    public void update() {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
-            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
-            while (iterator.next()) {
-                Station stationBefore = (Station) iterator.getElement();
-                CalculateCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalculateCargoSupplyRateAtStation(world, stationBefore.location);
-
-                Station stationAfter = supplyRate.calculations(stationBefore);
-
-                if (!stationAfter.equals(stationBefore)) {
-                    Move move = new ChangeStationMove(iterator.getIndex(), stationBefore, stationAfter, principal);
-                    moveReceiver.process(move);
-                }
-            }
-        }
-    }
 }

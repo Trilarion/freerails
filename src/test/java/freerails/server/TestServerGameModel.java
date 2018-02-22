@@ -24,11 +24,11 @@ package freerails.server;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.World;
 
-// TODO not sure this is really needed
+// TODO not sure this is really needed, just doesn't do anything
 /**
  * A ServerGameModel that has a world object but no automation.
  */
-public class SimpleServerGameModel implements ServerGameModel {
+public class TestServerGameModel implements ServerGameModel {
 
     private static final long serialVersionUID = 3546074757457131826L;
     private World world;

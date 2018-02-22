@@ -20,6 +20,7 @@ package freerails.server;
 
 import junit.framework.TestCase;
 
+// TODO does not exist anymore, now in FullServerGameModel, move to test there
 /**
  * Test for CargoAtStationsUpdater.
  */
@@ -28,10 +29,9 @@ public class CargoAtStationsUpdaterTest extends TestCase {
     /**
      *
      */
-    public void testCalculateAmountToAdd() {
-        CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
+    public static void testCalculateAmountToAdd() {
 
-        int amount = cargoAtStationsUpdater.calculateAmountToAddPerMonth(12, 1);
+        int amount = FullServerGameModel.calculateAmountToAddPerMonth(12, 1);
         assertEquals(1, amount);
 
         assertCorrectTotalAddedOverYear(0);
@@ -46,12 +46,11 @@ public class CargoAtStationsUpdaterTest extends TestCase {
      * others we should add 2 such that over the year exactly 14 units get
      * added.
      */
-    private void assertCorrectTotalAddedOverYear(final int unitPerYear) {
-        CargoAtStationsUpdater cargoAtStationsUpdater = new CargoAtStationsUpdater();
+    private static void assertCorrectTotalAddedOverYear(final int unitPerYear) {
         int amountAddedThisSoFar = 0;
 
         for (int i = 0; i < 12; i++) {
-            amountAddedThisSoFar += cargoAtStationsUpdater.calculateAmountToAddPerMonth(unitPerYear, i);
+            amountAddedThisSoFar += FullServerGameModel.calculateAmountToAddPerMonth(unitPerYear, i);
         }
 
         assertEquals(unitPerYear, amountAddedThisSoFar);

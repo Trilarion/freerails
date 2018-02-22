@@ -28,6 +28,7 @@ public class IpConnectionToServer extends AbstractIpConnection implements Connec
 
     private final String serverDetails;
 
+    // TODO use java.net.InetSocketAdress instead?
     /**
      * @param ip
      * @param port

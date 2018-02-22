@@ -229,9 +229,9 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
      * appropriate.
      */
     @Override
-    public void propertyChange(ModelRootProperty p, Object oldValue, Object newValue) {
+    public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
 
-        switch (p) {
+        switch (modelRootProperty) {
             case CURSOR_POSITION:
                 Vector2D newPoint = (Vector2D) newValue;
                 Vector2D oldPoint = (Vector2D) oldValue;

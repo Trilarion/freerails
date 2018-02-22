@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
 /**
  * Lets the caller access a series of Points as a series of IntLines.
  */
-public class PathIteratorImpl implements PathIterator {
+public class TestPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3258411750679720758L;
     private final boolean forwards;
@@ -42,7 +42,7 @@ public class PathIteratorImpl implements PathIterator {
      * @param l
      * @param f
      */
-    public PathIteratorImpl(List<Point> l, boolean f) {
+    public TestPathIterator(List<Point> l, boolean f) {
         points = l;
         forwards = f;
 
@@ -59,7 +59,7 @@ public class PathIteratorImpl implements PathIterator {
      * @return
      */
     public static PathIterator forwardsIterator(List<Point> l) {
-        return new PathIteratorImpl(l, true);
+        return new TestPathIterator(l, true);
     }
 
     public boolean hasNext() {

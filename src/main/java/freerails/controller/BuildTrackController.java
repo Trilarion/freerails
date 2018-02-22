@@ -21,7 +21,7 @@ package freerails.controller;
 import freerails.client.ClientConfig;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
-import freerails.client.SoundManager;
+import freerails.util.ui.SoundManager;
 import freerails.controller.pathfinding.*;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
@@ -58,7 +58,7 @@ public class BuildTrackController implements GameModel {
     private final PathOnTrackFinder pathOnExistingTrackFinder;
     private final FreerailsPrincipal principal;
     private final ReadOnlyWorld realWorld;
-    private final SoundManager soundManager = SoundManager.getSoundManager();
+    private final SoundManager soundManager = SoundManager.getInstance();
     private final FullWorldDiffs worldDiffs;
     private boolean buildNewTrack = true;
     private List<Vector2D> builtTrack = new ArrayList<>();

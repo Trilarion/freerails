@@ -34,6 +34,7 @@ import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldListListener;
 import freerails.model.WorldMapListener;
 import freerails.model.player.FreerailsPrincipal;
+import freerails.util.ui.SoundManager;
 
 import java.util.*;
 
@@ -67,7 +68,14 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         properties.put(ModelRootProperty.TIME, 0.0d);
         properties.put(ModelRootProperty.TRACK_BUILDER_MODE, BuildMode.BUILD_TRACK);
         properties.put(ModelRootProperty.SAVED_GAMES_LIST, Collections.emptyList());
-        addPropertyChangeListener(SoundManager.getSoundManager());
+        addPropertyChangeListener(new ModelRootListener() {
+            @Override
+            public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
+                if (modelRootProperty == ModelRootProperty.PLAY_SOUNDS) {
+                    SoundManager.getInstance().setPlayingSounds((Boolean) newValue);
+                }
+            }
+        });
     }
 
     /**

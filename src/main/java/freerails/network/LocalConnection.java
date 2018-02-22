@@ -24,6 +24,7 @@ import freerails.util.SynchronizedFlag;
 import java.io.IOException;
 import java.io.Serializable;
 
+// TODO can we not get rid of this and use local IP connection with localhost (127.0.0.1) instead? untangle FreerailsClient before
 /**
  * A connection between the a client and server in the same JVM.
  */

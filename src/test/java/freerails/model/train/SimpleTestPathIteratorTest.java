@@ -27,7 +27,7 @@ import junit.framework.TestCase;
 /**
  *
  */
-public class SimplePathIteratorImplTest extends TestCase {
+public class SimpleTestPathIteratorTest extends TestCase {
 
     /**
      *

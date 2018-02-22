@@ -26,6 +26,7 @@ import freerails.model.player.FreerailsPrincipal;
 
 import java.io.Serializable;
 
+// TODO currently not used, except in tests?
 /**
  * This move removes a cargo bundle from the cargo bundle list.
  */

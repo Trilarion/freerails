@@ -22,7 +22,7 @@ import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 
-// TODO what is this good for?
+// TODO what is this good for? why is it named Untried?
 /**
  * Lets the caller test moves.
  */

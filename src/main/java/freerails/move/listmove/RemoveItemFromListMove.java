@@ -35,15 +35,15 @@ public class RemoveItemFromListMove implements ListMove {
 
     private static final long serialVersionUID = 3906091169698953521L;
     private final Serializable item;
-    private final PlayerKey listPlayerKey;
+    private final PlayerKey playerKey;
     private final int index;
     private final FreerailsPrincipal principal;
 
-    public RemoveItemFromListMove(PlayerKey k, int i, Serializable item, FreerailsPrincipal p) {
+    public RemoveItemFromListMove(PlayerKey key, int i, Serializable item, FreerailsPrincipal principal) {
         this.item = item;
-        listPlayerKey = k;
+        playerKey = key;
         index = i;
-        principal = p;
+        this.principal = principal;
     }
 
     public int getIndex() {
@@ -54,7 +54,7 @@ public class RemoveItemFromListMove implements ListMove {
     public int hashCode() {
         int result;
         result = (item != null ? item.hashCode() : 0);
-        result = 29 * result + listPlayerKey.hashCode();
+        result = 29 * result + playerKey.hashCode();
         result = 29 * result + index;
         result = 29 * result + principal.hashCode();
 
@@ -62,15 +62,15 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     public PlayerKey getKey() {
-        return listPlayerKey;
+        return playerKey;
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        if (world.size(this.principal, listPlayerKey) < (index + 1)) {
-            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listPlayerKey) + " but index =" + index);
+        if (world.size(this.principal, playerKey) < (index + 1)) {
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, playerKey) + " but index =" + index);
         }
 
-        Serializable item2remove = world.get(this.principal, listPlayerKey, index);
+        Serializable item2remove = world.get(this.principal, playerKey, index);
 
         if (null == item2remove) {
             return MoveStatus.moveFailed("The item at position " + index + " has already been removed.");
@@ -85,12 +85,12 @@ public class RemoveItemFromListMove implements ListMove {
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        if (world.size(this.principal, listPlayerKey) < (index + 1)) {
-            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, listPlayerKey) + " but index =" + index);
+        if (world.size(this.principal, playerKey) < (index + 1)) {
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, playerKey) + " but index =" + index);
         }
 
-        if (null != world.get(this.principal, listPlayerKey, index)) {
-            String reason = "The item at position " + index + " in the list (" + world.get(this.principal, listPlayerKey, index).toString() + ") is not the expected item (null).";
+        if (null != world.get(this.principal, playerKey, index)) {
+            String reason = "The item at position " + index + " in the list (" + world.get(this.principal, playerKey, index).toString() + ") is not the expected item (null).";
 
             return MoveStatus.moveFailed(reason);
         }
@@ -101,7 +101,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.set(this.principal, listPlayerKey, index, null);
+            world.set(this.principal, playerKey, index, null);
         }
 
         return moveStatus;
@@ -111,7 +111,7 @@ public class RemoveItemFromListMove implements ListMove {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {
-            world.set(this.principal, listPlayerKey, index, item);
+            world.set(this.principal, playerKey, index, item);
         }
 
         return moveStatus;
@@ -130,7 +130,7 @@ public class RemoveItemFromListMove implements ListMove {
                 return false;
             }
 
-            return listPlayerKey == test.listPlayerKey;
+            return playerKey == test.playerKey;
         }
         return false;
     }

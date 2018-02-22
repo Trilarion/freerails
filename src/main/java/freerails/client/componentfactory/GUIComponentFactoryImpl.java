@@ -450,7 +450,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      *
      * <b>Be extremely careful with the references of objects allocated in this
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
-     * starting several new games). </b>
+     * starting several new games).</b>
      */
     public void setup(RendererRoot vl, ReadOnlyWorld world) throws IOException {
         /*

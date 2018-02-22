@@ -19,7 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConfig;
-import freerails.client.SoundManager;
+import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
 import freerails.client.renderer.tile.*;
@@ -70,7 +70,7 @@ public class RendererRootImpl implements RendererRoot {
         // Pre-load sounds..
         String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK, ClientConfig.SOUND_CASH, ClientConfig.SOUND_REMOVE_TRACK, ClientConfig.SOUND_WHISTLE};
         progressMonitorModel.nextStep(soundsFiles.length);
-        SoundManager sm = SoundManager.getSoundManager();
+        SoundManager sm = SoundManager.getInstance();
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
                 sm.addClip(soundsFiles[i]);

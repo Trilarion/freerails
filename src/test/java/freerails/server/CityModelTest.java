@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+import freerails.model.terrain.CityModel;
 import freerails.util.Vector2D;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;

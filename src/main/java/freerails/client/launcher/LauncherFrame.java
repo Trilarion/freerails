@@ -428,13 +428,13 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         if (isNewGame()) {
             initServer();
         }
-        IpConnectionAcceptor accepter = new IpConnectionAcceptor(server, port);
+        IpConnectionAcceptor acceptor = new IpConnectionAcceptor(server, port);
         /*
          * Note, the thread's name gets set in the run method so there is no
          * point setting it here.
          */
-        Thread t = new Thread(accepter);
-        t.start();
+        Thread thread = new Thread(acceptor);
+        thread.start();
 
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "3");

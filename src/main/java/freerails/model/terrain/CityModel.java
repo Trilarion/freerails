@@ -16,17 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.model.terrain;
 
-import freerails.model.terrain.CityTile;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
-import freerails.model.terrain.City;
-import freerails.model.terrain.FullTerrainTile;
-import freerails.model.terrain.TerrainCategory;
-import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 import java.util.ArrayList;
