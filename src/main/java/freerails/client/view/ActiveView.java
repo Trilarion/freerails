@@ -21,6 +21,7 @@
  */
 package freerails.client.view;
 
+import freerails.client.ActionRoot;
 import freerails.client.ModelRoot;
 
 /**

@@ -18,6 +18,7 @@
 
 package freerails.client.view;
 
+import freerails.client.ActionRoot;
 import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.StationRadiusRenderer;
 import freerails.client.ModelRoot;

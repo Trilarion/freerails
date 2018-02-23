@@ -245,8 +245,9 @@ public class SelectStationPanel extends JPanel implements View {
 
         // Draw track
         g2.setColor(Color.BLACK);
-        for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, world.getMapWidth()); x++) {
-            for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, world.getMapHeight()); y++) {
+        Vector2D mapSize = world.getMapSize();
+        for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, mapSize.x); x++) {
+            for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, mapSize.y); y++) {
                 FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vector2D(x, y));
                 if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     double xDouble = x - visableMapTiles.x;

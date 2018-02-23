@@ -23,6 +23,7 @@
 
 package freerails.client.view;
 
+import freerails.client.ActionRoot;
 import freerails.client.ClientConfig;
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.ImageManager;

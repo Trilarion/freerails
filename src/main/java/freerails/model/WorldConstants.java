@@ -14,6 +14,7 @@ public final class WorldConstants {
     /**
      * size of a tile (height and width)
      */
+    // TODO the world should not depend on the tile size, currently it still does, maybe a different tile size (not pixel on screen, but kilometer?)
     public static final int TILE_SIZE = 30;
     public static final double TILE_DIAGONAL_SIZE = StrictMath.hypot(TILE_SIZE, TILE_SIZE);
     private static final int SHARE_BUNDLE_SIZE = 10000;

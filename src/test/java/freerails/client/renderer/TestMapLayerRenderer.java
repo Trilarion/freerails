@@ -9,9 +9,9 @@ import java.awt.*;
  *
  */
 public class TestMapLayerRenderer implements MapLayerRenderer {
-    public void paintTile(Graphics g, Vector2D tileP) {}
+    public void paintTile(Graphics g, Vector2D tileLocation) {}
 
-    public void refreshTile(Vector2D p) {}
+    public void refreshTile(Vector2D tileLocation) {}
 
     public void refreshAll() {}
 

@@ -135,7 +135,7 @@ class TerrainInfoPanel extends JPanel {
         terrainDescription.setText(labelString);
         terrainName.setText(type.getDisplayName());
 
-        Image tileIcon = rendererRoot.getTileViewWithNumber(typeNumber).getDefaultIcon();
+        Image tileIcon = rendererRoot.getTileRendererByIndex(typeNumber).getDefaultIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));
 
         repaint();

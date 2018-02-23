@@ -51,13 +51,13 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
     }
 
     @Override
-    protected void paintComponent(java.awt.Graphics g) {
-        java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
-        java.awt.Rectangle r = getVisibleRect();
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        Rectangle r = getVisibleRect();
         mapView.paintRect(g2, r);
     }
 
-    public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) {
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         return (int) mapView.getScale();
     }
 
@@ -65,7 +65,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
         return false;
     }
 
-    public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) {
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         if (javax.swing.SwingConstants.VERTICAL == orientation) {
             int best = (int) (((visibleRect.height / mapView.getScale()) - 2) * mapView.getScale());
 
@@ -99,7 +99,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
      *
      * @return The preferredScrollableViewportSize value
      */
-    public java.awt.Dimension getPreferredScrollableViewportSize() {
+    public Dimension getPreferredScrollableViewportSize() {
         return getPreferredSize();
     }
 
@@ -117,13 +117,13 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
     /**
      * @return
      */
-    public Dimension getMapSizeInPixels() {
+    public Vector2D getMapSizeInPixels() {
         return mapView.getMapSizeInPixels();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return getMapSizeInPixels();
+        return Vector2D.toDimension(getMapSizeInPixels());
     }
 
     public MapRenderer getMapView() {

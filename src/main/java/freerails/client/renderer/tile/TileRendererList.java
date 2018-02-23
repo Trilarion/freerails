@@ -20,16 +20,17 @@ package freerails.client.renderer.tile;
 
 import freerails.model.world.ReadOnlyWorld;
 
+// TODO what is this good for?
 /**
  * A list of TileRenderer.
  */
 public interface TileRendererList {
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    TileRenderer getTileViewWithNumber(int i);
+    TileRenderer getTileRendererByIndex(int index);
 
     // TODO Is this function needed?
     /**

@@ -22,6 +22,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.util.BinaryNumberFormatter;
+import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
@@ -45,8 +46,7 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
      * @throws IOException
      */
     public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
-        super(tileModel, rgbValues, world);
-        setTileIcons(new Image[16]);
+        super(tileModel, rgbValues, 16);
 
         for (int i = 0; i < getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
@@ -58,12 +58,12 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
      * TODO optimize cache
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
         int iconNumber = 0;
 
         for (int i = 0; i < 4; i++) {
             iconNumber = iconNumber << 1;
-            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], world);
+            iconNumber = iconNumber | checkTile(Vector2D.add(mapLocation, new Vector2D(X_LOOK_AT[i], Y_LOOK_AT[i])), world);
         }
 
         return iconNumber;

@@ -52,8 +52,7 @@ public class FullWorldTest extends TestCase {
      */
     public void testConstructor() {
         World world = new FullWorld();
-        assertEquals("The width should be zero", 0, world.getMapWidth());
-        assertEquals("The height should be zero", 0, world.getMapHeight());
+        assertEquals(world.getMapSize(), Vector2D.ZERO);
     }
 
     /**

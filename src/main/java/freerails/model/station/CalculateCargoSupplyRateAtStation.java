@@ -165,7 +165,8 @@ public class CalculateCargoSupplyRateAtStation {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(location.x - stationRadius, location.y - stationRadius, stationDiameter, stationDiameter);
-        Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
+        Vector2D mapSize = world.getMapSize();
+        Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 
         logger.debug("stationRadiusRect=" + stationRadiusRect);

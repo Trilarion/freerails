@@ -162,11 +162,22 @@ public final class Utils {
      * @param <T>
      * @return the non-null reference that was checked
      */
-    public static <T> T verifyNotNull(T reference) throws NullPointerException {
+    public static <T> T verifyNotNull(T reference, String message) throws NullPointerException {
         if (null == reference) {
-            throw new NullPointerException();
+            throw new NullPointerException(message);
         }
         return reference;
+    }
+
+    /**
+     * Convenience method.
+     *
+     * @param reference an object reference
+     * @param <T>
+     * @return the non-null reference that was checked
+     */
+    public static <T> T verifyNotNull(T reference) throws NullPointerException {
+        return verifyNotNull(reference, null);
     }
 
     /**

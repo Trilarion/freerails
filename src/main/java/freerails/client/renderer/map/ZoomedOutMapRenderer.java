@@ -49,10 +49,10 @@ import java.awt.image.BufferedImage;
  */
 public class ZoomedOutMapRenderer implements MapRenderer {
 
+    // TODO convert to Vector2D
     private final int imageWidth;
     private final int imageHeight;
-    private final int mapWidth;
-    private final int mapHeight;
+    private final Vector2D mapSize;
     private final int mapX;
     private final int mapY;
     private final ReadOnlyWorld world;
@@ -62,14 +62,13 @@ public class ZoomedOutMapRenderer implements MapRenderer {
     private BufferedImage mapImage;
     private boolean isDirty = true;
 
-    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, int mapWidth, int mapHeight) {
+    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, Vector2D mapSize) {
         this.world = world;
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
+        this.mapSize = mapSize;
         imageHeight = height;
         imageWidth = width;
 
-        double scalingFactor = ((double) imageHeight) / mapHeight;
+        double scalingFactor = ((double) imageHeight) / mapSize.y;
         affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
         this.mapX = mapX;
         this.mapY = mapY;
@@ -83,8 +82,9 @@ public class ZoomedOutMapRenderer implements MapRenderer {
      */
     public static MapRenderer getInstance(ReadOnlyWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
-        double worldWidth = world.getMapWidth();
-        double worldHeight = world.getMapHeight();
+        Vector2D mapSize = world.getMapSize();
+        double worldWidth = mapSize.x;
+        double worldHeight = mapSize.y;
         double scale;
 
         if (worldWidth / worldHeight > maxSize.getWidth() / maxSize.getHeight()) {
@@ -96,14 +96,14 @@ public class ZoomedOutMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0, world.getMapWidth(), world.getMapHeight());
+        return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0, mapSize);
     }
 
     /**
      * @return
      */
     public float getScale() {
-        return (float) imageHeight / (float) mapHeight;
+        return (float) imageHeight / (float) mapSize.y;
     }
 
     /**
@@ -129,16 +129,16 @@ public class ZoomedOutMapRenderer implements MapRenderer {
         }
     }
 
-    public void refreshTile(Vector2D tile) {
-        FullTerrainTile tt = (FullTerrainTile) world.getTile(tile);
+    public void refreshTile(Vector2D tileLocation) {
+        FullTerrainTile tt = (FullTerrainTile) world.getTile(tileLocation);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
             int typeNumber = tt.getTerrainTypeID();
             TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, typeNumber);
-            oneToOneImage.setRGB(tile.x, tile.y, terrainType.getRGB());
+            oneToOneImage.setRGB(tileLocation.x, tileLocation.y, terrainType.getRGB());
         } else {
             // black with alpha of 1
-            oneToOneImage.setRGB(tile.x, tile.y, 0xff000000);
+            oneToOneImage.setRGB(tileLocation.x, tileLocation.y, 0xff000000);
         }
 
         isDirty = true;
@@ -163,12 +163,12 @@ public class ZoomedOutMapRenderer implements MapRenderer {
         // mapGraphics.dispose();
         // }
         // generate a 1:1 map of the terrain layer
-        oneToOneImage = defaultConfiguration.createCompatibleImage(mapWidth, mapHeight, Transparency.TRANSLUCENT);
+        oneToOneImage = defaultConfiguration.createCompatibleImage(mapSize.x, mapSize.y, Transparency.TRANSLUCENT);
         mapImage = defaultConfiguration.createCompatibleImage(imageWidth, imageHeight, Transparency.OPAQUE);
 
 
-        for (int tileX = mapX; tileX < mapWidth + mapX; tileX++) {
-            for (int tileY = mapY; tileY < mapHeight + mapY; tileY++) {
+        for (int tileX = mapX; tileX < mapSize.x + mapX; tileX++) {
+            for (int tileY = mapY; tileY < mapSize.y + mapY; tileY++) {
                 FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vector2D(tileX, tileY));
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
@@ -188,16 +188,15 @@ public class ZoomedOutMapRenderer implements MapRenderer {
     /**
      * @return
      */
-    public Dimension getMapSizeInPixels() {
-        return new Dimension(imageWidth, imageHeight);
+    public Vector2D getMapSizeInPixels() {
+        return new Vector2D(imageWidth, imageHeight);
     }
 
     /**
      * @param g
-     * @param tileX
-     * @param tileY
+     * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileP) {
+    public void paintTile(Graphics g, Vector2D tileLocation) {
         g.drawImage(mapImage, 0, 0, null);
     }
 

@@ -73,7 +73,7 @@ public class BuildTrackRenderer implements Painter {
 
                 int ruleNumber = trackPiece.getTrackTypeID();
                 TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
-                trackPieceView.drawTrackPieceIcon(graphicsNumber, g, point.x, point.y, ClientConfig.tileSize);
+                trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConfig.tileSize);
             }
 
             ReadOnlyWorld realWorld = modelRoot.getWorld();
@@ -84,8 +84,9 @@ public class BuildTrackRenderer implements Painter {
              */
             for (Iterator<Vector2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Vector2D p = iter.next();
-                int x = p.x * ClientConfig.tileSize.width + (ClientConfig.tileSize.width - ClientConfig.SMALL_DOT_WIDTH) / 2;
-                int y = p.y * ClientConfig.tileSize.height + (ClientConfig.tileSize.height - ClientConfig.SMALL_DOT_WIDTH) / 2;
+                // TODO replace by Vector2D arithmetics
+                int x = p.x * ClientConfig.tileSize.x + (ClientConfig.tileSize.x - ClientConfig.SMALL_DOT_WIDTH) / 2;
+                int y = p.y * ClientConfig.tileSize.y + (ClientConfig.tileSize.y - ClientConfig.SMALL_DOT_WIDTH) / 2;
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
                 FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p);
 

@@ -96,8 +96,9 @@ public class MapFixtureFactory2 {
             }
         }
         FullTerrainTile tile = FullTerrainTile.getInstance(clearTypeID);
-        for (int x = 0; x < world.getMapWidth(); x++) {
-            for (int y = 0; y < world.getMapHeight(); y++) {
+        Vector2D mapSize = world.getMapSize();
+        for (int x = 0; x < mapSize.x; x++) {
+            for (int y = 0; y < mapSize.y; y++) {
                 world.setTile(new Vector2D(x, y), tile);
             }
         }

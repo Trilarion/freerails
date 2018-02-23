@@ -197,8 +197,7 @@ public class FullWorldDiffsTest extends TestCase {
     public void testMap() {
         FullWorld underlyingWorld = new FullWorld(new Vector2D(21, 8));
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
-        assertEquals(21, worldDiff.getMapWidth());
-        assertEquals(8, worldDiff.getMapHeight());
+        assertEquals(worldDiff.getMapSize(), new Vector2D(21, 8));
 
         FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(new Vector2D(2, 2));
         assertNotNull(tile);

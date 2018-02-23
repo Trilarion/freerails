@@ -19,6 +19,7 @@
 package freerails.client;
 
 import freerails.model.WorldConstants;
+import freerails.util.Vector2D;
 
 import java.awt.*;
 
@@ -207,7 +208,7 @@ public final class ClientConfig {
      */
     public static final int SERVERUPDATE = 50;
 
-    public static final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
+    public static final Vector2D tileSize = new Vector2D(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
 
     private ClientConfig() {
     }

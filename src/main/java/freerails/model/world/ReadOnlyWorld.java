@@ -114,14 +114,11 @@ public interface ReadOnlyWorld extends Serializable {
     int getID(FreerailsPrincipal principal);
 
     /**
-     * Returns the height of the map in tiles.
+     * Returns the width and height of the map in tiles.
+     *
+     * @return
      */
-    int getMapHeight();
-
-    /**
-     * Returns the width of the map in tiles.
-     */
-    int getMapWidth();
+    Vector2D getMapSize();
 
     /**
      * @return

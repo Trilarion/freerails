@@ -22,6 +22,7 @@
  */
 package freerails.client.renderer.tile;
 
+import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
@@ -42,21 +43,20 @@ public class ChequeredTileRenderer extends AbstractTileRenderer {
      * @throws IOException
      */
     public ChequeredTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
-        super(tileModel, rgbValues, world);
-        setTileIcons(new Image[2]);
+        super(tileModel, rgbValues, 2);
         getTileIcons()[0] = imageManager.getImage(generateRelativeFileName(0));
         getTileIcons()[1] = imageManager.getImage(generateRelativeFileName(1));
     }
 
+    // TODO World needed in any subclass?
     /**
-     * @param x
-     * @param y
+     * @param mapLocation
      * @param world
      * @return
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
-        return (x + y) % 2;
+    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
+        return (mapLocation.x + mapLocation.y) % 2;
     }
 
     /**

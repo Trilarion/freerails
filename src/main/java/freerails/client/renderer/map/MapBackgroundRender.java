@@ -58,8 +58,8 @@ public class MapBackgroundRender implements MapLayerRenderer {
      * The track layer.
      */
     private final TrackLayer trackLayer;
-    private final Dimension tileSize = new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
-    private final Dimension mapSize;
+    private final Vector2D tileSize = new Vector2D(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
+    private final Vector2D mapSize;
     private final Painter cityNames;
     private final Painter stationNames;
 
@@ -77,19 +77,18 @@ public class MapBackgroundRender implements MapLayerRenderer {
     public MapBackgroundRender(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trackLayer = new TrackLayer(world, rendererRoot);
         terrainLayer = new TerrainLayer(world, rendererRoot);
-        mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
+        mapSize = world.getMapSize();
         cityNames = new CityNamesRenderer(world);
         stationNames = new StationNamesRenderer(world, modelRoot);
     }
 
     /**
      * @param g
-     * @param tileX
-     * @param tileY
+     * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileP) {
-        terrainLayer.paintTile(g, tileP);
-        trackLayer.paintTile(g, tileP);
+    public void paintTile(Graphics g, Vector2D tileLocation) {
+        terrainLayer.paintTile(g, tileLocation);
+        trackLayer.paintTile(g, tileLocation);
         cityNames.paint((Graphics2D) g, null);
         stationNames.paint((Graphics2D) g, null);
     }
@@ -123,10 +122,9 @@ public class MapBackgroundRender implements MapLayerRenderer {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param tileLocation
      */
-    public void refreshTile(Vector2D p) {}
+    public void refreshTile(Vector2D tileLocation) {}
 
     /**
      *
@@ -166,17 +164,16 @@ public class MapBackgroundRender implements MapLayerRenderer {
              */
             for (int tileX = tilesToPaint.x - 1; tileX < (tilesToPaint.x + tilesToPaint.width + 1); tileX++) {
                 for (int tileY = tilesToPaint.y - 1; tileY < (tilesToPaint.y + tilesToPaint.height + 1); tileY++) {
-                    if ((tileX >= 0) && (tileX < mapSize.width) && (tileY >= 0) && (tileY < mapSize.height)) {
-                        FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vector2D(tileX, tileY));
-                        TrackPiece tp = ft.getTrackPiece();
+                    if ((tileX >= 0) && (tileX < mapSize.x) && (tileY >= 0) && (tileY < mapSize.y)) {
+                        Vector2D tileLocation = new Vector2D(tileX, tileY);
+                        FullTerrainTile fullTerrainTile = (FullTerrainTile) world.getTile(tileLocation);
+                        TrackPiece trackPiece = fullTerrainTile.getTrackPiece();
+                        int graphicsNumber = trackPiece.getTrackGraphicID();
 
-                        int graphicsNumber = tp.getTrackGraphicID();
-
-                        int ruleNumber = tp.getTrackTypeID();
+                        int ruleNumber = trackPiece.getTrackTypeID();
                         if (ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                             TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
-
-                            trackPieceView.drawTrackPieceIcon(graphicsNumber, g, tileX, tileY, tileSize);
+                            trackPieceView.drawTrackPieceIcon(g, graphicsNumber, tileLocation, tileSize);
                         }
                     }
                 }
@@ -185,16 +182,15 @@ public class MapBackgroundRender implements MapLayerRenderer {
 
         /**
          * @param g
-         * @param tileX
-         * @param tileY
+         * @param tileLocation
          */
-        public void paintTile(Graphics g, Vector2D tileP) {
+        public void paintTile(Graphics g, Vector2D tileLocation) {
             /*
              * Since track tiles overlap the adjacent terrain tiles, we create a
              * temporary Graphics object that only lets us draw on the selected
              * tile.
              */
-            paintRectangleOfTiles(g, new Rectangle(tileP.x, tileP.y, 1, 1));
+            paintRectangleOfTiles(g, new Rectangle(tileLocation.x, tileLocation.y, 1, 1));
         }
 
         private void paintRectangleOfTiles(Graphics g, Vector2D p, int width, int height) {
@@ -202,10 +198,9 @@ public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         * @param x
-         * @param y
+         * @param tileLocation
          */
-        public void refreshTile(Vector2D p) {}
+        public void refreshTile(Vector2D tileLocation) {}
 
         /**
          * @param g
@@ -241,22 +236,21 @@ public class MapBackgroundRender implements MapLayerRenderer {
 
         /**
          * @param g
-         * @param tile
+         * @param tileLocation
          */
-        public void paintTile(Graphics g, Vector2D tile) {
-            int screenX = tileSize.width * tile.x;
-            int screenY = tileSize.height * tile.y;
+        public void paintTile(Graphics g, Vector2D tileLocation) {
+            Vector2D screenLocation = Vector2D.multiply(tileSize, tileLocation);
 
-            if ((tile.x >= 0) && (tile.x < mapSize.width) && (tile.y >= 0) && (tile.y < mapSize.height)) {
-                TerrainTile tt = (TerrainTile) world.getTile(tile);
+            if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
+                TerrainTile tt = (TerrainTile) world.getTile(tileLocation);
 
                 int typeNumber = tt.getTerrainTypeID();
-                TileRenderer tr = tiles.getTileViewWithNumber(typeNumber);
+                TileRenderer tr = tiles.getTileRendererByIndex(typeNumber);
 
                 if (null == tr) {
                     logger.warn("No tile renderer for " + typeNumber);
                 } else {
-                    tr.renderTile(g, screenX, screenY, tile.x, tile.y, world);
+                    tr.render(g, screenLocation, tileLocation, world);
                 }
             }
         }
@@ -288,10 +282,9 @@ public class MapBackgroundRender implements MapLayerRenderer {
         }
 
         /**
-         * @param x
-         * @param y
+         * @param tileLocation
          */
-        public void refreshTile(Vector2D p) {}
+        public void refreshTile(Vector2D tileLocation) {}
 
         /**
          *

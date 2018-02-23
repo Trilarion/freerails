@@ -47,7 +47,7 @@ import java.util.List;
 public class RendererRootImpl implements RendererRoot {
 
     private static final Logger logger = Logger.getLogger(RendererRootImpl.class.getName());
-    private final TileRendererList tiles;
+    private final TileRendererList tileRendererList;
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
     private final List<TrainImages> wagonImages = new ArrayList<>();
@@ -60,7 +60,7 @@ public class RendererRootImpl implements RendererRoot {
      */
     public RendererRootImpl(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
-        tiles = loadNewTileViewList(world, progressMonitorModel);
+        tileRendererList = loadNewTileViewList(world, progressMonitorModel);
 
         trackPieceViewList = loadTrackViews(world, progressMonitorModel);
 
@@ -126,7 +126,7 @@ public class RendererRootImpl implements RendererRoot {
         progressMonitorModel.setValue(progress);
 
         for (int i = 0; i < numberOfTypes; i++) {
-            TerrainType t = (TerrainType) world.get(SharedKey.TerrainTypes, i);
+            TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, i);
             int[] typesTreatedAsTheSame = new int[]{i};
 
             TileRenderer tileRenderer;
@@ -136,7 +136,7 @@ public class RendererRootImpl implements RendererRoot {
             try {
                 // XXX hack to make rivers flow into ocean and harbours & ocean
                 // treat harbours as the same type.
-                TerrainCategory thisTerrainCategory = t.getCategory();
+                TerrainCategory thisTerrainCategory = terrainType.getCategory();
 
                 if (thisTerrainCategory == TerrainCategory.River || thisTerrainCategory == TerrainCategory.Ocean) {
                     // Count number of types with category "water"
@@ -165,7 +165,7 @@ public class RendererRootImpl implements RendererRoot {
                     }
                 }
 
-                tileRenderer = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, t, world);
+                tileRenderer = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
                 tileRenderers.add(tileRenderer);
 
                 continue;
@@ -173,7 +173,7 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tileRenderer = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, t, world);
+                tileRenderer = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
                 tileRenderers.add(tileRenderer);
 
                 continue;
@@ -181,7 +181,7 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tileRenderer = new ChequeredTileRenderer(imageManager, typesTreatedAsTheSame, t, world);
+                tileRenderer = new ChequeredTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
                 tileRenderers.add(tileRenderer);
 
                 continue;
@@ -189,19 +189,20 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, t, world);
+                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
                 tileRenderers.add(tileRenderer);
             } catch (IOException io) {
                 // If the image is missing, we generate it.
-                logger.warn("No tile renderer for " + t.getTerrainTypeName());
+                logger.warn("No tile renderer for " + terrainType.getTerrainTypeName());
 
-                String filename = StandardTileRenderer.generateFilename(t.getTerrainTypeName());
-                Image image = QuickRGBTileRendererList.createImageFor(t);
+                // TODO maybe get rid of it instead
+                String filename = StandardTileRenderer.generateFilename(terrainType.getTerrainTypeName());
+                Image image = QuickRGBTileRendererList.createImageFor(terrainType);
                 imageManager.setImage(filename, image);
 
                 // generatedImages.setImage(filename, image);
                 try {
-                    tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, t, world);
+                    tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
                     tileRenderers.add(tileRenderer);
                 } catch (IOException io2) {
                     io2.printStackTrace();
@@ -236,13 +237,13 @@ public class RendererRootImpl implements RendererRoot {
             }
         }
 
-        return new TileRendererListImpl(tileRenderers);
+        return new StandardTileRendererList(tileRenderers);
     }
 
     public boolean validate(ReadOnlyWorld world) {
         boolean okSoFar = true;
 
-        if (!tiles.validate(world)) {
+        if (!tileRendererList.validate(world)) {
             okSoFar = false;
         }
 
@@ -263,11 +264,11 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    public TileRenderer getTileViewWithNumber(int i) {
-        return tiles.getTileViewWithNumber(i);
+    public TileRenderer getTileRendererByIndex(int index) {
+        return tileRendererList.getTileRendererByIndex(index);
     }
 
     /**

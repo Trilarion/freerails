@@ -65,24 +65,24 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
 
     /**
      * @param g
-     * @param tileP
+     * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileP) {
-        mapView.paintTile(g, tileP);
+    public void paintTile(Graphics g, Vector2D tileLocation) {
+        mapView.paintTile(g, tileLocation);
     }
 
     /**
      * @param x
      * @param y
      */
-    public void refreshTile(Vector2D p) {
+    public void refreshTile(Vector2D tileLocation) {
         // The backgroundBuffer gets created on the first call to
         // backgroundBuffer.paintRect(..)
         // so we need a check here to avoid a null pointer exception.
         if (null != super.backgroundBuffer) {
             Graphics gg = bg.create();
             gg.translate(-bufferRect.x, -bufferRect.y);
-            mapView.paintTile(gg, p);
+            mapView.paintTile(gg, tileLocation);
             gg.dispose();
         }
     }

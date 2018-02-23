@@ -19,6 +19,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.model.world.ReadOnlyWorld;
+import freerails.util.Vector2D;
 
 import java.awt.*;
 
@@ -34,12 +35,10 @@ public interface TileRenderer {
 
     /**
      * @param g
-     * @param renderX
-     * @param renderY
-     * @param mapX
-     * @param mapY
+     * @param renderLocation
+     * @param mapLocation
      * @param world
      */
-    void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld world);
+    void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, ReadOnlyWorld world);
 
 }

@@ -96,7 +96,7 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
     }
 
     @Override
-    protected void paintComponent(java.awt.Graphics g) {
+    protected void paintComponent(Graphics g) {
         if (EventQueue.isDispatchThread()) {
             return;
         }
@@ -173,14 +173,14 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
     /**
      * @param g
      */
-    public void paintTile(Graphics g, Vector2D p) {
+    public void paintTile(Graphics g, Vector2D tileLocation) {
         throw new UnsupportedOperationException();
     }
 
     /**
      *
      */
-    public void refreshTile(Vector2D p) {
+    public void refreshTile(Vector2D tileLocation) {
         throw new UnsupportedOperationException();
     }
 

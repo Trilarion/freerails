@@ -27,10 +27,10 @@ import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 
+// TODO only used, if something else fails
 /**
  * Simple implementation of TileRendererList, for testing purposes only.
  */
-
 public class QuickRGBTileRendererList implements TileRendererList {
 
     private static final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -51,10 +51,10 @@ public class QuickRGBTileRendererList implements TileRendererList {
     }
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    public TileRenderer getTileViewWithNumber(int i) {
+    public TileRenderer getTileRendererByIndex(int index) {
         throw new UnsupportedOperationException();
     }
 

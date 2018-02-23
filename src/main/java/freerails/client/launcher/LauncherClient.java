@@ -26,7 +26,7 @@ import freerails.client.componentfactory.GUIComponentFactoryImpl;
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
-import freerails.client.view.ActionRoot;
+import freerails.client.ActionRoot;
 import freerails.network.command.ClientProperty;
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.ProgressMonitorModel;
@@ -80,7 +80,6 @@ public class LauncherClient extends FreerailsClient {
 
     @Override
     protected void clientUpdates() {
-        if (factory.isSetup()) {
             factory.getBuildTrackController().update();
             // Update sub tick time.
             long currentTime = System.currentTimeMillis();
@@ -95,7 +94,6 @@ public class LauncherClient extends FreerailsClient {
                 ticks += subTicks;
             }
             modelRoot.setProperty(ModelRootProperty.TIME, ticks);
-        }
     }
 
     /**

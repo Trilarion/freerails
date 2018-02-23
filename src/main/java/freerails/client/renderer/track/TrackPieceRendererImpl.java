@@ -19,6 +19,7 @@
 package freerails.client.renderer.track;
 
 import freerails.util.BinaryNumberFormatter;
+import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
@@ -67,20 +68,20 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
     }
 
     /**
-     * @param trackTemplate
      * @param g
-     * @param x
-     * @param y
+     * @param trackTemplate
+     * @param tileLocation
      * @param tileSize
      */
-    public void drawTrackPieceIcon(int trackTemplate, java.awt.Graphics g, int x, int y, java.awt.Dimension tileSize) {
+    public void drawTrackPieceIcon(Graphics g, int trackTemplate, Vector2D tileLocation, Vector2D tileSize) {
         if ((trackTemplate > 511) || (trackTemplate < 0)) {
             throw new java.lang.IllegalArgumentException("trackTemplate = " + trackTemplate + ", it should be in the range 0-511");
         }
 
         if (trackPieceIcons[trackTemplate] != null) {
-            int drawX = x * tileSize.width - tileSize.width / 2;
-            int drawY = y * tileSize.height - tileSize.height / 2;
+            // TODO use Vector2D arithmetics
+            int drawX = tileLocation.x * tileSize.x - tileSize.x / 2;
+            int drawY = tileLocation.y * tileSize.y - tileSize.y / 2;
             g.drawImage(trackPieceIcons[trackTemplate], drawX, drawY, null);
         }
     }

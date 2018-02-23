@@ -123,13 +123,8 @@ public class FullWorldDiffs extends FullWorld {
     }
 
     @Override
-    public int getMapHeight() {
-        return underlying.getMapHeight();
-    }
-
-    @Override
-    public int getMapWidth() {
-        return underlying.getMapWidth();
+    public Vector2D getMapSize() {
+        return underlying.getMapSize();
     }
 
     @Override

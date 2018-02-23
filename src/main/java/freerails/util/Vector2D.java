@@ -24,6 +24,7 @@ package freerails.util;
 import java.awt.*;
 import java.io.Serializable;
 
+// TODO double version of it?
 /**
  * Immutable vector with two integer coordinates and some arithmetic convenience functions.
  *
@@ -85,6 +86,11 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
         return new Vector2D(a.x - b.x, a.y - b.y);
     }
 
+    public static Vector2D multiply(Vector2D a, Vector2D b) {
+        return new Vector2D(a.x * b.x, a.y * b.y);
+    }
+
+
     public int compareTo(Vector2D o) {
         if (o.y != y) return y - o.y;
         else return x - o.x;
@@ -96,5 +102,9 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
 
     public static Point toPoint(Vector2D p) {
         return new Point(p.x, p.y);
+    }
+
+    public static Dimension toDimension(Vector2D p) {
+        return new Dimension(p.x, p.y);
     }
 }

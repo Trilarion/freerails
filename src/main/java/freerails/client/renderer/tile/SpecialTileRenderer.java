@@ -22,6 +22,7 @@
  */
 package freerails.client.renderer.tile;
 
+import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
@@ -48,45 +49,41 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @throws IOException
      */
     public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld world) throws IOException {
-        super(tileModel, rgbValues, world);
-        setTileIcons(new Image[1]);
+        super(tileModel, rgbValues, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
         this.parentTileView = parentTileView;
     }
 
     /**
      * @param g
-     * @param screenX
-     * @param screenY
-     * @param mapX
-     * @param mapY
+     * @param renderLocation
+     * @param mapLocation
      * @param world
      */
     @Override
-    public void renderTile(java.awt.Graphics g, int screenX, int screenY, int mapX, int mapY, ReadOnlyWorld world) {
+    public void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, ReadOnlyWorld world) {
         if (parentTileView != null) {
-            parentTileView.renderTile(g, screenX, screenY, mapX, mapY, world);
+            parentTileView.render(g, renderLocation, mapLocation, world);
         } else {
             logger.warn("parent tileView==null");
         }
 
-        Image icon = getIcon(mapX, mapX, world);
+        Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
-            g.drawImage(icon, screenX, screenY, null);
+            g.drawImage(icon, renderLocation.x, renderLocation.y, null);
         } else {
             logger.warn("special tileView icon==null");
         }
     }
 
     /**
-     * @param x
-     * @param y
+     * @param mapLocation
      * @param world
      * @return
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
         return 0;
     }
 

@@ -46,25 +46,25 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      * @return
      */
-    public Dimension getMapSizeInPixels() {
+    public Vector2D getMapSizeInPixels() {
         int height = (int) (400 * scale);
         int width = (int) (400 * scale);
 
-        return new Dimension(height, width);
+        return new Vector2D(width, height);
     }
 
     /**
      * @param g
-     * @param tileP
+     * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileP) {
+    public void paintTile(Graphics g, Vector2D tileLocation) {
         paintRect(g, null);
     }
 
     /**
-     * @param p
+     * @param tileLocation
      */
-    public void refreshTile(Vector2D p) {}
+    public void refreshTile(Vector2D tileLocation) {}
 
     /**
      * @param g

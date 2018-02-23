@@ -298,8 +298,8 @@ public class UserInputOnMapController extends KeyAdapter {
     private void cancelProposedBuild() {
         ignoreDragging = true;
         buildTrack.hide();
-        StationBuildModel sbm = actionRoot.getStationBuildModel();
-        sbm.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
+        StationBuildModel stationBuildModel = actionRoot.getStationBuildModel();
+        stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         setIgnoreKeyEvents(false);
     }
 
@@ -329,9 +329,8 @@ public class UserInputOnMapController extends KeyAdapter {
      */
     private boolean legalRectangleContains(Vector2D tryThisPoint) {
         ReadOnlyWorld world = modelRoot.getWorld();
-        int width = world.getMapWidth();
-        int height = world.getMapHeight();
-        Rectangle legalRectangle = new Rectangle(0, 0, width, height);
+        Vector2D mapSize = world.getMapSize();
+        Rectangle legalRectangle = new Rectangle(0, 0, mapSize.x, mapSize.y);
         return legalRectangle.contains(Vector2D.toPoint(tryThisPoint));
     }
 

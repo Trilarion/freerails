@@ -18,6 +18,7 @@
 
 package freerails.client.renderer.map;
 
+import freerails.client.ClientConfig;
 import freerails.client.renderer.track.BuildTrackRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
@@ -37,7 +38,7 @@ public class DetailMapRenderer implements MapRenderer {
 
     private static final boolean OSXWorkaround = (System.getProperty("OSXWorkaround") != null);
     private final MapLayerRenderer background;
-    private final Dimension mapSizeInPixels;
+    private final Vector2D mapSizeInPixels;
     private final OverHeadTrainView trainsview;
     private final StationRadiusRenderer stationRadius;
     private final BuildTrackRenderer buildTrackRenderer;
@@ -61,8 +62,8 @@ public class DetailMapRenderer implements MapRenderer {
             background = new SquareTileBackgroundRenderer(render);
         }
 
-        Dimension mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
-        mapSizeInPixels = new Dimension(mapSize.width * WorldConstants.TILE_SIZE, mapSize.height * WorldConstants.TILE_SIZE);
+        Vector2D mapSize = world.getMapSize();
+        mapSizeInPixels = Vector2D.multiply(mapSize, ClientConfig.tileSize);
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);
         buildTrackController = new BuildTrackController(world, modelRoot);
@@ -93,15 +94,15 @@ public class DetailMapRenderer implements MapRenderer {
     /**
      * @return
      */
-    public Dimension getMapSizeInPixels() {
+    public Vector2D getMapSizeInPixels() {
         return mapSizeInPixels;
     }
 
     /**
      * @param g
      */
-    public void paintTile(Graphics g, Vector2D tileP) {
-        background.paintTile(g, tileP);
+    public void paintTile(Graphics g, Vector2D tileLocation) {
+        background.paintTile(g, tileLocation);
         trainsview.paint((Graphics2D) g, null);
         stationRadius.paint((Graphics2D) g, null);
         stationBoxes.paint((Graphics2D) g, null);
@@ -111,8 +112,8 @@ public class DetailMapRenderer implements MapRenderer {
 
     /**
      */
-    public void refreshTile(Vector2D p) {
-        background.refreshTile(p);
+    public void refreshTile(Vector2D tileLocation) {
+        background.refreshTile(tileLocation);
     }
 
     /**

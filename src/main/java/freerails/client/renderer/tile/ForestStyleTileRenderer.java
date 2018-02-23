@@ -23,6 +23,7 @@
 package freerails.client.renderer.tile;
 
 import freerails.util.BinaryNumberFormatter;
+import freerails.util.Vector2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
@@ -35,6 +36,7 @@ import java.io.IOException;
  */
 public class ForestStyleTileRenderer extends AbstractTileRenderer {
 
+    // TODO better naming maybe (also express this as Vector2D)
     private static final int[] X_LOOK_AT = {-1, 1};
     private static final int[] Y_LOOK_AT = {0, 0};
 
@@ -46,8 +48,7 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
      * @throws IOException
      */
     public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
-        super(tileModel, rgbValues, world);
-        setTileIcons(new Image[4]);
+        super(tileModel, rgbValues, 4);
 
         for (int i = 0; i < getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);
@@ -56,17 +57,16 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param mapLocation
      * @param world
      * @return
      */
     @Override
-    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
         int iconNumber = 0;
 
         for (int i = 0; i < 2; i++) {
-            iconNumber = iconNumber | checkTile(x + X_LOOK_AT[i], y + Y_LOOK_AT[i], world);
+            iconNumber = iconNumber | checkTile( Vector2D.add(mapLocation, new Vector2D(X_LOOK_AT[i], Y_LOOK_AT[i])), world);
             iconNumber = iconNumber << 1;
         }
 

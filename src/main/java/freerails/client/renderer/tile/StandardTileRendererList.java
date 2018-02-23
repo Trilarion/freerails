@@ -31,30 +31,27 @@ import java.util.List;
 /**
  * A list of TileRenderer stored in an array and created from an ArrayList.
  */
-public class TileRendererListImpl implements TileRendererList {
-    private final TileRenderer[] tiles;
+public class StandardTileRendererList implements TileRendererList {
+
+    private final List<TileRenderer> tileRenderer;
 
     /**
-     * @param t
+     * @param tileRenderer
      */
-    public TileRendererListImpl(List<TileRenderer> t) {
-        tiles = new TileRenderer[t.size()];
-
-        for (int i = 0; i < t.size(); i++) {
-            tiles[i] = t.get(i);
-        }
+    public StandardTileRendererList(List<TileRenderer> tileRenderer) {
+        this.tileRenderer = tileRenderer;
     }
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    public TileRenderer getTileViewWithNumber(int i) {
-        return tiles[i];
+    public TileRenderer getTileRendererByIndex(int index) {
+        return tileRenderer.get(index);
     }
 
     public boolean validate(ReadOnlyWorld world) {
         // There should a TileRenderer for each terrain type.
-        return world.size(SharedKey.TerrainTypes) == tiles.length;
+        return world.size(SharedKey.TerrainTypes) == tileRenderer.size();
     }
 }

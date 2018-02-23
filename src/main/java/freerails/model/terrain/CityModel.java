@@ -102,7 +102,8 @@ public class CityModel {
         stations = 0;
 
         // Identify city's bounds.
-        Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
+        Vector2D mapSize = world.getMapSize();
+        Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
         City city = (City) world.get(SharedKey.Cities, cityID);
         Vector2D topleft = Vector2D.subtract(city.getLocation(), new Vector2D(-3,-3));
         Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);

@@ -57,7 +57,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      */
     private static final Logger logger = Logger.getLogger(GUIComponentFactoryImpl.class.getName());
     private final ActionRoot actionRoot;
-    private final BuildMenu buildMenu;
+    private final JMenu buildMenu; // let's you select a track type
     private final CashLabel cashlabel;
     private final ClientFrame clientFrame;
     private final DateLabel datelabel;
@@ -73,10 +73,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private final RHSTabPane trainsJTabPane;
     private final UserInputOnMapController userInputOnMapController;
     private final UserMessageGenerator userMessageGenerator;
-    private boolean isSetup = false;
     private DetailMapRenderer mainMap;
     private MapRenderer overviewMap;
-    private ServerControlModel sc;
     private ActionAdapter speedActions;
     private JMenuItem stationInfoJMenuItem;
     private JMenuItem trainListJMenuItem;
@@ -90,8 +88,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     public GUIComponentFactoryImpl(ModelRootImpl modelRoot, ActionRoot actionRoot) {
         this.modelRoot = modelRoot;
         this.actionRoot = actionRoot;
-        userInputOnMapController = new UserInputOnMapController(this.modelRoot, actionRoot);
-        buildMenu = new BuildMenu();
+        userInputOnMapController = new UserInputOnMapController(modelRoot, actionRoot);
+        buildMenu = new JMenu();
         mapViewJComponent = new MapViewComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
         Rectangle r = new Rectangle(10, 10, 10, 10);
@@ -259,7 +257,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @return
      */
     public JMenu createGameMenu() {
-        sc = actionRoot.getServerControls();
+        ServerControlModel serverControlModel = actionRoot.getServerControls();
 
         JMenu gameMenu = new JMenu("Game");
         gameMenu.setMnemonic(71);
@@ -269,7 +267,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
         quitJMenuItem.addActionListener(e -> System.exit(0));
 
-        final JMenu newGameJMenu = new JMenu(sc.getNewGameAction());
+        final JMenu newGameJMenu = new JMenu(serverControlModel.getNewGameAction());
         newGameJMenu.addMenuListener(new MenuListener() {
 
             public void menuCanceled(MenuEvent e) {
@@ -281,23 +279,23 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             public void menuSelected(MenuEvent e) {
                 newGameJMenu.removeAll();
 
-                for (Action action: sc.getMapNames().getActions()) {
+                for (Action action: serverControlModel.getMapNames().getActions()) {
                     JMenuItem mi = new JMenuItem(action);
                     newGameJMenu.add(mi);
                 }
             }
         });
 
-        JMenuItem saveGameJMenuItem = new JMenuItem(sc.getSaveGameAction());
+        JMenuItem saveGameJMenuItem = new JMenuItem(serverControlModel.getSaveGameAction());
 
-        JMenuItem loadGameJMenuItem = new JMenuItem(sc.getLoadGameAction());
+        JMenuItem loadGameJMenuItem = new JMenuItem(serverControlModel.getLoadGameAction());
 
         // Set up the game speed sub-menu.
         JMenu gameSpeedSubMenu = new JMenu("Game Speed");
 
         ButtonGroup group = new ButtonGroup();
 
-        speedActions = sc.getSetTargetTickPerSecondActions();
+        speedActions = serverControlModel.getSetTargetTickPerSecondActions();
 
         Enumeration<MappedButtonModel> buttonModels = speedActions.getButtonModels();
 
@@ -401,13 +399,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @return
-     */
-    public boolean isSetup() {
-        return isSetup;
-    }
-
-    /**
      * @param key
      * @param index
      * @param principal
@@ -452,7 +443,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games).</b>
      */
-    public void setup(RendererRoot vl, ReadOnlyWorld world) throws IOException {
+    public void setup(RendererRoot rendererRoot, ReadOnlyWorld world) throws IOException {
         /*
          * Set the cursor position. The initial cursor position is 0,0. However,
          * if a game is loaded or a new game is started and the map size is the
@@ -461,7 +452,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
          */
         Vector2D cursorPosition = Vector2D.ZERO;
         if (null != this.world) {
-            if (world.getMapWidth() == this.world.getMapWidth() && world.getMapHeight() == this.world.getMapHeight()) {
+            if (world.getMapSize().equals(this.world.getMapSize())) {
                 cursorPosition = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
             }
         }
@@ -469,35 +460,41 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         modelRoot.addMapListener(this);
         modelRoot.addListListener(this);
 
-        if (!vl.validate(this.world)) {
+        if (!rendererRoot.validate(this.world)) {
             throw new IllegalArgumentException("The specified" + " RendererRoot are not compatible with the clients" + "world!");
         }
 
         // create the main and overview maps
-        mainMap = new DetailMapRenderer(this.world, vl, modelRoot);
+        mainMap = new DetailMapRenderer(this.world, rendererRoot, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);
         overviewMap = ZoomedOutMapRenderer.getInstance(this.world, maxSize);
 
         stationTypesPopup.setup(modelRoot, actionRoot, mainMap.getStationRadius());
 
-        mapViewJComponent.setup(mainMap, modelRoot, vl);
+        mapViewJComponent.setup(mainMap, modelRoot, rendererRoot);
 
         // setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
         userInputOnMapController.setup(mapViewJComponent, actionRoot.getTrackMoveProducer(), stationTypesPopup, modelRoot, dialogueBoxController, getBuildTrackController());
 
-        buildMenu.setup(actionRoot);
+
+        // build menu setup
+        buildMenu.removeAll();
+        buildMenu.setText("Build");
+        buildMenu.add(actionRoot.getBuildTrainDialogAction());
+
+
         mainMapScrollPane1.setViewportView(mapViewJComponent);
 
         ((OverviewMapComponent) overviewMapContainer).setup(overviewMap);
 
-        datelabel.setup(modelRoot, vl, null);
-        cashlabel.setup(modelRoot, vl, null);
-        trainsJTabPane.setup(actionRoot, vl, modelRoot);
+        datelabel.setup(modelRoot, rendererRoot, null);
+        cashlabel.setup(modelRoot, rendererRoot, null);
+        trainsJTabPane.setup(actionRoot, rendererRoot, modelRoot);
 
-        dialogueBoxController.setup(modelRoot, vl);
+        dialogueBoxController.setup(modelRoot, rendererRoot);
 
         StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
@@ -525,7 +522,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         }
 
         clientFrame.setTitle(frameTitle);
-        isSetup = true;
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, cursorPosition);
         mapViewJComponent.requestFocus();
     }
@@ -545,9 +541,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
             mainMap.refreshAll();
             overviewMap.refreshAll();
         } else {
-            // Fix for bug 967673 (Crash when building track close to edge of
-            // map).
-            Rectangle mapRect = new Rectangle(0, 0, world.getMapWidth(), world.getMapHeight());
+            // TODO this bug still exists, but why? (coordinates outside, what effect has this)
+            // Fix for bug 967673 (Crash when building track close to edge of map).
+            Vector2D mapSize = world.getMapSize();
+            Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
             tilesChanged = tilesChanged.intersection(mapRect);
 
             for (int tileX = tilesChanged.x; tileX < (tilesChanged.x + tilesChanged.width); tileX++) {

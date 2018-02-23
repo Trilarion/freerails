@@ -18,11 +18,10 @@
 
 package freerails.client.renderer.map;
 
-import java.awt.*;
+import freerails.util.Vector2D;
 
 /**
- * Lets the GUI component that is displaying the map known the scale at which
- * the map is being rendered.
+ * Lets the GUI component that is displaying the map known the scale at which the map is being rendered.
  */
 public interface MapRenderer extends MapLayerRenderer {
 
@@ -34,5 +33,5 @@ public interface MapRenderer extends MapLayerRenderer {
     /**
      * @return
      */
-    Dimension getMapSizeInPixels();
+    Vector2D getMapSizeInPixels();
 }

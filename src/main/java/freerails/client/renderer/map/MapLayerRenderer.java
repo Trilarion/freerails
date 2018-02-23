@@ -33,14 +33,14 @@ public interface MapLayerRenderer {
 
     /**
      * @param g
-     * @param p
+     * @param tileLocation
      */
-    void paintTile(Graphics g, Vector2D p);
+    void paintTile(Graphics g, Vector2D tileLocation);
 
     /**
-     * @param p
+     * @param tileLocation
      */
-    void refreshTile(Vector2D p);
+    void refreshTile(Vector2D tileLocation);
 
     /**
      *

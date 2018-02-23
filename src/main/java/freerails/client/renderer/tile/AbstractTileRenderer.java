@@ -37,32 +37,27 @@ import java.io.File;
 public abstract class AbstractTileRenderer implements TileRenderer {
 
     private final int[] typeNumbers;
-    private final int mapWidth;
-    private final int mapHeight;
-    private final TerrainType tileModel;
+    private final TerrainType terrainType;
     private Image[] tileIcons;
 
-    public AbstractTileRenderer(TerrainType t, int[] rgbValues, ReadOnlyWorld world) {
-        mapWidth = world.getMapWidth();
-        mapHeight = world.getMapHeight();
-
-        tileModel = Utils.verifyNotNull(t);
+    // TODO if only mapSize is needed, do not send the full world here
+    public AbstractTileRenderer(TerrainType terrainType, int[] rgbValues, int numberTileIcons) {
+        this.terrainType = Utils.verifyNotNull(terrainType);
         typeNumbers = Utils.verifyNotNull(rgbValues);
+        tileIcons = new Image[numberTileIcons]; // TODO check > 0
     }
 
     /**
      * @param g
-     * @param renderX
-     * @param renderY
-     * @param mapX
-     * @param mapY
+     * @param renderLocation
+     * @param mapLocation
      * @param world
      */
-    public void renderTile(java.awt.Graphics g, int renderX, int renderY, int mapX, int mapY, ReadOnlyWorld world) {
-        Image icon = getIcon(mapX, mapY, world);
+    public void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, ReadOnlyWorld world) {
+        Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
-            g.drawImage(icon, renderX, renderY, null);
+            g.drawImage(icon, renderLocation.x, renderLocation.y, null);
         }
     }
 
@@ -70,39 +65,44 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @return
      */
     public Image getDefaultIcon() {
-        return getTileIcons()[0];
+        return tileIcons[0];
     }
 
     public String getTerrainType() {
-        return tileModel.getTerrainTypeName();
+        return terrainType.getTerrainTypeName();
     }
 
     /**
-     * Returns an icon for the tile at x,y, which may depend on the terrain
-     * types of of the surrounding tiles.
+     * Returns an icon for the tile at x,y, which may also depend on the terrain types of of the surrounding tiles.
+     *
+     * In the standard implementation it doesn't though.
      */
-    public Image getIcon(int x, int y, ReadOnlyWorld world) {
-        int tile = selectTileIcon(x, y, world);
+    public Image getIcon(Vector2D mapLocation, ReadOnlyWorld world) {
+        int index = selectTileIconIndex(mapLocation, world);
 
-        if (getTileIcons()[tile] != null) {
-            return getTileIcons()[tile];
-        }
-        throw new NullPointerException("Error in TileView.getIcon: icon no. " + tile + "==null");
+        return Utils.verifyNotNull(tileIcons[index], String.format("TileRenderer.getIcon: icon at index %d is null", index));
     }
 
-    public int selectTileIcon(int x, int y, ReadOnlyWorld world) {
-        return 0;
-    }
+    /**
+     * Which of the stored icons to use for that specific map location. May also depend on surrounding icons.
+     *
+     * @param mapLocation
+     * @param world
+     * @return
+     */
+    public abstract int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world);
 
-    // TODO remove wo !
-    public int checkTile(int x, int y, ReadOnlyWorld world) {
+    // TODO remove world !
+    public int checkTile(Vector2D location, ReadOnlyWorld world) {
         int match = 0;
 
-        if ((x < mapWidth) && (x >= 0) && (y < mapHeight) && (y >= 0)) {
+        // TODO vector2D arithmetics
+        Vector2D mapSize = world.getMapSize();
+        if ((location.x < mapSize.x) && (location.x >= 0) && (location.y < mapSize.y) && (location.y >= 0)) {
             for (int typeNumber : typeNumbers) {
-                TerrainTile tt = (TerrainTile) world.getTile(new Vector2D(x, y));
+                TerrainTile terrainTile = (TerrainTile) world.getTile(location);
 
-                if (tt.getTerrainTypeID() == typeNumber) {
+                if (terrainTile.getTerrainTypeID() == typeNumber) {
                     match = 1;
                     // A match
                 }
@@ -127,11 +127,12 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      */
     protected abstract String generateFileNameNumber(int i);
 
-    public Image[] getTileIcons() {
+    /**
+     * Only for subclasses.
+     *
+     * @return
+     */
+    protected Image[] getTileIcons() {
         return tileIcons;
-    }
-
-    public void setTileIcons(Image[] tileIcons) {
-        this.tileIcons = tileIcons;
     }
 }

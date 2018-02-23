@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.view;
+package freerails.client;
 
-import freerails.client.ModelRootImpl;
 import freerails.client.model.ServerControlModel;
 import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.RendererRoot;
+import freerails.client.view.DialogueBoxController;
 import freerails.move.StationBuilder;
 import freerails.controller.TrackMoveProducer;
 import freerails.model.world.ReadOnlyWorld;
@@ -37,7 +37,6 @@ import java.awt.event.KeyEvent;
  */
 public class ActionRoot {
 
-    private final Action buildTrainDialogAction = new BuildTrainDialogAction();
     private final ServerControlModel serverControls;
     private DialogueBoxController dialogueBoxController;
     private StationBuildModel stationBuildModel;
@@ -54,7 +53,7 @@ public class ActionRoot {
      * @return
      */
     public Action getBuildTrainDialogAction() {
-        return buildTrainDialogAction;
+        return new BuildTrainDialogAction();
     }
 
     /**
@@ -95,17 +94,18 @@ public class ActionRoot {
     /**
      * Call this method when a new game is started or a game is loaded.
      */
-    public void setup(ModelRootImpl modelRoot, RendererRoot vl) {
+    public void setup(ModelRootImpl modelRoot, RendererRoot rendererRoot) {
         serverControls.setup(modelRoot, dialogueBoxController);
 
         ReadOnlyWorld world = modelRoot.getWorld();
 
         if (world.size(SharedKey.TrackRules) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
-            stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), vl, modelRoot);
+            stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), rendererRoot, modelRoot);
         }
     }
 
+    // TODO too convoluted, remove this inner class
     private class BuildTrainDialogAction extends AbstractAction {
         private static final long serialVersionUID = 3257853173002416948L;
 

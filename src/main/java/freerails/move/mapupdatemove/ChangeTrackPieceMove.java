@@ -138,7 +138,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         int cornersTemplate = Integer.parseInt(templateString, 2);
         trackTemplate = trackTemplate & cornersTemplate;
 
-        Dimension mapSize = new Dimension(world.getMapWidth(), world.getMapHeight());
+        Vector2D mapSize = world.getMapSize();
 
         // Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
@@ -149,7 +149,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
             trackTemplateAbove = 0;
         }
 
-        if ((point.y + 1) < mapSize.height) {
+        if ((point.y + 1) < mapSize.y) {
             FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vector2D(point.x, point.y + 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateBelow = tp.getTrackGraphicID();

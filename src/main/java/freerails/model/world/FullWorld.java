@@ -160,7 +160,8 @@ public class FullWorld implements World {
      */
     public boolean boundsContain(Vector2D location) {
         // TODO use compareTo instead
-        return location.x >= 0 && location.x < getMapWidth() && location.y >= 0 && location.y < getMapHeight();
+        Vector2D mapSize = getMapSize();
+        return location.x >= 0 && location.x < mapSize.x && location.y >= 0 && location.y < mapSize.y;
     }
 
     /**
@@ -177,41 +178,42 @@ public class FullWorld implements World {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof FullWorld) {
-            FullWorld test = (FullWorld) obj;
+            FullWorld other = (FullWorld) obj;
 
             // Compare players
             int numberOfPlayers = getNumberOfPlayers();
-            if (numberOfPlayers != test.getNumberOfPlayers()) return false;
+            if (numberOfPlayers != other.getNumberOfPlayers()) return false;
 
             for (int i = 0; i < numberOfPlayers; i++) {
-                if (!getPlayer(i).equals(test.getPlayer(i))) return false;
+                if (!getPlayer(i).equals(other.getPlayer(i))) return false;
             }
 
             // Compare lists
-            if (!lists.equals(test.lists)) {
+            if (!lists.equals(other.lists)) {
                 return false;
             }
-            if (!sharedLists.equals(test.sharedLists)) {
+            if (!sharedLists.equals(other.sharedLists)) {
                 return false;
             }
-            if (!activityLists.equals(test.activityLists)) {
+            if (!activityLists.equals(other.activityLists)) {
                 return false;
             }
-            if (!items.equals(test.items)) {
+            if (!items.equals(other.items)) {
                 return false;
             }
-            if (!bankAccounts.equals(test.bankAccounts)) {
+            if (!bankAccounts.equals(other.bankAccounts)) {
                 return false;
             }
 
             // Compare maps
-            if ((getMapWidth() != test.getMapWidth()) || (getMapHeight() != test.getMapHeight())) {
+            Vector2D mapSize = getMapSize();
+            if (!mapSize.equals(other.getMapSize())) {
                 return false;
             }
-            for (int x = 0; x < getMapWidth(); x++) {
-                for (int y = 0; y < getMapHeight(); y++) {
+            for (int x = 0; x < mapSize.x; x++) {
+                for (int y = 0; y < mapSize.y; y++) {
                     Vector2D p = new Vector2D(x, y);
-                    if (!getTile(p).equals(test.getTile(p))) {
+                    if (!getTile(p).equals(other.getTile(p))) {
                         return false;
                     }
                 }
@@ -263,18 +265,14 @@ public class FullWorld implements World {
         return principal.getWorldIndex();
     }
 
-    public int getMapHeight() {
+    public Vector2D getMapSize() {
         if (map.length == 0) {
-            // When the map size is 0*0 we get a
-            // java.lang.ArrayIndexOutOfBoundsException: 0
-            // if we don't have the check above.
-            return 0;
+            return Vector2D.ZERO;
         }
-        return map[0].length;
-    }
-
-    public int getMapWidth() {
-        return map.length;
+        // When the map size is 0*0 we get a
+        // java.lang.ArrayIndexOutOfBoundsException: 0
+        // if we don't have the check above.
+        return new Vector2D(map.length, map[0].length);
     }
 
     /**
