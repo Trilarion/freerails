@@ -89,11 +89,11 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     };
 
-    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewComponent mapView) {
+    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer stationRadiusRenderer, MapViewComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();
-        stationRadiusRenderer = srr;
+        this.stationRadiusRenderer = stationRadiusRenderer;
         buildEnabled = stationBuildModel.getStationBuildAction().isEnabled();
     }
 

@@ -28,13 +28,14 @@ import freerails.util.Vector2D;
 import javax.swing.*;
 import java.awt.*;
 
+// TODO What is the abstraction here?
 /**
 * Displays the map and provides methods to handle scrolling.
  */
 public abstract class MapViewComponent extends JPanel implements Scrollable, MapRenderer {
 
     private static final long serialVersionUID = 3588200012170257744L;
-    private MapRenderer mapView = new BlankMapRenderer(10);
+    private MapRenderer mapRenderer;
 
     /**
      *
@@ -47,18 +48,18 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
      * @return
      */
     public float getScale() {
-        return mapView.getScale();
+        return mapRenderer.getScale();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Rectangle r = getVisibleRect();
-        mapView.paintRect(g2, r);
+        mapRenderer.paintRect(g2, r);
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return (int) mapView.getScale();
+        return (int) mapRenderer.getScale();
     }
 
     public boolean getScrollableTracksViewportWidth() {
@@ -66,15 +67,15 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        if (javax.swing.SwingConstants.VERTICAL == orientation) {
-            int best = (int) (((visibleRect.height / mapView.getScale()) - 2) * mapView.getScale());
+        if (SwingConstants.VERTICAL == orientation) {
+            int best = (int) (((visibleRect.height / mapRenderer.getScale()) - 2) * mapRenderer.getScale());
 
             if (best > 0) {
                 return best;
             }
             return visibleRect.height;
         }
-        float f = ((visibleRect.width / mapView.getScale()) - 2) * mapView.getScale();
+        float f = ((visibleRect.width / mapRenderer.getScale()) - 2) * mapRenderer.getScale();
         int best = (int) (f);
 
         if (best > 0) {
@@ -107,7 +108,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
      * @param tile
      */
     public void centerOnTile(Vector2D tile) {
-        float scale = mapView.getScale();
+        float scale = mapRenderer.getScale();
         Rectangle visRect = new Rectangle(getVisibleRect());
         visRect.x = (int) (tile.x * scale - (visRect.width / 2));
         visRect.y = (int) (tile.y * scale - (visRect.height / 2));
@@ -118,7 +119,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
      * @return
      */
     public Vector2D getMapSizeInPixels() {
-        return mapView.getMapSizeInPixels();
+        return mapRenderer.getMapSizeInPixels();
     }
 
     @Override
@@ -126,11 +127,11 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
         return Vector2D.toDimension(getMapSizeInPixels());
     }
 
-    public MapRenderer getMapView() {
-        return mapView;
+    public MapRenderer getMapRenderer() {
+        return mapRenderer;
     }
 
-    public void setMapView(MapRenderer mapView) {
-        this.mapView = mapView;
+    public void setMapRenderer(MapRenderer mapRenderer) {
+        this.mapRenderer = mapRenderer;
     }
 }

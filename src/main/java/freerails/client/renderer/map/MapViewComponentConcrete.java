@@ -134,7 +134,7 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
      * @throws IOException
      */
     public void setup(MapRenderer mapRenderer, ModelRootImpl modelRoot, RendererRoot rendererRoot) throws IOException {
-        super.setMapView(mapRenderer);
+        super.setMapRenderer(mapRenderer);
 
         setBorder(null);
 
@@ -147,11 +147,11 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
      * @param mapRenderer
      */
     public void setup(MapRenderer mapRenderer) {
-        super.setMapView(mapRenderer);
+        super.setMapRenderer(mapRenderer);
     }
 
     private void react2curorMove(Vector2D newPoint, Vector2D oldPoint) {
-        float scale = getMapView().getScale();
+        float scale = getMapRenderer().getScale();
         Dimension tileSize = new Dimension((int) scale, (int) scale);
         Rectangle vr = getVisibleRect();
         Rectangle rectangleSurroundingCursor = new Rectangle(0, 0, 1, 1);
@@ -188,7 +188,7 @@ public class MapViewComponentConcrete extends MapViewComponent implements ModelR
      *
      */
     public void refreshAll() {
-        getMapView().refreshAll();
+        getMapRenderer().refreshAll();
     }
 
     /**

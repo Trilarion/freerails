@@ -29,7 +29,7 @@ import freerails.client.renderer.map.MapViewComponentConcrete;
 import freerails.controller.BuildTrackController;
 import freerails.client.renderer.map.MapRenderer;
 import freerails.client.renderer.RendererRoot;
-import freerails.client.renderer.map.ZoomedOutMapRenderer;
+import freerails.client.renderer.map.OverviewMapRenderer;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.LocalConnection;
@@ -468,7 +468,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         mainMap = new DetailMapRenderer(this.world, rendererRoot, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);
-        overviewMap = ZoomedOutMapRenderer.getInstance(this.world, maxSize);
+        overviewMap = OverviewMapRenderer.getInstance(this.world, maxSize);
 
         stationTypesPopup.setup(modelRoot, actionRoot, mainMap.getStationRadius());
 

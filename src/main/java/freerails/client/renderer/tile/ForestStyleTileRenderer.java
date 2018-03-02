@@ -44,10 +44,9 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
      * @param imageManager
      * @param rgbValues
      * @param tileModel
-     * @param world
      * @throws IOException
      */
-    public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
+    public ForestStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues, 4);
 
         for (int i = 0; i < getTileIcons().length; i++) {

@@ -45,10 +45,9 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @param rgbValues
      * @param tileModel
      * @param parentTileView
-     * @param world
      * @throws IOException
      */
-    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView, ReadOnlyWorld world) throws IOException {
+    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView) throws IOException {
         super(tileModel, rgbValues, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
         this.parentTileView = parentTileView;
@@ -87,8 +86,9 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
         return 0;
     }
 
+    // TODO move this somewhere else
     private String generateFilename() {
-        return "terrain" + File.separator + getTerrainType() + ".png";
+        return "terrain" + File.separator + getTerrainTypeName() + ".png";
     }
 
     /**

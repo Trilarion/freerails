@@ -26,7 +26,6 @@ import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -38,25 +37,16 @@ public class StandardTileRenderer extends AbstractTileRenderer {
     /**
      * @param imageManager
      * @param rgbValues
-     * @param tileModel
-     * @param world
+     * @param terrainType
      * @throws IOException
      */
-    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
-        super(tileModel, rgbValues, 1);
+    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType terrainType) throws IOException {
+        super(terrainType, rgbValues, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 
-    /**
-     * @param typeName
-     * @return
-     */
-    public static String generateFilename(String typeName) {
-        return "terrain" + File.separator + typeName + ".png";
-    }
-
     private String generateFilename() {
-        return generateFilename(getTerrainType());
+        return "terrain" + File.separator + getTerrainTypeName() + ".png";
     }
 
     @Override

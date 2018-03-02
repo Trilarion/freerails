@@ -20,6 +20,7 @@ package freerails.client.renderer.map;
 
 import freerails.util.Vector2D;
 
+// TODO these functions do not seem to be a good entity
 /**
  * Lets the GUI component that is displaying the map known the scale at which the map is being rendered.
  */

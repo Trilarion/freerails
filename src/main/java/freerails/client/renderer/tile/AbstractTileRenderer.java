@@ -68,7 +68,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         return tileIcons[0];
     }
 
-    public String getTerrainType() {
+    public String getTerrainTypeName() {
         return terrainType.getTerrainTypeName();
     }
 
@@ -80,6 +80,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     public Image getIcon(Vector2D mapLocation, ReadOnlyWorld world) {
         int index = selectTileIconIndex(mapLocation, world);
 
+        // TODO here we can assume that all icons in the array are not null, however, make sure of that before
         return Utils.verifyNotNull(tileIcons[index], String.format("TileRenderer.getIcon: icon at index %d is null", index));
     }
 
@@ -118,7 +119,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     public String generateRelativeFileName(int i) {
-        return "terrain" + File.separator + getTerrainType() + '_' + generateFileNameNumber(i) + ".png";
+        return "terrain" + File.separator + getTerrainTypeName() + '_' + generateFileNameNumber(i) + ".png";
     }
 
     /**

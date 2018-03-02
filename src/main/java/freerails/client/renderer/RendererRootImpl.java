@@ -114,6 +114,7 @@ public class RendererRootImpl implements RendererRoot {
         return new TrackPieceRendererList(world, imageManager, progressMonitorModel);
     }
 
+    // TODO this tile renderer list must have a certain length and structure otherwise the scenario start will hang, fix this behavior and simplify
     private TileRendererList loadNewTileViewList(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
@@ -125,6 +126,7 @@ public class RendererRootImpl implements RendererRoot {
         int progress = 0;
         progressMonitorModel.setValue(progress);
 
+        // for all terrain types
         for (int i = 0; i < numberOfTypes; i++) {
             TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, i);
             int[] typesTreatedAsTheSame = new int[]{i};
@@ -165,7 +167,7 @@ public class RendererRootImpl implements RendererRoot {
                     }
                 }
 
-                tileRenderer = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
+                tileRenderer = new RiverStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
                 tileRenderers.add(tileRenderer);
 
                 continue;
@@ -173,7 +175,16 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tileRenderer = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
+                tileRenderer = new ForestStyleTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
+                tileRenderers.add(tileRenderer);
+
+                continue;
+            } catch (IOException ignored) {
+            }
+
+            // TODO this was the chequered tile renderer which was removed because it was not needede
+            try {
+                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
                 tileRenderers.add(tileRenderer);
 
                 continue;
@@ -181,45 +192,21 @@ public class RendererRootImpl implements RendererRoot {
             }
 
             try {
-                tileRenderer = new ChequeredTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
+                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
                 tileRenderers.add(tileRenderer);
-
-                continue;
             } catch (IOException ignored) {
-            }
-
-            try {
-                tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
-                tileRenderers.add(tileRenderer);
-            } catch (IOException io) {
-                // If the image is missing, we generate it.
-                logger.warn("No tile renderer for " + terrainType.getTerrainTypeName());
-
-                // TODO maybe get rid of it instead
-                String filename = StandardTileRenderer.generateFilename(terrainType.getTerrainTypeName());
-                Image image = QuickRGBTileRendererList.createImageFor(terrainType);
-                imageManager.setImage(filename, image);
-
-                // generatedImages.setImage(filename, image);
-                try {
-                    tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType, world);
-                    tileRenderers.add(tileRenderer);
-                } catch (IOException io2) {
-                    io2.printStackTrace();
-                    throw new IllegalStateException();
-                }
             }
         }
 
         // add special tile renderer for harbours
-        TileRenderer occeanTileRenderer = null;
+        TileRenderer oceanTileRenderer = null;
 
         for (int j = 0; j < numberOfTypes; j++) {
             TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
             String terrainName = t2.getTerrainTypeName();
 
             if (terrainName.equalsIgnoreCase("Ocean")) {
-                occeanTileRenderer = tileRenderers.get(j);
+                oceanTileRenderer = tileRenderers.get(j);
 
                 break;
             }
@@ -231,7 +218,7 @@ public class RendererRootImpl implements RendererRoot {
 
             if (terrainName.equalsIgnoreCase("Harbour")) {
                 TerrainType t = (TerrainType) world.get(SharedKey.TerrainTypes, j);
-                TileRenderer tr = new SpecialTileRenderer(imageManager, new int[]{j}, t, occeanTileRenderer, world);
+                TileRenderer tr = new SpecialTileRenderer(imageManager, new int[]{j}, t, oceanTileRenderer);
                 tileRenderers.set(j, tr);
                 break;
             }

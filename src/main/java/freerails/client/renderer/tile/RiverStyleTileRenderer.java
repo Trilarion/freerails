@@ -42,10 +42,9 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
      * @param imageManager
      * @param rgbValues
      * @param tileModel
-     * @param world
      * @throws IOException
      */
-    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, ReadOnlyWorld world) throws IOException {
+    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel) throws IOException {
         super(tileModel, rgbValues, 16);
 
         for (int i = 0; i < getTileIcons().length; i++) {

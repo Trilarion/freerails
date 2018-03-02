@@ -53,7 +53,7 @@ public class DetailMapRenderer implements MapRenderer {
     public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
-        MapBackgroundRender render = new MapBackgroundRender(world, rendererRoot, modelRoot);
+        MapBackgroundRenderer render = new MapBackgroundRenderer(world, rendererRoot, modelRoot);
 
         if (OSXWorkaround) {
             // Don't buffer the mapviews background.

@@ -47,7 +47,7 @@ import java.awt.image.BufferedImage;
 /**
  * Draws the overview map.
  */
-public class ZoomedOutMapRenderer implements MapRenderer {
+public class OverviewMapRenderer implements MapRenderer {
 
     // TODO convert to Vector2D
     private final int imageWidth;
@@ -62,7 +62,7 @@ public class ZoomedOutMapRenderer implements MapRenderer {
     private BufferedImage mapImage;
     private boolean isDirty = true;
 
-    private ZoomedOutMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, Vector2D mapSize) {
+    private OverviewMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, Vector2D mapSize) {
         this.world = world;
         this.mapSize = mapSize;
         imageHeight = height;
@@ -96,7 +96,7 @@ public class ZoomedOutMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new ZoomedOutMapRenderer(world, (int) width, (int) height, 0, 0, mapSize);
+        return new OverviewMapRenderer(world, (int) width, (int) height, 0, 0, mapSize);
     }
 
     /**
