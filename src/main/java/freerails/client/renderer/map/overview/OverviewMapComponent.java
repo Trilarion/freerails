@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.view;
+package freerails.client.renderer.map.overview;
 
 import freerails.client.renderer.map.BlankMapRenderer;
 import freerails.client.renderer.map.MapRenderer;
@@ -33,24 +33,25 @@ public class OverviewMapComponent extends JPanel {
 
     private static final long serialVersionUID = 3258697585148376888L;
     private final Rectangle mainMapVisRect;
-    private MapRenderer mapView = new BlankMapRenderer(0.4F);
+    private MapRenderer mapRenderer = new BlankMapRenderer(0.4F);
 
     /**
-     * @param r
+     * @param visibleRect
      */
-    public OverviewMapComponent(Rectangle r) {
-        setPreferredSize(Vector2D.toDimension(mapView.getMapSizeInPixels()));
-        mainMapVisRect = r;
+    public OverviewMapComponent(Rectangle visibleRect) {
+        setPreferredSize(Vector2D.toDimension(mapRenderer.getMapSizeInPixels()));
+        mainMapVisRect = visibleRect;
     }
 
     /**
      * @param mapRenderer
      */
     public void setup(MapRenderer mapRenderer) {
-        mapView = mapRenderer;
-        setPreferredSize(Vector2D.toDimension(mapView.getMapSizeInPixels()));
-        setMinimumSize(getPreferredSize());
-        setSize(getPreferredSize());
+        this.mapRenderer = mapRenderer;
+        Dimension size = Vector2D.toDimension(this.mapRenderer.getMapSizeInPixels());
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setSize(size);
 
         if (null != getParent()) {
             getParent().validate();
@@ -61,13 +62,13 @@ public class OverviewMapComponent extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Rectangle r = getVisibleRect();
-        mapView.paintRect(g2, r);
+        mapRenderer.paintRect(g2, r);
         g2.setColor(Color.WHITE);
         g2.drawRect(mainMapVisRect.x, mainMapVisRect.y, mainMapVisRect.width, mainMapVisRect.height);
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return Vector2D.toDimension(mapView.getMapSizeInPixels());
+        return Vector2D.toDimension(mapRenderer.getMapSizeInPixels());
     }
 }

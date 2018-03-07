@@ -16,10 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.renderer;
+package freerails.client.renderer.map.detail;
 
 import freerails.client.ClientConfig;
 import freerails.client.ModelRootProperty;
+import freerails.client.renderer.RendererRoot;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.Painter;

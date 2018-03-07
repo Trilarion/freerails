@@ -49,20 +49,16 @@ public class BuildTrackRenderer implements Painter {
         rendererRoot = trackPieceViewList;
     }
 
-    private FullWorldDiffs getWorldDiffs() {
-        if (modelRoot == null) {
-            return null;
-        }
-        return (FullWorldDiffs) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
-    }
-
     /**
      * Paints the proposed track and dots to distinguish the proposed track from
      * any existing track.
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
-        FullWorldDiffs worldDiffs = getWorldDiffs();
+        FullWorldDiffs worldDiffs = null;
+        if (modelRoot != null) {
+            worldDiffs = (FullWorldDiffs) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        }
         if (null != worldDiffs) {
             for (Iterator<Vector2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
                 Vector2D point = iter.next();

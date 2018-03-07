@@ -391,7 +391,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
 
         // Remove all wagons from the train.
-        TrainModel model = ta.getTrain();
+        Train model = ta.getTrain();
         model = model.getNewInstance(model.getEngineType(), new ImmutableList<>());
         world.set(principal, PlayerKey.Trains, 0, model);
 
@@ -486,7 +486,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
         assertEquals(TrainState.READY, trainMotion.getActivity());
 
-        TrainModel train = ta.getTrain();
+        Train train = ta.getTrain();
         assertEquals(2, train.getNumberOfWagons());
 
         assertTrue(trainMotion.getInitialPosition() >= train.getLength());

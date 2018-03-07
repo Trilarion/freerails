@@ -209,6 +209,17 @@ public final class ClientConfig {
     public static final int SERVERUPDATE = 50;
 
     public static final Vector2D tileSize = new Vector2D(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
+    /**
+     * Affects scroll direction and scroll speed relative to the cursor.
+     * Examples:
+     *
+     * 1 := grab map, move 1:1
+     *
+     * -2 := invert mouse, scroll twice as fast
+     */
+    public static final int MAP_SCROLL_SPEED = 2;
+    public static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
+    public static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
 
     private ClientConfig() {
     }

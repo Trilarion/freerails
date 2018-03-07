@@ -16,14 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.renderer.map;
+package freerails.client.renderer.map.detail;
 
 import freerails.client.ClientConfig;
+import freerails.client.renderer.map.*;
 import freerails.client.renderer.track.BuildTrackRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
-import freerails.client.view.OverHeadTrainView;
-import freerails.controller.BuildTrackController;
 import freerails.client.ModelRoot;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
@@ -36,13 +35,11 @@ import java.awt.*;
  */
 public class DetailMapRenderer implements MapRenderer {
 
-    private static final boolean OSXWorkaround = (System.getProperty("OSXWorkaround") != null);
     private final MapLayerRenderer background;
     private final Vector2D mapSizeInPixels;
     private final OverHeadTrainView trainsview;
     private final StationRadiusRenderer stationRadius;
     private final BuildTrackRenderer buildTrackRenderer;
-    private final BuildTrackController buildTrackController;
     private final Painter stationBoxes;
 
     /**
@@ -54,19 +51,13 @@ public class DetailMapRenderer implements MapRenderer {
         trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
         MapBackgroundRenderer render = new MapBackgroundRenderer(world, rendererRoot, modelRoot);
-
-        if (OSXWorkaround) {
-            // Don't buffer the mapviews background.
-            background = render;
-        } else {
-            background = new SquareTileBackgroundRenderer(render);
-        }
+        background = new SquareTileBackgroundRenderer(render);
 
         Vector2D mapSize = world.getMapSize();
         mapSizeInPixels = Vector2D.multiply(mapSize, ClientConfig.tileSize);
+
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);
-        buildTrackController = new BuildTrackController(world, modelRoot);
         stationBoxes = new StationBoxRenderer(world, rendererRoot, modelRoot);
     }
 
@@ -75,13 +66,6 @@ public class DetailMapRenderer implements MapRenderer {
      */
     public StationRadiusRenderer getStationRadius() {
         return stationRadius;
-    }
-
-    /**
-     * @return
-     */
-    public BuildTrackController getBuildTrackController() {
-        return buildTrackController;
     }
 
     /**

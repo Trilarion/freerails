@@ -190,8 +190,8 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     private void getBundles() {
-        TrainModel trainModel = ((TrainModel) world.get(principal, PlayerKey.Trains, trainId));
-        trainBundleId = trainModel.getCargoBundleID();
+        Train train = ((Train) world.get(principal, PlayerKey.Trains, trainId));
+        trainBundleId = train.getCargoBundleID();
         trainBefore = getCopyOfBundle(trainBundleId);
         trainAfter = getCopyOfBundle(trainBundleId);
 

@@ -21,6 +21,7 @@
  */
 package freerails.model.train;
 
+import freerails.model.WorldConstants;
 import freerails.util.Pair;
 import freerails.util.Vector2D;
 import freerails.model.Activity;
@@ -80,7 +81,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      */
 
     public TrainMotion(PathOnTiles path, int engineStep, int trainLength, Motion speeds) {
-        if (trainLength < TrainModel.WAGON_LENGTH || trainLength > TrainModel.MAX_TRAIN_LENGTH)
+        if (trainLength < WorldConstants.WAGON_LENGTH || trainLength > WorldConstants.MAX_TRAIN_LENGTH)
             throw new IllegalArgumentException();
         this.path = path;
         this.speeds = speeds;

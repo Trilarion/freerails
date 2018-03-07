@@ -31,8 +31,9 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package freerails.client.renderer.map;
+package freerails.client.renderer.map.overview;
 
+import freerails.client.renderer.map.MapRenderer;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;

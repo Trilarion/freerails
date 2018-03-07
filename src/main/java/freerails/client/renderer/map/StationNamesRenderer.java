@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.renderer;
+package freerails.client.renderer.map;
 
 import freerails.client.ModelRootProperty;
 import freerails.model.world.PlayerKey;
@@ -59,7 +59,7 @@ public class StationNamesRenderer implements Painter {
         fontSize = 10;
         bgColor = Color.BLACK;
         textColor = Color.WHITE;
-        font = new Font("Arial", 0, fontSize);
+        font = new Font("Arial", Font.PLAIN, fontSize);
     }
 
     /**

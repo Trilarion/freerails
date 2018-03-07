@@ -35,7 +35,7 @@ import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 import junit.framework.TestCase;
 
 /**
@@ -81,7 +81,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         // 3 wagons to carry cargo type 0.
         ImmutableList<Integer> wagons = new ImmutableList<>(0, 0, 0);
-        TrainModel train = new TrainModel(wagons, trainCargoBundleId);
+        Train train = new Train(wagons, trainCargoBundleId);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, train);
     }
 
@@ -303,8 +303,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void addWagons(ImmutableList<Integer> wagons) {
-        TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
-        TrainModel newTrain = train.getNewInstance(train.getEngineType(), wagons);
+        Train train = (Train) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
+        Train newTrain = train.getNewInstance(train.getEngineType(), wagons);
         world.set(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0, newTrain);
     }
 
@@ -333,7 +333,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private ImmutableCargoBatchBundle getCargoOnTrain() {
-        TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
+        Train train = (Train) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
 
         return (ImmutableCargoBatchBundle) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.CargoBundles, train.getCargoBundleID());
@@ -349,7 +349,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void setCargoOnTrain(CargoBatch cb, int amount) {
-        TrainModel train = (TrainModel) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
+        Train train = (Train) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
         MutableCargoBatchBundle bundle = new MutableCargoBatchBundle(getCargoOnTrain());
         bundle.setAmount(cb, amount);
         world.set(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.CargoBundles, train.getCargoBundleID(), bundle.toImmutableCargoBundle());

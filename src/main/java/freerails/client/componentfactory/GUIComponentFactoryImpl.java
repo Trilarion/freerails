@@ -19,17 +19,18 @@
 package freerails.client.componentfactory;
 
 import freerails.client.*;
+import freerails.client.renderer.map.*;
+import freerails.client.renderer.map.detail.DetailMapRenderer;
+import freerails.client.renderer.map.detail.DetailMapViewComponentConcrete;
+import freerails.client.renderer.map.overview.OverviewMapComponent;
+import freerails.client.renderer.map.overview.OverviewMapRenderer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.ActionAdapter;
 import freerails.util.ui.ActionAdapter.MappedButtonModel;
 import freerails.client.model.ServerControlModel;
-import freerails.client.renderer.map.DetailMapRenderer;
-import freerails.client.renderer.map.MapViewComponentConcrete;
 import freerails.controller.BuildTrackController;
-import freerails.client.renderer.map.MapRenderer;
 import freerails.client.renderer.RendererRoot;
-import freerails.client.renderer.map.OverviewMapRenderer;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.LocalConnection;
@@ -63,7 +64,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private final DateLabel datelabel;
     private final DialogueBoxController dialogueBoxController;
     private final JScrollPane mainMapScrollPane1;
-    private final MapViewComponentConcrete mapViewJComponent;
+    private final DetailMapViewComponentConcrete mapViewJComponent;
     private final ModelRootImpl modelRoot;
     private final JPanel overviewMapContainer;
     private final StationTypesPopup stationTypesPopup;
@@ -80,7 +81,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private JMenuItem trainListJMenuItem;
     private JMenuItem trainOrdersJMenuItem;
     private ReadOnlyWorld world;
-
+    private BuildTrackController buildTrackController;
     /**
      * @param modelRoot
      * @param actionRoot
@@ -90,7 +91,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         this.actionRoot = actionRoot;
         userInputOnMapController = new UserInputOnMapController(modelRoot, actionRoot);
         buildMenu = new JMenu();
-        mapViewJComponent = new MapViewComponentConcrete();
+        mapViewJComponent = new DetailMapViewComponentConcrete();
         mainMapScrollPane1 = new JScrollPane();
         Rectangle r = new Rectangle(10, 10, 10, 10);
         overviewMapContainer = new OverviewMapComponent(r);
@@ -395,7 +396,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @return
      */
     public BuildTrackController getBuildTrackController() {
-        return mainMap.getBuildTrackController();
+        return buildTrackController;
     }
 
     /**
@@ -465,6 +466,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         }
 
         // create the main and overview maps
+        buildTrackController = new BuildTrackController(world, modelRoot);
         mainMap = new DetailMapRenderer(this.world, rendererRoot, modelRoot);
 
         Dimension maxSize = new Dimension(200, 200);

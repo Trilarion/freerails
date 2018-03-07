@@ -171,7 +171,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public boolean isWaiting4FullLoad() {
-        TrainModel train = (TrainModel) worldDiffs.get(principal, PlayerKey.Trains, trainId);
+        Train train = (Train) worldDiffs.get(principal, PlayerKey.Trains, trainId);
         int scheduleID = train.getScheduleID();
         Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, PlayerKey.TrainSchedules, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
@@ -221,7 +221,7 @@ public class TrainStopsHandler implements Serializable {
             // ..if so, we should change the consist.
             int oldLength = ta.getTrain().getLength();
             int engineType = ta.getTrain().getEngineType();
-            TrainModel newTrain = ta.getTrain().getNewInstance(engineType, order.consist);
+            Train newTrain = ta.getTrain().getNewInstance(engineType, order.consist);
             worldDiffs.set(principal, PlayerKey.Trains, trainId, newTrain);
             int newLength = newTrain.getLength();
             // has the trains length increased?
@@ -258,7 +258,7 @@ public class TrainStopsHandler implements Serializable {
 
     private void scheduledStop() {
 
-        TrainModel train = (TrainModel) worldDiffs.get(principal, PlayerKey.Trains, trainId);
+        Train train = (Train) worldDiffs.get(principal, PlayerKey.Trains, trainId);
         Schedule schedule = (ImmutableSchedule) worldDiffs.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
 
         ImmutableList<Integer> wagonsToAdd = schedule.getWagonsToAdd();
@@ -280,7 +280,7 @@ public class TrainStopsHandler implements Serializable {
     }
 
     private void updateSchedule() {
-        TrainModel train = (TrainModel) worldDiffs.get(principal, PlayerKey.Trains, trainId);
+        Train train = (Train) worldDiffs.get(principal, PlayerKey.Trains, trainId);
         int scheduleID = train.getScheduleID();
         ImmutableSchedule currentSchedule = (ImmutableSchedule) worldDiffs.get(principal, PlayerKey.TrainSchedules, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);

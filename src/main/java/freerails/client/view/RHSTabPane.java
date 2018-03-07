@@ -37,7 +37,7 @@ import java.net.URL;
 public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
     private static final long serialVersionUID = 3906926798502965297L;
-    private static final Logger LOGGER = Logger.getLogger(RHSTabPane.class.getName());
+    private static final Logger logger = Logger.getLogger(RHSTabPane.class.getName());
     private final TerrainInfoPanel terrainInfoPanel;
     private final StationInfoPanel stationInfoPanel;
     private final TrainListPanel trainListPanel;
@@ -143,7 +143,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
             Vector2D location = (Vector2D) after;
 
             // Select priority element at location
-            LOGGER.debug("Let's try to show the station.");
+            logger.debug("Let's try to show the station.");
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that

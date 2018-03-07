@@ -23,6 +23,7 @@
  */
 package freerails.client.renderer.map;
 
+import freerails.client.renderer.track.TrackLayerRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
@@ -100,17 +101,13 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
         int width = (clipRectangle.width / tileWidth) + 2;
         int height = (clipRectangle.height) / tileHeight + 2;
 
-        paintRectangleOfTiles(g, x, y, width, height);
-        cityNames.paint((Graphics2D) g, visibleRect);
-        stationNames.paint((Graphics2D) g, visibleRect);
-    }
-
-    private void paintRectangleOfTiles(Graphics g, int x, int y, int width, int height) {
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, new Vector2D(x, y), width, height);
         Rectangle visibleRectangle = new Rectangle(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, width * WorldConstants.TILE_SIZE, height * WorldConstants.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
+        //cityNames.paint((Graphics2D) g, visibleRect);
+        //UstationNames.paint((Graphics2D) g, visibleRect);
     }
 
     /**

@@ -32,7 +32,7 @@ import freerails.model.WorldListListener;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.Schedule;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
 
 import javax.swing.*;
@@ -98,7 +98,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         showingOrder = false;
         trainNumber = newTrainNumber;
 
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
         display(train.getEngineType(), train.getConsist());
         resetPreferredSize();
     }
@@ -135,7 +135,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
         scheduleOrderNumber = newScheduleOrderID;
 
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
         scheduleID = train.getScheduleID();
 
         Schedule s = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);

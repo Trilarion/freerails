@@ -33,7 +33,7 @@ import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -94,7 +94,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     }
 
     private void updateIfNecessary() {
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
 
         int cargoBundleID = train.getCargoBundleID();
         Serializable cb = world.get(principal, PlayerKey.CargoBundles, cargoBundleID);
@@ -120,7 +120,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         trainNumber = newTrainNumber;
 
         trainViewJPanel1.display(newTrainNumber);
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, newTrainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, newTrainNumber);
 
         int cargoBundleID = train.getCargoBundleID();
         ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, cargoBundleID);

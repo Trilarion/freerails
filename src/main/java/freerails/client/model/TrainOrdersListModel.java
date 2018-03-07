@@ -28,7 +28,7 @@ import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.Schedule;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
 
 import javax.swing.*;
@@ -102,7 +102,7 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     private Schedule getSchedule() {
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
         ImmutableSchedule sched = null;
         if (train != null) {
             sched = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());

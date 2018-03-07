@@ -20,7 +20,7 @@ package freerails.client;
 
 import freerails.client.model.ServerControlModel;
 import freerails.client.model.StationBuildModel;
-import freerails.client.renderer.map.MapViewComponent;
+import freerails.client.renderer.map.detail.DetailMapViewComponent;
 import freerails.controller.BuildTrackController;
 import freerails.client.view.*;
 import freerails.controller.BuildMode;
@@ -54,7 +54,7 @@ public class UserInputOnMapController extends KeyAdapter {
     private final BuildIndustryPopupMenu buildIndustryPopupMenu = new BuildIndustryPopupMenu();
     private final MouseInputAdapter mouseInputAdapter = new CursorMouseAdapter();
     private final SoundManager soundManager = SoundManager.getInstance();
-    private MapViewComponent mapView;
+    private DetailMapViewComponent mapView;
     private StationTypesPopup stationTypesPopup;
     private TrackMoveProducer trackBuilder;
     private DialogueBoxController dialogueBoxController;
@@ -85,7 +85,7 @@ public class UserInputOnMapController extends KeyAdapter {
      * @param buildTrack
      */
 
-    public void setup(MapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrack) {
+    public void setup(DetailMapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrack) {
         dialogueBoxController = dbc;
         mapView = mv;
         stationTypesPopup = stPopup;

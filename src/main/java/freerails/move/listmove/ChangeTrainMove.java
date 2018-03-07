@@ -25,7 +25,7 @@ import freerails.move.Move;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 
 import java.io.Serializable;
 
@@ -48,8 +48,8 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * @param principal
      * @return
      */
-    public static Move generateMove(int id, TrainModel before, int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal principal) {
-        TrainModel after = before.getNewInstance(newEngine, newWagons);
+    public static Move generateMove(int id, Train before, int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal principal) {
+        Train after = before.getNewInstance(newEngine, newWagons);
 
         return new ChangeTrainMove(id, before, after, principal);
     }

@@ -52,7 +52,7 @@ import java.util.List;
  */
 public class BuildTrackController implements GameModel {
 
-    private static final Logger LOGGER = Logger.getLogger(BuildTrackController.class.getName());
+    private static final Logger logger = Logger.getLogger(BuildTrackController.class.getName());
     private final ModelRoot modelRoot;
     private final TrackPathFinder path4newTrackFinder;
     private final PathOnTrackFinder pathOnExistingTrackFinder;
@@ -163,11 +163,11 @@ public class BuildTrackController implements GameModel {
         }
 
         for (Vector2D point : track) {
-            LOGGER.debug("point" + point);
-            LOGGER.debug("oldPosition" + oldPosition);
+            logger.debug("point" + point);
+            logger.debug("oldPosition" + oldPosition);
 
             if (oldPosition.equals(point)) {
-                LOGGER.debug("(oldPosition.equals(point))" + point);
+                logger.debug("(oldPosition.equals(point))" + point);
 
                 continue;
             }

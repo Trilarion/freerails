@@ -23,7 +23,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 import freerails.model.train.PathWalker;
 import freerails.model.train.PathWalkerImpl;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 import freerails.model.train.TrainPositionOnMap;
 
 import java.awt.*;
@@ -36,10 +36,10 @@ public class TrainRenderer {
     private final RendererRoot rendererRoot;
 
     /**
-     * @param trainImages
+     * @param rendererRoot
      */
-    public TrainRenderer(RendererRoot trainImages) {
-        rendererRoot = trainImages;
+    public TrainRenderer(RendererRoot rendererRoot) {
+        this.rendererRoot = rendererRoot;
     }
 
     /**
@@ -47,17 +47,9 @@ public class TrainRenderer {
      * @param train
      * @param s
      */
-    public void paintTrain(Graphics g, TrainModel train, TrainPositionOnMap s) {
+    public void paintTrain(Graphics g, Train train, TrainPositionOnMap s) {
         // If the train has been removed, it will be null!
         if (train == null) {
-            return;
-        }
-
-        /*
-         * XXX HACK !! really our position ought to be defined at all times, but
-         * this is a workaround until we can fix movement
-         */
-        if (s == null) {
             return;
         }
 

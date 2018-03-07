@@ -1,7 +1,8 @@
-package freerails.client.renderer.map;
+package freerails.client.renderer.track;
 
 import freerails.client.ClientConfig;
 import freerails.client.renderer.RendererRoot;
+import freerails.client.renderer.map.MapLayerRenderer;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.NullTrackType;
@@ -24,7 +25,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param world
      * @param trackPieceViewList
      */
-    TrackLayerRenderer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
+    public TrackLayerRenderer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
         rendererRoot = trackPieceViewList;
         this.world = world;
         this.mapSize = world.getMapSize();
@@ -75,7 +76,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
         paintRectangleOfTiles(g, new Rectangle(tileLocation.x, tileLocation.y, 1, 1));
     }
 
-    protected void paintRectangleOfTiles(Graphics g, Vector2D p, int width, int height) {
+    public void paintRectangleOfTiles(Graphics g, Vector2D p, int width, int height) {
         paintRectangleOfTiles(g, new Rectangle(p.x, p.y, width, height));
     }
 

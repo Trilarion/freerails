@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.view;
+package freerails.client.renderer.map.detail;
 
 import freerails.client.ClientConfig;
+import freerails.model.WorldConstants;
 import freerails.util.ui.Painter;
 import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
@@ -29,7 +30,7 @@ import freerails.model.train.TrainAccessor;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 import freerails.model.train.TrainPositionOnMap;
 
 import java.awt.*;
@@ -69,14 +70,14 @@ public class OverHeadTrainView implements Painter {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
             for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
-                TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, i);
+                Train train = (Train) world.get(principal, PlayerKey.Trains, i);
 
                 // TrainPositionOnMap pos = (TrainPositionOnMap) world.get(
                 // principal, KEY.TRAIN_POSITIONS, i);
                 TrainAccessor ta = new TrainAccessor(world, principal, i);
                 TrainPositionOnMap pos = ta.findPosition(time, newVisibleRectangle);
                 if (pos == null) continue;
-                if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= TrainPositionOnMap.CRASH_FRAMES_COUNT)) {
+                if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= WorldConstants.TRAIN_CRASH_FRAMES_COUNT)) {
                     // TODO reimplement trainPainter.paintTrainCrash(g, pos);
                     if (TrainPositionOnMap.getFrameCt() == 1) {
                             soundManager.playSound(ClientConfig.SOUND_TRAIN_CRASH, 1);

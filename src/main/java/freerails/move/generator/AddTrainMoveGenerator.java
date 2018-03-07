@@ -120,7 +120,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     }
 
     private int calTrainLength() {
-        TrainModel train = new TrainModel(engineTypeId, wagons, 0);
+        Train train = new Train(engineTypeId, wagons, 0);
         return train.getLength();
     }
 
@@ -149,7 +149,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         AddItemToListMove addSchedule = new AddItemToListMove(PlayerKey.TrainSchedules, scheduleId, schedule, principal);
 
         // Add train to train list.
-        TrainModel train = new TrainModel(engineTypeId, wagons, scheduleId, bundleId);
+        Train train = new Train(engineTypeId, wagons, scheduleId, bundleId);
         int trainId = world.size(principal, PlayerKey.Trains);
         AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, principal);
 

@@ -18,6 +18,7 @@
 
 package freerails.model.train;
 
+import freerails.model.WorldConstants;
 import freerails.util.ImmutableList;
 
 import java.io.Serializable;
@@ -25,13 +26,11 @@ import java.io.Serializable;
 /**
  * Represents a train.
  */
-public class TrainModel implements Serializable {
+public class Train implements Serializable {
 
-    public static final int WAGON_LENGTH = 24;
-    public static final int MAX_NUMBER_OF_WAGONS = 6;
-    public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS) * WAGON_LENGTH;
     private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
+    // TODO replace engine type id with an enum maybe? or by a class?
     private final int engineTypeId;
     private final ImmutableList<Integer> wagonTypes;
     private final int cargoBundleId;
@@ -42,7 +41,7 @@ public class TrainModel implements Serializable {
      * @param scheduleID
      * @param BundleId
      */
-    public TrainModel(int engine, ImmutableList<Integer> wagons, int scheduleID, int BundleId) {
+    public Train(int engine, ImmutableList<Integer> wagons, int scheduleID, int BundleId) {
         engineTypeId = engine;
         wagonTypes = wagons;
         scheduleId = scheduleID;
@@ -53,7 +52,7 @@ public class TrainModel implements Serializable {
      * @param wagons
      * @param BundleId
      */
-    public TrainModel(ImmutableList<Integer> wagons, int BundleId) {
+    public Train(ImmutableList<Integer> wagons, int BundleId) {
         wagonTypes = wagons;
         cargoBundleId = BundleId;
         engineTypeId = 0;
@@ -65,7 +64,7 @@ public class TrainModel implements Serializable {
      * @param wagons
      * @param scheduleID
      */
-    public TrainModel(int engine, ImmutableList<Integer> wagons, int scheduleID) {
+    public Train(int engine, ImmutableList<Integer> wagons, int scheduleID) {
         engineTypeId = engine;
         wagonTypes = wagons;
         scheduleId = scheduleID;
@@ -87,15 +86,15 @@ public class TrainModel implements Serializable {
      * @param newWagons
      * @return
      */
-    public TrainModel getNewInstance(int newEngine, ImmutableList<Integer> newWagons) {
-        return new TrainModel(newEngine, newWagons, scheduleId, cargoBundleId);
+    public Train getNewInstance(int newEngine, ImmutableList<Integer> newWagons) {
+        return new Train(newEngine, newWagons, scheduleId, cargoBundleId);
     }
 
     /**
      * @return
      */
     public int getLength() {
-        return (1 + wagonTypes.size()) * WAGON_LENGTH; // Engine + wagons.
+        return (1 + wagonTypes.size()) * WorldConstants.WAGON_LENGTH; // Engine + wagons.
     }
 
     /**
@@ -143,8 +142,8 @@ public class TrainModel implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TrainModel) {
-            TrainModel test = (TrainModel) obj;
+        if (obj instanceof Train) {
+            Train test = (Train) obj;
 
             return cargoBundleId == test.cargoBundleId && engineTypeId == test.engineTypeId && wagonTypes.equals(test.wagonTypes) && scheduleId == test.scheduleId;
         }

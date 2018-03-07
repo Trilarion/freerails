@@ -164,15 +164,15 @@ public class TrainAccessor {
     /**
      * @return
      */
-    public TrainModel getTrain() {
-        return (TrainModel) world.get(p, PlayerKey.Trains, id);
+    public Train getTrain() {
+        return (Train) world.get(p, PlayerKey.Trains, id);
     }
 
     /**
      * @return
      */
     public ImmutableSchedule getSchedule() {
-        TrainModel train = getTrain();
+        Train train = getTrain();
         return (ImmutableSchedule) world.get(p, PlayerKey.TrainSchedules, train.getScheduleID());
     }
 
@@ -180,7 +180,7 @@ public class TrainAccessor {
      * @return
      */
     public CargoBatchBundle getCargoBundle() {
-        TrainModel train = getTrain();
+        Train train = getTrain();
         return (ImmutableCargoBatchBundle) world.get(p, PlayerKey.CargoBundles, train.getCargoBundleID());
     }
 
@@ -204,7 +204,7 @@ public class TrainAccessor {
         TrainOrders order = shedule.getOrder(shedule.getOrderToGoto());
         if (order.stationId != stationId) return false;
         if (!order.waitUntilFull) return false;
-        TrainModel train = getTrain();
+        Train train = getTrain();
         return order.getConsist().equals(train.getConsist());
     }
 
@@ -213,7 +213,7 @@ public class TrainAccessor {
      * towards.
      */
     public Vector2D getTargetLocation() {
-        TrainModel train = (TrainModel) world.get(p, PlayerKey.Trains, id);
+        Train train = (Train) world.get(p, PlayerKey.Trains, id);
         int scheduleID = train.getScheduleID();
         Schedule schedule = (ImmutableSchedule) world.get(p, PlayerKey.TrainSchedules, scheduleID);
         int stationNumber = schedule.getStationToGoto();
@@ -263,7 +263,7 @@ public class TrainAccessor {
      */
     public ImmutableList<Integer> spaceAvailable() {
 
-        TrainModel train = (TrainModel) world.get(p, PlayerKey.Trains, id);
+        Train train = (Train) world.get(p, PlayerKey.Trains, id);
         CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(p, PlayerKey.CargoBundles, train.getCargoBundleID());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
     }

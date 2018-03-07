@@ -21,8 +21,9 @@
  *
  *  Created on 06 August 2001, 14:12
  */
-package freerails.client.renderer.map;
+package freerails.client.renderer.map.detail;
 
+import freerails.client.renderer.map.MapRenderer;
 import freerails.util.Vector2D;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ import java.awt.*;
 /**
 * Displays the map and provides methods to handle scrolling.
  */
-public abstract class MapViewComponent extends JPanel implements Scrollable, MapRenderer {
+public abstract class DetailMapViewComponent extends JPanel implements Scrollable, MapRenderer {
 
     private static final long serialVersionUID = 3588200012170257744L;
     private MapRenderer mapRenderer;
@@ -40,7 +41,7 @@ public abstract class MapViewComponent extends JPanel implements Scrollable, Map
     /**
      *
      */
-    public MapViewComponent() {
+    public DetailMapViewComponent() {
         setAutoscrolls(true);
     }
 

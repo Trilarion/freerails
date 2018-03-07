@@ -40,7 +40,7 @@ import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
 import freerails.model.train.schedule.MutableSchedule;
-import freerails.model.train.TrainModel;
+import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
 import freerails.model.train.WagonAndEngineTypesFactory;
 import freerails.model.world.FullWorld;
@@ -140,18 +140,16 @@ class DialogueBoxTester extends JFrame {
         schedule.setOrder(1, order2);
 
         int scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new TrainModel(0, new ImmutableList<>(0, 0), scheduleID));
+        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new Train(0, new ImmutableList<>(0, 0), scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
         scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new TrainModel(1, new ImmutableList<>(1, 1), scheduleID));
+        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new Train(1, new ImmutableList<>(1, 1), scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule
-                .toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new TrainModel(0,
-                new ImmutableList<>(1, 2, 0), scheduleID));
+        scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new Train(0, new ImmutableList<>(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);

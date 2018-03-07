@@ -21,7 +21,7 @@
  * Class to render the city names on the game map. Names are retrieved
  * from the KEY.CITIES object.
  */
-package freerails.client.renderer;
+package freerails.client.renderer.map;
 
 import freerails.util.ui.Painter;
 import freerails.util.Vector2D;
@@ -52,20 +52,19 @@ public class CityNamesRenderer implements Painter {
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", 0, 20));
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
 
         // draw city names onto map
-        int size = world.size(SharedKey.Cities);
-        for (int i = 0; i < size; i++) {
-            City tempCity = (City) world.get(SharedKey.Cities, i);
-            Vector2D location = tempCity.getLocation();
+        for (int i = 0; i < world.size(SharedKey.Cities); i++) {
+            City city = (City) world.get(SharedKey.Cities, i);
+            Vector2D location = city.getLocation();
             final int xpos = location.x * WorldConstants.TILE_SIZE;
             final int ypos = location.y * WorldConstants.TILE_SIZE + 10;
             Rectangle cityNameBox = new Rectangle(xpos, ypos, WorldConstants.TILE_SIZE * 8, 20);
             if (newVisibleRectangle != null && !newVisibleRectangle.intersects(cityNameBox)) {
                 continue;
             }
-            g.drawString(tempCity.getName(), xpos, ypos);
+            g.drawString(city.getName(), xpos, ypos);
         }
     }
 }

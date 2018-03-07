@@ -21,6 +21,7 @@ import freerails.util.Vector2D;
 
 import java.awt.*;
 
+// TODO remove this
 /**
  * Implements the TrackPieceView interface, but intentionally does
  * nothing. Its methods are called when drawing tiles with no track.

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client.renderer;
+package freerails.client.renderer.map.detail;
 
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;

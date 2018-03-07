@@ -422,7 +422,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         trainNumber = newTrainNumber;
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld world = modelRoot.getWorld();
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, newTrainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, newTrainNumber);
         scheduleID = train.getScheduleID();
         listModel = new TrainOrdersListModel(world, newTrainNumber, principal);
         orders.setModel(listModel);
@@ -442,7 +442,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private MutableSchedule getSchedule() {
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld world = modelRoot.getWorld();
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
         ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
         return new MutableSchedule(immutableSchedule);
     }
@@ -572,7 +572,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void sendUpdateMove(MutableSchedule mutableSchedule) {
         FreerailsPrincipal principal = modelRoot.getPrincipal();
         ReadOnlyWorld world = modelRoot.getWorld();
-        TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
         // int scheduleID = train.getScheduleID();
         assert (scheduleID == train.getScheduleID());
         ImmutableSchedule before = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);

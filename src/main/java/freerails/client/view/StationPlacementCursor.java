@@ -20,8 +20,8 @@ package freerails.client.view;
 
 import freerails.client.ActionRoot;
 import freerails.client.model.StationBuildModel;
-import freerails.client.renderer.StationRadiusRenderer;
-import freerails.client.renderer.map.MapViewComponent;
+import freerails.client.renderer.map.detail.StationRadiusRenderer;
+import freerails.client.renderer.map.detail.DetailMapViewComponent;
 
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
@@ -49,7 +49,7 @@ import java.beans.PropertyChangeListener;
  */
 public class StationPlacementCursor extends MouseInputAdapter {
 
-    private final MapViewComponent mapView;
+    private final DetailMapViewComponent mapView;
     private final float scale;
     private final StationBuildModel stationBuildModel;
     private final StationRadiusRenderer stationRadiusRenderer;
@@ -89,7 +89,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
         }
     };
 
-    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer stationRadiusRenderer, MapViewComponent mapView) {
+    private StationPlacementCursor(ActionRoot actionRoot, StationRadiusRenderer stationRadiusRenderer, DetailMapViewComponent mapView) {
         scale = mapView.getScale();
         this.mapView = mapView;
         stationBuildModel = actionRoot.getStationBuildModel();
@@ -102,7 +102,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
      * @param srr
      * @param mapView
      */
-    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, MapViewComponent mapView) {
+    public static void wireUp(ActionRoot actionRoot, StationRadiusRenderer srr, DetailMapViewComponent mapView) {
         StationPlacementCursor spc = new StationPlacementCursor(actionRoot, srr, mapView);
         spc.init();
     }

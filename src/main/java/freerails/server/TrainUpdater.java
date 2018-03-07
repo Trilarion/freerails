@@ -140,7 +140,7 @@ public class TrainUpdater implements Serializable {
             Collection<MoveTrainMoveGenerator> stoppedTrains = new ArrayList<>();
             for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
 
-                TrainModel train = (TrainModel) world.get(principal, PlayerKey.Trains, i);
+                Train train = (Train) world.get(principal, PlayerKey.Trains, i);
                 if (null == train) continue;
 
                 MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(i, principal, occupiedTracks);

@@ -28,6 +28,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO does not use any Train motion
 /**
  * This <b>immutable</b> class represents the position of a train as a String
  * of points. There must be at least two points. The first point is the position
@@ -36,8 +37,6 @@ import java.util.List;
  *
  * Coordinates are expressed in display coordinates relative to the map origin
  * (as opposed to map squares).
- *
- *
  *
  * Train positions can be combined and divided as illustrated below (notice what
  * happens to the head and tail that are combined)
@@ -90,7 +89,6 @@ import java.util.List;
  */
 public class TrainPositionOnMap implements Serializable {
 
-    public static final int CRASH_FRAMES_COUNT = 15;
     private static final long serialVersionUID = 3979269144611010865L;
     private final ImmutableList<Integer> xpoints;
     private final ImmutableList<Integer> ypoints;

@@ -23,7 +23,7 @@ import freerails.util.Vector2D;
 import java.awt.*;
 
 /**
- * Used for testing the Map view components without setting up any map data.
+ * Used for testing the Map view components without setting up any map data. Also used in the overview map.
  */
 public class BlankMapRenderer implements MapRenderer {
 
