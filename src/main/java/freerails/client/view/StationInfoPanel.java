@@ -161,7 +161,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.previous()) {
-            Vector2D p = ((Station) worldIterator.getElement()).getStationP();
+            Vector2D p = ((Station) worldIterator.getElement()).getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
 
             display();
@@ -174,7 +174,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.next()) {
-            Vector2D p = ((Station) worldIterator.getElement()).getStationP();
+            Vector2D p = ((Station) worldIterator.getElement()).getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
             display();
         } else {

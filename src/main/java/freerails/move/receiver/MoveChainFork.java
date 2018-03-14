@@ -88,14 +88,9 @@ public class MoveChainFork implements MoveReceiver {
         for (MoveReceiver moveReceiver : moveReceivers) {
             moveReceiver.process(move);
         }
-        // CompositeMoves are splitted here
-        if (move instanceof CompositeMove) {
-            for (Move subMove : ((CompositeMove) move).getMoves()) {
-                splitMove(subMove);
-            }
-        } else {
-            splitMove(move);
-        }
+
+        // split the move and process it
+        splitMove(move);
     }
 
     /**
@@ -105,36 +100,44 @@ public class MoveChainFork implements MoveReceiver {
      */
     private void splitMove(Move move) {
 
-        // all split move receivers process the move
-        for (MoveReceiver moveReceiver : splitMoveReceivers) {
-            moveReceiver.process(move);
-        }
+        // CompositeMoves are splitted here
+        if (move instanceof CompositeMove) {
+            for (Move subMove : ((CompositeMove) move).getMoves()) {
+                splitMove(subMove);
+            }
+        } else {
 
-        if (move instanceof AddItemToListMove) {
-            ListMove listMove = (AddItemToListMove) move;
-            for (WorldListListener listener : listListeners) {
-                listener.itemAdded(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+            // all split move receivers process the move
+            for (MoveReceiver moveReceiver : splitMoveReceivers) {
+                moveReceiver.process(move);
             }
-        } else if (move instanceof ChangeItemInListMove) {
-            ListMove listMove = (ChangeItemInListMove) move;
-            for (WorldListListener listener : listListeners) {
-                listener.listUpdated(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
-            }
-        } else if (move instanceof RemoveItemFromListMove) {
-            ListMove listMove = (RemoveItemFromListMove) move;
-            for (WorldListListener listener : listListeners) {
-                listener.itemRemoved(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
-            }
-        } else if (move instanceof MapUpdateMove) {
-            Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();
-            // TODO can r be 0,0,0,0
-            if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {
-                for (WorldMapListener listener : mapListeners) {
-                    listener.tilesChanged(rectangle);
+
+            if (move instanceof AddItemToListMove) {
+                ListMove listMove = (AddItemToListMove) move;
+                for (WorldListListener listener : listListeners) {
+                    listener.itemAdded(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
                 }
+            } else if (move instanceof ChangeItemInListMove) {
+                ListMove listMove = (ChangeItemInListMove) move;
+                for (WorldListListener listener : listListeners) {
+                    listener.listUpdated(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+                }
+            } else if (move instanceof RemoveItemFromListMove) {
+                ListMove listMove = (RemoveItemFromListMove) move;
+                for (WorldListListener listener : listListeners) {
+                    listener.itemRemoved(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+                }
+            } else if (move instanceof MapUpdateMove) {
+                Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();
+                // TODO can r be 0,0,0,0
+                if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {
+                    for (WorldMapListener listener : mapListeners) {
+                        listener.tilesChanged(rectangle);
+                    }
+                }
+            } else if (move instanceof TimeTickMove) {
+                lastTickTime = System.currentTimeMillis();
             }
-        } else if (move instanceof TimeTickMove) {
-            lastTickTime = System.currentTimeMillis();
         }
     }
 

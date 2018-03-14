@@ -90,14 +90,14 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
         return new Vector2D(a.x * b.x, a.y * b.y);
     }
 
+    public static Vector2D multiply(Vector2D a, int b) {
+        return new Vector2D(a.x * b, a.y * b);
+    }
+
 
     public int compareTo(Vector2D o) {
         if (o.y != y) return y - o.y;
         else return x - o.x;
-    }
-
-    public static Vector2D fromPoint(Point p) {
-        return new Vector2D(p.x, p.y);
     }
 
     public static Point toPoint(Vector2D p) {

@@ -36,7 +36,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param tileLocation
      */
     public void paintTile(Graphics g, Vector2D tileLocation) {
-        Vector2D screenLocation = Vector2D.multiply(ClientConfig.tileSize, tileLocation);
+        Vector2D screenLocation = Vector2D.multiply(ClientConfig.TILE_SIZE, tileLocation);
 
         if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
             TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);

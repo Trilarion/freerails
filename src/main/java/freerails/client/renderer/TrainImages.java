@@ -46,9 +46,8 @@ public class TrainImages {
         sideOnFileName = "trains" + File.separator + "sideon" + File.separator + name + ".png";
         sideOnImage = imageManager.getImage(sideOnFileName);
 
+        TileTransition[] vectors = TileTransition.getTransitions();
         for (int direction = 0; direction < 8; direction++) {
-            TileTransition[] vectors = TileTransition.getTransitions();
-
             String overheadOnFileName = "trains" + File.separator + "overhead" + File.separator + name + '_' + vectors[direction].toAbrvString() + ".png";
             overheadImages[direction] = imageManager.getImage(overheadOnFileName);
         }

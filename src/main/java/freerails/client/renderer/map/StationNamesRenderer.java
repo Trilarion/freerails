@@ -18,6 +18,7 @@
 
 package freerails.client.renderer.map;
 
+import freerails.client.ClientConfig;
 import freerails.client.ModelRootProperty;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.Painter;
@@ -30,7 +31,6 @@ import freerails.model.terrain.FullTerrainTile;
 import freerails.model.world.ReadOnlyWorld;
 
 import java.awt.*;
-import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.RoundRectangle2D;
 
@@ -44,10 +44,10 @@ public class StationNamesRenderer implements Painter {
     private static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
     private final ReadOnlyWorld world;
     private final ModelRoot modelRoot;
-    private final int fontSize;
-    private final Color bgColor;
-    private final Color textColor;
-    private final Font font;
+    private final int fontSize = 10;
+    private final Color bgColor = Color.BLACK;
+    private final Color textColor = Color.WHITE;
+    private final Font font = new Font("Arial", Font.PLAIN, fontSize);
 
     /**
      * @param world
@@ -56,10 +56,6 @@ public class StationNamesRenderer implements Painter {
     public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
         this.world = world;
         this.modelRoot = modelRoot;
-        fontSize = 10;
-        bgColor = Color.BLACK;
-        textColor = Color.WHITE;
-        font = new Font("Arial", Font.PLAIN, fontSize);
     }
 
     /**
@@ -67,49 +63,34 @@ public class StationNamesRenderer implements Painter {
      * @param newVisibleRectangle
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
-        int rectWidth;
-        int rectHeight;
-        int rectX;
-        int rectY;
-        float visibleAdvance;
-        float textX;
-        float textY;
-
-        Station tempStation;
-        String stationName;
-        int positionX;
-        int positionY;
 
         Boolean showStationNames = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES);
         Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_BORDERS);
 
-        FontRenderContext frc = g.getFontRenderContext();
-        TextLayout layout;
-
+        // for all players
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
 
             // draw station names onto map
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
-            while (wi.next()) { // loop over non null stations
-                tempStation = (Station) wi.getElement();
+            // for all stations of this player
+            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            while (worldIterator.next()) { // loop over non null stations
+                Station station = (Station) worldIterator.getElement();
 
-                int x = tempStation.getStationP().x;
-                int y = tempStation.getStationP().y;
-                int xdisp = x * WorldConstants.TILE_SIZE;
-                int ydisp = y * WorldConstants.TILE_SIZE;
-                Rectangle stationBox = new Rectangle(xdisp - WorldConstants.TILE_SIZE * 3, ydisp - WorldConstants.TILE_SIZE * 3, WorldConstants.TILE_SIZE * 7, WorldConstants.TILE_SIZE * 7);
+                Vector2D location = station.getLocation();
+                Vector2D displayLocation = Vector2D.multiply(location, WorldConstants.TILE_SIZE);
+                Rectangle stationBox = new Rectangle(displayLocation.x - WorldConstants.TILE_SIZE * 3, displayLocation.y - WorldConstants.TILE_SIZE * 3, WorldConstants.TILE_SIZE * 7, WorldConstants.TILE_SIZE * 7);
                 if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
                 }
                 // First draw station sphere of influence
                 if (showStationBorders) {
-                    FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(x, y));
+                    FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
                     int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
                     int diameterInPixels = (radius * 2 + 1) * WorldConstants.TILE_SIZE;
-                    int radiusX = (x - radius) * WorldConstants.TILE_SIZE;
-                    int radiusY = (y - radius) * WorldConstants.TILE_SIZE;
+                    int radiusX = (location.x - radius) * WorldConstants.TILE_SIZE;
+                    int radiusY = (location.y - radius) * WorldConstants.TILE_SIZE;
                     g.setColor(Color.WHITE);
                     g.setStroke(dashed);
                     g.draw(new RoundRectangle2D.Double(radiusX, radiusY, diameterInPixels, diameterInPixels, 10, 10));
@@ -117,24 +98,24 @@ public class StationNamesRenderer implements Painter {
 
                 // Then draw the station name.
                 if (showStationNames) {
-                    stationName = tempStation.getStationName();
+                    String stationName = station.getStationName();
 
-                    positionX = xdisp + WorldConstants.TILE_SIZE / 2;
-                    positionY = ydisp + WorldConstants.TILE_SIZE;
+                    int positionX = displayLocation.x + WorldConstants.TILE_SIZE / 2;
+                    int positionY = displayLocation.y + WorldConstants.TILE_SIZE;
 
-                    layout = new TextLayout(stationName, font, frc);
-                    visibleAdvance = layout.getVisibleAdvance();
+                    TextLayout layout = new TextLayout(stationName, font, g.getFontRenderContext());
+                    float visibleAdvance = layout.getVisibleAdvance();
 
-                    rectWidth = (int) (visibleAdvance * 1.2);
-                    rectHeight = (int) (fontSize * 1.5);
-                    rectX = (positionX - (rectWidth / 2));
-                    rectY = positionY;
+                    int rectWidth = (int) (visibleAdvance * 1.2);
+                    int rectHeight = (int) (fontSize * 1.5);
+                    int rectX = (positionX - (rectWidth / 2));
+                    int rectY = positionY;
 
                     g.setColor(bgColor);
                     g.fillRect(rectX, rectY, rectWidth, rectHeight);
 
-                    textX = (positionX - (visibleAdvance / 2));
-                    textY = positionY + fontSize + 1;
+                    float textX = (positionX - (visibleAdvance / 2));
+                    float textY = positionY + fontSize + 1;
 
                     g.setColor(textColor);
                     layout.draw(g, textX, textY);

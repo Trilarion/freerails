@@ -44,32 +44,30 @@ import java.io.IOException;
 public class StationBoxRenderer implements Painter {
 
     private final ReadOnlyWorld world;
-    private final Color bgColor;
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 200, 60);;
     private final int wagonImageWidth;
     private final ModelRoot modelRoot;
     private final Image[] cargoImages;
 
     /**
      * @param world
-     * @param vl
+     * @param rendererRoot
      * @param modelRoot
      */
-    public StationBoxRenderer(ReadOnlyWorld world, RendererRoot vl, ModelRoot modelRoot) {
+    public StationBoxRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.world = world;
-        bgColor = new Color(0, 0, 200, 60);
         this.modelRoot = modelRoot;
 
-        // How wide will the wagon images be if we scale them so their height is
-        // WAGON_IMAGE_HEIGHT?
-        Image wagonImage = vl.getWagonImages(0).getSideOnImage();
+        // How wide will the wagon images be if we scale them so their height is WAGON_IMAGE_HEIGHT?
+        Image wagonImage = rendererRoot.getWagonImages(0).getSideOnImage();
         wagonImageWidth = wagonImage.getWidth(null) * ClientConfig.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
         int nrOfCargoTypes = this.world.size(SharedKey.CargoTypes);
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
-            String wagonFilename = vl.getWagonImages(i).sideOnFileName;
+            String wagonFilename = rendererRoot.getWagonImages(i).sideOnFileName;
             try {
-                wagonImage = vl.getScaledImage(wagonFilename, ClientConfig.WAGON_IMAGE_HEIGHT);
+                wagonImage = rendererRoot.getScaledImage(wagonFilename, ClientConfig.WAGON_IMAGE_HEIGHT);
             } catch (IOException e) {
                 throw new IllegalArgumentException(wagonFilename);
             }
@@ -87,22 +85,24 @@ public class StationBoxRenderer implements Painter {
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.
             FreerailsPrincipal principal = modelRoot.getPrincipal();
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
-            while (wi.next()) { // loop over non null stations
-                Station station = (Station) wi.getElement();
-                int positionX = (station.getStationP().x * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE / 2;
-                int positionY = (station.getStationP().y * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE * 2;
+            // TODO can there be null stations?
+            while (worldIterator.next()) { // loop over non null stations
+                Station station = (Station) worldIterator.getElement();
+                // TODO which position is meant here?
+                int positionX = (station.getLocation().x * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE / 2;
+                int positionY = (station.getLocation().y * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
-                    g.setColor(bgColor);
-                    g.fillRect(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
+                    g.setColor(StationBoxRenderer.BACKGROUND_COLOR);
+                    g.fillRect(r.x, r.y, r.width, r.height);
                     g.setColor(Color.WHITE);
                     g.setStroke(new BasicStroke(1.0f));
-                    g.drawRect(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
+                    g.drawRect(r.x, r.y, r.width, r.height);
 
-                    CargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
-                    int[][] carsLoads = calculateCarLoads(cb);
+                    CargoBatchBundle cargoBatchBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
+                    int[][] carsLoads = calculateCarLoads(cargoBatchBundle);
                     for (int category = 0; category < CargoCategory.getNumberOfCategories(); category++) {
                         int alternateWidth = (ClientConfig.MAX_WIDTH - 2 * ClientConfig.SPACING) / (carsLoads[category].length + 1);
                         int xOffsetPerWagon = Math.min(wagonImageWidth, alternateWidth);
@@ -119,20 +119,21 @@ public class StationBoxRenderer implements Painter {
         }
     }
 
+    // TODO move this to cargo batch bundle maybe?
     /**
      * The length of the returned array is the number of complete carloads of
      * the specified cargo category in the specified bundle. The values in the
      * array are the type of the cargo. E.g. if the bundle contained 2 carloads
      * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
      */
-    private int[][] calculateCarLoads(CargoBatchBundle cb) {
+    private int[][] calculateCarLoads(CargoBatchBundle cargoBatchBundle) {
         int categories = CargoCategory.getNumberOfCategories();
         int numCargoTypes = world.size(SharedKey.CargoTypes);
         int[] numberOfCarLoads = new int[categories];
         int[][] cars = new int[categories][numCargoTypes];
         for (int i = 0; i < numCargoTypes; i++) {
             CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, i);
-            int carsOfThisCargo = cb.getAmountOfType(i) / WagonType.UNITS_OF_CARGO_PER_WAGON;
+            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / WagonType.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
             cars[ct.getCategory().getID()][i] += carsOfThisCargo;
         }

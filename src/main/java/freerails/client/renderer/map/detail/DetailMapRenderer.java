@@ -54,7 +54,7 @@ public class DetailMapRenderer implements MapRenderer {
         background = new SquareTileBackgroundRenderer(render);
 
         Vector2D mapSize = world.getMapSize();
-        mapSizeInPixels = Vector2D.multiply(mapSize, ClientConfig.tileSize);
+        mapSizeInPixels = Vector2D.multiply(mapSize, ClientConfig.TILE_SIZE);
 
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);

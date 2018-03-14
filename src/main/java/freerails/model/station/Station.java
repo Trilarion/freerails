@@ -211,7 +211,7 @@ public class Station implements Serializable {
     /**
      * @return
      */
-    public Vector2D getStationP() {
+    public Vector2D getLocation() {
         return location;
     }
 
