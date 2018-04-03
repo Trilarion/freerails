@@ -39,9 +39,9 @@ public class ChangeCargoBundleMove extends ChangeItemInListMove {
      * @param before
      * @param after
      * @param bundleNumber
-     * @param p
+     * @param principal
      */
-    public ChangeCargoBundleMove(Serializable before, Serializable after, int bundleNumber, FreerailsPrincipal p) {
-        super(PlayerKey.CargoBundles, bundleNumber, before, after, p);
+    public ChangeCargoBundleMove(Serializable before, Serializable after, int bundleNumber, FreerailsPrincipal principal) {
+        super(PlayerKey.CargoBundles, bundleNumber, before, after, principal);
     }
 }

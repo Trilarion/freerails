@@ -18,7 +18,7 @@
 
 package freerails.network;
 
-import freerails.network.gameserver.FreerailsGameServer;
+import freerails.server.FreerailsGameServer;
 import freerails.savegames.TestSaveGamesManager;
 import freerails.util.SynchronizedFlag;
 import junit.framework.TestCase;

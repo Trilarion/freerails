@@ -214,7 +214,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         // must connect to existing track
         GameRules rules = (GameRules) world.get(WorldItem.GameRules);
 
-        if (rules.isMustConnectToExistingTrack()) {
+        if (rules.mustConnectToExistingTrack()) {
             if (hasAnyTrackBeenBuilt(world, builder)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);

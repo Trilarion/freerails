@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+// TODO is used in the client, controller, network.gameserver and server (maybe with different intentions?)
 /**
  * Defines a standard method to update the game world.
  */

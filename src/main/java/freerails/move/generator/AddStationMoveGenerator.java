@@ -140,8 +140,8 @@ public class AddStationMoveGenerator implements MoveGenerator {
         return move;
     }
 
-    private CompositeMove addSupplyAndDemand(CompositeMove m, ReadOnlyWorld world) {
-        List<Move> moves2 = m.getMoves();
+    private CompositeMove addSupplyAndDemand(CompositeMove compositeMove, ReadOnlyWorld world) {
+        List<Move> moves2 = compositeMove.getMoves();
         Move[] moves = new Move[moves2.size()];
         for (int i = 0; i < moves2.size(); i++) {
             moves[i] = moves2.get(i);

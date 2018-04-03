@@ -19,9 +19,9 @@
 /*
  *
  */
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
-import freerails.controller.explorer.FlatTrackExplorer;
+import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.NoTrackException;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;

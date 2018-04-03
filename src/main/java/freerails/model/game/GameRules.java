@@ -26,14 +26,14 @@ import java.io.Serializable;
  */
 public class GameRules implements Serializable {
 
+    private static final long serialVersionUID = 3258125847557978416L;
     public static final Serializable DEFAULT_RULES = new GameRules(true, false);
     public static final Serializable NO_RESTRICTIONS = new GameRules(false, true);
-    private static final long serialVersionUID = 3258125847557978416L;
     private final boolean canConnectToOtherRRTrack;
     private final boolean mustConnectToExistingTrack;
 
-    private GameRules(boolean mustConnect, boolean canConnect2others) {
-        canConnectToOtherRRTrack = canConnect2others;
+    private GameRules(boolean mustConnect, boolean canConnectToOthers) {
+        canConnectToOtherRRTrack = canConnectToOthers;
         mustConnectToExistingTrack = mustConnect;
     }
 
@@ -49,14 +49,14 @@ public class GameRules implements Serializable {
     /**
      * @return
      */
-    public synchronized boolean isCanConnectToOtherRRTrack() {
+    public synchronized boolean canConnectToOtherRRTrack() {
         return canConnectToOtherRRTrack;
     }
 
     /**
      * @return
      */
-    public synchronized boolean isMustConnectToExistingTrack() {
+    public synchronized boolean mustConnectToExistingTrack() {
         return mustConnectToExistingTrack;
     }
 

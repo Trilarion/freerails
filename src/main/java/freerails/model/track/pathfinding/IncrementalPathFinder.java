@@ -16,24 +16,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network.gameserver;
-
-import freerails.network.ConnectionToClient;
-import freerails.server.GameModel;
+/*
+ *
+ */
+package freerails.model.track.pathfinding;
 
 /**
- * Defines a server that can accept connections to clients.
+ * Defines part of the contract for a pathfinder whose search can be completed
+ * in several steps.
  */
-public interface GameServer extends GameModel {
+public interface IncrementalPathFinder {
 
     /**
-     * @param connection
-     */
-    void addConnection(ConnectionToClient connection);
-
-    /**g
      * @return
      */
-    int getNumberOpenConnections();
+    PathFinderStatus getStatus();
 
+    /**
+     * @param maxDuration
+     * @throws PathNotFoundException
+     */
+    void search(long maxDuration) throws PathNotFoundException;
+
+    /**
+     *
+     */
+    void abandonSearch();
 }

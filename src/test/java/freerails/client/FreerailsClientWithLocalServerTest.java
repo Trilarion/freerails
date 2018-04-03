@@ -21,7 +21,7 @@ package freerails.client;
 import freerails.move.*;
 import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.network.*;
-import freerails.network.gameserver.FreerailsGameServer;
+import freerails.server.FreerailsGameServer;
 import freerails.network.command.*;
 import freerails.savegames.TestSaveGamesManager;
 import freerails.server.TestServerGameModel;

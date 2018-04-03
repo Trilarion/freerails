@@ -1,4 +1,4 @@
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
 import java.io.Serializable;
 

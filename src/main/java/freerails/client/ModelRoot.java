@@ -21,7 +21,7 @@
  */
 package freerails.client;
 
-import freerails.controller.MoveExecutor;
+import freerails.move.MoveExecutor;
 import freerails.network.command.CommandToServer;
 
 /**

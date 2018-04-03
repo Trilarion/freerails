@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.move;
 
 import freerails.move.Move;
+import freerails.move.MoveExecutor;
 import freerails.move.MoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.ReadOnlyWorld;

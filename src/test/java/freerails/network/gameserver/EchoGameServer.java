@@ -19,6 +19,7 @@
 package freerails.network.gameserver;
 
 import freerails.network.ConnectionToClient;
+import freerails.server.GameServer;
 import freerails.util.SynchronizedFlag;
 import freerails.util.Utils;
 import org.apache.log4j.Logger;

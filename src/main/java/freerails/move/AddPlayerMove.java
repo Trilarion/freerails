@@ -82,17 +82,17 @@ public class AddPlayerMove implements Move {
         return MoveStatus.moveFailed("The last player is " + pp.getName() + "not " + playerToAdd.getName());
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal p) {
-        MoveStatus moveStatus = tryDoMove(world, p);
+    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+        MoveStatus moveStatus = tryDoMove(world, principal);
         if (!moveStatus.succeeds()) return moveStatus;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
-        FreerailsPrincipal principal = playerToAdd.getPrincipal();
-        world.addTransaction(principal, BondItemTransaction.issueBond(5));
+        FreerailsPrincipal principal2 = playerToAdd.getPrincipal();
+        world.addTransaction(principal2, BondItemTransaction.issueBond(5));
         // Issue stock
         Money initialStockPrice = new Money(5);
         Transaction transaction = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
-        world.addTransaction(principal, transaction);
+        world.addTransaction(principal2, transaction);
         return moveStatus;
     }
 

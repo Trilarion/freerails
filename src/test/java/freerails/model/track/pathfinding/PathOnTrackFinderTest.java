@@ -19,13 +19,15 @@
 /*
  *
  */
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.move.MoveExecutor;
+import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
 import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;

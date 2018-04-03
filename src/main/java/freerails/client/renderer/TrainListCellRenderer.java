@@ -138,8 +138,8 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
         scheduleID = train.getScheduleID();
 
-        Schedule s = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
-        TrainOrders order = s.getOrder(newScheduleOrderID);
+        Schedule schedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
+        TrainOrders order = schedule.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
         if (null != order.consist) {

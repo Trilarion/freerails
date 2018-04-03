@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
-import freerails.controller.explorer.GraphExplorer;
+import freerails.model.track.explorer.GraphExplorer;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;

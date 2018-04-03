@@ -21,7 +21,7 @@
  */
 package freerails.move.generator;
 
-import freerails.controller.explorer.FlatTrackExplorer;
+import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.util.ImmutableList;

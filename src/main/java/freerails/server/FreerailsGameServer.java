@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.network.gameserver;
+package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
@@ -28,7 +28,6 @@ import freerails.network.command.*;
 import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.move.receiver.MoveReceiver;
-import freerails.server.ServerGameModel;
 import freerails.util.ImmutableList;
 import freerails.util.SynchronizedFlag;
 import freerails.model.world.World;

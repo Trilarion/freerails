@@ -34,9 +34,9 @@ public class ChangeTrainScheduleMove extends ChangeItemInListMove {
      * @param id
      * @param before
      * @param after
-     * @param p
+     * @param principal
      */
-    public ChangeTrainScheduleMove(int id, Serializable before, Serializable after, FreerailsPrincipal p) {
-        super(PlayerKey.TrainSchedules, id, before, after, p);
+    public ChangeTrainScheduleMove(int id, Serializable before, Serializable after, FreerailsPrincipal principal) {
+        super(PlayerKey.TrainSchedules, id, before, after, principal);
     }
 }

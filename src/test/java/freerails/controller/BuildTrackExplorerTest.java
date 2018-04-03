@@ -21,7 +21,7 @@
  */
 package freerails.controller;
 
-import freerails.controller.explorer.BuildTrackExplorer;
+import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;

@@ -100,48 +100,48 @@ public class Station implements Serializable {
 
     // TODO this might be a misuse, just add production as method instead, copy should not be necessary
     /**
-     * @param s
+     * @param station
      * @param production
      */
-    public Station(Station s, ImmutableList<TrainBlueprint> production) {
+    public Station(Station station, ImmutableList<TrainBlueprint> production) {
         this.production = production;
-        demandForCargo = s.demandForCargo;
-        cargoBundleNumber = s.cargoBundleNumber;
-        cargoConversion = s.cargoConversion;
-        name = s.name;
-        supply = s.supply;
-        location = s.location;
+        demandForCargo = station.demandForCargo;
+        cargoBundleNumber = station.cargoBundleNumber;
+        cargoConversion = station.cargoConversion;
+        name = station.name;
+        supply = station.supply;
+        location = station.location;
     }
 
     // TODO possible misuse, see above
     /**
-     * @param s
+     * @param station
      * @param demandForCargo
      */
-    public Station(Station s, StationDemand demandForCargo) {
+    public Station(Station station, StationDemand demandForCargo) {
         this.demandForCargo = demandForCargo;
-        cargoBundleNumber = s.cargoBundleNumber;
-        cargoConversion = s.cargoConversion;
-        name = s.name;
-        production = s.production;
-        supply = s.supply;
-        location = s.location;
+        cargoBundleNumber = station.cargoBundleNumber;
+        cargoConversion = station.cargoConversion;
+        name = station.name;
+        production = station.production;
+        supply = station.supply;
+        location = station.location;
     }
 
     // TODO possible misuse, see above
     /**
-     * @param s
+     * @param station
      * @param supply
      */
-    public Station(Station s, StationSupply supply) {
+    public Station(Station station, StationSupply supply) {
         this.supply = supply;
-        demandForCargo = s.demandForCargo;
+        demandForCargo = station.demandForCargo;
 
-        cargoBundleNumber = s.cargoBundleNumber;
-        cargoConversion = s.cargoConversion;
-        name = s.name;
-        production = s.production;
-        location = s.location;
+        cargoBundleNumber = station.cargoBundleNumber;
+        cargoConversion = station.cargoConversion;
+        name = station.name;
+        production = station.production;
+        location = station.location;
     }
 
     /**

@@ -37,9 +37,9 @@ public class RemoveCargoBundleMove extends RemoveItemFromListMove {
     /**
      * @param i
      * @param item
-     * @param p
+     * @param principal
      */
-    public RemoveCargoBundleMove(int i, Serializable item, FreerailsPrincipal p) {
-        super(PlayerKey.CargoBundles, i, item, p);
+    public RemoveCargoBundleMove(int i, Serializable item, FreerailsPrincipal principal) {
+        super(PlayerKey.CargoBundles, i, item, principal);
     }
 }

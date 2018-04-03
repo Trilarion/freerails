@@ -18,7 +18,6 @@
 
 package freerails.move;
 
-import freerails.controller.MoveExecutor;
 import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vector2D;
 import freerails.model.world.ReadOnlyWorld;

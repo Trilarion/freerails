@@ -48,14 +48,14 @@ public class ChangeItemInListMove implements ListMove {
      * @param index
      * @param before
      * @param after
-     * @param p
+     * @param principal
      */
-    public ChangeItemInListMove(PlayerKey k, int index, Serializable before, Serializable after, FreerailsPrincipal p) {
+    public ChangeItemInListMove(PlayerKey k, int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
         this.before = before;
         this.after = after;
         this.index = index;
         listPlayerKey = k;
-        principal = p;
+        this.principal = principal;
     }
 
     /**

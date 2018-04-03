@@ -79,17 +79,17 @@ public class TrainUpdater implements Serializable {
         // generate initial schedule
 
         WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
-        MutableSchedule s = new MutableSchedule();
+        MutableSchedule schedule = new MutableSchedule();
 
         // Add up to 4 stations to the schedule.
-        while (wi.next() && s.getNumOrders() < 5) {
+        while (wi.next() && schedule.getNumOrders() < 5) {
             TrainOrders orders = new TrainOrders(wi.getIndex(), null, false, autoSchedule);
-            s.addOrder(orders);
+            schedule.addOrder(orders);
         }
 
-        s.setOrderToGoto(0);
+        schedule.setOrderToGoto(0);
 
-        ImmutableSchedule is = s.toImmutableSchedule();
+        ImmutableSchedule is = schedule.toImmutableSchedule();
 
         MoveGenerator addTrain = new AddTrainMoveGenerator(engineTypeId, wagons, location, principal, is);
 

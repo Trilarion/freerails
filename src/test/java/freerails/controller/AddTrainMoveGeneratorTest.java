@@ -23,10 +23,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
-import freerails.move.AbstractMoveTestCase;
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.StationBuilder;
+import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
@@ -76,10 +73,10 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
         TrainOrders order0 = new TrainOrders(0, null, false, false);
         TrainOrders order1 = new TrainOrders(1, null, false, false);
-        MutableSchedule s = new MutableSchedule();
-        s.addOrder(order0);
-        s.addOrder(order1);
-        defaultSchedule = s.toImmutableSchedule();
+        MutableSchedule schedule = new MutableSchedule();
+        schedule.addOrder(order0);
+        schedule.addOrder(order1);
+        defaultSchedule = schedule.toImmutableSchedule();
     }
 
     /**

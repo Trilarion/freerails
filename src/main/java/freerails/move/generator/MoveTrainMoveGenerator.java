@@ -21,10 +21,10 @@
  */
 package freerails.move.generator;
 
-import freerails.controller.explorer.FlatTrackExplorer;
-import freerails.controller.explorer.GraphExplorer;
-import freerails.controller.pathfinding.PathNotFoundException;
-import freerails.controller.pathfinding.PathOnTrackFinder;
+import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.track.explorer.GraphExplorer;
+import freerails.model.track.pathfinding.PathNotFoundException;
+import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
 import freerails.util.ImmutableList;

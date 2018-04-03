@@ -26,6 +26,8 @@ import freerails.controller.*;
 import freerails.client.ModelRootProperty;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.move.MoveExecutor;
+import freerails.move.SimpleMoveExecutor;
 import freerails.util.Vector2D;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;

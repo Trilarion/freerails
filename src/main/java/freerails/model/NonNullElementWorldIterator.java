@@ -60,12 +60,12 @@ public class NonNullElementWorldIterator implements WorldIterator {
     /**
      * @param k
      * @param world
-     * @param p
+     * @param principal
      */
-    public NonNullElementWorldIterator(PlayerKey k, ReadOnlyWorld world, FreerailsPrincipal p) {
+    public NonNullElementWorldIterator(PlayerKey k, ReadOnlyWorld world, FreerailsPrincipal principal) {
         playerKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
-        principal = Utils.verifyNotNull(p);
+        this.principal = Utils.verifyNotNull(principal);
         sharedKey = null;
     }
 

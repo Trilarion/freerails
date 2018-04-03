@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.controller.explorer;
+package freerails.model.track.explorer;
 
 import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vector2D;

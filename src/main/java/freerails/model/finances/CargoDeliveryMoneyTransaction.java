@@ -20,10 +20,10 @@ package freerails.model.finances;
 
 import freerails.model.cargo.CargoBatch;
 
+// TODO Is this an Item transaction or a money transaction or something more complex?
 /**
  * A credit for delivering cargo.
  */
-// TODO Is this an Item transaction?
 public class CargoDeliveryMoneyTransaction extends MoneyTransaction {
 
     private static final long serialVersionUID = 3257009851963160372L;

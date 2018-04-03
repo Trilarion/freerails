@@ -34,9 +34,9 @@ public final class ChangeStationMove extends ChangeItemInListMove {
      * @param index
      * @param before
      * @param after
-     * @param p
+     * @param principal
      */
-    public ChangeStationMove(int index, Serializable before, Serializable after, FreerailsPrincipal p) {
-        super(PlayerKey.Stations, index, before, after, p);
+    public ChangeStationMove(int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
+        super(PlayerKey.Stations, index, before, after, principal);
     }
 }

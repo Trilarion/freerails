@@ -23,7 +23,7 @@
 
 package freerails.client.launcher;
 
-import freerails.network.gameserver.FreerailsGameServer;
+import freerails.server.FreerailsGameServer;
 import freerails.util.ui.MyAbstractListModel;
 
 import javax.swing.*;

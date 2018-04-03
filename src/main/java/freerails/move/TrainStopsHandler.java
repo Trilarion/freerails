@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.controller.explorer.FlatTrackExplorer;
+import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.model.track.NoTrackException;

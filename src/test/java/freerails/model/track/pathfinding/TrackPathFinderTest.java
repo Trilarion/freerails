@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
 import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vector2D;

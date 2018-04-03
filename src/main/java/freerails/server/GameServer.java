@@ -16,44 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller;
+package freerails.server;
 
-import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.generator.MoveGenerator;
-import freerails.model.world.ReadOnlyWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.network.ConnectionToClient;
+import freerails.server.GameModel;
 
 /**
- * Lets the caller try and execute Moves.
+ * Defines a server that can accept connections to clients.
  */
-public interface MoveExecutor {
+public interface GameServer extends GameModel {
 
     /**
-     * @param move
-     * @return
+     * @param connection
      */
-    MoveStatus doMove(Move move);
+    void addConnection(ConnectionToClient connection);
 
-    /**
-     * @param moveGenerator
+    /**g
      * @return
      */
-    MoveStatus doPreMove(MoveGenerator moveGenerator);
+    int getNumberOpenConnections();
 
-    /**
-     * @param move
-     * @return
-     */
-    MoveStatus tryDoMove(Move move);
-
-    /**
-     * @return
-     */
-    ReadOnlyWorld getWorld();
-
-    /**
-     * @return
-     */
-    FreerailsPrincipal getPrincipal();
 }

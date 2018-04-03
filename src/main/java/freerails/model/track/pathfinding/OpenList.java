@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
 import java.io.Serializable;
 import java.util.HashMap;

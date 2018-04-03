@@ -112,7 +112,7 @@ public interface World extends ReadOnlyWorld {
      * principal's bank account. This method is only here so that moves that add
      * transactions can be undone.
      */
-    Transaction removeLastTransaction(FreerailsPrincipal p);
+    Transaction removeLastTransaction(FreerailsPrincipal principal);
 
     /**
      * @return

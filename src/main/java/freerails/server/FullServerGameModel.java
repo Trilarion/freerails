@@ -66,6 +66,7 @@ public class FullServerGameModel implements ServerGameModel {
         nextModelUpdateDue = System.currentTimeMillis();
     }
 
+    // TODO this should be part of the model, at least the update part
     /**
      * Call this method once a month.
      *

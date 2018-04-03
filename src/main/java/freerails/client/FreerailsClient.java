@@ -25,7 +25,7 @@ import freerails.move.MoveStatus;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
-import freerails.network.gameserver.GameServer;
+import freerails.server.GameServer;
 import freerails.network.command.*;
 import freerails.move.receiver.MoveChainFork;
 import freerails.move.receiver.UntriedMoveReceiver;

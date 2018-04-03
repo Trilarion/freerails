@@ -43,13 +43,13 @@ public class AddItemToListMove implements ListMove {
      * @param playerKey
      * @param i
      * @param item
-     * @param p
+     * @param principal
      */
-    public AddItemToListMove(PlayerKey playerKey, int i, Serializable item, FreerailsPrincipal p) {
+    public AddItemToListMove(PlayerKey playerKey, int i, Serializable item, FreerailsPrincipal principal) {
         listPlayerKey = playerKey;
         index = i;
         this.item = item;
-        principal = p;
+        this.principal = principal;
     }
 
     public int getIndex() {

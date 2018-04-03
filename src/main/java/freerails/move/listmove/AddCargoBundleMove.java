@@ -35,9 +35,9 @@ public class AddCargoBundleMove extends AddItemToListMove {
     /**
      * @param i
      * @param item
-     * @param p
+     * @param principal
      */
-    public AddCargoBundleMove(int i, Serializable item, FreerailsPrincipal p) {
-        super(PlayerKey.CargoBundles, i, item, p);
+    public AddCargoBundleMove(int i, Serializable item, FreerailsPrincipal principal) {
+        super(PlayerKey.CargoBundles, i, item, principal);
     }
 }

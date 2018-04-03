@@ -28,9 +28,11 @@ import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 
 /**
- * Calculates the stock price for each of the players. Stock price = [Net worth +
- * 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other
- * players] Let profit last year = 100,000 in the first year.
+ * Calculates the stock price for each of the players.
+ *
+ * Stock price = [Net worth + 5 * profit last year] / [ shares owned by public + 0.5 shares owned by other players]
+ *
+ * Let profit last year = 100,000 in the first year.
  */
 public class StockPriceCalculator {
 
@@ -41,12 +43,6 @@ public class StockPriceCalculator {
      */
     public StockPriceCalculator(ReadOnlyWorld world) {
         this.world = world;
-    }
-
-    public static Money calculateStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares) {
-        if ((publicShares + otherRRShares) == 0) return new Money(Long.MAX_VALUE);
-        long price = 2 * (5 * profitLastyear + netWorth) / (2 * publicShares + otherRRShares);
-        return new Money(price);
     }
 
     /**
@@ -73,9 +69,9 @@ public class StockPriceCalculator {
      * Returns true if the current time in the same year as the first
      * transaction for the specified player.
      */
-    public boolean isFirstYear(int playerId) {
-        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
-        GameTime firstTransactionTime = world.getTransactionTimeStamp(pr, 0);
+    boolean isFirstYear(int playerId) {
+        FreerailsPrincipal principal = world.getPlayer(playerId).getPrincipal();
+        GameTime firstTransactionTime = world.getTransactionTimeStamp(principal, 0);
         GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
         int year = calendar.getYear(firstTransactionTime.getTicks());
         GameTime currentTime = world.currentTime();
@@ -84,7 +80,7 @@ public class StockPriceCalculator {
     }
 
     /**
-     * Returns the players networth at the start of this year.
+     * Returns the players net worth at the start of this year.
      */
     public long netWorth(int playerId) {
         FreerailsPrincipal principal = world.getPlayer(playerId).getPrincipal();

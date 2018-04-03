@@ -22,7 +22,7 @@ import freerails.client.ClientConfig;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.SoundManager;
-import freerails.controller.pathfinding.*;
+import freerails.model.track.pathfinding.*;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
@@ -47,8 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides methods to change the proposed track and save it to the
- * real world.
+ * Provides methods to change the proposed track and save it to the real world.
  */
 public class BuildTrackController implements GameModel {
 

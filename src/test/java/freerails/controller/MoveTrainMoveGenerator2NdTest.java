@@ -107,10 +107,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         TrainOrders order0 = new TrainOrders(2, null, false, false);
         TrainOrders order1 = new TrainOrders(0, null, false, false);
-        MutableSchedule s = new MutableSchedule();
-        s.addOrder(order0);
-        s.addOrder(order1);
-        ImmutableSchedule defaultSchedule = s.toImmutableSchedule();
+        MutableSchedule schedule = new MutableSchedule();
+        schedule.addOrder(order0);
+        schedule.addOrder(order1);
+        ImmutableSchedule defaultSchedule = schedule.toImmutableSchedule();
 
         Vector2D start = new Vector2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(0, new ImmutableList<>(0, 0),
@@ -398,10 +398,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Change trains schedule to auto consist.
         TrainOrders order0 = new TrainOrders(1, null, false, true);
         TrainOrders order1 = new TrainOrders(2, null, false, true);
-        MutableSchedule s = new MutableSchedule();
-        s.addOrder(order0);
-        s.addOrder(order1);
-        world.set(principal, PlayerKey.TrainSchedules, 0, s.toImmutableSchedule());
+        MutableSchedule schedule = new MutableSchedule();
+        schedule.addOrder(order0);
+        schedule.addOrder(order1);
+        world.set(principal, PlayerKey.TrainSchedules, 0, schedule.toImmutableSchedule());
 
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 

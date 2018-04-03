@@ -16,34 +16,44 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.server;
+package freerails.move;
 
-import freerails.model.station.CalculateCargoSupplyRateAtStation;
-import freerails.move.listmove.ChangeStationMove;
 import freerails.move.Move;
-import freerails.move.receiver.MoveReceiver;
-import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
-import freerails.model.world.World;
+import freerails.move.MoveStatus;
+import freerails.move.generator.MoveGenerator;
+import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.station.Station;
 
 /**
-
+ * Lets the caller try and execute Moves.
  */
-// TODO relation to CargoAtStationsUpdater?
-public class SupplyAtStationsUpdater {
-
-    private final World world;
-    private final MoveReceiver moveReceiver;
+public interface MoveExecutor {
 
     /**
-     * @param world The World object that contains all about the game world
+     * @param move
+     * @return
      */
-    public SupplyAtStationsUpdater(World world, MoveReceiver moveReceiver) {
-        this.world = world;
-        this.moveReceiver = moveReceiver;
-    }
+    MoveStatus doMove(Move move);
 
+    /**
+     * @param moveGenerator
+     * @return
+     */
+    MoveStatus doPreMove(MoveGenerator moveGenerator);
 
+    /**
+     * @param move
+     * @return
+     */
+    MoveStatus tryDoMove(Move move);
+
+    /**
+     * @return
+     */
+    ReadOnlyWorld getWorld();
+
+    /**
+     * @return
+     */
+    FreerailsPrincipal getPrincipal();
 }

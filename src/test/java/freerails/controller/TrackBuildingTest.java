@@ -20,12 +20,14 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
-import freerails.controller.pathfinding.PathFinderStatus;
-import freerails.controller.pathfinding.PathNotFoundException;
-import freerails.controller.pathfinding.TrackPathFinder;
+import freerails.model.track.pathfinding.PathFinderStatus;
+import freerails.model.track.pathfinding.PathNotFoundException;
+import freerails.model.track.pathfinding.TrackPathFinder;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.move.MoveExecutor;
 import freerails.move.MoveStatus;
 import freerails.model.MapFixtureFactory2;
+import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
 import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;

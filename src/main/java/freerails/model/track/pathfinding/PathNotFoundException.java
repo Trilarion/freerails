@@ -19,27 +19,34 @@
 /*
  *
  */
-package freerails.controller.pathfinding;
+package freerails.model.track.pathfinding;
 
 /**
- * Defines part of the contract for a pathfinder whose search can be completed
- * in several steps.
+ * Thrown when a path cannot be found.
  */
-public interface IncrementalPathFinder {
+public class PathNotFoundException extends Exception {
 
     /**
-     * @return
+     * @param message message
+     * @param cause   cause
      */
-    PathFinderStatus getStatus();
+    public PathNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     /**
-     * @param maxDuration
-     * @throws PathNotFoundException
+     * 
+     * @param cause
      */
-    void search(long maxDuration) throws PathNotFoundException;
+    public PathNotFoundException(Throwable cause) {
+        super(cause);
+    }
 
     /**
      *
+     * @param message
      */
-    void abandonSearch();
+    public PathNotFoundException(String message) {
+        super(message);
+    }
 }

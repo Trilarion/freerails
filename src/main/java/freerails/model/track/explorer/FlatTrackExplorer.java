@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller.explorer;
+package freerails.model.track.explorer;
 
 import freerails.model.track.NoTrackException;
 import freerails.util.Vector2D;

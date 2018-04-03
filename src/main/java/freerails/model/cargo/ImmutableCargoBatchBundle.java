@@ -39,7 +39,7 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
     }
 
     /**
-     * Copies and wraps in an unmodifieable map, making it immutable.
+     * Copies and wraps in an unmodifiable map, making it immutable.
      */
     public ImmutableCargoBatchBundle(CargoBatchBundle cargoBatchBundle) {
         SortedMap<CargoBatch, Integer> map = new TreeMap<>();

@@ -51,27 +51,27 @@ public class TrainOrdersListModel extends AbstractListModel {
     /**
      * @param world
      * @param trainNumber
-     * @param p
+     * @param principal
      */
-    public TrainOrdersListModel(ReadOnlyWorld world, int trainNumber, FreerailsPrincipal p) {
+    public TrainOrdersListModel(ReadOnlyWorld world, int trainNumber, FreerailsPrincipal principal) {
         this.trainNumber = trainNumber;
         this.world = world;
-        principal = p;
+        this.principal = principal;
         assert (null != getSchedule());
     }
 
     public Object getElementAt(int index) {
-        Schedule s = getSchedule();
+        Schedule schedule = getSchedule();
         int gotoStatus;
 
-        if (s.getNextScheduledOrder() == index) {
-            if (s.hasPriorityOrders()) {
+        if (schedule.getNextScheduledOrder() == index) {
+            if (schedule.hasPriorityOrders()) {
                 gotoStatus = GOTO_AFTER_PRIORITY_ORDERS;
             } else {
                 gotoStatus = GOTO_NOW;
             }
         } else {
-            if (s.hasPriorityOrders() && 0 == index) {
+            if (schedule.hasPriorityOrders() && 0 == index) {
                 // These orders are the priority orders.
                 gotoStatus = GOTO_NOW;
             } else {
@@ -79,17 +79,17 @@ public class TrainOrdersListModel extends AbstractListModel {
             }
         }
 
-        boolean isPriorityOrders = 0 == index && s.hasPriorityOrders();
+        boolean isPriorityOrders = 0 == index && schedule.hasPriorityOrders();
         TrainOrders order = getSchedule().getOrder(index);
 
         return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
     }
 
     public int getSize() {
-        Schedule s = getSchedule();
+        Schedule schedule = getSchedule();
         int size = 0;
-        if (s != null) {
-            size = s.getNumOrders();
+        if (schedule != null) {
+            size = schedule.getNumOrders();
         }
         return size;
     }

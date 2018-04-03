@@ -23,8 +23,10 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.move.MoveExecutor;
 import freerails.move.MoveStatus;
 import freerails.model.MapFixtureFactory2;
+import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
 import freerails.util.Vector2D;
 import freerails.model.terrain.TileTransition;

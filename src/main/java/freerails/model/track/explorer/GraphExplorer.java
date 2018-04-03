@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.controller.explorer;
+package freerails.model.track.explorer;
 
 /**
- * This interface lets the caller explorer a graph while hiding the way the
+ * This interface lets the caller explore a graph while hiding the way the
  * graph is stored. Vertices are packed into single int values to avoid the cost of
  * object creation and garbage collection.
  */

@@ -44,13 +44,13 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param b
      * @param a
      * @param station
-     * @param p
+     * @param principal
      */
-    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal p) {
+    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal principal) {
         before = b;
         after = a;
         stationNumber = station;
-        principal = p;
+        this.principal = principal;
     }
 
     @Override

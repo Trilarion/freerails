@@ -281,8 +281,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
             case KeyEvent.VK_W: {
                 // toggle wait until full
-                MutableSchedule s = getSchedule();
-                TrainOrders order = s.getOrder(orderNumber);
+                MutableSchedule schedule = getSchedule();
+                TrainOrders order = schedule.getOrder(orderNumber);
                 setWaitUntilFull(!order.waitUntilFull);
                 break;
             }
@@ -325,62 +325,62 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void priorityOrdersJButtonActionPerformed(ActionEvent evt) {
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         try {
-            s.setPriorityOrders(new TrainOrders(getFirstStationID(), null, false, false));
-            showSelectStation(s, Schedule.PRIORITY_ORDERS);
+            schedule.setPriorityOrders(new TrainOrders(getFirstStationID(), null, false, false));
+            showSelectStation(schedule, Schedule.PRIORITY_ORDERS);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");
         }
     }
 
     private void addStationJButtonActionPerformed(ActionEvent evt) {
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         try {
             // TODO fix bug? which bug?
-            int newOrderNumber = s.addOrder(new TrainOrders(getFirstStationID(), null, false, false));
-            showSelectStation(s, newOrderNumber);
+            int newOrderNumber = schedule.addOrder(new TrainOrders(getFirstStationID(), null, false, false));
+            showSelectStation(schedule, newOrderNumber);
         } catch (NoSuchElementException e) {
             logger.warn("No stations exist so can't add station to schedule!");
         }
     }
 
     private void removeStationJMenuItemActionPerformed(ActionEvent evt) {
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        s.removeOrder(i);
-        sendUpdateMove(s);
+        schedule.removeOrder(i);
+        sendUpdateMove(schedule);
     }
 
     private void gotoStationJMenuItemActionPerformed(ActionEvent evt) {
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        s.setOrderToGoto(i);
-        sendUpdateMove(s);
+        schedule.setOrderToGoto(i);
+        sendUpdateMove(schedule);
     }
 
     private void pushDownJMenuItemActionPerformed(ActionEvent evt) {
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        s.pushDown(i);
-        sendUpdateMove(s);
+        schedule.pushDown(i);
+        sendUpdateMove(schedule);
         orders.setSelectedIndex(i + 1);
     }
 
     private void ordersMouseClicked(MouseEvent evt) {
         int i = orders.getSelectedIndex();
-        MutableSchedule s = getSchedule();
-        if (i >= s.getNumOrders()) {
+        MutableSchedule schedule = getSchedule();
+        if (i >= schedule.getNumOrders()) {
             // The selected index does not exist!
             // For some reason, the JList hasn't updated yet.
             i = -1;
         }
         if (-1 != i && MouseEvent.BUTTON3 == evt.getButton()) {
             // If an element is select and the right button is pressed.
-            TrainOrders order = s.getOrder(i);
-            pullUpJMenuItem.setEnabled(s.canPullUp(i));
-            pushDownJMenuItem.setEnabled(s.canPushDown(i));
-            gotoStationJMenuItem.setEnabled(s.canSetGotoStation(i));
+            TrainOrders order = schedule.getOrder(i);
+            pullUpJMenuItem.setEnabled(schedule.canPullUp(i));
+            pushDownJMenuItem.setEnabled(schedule.canPushDown(i));
+            gotoStationJMenuItem.setEnabled(schedule.canSetGotoStation(i));
             removeWagonsJMenu.setEnabled(order.orderHasWagons());
             waitJMenu.setEnabled(order.orderHasWagons());
             addWagonJMenu.setEnabled(order.hasLessThanMaximumNumberOfWagons());
@@ -390,10 +390,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void pullUpJMenuItemActionPerformed(ActionEvent evt) {
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int i = orders.getSelectedIndex();
-        s.pullUp(i);
-        sendUpdateMove(s);
+        schedule.pullUp(i);
+        sendUpdateMove(schedule);
         orders.setSelectedIndex(i - 1);
     }
 
@@ -432,11 +432,11 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void enableButtons() {
-        MutableSchedule s = getSchedule();
-        addStationJButton.setEnabled(s.canAddOrder());
+        MutableSchedule schedule = getSchedule();
+        addStationJButton.setEnabled(schedule.canAddOrder());
 
         // Only one set of priority orders are allowed.
-        priorityOrdersJButton.setEnabled(!s.hasPriorityOrders());
+        priorityOrdersJButton.setEnabled(!schedule.hasPriorityOrders());
     }
 
     private MutableSchedule getSchedule() {
@@ -481,44 +481,44 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     private void noChange() {
         TrainOrders oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
+        oldOrders = schedule.getOrder(orderNumber);
         newOrders = new TrainOrders(oldOrders.getStationID(), null, false, false);
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
+        schedule.setOrder(orderNumber, newOrders);
+        sendUpdateMove(schedule);
     }
 
     private void setWaitUntilFull(boolean b) {
         TrainOrders oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
+        oldOrders = schedule.getOrder(orderNumber);
         // If auto-consist is set do nothing
         if (oldOrders.autoConsist) return;
         // If no-change is set do nothing
         if (oldOrders.consist == null) return;
         boolean autoConsist = false;
         newOrders = new TrainOrders(oldOrders.getStationID(), oldOrders.consist, b, autoConsist);
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
+        schedule.setOrder(orderNumber, newOrders);
+        sendUpdateMove(schedule);
     }
 
     private void setAutoConsist() {
         TrainOrders oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
+        oldOrders = schedule.getOrder(orderNumber);
         newOrders = new TrainOrders(oldOrders.getStationID(), null, false, true);
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
+        schedule.setOrder(orderNumber, newOrders);
+        sendUpdateMove(schedule);
     }
 
     private void addWagon(int wagonTypeNumber) {
         TrainOrders oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
+        oldOrders = schedule.getOrder(orderNumber);
         Integer[] newConsist;
         // The consist will be null if old orders were 'no change'.
         if (null != oldOrders.consist) {
@@ -534,25 +534,25 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
             newConsist = new Integer[]{wagonTypeNumber};
         }
         newOrders = new TrainOrders(oldOrders.getStationID(), new ImmutableList<>(newConsist), oldOrders.getWaitUntilFull(), false);
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
+        schedule.setOrder(orderNumber, newOrders);
+        sendUpdateMove(schedule);
     }
 
     private void removeAllWagons() {
         TrainOrders oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
+        oldOrders = schedule.getOrder(orderNumber);
         newOrders = new TrainOrders(oldOrders.getStationID(), new ImmutableList<>(), false, false);
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
+        schedule.setOrder(orderNumber, newOrders);
+        sendUpdateMove(schedule);
     }
 
     private void removeLastWagon() {
         TrainOrders oldOrders, newOrders;
-        MutableSchedule s = getSchedule();
+        MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
-        oldOrders = s.getOrder(orderNumber);
+        oldOrders = schedule.getOrder(orderNumber);
         if (oldOrders.consist == null) {
             return;
         }
@@ -565,8 +565,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         ImmutableList<Integer> newConsist = Utils.removeLastOfImmutableList(oldConsist);
 
         newOrders = new TrainOrders(oldOrders.getStationID(), newConsist, oldOrders.waitUntilFull, false);
-        s.setOrder(orderNumber, newOrders);
-        sendUpdateMove(s);
+        schedule.setOrder(orderNumber, newOrders);
+        sendUpdateMove(schedule);
     }
 
     private void sendUpdateMove(MutableSchedule mutableSchedule) {
