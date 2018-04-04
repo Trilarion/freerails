@@ -108,7 +108,7 @@ public class CalculateCargoSupplyRateAtStation {
         TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tileTypeNumber);
 
         // Calculate supply.
-        ImmutableList<TileProduction> production = terrainType.getProduction();
+        List<TileProduction> production = terrainType.getProduction();
 
         // loop through the production array and increment
         // the supply rates for the station
@@ -122,7 +122,7 @@ public class CalculateCargoSupplyRateAtStation {
         }
 
         // Now calculate demand.
-        ImmutableList<TileConsumption> consumption = terrainType.getConsumption();
+        List<TileConsumption> consumption = terrainType.getConsumption();
 
         for (int m = 0; m < consumption.size(); m++) {
             int type = consumption.get(m).getCargoType();
@@ -134,7 +134,7 @@ public class CalculateCargoSupplyRateAtStation {
             demand[type] += WorldConstants.PREREQUISITE_FOR_DEMAND / prerequisite;
         }
 
-        ImmutableList<TileConversion> conversion = terrainType.getConversion();
+        List<TileConversion> conversion = terrainType.getConversion();
 
         for (int m = 0; m < conversion.size(); m++) {
             int type = conversion.get(m).getInput();

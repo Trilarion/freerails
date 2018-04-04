@@ -20,6 +20,10 @@ package freerails.model.terrain;
 
 import freerails.util.ImmutableList;
 import freerails.model.finances.Money;
+import freerails.util.Utils;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a type of terrain.
@@ -29,9 +33,12 @@ public class TerrainTypeImpl implements TerrainType {
     // TODO why is TerrainType and TerrainTypeImplementation separate?
     private static final long serialVersionUID = 4049919380945253945L;
 
-    private final ImmutableList<TileConsumption> consumption;
-    private final ImmutableList<TileConversion> conversion;
-    private final ImmutableList<TileProduction> production;
+    /**
+     * Consumption, conversion and production will not be modified
+     */
+    private final List<TileConsumption> consumption;
+    private final List<TileConversion> conversion;
+    private final List<TileProduction> production;
     private final int rgb;
     private final int rightOfWay;
     private final TerrainCategory terrainCategory;
@@ -52,14 +59,14 @@ public class TerrainTypeImpl implements TerrainType {
      * @param tileConversion
      * @param tileBuildCost
      */
-    public TerrainTypeImpl(int rgb, TerrainCategory terrainCategory, String terrainType, int rightOfWay, TileProduction[] tileProduction, TileConsumption[] tileConsumption, TileConversion[] tileConversion, int tileBuildCost) {
+    public TerrainTypeImpl(int rgb, TerrainCategory terrainCategory, String terrainType, int rightOfWay, List<TileProduction> tileProduction, List<TileConsumption> tileConsumption, List<TileConversion> tileConversion, int tileBuildCost) {
         this.terrainType = terrainType;
         this.terrainCategory = terrainCategory;
         this.rgb = rgb;
         this.rightOfWay = rightOfWay;
-        production = new ImmutableList<>(tileProduction);
-        consumption = new ImmutableList<>(tileConsumption);
-        conversion = new ImmutableList<>(tileConversion);
+        production = Utils.verifyUnmodifiable(tileProduction);
+        consumption = Utils.verifyUnmodifiable(tileConsumption);
+        conversion = Utils.verifyUnmodifiable(tileConversion);
 
         if (tileBuildCost > 0) {
             this.tileBuildCost = new Money(tileBuildCost);
@@ -77,9 +84,9 @@ public class TerrainTypeImpl implements TerrainType {
         this.terrainCategory = terrainCategory;
         rgb = 0;
         rightOfWay = 0;
-        production = new ImmutableList<>();
-        consumption = new ImmutableList<>();
-        conversion = new ImmutableList<>();
+        production = Collections.emptyList();
+        consumption = Collections.emptyList();
+        conversion = Collections.emptyList();
         tileBuildCost = null;
     }
 
@@ -131,14 +138,14 @@ public class TerrainTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public ImmutableList<TileConsumption> getConsumption() {
+    public List<TileConsumption> getConsumption() {
         return consumption;
     }
 
     /**
      * @return
      */
-    public ImmutableList<TileConversion> getConversion() {
+    public List<TileConversion> getConversion() {
         return conversion;
     }
 
@@ -152,7 +159,7 @@ public class TerrainTypeImpl implements TerrainType {
     /**
      * @return
      */
-    public ImmutableList<TileProduction> getProduction() {
+    public List<TileProduction> getProduction() {
         return production;
     }
 

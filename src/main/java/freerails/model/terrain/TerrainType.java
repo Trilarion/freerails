@@ -18,10 +18,10 @@
 
 package freerails.model.terrain;
 
-import freerails.util.ImmutableList;
 import freerails.model.finances.Money;
 
 import java.io.Serializable;
+import java.util.List;
 
 // TODO are these things all
 /**
@@ -58,17 +58,17 @@ public interface TerrainType extends Serializable {
     /**
      * @return
      */
-    ImmutableList<TileProduction> getProduction();
+    List<TileProduction> getProduction();
 
     /**
      * @return
      */
-    ImmutableList<TileConsumption> getConsumption();
+    List<TileConsumption> getConsumption();
 
     /**
      * @return
      */
-    ImmutableList<TileConversion> getConversion();
+    List<TileConversion> getConversion();
 
     /**
      * @return

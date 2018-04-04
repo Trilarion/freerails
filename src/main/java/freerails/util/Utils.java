@@ -181,6 +181,24 @@ public final class Utils {
     }
 
     /**
+     * Ensures that a list is unmodifiable (i.e. that nothing can be added).
+     *
+     * Unmodifiable lists can e.g. be created by Collections.UnmodifiableList().
+     *
+     * @param list a list
+     * @param <T> element type of the list
+     * @return the list that is verified to be unmodifiable
+     */
+    public static <T> List<T> verifyUnmodifiable(List<T> list) {
+        try {
+            list.addAll(Collections.emptyList());
+        } catch (Exception e) {
+            return list;
+        }
+        throw new IllegalArgumentException("List is modifiable.");
+    }
+
+    /**
      * @param values
      * @return
      */

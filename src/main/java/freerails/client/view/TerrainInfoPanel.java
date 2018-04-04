@@ -115,9 +115,9 @@ class TerrainInfoPanel extends JPanel {
             if (cargosConsumed != 0) {
                 tableString.append("<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConsumed; i++) {
-                    TileConsumption p = type.getConsumption().get(i);
-                    CargoType c = (CargoType) world.get(SharedKey.CargoTypes, p.getCargoType());
-                    tableString.append("<tr> <td>").append(c.getDisplayName()).append(" </td><td>&nbsp;</td></tr>");
+                    TileConsumption consumption = type.getConsumption().get(i);
+                    CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, consumption.getCargoType());
+                    tableString.append("<tr> <td>").append(cargoType.getDisplayName()).append(" </td><td>&nbsp;</td></tr>");
                 }
             }
             if (cargosConverted != 0) {

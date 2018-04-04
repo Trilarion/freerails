@@ -18,6 +18,7 @@
 
 package freerails.model.finances;
 
+// TODO remove type from here and
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
  *

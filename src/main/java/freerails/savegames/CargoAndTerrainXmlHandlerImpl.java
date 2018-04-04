@@ -102,26 +102,7 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
     }
 
     public void endTile() {
-        TileConsumption[] consumes = new TileConsumption[typeConsumes.size()];
-
-        for (int i = 0; i < typeConsumes.size(); i++) {
-            consumes[i] = typeConsumes.get(i);
-        }
-
-        TileProduction[] produces = new TileProduction[typeProduces.size()];
-
-        for (int i = 0; i < typeProduces.size(); i++) {
-            produces[i] = typeProduces.get(i);
-        }
-
-        TileConversion[] converts = new TileConversion[typeConverts.size()];
-
-        for (int i = 0; i < typeConverts.size(); i++) {
-            converts[i] = typeConverts.get(i);
-        }
-
-        Serializable tileType = new TerrainTypeImpl(tileRGB, tileCategory, tileID, tileROW, produces, consumes, converts, tileBuildCost);
-
+        Serializable tileType = new TerrainTypeImpl(tileRGB, tileCategory, tileID, tileROW, Collections.unmodifiableList(typeProduces), Collections.unmodifiableList(typeConsumes), Collections.unmodifiableList(typeConverts), tileBuildCost);
         world.add(SharedKey.TerrainTypes, tileType);
     }
 

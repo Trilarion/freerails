@@ -47,7 +47,7 @@ public class ServerControlModel implements ModelRootListener {
     private final ActionAdapter targetTicksPerSecondActions = new ActionAdapter(speedActions, 0);
     private ModelRootImpl modelRoot;
     private ActionAdapter selectMapActions;
-    private DialogueBoxController dbc;
+    private DialogueBoxController dialogueBoxController;
 
     /**
      * @param modelRoot
@@ -151,7 +151,7 @@ public class ServerControlModel implements ModelRootListener {
      */
     public void setup(ModelRootImpl modelRoot, DialogueBoxController dbc) {
         this.modelRoot = modelRoot;
-        this.dbc = dbc;
+        this.dialogueBoxController = dbc;
         modelRoot.addPropertyChangeListener(this);
     }
 
@@ -190,23 +190,7 @@ public class ServerControlModel implements ModelRootListener {
         }
 
         public void actionPerformed(ActionEvent e) {
-            dbc.showSelectSavedGame2Load();
-            /*
-             *
-             * ImmutableList<String> files =
-             * (ImmutableList<String>)modelRoot.getProperty(Property.SAVED_GAMES_LIST);
-             * Object[] saves = new Object[files.size()]; for (int i = 0; i <
-             * files.size(); i++) { saves[i] = files.get(i); } // Display a
-             * JOptionPane that lists the existing saved games try { Object
-             * showInputDialog = JOptionPane.showInputDialog(null, "Saved
-             * Games:", "Select game to load", JOptionPane.INFORMATION_MESSAGE,
-             * null, saves, saves[0]); String filename =
-             * showInputDialog.toString(); // Load the game chosen
-             * CommandToServer message2 = new LoadGameCommandToServer(1,
-             * filename); modelRoot.sendCommand(message2); } catch (Exception
-             * except) { // <Hack> // When no saved game is selected, or one that
-             * doesn't exist, // nothing changes // </.Hack> }
-             */
+            dialogueBoxController.showSelectSavedGame2Load();
         }
     }
 
@@ -242,7 +226,7 @@ public class ServerControlModel implements ModelRootListener {
         }
 
         public void actionPerformed(ActionEvent e) {
-            dbc.showSaveGame();
+            dialogueBoxController.showSaveGame();
             /*
              * try { // @SonnyZ // Show a JOptionPane that takes in a string
              * from a text box String filename =
