@@ -35,6 +35,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
+import java.awt.*;
 
 /**
  * The Launcher panel that lets you load a game or start a new game with a
@@ -55,7 +56,7 @@ class SelectMapPanel extends JPanel {
     SelectMapPanel(LauncherInterface owner) {
         this.owner = owner;
 
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
         JPanel jPanel1 = new JPanel();
         JScrollPane jScrollPane1 = new JScrollPane();
@@ -68,9 +69,9 @@ class SelectMapPanel extends JPanel {
         serverPort = new JTextField();
         JPanel jPanel2 = new JPanel();
 
-        setLayout(new java.awt.GridBagLayout());
+        setLayout(new GridBagLayout());
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new BorderLayout());
 
         jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "New Game"));
         jPanel1.setPreferredSize(null);
@@ -80,15 +81,15 @@ class SelectMapPanel extends JPanel {
 
         jScrollPane1.setViewportView(newmapsJList);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane1, BorderLayout.CENTER);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
 
-        jPanel4.setLayout(new java.awt.BorderLayout());
+        jPanel4.setLayout(new BorderLayout());
 
         jPanel4.setBorder(new TitledBorder(new EtchedBorder(), "Load game"));
         jPanel4.setPreferredSize(null);
@@ -99,43 +100,43 @@ class SelectMapPanel extends JPanel {
 
         jScrollPane2.setViewportView(savedmapsJList);
 
-        jPanel4.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanel4.add(jScrollPane2, BorderLayout.CENTER);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(jPanel4, gridBagConstraints);
 
-        jPanel3.setLayout(new java.awt.GridBagLayout());
+        jPanel3.setLayout(new GridBagLayout());
 
         jPanel3.setBorder(new TitledBorder(new EtchedBorder(), "Server port"));
         portLabel.setText("Port:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
         jPanel3.add(portLabel, gridBagConstraints);
 
         serverPort.setColumns(6);
         serverPort.setText(this.owner.getProperty(ClientConfig.SERVER_PORT_PROPERTY));
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
         jPanel3.add(serverPort, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jPanel2, gridBagConstraints);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(jPanel3, gridBagConstraints);
 
         // initialise the map list

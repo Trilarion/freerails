@@ -181,6 +181,22 @@ public final class Utils {
     }
 
     /**
+     * Ensures that all elements of an iterable are not null as well as the iterable itself.
+     *
+     * @param iterable an iterable reference
+     * @param <E> the element type of the iterable
+     * @param <T> the iterable type
+     * @return the iterable that was checked
+     */
+    public static <E, T extends Iterable<E>> T verifyNoneNull(T iterable) {
+        verifyNotNull(iterable);
+        for (E e: iterable) {
+            verifyNotNull(e);
+        }
+        return iterable;
+    }
+
+    /**
      * Ensures that a list is unmodifiable (i.e. that nothing can be added).
      *
      * Unmodifiable lists can e.g. be created by Collections.UnmodifiableList().

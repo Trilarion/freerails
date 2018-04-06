@@ -21,8 +21,7 @@ package freerails.network.command;
 import java.io.IOException;
 
 /**
- * Defines the methods that a client can call on the server using a
- * CommandToServer.
+ * Defines the methods that a client can call on the server using a CommandToServer.
  *
  * @see CommandToServer
  */

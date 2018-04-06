@@ -20,6 +20,7 @@ package freerails.network.command;
 
 import java.io.Serializable;
 
+// TODO reason is not read anywhere
 /**
  * An instance of this class is returned to the client (the server) when a
  * CommandToServer (CommandToClient) is executed by the server (the client).

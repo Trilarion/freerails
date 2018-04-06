@@ -24,6 +24,7 @@ package freerails.model.train.motion;
 import freerails.util.ImmutableList;
 import freerails.model.Activity;
 import freerails.model.train.TrainState;
+import freerails.util.Utils;
 
 /**
  *
@@ -39,7 +40,7 @@ public class CompositeMotion implements Activity<SpeedTimeAndStatus>, Motion {
      */
     public CompositeMotion(Motion... motions) {
         this.motions = new ImmutableList<>(motions);
-        this.motions.verifyNoneNull();
+        Utils.verifyNoneNull(this.motions);
         double time = 0, distance = 0;
         for (Motion motion : motions) {
             time += motion.getTotalTime();

@@ -26,6 +26,8 @@ package freerails.model.track.pathfinding;
  */
 public class PathNotFoundException extends Exception {
 
+    private static final long serialVersionUID = -3078115780884810261L;
+
     /**
      * @param message message
      * @param cause   cause

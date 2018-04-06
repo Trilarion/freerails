@@ -45,7 +45,7 @@ public strictfp class PathOnTiles implements Serializable {
      */
     public PathOnTiles(Vector2D start, List<TileTransition> tileTransitions) {
         vectors = new ImmutableList<>(tileTransitions);
-        vectors.verifyNoneNull();
+        Utils.verifyNoneNull(vectors);
         this.start = Utils.verifyNotNull(start);
     }
 
@@ -56,8 +56,8 @@ public strictfp class PathOnTiles implements Serializable {
      */
     // TODO remove this constructor only used from tests
     public PathOnTiles(Vector2D start, TileTransition... tileTransitions) {
-        this.vectors = new ImmutableList<>(tileTransitions);
-        this.vectors.verifyNoneNull();
+        vectors = new ImmutableList<>(tileTransitions);
+        Utils.verifyNoneNull(vectors);
         this.start = Utils.verifyNotNull(start);
     }
 

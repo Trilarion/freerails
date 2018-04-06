@@ -218,6 +218,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         rootLogger.setLevel(Level.INFO);
         logger.debug("Started launcher.");
 
+        // show new launcher frame
         LauncherFrame launcherFrame = new LauncherFrame();
         launcherFrame.setVisible(true);
     }
@@ -266,6 +267,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         }
     }
 
+    /**
+     * Single player local games start here.
+     */
     private void startGame() {
         CardLayout cl = (CardLayout) jPanel1.getLayout();
         cl.show(jPanel1, "4");
@@ -274,7 +278,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         LauncherPanel launcherPanel = (LauncherPanel) wizardPages[0];
         SelectMapPanel selectMapPanel = (SelectMapPanel) wizardPages[1];
         ClientOptionsPanel clientOptionsPanel = (ClientOptionsPanel) wizardPages[2];
-        ConnectedPlayersPanel cp = (ConnectedPlayersPanel) wizardPages[3];
+        ConnectedPlayersPanel connectedPlayersPanel = (ConnectedPlayersPanel) wizardPages[3];
 
         boolean recover = false;
         int mode;
@@ -313,7 +317,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     currentPage = 3;
                     String[] playerNames = server.getPlayerNames();
                     playerNames = playerNames.length == 0 ? new String[]{"No players are connected."} : playerNames;
-                    cp.setListOfPlayers(playerNames);
+                    connectedPlayersPanel.setListOfPlayers(playerNames);
                     cl.show(jPanel1, "3");
                     setNextEnabled(false);
                 } catch (Exception e) {

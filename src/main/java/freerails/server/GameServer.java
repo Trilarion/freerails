@@ -19,12 +19,11 @@
 package freerails.server;
 
 import freerails.network.ConnectionToClient;
-import freerails.server.GameModel;
 
 /**
  * Defines a server that can accept connections to clients.
  */
-public interface GameServer extends GameModel {
+public interface GameServer {
 
     /**
      * @param connection

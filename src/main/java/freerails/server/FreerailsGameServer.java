@@ -49,7 +49,7 @@ import java.util.*;
  * @see IpConnectionAcceptor
  * @see ConnectionToClient
  */
-public class FreerailsGameServer implements ServerControlInterface, GameServer, Runnable {
+public class FreerailsGameServer implements ServerControlInterface, GameServer, GameModel, Runnable {
 
     private static final Logger logger = Logger.getLogger(FreerailsGameServer.class.getName());
     /**
@@ -451,6 +451,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                         } else if (message instanceof CommandStatus) {
                             CommandStatus commandStatus = (CommandStatus) message;
 
+                            // TODO what is the reason for that? any useful?
                             if (commandStatus.getId() == confirmationID) {
                                 /*
                                  * The client is confirming that they have

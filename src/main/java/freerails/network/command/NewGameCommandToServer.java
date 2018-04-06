@@ -18,6 +18,7 @@
 
 package freerails.network.command;
 
+// TODO the id for all the commands is not really used, do we really need it
 /**
  * Request to start a game on a new map.
  */

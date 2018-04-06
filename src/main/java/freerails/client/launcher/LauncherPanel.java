@@ -31,8 +31,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
- * The first launcher panel, lets you choose 'single player', 'start network
- * game' etc.
+ * The first launcher panel, lets you choose 'single player', 'start network game' etc.
  */
 public class LauncherPanel extends JPanel {
 

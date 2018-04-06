@@ -31,7 +31,6 @@ import java.awt.*;
 /**
  * This thread updates the GUI Client window.
  */
-
 public class GameLoop implements Runnable {
 
     private static final Logger logger = Logger.getLogger(GameLoop.class.getName());
@@ -94,7 +93,6 @@ public class GameLoop implements Runnable {
                 synchronized (SynchronizedEventQueue.MUTEX) {
                     if (!gameNotDone) {
                         SynchronizedEventQueue.MUTEX.notify();
-
                         break;
                     }
 
@@ -137,8 +135,7 @@ public class GameLoop implements Runnable {
 
                 if (screenHandler.isMinimised()) {
                     try {
-                        // The window is minimised so we don't need to keep
-                        // updating.
+                        // The window is minimised so we don't need to keep updating.
                         Thread.sleep(200);
                     } catch (Exception e) {}
                 } else if (ClientConfig.LIMIT_FRAME_RATE) {
