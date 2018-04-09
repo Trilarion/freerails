@@ -32,7 +32,7 @@ public class TrackRuleProperties implements Serializable {
     private final Money maintenanceCost;
     private final Money price;
     private final Money fixedCost;
-    private final TrackCategories category;
+    private final TrackCategory category;
     // TODO rgbvalue part of the client, not part of the world model
     private final int rGBvalue;
     private final int stationRadius;
@@ -48,7 +48,7 @@ public class TrackRuleProperties implements Serializable {
      * @param maintenance
      * @param fixedCost
      */
-    public TrackRuleProperties(int rgb, boolean doubleTrack, String name, TrackCategories c, int radius, int price, int maintenance, int fixedCost) {
+    public TrackRuleProperties(int rgb, boolean doubleTrack, String name, TrackCategory c, int radius, int price, int maintenance, int fixedCost) {
         stationRadius = radius;
         rGBvalue = rgb;
         enableDoubleTrack = doubleTrack;
@@ -123,13 +123,13 @@ public class TrackRuleProperties implements Serializable {
      * @return
      */
     public boolean isStation() {
-        return category == TrackCategories.station;
+        return category == TrackCategory.station;
     }
 
     /**
      * @return
      */
-    public TrackCategories getCategory() {
+    public TrackCategory getCategory() {
         return category;
     }
 

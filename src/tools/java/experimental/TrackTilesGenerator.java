@@ -20,7 +20,7 @@ package experimental;
 
 import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.savegames.TrackTilesXmlHandlerImpl;
-import freerails.model.track.TrackCategories;
+import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackRule;
 
@@ -95,15 +95,15 @@ class TrackTilesGenerator extends JPanel {
     private void generateTiles() {
 
         for (TrackRule rule : rules) {
-            TrackCategories category = rule.getCategory();
+            TrackCategory category = rule.getCategory();
             Image icon;
-            if (category == TrackCategories.bridge || category == TrackCategories.station) {
+            if (category == TrackCategory.bridge || category == TrackCategory.station) {
                 tr.setIcon(rule.getTypeName());
                 icon = tr.icon;
             } else {
                 icon = null;
             }
-            tr.tunnel = category == TrackCategories.tunnel;
+            tr.tunnel = category == TrackCategory.tunnel;
             tr.doubleTrack = rule.isDouble();
 
             for (int i = 0; i < 512; i++) {

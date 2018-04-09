@@ -30,6 +30,7 @@ public interface TrackPiece extends Serializable {
      */
     int getTrackGraphicID();
 
+    // TODO make TrackTypeID an enum
     /**
      * @return
      */

@@ -99,7 +99,7 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
          */
         rGBvalue = new Color(rGBvalue).getRGB();
 
-        TrackCategories category = TrackCategories.valueOf(attributes.getValue("category"));
+        TrackCategory category = TrackCategory.valueOf(attributes.getValue("category"));
 
         boolean enableDoubleTrack = Boolean.valueOf(attributes.getValue("doubleTrack"));
         String typeName = attributes.getValue("type");

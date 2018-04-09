@@ -91,7 +91,7 @@ public class MapFixtureFactory {
         validTrackConfigurations[0] = new ValidTrackConfigurations(-1,
                 trackTemplates0);
         trackRuleProperties[0] = new TrackRuleProperties(1, false, "type0",
-                TrackCategories.track, 0, 0, 10, 0);
+                TrackCategory.track, 0, 0, 10, 0);
         validTrackPlacement[0] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
                 PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
@@ -103,7 +103,7 @@ public class MapFixtureFactory {
         validTrackConfigurations[1] = new ValidTrackConfigurations(-1,
                 trackTemplates1);
         trackRuleProperties[1] = new TrackRuleProperties(2, false, "type1",
-                TrackCategories.track, 0, 0, 20, 0);
+                TrackCategory.track, 0, 0, 20, 0);
 
         validTrackPlacement[1] = new ValidTrackPlacement(
                 cannotBuildOnTheseTerrainTypes,
@@ -113,7 +113,7 @@ public class MapFixtureFactory {
 
         // 3rd track type..
         trackRuleProperties[2] = new TrackRuleProperties(3, false, "type2",
-                TrackCategories.track, 0, 0, 30, 0);
+                TrackCategory.track, 0, 0, 30, 0);
 
         String[] trackTemplates2 = {"000010000"};
         validTrackConfigurations[2] = new ValidTrackConfigurations(-1,

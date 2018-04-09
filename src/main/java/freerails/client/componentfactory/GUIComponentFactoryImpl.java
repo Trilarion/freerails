@@ -479,7 +479,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         // setup the the main and overview map JComponents
         dialogueBoxController.setDefaultFocusOwner(mapViewJComponent);
 
-        userInputOnMapController.setup(mapViewJComponent, actionRoot.getTrackMoveProducer(), stationTypesPopup, modelRoot, dialogueBoxController, getBuildTrackController());
+        userInputOnMapController.setup(mapViewJComponent, actionRoot.getTrackMoveProducer(), stationTypesPopup, modelRoot, dialogueBoxController, buildTrackController);
 
 
         // build menu setup

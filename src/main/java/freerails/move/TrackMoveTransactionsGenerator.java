@@ -31,7 +31,7 @@ import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.track.NullTrackType;
-import freerails.model.track.TrackCategories;
+import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackRule;
 
@@ -124,7 +124,7 @@ public class TrackMoveTransactionsGenerator {
         final int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
         if (ruleAfter != ruleBefore) {
-            TrackCategories category = newTrackRule.getCategory();
+            TrackCategory category = newTrackRule.getCategory();
             switch (category) {
                 case station: {
                     // TODO Money arithmetics

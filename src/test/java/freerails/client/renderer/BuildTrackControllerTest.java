@@ -111,9 +111,9 @@ public class BuildTrackControllerTest extends TestCase {
         testBuildTrack();
 
         // Change the strategy.
-        BuildTrackStrategy bts = BuildTrackStrategy.getSingleRuleInstance(doubleTrackRuleID, modelRoot.getWorld());
+        BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getSingleRuleInstance(doubleTrackRuleID, modelRoot.getWorld());
 
-        trackBuilder.setBuildTrackStrategy(bts);
+        trackBuilder.setBuildTrackStrategy(buildTrackStrategy);
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.

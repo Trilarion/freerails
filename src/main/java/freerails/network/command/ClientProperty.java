@@ -1,7 +1,7 @@
 package freerails.network.command;
 
 /**
- *
+ * Used by CommandToClient or ClientControlInterface
  */
 public enum ClientProperty {
 

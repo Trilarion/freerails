@@ -29,7 +29,7 @@ public final class Money implements Serializable, Comparable<Money> {
 
     private static final long serialVersionUID = 3258697615163338805L;
     public static final Money ZERO = new Money(0);
-    private static final DecimalFormat df = new DecimalFormat("#,###");
+    private static final DecimalFormat format = new DecimalFormat("#,###");
     public final long amount;
 
     /**
@@ -108,7 +108,7 @@ public final class Money implements Serializable, Comparable<Money> {
     // TODO add currency here (not in the client)
     @Override
     public String toString() {
-        return df.format(amount);
+        return format.format(amount);
     }
 
     /**

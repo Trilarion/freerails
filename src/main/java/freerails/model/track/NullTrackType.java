@@ -133,8 +133,8 @@ public class NullTrackType implements TrackRule {
     /**
      * @return
      */
-    public TrackCategories getCategory() {
-        return TrackCategories.non;
+    public TrackCategory getCategory() {
+        return TrackCategory.non;
     }
 
     public int compareTo(TrackRule o) {

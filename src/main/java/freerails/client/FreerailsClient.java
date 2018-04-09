@@ -45,7 +45,7 @@ import java.util.Map;
 public class FreerailsClient implements ClientControlInterface, GameModel, UntriedMoveReceiver, ServerCommandReceiver {
 
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
-    private final Map<String, Serializable> properties = new HashMap<>();
+    private final Map<ClientProperty, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveFork = new MoveChainFork();
     protected ConnectionToServer connectionToServer;
     private World world;
@@ -137,16 +137,16 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     protected void newWorld(World world) {}
 
-    public void setProperty(ClientProperty propertyName, Serializable value) {
-        properties.put(propertyName.name(), value);
+    public void setProperty(ClientProperty property, Serializable value) {
+        properties.put(property, value);
     }
 
     /**
-     * @param propertyName
+     * @param property
      * @return
      */
-    public final Serializable getProperty(ClientProperty propertyName) {
-        return properties.get(propertyName.name());
+    public final Serializable getProperty(ClientProperty property) {
+        return properties.get(property);
     }
 
     public final Serializable read() {
@@ -191,7 +191,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     /**
-     * Processes a message received from the server.
+     * Processes a message received from the server. Called by update().
      */
     public final void processMessage(Serializable message) throws IOException {
         if (message instanceof CommandToClient) {
@@ -212,8 +212,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             Move move = committer.fromServer(moveGenerator);
             moveFork.process(move);
         } else if (message instanceof TryMoveStatus) {
-            TryMoveStatus pms = (TryMoveStatus) message;
-            committer.fromServer(pms);
+            TryMoveStatus tryMoveStatus = (TryMoveStatus) message;
+            committer.fromServer(tryMoveStatus);
         } else {
             logger.debug(message.toString());
         }

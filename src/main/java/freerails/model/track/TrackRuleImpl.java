@@ -99,7 +99,7 @@ public class TrackRuleImpl implements TrackRule {
     /**
      * @return
      */
-    public TrackCategories getCategory() {
+    public TrackCategory getCategory() {
         return properties.getCategory();
     }
 

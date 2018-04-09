@@ -31,8 +31,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A BuildTrackStrategy determines which track types to build (or upgrade to) on
- * different terrains.
+ * A BuildTrackStrategy determines which track types to build (or upgrade to) on different terrains.
  */
 public class BuildTrackStrategy {
 
@@ -52,12 +51,12 @@ public class BuildTrackStrategy {
      */
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld world) {
         int numberTerrainTypes = world.size(SharedKey.TerrainTypes);
-        int[] newRules = new int[numberTerrainTypes];
+        int[] rules = new int[numberTerrainTypes];
         for (int i = 0; i < numberTerrainTypes; i++) {
-            newRules[i] = trackTypeID;
+            rules[i] = trackTypeID;
         }
 
-        return new BuildTrackStrategy(newRules);
+        return new BuildTrackStrategy(rules);
     }
 
     /**
@@ -66,8 +65,8 @@ public class BuildTrackStrategy {
      * @return
      */
     public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, ReadOnlyWorld world) {
-        int[] rulesArray = generateRules(ruleIDs, world);
-        return new BuildTrackStrategy(rulesArray);
+        int[] rules = generateRules(ruleIDs, world);
+        return new BuildTrackStrategy(rules);
     }
 
     /**
@@ -76,19 +75,19 @@ public class BuildTrackStrategy {
      */
     public static BuildTrackStrategy getDefault(ReadOnlyWorld world) {
         Collection<Integer> allowable = new ArrayList<>();
-        allowable.add(getCheapest(TrackCategories.track, world));
-        allowable.add(getCheapest(TrackCategories.bridge, world));
-        allowable.add(getCheapest(TrackCategories.tunnel, world));
+        allowable.add(getCheapest(TrackCategory.track, world));
+        allowable.add(getCheapest(TrackCategory.bridge, world));
+        allowable.add(getCheapest(TrackCategory.tunnel, world));
         return new BuildTrackStrategy(generateRules(allowable, world));
     }
 
-    private static Integer getCheapest(TrackCategories category, ReadOnlyWorld world) {
+    private static Integer getCheapest(TrackCategory category, ReadOnlyWorld world) {
         TrackRule cheapest = null;
         Integer cheapestID = null;
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
             if (rule.getCategory() == category) {
-                if (null == cheapest || cheapest.getPrice().amount > rule.getPrice().amount) {
+                if (null == cheapest || cheapest.getPrice().compareTo(rule.getPrice()) > 0) {
                     cheapest = rule;
                     cheapestID = i;
                 }

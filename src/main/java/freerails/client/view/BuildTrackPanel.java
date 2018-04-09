@@ -37,7 +37,7 @@ import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
-import freerails.model.track.TrackCategories;
+import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackRule;
 
 import javax.swing.*;
@@ -61,7 +61,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
     private static final long serialVersionUID = 3618701915647850036L;
     private final ImageManager imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
-    private HashMap<TrackCategories, Integer> selectionSet;
+    private HashMap<TrackCategory, Integer> selectionSet;
     private ModelRoot modelRoot;
     private TrackMoveProducer trackMoveProducer;
     private StationBuildModel stationBuildModel;
@@ -282,14 +282,14 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
             JToggleButton toggleButton = new JToggleButton();
             final Integer ruleID = i;
             TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-            TrackCategories category = rule.getCategory();
+            TrackCategory category = rule.getCategory();
             Money price = null;
             switch (category) {
                 case track:
                     trackButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(e -> {
-                        selectionSet.put(TrackCategories.track, ruleID);
+                        selectionSet.put(TrackCategory.track, ruleID);
                         setBuildTrackStrategy();
                     });
                     price = rule.getPrice();
@@ -300,7 +300,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
                     bridgeButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(e -> {
-                        selectionSet.put(TrackCategories.bridge, ruleID);
+                        selectionSet.put(TrackCategory.bridge, ruleID);
                         setBuildTrackStrategy();
                     });
 
@@ -312,7 +312,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
                     tunnelButtonGroup.add(toggleButton);
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
                     toggleButton.addActionListener(e -> {
-                        selectionSet.put(TrackCategories.tunnel, ruleID);
+                        selectionSet.put(TrackCategory.tunnel, ruleID);
                         setBuildTrackStrategy();
                     });
                     price = rule.getPrice();
@@ -326,7 +326,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
                     toggleButton.setIcon(getIcon(rule.getTypeName()));
 
-                    toggleButton.addActionListener(e -> selectionSet.put(TrackCategories.station, ruleID));
+                    toggleButton.addActionListener(e -> selectionSet.put(TrackCategory.station, ruleID));
 
                     stationsJPanel.add(toggleButton);
                     price = rule.getFixedCost();
@@ -376,7 +376,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         toggleButton.setIcon(getIcon("no_tunnels"));
         toggleButton.setPreferredSize(new Dimension(36, 36));
         toggleButton.addActionListener(e -> {
-            selectionSet.put(TrackCategories.tunnel, null);
+            selectionSet.put(TrackCategory.tunnel, null);
             setBuildTrackStrategy();
         });
         toggleButton.setToolTipText("Don't build tunnels");
@@ -389,7 +389,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         toggleButton.setIcon(getIcon("no_bridges"));
         toggleButton.setPreferredSize(new Dimension(36, 36));
         toggleButton.addActionListener(e -> {
-            selectionSet.put(TrackCategories.bridge, null);
+            selectionSet.put(TrackCategory.bridge, null);
             setBuildTrackStrategy();
         });
         toggleButton.setToolTipText("Don't build bridges");
@@ -460,9 +460,9 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
     private void setBuildTrackStrategy() {
         Collection<Integer> ruleIDs = new ArrayList<>();
-        ruleIDs.add(selectionSet.get(TrackCategories.track));
-        ruleIDs.add(selectionSet.get(TrackCategories.bridge));
-        ruleIDs.add(selectionSet.get(TrackCategories.tunnel));
+        ruleIDs.add(selectionSet.get(TrackCategory.track));
+        ruleIDs.add(selectionSet.get(TrackCategory.bridge));
+        ruleIDs.add(selectionSet.get(TrackCategory.tunnel));
         BuildTrackStrategy bts = BuildTrackStrategy.getMultipleRuleInstance(ruleIDs, modelRoot.getWorld());
         modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, bts);
     }

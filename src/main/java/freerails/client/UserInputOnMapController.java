@@ -56,9 +56,9 @@ public class UserInputOnMapController extends KeyAdapter {
     private final SoundManager soundManager = SoundManager.getInstance();
     private DetailMapViewComponent mapView;
     private StationTypesPopup stationTypesPopup;
-    private TrackMoveProducer trackBuilder;
+    private TrackMoveProducer trackMoveProducer;
     private DialogueBoxController dialogueBoxController;
-    private BuildTrackController buildTrack;
+    private BuildTrackController buildTrackController;
     /**
      * Ignores the dragging action for efficiency I think.
      * Ignores mostly for right mouse button.
@@ -82,15 +82,15 @@ public class UserInputOnMapController extends KeyAdapter {
      * @param stPopup
      * @param modelRoot
      * @param dbc
-     * @param buildTrack
+     * @param buildTrackController
      */
 
-    public void setup(DetailMapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrack) {
+    public void setup(DetailMapViewComponent mv, TrackMoveProducer trackBuilder, StationTypesPopup stPopup, ModelRoot modelRoot, DialogueBoxController dbc, BuildTrackController buildTrackController) {
         dialogueBoxController = dbc;
         mapView = mv;
         stationTypesPopup = stPopup;
-        this.trackBuilder = trackBuilder;
-        this.buildTrack = buildTrack;
+        this.trackMoveProducer = trackBuilder;
+        this.buildTrackController = buildTrackController;
         buildIndustryPopupMenu.setup(modelRoot, null, null);
 
         /*
@@ -255,9 +255,9 @@ public class UserInputOnMapController extends KeyAdapter {
     private void cursorOneTileMove(Vector2D oldPosition, TileTransition vector) {
         boolean b = (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE) == ModelRootValue.BUILD_TRACK_CURSOR_MODE);
 
-        if (null != trackBuilder && b) {
-            trackBuilder.setBuildTrackStrategy(getBts());
-            MoveStatus moveStatus = trackBuilder.buildTrack(oldPosition, vector);
+        if (null != trackMoveProducer && b) {
+            trackMoveProducer.setBuildTrackStrategy(getBts());
+            MoveStatus moveStatus = trackMoveProducer.buildTrack(oldPosition, vector);
 
             if (moveStatus.succeeds()) {
                 setCursorMessage("");
@@ -297,14 +297,14 @@ public class UserInputOnMapController extends KeyAdapter {
 
     private void cancelProposedBuild() {
         ignoreDragging = true;
-        buildTrack.hide();
+        buildTrackController.hide();
         StationBuildModel stationBuildModel = actionRoot.getStationBuildModel();
         stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, ""));
         setIgnoreKeyEvents(false);
     }
 
     private void playAppropriateSound() {
-        switch (trackBuilder.getTrackBuilderMode()) {
+        switch (trackMoveProducer.getTrackBuilderMode()) {
             case BUILD_TRACK:
             case UPGRADE_TRACK:
                 soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
@@ -381,14 +381,14 @@ public class UserInputOnMapController extends KeyAdapter {
                  * Fix for bug [ 972866 ] Build track by dragging - only when
                  * build track selected
                  */
-                boolean isBuildTrackModeSet = trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK;
+                boolean isBuildTrackModeSet = trackMoveProducer.getTrackBuilderMode() == BuildMode.BUILD_TRACK;
 
                 if (isBuildTrackModeSet) {
-                    buildTrack.show();
+                    buildTrackController.show();
                 }
             } else if (SwingUtilities.isRightMouseButton(e)) {
                 // Cancel building track.
-                buildTrack.hide();
+                buildTrackController.hide();
                 ignoreDragging = true;
                 setIgnoreKeyEvents(false);
             }
@@ -404,7 +404,7 @@ public class UserInputOnMapController extends KeyAdapter {
                 setIgnoreKeyEvents(false);
 
                 // build a railroad from x,y to current cursor position
-                if (pressedInside && buildTrack.isBuilding() && buildTrack.isBuildTrackSuccessful()) {
+                if (pressedInside && buildTrackController.isBuilding() && buildTrackController.isBuildTrackSuccessful()) {
 
                     // Fix for bug [ 997088 ]
                     // Is current position different from original position?
@@ -415,13 +415,13 @@ public class UserInputOnMapController extends KeyAdapter {
 
                     if (getCursorPosition().x != tileX || getCursorPosition().y != tileY) {
                         // copy WorldDifferences from buildTrack to World
-                        Vector2D newPosition = buildTrack.updateWorld(trackBuilder);
+                        Vector2D newPosition = buildTrackController.updateWorld(trackMoveProducer);
                         setCursorPosition(newPosition);
                     }
                 }
 
                 pressedInside = false;
-                buildTrack.hide();
+                buildTrackController.hide();
             }
         }
 
@@ -431,7 +431,7 @@ public class UserInputOnMapController extends KeyAdapter {
             // Called a lot for a small area, not just every square... efficiency questions?
             logger.debug("Mouse dragged");
 
-            BuildMode trackBuilderMode = trackBuilder.getTrackBuilderMode();
+            BuildMode trackBuilderMode = trackMoveProducer.getTrackBuilderMode();
             /*
              * Fix for bug [ 972866 ] Build track by dragging - only when build
              * track selected Fix for bug [1537413 ] Exception when building
@@ -472,8 +472,8 @@ public class UserInputOnMapController extends KeyAdapter {
                     mapView.scrollRectToVisible(r);
                 }
 
-                Vector2D to = new Vector2D(tileX, tileY);
-                buildTrack.setProposedTrack(to, trackBuilder);
+                Vector2D destination = new Vector2D(tileX, tileY);
+                buildTrackController.setProposedTrack(destination, trackMoveProducer);
                 mapView.requestFocus();
             }
         }

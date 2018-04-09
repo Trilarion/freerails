@@ -32,7 +32,7 @@ public interface TrackRule extends Serializable, Comparable<TrackRule> {
     /**
      * @return
      */
-    TrackCategories getCategory();
+    TrackCategory getCategory();
 
     /**
      * @param TerrainType

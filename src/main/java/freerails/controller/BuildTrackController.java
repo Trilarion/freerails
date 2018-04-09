@@ -53,11 +53,10 @@ public class BuildTrackController implements GameModel {
 
     private static final Logger logger = Logger.getLogger(BuildTrackController.class.getName());
     private final ModelRoot modelRoot;
-    private final TrackPathFinder path4newTrackFinder;
-    private final PathOnTrackFinder pathOnExistingTrackFinder;
+    private final TrackPathFinder trackPathFinder;
+    private final PathOnTrackFinder pathOnTrackFinder;
     private final FreerailsPrincipal principal;
     private final ReadOnlyWorld realWorld;
-    private final SoundManager soundManager = SoundManager.getInstance();
     private final FullWorldDiffs worldDiffs;
     private boolean buildNewTrack = true;
     private List<Vector2D> builtTrack = new ArrayList<>();
@@ -75,8 +74,8 @@ public class BuildTrackController implements GameModel {
     public BuildTrackController(ReadOnlyWorld readOnlyWorld, ModelRoot modelRoot) {
         worldDiffs = new FullWorldDiffs(readOnlyWorld);
         realWorld = readOnlyWorld;
-        path4newTrackFinder = new TrackPathFinder(readOnlyWorld, modelRoot.getPrincipal());
-        pathOnExistingTrackFinder = new PathOnTrackFinder(readOnlyWorld);
+        trackPathFinder = new TrackPathFinder(readOnlyWorld, modelRoot.getPrincipal());
+        pathOnTrackFinder = new PathOnTrackFinder(readOnlyWorld);
         this.modelRoot = modelRoot;
         principal = modelRoot.getPrincipal();
         this.modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, worldDiffs);
@@ -214,7 +213,7 @@ public class BuildTrackController implements GameModel {
         // If track has actually been built, play the build track sound.
         if (trackBuilder != null && moveStatuss.succeeds()) {
             if (trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
-                soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
+                SoundManager.getInstance().playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
             }
         }
 
@@ -245,16 +244,16 @@ public class BuildTrackController implements GameModel {
      */
     private void reset() {
         worldDiffs.reset();
-        path4newTrackFinder.abandonSearch();
+        trackPathFinder.abandonSearch();
         builtTrack.clear();
         isBuildTrackSuccessful = false;
     }
 
     private PathFinderStatus searchStatus() {
         if (buildNewTrack) {
-            return path4newTrackFinder.getStatus();
+            return trackPathFinder.getStatus();
         }
-        return pathOnExistingTrackFinder.getStatus();
+        return pathOnTrackFinder.getStatus();
     }
 
     /**
@@ -308,9 +307,9 @@ public class BuildTrackController implements GameModel {
 
             BuildTrackStrategy bts = getBuildTrackStrategy();
             if (buildNewTrack) {
-                path4newTrackFinder.setupSearch(from, to, bts);
+                trackPathFinder.setupSearch(from, to, bts);
             } else {
-                pathOnExistingTrackFinder.setupSearch(from, to);
+                pathOnTrackFinder.setupSearch(from, to);
             }
         } catch (PathNotFoundException e) {
             setCursorMessage(e.getMessage());
@@ -374,9 +373,9 @@ public class BuildTrackController implements GameModel {
     private void updateSearch() {
         try {
             if (buildNewTrack) {
-                path4newTrackFinder.search(100);
+                trackPathFinder.search(100);
             } else {
-                pathOnExistingTrackFinder.search(100);
+                pathOnTrackFinder.search(100);
             }
         } catch (PathNotFoundException e) {
             setCursorMessage(e.getMessage());
@@ -385,11 +384,11 @@ public class BuildTrackController implements GameModel {
 
         if (searchStatus() == PathFinderStatus.PATH_FOUND) {
             if (buildNewTrack) {
-                builtTrack = path4newTrackFinder.pathAsPoints();
+                builtTrack = trackPathFinder.pathAsPoints();
                 moveCursorMoreTiles(builtTrack);
             } else {
                 boolean okSoFar = true;
-                path = pathOnExistingTrackFinder.pathAsVectors();
+                path = pathOnTrackFinder.pathAsVectors();
                 BuildMode mode = getBuildMode();
 
                 int locationX = startPoint.x;
@@ -489,9 +488,9 @@ public class BuildTrackController implements GameModel {
                 actPoint = targetPoint;
                 setCursorMessage("");
                 if (BuildMode.REMOVE_TRACK == getBuildMode()) {
-                    soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
+                    SoundManager.getInstance().playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
                 } else {
-                    soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
+                    SoundManager.getInstance().playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
                 }
             } else {
                 setCursorMessage(moveStatus.getMessage());

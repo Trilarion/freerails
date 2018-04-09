@@ -130,9 +130,9 @@ public class LauncherClient extends FreerailsClient {
     }
 
     @Override
-    public void setProperty(ClientProperty propertyName, Serializable value) {
-        super.setProperty(propertyName, value);
-        switch (propertyName) {
+    public void setProperty(ClientProperty property, Serializable value) {
+        super.setProperty(property, value);
+        switch (property) {
             case SAVED_GAMES:
                 modelRoot.setProperty(ModelRootProperty.SAVED_GAMES_LIST, value);
                 break;
