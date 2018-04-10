@@ -19,7 +19,6 @@
 package freerails.savegames;
 
 import freerails.server.ServerGameModel;
-import freerails.model.world.World;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -21,7 +21,7 @@ package freerails.move.mapupdatemove;
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.generator.MoveTrainMoveGenerator;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
 import freerails.model.player.FreerailsPrincipal;
@@ -43,14 +43,14 @@ public final class ChangeTrackPieceMove implements TrackMove {
     private static final long serialVersionUID = 4120849958418591801L;
     public final TrackPiece trackPieceBefore;
     private final TrackPiece trackPieceAfter;
-    private final Vector2D location;
+    private final Vec2D location;
 
     /**
      * @param before
      * @param after
      * @param p
      */
-    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Vector2D p) {
+    public ChangeTrackPieceMove(TrackPiece before, TrackPiece after, Vec2D p) {
         trackPieceBefore = before;
         trackPieceAfter = after;
         location = p;
@@ -71,7 +71,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * station is getting removed.
      */
-    private static MoveStatus checkForOverlap(World world, Vector2D location, TrackPiece trackPiece) {
+    private static MoveStatus checkForOverlap(World world, Vec2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
@@ -102,7 +102,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                Vector2D delta = Vector2D.subtract(station.location, location);
+                Vec2D delta = Vec2D.subtract(station.location, location);
 
                 // Do radii overlap?
                 boolean xOverlap = sumOfRadiiSquared >= delta.x * delta.x;
@@ -119,7 +119,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return MoveStatus.MOVE_OK;
     }
 
-    private static boolean noDiagonalTrackConflicts(Vector2D point, int trackTemplate, World world) {
+    private static boolean noDiagonalTrackConflicts(Vec2D point, int trackTemplate, World world) {
         /*
          * This method is needs replacing. It only deals with flat track pieces,
          * and is rather hard to make sense of. LL
@@ -138,11 +138,11 @@ public final class ChangeTrackPieceMove implements TrackMove {
         int cornersTemplate = Integer.parseInt(templateString, 2);
         trackTemplate = trackTemplate & cornersTemplate;
 
-        Vector2D mapSize = world.getMapSize();
+        Vec2D mapSize = world.getMapSize();
 
         // Avoid array-out-of-bounds exceptions.
         if (point.y > 0) {
-            FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vector2D(point.x, point.y - 1));
+            FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vec2D(point.x, point.y - 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateAbove = tp.getTrackGraphicID();
         } else {
@@ -150,7 +150,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         if ((point.y + 1) < mapSize.y) {
-            FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vector2D(point.x, point.y + 1));
+            FullTerrainTile ft = (FullTerrainTile) world.getTile(new Vec2D(point.x, point.y + 1));
             TrackPiece tp = ft.getTrackPiece();
             trackTemplateBelow = tp.getTrackGraphicID();
         } else {
@@ -168,7 +168,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
     /**
      * @return
      */
-    public Vector2D getLocation() {
+    public Vec2D getLocation() {
         return location;
     }
 

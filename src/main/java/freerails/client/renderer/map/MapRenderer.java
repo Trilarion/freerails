@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.map;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 // TODO these functions do not seem to be a good entity
 /**
@@ -34,5 +34,5 @@ public interface MapRenderer extends MapLayerRenderer {
     /**
      * @return
      */
-    Vector2D getMapSizeInPixels();
+    Vec2D getMapSizeInPixels();
 }

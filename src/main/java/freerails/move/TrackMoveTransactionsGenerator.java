@@ -127,7 +127,7 @@ public class TrackMoveTransactionsGenerator {
             TrackCategory category = newTrackRule.getCategory();
             switch (category) {
                 case station: {
-                    // TODO Money arithmetics
+                    // TODO Money arithmetic
                     fixedCostsStations -= newTrackRule.getFixedCost().amount;
                     break;
                 }

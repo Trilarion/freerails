@@ -62,6 +62,7 @@ public class UserMessageGenerator implements MoveReceiver {
      * @param move
      */
     public void process(Move move) {
+        // TODO then it could also be a splitMoveReceiver in MoveChainFork
         if (move instanceof CompositeMove) {
             List<Move> moves = ((CompositeMove) move).getMoves();
 
@@ -84,9 +85,9 @@ public class UserMessageGenerator implements MoveReceiver {
      * Generates a message giving details of any cargo delivered and plays a
      * cash register sound to indicate that revenue is coming in.
      */
-    private void trainArrives(WorldDiffMove wdm) {
+    private void trainArrives(WorldDiffMove worldDiffMove) {
         List<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
-        CompositeMove listChanges = wdm.getListChanges();
+        CompositeMove listChanges = worldDiffMove.getListChanges();
         for (int i = 0; i < listChanges.size(); i++) {
             Move move = listChanges.getMoves().get(i);
             if (move instanceof AddTransactionMove) {

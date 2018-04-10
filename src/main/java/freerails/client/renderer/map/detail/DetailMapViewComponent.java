@@ -24,7 +24,7 @@
 package freerails.client.renderer.map.detail;
 
 import freerails.client.renderer.map.MapRenderer;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,7 +108,7 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     /**
      * @param tile
      */
-    public void centerOnTile(Vector2D tile) {
+    public void centerOnTile(Vec2D tile) {
         float scale = mapRenderer.getScale();
         Rectangle visRect = new Rectangle(getVisibleRect());
         visRect.x = (int) (tile.x * scale - (visRect.width / 2));
@@ -119,13 +119,13 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     /**
      * @return
      */
-    public Vector2D getMapSizeInPixels() {
+    public Vec2D getMapSizeInPixels() {
         return mapRenderer.getMapSizeInPixels();
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return Vector2D.toDimension(getMapSizeInPixels());
+        return Vec2D.toDimension(getMapSizeInPixels());
     }
 
     public MapRenderer getMapRenderer() {

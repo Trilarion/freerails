@@ -18,12 +18,11 @@
 
 package freerails.client.renderer.map;
 
-import freerails.client.ClientConfig;
 import freerails.client.ModelRootProperty;
 import freerails.model.world.PlayerKey;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -78,8 +77,8 @@ public class StationNamesRenderer implements Painter {
             while (worldIterator.next()) { // loop over non null stations
                 Station station = (Station) worldIterator.getElement();
 
-                Vector2D location = station.getLocation();
-                Vector2D displayLocation = Vector2D.multiply(location, WorldConstants.TILE_SIZE);
+                Vec2D location = station.getLocation();
+                Vec2D displayLocation = Vec2D.multiply(location, WorldConstants.TILE_SIZE);
                 Rectangle stationBox = new Rectangle(displayLocation.x - WorldConstants.TILE_SIZE * 3, displayLocation.y - WorldConstants.TILE_SIZE * 3, WorldConstants.TILE_SIZE * 7, WorldConstants.TILE_SIZE * 7);
                 if (newVisibleRectangle != null && !newVisibleRectangle.intersects(stationBox)) {
                     continue; // station box not visible
@@ -109,10 +108,9 @@ public class StationNamesRenderer implements Painter {
                     int rectWidth = (int) (visibleAdvance * 1.2);
                     int rectHeight = (int) (fontSize * 1.5);
                     int rectX = (positionX - (rectWidth / 2));
-                    int rectY = positionY;
 
                     g.setColor(bgColor);
-                    g.fillRect(rectX, rectY, rectWidth, rectHeight);
+                    g.fillRect(rectX, positionY, rectWidth, rectHeight);
 
                     float textX = (positionX - (visibleAdvance / 2));
                     float textY = positionY + fontSize + 1;
@@ -122,7 +120,7 @@ public class StationNamesRenderer implements Painter {
 
                     g.setStroke(new BasicStroke(1.0f));
                     // draw a border 1 pixel inside the edges of the rectangle
-                    g.draw(new Rectangle(rectX + 1, rectY + 1, rectWidth - 3, rectHeight - 3));
+                    g.draw(new Rectangle(rectX + 1, positionY + 1, rectWidth - 3, rectHeight - 3));
                 }
             }
         }

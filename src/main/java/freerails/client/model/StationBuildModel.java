@@ -27,7 +27,7 @@ import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
 import freerails.move.StationBuilder;
 import freerails.move.MoveStatus;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
@@ -125,7 +125,7 @@ public class StationBuildModel {
     public boolean canBuildStationHere() {
         java.awt.Point p = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
 
-        return stationBuilder.tryBuildingStation(new Vector2D(p.x, p.y)).succeeds();
+        return stationBuilder.tryBuildingStation(new Vec2D(p.x, p.y)).succeeds();
     }
 
     /**
@@ -209,7 +209,7 @@ public class StationBuildModel {
 
         public void actionPerformed(ActionEvent e) {
             java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
-            MoveStatus moveStatus = stationBuilder.buildStation(new Vector2D(value.x, value.y));
+            MoveStatus moveStatus = stationBuilder.buildStation(new Vec2D(value.x, value.y));
             String message = null;
 
             if (moveStatus.succeeds()) {

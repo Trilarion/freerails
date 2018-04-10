@@ -18,7 +18,7 @@
 
 package freerails.model.world;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.Activity;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameTime;
@@ -142,7 +142,7 @@ public interface World extends ReadOnlyWorld {
      * Replaces the tile at the specified position on the map with the specified
      * tile.
      */
-    void setTile(Vector2D p, Serializable tile);
+    void setTile(Vec2D p, Serializable tile);
 
     /**
      * @param t

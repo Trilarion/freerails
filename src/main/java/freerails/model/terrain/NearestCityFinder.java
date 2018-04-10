@@ -18,10 +18,9 @@
 
 package freerails.model.terrain;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.terrain.City;
 
 import java.util.NoSuchElementException;
 
@@ -31,14 +30,14 @@ import java.util.NoSuchElementException;
  */
 public class NearestCityFinder {
 
-    private final Vector2D location;
+    private final Vec2D location;
     private final ReadOnlyWorld world;
 
     /**
      * @param world
      * @param location
      */
-    public NearestCityFinder(ReadOnlyWorld world, Vector2D location) {
+    public NearestCityFinder(ReadOnlyWorld world, Vec2D location) {
         this.world = world;
         this.location = location;
     }
@@ -73,8 +72,8 @@ public class NearestCityFinder {
         throw new NoSuchElementException();
     }
 
-    private double getDistance(Vector2D cityLocation) {
-        Vector2D delta = Vector2D.subtract(location, cityLocation);
+    private double getDistance(Vec2D cityLocation) {
+        Vec2D delta = Vec2D.subtract(location, cityLocation);
         return delta.norm();
     }
 }

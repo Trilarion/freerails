@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainTile;
@@ -53,7 +53,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param mapLocation
      * @param world
      */
-    public void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, ReadOnlyWorld world) {
+    public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, ReadOnlyWorld world) {
         Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
@@ -77,7 +77,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      *
      * In the standard implementation it doesn't though.
      */
-    public Image getIcon(Vector2D mapLocation, ReadOnlyWorld world) {
+    public Image getIcon(Vec2D mapLocation, ReadOnlyWorld world) {
         int index = selectTileIconIndex(mapLocation, world);
 
         // TODO here we can assume that all icons in the array are not null, however, make sure of that before
@@ -91,14 +91,14 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param world
      * @return
      */
-    public abstract int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world);
+    public abstract int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world);
 
     // TODO remove world !
-    public int checkTile(Vector2D location, ReadOnlyWorld world) {
+    public int checkTile(Vec2D location, ReadOnlyWorld world) {
         int match = 0;
 
-        // TODO vector2D arithmetics
-        Vector2D mapSize = world.getMapSize();
+        // TODO vector2D arithmetic
+        Vec2D mapSize = world.getMapSize();
         if ((location.x < mapSize.x) && (location.x >= 0) && (location.y < mapSize.y) && (location.y >= 0)) {
             for (int typeNumber : typeNumbers) {
                 TerrainTile terrainTile = (TerrainTile) world.getTile(location);

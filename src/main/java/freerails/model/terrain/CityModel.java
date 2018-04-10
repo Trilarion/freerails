@@ -18,7 +18,7 @@
 
 package freerails.model.terrain;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
@@ -38,7 +38,7 @@ public class CityModel {
     public final Collection<CityTile> industryCityTiles = new ArrayList<>();
     public final List<TerrainType> industriesNotAtCity = new ArrayList<>();
     private final Collection<CityTile> resourceCityTiles = new ArrayList<>();
-    public final List<Vector2D> clearTiles = new ArrayList<>();
+    public final List<Vec2D> clearTiles = new ArrayList<>();
     /**
      * The number of stations within this city's bounds.
      */
@@ -62,7 +62,7 @@ public class CityModel {
         // Pick a spot at random at which to place the tile.
         if (!clearTiles.isEmpty()) {
             int tilePos = rand.nextInt(clearTiles.size());
-            Vector2D p = clearTiles.remove(tilePos);
+            Vec2D p = clearTiles.remove(tilePos);
 
             switch (type.getCategory()) {
                 case Urban:
@@ -102,17 +102,17 @@ public class CityModel {
         stations = 0;
 
         // Identify city's bounds.
-        Vector2D mapSize = world.getMapSize();
+        Vec2D mapSize = world.getMapSize();
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
         City city = (City) world.get(SharedKey.Cities, cityID);
-        Vector2D topleft = Vector2D.subtract(city.getLocation(), new Vector2D(-3,-3));
+        Vec2D topleft = Vec2D.subtract(city.getLocation(), new Vec2D(-3,-3));
         Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);
         cityArea = cityArea.intersection(mapRect);
 
         // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(x, y));
+                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
 
                 // Count the number of stations at the city.
                 if (tile.getTrackPiece().getTrackRule().isStation()) {
@@ -122,7 +122,7 @@ public class CityModel {
                 int terrainTypeNumber = tile.getTerrainTypeID();
                 TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, terrainTypeNumber);
 
-                Vector2D location = new Vector2D(x, y);
+                Vec2D location = new Vec2D(x, y);
                 switch (type.getCategory()) {
                     case Urban:
                         urbanCityTiles.add(new CityTile(location, type));

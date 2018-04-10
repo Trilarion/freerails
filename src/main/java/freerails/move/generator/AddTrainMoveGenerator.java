@@ -25,7 +25,7 @@ import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
@@ -52,7 +52,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private static final long serialVersionUID = 4050201951105069624L;
     private final int engineTypeId;
     private final ImmutableList<Integer> wagons;
-    private final Vector2D point;
+    private final Vec2D point;
     private final FreerailsPrincipal principal;
     private final ImmutableSchedule schedule;
 
@@ -63,7 +63,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * @param principal
      * @param schedule
      */
-    public AddTrainMoveGenerator(int e, ImmutableList<Integer> wagons, Vector2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
+    public AddTrainMoveGenerator(int e, ImmutableList<Integer> wagons, Vec2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
         engineTypeId = e;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);

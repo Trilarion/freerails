@@ -29,7 +29,7 @@ import freerails.move.listmove.AddItemToListMove;
 import freerails.move.listmove.AddStationMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
@@ -49,11 +49,11 @@ import java.util.NoSuchElementException;
 public class AddStationMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 3258131349411148085L;
-    private final Vector2D location;
+    private final Vec2D location;
     private final int ruleNumber;
     private final FreerailsPrincipal principal;
 
-    private AddStationMoveGenerator(Vector2D location, int trackRule, FreerailsPrincipal principal) {
+    private AddStationMoveGenerator(Vec2D location, int trackRule, FreerailsPrincipal principal) {
         this.location = location;
         ruleNumber = trackRule;
         this.principal = principal;
@@ -65,7 +65,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
      * @param principal
      * @return
      */
-    public static AddStationMoveGenerator newStation(Vector2D p, int trackRule, FreerailsPrincipal principal) {
+    public static AddStationMoveGenerator newStation(Vec2D p, int trackRule, FreerailsPrincipal principal) {
         return new AddStationMoveGenerator(p, trackRule, principal);
     }
 

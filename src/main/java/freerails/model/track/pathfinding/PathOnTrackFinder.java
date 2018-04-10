@@ -23,7 +23,7 @@ package freerails.model.track.pathfinding;
 
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.NoTrackException;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -42,7 +42,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld world;
-    private Vector2D startPoint;
+    private Vec2D startPoint;
 
     /**
      * @param world
@@ -71,10 +71,10 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     public TileTransition[] pathAsVectors() {
         List<Integer> path = pathFinder.retrievePath();
         TileTransition[] vectors = new TileTransition[path.size()];
-        Vector2D p = startPoint;
+        Vec2D p = startPoint;
         for (int i = 0; i < path.size(); i++) {
             PositionOnTrack p2 = new PositionOnTrack(path.get(i));
-            vectors[i] = TileTransition.getInstance(Vector2D.subtract(p2.getLocation(), p));
+            vectors[i] = TileTransition.getInstance(Vec2D.subtract(p2.getLocation(), p));
             p = p2.getLocation();
         }
         return vectors;
@@ -100,7 +100,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
      * @param target
      * @throws PathNotFoundException
      */
-    public void setupSearch(Vector2D from, Vector2D target) throws PathNotFoundException {
+    public void setupSearch(Vec2D from, Vec2D target) throws PathNotFoundException {
         startPoint = from;
         logger.debug("Find track path from " + from + " to " + target);
 

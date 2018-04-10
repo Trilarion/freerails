@@ -44,7 +44,7 @@ import java.io.IOException;
 public class StationBoxRenderer implements Painter {
 
     private final ReadOnlyWorld world;
-    private static final Color BACKGROUND_COLOR = new Color(0, 0, 200, 60);;
+    private static final Color BACKGROUND_COLOR = new Color(0, 0, 200, 60);
     private final int wagonImageWidth;
     private final ModelRoot modelRoot;
     private final Image[] cargoImages;
@@ -119,7 +119,7 @@ public class StationBoxRenderer implements Painter {
         }
     }
 
-    // TODO move this to cargo batch bundle maybe?
+    // TODO move this to cargo batch bundle maybe? however, depends on the world
     /**
      * The length of the returned array is the number of complete carloads of
      * the specified cargo category in the specified bundle. The values in the

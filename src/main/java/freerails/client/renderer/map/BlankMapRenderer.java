@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.map;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import java.awt.*;
 
@@ -46,25 +46,25 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      * @return
      */
-    public Vector2D getMapSizeInPixels() {
+    public Vec2D getMapSizeInPixels() {
         int height = (int) (400 * scale);
         int width = (int) (400 * scale);
 
-        return new Vector2D(width, height);
+        return new Vec2D(width, height);
     }
 
     /**
      * @param g
      * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, Vec2D tileLocation) {
         paintRect(g, null);
     }
 
     /**
      * @param tileLocation
      */
-    public void refreshTile(Vector2D tileLocation) {}
+    public void refreshTile(Vec2D tileLocation) {}
 
     /**
      * @param g

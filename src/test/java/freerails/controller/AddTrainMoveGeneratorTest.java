@@ -27,7 +27,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.ActivityIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.FreerailsPrincipal;
@@ -43,7 +43,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
     private FreerailsPrincipal principal;
     private ImmutableSchedule defaultSchedule;
-    private Vector2D stationA;
+    private Vec2D stationA;
 
     /**
      *
@@ -60,14 +60,14 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         // Build track.
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
-        stationA = new Vector2D(10, 10);
+        stationA = new Vec2D(10, 10);
         MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.succeeds());
 
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.succeeds());
-        Vector2D stationB = new Vector2D(19, 10);
+        Vec2D stationB = new Vec2D(19, 10);
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.succeeds());
 
@@ -139,7 +139,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
-        Vector2D from = new Vector2D(5, 5);
+        Vec2D from = new Vec2D(5, 5);
         MoveStatus moveStatus = producer.buildTrack(from, trackPath);
         if (!moveStatus.succeeds())
             throw new IllegalStateException(moveStatus.getMessage());

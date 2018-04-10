@@ -46,10 +46,10 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private final Map<ClientProperty, Serializable> properties = new HashMap<>();
-    private final MoveChainFork moveFork = new MoveChainFork();
+    private final MoveChainFork moveChainFork = new MoveChainFork();
     protected ConnectionToServer connectionToServer;
     private World world;
-    private MovePrecommitter committer;
+    private MovePrecommitter movePrecommitter;
 
     /**
      *
@@ -60,7 +60,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * @return
      */
     protected final MoveChainFork getMoveFork() {
-        return moveFork;
+        return moveChainFork;
     }
 
     /**
@@ -127,7 +127,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
     public final void setGameModel(World world) {
         this.world = world;
-        committer = new MovePrecommitter(this.world);
+        movePrecommitter = new MovePrecommitter(this.world);
         newWorld(this.world);
     }
 
@@ -202,18 +202,18 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             connectionToServer.writeToServer(status);
         } else if (message instanceof Move) {
             Move move = (Move) message;
-            committer.fromServer(move);
-            moveFork.process(move);
+            movePrecommitter.fromServer(move);
+            moveChainFork.process(move);
         } else if (message instanceof MoveStatus) {
             MoveStatus moveStatus = (MoveStatus) message;
-            committer.fromServer(moveStatus);
+            movePrecommitter.fromServer(moveStatus);
         } else if (message instanceof MoveGenerator) {
             MoveGenerator moveGenerator = (MoveGenerator) message;
-            Move move = committer.fromServer(moveGenerator);
-            moveFork.process(move);
+            Move move = movePrecommitter.fromServer(moveGenerator);
+            moveChainFork.process(move);
         } else if (message instanceof TryMoveStatus) {
             TryMoveStatus tryMoveStatus = (TryMoveStatus) message;
-            committer.fromServer(tryMoveStatus);
+            movePrecommitter.fromServer(tryMoveStatus);
         } else {
             logger.debug(message.toString());
         }
@@ -230,8 +230,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Sends move to the server.
      */
     public final void process(Move move) {
-        committer.toServer(move);
-        moveFork.process(move);
+        movePrecommitter.toServer(move);
+        moveChainFork.process(move);
         write(move);
     }
 
@@ -253,8 +253,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * @param moveGenerator
      */
     public void processMoveGenerator(MoveGenerator moveGenerator) {
-        Move move = committer.toServer(moveGenerator);
-        moveFork.process(move);
+        Move move = movePrecommitter.toServer(moveGenerator);
+        moveChainFork.process(move);
         write(moveGenerator);
     }
 
@@ -262,6 +262,6 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * @return
      */
     protected long getLastTickTime() {
-        return moveFork.getLastTickTime();
+        return moveChainFork.getLastTickTime();
     }
 }

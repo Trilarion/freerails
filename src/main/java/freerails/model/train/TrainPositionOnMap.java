@@ -283,12 +283,12 @@ public class TrainPositionOnMap implements Serializable {
         int result = 0;
 
         // TODO is there are danger of overflow here?
-        for (int i = 0; i < xpoints.size(); i++) {
-            result = 29 * result + xpoints.get(i);
+        for (Integer xpoint : xpoints) {
+            result = 29 * result + xpoint;
         }
 
-        for (int i = 0; i < ypoints.size(); i++) {
-            result = 29 * result + ypoints.get(i);
+        for (Integer ypoint : ypoints) {
+            result = 29 * result + ypoint;
         }
 
         return result;

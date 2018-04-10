@@ -22,7 +22,7 @@ import freerails.client.ActionRoot;
 import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.map.detail.StationRadiusRenderer;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.terrain.FullTerrainTile;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ import java.awt.event.ActionEvent;
 public class StationTypesPopup extends JPopupMenu {
 
     private static final long serialVersionUID = 3258415040658093364L;
-    private Vector2D tileToBuildStationOn;
+    private Vec2D tileToBuildStationOn;
     private StationRadiusRenderer stationRadiusRenderer;
     private PopupMenuListener popupMenuListener;
     private StationBuildModel stationBuildModel;
@@ -56,7 +56,7 @@ public class StationTypesPopup extends JPopupMenu {
      * @param p
      * @return
      */
-    public boolean canBuiltStationHere(Vector2D p) {
+    public boolean canBuiltStationHere(Vec2D p) {
         stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
         FullTerrainTile tile = (FullTerrainTile) modelRoot.getWorld().getTile(p);
         return tile.hasTrack();
@@ -122,7 +122,7 @@ public class StationTypesPopup extends JPopupMenu {
      * @param y
      * @param tile
      */
-    public void showMenu(Component invoker, int x, int y, Vector2D tile) {
+    public void showMenu(Component invoker, int x, int y, Vec2D tile) {
         tileToBuildStationOn = tile;
 
         super.show(invoker, x, y);

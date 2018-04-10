@@ -32,8 +32,6 @@ class IpConnection {
 
     private static final String CONNECTION_OPEN = "CONNECTION_OPEN";
     private final Socket socket;
-    private DeflaterOutputStream deflaterOutputStream;
-    private InflaterInputStream inflaterInputStream;
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
 
@@ -55,14 +53,14 @@ class IpConnection {
      */
     synchronized void initialize() throws IOException {
         OutputStream outputStream = socket.getOutputStream();
-        deflaterOutputStream = new DeflaterOutputStream(outputStream, true);
+        DeflaterOutputStream deflaterOutputStream = new DeflaterOutputStream(outputStream, true);
         objectOutputStream = new ObjectOutputStream(deflaterOutputStream);
         objectOutputStream.writeObject(CONNECTION_OPEN);
         objectOutputStream.flush();
 
         InputStream inputStream = socket.getInputStream();
 
-        inflaterInputStream = new InflaterInputStream(inputStream);
+        InflaterInputStream inflaterInputStream = new InflaterInputStream(inputStream);
         objectInputStream = new ObjectInputStream(inflaterInputStream);
 
         try {

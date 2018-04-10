@@ -25,7 +25,7 @@ import freerails.model.finances.TransactionCategory;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 /**
@@ -70,7 +70,7 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testMap() {
-        assertEquals(world.getMapSize(), new Vector2D(50, 50));
+        assertEquals(world.getMapSize(), new Vec2D(50, 50));
     }
 
     /**

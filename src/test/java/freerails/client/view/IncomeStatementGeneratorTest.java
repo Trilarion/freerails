@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.model.finances.IncomeStatementGenerator;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.FullWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
@@ -63,7 +63,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
             CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, i);
 
             if (ct.getCategory() == category) {
-                CargoBatch cb = new CargoBatch(i, Vector2D.ZERO, 0, 0);
+                CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);
                 world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
                         new CargoDeliveryMoneyTransaction(amount, 10, 0, cb, 1));
                 return;

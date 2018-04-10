@@ -24,7 +24,7 @@ import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
 import freerails.savegames.TrackTilesXmlHandlerImpl;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
@@ -65,7 +65,7 @@ public class MapFixtureFactory2 {
      */
     private static World generateWorld() {
 
-        World world = new FullWorld(new Vector2D(50, 50));
+        World world = new FullWorld(new Vec2D(50, 50));
         WagonAndEngineTypesFactory.addTypesToWorld(world);
         MapCreator.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
@@ -96,10 +96,10 @@ public class MapFixtureFactory2 {
             }
         }
         FullTerrainTile tile = FullTerrainTile.getInstance(clearTypeID);
-        Vector2D mapSize = world.getMapSize();
+        Vec2D mapSize = world.getMapSize();
         for (int x = 0; x < mapSize.x; x++) {
             for (int y = 0; y < mapSize.y; y++) {
-                world.setTile(new Vector2D(x, y), tile);
+                world.setTile(new Vec2D(x, y), tile);
             }
         }
 

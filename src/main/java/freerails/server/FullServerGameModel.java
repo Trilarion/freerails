@@ -187,6 +187,7 @@ public class FullServerGameModel implements ServerGameModel {
         }
     }
 
+    // TODO make this part of the constructor
     /**
      * @param moveReceiver
      */

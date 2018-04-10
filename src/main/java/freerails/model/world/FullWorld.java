@@ -64,13 +64,13 @@ public class FullWorld implements World {
      *
      */
     public FullWorld() {
-        this(Vector2D.ZERO);
+        this(Vec2D.ZERO);
     }
 
     /**
      * @param mapSize
      */
-    public FullWorld(Vector2D mapSize) {
+    public FullWorld(Vec2D mapSize) {
         set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         set(WorldItem.EconomicClimate, EconomicClimate.MODERATION);
         setupMap(mapSize);
@@ -158,9 +158,9 @@ public class FullWorld implements World {
      * @param location
      * @return
      */
-    public boolean boundsContain(Vector2D location) {
+    public boolean boundsContain(Vec2D location) {
         // TODO use compareTo instead
-        Vector2D mapSize = getMapSize();
+        Vec2D mapSize = getMapSize();
         return location.x >= 0 && location.x < mapSize.x && location.y >= 0 && location.y < mapSize.y;
     }
 
@@ -206,13 +206,13 @@ public class FullWorld implements World {
             }
 
             // Compare maps
-            Vector2D mapSize = getMapSize();
+            Vec2D mapSize = getMapSize();
             if (!mapSize.equals(other.getMapSize())) {
                 return false;
             }
             for (int x = 0; x < mapSize.x; x++) {
                 for (int y = 0; y < mapSize.y; y++) {
-                    Vector2D p = new Vector2D(x, y);
+                    Vec2D p = new Vec2D(x, y);
                     if (!getTile(p).equals(other.getTile(p))) {
                         return false;
                     }
@@ -265,14 +265,14 @@ public class FullWorld implements World {
         return principal.getWorldIndex();
     }
 
-    public Vector2D getMapSize() {
+    public Vec2D getMapSize() {
         if (map.length == 0) {
-            return Vector2D.ZERO;
+            return Vec2D.ZERO;
         }
         // When the map size is 0*0 we get a
         // java.lang.ArrayIndexOutOfBoundsException: 0
         // if we don't have the check above.
-        return new Vector2D(map.length, map[0].length);
+        return new Vec2D(map.length, map[0].length);
     }
 
     /**
@@ -299,7 +299,7 @@ public class FullWorld implements World {
         return players.get(i);
     }
 
-    public Serializable getTile(Vector2D location) {
+    public Serializable getTile(Vec2D location) {
         return map[location.x][location.y];
     }
 
@@ -427,7 +427,7 @@ public class FullWorld implements World {
         sharedLists.set(key.getId(), index, element);
     }
 
-    public void setTile(Vector2D p, Serializable tile) {
+    public void setTile(Vec2D p, Serializable tile) {
         map[p.x][p.y] = tile;
     }
 
@@ -441,7 +441,7 @@ public class FullWorld implements World {
     /**
      * @param mapSize
      */
-    public void setupMap(Vector2D mapSize) {
+    public void setupMap(Vec2D mapSize) {
         map = new Serializable[mapSize.x][mapSize.y];
 
         for (int x = 0; x < mapSize.x; x++) {

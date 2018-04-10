@@ -26,7 +26,7 @@ import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.model.track.NoTrackException;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
@@ -75,7 +75,7 @@ public class TrainStopsHandler implements Serializable {
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
         List<TileTransition> tileTransitions = new ArrayList<>();
-        Vector2D start = path.getStart();
+        Vec2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
         PositionOnTrack nextPot = PositionOnTrack.createComingFrom(start, firstTileTransition);
 
@@ -107,10 +107,10 @@ public class TrainStopsHandler implements Serializable {
     /**
      * @return
      */
-    public void arrivesAtPoint(Vector2D p) {
+    public void arrivesAtPoint(Vec2D p) {
         TrainAccessor ta = new TrainAccessor(worldDiffs, principal, trainId);
 
-        Vector2D targetPoint = ta.getTargetLocation();
+        Vec2D targetPoint = ta.getTargetLocation();
 
         if (p.equals(targetPoint)) {
             updateTarget();
@@ -136,7 +136,7 @@ public class TrainStopsHandler implements Serializable {
      * @return the number of the station the train is currently at, or -1 if no
      * current station.
      */
-    public int getStationID(Vector2D p) {
+    public int getStationID(Vec2D p) {
         // loop through the station list to check if train is at the same Point2D as a station
         for (int i = 0; i < worldDiffs.size(principal, PlayerKey.Stations); i++) {
             Station tempPoint = (Station) worldDiffs.get(principal, PlayerKey.Stations, i);

@@ -30,10 +30,10 @@ import java.io.Serializable;
  *
  * Mostly used for locations (points) or differences of locations (vectors).
  */
-public final class Vector2D implements Serializable, Comparable<Vector2D> {
+public final class Vec2D implements Serializable, Comparable<Vec2D> {
 
     private static final long serialVersionUID = -3053020239886388576L;
-    public static final Vector2D ZERO = new Vector2D(0, 0);
+    public static final Vec2D ZERO = new Vec2D(0, 0);
     public final int x;
     public final int y;
 
@@ -42,7 +42,7 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
      * @param x
      * @param y
      */
-    public Vector2D(int x, int y) {
+    public Vec2D(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -50,61 +50,131 @@ public final class Vector2D implements Serializable, Comparable<Vector2D> {
     /**
      *
      */
-    public Vector2D() {
+    public Vec2D() {
         this(0,0);
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Vector2D)) return false;
+        if (!(obj instanceof Vec2D)) return false;
 
-        final Vector2D other = (Vector2D) obj;
+        final Vec2D other = (Vec2D) obj;
 
         return x == other.x && y == other.y;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         return x * 29 + y;
     }
 
+    /**
+     *
+     * @return
+     */
     public double norm() {
         return Math.sqrt(x * x + y * y);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
 
-    public static Vector2D add(Vector2D a, Vector2D b) {
-        return new Vector2D(a.x + b.x, a.y + b.y);
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D add(Vec2D a, Vec2D b) {
+        return new Vec2D(a.x + b.x, a.y + b.y);
     }
 
-    public static Vector2D subtract(Vector2D a, Vector2D b) {
-        return new Vector2D(a.x - b.x, a.y - b.y);
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D subtract(Vec2D a, Vec2D b) {
+        return new Vec2D(a.x - b.x, a.y - b.y);
     }
 
-    public static Vector2D multiply(Vector2D a, Vector2D b) {
-        return new Vector2D(a.x * b.x, a.y * b.y);
+    public static Vec2D subtract(Vec2D a, int b) {
+        return new Vec2D(a.x - b, a.y - b);
     }
 
-    public static Vector2D multiply(Vector2D a, int b) {
-        return new Vector2D(a.x * b, a.y * b);
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D multiply(Vec2D a, Vec2D b) {
+        return new Vec2D(a.x * b.x, a.y * b.y);
+    }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D multiply(Vec2D a, int b) {
+        return new Vec2D(a.x * b, a.y * b);
+    }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D divide(Vec2D a, int b) {
+        return new Vec2D(a.x / b, a.y / b);
     }
 
 
-    public int compareTo(Vector2D o) {
+    /**
+     *
+     * @param o
+     * @return
+     */
+    public int compareTo(Vec2D o) {
         if (o.y != y) return y - o.y;
         else return x - o.x;
     }
 
-    public static Point toPoint(Vector2D p) {
+    /**
+     *
+     * @param p
+     * @return
+     */
+    public static Point toPoint(Vec2D p) {
         return new Point(p.x, p.y);
     }
 
-    public static Dimension toDimension(Vector2D p) {
+    /**
+     *
+     * @param p
+     * @return
+     */
+    public static Dimension toDimension(Vec2D p) {
         return new Dimension(p.x, p.y);
     }
 }

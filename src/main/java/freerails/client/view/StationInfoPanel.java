@@ -28,7 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.CargoType;
@@ -161,7 +161,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.previous()) {
-            Vector2D p = ((Station) worldIterator.getElement()).getLocation();
+            Vec2D p = ((Station) worldIterator.getElement()).getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
 
             display();
@@ -174,7 +174,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         // Add your handling code here:
         if (worldIterator.next()) {
-            Vector2D p = ((Station) worldIterator.getElement()).getLocation();
+            Vec2D p = ((Station) worldIterator.getElement()).getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
             display();
         } else {

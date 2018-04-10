@@ -32,7 +32,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-// TODO Why are composite moves not always splitted?
 /**
  * A central point at which a client may register to receive moves which have
  * been committed.

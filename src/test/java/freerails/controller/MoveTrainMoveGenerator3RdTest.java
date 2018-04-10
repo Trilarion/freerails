@@ -29,7 +29,7 @@ import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
@@ -63,7 +63,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         // Build track.
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
 
-        Vector2D stationA = new Vector2D(10, 10);
+        Vec2D stationA = new Vec2D(10, 10);
         MoveStatus moveStatus = trackBuilder.buildTrack(stationA, line1);
         assertTrue(moveStatus.succeeds());
         moveStatus = trackBuilder.buildTrack(stationA, line2);
@@ -76,15 +76,15 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
      *
      */
     public void testFindingPath() {
-        findPath2Target(new Vector2D(14, 7), line1);
-        findPath2Target(new Vector2D(9, 13), line2);
-        findPath2Target(new Vector2D(9, 13), line2);
+        findPath2Target(new Vec2D(14, 7), line1);
+        findPath2Target(new Vec2D(9, 13), line2);
+        findPath2Target(new Vec2D(9, 13), line2);
     }
 
-    private void findPath2Target(Vector2D target1, TileTransition[] expectedPath) {
+    private void findPath2Target(Vec2D target1, TileTransition[] expectedPath) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(target1);
         assertTrue(tile.hasTrack());
-        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vector2D(10, 10), TileTransition.EAST);
+        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vec2D(10, 10), TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
             TileTransition actual = MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target1);

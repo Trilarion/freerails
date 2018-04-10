@@ -23,7 +23,7 @@
  */
 package freerails.client.renderer.map;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 
 import java.awt.*;
@@ -35,16 +35,18 @@ import java.awt.*;
  */
 public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRenderer {
 
-    private final MapLayerRenderer mapView;
+    private final MapLayerRenderer mapLayerRenderer;
 
     /**
-     * @param mv
+     * @param mapLayerRenderer
      */
-    public SquareTileBackgroundRenderer(MapLayerRenderer mv) {
-        mapView = Utils.verifyNotNull(mv);
+    public SquareTileBackgroundRenderer(MapLayerRenderer mapLayerRenderer) {
+        this.mapLayerRenderer = Utils.verifyNotNull(mapLayerRenderer);
     }
 
     /**
+     * The map has changed.
+     *
      * @param x
      * @param y
      * @param width
@@ -55,11 +57,11 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
         // Fix for bug [ 1303162 ]
         // If the buffer hasn't been set yet, don't try and refresh it!
         if (null != super.backgroundBuffer) {
-            Graphics gg = bg.create();
-            gg.setClip(x, y, width, height);
-            gg.translate(-bufferRect.x, -bufferRect.y);
-            mapView.paintRect(gg, bufferRect);
-            gg.dispose();
+            Graphics graphics = bg.create();
+            graphics.setClip(x, y, width, height);
+            graphics.translate(-bufferRect.x, -bufferRect.y);
+            mapLayerRenderer.paintRect(graphics, bufferRect);
+            graphics.dispose();
         }
     }
 
@@ -67,22 +69,21 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
      * @param g
      * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
-        mapView.paintTile(g, tileLocation);
+    public void paintTile(Graphics g, Vec2D tileLocation) {
+        mapLayerRenderer.paintTile(g, tileLocation);
     }
 
     /**
-     * @param x
-     * @param y
+     * @param tileLocation
      */
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(Vec2D tileLocation) {
         // The backgroundBuffer gets created on the first call to
         // backgroundBuffer.paintRect(..)
         // so we need a check here to avoid a null pointer exception.
         if (null != super.backgroundBuffer) {
             Graphics gg = bg.create();
             gg.translate(-bufferRect.x, -bufferRect.y);
-            mapView.paintTile(gg, tileLocation);
+            mapLayerRenderer.paintTile(gg, tileLocation);
             gg.dispose();
         }
     }

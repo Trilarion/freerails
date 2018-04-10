@@ -34,7 +34,7 @@
 package freerails.client.renderer.map.overview;
 
 import freerails.client.renderer.map.MapRenderer;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.terrain.FullTerrainTile;
@@ -50,12 +50,9 @@ import java.awt.image.BufferedImage;
  */
 public class OverviewMapRenderer implements MapRenderer {
 
-    // TODO convert to Vector2D
-    private final int imageWidth;
-    private final int imageHeight;
-    private final Vector2D mapSize;
-    private final int mapX;
-    private final int mapY;
+    private final Vec2D imageSize;
+    private final Vec2D mapSize;
+    private final Vec2D mapLocation;
     private final ReadOnlyWorld world;
     private final AffineTransform affineTransform;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
@@ -63,16 +60,14 @@ public class OverviewMapRenderer implements MapRenderer {
     private BufferedImage mapImage;
     private boolean isDirty = true;
 
-    private OverviewMapRenderer(ReadOnlyWorld world, int width, int height, int mapX, int mapY, Vector2D mapSize) {
+    private OverviewMapRenderer(ReadOnlyWorld world, Vec2D imageSize, Vec2D mapLocation, Vec2D mapSize) {
         this.world = world;
         this.mapSize = mapSize;
-        imageHeight = height;
-        imageWidth = width;
+        this.imageSize = imageSize;
 
-        double scalingFactor = ((double) imageHeight) / mapSize.y;
+        double scalingFactor = ((double) imageSize.y) / mapSize.y;
         affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
-        this.mapX = mapX;
-        this.mapY = mapY;
+        this.mapLocation = mapLocation;
         refresh();
     }
 
@@ -83,7 +78,7 @@ public class OverviewMapRenderer implements MapRenderer {
      */
     public static MapRenderer getInstance(ReadOnlyWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
-        Vector2D mapSize = world.getMapSize();
+        Vec2D mapSize = world.getMapSize();
         double worldWidth = mapSize.x;
         double worldHeight = mapSize.y;
         double scale;
@@ -97,14 +92,14 @@ public class OverviewMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new OverviewMapRenderer(world, (int) width, (int) height, 0, 0, mapSize);
+        return new OverviewMapRenderer(world, new Vec2D((int) width, (int) height), Vec2D.ZERO, mapSize);
     }
 
     /**
      * @return
      */
     public float getScale() {
-        return (float) imageHeight / (float) mapSize.y;
+        return (float) imageSize.y / (float) mapSize.y;
     }
 
     /**
@@ -123,14 +118,14 @@ public class OverviewMapRenderer implements MapRenderer {
 
             mapGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-            mapGraphics.setClip(0, 0, imageWidth, imageHeight);
-            mapGraphics.clearRect(0, 0, imageWidth, imageHeight);
+            mapGraphics.setClip(0, 0, imageSize.x, imageSize.y);
+            mapGraphics.clearRect(0, 0, imageSize.x, imageSize.y);
             mapGraphics.drawImage(oneToOneImage, affineTransform, null);
             isDirty = false;
         }
     }
 
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(Vec2D tileLocation) {
         FullTerrainTile tt = (FullTerrainTile) world.getTile(tileLocation);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
@@ -160,25 +155,22 @@ public class OverviewMapRenderer implements MapRenderer {
             oneToOneImage.flush();
         }
 
-        // if (mapGraphics != null) {
-        // mapGraphics.dispose();
-        // }
         // generate a 1:1 map of the terrain layer
         oneToOneImage = defaultConfiguration.createCompatibleImage(mapSize.x, mapSize.y, Transparency.TRANSLUCENT);
-        mapImage = defaultConfiguration.createCompatibleImage(imageWidth, imageHeight, Transparency.OPAQUE);
+        mapImage = defaultConfiguration.createCompatibleImage(imageSize.x, imageSize.y, Transparency.OPAQUE);
 
 
-        for (int tileX = mapX; tileX < mapSize.x + mapX; tileX++) {
-            for (int tileY = mapY; tileY < mapSize.y + mapY; tileY++) {
-                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vector2D(tileX, tileY));
+        for (int tileX = mapLocation.x; tileX < mapSize.x + mapLocation.x; tileX++) {
+            for (int tileY = mapLocation.y; tileY < mapSize.y + mapLocation.y; tileY++) {
+                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vec2D(tileX, tileY));
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
                     int typeNumber = tt.getTerrainTypeID();
                     TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, typeNumber);
-                    oneToOneImage.setRGB(tileX - mapX, tileY - mapY, terrainType.getRGB());
+                    oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, terrainType.getRGB());
                 } else {
                     // black with alpha of 1
-                    oneToOneImage.setRGB(tileX - mapX, tileY - mapY, 0xff000000);
+                    oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, 0xff000000);
                 }
             }
         }
@@ -189,15 +181,15 @@ public class OverviewMapRenderer implements MapRenderer {
     /**
      * @return
      */
-    public Vector2D getMapSizeInPixels() {
-        return new Vector2D(imageWidth, imageHeight);
+    public Vec2D getMapSizeInPixels() {
+        return imageSize;
     }
 
     /**
      * @param g
      * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, Vec2D tileLocation) {
         g.drawImage(mapImage, 0, 0, null);
     }
 

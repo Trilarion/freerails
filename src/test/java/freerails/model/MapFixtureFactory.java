@@ -19,7 +19,7 @@
 package freerails.model;
 
 import freerails.model.world.SharedKey;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoType;
 import freerails.model.player.FreerailsPrincipal;
@@ -58,7 +58,7 @@ public class MapFixtureFactory {
      * @param mapSize
      * @return
      */
-    public static World getWorld(Vector2D mapSize) {
+    public static World getWorld(Vec2D mapSize) {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
         World world = new FullWorld(mapSize);
         generateTerrainTypesList(world);
@@ -66,7 +66,7 @@ public class MapFixtureFactory {
 
         for (int x = 0; x < mapSize.x; x++) {
             for (int y = 0; y < mapSize.y; y++) {
-                world.setTile(new Vector2D(x, y), tile);
+                world.setTile(new Vec2D(x, y), tile);
             }
         }
 

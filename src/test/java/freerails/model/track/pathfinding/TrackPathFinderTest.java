@@ -22,7 +22,7 @@
 package freerails.model.track.pathfinding;
 
 import freerails.model.track.BuildTrackStrategy;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.FullWorld;
 import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
@@ -46,7 +46,7 @@ public class TrackPathFinderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vector2D(20, 20));
+        world = new FullWorld(new Vec2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
@@ -60,13 +60,13 @@ public class TrackPathFinderTest extends TestCase {
             BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
             TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer.getPrincipal());
-            List l = pathFinder.generatePath(Vector2D.ZERO, new Vector2D(0,5), buildTrackStrategy);
+            List l = pathFinder.generatePath(Vec2D.ZERO, new Vec2D(0,5), buildTrackStrategy);
             assertEquals(5, l.size());
 
-            List list2 = pathFinder.generatePath(new Vector2D(5, 5),new Vector2D(5, 10), buildTrackStrategy);
+            List list2 = pathFinder.generatePath(new Vec2D(5, 5),new Vec2D(5, 10), buildTrackStrategy);
             assertEquals(5, list2.size());
 
-            list2 = pathFinder.generatePath(new Vector2D(5, 10), new Vector2D(5,5), buildTrackStrategy);
+            list2 = pathFinder.generatePath(new Vec2D(5, 10), new Vec2D(5,5), buildTrackStrategy);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
             fail();

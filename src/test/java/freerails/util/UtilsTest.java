@@ -35,9 +35,9 @@ public class UtilsTest extends TestCase {
      */
     public void testEqualsBySerialization() {
 
-        Serializable a = new Vector2D(10, 10);
-        Serializable b = new Vector2D(10, 10);
-        Serializable c = new Vector2D(30, 10);
+        Serializable a = new Vec2D(10, 10);
+        Serializable b = new Vec2D(10, 10);
+        Serializable c = new Vec2D(30, 10);
 
         assertTrue(Utils.equalsBySerialization(a, b));
         assertTrue(Utils.equalsBySerialization(a, a));

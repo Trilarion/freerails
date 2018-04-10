@@ -22,12 +22,11 @@
 package freerails.client.renderer.tile;
 
 import freerails.util.BinaryNumberFormatter;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -35,6 +34,7 @@ import java.io.IOException;
  */
 public class RiverStyleTileRenderer extends AbstractTileRenderer {
 
+    // TODO use Vector2D instead (see ForestStyleTileRenderer)
     private static final int[] Y_LOOK_AT = {0, 1, 0, -1};
     private static final int[] X_LOOK_AT = {-1, 0, 1, 0};
 
@@ -57,12 +57,12 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
      * TODO optimize cache
      */
     @Override
-    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world) {
         int iconNumber = 0;
 
         for (int i = 0; i < 4; i++) {
             iconNumber = iconNumber << 1;
-            iconNumber = iconNumber | checkTile(Vector2D.add(mapLocation, new Vector2D(X_LOOK_AT[i], Y_LOOK_AT[i])), world);
+            iconNumber = iconNumber | checkTile(Vec2D.add(mapLocation, new Vec2D(X_LOOK_AT[i], Y_LOOK_AT[i])), world);
         }
 
         return iconNumber;

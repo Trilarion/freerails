@@ -27,7 +27,7 @@ import freerails.client.renderer.track.TrackLayerRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldConstants;
 import org.apache.log4j.Logger;
@@ -52,7 +52,6 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * The track layer.
      */
     private final TrackLayerRenderer trackLayer;
-    private final Vector2D mapSize;
     private final Painter cityNames;
     private final Painter stationNames;
 
@@ -70,7 +69,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     public MapBackgroundRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trackLayer = new TrackLayerRenderer(world, rendererRoot);
         terrainLayer = new TerrainLayerRenderer(world, rendererRoot);
-        mapSize = world.getMapSize();
+        Vec2D mapSize = world.getMapSize();
         cityNames = new CityNamesRenderer(world);
         stationNames = new StationNamesRenderer(world, modelRoot);
     }
@@ -79,7 +78,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param g
      * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, Vec2D tileLocation) {
         terrainLayer.paintTile(g, tileLocation);
         trackLayer.paintTile(g, tileLocation);
         cityNames.paint((Graphics2D) g, null);
@@ -87,6 +86,8 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     }
 
     /**
+     * A portion of the map has changed, redraw the map.
+     *
      * @param g
      * @param visibleRect
      */
@@ -102,18 +103,16 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
         int height = (clipRectangle.height) / tileHeight + 2;
 
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
-        trackLayer.paintRectangleOfTiles(g, new Vector2D(x, y), width, height);
+        trackLayer.paintRectangleOfTiles(g, new Vec2D(x, y), width, height);
         Rectangle visibleRectangle = new Rectangle(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, width * WorldConstants.TILE_SIZE, height * WorldConstants.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
-        //cityNames.paint((Graphics2D) g, visibleRect);
-        //UstationNames.paint((Graphics2D) g, visibleRect);
     }
 
     /**
      * @param tileLocation
      */
-    public void refreshTile(Vector2D tileLocation) {}
+    public void refreshTile(Vec2D tileLocation) {}
 
     /**
      *

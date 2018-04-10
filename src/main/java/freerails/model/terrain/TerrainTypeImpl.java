@@ -18,7 +18,6 @@
 
 package freerails.model.terrain;
 
-import freerails.util.ImmutableList;
 import freerails.model.finances.Money;
 import freerails.util.Utils;
 

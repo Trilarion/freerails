@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.model.world.WorldItem;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.*;
 import freerails.model.game.GameCalendar;
@@ -274,7 +274,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      */
     protected void setupWorld() {
-        this.world = new FullWorld(new Vector2D(10, 10));
+        this.world = new FullWorld(new Vec2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
@@ -286,7 +286,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertTrackHere(int x, int y) {
 
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(x, y));
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
         assertTrue(tile.hasTrack());
     }
 
@@ -294,7 +294,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * @param path
      */
     protected void assertTrackHere(PathOnTiles path) {
-        Vector2D start = path.getStart();
+        Vec2D start = path.getStart();
         int x = start.x;
         int y = start.y;
         for (int i = 0; i < path.steps(); i++) {

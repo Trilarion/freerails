@@ -294,7 +294,7 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      */
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new ListIterator<E>() {
+        return new ListIterator<>() {
 
             private int idx = index;
 
@@ -367,7 +367,7 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      */
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<E>() {
+        return new Iterator<>() {
 
             private int index = 0;
 

@@ -26,7 +26,7 @@ import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameRules;
@@ -67,7 +67,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param principal
      * @return
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vector2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, ReadOnlyWorld world, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a;
         ChangeTrackPieceMove b;
         a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, world, principal);
@@ -84,7 +84,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @return
      * @throws Exception
      */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vector2D from, TileTransition direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
         TrackMove a;
         TrackMove b;
 
@@ -95,7 +95,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, TrackRule trackRule, ReadOnlyWorld world, FreerailsPrincipal principal) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackRule trackRule, ReadOnlyWorld world, FreerailsPrincipal principal) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -119,7 +119,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vector2D p, TrackConfigurations direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 

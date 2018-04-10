@@ -228,17 +228,7 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     public boolean validate(ReadOnlyWorld world) {
-        boolean okSoFar = true;
-
-        if (!tileRendererList.validate(world)) {
-            okSoFar = false;
-        }
-
-        if (!trackPieceViewList.validate(world)) {
-            okSoFar = false;
-        }
-
-        return okSoFar;
+        return tileRendererList.validate(world) && trackPieceViewList.validate(world);
     }
 
     /**

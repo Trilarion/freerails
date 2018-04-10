@@ -28,7 +28,7 @@ import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.ActivityIterator;
 import freerails.model.world.FullWorldDiffs;
 import freerails.model.world.PlayerKey;
@@ -84,7 +84,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      *
      * @throws NoTrackException if no track
      */
-    public static TileTransition findNextStep(ReadOnlyWorld world, PositionOnTrack currentPosition, Vector2D target) {
+    public static TileTransition findNextStep(ReadOnlyWorld world, PositionOnTrack currentPosition, Vec2D target) {
         int startPos = PositionOnTrack.toInt(currentPosition.getLocation());
         int endPos = PositionOnTrack.toInt(target);
         HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
@@ -170,7 +170,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return hasFinishedLastActivity;
     }
 
-    private Vector2D currentTrainTarget(ReadOnlyWorld world) {
+    private Vec2D currentTrainTarget(ReadOnlyWorld world) {
         TrainAccessor ta = new TrainAccessor(world, principal, trainID);
         return ta.getTargetLocation();
     }
@@ -212,7 +212,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, principal, new FullWorldDiffs(world));
                 ta.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack positionOnTrack = tm.getFinalPosition();
-                Vector2D p = positionOnTrack.getLocation();
+                Vec2D p = positionOnTrack.getLocation();
                 boolean atStation = stopsHandler.getStationID(p) >= 0;
 
                 TrainMotion nextMotion;
@@ -286,8 +286,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getLocation());
 
         // Check whether the desired track section is single or double track.
-        Vector2D tileA = desiredTrackSection.tileA();
-        Vector2D tileB = desiredTrackSection.tileB();
+        Vec2D tileA = desiredTrackSection.tileA();
+        Vec2D tileB = desiredTrackSection.tileB();
         FullTerrainTile fta = (FullTerrainTile) world.getTile(tileA);
         FullTerrainTile ftb = (FullTerrainTile) world.getTile(tileB);
         TrackPiece tpa = fta.getTrackPiece();
@@ -351,7 +351,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrainMotion currentMotion = lastMotion(world);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
-        Vector2D targetPoint = currentTrainTarget(world);
+        Vec2D targetPoint = currentTrainTarget(world);
         return findNextStep(world, currentPosition, targetPoint);
     }
 

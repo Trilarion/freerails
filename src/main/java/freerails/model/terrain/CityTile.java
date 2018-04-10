@@ -1,16 +1,16 @@
 package freerails.model.terrain;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 /**
  * Stores a tile type and its location.
  */
 public class CityTile {
 
-    public final Vector2D location;
+    public final Vec2D location;
     public final TerrainType terrainType;
 
-    public CityTile(Vector2D location, TerrainType terrainType) {
+    public CityTile(Vec2D location, TerrainType terrainType) {
         this.location = location;
         this.terrainType = terrainType;
     }

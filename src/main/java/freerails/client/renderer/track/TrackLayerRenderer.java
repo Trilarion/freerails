@@ -7,7 +7,7 @@ import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackPiece;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import java.awt.*;
 
@@ -18,7 +18,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
 
     private final ReadOnlyWorld world;
     private final RendererRoot rendererRoot;
-    private final Vector2D mapSize;
+    private final Vec2D mapSize;
 
     /**
      * @param world
@@ -47,7 +47,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
         for (int tileX = tilesToPaint.x - 1; tileX < (tilesToPaint.x + tilesToPaint.width + 1); tileX++) {
             for (int tileY = tilesToPaint.y - 1; tileY < (tilesToPaint.y + tilesToPaint.height + 1); tileY++) {
                 if ((tileX >= 0) && (tileX < mapSize.x) && (tileY >= 0) && (tileY < mapSize.y)) {
-                    Vector2D tileLocation = new Vector2D(tileX, tileY);
+                    Vec2D tileLocation = new Vec2D(tileX, tileY);
                     FullTerrainTile fullTerrainTile = (FullTerrainTile) world.getTile(tileLocation);
                     TrackPiece trackPiece = fullTerrainTile.getTrackPiece();
                     int graphicsNumber = trackPiece.getTrackGraphicID();
@@ -66,7 +66,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param g
      * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, Vec2D tileLocation) {
         /*
          * Since track tiles overlap the adjacent terrain tiles, we create a
          * temporary Graphics object that only lets us draw on the selected
@@ -75,14 +75,14 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
         paintRectangleOfTiles(g, new Rectangle(tileLocation.x, tileLocation.y, 1, 1));
     }
 
-    public void paintRectangleOfTiles(Graphics g, Vector2D p, int width, int height) {
+    public void paintRectangleOfTiles(Graphics g, Vec2D p, int width, int height) {
         paintRectangleOfTiles(g, new Rectangle(p.x, p.y, width, height));
     }
 
     /**
      * @param tileLocation
      */
-    public void refreshTile(Vector2D tileLocation) {}
+    public void refreshTile(Vec2D tileLocation) {}
 
     /**
      * @param g

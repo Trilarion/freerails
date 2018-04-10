@@ -28,7 +28,7 @@ import freerails.model.MapFixtureFactory2;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
@@ -86,20 +86,20 @@ public class BuildTrackControllerTest extends TestCase {
      *
      */
     public void testBuildTrack() {
-        Vector2D from = new Vector2D(10, 10);
+        Vec2D from = new Vec2D(10, 10);
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
-        Vector2D to = new Vector2D(20, 10);
+        Vec2D to = new Vec2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
         buildTrackController.updateUntilComplete();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         // See if any track has actually been built.
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(10, 10));
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(10, 10));
         assertFalse(tile.hasTrack());
         buildTrackController.updateWorld(trackBuilder);
-        tile = (FullTerrainTile) world.getTile(new Vector2D(10, 10));
+        tile = (FullTerrainTile) world.getTile(new Vec2D(10, 10));
         assertTrue(tile.hasTrack());
-        tile = (FullTerrainTile) world.getTile(new Vector2D(20, 10));
+        tile = (FullTerrainTile) world.getTile(new Vec2D(20, 10));
         assertTrue(tile.hasTrack());
     }
 
@@ -117,23 +117,23 @@ public class BuildTrackControllerTest extends TestCase {
         trackBuilder.setTrackBuilderMode(BuildMode.UPGRADE_TRACK);
 
         // Upgrade part of the track.
-        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new Vector2D(15, 10));
-        buildTrackController.setProposedTrack(new Vector2D(20, 10), trackBuilder);
+        modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, new Vec2D(15, 10));
+        buildTrackController.setProposedTrack(new Vec2D(20, 10), trackBuilder);
         buildTrackController.updateUntilComplete();
         assertTrue(buildTrackController.isBuildTrackSuccessful());
 
         buildTrackController.updateWorld(trackBuilder);
 
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(10, 10));
+        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(10, 10));
         assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) world.getTile(new Vector2D(15, 10));
+        tile = (FullTerrainTile) world.getTile(new Vec2D(15, 10));
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) world.getTile(new Vector2D(17, 10));
+        tile = (FullTerrainTile) world.getTile(new Vec2D(17, 10));
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
 
-        tile = (FullTerrainTile) world.getTile(new Vector2D(20, 10));
+        tile = (FullTerrainTile) world.getTile(new Vec2D(20, 10));
         assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
     }
 
@@ -146,10 +146,10 @@ public class BuildTrackControllerTest extends TestCase {
 
         // Then remove some of it.
         trackBuilder.setTrackBuilderMode(BuildMode.REMOVE_TRACK);
-        Vector2D from = new Vector2D(15, 10);
+        Vec2D from = new Vec2D(15, 10);
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, from);
 
-        Vector2D to = new Vector2D(20, 10);
+        Vec2D to = new Vec2D(20, 10);
         buildTrackController.setProposedTrack(to, trackBuilder);
 
         buildTrackController.updateUntilComplete();

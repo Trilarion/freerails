@@ -28,7 +28,7 @@ import freerails.network.command.ServerCommandReceiver;
 import freerails.move.receiver.MoveChainFork;
 import freerails.move.receiver.MoveReceiver;
 import freerails.move.receiver.UntriedMoveReceiver;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldListListener;
@@ -56,7 +56,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      *
      */
     public ModelRootImpl() {
-        properties.put(ModelRootProperty.CURSOR_POSITION, new Vector2D());
+        properties.put(ModelRootProperty.CURSOR_POSITION, new Vec2D());
         properties.put(ModelRootProperty.SHOW_STATION_NAMES, Boolean.TRUE);
         properties.put(ModelRootProperty.SHOW_CARGO_AT_STATIONS, Boolean.TRUE);
         properties.put(ModelRootProperty.SHOW_STATION_BORDERS, Boolean.TRUE);
@@ -68,12 +68,9 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
         properties.put(ModelRootProperty.TIME, 0.0d);
         properties.put(ModelRootProperty.TRACK_BUILDER_MODE, BuildMode.BUILD_TRACK);
         properties.put(ModelRootProperty.SAVED_GAMES_LIST, Collections.emptyList());
-        addPropertyChangeListener(new ModelRootListener() {
-            @Override
-            public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
-                if (modelRootProperty == ModelRootProperty.PLAY_SOUNDS) {
-                    SoundManager.getInstance().setPlayingSounds((Boolean) newValue);
-                }
+        addPropertyChangeListener((modelRootProperty, oldValue, newValue) -> {
+            if (modelRootProperty == ModelRootProperty.PLAY_SOUNDS) {
+                SoundManager.getInstance().setPlayingSounds((Boolean) newValue);
             }
         });
     }

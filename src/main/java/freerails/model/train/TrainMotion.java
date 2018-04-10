@@ -23,7 +23,7 @@ package freerails.model.train;
 
 import freerails.model.WorldConstants;
 import freerails.util.Pair;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
@@ -245,7 +245,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             tileTransitions.add(path.getStep(i));
         }
 
-        Vector2D p = path.getStart();
+        Vec2D p = path.getStart();
         int x = p.x;
         int y = p.y;
         for (int i = 0; i < stepsBeforeStart; i++) {
@@ -254,7 +254,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             y += tileTransition.deltaY;
         }
 
-        Vector2D startPoint = new Vector2D(x, y);
+        Vec2D startPoint = new Vec2D(x, y);
 
         return new PathOnTiles(startPoint, tileTransitions);
     }

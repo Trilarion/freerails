@@ -231,8 +231,8 @@ public final class Utils {
      */
     public static int sumOfIntegerImmutableList(ImmutableList<Integer> list) {
         int sum = 0;
-        for (int i = 0; i < list.size(); i++) {
-            sum += list.get(i);
+        for (Integer value : list) {
+            sum += value;
         }
         return sum;
     }

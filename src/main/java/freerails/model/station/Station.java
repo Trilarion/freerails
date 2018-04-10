@@ -19,7 +19,7 @@
 package freerails.model.station;
 
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 public class Station implements Serializable {
 
     private static final long serialVersionUID = 3256442503979874355L;
-    public final Vector2D location;
+    public final Vec2D location;
     private final String name;
     private final StationSupply supply;
     private final StationDemand demandForCargo;
@@ -70,7 +70,7 @@ public class Station implements Serializable {
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
      */
-    public Station(Vector2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(Vec2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
         name = stationName;
         this.location = location;
         this.cargoBundleNumber = cargoBundleNumber;
@@ -90,7 +90,7 @@ public class Station implements Serializable {
      */
     public Station() {
         name = "No name";
-        location = Vector2D.ZERO;
+        location = Vec2D.ZERO;
         demandForCargo = new StationDemand(new boolean[0]);
         supply = new StationSupply(new Integer[0]);
         cargoConversion = new StationCargoConversion(new Integer[0]);
@@ -147,7 +147,7 @@ public class Station implements Serializable {
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(ReadOnlyWorld world, FreerailsPrincipal principal, Vector2D location) {
+    public static int getStationNumberAtLocation(ReadOnlyWorld world, FreerailsPrincipal principal, Vec2D location) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
@@ -211,7 +211,7 @@ public class Station implements Serializable {
     /**
      * @return
      */
-    public Vector2D getLocation() {
+    public Vec2D getLocation() {
         return location;
     }
 

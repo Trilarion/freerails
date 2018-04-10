@@ -24,7 +24,7 @@ package freerails.move.mapupdatemove;
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.WorldDiffMoveCause;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.*;
 import freerails.model.finances.ItemTransaction;
@@ -41,8 +41,8 @@ import junit.framework.TestCase;
  */
 public class WorldDiffsMoveTest extends TestCase {
 
-    private final City city1 = new City("City 1", new Vector2D(8, 4));
-    private final City city2 = new City("City 2", new Vector2D(9, 4));
+    private final City city1 = new City("City 1", new Vec2D(8, 4));
+    private final City city2 = new City("City 2", new Vec2D(9, 4));
     private World world;
     private FullWorldDiffs diffs;
     private FreerailsPrincipal fp1;
@@ -53,7 +53,7 @@ public class WorldDiffsMoveTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vector2D(10, 10));
+        world = new FullWorld(new Vec2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
@@ -66,8 +66,8 @@ public class WorldDiffsMoveTest extends TestCase {
      */
     public void testChangingMap() {
 
-        diffs.setTile(new Vector2D(4, 0), city1);
-        diffs.setTile(new Vector2D(8, 5), city2);
+        diffs.setTile(new Vec2D(4, 0), city1);
+        diffs.setTile(new Vec2D(8, 5), city2);
 
         runTests();
     }

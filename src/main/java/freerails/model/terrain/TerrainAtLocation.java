@@ -18,21 +18,21 @@
 
 package freerails.model.terrain;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 /**
  * Stores a location and terrain type.
  */
 public class TerrainAtLocation {
 
-    private final Vector2D location;
+    private final Vec2D location;
     private final int terrainType;
 
     /**
      * @param location
      * @param terrainType
      */
-    public TerrainAtLocation(Vector2D location, int terrainType) {
+    public TerrainAtLocation(Vec2D location, int terrainType) {
         this.location = location;
         this.terrainType = terrainType;
     }
@@ -40,7 +40,7 @@ public class TerrainAtLocation {
     /**
      * @return
      */
-    public Vector2D getLocation() {
+    public Vec2D getLocation() {
         return location;
     }
 

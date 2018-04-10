@@ -23,7 +23,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.controller.BuildMode;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -42,7 +42,7 @@ public class FreerailsCursor {
     /**
      * The location of the cursor last time paintCursor(.) was called.
      */
-    private Vector2D lastCursorPosition = new Vector2D();
+    private Vec2D lastCursorPosition = new Vec2D();
 
     /**
      * The time in ms the cursor arrived at its current position.
@@ -73,7 +73,7 @@ public class FreerailsCursor {
 
         BuildMode buildMode = (BuildMode) modelRoot.getProperty(ModelRootProperty.TRACK_BUILDER_MODE);
 
-        Vector2D cursorMapPosition = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+        Vec2D cursorMapPosition = (Vec2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
 
         // Has the cursor moved since we last painted it?
         if (!cursorMapPosition.equals(lastCursorPosition)) {
@@ -128,7 +128,7 @@ public class FreerailsCursor {
         }
 
         // Draw a big white dot at the target point.
-        Vector2D targetPoint = (Vector2D) modelRoot.getProperty(ModelRootProperty.THINKING_POINT);
+        Vec2D targetPoint = (Vec2D) modelRoot.getProperty(ModelRootProperty.THINKING_POINT);
         if (null != targetPoint) {
             time = System.currentTimeMillis();
             int dotSize;

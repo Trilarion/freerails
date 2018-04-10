@@ -18,7 +18,7 @@
 
 package freerails.savegames;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.City;
@@ -84,7 +84,7 @@ public class CityXmlParser extends DefaultHandler {
                     y = Integer.parseInt(attributes.getValue(i));
 
                     // TODO is it clear that y always comes last?
-                    City city = new City(cityName, new Vector2D(x, y));
+                    City city = new City(cityName, new Vec2D(x, y));
                     cities.add(city);
                 }
             }

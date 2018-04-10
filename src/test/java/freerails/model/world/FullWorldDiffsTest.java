@@ -18,7 +18,7 @@
 
 package freerails.model.world;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.ListKey;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoType;
@@ -43,7 +43,7 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testSharedLists() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         CargoType mailCT = new CargoType(10, "Mail", CargoCategory.Mail);
         CargoType passengersCT = new CargoType(10, "Passengers", CargoCategory.Passengers);
         underlyingWorld.add(SharedKey.CargoTypes, mailCT);
@@ -76,7 +76,7 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testPlayers() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         underlyingWorld.addPlayer(player0);
 
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
@@ -102,7 +102,7 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testNonSharedLists() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         underlyingWorld.addPlayer(player0);
 
         Station station0 = new Station();
@@ -161,7 +161,7 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testUsingNullElements() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         underlyingWorld.addPlayer(player0);
         Station station0 = new Station();
         Station station1 = null;
@@ -180,7 +180,7 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testItem() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         Station station0 = new Station();
         Station station1 = new Station();
         underlyingWorld.set(WorldItem.GameRules, station0); // why not!
@@ -195,27 +195,27 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testMap() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(21, 8));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(21, 8));
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
-        assertEquals(worldDiff.getMapSize(), new Vector2D(21, 8));
+        assertEquals(worldDiff.getMapSize(), new Vec2D(21, 8));
 
-        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(new Vector2D(2, 2));
+        FullTerrainTile tile = (FullTerrainTile) underlyingWorld.getTile(new Vec2D(2, 2));
         assertNotNull(tile);
-        assertEquals(tile, worldDiff.getTile(new Vector2D(2, 2)));
+        assertEquals(tile, worldDiff.getTile(new Vec2D(2, 2)));
 
         FullTerrainTile newTile = FullTerrainTile.getInstance(999);
-        worldDiff.setTile(new Vector2D(3, 5), newTile);
-        assertEquals(newTile, worldDiff.getTile(new Vector2D(3, 5)));
+        worldDiff.setTile(new Vec2D(3, 5), newTile);
+        assertEquals(newTile, worldDiff.getTile(new Vec2D(3, 5)));
 
-        Iterator<Vector2D> it = worldDiff.getMapDiffs();
-        assertEquals(new Vector2D(3, 5), it.next());
+        Iterator<Vec2D> it = worldDiff.getMapDiffs();
+        assertEquals(new Vec2D(3, 5), it.next());
     }
 
     /**
      *
      */
     public void testAccount() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         underlyingWorld.addPlayer(player0);
 
         FullWorldDiffs worldDiff = new FullWorldDiffs(underlyingWorld);
@@ -227,7 +227,7 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testEquals() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         underlyingWorld.addPlayer(player0);
         FullWorldDiffs a = new FullWorldDiffs(underlyingWorld);
         FullWorldDiffs b = new FullWorldDiffs(underlyingWorld);
@@ -241,10 +241,10 @@ public class FullWorldDiffsTest extends TestCase {
      *
      */
     public void testGetListDiffs() {
-        FullWorld underlyingWorld = new FullWorld(new Vector2D(10, 10));
+        FullWorld underlyingWorld = new FullWorld(new Vec2D(10, 10));
         underlyingWorld.addPlayer(player0);
         FullWorldDiffs diffs = new FullWorldDiffs(underlyingWorld);
-        City city = new City("Bristol", new Vector2D(10, 4));
+        City city = new City("Bristol", new Vec2D(10, 4));
         diffs.add(SharedKey.Cities, city);
 
         Iterator<ListKey> it = diffs.getListDiffs();

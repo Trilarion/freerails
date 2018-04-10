@@ -18,7 +18,7 @@
 
 package freerails.model.track;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 
 import java.io.Serializable;
@@ -30,14 +30,14 @@ public class TrackSection implements Serializable {
 
     private static final long serialVersionUID = -3776624056097990938L;
     private final TileTransition tileTransition;
-    private final Vector2D tile;
+    private final Vec2D tile;
 
     /**
      * @param tileTransition
      * @param tile
      */
-    public TrackSection(final TileTransition tileTransition, final Vector2D tile) {
-        Vector2D otherTile = TileTransition.move(tile, tileTransition);
+    public TrackSection(final TileTransition tileTransition, final Vec2D tile) {
+        Vec2D otherTile = TileTransition.move(tile, tileTransition);
         if (tile.compareTo(otherTile) > 0) {
             this.tileTransition = tileTransition.getOpposite();
             this.tile = otherTile;
@@ -78,14 +78,14 @@ public class TrackSection implements Serializable {
     /**
      * @return
      */
-    public Vector2D tileA() {
+    public Vec2D tileA() {
         return tile;
     }
 
     /**
      * @return
      */
-    public Vector2D tileB() {
+    public Vec2D tileB() {
         return TileTransition.move(tile, tileTransition);
     }
 

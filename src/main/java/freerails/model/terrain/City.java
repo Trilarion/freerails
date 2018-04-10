@@ -18,7 +18,7 @@
 
 package freerails.model.terrain;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import java.io.Serializable;
 
@@ -32,13 +32,13 @@ public class City implements Serializable {
 
     private static final long serialVersionUID = 3256720697500709428L;
     private final String name;
-    private final Vector2D location;
+    private final Vec2D location;
 
     /**
      * @param name
      * @param location
      */
-    public City(String name, Vector2D location) {
+    public City(String name, Vec2D location) {
         this.name = name;
         this.location = location;
     }
@@ -72,7 +72,7 @@ public class City implements Serializable {
      *
      * @return
      */
-    public Vector2D getLocation() {
+    public Vec2D getLocation() {
         return location;
     }
 

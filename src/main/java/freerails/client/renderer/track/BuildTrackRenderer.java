@@ -23,7 +23,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.FullWorldDiffs;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.FullTerrainTile;
@@ -60,8 +60,8 @@ public class BuildTrackRenderer implements Painter {
             worldDiffs = (FullWorldDiffs) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
         }
         if (null != worldDiffs) {
-            for (Iterator<Vector2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
-                Vector2D point = iter.next();
+            for (Iterator<Vec2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
+                Vec2D point = iter.next();
                 FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point);
                 TrackPiece trackPiece = fp.getTrackPiece();
 
@@ -78,18 +78,16 @@ public class BuildTrackRenderer implements Painter {
              * are white if track has been added or upgraded and red if it has
              * been removed.
              */
-            for (Iterator<Vector2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
-                Vector2D p = iter.next();
-                // TODO replace by Vector2D arithmetics
-                int x = p.x * ClientConfig.TILE_SIZE.x + (ClientConfig.TILE_SIZE.x - ClientConfig.SMALL_DOT_WIDTH) / 2;
-                int y = p.y * ClientConfig.TILE_SIZE.y + (ClientConfig.TILE_SIZE.y - ClientConfig.SMALL_DOT_WIDTH) / 2;
+            for (Iterator<Vec2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
+                Vec2D p = iter.next();
+                Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConfig.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConfig.TILE_SIZE, ClientConfig.SMALL_DOT_WIDTH), 2));
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
                 FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p);
 
                 boolean trackRemoved = !after.getTrackPiece().getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
                 Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
                 g.setColor(dotColor);
-                g.fillOval(x, y, ClientConfig.SMALL_DOT_WIDTH, ClientConfig.SMALL_DOT_WIDTH);
+                g.fillOval(location.x, location.y, ClientConfig.SMALL_DOT_WIDTH, ClientConfig.SMALL_DOT_WIDTH);
             }
         }
     }

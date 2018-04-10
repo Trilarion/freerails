@@ -45,7 +45,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      */
     public final Rectangle bufferRect = new Rectangle();
     /**
-     * Used to draw on the backbuffer.
+     * Used to draw on the back buffer.
      */
     public Graphics bg;
     /**
@@ -53,7 +53,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      */
     public VolatileImage backgroundBuffer;
     /**
-     * Used to draw on the backbuffer. It is translated so that to its users, it
+     * Used to draw on the back buffer. It is translated so that to its users, it
      * appears they are drawing on the actual map, not a buffered region of the
      * map.
      *
@@ -62,12 +62,12 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
     private Graphics translatedBg;
 
     /**
-     * Updates the backbuffer as necessary, then draws it on to the Graphics
+     * Updates the back buffer as necessary, then draws it on to the Graphics
      * object passed.
      *
-     * @param g           Once it has been updated, the backbuffer is drawn onto this
+     * @param g           Once it has been updated, the back buffer is drawn onto this
      *                    Graphics object.
-     * @param visibleRect The region of the map that the backbuffer must be updated to
+     * @param visibleRect The region of the map that the back buffer must be updated to
      *                    display.
      */
     public void paintRect(Graphics g, Rectangle visibleRect) {
@@ -110,12 +110,15 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
         } while (contentsLost);
     }
 
+    /**
+     * The map has changed.
+     */
     private void refreshBackground() {
         paintBufferRectangle(0, 0, bufferRect.width, bufferRect.height);
     }
 
     /**
-     *
+     * Called when the map has changed.
      */
     public void refreshAll() {
         refreshBackground();

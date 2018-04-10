@@ -18,8 +18,7 @@
 
 package freerails.model.station;
 
-import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.WorldConstants;
@@ -44,7 +43,7 @@ public class CalculateCargoSupplyRateAtStation {
     private final int[] demand;
     private final List<CargoElementObject> supplies;
     private final ReadOnlyWorld world;
-    private final Vector2D location;
+    private final Vec2D location;
     private final int stationRadius;
 
     /**
@@ -52,7 +51,7 @@ public class CalculateCargoSupplyRateAtStation {
      *
      * @param trackRuleNo the station type.
      */
-    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location, int trackRuleNo) {
+    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vec2D location, int trackRuleNo) {
         this.world = world;
         this.location = location;
 
@@ -70,12 +69,12 @@ public class CalculateCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station already exists.
      */
-    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vector2D location) {
+    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vec2D location) {
         this(world, location, findTrackRule(location, world));
     }
 
     // TODO inline this but be careful because this and super must be on the first line
-    private static int findTrackRule(Vector2D location, ReadOnlyWorld world) {
+    private static int findTrackRule(Vec2D location, ReadOnlyWorld world) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
         return tile.getTrackPiece().getTrackTypeID();
     }
@@ -102,7 +101,7 @@ public class CalculateCargoSupplyRateAtStation {
         return new StationDemand(demandboolean);
     }
 
-    private void incrementSupplyAndDemand(Vector2D p) {
+    private void incrementSupplyAndDemand(Vec2D p) {
         int tileTypeNumber = ((FullTerrainTile) world.getTile(p)).getTerrainTypeID();
 
         TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tileTypeNumber);
@@ -112,9 +111,9 @@ public class CalculateCargoSupplyRateAtStation {
 
         // loop through the production array and increment
         // the supply rates for the station
-        for (int m = 0; m < production.size(); m++) {
-            int type = production.get(m).getCargoType();
-            int rate = production.get(m).getRate();
+        for (TileProduction aProduction : production) {
+            int type = aProduction.getCargoType();
+            int rate = aProduction.getRate();
 
             // loop through supplies vector and increment the cargo values as
             // required
@@ -124,9 +123,9 @@ public class CalculateCargoSupplyRateAtStation {
         // Now calculate demand.
         List<TileConsumption> consumption = terrainType.getConsumption();
 
-        for (int m = 0; m < consumption.size(); m++) {
-            int type = consumption.get(m).getCargoType();
-            int prerequisite = consumption.get(m).getPrerequisite();
+        for (TileConsumption aConsumption : consumption) {
+            int type = aConsumption.getCargoType();
+            int prerequisite = aConsumption.getPrerequisite();
 
             // The prerequisite is the number tiles of this type that must
             // be within the station radius before the station demands the
@@ -136,13 +135,13 @@ public class CalculateCargoSupplyRateAtStation {
 
         List<TileConversion> conversion = terrainType.getConversion();
 
-        for (int m = 0; m < conversion.size(); m++) {
-            int type = conversion.get(m).getInput();
+        for (TileConversion aConversion : conversion) {
+            int type = aConversion.getInput();
 
             // Only one tile that converts the cargo type is needed for the
             // station to demand the cargo type.
             demand[type] += WorldConstants.PREREQUISITE_FOR_DEMAND;
-            converts[type] = conversion.get(m).getOutput();
+            converts[type] = aConversion.getOutput();
         }
     }
 
@@ -165,7 +164,7 @@ public class CalculateCargoSupplyRateAtStation {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(location.x - stationRadius, location.y - stationRadius, stationDiameter, stationDiameter);
-        Vector2D mapSize = world.getMapSize();
+        Vec2D mapSize = world.getMapSize();
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
         Rectangle tiles2scan = stationRadiusRect.intersection(mapRect);
 
@@ -178,7 +177,7 @@ public class CalculateCargoSupplyRateAtStation {
         // The station radius determines how many tiles each side we look at.
         for (int i = tiles2scan.x; i < (tiles2scan.x + tiles2scan.width); i++) {
             for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height); j++) {
-                incrementSupplyAndDemand(new Vector2D(i, j));
+                incrementSupplyAndDemand(new Vec2D(i, j));
             }
         }
 

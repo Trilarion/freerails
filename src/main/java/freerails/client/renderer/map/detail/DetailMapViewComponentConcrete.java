@@ -29,7 +29,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.map.MapRenderer;
 import freerails.client.view.FreerailsCursor;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.WorldConstants;
 
 import java.awt.*;
@@ -122,14 +122,14 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     /**
      * @param g
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, Vec2D tileLocation) {
         throw new UnsupportedOperationException();
     }
 
     /**
      *
      */
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(Vec2D tileLocation) {
         throw new UnsupportedOperationException();
     }
 
@@ -167,11 +167,11 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
 
         switch (modelRootProperty) {
             case CURSOR_POSITION:
-                Vector2D newPoint = (Vector2D) newValue;
-                Vector2D oldPoint = (Vector2D) oldValue;
+                Vec2D newPoint = (Vec2D) newValue;
+                Vec2D oldPoint = (Vec2D) oldValue;
 
                 if (null == oldPoint) {
-                    oldPoint = new Vector2D();
+                    oldPoint = new Vec2D();
                 }
 
                 // react to cursor move

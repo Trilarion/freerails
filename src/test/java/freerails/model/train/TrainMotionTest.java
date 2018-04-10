@@ -21,7 +21,7 @@
  */
 package freerails.model.train;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.motion.CompositeMotion;
 import freerails.model.train.motion.ConstantAccelerationMotion;
@@ -38,8 +38,8 @@ public class TrainMotionTest extends TestCase {
      */
     public void test4Bug1266695() {
         // The figures are copied from the debugger.
-        Vector2D start = new Vector2D(14, 5);
-        TileTransition[] vectors = {TileTransition.getInstance(new Vector2D(1, 1)), TileTransition.getInstance(new Vector2D(1, 0))};
+        Vec2D start = new Vec2D(14, 5);
+        TileTransition[] vectors = {TileTransition.getInstance(new Vec2D(1, 1)), TileTransition.getInstance(new Vec2D(1, 0))};
         PathOnTiles path = new PathOnTiles(start, vectors);
 
         ConstantAccelerationMotion constantAccelerationMovement0 = ConstantAccelerationMotion.fromSpeedAccelerationTime(6.5135556243263055d, 0.5d,

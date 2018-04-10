@@ -23,7 +23,7 @@ package freerails.client.renderer;
 
 import freerails.client.renderer.map.MapLayerRenderer;
 import freerails.client.renderer.map.SquareTileBackgroundRenderer;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 import java.awt.*;
@@ -47,7 +47,7 @@ public class SquareCityTileBackgroundRendererTest extends TestCase {
 
         SquareTileBackgroundRenderer renderer = new SquareTileBackgroundRenderer(this.renderer);
         renderer.refreshAll();
-        renderer.refreshTile(new Vector2D(1, 2));
+        renderer.refreshTile(new Vec2D(1, 2));
     }
 
 }

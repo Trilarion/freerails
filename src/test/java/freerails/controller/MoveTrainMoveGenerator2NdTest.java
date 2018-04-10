@@ -30,7 +30,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.*;
 import freerails.model.game.GameTime;
@@ -50,8 +50,8 @@ import freerails.model.world.World;
 public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
     private FreerailsPrincipal principal;
-    private Vector2D station1Location;
-    private Vector2D station2Location;
+    private Vec2D station1Location;
+    private Vec2D station2Location;
 
     public static void incrTime(World world, FreerailsPrincipal principal) {
         ActivityIterator activityIterator = world.getActivities(principal, 0);
@@ -90,7 +90,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         for (int i = 0; i < track.length; i++) {
             track[i] = TileTransition.EAST;
         }
-        Vector2D station0Location = new Vector2D(10, 10);
+        Vec2D station0Location = new Vec2D(10, 10);
 
         MoveStatus moveStatus1 = trackBuilder.buildTrack(station0Location, track);
         assertTrue(moveStatus1.succeeds());
@@ -98,10 +98,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Build 2 stations.
         MoveStatus ms1 = stationBuilder.buildStation(station0Location);
         assertTrue(ms1.succeeds());
-        station1Location = new Vector2D(20, 10);
+        station1Location = new Vec2D(20, 10);
         MoveStatus ms2 = stationBuilder.buildStation(station1Location);
         assertTrue(ms2.succeeds());
-        station2Location = new Vector2D(28, 10);
+        station2Location = new Vec2D(28, 10);
         MoveStatus ms3 = stationBuilder.buildStation(station2Location);
         assertTrue(ms3.succeeds());
 
@@ -112,7 +112,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         schedule.addOrder(order1);
         ImmutableSchedule defaultSchedule = schedule.toImmutableSchedule();
 
-        Vector2D start = new Vector2D(10, 10);
+        Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(0, new ImmutableList<>(0, 0),
                 start, principal, defaultSchedule);
         Move move = preMove.generate(world);
@@ -226,7 +226,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      */
     private void addCargoAtStation(int stationId, int amount) {
 
-        CargoBatch cb = new CargoBatch(0, new Vector2D(6, 6), 0, stationId);
+        CargoBatch cb = new CargoBatch(0, new Vec2D(6, 6), 0, stationId);
         MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
         mb.addCargo(cb, amount);
         Station station1Model = (Station) world.get(principal, PlayerKey.Stations, stationId);
@@ -411,7 +411,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         int cargoBundleId = station0.getCargoBundleID();
         MutableCargoBatchBundle mcb = new MutableCargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
-        mcb.addCargo(new CargoBatch(0, Vector2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
+        mcb.addCargo(new CargoBatch(0, Vec2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
         world.set(principal, PlayerKey.CargoBundles, cargoBundleId, mcb
                 .toImmutableCargoBundle());
 

@@ -5,7 +5,7 @@ import freerails.client.renderer.tile.TileRenderer;
 import freerails.client.renderer.tile.TileRendererList;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -19,7 +19,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
 
     private final TileRendererList tiles;
     private final ReadOnlyWorld world;
-    private final Vector2D mapSize;
+    private final Vec2D mapSize;
 
     /**
      * @param world
@@ -35,8 +35,8 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param g
      * @param tileLocation
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
-        Vector2D screenLocation = Vector2D.multiply(ClientConfig.TILE_SIZE, tileLocation);
+    public void paintTile(Graphics g, Vec2D tileLocation) {
+        Vec2D screenLocation = Vec2D.multiply(ClientConfig.TILE_SIZE, tileLocation);
 
         if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
             TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
@@ -61,7 +61,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
         for (int tileX = tilesToPaint.x; tileX < (tilesToPaint.x + tilesToPaint.width); tileX++) {
             for (int tileY = tilesToPaint.y; tileY < (tilesToPaint.y + tilesToPaint.height); tileY++) {
-                this.paintTile(g, new Vector2D(tileX, tileY));
+                this.paintTile(g, new Vec2D(tileX, tileY));
             }
         }
     }
@@ -81,7 +81,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     /**
      * @param tileLocation
      */
-    public void refreshTile(Vector2D tileLocation) {}
+    public void refreshTile(Vec2D tileLocation) {}
 
     /**
      *

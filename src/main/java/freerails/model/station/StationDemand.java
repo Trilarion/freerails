@@ -52,8 +52,8 @@ public class StationDemand implements Serializable {
     public int hashCode() {
         int result = 0;
 
-        for (int i = 0; i < demand.size(); i++) {
-            result = 29 * result + demand.get(i);
+        for (Integer aDemand : demand) {
+            result = 29 * result + aDemand;
         }
 
         return result;

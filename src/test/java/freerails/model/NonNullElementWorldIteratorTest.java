@@ -23,7 +23,7 @@ package freerails.model;
 
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.station.Station;
 import freerails.model.world.FullWorld;
 import freerails.model.world.World;
@@ -47,9 +47,9 @@ public class NonNullElementWorldIteratorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         world = new FullWorld();
-        station1 = new Station(new Vector2D(10, 20), "Station1", 4, 0);
-        station2 = new Station(new Vector2D(15, 16), "Station2", 4, 1);
-        Station station3 = new Station(new Vector2D(30, 50), "Station3", 4, 2);
+        station1 = new Station(new Vec2D(10, 20), "Station1", 4, 0);
+        station2 = new Station(new Vec2D(15, 16), "Station2", 4, 1);
+        Station station3 = new Station(new Vec2D(30, 50), "Station3", 4, 2);
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station1);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, null);

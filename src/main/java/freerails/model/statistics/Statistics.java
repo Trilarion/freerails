@@ -1,6 +1,5 @@
 package freerails.model.statistics;
 
-import freerails.model.QuantitiesAndValues;
 import freerails.model.WorldConstants;
 import freerails.model.finances.*;
 import freerails.model.track.TrackRule;
@@ -14,15 +13,8 @@ import freerails.model.world.SharedKey;
  */
 public class Statistics {
 
-    private final Money operatingFunds;
-    private final Money track;
-    private final Money stations;
-    private final Money rollingStock;
-    private final Money industries;
     public final Money loans;
     public final Money equity;
-    private Money treasuryStock;
-    private Money otherRrStock;
 
     /**
      * @param world
@@ -32,28 +24,28 @@ public class Statistics {
     public Statistics(ReadOnlyWorld world, FreerailsPrincipal principal, final GameTime[] totalTimeInterval) {
         TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, principal, totalTimeInterval);
 
-        operatingFunds = operatingFundsAggregator.calculateValue();
+        Money operatingFunds = operatingFundsAggregator.calculateValue();
 
-        track = calculateTrackTotal(world, principal, totalTimeInterval[0]);
+        Money track = calculateTrackTotal(world, principal, totalTimeInterval[0]);
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setTimes(totalTimeInterval);
 
         aggregator.setCategory(TransactionCategory.STATIONS);
-        stations = aggregator.calculateValue();
+        Money stations = aggregator.calculateValue();
 
         aggregator.setCategory(TransactionCategory.TRAIN);
-        rollingStock = aggregator.calculateValue();
+        Money rollingStock = aggregator.calculateValue();
 
         aggregator.setCategory(TransactionCategory.INDUSTRIES);
-        industries = aggregator.calculateValue();
+        Money industries = aggregator.calculateValue();
         aggregator.setCategory(TransactionCategory.BOND);
         loans = aggregator.calculateValue();
         aggregator.setCategory(TransactionCategory.ISSUE_STOCK);
         equity = aggregator.calculateValue();
 
         // If we don't initialize this variable we get a NPE when we don't own any stock in others RRs
-        otherRrStock = Money.ZERO;
+        Money otherRrStock = Money.ZERO;
 
         int thisPlayerId = world.getID(principal);
 
@@ -64,7 +56,7 @@ public class Statistics {
             aggregator.setType(thisPlayerId);
             int quantity = aggregator.calculateQuantity();
             if (playerId == thisPlayerId) {
-                treasuryStock = Money.multiply(stockPrices[playerId].currentPrice, quantity);
+                Money treasuryStock = Money.multiply(stockPrices[playerId].currentPrice, quantity);
             } else {
                 otherRrStock = Money.add(Money.multiply(stockPrices[playerId].currentPrice, quantity), otherRrStock);
             }
@@ -92,8 +84,7 @@ public class Statistics {
 
             aggregator.setType(i);
             aggregator.setTimes(times);
-            QuantitiesAndValues qnv = aggregator.calculateQuantitiesAndValues();
-            int quantity = qnv.quantities[0];
+            int quantity = aggregator.calculateQuantity();
             amount += trackValue * quantity / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
         }
 

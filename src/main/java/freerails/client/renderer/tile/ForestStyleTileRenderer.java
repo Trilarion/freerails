@@ -23,12 +23,11 @@
 package freerails.client.renderer.tile;
 
 import freerails.util.BinaryNumberFormatter;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
 
-import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -36,9 +35,8 @@ import java.io.IOException;
  */
 public class ForestStyleTileRenderer extends AbstractTileRenderer {
 
-    // TODO better naming maybe (also express this as Vector2D)
-    private static final int[] X_LOOK_AT = {-1, 1};
-    private static final int[] Y_LOOK_AT = {0, 0};
+    private static final Vec2D SHIFT_LEFT = new Vec2D(-1, 0);
+    private static final Vec2D SHIFT_RIGHT = new Vec2D(1, 0);
 
     /**
      * @param imageManager
@@ -61,15 +59,15 @@ public class ForestStyleTileRenderer extends AbstractTileRenderer {
      * @return
      */
     @Override
-    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world) {
         int iconNumber = 0;
 
-        for (int i = 0; i < 2; i++) {
-            iconNumber = iconNumber | checkTile( Vector2D.add(mapLocation, new Vector2D(X_LOOK_AT[i], Y_LOOK_AT[i])), world);
-            iconNumber = iconNumber << 1;
-        }
+        // shift left
+        iconNumber = iconNumber | checkTile(Vec2D.add(mapLocation, SHIFT_LEFT), world);
+        iconNumber = iconNumber << 1;
 
-        iconNumber = iconNumber >> 1;
+        // shift right
+        iconNumber = iconNumber | checkTile(Vec2D.add(mapLocation, SHIFT_RIGHT), world);
 
         return iconNumber;
     }

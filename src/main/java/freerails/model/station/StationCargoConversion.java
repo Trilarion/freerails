@@ -85,8 +85,8 @@ public class StationCargoConversion implements Serializable {
     @Override
     public int hashCode() {
         int result = 0;
-        for (int i = 0; i < convertedTo.size(); i++) {
-            result = 29 * result + convertedTo.get(i);
+        for (Integer aConvertedTo : convertedTo) {
+            result = 29 * result + aConvertedTo;
         }
 
         return result;

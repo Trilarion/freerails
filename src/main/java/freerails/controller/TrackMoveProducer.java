@@ -24,7 +24,7 @@ import freerails.model.track.*;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
@@ -85,13 +85,13 @@ public class TrackMoveProducer {
      * @param path
      * @return
      */
-    public MoveStatus buildTrack(Vector2D from, TileTransition[] path) {
+    public MoveStatus buildTrack(Vec2D from, TileTransition[] path) {
         MoveStatus returnValue = MoveStatus.MOVE_OK;
         int x = from.x;
         int y = from.y;
         for (TileTransition aPath : path) {
 
-            returnValue = buildTrack(new Vector2D(x, y), aPath);
+            returnValue = buildTrack(new Vec2D(x, y), aPath);
             x += aPath.deltaX;
             y += aPath.deltaY;
             if (!returnValue.succeeds()) {
@@ -106,7 +106,7 @@ public class TrackMoveProducer {
      * @param trackVector
      * @return
      */
-    public MoveStatus buildTrack(Vector2D from, TileTransition trackVector) {
+    public MoveStatus buildTrack(Vec2D from, TileTransition trackVector) {
 
         ReadOnlyWorld world = executor.getWorld();
         FreerailsPrincipal principal = executor.getPrincipal();
@@ -144,7 +144,7 @@ public class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            TerrainTile tile = (FullTerrainTile) world.getTile(new Vector2D(x, y));
+            TerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
             int tt = tile.getTerrainTypeID();
             ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
 
@@ -166,7 +166,7 @@ public class TrackMoveProducer {
                         return moveStatus;
                     }
                 }
-                Vector2D point = Vector2D.add(from, trackVector.getD());
+                Vec2D point = Vec2D.add(from, trackVector.getD());
                 FullTerrainTile tileB = (FullTerrainTile) world.getTile(point);
                 if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
                     MoveStatus moveStatus = upgradeTrack(point, ruleIDs[1]);
@@ -188,7 +188,7 @@ public class TrackMoveProducer {
         }
     }
 
-    private MoveStatus upgradeTrack(Vector2D point, int trackRuleID) {
+    private MoveStatus upgradeTrack(Vec2D point, int trackRuleID) {
         ReadOnlyWorld world = executor.getWorld();
         TrackPiece before = ((FullTerrainTile) world.getTile(point)).getTrackPiece();
         // Check whether there is track here.
@@ -252,7 +252,7 @@ public class TrackMoveProducer {
         return moveStatus;
     }
 
-    private boolean isStationHere(Vector2D p) {
+    private boolean isStationHere(Vec2D p) {
         ReadOnlyWorld world = executor.getWorld();
         FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
         return tile.getTrackPiece().getTrackRule().isStation();

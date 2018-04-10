@@ -20,7 +20,7 @@ package freerails.client.renderer.map.overview;
 
 import freerails.client.renderer.map.BlankMapRenderer;
 import freerails.client.renderer.map.MapRenderer;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +39,7 @@ public class OverviewMapComponent extends JPanel {
      * @param visibleRect
      */
     public OverviewMapComponent(Rectangle visibleRect) {
-        setPreferredSize(Vector2D.toDimension(mapRenderer.getMapSizeInPixels()));
+        setPreferredSize(Vec2D.toDimension(mapRenderer.getMapSizeInPixels()));
         mainMapVisRect = visibleRect;
     }
 
@@ -48,7 +48,7 @@ public class OverviewMapComponent extends JPanel {
      */
     public void setup(MapRenderer mapRenderer) {
         this.mapRenderer = mapRenderer;
-        Dimension size = Vector2D.toDimension(this.mapRenderer.getMapSizeInPixels());
+        Dimension size = Vec2D.toDimension(this.mapRenderer.getMapSizeInPixels());
         setPreferredSize(size);
         setMinimumSize(size);
         setSize(size);
@@ -69,6 +69,6 @@ public class OverviewMapComponent extends JPanel {
 
     @Override
     public Dimension getPreferredSize() {
-        return Vector2D.toDimension(mapRenderer.getMapSizeInPixels());
+        return Vec2D.toDimension(mapRenderer.getMapSizeInPixels());
     }
 }

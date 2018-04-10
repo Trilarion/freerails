@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.track;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 
 import java.awt.*;
 
@@ -39,5 +39,5 @@ public interface TrackPieceRenderer {
      * @param tileLocation
      * @param tileSize
      */
-    void drawTrackPieceIcon(Graphics g, int trackTemplate, Vector2D tileLocation, Vector2D tileSize);
+    void drawTrackPieceIcon(Graphics g, int trackTemplate, Vec2D tileLocation, Vec2D tileSize);
 }

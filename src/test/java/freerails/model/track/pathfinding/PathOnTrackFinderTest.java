@@ -29,7 +29,7 @@ import freerails.model.track.BuildTrackStrategy;
 import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import junit.framework.TestCase;
@@ -63,8 +63,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testPathAsVectors1() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
-        Vector2D start = new Vector2D(5, 5);
-        Vector2D end = TileTransition.move(start, path);
+        Vec2D start = new Vec2D(5, 5);
+        Vec2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -82,8 +82,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testPathAsVectors2() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.NORTH_EAST};
-        Vector2D start = new Vector2D(5, 5);
-        Vector2D end = TileTransition.move(start, path);
+        Vec2D start = new Vec2D(5, 5);
+        Vec2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -101,8 +101,8 @@ public class PathOnTrackFinderTest extends TestCase {
      */
     public void testSetupSearch() {
         TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.SOUTH_EAST};
-        Vector2D start = new Vector2D(5, 5);
-        Vector2D end = TileTransition.move(start, path);
+        Vec2D start = new Vec2D(5, 5);
+        Vec2D end = TileTransition.move(start, path);
         producer.buildTrack(start, path);
         try {
             pathFinder.setupSearch(start, end);
@@ -110,12 +110,12 @@ public class PathOnTrackFinderTest extends TestCase {
             fail("Track at both of the points so no exception should be thrown");
         }
         try {
-            pathFinder.setupSearch(start, new Vector2D(10, 10));
+            pathFinder.setupSearch(start, new Vec2D(10, 10));
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
         }
         try {
-            pathFinder.setupSearch(new Vector2D(10, 10), end);
+            pathFinder.setupSearch(new Vec2D(10, 10), end);
             fail("No track at one of the points so an exception should be thrown");
         } catch (PathNotFoundException e) {
         }

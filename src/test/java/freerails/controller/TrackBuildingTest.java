@@ -29,7 +29,7 @@ import freerails.move.MoveStatus;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
@@ -72,12 +72,12 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testBuildingStraight() {
 
-        Vector2D from = new Vector2D(5, 5);
-        Vector2D to = new Vector2D(10, 5);
+        Vec2D from = new Vec2D(5, 5);
+        Vec2D to = new Vec2D(10, 5);
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FullTerrainTile) world.getTile(new Vector2D(x, 5)))
+                TrackPiece tp = ((FullTerrainTile) world.getTile(new Vec2D(x, 5)))
                         .getTrackPiece();
                 assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp
                         .getTrackTypeID());
@@ -94,7 +94,7 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = ((FullTerrainTile) world.getTile(new Vector2D(x, 5))).getTrackPiece();
+                TrackPiece tp = ((FullTerrainTile) world.getTile(new Vec2D(x, 5))).getTrackPiece();
                 assertEquals(0, tp.getTrackTypeID());
             }
         } catch (PathNotFoundException e) {
@@ -107,16 +107,16 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testBuildingOneTrackPiece() {
 
-        Vector2D from = new Vector2D(5, 5);
-        Vector2D to = new Vector2D(6, 5);
+        Vec2D from = new Vec2D(5, 5);
+        Vec2D to = new Vec2D(6, 5);
         try {
             // Check there is no track before we build it.
 
-            TrackPiece tp1 = ((FullTerrainTile) world.getTile(new Vector2D(5, 5))).getTrackPiece();
+            TrackPiece tp1 = ((FullTerrainTile) world.getTile(new Vec2D(5, 5))).getTrackPiece();
             assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp1
                     .getTrackTypeID());
 
-            TrackPiece tp2 = ((FullTerrainTile) world.getTile(new Vector2D(6, 5))).getTrackPiece();
+            TrackPiece tp2 = ((FullTerrainTile) world.getTile(new Vec2D(6, 5))).getTrackPiece();
             assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp2
                     .getTrackTypeID());
 
@@ -131,10 +131,10 @@ public class TrackBuildingTest extends TestCase {
             MoveStatus moveStatus = producer.buildTrack(from, path);
             assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
             // Check track has been built.
-            tp1 = ((FullTerrainTile) world.getTile(new Vector2D(5, 5))).getTrackPiece();
+            tp1 = ((FullTerrainTile) world.getTile(new Vec2D(5, 5))).getTrackPiece();
             assertEquals(0, tp1.getTrackTypeID());
 
-            tp2 = ((FullTerrainTile) world.getTile(new Vector2D(6, 5))).getTrackPiece();
+            tp2 = ((FullTerrainTile) world.getTile(new Vec2D(6, 5))).getTrackPiece();
             assertEquals(0, tp2.getTrackTypeID());
         } catch (PathNotFoundException e) {
             fail();
@@ -148,15 +148,15 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testTerminalProblem() {
         try {
-            Vector2D from = new Vector2D(5, 5);
+            Vec2D from = new Vec2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
             MoveStatus moveStatus = producer.buildTrack(from, path);
             assertTrue(moveStatus.succeeds());
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
             stationBuilder.setStationType(terminalStationType);
-            moveStatus = stationBuilder.buildStation(new Vector2D(8, 5));
+            moveStatus = stationBuilder.buildStation(new Vec2D(8, 5));
             assertTrue(moveStatus.succeeds());
-            pathFinder.setupSearch(new Vector2D(7, 5), new Vector2D(9, 5), bts);
+            pathFinder.setupSearch(new Vec2D(7, 5), new Vec2D(9, 5), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);
@@ -179,9 +179,9 @@ public class TrackBuildingTest extends TestCase {
             int trackTypeID = stationBuilder.getTrackTypeID("double track");
             bts = BuildTrackStrategy.getSingleRuleInstance(trackTypeID, world);
             producer.setBuildTrackStrategy(bts);
-            Vector2D a = new Vector2D(5, 5);
-            Vector2D b = new Vector2D(6, 5);
-            Vector2D c = new Vector2D(7, 6);
+            Vec2D a = new Vec2D(5, 5);
+            Vec2D b = new Vec2D(6, 5);
+            Vec2D c = new Vec2D(7, 6);
 
             pathFinder.setupSearch(a, b, bts);
             pathFinder.search(-1);
@@ -214,11 +214,11 @@ public class TrackBuildingTest extends TestCase {
      */
     public void testStartSearchOnSharpCurve() {
         try {
-            Vector2D from = new Vector2D(5, 5);
+            Vec2D from = new Vec2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
             MoveStatus moveStatus = producer.buildTrack(from, path);
             assertTrue(moveStatus.succeeds());
-            pathFinder.setupSearch(new Vector2D(6, 5), new Vector2D(6, 7), bts);
+            pathFinder.setupSearch(new Vec2D(6, 5), new Vec2D(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
             assertEquals(2, path.length);

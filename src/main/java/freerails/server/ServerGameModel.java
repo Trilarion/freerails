@@ -26,6 +26,7 @@ import freerails.model.world.World;
 
 import java.io.Serializable;
 
+// TODO do not extend GameModel, just add an update method
 /**
  * Defines methods on a GameModel that let the server load and initiate, and
  * save it.

@@ -24,7 +24,7 @@ package freerails.move.mapupdatemove;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.MoveStatus;
 import freerails.model.MapFixtureFactory2;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 
@@ -37,7 +37,7 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        Vector2D p = new Vector2D(10, 10);
+        Vec2D p = new Vec2D(10, 10);
         TerrainTile tile = (TerrainTile) world.getTile(p);
         assertTrue(tile.getTerrainTypeID() != 5);
         ChangeTileMove move = new ChangeTileMove(world, p, 5);
@@ -51,7 +51,7 @@ public class ChangeTileMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        Vector2D p = new Vector2D(10, 10);
+        Vec2D p = new Vec2D(10, 10);
         ChangeTileMove move = new ChangeTileMove(world, p, 5);
         assertSurvivesSerialisation(move);
     }

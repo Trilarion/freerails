@@ -18,7 +18,6 @@
 
 package freerails.model.finances;
 
-import freerails.model.QuantitiesAndValues;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.ReadOnlyWorld;
 
@@ -64,19 +63,8 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      * @return
      */
     public int calculateQuantity() {
-        QuantitiesAndValues qnv = calculateQuantitiesAndValues();
-        return qnv.quantities[0];
-    }
-
-    /**
-     * @return
-     */
-    public QuantitiesAndValues calculateQuantitiesAndValues() {
-        QuantitiesAndValues returnValue = new QuantitiesAndValues();
-        returnValue.values = super.calculateValues();
-        returnValue.quantities = quantities;
-
-        return returnValue;
+        super.calculateValues();
+        return quantities[0];
     }
 
     /**

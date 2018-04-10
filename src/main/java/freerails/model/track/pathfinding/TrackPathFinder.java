@@ -23,7 +23,7 @@ package freerails.model.track.pathfinding;
 
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.model.track.BuildTrackStrategy;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
@@ -47,7 +47,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final ReadOnlyWorld world;
     private final FreerailsPrincipal principal;
-    private Vector2D startPoint;
+    private Vec2D startPoint;
 
     /**
      * @param world
@@ -58,13 +58,13 @@ public class TrackPathFinder implements IncrementalPathFinder {
         this.principal = principal;
     }
 
-    private static List<Vector2D> convertPathToPoints(List<Integer> path) {
+    private static List<Vec2D> convertPathToPoints(List<Integer> path) {
         PositionOnTrack positionOnTrack = new PositionOnTrack();
-        List<Vector2D> proposedTrack = new ArrayList<>();
+        List<Vec2D> proposedTrack = new ArrayList<>();
 
         for (Integer aPath : path) {
             positionOnTrack.setValuesFromInt(aPath);
-            Vector2D p = positionOnTrack.getLocation();
+            Vec2D p = positionOnTrack.getLocation();
             proposedTrack.add(p);
             logger.debug("Adding point " + p);
         }
@@ -79,7 +79,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         pathFinder.abandonSearch();
     }
 
-    private int[] findTargets(Vector2D targetPoint) {
+    private int[] findTargets(Vec2D targetPoint) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(targetPoint);
         TrackPiece trackPiece = tile.getTrackPiece();
         int ruleNumber = trackPiece.getTrackTypeID();
@@ -134,7 +134,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @return
      * @throws PathNotFoundException
      */
-    public List generatePath(Vector2D start, Vector2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
+    public List generatePath(Vec2D start, Vec2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
         setupSearch(start, targetPoint, bts);
         pathFinder.search(-1);
 
@@ -153,7 +153,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @return
      */
-    public List<Vector2D> pathAsPoints() {
+    public List<Vec2D> pathAsPoints() {
         List<Integer> path = pathFinder.retrievePath();
 
         return convertPathToPoints(path);
@@ -168,10 +168,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
         TileTransition[] vectors = new TileTransition[size];
         PositionOnTrack progress = new PositionOnTrack();
 
-        Vector2D p = startPoint;
+        Vec2D p = startPoint;
         for (int i = 0; i < size; i++) {
             progress.setValuesFromInt(path.get(i));
-            vectors[i] = TileTransition.getInstance(Vector2D.subtract(progress.getLocation(), p));
+            vectors[i] = TileTransition.getInstance(Vec2D.subtract(progress.getLocation(), p));
             p = progress.getLocation();
         }
         return vectors;
@@ -191,7 +191,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @param bts
      * @throws PathNotFoundException
      */
-    public void setupSearch(Vector2D startPoint, Vector2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
+    public void setupSearch(Vec2D startPoint, Vec2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
         logger.debug("Find track path from " + startPoint + " to " + targetPoint);
 
         this.startPoint = startPoint;

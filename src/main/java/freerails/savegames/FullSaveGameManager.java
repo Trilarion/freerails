@@ -22,11 +22,9 @@
 package freerails.savegames;
 
 import freerails.server.ServerGameModel;
-import freerails.model.world.World;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 

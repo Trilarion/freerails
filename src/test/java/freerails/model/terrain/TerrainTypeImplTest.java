@@ -24,8 +24,6 @@ package freerails.model.terrain;
 import freerails.util.TestUtils;
 import junit.framework.TestCase;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**

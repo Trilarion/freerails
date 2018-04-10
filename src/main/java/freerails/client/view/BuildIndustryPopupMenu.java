@@ -26,7 +26,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.ItemTransaction;
@@ -47,12 +47,12 @@ import java.awt.event.ActionListener;
 public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
     private static final long serialVersionUID = 3689636912575165749L;
-    private Vector2D cursorLocation;
+    private Vec2D cursorLocation;
 
     /**
      * @param p
      */
-    public void setCursorLocation(Vector2D p) {
+    public void setCursorLocation(Vec2D p) {
         cursorLocation = p;
     }
 

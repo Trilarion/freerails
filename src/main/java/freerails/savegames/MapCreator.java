@@ -10,8 +10,7 @@ import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
-import freerails.model.terrain.CityTilePositioner;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.ui.ProgressMonitorModel;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -85,7 +84,7 @@ public class MapCreator {
         BufferedImage mapBufferedImage = new BufferedImage(mapRect.width, mapRect.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = mapBufferedImage.getGraphics();
         g.drawImage(mapImage, 0, 0, null);
-        world.setupMap(new Vector2D(mapRect.width, mapRect.height));
+        world.setupMap(new Vec2D(mapRect.width, mapRect.height));
 
         ProgressMonitorModel.EMPTY.nextStep(mapRect.width);
 
@@ -132,7 +131,7 @@ public class MapCreator {
                 }
 
                 tile = FullTerrainTile.getInstance(terrainRandomizer.getNewType(type));
-                Vector2D location = new Vector2D(x, y);
+                Vec2D location = new Vec2D(x, y);
                 if (countryTypes.contains(tile.getTerrainTypeID())) {
                     locations.add(new TerrainAtLocation(location, tile.getTerrainTypeID()));
                 }
@@ -144,17 +143,17 @@ public class MapCreator {
         for (TerrainAtLocation terrainAtLocation : locations) {
             FullTerrainTile tile = FullTerrainTile.getInstance(terrainAtLocation.getType());
 
-            Vector2D location = terrainAtLocation.getLocation();
+            Vec2D location = terrainAtLocation.getLocation();
             int val = 3;
-            Vector2D v = new Vector2D(val, val);
+            Vec2D v = new Vec2D(val, val);
 
             double prob = 0.75;
 
-            if (world.boundsContain(Vector2D.subtract(location, v)) && world.boundsContain(Vector2D.add(location, v))) {
+            if (world.boundsContain(Vec2D.subtract(location, v)) && world.boundsContain(Vec2D.add(location, v))) {
                 for (int m = location.x - val; m < location.x + val; m++) {
                     for (int n = location.y - val; n < location.y + val; n++) {
                         if (Math.random() > prob) {
-                            Vector2D p = new Vector2D(m, n);
+                            Vec2D p = new Vec2D(m, n);
                             if (!non_countryTypes.contains(((FullTerrainTile) world.getTile(p)).getTerrainTypeID())) {
                                 world.setTile(p, tile);
                             }

@@ -25,7 +25,7 @@ import freerails.move.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.FullWorld;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.SharedKey;
@@ -44,9 +44,9 @@ import junit.framework.TestCase;
  */
 public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
-    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, Vector2D.ZERO,0, 2);
-    private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, Vector2D.ZERO,0, 2);
-    private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new Vector2D(0,0),0, 0);
+    private final CargoBatch cargoType0FromStation2 = new CargoBatch(0, Vec2D.ZERO,0, 2);
+    private final CargoBatch cargoType1FromStation2 = new CargoBatch(1, Vec2D.ZERO,0, 2);
+    private final CargoBatch cargoType0FromStation0 = new CargoBatch(0,new Vec2D(0,0),0, 0);
     private World world;
 
     /**
@@ -72,7 +72,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int stationCargoBundleId = world.add(MapFixtureFactory.TEST_PRINCIPAL,
                 PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
         String stationName = "Station 1";
-        Station station = new Station(new Vector2D(x, y), stationName, world.size(SharedKey.CargoTypes), stationCargoBundleId);
+        Station station = new Station(new Vec2D(x, y), stationName, world.size(SharedKey.CargoTypes), stationCargoBundleId);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
 
         // Set up train

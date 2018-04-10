@@ -18,7 +18,7 @@
 
 package freerails.model.station;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
@@ -48,7 +48,7 @@ public class NearestStationFinder {
     /**
      * Returns true if the angle between direction and the vector (deltaX, deltaY) is less than 45 degrees.
      */
-    private static boolean isInRightDirection(TileTransition direction, Vector2D delta) {
+    private static boolean isInRightDirection(TileTransition direction, Vec2D delta) {
         boolean isDiagonal = direction.deltaX * direction.deltaY != 0;
         boolean sameXDirection = (direction.deltaX * delta.x) > 0;
         boolean sameYDirection = (direction.deltaY * delta.y > 0);
@@ -67,7 +67,7 @@ public class NearestStationFinder {
      * @param p
      * @return
      */
-    public int findNearestStation(Vector2D p) {
+    public int findNearestStation(Vec2D p) {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
@@ -77,7 +77,7 @@ public class NearestStationFinder {
         while (it.next()) {
             Station station = (Station) it.getElement();
 
-            Vector2D delta = Vector2D.subtract(p, station.location);
+            Vec2D delta = Vec2D.subtract(p, station.location);
             int distanceSquared = delta.x * delta.x + delta.y * delta.y;
 
             if (distanceSquared < distanceToClosestSquared && MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
@@ -104,7 +104,7 @@ public class NearestStationFinder {
 
         while (it.next()) {
             Station station = (Station) it.getElement();
-            Vector2D delta = Vector2D.subtract(station.location, currentStation.location);
+            Vec2D delta = Vec2D.subtract(station.location, currentStation.location);
             int distanceSquared = delta.x * delta.x + delta.y * delta.y;
             boolean closer = distanceSquared < distanceToClosestSquared;
             boolean notTheSameStation = startStation != it.getIndex();

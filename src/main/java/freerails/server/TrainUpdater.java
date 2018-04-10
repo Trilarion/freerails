@@ -25,7 +25,7 @@ import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.ImmutableList;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.NonNullElementWorldIterator;
@@ -48,8 +48,7 @@ import java.util.Collection;
  * Is used by the server to generate moves that add trains, move
  * trains, and handle stops at stations.
  *
- * Note: The client should not use this
- * class to build trains, instead it should request that a train gets built by
+ * Note: The client should not use this class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
  */
 public class TrainUpdater implements Serializable {
@@ -71,7 +70,7 @@ public class TrainUpdater implements Serializable {
      * @param principal
      * @param world
      */
-    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Vector2D location, FreerailsPrincipal principal, ReadOnlyWorld world) {
+    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Vec2D location, FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -112,9 +111,9 @@ public class TrainUpdater implements Serializable {
                     ImmutableList<TrainBlueprint> production = station.getProduction();
                     if (production.size() > 0) {
 
-                        for (int j = 0; j < production.size(); j++) {
-                            int engineType = production.get(j).getEngineType();
-                            ImmutableList<Integer> wagonTypes = production.get(j).getWagonTypes();
+                        for (TrainBlueprint aProduction : production) {
+                            int engineType = aProduction.getEngineType();
+                            ImmutableList<Integer> wagonTypes = aProduction.getWagonTypes();
                             buildTrain(engineType, wagonTypes, station.location, principal, world);
                         }
 

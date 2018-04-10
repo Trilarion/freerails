@@ -34,7 +34,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.LocalConnection;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameSpeed;
 import freerails.model.player.FreerailsPrincipal;
@@ -109,10 +109,12 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         dialogueBoxController = new DialogueBoxController(clientFrame, this.modelRoot);
         this.actionRoot.setDialogueBoxController(dialogueBoxController);
 
+        // TODO only split move receiver so far
         this.modelRoot.addSplitMoveReceiver(move -> {
             if (move instanceof ChangeGameSpeedMove) {
                 ChangeGameSpeedMove speedMove = (ChangeGameSpeedMove) move;
 
+                // TODO this loop does not loop!
                 for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
@@ -451,10 +453,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
          * same as the last map size, then the cursor should take the position
          * it had on the last map.
          */
-        Vector2D cursorPosition = Vector2D.ZERO;
+        Vec2D cursorPosition = Vec2D.ZERO;
         if (null != this.world) {
             if (world.getMapSize().equals(this.world.getMapSize())) {
-                cursorPosition = (Vector2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
+                cursorPosition = (Vec2D) modelRoot.getProperty(ModelRootProperty.CURSOR_POSITION);
             }
         }
         this.world = world;
@@ -530,6 +532,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
 
     // TODO change to often, ~10% of time
     /**
+     * Part of the WorldMapListener interface, invoked by MoveChainFork upon a MapUpdateMove
+     *
      * Listens for changes on the map, for instance when track is built, and
      * refreshes the map views.
      */
@@ -545,13 +549,13 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         } else {
             // TODO this bug still exists, but why? (coordinates outside, what effect has this)
             // Fix for bug 967673 (Crash when building track close to edge of map).
-            Vector2D mapSize = world.getMapSize();
+            Vec2D mapSize = world.getMapSize();
             Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
             tilesChanged = tilesChanged.intersection(mapRect);
 
             for (int tileX = tilesChanged.x; tileX < (tilesChanged.x + tilesChanged.width); tileX++) {
                 for (int tileY = tilesChanged.y; tileY < (tilesChanged.y + tilesChanged.height); tileY++) {
-                    Vector2D p = new Vector2D(tileX, tileY);
+                    Vec2D p = new Vec2D(tileX, tileY);
                     mainMap.refreshTile(p);
                     overviewMap.refreshTile(p);
                 }

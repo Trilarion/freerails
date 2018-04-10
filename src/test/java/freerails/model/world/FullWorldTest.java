@@ -22,7 +22,7 @@
 package freerails.model.world;
 
 import freerails.model.Activity;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.finances.*;
 import freerails.model.player.FreerailsPrincipal;
@@ -52,7 +52,7 @@ public class FullWorldTest extends TestCase {
      */
     public void testConstructor() {
         World world = new FullWorld();
-        assertEquals(world.getMapSize(), Vector2D.ZERO);
+        assertEquals(world.getMapSize(), Vec2D.ZERO);
     }
 
     /**
@@ -152,14 +152,14 @@ public class FullWorldTest extends TestCase {
      */
     public void testBoundsContain() {
         World world = new FullWorld();
-        assertFalse(world.boundsContain(new Vector2D(1, 1)));
-        assertFalse(world.boundsContain(Vector2D.ZERO));
-        assertFalse(world.boundsContain(new Vector2D(-1, -1)));
-        world = new FullWorld(new Vector2D(5, 10));
-        assertTrue(world.boundsContain(Vector2D.ZERO));
-        assertTrue(world.boundsContain(new Vector2D(4, 9)));
-        assertFalse(world.boundsContain(new Vector2D(-1, -1)));
-        assertFalse(world.boundsContain(new Vector2D(5, 10)));
+        assertFalse(world.boundsContain(new Vec2D(1, 1)));
+        assertFalse(world.boundsContain(Vec2D.ZERO));
+        assertFalse(world.boundsContain(new Vec2D(-1, -1)));
+        world = new FullWorld(new Vec2D(5, 10));
+        assertTrue(world.boundsContain(Vec2D.ZERO));
+        assertTrue(world.boundsContain(new Vec2D(4, 9)));
+        assertFalse(world.boundsContain(new Vec2D(-1, -1)));
+        assertFalse(world.boundsContain(new Vec2D(5, 10)));
     }
 
     /**

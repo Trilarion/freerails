@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.TerrainType;
@@ -60,7 +60,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @param world
      */
     @Override
-    public void render(Graphics g, Vector2D renderLocation, Vector2D mapLocation, ReadOnlyWorld world) {
+    public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, ReadOnlyWorld world) {
         if (parentTileView != null) {
             parentTileView.render(g, renderLocation, mapLocation, world);
         } else {
@@ -82,7 +82,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      * @return
      */
     @Override
-    public int selectTileIconIndex(Vector2D mapLocation, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world) {
         return 0;
     }
 

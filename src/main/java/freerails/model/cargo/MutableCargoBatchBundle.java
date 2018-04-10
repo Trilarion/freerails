@@ -79,7 +79,7 @@ public class MutableCargoBatchBundle implements CargoBatchBundle {
          * cargo bundle gets changed while the iterator is in use, you will know
          * about it straight away.
          */
-        return new Iterator<CargoBatch>() {
+        return new Iterator<>() {
             private final int updateIDAtCreation = updateID;
 
             public boolean hasNext() {

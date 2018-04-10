@@ -24,7 +24,7 @@ import freerails.client.renderer.track.BuildTrackRenderer;
 import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.WorldConstants;
 
@@ -36,7 +36,7 @@ import java.awt.*;
 public class DetailMapRenderer implements MapRenderer {
 
     private final MapLayerRenderer background;
-    private final Vector2D mapSizeInPixels;
+    private final Vec2D mapSizeInPixels;
     private final OverHeadTrainView trainsview;
     private final StationRadiusRenderer stationRadius;
     private final BuildTrackRenderer buildTrackRenderer;
@@ -50,11 +50,11 @@ public class DetailMapRenderer implements MapRenderer {
     public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
-        MapBackgroundRenderer render = new MapBackgroundRenderer(world, rendererRoot, modelRoot);
-        background = new SquareTileBackgroundRenderer(render);
+        MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot, modelRoot);
+        background = new SquareTileBackgroundRenderer(mapBackgroundRenderer);
 
-        Vector2D mapSize = world.getMapSize();
-        mapSizeInPixels = Vector2D.multiply(mapSize, ClientConfig.TILE_SIZE);
+        Vec2D mapSize = world.getMapSize();
+        mapSizeInPixels = Vec2D.multiply(mapSize, ClientConfig.TILE_SIZE);
 
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);
@@ -78,14 +78,14 @@ public class DetailMapRenderer implements MapRenderer {
     /**
      * @return
      */
-    public Vector2D getMapSizeInPixels() {
+    public Vec2D getMapSizeInPixels() {
         return mapSizeInPixels;
     }
 
     /**
      * @param g
      */
-    public void paintTile(Graphics g, Vector2D tileLocation) {
+    public void paintTile(Graphics g, Vec2D tileLocation) {
         background.paintTile(g, tileLocation);
         trainsview.paint((Graphics2D) g, null);
         stationRadius.paint((Graphics2D) g, null);
@@ -96,7 +96,7 @@ public class DetailMapRenderer implements MapRenderer {
 
     /**
      */
-    public void refreshTile(Vector2D tileLocation) {
+    public void refreshTile(Vec2D tileLocation) {
         background.refreshTile(tileLocation);
     }
 

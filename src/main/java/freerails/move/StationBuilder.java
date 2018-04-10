@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.move.generator.AddStationMoveGenerator;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
@@ -62,7 +62,7 @@ public class StationBuilder {
      * @param location
      * @return
      */
-    public MoveStatus tryBuildingStation(Vector2D location) {
+    public MoveStatus tryBuildingStation(Vec2D location) {
         ReadOnlyWorld world = executor.getWorld();
 
         FreerailsPrincipal principal = executor.getPrincipal();
@@ -76,7 +76,7 @@ public class StationBuilder {
      * @param location
      * @return
      */
-    public MoveStatus buildStation(Vector2D location) {
+    public MoveStatus buildStation(Vec2D location) {
         // Only build a station if there is track at the specified point.
         MoveStatus status = tryBuildingStation(location);
         if (status.succeeds()) {

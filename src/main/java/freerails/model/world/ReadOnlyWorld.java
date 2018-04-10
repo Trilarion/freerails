@@ -19,7 +19,7 @@
 package freerails.model.world;
 
 import freerails.util.Pair;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.ActivityIterator;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
@@ -61,7 +61,7 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * @return
      */
-    boolean boundsContain(Vector2D location);
+    boolean boundsContain(Vec2D location);
 
     /**
      * @param principal
@@ -118,7 +118,7 @@ public interface ReadOnlyWorld extends Serializable {
      *
      * @return
      */
-    Vector2D getMapSize();
+    Vec2D getMapSize();
 
     /**
      * @return
@@ -146,7 +146,7 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * Returns the tile at the specified position on the map.
      */
-    Serializable getTile(Vector2D location);
+    Serializable getTile(Vec2D location);
 
     /**
      * @param principal

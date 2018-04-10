@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
-import freerails.util.Vector2D;
+import freerails.util.Vec2D;
 import freerails.model.world.FullWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
@@ -51,7 +51,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vector2D(20, 20));
+        world = new FullWorld(new Vec2D(20, 20));
         MapFixtureFactory.generateTrackRuleList(world);
         Player player = new Player("test player", 0);
         world.addPlayer(player);
@@ -69,12 +69,12 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) world.getTile(Vector2D.ZERO)).getTrackPiece();
+        oldTrackPiece = ((FullTerrainTile) world.getTile(Vec2D.ZERO)).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, 0);
         int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL, world);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
-        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vector2D.ZERO);
+        trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);
         assertNotNull(move);

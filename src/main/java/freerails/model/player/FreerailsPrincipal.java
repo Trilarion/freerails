@@ -21,7 +21,6 @@ package freerails.model.player;
 import freerails.util.Utils;
 
 import java.io.Serializable;
-import java.security.Principal;
 
 /**
  * This interface identifies a principal. This interface may be extended in the
