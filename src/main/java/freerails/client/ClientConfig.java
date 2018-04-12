@@ -56,10 +56,9 @@ public final class ClientConfig {
      *
      */
     public static final String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
-    public static final int MODE_SINGLE_PLAYER = 0;
-    public static final int MODE_START_NETWORK_GAME = 1;
-    public static final int MODE_JOIN_NETWORK_GAME = 2;
-    public static final int MODE_SERVER_ONLY = 3;
+    public static final int MODE_START_NETWORK_GAME = 0;
+    public static final int MODE_JOIN_NETWORK_GAME = 1;
+    public static final int MODE_SERVER_ONLY = 2;
 
     /**
      *

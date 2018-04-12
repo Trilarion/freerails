@@ -36,14 +36,13 @@ import java.awt.*;
 public class LauncherPanel extends JPanel {
 
     private static final long serialVersionUID = 3257850965422913590L;
-    private final ButtonModel[] buttonModels = new ButtonModel[4];
+    private final ButtonModel[] buttonModels = new ButtonModel[3];
     private final ButtonGroup buttonGroup1;
 
     public LauncherPanel() {
         GridBagConstraints gridBagConstraints;
 
         buttonGroup1 = new ButtonGroup();
-        JRadioButton singlePlayerButton = new JRadioButton();
         JRadioButton startNetworkButton = new JRadioButton();
         JRadioButton joinNetworkButton = new JRadioButton();
         JRadioButton serverOnlyButton = new JRadioButton();
@@ -52,16 +51,9 @@ public class LauncherPanel extends JPanel {
         setLayout(new GridBagLayout());
 
         setBorder(new TitledBorder(new EtchedBorder(), "Select Game Type"));
-        buttonGroup1.add(singlePlayerButton);
-        singlePlayerButton.setSelected(true);
-        singlePlayerButton.setText("Single-Player");
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        add(singlePlayerButton, gridBagConstraints);
-
         buttonGroup1.add(startNetworkButton);
         startNetworkButton.setText("Start a network game");
+        startNetworkButton.setSelected(true);
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
@@ -91,7 +83,6 @@ public class LauncherPanel extends JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(paddingJPanel, gridBagConstraints);
-        buttonModels[ClientConfig.MODE_SINGLE_PLAYER] = singlePlayerButton.getModel();
         buttonModels[ClientConfig.MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
         buttonModels[ClientConfig.MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
         buttonModels[ClientConfig.MODE_SERVER_ONLY] = serverOnlyButton.getModel();

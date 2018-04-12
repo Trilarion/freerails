@@ -26,6 +26,7 @@ import freerails.client.componentfactory.GUIComponentFactoryImpl;
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
+import freerails.controller.BuildTrackController;
 import freerails.network.command.ClientProperty;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldItem;
@@ -78,12 +79,16 @@ public class LauncherClient extends FreerailsClient {
 
     @Override
     protected void clientUpdates() {
-            factory.getBuildTrackController().update();
-            // Update sub tick time.
-            long currentTime = System.currentTimeMillis();
-            long lastTick = getLastTickTime();
-            double dt = currentTime - lastTick;
-            ReadOnlyWorld world2 = modelRoot.getWorld();
+        BuildTrackController buildTrackController = factory.getBuildTrackController();
+        if (buildTrackController != null) {
+            buildTrackController.update();
+        }
+        // Update sub tick time.
+        long currentTime = System.currentTimeMillis();
+        long lastTick = getLastTickTime();
+        double dt = currentTime - lastTick;
+        ReadOnlyWorld world2 = modelRoot.getWorld();
+        if (world2 != null) {
             GameSpeed gameSpeed = (GameSpeed) world2.get(WorldItem.GameSpeed);
             GameTime currentGameTime = world2.currentTime();
             double ticks = currentGameTime.getTicks();
@@ -92,6 +97,7 @@ public class LauncherClient extends FreerailsClient {
                 ticks += subTicks;
             }
             modelRoot.setProperty(ModelRootProperty.TIME, ticks);
+        }
     }
 
     /**

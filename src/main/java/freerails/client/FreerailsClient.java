@@ -96,12 +96,8 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     public final LogOnResponse connect(GameServer server, String username, String password) {
         try {
             Serializable request = new LogOnCredentials(username, password);
-            //connectionToServer = new IpConnectionToServer("127.0.0.1", 34567);
-            //server.addConnection(new IpConnectionToClient("127.0.0.1", 34567));
-            // TODO use IpConnectionToServer instead (as commented above), eliminate LocalConnection
-            connectionToServer = new LocalConnection();
+            connectionToServer = new IpConnectionToServer("127.0.0.1", 55000); // TODO get selected port
             connectionToServer.writeToServer(request);
-            server.addConnection((LocalConnection) connectionToServer);
 
             return (LogOnResponse) connectionToServer.waitForObjectFromServer();
         } catch (Exception e) {

@@ -33,7 +33,6 @@ import freerails.controller.BuildTrackController;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
-import freerails.network.LocalConnection;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameSpeed;
@@ -519,11 +518,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         String name = modelRoot.getPrincipal().getName();
         String serverDetails = (String) modelRoot.getProperty(ModelRootProperty.SERVER);
         String frameTitle;
-        if (serverDetails.equals(LocalConnection.LOCAL_SERVER_DESCRIPTION)) {
-            frameTitle = name + " - Freerails";
-        } else {
-            frameTitle = name + " - " + serverDetails + " - Freerails";
-        }
+        // frameTitle = name + " - Freerails";
+        frameTitle = name + " - " + serverDetails + " - Freerails";
 
         clientFrame.setTitle(frameTitle);
         modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, cursorPosition);

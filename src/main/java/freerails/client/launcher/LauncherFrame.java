@@ -284,32 +284,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         int mode;
 
         switch (launcherPanel.getMode()) {
-            case ClientConfig.MODE_SINGLE_PLAYER:
-                try {
-                    mode = clientOptionsPanel.getScreenMode();
-
-                    client = new LauncherClient(clientOptionsPanel.getPlayerName(), progressPanel, mode, clientOptionsPanel.getDisplayMode());
-                    if (isNewGame()) {
-                        initServer();
-                    }
-                    client.connect(server, clientOptionsPanel.getPlayerName(), "password");
-
-                    setServerGameModel();
-                } catch (Exception e) {
-                    setInfoText(e.getMessage(), InfoMessageType.WARNING);
-                    recover = true;
-                } finally {
-                    if (recover) {
-                        clientOptionsPanel.setControlsEnabled(true);
-                        prevButton.setEnabled(true);
-                        setButtonsVisible(true);
-                        currentPage = 1;
-                        cl.show(jPanel1, "1");
-                        return;
-                    }
-                }
-                startThread(server, client);
-                break;
             case ClientConfig.MODE_START_NETWORK_GAME:
                 // LL: I don't think this code ever executes now that there is a connected players screen.
                 try {
@@ -487,13 +461,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                             cl.next(jPanel1);
                             msp.setServerPortPanelVisible(true);
 
-                            currentPage++;
-                            break;
-                        case ClientConfig.MODE_SINGLE_PLAYER:
-                            // go to map selection screen
-                            cl.next(jPanel1);
-                            msp.setServerPortPanelVisible(false);
-                            cop.setRemoteServerPanelVisible(false);
                             currentPage++;
                             break;
                         case ClientConfig.MODE_START_NETWORK_GAME:
