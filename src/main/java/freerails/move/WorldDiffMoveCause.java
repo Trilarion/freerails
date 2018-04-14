@@ -5,6 +5,5 @@ package freerails.move;
  */
 public enum WorldDiffMoveCause {
 
-    TrainArrives,
-    YearEnd
+    TrainArrives
 }
