@@ -304,10 +304,9 @@ public strictfp class PathOnTiles implements Serializable {
                 points.add(new Vec2D(x, y));
             }
 
-            TileTransition v = vector;
-            tileX += v.deltaX;
-            tileY += v.deltaY;
-            distanceSoFar += v.getLength();
+            tileX += vector.deltaX;
+            tileY += vector.deltaY;
+            distanceSoFar += vector.getLength();
         }
 
         Pair<Vec2D, Vec2D> point = getPoint(offset, offset + length);

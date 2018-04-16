@@ -24,11 +24,11 @@ import freerails.move.listmove.ChangeCargoBundleMove;
 
 import java.util.List;
 
+// TODO this should probably not derive from CompositeMove ??
 /**
  * This {@link CompositeMove} transfers cargo from a train to a station and
  * vice-versa.
  */
-
 public class TransferCargoAtStationMove extends CompositeMove {
 
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
@@ -36,10 +36,10 @@ public class TransferCargoAtStationMove extends CompositeMove {
     private static final long serialVersionUID = 3257291318215456563L;
 
     /**
-     * @param movesArrayList
+     * @param moves
      */
-    public TransferCargoAtStationMove(List<Move> movesArrayList) {
-        super(movesArrayList);
+    public TransferCargoAtStationMove(List<Move> moves) {
+        super(moves);
     }
 
     /**

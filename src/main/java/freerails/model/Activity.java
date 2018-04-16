@@ -24,6 +24,8 @@ package freerails.model;
 import java.io.Serializable;
 
 /**
+ * Mostly used for trains.
+ *
  * @param <E>
  */
 public interface Activity<E extends Serializable> extends Serializable {

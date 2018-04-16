@@ -28,6 +28,10 @@ public final class WorldConstants {
      * demands the cargo.
      */
     public static final int PREREQUISITE_FOR_DEMAND = 16;
+    /**
+     * Determines how much the player gets for delivering cargo.
+     */
+    public static final int CARGO_DELIVERY_EARNINGS_FACTOR = 75;
 
     private WorldConstants() {
     }

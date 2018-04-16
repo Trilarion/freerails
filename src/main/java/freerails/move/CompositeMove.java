@@ -25,6 +25,7 @@ import freerails.util.Utils;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +44,12 @@ public class CompositeMove implements Move {
      */
     public CompositeMove(List<Move> moves) {
         this.moves = Utils.immutableList(moves);
+    }
+
+    public CompositeMove(Move move, List<Move> moreMoves) {
+        moves = new ArrayList<>();
+        moves.add(move);
+        moves.addAll(moreMoves);
     }
 
     /**

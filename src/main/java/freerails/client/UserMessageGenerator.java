@@ -37,6 +37,7 @@ import freerails.util.ui.SoundManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,12 +72,10 @@ public class UserMessageGenerator implements MoveReceiver {
             }
         }
 
-        if (move instanceof WorldDiffMove) {
-            WorldDiffMove worldDiffMove = (WorldDiffMove) move;
-            if (worldDiffMove.getCause() == WorldDiffMoveCause.TrainArrives) {
-                trainArrives(worldDiffMove);
-            }
-        } else if (move instanceof ChangeGameSpeedMove) {
+        // TODO there was a WorldDiffMove before which triggered trainArrives (must be re-implemented) somehow
+        // trainArrives(move);
+
+        if (move instanceof ChangeGameSpeedMove) {
             logSpeed();
         }
     }
@@ -85,11 +84,11 @@ public class UserMessageGenerator implements MoveReceiver {
      * Generates a message giving details of any cargo delivered and plays a
      * cash register sound to indicate that revenue is coming in.
      */
-    private void trainArrives(WorldDiffMove worldDiffMove) {
+    private void trainArrives(CompositeMove moves) {
+        // TODO does this work anymore, was a WorldDiffMove before
         List<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
-        CompositeMove listChanges = worldDiffMove.getListChanges();
-        for (int i = 0; i < listChanges.size(); i++) {
-            Move move = listChanges.getMoves().get(i);
+        for (int i = 0; i < moves.size(); i++) {
+            Move move = moves.getMoves().get(i);
             if (move instanceof AddTransactionMove) {
                 AddTransactionMove atm = (AddTransactionMove) move;
                 if (!atm.getPrincipal().equals(modelRoot.getPrincipal())) {

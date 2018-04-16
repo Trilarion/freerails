@@ -46,30 +46,30 @@ import java.util.HashSet;
 public class TrainAccessor {
 
     private final ReadOnlyWorld world;
-    private final FreerailsPrincipal p;
+    private final FreerailsPrincipal principal;
     private final int id;
 
     /**
      * @param world
-     * @param p
+     * @param principal
      * @param id
      */
-    public TrainAccessor(final ReadOnlyWorld world, final FreerailsPrincipal p, final int id) {
+    public TrainAccessor(final ReadOnlyWorld world, final FreerailsPrincipal principal, final int id) {
         this.world = world;
-        this.p = p;
+        this.principal = principal;
         this.id = id;
     }
 
     /**
-     * @param row
+     * @param world
      * @param onTrain
      * @param consist
      * @return
      */
-    public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld row, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
+    public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld world, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
-        final int NUM_CARGO_TYPES = row.size(SharedKey.CargoTypes);
+        final int NUM_CARGO_TYPES = world.size(SharedKey.CargoTypes);
         Integer[] spaceAvailable = new Integer[NUM_CARGO_TYPES];
         Arrays.fill(spaceAvailable, 0);
 
@@ -90,8 +90,8 @@ public class TrainAccessor {
      * @return
      */
     public TrainState getStatus(double time) {
-        TrainMotion tm = findCurrentMotion(time);
-        return tm.getActivity();
+        TrainMotion trainMotion = findCurrentMotion(time);
+        return trainMotion.getTrainState();
     }
 
     /**
@@ -100,15 +100,15 @@ public class TrainAccessor {
      */
     public int getStationId(double time) {
 
-        TrainMotion tm = findCurrentMotion(time);
-        PositionOnTrack positionOnTrack = tm.getFinalPosition();
-        Vec2D pp = positionOnTrack.getLocation();
+        TrainMotion trainMotion = findCurrentMotion(time);
+        PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
+        Vec2D location = positionOnTrack.getLocation();
 
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < world.size(p, PlayerKey.Stations); i++) {
-            Station tempPoint = (Station) world.get(p, PlayerKey.Stations, i);
+        for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
+            Station station = (Station) world.get(principal, PlayerKey.Stations, i);
 
-            if (null != tempPoint && pp.equals(tempPoint.location)) {
+            if (null != station && location.equals(station.location)) {
                 return i; // train is at the station at location tempPoint
             }
         }
@@ -122,30 +122,30 @@ public class TrainAccessor {
      * @return
      */
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
-        ActivityIterator ai = world.getActivities(p, id);
+        ActivityIterator activityIterator = world.getActivities(principal, id);
 
         // goto last
-        ai.gotoLastActivity();
+        activityIterator.gotoLastActivity();
         // search backwards
-        while (ai.getFinishTime() >= time && ai.hasPrevious()) {
-            ai.previousActivity();
+        while (activityIterator.getFinishTime() >= time && activityIterator.hasPrevious()) {
+            activityIterator.previousActivity();
         }
-        boolean afterFinish = ai.getFinishTime() < time;
-        while (afterFinish && ai.hasNext()) {
-            ai.nextActivity();
-            afterFinish = ai.getFinishTime() < time;
+        boolean afterFinish = activityIterator.getFinishTime() < time;
+        while (afterFinish && activityIterator.hasNext()) {
+            activityIterator.nextActivity();
+            afterFinish = activityIterator.getFinishTime() < time;
         }
-        double dt = time - ai.getStartTime();
-        dt = Math.min(dt, ai.getDuration());
-        TrainMotion tm = (TrainMotion) ai.getActivity();
+        double dt = time - activityIterator.getStartTime();
+        dt = Math.min(dt, activityIterator.getDuration());
+        TrainMotion trainMotion = (TrainMotion) activityIterator.getActivity();
 
-        Vec2D start = tm.getPath().getStart();
-        int trainLength = tm.getTrainLength();
+        Vec2D start = trainMotion.getPath().getStart();
+        int trainLength = trainMotion.getTrainLength();
         Rectangle trainBox = new Rectangle(start.x * WorldConstants.TILE_SIZE - trainLength * 2, start.y * WorldConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
             return null; // TODO doesn't work
         }
-        return tm.getStateAtTime(dt);
+        return trainMotion.getStateAtTime(dt);
     }
 
     /**
@@ -153,19 +153,19 @@ public class TrainAccessor {
      * @return
      */
     public TrainMotion findCurrentMotion(double time) {
-        ActivityIterator ai = world.getActivities(p, id);
-        boolean afterFinish = ai.getFinishTime() < time;
+        ActivityIterator activityIterator = world.getActivities(principal, id);
+        boolean afterFinish = activityIterator.getFinishTime() < time;
         if (afterFinish) {
-            ai.gotoLastActivity();
+            activityIterator.gotoLastActivity();
         }
-        return (TrainMotion) ai.getActivity();
+        return (TrainMotion) activityIterator.getActivity();
     }
 
     /**
      * @return
      */
     public Train getTrain() {
-        return (Train) world.get(p, PlayerKey.Trains, id);
+        return (Train) world.get(principal, PlayerKey.Trains, id);
     }
 
     /**
@@ -173,7 +173,7 @@ public class TrainAccessor {
      */
     public ImmutableSchedule getSchedule() {
         Train train = getTrain();
-        return (ImmutableSchedule) world.get(p, PlayerKey.TrainSchedules, train.getScheduleID());
+        return (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
     }
 
     /**
@@ -181,7 +181,7 @@ public class TrainAccessor {
      */
     public CargoBatchBundle getCargoBundle() {
         Train train = getTrain();
-        return (ImmutableCargoBatchBundle) world.get(p, PlayerKey.CargoBundles, train.getCargoBundleID());
+        return (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, train.getCargoBundleID());
     }
 
     /**
@@ -200,8 +200,8 @@ public class TrainAccessor {
         if (stationId == -1) return false;
         TrainState act = getStatus(time);
         if (act != TrainState.WAITING_FOR_FULL_LOAD) return false;
-        ImmutableSchedule shedule = getSchedule();
-        TrainOrders order = shedule.getOrder(shedule.getOrderToGoto());
+        ImmutableSchedule schedule = getSchedule();
+        TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
         if (order.stationId != stationId) return false;
         if (!order.waitUntilFull) return false;
         Train train = getTrain();
@@ -213,9 +213,9 @@ public class TrainAccessor {
      * towards.
      */
     public Vec2D getTargetLocation() {
-        Train train = (Train) world.get(p, PlayerKey.Trains, id);
+        Train train = (Train) world.get(principal, PlayerKey.Trains, id);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) world.get(p, PlayerKey.TrainSchedules, scheduleID);
+        Schedule schedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {
@@ -223,7 +223,7 @@ public class TrainAccessor {
             return Vec2D.ZERO;
         }
 
-        Station station = (Station) world.get(p, PlayerKey.Stations, stationNumber);
+        Station station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
         return station.location;
     }
 
@@ -232,8 +232,8 @@ public class TrainAccessor {
      * @return
      */
     public HashSet<TrackSection> occupiedTrackSection(double time) {
-        TrainMotion tm = findCurrentMotion(time);
-        PathOnTiles path = tm.getPath();
+        TrainMotion trainMotion = findCurrentMotion(time);
+        PathOnTiles path = trainMotion.getPath();
         HashSet<TrackSection> sections = new HashSet<>();
         Vec2D start = path.getStart();
         int x = start.x;
@@ -253,8 +253,8 @@ public class TrainAccessor {
      * @return
      */
     public boolean isMoving(double time) {
-        TrainMotion tm = findCurrentMotion(time);
-        double speed = tm.getSpeedAtEnd();
+        TrainMotion trainMotion = findCurrentMotion(time);
+        double speed = trainMotion.getSpeedAtEnd();
         return speed != 0;
     }
 
@@ -263,8 +263,8 @@ public class TrainAccessor {
      */
     public ImmutableList<Integer> spaceAvailable() {
 
-        Train train = (Train) world.get(p, PlayerKey.Trains, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(p, PlayerKey.CargoBundles, train.getCargoBundleID());
+        Train train = (Train) world.get(principal, PlayerKey.Trains, id);
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, train.getCargoBundleID());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
     }
 

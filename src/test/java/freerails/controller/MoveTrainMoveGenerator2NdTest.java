@@ -152,7 +152,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
             TrainMotion tm = moveTrain();
             PositionOnTrack positionOnTrack = tm.getFinalPosition();
             assertEquals(14 + i, positionOnTrack.getLocation().x);
-            assertEquals(TrainState.READY, tm.getActivity());
+            assertEquals(TrainState.READY, tm.getTrainState());
             assertTrue(tm.getSpeedAtEnd() > 0);
         }
     }
@@ -199,14 +199,14 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station1Location.x);
         assertEquals(station1Location.x, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
 
         // The next train motion should represent the stop at the station.
         trainMotion = moveTrain();
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station1Location.x, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getActivity());
+        assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getTrainState());
 
         // 80 Units of cargo should have been transferred to the train!
         CargoBatchBundle onTrain = trainAccessor.getCargoBundle();
@@ -218,7 +218,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station1Location.x + 1, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
     }
 
     /**
@@ -255,7 +255,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         } while (x < station2Location.x);
         assertEquals(station2Location.x, x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
 
         // The train should be heading for station 1.
         TrainAccessor ta = new TrainAccessor(world, principal, 0);
@@ -269,7 +269,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station2Location.x, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getActivity());
+        assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getTrainState());
 
         // The train should be heading for station 0.
         Schedule schedule2 = ta.getSchedule();
@@ -288,7 +288,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
     }
 
     /**
@@ -309,7 +309,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
     }
 
     private void putTrainAtStationWaiting4FullLoad() {
@@ -336,7 +336,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station2Location.x);
         assertEquals(station2Location.x, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
 
         // The train should now stop at the station
         // and wait for a full load.
@@ -345,7 +345,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
 
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.WAITING_FOR_FULL_LOAD, trainMotion.getActivity());
+        assertEquals(TrainState.WAITING_FOR_FULL_LOAD, trainMotion.getTrainState());
 
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, principal,
                 new OccupiedTracks(principal, world));
@@ -378,7 +378,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
     }
 
     /**
@@ -435,7 +435,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station1Location.x);
         assertEquals(station1Location.x, positionOnTrack.getLocation().x);
         assertEquals(station1Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
         trainMotion = moveTrain();
         positionOnTrack = trainMotion.getFinalPosition();
 
@@ -484,7 +484,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         } while (positionOnTrack.getLocation().x < station2Location.x);
         assertEquals(station2Location.x, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
-        assertEquals(TrainState.READY, trainMotion.getActivity());
+        assertEquals(TrainState.READY, trainMotion.getTrainState());
 
         Train train = ta.getTrain();
         assertEquals(2, train.getNumberOfWagons());

@@ -63,7 +63,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     private final PathOnTiles path;
     private final Motion speeds;
     private final int trainLength;
-    private final TrainState activity;
+    private final TrainState trainState;
 
     /**
      * Creates a new TrainMotion instance.
@@ -107,7 +107,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
             duration = tempDuration;
         }
 
-        activity = TrainState.READY;
+        trainState = TrainState.READY;
         sanityCheck();
     }
 
@@ -120,7 +120,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     public TrainMotion(PathOnTiles path, int trainLength, double duration, TrainState act) {
         this.path = path;
         this.trainLength = trainLength;
-        activity = act;
+        trainState = act;
         distanceEngineWillTravel = 0;
         initialPosition = path.getTotalDistance();
         speeds = ConstantAccelerationMotion.STOPPED;
@@ -209,7 +209,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
         Pair<PathIterator, Integer> pathIt = path.subPath(offset, trainLength);
         double speed = speeds.calculateSpeedAtTime(time);
         double acceleration = speeds.calculateAccelerationAtTime(time);
-        return TrainPositionOnMap.createInSameDirectionAsPathReversed(pathIt, speed, acceleration, activity);
+        return TrainPositionOnMap.createInSameDirectionAsPathReversed(pathIt, speed, acceleration, trainState);
     }
 
     /**
@@ -285,8 +285,8 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * @return
      */
-    public TrainState getActivity() {
-        return activity;
+    public TrainState getTrainState() {
+        return trainState;
     }
 
     /**
