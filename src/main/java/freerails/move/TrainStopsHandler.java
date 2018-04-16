@@ -24,7 +24,6 @@ package freerails.move;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.listmove.ChangeTrainScheduleMove;
-import freerails.move.mapupdatemove.WorldDiffMove;
 import freerails.model.track.NoTrackException;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
