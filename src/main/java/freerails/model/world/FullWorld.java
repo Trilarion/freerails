@@ -31,6 +31,10 @@ import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An implementation of World that uses standard java.util collections internally.
@@ -38,26 +42,18 @@ import java.io.Serializable;
 public class FullWorld implements World {
 
     private static final long serialVersionUID = 3544393612684505393L;
-    /**
-     * A 3D list: D1 is player, D2 is train id, D3 is train position.
-     */
-    public List3D<ActivityAndTime> activityLists = new List3DImpl<>(0, 0);
-    /**
-     * A 2D list: D1 is player, D2 is transaction.
-     */
-    public List2D<TransactionRecord> bankAccounts = new List2DImpl<>(0);
-    public List1D<Money> currentBalance = new List1DImpl<>();
-    public List1D<Serializable> items = new List1DImpl<>(WorldItem.getNumberOfKeys());
+    public Map<FreerailsPrincipal, Map<Integer, List<ActivityAndTime>>> activities = new HashMap<>();
+    public Map<FreerailsPrincipal, List<TransactionRecord>> transactionLogs = new HashMap<>();
+    public List<Money> currentBalance = new ArrayList<>();
+    public List<Serializable> items = new ArrayList<>();
+
     /**
      * A 3D list: D1 is player, D2 is type, D3 is element.
      */
-    public List3D<Serializable> lists = new List3DImpl<>(0, PlayerKey.getNumberOfKeys());
+    public Map<FreerailsPrincipal, Map<PlayerKey, List<Serializable>>> playerLists = new HashMap<>();
     private Serializable[][] map;
-    public List1D<Player> players = new List1DImpl<>();
-    /**
-     * A 2D list: D1 is type, D2 is element.
-     */
-    public List2D<Serializable> sharedLists = new List2DImpl<>(SharedKey.getNumberOfKeys());
+    public List<Player> players = new ArrayList<>();
+    public Map<SharedKey, List<Serializable>> sharedKeyLists = new HashMap<>();
     public GameTime time = new GameTime(0);
 
     /**
@@ -71,6 +67,13 @@ public class FullWorld implements World {
      * @param mapSize
      */
     public FullWorld(Vec2D mapSize) {
+        for (int i = 0; i < WorldItem.getNumberOfKeys(); i++) {
+            items.add(null);
+        }
+        for (SharedKey key: SharedKey.values()) {
+            sharedKeyLists.put(key, new ArrayList<>());
+        }
+
         set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         set(WorldItem.EconomicClimate, EconomicClimate.MODERATION);
         setupMap(mapSize);
@@ -82,23 +85,25 @@ public class FullWorld implements World {
      * @param activity
      */
     public void addActivity(FreerailsPrincipal principal, int index, Activity activity) {
-        int playerIndex = principal.getWorldIndex();
-        int lastID = activityLists.sizeD3(playerIndex, index) - 1;
-        ActivityAndTime last = activityLists.get(playerIndex, index, lastID);
+        int lastId = activities.get(principal).get(index).size() - 1;
+        ActivityAndTime last = activities.get(principal).get(index).get(lastId);
         double duration = last.act.duration();
         double lastFinishTime = last.startTime + duration;
         double thisStartTime = Math.max(lastFinishTime, currentTime().getTicks());
         ActivityAndTime ant = new ActivityAndTime(activity, thisStartTime);
-        activityLists.addD3(playerIndex, index, ant);
+        activities.get(principal).get(index).add(ant);
     }
 
     public int add(FreerailsPrincipal principal, PlayerKey playerKey, Serializable element) {
-        int playerIndex = principal.getWorldIndex();
-        return lists.addD3(playerIndex, playerKey.getId(), element);
+        List<Serializable> serializables = playerLists.get(principal).get(playerKey);
+        serializables.add(element);
+        return serializables.size() - 1;
     }
 
     public int add(SharedKey key, Serializable element) {
-        return sharedLists.addD2(key.getId(), element);
+        List<Serializable> serializables = sharedKeyLists.get(key);
+        serializables.add(element);
+        return serializables.size() - 1;
     }
 
     /**
@@ -107,10 +112,10 @@ public class FullWorld implements World {
      * @return
      */
     public int addActiveEntity(FreerailsPrincipal principal, Activity element) {
-        int playerIndex = principal.getWorldIndex();
-        int index = activityLists.addD2(playerIndex);
+        int index = activities.get(principal).size();
+        activities.get(principal).put(index, new ArrayList<>());
         ActivityAndTime ant = new ActivityAndTime(element, currentTime().getTicks());
-        activityLists.addD3(playerIndex, index, ant);
+        activities.get(principal).get(index).add(ant);
         return index;
     }
 
@@ -120,15 +125,19 @@ public class FullWorld implements World {
      */
     public int addPlayer(Player player) {
         Utils.verifyNotNull(player);
-        int index = players.add(player);
-        bankAccounts.addD1();
+
+        players.add(player);
+        int index = players.size() - 1;
+
+        transactionLogs.put(player.getPrincipal(), new ArrayList<>());
         currentBalance.add(Money.ZERO);
 
-        lists.addD1();
-        for (int i = 0; i < PlayerKey.getNumberOfKeys(); i++) {
-            lists.addD2(index);
+        playerLists.put(player.getPrincipal(), new HashMap<>());
+        for (PlayerKey key: PlayerKey.values()) {
+            playerLists.get(player.getPrincipal()).put(key, new ArrayList<>());
         }
-        activityLists.addD1();
+
+        activities.put(player.getPrincipal(), new HashMap<>());
 
         return index;
     }
@@ -136,7 +145,7 @@ public class FullWorld implements World {
     public void addTransaction(FreerailsPrincipal principal, Transaction transaction) {
         int playerIndex = principal.getWorldIndex();
         TransactionRecord transactionRecord = new TransactionRecord(transaction, time);
-        bankAccounts.addD2(playerIndex, transactionRecord);
+        transactionLogs.get(principal).add(transactionRecord);
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = Money.add(transaction.price(), oldBalance);
         currentBalance.set(playerIndex, newBalance);
@@ -189,19 +198,19 @@ public class FullWorld implements World {
             }
 
             // Compare lists
-            if (!lists.equals(other.lists)) {
+            if (!playerLists.equals(other.playerLists)) {
                 return false;
             }
-            if (!sharedLists.equals(other.sharedLists)) {
+            if (!sharedKeyLists.equals(other.sharedKeyLists)) {
                 return false;
             }
-            if (!activityLists.equals(other.activityLists)) {
+            if (!activities.equals(other.activities)) {
                 return false;
             }
             if (!items.equals(other.items)) {
                 return false;
             }
-            if (!bankAccounts.equals(other.bankAccounts)) {
+            if (!transactionLogs.equals(other.transactionLogs)) {
                 return false;
             }
 
@@ -226,8 +235,7 @@ public class FullWorld implements World {
     }
 
     public Serializable get(FreerailsPrincipal principal, PlayerKey key, int index) {
-        int playerIndex = principal.getWorldIndex();
-        return lists.get(playerIndex, key.getId(), index);
+        return playerLists.get(principal).get(key).get(index);
     }
 
     public Serializable get(WorldItem item) {
@@ -235,7 +243,7 @@ public class FullWorld implements World {
     }
 
     public Serializable get(SharedKey key, int index) {
-        return sharedLists.get(key.getId(), index);
+        return sharedKeyLists.get(key).get(index);
     }
 
     /**
@@ -244,8 +252,7 @@ public class FullWorld implements World {
      * @return
      */
     public ActivityIterator getActivities(final FreerailsPrincipal principal, int index) {
-        final int playerIndex = principal.getWorldIndex();
-        return new ActivityIteratorImpl(this, playerIndex, index);
+        return new ActivityIteratorImpl(this, principal, index);
     }
 
     /**
@@ -287,8 +294,7 @@ public class FullWorld implements World {
      * @return
      */
     public int getNumberOfTransactions(FreerailsPrincipal principal) {
-        int playerIndex = principal.getWorldIndex();
-        return bankAccounts.sizeD2(playerIndex);
+        return transactionLogs.get(principal).size();
     }
 
     /**
@@ -309,9 +315,8 @@ public class FullWorld implements World {
      * @return
      */
     public Transaction getTransaction(FreerailsPrincipal principal, int i) {
-        int playerIndex = principal.getWorldIndex();
-        TransactionRecord tats = bankAccounts.get(playerIndex, i);
-        return tats.getTransaction();
+        TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
+        return transactionRecord.getTransaction();
     }
 
     /**
@@ -320,9 +325,8 @@ public class FullWorld implements World {
      * @return
      */
     public GameTime getTransactionTimeStamp(FreerailsPrincipal principal, int i) {
-        int playerIndex = principal.getWorldIndex();
-        TransactionRecord tats = bankAccounts.get(playerIndex, i);
-        return tats.getTimestamp();
+        TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
+        return transactionRecord.getTimestamp();
     }
 
     /**
@@ -331,9 +335,8 @@ public class FullWorld implements World {
      * @return
      */
     public Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal principal, int i) {
-        int playerIndex = principal.getWorldIndex();
-        TransactionRecord tats = bankAccounts.get(playerIndex, i);
-        return new Pair<>(tats.getTransaction(), tats.getTimestamp());
+        TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
+        return new Pair<>(transactionRecord.getTransaction(), transactionRecord.getTimestamp());
     }
 
     @Override
@@ -353,13 +356,13 @@ public class FullWorld implements World {
     }
 
     public Serializable removeLast(FreerailsPrincipal principal, PlayerKey playerKey) {
-        int playerIndex = principal.getWorldIndex();
-        return lists.removeLastD3(playerIndex, playerKey.getId());
+        List<Serializable> serializables = playerLists.get(principal).get(playerKey);
+        return serializables.remove(serializables.size() - 1);
     }
 
     public Serializable removeLast(SharedKey key) {
-
-        return sharedLists.removeLastD2(key.getId());
+        List<Serializable> serializables = sharedKeyLists.get(key);
+        return serializables.remove(serializables.size() - 1);
     }
 
     /**
@@ -367,10 +370,10 @@ public class FullWorld implements World {
      * @return
      */
     public Activity removeLastActiveEntity(FreerailsPrincipal principal) {
-        int playerIndex = principal.getWorldIndex();
-        int lastID = activityLists.sizeD2(playerIndex) - 1;
-        Activity act = activityLists.removeLastD3(playerIndex, lastID).act;
-        activityLists.removeLastD2(playerIndex);
+        int lastId = activities.get(principal).size() - 1;
+        List<ActivityAndTime> serializables = activities.get(principal).get(lastId);
+        Activity act = serializables.remove(serializables.size() - 1).act;
+        activities.get(principal).remove(lastId);
         return act;
     }
 
@@ -380,11 +383,12 @@ public class FullWorld implements World {
      * @return
      */
     public void removeLastActivity(FreerailsPrincipal principal, int index) {
-        int playerIndex = principal.getWorldIndex();
-        if (activityLists.sizeD3(playerIndex, index) < 2) throw new IllegalStateException();
-
-        activityLists.removeLastD3(playerIndex, index);
-    }
+        if (activities.get(principal).get(index).size() < 2) {
+            throw new IllegalStateException();
+        }
+        List<ActivityAndTime> list = activities.get(principal).get(index);
+        list.remove(list.size() - 1);
+      }
 
     /**
      * Removes the last player to be added.
@@ -395,19 +399,26 @@ public class FullWorld implements World {
      */
     public Player removeLastPlayer() {
 
+        // TODO this does not work, because we should indicate which player we want to remove
+        /*
         int playerID = bankAccounts.removeLastD1();
         while (lists.sizeD2(playerID) > 0) lists.removeLastD2(playerID);
 
         lists.removeLastD1();
-        currentBalance.removeLast();
+        currentBalance.remove(currentBalance.size() - 1);
         activityLists.removeLastD1();
 
-        return players.removeLast();
+        return players.remove(players.size() - 1);
+        */
+        throw new UnsupportedOperationException();
     }
 
     public Transaction removeLastTransaction(FreerailsPrincipal principal) {
         int playerIndex = principal.getWorldIndex();
-        TransactionRecord transactionRecord = bankAccounts.removeLastD2(playerIndex);
+
+        List<TransactionRecord> transactions = transactionLogs.get(principal);
+        TransactionRecord transactionRecord = transactions.remove(transactions.size()-1);
+
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = Money.subtract(oldBalance, transactionRecord.getTransaction().price());
         currentBalance.set(playerIndex, newBalance);
@@ -415,8 +426,7 @@ public class FullWorld implements World {
     }
 
     public void set(FreerailsPrincipal principal, PlayerKey playerKey, int index, Serializable element) {
-        int playerIndex = principal.getWorldIndex();
-        lists.set(playerIndex, playerKey.getId(), index, element);
+        playerLists.get(principal).get(playerKey).set(index, element);
     }
 
     public void set(WorldItem worldItem, Serializable element) {
@@ -424,7 +434,7 @@ public class FullWorld implements World {
     }
 
     public void set(SharedKey key, int index, Serializable element) {
-        sharedLists.set(key.getId(), index, element);
+        sharedKeyLists.get(key).set(index, element);
     }
 
     public void setTile(Vec2D p, Serializable tile) {
@@ -452,17 +462,15 @@ public class FullWorld implements World {
     }
 
     public int size(FreerailsPrincipal principal) {
-        int playerIndex = principal.getWorldIndex();
-        return activityLists.sizeD2(playerIndex);
+        return activities.get(principal).size();
     }
 
     public int size(FreerailsPrincipal principal, PlayerKey key) {
-        int playerIndex = principal.getWorldIndex();
-        return lists.sizeD3(playerIndex, key.getId());
+        return playerLists.get(principal).get(key).size();
     }
 
     public int size(SharedKey key) {
-        return sharedLists.sizeD2(key.getId());
+        return sharedKeyLists.get(key).size();
     }
 
     /**
@@ -470,8 +478,7 @@ public class FullWorld implements World {
      * @return
      */
     public int getNumberOfActiveEntities(FreerailsPrincipal principal) {
-        int playerIndex = principal.getWorldIndex();
-        return activityLists.sizeD2(playerIndex);
+        return activities.get(principal).size();
     }
 
     /**

@@ -27,6 +27,7 @@ import freerails.model.finances.Transaction;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 
+// TODO what about a remove of a player?
 /**
  * Adds a player to the world.
  */

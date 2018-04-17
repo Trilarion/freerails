@@ -23,33 +23,12 @@ package freerails.model.world;
  */
 public enum PlayerKey {
 
-    Trains(0), Stations(1), CargoBundles(2), TrainSchedules(3);
-
-    private final int id;
-
-    PlayerKey(int id) {
-        this.id = id;
-    }
+    Trains, Stations, CargoBundles, TrainSchedules;
 
     /**
      * @return
      */
     public static int getNumberOfKeys() {
         return values().length;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getId() {
-        return id;
-    }
-
-    public static PlayerKey getById(int id) {
-        for (PlayerKey key : values()) {
-            if (key.id == id) return key;
-        }
-        throw new IllegalArgumentException();
     }
 }

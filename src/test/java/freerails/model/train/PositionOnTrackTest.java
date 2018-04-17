@@ -71,7 +71,6 @@ public class PositionOnTrackTest extends TestCase {
         TileTransition v = TileTransition.getInstance(7); // 7 is the maximum vector number.
 
         p1 = PositionOnTrack.createComingFrom(new Vec2D(PositionOnTrack.MAX_COORDINATE, PositionOnTrack.MAX_COORDINATE), v);
-        i = p1.toInt();
     }
 
     /*

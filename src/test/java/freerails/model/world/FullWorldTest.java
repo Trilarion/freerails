@@ -114,10 +114,6 @@ public class FullWorldTest extends TestCase {
         original.addPlayer(a);
         copy.addPlayer(b);
         assertFalse(copy.equals(original));
-        copy.removeLastPlayer();
-        assertTrue(copy2.equals(copy));
-        copy.addPlayer(a);
-        assertTrue(copy.equals(original));
     }
 
     /**

@@ -22,7 +22,6 @@ import freerails.client.ClientConfig;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.world.FullWorld;
-import freerails.model.world.World;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.ui.SoundManager;
 import freerails.model.track.pathfinding.*;
@@ -442,7 +441,7 @@ public class BuildTrackController implements GameModel {
                                     break attemptMove;
                                 }
 
-                                int owner = World.getPlayerIndex(world, fp);
+                                int owner = ReadOnlyWorld.getPlayerIndex(world, fp);
                                 TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
                                 TrackPiece after = new TrackPieceImpl(tile.getTrackPiece().getTrackConfiguration(), trackRule, owner, trackRuleID);
 

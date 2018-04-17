@@ -137,7 +137,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public ImmutableList<Move> getMoves() {
-        ImmutableList<Move> currentMoves = new ImmutableList<Move>(moves);
+        ImmutableList<Move> currentMoves = new ImmutableList<>(moves);
         moves.clear();
         fullWorld = (FullWorld) Utils.cloneBySerialisation(world);
         return currentMoves;

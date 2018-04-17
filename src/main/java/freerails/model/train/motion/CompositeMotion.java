@@ -64,8 +64,8 @@ public class CompositeMotion implements Activity<SpeedTimeAndStatus>, Motion {
     @Override
     public int hashCode() {
         int result = motions.hashCode();
-        result = 29 * Double.hashCode(totalTime);
-        result = 29 * Double.hashCode(totalDistance);
+        result += 29 * Double.hashCode(totalTime);
+        result += 29 * Double.hashCode(totalDistance);
         return result;
     }
 

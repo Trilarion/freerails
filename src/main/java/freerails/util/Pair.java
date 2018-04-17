@@ -19,10 +19,12 @@
 package freerails.util;
 
 /**
- * Generic Pair<A, B> implementation to help when you really only need a simple
- * Pair, nothing else. In all examples where semantics would help coding it
- * might be better to use a meaningful naming convention. However for the cases,
- * where the use is simple and limited, Pair might be the better option.
+ * Generic immutable Pair<A, B> implementation to help when you really only need
+ * a simple, immutable Pair, nothing else.
+ *
+ * In all examples where semantics would help coding it might be better to use
+ * a meaningful naming convention. However for the cases, where the use is simple
+ * and limited, Pair might be a good option.
  *
  * Should be HashMap/Comparable/Iterable save.
  *
@@ -63,7 +65,7 @@ public class Pair<A, B> {
     }
 
     /**
-     * Calculates a combined hash code in a relatively simple but smart way.
+     * Calculates a combined hash code.
      *
      * @return The hash code.
      */
@@ -77,7 +79,7 @@ public class Pair<A, B> {
         if (b != null) {
             hashB = b.hashCode();
         }
-        return (hashA + hashB) * hashB + hashA;
+        return hashA * 31 + hashB;
     }
 
     /**

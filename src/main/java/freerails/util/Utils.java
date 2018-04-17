@@ -89,7 +89,7 @@ public final class Utils {
 
         Serializable serializable;
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-        ObjectInputStream objectInputStream = null;
+        ObjectInputStream objectInputStream;
         try {
             objectInputStream = new ObjectInputStream(byteArrayInputStream);
             serializable = (Serializable) objectInputStream.readObject();

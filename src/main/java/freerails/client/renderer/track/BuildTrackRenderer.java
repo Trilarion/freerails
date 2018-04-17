@@ -29,7 +29,6 @@ import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.TrackPiece;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -60,8 +59,7 @@ public class BuildTrackRenderer implements Painter {
             proposedTrack = (Map<Vec2D, TrackPiece>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
         }
         if (null != proposedTrack) {
-            for (Iterator<Vec2D> iter = proposedTrack.keySet().iterator(); iter.hasNext(); ) {
-                Vec2D point = iter.next();
+            for (Vec2D point : proposedTrack.keySet()) {
                 TrackPiece trackPiece = proposedTrack.get(point);
 
                 int graphicsNumber = trackPiece.getTrackGraphicID();
@@ -77,8 +75,7 @@ public class BuildTrackRenderer implements Painter {
              * are white if track has been added or upgraded and red if it has
              * been removed.
              */
-            for (Iterator<Vec2D> iter = proposedTrack.keySet().iterator(); iter.hasNext(); ) {
-                Vec2D p = iter.next();
+            for (Vec2D p : proposedTrack.keySet()) {
                 Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConfig.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConfig.TILE_SIZE, ClientConfig.SMALL_DOT_WIDTH), 2));
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
                 TrackPiece trackPiece = proposedTrack.get(p);

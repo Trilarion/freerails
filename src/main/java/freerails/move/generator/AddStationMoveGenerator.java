@@ -24,7 +24,6 @@ package freerails.move.generator;
 import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.terrain.NearestCityFinder;
 import freerails.model.station.VerifyStationName;
-import freerails.model.world.World;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.move.listmove.AddStationMove;
@@ -105,7 +104,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
         TrackPiece before = ft.getTrackPiece();
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 
-        int owner = World.getPlayerIndex(world, principal);
+        int owner = ReadOnlyWorld.getPlayerIndex(world, principal);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, ruleNumber);
         Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
 

@@ -67,8 +67,7 @@ public class PositionOnTrack {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      * @param direction
      * @return
      */
@@ -77,8 +76,7 @@ public class PositionOnTrack {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      * @param direction
      * @return
      */
@@ -99,8 +97,7 @@ public class PositionOnTrack {
     }
 
     /**
-     * @param x
-     * @param y
+     * @param p
      * @return
      */
     public static int toInt(Vec2D p) {

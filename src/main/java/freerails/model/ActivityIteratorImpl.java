@@ -1,5 +1,6 @@
 package freerails.model;
 
+import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.FullWorld;
 
 import java.io.Serializable;
@@ -21,21 +22,21 @@ public class ActivityIteratorImpl implements ActivityIterator {
      *
      */
     private int activityIndex = 0;
-    private FullWorld.ActivityAndTime ant;
+    private FullWorld.ActivityAndTime activityAndTime;
 
     /**
-     * @param playerIndex
+     * @param principal
      * @param index
      */
-    public ActivityIteratorImpl(FullWorld world, int playerIndex, int index) {
-        currentList = world.activityLists.get(playerIndex, index);
+    public ActivityIteratorImpl(FullWorld world, FreerailsPrincipal principal, int index) {
+        currentList = world.activities.get(principal).get(index);
         size = currentList.size();
-        ant = currentList.get(activityIndex);
+        activityAndTime = currentList.get(activityIndex);
     }
 
     public double absoluteToRelativeTime(double absoluteTime) {
-        double dt = absoluteTime - ant.startTime;
-        dt = Math.min(dt, ant.act.duration());
+        double dt = absoluteTime - activityAndTime.startTime;
+        dt = Math.min(dt, activityAndTime.act.duration());
         return dt;
     }
 
@@ -43,22 +44,22 @@ public class ActivityIteratorImpl implements ActivityIterator {
      * @return
      */
     public Activity getActivity() {
-        return ant.act;
+        return activityAndTime.act;
     }
 
     /**
      * @return
      */
     public double getDuration() {
-        return ant.act.duration();
+        return activityAndTime.act.duration();
     }
 
     public double getFinishTime() {
-        return ant.startTime + ant.act.duration();
+        return activityAndTime.startTime + activityAndTime.act.duration();
     }
 
     public double getStartTime() {
-        return ant.startTime;
+        return activityAndTime.startTime;
     }
 
     /**
@@ -67,7 +68,7 @@ public class ActivityIteratorImpl implements ActivityIterator {
      */
     public Serializable getState(double absoluteTime) {
         double dt = absoluteToRelativeTime(absoluteTime);
-        return ant.act.getStateAtTime(dt);
+        return activityAndTime.act.getStateAtTime(dt);
     }
 
     /**
@@ -85,7 +86,7 @@ public class ActivityIteratorImpl implements ActivityIterator {
             throw new NoSuchElementException();
         }
         activityIndex++;
-        ant = currentList.get(activityIndex);
+        activityAndTime = currentList.get(activityIndex);
     }
 
     /**
@@ -93,7 +94,7 @@ public class ActivityIteratorImpl implements ActivityIterator {
      */
     public void gotoLastActivity() {
         activityIndex = size - 1;
-        ant = currentList.get(activityIndex);
+        activityAndTime = currentList.get(activityIndex);
     }
 
     /**
@@ -111,7 +112,7 @@ public class ActivityIteratorImpl implements ActivityIterator {
             throw new NoSuchElementException();
         }
         activityIndex--;
-        ant = currentList.get(activityIndex);
+        activityAndTime = currentList.get(activityIndex);
     }
 
 }
