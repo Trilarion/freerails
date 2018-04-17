@@ -68,10 +68,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @return
      */
     public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, ReadOnlyWorld world, FreerailsPrincipal principal) {
-        ChangeTrackPieceMove a;
-        ChangeTrackPieceMove b;
-        a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, world, principal);
-        b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, world, principal);
+        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, world, principal);
+        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, world, principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
@@ -85,11 +83,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @throws Exception
      */
     public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
-        TrackMove a;
-        TrackMove b;
-
-        a = getRemoveTrackChangeTrackPieceMove(from, direction, world, principal);
-        b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, principal);
+        TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, principal);
+        TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
@@ -99,7 +94,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        int owner = getOwner(principal, world);
+        int owner = World.getPlayerIndex(world, principal);
 
         if (world.boundsContain(p)) {
             oldTrackPiece = ((FullTerrainTile) world.getTile(p)).getTrackPiece();
@@ -130,7 +125,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-                    int owner = getOwner(principal, world);
+                    int owner = World.getPlayerIndex(world, principal);
                     newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();
@@ -160,21 +155,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
 
         return new TrackPieceImpl(trackConfiguration, trackRule, owner, ruleNumber);
-    }
-
-    /**
-     * @param principal
-     * @param world
-     * @return
-     */
-    public static int getOwner(FreerailsPrincipal principal, ReadOnlyWorld world) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (world.getPlayer(i).getPrincipal().equals(principal)) {
-                return i;
-            }
-        }
-
-        throw new IllegalStateException();
     }
 
     /**

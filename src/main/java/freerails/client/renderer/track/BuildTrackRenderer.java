@@ -24,13 +24,13 @@ import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
-import freerails.model.world.FullWorldDiffs;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.TrackPiece;
 
 import java.awt.*;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Draws the track being build.
@@ -55,15 +55,14 @@ public class BuildTrackRenderer implements Painter {
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
-        FullWorldDiffs worldDiffs = null;
+        Map<Vec2D, TrackPiece> proposedTrack = null;
         if (modelRoot != null) {
-            worldDiffs = (FullWorldDiffs) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+            proposedTrack = (Map<Vec2D, TrackPiece>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
         }
-        if (null != worldDiffs) {
-            for (Iterator<Vec2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
+        if (null != proposedTrack) {
+            for (Iterator<Vec2D> iter = proposedTrack.keySet().iterator(); iter.hasNext(); ) {
                 Vec2D point = iter.next();
-                FullTerrainTile fp = (FullTerrainTile) worldDiffs.getTile(point);
-                TrackPiece trackPiece = fp.getTrackPiece();
+                TrackPiece trackPiece = proposedTrack.get(point);
 
                 int graphicsNumber = trackPiece.getTrackGraphicID();
 
@@ -78,13 +77,13 @@ public class BuildTrackRenderer implements Painter {
              * are white if track has been added or upgraded and red if it has
              * been removed.
              */
-            for (Iterator<Vec2D> iter = worldDiffs.getMapDiffs(); iter.hasNext(); ) {
+            for (Iterator<Vec2D> iter = proposedTrack.keySet().iterator(); iter.hasNext(); ) {
                 Vec2D p = iter.next();
                 Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConfig.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConfig.TILE_SIZE, ClientConfig.SMALL_DOT_WIDTH), 2));
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
-                FullTerrainTile after = (FullTerrainTile) worldDiffs.getTile(p);
+                TrackPiece trackPiece = proposedTrack.get(p);
 
-                boolean trackRemoved = !after.getTrackPiece().getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
+                boolean trackRemoved = !trackPiece.getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
                 Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
                 g.setColor(dotColor);
                 g.fillOval(location.x, location.y, ClientConfig.SMALL_DOT_WIDTH, ClientConfig.SMALL_DOT_WIDTH);

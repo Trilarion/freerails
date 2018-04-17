@@ -55,6 +55,15 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
     }
 
     /**
+     * Also creates a deep copy of the given object.
+     *
+     * @param o
+     */
+    public Vec2D(Vec2D o) {
+        this(o.x, o.y);
+    }
+
+    /**
      *
      * @param obj
      * @return

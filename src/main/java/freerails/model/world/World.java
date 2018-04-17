@@ -42,6 +42,23 @@ import java.io.Serializable;
 public interface World extends ReadOnlyWorld {
 
     /**
+     * Gets the player index in the world.
+     *
+     * @param world
+     * @param principal
+     * @return
+     */
+    public static int getPlayerIndex(ReadOnlyWorld world, FreerailsPrincipal principal) {
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            if (world.getPlayer(i).getPrincipal().equals(principal)) {
+                return i;
+            }
+        }
+
+        throw new IllegalStateException();
+    }
+
+    /**
      * @param principal
      * @param element
      * @return

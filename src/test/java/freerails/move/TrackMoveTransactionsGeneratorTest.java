@@ -21,7 +21,6 @@
  */
 package freerails.move;
 
-import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vec2D;
@@ -72,7 +71,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         oldTrackPiece = ((FullTerrainTile) world.getTile(Vec2D.ZERO)).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, 0);
-        int owner = ChangeTrackPieceCompositeMove.getOwner(MapFixtureFactory.TEST_PRINCIPAL, world);
+        int owner = World.getPlayerIndex(world, MapFixtureFactory.TEST_PRINCIPAL);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 

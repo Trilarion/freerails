@@ -42,8 +42,8 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
     private static final long serialVersionUID = 4120849958418591801L;
     public final TrackPiece trackPieceBefore;
-    private final TrackPiece trackPieceAfter;
-    private final Vec2D location;
+    public final TrackPiece trackPieceAfter;
+    public final Vec2D location;
 
     /**
      * @param before
@@ -91,7 +91,6 @@ public final class ChangeTrackPieceMove implements TrackMove {
                  * are the same, then we are upgrading a station so it doesn't
                  * matter if the radii overlap.
                  */
-
                 if (location.equals(station.location)) {
                     continue;
                 }
@@ -263,7 +262,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
             return MoveStatus.moveFailed("Can't build " + thisTrackType + " on " + terrainCategory);
         }
 
-        // Check 4 overlapping stations.
+        // Check for overlapping stations.
         if (newTrackPiece.getTrackRule().isStation()) {
             MoveStatus moveStatus = ChangeTrackPieceMove.checkForOverlap(world, location, newTrackPiece);
             if (!moveStatus.succeeds()) return moveStatus;

@@ -230,9 +230,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
         mb.addCargo(cb, amount);
         Station station1Model = (Station) world.get(principal, PlayerKey.Stations, stationId);
-        ImmutableCargoBatchBundle cargoAtStationBefore = mb.toImmutableCargoBundle();
         int station1BundleId = station1Model.getCargoBundleID();
-        world.set(principal, PlayerKey.CargoBundles, station1BundleId, cargoAtStationBefore);
+        world.set(principal, PlayerKey.CargoBundles, station1BundleId, mb.toImmutableCargoBundle());
     }
 
     /**
