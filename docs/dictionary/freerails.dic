@@ -8,6 +8,7 @@ bordercolor
 cargos
 cellpadding
 cellspacing
+checkdep
 cymric
 defaultstate
 deflater
@@ -32,6 +33,7 @@ multiplayer
 netbeans
 noninfringement
 opitz
+positioner
 precommitter
 precommitting
 premove
@@ -41,11 +43,14 @@ railz
 resized
 resizes
 ruleset
+rulesets
 savegame
 showfps
 smackay
 sosnoski
 spatzenegger
+tileset
+tilesets
 tozicka
 trilarion
 unpausing

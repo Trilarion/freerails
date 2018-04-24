@@ -1,4 +1,4 @@
-.. Manually converted from ../HISTORY.md with pandoc (http://pandoc.org/), may not be in sync
+.. Manually converted from ../HISTORY.md with pandoc (http://pandoc.org/) DO NOT EDIT HERE! MAY NOT BE IN SYNC!
 
 *******
 History

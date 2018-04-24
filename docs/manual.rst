@@ -1,5 +1,5 @@
 ************************
-Tutorial
+Player Manual
 ************************
 
 How to play
