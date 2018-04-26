@@ -20,8 +20,17 @@ package freerails.network;
 
 import freerails.server.FreerailsGameServer;
 import freerails.savegames.TestSaveGamesManager;
-import freerails.util.SynchronizedFlag;
+import freerails.util.network.Connection;
+import freerails.util.network.ServerSocketAcceptor;
 import junit.framework.TestCase;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Test cases that use FreerailsGameServer <b>and</b> connect over the Internet
@@ -31,7 +40,8 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
 
     private static final int PORT = 13856;
     public FreerailsGameServer server;
-    private IpConnectionAcceptor connectionAccepter;
+    private ServerSocketAcceptor acceptor;
+    private Thread bridgeThread;
 
     /**
      * @throws Exception
@@ -47,20 +57,36 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
 
         try {
             // Wait for the server to start before returning.
-            SynchronizedFlag status = server1.getStatus();
-            synchronized (status) {
-                status.wait();
-            }
+            CountDownLatch status = server1.getStatus();
+            status.await();
 
             result = server1;
         } catch (InterruptedException e) {
             throw new IllegalStateException();
         }
         server = result;
-        connectionAccepter = new IpConnectionAcceptor(server, PORT);
 
-        Thread serverThread = new Thread(connectionAccepter);
-        serverThread.start();
+        InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), PORT);
+
+        BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>();
+        try {
+            acceptor = new ServerSocketAcceptor(address, sockets);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        bridgeThread = new Thread(() -> {
+            while (true) {
+                try {
+                    Socket socket = sockets.take();
+                    Connection connection = Connection.make(socket);
+                    server.addConnection(connection);
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, "Server Connection Acceptor");
+        bridgeThread.start();
     }
 
     /**
@@ -69,7 +95,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     @Override
     protected synchronized void tearDown() throws Exception {
         super.tearDown();
-        connectionAccepter.stop();
+        acceptor.close();
     }
 
     public int getPort() {

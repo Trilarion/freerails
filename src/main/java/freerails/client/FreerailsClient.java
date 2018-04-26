@@ -32,11 +32,15 @@ import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.model.world.World;
 import freerails.server.GameModel;
 import freerails.model.player.Player;
+import freerails.util.network.Connection;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,7 +51,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     private static final Logger logger = Logger.getLogger(FreerailsClient.class.getName());
     private final Map<ClientProperty, Serializable> properties = new HashMap<>();
     private final MoveChainFork moveChainFork = new MoveChainFork();
-    protected ConnectionToServer connectionToServer;
+    protected Connection connectionToServer;
     private World world;
     private MovePrecommitter movePrecommitter;
 
@@ -70,22 +74,18 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         logger.debug("Connect to remote server.  " + address + ':' + port);
 
         try {
-            connectionToServer = new IpConnectionToServer(address, port);
+            connectionToServer = Connection.make(new InetSocketAddress(address, port));
         } catch (IOException e) {
             return new LogOnResponse(false, e.getMessage());
         }
 
         try {
             Serializable request = new LogOnCredentials(username, password);
-            connectionToServer.writeToServer(request);
+            connectionToServer.sendObject(request);
 
-            return (LogOnResponse) connectionToServer.waitForObjectFromServer();
+            return (LogOnResponse) connectionToServer.receiveObject();
         } catch (Exception e) {
-            try {
-                connectionToServer.disconnect();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            connectionToServer.close();
             return new LogOnResponse(false, e.getMessage());
         }
     }
@@ -96,16 +96,12 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     public final LogOnResponse connect(GameServer server, String username, String password) {
         try {
             Serializable request = new LogOnCredentials(username, password);
-            connectionToServer = new IpConnectionToServer("127.0.0.1", 55000); // TODO get selected port
-            connectionToServer.writeToServer(request);
+            connectionToServer = Connection.make(new InetSocketAddress(InetAddress.getLoopbackAddress(), 55000)); // TODO get selected port
+            connectionToServer.sendObject(request);
 
-            return (LogOnResponse) connectionToServer.waitForObjectFromServer();
+            return (LogOnResponse) connectionToServer.receiveObject();
         } catch (Exception e) {
-            try {
-                connectionToServer.disconnect();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            connectionToServer.close();
             return new LogOnResponse(false, e.getMessage());
         }
     }
@@ -114,11 +110,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      * Disconnect the client from the server.
      */
     public final void disconnect() {
-        try {
-            connectionToServer.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        connectionToServer.close();
     }
 
     public final void setGameModel(World world) {
@@ -146,19 +138,14 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     }
 
     public final Serializable read() {
-        try {
-            return connectionToServer.waitForObjectFromServer();
-        } catch (IOException | InterruptedException e) {
-        }
-
-        throw new IllegalStateException();
+        return connectionToServer.receiveObject();
     }
 
     public final void write(Serializable fs) {
         try {
-            connectionToServer.writeToServer(fs);
+            connectionToServer.sendObject(fs);
         } catch (IOException e) {
-            throw new IllegalStateException();
+            throw new IllegalStateException(e);
         }
     }
 
@@ -167,7 +154,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     public final void update() {
         try {
-            Serializable[] messages = connectionToServer.readFromServer();
+            List<Serializable> messages = connectionToServer.getReceivedObjects();
 
             for (Serializable message : messages) {
                 processMessage(message);
@@ -195,7 +182,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             CommandStatus status = request.execute(this);
             logger.debug(request.toString());
 
-            connectionToServer.writeToServer(status);
+            connectionToServer.sendObject(status);
         } else if (message instanceof Move) {
             Move move = (Move) message;
             movePrecommitter.fromServer(move);

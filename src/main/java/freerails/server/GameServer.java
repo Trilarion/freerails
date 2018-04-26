@@ -18,7 +18,7 @@
 
 package freerails.server;
 
-import freerails.network.ConnectionToClient;
+import freerails.util.network.Connection;
 
 /**
  * Defines a server that can accept connections to clients.
@@ -28,7 +28,7 @@ public interface GameServer {
     /**
      * @param connection
      */
-    void addConnection(ConnectionToClient connection);
+    void addConnection(Connection connection);
 
     /**g
      * @return

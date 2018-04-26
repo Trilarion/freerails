@@ -25,11 +25,12 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConfig;
 import freerails.server.FreerailsGameServer;
-import freerails.network.IpConnectionAcceptor;
 import freerails.network.LogOnResponse;
 import freerails.savegames.FullSaveGameManager;
 import freerails.server.FullServerGameModel;
 import freerails.server.GameModel;
+import freerails.util.network.Connection;
+import freerails.util.network.ServerSocketAcceptor;
 import org.apache.log4j.*;
 
 import javax.swing.*;
@@ -41,8 +42,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.BindException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.Properties;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 // TODO The code in the switch statements needs reviewing.
 /**
@@ -406,12 +411,25 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         if (isNewGame()) {
             initServer();
         }
-        IpConnectionAcceptor acceptor = new IpConnectionAcceptor(server, port);
-        /*
-         * Note, the thread's name gets set in the run method so there is no
-         * point setting it here.
-         */
-        Thread thread = new Thread(acceptor);
+
+        Thread thread = new Thread(() -> {
+            BlockingQueue<Socket> sockets = new LinkedBlockingQueue<>();
+            InetSocketAddress address = new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
+            try {
+                ServerSocketAcceptor acceptor = new ServerSocketAcceptor(address, sockets);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            while (true) {
+                try {
+                    Socket socket = sockets.take();
+                    Connection connection = Connection.make(socket);
+                    server.addConnection(connection);
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, "Server Connection Acceptor");
         thread.start();
 
         CardLayout cl = (CardLayout) jPanel1.getLayout();

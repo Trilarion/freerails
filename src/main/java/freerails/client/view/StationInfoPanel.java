@@ -76,14 +76,14 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
 
         @Override
-        public void componentShown(ComponentEvent e) {
+        public void componentShown(ComponentEvent evt) {
 
             int i = worldIterator.getIndex();
             worldIterator.reset();
             if (i != WorldIterator.BEFORE_FIRST) {
                 try {
                     worldIterator.gotoIndex(i);
-                } catch (NoSuchElementException ex) {
+                } catch (NoSuchElementException e) {
                     logger.info("Exception ignored in StationInfoPanel (NoSuchElement).");
                     return; // ignore silently
                 }

@@ -124,7 +124,7 @@ public class LauncherClient extends FreerailsClient {
                 }
             }
 
-            modelRoot.setProperty(ModelRootProperty.SERVER, connectionToServer.getServerDetails());
+            modelRoot.setProperty(ModelRootProperty.SERVER, ""); // TODO display ip plus port here using connectionToServer
             actionRoot.setup(modelRoot, rendererRoot);
 
             factory.setup(rendererRoot, world);
