@@ -24,7 +24,6 @@ package freerails.model;
 import freerails.model.finances.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 import junit.framework.TestCase;
 
@@ -37,7 +36,7 @@ public class ItemsTransactionAggregatorTest extends TestCase {
      *
      */
     public void test1() {
-        World world = new FullWorld();
+        World world = new World();
         Player player = new Player("name", 0);
         world.addPlayer(player);
         FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();

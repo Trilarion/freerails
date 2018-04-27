@@ -32,7 +32,7 @@ import freerails.model.finances.StockPrice;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.finances.BondItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.StockItemTransaction;
@@ -127,7 +127,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
-                    StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
                     Move move = new AddTransactionMove(modelRoot.getPrincipal(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
@@ -141,7 +141,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
-                    StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, -WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
                     Move move = new AddTransactionMove(modelRoot.getPrincipal(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
@@ -161,7 +161,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
         // TODO use Money arithmetic
-        long highestAffordablePrice = world.getCurrentBalance(principal).amount / WorldConstants.STOCK_BUNDLE_SIZE;
+        long highestAffordablePrice = world.getCurrentBalance(principal).amount / ModelConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
         for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
             Player temp = modelRoot.getWorld().getPlayer(playerId);
@@ -180,7 +180,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
             if (otherPrincipal.equals(principal)) {
                 int treasuryStock = otherDataGatherer.treasuryStock();
                 int totalStock = otherDataGatherer.totalShares();
-                if (WorldConstants.STOCK_BUNDLE_SIZE + treasuryStock >= totalStock) {
+                if (ModelConstants.STOCK_BUNDLE_SIZE + treasuryStock >= totalStock) {
                     buyStock[playerId].setEnabled(false);
                 }
             }

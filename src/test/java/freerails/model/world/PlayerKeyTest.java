@@ -34,14 +34,6 @@ public class PlayerKeyTest extends TestCase {
     /**
      *
      */
-    public void testGetNumberOfKeys() {
-        // There were 4 keys when a wrote this test, but I expect the number to increase.
-        assertTrue(PlayerKey.getNumberOfKeys() >= 4);
-    }
-
-    /**
-     *
-     */
     public void testThatAllTheFieldsDefinedInKEYAreInstancesOFKEY() {
         Field[] fields = PlayerKey.class.getFields();
 

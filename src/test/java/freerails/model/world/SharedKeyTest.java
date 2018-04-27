@@ -34,13 +34,6 @@ public class SharedKeyTest extends TestCase {
     /**
      *
      */
-    public void testGetNumberOfKeys() {
-        assertTrue(SharedKey.getNumberOfKeys() > 5);
-    }
-
-    /**
-     *
-     */
     public void testThatAllTheFieldsDefinedInSKEYAreInstancesOFSKEY() {
         Field[] fields = SharedKey.class.getFields();
 

@@ -1,6 +1,6 @@
 package freerails.model.statistics;
 
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.finances.*;
 import freerails.model.track.TrackRule;
 import freerails.model.world.ReadOnlyWorld;
@@ -85,7 +85,7 @@ public class Statistics {
             aggregator.setType(i);
             aggregator.setTimes(times);
             int quantity = aggregator.calculateQuantity();
-            amount += trackValue * quantity / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+            amount += trackValue * quantity / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
         }
 
         return new Money(amount);

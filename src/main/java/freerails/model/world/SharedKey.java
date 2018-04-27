@@ -33,13 +33,6 @@ public enum SharedKey {
     }
 
     /**
-     * @return
-     */
-    public static int getNumberOfKeys() {
-        return values().length;
-    }
-
-    /**
      *
      * @return
      */

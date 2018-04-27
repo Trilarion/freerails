@@ -28,7 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.station.NearestStationFinder;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;

@@ -27,7 +27,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;

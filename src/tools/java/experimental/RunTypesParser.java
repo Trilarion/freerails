@@ -24,7 +24,7 @@ package experimental;
 
 import freerails.savegames.CargoAndTerrainXmlHandlerImpl;
 import freerails.savegames.CargoAndTerrainXmlParser;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 
 /**
  * The main method on this class uses CargoAndTerrainParser to parse cargo
@@ -41,7 +41,7 @@ public class RunTypesParser {
     public static void main(String[] args) {
         try {
             java.net.URL url = RunTypesParser.class.getResource("/freerails/data/cargo_and_terrain.xml");
-            CargoAndTerrainXmlParser.parse(url, new CargoAndTerrainXmlHandlerImpl(new FullWorld()));
+            CargoAndTerrainXmlParser.parse(url, new CargoAndTerrainXmlHandlerImpl(new World()));
             System.out.println("It worked");
         } catch (Exception ignored) {
         }

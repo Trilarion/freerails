@@ -22,7 +22,7 @@
 package freerails.model.train.motion;
 
 import freerails.util.ImmutableList;
-import freerails.model.Activity;
+import freerails.model.activity.Activity;
 import freerails.model.train.TrainState;
 import freerails.util.Utils;
 

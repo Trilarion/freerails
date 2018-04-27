@@ -22,7 +22,6 @@
 package freerails.model.finances;
 
 import freerails.model.world.World;
-import freerails.model.world.FullWorld;
 import freerails.model.MapFixtureFactory;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
@@ -42,7 +41,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(20, 20));
+        world = new World(new Vec2D(20, 20));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(world);
     }

@@ -6,7 +6,6 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -96,8 +95,7 @@ public class Connection {
 
     public static Connection make(Socket socket) throws IOException{
         Utils.verifyNotNull(socket);
-        Connection connection = new Connection(socket);
-        return connection;
+        return new Connection(socket);
     }
 
     /**

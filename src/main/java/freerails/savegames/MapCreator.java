@@ -6,7 +6,6 @@ import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.*;
 import freerails.model.train.WagonAndEngineTypesFactory;
-import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
@@ -55,7 +54,7 @@ public class MapCreator {
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
 
-        FullWorld world = new FullWorld();
+        World world = new World();
 
         WagonAndEngineTypesFactory.addTypesToWorld(world);
 

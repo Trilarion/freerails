@@ -25,9 +25,8 @@ import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.model.finances.*;
+import freerails.model.ModelConstants;
 import freerails.model.world.World;
-import freerails.model.WorldConstants;
-import freerails.model.world.FullWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import junit.framework.TestCase;
@@ -47,7 +46,7 @@ public class FinancialDataGathererTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         player = new Player("Player X", 0);
-        world = new FullWorld();
+        world = new World();
 
         Move addPlayer = AddPlayerMove.generateMove(world, player);
         MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
@@ -98,7 +97,7 @@ public class FinancialDataGathererTest extends TestCase {
         assertEquals(0, fdg.treasuryStock());
 
         int treasuryStock = 10000;
-        int totalStock = WorldConstants.IPO_SIZE;
+        int totalStock = ModelConstants.IPO_SIZE;
         int publicStock = totalStock - treasuryStock;
         Transaction transaction = StockItemTransaction.buyOrSellStock(0, treasuryStock, new Money(5));
         world.addTransaction(principal, transaction);
@@ -112,7 +111,7 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testBuyingStakesInOtherRRs() {
-        world = new FullWorld();
+        world = new World();
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player("Player " + i, i);
@@ -136,7 +135,7 @@ public class FinancialDataGathererTest extends TestCase {
      */
     public void testTotalShares() {
         FinancialDataGatherer fdg = new FinancialDataGatherer(world, player.getPrincipal());
-        int expected = WorldConstants.IPO_SIZE;
+        int expected = ModelConstants.IPO_SIZE;
         assertEquals(expected, fdg.totalShares());
     }
 }

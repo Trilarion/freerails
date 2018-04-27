@@ -21,13 +21,10 @@
  */
 package freerails.move;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vec2D;
-import freerails.model.world.FullWorld;
-import freerails.model.world.SharedKey;
-import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.MapFixtureFactory;
@@ -51,7 +48,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(20, 20));
+        world = new World(new Vec2D(20, 20));
         MapFixtureFactory.generateTrackRuleList(world);
         Player player = new Player("test player", 0);
         world.addPlayer(player);
@@ -72,7 +69,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         oldTrackPiece = ((FullTerrainTile) world.getTile(Vec2D.ZERO)).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, 0);
-        int owner = ReadOnlyWorld.getPlayerIndex(world, MapFixtureFactory.TEST_PRINCIPAL);
+        int owner = WorldUtils.getPlayerIndex(world, MapFixtureFactory.TEST_PRINCIPAL);
         newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 

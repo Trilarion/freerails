@@ -25,7 +25,6 @@ import freerails.move.*;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.game.GameTime;
 import freerails.model.world.World;
-import freerails.model.world.FullWorld;
 import freerails.model.player.Player;
 import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.util.Vec2D;
@@ -44,7 +43,7 @@ public class MovePrecommitterTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(10, 10));
+        world = new World(new Vec2D(10, 10));
         committer = new MovePrecommitter(world);
     }
 

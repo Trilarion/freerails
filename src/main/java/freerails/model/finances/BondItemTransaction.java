@@ -18,7 +18,7 @@
 
 package freerails.model.finances;
 
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 
 // TODO get rid of this and just use an ItemTransaction with category BOND
 /**
@@ -42,7 +42,7 @@ public class BondItemTransaction extends ItemTransaction {
      * @return
      */
     public static BondItemTransaction issueBond(double interestRate) {
-        return new BondItemTransaction(TransactionCategory.BOND, interestRate, 1, WorldConstants.BOND_VALUE_ISSUE);
+        return new BondItemTransaction(TransactionCategory.BOND, interestRate, 1, ModelConstants.BOND_VALUE_ISSUE);
     }
 
     /**
@@ -50,6 +50,6 @@ public class BondItemTransaction extends ItemTransaction {
      * @return
      */
     public static BondItemTransaction repayBond(int interestRate) {
-        return new BondItemTransaction(TransactionCategory.BOND, interestRate, -1, WorldConstants.BOND_VALUE_REPAY);
+        return new BondItemTransaction(TransactionCategory.BOND, interestRate, -1, ModelConstants.BOND_VALUE_REPAY);
     }
 }

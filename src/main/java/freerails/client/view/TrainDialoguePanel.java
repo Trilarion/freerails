@@ -25,10 +25,8 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.*;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;

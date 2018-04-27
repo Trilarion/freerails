@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.model.Activity;
+import freerails.model.activity.Activity;
 import freerails.model.world.TestActivity;
 import freerails.model.player.FreerailsPrincipal;
 

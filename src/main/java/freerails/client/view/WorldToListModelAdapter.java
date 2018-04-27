@@ -23,7 +23,7 @@ package freerails.client.view;
 
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;

@@ -26,7 +26,7 @@ import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 
 import java.awt.*;
 
@@ -72,7 +72,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @return
      */
     public float getScale() {
-        return WorldConstants.TILE_SIZE;
+        return ModelConstants.TILE_SIZE;
     }
 
     /**

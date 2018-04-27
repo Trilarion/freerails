@@ -19,7 +19,7 @@
 /*
  *
  */
-package freerails.model;
+package freerails.model.activity;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;

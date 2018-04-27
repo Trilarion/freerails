@@ -36,7 +36,7 @@ import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         super.setHasSetupBeenCalled(true);
-        setWorld(new FullWorld(new Vec2D(10, 10)));
+        setWorld(new World(new Vec2D(10, 10)));
         getWorld().set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
         getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateTrackRuleList(getWorld());

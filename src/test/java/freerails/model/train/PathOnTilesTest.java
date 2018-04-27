@@ -25,7 +25,7 @@ import freerails.util.LineSegment;
 import freerails.util.Vec2D;
 import freerails.util.Pair;
 import freerails.util.TestUtils;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.track.PathIterator;
 import freerails.model.terrain.TileTransition;
 import junit.framework.TestCase;
@@ -77,7 +77,7 @@ public class PathOnTilesTest extends TestCase {
         Vec2D p1 = Vec2D.ZERO;
         TileTransition[] tileTransitions = new TileTransition[]{TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         PathOnTiles pathOnTiles = new PathOnTiles(p1, tileTransitions);
-        assertEquals(3 * WorldConstants.TILE_SIZE, pathOnTiles.getTotalDistance(), 0.001);
+        assertEquals(3 * ModelConstants.TILE_SIZE, pathOnTiles.getTotalDistance(), 0.001);
     }
 
     /**
@@ -171,8 +171,8 @@ public class PathOnTilesTest extends TestCase {
         expected = new Vec2D[]{new Vec2D(18, 15), new Vec2D(45, 15),
                 new Vec2D(75, 15), new Vec2D(105, 15)};
         for (int j = 0; j < expected.length; j++) {
-            int x = expected[j].x + p1.x * WorldConstants.TILE_SIZE;
-            int y = expected[j].y + p1.y * WorldConstants.TILE_SIZE;
+            int x = expected[j].x + p1.x * ModelConstants.TILE_SIZE;
+            int y = expected[j].y + p1.y * ModelConstants.TILE_SIZE;
             expected[j] = new Vec2D(x, y);
         }
         assertEquals(Integer.valueOf(expected.length), pathIt.getB());

@@ -23,7 +23,7 @@
 package freerails.model.terrain;
 
 import freerails.util.Vec2D;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.track.TrackConfigurations;
 
 /**
@@ -107,7 +107,7 @@ public class TileTransition implements TrackConfigurations {
         deltaX = x;
         deltaY = y;
         flatTrackTemplate = t;
-        length = (x * y) == 0 ? WorldConstants.TILE_SIZE : WorldConstants.TILE_DIAGONAL_SIZE;
+        length = (x * y) == 0 ? ModelConstants.TILE_SIZE : ModelConstants.TILE_DIAGONAL_SIZE;
     }
 
     /**

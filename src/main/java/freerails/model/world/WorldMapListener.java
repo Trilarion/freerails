@@ -16,29 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
-package freerails.model;
+package freerails.model.world;
 
-import java.io.Serializable;
+import java.awt.*;
 
 /**
- * Mostly used for trains.
- *
- * @param <E>
+ * Classes that need to be notified of changes to the map on the world object
+ * should implement this interface.
  */
-public interface Activity<E extends Serializable> extends Serializable {
-
+public interface WorldMapListener {
     /**
-     * @return
+     * Called when tiles have changed.
+     *
+     * @param tilesChanged rectangle containing the tiles that have change; all the
+     *                     points contained by the rectangle must be within the map's
+     *                     bounds.
      */
-    double duration();
-
-    /**
-     * @param time
-     * @return
-     */
-    E getStateAtTime(double time);
-
+    void tilesChanged(Rectangle tilesChanged);
 }

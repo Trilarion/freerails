@@ -33,9 +33,9 @@ import freerails.move.generator.MoveGenerator;
 import freerails.util.ImmutableList;
 import freerails.util.LineSegment;
 import freerails.util.Vec2D;
-import freerails.model.ActivityIterator;
+import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -110,11 +110,11 @@ class TrainMotionExperiment extends JComponent {
 
         // Shade tiles with track..
         g.setColor(Color.GREEN);
-        for (int x = 0; x < world.getMapWidth(); x++) {
-            for (int y = 0; y < world.getMapHeight(); y++) {
+        for (int x = 0; x < world.getMapSize().x; x++) {
+            for (int y = 0; y < world.getMapSize().y; y++) {
                 FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
-                    g.drawRect(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE);
+                    g.drawRect(x * ModelConstants.TILE_SIZE, y * ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE);
                 }
             }
         }
@@ -143,10 +143,10 @@ class TrainMotionExperiment extends JComponent {
         Iterator<Vec2D> it = pathOT.tilesIterator();
         while (it.hasNext()) {
             Vec2D tile = it.next();
-            int x = tile.x * WorldConstants.TILE_SIZE;
-            int y = tile.y * WorldConstants.TILE_SIZE;
-            int w = WorldConstants.TILE_SIZE;
-            int h = WorldConstants.TILE_SIZE;
+            int x = tile.x * ModelConstants.TILE_SIZE;
+            int y = tile.y * ModelConstants.TILE_SIZE;
+            int w = ModelConstants.TILE_SIZE;
+            int h = ModelConstants.TILE_SIZE;
             g.setColor(Color.WHITE);
             g.fillRect(x, y, w, h);
             g.setColor(Color.DARK_GRAY);
@@ -157,10 +157,10 @@ class TrainMotionExperiment extends JComponent {
         it = pathOT.tilesIterator();
         while (it.hasNext()) {
             Vec2D tile = it.next();
-            int x = tile.x * WorldConstants.TILE_SIZE;
-            int y = tile.y * WorldConstants.TILE_SIZE;
-            int w = WorldConstants.TILE_SIZE;
-            int h = WorldConstants.TILE_SIZE;
+            int x = tile.x * ModelConstants.TILE_SIZE;
+            int y = tile.y * ModelConstants.TILE_SIZE;
+            int w = ModelConstants.TILE_SIZE;
+            int h = ModelConstants.TILE_SIZE;
             g.setColor(Color.LIGHT_GRAY);
             g.fillRect(x, y, w, h);
             g.setColor(Color.DARK_GRAY);

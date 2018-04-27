@@ -40,7 +40,7 @@ import java.util.*;
 // TODO difference between interface and implementation?
 public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler {
 
-    private final HashMap<String, Integer> cargoNameTocargoTypeNumber = new HashMap<>();
+    private final HashMap<String, Integer> cargoNameToCargoTypeNumber = new HashMap<>();
     private final Collection<Integer> rgbValuesAlreadyUsed = new HashSet<>();
     private final List<TileConsumption> typeConsumes = new ArrayList<>();
     private final List<TileProduction> typeProduces = new ArrayList<>();
@@ -113,7 +113,7 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
         Serializable cargoType = new CargoType(unitWeight, cargoID, CargoCategory.valueOf(cargoCategory));
 
         int cargoNumber = world.size(SharedKey.CargoTypes);
-        cargoNameTocargoTypeNumber.put(cargoID, cargoNumber);
+        cargoNameToCargoTypeNumber.put(cargoID, cargoNumber);
         world.add(SharedKey.CargoTypes, cargoType);
     }
 
@@ -138,8 +138,8 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
      * Returns the index number of the cargo with the specified name.
      */
     private int stringToCargoID(String cargoName) throws SAXException {
-        if (cargoNameTocargoTypeNumber.containsKey(cargoName)) {
-            return cargoNameTocargoTypeNumber.get(cargoName);
+        if (cargoNameToCargoTypeNumber.containsKey(cargoName)) {
+            return cargoNameToCargoTypeNumber.get(cargoName);
         }
         throw new SAXException("Unknown cargo type: " + cargoName);
     }

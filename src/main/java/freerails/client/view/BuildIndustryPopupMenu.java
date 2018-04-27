@@ -27,7 +27,7 @@ import freerails.client.ModelRoot;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vec2D;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;

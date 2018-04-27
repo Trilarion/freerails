@@ -22,7 +22,7 @@ import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.finances.*;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -56,7 +56,7 @@ public class BondInterestMoveGenerator {
                     BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
                     int interestRate = bondItemTransaction.getType();
                     // TODO Money arithmetics
-                    long bondAmount = WorldConstants.BOND_VALUE_ISSUE.amount;
+                    long bondAmount = ModelConstants.BOND_VALUE_ISSUE.amount;
                     interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
                 }
             }

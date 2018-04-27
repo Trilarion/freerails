@@ -19,7 +19,7 @@
 package freerails.client.renderer.map.detail;
 
 import freerails.client.ClientConfig;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.util.ui.Painter;
 import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
@@ -77,7 +77,7 @@ public class OverHeadTrainView implements Painter {
                 TrainAccessor ta = new TrainAccessor(world, principal, i);
                 TrainPositionOnMap pos = ta.findPosition(time, newVisibleRectangle);
                 if (pos == null) continue;
-                if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= WorldConstants.TRAIN_CRASH_FRAMES_COUNT)) {
+                if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= ModelConstants.TRAIN_CRASH_FRAMES_COUNT)) {
                     // TODO reimplement trainPainter.paintTrainCrash(g, pos);
                     if (TrainPositionOnMap.getFrameCt() == 1) {
                             soundManager.playSound(ClientConfig.SOUND_TRAIN_CRASH, 1);

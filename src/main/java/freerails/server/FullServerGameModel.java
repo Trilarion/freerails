@@ -21,7 +21,6 @@
  */
 package freerails.server;
 
-import freerails.model.NonNullElementWorldIterator;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.MutableCargoBatchBundle;

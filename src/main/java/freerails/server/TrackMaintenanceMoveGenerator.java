@@ -27,7 +27,7 @@ import freerails.move.receiver.MoveReceiver;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.finances.Money;
 import freerails.model.finances.MoneyTransaction;
 import freerails.model.finances.Transaction;
@@ -77,7 +77,7 @@ public class TrackMaintenanceMoveGenerator {
 
             if (rightType) {
                 aggregator.setType(i);
-                amount += maintenanceCost * aggregator.calculateQuantity() / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
+                amount += maintenanceCost * aggregator.calculateQuantity() / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }
 

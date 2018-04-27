@@ -31,7 +31,6 @@ import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.PathOnTiles;
-import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 import junit.framework.TestCase;
 
@@ -274,7 +273,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      */
     protected void setupWorld() {
-        this.world = new FullWorld(new Vec2D(10, 10));
+        this.world = new World(new Vec2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);

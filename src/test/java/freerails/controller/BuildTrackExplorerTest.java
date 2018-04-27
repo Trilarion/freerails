@@ -37,7 +37,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.terrain.TerrainTypeImpl;
 import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import junit.framework.TestCase;
 
 /**
@@ -46,7 +46,7 @@ import junit.framework.TestCase;
 public class BuildTrackExplorerTest extends TestCase {
 
     private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
-    private FullWorld world;
+    private World world;
     private FreerailsPrincipal principal;
 
     /**
@@ -55,7 +55,7 @@ public class BuildTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(20, 20));
+        world = new World(new Vec2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();

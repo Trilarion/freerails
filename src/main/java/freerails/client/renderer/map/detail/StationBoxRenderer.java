@@ -21,8 +21,7 @@ package freerails.client.renderer.map.detail;
 import freerails.client.ClientConfig;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.world.SharedKey;
-import freerails.model.world.PlayerKey;
+import freerails.model.world.*;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.model.*;
@@ -33,7 +32,6 @@ import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.train.WagonType;
-import freerails.model.world.ReadOnlyWorld;
 
 import java.awt.*;
 import java.io.IOException;
@@ -91,8 +89,8 @@ public class StationBoxRenderer implements Painter {
             while (worldIterator.next()) { // loop over non null stations
                 Station station = (Station) worldIterator.getElement();
                 // TODO which position is meant here?
-                int positionX = (station.getLocation().x * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE / 2;
-                int positionY = (station.getLocation().y * WorldConstants.TILE_SIZE) + WorldConstants.TILE_SIZE * 2;
+                int positionX = (station.getLocation().x * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE / 2;
+                int positionY = (station.getLocation().y * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
                     g.setColor(StationBoxRenderer.BACKGROUND_COLOR);

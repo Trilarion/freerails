@@ -5,7 +5,7 @@ import freerails.model.finances.Money;
 /**
  *
  */
-public final class WorldConstants {
+public final class ModelConstants {
 
     public static final int STOCK_BUNDLE_SIZE = 10000;
     public static final int LENGTH_OF_STRAIGHT_TRACK_PIECE = 200;
@@ -33,6 +33,6 @@ public final class WorldConstants {
      */
     public static final int CARGO_DELIVERY_EARNINGS_FACTOR = 75;
 
-    private WorldConstants() {
+    private ModelConstants() {
     }
 }

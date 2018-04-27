@@ -21,7 +21,7 @@ package freerails.model.station;
 import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.terrain.*;
 import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
@@ -93,7 +93,7 @@ public class CalculateCargoSupplyRateAtStation {
         boolean[] demandboolean = new boolean[world.size(SharedKey.CargoTypes)];
 
         for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
-            if (demand[i] >= WorldConstants.PREREQUISITE_FOR_DEMAND) {
+            if (demand[i] >= ModelConstants.PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
             }
         }
@@ -130,7 +130,7 @@ public class CalculateCargoSupplyRateAtStation {
             // The prerequisite is the number tiles of this type that must
             // be within the station radius before the station demands the
             // cargo.
-            demand[type] += WorldConstants.PREREQUISITE_FOR_DEMAND / prerequisite;
+            demand[type] += ModelConstants.PREREQUISITE_FOR_DEMAND / prerequisite;
         }
 
         List<TileConversion> conversion = terrainType.getConversion();
@@ -140,7 +140,7 @@ public class CalculateCargoSupplyRateAtStation {
 
             // Only one tile that converts the cargo type is needed for the
             // station to demand the cargo type.
-            demand[type] += WorldConstants.PREREQUISITE_FOR_DEMAND;
+            demand[type] += ModelConstants.PREREQUISITE_FOR_DEMAND;
             converts[type] = aConversion.getOutput();
         }
     }

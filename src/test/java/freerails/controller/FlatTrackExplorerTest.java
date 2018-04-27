@@ -31,7 +31,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import junit.framework.TestCase;
 
 import java.util.HashSet;
@@ -42,7 +42,7 @@ import java.util.HashSet;
 public class FlatTrackExplorerTest extends TestCase {
 
     private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
-    private FullWorld world;
+    private World world;
 
     /**
      *
@@ -50,7 +50,7 @@ public class FlatTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(20, 20));
+        world = new World(new Vec2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);

@@ -20,7 +20,7 @@ package freerails.model.world;
 
 import freerails.util.Pair;
 import freerails.util.Vec2D;
-import freerails.model.ActivityIterator;
+import freerails.model.activity.ActivityIterator;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameTime;
@@ -53,27 +53,9 @@ import java.io.Serializable;
  * add a new class or change the interface of the World class when a new list is
  * added. Instead one can just add a new entry to the class KEY.
  *
- *
- * Code that loops through lists should handle null values gracefully
+ * Code that loops through lists should handle null values gracefully.
  */
 public interface ReadOnlyWorld extends Serializable {
-
-    /**
-     * Gets the player index in the world.
-     *
-     * @param world
-     * @param principal
-     * @return
-     */
-    static int getPlayerIndex(ReadOnlyWorld world, FreerailsPrincipal principal) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (world.getPlayer(i).getPrincipal().equals(principal)) {
-                return i;
-            }
-        }
-
-        throw new IllegalStateException();
-    }
 
     /**
      * @return
@@ -96,19 +78,16 @@ public interface ReadOnlyWorld extends Serializable {
     /**
      * Returns the element mapped to the specified item.
      */
-
     Serializable get(WorldItem item);
 
     /**
      * Returns the element at the specified position in the specified list.
      */
-
     Serializable get(FreerailsPrincipal principal, PlayerKey key, int index);
 
     /**
      * Returns the element at the specified position in the specified list.
      */
-
     Serializable get(SharedKey key, int index);
 
     /**
@@ -147,12 +126,6 @@ public interface ReadOnlyWorld extends Serializable {
      * @return
      */
     int getNumberOfTransactions(FreerailsPrincipal principal);
-
-    /**
-     * @param principal
-     * @return
-     */
-    int getNumberOfActiveEntities(FreerailsPrincipal principal);
 
     /**
      * @param i

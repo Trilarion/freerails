@@ -23,7 +23,7 @@ package freerails.model.track.pathfinding;
 
 import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vec2D;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
 import freerails.model.player.Player;
@@ -38,7 +38,7 @@ import java.util.List;
 public class TrackPathFinderTest extends TestCase {
 
     private final Player testPlayer = new Player("test", 0);
-    private FullWorld world;
+    private World world;
 
     /**
      * @throws Exception
@@ -46,7 +46,7 @@ public class TrackPathFinderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(20, 20));
+        world = new World(new Vec2D(20, 20));
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);

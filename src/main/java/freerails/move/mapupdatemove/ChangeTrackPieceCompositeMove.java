@@ -22,8 +22,7 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.model.world.WorldItem;
-import freerails.model.world.SharedKey;
+import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
@@ -34,8 +33,6 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
-import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.World;
 
 import java.awt.*;
 
@@ -94,7 +91,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        int owner = ReadOnlyWorld.getPlayerIndex(world, principal);
+        int owner = WorldUtils.getPlayerIndex(world, principal);
 
         if (world.boundsContain(p)) {
             oldTrackPiece = ((FullTerrainTile) world.getTile(p)).getTrackPiece();
@@ -125,7 +122,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-                    int owner = ReadOnlyWorld.getPlayerIndex(world, principal);
+                    int owner = WorldUtils.getPlayerIndex(world, principal);
                     newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
                 } else {
                     newTrackPiece = NullTrackPiece.getInstance();

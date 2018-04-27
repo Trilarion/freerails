@@ -23,6 +23,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.activity.ActivityIterator;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;

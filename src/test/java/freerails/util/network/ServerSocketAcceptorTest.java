@@ -30,7 +30,7 @@ public class ServerSocketAcceptorTest extends TestCase {
 
         try {
             Thread.sleep(20);
-        } catch (InterruptedException ignored) {};
+        } catch (InterruptedException ignored) {}
 
         // close acceptor
         acceptor.close();

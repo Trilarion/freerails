@@ -1,6 +1,6 @@
 package freerails.model.finances;
 
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 
 /**
  *
@@ -21,10 +21,10 @@ public class StockPrice {
      */
     StockPrice(long netWorth, long profitLastYear, int publicShares, int otherRRShares) {
         currentPrice = calculateStockPrice(netWorth, profitLastYear, publicShares, otherRRShares);
-        sellPrice = calculateStockPrice(netWorth, profitLastYear, publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares - WorldConstants.STOCK_BUNDLE_SIZE);
-        buyPrice = calculateStockPrice(netWorth, profitLastYear, publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares + WorldConstants.STOCK_BUNDLE_SIZE);
-        treasurySellPrice = calculateStockPrice(netWorth, profitLastYear, publicShares + WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
-        treasuryBuyPrice = calculateStockPrice(netWorth, profitLastYear, publicShares - WorldConstants.STOCK_BUNDLE_SIZE, otherRRShares);
+        sellPrice = calculateStockPrice(netWorth, profitLastYear, publicShares + ModelConstants.STOCK_BUNDLE_SIZE, otherRRShares - ModelConstants.STOCK_BUNDLE_SIZE);
+        buyPrice = calculateStockPrice(netWorth, profitLastYear, publicShares - ModelConstants.STOCK_BUNDLE_SIZE, otherRRShares + ModelConstants.STOCK_BUNDLE_SIZE);
+        treasurySellPrice = calculateStockPrice(netWorth, profitLastYear, publicShares + ModelConstants.STOCK_BUNDLE_SIZE, otherRRShares);
+        treasuryBuyPrice = calculateStockPrice(netWorth, profitLastYear, publicShares - ModelConstants.STOCK_BUNDLE_SIZE, otherRRShares);
     }
 
     public static Money calculateStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares) {

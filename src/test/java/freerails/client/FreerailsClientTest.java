@@ -64,6 +64,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
 
             // Test 4 : disconnect the client from test 1.
             client.disconnect();
+            Thread.sleep(50);
             assertEquals(1, server.getNumberOpenConnections());
         } catch (Exception e) {
             fail();

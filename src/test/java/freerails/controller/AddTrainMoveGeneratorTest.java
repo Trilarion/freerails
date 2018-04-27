@@ -28,7 +28,7 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
-import freerails.model.ActivityIterator;
+import freerails.model.activity.ActivityIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;

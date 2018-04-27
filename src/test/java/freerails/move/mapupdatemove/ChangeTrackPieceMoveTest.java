@@ -27,7 +27,7 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
@@ -51,7 +51,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         setHasSetupBeenCalled(true);
-        setWorld(new FullWorld(new Vec2D(20, 20)));
+        setWorld(new World(new Vec2D(20, 20)));
         getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }

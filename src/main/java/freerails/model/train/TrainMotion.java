@@ -21,10 +21,10 @@
  */
 package freerails.model.train;
 
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
-import freerails.model.Activity;
+import freerails.model.activity.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 import freerails.model.train.motion.CompositeMotion;
@@ -81,7 +81,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
      */
 
     public TrainMotion(PathOnTiles path, int engineStep, int trainLength, Motion speeds) {
-        if (trainLength < WorldConstants.WAGON_LENGTH || trainLength > WorldConstants.MAX_TRAIN_LENGTH)
+        if (trainLength < ModelConstants.WAGON_LENGTH || trainLength > ModelConstants.MAX_TRAIN_LENGTH)
             throw new IllegalArgumentException();
         this.path = path;
         this.speeds = speeds;

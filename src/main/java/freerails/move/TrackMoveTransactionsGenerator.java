@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
@@ -171,7 +171,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
                 Money price = rule.getPrice();
                 // TODO Money arithmetics
-                Money total = new Money(-price.amount * numberAdded / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money(-price.amount * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
                 Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
                 transactions.add(transaction);
             }
@@ -182,7 +182,7 @@ public class TrackMoveTransactionsGenerator {
                 TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
                 Money m = rule.getPrice();
                 // TODO Money arithmetics
-                Money total = new Money((m.amount * numberRemoved) / WorldConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money total = new Money((m.amount * numberRemoved) / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = Money.divide(total, 2);

@@ -18,7 +18,7 @@
 
 package freerails.model.train;
 
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.util.ImmutableList;
 
 import java.io.Serializable;
@@ -94,7 +94,7 @@ public class Train implements Serializable {
      * @return
      */
     public int getLength() {
-        return (1 + wagonTypes.size()) * WorldConstants.WAGON_LENGTH; // Engine + wagons.
+        return (1 + wagonTypes.size()) * ModelConstants.WAGON_LENGTH; // Engine + wagons.
     }
 
     /**

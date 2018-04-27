@@ -20,7 +20,7 @@ package freerails.model.station;
 
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TileTransition;

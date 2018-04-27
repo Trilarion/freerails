@@ -90,7 +90,7 @@ public class EchoServer {
                 // sleep for the rest of the interval
                 try {
                     Thread.sleep(Long.max(UPDATE_DURATION - (System.currentTimeMillis() - startTime), 0));
-                } catch (InterruptedException ignored) {};
+                } catch (InterruptedException ignored) {}
             }
             // close all still open connections
             for (Connection connection: activeConnections) {

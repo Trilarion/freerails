@@ -16,21 +16,38 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model;
+/*
+ *
+ */
+package freerails.model.world;
 
-import java.awt.*;
+import freerails.model.player.FreerailsPrincipal;
+import freerails.model.world.PlayerKey;
 
 /**
- * Classes that need to be notified of changes to the map on the world object
+ * Classes that need to be notified of changes to the lists on the world object
  * should implement this interface.
  */
-public interface WorldMapListener {
+public interface WorldListListener {
+
     /**
-     * Called when tiles have changed.
-     *
-     * @param tilesChanged rectangle containing the tiles that have change; all the
-     *                     points contained by the rectangle must be within the map's
-     *                     bounds.
+     * @param key
+     * @param index
+     * @param principal
      */
-    void tilesChanged(Rectangle tilesChanged);
+    void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal);
+
+    /**
+     * @param key
+     * @param index
+     * @param principal
+     */
+    void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal);
+
+    /**
+     * @param key
+     * @param index
+     * @param principal
+     */
+    void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal);
 }

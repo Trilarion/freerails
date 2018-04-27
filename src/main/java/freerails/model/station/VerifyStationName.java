@@ -19,9 +19,9 @@
 package freerails.model.station;
 
 import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.WorldIterator;
+import freerails.model.world.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
 
 import java.util.Arrays;

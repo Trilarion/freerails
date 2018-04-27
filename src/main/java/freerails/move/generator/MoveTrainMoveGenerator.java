@@ -29,7 +29,7 @@ import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
-import freerails.model.ActivityIterator;
+import freerails.model.activity.ActivityIterator;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.cargo.CargoBatchBundle;

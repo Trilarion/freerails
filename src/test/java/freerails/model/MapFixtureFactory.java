@@ -28,7 +28,6 @@ import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.terrain.TerrainTypeImpl;
 import freerails.model.track.*;
-import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 
 import java.util.HashSet;
@@ -60,7 +59,7 @@ public class MapFixtureFactory {
      */
     public static World getWorld(Vec2D mapSize) {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        World world = new FullWorld(mapSize);
+        World world = new World(mapSize);
         generateTerrainTypesList(world);
         generateCargoTypesList(world);
 

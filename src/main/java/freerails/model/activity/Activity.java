@@ -19,35 +19,26 @@
 /*
  *
  */
-package freerails.model;
+package freerails.model.activity;
 
-import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.PlayerKey;
+import java.io.Serializable;
 
 /**
- * Classes that need to be notified of changes to the lists on the world object
- * should implement this interface.
+ * Mostly used for trains.
+ *
+ * @param <E>
  */
-public interface WorldListListener {
+public interface Activity<E extends Serializable> extends Serializable {
 
     /**
-     * @param key
-     * @param index
-     * @param principal
+     * @return
      */
-    void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal);
+    double duration();
 
     /**
-     * @param key
-     * @param index
-     * @param principal
+     * @param time
+     * @return
      */
-    void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal);
+    E getStateAtTime(double time);
 
-    /**
-     * @param key
-     * @param index
-     * @param principal
-     */
-    void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal);
 }

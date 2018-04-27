@@ -43,7 +43,6 @@ import freerails.model.train.schedule.MutableSchedule;
 import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
 import freerails.model.train.WagonAndEngineTypesFactory;
-import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 
 import javax.swing.*;
@@ -75,7 +74,7 @@ class DialogueBoxTester extends JFrame {
      */
     private DialogueBoxTester() {
 
-        World world = new FullWorld(new Vec2D(200, 200));
+        World world = new World(new Vec2D(200, 200));
 
         UntriedMoveReceiver dummyReceiver = new TestMoveReceiver(world);
 

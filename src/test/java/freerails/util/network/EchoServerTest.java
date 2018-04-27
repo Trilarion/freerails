@@ -24,7 +24,7 @@ public class EchoServerTest extends TestCase {
 
         try {
             Thread.sleep(20);
-        } catch (InterruptedException ignored) {};
+        } catch (InterruptedException ignored) {}
 
         assertEquals(1, server.getNumberActiveConnections());
 
@@ -38,7 +38,7 @@ public class EchoServerTest extends TestCase {
 
         try {
             Thread.sleep(20);
-        } catch (InterruptedException ignored) {};
+        } catch (InterruptedException ignored) {}
 
         assertEquals(0, server.getNumberActiveConnections());
 

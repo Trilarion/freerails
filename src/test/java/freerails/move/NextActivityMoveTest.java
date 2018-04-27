@@ -21,7 +21,8 @@
  */
 package freerails.move;
 
-import freerails.model.*;
+import freerails.model.activity.Activity;
+import freerails.model.activity.ActivityIterator;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.TestActivity;

@@ -19,13 +19,10 @@
 /*
  *
  */
-package freerails.model;
+package freerails.model.world;
 
-import freerails.model.world.SharedKey;
-import freerails.model.world.PlayerKey;
 import freerails.util.Utils;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.ReadOnlyWorld;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;

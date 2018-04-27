@@ -21,6 +21,7 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.track.*;
+import freerails.model.world.WorldUtils;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
@@ -197,7 +198,7 @@ public class TrackMoveProducer {
         }
 
         FreerailsPrincipal principal = executor.getPrincipal();
-        int owner = ReadOnlyWorld.getPlayerIndex(world, principal);
+        int owner = WorldUtils.getPlayerIndex(world, principal);
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
         TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
 

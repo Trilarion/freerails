@@ -27,9 +27,9 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.PlayerKey;
-import freerails.model.NonNullElementWorldIterator;
+import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.WorldIterator;
+import freerails.model.world.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
 
 import javax.swing.*;

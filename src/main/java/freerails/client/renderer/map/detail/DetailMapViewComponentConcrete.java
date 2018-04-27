@@ -30,7 +30,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.map.MapRenderer;
 import freerails.client.view.FreerailsCursor;
 import freerails.util.Vec2D;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 
 import java.awt.*;
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
         super.paintComponent(g);
 
         if (null != mapCursor && isFocusOwner()) {
-            mapCursor.paintCursor(g, new Dimension(WorldConstants.TILE_SIZE, WorldConstants.TILE_SIZE));
+            mapCursor.paintCursor(g, new Dimension(ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE));
         }
 
         if (System.currentTimeMillis() < displayMessageUntil) {

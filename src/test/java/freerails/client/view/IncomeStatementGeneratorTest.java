@@ -20,7 +20,6 @@ package freerails.client.view;
 
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.util.Vec2D;
-import freerails.model.world.FullWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
@@ -79,7 +78,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld();
+        world = new World();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateCargoTypesList(world);
         balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PRINCIPAL);

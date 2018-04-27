@@ -21,6 +21,7 @@
  */
 package freerails.model.train;
 
+import freerails.model.activity.ActivityIterator;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.util.ImmutableList;
@@ -141,7 +142,7 @@ public class TrainAccessor {
 
         Vec2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();
-        Rectangle trainBox = new Rectangle(start.x * WorldConstants.TILE_SIZE - trainLength * 2, start.y * WorldConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
+        Rectangle trainBox = new Rectangle(start.x * ModelConstants.TILE_SIZE - trainLength * 2, start.y * ModelConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
         if (!view.intersects(trainBox)) {
             return null; // TODO doesn't work
         }

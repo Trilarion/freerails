@@ -1,7 +1,7 @@
-package freerails.model;
+package freerails.model.activity;
 
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.FullWorld;
+import freerails.model.world.World;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,19 +16,19 @@ public class ActivityIteratorImpl implements ActivityIterator {
      *
      */
     private final int size;
-    private final List<FullWorld.ActivityAndTime> currentList;
+    private final List<ActivityAndTime> currentList;
 
     /**
      *
      */
     private int activityIndex = 0;
-    private FullWorld.ActivityAndTime activityAndTime;
+    private ActivityAndTime activityAndTime;
 
     /**
      * @param principal
      * @param index
      */
-    public ActivityIteratorImpl(FullWorld world, FreerailsPrincipal principal, int index) {
+    public ActivityIteratorImpl(World world, FreerailsPrincipal principal, int index) {
         currentList = world.activities.get(principal).get(index);
         size = currentList.size();
         activityAndTime = currentList.get(activityIndex);

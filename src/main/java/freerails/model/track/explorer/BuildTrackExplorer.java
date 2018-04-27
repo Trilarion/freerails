@@ -26,7 +26,7 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -249,7 +249,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (!currentRuleA.equals(ruleA)) {
                 assert (!currentRuleA.isStation()); // We shouldn't be upgrading
                 // a station.
-                cost += ruleA.getFixedCost().amount * WorldConstants.TILE_SIZE;
+                cost += ruleA.getFixedCost().amount * ModelConstants.TILE_SIZE;
             }
         }
         return cost;

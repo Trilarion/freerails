@@ -22,7 +22,7 @@
 package freerails.model.train;
 
 import freerails.util.*;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 
@@ -109,13 +109,13 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == distance) {
-                return new Vec2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+                return new Vec2D(x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2, y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2);
             }
             if (distanceSoFar > distance) {
-                int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - distance) / v.getLength());
-                x = x * WorldConstants.TILE_SIZE - v.deltaX * excess;
-                y = y * WorldConstants.TILE_SIZE - v.deltaY * excess;
-                return new Vec2D(x + WorldConstants.TILE_SIZE / 2, y + WorldConstants.TILE_SIZE / 2);
+                int excess = (int) (ModelConstants.TILE_SIZE * (distanceSoFar - distance) / v.getLength());
+                x = x * ModelConstants.TILE_SIZE - v.deltaX * excess;
+                y = y * ModelConstants.TILE_SIZE - v.deltaY * excess;
+                return new Vec2D(x + ModelConstants.TILE_SIZE / 2, y + ModelConstants.TILE_SIZE / 2);
             }
         }
         throw new IllegalArgumentException("distance:" + distance + " > getLength():" + vectors.size() + " distanceSoFar:" + distanceSoFar);
@@ -151,13 +151,13 @@ public strictfp class PathOnTiles implements Serializable {
             x += v.deltaX;
             y += v.deltaY;
             if (distanceSoFar == firstdistance) {
-                firstPoint = new Vec2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+                firstPoint = new Vec2D(x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2, y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2);
                 break;
             }
             if (distanceSoFar > firstdistance) {
-                int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - firstdistance) / v.getLength());
-                int nx = x * WorldConstants.TILE_SIZE - v.deltaX * excess + WorldConstants.TILE_SIZE / 2;
-                int ny = y * WorldConstants.TILE_SIZE - v.deltaY * excess + WorldConstants.TILE_SIZE / 2;
+                int excess = (int) (ModelConstants.TILE_SIZE * (distanceSoFar - firstdistance) / v.getLength());
+                int nx = x * ModelConstants.TILE_SIZE - v.deltaX * excess + ModelConstants.TILE_SIZE / 2;
+                int ny = y * ModelConstants.TILE_SIZE - v.deltaY * excess + ModelConstants.TILE_SIZE / 2;
                 firstPoint = new Vec2D(nx, ny);
                 break;
             }
@@ -173,13 +173,13 @@ public strictfp class PathOnTiles implements Serializable {
         do {
 
             if (distanceSoFar == lastdistance) {
-                secondPoint = new Vec2D(x * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2, y * WorldConstants.TILE_SIZE + WorldConstants.TILE_SIZE / 2);
+                secondPoint = new Vec2D(x * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2, y * ModelConstants.TILE_SIZE + ModelConstants.TILE_SIZE / 2);
                 break;
             }
             if (distanceSoFar > lastdistance) {
-                int excess = (int) (WorldConstants.TILE_SIZE * (distanceSoFar - lastdistance) / v.getLength());
-                int nx = x * WorldConstants.TILE_SIZE - v.deltaX * excess + WorldConstants.TILE_SIZE / 2;
-                int ny = y * WorldConstants.TILE_SIZE - v.deltaY * excess + WorldConstants.TILE_SIZE / 2;
+                int excess = (int) (ModelConstants.TILE_SIZE * (distanceSoFar - lastdistance) / v.getLength());
+                int nx = x * ModelConstants.TILE_SIZE - v.deltaX * excess + ModelConstants.TILE_SIZE / 2;
+                int ny = y * ModelConstants.TILE_SIZE - v.deltaY * excess + ModelConstants.TILE_SIZE / 2;
                 secondPoint = new Vec2D(nx, ny);
                 break;
             }
@@ -299,8 +299,8 @@ public strictfp class PathOnTiles implements Serializable {
                 break;
             }
             if (distanceSoFar >= offset) {
-                int x = WorldConstants.TILE_SIZE / 2 + WorldConstants.TILE_SIZE * tileX;
-                int y = WorldConstants.TILE_SIZE / 2 + WorldConstants.TILE_SIZE * tileY;
+                int x = ModelConstants.TILE_SIZE / 2 + ModelConstants.TILE_SIZE * tileX;
+                int y = ModelConstants.TILE_SIZE / 2 + ModelConstants.TILE_SIZE * tileY;
                 points.add(new Vec2D(x, y));
             }
 

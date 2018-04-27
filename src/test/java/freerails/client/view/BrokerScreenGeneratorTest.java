@@ -34,7 +34,6 @@ import freerails.model.finances.StockItemTransaction;
 import freerails.model.game.GameCalendar;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.world.FullWorld;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
@@ -54,7 +53,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new FullWorld(new Vec2D(10, 10));
+        world = new World(new Vec2D(10, 10));
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         Player player = MapFixtureFactory.TEST_PLAYER;
@@ -76,7 +75,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
             StockPrice stockPrice = new StockPriceCalculator(world).calculate()[playerID];
             Money sharePrice = stockPrice.treasuryBuyPrice;
             StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(playerID,
-                    WorldConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
             Move move = new AddTransactionMove(principal, stockItemTransaction);
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(moveStatus.succeeds());

@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Money;
@@ -186,7 +186,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             double dist = Math.sqrt(distanceSquared);
             int quantity = bundle.getAmount(batch);
 
-            double amount = quantity * Math.log(dist) * WorldConstants.CARGO_DELIVERY_EARNINGS_FACTOR;
+            double amount = quantity * Math.log(dist) * ModelConstants.CARGO_DELIVERY_EARNINGS_FACTOR;
             Money money = new Money((long) amount);
             CargoDeliveryMoneyTransaction receipt = new CargoDeliveryMoneyTransaction(money, quantity, stationID, batch, trainId);
             moves.add(new AddTransactionMove(principal, receipt));

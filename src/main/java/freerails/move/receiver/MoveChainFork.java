@@ -25,8 +25,8 @@ import freerails.move.listmove.ListMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.move.mapupdatemove.MapUpdateMove;
 import freerails.util.Utils;
-import freerails.model.WorldListListener;
-import freerails.model.WorldMapListener;
+import freerails.model.world.WorldListListener;
+import freerails.model.world.WorldMapListener;
 
 import java.awt.*;
 import java.util.ArrayList;

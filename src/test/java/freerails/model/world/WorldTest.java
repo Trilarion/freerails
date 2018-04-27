@@ -21,7 +21,7 @@
  */
 package freerails.model.world;
 
-import freerails.model.Activity;
+import freerails.model.activity.Activity;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.finances.*;
@@ -32,9 +32,9 @@ import junit.framework.TestCase;
 import java.io.Serializable;
 
 /**
- * Test for FullWorld.
+ * Test for World.
  */
-public class FullWorldTest extends TestCase {
+public class WorldTest extends TestCase {
 
     private static final Serializable fs = new TestState(1);
 
@@ -42,16 +42,16 @@ public class FullWorldTest extends TestCase {
      *
      */
     public void testGet() {
-        FullWorld fullWorld = new FullWorld();
-        fullWorld.add(SharedKey.TerrainTypes, fs);
-        assertEquals(fullWorld.get(SharedKey.TerrainTypes, 0), fs);
+        World world = new World();
+        world.add(SharedKey.TerrainTypes, fs);
+        assertEquals(world.get(SharedKey.TerrainTypes, 0), fs);
     }
 
     /**
      *
      */
     public void testConstructor() {
-        World world = new FullWorld();
+        World world = new World();
         assertEquals(world.getMapSize(), Vec2D.ZERO);
     }
 
@@ -62,7 +62,7 @@ public class FullWorldTest extends TestCase {
     public void testDefensiveCopy() {
         World original;
         World copy;
-        original = new FullWorld();
+        original = new World();
         copy = original.defensiveCopy();
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
@@ -81,7 +81,7 @@ public class FullWorldTest extends TestCase {
     public void testEquals() {
         World original;
         World copy;
-        original = new FullWorld();
+        original = new World();
         copy = original.defensiveCopy();
 
         Player player = new Player("Name", 0);
@@ -105,7 +105,7 @@ public class FullWorldTest extends TestCase {
     public void testEquals2() {
         World original;
         World copy, copy2;
-        original = new FullWorld();
+        original = new World();
         copy = original.defensiveCopy();
         copy2 = original.defensiveCopy();
         // Test adding players.
@@ -120,7 +120,7 @@ public class FullWorldTest extends TestCase {
      *
      */
     public void testActivityLists() {
-        World world = new FullWorld();
+        World world = new World();
         Player player = new Player("Name", 0);
         world.addPlayer(player);
         FreerailsPrincipal principal = player.getPrincipal();
@@ -147,11 +147,11 @@ public class FullWorldTest extends TestCase {
      *
      */
     public void testBoundsContain() {
-        World world = new FullWorld();
+        World world = new World();
         assertFalse(world.boundsContain(new Vec2D(1, 1)));
         assertFalse(world.boundsContain(Vec2D.ZERO));
         assertFalse(world.boundsContain(new Vec2D(-1, -1)));
-        world = new FullWorld(new Vec2D(5, 10));
+        world = new World(new Vec2D(5, 10));
         assertTrue(world.boundsContain(Vec2D.ZERO));
         assertTrue(world.boundsContain(new Vec2D(4, 9)));
         assertFalse(world.boundsContain(new Vec2D(-1, -1)));
@@ -162,7 +162,7 @@ public class FullWorldTest extends TestCase {
      *
      */
     public void testBankAccount() {
-        FullWorld world = new FullWorld();
+        World world = new World();
         Player player = new Player("Test", 0);
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);

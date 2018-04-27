@@ -22,7 +22,6 @@ import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
-import freerails.model.*;
 import freerails.model.game.GameRules;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;

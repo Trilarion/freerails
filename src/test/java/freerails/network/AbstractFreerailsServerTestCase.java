@@ -41,7 +41,6 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
     private static final int PORT = 13856;
     public FreerailsGameServer server;
     private ServerSocketAcceptor acceptor;
-    private Thread bridgeThread;
 
     /**
      * @throws Exception
@@ -75,7 +74,7 @@ public abstract class AbstractFreerailsServerTestCase extends TestCase {
             throw new RuntimeException(e);
         }
 
-        bridgeThread = new Thread(() -> {
+        Thread bridgeThread = new Thread(() -> {
             while (true) {
                 try {
                     Socket socket = sockets.take();

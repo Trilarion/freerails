@@ -74,9 +74,7 @@ public class RendererRootImpl implements RendererRoot {
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
                 sm.addClip(soundsFiles[i]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (UnsupportedAudioFileException e) {
+            } catch (IOException | UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
             progressMonitorModel.setValue(i + 1);
@@ -182,7 +180,7 @@ public class RendererRootImpl implements RendererRoot {
             } catch (IOException ignored) {
             }
 
-            // TODO this was the chequered tile renderer which was removed because it was not needede
+            // TODO this was the chequered tile renderer which was removed because it was not needed
             try {
                 tileRenderer = new StandardTileRenderer(imageManager, typesTreatedAsTheSame, terrainType);
                 tileRenderers.add(tileRenderer);

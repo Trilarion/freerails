@@ -29,7 +29,7 @@ import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -92,8 +92,8 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param visibleRect
      */
     public void paintRect(Graphics g, Rectangle visibleRect) {
-        int tileWidth = WorldConstants.TILE_SIZE;
-        int tileHeight = WorldConstants.TILE_SIZE;
+        int tileWidth = ModelConstants.TILE_SIZE;
+        int tileHeight = ModelConstants.TILE_SIZE;
 
         clipRectangle = g.getClipBounds(clipRectangle);
 
@@ -104,7 +104,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
 
         terrainLayer.paintRectangleOfTiles(g, x, y, width, height);
         trackLayer.paintRectangleOfTiles(g, new Vec2D(x, y), width, height);
-        Rectangle visibleRectangle = new Rectangle(x * WorldConstants.TILE_SIZE, y * WorldConstants.TILE_SIZE, width * WorldConstants.TILE_SIZE, height * WorldConstants.TILE_SIZE);
+        Rectangle visibleRectangle = new Rectangle(x * ModelConstants.TILE_SIZE, y * ModelConstants.TILE_SIZE, width * ModelConstants.TILE_SIZE, height * ModelConstants.TILE_SIZE);
         cityNames.paint((Graphics2D) g, visibleRectangle);
         stationNames.paint((Graphics2D) g, visibleRectangle);
     }

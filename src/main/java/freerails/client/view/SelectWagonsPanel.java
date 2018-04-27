@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.WagonCellRenderer;
 import freerails.client.ModelRoot;
-import freerails.model.WorldConstants;
+import freerails.model.ModelConstants;
 import freerails.model.world.SharedKey;
 
 import javax.swing.*;
@@ -169,7 +169,7 @@ public class SelectWagonsPanel extends JPanel implements View {
 
     // Adds the wagon selected in the list to the train consist.
     private void addwagon() {
-        if (wagons.size() < WorldConstants.MAX_NUMBER_OF_WAGONS) {
+        if (wagons.size() < ModelConstants.MAX_NUMBER_OF_WAGONS) {
             int type = wagonTypesJList.getSelectedIndex();
             wagons.add(type);
 
@@ -179,8 +179,8 @@ public class SelectWagonsPanel extends JPanel implements View {
     }
 
     private void updateMaxWagonsText() {
-        if (wagons.size() >= WorldConstants.MAX_NUMBER_OF_WAGONS) {
-            label1.setText("Max train length is " + WorldConstants.MAX_NUMBER_OF_WAGONS + " wagons");
+        if (wagons.size() >= ModelConstants.MAX_NUMBER_OF_WAGONS) {
+            label1.setText("Max train length is " + ModelConstants.MAX_NUMBER_OF_WAGONS + " wagons");
         } else {
             label1.setText("");
         }

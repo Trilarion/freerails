@@ -124,25 +124,25 @@ public class CargoAndTerrainXmlParser implements ContentHandler {
     /**
      * This SAX interface method is implemented by the parser.
      */
-    public final void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+    public final void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         dispatch(true);
-        context.push(new Object[]{qName, new org.xml.sax.helpers.AttributesImpl(atts)});
+        context.push(new Object[]{qName, new org.xml.sax.helpers.AttributesImpl(attributes)});
 
         switch (localName) {
             case "Converts":
-                handler.handleConversions(atts);
+                handler.handleConversions(attributes);
                 break;
             case "Tile":
-                handler.startTile(atts);
+                handler.startTile(attributes);
                 break;
             case "Cargo":
-                handler.handleCargo(atts);
+                handler.handleCargo(attributes);
                 break;
             case "Consumes":
-                handler.handleConsumptions(atts);
+                handler.handleConsumptions(attributes);
                 break;
             case "Produces":
-                handler.handleProductions(atts);
+                handler.handleProductions(attributes);
                 break;
         }
     }

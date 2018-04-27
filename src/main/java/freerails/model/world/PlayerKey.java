@@ -23,12 +23,6 @@ package freerails.model.world;
  */
 public enum PlayerKey {
 
-    Trains, Stations, CargoBundles, TrainSchedules;
+    Trains, Stations, CargoBundles, TrainSchedules
 
-    /**
-     * @return
-     */
-    public static int getNumberOfKeys() {
-        return values().length;
-    }
 }
