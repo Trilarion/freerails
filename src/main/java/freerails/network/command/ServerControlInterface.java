@@ -41,11 +41,6 @@ public interface ServerControlInterface {
     /**
      *
      */
-    void stopGame();
-
-    /**
-     *
-     */
     void refreshSavedGames();
 
     /**

@@ -25,15 +25,12 @@ package freerails.network.command;
 public class NewGameCommandToServer implements CommandToServer {
 
     private static final long serialVersionUID = 3256723961743422513L;
-    private final int id;
     private final String mapName;
 
     /**
-     * @param id
      * @param s
      */
-    public NewGameCommandToServer(int id, String s) {
-        this.id = id;
+    public NewGameCommandToServer(String s) {
         mapName = s;
     }
 
@@ -45,9 +42,9 @@ public class NewGameCommandToServer implements CommandToServer {
         try {
             server.newGame(mapName);
 
-            return new CommandStatus(id, true);
+            return new CommandStatus(true);
         } catch (Exception e) {
-            return new CommandStatus(id, false, e.getMessage());
+            return new CommandStatus(false, e.getMessage());
         }
     }
 
@@ -58,15 +55,11 @@ public class NewGameCommandToServer implements CommandToServer {
 
         final NewGameCommandToServer newGameMessageToServer = (NewGameCommandToServer) obj;
 
-        if (id != newGameMessageToServer.id) return false;
         return mapName.equals(newGameMessageToServer.mapName);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = id;
-        result = 29 * result + mapName.hashCode();
-        return result;
+        return mapName.hashCode();
     }
 }

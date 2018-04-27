@@ -225,7 +225,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectSavedGame2Load() {
-        CommandToServer refreshGames = new RefreshListOfGamesCommandToServer(2);
+        CommandToServer refreshGames = new RefreshListOfGamesCommandToServer();
         modelRoot.sendCommand(refreshGames);
         LoadGamePanel loadGameJPane = new LoadGamePanel();
         loadGameJPane.setup(modelRoot, vl, closeCurrentDialogue);

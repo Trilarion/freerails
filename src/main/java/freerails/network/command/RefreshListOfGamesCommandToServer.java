@@ -28,14 +28,11 @@ package freerails.network.command;
 public class RefreshListOfGamesCommandToServer implements CommandToServer {
 
     private static final long serialVersionUID = -8745171955732354168L;
-    private final int id;
 
     /**
-     * @param id
      */
-    public RefreshListOfGamesCommandToServer(final int id) {
+    public RefreshListOfGamesCommandToServer() {
         super();
-        this.id = id;
     }
 
     /**
@@ -44,15 +41,12 @@ public class RefreshListOfGamesCommandToServer implements CommandToServer {
      */
     public CommandStatus execute(ServerControlInterface server) {
         server.refreshSavedGames();
-        return new CommandStatus(id, true);
+        return new CommandStatus(true);
     }
 
     @Override
     public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + id;
-        return result;
+        return 31;
     }
 
     @Override
@@ -61,7 +55,7 @@ public class RefreshListOfGamesCommandToServer implements CommandToServer {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         final RefreshListOfGamesCommandToServer other = (RefreshListOfGamesCommandToServer) obj;
-        return id == other.id;
+        return true;
     }
 
 }

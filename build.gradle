@@ -39,3 +39,21 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
+task generateSources {
+    def outputDir = file("$buildDir/../src/main/java/freerails")
+    outputs.dir outputDir
+    doFirst {
+        outputDir.exists() || outputDir.mkdirs()
+        def srcFile = new File(outputDir, "Version.java")
+        srcFile.write(
+                """package freerails;
+public class Version {
+    static final String VERSION = "$project.version";
+}
+""")
+    }
+}
+
+compileJava.dependsOn generateSources
+compileJava.source generateSources.outputs.files, sourceSets.main.java

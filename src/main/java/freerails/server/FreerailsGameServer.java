@@ -66,7 +66,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final SaveGamesManager saveGamesManager;
     private final CountDownLatch status = new CountDownLatch(1);
-    private int commandID = 0;
     /**
      * ID of the last SetWorldCommandToClient sent out. Used to keep track of
      * which clients have updated their world object to the current version.
@@ -110,10 +109,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 }
 
                 // Just send to the new client.
-                Serializable setMaps = new SetPropertyCommandToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
+                Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
 
                 ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
-                Serializable setSaveGames = new SetPropertyCommandToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, savedGameNames);
+                Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, savedGameNames);
 
                 connection.sendObject(setMaps);
                 connection.sendObject(setSaveGames);
@@ -126,7 +125,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                  * copy of the world object.
                  */
                 if (null != serverGameModel && null != serverGameModel.getWorld()) {
-                    Serializable command = new SetWorldCommandToClient(confirmationID, serverGameModel.getWorld());
+                    Serializable command = new SetWorldCommandToClient(serverGameModel.getWorld());
                     connection.sendObject(command);
                 }
 
@@ -165,14 +164,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         return numberOpenConnections;
     }
 
-    public World getCopyOfWorld() {
-        return serverGameModel.getWorld().defensiveCopy();
-    }
-
-    private int getNextClientCommandId() {
-        return commandID++;
-    }
-
     /**
      * @return
      */
@@ -184,18 +175,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         }
 
         return playerNames;
-    }
-
-    public boolean isConfirmed(int player) {
-        logger.debug("confirmedPlayers.size()=" + confirmedPlayers.size());
-        return confirmedPlayers.contains(players.get(player));
-    }
-
-    /**
-     * @return
-     */
-    public boolean isNewPlayersAllowed() {
-        return newPlayersAllowed;
     }
 
     /**
@@ -219,7 +198,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     public void loadGame(String saveGameName) throws IOException {
         logger.info("load game " + saveGameName);
         newPlayersAllowed = false;
-        confirmedPlayers.clear();
 
         ServerGameModel serverGameModel = saveGamesManager.loadGame(saveGameName);
         String[] passwords = serverGameModel.getPasswords();
@@ -285,7 +263,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      */
     public void newGame(String mapName) {
         newPlayersAllowed = false;
-        confirmedPlayers.clear();
 
         World world = MapCreator.newMap(mapName);
 
@@ -344,7 +321,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             e.printStackTrace();
         }
         String[] saves = saveGamesManager.getSaveGameNames();
-        Serializable request = new SetPropertyCommandToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, new ImmutableList<>(saves));
+        Serializable request = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ImmutableList<>(saves));
         sendToAll(request);
     }
 
@@ -381,16 +358,15 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         // Send the client the list of players.
         String[] playerNames = getPlayerNames();
 
-        Serializable request = new SetPropertyCommandToClient(getNextClientCommandId(), ClientProperty.CONNECTED_CLIENTS, new ImmutableList<>(playerNames));
+        Serializable request = new SetPropertyCommandToClient(ClientProperty.CONNECTED_CLIENTS, new ImmutableList<>(playerNames));
 
         sendToAll(request);
     }
 
     private void sendWorldUpdatedCommand() {
         // Send the world to the clients.
-        confirmationID = getNextClientCommandId();
 
-        Serializable command = new SetWorldCommandToClient(confirmationID, serverGameModel.getWorld());
+        Serializable command = new SetWorldCommandToClient(serverGameModel.getWorld());
 
         sendToAll(command);
     }
@@ -416,13 +392,6 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     }
 
     /**
-     *
-     */
-    public void stopGame() {
-        logger.info("Stop game.");
-    }
-
-    /**
      * Updates the game model, then reads and deals with the outstanding
      * messages from each of the connected clients. This method is synchronized
      * to prevent moves being sent out while addConnection(.) is executing.
@@ -441,25 +410,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
                     for (Serializable message : messages) {
                         if (message instanceof CommandToServer) {
-                            CommandToServer message2 = (CommandToServer) message;
-                            CommandStatus cStatus = message2.execute(this);
-                            logger.debug(message2.toString());
+                            CommandToServer command = (CommandToServer) message;
+                            CommandStatus cStatus = command.execute(this);
+                            logger.debug(command.toString());
                             connection.sendObject(cStatus);
-                        } else if (message instanceof CommandStatus) {
-                            CommandStatus commandStatus = (CommandStatus) message;
-
-                            // TODO what is the reason for that? any useful?
-                            if (commandStatus.getId() == confirmationID) {
-                                /*
-                                 * The client is confirming that they have
-                                 * updated their world object to the current
-                                 * version.
-                                 */
-                                confirmedPlayers.add(player);
-                                logger.debug("Confirmed player " + player);
-                            }
-
-                            logger.debug(message.toString());
                         } else if (message instanceof Move || message instanceof MoveGenerator) {
                             Player player2 = serverGameModel.getWorld().getPlayer(players.indexOf(player));
                             FreerailsPrincipal principal = player2.getPrincipal();
@@ -508,9 +462,9 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      *
      */
     public void refreshSavedGames() {
-        Serializable setMaps = new SetPropertyCommandToClient(getNextClientCommandId(), ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
+        Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
         ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
-        Serializable setSaveGames = new SetPropertyCommandToClient(getNextClientCommandId(), ClientProperty.SAVED_GAMES, savedGameNames);
+        Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, savedGameNames);
         sendToAll(setMaps);
         sendToAll(setSaveGames);
     }

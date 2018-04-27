@@ -117,7 +117,7 @@ public class LoadGamePanel extends JPanel implements View {
 
 
     private void refreshButtonActionPerformed(ActionEvent evt) {
-        CommandToServer refreshGames = new RefreshListOfGamesCommandToServer(2);
+        CommandToServer refreshGames = new RefreshListOfGamesCommandToServer();
         modelRoot.sendCommand(refreshGames);
     }
 
@@ -127,7 +127,7 @@ public class LoadGamePanel extends JPanel implements View {
 
     private void okButtonActionPerformed(ActionEvent evt) {
         String filename = (String) list1.getSelectedValue();
-        CommandToServer message2 = new LoadGameCommandToServer(1, filename);
+        CommandToServer message2 = new LoadGameCommandToServer(filename);
         modelRoot.sendCommand(message2);
 
         if (null != close) close.actionPerformed(evt);

@@ -211,7 +211,7 @@ public class ServerControlModel implements ModelRootListener {
             String mapName = e.getActionCommand();
 
             if (mapName != null) {
-                CommandToServer message2 = new NewGameCommandToServer(1, mapName);
+                CommandToServer message2 = new NewGameCommandToServer(mapName);
                 modelRoot.sendCommand(message2);
             }
         }

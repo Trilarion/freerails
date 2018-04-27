@@ -27,15 +27,13 @@ import freerails.model.world.World;
 public class SetWorldCommandToClient implements CommandToClient {
 
     private static final long serialVersionUID = 3257570619972269362L;
-    private final int id;
     private final World world;
 
     // TODO why a defensive copy (actually some things do not work otherwise), maybe because in local connection, nothing is serialized
     /**
      * Note, makes a defensive copy of the world object passed to it.
      */
-    public SetWorldCommandToClient(int id, World world) {
-        this.id = id;
+    public SetWorldCommandToClient(World world) {
         this.world = world.defensiveCopy();
         // this.world = world;
     }
@@ -43,7 +41,7 @@ public class SetWorldCommandToClient implements CommandToClient {
     public CommandStatus execute(ClientControlInterface client) {
         client.setGameModel(world.defensiveCopy());
 
-        return new CommandStatus(id, true);
+        return new CommandStatus(true);
     }
 
     @Override
@@ -53,15 +51,11 @@ public class SetWorldCommandToClient implements CommandToClient {
 
         final SetWorldCommandToClient setWorldMessageToClient = (SetWorldCommandToClient) obj;
 
-        if (id != setWorldMessageToClient.id) return false;
         return world.equals(setWorldMessageToClient.world);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = id;
-        result = 29 * result + world.hashCode();
-        return result;
+        return world.hashCode();
     }
 }

@@ -29,17 +29,14 @@ import java.io.Serializable;
 public class SetPropertyCommandToClient implements CommandToClient {
 
     private static final long serialVersionUID = 3544392521746034740L;
-    private final int id;
     private final ClientProperty key;
     private final Serializable value;
 
     /**
-     * @param id
      * @param key
      * @param value
      */
-    public SetPropertyCommandToClient(int id, ClientProperty key, Serializable value) {
-        this.id = id;
+    public SetPropertyCommandToClient(ClientProperty key, Serializable value) {
         this.key = Utils.verifyNotNull(key);
         this.value = Utils.verifyNotNull(value);
     }
@@ -51,7 +48,6 @@ public class SetPropertyCommandToClient implements CommandToClient {
 
         final SetPropertyCommandToClient setPropertyMessageToClient = (SetPropertyCommandToClient) obj;
 
-        if (id != setPropertyMessageToClient.id) return false;
         if (key != setPropertyMessageToClient.key) return false;
         return value.equals(setPropertyMessageToClient.value);
     }
@@ -59,14 +55,13 @@ public class SetPropertyCommandToClient implements CommandToClient {
     public CommandStatus execute(ClientControlInterface client) {
         client.setProperty(key, value);
 
-        return new CommandStatus(id, true);
+        return new CommandStatus(true);
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = id;
-        result = 29 * result + key.hashCode();
+        result = key.hashCode();
         result = 29 * result + value.hashCode();
         return result;
     }

@@ -31,27 +31,22 @@ import java.io.Serializable;
 public class CommandStatus implements Serializable {
 
     private static final long serialVersionUID = 3257285842216103987L;
-    private final int id;
     private final String reason;
     private final boolean successful;
 
     /**
-     * @param id
      * @param successful
      * @param reason
      */
-    public CommandStatus(int id, boolean successful, String reason) {
-        this.id = id;
+    public CommandStatus(boolean successful, String reason) {
         this.reason = reason;
         this.successful = successful;
     }
 
     /**
-     * @param id
      * @param successful
      */
-    public CommandStatus(int id, boolean successful) {
-        this.id = id;
+    public CommandStatus(boolean successful) {
         reason = null;
         this.successful = successful;
     }
@@ -62,8 +57,6 @@ public class CommandStatus implements Serializable {
         if (!(obj instanceof CommandStatus)) return false;
 
         final CommandStatus commandStatus = (CommandStatus) obj;
-
-        if (id != commandStatus.id) return false;
         if (successful != commandStatus.successful) return false;
         return reason != null ? reason.equals(commandStatus.reason) : commandStatus.reason == null;
     }
@@ -71,17 +64,9 @@ public class CommandStatus implements Serializable {
     @Override
     public int hashCode() {
         int result;
-        result = id;
-        result = 29 * result + (reason != null ? reason.hashCode() : 0);
+        result = (reason != null ? reason.hashCode() : 0);
         result = 29 * result + (successful ? 1 : 0);
         return result;
-    }
-
-    /**
-     * Returns the id of the command whose success this object stores.
-     */
-    public int getId() {
-        return id;
     }
 
     /**

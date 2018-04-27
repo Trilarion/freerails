@@ -24,15 +24,12 @@ package freerails.network.command;
 public class SaveGameCommandToServer implements CommandToServer {
 
     private static final long serialVersionUID = 3257281452725777209L;
-    private final int id;
     private final String filename;
 
     /**
-     * @param id
      * @param s
      */
-    public SaveGameCommandToServer(int id, String s) {
-        this.id = id;
+    public SaveGameCommandToServer(String s) {
         filename = s;
     }
 
@@ -43,16 +40,12 @@ public class SaveGameCommandToServer implements CommandToServer {
 
         final SaveGameCommandToServer saveGameMessageToServer = (SaveGameCommandToServer) obj;
 
-        if (id != saveGameMessageToServer.id) return false;
         return filename.equals(saveGameMessageToServer.filename);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = id;
-        result = 29 * result + filename.hashCode();
-        return result;
+        return filename.hashCode();
     }
 
     /**
@@ -62,9 +55,9 @@ public class SaveGameCommandToServer implements CommandToServer {
     public CommandStatus execute(ServerControlInterface server) {
         try {
             server.saveGame(filename);
-            return new CommandStatus(id, true);
+            return new CommandStatus(true);
         } catch (Exception e) {
-            return new CommandStatus(id, false, e.getMessage());
+            return new CommandStatus(false, e.getMessage());
         }
     }
 }

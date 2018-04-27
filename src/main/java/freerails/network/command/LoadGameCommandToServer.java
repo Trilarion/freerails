@@ -24,15 +24,12 @@ package freerails.network.command;
 public class LoadGameCommandToServer implements CommandToServer {
 
     private static final long serialVersionUID = 3256726186552930869L;
-    private final int id;
     private final String filename;
 
     /**
-     * @param id
      * @param filename
      */
-    public LoadGameCommandToServer(int id, String filename) {
-        this.id = id;
+    public LoadGameCommandToServer(String filename) {
         this.filename = filename;
     }
 
@@ -43,16 +40,12 @@ public class LoadGameCommandToServer implements CommandToServer {
 
         final LoadGameCommandToServer loadGameMessageToServer = (LoadGameCommandToServer) obj;
 
-        if (id != loadGameMessageToServer.id) return false;
         return filename.equals(loadGameMessageToServer.filename);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = id;
-        result = 29 * result + filename.hashCode();
-        return result;
+        return filename.hashCode();
     }
 
     /**
@@ -63,9 +56,9 @@ public class LoadGameCommandToServer implements CommandToServer {
         try {
             server.loadGame(filename);
 
-            return new CommandStatus(id, true);
+            return new CommandStatus(true);
         } catch (Exception e) {
-            return new CommandStatus(id, false, e.getMessage());
+            return new CommandStatus(false, e.getMessage());
         }
     }
 }

@@ -104,7 +104,7 @@ public class SaveGamePanel extends JPanel implements View {
         String filename = fileNameTextField.getText();
         // Save the current game using the string
         modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Saved game " + filename);
-        CommandToServer message2 = new SaveGameCommandToServer(1, filename + ".sav");
+        CommandToServer message2 = new SaveGameCommandToServer(filename + ".sav");
 
         modelRoot.sendCommand(message2);
         close.actionPerformed(evt);
