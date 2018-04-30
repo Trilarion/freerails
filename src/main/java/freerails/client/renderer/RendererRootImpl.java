@@ -18,7 +18,7 @@
 
 package freerails.client.renderer;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
@@ -59,7 +59,7 @@ public class RendererRootImpl implements RendererRoot {
      * @throws IOException
      */
     public RendererRootImpl(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
-        imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
+        imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
         tileRendererList = loadNewTileViewList(world, progressMonitorModel);
 
         trackPieceViewList = loadTrackViews(world, progressMonitorModel);
@@ -68,7 +68,7 @@ public class RendererRootImpl implements RendererRoot {
         loadTrainImages(world, progressMonitorModel);
 
         // Pre-load sounds..
-        String[] soundsFiles = {ClientConfig.SOUND_BUILD_TRACK, ClientConfig.SOUND_CASH, ClientConfig.SOUND_REMOVE_TRACK, ClientConfig.SOUND_WHISTLE};
+        String[] soundsFiles = {ClientConstants.SOUND_BUILD_TRACK, ClientConstants.SOUND_CASH, ClientConstants.SOUND_REMOVE_TRACK, ClientConstants.SOUND_WHISTLE};
         progressMonitorModel.nextStep(soundsFiles.length);
         SoundManager sm = SoundManager.getInstance();
         for (int i = 0; i < soundsFiles.length; i++) {

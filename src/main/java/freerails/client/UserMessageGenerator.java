@@ -138,7 +138,7 @@ public class UserMessageGenerator implements MoveReceiver {
             // Play the sound of cash coming in. The greater the
             // revenue, the more loops of the sample we play.
             int loops = (int) revenue.amount / 4000;
-            soundManager.playSound(ClientConfig.SOUND_CASH, loops);
+            soundManager.playSound(ClientConstants.SOUND_CASH, loops);
         }
     }
 

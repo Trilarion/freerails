@@ -24,7 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.ActionRoot;
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
@@ -60,7 +60,7 @@ import java.util.HashMap;
 public class BuildTrackPanel extends JPanel implements ActiveView {
 
     private static final long serialVersionUID = 3618701915647850036L;
-    private final ImageManager imageManager = new ImageManagerImpl(ClientConfig.GRAPHICS_PATH);
+    private final ImageManager imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
     private HashMap<TrackCategory, Integer> selectionSet;
     private ModelRoot modelRoot;
     private TrackMoveProducer trackMoveProducer;
@@ -399,7 +399,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
     private Icon getIcon(String typeName) {
         try {
 
-            String relativeFileName = ClientConfig.ICONS_FOLDER_NAME + File.separator + typeName + ClientConfig.ICON_FILE_EXTENSION;
+            String relativeFileName = ClientConstants.ICONS_FOLDER_NAME + File.separator + typeName + ClientConstants.ICON_FILE_EXTENSION;
             relativeFileName = relativeFileName.replace(' ', '_');
 
             Image im = imageManager.getImage(relativeFileName);

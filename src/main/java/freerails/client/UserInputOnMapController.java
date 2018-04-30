@@ -307,10 +307,10 @@ public class UserInputOnMapController extends KeyAdapter {
         switch (trackMoveProducer.getTrackBuilderMode()) {
             case BUILD_TRACK:
             case UPGRADE_TRACK:
-                soundManager.playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
+                soundManager.playSound(ClientConstants.SOUND_BUILD_TRACK, 0);
                 break;
             case REMOVE_TRACK:
-                soundManager.playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
+                soundManager.playSound(ClientConstants.SOUND_REMOVE_TRACK, 0);
                 break;
             default:
         }

@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer.map.detail;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
 import freerails.client.ModelRootProperty;
@@ -85,7 +85,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
         if (System.currentTimeMillis() < displayMessageUntil) {
             Rectangle visRect = getVisibleRect();
             g.setColor(Color.WHITE);
-            g.setFont(ClientConfig.USER_MESSAGE_FONT);
+            g.setFont(ClientConstants.USER_MESSAGE_FONT);
 
             for (int i = 0; i < quickMessage.length; i++) {
                 g.drawString(quickMessage[i], 50 + visRect.x, 50 + visRect.y + i * 20);
@@ -95,10 +95,10 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
         if (permanentMessage != null) {
             Rectangle visRect = getVisibleRect();
             g.setColor(Color.lightGray);
-            g.setFont(ClientConfig.LARGE_MESSAGE_FONT);
+            g.setFont(ClientConstants.LARGE_MESSAGE_FONT);
 
-            int msgWidth = g.getFontMetrics(ClientConfig.LARGE_MESSAGE_FONT).stringWidth(permanentMessage);
-            int msgHeight = g.getFontMetrics(ClientConfig.LARGE_MESSAGE_FONT).getHeight();
+            int msgWidth = g.getFontMetrics(ClientConstants.LARGE_MESSAGE_FONT).stringWidth(permanentMessage);
+            int msgHeight = g.getFontMetrics(ClientConstants.LARGE_MESSAGE_FONT).getHeight();
             g.drawString(permanentMessage, (int) (visRect.x + (visRect.getWidth() - msgWidth) / 2), (int) (visRect.y + (visRect.getHeight() - msgHeight) / 2));
         }
     }

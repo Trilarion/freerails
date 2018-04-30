@@ -28,6 +28,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.controller.BuildTrackController;
 import freerails.network.command.ClientProperty;
+import freerails.util.Vec2D;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldItem;
 import freerails.model.world.ReadOnlyWorld;
@@ -61,7 +62,7 @@ public class LauncherClient extends FreerailsClient {
      * @param displayMode
      * @throws IOException
      */
-    public LauncherClient(String name, ProgressMonitorModel progressMonitorModel, int screenMode, DisplayMode displayMode) {
+    public LauncherClient(String name, ProgressMonitorModel progressMonitorModel, int screenMode, Vec2D displayMode) {
         this.name = name;
         monitor = null == progressMonitorModel ? ProgressPanelModel.EMPTY : progressMonitorModel;
         // Set up model root and action root.

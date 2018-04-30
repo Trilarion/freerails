@@ -1,6 +1,6 @@
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
@@ -33,7 +33,7 @@ public class TrainOrderPanelSingle extends JPanel implements View {
 
         setLayout(new GridBagLayout());
 
-        gotoIcon.setIcon(new ImageIcon(getClass().getResource(ClientConfig.GRAPHIC_ARROW_SELECTED)));
+        gotoIcon.setIcon(new ImageIcon(getClass().getResource(ClientConstants.GRAPHIC_ARROW_SELECTED)));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;

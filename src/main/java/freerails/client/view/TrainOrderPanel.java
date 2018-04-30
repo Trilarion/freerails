@@ -23,7 +23,7 @@
 
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
@@ -43,8 +43,8 @@ import java.util.Map;
  */
 public class TrainOrderPanel implements View, ListCellRenderer {
 
-    private final Icon gotoNow = new ImageIcon(TrainOrderPanel.class.getResource(ClientConfig.GRAPHIC_ARROW_SELECTED));
-    private final Icon gotoAfterPriorityOrders = new ImageIcon(TrainOrderPanel.class.getResource(ClientConfig.GRAPHIC_ARROW_DESELECTED));
+    private final Icon gotoNow = new ImageIcon(TrainOrderPanel.class.getResource(ClientConstants.GRAPHIC_ARROW_SELECTED));
+    private final Icon gotoAfterPriorityOrders = new ImageIcon(TrainOrderPanel.class.getResource(ClientConstants.GRAPHIC_ARROW_DESELECTED));
     private final ImageIcon dontGoto = null;
     public final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");

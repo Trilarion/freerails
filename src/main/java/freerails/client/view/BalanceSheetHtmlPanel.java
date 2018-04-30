@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.statistics.BalanceSheetGenerator;
 import freerails.client.ModelRoot;
@@ -44,7 +44,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     public BalanceSheetHtmlPanel() {
         super();
 
-        URL url = BalanceSheetHtmlPanel.class.getResource(ClientConfig.VIEW_BALANCE_SHEET);
+        URL url = BalanceSheetHtmlPanel.class.getResource(ClientConstants.VIEW_BALANCE_SHEET);
         template = loadText(url);
     }
 

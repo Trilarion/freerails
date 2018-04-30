@@ -44,22 +44,4 @@ interface LauncherInterface {
      *
      */
     void hideAllMessages();
-
-    /**
-     * @param key
-     * @param value
-     */
-    void setProperty(String key, String value);
-
-    /**
-     * @param key
-     * @return
-     */
-    String getProperty(String key);
-
-    /**
-     *
-     */
-    void saveProperties();
-
 }

@@ -22,11 +22,13 @@ import freerails.model.ModelConstants;
 import freerails.util.Vec2D;
 
 import java.awt.*;
+import java.io.File;
+import java.nio.charset.Charset;
 
 /**
  * Important constants
  */
-public final class ClientConfig {
+public final class ClientConstants {
 
     /**
      *
@@ -35,27 +37,6 @@ public final class ClientConfig {
     /**
      *
      */
-    public static final String PROPERTIES_FILENAME = "freerails.properties";
-    /**
-     *
-     */
-    public static final String SERVER_IP_ADDRESS_PROPERTY = "freerails.server.ip.address";
-    /**
-     *
-     */
-    public static final String PLAYER_NAME_PROPERTY = "freerails.player.name";
-    /**
-     *
-     */
-    public static final String SERVER_PORT_PROPERTY = "freerails.server.port";
-    /**
-     *
-     */
-    public static final String CLIENT_DISPLAY_PROPERTY = "freerails.client.display";
-    /**
-     *
-     */
-    public static final String CLIENT_FULLSCREEN_PROPERTY = "freerails.client.fullscreen";
     public static final int MODE_START_NETWORK_GAME = 0;
     public static final int MODE_JOIN_NETWORK_GAME = 1;
     public static final int MODE_SERVER_ONLY = 2;
@@ -192,8 +173,6 @@ public final class ClientConfig {
     public static final String GRAPHIC_ARROW_DESELECTED = GRAPHICS_PATH + "deselected_arrow.png";
     public static final int FULL_SCREEN = 0;
     public static final int WINDOWED_MODE = 1;
-
-    public static final int FIXED_SIZE_WINDOWED_MODE = 2;
     public static final int BIG_DOT_WIDTH = 12;
     public static final int SMALL_DOT_WIDTH = 6;
     public static final boolean LIMIT_FRAME_RATE = false;
@@ -220,6 +199,13 @@ public final class ClientConfig {
     public static final Font USER_MESSAGE_FONT = new Font("Arial", 0, 12);
     public static final Font LARGE_MESSAGE_FONT = new Font("Arial", 0, 24);
 
-    private ClientConfig() {
+    public static final File USER_HOME_FOLDER = new File(System.getProperty("user.home"));
+    public static final File FREERAILS_USER_FOLDER = new File(USER_HOME_FOLDER, "Freerails user data");
+    public static final File OPTIONS_FILE = new File(FREERAILS_USER_FOLDER, "Freerails.options");
+
+    public static final Charset defaultCharset = Charset.forName("utf-8");
+
+
+    private ClientConstants() {
     }
 }

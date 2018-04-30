@@ -23,9 +23,10 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ClientConfig;
+import freerails.Options;
+import freerails.client.ClientConstants;
 import freerails.client.view.DisplayModesComboBoxModels;
-import freerails.client.model.DisplayModeWithName;
+import freerails.util.Vec2D;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -51,7 +52,6 @@ public class ClientOptionsPanel extends JPanel {
     private static final Logger logger = Logger.getLogger(ClientOptionsPanel.class.getName());
     private static final String INVALID_PORT = "A valid port value is between between 0 and 65535.";
     private final LauncherInterface owner;
-    private JRadioButton fixedSizeButton;
     private JRadioButton fullScreenButton;
     private JList list1;
     private JPanel jPanel4;
@@ -82,7 +82,6 @@ public class ClientOptionsPanel extends JPanel {
         list1 = new JList();
         JPanel jPanel2 = new JPanel();
         windowedButton = new JRadioButton();
-        fixedSizeButton = new JRadioButton();
         fullScreenButton = new JRadioButton();
 
         setLayout(new GridBagLayout());
@@ -101,7 +100,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel3.add(label1);
 
         playerName.setColumns(12);
-        playerName.setText(owner.getProperty(ClientConfig.PLAYER_NAME_PROPERTY));
+        playerName.setText(Options.Client.NAME.get());
         jPanel3.add(playerName);
 
         playerNames.setToolTipText("Select a player from the saved game.");
@@ -119,7 +118,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel4.add(label2, new GridBagConstraints());
 
         remoteIP.setColumns(15);
-        remoteIP.setText(owner.getProperty(ClientConfig.SERVER_IP_ADDRESS_PROPERTY));
+        remoteIP.setText(Options.Server.IP.get());
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.anchor = GridBagConstraints.WEST;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
@@ -134,7 +133,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel4.add(label3, gridBagConstraints);
 
         remotePort.setColumns(5);
-        remotePort.setText(owner.getProperty(ClientConfig.SERVER_PORT_PROPERTY));
+        remotePort.setText(String.valueOf(Options.Server.PORT.get()));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -159,11 +158,11 @@ public class ClientOptionsPanel extends JPanel {
         jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "Select Display Mode"));
         jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
-        String displayMode = owner.getProperty(ClientConfig.CLIENT_DISPLAY_PROPERTY);
-        String fullscreenProp = owner.getProperty(ClientConfig.CLIENT_FULLSCREEN_PROPERTY);
+        Vec2D displayMode = Options.Client.DISPLAY_MODE.get();
+        Boolean fullscreenProp = Options.Client.MAINWINDOW_FULLSCREEN.get();
         boolean fullscreen = false;
-        if (displayMode != null && !displayMode.trim().isEmpty()) {
-            fullscreen = Boolean.valueOf(fullscreenProp);
+        if (displayMode != null) {
+            fullscreen = fullscreenProp;
         }
 
         list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -187,10 +186,6 @@ public class ClientOptionsPanel extends JPanel {
         }
         windowedButton.setText("Windowed");
         jPanel2.add(windowedButton);
-
-        buttonGroup1.add(fixedSizeButton);
-        fixedSizeButton.setText("Windowed (fixed size 640*480)");
-        jPanel2.add(fixedSizeButton);
 
         buttonGroup1.add(fullScreenButton);
         if (fullscreen) {
@@ -279,11 +274,10 @@ public class ClientOptionsPanel extends JPanel {
         return names[index];
     }
 
-    java.awt.DisplayMode getDisplayMode() {
+    Vec2D getDisplayMode() {
         if (fullScreenButton.isSelected()) {
-            DisplayModeWithName displayModeWithName = ((DisplayModeWithName) list1.getSelectedValue());
-            logger.debug("The selected display mode is " + displayModeWithName.toString());
-            return displayModeWithName.displayMode;
+            // TODO readout list1
+            return new Vec2D(800, 600);
         }
         return null;
     }
@@ -352,23 +346,20 @@ public class ClientOptionsPanel extends JPanel {
         // Everything is success.
         owner.hideErrorMessages();
 
-        owner.setProperty(ClientConfig.SERVER_PORT_PROPERTY, remotePort.getText());
-        owner.setProperty(ClientConfig.PLAYER_NAME_PROPERTY, playerName.getText());
-        owner.setProperty(ClientConfig.SERVER_IP_ADDRESS_PROPERTY, remoteIP.getText());
-        owner.setProperty(ClientConfig.CLIENT_FULLSCREEN_PROPERTY, Boolean.toString(fullScreenButton.isSelected()));
+        Options.Server.PORT.set(Integer.valueOf(remotePort.getText()));
+        Options.Client.NAME.set(playerName.getText());
+        Options.Server.IP.set(remoteIP.getText());
+        Options.Client.MAINWINDOW_FULLSCREEN.set(fullScreenButton.isSelected());
         if (getDisplayMode() != null) {
-            owner.setProperty(ClientConfig.CLIENT_DISPLAY_PROPERTY, new DisplayModeWithName(getDisplayMode()).toString());
+            Options.Client.DISPLAY_MODE.set(getDisplayMode());
         }
-        owner.saveProperties();
     }
 
     int getScreenMode() {
         if (fullScreenButton.isSelected()) {
-            return ClientConfig.FULL_SCREEN;
+            return ClientConstants.FULL_SCREEN;
         } else if (windowedButton.isSelected()) {
-            return ClientConfig.WINDOWED_MODE;
-        } else if (fixedSizeButton.isSelected()) {
-            return ClientConfig.FIXED_SIZE_WINDOWED_MODE;
+            return ClientConstants.WINDOWED_MODE;
         } else {
             throw new IllegalStateException();
         }
@@ -377,7 +368,6 @@ public class ClientOptionsPanel extends JPanel {
     public void setControlsEnabled(boolean enabled) {
         windowedButton.setEnabled(enabled);
         fullScreenButton.setEnabled(enabled);
-        fixedSizeButton.setEnabled(enabled);
         if (fullScreenButton.isSelected()) {
             list1.setEnabled(enabled);
         }

@@ -71,16 +71,16 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
         buildTrackPanel = new BuildTrackPanel();
         trainListPanel.removeButtons();
 
-        URL terrainInfoIconUrl = getClass().getResource(ClientConfig.ICON_TERRAIN_INFO);
+        URL terrainInfoIconUrl = getClass().getResource(ClientConstants.ICON_TERRAIN_INFO);
         Icon terrainInfoIcon = new ImageIcon(terrainInfoIconUrl);
 
-        URL buildTrackIconUrl = getClass().getResource(ClientConfig.ICON_NEW_TRACK);
+        URL buildTrackIconUrl = getClass().getResource(ClientConstants.ICON_NEW_TRACK);
         buildTrackIcon = new ImageIcon(buildTrackIconUrl);
 
-        URL trainListIconUrl = getClass().getResource(ClientConfig.ICON_TRAIN_LIST);
+        URL trainListIconUrl = getClass().getResource(ClientConstants.ICON_TRAIN_LIST);
         trainListIcon = new ImageIcon(trainListIconUrl);
 
-        URL stationListIconUrl = getClass().getResource(ClientConfig.ICON_STATION_LIST);
+        URL stationListIconUrl = getClass().getResource(ClientConstants.ICON_STATION_LIST);
         stationInfoIcon = new ImageIcon(stationListIconUrl);
 
         // Note titles set to null so only the icon appears at the top of the

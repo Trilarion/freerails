@@ -16,6 +16,8 @@ sourceSets {
 
 dependencies {
     compile 'log4j:log4j:1.2.17'
+    compile 'com.google.code.gson:gson:2.8.3'
+    compile 'commons-io:commons-io:2.6'
     testCompile 'junit:junit:4.12'
     toolsCompile sourceSets.main.output, sourceSets.test.output
 }
@@ -48,8 +50,8 @@ task generateSources {
         def srcFile = new File(outputDir, "Version.java")
         srcFile.write(
                 """package freerails;
-public class Version {
-    static final String VERSION = "$project.version";
+public final class Version {
+    public static final String VERSION = "$project.version";
 }
 """)
     }

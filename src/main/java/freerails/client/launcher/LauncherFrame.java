@@ -23,7 +23,8 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ClientConfig;
+import freerails.Options;
+import freerails.client.ClientConstants;
 import freerails.server.FreerailsGameServer;
 import freerails.network.LogOnResponse;
 import freerails.savegames.FullSaveGameManager;
@@ -38,6 +39,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,9 +60,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     private static final Logger logger = Logger.getLogger(LauncherFrame.class.getName());
     private static final long serialVersionUID = -8224003315973977661L;
     private final Component[] wizardPages = new Component[4];
-    private final Icon errorIcon = new ImageIcon(getClass().getResource(ClientConfig.ICON_ERROR));
-    private final Icon warningIcon = new ImageIcon(getClass().getResource(ClientConfig.ICON_WARNING));
-    private final Icon infoIcon = new ImageIcon(getClass().getResource(ClientConfig.ICON_INFO));
+    private final Icon errorIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_ERROR));
+    private final Icon warningIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_WARNING));
+    private final Icon infoIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_INFO));
     private final ProgressPanelModel progressPanel = new ProgressPanelModel(this);
     private JLabel infoLabel;
     private JPanel jPanel1;
@@ -69,11 +71,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     private int currentPage = 0;
     private FreerailsGameServer server;
     private LauncherClient client;
-    private Properties properties;
     private boolean nextIsStart = false;
 
     private LauncherFrame() {
-        loadProperties();
         GridBagConstraints gridBagConstraints;
 
         jPanel1 = new JPanel();
@@ -193,9 +193,9 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     long startTime = System.currentTimeMillis();
                     server.update();
                     long deltatime = System.currentTimeMillis() - startTime;
-                    if (deltatime < ClientConfig.SERVERUPDATE) {
+                    if (deltatime < ClientConstants.SERVERUPDATE) {
                         try {
-                            Thread.sleep(ClientConfig.SERVERUPDATE - deltatime);
+                            Thread.sleep(ClientConstants.SERVERUPDATE - deltatime);
                         } catch (InterruptedException e) {}
                     }
                 }
@@ -223,9 +223,18 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         rootLogger.setLevel(Level.INFO);
         logger.debug("Started launcher.");
 
+        // load options
+        ClientConstants.USER_HOME_FOLDER.mkdirs();
+        if (ClientConstants.OPTIONS_FILE.exists()) {
+            Options.load(ClientConstants.OPTIONS_FILE);
+        }
+
         // show new launcher frame
         LauncherFrame launcherFrame = new LauncherFrame();
         launcherFrame.setVisible(true);
+
+        // save options
+        Options.save(ClientConstants.OPTIONS_FILE);
     }
 
     /**
@@ -289,7 +298,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         int mode;
 
         switch (launcherPanel.getMode()) {
-            case ClientConfig.MODE_START_NETWORK_GAME:
+            case ClientConstants.MODE_START_NETWORK_GAME:
                 // LL: I don't think this code ever executes now that there is a connected players screen.
                 try {
                     setServerGameModel();
@@ -316,7 +325,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                 }
 
                 break;
-            case ClientConfig.MODE_JOIN_NETWORK_GAME:
+            case ClientConstants.MODE_JOIN_NETWORK_GAME:
                 mode = clientOptionsPanel.getScreenMode();
                 try {
 
@@ -352,7 +361,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                 }
 
                 break;
-            case ClientConfig.MODE_SERVER_ONLY:
+            case ClientConstants.MODE_SERVER_ONLY:
                 if (selectMapPanel.validateInput()) {
                     initServer();
                     try {
@@ -407,7 +416,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
      * Starts a thread listening for new connections.
      */
     private void prepareToHostNetworkGame(int port) throws IOException {
-        loadProperties();
         if (isNewGame()) {
             initServer();
         }
@@ -450,7 +458,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                 break;
             case 2:
                 LauncherPanel panel = (LauncherPanel) wizardPages[0];
-                if (panel.getMode() == ClientConfig.MODE_JOIN_NETWORK_GAME) {
+                if (panel.getMode() == ClientConstants.MODE_JOIN_NETWORK_GAME) {
                     currentPage = 0;
                     cl.show(jPanel1, "0");
                     prevButton.setEnabled(false);
@@ -474,21 +482,21 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     msp.validateInput();
                     // Initial game selection page
                     switch (panel.getMode()) {
-                        case ClientConfig.MODE_SERVER_ONLY:
+                        case ClientConstants.MODE_SERVER_ONLY:
                             // go to map selection screen
                             cl.next(jPanel1);
                             msp.setServerPortPanelVisible(true);
 
                             currentPage++;
                             break;
-                        case ClientConfig.MODE_START_NETWORK_GAME:
+                        case ClientConstants.MODE_START_NETWORK_GAME:
                             // go to map selection screen
                             msp.setServerPortPanelVisible(true);
                             cop.setRemoteServerPanelVisible(false);
                             cl.next(jPanel1);
                             currentPage++;
                             break;
-                        case ClientConfig.MODE_JOIN_NETWORK_GAME:
+                        case ClientConstants.MODE_JOIN_NETWORK_GAME:
                             // client display options
                             nextIsStart = true;
                             cl.show(jPanel1, "2");
@@ -502,7 +510,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     break;
                 case 1:
                     // map selection page
-                    if (panel.getMode() == ClientConfig.MODE_SERVER_ONLY) {
+                    if (panel.getMode() == ClientConstants.MODE_SERVER_ONLY) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
                             try {
@@ -537,7 +545,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     break;
                 case 2:
                     // display mode selection
-                    if (panel.getMode() == ClientConfig.MODE_START_NETWORK_GAME) {
+                    if (panel.getMode() == ClientConstants.MODE_START_NETWORK_GAME) {
                         if (msp.validateInput()) {
                             prevButton.setEnabled(false);
                             int mode = cop.getScreenMode();
@@ -558,7 +566,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         // Connection success screen
                         prevButton.setEnabled(false);
                         setServerGameModel();// TODO catch exception
-                        if (panel.getMode() == ClientConfig.MODE_START_NETWORK_GAME) {
+                        if (panel.getMode() == ClientConstants.MODE_START_NETWORK_GAME) {
                             startThread(server, client);
                             cl.show(jPanel1, "4");
                         } else {
@@ -639,56 +647,4 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             nextButton.setEnabled(true);
         }
     }
-
-    private void loadProperties() {
-        try {
-            properties = new Properties();
-            FileInputStream in = new FileInputStream(ClientConfig.PROPERTIES_FILENAME);
-            properties.load(in);
-            in.close();
-            if (!properties.containsKey(ClientConfig.SERVER_PORT_PROPERTY) || !properties.containsKey(ClientConfig.PLAYER_NAME_PROPERTY) || !properties.containsKey(ClientConfig.SERVER_IP_ADDRESS_PROPERTY)) {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            properties = new Properties();
-            properties.setProperty(ClientConfig.SERVER_PORT_PROPERTY, "55000");
-            properties.setProperty(ClientConfig.PLAYER_NAME_PROPERTY, System.getProperty("user.name"));
-            properties.setProperty(ClientConfig.SERVER_IP_ADDRESS_PROPERTY, "127.0.0.1");
-        }
-    }
-
-    /**
-     *
-     */
-    public void saveProperties() {
-        try {
-            FileOutputStream out = new FileOutputStream(ClientConfig.PROPERTIES_FILENAME);
-            properties.store(out, "---No Comment---");
-            out.close();
-
-            // Copy key-value pairs to System.Properties so
-            // that they are visible in the game via the
-            // show java properties menu item.
-            System.getProperties().putAll(properties);
-        } catch (Exception e) {
-            logger.warn(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * @param key
-     * @param value
-     */
-    public void setProperty(String key, String value) {
-        properties.setProperty(key, value);
-    }
-
-    /**
-     * @param key
-     * @return
-     */
-    public String getProperty(String key) {
-        return properties.getProperty(key);
-    }
-
 }

@@ -23,7 +23,7 @@
 
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.finances.FinancialDataGatherer;
 import freerails.client.ModelRoot;
@@ -82,7 +82,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     public BrokerScreenHtmlFrame() {
         super();
 
-        URL url = BrokerScreenHtmlFrame.class.getResource(ClientConfig.VIEW_BROKER);
+        URL url = BrokerScreenHtmlFrame.class.getResource(ClientConstants.VIEW_BROKER);
         template = loadText(url);
         setSize(550, 300);
     }

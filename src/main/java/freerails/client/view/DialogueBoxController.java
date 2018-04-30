@@ -22,7 +22,7 @@
  */
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
 import freerails.model.world.*;
 import freerails.util.ui.MyGlassPanel;
@@ -151,9 +151,9 @@ public class DialogueBoxController implements WorldListListener {
 
         closeButton.addActionListener(closeCurrentDialogue);
 
-        showControls = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_GAME_CONTROLS));
-        about = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_ABOUT));
-        how2play = new HtmlPanel(DialogueBoxController.class.getResource(ClientConfig.VIEW_HOW_TO_PLAY));
+        showControls = new HtmlPanel(DialogueBoxController.class.getResource(ClientConstants.VIEW_GAME_CONTROLS));
+        about = new HtmlPanel(DialogueBoxController.class.getResource(ClientConstants.VIEW_ABOUT));
+        how2play = new HtmlPanel(DialogueBoxController.class.getResource(ClientConstants.VIEW_HOW_TO_PLAY));
 
         terrainInfo = new TerrainInfoPanel();
         stationInfo = new StationInfoPanel();

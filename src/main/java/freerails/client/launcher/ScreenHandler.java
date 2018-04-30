@@ -18,8 +18,8 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ClientConfig;
-import freerails.client.model.DisplayModeWithName;
+import freerails.client.ClientConstants;
+import freerails.util.Vec2D;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import org.apache.log4j.Logger;
 
@@ -43,7 +43,7 @@ public class ScreenHandler {
     public final JFrame frame;
     private final int mode;
     private BufferStrategy bufferStrategy;
-    private DisplayMode displayMode;
+    private Vec2D displayMode;
     private boolean isInUse = false;
     /**
      * Whether the window is minimised.
@@ -55,7 +55,7 @@ public class ScreenHandler {
      * @param mode
      * @param displayMode
      */
-    public ScreenHandler(JFrame f, int mode, DisplayMode displayMode) {
+    public ScreenHandler(JFrame f, int mode, Vec2D displayMode) {
         this.displayMode = displayMode;
         frame = f;
         this.mode = mode;
@@ -89,15 +89,13 @@ public class ScreenHandler {
         }
     }
 
-    private static DisplayMode getBestDisplayMode() {
+    private static Vec2D getBestDisplayMode() {
         for (DisplayMode BEST_DISPLAY_MODE : BEST_DISPLAY_MODES) {
             DisplayMode[] modes = device.getDisplayModes();
 
             for (DisplayMode mode1 : modes) {
                 if (mode1.getWidth() == BEST_DISPLAY_MODE.getWidth() && mode1.getHeight() == BEST_DISPLAY_MODE.getHeight() && mode1.getBitDepth() == BEST_DISPLAY_MODE.getBitDepth()) {
-                    logger.debug("Best display mode is " + (new DisplayModeWithName(BEST_DISPLAY_MODE)).toString());
-
-                    return BEST_DISPLAY_MODE;
+                    return new Vec2D(BEST_DISPLAY_MODE.getWidth(), BEST_DISPLAY_MODE.getHeight());
                 }
             }
         }
@@ -117,8 +115,8 @@ public class ScreenHandler {
      */
     public synchronized void apply() {
         switch (mode) {
-            case ClientConfig.FULL_SCREEN: {
-                DisplayMode displayMode1 = displayMode;
+            case ClientConstants.FULL_SCREEN: {
+                Vec2D displayMode1 = displayMode;
 
                 setRepaintOffAndDisableDoubleBuffering(frame);
 
@@ -139,8 +137,8 @@ public class ScreenHandler {
                         displayMode1 = getBestDisplayMode();
                     }
 
-                    logger.info("Setting display mode to:  " + (new DisplayModeWithName(displayMode1).toString()));
-                    device.setDisplayMode(displayMode1);
+                    logger.info("Setting display mode to:  " + displayMode1.toString());
+                    device.setDisplayMode(new DisplayMode(displayMode1.x, displayMode.y, DisplayMode.BIT_DEPTH_MULTI, DisplayMode.REFRESH_RATE_UNKNOWN));
                 }
 
                 frame.validate();
@@ -148,7 +146,7 @@ public class ScreenHandler {
                 break;
             }
 
-            case ClientConfig.WINDOWED_MODE: {
+            case ClientConstants.WINDOWED_MODE: {
                 // Some of the dialogue boxes do not get laid out properly if they
                 // are smaller than their
                 // minimum size. JFrameMinimumSizeEnforcer increases the size of the
@@ -156,24 +154,6 @@ public class ScreenHandler {
                 // below the specified size.
                 frame.addComponentListener(new JFrameMinimumSizeEnforcer(640, 480));
 
-                frame.setSize(640, 480);
-                frame.setVisible(true);
-
-                break;
-            }
-
-            case ClientConfig.FIXED_SIZE_WINDOWED_MODE: {
-                /*
-                 * We need to make the frame not displayable before calling
-                 * setUndecorated(true) otherwise a
-                 * IllegalComponentStateException will get thrown.
-                 */
-                if (frame.isDisplayable()) {
-                    frame.dispose();
-                }
-
-                frame.setUndecorated(true);
-                frame.setResizable(false);
                 frame.setSize(640, 480);
                 frame.setVisible(true);
 

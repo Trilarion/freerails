@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.map.detail;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.renderer.map.*;
 import freerails.client.renderer.track.BuildTrackRenderer;
 import freerails.util.ui.Painter;
@@ -54,7 +54,7 @@ public class DetailMapRenderer implements MapRenderer {
         background = new SquareTileBackgroundRenderer(mapBackgroundRenderer);
 
         Vec2D mapSize = world.getMapSize();
-        mapSizeInPixels = Vec2D.multiply(mapSize, ClientConfig.TILE_SIZE);
+        mapSizeInPixels = Vec2D.multiply(mapSize, ClientConstants.TILE_SIZE);
 
         stationRadius = new StationRadiusRenderer(modelRoot);
         buildTrackRenderer = new BuildTrackRenderer(rendererRoot, modelRoot);

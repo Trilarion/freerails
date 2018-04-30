@@ -18,7 +18,7 @@
 
 package freerails.client.view;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
@@ -44,7 +44,7 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     public IncomeStatementHtmlPanel() {
         super();
 
-        URL url = IncomeStatementHtmlPanel.class.getResource(ClientConfig.VIEW_INCOME_STATEMENT);
+        URL url = IncomeStatementHtmlPanel.class.getResource(ClientConstants.VIEW_INCOME_STATEMENT);
         template = loadText(url);
     }
 

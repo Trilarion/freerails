@@ -1,6 +1,6 @@
 package freerails.client.renderer.track;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.map.MapLayerRenderer;
 import freerails.model.terrain.FullTerrainTile;
@@ -55,7 +55,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
                     int ruleNumber = trackPiece.getTrackTypeID();
                     if (ruleNumber != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                         TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
-                        trackPieceView.drawTrackPieceIcon(g, graphicsNumber, tileLocation, ClientConfig.TILE_SIZE);
+                        trackPieceView.drawTrackPieceIcon(g, graphicsNumber, tileLocation, ClientConstants.TILE_SIZE);
                     }
                 }
             }

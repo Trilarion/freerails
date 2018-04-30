@@ -1,6 +1,6 @@
 package freerails.client.renderer.map.detail;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
@@ -58,7 +58,7 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
          * UserInputOnMapController
          */
         if (SwingUtilities.isRightMouseButton(e)) {
-            detailMapViewComponentConcrete.setCursor(Cursor.getPredefinedCursor((ClientConfig.MAP_SCROLL_SPEED > 0) ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
+            detailMapViewComponentConcrete.setCursor(Cursor.getPredefinedCursor((ClientConstants.MAP_SCROLL_SPEED > 0) ? Cursor.HAND_CURSOR : Cursor.MOVE_CURSOR));
             lastMouseLocation.x = e.getX();
             lastMouseLocation.y = e.getY();
             screenLocation.x = e.getX();
@@ -85,11 +85,11 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
                 tileSize/GRANULARITY intervals). Multiply this value with LINEAR_ACCEL to
                 be independent of acceleration.
              */
-            int GRANULARITY = 2 * ClientConfig.MAP_SCROLL_SPEED;
+            int GRANULARITY = 2 * ClientConstants.MAP_SCROLL_SPEED;
             tiledelta.x = (sigmadelta.x * GRANULARITY) / tileSize;
             tiledelta.y = (sigmadelta.y * GRANULARITY) / tileSize;
-            tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY) * ClientConfig.MAP_SCROLL_SPEED;
-            tiledelta.y = ((tiledelta.y * tileSize) / GRANULARITY) * ClientConfig.MAP_SCROLL_SPEED;
+            tiledelta.x = ((tiledelta.x * tileSize) / GRANULARITY) * ClientConstants.MAP_SCROLL_SPEED;
+            tiledelta.y = ((tiledelta.y * tileSize) / GRANULARITY) * ClientConstants.MAP_SCROLL_SPEED;
 
             Rectangle vr = detailMapViewComponentConcrete.getVisibleRect();
             Rectangle bounds = detailMapViewComponentConcrete.getBounds();
@@ -97,18 +97,18 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
             int temp; // respect bounds
 
             if ((temp = vr.x - tiledelta.x) < 0) {
-                sigmadelta.x += temp / ClientConfig.MAP_SCROLL_SPEED;
+                sigmadelta.x += temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.x += temp;
             } else if ((temp = (bounds.width) - (vr.x + vr.width) + tiledelta.x) < 0) {
-                sigmadelta.x -= temp / ClientConfig.MAP_SCROLL_SPEED;
+                sigmadelta.x -= temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.x -= temp;
             }
 
             if ((temp = vr.y - tiledelta.y) < 0) {
-                sigmadelta.y += temp / ClientConfig.MAP_SCROLL_SPEED;
+                sigmadelta.y += temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.y += temp;
             } else if ((temp = (bounds.height) - (vr.y + vr.height) + tiledelta.y) < 0) {
-                sigmadelta.y -= temp / ClientConfig.MAP_SCROLL_SPEED;
+                sigmadelta.y -= temp / ClientConstants.MAP_SCROLL_SPEED;
                 tiledelta.y -= temp;
             }
 
@@ -117,8 +117,8 @@ final class DetailMapViewComponentMouseAdapter extends MouseInputAdapter {
                 vr.y -= tiledelta.y;
                 detailMapViewComponentConcrete.scrollRectToVisible(vr);
 
-                sigmadelta.x -= tiledelta.x / ClientConfig.MAP_SCROLL_SPEED;
-                sigmadelta.y -= tiledelta.y / ClientConfig.MAP_SCROLL_SPEED;
+                sigmadelta.x -= tiledelta.x / ClientConstants.MAP_SCROLL_SPEED;
+                sigmadelta.y -= tiledelta.y / ClientConstants.MAP_SCROLL_SPEED;
                 lastMouseLocation.x -= tiledelta.x;
                 lastMouseLocation.y -= tiledelta.y;
             }

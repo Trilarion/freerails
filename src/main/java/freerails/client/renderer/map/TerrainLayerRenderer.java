@@ -1,6 +1,6 @@
 package freerails.client.renderer.map;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.renderer.tile.TileRenderer;
 import freerails.client.renderer.tile.TileRendererList;
 import freerails.model.terrain.TerrainTile;
@@ -36,7 +36,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param tileLocation
      */
     public void paintTile(Graphics g, Vec2D tileLocation) {
-        Vec2D screenLocation = Vec2D.multiply(ClientConfig.TILE_SIZE, tileLocation);
+        Vec2D screenLocation = Vec2D.multiply(ClientConstants.TILE_SIZE, tileLocation);
 
         if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
             TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);

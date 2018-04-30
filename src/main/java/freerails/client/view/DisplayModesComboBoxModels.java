@@ -22,7 +22,7 @@
  */
 package freerails.client.view;
 
-import freerails.client.model.DisplayModeWithName;
+import freerails.util.Vec2D;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
@@ -32,13 +32,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * ComboBoxModel that provides access to the screen resolutions and bit depths
- * available.
+ * ComboBoxModel that provides access to the screen resolutions available.
  */
 public class DisplayModesComboBoxModels implements ComboBoxModel {
 
-    private final List<DisplayModeWithName> modes = new ArrayList<>();
-    private DisplayModeWithName selection;
+    private final List<Vec2D> modes = new ArrayList<>();
+    private Vec2D selection;
 
     /**
      *
@@ -46,11 +45,11 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
     public DisplayModesComboBoxModels() {
         GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
         java.awt.DisplayMode currentMode = defaultConfiguration.getDevice().getDisplayMode();
-        selection = new DisplayModeWithName(currentMode);
+        selection = new Vec2D(currentMode.getWidth(), currentMode.getHeight());
 
         java.awt.DisplayMode[] displayModes = defaultConfiguration.getDevice().getDisplayModes();
         for (java.awt.DisplayMode displayMode : displayModes) {
-            DisplayModeWithName mode = new DisplayModeWithName(displayMode);
+            Vec2D mode = new Vec2D(displayMode.getWidth(), displayMode.getHeight());
             modes.add(mode);
         }
     }
@@ -60,18 +59,16 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
      * width, height, or bitdepth below the specified values.
      */
     public void removeDisplayModesBelow(int width, int height, int bitDepth) {
-        Iterator<DisplayModeWithName> it = modes.iterator();
+        Iterator<Vec2D> it = modes.iterator();
         while (it.hasNext()) {
-            DisplayModeWithName mode = it.next();
-            java.awt.DisplayMode displayMode = mode.displayMode;
-            final boolean tooNarrow = displayMode.getWidth() < width;
-            final boolean tooShort = displayMode.getHeight() < height;
+            Vec2D mode = it.next();
+            final boolean tooNarrow = mode.x < width;
+            final boolean tooShort = mode.y < height;
             /*
              * Note, displayMode.getBitDepth() may return
              * DisplayModeWithName.BIT_DEPTH_MULTI, which is -1.
              */
-            final boolean tooFewColours = (displayMode.getBitDepth() < bitDepth) && (displayMode.getBitDepth() != java.awt.DisplayMode.BIT_DEPTH_MULTI);
-            if (tooNarrow || tooShort || tooFewColours) {
+            if (tooNarrow || tooShort) {
                 it.remove();
             }
         }
@@ -82,13 +79,13 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
     }
 
     public void setSelectedItem(Object anItem) {
-        selection = (DisplayModeWithName) anItem;
+        selection = (Vec2D) anItem;
     }
 
     public void addListDataListener(ListDataListener l) {
     }
 
-    public DisplayModeWithName getElementAt(int index) {
+    public Vec2D getElementAt(int index) {
         return modes.get(index);
     }
 

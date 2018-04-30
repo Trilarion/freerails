@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.map.detail;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.world.*;
@@ -58,14 +58,14 @@ public class StationBoxRenderer implements Painter {
 
         // How wide will the wagon images be if we scale them so their height is WAGON_IMAGE_HEIGHT?
         Image wagonImage = rendererRoot.getWagonImages(0).getSideOnImage();
-        wagonImageWidth = wagonImage.getWidth(null) * ClientConfig.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
+        wagonImageWidth = wagonImage.getWidth(null) * ClientConstants.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
         int nrOfCargoTypes = this.world.size(SharedKey.CargoTypes);
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
             String wagonFilename = rendererRoot.getWagonImages(i).sideOnFileName;
             try {
-                wagonImage = rendererRoot.getScaledImage(wagonFilename, ClientConfig.WAGON_IMAGE_HEIGHT);
+                wagonImage = rendererRoot.getScaledImage(wagonFilename, ClientConstants.WAGON_IMAGE_HEIGHT);
             } catch (IOException e) {
                 throw new IllegalArgumentException(wagonFilename);
             }
@@ -91,7 +91,7 @@ public class StationBoxRenderer implements Painter {
                 // TODO which position is meant here?
                 int positionX = (station.getLocation().x * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE / 2;
                 int positionY = (station.getLocation().y * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE * 2;
-                Rectangle r = new Rectangle(positionX, positionY, ClientConfig.MAX_WIDTH, ClientConfig.MAX_HEIGHT);
+                Rectangle r = new Rectangle(positionX, positionY, ClientConstants.MAX_WIDTH, ClientConstants.MAX_HEIGHT);
                 if (newVisibleRectangle.intersects(r)) {
                     g.setColor(StationBoxRenderer.BACKGROUND_COLOR);
                     g.fillRect(r.x, r.y, r.width, r.height);
@@ -102,12 +102,12 @@ public class StationBoxRenderer implements Painter {
                     CargoBatchBundle cargoBatchBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
                     int[][] carsLoads = calculateCarLoads(cargoBatchBundle);
                     for (int category = 0; category < CargoCategory.getNumberOfCategories(); category++) {
-                        int alternateWidth = (ClientConfig.MAX_WIDTH - 2 * ClientConfig.SPACING) / (carsLoads[category].length + 1);
+                        int alternateWidth = (ClientConstants.MAX_WIDTH - 2 * ClientConstants.SPACING) / (carsLoads[category].length + 1);
                         int xOffsetPerWagon = Math.min(wagonImageWidth, alternateWidth);
 
                         for (int car = 0; car < carsLoads[category].length; car++) {
-                            int x = positionX + (car * xOffsetPerWagon) + ClientConfig.SPACING;
-                            int y = positionY + (category * (ClientConfig.WAGON_IMAGE_HEIGHT + ClientConfig.SPACING));
+                            int x = positionX + (car * xOffsetPerWagon) + ClientConstants.SPACING;
+                            int y = positionY + (category * (ClientConstants.WAGON_IMAGE_HEIGHT + ClientConstants.SPACING));
                             int cargoType = carsLoads[category][car];
                             g.drawImage(cargoImages[cargoType], x, y, null);
                         }

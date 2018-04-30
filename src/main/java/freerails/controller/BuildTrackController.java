@@ -18,7 +18,7 @@
 
 package freerails.controller;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.world.World;
@@ -219,7 +219,7 @@ public class BuildTrackController implements GameModel {
         // If track has actually been built, play the build track sound.
         if (trackBuilder != null && moveStatus.succeeds()) {
             if (trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
-                SoundManager.getInstance().playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
+                SoundManager.getInstance().playSound(ClientConstants.SOUND_BUILD_TRACK, 0);
             }
         }
 
@@ -511,9 +511,9 @@ public class BuildTrackController implements GameModel {
                 actPoint = targetPoint;
                 setCursorMessage("");
                 if (BuildMode.REMOVE_TRACK == getBuildMode()) {
-                    SoundManager.getInstance().playSound(ClientConfig.SOUND_REMOVE_TRACK, 0);
+                    SoundManager.getInstance().playSound(ClientConstants.SOUND_REMOVE_TRACK, 0);
                 } else {
-                    SoundManager.getInstance().playSound(ClientConfig.SOUND_BUILD_TRACK, 0);
+                    SoundManager.getInstance().playSound(ClientConstants.SOUND_BUILD_TRACK, 0);
                 }
             } else {
                 setCursorMessage(moveStatus.getMessage());

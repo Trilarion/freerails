@@ -23,7 +23,7 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -83,9 +83,9 @@ public class LauncherPanel extends JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         add(paddingJPanel, gridBagConstraints);
-        buttonModels[ClientConfig.MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
-        buttonModels[ClientConfig.MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
-        buttonModels[ClientConfig.MODE_SERVER_ONLY] = serverOnlyButton.getModel();
+        buttonModels[ClientConstants.MODE_START_NETWORK_GAME] = startNetworkButton.getModel();
+        buttonModels[ClientConstants.MODE_JOIN_NETWORK_GAME] = joinNetworkButton.getModel();
+        buttonModels[ClientConstants.MODE_SERVER_ONLY] = serverOnlyButton.getModel();
     }
 
     int getMode() {

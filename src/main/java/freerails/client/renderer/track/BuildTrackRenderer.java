@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.track;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
@@ -66,7 +66,7 @@ public class BuildTrackRenderer implements Painter {
 
                 int ruleNumber = trackPiece.getTrackTypeID();
                 TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
-                trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConfig.TILE_SIZE);
+                trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConstants.TILE_SIZE);
             }
 
             ReadOnlyWorld realWorld = modelRoot.getWorld();
@@ -76,14 +76,14 @@ public class BuildTrackRenderer implements Painter {
              * been removed.
              */
             for (Vec2D p : proposedTrack.keySet()) {
-                Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConfig.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConfig.TILE_SIZE, ClientConfig.SMALL_DOT_WIDTH), 2));
+                Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
                 FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
                 TrackPiece trackPiece = proposedTrack.get(p);
 
                 boolean trackRemoved = !trackPiece.getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
                 Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
                 g.setColor(dotColor);
-                g.fillOval(location.x, location.y, ClientConfig.SMALL_DOT_WIDTH, ClientConfig.SMALL_DOT_WIDTH);
+                g.fillOval(location.x, location.y, ClientConstants.SMALL_DOT_WIDTH, ClientConstants.SMALL_DOT_WIDTH);
             }
         }
     }

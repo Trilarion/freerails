@@ -23,7 +23,8 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ClientConfig;
+import freerails.Options;
+import freerails.client.ClientConstants;
 import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.savegames.FullSaveGameManager;
@@ -121,7 +122,7 @@ class SelectMapPanel extends JPanel {
         jPanel3.add(portLabel, gridBagConstraints);
 
         serverPort.setColumns(6);
-        serverPort.setText(this.owner.getProperty(ClientConfig.SERVER_PORT_PROPERTY));
+        serverPort.setText(String.valueOf(Options.Server.PORT.get()));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -226,8 +227,7 @@ class SelectMapPanel extends JPanel {
 
         // Everything is success.
         owner.hideErrorMessages();
-        owner.setProperty(ClientConfig.SERVER_PORT_PROPERTY, serverPort.getText());
-        owner.saveProperties();
+        Options.Server.PORT.set(Integer.valueOf(serverPort.getText()));
         return true;
     }
 

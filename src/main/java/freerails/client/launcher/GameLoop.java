@@ -18,7 +18,7 @@
 
 package freerails.client.launcher;
 
-import freerails.client.ClientConfig;
+import freerails.client.ClientConstants;
 import freerails.client.SynchronizedEventQueue;
 import freerails.client.view.FramePerSecondDisplay;
 import freerails.util.ui.RepaintManagerForActiveRendering;
@@ -138,12 +138,12 @@ public class GameLoop implements Runnable {
                         // The window is minimised so we don't need to keep updating.
                         Thread.sleep(200);
                     } catch (Exception e) {}
-                } else if (ClientConfig.LIMIT_FRAME_RATE) {
+                } else if (ClientConstants.LIMIT_FRAME_RATE) {
                     long deltatime = System.currentTimeMillis() - frameStartTime;
 
-                    while (deltatime < (1000 / ClientConfig.TARGET_FPS)) {
+                    while (deltatime < (1000 / ClientConstants.TARGET_FPS)) {
                         try {
-                            long sleeptime = (1000 / ClientConfig.TARGET_FPS) - deltatime;
+                            long sleeptime = (1000 / ClientConstants.TARGET_FPS) - deltatime;
                             Thread.sleep(sleeptime);
                         } catch (Exception ignored) {
                         }
