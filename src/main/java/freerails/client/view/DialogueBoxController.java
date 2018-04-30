@@ -68,7 +68,6 @@ public class DialogueBoxController implements WorldListListener {
     private final HtmlPanel showControls;
     private final HtmlPanel about;
     private final HtmlPanel how2play;
-    private final HtmlPanel javaProperties;
     private final TerrainInfoPanel terrainInfo;
     private final StationInfoPanel stationInfo;
     private final TrainDialoguePanel trainDialoguePanel;
@@ -157,10 +156,6 @@ public class DialogueBoxController implements WorldListListener {
 
         terrainInfo = new TerrainInfoPanel();
         stationInfo = new StationInfoPanel();
-        javaProperties = new HtmlPanel(ShowJavaProperties.getPropertiesHtmlString());
-        Dimension d = javaProperties.getPreferredSize();
-        d.width += 50;
-        javaProperties.setPreferredSize(d);
         newspaper = new NewsPaperPanel();
         selectWagons = new SelectWagonsPanel();
         selectEngine = new SelectEnginePanel();
@@ -196,7 +191,6 @@ public class DialogueBoxController implements WorldListListener {
         showControls.setup(modelRoot, vl, closeCurrentDialogue);
         about.setup(modelRoot, vl, closeCurrentDialogue);
         how2play.setup(modelRoot, vl, closeCurrentDialogue);
-        javaProperties.setup(modelRoot, vl, closeCurrentDialogue);
 
         // Set up select engine dialogue.
         selectEngine.setCancelButtonActionListener(closeCurrentDialogue);
@@ -319,13 +313,6 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showHow2Play() {
         showContent(how2play);
-    }
-
-    /**
-     *
-     */
-    public void showJavaProperties() {
-        showContent(javaProperties);
     }
 
     /**

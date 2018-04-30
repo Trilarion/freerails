@@ -38,7 +38,6 @@ import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 

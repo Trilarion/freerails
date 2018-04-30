@@ -90,8 +90,6 @@ class TrainMotionExperiment extends JComponent {
      * @param args
      */
     public static void main(String[] args) {
-        System.setProperty("SHOWFPS", "true");
-
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         f.getContentPane().add(new TrainMotionExperiment());

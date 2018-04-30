@@ -24,7 +24,6 @@
 package freerails.client.launcher;
 
 import freerails.Options;
-import freerails.client.ClientConstants;
 import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.savegames.FullSaveGameManager;

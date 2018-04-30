@@ -240,14 +240,6 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, Boolean.FALSE);
         displayMenu.add(playSoundsMenuItem);
         playSoundsMenuItem.addActionListener(e -> modelRoot.setProperty(ModelRootProperty.PLAY_SOUNDS, playSoundsMenuItem.isSelected()));
-        boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
-
-        final JCheckBoxMenuItem showFPSMenuItem = new JCheckBoxMenuItem("Show FPS stats", showFps);
-        displayMenu.add(showFPSMenuItem);
-        showFPSMenuItem.addActionListener(e -> {
-            String newValue = String.valueOf(showFPSMenuItem.isSelected());
-            System.setProperty("SHOWFPS", newValue);
-        });
 
         return displayMenu;
     }
@@ -318,6 +310,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         return gameMenu;
     }
 
+    // TODO the whole help menu is pretty dead
     /**
      * @return
      */
@@ -333,12 +326,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         JMenuItem showControls = new JMenuItem("Show game controls");
         showControls.addActionListener(e -> dialogueBoxController.showGameControls());
 
-        JMenuItem showJavaProperties = new JMenuItem("Show Java Properties");
-        showJavaProperties.addActionListener(e -> dialogueBoxController.showJavaProperties());
-
         helpMenu.add(showControls);
         helpMenu.add(how2play);
-        helpMenu.add(showJavaProperties);
         helpMenu.add(about);
 
         return helpMenu;

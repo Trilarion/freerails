@@ -165,7 +165,6 @@ class DialogueBoxTester extends JFrame {
         JMenuItem showTrainList = new JMenuItem();
         JMenuItem throwException = new JMenuItem();
         JMenuItem showCargoWaitingAndDemand = new JMenuItem();
-        JMenuItem showJavaSystemProperties = new JMenuItem();
         JMenuItem showNetworthGraph = new JMenuItem();
 
         addKeyListener(new KeyAdapter() {
@@ -236,16 +235,10 @@ class DialogueBoxTester extends JFrame {
 
         show.add(showCargoWaitingAndDemand);
 
-        showJavaSystemProperties.setText("Java System Properties");
-        showJavaSystemProperties
-                .addActionListener(this::showJavaSystemPropertiesActionPerformed);
-
         throwException.setText("Throw Exception");
         throwException.addActionListener(e -> {
             throw new IllegalArgumentException();
         });
-
-        show.add(showJavaSystemProperties);
 
         showNetworthGraph.setText("Show net worth graph");
         showNetworthGraph
@@ -270,14 +263,6 @@ class DialogueBoxTester extends JFrame {
 
     private void showNetworthGraphActionPerformed(ActionEvent evt) {
         dialogueBoxController.showNetworthGraph();
-    }
-
-    private void showJavaSystemPropertiesActionPerformed(ActionEvent evt) {
-        // Add your handling code here:
-        String s = ShowJavaProperties.getPropertiesHtmlString();
-        HtmlPanel htmlPanel = new HtmlPanel(s);
-        htmlPanel.setup(modelRoot, vl, closeCurrentDialogue);
-        dialogueBoxController.showContent(htmlPanel);
     }
 
     private void formKeyPressed(KeyEvent evt) {

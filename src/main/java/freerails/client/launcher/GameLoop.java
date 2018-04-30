@@ -20,7 +20,6 @@ package freerails.client.launcher;
 
 import freerails.client.ClientConstants;
 import freerails.client.SynchronizedEventQueue;
-import freerails.client.view.FramePerSecondDisplay;
 import freerails.util.ui.RepaintManagerForActiveRendering;
 import freerails.util.Utils;
 import freerails.server.GameModel;
@@ -68,8 +67,6 @@ public class GameLoop implements Runnable {
 
             boolean gameNotDone = true;
 
-            FramePerSecondDisplay fPScounter = new FramePerSecondDisplay();
-
             /*
              * Reduce this threads priority to avoid starvation of the input
              * thread on Windows.
@@ -110,10 +107,6 @@ public class GameLoop implements Runnable {
 
                                     screenHandler.frame.paintComponents(g);
 
-                                    boolean showFps = Boolean.parseBoolean(System.getProperty("SHOWFPS"));
-                                    if (showFps) {
-                                        fPScounter.drawFPS((Graphics2D) g);
-                                    }
                                 } catch (RuntimeException re) {
                                     /*
                                      * We are not expecting a RuntimeException
@@ -128,7 +121,6 @@ public class GameLoop implements Runnable {
                                 contentsRestored = screenHandler.contentsRestored();
                             } while (contentsRestored);
                             screenHandler.swapScreens();
-                            fPScounter.updateFPSCounter();
                         }
                     }
                 }
