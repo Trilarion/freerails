@@ -51,7 +51,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         setHasSetupBeenCalled(true);
-        setWorld(new World(new Vec2D(20, 20)));
+        setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).build());
         getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }

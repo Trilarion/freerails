@@ -23,10 +23,13 @@
 
 package freerails.client.view;
 
+import freerails.client.StaticListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainCellRenderer;
 import freerails.client.ModelRoot;
+import freerails.model.train.Engine;
 import freerails.model.world.SharedKey;
+import freerails.util.ImmutableList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -40,7 +43,7 @@ public class SelectEnginePanel extends JPanel implements View {
 
     private static final long serialVersionUID = 4122537730158179638L;
     private JButton cancelButton;
-    private JList list1;
+    private JList<Engine> list1;
     private JButton okButton;
 
     public SelectEnginePanel() {
@@ -49,7 +52,7 @@ public class SelectEnginePanel extends JPanel implements View {
         okButton = new JButton();
         cancelButton = new JButton();
         JScrollPane jScrollPane1 = new JScrollPane();
-        list1 = new JList();
+        list1 = new JList<>();
 
         setLayout(new GridBagLayout());
 
@@ -107,7 +110,8 @@ public class SelectEnginePanel extends JPanel implements View {
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
 
-        list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), SharedKey.EngineTypes));
+        list1.setModel(new StaticListModel<Engine>(modelRoot.getWorld().getEngines()));
+        // list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), SharedKey.EngineTypes));
         list1.setCellRenderer(new TrainCellRenderer(rendererRoot));
         okButton.addActionListener(closeAction);
     }
@@ -127,8 +131,8 @@ public class SelectEnginePanel extends JPanel implements View {
     /**
      * Returns the number of the currently selected engine type.
      */
-    public int getEngineType() {
-        return list1.getSelectedIndex();
+    public int getSelectedEngineId() {
+        return list1.getSelectedValue().getId();
     }
 
 }

@@ -19,6 +19,7 @@
 package freerails.network.command;
 
 import freerails.model.world.World;
+import freerails.util.Utils;
 
 /**
  * Sent from the server to the client when (i) a new game is started, (ii) a
@@ -34,12 +35,20 @@ public class SetWorldCommandToClient implements CommandToClient {
      * Note, makes a defensive copy of the world object passed to it.
      */
     public SetWorldCommandToClient(World world) {
-        this.world = world.defensiveCopy();
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        this.world = (World) Utils.cloneBySerialisation(world);
         // this.world = world;
     }
 
     public CommandStatus execute(ClientControlInterface client) {
-        client.setGameModel(world.defensiveCopy());
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        client.setGameModel((World) Utils.cloneBySerialisation(world));
 
         return new CommandStatus(true);
     }

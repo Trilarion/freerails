@@ -42,7 +42,7 @@ public class WorldTest extends TestCase {
      *
      */
     public void testGet() {
-        World world = new World();
+        World world = new World.Builder().build();
         world.add(SharedKey.TerrainTypes, fs);
         assertEquals(world.get(SharedKey.TerrainTypes, 0), fs);
     }
@@ -51,7 +51,7 @@ public class WorldTest extends TestCase {
      *
      */
     public void testConstructor() {
-        World world = new World();
+        World world = new World.Builder().build();
         assertEquals(world.getMapSize(), Vec2D.ZERO);
     }
 
@@ -62,8 +62,12 @@ public class WorldTest extends TestCase {
     public void testDefensiveCopy() {
         World original;
         World copy;
-        original = new World();
-        copy = original.defensiveCopy();
+        original = new World.Builder().build();
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        copy = (World) Utils.cloneBySerialisation(original);
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
 
@@ -81,8 +85,12 @@ public class WorldTest extends TestCase {
     public void testEquals() {
         World original;
         World copy;
-        original = new World();
-        copy = original.defensiveCopy();
+        original = new World.Builder().build();
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        copy = (World) Utils.cloneBySerialisation(original);
 
         Player player = new Player("Name", 0);
         int index = copy.addPlayer(player);
@@ -105,9 +113,17 @@ public class WorldTest extends TestCase {
     public void testEquals2() {
         World original;
         World copy, copy2;
-        original = new World();
-        copy = original.defensiveCopy();
-        copy2 = original.defensiveCopy();
+        original = new World.Builder().build();
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        copy = (World) Utils.cloneBySerialisation(original);
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        copy2 = (World) Utils.cloneBySerialisation(original);
         // Test adding players.
         Player a = new Player("Fred");
         Player b = new Player("John");
@@ -120,7 +136,7 @@ public class WorldTest extends TestCase {
      *
      */
     public void testActivityLists() {
-        World world = new World();
+        World world = new World.Builder().build();
         Player player = new Player("Name", 0);
         world.addPlayer(player);
         FreerailsPrincipal principal = player.getPrincipal();
@@ -147,11 +163,11 @@ public class WorldTest extends TestCase {
      *
      */
     public void testBoundsContain() {
-        World world = new World();
+        World world = new World.Builder().build();
         assertFalse(world.boundsContain(new Vec2D(1, 1)));
         assertFalse(world.boundsContain(Vec2D.ZERO));
         assertFalse(world.boundsContain(new Vec2D(-1, -1)));
-        world = new World(new Vec2D(5, 10));
+        world = new World.Builder().setMapSize(new Vec2D(5, 10)).build();
         assertTrue(world.boundsContain(Vec2D.ZERO));
         assertTrue(world.boundsContain(new Vec2D(4, 9)));
         assertFalse(world.boundsContain(new Vec2D(-1, -1)));
@@ -162,7 +178,7 @@ public class WorldTest extends TestCase {
      *
      */
     public void testBankAccount() {
-        World world = new World();
+        World world = new World.Builder().build();
         Player player = new Player("Test", 0);
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);

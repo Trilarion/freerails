@@ -18,6 +18,7 @@ dependencies {
     compile 'log4j:log4j:1.2.17'
     compile 'com.google.code.gson:gson:2.8.3'
     compile 'commons-io:commons-io:2.6'
+    compile 'org.jetbrains:annotations:16.0.1'
     testCompile 'junit:junit:4.12'
     toolsCompile sourceSets.main.output, sourceSets.test.output
 }

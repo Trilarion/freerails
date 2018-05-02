@@ -231,12 +231,12 @@ public class TrainStopsHandler implements Serializable {
         if (!consist.equals(order.consist)) {
             // ..if so, we should change the consist.
             int oldLength = trainAccessor.getTrain().getLength();
-            int engineType = trainAccessor.getTrain().getEngineType();
+            int engineId = trainAccessor.getTrain().getEngineId();
 
             // TODO newTrain is computed in the ChangeTrainMove also
-            Train newTrain = trainAccessor.getTrain().getNewInstance(engineType, order.consist);
+            Train newTrain = trainAccessor.getTrain().getNewInstance(engineId, order.consist);
             // worldDiffs.set(principal, PlayerKey.Trains, trainId, newTrain);
-            Move move = ChangeTrainMove.generateMove(trainId, trainAccessor.getTrain(), engineType, order.consist, principal);
+            Move move = ChangeTrainMove.generateMove(trainId, trainAccessor.getTrain(), engineId, order.consist, principal);
             move.doMove(world, principal);
             moves.add(move);
 
@@ -283,7 +283,7 @@ public class TrainStopsHandler implements Serializable {
         boolean autoConsist = schedule.autoConsist();
 
         if (null != wagonsToAdd) {
-            int engineType = train.getEngineType();
+            int engineType = train.getEngineId();
             Move move = ChangeTrainMove.generateMove(trainId, train, engineType, wagonsToAdd, principal);
             // TODO instead of doing the move, add them to a list
             moves.add(move);

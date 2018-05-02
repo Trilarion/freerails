@@ -53,7 +53,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World(new Vec2D(10, 10));
+        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         Player player = MapFixtureFactory.TEST_PLAYER;

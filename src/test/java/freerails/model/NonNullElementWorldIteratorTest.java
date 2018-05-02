@@ -43,7 +43,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World();
+        world = new World.Builder().build();
         station1 = new Station(new Vec2D(10, 20), "Station1", 4, 0);
         station2 = new Station(new Vec2D(15, 16), "Station2", 4, 1);
         Station station3 = new Station(new Vec2D(30, 50), "Station3", 4, 2);

@@ -64,13 +64,13 @@ public class TrainUpdater implements Serializable {
     }
 
     /**
-     * @param engineTypeId
+     * @param engineId
      * @param wagons
      * @param location
      * @param principal
      * @param world
      */
-    private void buildTrain(int engineTypeId, ImmutableList<Integer> wagons, Vec2D location, FreerailsPrincipal principal, ReadOnlyWorld world) {
+    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, FreerailsPrincipal principal, ReadOnlyWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -90,7 +90,7 @@ public class TrainUpdater implements Serializable {
 
         ImmutableSchedule is = schedule.toImmutableSchedule();
 
-        MoveGenerator addTrain = new AddTrainMoveGenerator(engineTypeId, wagons, location, principal, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagons, location, principal, is);
 
         Move move = addTrain.generate(world);
         moveReceiver.process(move);
@@ -112,9 +112,9 @@ public class TrainUpdater implements Serializable {
                     if (production.size() > 0) {
 
                         for (TrainBlueprint aProduction : production) {
-                            int engineType = aProduction.getEngineType();
+                            int engineId = aProduction.getEngineId();
                             ImmutableList<Integer> wagonTypes = aProduction.getWagonTypes();
-                            buildTrain(engineType, wagonTypes, station.location, principal, world);
+                            buildTrain(engineId, wagonTypes, station.location, principal, world);
                         }
 
                         Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, principal);

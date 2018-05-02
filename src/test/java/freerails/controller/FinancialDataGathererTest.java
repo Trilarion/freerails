@@ -29,6 +29,7 @@ import freerails.model.ModelConstants;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
+import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 /**
@@ -46,7 +47,7 @@ public class FinancialDataGathererTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         player = new Player("Player X", 0);
-        world = new World();
+        world = new World.Builder().build();
 
         Move addPlayer = AddPlayerMove.generateMove(world, player);
         MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
@@ -111,7 +112,7 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testBuyingStakesInOtherRRs() {
-        world = new World();
+        world = new World.Builder().build();
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player("Player " + i, i);

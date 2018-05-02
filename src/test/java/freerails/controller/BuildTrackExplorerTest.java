@@ -55,7 +55,7 @@ public class BuildTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World(new Vec2D(20, 20));
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();

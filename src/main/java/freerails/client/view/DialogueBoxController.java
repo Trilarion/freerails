@@ -113,9 +113,9 @@ public class DialogueBoxController implements WorldListListener {
                 Station station = (Station) wi.getElement();
 
                 ImmutableList<TrainBlueprint> before = station.getProduction();
-                int engineType = selectEngine.getEngineType();
+                int engineId = selectEngine.getSelectedEngineId();
                 Integer[] wagonTypes = selectWagons.getWagons();
-                ImmutableList<TrainBlueprint> after = new ImmutableList<>(new TrainBlueprint(engineType, wagonTypes));
+                ImmutableList<TrainBlueprint> after = new ImmutableList<>(new TrainBlueprint(engineId, wagonTypes));
 
                 Move move = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
                 modelRoot.doMove(move);
@@ -320,7 +320,7 @@ public class DialogueBoxController implements WorldListListener {
      */
     public void showSelectWagons() {
         selectWagons.resetSelectedWagons();
-        selectWagons.setEngineType(selectEngine.getEngineType());
+        selectWagons.setEngineId(selectEngine.getSelectedEngineId());
         showContent(selectWagons);
     }
 

@@ -78,7 +78,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World();
+        world = new World.Builder().build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         MapFixtureFactory.generateCargoTypesList(world);
         balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PRINCIPAL);

@@ -43,6 +43,7 @@ import freerails.model.train.schedule.MutableSchedule;
 public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
     private FreerailsPrincipal principal;
+    private int validEngineId;
 
     /**
      *
@@ -50,6 +51,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
     @Override
     protected void setupWorld() {
         world = MapFixtureFactory2.getCopy();
+        validEngineId = world.getEngines().iterator().next().getId();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         principal = moveExecutor.getPrincipal();
         ModelRoot modelRoot = new ModelRootImpl();
@@ -78,7 +80,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         ImmutableSchedule defaultSchedule = schedule.toImmutableSchedule();
 
         Vec2D start = new Vec2D(10, 10);
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(0, new ImmutableList<>(0, 0), start, principal, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), start, principal, defaultSchedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, principal);
         assertTrue(moveStatus.succeeds());
@@ -208,7 +210,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(0, new ImmutableList<>(), from,
+        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(), from,
                 principal, is);
 
         Move move = addTrain.generate(world);

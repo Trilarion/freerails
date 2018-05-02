@@ -5,7 +5,7 @@
     "upkeep": 100,
     "maximumSpeed": 10,
     "maximumThrust": 1000,
-    "id": 1
+    "id": 5
   },
   {
     "name": "Norris",
@@ -13,6 +13,6 @@
     "upkeep": 100,
     "maximumSpeed": 15,
     "maximumThrust": 1000,
-    "id": 2
+    "id": 6
   }
 ]

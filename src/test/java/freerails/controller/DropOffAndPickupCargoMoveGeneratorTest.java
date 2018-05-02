@@ -56,7 +56,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         super.setUp();
         // Set up the world object with three cargo types, one station, and one
         // train.
-        world = new World();
+        world = new World.Builder().build();
 
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
@@ -303,7 +303,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     private void addWagons(ImmutableList<Integer> wagons) {
         Train train = (Train) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0);
-        Train newTrain = train.getNewInstance(train.getEngineType(), wagons);
+        Train newTrain = train.getNewInstance(train.getEngineId(), wagons);
         world.set(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Trains, 0, newTrain);
     }
 

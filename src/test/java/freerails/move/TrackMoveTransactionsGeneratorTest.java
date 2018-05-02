@@ -48,7 +48,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World(new Vec2D(20, 20));
+        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
         MapFixtureFactory.generateTrackRuleList(world);
         Player player = new Player("test player", 0);
         world.addPlayer(player);

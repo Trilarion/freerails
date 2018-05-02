@@ -207,7 +207,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         moves.add(TransferCargoAtStationMove.CHANGE_ON_TRAIN_INDEX, changeOnTrain);
 
         if (autoConsist) {
-            int engine = trainAccessor.getTrain().getEngineType();
+            int engine = trainAccessor.getTrain().getEngineId();
             Move move = ChangeTrainMove.generateMove(trainId, trainAccessor.getTrain(), engine, consist, principal);
             moves.add(move);
         } else if (waitingForFullLoad) {

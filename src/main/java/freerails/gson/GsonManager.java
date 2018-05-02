@@ -5,13 +5,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import freerails.client.ClientConstants;
 import freerails.gson.adapter.MoneyAdapter;
+import freerails.model.Identifiable;
 import freerails.model.finances.Money;
 import freerails.model.train.Engine;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 
 public class GsonManager {
@@ -26,13 +29,24 @@ public class GsonManager {
 
     private GsonManager() {}
 
-    public static SortedSet<Engine> loadEngines(URL url) throws IOException{
+    public static Map<Integer, Engine> loadEngines(URL url) throws IOException{
         // load json
         String json = IOUtils.toString(url, ClientConstants.defaultCharset);
 
         // deserialize json
-        SortedSet<Engine> engines = gson.fromJson(json, new TypeToken<SortedSet<Engine>>(){}.getType());
+        List<Engine> engineList = gson.fromJson(json, new TypeToken<List<Engine>>(){}.getType());
 
-        return engines;
+        return toMap(engineList);
+    }
+
+    public static <E extends Identifiable> Map<Integer, E> toMap(List<E> list) {
+        Map<Integer, E> map = new HashMap<>();
+        for (E e: list) {
+            if (map.containsKey(e.getId())) {
+                throw new IllegalArgumentException("List contains non-unique ids.");
+            }
+            map.put(e.getId(), e);
+        }
+        return map;
     }
 }

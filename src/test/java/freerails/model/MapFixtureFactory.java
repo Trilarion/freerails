@@ -59,7 +59,7 @@ public class MapFixtureFactory {
      */
     public static World getWorld(Vec2D mapSize) {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        World world = new World(mapSize);
+        World world = new World.Builder().setMapSize(mapSize).build();
         generateTerrainTypesList(world);
         generateCargoTypesList(world);
 

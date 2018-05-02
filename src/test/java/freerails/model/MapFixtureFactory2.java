@@ -18,12 +18,15 @@
 
 package freerails.model;
 
+import freerails.gson.GsonManager;
+import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
 import freerails.savegames.TrackTilesXmlHandlerImpl;
+import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
@@ -32,10 +35,11 @@ import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainType;
-import freerails.model.train.EngineTypesFactory;
 import freerails.model.world.World;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Stores a static world object and provides copies to clients.
@@ -55,7 +59,11 @@ public class MapFixtureFactory2 {
         if (null == world) {
             world = generateWorld();
         }
-        return world.defensiveCopy();
+        /**
+         * Returns a copy of this world object - making changes to this copy will
+         * not change this object.
+         */
+        return (World) Utils.cloneBySerialisation(world);
     }
 
     /**
@@ -64,8 +72,14 @@ public class MapFixtureFactory2 {
      */
     private static World generateWorld() {
 
-        World world = new World(new Vec2D(50, 50));
-        EngineTypesFactory.addTypesToWorld(world);
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
+        Map<Integer, Engine> engines;
+        try {
+            engines = GsonManager.loadEngines(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).build();
         MapCreator.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);

@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.Identifiable;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
@@ -29,7 +30,6 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
@@ -50,21 +50,21 @@ import java.util.List;
 public class AddTrainMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 4050201951105069624L;
-    private final int engineTypeId;
+    private final int engineId;
     private final ImmutableList<Integer> wagons;
     private final Vec2D point;
     private final FreerailsPrincipal principal;
     private final ImmutableSchedule schedule;
 
     /**
-     * @param engineTypeId
+     * @param engineId
      * @param wagons
      * @param p
      * @param principal
      * @param schedule
      */
-    public AddTrainMoveGenerator(int engineTypeId, ImmutableList<Integer> wagons, Vec2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
-        this.engineTypeId = engineTypeId;
+    public AddTrainMoveGenerator(int engineId, ImmutableList<Integer> wagons, Vec2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
+        this.engineId = engineId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);
         this.principal = Utils.verifyNotNull(principal);
@@ -78,7 +78,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
 
         final AddTrainMoveGenerator addTrainPreMove = (AddTrainMoveGenerator) obj;
 
-        if (engineTypeId != addTrainPreMove.engineTypeId) return false;
+        if (engineId != addTrainPreMove.engineId) return false;
         if (!point.equals(addTrainPreMove.point)) return false;
         if (!principal.equals(addTrainPreMove.principal)) return false;
         if (!schedule.equals(addTrainPreMove.schedule)) return false;
@@ -88,7 +88,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     @Override
     public int hashCode() {
         int result;
-        result = engineTypeId;
+        result = engineId;
         result = 29 * result + point.hashCode();
         result = 29 * result + principal.hashCode();
         result = 29 * result + schedule.hashCode();
@@ -120,7 +120,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     }
 
     private int calTrainLength() {
-        Train train = new Train(engineTypeId, wagons, 0);
+        Train train = new Train(engineId, wagons, 0);
         return train.getLength();
     }
 
@@ -149,16 +149,16 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         AddItemToListMove addSchedule = new AddItemToListMove(PlayerKey.TrainSchedules, scheduleId, schedule, principal);
 
         // Add train to train list.
-        Train train = new Train(engineTypeId, wagons, scheduleId, bundleId);
+        Train train = new Train(engineId, wagons, scheduleId, bundleId);
         int trainId = world.size(principal, PlayerKey.Trains);
         AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, principal);
 
         // Pay for train.
         int quantity = 1;
         // Determine the price of the train.
-        EngineType engineType = (EngineType) world.get(SharedKey.EngineTypes, engineTypeId);
-        Money price = engineType.getPrice();
-        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineTypeId, quantity, Money.opposite(price));
+        Engine engine = world.getEngine(engineId);
+        Money price = engine.getPrice();
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineId, quantity, Money.opposite(price));
         AddTransactionMove transactionMove = new AddTransactionMove(principal, transaction);
 
         // Setup and add train position.

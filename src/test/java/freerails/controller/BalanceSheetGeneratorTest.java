@@ -69,7 +69,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        world = new World(new Vec2D(10, 10));
+        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
         player = new Player("Player X", world.getNumberOfPlayers());
         world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));

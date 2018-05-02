@@ -20,6 +20,8 @@ package freerails.client;
 
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
+import freerails.gson.GsonManager;
+import freerails.model.train.Engine;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.move.receiver.TestMoveReceiver;
@@ -42,12 +44,14 @@ import freerails.model.station.Station;
 import freerails.model.train.schedule.MutableSchedule;
 import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
-import freerails.model.train.EngineTypesFactory;
 import freerails.model.world.World;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * Lets you test dialogue boxes without running the whole game.
@@ -74,7 +78,14 @@ class DialogueBoxTester extends JFrame {
      */
     private DialogueBoxTester() {
 
-        World world = new World(new Vec2D(200, 200));
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
+        Map<Integer, Engine> engines;
+        try {
+            engines = GsonManager.loadEngines(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(200, 200)).build();
 
         UntriedMoveReceiver dummyReceiver = new TestMoveReceiver(world);
 
@@ -82,9 +93,7 @@ class DialogueBoxTester extends JFrame {
         modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(dummyReceiver);
 
-        EngineTypesFactory wetf = new EngineTypesFactory();
         MapCreator.addTerrainTileTypesList(world);
-        EngineTypesFactory.addTypesToWorld(world);
         world.addPlayer(TEST_PLAYER);
         try {
             vl = new RendererRootImpl(world,

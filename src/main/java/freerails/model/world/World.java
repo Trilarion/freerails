@@ -22,6 +22,7 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.activity.ActivityIteratorImpl;
+import freerails.model.terrain.City2;
 import freerails.model.train.Engine;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
@@ -33,6 +34,7 @@ import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.*;
@@ -69,19 +71,39 @@ public class World implements ReadOnlyWorld {
     public Map<SharedKey, List<Serializable>> sharedKeyLists = new HashMap<>();
     public GameTime time = new GameTime(0);
 
-    private final SortedSet<Engine> engines = null;
+    private final Map<Integer, Engine> engines;
+    private final Map<Integer, City2> cities;
 
-    /**
-     *
-     */
-    public World() {
-        this(Vec2D.ZERO);
+    public static class Builder {
+
+        private Map<Integer, Engine> engines = new HashMap<>();
+        private Map<Integer, City2> cities = new HashMap<>();
+        private Vec2D mapSize = Vec2D.ZERO;
+
+        public Builder setEngines(Map<Integer, Engine> engines) {
+            this.engines = engines;
+            return this;
+        }
+
+        public Builder setCities(Map<Integer, City2> cities) {
+            this.cities = cities;
+            return this;
+        }
+
+        public Builder setMapSize(Vec2D mapSize) {
+            this.mapSize = mapSize;
+            return this;
+        }
+
+        public World build() {
+            return new World(this);
+        }
     }
 
-    /**
-     * @param mapSize
-     */
-    public World(Vec2D mapSize) {
+    public World(Builder builder) {
+        engines = builder.engines;
+        cities = builder.cities;
+
         for (int i = 0; i < WorldItem.values().length; i++) {
             items.add(null);
         }
@@ -91,7 +113,31 @@ public class World implements ReadOnlyWorld {
 
         set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         set(WorldItem.EconomicClimate, EconomicClimate.MODERATION);
-        setupMap(mapSize);
+        setupMap(builder.mapSize);
+    }
+
+    // TODO unmodifiable collection?
+    public Collection<Engine> getEngines() {
+        return engines.values();
+    }
+
+    public Engine getEngine(int id) {
+        return get(id, engines);
+    }
+
+    public Collection<City2> getCities() {
+        return cities.values();
+    }
+
+    public City2 getCity(int id) {
+        return get(id, cities);
+    }
+
+    private <T> T get(final int id, @NotNull final Map<Integer, T> map) {
+        if (!map.containsKey(id)) {
+            throw new IllegalArgumentException("Id not a key of the map.");
+        }
+        return map.get(id);
     }
 
     /**
@@ -215,14 +261,6 @@ public class World implements ReadOnlyWorld {
      */
     public GameTime currentTime() {
         return time;
-    }
-
-    /**
-     * Returns a copy of this world object - making changes to this copy will
-     * not change this object.
-     */
-    public World defensiveCopy() {
-        return (World) Utils.cloneBySerialisation(this);
     }
 
     @Override

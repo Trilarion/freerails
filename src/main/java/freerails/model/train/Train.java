@@ -31,7 +31,7 @@ public class Train implements Serializable {
     private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
     // TODO replace engine type id with an enum maybe? or by a class?
-    private final int engineTypeId;
+    private final int engineId;
     private final ImmutableList<Integer> wagonTypes;
     private final int cargoBundleId;
 
@@ -42,7 +42,7 @@ public class Train implements Serializable {
      * @param BundleId
      */
     public Train(int engine, ImmutableList<Integer> wagons, int scheduleID, int BundleId) {
-        engineTypeId = engine;
+        engineId = engine;
         wagonTypes = wagons;
         scheduleId = scheduleID;
         cargoBundleId = BundleId;
@@ -55,7 +55,7 @@ public class Train implements Serializable {
     public Train(ImmutableList<Integer> wagons, int BundleId) {
         wagonTypes = wagons;
         cargoBundleId = BundleId;
-        engineTypeId = 0;
+        engineId = 0;
         scheduleId = 0;
     }
 
@@ -65,7 +65,7 @@ public class Train implements Serializable {
      * @param scheduleID
      */
     public Train(int engine, ImmutableList<Integer> wagons, int scheduleID) {
-        engineTypeId = engine;
+        engineId = engine;
         wagonTypes = wagons;
         scheduleId = scheduleID;
         cargoBundleId = 0;
@@ -75,19 +75,19 @@ public class Train implements Serializable {
     public int hashCode() {
         int result;
         result = scheduleId;
-        result = 29 * result + engineTypeId;
+        result = 29 * result + engineId;
         result = 29 * result + cargoBundleId;
 
         return result;
     }
 
     /**
-     * @param newEngine
+     * @param engineId
      * @param newWagons
      * @return
      */
-    public Train getNewInstance(int newEngine, ImmutableList<Integer> newWagons) {
-        return new Train(newEngine, newWagons, scheduleId, cargoBundleId);
+    public Train getNewInstance(int engineId, ImmutableList<Integer> newWagons) {
+        return new Train(engineId, newWagons, scheduleId, cargoBundleId);
     }
 
     /**
@@ -115,8 +115,8 @@ public class Train implements Serializable {
     /**
      * @return
      */
-    public int getEngineType() {
-        return engineTypeId;
+    public int getEngineId() {
+        return engineId;
     }
 
     /**
@@ -145,7 +145,7 @@ public class Train implements Serializable {
         if (obj instanceof Train) {
             Train test = (Train) obj;
 
-            return cargoBundleId == test.cargoBundleId && engineTypeId == test.engineTypeId && wagonTypes.equals(test.wagonTypes) && scheduleId == test.scheduleId;
+            return cargoBundleId == test.cargoBundleId && engineId == test.engineId && wagonTypes.equals(test.wagonTypes) && scheduleId == test.scheduleId;
         }
         return false;
     }

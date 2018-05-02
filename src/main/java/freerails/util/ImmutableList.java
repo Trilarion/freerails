@@ -18,6 +18,8 @@
 
 package freerails.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -42,7 +44,6 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      * Constructs an immutable list containing the elements.
      * @param items
      */
-    @SafeVarargs
     public ImmutableList(E... items) {
         values = items.clone();
     }
@@ -53,7 +54,7 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      *
      * @param c the collection whose elements are to be placed in this immutable list
      */
-    public ImmutableList(Collection<? extends E> c) {
+    public ImmutableList(@NotNull Collection<? extends E> c) {
         values = c.toArray((E[])new Object[c.size()]);
     }
 

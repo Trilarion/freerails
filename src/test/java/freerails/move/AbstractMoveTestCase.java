@@ -21,7 +21,10 @@
  */
 package freerails.move;
 
+import freerails.gson.GsonManager;
+import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
+import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.*;
@@ -34,7 +37,11 @@ import freerails.model.train.PathOnTiles;
 import freerails.model.world.World;
 import junit.framework.TestCase;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+import java.util.Map;
+import java.util.SortedSet;
 
 /**
  * All TestCases for moves should extend this class.
@@ -42,6 +49,7 @@ import java.io.Serializable;
 public abstract class AbstractMoveTestCase extends TestCase {
 
     protected World world;
+    protected int validEngineId;
     private boolean hasSetupBeenCalled = false;
 
     public AbstractMoveTestCase() {
@@ -273,7 +281,15 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      */
     protected void setupWorld() {
-        this.world = new World(new Vec2D(10, 10));
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
+        Map<Integer, Engine> engines;
+        try {
+            engines = GsonManager.loadEngines(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        validEngineId = engines.values().iterator().next().getId(); // more or less gets a valid id of an engine
+        this.world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(10, 10)).build();
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);

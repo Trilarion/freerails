@@ -99,14 +99,14 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
 
         Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
-        display(train.getEngineType(), train.getConsist());
+        display(train.getEngineId(), train.getConsist());
         resetPreferredSize();
     }
 
     private void display(int engine, ImmutableList<Integer> wagons) {
         images = new Image[1 + wagons.size()];
         // images[0] = vl.getTrainImages().getSideOnEngineImage(
-        // train.getEngineType(), height);
+        // train.getEngineId(), height);
         String engineFilename = vl.getEngineImages(engine).sideOnFileName;
         try {
             images[0] = vl.getScaledImage(engineFilename, height);
@@ -143,7 +143,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
 
         // Set up the array of images.
         if (null != order.consist) {
-            display(train.getEngineType(), order.consist);
+            display(train.getEngineId(), order.consist);
         } else {
             images = new Image[0];
         }

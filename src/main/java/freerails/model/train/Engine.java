@@ -6,9 +6,10 @@ import freerails.model.finances.Money;
 import java.io.Serializable;
 
 /**
- *
+ * Represents an engine type, for example 'Grass Hopper'. It
+ * encapsulates the properties that are common to all engines of the same type.
  */
-public class Engine extends Identifiable implements Serializable {
+public class Engine extends Identifiable {
 
     private final String name;
     private final Money price;

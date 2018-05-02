@@ -129,6 +129,7 @@ public class LauncherClient extends FreerailsClient {
 
             factory.setup(rendererRoot, world);
         } catch (Exception e) {
+            e.printStackTrace();
             LauncherFrame.emergencyStop();
         }
     }

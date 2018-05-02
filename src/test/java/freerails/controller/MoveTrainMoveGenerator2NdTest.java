@@ -53,6 +53,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private FreerailsPrincipal principal;
     private Vec2D station1Location;
     private Vec2D station2Location;
+    private int validEngineId;
 
     public static void incrTime(World world, FreerailsPrincipal principal) {
         ActivityIterator activityIterator = world.getActivities(principal, 0);
@@ -78,6 +79,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
+        validEngineId = world.getEngines().iterator().next().getId();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         principal = moveExecutor.getPrincipal();
         ModelRoot modelRoot = new ModelRootImpl();
@@ -114,7 +116,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         ImmutableSchedule defaultSchedule = schedule.toImmutableSchedule();
 
         Vec2D start = new Vec2D(10, 10);
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(0, new ImmutableList<>(0, 0),
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0),
                 start, principal, defaultSchedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, principal);
@@ -392,7 +394,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Remove all wagons from the train.
         Train model = ta.getTrain();
-        model = model.getNewInstance(model.getEngineType(), new ImmutableList<>());
+        model = model.getNewInstance(model.getEngineId(), new ImmutableList<>());
         world.set(principal, PlayerKey.Trains, 0, model);
 
         // Change trains schedule to auto consist.

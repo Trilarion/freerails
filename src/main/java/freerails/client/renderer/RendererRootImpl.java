@@ -19,6 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConstants;
+import freerails.model.train.Engine;
 import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
@@ -31,14 +32,15 @@ import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.terrain.TerrainType;
-import freerails.model.train.EngineType;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of RendererRoot whose constructor loads graphics and provides
@@ -51,7 +53,7 @@ public class RendererRootImpl implements RendererRoot {
     private final TrackPieceRendererList trackPieceViewList;
     private final ImageManager imageManager;
     private final List<TrainImages> wagonImages = new ArrayList<>();
-    private final List<TrainImages> engineImages = new ArrayList<>();
+    private final Map<Integer, TrainImages> engineImages = new HashMap<>();
 
     /**
      * @param world
@@ -84,8 +86,7 @@ public class RendererRootImpl implements RendererRoot {
     private void loadTrainImages(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         // Setup progress monitor..
         final int numberOfWagonTypes = world.size(SharedKey.CargoTypes);
-        final int numberOfEngineTypes = world.size(SharedKey.EngineTypes);
-        progressMonitorModel.nextStep(numberOfWagonTypes + numberOfEngineTypes);
+        progressMonitorModel.nextStep(numberOfWagonTypes);
         int progress = 0;
         progressMonitorModel.setValue(progress);
 
@@ -99,12 +100,10 @@ public class RendererRootImpl implements RendererRoot {
         }
 
         // Load engine images
-        for (int i = 0; i < numberOfEngineTypes; i++) {
-            EngineType engineType = (EngineType) world.get(SharedKey.EngineTypes, i);
-            String engineTypeName = engineType.getEngineTypeName();
-            TrainImages trainImages = new TrainImages(imageManager, engineTypeName);
-            engineImages.add(trainImages);
-            progressMonitorModel.setValue(++progress);
+        for (Engine engine: world.getEngines()) {
+            String name = engine.getName();
+            TrainImages trainImages = new TrainImages(imageManager, name);
+            engineImages.put(engine.getId(), trainImages);
         }
     }
 

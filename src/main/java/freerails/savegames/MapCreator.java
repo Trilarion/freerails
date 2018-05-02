@@ -1,6 +1,5 @@
 package freerails.savegames;
 
-import com.google.gson.Gson;
 import freerails.gson.GsonManager;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
@@ -8,9 +7,7 @@ import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.*;
 import freerails.model.train.Engine;
-import freerails.model.train.EngineTypesFactory;
 import freerails.model.world.World;
-import freerails.model.world.WorldBuilder;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.util.Vec2D;
@@ -57,16 +54,14 @@ public class MapCreator {
         mapName = mapName.replace(' ', '_');
 
         URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        SortedSet<Engine> engines;
+        Map<Integer, Engine> engines;
         try {
             engines = GsonManager.loadEngines(url);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        WorldBuilder builder = new WorldBuilder().setEngines(engines);
-        World world = builder.create();
-
-        EngineTypesFactory.addTypesToWorld(world);
+        World.Builder builder = new World.Builder().setEngines(engines);
+        World world = builder.build();
 
         addTerrainTileTypesList(world);
 
@@ -185,6 +180,9 @@ public class MapCreator {
                 saxParser.parse(is, handler);
             } catch (IOException | ParserConfigurationException ignored) {}
         } catch (SAXException ignored) {}
+
+        // XXX code to save the cities for each mapName
+        // URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
 
         // Randomly position the city tiles
         CityTilePositioner cityTilePositioner = new CityTilePositioner(world);

@@ -31,23 +31,22 @@ import java.io.Serializable;
 public class TrainBlueprint implements Serializable {
 
     private static final long serialVersionUID = 3545515106038592057L;
-    // TODO engine type?? no enum or an ID
-    private final int engineType;
+    private final int engineId;
     // TODO wagon type?? (make if ordinary immutable arraylist)
     private final ImmutableList<Integer> wagonTypes;
 
     /**
-     * @param engineType
+     * @param engineId
      * @param wagonTypes
      */
-    public TrainBlueprint(int engineType, Integer[] wagonTypes) {
-        this.engineType = engineType;
+    public TrainBlueprint(int engineId, Integer[] wagonTypes) {
+        this.engineId = engineId;
         this.wagonTypes = new ImmutableList<>(wagonTypes);
     }
 
     @Override
     public int hashCode() {
-        return engineType;
+        return engineId;
     }
 
     @Override
@@ -57,15 +56,15 @@ public class TrainBlueprint implements Serializable {
 
         final TrainBlueprint productionAtEngineShop = (TrainBlueprint) obj;
 
-        if (engineType != productionAtEngineShop.engineType) return false;
+        if (engineId != productionAtEngineShop.engineId) return false;
         return wagonTypes.equals(productionAtEngineShop.wagonTypes);
     }
 
     /**
      * @return
      */
-    public int getEngineType() {
-        return engineType;
+    public int getEngineId() {
+        return engineId;
     }
 
     /**
@@ -77,6 +76,6 @@ public class TrainBlueprint implements Serializable {
 
     @Override
     public String toString() {
-        return "engine type: " + engineType + ", with " + wagonTypes.size() + " wagons";
+        return "engine type: " + engineId + ", with " + wagonTypes.size() + " wagons";
     }
 }

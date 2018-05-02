@@ -45,7 +45,7 @@ public class SelectWagonsPanel extends JPanel implements View {
     private static final long serialVersionUID = 3905239009449095220L;
     private final Image stationView;
     private final List<Integer> wagons = new ArrayList<>();
-    private int engineType = 0;
+    private int engineId = -1;
     private RendererRoot rendererRoot;
     private JLabel label1;
     private JButton okButton;
@@ -217,8 +217,8 @@ public class SelectWagonsPanel extends JPanel implements View {
         }
 
         // paint the engine
-        if (-1 != engineType) { // If an engine is selected.
-            Image image = rendererRoot.getEngineImages(engineType).getSideOnImage();
+        if (-1 != engineId) { // If an engine is selected.
+            Image image = rendererRoot.getEngineImages(engineId).getSideOnImage();
 
             int scaledWidth = (image.getWidth(null) * SCALED_IMAGE_HEIGHT) / image.getHeight(null);
             x -= scaledWidth;
@@ -255,10 +255,10 @@ public class SelectWagonsPanel extends JPanel implements View {
     }
 
     /**
-     * @param engineType
+     * @param engineId
      */
-    public void setEngineType(int engineType) {
-        this.engineType = engineType;
+    public void setEngineId(int engineId) {
+        this.engineId = engineId;
     }
 
 

@@ -1,39 +1,70 @@
 package freerails.model;
 
+import java.io.Serializable;
+
 /**
  *
  */
-public class Identifiable implements Comparable<Identifiable> {
+public class Identifiable implements Comparable<Identifiable>, Serializable {
 
     private final int id;
 
+    /**
+     * Parameter-less constructor used for deserialization.
+     */
     public Identifiable() {
-        this(0);
+        this(-1);
     }
 
+    /**
+     *
+     * @param id
+     */
     public Identifiable(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public final boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj instanceof Identifiable) {
-            Identifiable other = (Identifiable) obj;
-            return id == other.id;
+            return this.compareTo((Identifiable) obj) == 0;
         }
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public final int hashCode() {
         return id;
+    }
+
+    /**
+     *
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Identifiable o) {
+        return Integer.compare(id, o.id);
     }
 
     /**
@@ -50,11 +81,6 @@ public class Identifiable implements Comparable<Identifiable> {
             }
         }
         return null;
-    }
-
-    @Override
-    public int compareTo(Identifiable o) {
-        return Integer.compare(id, o.id);
     }
 }
 

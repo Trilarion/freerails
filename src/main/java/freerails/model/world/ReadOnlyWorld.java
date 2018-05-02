@@ -18,6 +18,8 @@
 
 package freerails.model.world;
 
+import freerails.model.terrain.City2;
+import freerails.model.train.Engine;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
@@ -28,6 +30,8 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.SortedSet;
 
 /**
  * This interface defines a unified set of methods to access the elements that
@@ -56,6 +60,14 @@ import java.io.Serializable;
  * Code that loops through lists should handle null values gracefully.
  */
 public interface ReadOnlyWorld extends Serializable {
+
+    Collection<Engine> getEngines();
+
+    Engine getEngine(int id);
+
+    Collection<City2> getCities();
+
+    City2 getCity(int id);
 
     /**
      * @return
