@@ -25,6 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.ModelConstants;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
@@ -33,7 +34,6 @@ import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.train.WagonType;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -177,7 +177,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
 
             if (0 != amountWaiting) {
                 typeWaiting.add(cargoType.getDisplayName());
-                int carloads = amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON;
+                int carloads = amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
                 quantityWaiting.add(carloads);
             }
             if (station.getDemandForCargo().isCargoDemanded(i)) {

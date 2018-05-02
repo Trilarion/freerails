@@ -42,7 +42,7 @@ import freerails.model.station.Station;
 import freerails.model.train.schedule.MutableSchedule;
 import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
-import freerails.model.train.WagonAndEngineTypesFactory;
+import freerails.model.train.EngineTypesFactory;
 import freerails.model.world.World;
 
 import javax.swing.*;
@@ -82,9 +82,9 @@ class DialogueBoxTester extends JFrame {
         modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(dummyReceiver);
 
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
+        EngineTypesFactory wetf = new EngineTypesFactory();
         MapCreator.addTerrainTileTypesList(world);
-        WagonAndEngineTypesFactory.addTypesToWorld(world);
+        EngineTypesFactory.addTypesToWorld(world);
         world.addPlayer(TEST_PLAYER);
         try {
             vl = new RendererRootImpl(world,

@@ -100,7 +100,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel3.add(label1);
 
         playerName.setColumns(12);
-        playerName.setText(Options.Client.NAME.get());
+        playerName.setText(Options.NAME);
         jPanel3.add(playerName);
 
         playerNames.setToolTipText("Select a player from the saved game.");
@@ -118,7 +118,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel4.add(label2, new GridBagConstraints());
 
         remoteIP.setColumns(15);
-        remoteIP.setText(Options.Server.IP.get());
+        remoteIP.setText(Options.IP);
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.anchor = GridBagConstraints.WEST;
         gridBagConstraints.insets = new Insets(5, 5, 5, 5);
@@ -133,7 +133,7 @@ public class ClientOptionsPanel extends JPanel {
         jPanel4.add(label3, gridBagConstraints);
 
         remotePort.setColumns(5);
-        remotePort.setText(String.valueOf(Options.Server.PORT.get()));
+        remotePort.setText(String.valueOf(Options.PORT));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -158,8 +158,8 @@ public class ClientOptionsPanel extends JPanel {
         jPanel1.setBorder(new TitledBorder(new EtchedBorder(), "Select Display Mode"));
         jScrollPane1.setBorder(new BevelBorder(BevelBorder.LOWERED));
 
-        Vec2D displayMode = Options.Client.DISPLAY_MODE.get();
-        Boolean fullscreenProp = Options.Client.MAINWINDOW_FULLSCREEN.get();
+        Vec2D displayMode = Options.DISPLAY_MODE;
+        Boolean fullscreenProp = Options.MAINWINDOW_FULLSCREEN;
         boolean fullscreen = false;
         if (displayMode != null) {
             fullscreen = fullscreenProp;
@@ -346,12 +346,12 @@ public class ClientOptionsPanel extends JPanel {
         // Everything is success.
         owner.hideErrorMessages();
 
-        Options.Server.PORT.set(Integer.valueOf(remotePort.getText()));
-        Options.Client.NAME.set(playerName.getText());
-        Options.Server.IP.set(remoteIP.getText());
-        Options.Client.MAINWINDOW_FULLSCREEN.set(fullScreenButton.isSelected());
+        Options.PORT = Integer.valueOf(remotePort.getText());
+        Options.NAME = playerName.getText();
+        Options.IP = remoteIP.getText();
+        Options.MAINWINDOW_FULLSCREEN = fullScreenButton.isSelected();
         if (getDisplayMode() != null) {
-            Options.Client.DISPLAY_MODE.set(getDisplayMode());
+            Options.DISPLAY_MODE = getDisplayMode();
         }
     }
 

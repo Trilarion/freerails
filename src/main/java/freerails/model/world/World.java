@@ -22,6 +22,7 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.activity.ActivityIteratorImpl;
+import freerails.model.train.Engine;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
 import freerails.model.finances.Money;
@@ -34,10 +35,7 @@ import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * An implementation of World that uses standard java.util collections internally.
@@ -70,6 +68,8 @@ public class World implements ReadOnlyWorld {
     public List<Player> players = new ArrayList<>();
     public Map<SharedKey, List<Serializable>> sharedKeyLists = new HashMap<>();
     public GameTime time = new GameTime(0);
+
+    private final SortedSet<Engine> engines = null;
 
     /**
      *
@@ -127,6 +127,17 @@ public class World implements ReadOnlyWorld {
         List<Serializable> serializables = sharedKeyLists.get(key);
         serializables.add(element);
         return serializables.size() - 1;
+    }
+
+
+    // TODO really all the lists in a hashmap, what about different lists instead (better type inference)?
+    /**
+     *
+     * @param key
+     * @param list
+     */
+    public void set(SharedKey key, List<Serializable> list) {
+        sharedKeyLists.put(key, list);
     }
 
     /**
@@ -498,6 +509,7 @@ public class World implements ReadOnlyWorld {
         map[p.x][p.y] = tile;
     }
 
+    // TODO instead of setting a new time, call advance on the time.
     /**
      * @param t
      */

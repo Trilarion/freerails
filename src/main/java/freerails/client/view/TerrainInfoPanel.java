@@ -24,6 +24,7 @@
 package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
+import freerails.model.ModelConstants;
 import freerails.model.world.ReadOnlyWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
@@ -31,7 +32,6 @@ import freerails.model.terrain.TerrainType;
 import freerails.model.terrain.TileConsumption;
 import freerails.model.terrain.TileConversion;
 import freerails.model.terrain.TileProduction;
-import freerails.model.train.WagonType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,7 +108,7 @@ class TerrainInfoPanel extends JPanel {
                 for (int i = 0; i < cargosProduced; i++) {
                     TileProduction p = type.getProduction().get(i);
                     CargoType c = (CargoType) world.get(SharedKey.CargoTypes, p.getCargoType());
-                    String supply = String.valueOf(p.getRate() / WagonType.UNITS_OF_CARGO_PER_WAGON);
+                    String supply = String.valueOf(p.getRate() / ModelConstants.UNITS_OF_CARGO_PER_WAGON);
                     tableString.append("<tr> <td>").append(c.getDisplayName()).append(" </td><td>").append(supply).append("</td></tr>");
                 }
             }

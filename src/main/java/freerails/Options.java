@@ -1,58 +1,65 @@
 package freerails;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import freerails.client.ClientConstants;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
-import freerails.util.value.ValueWithDefault;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Options that can be changed and are loaded on startup and stored on exit.
  */
 public final class Options {
 
-    // version
-    public static ValueWithDefault<String> OPTION_VERSION = new ValueWithDefault<>(Version.VERSION);
-
     // client options
-    public static final class Client {
 
-        // name
-        public static ValueWithDefault<String> NAME = new ValueWithDefault<>(System.getProperty("user.name"));
+    // name
+    public static String NAME;
 
-        // main window
-        public static ValueWithDefault<Boolean> MAINWINDOW_FULLSCREEN = new ValueWithDefault<>(false);
+    // main window
+    public static Boolean MAINWINDOW_FULLSCREEN;
 
-        // window resolution
-        public static ValueWithDefault<Vec2D> DISPLAY_MODE = new ValueWithDefault<>(Vec2D.ZERO);
+    // window resolution
+    public static Vec2D DISPLAY_MODE;
 
-        // sound
-        public static ValueWithDefault<Boolean> SOUNDTRACK_MUTE = new ValueWithDefault<>(false);
-
-    }
+    // sound
+    public static Boolean SOUNDTRACK_MUTE;
 
     // server options
-    public static final class Server {
 
-        // public IP
-        public static ValueWithDefault<String> IP = new ValueWithDefault<>("127.0.0.1");
+    // public IP
+    public static String IP;
 
-        // public Port
-        public static ValueWithDefault<Integer> PORT = new ValueWithDefault<>(55000);
+    // public Port
+    public static Integer PORT;
+
+    {
+        // set to default values once in the beginning
+        reset();
     }
 
+    /**
+     * Sets to default values
+     */
+    public static void reset() {
+        NAME = System.getProperty("user.name");
+        MAINWINDOW_FULLSCREEN = false;
+        DISPLAY_MODE = Vec2D.ZERO;
+        SOUNDTRACK_MUTE = false;
+        IP = "127.0.0.1";
+        PORT = 55000;
+    }
 
-
-
-
-
-    // TODO only serialize values, not default values
     /**
      *
      * @param file
@@ -69,14 +76,14 @@ public final class Options {
         }
 
         // create Gson instance
-        GsonBuilder builder = (new GsonBuilder()).serializeNulls().setPrettyPrinting().excludeFieldsWithModifiers(Modifier.TRANSIENT);
+        GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        // deserialize from json
+        // deserialize, created instance not needed
         gson.fromJson(json, Options.class);
+
     }
 
-    // TODO deserialize only serialized values, no default values
     /**
      *
      * @param file
@@ -85,7 +92,7 @@ public final class Options {
         Utils.verifyNotNull(file);
 
         // create Gson instance
-        GsonBuilder builder = (new GsonBuilder()).serializeNulls().setPrettyPrinting().excludeFieldsWithModifiers(Modifier.TRANSIENT);
+        GsonBuilder builder = new GsonBuilder().serializeNulls().setPrettyPrinting().excludeFieldsWithModifiers(Modifier.TRANSIENT);
         Gson gson = builder.create();
 
         // serialize to json

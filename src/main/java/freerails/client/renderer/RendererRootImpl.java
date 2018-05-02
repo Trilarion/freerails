@@ -102,8 +102,8 @@ public class RendererRootImpl implements RendererRoot {
         for (int i = 0; i < numberOfEngineTypes; i++) {
             EngineType engineType = (EngineType) world.get(SharedKey.EngineTypes, i);
             String engineTypeName = engineType.getEngineTypeName();
-            TrainImages ti = new TrainImages(imageManager, engineTypeName);
-            engineImages.add(ti);
+            TrainImages trainImages = new TrainImages(imageManager, engineTypeName);
+            engineImages.add(trainImages);
             progressMonitorModel.setValue(++progress);
         }
     }

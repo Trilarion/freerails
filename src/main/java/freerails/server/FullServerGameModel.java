@@ -42,6 +42,7 @@ import freerails.model.game.GameTime;
 
 import java.util.Iterator;
 
+// TODO why does it have to be saved and not only the world during loading and saveing? Is there some internal state that should be part of the world?
 /**
  * A ServerGameModel that contains the automations used in the actual game. This is serialized during loading and
  * saving of games.

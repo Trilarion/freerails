@@ -26,6 +26,7 @@ package freerails.client.view;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.ModelConstants;
 import freerails.model.world.*;
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatchBundle;
@@ -34,7 +35,6 @@ import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.FullTerrainTile;
-import freerails.model.train.WagonType;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -235,10 +235,10 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
                 int amountSupplied = station.getSupply().getSupply(i);
                 boolean isSupplied = (amountSupplied > 0);
-                String supply = isSupplied ? String.valueOf(amountSupplied / WagonType.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
+                String supply = isSupplied ? String.valueOf(amountSupplied / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
                 int amountWaiting = cargoWaiting.getAmountOfType(i);
-                String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting / WagonType.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
+                String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
                 // build the html
                 if (station.getDemandForCargo().isCargoDemanded(i) || isSupplied) {

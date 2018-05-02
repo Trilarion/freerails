@@ -21,6 +21,7 @@ public final class ModelConstants {
     public static final int MAX_NUMBER_OF_WAGONS = 6;
     public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS) * WAGON_LENGTH;
     public static final int TRAIN_CRASH_FRAMES_COUNT = 15;
+    public static final int UNITS_OF_CARGO_PER_WAGON = 40;
     private static final int SHARE_BUNDLE_SIZE = 10000;
     public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
     /**

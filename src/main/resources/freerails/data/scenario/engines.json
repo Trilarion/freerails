@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Grasshopper",
+    "price": 10000,
+    "upkeep": 100,
+    "maximumSpeed": 10,
+    "maximumThrust": 1000,
+    "id": 1
+  },
+  {
+    "name": "Norris",
+    "price": 10000,
+    "upkeep": 100,
+    "maximumSpeed": 15,
+    "maximumThrust": 1000,
+    "id": 2
+  }
+]

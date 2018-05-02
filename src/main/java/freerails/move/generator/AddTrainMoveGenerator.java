@@ -57,14 +57,14 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private final ImmutableSchedule schedule;
 
     /**
-     * @param e
+     * @param engineTypeId
      * @param wagons
      * @param p
      * @param principal
      * @param schedule
      */
-    public AddTrainMoveGenerator(int e, ImmutableList<Integer> wagons, Vec2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
-        engineTypeId = e;
+    public AddTrainMoveGenerator(int engineTypeId, ImmutableList<Integer> wagons, Vec2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
+        this.engineTypeId = engineTypeId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);
         this.principal = Utils.verifyNotNull(principal);

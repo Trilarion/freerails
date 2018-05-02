@@ -32,7 +32,7 @@ import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainType;
-import freerails.model.train.WagonAndEngineTypesFactory;
+import freerails.model.train.EngineTypesFactory;
 import freerails.model.world.World;
 
 import java.net.URL;
@@ -65,7 +65,7 @@ public class MapFixtureFactory2 {
     private static World generateWorld() {
 
         World world = new World(new Vec2D(50, 50));
-        WagonAndEngineTypesFactory.addTypesToWorld(world);
+        EngineTypesFactory.addTypesToWorld(world);
         MapCreator.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);

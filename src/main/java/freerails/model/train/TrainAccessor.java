@@ -77,7 +77,7 @@ public class TrainAccessor {
         // First calculate the train's total capacity.
         for (Integer aConsist : consist) {
             int cargoType = aConsist;
-            spaceAvailable[cargoType] += WagonType.UNITS_OF_CARGO_PER_WAGON;
+            spaceAvailable[cargoType] += ModelConstants.UNITS_OF_CARGO_PER_WAGON;
         }
 
         for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {

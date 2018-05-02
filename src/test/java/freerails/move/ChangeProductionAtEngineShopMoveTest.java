@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
-import freerails.model.train.WagonAndEngineTypesFactory;
+import freerails.model.train.EngineTypesFactory;
 import freerails.model.station.TrainBlueprint;
 import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
@@ -47,8 +47,8 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, new Station());
         getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, new Station());
 
-        WagonAndEngineTypesFactory wetf = new WagonAndEngineTypesFactory();
-        WagonAndEngineTypesFactory.addTypesToWorld(getWorld());
+        EngineTypesFactory wetf = new EngineTypesFactory();
+        EngineTypesFactory.addTypesToWorld(getWorld());
         engineType = 0;
         int wagonType = 0;
         wagons = new Integer[]{wagonType, wagonType};

@@ -31,7 +31,6 @@ import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.train.WagonType;
 
 import java.awt.*;
 import java.io.IOException;
@@ -131,7 +130,7 @@ public class StationBoxRenderer implements Painter {
         int[][] cars = new int[categories][numCargoTypes];
         for (int i = 0; i < numCargoTypes; i++) {
             CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, i);
-            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / WagonType.UNITS_OF_CARGO_PER_WAGON;
+            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
             cars[ct.getCategory().getID()][i] += carsOfThisCargo;
         }

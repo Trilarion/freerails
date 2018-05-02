@@ -1,12 +1,16 @@
 package freerails.savegames;
 
+import com.google.gson.Gson;
+import freerails.gson.GsonManager;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.*;
-import freerails.model.train.WagonAndEngineTypesFactory;
+import freerails.model.train.Engine;
+import freerails.model.train.EngineTypesFactory;
 import freerails.model.world.World;
+import freerails.model.world.WorldBuilder;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.util.Vec2D;
@@ -23,10 +27,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -54,26 +56,31 @@ public class MapCreator {
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
 
-        World world = new World();
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
+        SortedSet<Engine> engines;
+        try {
+            engines = GsonManager.loadEngines(url);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        WorldBuilder builder = new WorldBuilder().setEngines(engines);
+        World world = builder.create();
 
-        WagonAndEngineTypesFactory.addTypesToWorld(world);
+        EngineTypesFactory.addTypesToWorld(world);
 
         addTerrainTileTypesList(world);
 
-        URL track_xml_url = FullSaveGameManager.class.getResource("/freerails/data/track_tiles.xml");
+        URL track_xml_url = MapCreator.class.getResource("/freerails/data/track_tiles.xml");
 
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
 
         trackSetFactory.addTrackRules(world);
 
         // Load the terrain map
-        URL map_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + ".png");
+        URL map_url = MapCreator.class.getResource("/freerails/data/" + mapName + ".png");
 
         // converts an image file into a map.
         // Implemented Terrain Randomisation to randomly position the terrain types for each tile on the map.
-        final List<Integer> countryTypes = new ArrayList();
-        final List<Integer> non_countryTypes = new ArrayList();
-
 
         // Setup progress monitor..
         ProgressMonitorModel.EMPTY.setValue(0);
@@ -95,6 +102,8 @@ public class MapCreator {
         }
 
         TerrainType terrainTypeTile;
+        final List<Integer> countryTypes = new ArrayList();
+        final List<Integer> non_countryTypes = new ArrayList();
 
         for (int c = 0; c < world.size(SharedKey.TerrainTypes); c++) {
             terrainTypeTile = (TerrainType) world.get(SharedKey.TerrainTypes, c);
@@ -163,7 +172,7 @@ public class MapCreator {
         }
 
         // Load the city names
-        URL cities_xml_url = FullSaveGameManager.class.getResource("/freerails/data/" + mapName + "_cities.xml");
+        URL cities_xml_url = MapCreator.class.getResource("/freerails/data/" + mapName + "_cities.xml");
 
         try {
             InputSource is = new InputSource(cities_xml_url.toString());
@@ -183,6 +192,7 @@ public class MapCreator {
 
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
+        // TODO is this necessary, should be this by default
         world.setTime(new GameTime(0));
         world.set(WorldItem.GameSpeed, new GameSpeed(10));
         world.set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
@@ -201,7 +211,7 @@ public class MapCreator {
      */
     public static void addTerrainTileTypesList(World world) {
         try {
-            URL url = FullSaveGameManager.class.getResource("/freerails/data/cargo_and_terrain.xml");
+            URL url = MapCreator.class.getResource("/freerails/data/cargo_and_terrain.xml");
 
             CargoAndTerrainXmlParser.parse(url, new CargoAndTerrainXmlHandlerImpl(world));
         } catch (Exception e) {

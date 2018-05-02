@@ -121,7 +121,7 @@ class SelectMapPanel extends JPanel {
         jPanel3.add(portLabel, gridBagConstraints);
 
         serverPort.setColumns(6);
-        serverPort.setText(String.valueOf(Options.Server.PORT.get()));
+        serverPort.setText(String.valueOf(Options.PORT));
         gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -226,7 +226,7 @@ class SelectMapPanel extends JPanel {
 
         // Everything is success.
         owner.hideErrorMessages();
-        Options.Server.PORT.set(Integer.valueOf(serverPort.getText()));
+        Options.PORT = Integer.valueOf(serverPort.getText());
         return true;
     }
 

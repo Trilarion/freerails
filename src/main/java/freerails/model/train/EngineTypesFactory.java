@@ -21,27 +21,30 @@
  */
 package freerails.model.train;
 
+import com.google.gson.Gson;
+import freerails.gson.GsonManager;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.finances.Money;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Adds hard coded wagon and engine types to the World. Later the
  * wagon and engine types will be defined in an xml file, but this will do for
  * now.
  */
-public class WagonAndEngineTypesFactory {
+public class EngineTypesFactory {
 
     /**
      * @param world
      */
     public static void addTypesToWorld(World world) {
-        // Wagon types
-        WagonType[] wagonTypes = new WagonType[]{new WagonType("Mail", WagonType.MAIL), new WagonType("Passengers", WagonType.PASSENGER), new WagonType("Livestock", WagonType.FAST_FREIGHT), new WagonType("Coffee", WagonType.SLOW_FREIGHT), new WagonType("Wood", WagonType.BULK_FREIGHT),};
-
-        for (WagonType wagonType : wagonTypes) {
-            world.add(SharedKey.WagonTypes, wagonType);
-        }
 
         // Engine types
         EngineType[] engineTypes = new EngineType[]{new EngineType("Grasshopper", 1000, new Money(10000), 10, new Money(100)), new EngineType("Norris", 1000, new Money(10000), 15, new Money(100)),};

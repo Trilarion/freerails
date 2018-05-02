@@ -17,8 +17,7 @@ public class TrainCellRenderer implements ListCellRenderer {
         savesJLabels = new HashMap<>();
     }
 
-    public Component getListCellRendererComponent(JList list, Object value,
-            // value to display
+    public Component getListCellRendererComponent(JList list, Object value, // value to display
                                                   int index, // cell index
                                                   boolean isSelected, // is the cell selected
                                                   boolean cellHasFocus) /* the list and the cell have the focus */ {

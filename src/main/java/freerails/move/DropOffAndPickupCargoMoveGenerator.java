@@ -105,11 +105,11 @@ public class DropOffAndPickupCargoMoveGenerator {
                     int amount = stationAfter.getAmountOfType(i);
 
                     while (amount > 0) {
-                        int amount2remove = Math.min(amount, WagonType.UNITS_OF_CARGO_PER_WAGON);
+                        int amount2remove = Math.min(amount, ModelConstants.UNITS_OF_CARGO_PER_WAGON);
                         amount -= amount2remove;
 
                         // Don't bother with less than half a wagon load.
-                        if (amount2remove * 2 > WagonType.UNITS_OF_CARGO_PER_WAGON) {
+                        if (amount2remove * 2 > ModelConstants.UNITS_OF_CARGO_PER_WAGON) {
                             wagonsAvailable.add(new WagonLoad(amount2remove, i));
                         }
                     }

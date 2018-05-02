@@ -573,6 +573,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         setButtonsVisible(false);
                         setNextEnabled(false);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         setInfoText(e.getMessage(), InfoMessageType.WARNING);
                         cop.setControlsEnabled(true);
                         prevButton.setEnabled(true);

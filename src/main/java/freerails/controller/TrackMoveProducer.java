@@ -51,7 +51,7 @@ public class TrackMoveProducer {
      * This generates the transactions - the charge - for the track being built.
      */
     private final TrackMoveTransactionsGenerator transactionsGenerator;
-    private GameTime lastMoveTime = GameTime.BIG_BANG;
+    private GameTime lastMoveTime;
 
     /**
      * @param executor
