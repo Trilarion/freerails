@@ -20,7 +20,7 @@ package freerails.model.track.explorer;
 
 import freerails.model.track.NoTrackException;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NullTrackType;
@@ -39,7 +39,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     private static final long serialVersionUID = 3834311713465185081L;
     public final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
 
@@ -48,7 +48,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * @param positionOnTrack
      * @throws NoTrackException
      */
-    public FlatTrackExplorer(ReadOnlyWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
+    public FlatTrackExplorer(UnmodifiableWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
         FullTerrainTile tile = (FullTerrainTile) world.getTile(positionOnTrack.getLocation());
         if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
@@ -64,7 +64,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * possible orientations at this position (heading towards the
      * center of the tile)
      */
-    public static PositionOnTrack[] getPossiblePositions(ReadOnlyWorld world, Vec2D location) {
+    public static PositionOnTrack[] getPossiblePositions(UnmodifiableWorld world, Vec2D location) {
         TrackPiece tp = ((FullTerrainTile) world.getTile(location)).getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();

@@ -3,8 +3,6 @@ package freerails.model.train;
 import freerails.model.Identifiable;
 import freerails.model.finances.Money;
 
-import java.io.Serializable;
-
 /**
  * Represents an engine type, for example 'Grass Hopper'. It
  * encapsulates the properties that are common to all engines of the same type.

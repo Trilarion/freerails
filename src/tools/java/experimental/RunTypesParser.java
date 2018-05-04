@@ -25,7 +25,6 @@ package experimental;
 import freerails.savegames.CargoAndTerrainXmlHandlerImpl;
 import freerails.savegames.CargoAndTerrainXmlParser;
 import freerails.model.world.World;
-import freerails.util.Vec2D;
 
 /**
  * The main method on this class uses CargoAndTerrainParser to parse cargo

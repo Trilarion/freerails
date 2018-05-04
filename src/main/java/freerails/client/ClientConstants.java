@@ -23,7 +23,6 @@ import freerails.util.Vec2D;
 
 import java.awt.*;
 import java.io.File;
-import java.nio.charset.Charset;
 
 /**
  * Important constants
@@ -202,8 +201,6 @@ public final class ClientConstants {
     public static final File USER_HOME_FOLDER = new File(System.getProperty("user.home"));
     public static final File FREERAILS_USER_FOLDER = new File(USER_HOME_FOLDER, "Freerails user data");
     public static final File OPTIONS_FILE = new File(FREERAILS_USER_FOLDER, "Freerails.options");
-
-    public static final Charset defaultCharset = Charset.forName("utf-8");
 
 
     private ClientConstants() {

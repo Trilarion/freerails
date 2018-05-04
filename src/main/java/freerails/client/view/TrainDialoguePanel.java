@@ -49,7 +49,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     private TrainDescriptionPanel trainDetailsJPanel1;
     private JButton trainListJButton;
     private WorldIterator worldIterator;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private FreerailsPrincipal principal;
 
     public TrainDialoguePanel() {

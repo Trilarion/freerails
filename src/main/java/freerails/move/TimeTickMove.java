@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -45,7 +45,7 @@ public class TimeTickMove implements Move {
      * @param world
      * @return
      */
-    public static Move generate(ReadOnlyWorld world) {
+    public static Move generate(UnmodifiableWorld world) {
 
         GameTime oldTime = world.currentTime();
         GameTime newTime = new GameTime(oldTime.getTicks() + 1);

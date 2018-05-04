@@ -6,7 +6,7 @@ import freerails.client.renderer.map.MapLayerRenderer;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackPiece;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Vec2D;
 
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.awt.*;
  */
 public final class TrackLayerRenderer implements MapLayerRenderer {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final RendererRoot rendererRoot;
     private final Vec2D mapSize;
 
@@ -24,7 +24,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param world
      * @param trackPieceViewList
      */
-    public TrackLayerRenderer(ReadOnlyWorld world, RendererRoot trackPieceViewList) {
+    public TrackLayerRenderer(UnmodifiableWorld world, RendererRoot trackPieceViewList) {
         rendererRoot = trackPieceViewList;
         this.world = world;
         this.mapSize = world.getMapSize();

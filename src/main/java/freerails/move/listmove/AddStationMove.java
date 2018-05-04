@@ -25,7 +25,7 @@ import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
@@ -51,7 +51,7 @@ public class AddStationMove extends CompositeMove {
      * @param principal
      * @return
      */
-    public static AddStationMove generateMove(ReadOnlyWorld world, String stationName, Vec2D location, Move upgradeTrackMove, FreerailsPrincipal principal) {
+    public static AddStationMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, FreerailsPrincipal principal) {
         int cargoBundleNumber = world.size(principal, PlayerKey.CargoBundles);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
         int stationNumber = world.size(principal, PlayerKey.Stations);

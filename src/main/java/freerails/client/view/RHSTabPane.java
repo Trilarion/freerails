@@ -22,7 +22,7 @@ import freerails.client.*;
 import freerails.client.renderer.RendererRoot;
 import freerails.util.Vec2D;
 import freerails.model.station.Station;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.FullTerrainTile;
 import org.apache.log4j.Logger;
 
@@ -45,7 +45,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
     private final int terrainInfoIndex;
     private final int trainListIndex;
     private final int stationInfoIndex;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private ModelRoot modelRoot;
 
     /**

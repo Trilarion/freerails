@@ -44,6 +44,7 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      * Constructs an immutable list containing the elements.
      * @param items
      */
+    @SafeVarargs
     public ImmutableList(E... items) {
         values = items.clone();
     }
@@ -295,7 +296,7 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      */
     @Override
     public ListIterator<E> listIterator(int index) {
-        return new ListIterator<>() {
+        return new ListIterator<E>() {
 
             private int idx = index;
 
@@ -368,7 +369,7 @@ public final class ImmutableList<E> implements List<E>, RandomAccess, Serializab
      */
     @Override
     public Iterator<E> iterator() {
-        return new Iterator<>() {
+        return new Iterator<E>() {
 
             private int index = 0;
 

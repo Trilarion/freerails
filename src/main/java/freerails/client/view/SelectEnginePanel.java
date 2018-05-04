@@ -28,8 +28,6 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.train.Engine;
-import freerails.model.world.SharedKey;
-import freerails.util.ImmutableList;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -110,7 +108,7 @@ public class SelectEnginePanel extends JPanel implements View {
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
 
-        list1.setModel(new StaticListModel<Engine>(modelRoot.getWorld().getEngines()));
+        list1.setModel(new StaticListModel<>(modelRoot.getWorld().getEngines()));
         // list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), SharedKey.EngineTypes));
         list1.setCellRenderer(new TrainCellRenderer(rendererRoot));
         okButton.addActionListener(closeAction);

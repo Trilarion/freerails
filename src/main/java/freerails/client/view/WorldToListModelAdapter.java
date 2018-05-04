@@ -24,7 +24,7 @@ package freerails.client.view;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -44,7 +44,7 @@ class WorldToListModelAdapter implements ListModel {
      * @param world
      * @param key
      */
-    public WorldToListModelAdapter(ReadOnlyWorld world, SharedKey key) {
+    public WorldToListModelAdapter(UnmodifiableWorld world, SharedKey key) {
         Utils.verifyNotNull(key);
         elements = new NonNullElementWorldIterator(key, world);
     }
@@ -54,7 +54,7 @@ class WorldToListModelAdapter implements ListModel {
      * @param playerKey
      * @param principal
      */
-    public WorldToListModelAdapter(ReadOnlyWorld world, PlayerKey playerKey, FreerailsPrincipal principal) {
+    public WorldToListModelAdapter(UnmodifiableWorld world, PlayerKey playerKey, FreerailsPrincipal principal) {
         Utils.verifyNotNull(playerKey);
         Utils.verifyNotNull(principal);
         // Check that the principal exists.

@@ -25,7 +25,6 @@ import freerails.model.finances.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.world.World;
-import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 /**

@@ -30,7 +30,7 @@ import freerails.model.finances.TransactionAggregator;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
 
 import javax.swing.*;
@@ -112,7 +112,7 @@ public class LeaderBoardPanel extends JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         values.clear();
         submitButtonCallBack = closeAction;
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {

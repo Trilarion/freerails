@@ -39,6 +39,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
@@ -264,7 +265,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     public void newGame(String mapName) {
         newPlayersAllowed = false;
 
-        World world = MapCreator.newMap(mapName);
+        World world = null;
+        try {
+            world = MapCreator.newMap(mapName);
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
         String[] passwords = new String[players.size()];
 

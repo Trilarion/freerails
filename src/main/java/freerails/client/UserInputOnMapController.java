@@ -29,7 +29,7 @@ import freerails.controller.TrackMoveProducer;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TileTransition;
 import freerails.util.ui.SoundManager;
 import org.apache.log4j.Logger;
@@ -328,7 +328,7 @@ public class UserInputOnMapController extends KeyAdapter {
      * @return boolean
      */
     private boolean legalRectangleContains(Vec2D tryThisPoint) {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         Vec2D mapSize = world.getMapSize();
         Rectangle legalRectangle = new Rectangle(0, 0, mapSize.x, mapSize.y);
         return legalRectangle.contains(Vec2D.toPoint(tryThisPoint));

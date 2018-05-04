@@ -23,7 +23,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -36,7 +36,7 @@ import java.awt.*;
 public class CashLabel extends JLabel implements View {
 
     private static final long serialVersionUID = 3257853181542412341L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private FreerailsPrincipal principal;
 
     /**

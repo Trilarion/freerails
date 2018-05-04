@@ -18,11 +18,10 @@
 
 package freerails.server;
 
+import freerails.model.terrain.City2;
 import freerails.model.terrain.CityModel;
 import freerails.util.Vec2D;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
-import freerails.model.terrain.City;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
@@ -36,11 +35,12 @@ public class CityModelTest extends TestCase {
      */
     public void testLoadFromMap() {
         World world = MapFixtureFactory.getWorld(new Vec2D(100, 100));
-        City city = new City("New York", new Vec2D(10, 20));
-        world.add(SharedKey.Cities, city);
+        // TODO this is not supposed to work, but still works
+        City2 city = new City2(1,"New York", new Vec2D(10, 20));
+        world.getCities().add(city);
 
         CityModel cityModel = new CityModel();
-        cityModel.loadFromMap(world, 0);
+        cityModel.loadFromMap(world, 1);
         assertEquals(0, cityModel.industryCityTiles.size());
         assertEquals(0, cityModel.urbanCityTiles.size());
         assertEquals("A city is a 7*7 area", 49, cityModel.clearTiles.size());

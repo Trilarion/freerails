@@ -59,7 +59,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
      * @param world
      * @return
      */
-    public static boolean canConnectToOtherRRsTrack(ReadOnlyWorld world) {
+    public static boolean canConnectToOtherRRsTrack(UnmodifiableWorld world) {
         GameRules rules = (GameRules) world.get(WorldItem.GameRules);
 
         return rules.canConnectToOtherRRTrack();

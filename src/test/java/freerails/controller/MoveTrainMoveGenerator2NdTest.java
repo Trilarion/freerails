@@ -53,7 +53,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private FreerailsPrincipal principal;
     private Vec2D station1Location;
     private Vec2D station2Location;
-    private int validEngineId;
 
     public static void incrTime(World world, FreerailsPrincipal principal) {
         ActivityIterator activityIterator = world.getActivities(principal, 0);
@@ -79,7 +78,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
-        validEngineId = world.getEngines().iterator().next().getId();
+        int validEngineId = world.getEngines().iterator().next().getId();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         principal = moveExecutor.getPrincipal();
         ModelRoot modelRoot = new ModelRootImpl();

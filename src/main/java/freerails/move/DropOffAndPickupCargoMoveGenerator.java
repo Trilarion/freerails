@@ -27,7 +27,7 @@ import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.listmove.TransferCargoAtStationMove;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
@@ -51,7 +51,7 @@ import java.util.List;
  */
 public class DropOffAndPickupCargoMoveGenerator {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final TrainAccessor trainAccessor;
     private final int trainId;
     private final int stationId;
@@ -74,7 +74,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param stationNo ID of the station
      * @param world     The world object
      */
-    public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo, ReadOnlyWorld world, FreerailsPrincipal principal, boolean waiting, boolean autoConsist) {
+    public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo, UnmodifiableWorld world, FreerailsPrincipal principal, boolean waiting, boolean autoConsist) {
         this.principal = principal;
         trainId = trainNo;
         stationId = stationNo;
@@ -173,7 +173,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param trainId
      * @return
      */
-    public static List<Move> processCargo(ReadOnlyWorld world, CargoBatchBundle bundle, int stationID, FreerailsPrincipal principal, int trainId) {
+    public static List<Move> processCargo(UnmodifiableWorld world, CargoBatchBundle bundle, int stationID, FreerailsPrincipal principal, int trainId) {
         Station thisStation = (Station) world.get(principal, PlayerKey.Stations, stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 

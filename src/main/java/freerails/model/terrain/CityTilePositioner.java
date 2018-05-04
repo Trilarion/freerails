@@ -65,33 +65,29 @@ public class CityTilePositioner {
     }
 
     public void initCities() {
-        final int numCities = world.size(SharedKey.Cities);
-        CityModel[] cities = new CityModel[numCities];
-
-        for (int cityId = 0; cityId < numCities; cityId++) {
-            CityModel city = new CityModel();
-            city.loadFromMap(world, cityId);
+        for (City2 city: world.getCities()) {
+            CityModel cityModel = new CityModel();
+            cityModel.loadFromMap(world, city.getId());
 
             final int urbanTiles = 2 + random.nextInt(3);
 
             for (int i = 0; i < urbanTiles; i++) {
-                addUrbanTile(city);
+                addUrbanTile(cityModel);
             }
 
             final int industryTiles = random.nextInt(3);
 
             for (int i = 0; i < industryTiles; i++) {
-                addIndustryTile(city);
+                addIndustryTile(cityModel);
             }
 
             final int resourceTiles = random.nextInt(3);
 
             for (int i = 0; i < resourceTiles; i++) {
-                addResourceTile(city);
+                addResourceTile(cityModel);
             }
 
-            city.writeToMap(world);
-            cities[cityId] = city;
+            cityModel.writeToMap(world);
         }
     }
 
@@ -118,23 +114,21 @@ public class CityTilePositioner {
     }
 
     public void growCities() {
-        final int numCities = world.size(SharedKey.Cities);
-
         /*
          * At some stage this will be refined to take into account how much
          * cargo has been picked up and delivered and what city tiles are
          * already present.
          */
-        for (int cityId = 0; cityId < numCities; cityId++) {
-            CityModel city = new CityModel();
-            city.loadFromMap(world, cityId);
+        for (City2 city: world.getCities()) {
+            CityModel cityModel = new CityModel();
+            cityModel.loadFromMap(world, city.getId());
 
             // Only increase cities with stations and less than 16 tiles
-            if (city.size() < 16 && city.stations > 0) {
+            if (cityModel.size() < 16 && cityModel.stations > 0) {
                 switch (random.nextInt(10)) {
                     case 0:
                     case 1:
-                        addResourceTile(city); // 20% chance
+                        addResourceTile(cityModel); // 20% chance
 
                         break;
 
@@ -142,12 +136,12 @@ public class CityTilePositioner {
                     case 3:
                     case 4:
                     case 5:
-                        addUrbanTile(city); // 40% chance
+                        addUrbanTile(cityModel); // 40% chance
 
                         break;
 
                     case 6:
-                        addIndustryTile(city); // 10% chance
+                        addIndustryTile(cityModel); // 10% chance
 
                         break;
 
@@ -155,7 +149,7 @@ public class CityTilePositioner {
                         // Do nothing. 30% chance
                         break;
                 }
-                city.writeToMap(world);
+                cityModel.writeToMap(world);
             }
         }
     }

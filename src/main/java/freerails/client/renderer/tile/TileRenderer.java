@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.tile;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Vec2D;
 
 import java.awt.*;
@@ -39,6 +39,6 @@ public interface TileRenderer {
      * @param mapLocation
      * @param world
      */
-    void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, ReadOnlyWorld world);
+    void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world);
 
 }

@@ -22,7 +22,7 @@ import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.statistics.BalanceSheetGenerator;
 import freerails.client.ModelRoot;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 
 import javax.swing.*;
@@ -61,7 +61,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     }
 
     private void updateHtml() {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
         BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world, playerPrincipal);
         String populatedTemplate = populateTokens(template, balanceSheetGenerator);
@@ -71,7 +71,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     @Override
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
         int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 

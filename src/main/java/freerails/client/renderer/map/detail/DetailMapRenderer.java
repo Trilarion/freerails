@@ -25,7 +25,7 @@ import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
 
 import java.awt.*;
@@ -47,7 +47,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param rendererRoot
      * @param modelRoot
      */
-    public DetailMapRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+    public DetailMapRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trainsview = new OverHeadTrainView(world, rendererRoot, modelRoot);
 
         MapBackgroundRenderer mapBackgroundRenderer = new MapBackgroundRenderer(world, rendererRoot, modelRoot);

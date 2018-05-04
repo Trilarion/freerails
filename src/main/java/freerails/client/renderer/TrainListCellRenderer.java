@@ -27,7 +27,7 @@ import freerails.client.ModelRoot;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldListListener;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.schedule.ImmutableSchedule;
@@ -48,7 +48,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     private final Color backgoundColor = (Color) UIManager.getDefaults().get("List.background");
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private RendererRoot vl;
     private int trainNumber = -1;
     private int scheduleOrderNumber;

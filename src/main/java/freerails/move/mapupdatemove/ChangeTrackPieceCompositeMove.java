@@ -64,7 +64,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param principal
      * @return
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, UnmodifiableWorld world, FreerailsPrincipal principal) {
         ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, world, principal);
         ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, world, principal);
 
@@ -79,7 +79,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @return
      * @throws Exception
      */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, FreerailsPrincipal principal) throws Exception {
         TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, principal);
         TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, principal);
 
@@ -87,7 +87,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackRule trackRule, ReadOnlyWorld world, FreerailsPrincipal principal) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackRule trackRule, UnmodifiableWorld world, FreerailsPrincipal principal) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -111,7 +111,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, ReadOnlyWorld world, FreerailsPrincipal principal) throws Exception {
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, FreerailsPrincipal principal) throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -157,7 +157,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     /**
      * Returns true if some track has been built.
      */
-    public static boolean hasAnyTrackBeenBuilt(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, FreerailsPrincipal principal) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);
 
@@ -169,7 +169,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param world
      * @return
      */
-    private static int findRuleID(TrackRule rule, ReadOnlyWorld world) {
+    private static int findRuleID(TrackRule rule, UnmodifiableWorld world) {
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             Object o = world.get(SharedKey.TrackRules, i);
             if (rule.equals(o)) {

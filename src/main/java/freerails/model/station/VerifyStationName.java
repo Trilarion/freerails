@@ -20,7 +20,7 @@ package freerails.model.station;
 
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class VerifyStationName {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final String nameToVerify;
     private final List<String> stationAlternatives = Arrays.asList("Junction", "Siding", "North", "East", "South", "West");
 
@@ -42,7 +42,7 @@ public class VerifyStationName {
      * @param world
      * @param name
      */
-    public VerifyStationName(ReadOnlyWorld world, String name) {
+    public VerifyStationName(UnmodifiableWorld world, String name) {
         this.world = world;
         nameToVerify = name;
     }

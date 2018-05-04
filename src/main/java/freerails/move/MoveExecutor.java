@@ -18,10 +18,8 @@
 
 package freerails.move;
 
-import freerails.move.Move;
-import freerails.move.MoveStatus;
 import freerails.move.generator.MoveGenerator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 
 /**
@@ -50,7 +48,7 @@ public interface MoveExecutor {
     /**
      * @return
      */
-    ReadOnlyWorld getWorld();
+    UnmodifiableWorld getWorld();
 
     /**
      * @return

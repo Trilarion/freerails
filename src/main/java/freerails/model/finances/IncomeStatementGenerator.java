@@ -20,7 +20,7 @@ package freerails.model.finances;
 
 import freerails.util.Pair;
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.game.GameCalendar;
@@ -33,14 +33,14 @@ import freerails.model.player.FreerailsPrincipal;
  */
 public class IncomeStatementGenerator {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final FreerailsPrincipal principal;
     private final GameCalendar cal;
     private final int startyear;
 
     public Money mailTotal;
 
-    public IncomeStatementGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public IncomeStatementGenerator(UnmodifiableWorld world, FreerailsPrincipal principal) {
         this.world = world;
         this.principal = principal;
         cal = (GameCalendar) world.get(WorldItem.Calendar);

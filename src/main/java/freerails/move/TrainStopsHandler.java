@@ -30,7 +30,7 @@ import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -58,24 +58,24 @@ public class TrainStopsHandler implements Serializable {
     private final int trainId;
     private World world;
     private final List<Move> moves = new ArrayList<>();
-    private final ReadOnlyWorld readOnlyWorld;
+    private final UnmodifiableWorld unmodifiableWorld;
 
     /**
      * @param id
      * @param principal
-     * @param readOnlyWorld
+     * @param unmodifiableWorld
      */
-    public TrainStopsHandler(int id, FreerailsPrincipal principal, ReadOnlyWorld readOnlyWorld) {
+    public TrainStopsHandler(int id, FreerailsPrincipal principal, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
         this.principal = principal;
-        this.world =  (World) Utils.cloneBySerialisation(readOnlyWorld);
-        this.readOnlyWorld = readOnlyWorld;
+        this.world =  (World) Utils.cloneBySerialisation(unmodifiableWorld);
+        this.unmodifiableWorld = unmodifiableWorld;
     }
 
     /**
      * If wagons are added to a train, we need to increase its length.
      */
-    public static PathOnTiles lengthenPath(ReadOnlyWorld world, PathOnTiles path, int currentTrainLength) {
+    public static PathOnTiles lengthenPath(UnmodifiableWorld world, PathOnTiles path, int currentTrainLength) {
         double pathDistance = path.getTotalDistance();
         double extraDistanceNeeded = currentTrainLength - pathDistance;
 
@@ -139,7 +139,7 @@ public class TrainStopsHandler implements Serializable {
     public ImmutableList<Move> getMoves() {
         ImmutableList<Move> currentMoves = new ImmutableList<>(moves);
         moves.clear();
-        world = (World) Utils.cloneBySerialisation(readOnlyWorld);
+        world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
         return currentMoves;
     }
 

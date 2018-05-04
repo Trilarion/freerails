@@ -20,7 +20,7 @@ package freerails.move;
 
 import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.track.TrackRule;
@@ -48,7 +48,7 @@ public class StationBuilder {
 
         int i = -1;
 
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
 
         do {
             i++;
@@ -63,7 +63,7 @@ public class StationBuilder {
      * @return
      */
     public MoveStatus tryBuildingStation(Vec2D location) {
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
 
         FreerailsPrincipal principal = executor.getPrincipal();
         AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, principal);
@@ -98,7 +98,7 @@ public class StationBuilder {
     }
 
     public int getTrackTypeID(String string) {
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, i);
 

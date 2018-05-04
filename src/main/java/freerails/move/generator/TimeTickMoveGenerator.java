@@ -23,7 +23,7 @@ package freerails.move.generator;
 
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 /**
  * Generates a TimeTickMove.
@@ -40,7 +40,7 @@ public class TimeTickMoveGenerator implements MoveGenerator {
      * @param world
      * @return
      */
-    public Move generate(ReadOnlyWorld world) {
+    public Move generate(UnmodifiableWorld world) {
         return TimeTickMove.generate(world);
     }
 

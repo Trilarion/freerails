@@ -24,7 +24,7 @@ package freerails.model.track.explorer;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.player.FreerailsPrincipal;
@@ -45,7 +45,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
     private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
     private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final FreerailsPrincipal principal;
     private boolean beforeFirst = true;
     private int directionInt = 0;
@@ -56,7 +56,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param world
      * @param principal
      */
-    public BuildTrackExplorer(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public BuildTrackExplorer(UnmodifiableWorld world, FreerailsPrincipal principal) {
         this(world, principal, null);
     }
 
@@ -65,7 +65,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param principal
      * @param start
      */
-    public BuildTrackExplorer(ReadOnlyWorld world, FreerailsPrincipal principal, Vec2D start) {
+    public BuildTrackExplorer(UnmodifiableWorld world, FreerailsPrincipal principal, Vec2D start) {
         this.world = world;
         this.principal = principal;
         PositionOnTrack pos;

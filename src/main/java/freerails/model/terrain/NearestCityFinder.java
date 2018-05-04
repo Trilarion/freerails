@@ -19,8 +19,7 @@
 package freerails.model.terrain;
 
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.SharedKey;
+import freerails.model.world.UnmodifiableWorld;
 
 import java.util.NoSuchElementException;
 
@@ -31,13 +30,13 @@ import java.util.NoSuchElementException;
 public class NearestCityFinder {
 
     private final Vec2D location;
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
 
     /**
      * @param world
      * @param location
      */
-    public NearestCityFinder(ReadOnlyWorld world, Vec2D location) {
+    public NearestCityFinder(UnmodifiableWorld world, Vec2D location) {
         this.world = world;
         this.location = location;
     }
@@ -46,30 +45,22 @@ public class NearestCityFinder {
      * @return
      */
     public String findNearestCity() {
-        double cityDistance;
-        String cityName;
-        double tempDistance;
-        City tempCity;
+        double closestDistance = Double.MAX_VALUE;
+        String cityName = null;
 
-        if (world.size(SharedKey.Cities) > 0) {
-            tempCity = (City) world.get(SharedKey.Cities, 0);
-            cityDistance = getDistance(tempCity.getLocation());
-            cityName = tempCity.getName();
-
-            for (int i = 1; i < world.size(SharedKey.Cities); i++) {
-                tempCity = (City) world.get(SharedKey.Cities, i);
-                tempDistance = getDistance(tempCity.getLocation());
-
-                if (tempDistance < cityDistance) {
-                    cityDistance = tempDistance;
-                    cityName = tempCity.getName();
-                }
+        for (City2 city: world.getCities()) {
+            double distance = getDistance(city.getLocation());
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                cityName = city.getName();
             }
-
-            return cityName;
         }
 
-        throw new NoSuchElementException();
+        if (cityName != null) {
+            return cityName;
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
     private double getDistance(Vec2D cityLocation) {

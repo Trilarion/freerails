@@ -24,7 +24,7 @@ package freerails.client.renderer.track;
 
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ui.ImageManager;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackConfiguration;
@@ -49,7 +49,7 @@ public class TrackPieceRendererList {
      * @param progressMonitorModel
      * @throws IOException
      */
-    public TrackPieceRendererList(ReadOnlyWorld world, ImageManager imageManager, ProgressMonitorModel progressMonitorModel) throws IOException {
+    public TrackPieceRendererList(UnmodifiableWorld world, ImageManager imageManager, ProgressMonitorModel progressMonitorModel) throws IOException {
         // Setup progress monitor..
 
         progressMonitorModel.nextStep(world.size(SharedKey.TrackRules));
@@ -81,7 +81,7 @@ public class TrackPieceRendererList {
      * @param world
      * @return
      */
-    public boolean validate(ReadOnlyWorld world) {
+    public boolean validate(UnmodifiableWorld world) {
         boolean okSoFar = true;
 
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {

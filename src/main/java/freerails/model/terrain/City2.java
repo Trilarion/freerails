@@ -3,6 +3,7 @@ package freerails.model.terrain;
 import freerails.model.Identifiable;
 import freerails.util.Vec2D;
 
+// TODO Possible potential for expansion?? Initial size of city, growth rate etc.??? incorporate CityModel?
 /**
  * Simply stores the name and x and y coordinates of a city.
  */
@@ -23,5 +24,10 @@ public class City2 extends Identifiable {
 
     public Vec2D getLocation() {
         return location;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", name, location);
     }
 }

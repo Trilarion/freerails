@@ -48,9 +48,10 @@ import freerails.model.world.World;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Map;
 import java.util.SortedSet;
 
 /**
@@ -79,9 +80,15 @@ class DialogueBoxTester extends JFrame {
     private DialogueBoxTester() {
 
         URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        Map<Integer, Engine> engines;
+        File file = null;
         try {
-            engines = GsonManager.loadEngines(url);
+            file = new File(url.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        SortedSet<Engine> engines;
+        try {
+            engines = GsonManager.loadEngines(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

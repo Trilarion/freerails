@@ -31,7 +31,6 @@ import freerails.model.player.Player;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.SortedSet;
 
 /**
  * This interface defines a unified set of methods to access the elements that
@@ -59,7 +58,7 @@ import java.util.SortedSet;
  *
  * Code that loops through lists should handle null values gracefully.
  */
-public interface ReadOnlyWorld extends Serializable {
+public interface UnmodifiableWorld extends Serializable {
 
     Collection<Engine> getEngines();
 

@@ -3,19 +3,18 @@ package freerails.gson;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import freerails.client.ClientConstants;
 import freerails.gson.adapter.MoneyAdapter;
 import freerails.model.Identifiable;
+import freerails.model.ModelConstants;
 import freerails.model.finances.Money;
+import freerails.model.terrain.City2;
 import freerails.model.train.Engine;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
+import java.lang.reflect.Type;
+import java.util.*;
 
 public class GsonManager {
 
@@ -27,16 +26,50 @@ public class GsonManager {
         gson = builder.create();
     }
 
+    private static final Type enginesListType = new TypeToken<List<Engine>>(){}.getType();
+    private static final Type citiesListType = new TypeToken<List<City2>>(){}.getType();
+
     private GsonManager() {}
 
-    public static Map<Integer, Engine> loadEngines(URL url) throws IOException{
+    public static SortedSet<Engine> loadEngines(File file) throws IOException {
+        return load(file, enginesListType);
+    }
+
+    public static SortedSet<City2> loadCities(File file) throws IOException {
+        return load(file, citiesListType);
+    }
+
+    private static <T extends Identifiable> SortedSet<T> load(File file, Type type) throws IOException {
         // load json
-        String json = IOUtils.toString(url, ClientConstants.defaultCharset);
+        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
 
         // deserialize json
-        List<Engine> engineList = gson.fromJson(json, new TypeToken<List<Engine>>(){}.getType());
+        List<T> list = gson.fromJson(json, type);
 
-        return toMap(engineList);
+        // check for uniqueness
+        verifyUniqueIds(list);
+
+        return new TreeSet<>(list);
+    }
+
+    public static <E extends Identifiable> void verifyUniqueIds(Collection<E> c) {
+        Map<Integer, Object> map = new HashMap<>(c.size());
+        for (E e: c) {
+            Integer id = e.getId();
+            if (map.containsKey(id)) {
+                throw new IllegalArgumentException(String.format("Contains non-unique Ids (id = %d).", id));
+            } else {
+                map.put(id, null);
+            }
+        }
+    }
+
+    public static void save(File file, Object object) throws IOException {
+        // serialize to json
+        String json = gson.toJson(object);
+
+        // write json
+        FileUtils.writeStringToFile(file, json, ModelConstants.defaultCharset);
     }
 
     public static <E extends Identifiable> Map<Integer, E> toMap(List<E> list) {

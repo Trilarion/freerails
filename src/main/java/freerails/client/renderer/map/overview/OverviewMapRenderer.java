@@ -35,7 +35,7 @@ package freerails.client.renderer.map.overview;
 
 import freerails.client.renderer.map.MapRenderer;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainType;
@@ -53,14 +53,14 @@ public class OverviewMapRenderer implements MapRenderer {
     private final Vec2D imageSize;
     private final Vec2D mapSize;
     private final Vec2D mapLocation;
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final AffineTransform affineTransform;
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage oneToOneImage;
     private BufferedImage mapImage;
     private boolean isDirty = true;
 
-    private OverviewMapRenderer(ReadOnlyWorld world, Vec2D imageSize, Vec2D mapLocation, Vec2D mapSize) {
+    private OverviewMapRenderer(UnmodifiableWorld world, Vec2D imageSize, Vec2D mapLocation, Vec2D mapSize) {
         this.world = world;
         this.mapSize = mapSize;
         this.imageSize = imageSize;
@@ -76,7 +76,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @param maxSize
      * @return
      */
-    public static MapRenderer getInstance(ReadOnlyWorld world, Dimension maxSize) {
+    public static MapRenderer getInstance(UnmodifiableWorld world, Dimension maxSize) {
         // Work with doubles to avoid rounding errors.
         Vec2D mapSize = world.getMapSize();
         double worldWidth = mapSize.x;

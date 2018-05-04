@@ -28,7 +28,7 @@ import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
@@ -47,7 +47,7 @@ import java.io.Serializable;
 public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3977018444325664049L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private FreerailsPrincipal principal;
     private int trainNumber = -1;
     private Serializable lastTrain, lastCargoBundle;

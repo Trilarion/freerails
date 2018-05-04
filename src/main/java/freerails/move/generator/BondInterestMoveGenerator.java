@@ -21,7 +21,7 @@ package freerails.move.generator;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
 import freerails.model.finances.*;
 import freerails.model.player.FreerailsPrincipal;
@@ -44,7 +44,7 @@ public class BondInterestMoveGenerator {
     /**
      * @param world
      */
-    public void update(ReadOnlyWorld world) {
+    public void update(UnmodifiableWorld world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
             long interestDue = 0;

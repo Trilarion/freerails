@@ -28,7 +28,7 @@ import freerails.client.ModelRoot;
 import freerails.move.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackConfiguration;
@@ -84,7 +84,7 @@ public class StationBuildModel {
         this.stationBuilder = stationBuilder;
         this.modelRoot = modelRoot;
 
-        ReadOnlyWorld world = this.modelRoot.getWorld();
+        UnmodifiableWorld world = this.modelRoot.getWorld();
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             final TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
 

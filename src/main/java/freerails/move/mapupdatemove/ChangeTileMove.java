@@ -23,7 +23,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
@@ -49,7 +49,7 @@ public class ChangeTileMove implements MapUpdateMove {
      * @param location
      * @param terrainTypeAfter
      */
-    public ChangeTileMove(ReadOnlyWorld world, Vec2D location, int terrainTypeAfter) {
+    public ChangeTileMove(UnmodifiableWorld world, Vec2D location, int terrainTypeAfter) {
         this.location = location;
         before = (FullTerrainTile) world.getTile(this.location);
         after = FullTerrainTile.getInstance(terrainTypeAfter, before.getTrackPiece());

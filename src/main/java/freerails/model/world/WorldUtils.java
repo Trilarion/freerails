@@ -17,7 +17,7 @@ public class WorldUtils {
      * @param principal
      * @return
      */
-    public static int getPlayerIndex(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public static int getPlayerIndex(UnmodifiableWorld world, FreerailsPrincipal principal) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             if (world.getPlayer(i).getPrincipal().equals(principal)) {
                 return i;

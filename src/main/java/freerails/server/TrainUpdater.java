@@ -29,7 +29,7 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -70,7 +70,7 @@ public class TrainUpdater implements Serializable {
      * @param principal
      * @param world
      */
-    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, FreerailsPrincipal principal, ReadOnlyWorld world) {
+    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, FreerailsPrincipal principal, UnmodifiableWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -100,7 +100,7 @@ public class TrainUpdater implements Serializable {
      * Iterator over the stations and build trains at any that have their
      * production field set.
      */
-    public void buildTrains(ReadOnlyWorld world) {
+    public void buildTrains(UnmodifiableWorld world) {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
             FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
 
@@ -125,7 +125,7 @@ public class TrainUpdater implements Serializable {
         }
     }
 
-    public void moveTrains(ReadOnlyWorld world) {
+    public void moveTrains(UnmodifiableWorld world) {
         int time = world.currentTime().getTicks();
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {

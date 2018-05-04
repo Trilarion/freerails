@@ -20,7 +20,7 @@ package freerails.client.renderer;
 
 import freerails.client.renderer.tile.TileRendererList;
 import freerails.client.renderer.track.TrackPieceRenderer;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public interface RendererRoot extends TileRendererList {
      */
     TrainImages getEngineImages(int type);
 
-    boolean validate(ReadOnlyWorld world);
+    boolean validate(UnmodifiableWorld world);
 
     /**
      * @param relativeFilename

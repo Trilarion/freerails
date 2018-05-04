@@ -18,6 +18,7 @@
 
 package freerails.model.world;
 
+import freerails.model.Identifiable;
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
@@ -54,7 +55,7 @@ import java.util.*;
  * Code that loops through lists should handle null values gracefully
  *
  */
-public class World implements ReadOnlyWorld {
+public class World implements UnmodifiableWorld {
 
     private static final long serialVersionUID = 3544393612684505393L;
     public Map<FreerailsPrincipal, Map<Integer, List<ActivityAndTime>>> activities = new HashMap<>();
@@ -71,21 +72,21 @@ public class World implements ReadOnlyWorld {
     public Map<SharedKey, List<Serializable>> sharedKeyLists = new HashMap<>();
     public GameTime time = new GameTime(0);
 
-    private final Map<Integer, Engine> engines;
-    private final Map<Integer, City2> cities;
+    private final SortedSet<Engine> engines;
+    private final SortedSet<City2> cities;
 
     public static class Builder {
 
-        private Map<Integer, Engine> engines = new HashMap<>();
-        private Map<Integer, City2> cities = new HashMap<>();
+        private SortedSet<Engine> engines = new TreeSet<>();
+        private SortedSet<City2> cities = new TreeSet<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
-        public Builder setEngines(Map<Integer, Engine> engines) {
+        public Builder setEngines(SortedSet<Engine> engines) {
             this.engines = engines;
             return this;
         }
 
-        public Builder setCities(Map<Integer, City2> cities) {
+        public Builder setCities(SortedSet<City2> cities) {
             this.cities = cities;
             return this;
         }
@@ -118,26 +119,29 @@ public class World implements ReadOnlyWorld {
 
     // TODO unmodifiable collection?
     public Collection<Engine> getEngines() {
-        return engines.values();
+        return engines;
     }
 
     public Engine getEngine(int id) {
         return get(id, engines);
     }
 
+    // TODO unmodifiable collection
     public Collection<City2> getCities() {
-        return cities.values();
+        return cities;
     }
 
     public City2 getCity(int id) {
         return get(id, cities);
     }
 
-    private <T> T get(final int id, @NotNull final Map<Integer, T> map) {
-        if (!map.containsKey(id)) {
-            throw new IllegalArgumentException("Id not a key of the map.");
+    private <E extends Identifiable> E get(final int id, @NotNull final Collection<E> c) {
+        for (E e: c) {
+            if (e.getId() == id) {
+                return e;
+            }
         }
-        return map.get(id);
+        throw new IllegalArgumentException(String.format("Element with Id=%d not existing in collection.", id));
     }
 
     /**

@@ -23,7 +23,7 @@
 
 package freerails.model.track;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.terrain.TerrainType;
 
@@ -49,7 +49,7 @@ public class BuildTrackStrategy {
      * @param world
      * @return
      */
-    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, ReadOnlyWorld world) {
+    public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, UnmodifiableWorld world) {
         int numberTerrainTypes = world.size(SharedKey.TerrainTypes);
         int[] rules = new int[numberTerrainTypes];
         for (int i = 0; i < numberTerrainTypes; i++) {
@@ -64,7 +64,7 @@ public class BuildTrackStrategy {
      * @param world
      * @return
      */
-    public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, ReadOnlyWorld world) {
+    public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, UnmodifiableWorld world) {
         int[] rules = generateRules(ruleIDs, world);
         return new BuildTrackStrategy(rules);
     }
@@ -73,7 +73,7 @@ public class BuildTrackStrategy {
      * @param world
      * @return
      */
-    public static BuildTrackStrategy getDefault(ReadOnlyWorld world) {
+    public static BuildTrackStrategy getDefault(UnmodifiableWorld world) {
         Collection<Integer> allowable = new ArrayList<>();
         allowable.add(getCheapest(TrackCategory.track, world));
         allowable.add(getCheapest(TrackCategory.bridge, world));
@@ -81,7 +81,7 @@ public class BuildTrackStrategy {
         return new BuildTrackStrategy(generateRules(allowable, world));
     }
 
-    private static Integer getCheapest(TrackCategory category, ReadOnlyWorld world) {
+    private static Integer getCheapest(TrackCategory category, UnmodifiableWorld world) {
         TrackRule cheapest = null;
         Integer cheapestID = null;
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
@@ -96,7 +96,7 @@ public class BuildTrackStrategy {
         return cheapestID;
     }
 
-    private static int[] generateRules(Iterable<Integer> allowable, ReadOnlyWorld world) {
+    private static int[] generateRules(Iterable<Integer> allowable, UnmodifiableWorld world) {
         int noTerrainTypes = world.size(SharedKey.TerrainTypes);
         int[] newRules = new int[noTerrainTypes];
         for (int i = 0; i < noTerrainTypes; i++) {

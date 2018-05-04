@@ -21,7 +21,6 @@
  */
 package freerails.move.generator;
 
-import freerails.model.Identifiable;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
@@ -29,7 +28,7 @@ import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
@@ -95,7 +94,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    private PathOnTiles initPositionStep1(ReadOnlyWorld world) {
+    private PathOnTiles initPositionStep1(UnmodifiableWorld world) {
         PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(world, point);
         FlatTrackExplorer fte;
         try {
@@ -138,7 +137,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * <li>Init. the trains position and motion</li>
      * </ol>
      */
-    public Move generate(ReadOnlyWorld world) {
+    public Move generate(UnmodifiableWorld world) {
         // Add cargo bundle.
         int bundleId = world.size(principal, PlayerKey.CargoBundles);
         ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;

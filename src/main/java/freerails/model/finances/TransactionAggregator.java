@@ -20,7 +20,7 @@ package freerails.model.finances;
 
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 /**
  * Adds up the value of transactions. Implements GoF Template Method pattern.
@@ -30,7 +30,7 @@ import freerails.model.world.ReadOnlyWorld;
  */
 public abstract class TransactionAggregator {
 
-    protected final ReadOnlyWorld world;
+    protected final UnmodifiableWorld world;
     protected final FreerailsPrincipal principal;
     private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
     public Money[] monetaryTotals;
@@ -41,7 +41,7 @@ public abstract class TransactionAggregator {
      * @param world
      * @param principal
      */
-    public TransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public TransactionAggregator(UnmodifiableWorld world, FreerailsPrincipal principal) {
         this.world = world;
         this.principal = principal;
     }

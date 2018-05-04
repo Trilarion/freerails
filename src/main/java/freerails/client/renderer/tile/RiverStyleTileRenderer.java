@@ -24,7 +24,7 @@ package freerails.client.renderer.tile;
 import freerails.util.BinaryNumberFormatter;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainType;
 
 import java.io.IOException;
@@ -57,7 +57,7 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
      * TODO optimize cache
      */
     @Override
-    public int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
         int iconNumber = 0;
 
         for (int i = 0; i < 4; i++) {

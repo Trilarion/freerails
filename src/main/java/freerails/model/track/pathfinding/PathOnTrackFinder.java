@@ -24,7 +24,7 @@ package freerails.model.track.pathfinding;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.NoTrackException;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.PositionOnTrack;
@@ -41,13 +41,13 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(PathOnTrackFinder.class.getName());
 
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private Vec2D startPoint;
 
     /**
      * @param world
      */
-    public PathOnTrackFinder(ReadOnlyWorld world) {
+    public PathOnTrackFinder(UnmodifiableWorld world) {
         this.world = world;
     }
 

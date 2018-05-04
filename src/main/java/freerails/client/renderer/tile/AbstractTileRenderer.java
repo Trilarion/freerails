@@ -24,7 +24,7 @@ package freerails.client.renderer.tile;
 
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainType;
 
@@ -53,7 +53,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param mapLocation
      * @param world
      */
-    public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, ReadOnlyWorld world) {
+    public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world) {
         Image icon = getIcon(mapLocation, world);
 
         if (null != icon) {
@@ -77,7 +77,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      *
      * In the standard implementation it doesn't though.
      */
-    public Image getIcon(Vec2D mapLocation, ReadOnlyWorld world) {
+    public Image getIcon(Vec2D mapLocation, UnmodifiableWorld world) {
         int index = selectTileIconIndex(mapLocation, world);
 
         // TODO here we can assume that all icons in the array are not null, however, make sure of that before
@@ -91,10 +91,10 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param world
      * @return
      */
-    public abstract int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world);
+    public abstract int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world);
 
     // TODO remove world !
-    public int checkTile(Vec2D location, ReadOnlyWorld world) {
+    public int checkTile(Vec2D location, UnmodifiableWorld world) {
         int match = 0;
 
         // TODO vector2D arithmetic

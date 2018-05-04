@@ -22,7 +22,7 @@
 package freerails.model.finances;
 
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
@@ -42,7 +42,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      * @param world
      * @param principal
      */
-    public FinancialDataGatherer(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public FinancialDataGatherer(UnmodifiableWorld world, FreerailsPrincipal principal) {
         super(world, principal);
         stockInRRs = new int[world.getNumberOfPlayers()];
         calculateValues();

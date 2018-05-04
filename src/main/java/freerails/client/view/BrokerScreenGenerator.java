@@ -28,7 +28,7 @@ import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
 import freerails.model.world.WorldItem;
 import freerails.model.finances.ItemsTransactionAggregator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameCalendar;
@@ -48,7 +48,7 @@ class BrokerScreenGenerator {
     /**
      * Creates a new instance of BrokerScreenGenerator
      */
-    public BrokerScreenGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public BrokerScreenGenerator(UnmodifiableWorld world, FreerailsPrincipal principal) {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, principal);
 
         int playerId = world.getID(principal);

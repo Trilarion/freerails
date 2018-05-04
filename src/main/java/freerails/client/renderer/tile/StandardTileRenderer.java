@@ -23,7 +23,7 @@ package freerails.client.renderer.tile;
 
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainType;
 
 import java.io.File;
@@ -50,7 +50,7 @@ public class StandardTileRenderer extends AbstractTileRenderer {
     }
 
     @Override
-    public int selectTileIconIndex(Vec2D mapLocation, ReadOnlyWorld world) {
+    public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
         return 0;
     }
 

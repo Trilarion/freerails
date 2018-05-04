@@ -72,7 +72,7 @@ public class DialogueBoxController implements WorldListListener {
     private final StationInfoPanel stationInfo;
     private final TrainDialoguePanel trainDialoguePanel;
     private final JFrame frame;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private ModelRootImpl modelRoot;
     private RendererRoot vl;
     private Component defaultFocusOwner = null;

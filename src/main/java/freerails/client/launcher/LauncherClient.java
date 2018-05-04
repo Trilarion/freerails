@@ -31,7 +31,7 @@ import freerails.network.command.ClientProperty;
 import freerails.util.Vec2D;
 import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
@@ -87,7 +87,7 @@ public class LauncherClient extends FreerailsClient {
         long currentTime = System.currentTimeMillis();
         long lastTick = getLastTickTime();
         double dt = currentTime - lastTick;
-        ReadOnlyWorld world2 = modelRoot.getWorld();
+        UnmodifiableWorld world2 = modelRoot.getWorld();
         if (world2 != null) {
             GameSpeed gameSpeed = (GameSpeed) world2.get(WorldItem.GameSpeed);
             GameTime currentGameTime = world2.currentTime();

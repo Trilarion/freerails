@@ -34,7 +34,7 @@ import freerails.model.track.BuildTrackStrategy;
 import freerails.client.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackCategory;
@@ -276,7 +276,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         tunnelsJPanel.removeAll();
 
         // Add the new set of buttons.
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
 
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             JToggleButton toggleButton = new JToggleButton();

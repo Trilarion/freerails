@@ -28,7 +28,7 @@ import freerails.client.ModelRootProperty;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.command.CommandToServer;
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameSpeed;
 
 import javax.swing.*;
@@ -125,7 +125,7 @@ public class ServerControlModel implements ModelRootListener {
      * @return
      */
     private int getTargetTicksPerSecond() {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         return ((GameSpeed) world.get(WorldItem.GameSpeed)).getSpeed();
     }
 

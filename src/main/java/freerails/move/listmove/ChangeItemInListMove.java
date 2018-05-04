@@ -24,7 +24,7 @@ package freerails.move.listmove;
 import freerails.move.MoveStatus;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -149,7 +149,7 @@ public class ChangeItemInListMove implements ListMove {
      * @param world
      * @return
      */
-    private MoveStatus tryMove(Serializable to, Serializable from, ReadOnlyWorld world) {
+    private MoveStatus tryMove(Serializable to, Serializable from, UnmodifiableWorld world) {
         if (index >= world.size(principal, listPlayerKey)) {
             return MoveStatus.moveFailed("world.size(listKey) is " + world.size(principal, listPlayerKey) + " but index is " + index);
         }

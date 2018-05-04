@@ -19,10 +19,9 @@
 package freerails.model.track;
 
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.track.TrackSection;
 import freerails.model.train.TrainAccessor;
 
 import java.util.*;
@@ -39,7 +38,7 @@ public class OccupiedTracks {
      * @param principal
      * @param world
      */
-    public OccupiedTracks(FreerailsPrincipal principal, ReadOnlyWorld world) {
+    public OccupiedTracks(FreerailsPrincipal principal, UnmodifiableWorld world) {
 
         occupiedTrackSections = new HashMap<>();
         trainToTrackList = new HashMap<>();

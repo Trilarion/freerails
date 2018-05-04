@@ -18,7 +18,7 @@
 
 package freerails.move;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.finances.BondItemTransaction;
 import freerails.model.finances.Money;
@@ -45,7 +45,7 @@ public class AddPlayerMove implements Move {
      * @param player
      * @return
      */
-    public static AddPlayerMove generateMove(ReadOnlyWorld world, Player player) {
+    public static AddPlayerMove generateMove(UnmodifiableWorld world, Player player) {
         // create a new player with a corresponding Principal
         Player player2add = new Player(player.getName(), world.getNumberOfPlayers());
 
@@ -108,7 +108,7 @@ public class AddPlayerMove implements Move {
         return moveStatus;
     }
 
-    private boolean isAlreadyASimilarPlayer(ReadOnlyWorld world) {
+    private boolean isAlreadyASimilarPlayer(UnmodifiableWorld world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
             Player pp = world.getPlayer(i);
             if (pp.getName().equalsIgnoreCase(playerToAdd.getName())) {

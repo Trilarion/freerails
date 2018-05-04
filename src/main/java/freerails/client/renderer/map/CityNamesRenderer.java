@@ -23,12 +23,11 @@
  */
 package freerails.client.renderer.map;
 
+import freerails.model.terrain.City2;
 import freerails.util.ui.Painter;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
-import freerails.model.world.SharedKey;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
-import freerails.model.terrain.City;
 
 import java.awt.*;
 
@@ -37,12 +36,12 @@ import java.awt.*;
  */
 public class CityNamesRenderer implements Painter {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
 
     /**
      * @param world
      */
-    public CityNamesRenderer(ReadOnlyWorld world) {
+    public CityNamesRenderer(UnmodifiableWorld world) {
         this.world = world;
     }
 
@@ -55,8 +54,7 @@ public class CityNamesRenderer implements Painter {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
 
         // draw city names onto map
-        for (int i = 0; i < world.size(SharedKey.Cities); i++) {
-            City city = (City) world.get(SharedKey.Cities, i);
+        for (City2 city: world.getCities()) {
             Vec2D location = city.getLocation();
             final int xpos = location.x * ModelConstants.TILE_SIZE;
             final int ypos = location.y * ModelConstants.TILE_SIZE + 10;

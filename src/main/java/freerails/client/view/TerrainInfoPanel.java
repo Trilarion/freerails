@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.model.ModelConstants;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainType;
@@ -43,7 +43,7 @@ class TerrainInfoPanel extends JPanel {
 
     private static final long serialVersionUID = 3258131375164045363L;
     private RendererRoot rendererRoot;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private JLabel terrainDescription;
     private JLabel terrainImage;
     private JLabel terrainName;
@@ -86,7 +86,7 @@ class TerrainInfoPanel extends JPanel {
         add(terrainDescription, gridBagConstraints);
     }
 
-    public void setup(ReadOnlyWorld world, RendererRoot vl) {
+    public void setup(UnmodifiableWorld world, RendererRoot vl) {
         this.world = world;
         rendererRoot = vl;
     }

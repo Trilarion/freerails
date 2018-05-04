@@ -76,7 +76,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     private JMenuItem stationInfoJMenuItem;
     private JMenuItem trainListJMenuItem;
     private JMenuItem trainOrdersJMenuItem;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private BuildTrackController buildTrackController;
     /**
      * @param modelRoot
@@ -431,7 +431,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * method to avoid memory leaks - see bug 967677 (OutOfMemoryError after
      * starting several new games).</b>
      */
-    public void setup(RendererRoot rendererRoot, ReadOnlyWorld world) throws IOException {
+    public void setup(RendererRoot rendererRoot, UnmodifiableWorld world) throws IOException {
         /*
          * Set the cursor position. The initial cursor position is 0,0. However,
          * if a game is loaded or a new game is started and the map size is the

@@ -31,7 +31,7 @@ import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
 import freerails.model.finances.BondItemTransaction;
 import freerails.model.finances.Money;
@@ -107,7 +107,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private void setupStockMenu() {
         stocks.removeAll();
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         int thisPlayerId = world.getID(modelRoot.getPrincipal());
         int numberOfPlayers = world.getNumberOfPlayers();
         buyStock = new Action[numberOfPlayers];
@@ -154,7 +154,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     }
 
     private void enableAndDisableActions() {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         FreerailsPrincipal principal = modelRoot.getPrincipal();
 
         FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, principal);
@@ -199,7 +199,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     }
 
     private void updateHtml() {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         FreerailsPrincipal principal = modelRoot.getPrincipal();
 
         BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, principal);
@@ -227,7 +227,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     @Override
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
         int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 

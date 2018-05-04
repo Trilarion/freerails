@@ -31,7 +31,7 @@ import freerails.move.listmove.AddStationMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -94,7 +94,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
      * @param world
      * @return
      */
-    public Move generate(ReadOnlyWorld world) {
+    public Move generate(UnmodifiableWorld world) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
 
         FullTerrainTile oldTile = (FullTerrainTile) world.getTile(location);
@@ -140,7 +140,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
         return move;
     }
 
-    private CompositeMove addSupplyAndDemand(CompositeMove compositeMove, ReadOnlyWorld world) {
+    private CompositeMove addSupplyAndDemand(CompositeMove compositeMove, UnmodifiableWorld world) {
         List<Move> moves2 = compositeMove.getMoves();
         Move[] moves = new Move[moves2.size()];
         for (int i = 0; i < moves2.size(); i++) {

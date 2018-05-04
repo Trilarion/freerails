@@ -18,7 +18,7 @@
 
 package freerails.client.renderer.tile;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 // TODO what is this good for?
 /**
@@ -37,5 +37,5 @@ public interface TileRendererList {
      * Checks whether this tile view list has tile views for all the terrain
      * types in the specified list.
      */
-    boolean validate(ReadOnlyWorld world);
+    boolean validate(UnmodifiableWorld world);
 }

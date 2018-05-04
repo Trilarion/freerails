@@ -27,7 +27,7 @@ import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -58,7 +58,7 @@ public class TrackMoveProducer {
      * @param world
      * @param modelRoot
      */
-    public TrackMoveProducer(MoveExecutor executor, ReadOnlyWorld world, ModelRoot modelRoot) {
+    public TrackMoveProducer(MoveExecutor executor, UnmodifiableWorld world, ModelRoot modelRoot) {
         this.executor = executor;
         this.modelRoot = Utils.verifyNotNull(modelRoot);
         FreerailsPrincipal principal = executor.getPrincipal();
@@ -74,7 +74,7 @@ public class TrackMoveProducer {
         executor = modelRoot;
         this.modelRoot = modelRoot;
 
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
 
         FreerailsPrincipal principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
@@ -109,7 +109,7 @@ public class TrackMoveProducer {
      */
     public MoveStatus buildTrack(Vec2D from, TileTransition trackVector) {
 
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
         FreerailsPrincipal principal = executor.getPrincipal();
         switch (getBuildMode()) {
             case IGNORE_TRACK: {
@@ -190,7 +190,7 @@ public class TrackMoveProducer {
     }
 
     private MoveStatus upgradeTrack(Vec2D point, int trackRuleID) {
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
         TrackPiece before = ((FullTerrainTile) world.getTile(point)).getTrackPiece();
         // Check whether there is track here.
         if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
@@ -219,7 +219,7 @@ public class TrackMoveProducer {
      * the stack at a time other than the current time.
      */
     private void clearStackIfStale() {
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
         GameTime currentTime = world.currentTime();
 
         if (!currentTime.equals(lastMoveTime)) {
@@ -254,7 +254,7 @@ public class TrackMoveProducer {
     }
 
     private boolean isStationHere(Vec2D p) {
-        ReadOnlyWorld world = executor.getWorld();
+        UnmodifiableWorld world = executor.getWorld();
         FullTerrainTile tile = (FullTerrainTile) world.getTile(p);
         return tile.getTrackPiece().getTrackRule().isStation();
     }

@@ -24,7 +24,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.DialogueBoxController;
 import freerails.move.StationBuilder;
 import freerails.controller.TrackMoveProducer;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 
 import javax.swing.*;
@@ -97,7 +97,7 @@ public class ActionRoot {
     public void setup(ModelRootImpl modelRoot, RendererRoot rendererRoot) {
         serverControls.setup(modelRoot, dialogueBoxController);
 
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
 
         if (world.size(SharedKey.TrackRules) > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);

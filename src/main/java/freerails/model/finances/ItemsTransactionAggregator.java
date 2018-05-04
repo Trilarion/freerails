@@ -19,7 +19,7 @@
 package freerails.model.finances;
 
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 /**
  * Adds up the number of assets.
@@ -36,7 +36,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      * @param world
      * @param principal
      */
-    public ItemsTransactionAggregator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public ItemsTransactionAggregator(UnmodifiableWorld world, FreerailsPrincipal principal) {
         super(world, principal);
     }
 

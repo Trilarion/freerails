@@ -22,7 +22,7 @@
 package freerails.move.generator;
 
 import freerails.move.Move;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 import java.io.Serializable;
 
@@ -37,5 +37,5 @@ public interface MoveGenerator extends Serializable {
      * @param world
      * @return
      */
-    Move generate(ReadOnlyWorld world);
+    Move generate(UnmodifiableWorld world);
 }

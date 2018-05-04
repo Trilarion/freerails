@@ -28,7 +28,7 @@ import freerails.util.ui.Painter;
 import freerails.client.renderer.*;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
 import org.apache.log4j.Logger;
 
@@ -66,7 +66,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param rendererRoot
      * @param modelRoot
      */
-    public MapBackgroundRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+    public MapBackgroundRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         trackLayer = new TrackLayerRenderer(world, rendererRoot);
         terrainLayer = new TerrainLayerRenderer(world, rendererRoot);
         Vec2D mapSize = world.getMapSize();

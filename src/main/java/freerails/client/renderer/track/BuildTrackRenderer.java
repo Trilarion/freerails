@@ -24,7 +24,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.TrackPiece;
 
@@ -69,7 +69,7 @@ public class BuildTrackRenderer implements Painter {
                 trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConstants.TILE_SIZE);
             }
 
-            ReadOnlyWorld realWorld = modelRoot.getWorld();
+            UnmodifiableWorld realWorld = modelRoot.getWorld();
             /*
              * Draw small dots for each tile whose track has changed. The dots
              * are white if track has been added or upgraded and red if it has

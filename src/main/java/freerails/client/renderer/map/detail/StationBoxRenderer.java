@@ -40,7 +40,7 @@ import java.io.IOException;
  */
 public class StationBoxRenderer implements Painter {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private static final Color BACKGROUND_COLOR = new Color(0, 0, 200, 60);
     private final int wagonImageWidth;
     private final ModelRoot modelRoot;
@@ -51,7 +51,7 @@ public class StationBoxRenderer implements Painter {
      * @param rendererRoot
      * @param modelRoot
      */
-    public StationBoxRenderer(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+    public StationBoxRenderer(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.world = world;
         this.modelRoot = modelRoot;
 

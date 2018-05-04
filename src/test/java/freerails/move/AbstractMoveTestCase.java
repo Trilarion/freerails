@@ -37,10 +37,11 @@ import freerails.model.train.PathOnTiles;
 import freerails.model.world.World;
 import junit.framework.TestCase;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Map;
 import java.util.SortedSet;
 
 /**
@@ -282,13 +283,19 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void setupWorld() {
         URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        Map<Integer, Engine> engines;
+        File file = null;
         try {
-            engines = GsonManager.loadEngines(url);
+            file = new File(url.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        SortedSet<Engine> engines;
+        try {
+            engines = GsonManager.loadEngines(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        validEngineId = engines.values().iterator().next().getId(); // more or less gets a valid id of an engine
+        validEngineId = engines.iterator().next().getId(); // more or less gets a valid id of an engine
         this.world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(10, 10)).build();
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));

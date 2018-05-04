@@ -24,7 +24,7 @@ import freerails.util.Utils;
 import freerails.model.world.WorldItem;
 import freerails.model.world.PlayerKey;
 import freerails.model.finances.Money;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoType;
@@ -102,7 +102,7 @@ public class UserMessageGenerator implements MoveReceiver {
             }
         }
         if (!cargoDelivered.isEmpty()) {
-            ReadOnlyWorld world = modelRoot.getWorld();
+            UnmodifiableWorld world = modelRoot.getWorld();
 
             StringBuilder message = new StringBuilder();
             CargoDeliveryMoneyTransaction first = cargoDelivered.get(0);
@@ -146,7 +146,7 @@ public class UserMessageGenerator implements MoveReceiver {
      *
      */
     public void logSpeed() {
-        ReadOnlyWorld world = modelRoot.getWorld();
+        UnmodifiableWorld world = modelRoot.getWorld();
         GameSpeed speed = ((GameSpeed) world.get(WorldItem.GameSpeed));
         int gameSpeed = speed.getSpeed();
 

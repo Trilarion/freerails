@@ -23,7 +23,7 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class StandardTileRendererList implements TileRendererList {
         return tileRenderer.get(index);
     }
 
-    public boolean validate(ReadOnlyWorld world) {
+    public boolean validate(UnmodifiableWorld world) {
         // There should a TileRenderer for each terrain type.
         return world.size(SharedKey.TerrainTypes) == tileRenderer.size();
     }

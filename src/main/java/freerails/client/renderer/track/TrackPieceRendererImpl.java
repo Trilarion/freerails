@@ -21,7 +21,7 @@ package freerails.client.renderer.track;
 import freerails.util.BinaryNumberFormatter;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackRule;
@@ -43,7 +43,7 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      * @param typeNumber
      * @throws IOException
      */
-    public TrackPieceRendererImpl(ReadOnlyWorld world, ImageManager imageManager, int typeNumber) throws IOException {
+    public TrackPieceRendererImpl(UnmodifiableWorld world, ImageManager imageManager, int typeNumber) throws IOException {
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, typeNumber);
         String typeName = trackRule.getTypeName();
 

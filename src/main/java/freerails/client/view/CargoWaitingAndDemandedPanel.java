@@ -27,7 +27,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.CargoType;
@@ -51,7 +51,7 @@ import java.util.List;
 public class CargoWaitingAndDemandedPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3760559784860071476L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private FreerailsPrincipal principal;
     private JList demandsJList;
     private JLabel stationName;

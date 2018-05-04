@@ -2,6 +2,8 @@ package freerails.model;
 
 import freerails.model.finances.Money;
 
+import java.nio.charset.Charset;
+
 /**
  *
  */
@@ -22,6 +24,7 @@ public final class ModelConstants {
     public static final int MAX_TRAIN_LENGTH = (1 + MAX_NUMBER_OF_WAGONS) * WAGON_LENGTH;
     public static final int TRAIN_CRASH_FRAMES_COUNT = 15;
     public static final int UNITS_OF_CARGO_PER_WAGON = 40;
+    public static final Charset defaultCharset = Charset.forName("utf-8"); // used for reading/writing of json
     private static final int SHARE_BUNDLE_SIZE = 10000;
     public static final int IPO_SIZE = SHARE_BUNDLE_SIZE * 10;
     /**

@@ -31,7 +31,7 @@ import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -83,7 +83,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      *
      * @throws NoTrackException if no track
      */
-    public static TileTransition findNextStep(ReadOnlyWorld world, PositionOnTrack currentPosition, Vec2D target) {
+    public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, Vec2D target) {
         int startPos = PositionOnTrack.toInt(currentPosition.getLocation());
         int endPos = PositionOnTrack.toInt(target);
         HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
@@ -133,7 +133,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     /**
      * Returns true if an updated is due.
      */
-    public boolean isUpdateDue(ReadOnlyWorld world) {
+    public boolean isUpdateDue(UnmodifiableWorld world) {
         GameTime currentTime = world.currentTime();
         TrainAccessor ta = new TrainAccessor(world, principal, trainID);
         ActivityIterator ai = world.getActivities(principal, trainID);
@@ -169,7 +169,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return hasFinishedLastActivity;
     }
 
-    private Vec2D currentTrainTarget(ReadOnlyWorld world) {
+    private Vec2D currentTrainTarget(UnmodifiableWorld world) {
         TrainAccessor ta = new TrainAccessor(world, principal, trainID);
         return ta.getTargetLocation();
     }
@@ -191,7 +191,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * @param world
      * @return
      */
-    public Move generate(ReadOnlyWorld world) {
+    public Move generate(UnmodifiableWorld world) {
 
         // Check that we can generate a move.
         if (!isUpdateDue(world)) {
@@ -270,13 +270,13 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    private TrainMotion lastMotion(ReadOnlyWorld world) {
+    private TrainMotion lastMotion(UnmodifiableWorld world) {
         ActivityIterator ai = world.getActivities(principal, trainID);
         ai.gotoLastActivity();
         return (TrainMotion) ai.getActivity();
     }
 
-    private Move moveTrain(ReadOnlyWorld world, OccupiedTracks occupiedTracks) {
+    private Move moveTrain(UnmodifiableWorld world, OccupiedTracks occupiedTracks) {
         // Find the next vector.
         TileTransition nextVector = nextStep(world);
 
@@ -308,7 +308,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return new NextActivityMove(nextMotion, trainID, principal);
     }
 
-    private TrainMotion nextMotion(ReadOnlyWorld world, TileTransition tileTransition) {
+    private TrainMotion nextMotion(UnmodifiableWorld world, TileTransition tileTransition) {
         TrainMotion motion = lastMotion(world);
 
         Motion speeds = nextSpeeds(world, tileTransition);
@@ -318,7 +318,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
 
-    public Motion nextSpeeds(ReadOnlyWorld world, TileTransition tileTransition) {
+    public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
         TrainAccessor trainAccessor = new TrainAccessor(world, principal, trainID);
         TrainMotion lastMotion = lastMotion(world);
 
@@ -345,7 +345,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return newSpeeds;
     }
 
-    public TileTransition nextStep(ReadOnlyWorld world) {
+    public TileTransition nextStep(UnmodifiableWorld world) {
         // Find current position.
         TrainMotion currentMotion = lastMotion(world);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
@@ -358,7 +358,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * @param world
      * @return
      */
-    public Move stopTrain(ReadOnlyWorld world) {
+    public Move stopTrain(UnmodifiableWorld world) {
         TrainMotion motion = lastMotion(world);
         Motion stopped = ConstantAccelerationMotion.STOPPED;
         double duration = motion.duration();

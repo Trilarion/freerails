@@ -35,7 +35,7 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackSection;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.Schedule;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ import java.util.HashSet;
  */
 public class TrainAccessor {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final FreerailsPrincipal principal;
     private final int id;
 
@@ -55,7 +55,7 @@ public class TrainAccessor {
      * @param principal
      * @param id
      */
-    public TrainAccessor(final ReadOnlyWorld world, final FreerailsPrincipal principal, final int id) {
+    public TrainAccessor(final UnmodifiableWorld world, final FreerailsPrincipal principal, final int id) {
         this.world = world;
         this.principal = principal;
         this.id = id;
@@ -67,7 +67,7 @@ public class TrainAccessor {
      * @param consist
      * @return
      */
-    public static ImmutableList<Integer> spaceAvailable2(ReadOnlyWorld world, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
+    public static ImmutableList<Integer> spaceAvailable2(UnmodifiableWorld world, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = world.size(SharedKey.CargoTypes);

@@ -20,7 +20,7 @@ public class StaticListModel<E> implements ListModel<E> {
     }
 
     public StaticListModel(@NotNull Collection<? extends E> c) {
-        list = new ImmutableList<E>(c);
+        list = new ImmutableList<>(c);
     }
 
     @Override

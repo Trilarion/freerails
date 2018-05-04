@@ -19,7 +19,7 @@
 package freerails.model.station;
 
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.terrain.*;
@@ -42,7 +42,7 @@ public class CalculateCargoSupplyRateAtStation {
     private final Integer[] converts;
     private final int[] demand;
     private final List<CargoElementObject> supplies;
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final Vec2D location;
     private final int stationRadius;
 
@@ -51,7 +51,7 @@ public class CalculateCargoSupplyRateAtStation {
      *
      * @param trackRuleNo the station type.
      */
-    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vec2D location, int trackRuleNo) {
+    public CalculateCargoSupplyRateAtStation(UnmodifiableWorld world, Vec2D location, int trackRuleNo) {
         this.world = world;
         this.location = location;
 
@@ -69,12 +69,12 @@ public class CalculateCargoSupplyRateAtStation {
     /**
      * Call this constructor if the station already exists.
      */
-    public CalculateCargoSupplyRateAtStation(ReadOnlyWorld world, Vec2D location) {
+    public CalculateCargoSupplyRateAtStation(UnmodifiableWorld world, Vec2D location) {
         this(world, location, findTrackRule(location, world));
     }
 
     // TODO inline this but be careful because this and super must be on the first line
-    private static int findTrackRule(Vec2D location, ReadOnlyWorld world) {
+    private static int findTrackRule(Vec2D location, UnmodifiableWorld world) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
         return tile.getTrackPiece().getTrackTypeID();
     }

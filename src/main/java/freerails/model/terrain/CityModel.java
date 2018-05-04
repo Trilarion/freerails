@@ -19,7 +19,7 @@
 package freerails.model.terrain;
 
 import freerails.util.Vec2D;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 
@@ -81,7 +81,7 @@ public class CityModel {
         }
     }
 
-    public void loadFromMap(ReadOnlyWorld world, int cityID) {
+    public void loadFromMap(UnmodifiableWorld world, int cityID) {
         // Reset lists of tiles.
         urbanCityTiles.clear();
         industryCityTiles.clear();
@@ -104,7 +104,7 @@ public class CityModel {
         // Identify city's bounds.
         Vec2D mapSize = world.getMapSize();
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
-        City city = (City) world.get(SharedKey.Cities, cityID);
+        City2 city = world.getCity(cityID);
         Vec2D topleft = Vec2D.subtract(city.getLocation(), new Vec2D(-3,-3));
         Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);
         cityArea = cityArea.intersection(mapRect);

@@ -27,7 +27,7 @@ import freerails.client.renderer.tile.*;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.util.ui.ProgressMonitorModel;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainCategory;
@@ -60,7 +60,7 @@ public class RendererRootImpl implements RendererRoot {
      * @param progressMonitorModel
      * @throws IOException
      */
-    public RendererRootImpl(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
+    public RendererRootImpl(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
         tileRendererList = loadNewTileViewList(world, progressMonitorModel);
 
@@ -83,7 +83,7 @@ public class RendererRootImpl implements RendererRoot {
         }
     }
 
-    private void loadTrainImages(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
+    private void loadTrainImages(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         // Setup progress monitor..
         final int numberOfWagonTypes = world.size(SharedKey.CargoTypes);
         progressMonitorModel.nextStep(numberOfWagonTypes);
@@ -107,12 +107,12 @@ public class RendererRootImpl implements RendererRoot {
         }
     }
 
-    private TrackPieceRendererList loadTrackViews(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
+    private TrackPieceRendererList loadTrackViews(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         return new TrackPieceRendererList(world, imageManager, progressMonitorModel);
     }
 
     // TODO this tile renderer list must have a certain length and structure otherwise the scenario start will hang, fix this behavior and simplify
-    private TileRendererList loadNewTileViewList(ReadOnlyWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
+    private TileRendererList loadNewTileViewList(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
         // Setup progress monitor..
@@ -224,7 +224,7 @@ public class RendererRootImpl implements RendererRoot {
         return new StandardTileRendererList(tileRenderers);
     }
 
-    public boolean validate(ReadOnlyWorld world) {
+    public boolean validate(UnmodifiableWorld world) {
         return tileRendererList.validate(world) && trackPieceViewList.validate(world);
     }
 

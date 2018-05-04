@@ -29,7 +29,6 @@ import freerails.model.ModelConstants;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 /**

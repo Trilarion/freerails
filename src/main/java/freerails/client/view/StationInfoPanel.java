@@ -54,7 +54,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
     private static final Logger logger = Logger.getLogger(StationInfoPanel.class.getName());
     private static final long serialVersionUID = 4050759377680150585L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private ModelRoot modelRoot;
     private WorldIterator worldIterator;
 

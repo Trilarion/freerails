@@ -12,17 +12,13 @@ import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.util.Vec2D;
 import freerails.util.ui.ProgressMonitorModel;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import javax.swing.*;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -47,20 +43,23 @@ public class MapCreator {
      * @return
      * @throws IOException
      */
-    public static World newMap(String filePath) {
+    public static World newMap(String filePath) throws URISyntaxException, IOException {
         String mapName = filePath;
 
         mapName = mapName.toLowerCase();
         mapName = mapName.replace(' ', '_');
 
+        // load engines
         URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        Map<Integer, Engine> engines;
-        try {
-            engines = GsonManager.loadEngines(url);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        World.Builder builder = new World.Builder().setEngines(engines);
+        File file = new File(url.toURI());
+        SortedSet<Engine> engines = GsonManager.loadEngines(file);
+
+        // load cities
+        url = MapCreator.class.getResource("/freerails/data/scenario/" + mapName + "_cities.json");
+        file = new File(url.toURI());
+        SortedSet<City2> cities = GsonManager.loadCities(file);
+
+        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities);
         World world = builder.build();
 
         addTerrainTileTypesList(world);
@@ -165,24 +164,6 @@ public class MapCreator {
                 }
             }
         }
-
-        // Load the city names
-        URL cities_xml_url = MapCreator.class.getResource("/freerails/data/" + mapName + "_cities.xml");
-
-        try {
-            InputSource is = new InputSource(cities_xml_url.toString());
-
-            DefaultHandler handler = new CityXmlParser(world);
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-
-            try {
-                SAXParser saxParser = factory.newSAXParser();
-                saxParser.parse(is, handler);
-            } catch (IOException | ParserConfigurationException ignored) {}
-        } catch (SAXException ignored) {}
-
-        // XXX code to save the cities for each mapName
-        // URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
 
         // Randomly position the city tiles
         CityTilePositioner cityTilePositioner = new CityTilePositioner(world);

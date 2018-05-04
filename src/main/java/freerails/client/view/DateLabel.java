@@ -24,7 +24,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 
@@ -37,7 +37,7 @@ import java.awt.*;
 public class DateLabel extends JLabel implements View {
 
     private static final long serialVersionUID = 3689348840578757942L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
 
     /**
      *

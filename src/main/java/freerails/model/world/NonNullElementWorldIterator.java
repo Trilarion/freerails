@@ -37,7 +37,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
     private final PlayerKey playerKey;
     private final SharedKey sharedKey;
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final FreerailsPrincipal principal;
     private int index = BEFORE_FIRST;
     private int row = BEFORE_FIRST;
@@ -47,7 +47,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param k
      * @param world
      */
-    public NonNullElementWorldIterator(SharedKey k, ReadOnlyWorld world) {
+    public NonNullElementWorldIterator(SharedKey k, UnmodifiableWorld world) {
         playerKey = null;
         principal = null;
         sharedKey = Utils.verifyNotNull(k);
@@ -59,7 +59,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param world
      * @param principal
      */
-    public NonNullElementWorldIterator(PlayerKey k, ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public NonNullElementWorldIterator(PlayerKey k, UnmodifiableWorld world, FreerailsPrincipal principal) {
         playerKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
         this.principal = Utils.verifyNotNull(principal);
@@ -73,7 +73,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param row
      * @return
      */
-    public static int rowToIndex(ReadOnlyWorld world, PlayerKey playerKey, FreerailsPrincipal principal, int row) {
+    public static int rowToIndex(UnmodifiableWorld world, PlayerKey playerKey, FreerailsPrincipal principal, int row) {
         int count = 0;
         for (int i = 0; i < world.size(principal, playerKey); i++) {
 

@@ -21,7 +21,7 @@ package freerails.model.station;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TileTransition;
 
@@ -33,14 +33,14 @@ public class NearestStationFinder {
 
     public static final int NOT_FOUND = Integer.MIN_VALUE;
     public static final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final FreerailsPrincipal principal;
 
     /**
      * @param world
      * @param principal
      */
-    public NearestStationFinder(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public NearestStationFinder(UnmodifiableWorld world, FreerailsPrincipal principal) {
         this.world = world;
         this.principal = principal;
     }

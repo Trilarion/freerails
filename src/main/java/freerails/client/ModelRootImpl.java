@@ -30,7 +30,7 @@ import freerails.move.receiver.MoveReceiver;
 import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldListListener;
 import freerails.model.world.WorldMapListener;
 import freerails.model.player.FreerailsPrincipal;
@@ -50,7 +50,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private UntriedMoveReceiver moveReceiver;
     private FreerailsPrincipal playerPrincipal;
     private ServerCommandReceiver serverCommandReceiver;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
 
     /**
      *
@@ -151,7 +151,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @return
      */
-    public ReadOnlyWorld getWorld() {
+    public UnmodifiableWorld getWorld() {
         return world;
     }
 
@@ -204,7 +204,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model. Call this when the world model is changed (e.g. new map is loaded)
      */
-    public void setup(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public void setup(UnmodifiableWorld world, FreerailsPrincipal principal) {
         this.world = Utils.verifyNotNull(world);
         assert principal != null;
         assert world.isPlayer(principal);

@@ -29,7 +29,7 @@ import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.FullTerrainTile;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
 import java.awt.font.TextLayout;
@@ -43,7 +43,7 @@ public class StationNamesRenderer implements Painter {
 
     private static final float[] dash1 = {5.0f};
     private static final Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final ModelRoot modelRoot;
     private final int fontSize = 10;
     private final Color bgColor = Color.BLACK;
@@ -54,7 +54,7 @@ public class StationNamesRenderer implements Painter {
      * @param world
      * @param modelRoot
      */
-    public StationNamesRenderer(ReadOnlyWorld world, ModelRoot modelRoot) {
+    public StationNamesRenderer(UnmodifiableWorld world, ModelRoot modelRoot) {
         this.world = world;
         this.modelRoot = modelRoot;
     }

@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.finances.ItemTransaction;
@@ -52,7 +52,7 @@ public class TrackMoveTransactionsGenerator {
      * more to added a unit of track than is refunded when you removed it.
      */
     private final List<Transaction> transactions = new ArrayList<>();
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     /**
      * Number of each of the track types added.
      */
@@ -69,7 +69,7 @@ public class TrackMoveTransactionsGenerator {
      * @param principal the Principal on behalf of which this object generates
      *          transactions for
      */
-    public TrackMoveTransactionsGenerator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public TrackMoveTransactionsGenerator(UnmodifiableWorld world, FreerailsPrincipal principal) {
         this.world = world;
         this.principal = principal;
     }

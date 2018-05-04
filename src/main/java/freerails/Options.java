@@ -1,20 +1,14 @@
 package freerails;
 
 import com.google.gson.*;
-import freerails.client.ClientConstants;
+import freerails.model.ModelConstants;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Options that can be changed and are loaded on startup and stored on exit.
@@ -43,7 +37,7 @@ public final class Options {
     // public Port
     public static Integer PORT;
 
-    {
+    static {
         // set to default values once in the beginning
         reset();
     }
@@ -70,7 +64,7 @@ public final class Options {
         // read from file
         String json;
         try {
-            json = FileUtils.readFileToString(file, ClientConstants.defaultCharset);
+            json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -100,7 +94,7 @@ public final class Options {
 
         // write to file
         try {
-            FileUtils.writeStringToFile(file, json, ClientConstants.defaultCharset);
+            FileUtils.writeStringToFile(file, json, ModelConstants.defaultCharset);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

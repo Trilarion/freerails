@@ -22,7 +22,7 @@
 package freerails.model.finances;
 
 import freerails.model.world.WorldItem;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -36,12 +36,12 @@ import freerails.model.player.FreerailsPrincipal;
  */
 public class StockPriceCalculator {
 
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
 
     /**
      * @param world
      */
-    public StockPriceCalculator(ReadOnlyWorld world) {
+    public StockPriceCalculator(UnmodifiableWorld world) {
         this.world = world;
     }
 

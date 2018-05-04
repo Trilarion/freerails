@@ -18,7 +18,7 @@
 
 package freerails.model.finances;
 
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 
 /**
@@ -31,7 +31,7 @@ public class NetWorthCalculator extends TransactionAggregator {
      * @param world
      * @param principal
      */
-    public NetWorthCalculator(ReadOnlyWorld world, FreerailsPrincipal principal) {
+    public NetWorthCalculator(UnmodifiableWorld world, FreerailsPrincipal principal) {
         super(world, principal);
     }
 

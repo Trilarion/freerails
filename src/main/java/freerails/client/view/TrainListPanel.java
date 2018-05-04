@@ -28,7 +28,7 @@ import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
 
@@ -44,7 +44,7 @@ import java.awt.event.*;
 public class TrainListPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3832905463863064626L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private FreerailsPrincipal principal;
     private int lastNumberOfTrains = -1;
     private boolean rhsjTabPane = false; // if the train list is for the

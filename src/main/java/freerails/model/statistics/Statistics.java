@@ -3,7 +3,7 @@ package freerails.model.statistics;
 import freerails.model.ModelConstants;
 import freerails.model.finances.*;
 import freerails.model.track.TrackRule;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.world.SharedKey;
@@ -21,7 +21,7 @@ public class Statistics {
      * @param principal
      * @param totalTimeInterval
      */
-    public Statistics(ReadOnlyWorld world, FreerailsPrincipal principal, final GameTime[] totalTimeInterval) {
+    public Statistics(UnmodifiableWorld world, FreerailsPrincipal principal, final GameTime[] totalTimeInterval) {
         TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, principal, totalTimeInterval);
 
         Money operatingFunds = operatingFundsAggregator.calculateValue();
@@ -69,7 +69,7 @@ public class Statistics {
      * @param startTime
      * @return
      */
-    public static Money calculateTrackTotal(ReadOnlyWorld world, FreerailsPrincipal principal, GameTime startTime) {
+    public static Money calculateTrackTotal(UnmodifiableWorld world, FreerailsPrincipal principal, GameTime startTime) {
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);

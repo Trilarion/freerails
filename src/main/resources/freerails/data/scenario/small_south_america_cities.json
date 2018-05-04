@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Macapa",
+    "location": {
+      "x": 50,
+      "y": 23
+    },
+    "id": 0
+  },
+  {
+    "name": "Belem",
+    "location": {
+      "x": 63,
+      "y": 27
+    },
+    "id": 1
+  },
+  {
+    "name": "Sao Luis",
+    "location": {
+      "x": 80,
+      "y": 35
+    },
+    "id": 2
+  },
+  {
+    "name": "Cuiaba",
+    "location": {
+      "x": 12,
+      "y": 72
+    },
+    "id": 3
+  },
+  {
+    "name": "Miracema do Norte",
+    "location": {
+      "x": 50,
+      "y": 50
+    },
+    "id": 4
+  },
+  {
+    "name": "Manaus",
+    "location": {
+      "x": 23,
+      "y": 35
+    },
+    "id": 5
+  },
+  {
+    "name": "Macapa",
+    "location": {
+      "x": 50,
+      "y": 23
+    },
+    "id": 6
+  },
+  {
+    "name": "Boa Vista",
+    "location": {
+      "x": 11,
+      "y": 11
+    },
+    "id": 7
+  },
+  {
+    "name": "Paramaribo",
+    "location": {
+      "x": 48,
+      "y": 3
+    },
+    "id": 8
+  }
+]

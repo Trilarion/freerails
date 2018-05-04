@@ -28,7 +28,7 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.train.TrainAccessor;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.Train;
 import freerails.model.train.TrainPositionOnMap;
@@ -41,7 +41,7 @@ import java.awt.*;
 public class OverHeadTrainView implements Painter {
 
     private final TrainRenderer trainPainter;
-    private final ReadOnlyWorld world;
+    private final UnmodifiableWorld world;
     private final SoundManager soundManager = SoundManager.getInstance();
     private final ModelRoot modelRoot;
 
@@ -50,7 +50,7 @@ public class OverHeadTrainView implements Painter {
      * @param rendererRoot
      * @param modelRoot
      */
-    public OverHeadTrainView(ReadOnlyWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
+    public OverHeadTrainView(UnmodifiableWorld world, RendererRoot rendererRoot, ModelRoot modelRoot) {
         this.world = world;
         trainPainter = new TrainRenderer(rendererRoot);
         this.modelRoot = modelRoot;

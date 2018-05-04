@@ -27,7 +27,7 @@ import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -49,7 +49,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         super(moves);
     }
 
-    public static TrackMove getInstance(ReadOnlyWorld world, ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
+    public static TrackMove getInstance(UnmodifiableWorld world, ChangeTrackPieceMove removeTrackMove, FreerailsPrincipal principal) {
         WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
         int stationIndex = -1;
 

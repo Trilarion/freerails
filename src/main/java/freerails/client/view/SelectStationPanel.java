@@ -30,7 +30,7 @@ import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.station.NearestStationFinder;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.FullTerrainTile;
@@ -52,7 +52,7 @@ import java.util.NoSuchElementException;
 public class SelectStationPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3258411750662877488L;
-    private ReadOnlyWorld world;
+    private UnmodifiableWorld world;
     private ActionListener submitButtonCallBack;
     private int selectedStationID = 0;
     private int selectedOrderNumber = 1;

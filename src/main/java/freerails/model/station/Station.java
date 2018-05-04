@@ -24,7 +24,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.FullTerrainTile;
 import freerails.model.track.TrackRule;
-import freerails.model.world.ReadOnlyWorld;
+import freerails.model.world.UnmodifiableWorld;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -147,7 +147,7 @@ public class Station implements Serializable {
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(ReadOnlyWorld world, FreerailsPrincipal principal, Vec2D location) {
+    public static int getStationNumberAtLocation(UnmodifiableWorld world, FreerailsPrincipal principal, Vec2D location) {
         FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
