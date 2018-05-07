@@ -1,13 +1,14 @@
-package freerails.gson;
+package freerails.io;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import freerails.gson.adapter.MoneyAdapter;
+import freerails.io.adapter.MoneyAdapter;
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
+import freerails.model.cargo.CargoType;
 import freerails.model.finances.Money;
-import freerails.model.terrain.City2;
+import freerails.model.terrain.City;
 import freerails.model.train.Engine;
 import org.apache.commons.io.FileUtils;
 
@@ -27,7 +28,8 @@ public class GsonManager {
     }
 
     private static final Type enginesListType = new TypeToken<List<Engine>>(){}.getType();
-    private static final Type citiesListType = new TypeToken<List<City2>>(){}.getType();
+    private static final Type citiesListType = new TypeToken<List<City>>(){}.getType();
+    private static final Type cargoTypesListType = new TypeToken<List<CargoType>>(){}.getType();
 
     private GsonManager() {}
 
@@ -35,8 +37,12 @@ public class GsonManager {
         return load(file, enginesListType);
     }
 
-    public static SortedSet<City2> loadCities(File file) throws IOException {
+    public static SortedSet<City> loadCities(File file) throws IOException {
         return load(file, citiesListType);
+    }
+
+    public static SortedSet<CargoType> loadCargoTypes(File file) throws IOException {
+        return load(file, cargoTypesListType);
     }
 
     private static <T extends Identifiable> SortedSet<T> load(File file, Type type) throws IOException {

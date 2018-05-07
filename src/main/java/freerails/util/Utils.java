@@ -267,4 +267,21 @@ public final class Utils {
     public static <T> void removeLast(Collection<T> collection) {
         collection.remove(collection.size() - 1);
     }
+
+    /**
+     *
+     * @param keys
+     * @param value
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public static <K, V> Map<K, V> initializedMap(Collection<K> keys, V value) {
+        verifyNotNull(keys);
+        Map<K, V> map = new HashMap<>();
+        for (K key: keys) {
+            map.put(key, value);
+        }
+        return map;
+    }
 }

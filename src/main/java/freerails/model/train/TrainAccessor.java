@@ -70,7 +70,7 @@ public class TrainAccessor {
     public static ImmutableList<Integer> spaceAvailable2(UnmodifiableWorld world, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
-        final int NUM_CARGO_TYPES = world.size(SharedKey.CargoTypes);
+        final int NUM_CARGO_TYPES = world.getCargoTypes().size();
         Integer[] spaceAvailable = new Integer[NUM_CARGO_TYPES];
         Arrays.fill(spaceAvailable, 0);
 

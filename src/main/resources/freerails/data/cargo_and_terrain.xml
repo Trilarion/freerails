@@ -19,29 +19,29 @@
 <!DOCTYPE Types SYSTEM "cargo_and_terrain.dtd">
 <Types>
     <Cargo_Types>
-        <Cargo id="Mail" Category="Mail" unitWeight="1"/>
+        <Cargo id="Mail" Category="MAIL" unitWeight="1"/>
 
-        <Cargo id="Passengers" Category="Passengers" unitWeight="2"/>
+        <Cargo id="Passengers" Category="PASSENGER" unitWeight="2"/>
 
-        <Cargo id="Food" Category="Fast_Freight" unitWeight="2"/>
+        <Cargo id="Food" Category="FAST_FREIGHT" unitWeight="2"/>
 
-        <Cargo id="Livestock" Category="Fast_Freight" unitWeight="3"/>
+        <Cargo id="Livestock" Category="FAST_FREIGHT" unitWeight="3"/>
 
-        <Cargo id="Mfg._Goods" Category="Fast_Freight" unitWeight="3"/>
+        <Cargo id="Mfg._Goods" Category="FAST_FREIGHT" unitWeight="3"/>
 
-        <Cargo id="Grain" Category="Slow_Freight" unitWeight="5"/>
+        <Cargo id="Grain" Category="SLOW_FREIGHT" unitWeight="5"/>
 
-        <Cargo id="Coffee" Category="Slow_Freight" unitWeight="5"/>
+        <Cargo id="Coffee" Category="SLOW_FREIGHT" unitWeight="5"/>
 
-        <Cargo id="Export_Goods" Category="Slow_Freight" unitWeight="5"/>
+        <Cargo id="Export_Goods" Category="SLOW_FREIGHT" unitWeight="5"/>
 
-        <Cargo id="Petroleum" Category="Bulk_Freight" unitWeight="8"/>
+        <Cargo id="Petroleum" Category="BULK_FREIGHT" unitWeight="8"/>
 
-        <Cargo id="Oil" Category="Bulk_Freight" unitWeight="8"/>
+        <Cargo id="Oil" Category="BULK_FREIGHT" unitWeight="8"/>
 
-        <Cargo id="Wood" Category="Bulk_Freight" unitWeight="8"/>
+        <Cargo id="Wood" Category="BULK_FREIGHT" unitWeight="8"/>
 
-        <Cargo id="Sugar" Category="Bulk_Freight" unitWeight="8"/>
+        <Cargo id="Sugar" Category="BULK_FREIGHT" unitWeight="8"/>
     </Cargo_Types>
 
     <Terrain_Types>

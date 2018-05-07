@@ -24,7 +24,6 @@ public class Engine extends Identifiable {
         this.maximumThrust = maximumThrust;
     }
 
-
     public String getName() {
         return name;
     }
@@ -43,5 +42,10 @@ public class Engine extends Identifiable {
 
     public int getMaximumThrust() {
         return maximumThrust;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", name, price);
     }
 }

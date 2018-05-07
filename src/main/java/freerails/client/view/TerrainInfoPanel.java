@@ -25,9 +25,9 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.model.ModelConstants;
+import freerails.model.cargo.CargoType;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainType;
 import freerails.model.terrain.TileConsumption;
 import freerails.model.terrain.TileConversion;
@@ -107,26 +107,26 @@ class TerrainInfoPanel extends JPanel {
                 tableString.append("<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosProduced; i++) {
                     TileProduction p = type.getProduction().get(i);
-                    CargoType c = (CargoType) world.get(SharedKey.CargoTypes, p.getCargoType());
+                    CargoType c = world.getCargoType(p.getCargoTypeId());
                     String supply = String.valueOf(p.getRate() / ModelConstants.UNITS_OF_CARGO_PER_WAGON);
-                    tableString.append("<tr> <td>").append(c.getDisplayName()).append(" </td><td>").append(supply).append("</td></tr>");
+                    tableString.append("<tr> <td>").append(c.getName()).append(" </td><td>").append(supply).append("</td></tr>");
                 }
             }
             if (cargosConsumed != 0) {
                 tableString.append("<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConsumed; i++) {
                     TileConsumption consumption = type.getConsumption().get(i);
-                    CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, consumption.getCargoType());
-                    tableString.append("<tr> <td>").append(cargoType.getDisplayName()).append(" </td><td>&nbsp;</td></tr>");
+                    CargoType cargoType = world.getCargoType(consumption.getCargoTypeId());
+                    tableString.append("<tr> <td>").append(cargoType.getName()).append(" </td><td>&nbsp;</td></tr>");
                 }
             }
             if (cargosConverted != 0) {
                 tableString.append("<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConverted; i++) {
                     TileConversion p = type.getConversion().get(i);
-                    CargoType input = (CargoType) world.get(SharedKey.CargoTypes, p.getInput());
-                    CargoType output = (CargoType) world.get(SharedKey.CargoTypes, p.getOutput());
-                    tableString.append("<tr> <td colspan=\"2\">").append(input.getDisplayName()).append(" to ").append(output.getDisplayName()).append("</td></tr>");
+                    CargoType input = world.getCargoType(p.getInputCargoTypeId());
+                    CargoType output = world.getCargoType(p.getOutputCargoTypeId());
+                    tableString.append("<tr> <td colspan=\"2\">").append(input.getName()).append(" to ").append(output.getName()).append("</td></tr>");
                 }
             }
             tableString.append("</table> ");

@@ -27,10 +27,10 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
+import freerails.model.cargo.CargoType;
 import freerails.model.world.*;
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -81,6 +81,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
                 try {
                     worldIterator.gotoIndex(i);
                 } catch (NoSuchElementException e) {
+                    e.printStackTrace();
                     logger.info("Exception ignored in StationInfoPanel (NoSuchElement).");
                     return; // ignore silently
                 }
@@ -227,23 +228,22 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
             table1.append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>");
 
-            for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
+            for (CargoType cargoType: world.getCargoTypes()) {
+                int id = cargoType.getId();
 
-                // get the values
-                CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, i);
-                String demanded = (station.getDemandForCargo().isCargoDemanded(i) ? "Yes" : "No");
+                String demanded = (station.getDemandForCargo().isCargoDemanded(id) ? "Yes" : "No");
 
-                int amountSupplied = station.getSupply().getSupply(i);
+                int amountSupplied = station.getSupply().getSupply(id);
                 boolean isSupplied = (amountSupplied > 0);
                 String supply = isSupplied ? String.valueOf(amountSupplied / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
-                int amountWaiting = cargoWaiting.getAmountOfType(i);
+                int amountWaiting = cargoWaiting.getAmountOfType(id);
                 String waiting = (amountWaiting > 0) ? String.valueOf(amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON) : "&nbsp;";
 
                 // build the html
-                if (station.getDemandForCargo().isCargoDemanded(i) || isSupplied) {
+                if (station.getDemandForCargo().isCargoDemanded(id) || isSupplied) {
                     table1.append("<tr>");
-                    table1.append("<td>").append(cargoType.getDisplayName()).append("</td>");
+                    table1.append("<td>").append(cargoType.getName()).append("</td>");
                     table1.append("<td align=center>").append(demanded).append("</td>");
                     table1.append("<td align=center>").append(supply).append("</td>");
                     table1.append("<td align=center>").append(waiting).append("</td>");

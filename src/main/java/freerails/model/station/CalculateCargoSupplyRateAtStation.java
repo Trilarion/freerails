@@ -61,7 +61,8 @@ public class CalculateCargoSupplyRateAtStation {
         supplies = new ArrayList<>();
         populateSuppliesVector();
 
-        int numCargoTypes = this.world.size(SharedKey.CargoTypes);
+        // TODO demand and converts should be a MAP instead
+        int numCargoTypes = world.getCargoTypes().size();
         demand = new int[numCargoTypes];
         converts = StationCargoConversion.emptyConversionArray(numCargoTypes);
     }
@@ -90,9 +91,10 @@ public class CalculateCargoSupplyRateAtStation {
      * @return
      */
     private StationDemand getDemand() {
-        boolean[] demandboolean = new boolean[world.size(SharedKey.CargoTypes)];
+        final int n = world.getCargoTypes().size();
+        boolean[] demandboolean = new boolean[n];
 
-        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
+        for (int i = 0; i < n; i++) {
             if (demand[i] >= ModelConstants.PREREQUISITE_FOR_DEMAND) {
                 demandboolean[i] = true;
             }
@@ -112,7 +114,7 @@ public class CalculateCargoSupplyRateAtStation {
         // loop through the production array and increment
         // the supply rates for the station
         for (TileProduction aProduction : production) {
-            int type = aProduction.getCargoType();
+            int type = aProduction.getCargoTypeId();
             int rate = aProduction.getRate();
 
             // loop through supplies vector and increment the cargo values as
@@ -124,7 +126,7 @@ public class CalculateCargoSupplyRateAtStation {
         List<TileConsumption> consumption = terrainType.getConsumption();
 
         for (TileConsumption aConsumption : consumption) {
-            int type = aConsumption.getCargoType();
+            int type = aConsumption.getCargoTypeId();
             int prerequisite = aConsumption.getPrerequisite();
 
             // The prerequisite is the number tiles of this type that must
@@ -136,12 +138,12 @@ public class CalculateCargoSupplyRateAtStation {
         List<TileConversion> conversion = terrainType.getConversion();
 
         for (TileConversion aConversion : conversion) {
-            int type = aConversion.getInput();
+            int type = aConversion.getInputCargoTypeId();
 
             // Only one tile that converts the cargo type is needed for the
             // station to demand the cargo type.
             demand[type] += ModelConstants.PREREQUISITE_FOR_DEMAND;
-            converts[type] = aConversion.getOutput();
+            converts[type] = aConversion.getOutputCargoTypeId();
         }
     }
 
@@ -150,7 +152,7 @@ public class CalculateCargoSupplyRateAtStation {
         // get the correct list of cargoes from the world object
         CargoElementObject tempCargoElement;
 
-        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
+        for (int i = 0; i < world.getCargoTypes().size(); i++) {
             // cT = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             tempCargoElement = new CargoElementObject(0, i);
             supplies.add(tempCargoElement);
@@ -205,7 +207,7 @@ public class CalculateCargoSupplyRateAtStation {
      * @param station A Station object to be processed
      */
     public Station calculations(Station station) {
-        Integer[] cargoSupplied = new Integer[world.size(SharedKey.CargoTypes)];
+        Integer[] cargoSupplied = new Integer[world.getCargoTypes().size()];
 
         List<CargoElementObject> supply = scanAdjacentTiles();
 

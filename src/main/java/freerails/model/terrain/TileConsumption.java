@@ -27,7 +27,7 @@ public class TileConsumption implements Serializable {
 
     private static final long serialVersionUID = 3258133565631051064L;
     // TODO meaning of cargotype why not class
-    private final int cargoType;
+    private final int cargoTypeId;
 
     // TODO put requisite limit outside, here only nominal consumption
     /**
@@ -37,11 +37,11 @@ public class TileConsumption implements Serializable {
     private final int prerequisite;
 
     /**
-     * @param cargoType
+     * @param cargoTypeId
      * @param pq
      */
-    public TileConsumption(int cargoType, int pq) {
-        this.cargoType = cargoType;
+    public TileConsumption(int cargoTypeId, int pq) {
+        this.cargoTypeId = cargoTypeId;
         prerequisite = pq; // default value.
     }
 
@@ -52,14 +52,14 @@ public class TileConsumption implements Serializable {
 
         final TileConsumption tileConsumption = (TileConsumption) obj;
 
-        if (cargoType != tileConsumption.cargoType) return false;
+        if (cargoTypeId != tileConsumption.cargoTypeId) return false;
         return prerequisite == tileConsumption.prerequisite;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = cargoType;
+        result = cargoTypeId;
         result = 29 * result + prerequisite;
         return result;
     }
@@ -67,8 +67,8 @@ public class TileConsumption implements Serializable {
     /**
      * @return
      */
-    public int getCargoType() {
-        return cargoType;
+    public int getCargoTypeId() {
+        return cargoTypeId;
     }
 
     /**

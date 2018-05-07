@@ -417,7 +417,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
                 .toImmutableCargoBundle());
 
         // Make station2 demand cargo #0;
-        boolean[] boolArray = new boolean[world.size(SharedKey.CargoTypes)];
+        boolean[] boolArray = new boolean[world.getCargoTypes().size()];
         boolArray[0] = true;
         StationDemand demand = new StationDemand(boolArray);
         Station station2 = (Station) world.get(principal, PlayerKey.Stations, 2);

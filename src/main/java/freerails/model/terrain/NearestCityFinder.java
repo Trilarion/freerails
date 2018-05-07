@@ -48,7 +48,7 @@ public class NearestCityFinder {
         double closestDistance = Double.MAX_VALUE;
         String cityName = null;
 
-        for (City2 city: world.getCities()) {
+        for (City city: world.getCities()) {
             double distance = getDistance(city.getLocation());
             if (distance < closestDistance) {
                 closestDistance = distance;

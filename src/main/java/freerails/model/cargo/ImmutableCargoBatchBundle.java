@@ -110,7 +110,7 @@ public class ImmutableCargoBatchBundle implements CargoBatchBundle, Serializable
     public int getAmountOfType(int cargoType) {
         int amount = 0;
         for (CargoBatch cargoBatch : cargoMap.keySet()) {
-            if (cargoBatch.getCargoType() == cargoType) {
+            if (cargoBatch.getCargoTypeId() == cargoType) {
                 amount += getAmount(cargoBatch);
             }
         }

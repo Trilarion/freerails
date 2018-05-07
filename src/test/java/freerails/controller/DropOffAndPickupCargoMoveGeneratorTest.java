@@ -21,6 +21,8 @@
  */
 package freerails.controller;
 
+import freerails.io.GsonManager;
+import freerails.model.finances.IncomeStatementGenerator;
 import freerails.move.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -36,6 +38,10 @@ import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
 import freerails.model.train.Train;
 import junit.framework.TestCase;
+
+import java.io.File;
+import java.net.URL;
+import java.util.SortedSet;
 
 /**
  * This Junit TestCase tests whether a train picks up and drops off the right
@@ -56,14 +62,13 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         super.setUp();
         // Set up the world object with three cargo types, one station, and one
         // train.
-        world = new World.Builder().build();
+        // load cargo types
+        URL url = IncomeStatementGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
+        File file = new File(url.toURI());
+        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
 
+        world = new World.Builder().setCargoTypes(cargoTypes).build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-
-        // set up the cargo types.
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Mail", CargoCategory.Mail));
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Passengers", CargoCategory.Passengers));
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Goods", CargoCategory.Fast_Freight));
 
         // Set up station
         int x = 10;
@@ -71,7 +76,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int stationCargoBundleId = world.add(MapFixtureFactory.TEST_PRINCIPAL,
                 PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
         String stationName = "Station 1";
-        Station station = new Station(new Vec2D(x, y), stationName, world.size(SharedKey.CargoTypes), stationCargoBundleId);
+        Station station = new Station(new Vec2D(x, y), stationName, world.getCargoTypes().size(), stationCargoBundleId);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
 
         // Set up train

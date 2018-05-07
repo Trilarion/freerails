@@ -104,7 +104,7 @@ public class CityModel {
         // Identify city's bounds.
         Vec2D mapSize = world.getMapSize();
         Rectangle mapRect = new Rectangle(0, 0, mapSize.x, mapSize.y);
-        City2 city = world.getCity(cityID);
+        City city = world.getCity(cityID);
         Vec2D topleft = Vec2D.subtract(city.getLocation(), new Vec2D(-3,-3));
         Rectangle cityArea = new Rectangle(topleft.x, topleft.y, 7, 7);
         cityArea = cityArea.intersection(mapRect);

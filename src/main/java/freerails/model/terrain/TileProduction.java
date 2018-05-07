@@ -27,18 +27,18 @@ public class TileProduction implements Serializable {
 
     private static final long serialVersionUID = 3258125847641536052L;
     // TODO why not class
-    private final int cargoType;
+    private final int cargoTypeId;
     /**
      * The number of units per year (40 units = 1 car load).
      */
     private final int rate;
 
     /**
-     * @param type
+     * @param cargoTypeId
      * @param rate
      */
-    public TileProduction(int type, int rate) {
-        cargoType = type;
+    public TileProduction(int cargoTypeId, int rate) {
+        this.cargoTypeId = cargoTypeId;
         this.rate = rate;
     }
 
@@ -49,14 +49,14 @@ public class TileProduction implements Serializable {
 
         final TileProduction tileProduction = (TileProduction) obj;
 
-        if (cargoType != tileProduction.cargoType) return false;
+        if (cargoTypeId != tileProduction.cargoTypeId) return false;
         return rate == tileProduction.rate;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = cargoType;
+        result = cargoTypeId;
         result = 29 * result + rate;
         return result;
     }
@@ -64,8 +64,8 @@ public class TileProduction implements Serializable {
     /**
      * @return
      */
-    public int getCargoType() {
-        return cargoType;
+    public int getCargoTypeId() {
+        return cargoTypeId;
     }
 
     /**

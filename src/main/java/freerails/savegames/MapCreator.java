@@ -1,6 +1,7 @@
 package freerails.savegames;
 
-import freerails.gson.GsonManager;
+import freerails.io.GsonManager;
+import freerails.model.cargo.CargoType;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
@@ -11,7 +12,6 @@ import freerails.model.world.World;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.util.Vec2D;
-import freerails.util.ui.ProgressMonitorModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,9 +57,14 @@ public class MapCreator {
         // load cities
         url = MapCreator.class.getResource("/freerails/data/scenario/" + mapName + "_cities.json");
         file = new File(url.toURI());
-        SortedSet<City2> cities = GsonManager.loadCities(file);
+        SortedSet<City> cities = GsonManager.loadCities(file);
 
-        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities);
+        // load cargo types
+        url = MapCreator.class.getResource("/freerails/data/scenario/cargo_types.json");
+        file = new File(url.toURI());
+        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+
+        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargoTypes(cargoTypes);
         World world = builder.build();
 
         addTerrainTileTypesList(world);
@@ -76,8 +81,6 @@ public class MapCreator {
         // converts an image file into a map.
         // Implemented Terrain Randomisation to randomly position the terrain types for each tile on the map.
 
-        // Setup progress monitor..
-        ProgressMonitorModel.EMPTY.setValue(0);
 
         Image mapImage = (new ImageIcon(map_url)).getImage();
         Rectangle mapRect = new Rectangle(0, 0, mapImage.getWidth(null), mapImage.getHeight(null));
@@ -85,8 +88,6 @@ public class MapCreator {
         Graphics g = mapBufferedImage.getGraphics();
         g.drawImage(mapImage, 0, 0, null);
         world.setupMap(new Vec2D(mapRect.width, mapRect.height));
-
-        ProgressMonitorModel.EMPTY.nextStep(mapRect.width);
 
         Map<Integer, Integer> rgb2TerrainType = new HashMap<>();
 
@@ -121,8 +122,6 @@ public class MapCreator {
         List<TerrainAtLocation> locations = new ArrayList();
 
         for (int x = 0; x < mapRect.width; x++) {
-            ProgressMonitorModel.EMPTY.setValue(x);
-
             for (int y = 0; y < mapRect.height; y++) {
                 int rgb = mapBufferedImage.getRGB(x, y);
                 FullTerrainTile tile;
@@ -196,5 +195,28 @@ public class MapCreator {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+
+        /*
+        // convert cargotypes from xml to json
+        Map<CargoCategory, CargoCategory> conversion = new HashMap<>();
+        conversion.put(CargoCategory.MAIL, CargoCategory.MAIL);
+        conversion.put(CargoCategory.PASSENGER, CargoCategory.PASSENGER);
+        conversion.put(CargoCategory.FAST_FREIGHT, CargoCategory.FAST_FREIGHT);
+        conversion.put(CargoCategory.BULK_FREIGHT, CargoCategory.BULK_FREIGHT);
+        conversion.put(CargoCategory.SLOW_FREIGHT, CargoCategory.SLOW_FREIGHT);
+
+        File file = new File("cargo_types.json");
+        SortedSet<CargoType2> cargoTypes = new TreeSet<>();
+        for (int i = 0; i < world.getCargoTypes().size(); i++) {
+            CargoType a = (CargoType) world.get(SharedKey.CargoTypes, i);
+            CargoType2 b = new CargoType2(i, a.getName(), conversion.get(a.getCategory()), a.getUnitWeight());
+            cargoTypes.add(b);
+        }
+        try {
+            GsonManager.save(file, cargoTypes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        */
     }
 }

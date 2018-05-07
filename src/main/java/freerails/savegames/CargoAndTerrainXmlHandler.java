@@ -46,11 +46,6 @@ public interface CargoAndTerrainXmlHandler {
     /**
      * An empty element event handling method.
      */
-    void handleCargo(final Attributes attributes);
-
-    /**
-     * An empty element event handling method.
-     */
     void handleConsumptions(final Attributes attributes) throws SAXException;
 
     /**

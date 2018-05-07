@@ -162,6 +162,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
 
             clientUpdates();
         } catch (IOException e) {
+            e.printStackTrace();
             LauncherFrame.emergencyStop();
         }
     }

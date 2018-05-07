@@ -21,19 +21,20 @@ package freerails.client.renderer.map.detail;
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
+import freerails.model.cargo.*;
 import freerails.model.world.*;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.model.*;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoType;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Renders box showing the cargo waiting at a station.
@@ -59,7 +60,7 @@ public class StationBoxRenderer implements Painter {
         Image wagonImage = rendererRoot.getWagonImages(0).getSideOnImage();
         wagonImageWidth = wagonImage.getWidth(null) * ClientConstants.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
-        int nrOfCargoTypes = this.world.size(SharedKey.CargoTypes);
+        int nrOfCargoTypes = world.getCargoTypes().size();
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
             String wagonFilename = rendererRoot.getWagonImages(i).sideOnFileName;
@@ -99,17 +100,19 @@ public class StationBoxRenderer implements Painter {
                     g.drawRect(r.x, r.y, r.width, r.height);
 
                     CargoBatchBundle cargoBatchBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
-                    int[][] carsLoads = calculateCarLoads(cargoBatchBundle);
-                    for (int category = 0; category < CargoCategory.getNumberOfCategories(); category++) {
-                        int alternateWidth = (ClientConstants.MAX_WIDTH - 2 * ClientConstants.SPACING) / (carsLoads[category].length + 1);
+                    Map<CargoCategory, List<Integer>> carsLoads = calculateCarLoads(cargoBatchBundle);
+                    int i = 0;
+                    for (CargoCategory cargoCategory: CargoCategory.values()) {
+                        int alternateWidth = (ClientConstants.MAX_WIDTH - 2 * ClientConstants.SPACING) / (carsLoads.get(cargoCategory).size() + 1);
                         int xOffsetPerWagon = Math.min(wagonImageWidth, alternateWidth);
 
-                        for (int car = 0; car < carsLoads[category].length; car++) {
+                        for (int car = 0; car < carsLoads.get(cargoCategory).size(); car++) {
                             int x = positionX + (car * xOffsetPerWagon) + ClientConstants.SPACING;
-                            int y = positionY + (category * (ClientConstants.WAGON_IMAGE_HEIGHT + ClientConstants.SPACING));
-                            int cargoType = carsLoads[category][car];
+                            int y = positionY + (i * (ClientConstants.WAGON_IMAGE_HEIGHT + ClientConstants.SPACING));
+                            int cargoType = carsLoads.get(cargoCategory).get(car);
                             g.drawImage(cargoImages[cargoType], x, y, null);
                         }
+                        i++;
                     }
                 }
             }
@@ -123,30 +126,39 @@ public class StationBoxRenderer implements Painter {
      * array are the type of the cargo. E.g. if the bundle contained 2 carloads
      * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
      */
-    private int[][] calculateCarLoads(CargoBatchBundle cargoBatchBundle) {
-        int categories = CargoCategory.getNumberOfCategories();
-        int numCargoTypes = world.size(SharedKey.CargoTypes);
-        int[] numberOfCarLoads = new int[categories];
-        int[][] cars = new int[categories][numCargoTypes];
+    private Map<CargoCategory, List<Integer>> calculateCarLoads(CargoBatchBundle cargoBatchBundle) {
+        // TODO overly complicated, easier way possible?
+        int numCargoTypes = world.getCargoTypes().size();
+        Map<CargoCategory, Integer> numberOfCarLoads = new HashMap<>();
+        for (CargoCategory cargoCategory: CargoCategory.values()) {
+            numberOfCarLoads.put(cargoCategory, 0);
+        }
+        Map<CargoCategory, Map<Integer, Integer>> cars = new HashMap<>();
+        for (CargoCategory cargoCategory: CargoCategory.values()) {
+            Map<Integer, Integer> map = new HashMap<>();
+            // TODO int i is not an ID, this will break if ids are not going from 0 to number of types - 1
+            for (int i = 0; i < numCargoTypes; i++) {
+                map.put(i, 0);
+            }
+            cars.put(cargoCategory, map);
+        }
         for (int i = 0; i < numCargoTypes; i++) {
-            CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, i);
+            CargoType ct = world.getCargoType(i);
             int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
-            numberOfCarLoads[ct.getCategory().getID()] += carsOfThisCargo;
-            cars[ct.getCategory().getID()][i] += carsOfThisCargo;
+            numberOfCarLoads.put(ct.getCategory(), numberOfCarLoads.get(ct.getCategory()) + carsOfThisCargo);
+            cars.get(ct.getCategory()).put(i, cars.get(ct.getCategory()).get(i) + carsOfThisCargo);
         }
 
-        int[][] returnMatrix = new int[categories][];
-        for (int category = 0; category < categories; category++) {
-            int[] returnValue = new int[numberOfCarLoads[category]];
-            int arrayIndex = 0;
+        Map<CargoCategory, List<Integer>> returnMatrix = new HashMap<>();
+        for (CargoCategory cargoCategory: CargoCategory.values()) {
+            List<Integer> returnValue = new ArrayList<>();
 
             for (int cargoType = 0; cargoType < numCargoTypes; cargoType++) {
-                for (int j = 0; j < cars[category][cargoType]; j++) {
-                    returnValue[arrayIndex] = cargoType;
-                    arrayIndex++;
+                for (int j = 0; j < cars.get(cargoCategory).get(cargoType); j++) {
+                    returnValue.add(cargoType);
                 }
             }
-            returnMatrix[category] = returnValue;
+            returnMatrix.put(cargoCategory, returnValue);
         }
         return returnMatrix;
     }

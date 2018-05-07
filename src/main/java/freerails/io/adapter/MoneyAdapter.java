@@ -1,4 +1,4 @@
-package freerails.gson.adapter;
+package freerails.io.adapter;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;

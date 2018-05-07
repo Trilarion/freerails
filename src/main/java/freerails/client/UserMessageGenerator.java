@@ -18,6 +18,7 @@
 
 package freerails.client;
 
+import freerails.model.cargo.CargoType;
 import freerails.move.*;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.Utils;
@@ -25,9 +26,7 @@ import freerails.model.world.WorldItem;
 import freerails.model.world.PlayerKey;
 import freerails.model.finances.Money;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.CargoType;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameSpeed;
@@ -36,7 +35,9 @@ import freerails.util.ui.SoundManager;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Inspects incoming moves and generates a user message if appropriate. It is also used to trigger sounds.
@@ -116,19 +117,17 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(station.getStationName());
             message.append('\n');
             Money revenue = Money.ZERO;
-            int[] cargoQuantities = new int[modelRoot.getWorld().size(SharedKey.CargoTypes)];
+            Map<CargoType, Integer> cargoQuantities = new HashMap<>();
             for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
                 revenue = Money.add(revenue, receipt.price());
-                cargoQuantities[batch.getCargoType()] = receipt.getQuantity();
+                cargoQuantities.put(world.getCargoType(batch.getCargoTypeId()), receipt.getQuantity());
             }
-            for (int i = 0; i < cargoQuantities.length; i++) {
-                int j = cargoQuantities[i];
-                if (j > 0) {
-                    CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, i);
-                    message.append(j);
+            for (Map.Entry<CargoType, Integer> entry: cargoQuantities.entrySet()) {
+                if (entry.getValue() > 0) {
+                    message.append(entry.getValue());
                     message.append(' ');
-                    message.append(cargoType.getDisplayName());
+                    message.append(entry.getKey().getName());
                     message.append('\n');
                 }
             }

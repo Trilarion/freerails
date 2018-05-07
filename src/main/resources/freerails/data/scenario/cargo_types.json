@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Mail",
+    "category": "MAIL",
+    "unitWeight": 1,
+    "id": 0
+  },
+  {
+    "name": "Passengers",
+    "category": "PASSENGER",
+    "unitWeight": 2,
+    "id": 1
+  },
+  {
+    "name": "Food",
+    "category": "FAST_FREIGHT",
+    "unitWeight": 2,
+    "id": 2
+  },
+  {
+    "name": "Livestock",
+    "category": "FAST_FREIGHT",
+    "unitWeight": 3,
+    "id": 3
+  },
+  {
+    "name": "Mfg. Goods",
+    "category": "FAST_FREIGHT",
+    "unitWeight": 3,
+    "id": 4
+  },
+  {
+    "name": "Grain",
+    "category": "SLOW_FREIGHT",
+    "unitWeight": 5,
+    "id": 5
+  },
+  {
+    "name": "Coffee",
+    "category": "SLOW_FREIGHT",
+    "unitWeight": 5,
+    "id": 6
+  },
+  {
+    "name": "Export Goods",
+    "category": "SLOW_FREIGHT",
+    "unitWeight": 5,
+    "id": 7
+  },
+  {
+    "name": "Petroleum",
+    "category": "BULK_FREIGHT",
+    "unitWeight": 8,
+    "id": 8
+  },
+  {
+    "name": "Oil",
+    "category": "BULK_FREIGHT",
+    "unitWeight": 8,
+    "id": 9
+  },
+  {
+    "name": "Wood",
+    "category": "BULK_FREIGHT",
+    "unitWeight": 8,
+    "id": 10
+  },
+  {
+    "name": "Sugar",
+    "category": "BULK_FREIGHT",
+    "unitWeight": 8,
+    "id": 11
+  }
+]

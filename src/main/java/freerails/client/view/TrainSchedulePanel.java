@@ -21,12 +21,12 @@ package freerails.client.view;
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.cargo.CargoType;
 import freerails.model.world.*;
 import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.move.Move;
 import freerails.util.ImmutableList;
 import freerails.util.Utils;
-import freerails.model.cargo.CargoType;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.train.*;
 import freerails.model.train.schedule.ImmutableSchedule;
@@ -458,20 +458,18 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); // Remove existing menu items.
-        NonNullElementWorldIterator cargoTypes = new NonNullElementWorldIterator(SharedKey.CargoTypes, modelRoot.getWorld());
 
-        while (cargoTypes.next()) {
-            final CargoType wagonType = (CargoType) cargoTypes.getElement();
+        for (CargoType cargoType: modelRoot.getWorld().getCargoTypes()) {
             JMenuItem wagonMenuItem = new JMenuItem();
-            final int wagonTypeNumber = cargoTypes.getIndex();
-            wagonMenuItem.setText(wagonType.getDisplayName());
-            Image image = vl.getWagonImages(wagonTypeNumber).getSideOnImage();
+            final int cargoTypeId = cargoType.getId();
+            wagonMenuItem.setText(cargoType.getName());
+            Image image = vl.getWagonImages(cargoTypeId).getSideOnImage();
             int height = image.getHeight(null);
             int width = image.getWidth(null);
             int scale = height / 10;
             Icon icon = new ImageIcon(image.getScaledInstance(width / scale, height / scale, Image.SCALE_FAST));
             wagonMenuItem.setIcon(icon);
-            wagonMenuItem.addActionListener(e -> addWagon(wagonTypeNumber));
+            wagonMenuItem.addActionListener(e -> addWagon(cargoTypeId));
             addWagonJMenu.add(wagonMenuItem);
         }
     }

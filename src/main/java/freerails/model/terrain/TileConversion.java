@@ -27,16 +27,16 @@ public class TileConversion implements Serializable {
 
     private static final long serialVersionUID = 3546356219414853689L;
     // TODO meaning input, output
-    private final int input;
-    private final int output;
+    private final int inputCargoTypeId;
+    private final int outputCargoTypeId;
 
     /**
      * @param in
      * @param out
      */
     public TileConversion(int in, int out) {
-        input = in;
-        output = out;
+        inputCargoTypeId = in;
+        outputCargoTypeId = out;
     }
 
     @Override
@@ -46,29 +46,29 @@ public class TileConversion implements Serializable {
 
         final TileConversion tileConversion = (TileConversion) obj;
 
-        if (input != tileConversion.input) return false;
-        return output == tileConversion.output;
+        if (inputCargoTypeId != tileConversion.inputCargoTypeId) return false;
+        return outputCargoTypeId == tileConversion.outputCargoTypeId;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = input;
-        result = 29 * result + output;
+        result = inputCargoTypeId;
+        result = 29 * result + outputCargoTypeId;
         return result;
     }
 
     /**
      * @return
      */
-    public int getInput() {
-        return input;
+    public int getInputCargoTypeId() {
+        return inputCargoTypeId;
     }
 
     /**
      * @return
      */
-    public int getOutput() {
-        return output;
+    public int getOutputCargoTypeId() {
+        return outputCargoTypeId;
     }
 }

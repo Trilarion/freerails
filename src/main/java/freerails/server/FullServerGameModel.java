@@ -103,7 +103,8 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
+                // TODO i is not an CargoTypeId
+                for (int i = 0; i < world.getCargoTypes().size(); i++) {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {

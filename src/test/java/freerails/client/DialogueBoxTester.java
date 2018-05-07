@@ -20,7 +20,7 @@ package freerails.client;
 
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
-import freerails.gson.GsonManager;
+import freerails.io.GsonManager;
 import freerails.model.train.Engine;
 import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
@@ -32,7 +32,6 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.view.*;
 import freerails.move.receiver.MoveChainFork;
 import freerails.move.receiver.UntriedMoveReceiver;
-import freerails.util.ui.ProgressMonitorModel;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatch;
@@ -103,9 +102,9 @@ class DialogueBoxTester extends JFrame {
         MapCreator.addTerrainTileTypesList(world);
         world.addPlayer(TEST_PLAYER);
         try {
-            vl = new RendererRootImpl(world,
-                    ProgressMonitorModel.EMPTY);
+            vl = new RendererRootImpl(world);
         } catch (IOException e) {
+            e.printStackTrace();
         }
         modelRoot.setup(world, TEST_PLAYER.getPrincipal());
         ActionRoot actionRoot = new ActionRoot(new ServerControlModel(modelRoot));
@@ -114,7 +113,7 @@ class DialogueBoxTester extends JFrame {
         actionRoot.setDialogueBoxController(dialogueBoxController);
         dialogueBoxController.setDefaultFocusOwner(this);
 
-        int numberOfCargoTypes = world.size(SharedKey.CargoTypes);
+        int numberOfCargoTypes = world.getCargoTypes().size();
         Station bristol = new Station(new Vec2D(10, 10), "Bristol", numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 

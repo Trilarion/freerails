@@ -29,7 +29,6 @@ import freerails.client.renderer.RendererRootImpl;
 import freerails.controller.BuildTrackController;
 import freerails.network.command.ClientProperty;
 import freerails.util.Vec2D;
-import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
@@ -49,21 +48,18 @@ public class LauncherClient extends FreerailsClient {
     private final ActionRoot actionRoot;
     private final GUIComponentFactoryImpl factory;
     private final ModelRootImpl modelRoot;
-    private final ProgressMonitorModel monitor;
     private final String name;
     private final ScreenHandler screenHandler;
     private RendererRoot rendererRoot;
 
     /**
      * @param name
-     * @param progressMonitorModel
      * @param screenMode
      * @param displayMode
      * @throws IOException
      */
-    public LauncherClient(String name, ProgressMonitorModel progressMonitorModel, int screenMode, Vec2D displayMode) {
+    public LauncherClient(String name, int screenMode, Vec2D displayMode) {
         this.name = name;
-        monitor = null == progressMonitorModel ? ProgressPanelModel.EMPTY : progressMonitorModel;
         // Set up model root and action root.
         modelRoot = new ModelRootImpl();
         modelRoot.setMoveFork(getMoveFork());
@@ -111,8 +107,7 @@ public class LauncherClient extends FreerailsClient {
     protected void newWorld(World world) {
         try {
             if (null == rendererRoot || !rendererRoot.validate(world)) {
-                    rendererRoot = new RendererRootImpl(world, monitor);
-                    monitor.finished();
+                    rendererRoot = new RendererRootImpl(world);
             }
 
             // Should be a smarter way of doing this..

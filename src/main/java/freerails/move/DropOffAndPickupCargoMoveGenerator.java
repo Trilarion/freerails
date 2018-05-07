@@ -99,7 +99,8 @@ public class DropOffAndPickupCargoMoveGenerator {
             Station station = (Station) this.world.get(this.principal, PlayerKey.Stations, nextStationId);
             StationDemand demand = station.getDemandForCargo();
 
-            for (int i = 0; i < this.world.size(SharedKey.CargoTypes); i++) {
+            // TODO i is not an id
+            for (int i = 0; i < world.getCargoTypes().size(); i++) {
                 // If this cargo is demanded at the next scheduled station.
                 if (demand.isCargoDemanded(i)) {
                     int amount = stationAfter.getAmountOfType(i);
@@ -145,7 +146,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         while (batches.hasNext() && amountTransferedSoFar < amountToTransfer) {
             CargoBatch cb = batches.next();
 
-            if (cb.getCargoType() == cargoTypeToTransfer) {
+            if (cb.getCargoTypeId() == cargoTypeToTransfer) {
                 int amount = from.getAmount(cb);
                 int amountOfThisBatchToTransfer;
 
@@ -251,7 +252,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             // if the cargo is demanded and its not from this station
             // originally...
             StationDemand demand = station.getDemandForCargo();
-            int cargoType = cb.getCargoType();
+            int cargoType = cb.getCargoTypeId();
 
             if ((demand.isCargoDemanded(cargoType)) && (stationId != cb.getStationOfOrigin())) {
                 int amount = trainAfter.getAmount(cb);

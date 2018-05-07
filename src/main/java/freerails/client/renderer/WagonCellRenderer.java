@@ -5,7 +5,7 @@ import freerails.model.cargo.CargoType;
 import javax.swing.*;
 import java.awt.*;
 
-public class WagonCellRenderer implements ListCellRenderer {
+public class WagonCellRenderer implements ListCellRenderer<CargoType> {
 
     private final Component[] labels;
 
@@ -35,13 +35,12 @@ public class WagonCellRenderer implements ListCellRenderer {
      * @param cellHasFocus the list and the cell have the focus
      * @return
      */
-    public Component getListCellRendererComponent(JList list, Object value,
+    public Component getListCellRendererComponent(JList<? extends CargoType> list, CargoType value,
                                                   int index,
                                                   boolean isSelected,
                                                   boolean cellHasFocus)  {
         if (index >= 0 && index < labels.length) {
-            CargoType cargoType = (CargoType) value;
-            String text = "<html><body>" + (isSelected ? "<strong>" : "") + cargoType.getDisplayName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
+            String text = "<html><body>" + (isSelected ? "<strong>" : "") + value.getName() + (isSelected ? "</strong>" : "&nbsp;&nbsp;&nbsp;&nbsp;"/*
              * padding to stop
              * word wrap due to
              * greater width of

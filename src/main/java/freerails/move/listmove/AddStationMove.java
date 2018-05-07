@@ -55,7 +55,7 @@ public class AddStationMove extends CompositeMove {
         int cargoBundleNumber = world.size(principal, PlayerKey.CargoBundles);
         Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
         int stationNumber = world.size(principal, PlayerKey.Stations);
-        Station station = new Station(location, stationName, world.size(SharedKey.CargoTypes), cargoBundleNumber);
+        Station station = new Station(location, stationName, world.getCargoTypes().size(), cargoBundleNumber);
 
         Move addStation = new AddItemToListMove(PlayerKey.Stations, stationNumber, station, principal);
 

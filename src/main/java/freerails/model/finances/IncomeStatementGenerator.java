@@ -18,11 +18,10 @@
 
 package freerails.model.finances;
 
+import freerails.model.cargo.CargoType;
 import freerails.util.Pair;
 import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
-import freerails.model.cargo.CargoType;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
@@ -78,34 +77,34 @@ public class IncomeStatementGenerator {
             GameTime time = transactionAndTimeStamp.getB();
             if (transaction instanceof CargoDeliveryMoneyTransaction) {
                 CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
-                int cargoType = cargoDeliveryMoneyTransaction.getCargoBatch().getCargoType();
-                CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, cargoType);
+                int cargoTypeId = cargoDeliveryMoneyTransaction.getCargoBatch().getCargoTypeId();
+                CargoType ct = world.getCargoType(cargoTypeId);
                 switch (ct.getCategory()) {
-                    case Bulk_Freight:
+                    case BULK_FREIGHT:
                         bulkFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
                             bulkFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
-                    case Fast_Freight:
+                    case FAST_FREIGHT:
                         fastFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
                             fastFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
-                    case Mail:
+                    case MAIL:
                         mailTotal += cargoDeliveryMoneyTransaction.price().amount;
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
                             mailYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
-                    case Passengers:
+                    case PASSENGER:
                         passengersTotal += cargoDeliveryMoneyTransaction.price().amount;
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
                             passengersYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
-                    case Slow_Freight:
+                    case SLOW_FREIGHT:
                         slowFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
                         if (cal.getYear(time.getTicks()) >= this.startyear) {
                             slowFreightYtd += cargoDeliveryMoneyTransaction.price().amount;

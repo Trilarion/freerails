@@ -21,7 +21,7 @@
  */
 package freerails.move;
 
-import freerails.gson.GsonManager;
+import freerails.io.GsonManager;
 import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
 import freerails.savegames.MapCreator;

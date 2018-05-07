@@ -18,10 +18,12 @@
 
 package freerails.model;
 
-import freerails.model.world.SharedKey;
-import freerails.util.Vec2D;
+import freerails.io.GsonManager;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoType;
+import freerails.model.finances.IncomeStatementGenerator;
+import freerails.model.world.SharedKey;
+import freerails.util.Vec2D;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.terrain.FullTerrainTile;
@@ -30,7 +32,12 @@ import freerails.model.terrain.TerrainTypeImpl;
 import freerails.model.track.*;
 import freerails.model.world.World;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Is used to generate fixtures for Junit tests.
@@ -57,11 +64,17 @@ public class MapFixtureFactory {
      * @param mapSize
      * @return
      */
-    public static World getWorld(Vec2D mapSize) {
+    public static World getWorld(Vec2D mapSize) throws IOException {
         FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        World world = new World.Builder().setMapSize(mapSize).build();
+        SortedSet<CargoType> cargoTypes = new TreeSet<>();
+        cargoTypes.add(new CargoType(0, "Mail", CargoCategory.MAIL, 1));
+        cargoTypes.add(new CargoType(1, "Passengers", CargoCategory.PASSENGER, 1));
+        cargoTypes.add(new CargoType(2, "Goods", CargoCategory.FAST_FREIGHT, 2));
+        cargoTypes.add(new CargoType(3, "Steel", CargoCategory.SLOW_FREIGHT, 4));
+        cargoTypes.add(new CargoType(4, "Coal", CargoCategory.BULK_FREIGHT, 8));
+
+        World world = new World.Builder().setMapSize(mapSize).setCargoTypes(cargoTypes).build();
         generateTerrainTypesList(world);
-        generateCargoTypesList(world);
 
         for (int x = 0; x < mapSize.x; x++) {
             for (int y = 0; y < mapSize.y; y++) {
@@ -132,23 +145,6 @@ public class MapFixtureFactory {
         if (world.size(SharedKey.TerrainTypes) == 0) {
             generateTerrainTypesList(world);
         }
-    }
-
-    /**
-     * Adds hard coded cargo types.
-     *
-     * @param world
-     */
-    public static void generateCargoTypesList(World world) {
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Mail", CargoCategory.Mail));
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Passengers",
-                CargoCategory.Passengers));
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Goods",
-                CargoCategory.Fast_Freight));
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Steel",
-                CargoCategory.Slow_Freight));
-        world.add(SharedKey.CargoTypes, new CargoType(0, "Coal",
-                CargoCategory.Bulk_Freight));
     }
 
     /**

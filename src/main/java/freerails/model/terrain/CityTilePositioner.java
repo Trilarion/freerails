@@ -65,7 +65,7 @@ public class CityTilePositioner {
     }
 
     public void initCities() {
-        for (City2 city: world.getCities()) {
+        for (City city: world.getCities()) {
             CityModel cityModel = new CityModel();
             cityModel.loadFromMap(world, city.getId());
 
@@ -119,7 +119,7 @@ public class CityTilePositioner {
          * cargo has been picked up and delivered and what city tiles are
          * already present.
          */
-        for (City2 city: world.getCities()) {
+        for (City city: world.getCities()) {
             CityModel cityModel = new CityModel();
             cityModel.loadFromMap(world, city.getId());
 

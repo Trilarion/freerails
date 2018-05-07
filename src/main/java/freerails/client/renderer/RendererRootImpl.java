@@ -19,6 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConstants;
+import freerails.model.cargo.CargoType;
 import freerails.model.train.Engine;
 import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
@@ -26,10 +27,8 @@ import freerails.util.ui.ImageManagerImpl;
 import freerails.client.renderer.tile.*;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
-import freerails.util.ui.ProgressMonitorModel;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.cargo.CargoType;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.terrain.TerrainType;
 import org.apache.log4j.Logger;
@@ -57,21 +56,19 @@ public class RendererRootImpl implements RendererRoot {
 
     /**
      * @param world
-     * @param progressMonitorModel
      * @throws IOException
      */
-    public RendererRootImpl(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
+    public RendererRootImpl(UnmodifiableWorld world) throws IOException {
         imageManager = new ImageManagerImpl(ClientConstants.GRAPHICS_PATH);
-        tileRendererList = loadNewTileViewList(world, progressMonitorModel);
+        tileRendererList = loadNewTileViewList(world);
 
-        trackPieceViewList = loadTrackViews(world, progressMonitorModel);
+        trackPieceViewList = loadTrackViews(world);
 
         // rr = new OldTrainImages(world, imageManager, pm);
-        loadTrainImages(world, progressMonitorModel);
+        loadTrainImages(world);
 
         // Pre-load sounds..
         String[] soundsFiles = {ClientConstants.SOUND_BUILD_TRACK, ClientConstants.SOUND_CASH, ClientConstants.SOUND_REMOVE_TRACK, ClientConstants.SOUND_WHISTLE};
-        progressMonitorModel.nextStep(soundsFiles.length);
         SoundManager sm = SoundManager.getInstance();
         for (int i = 0; i < soundsFiles.length; i++) {
             try {
@@ -79,24 +76,15 @@ public class RendererRootImpl implements RendererRoot {
             } catch (IOException | UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
-            progressMonitorModel.setValue(i + 1);
         }
     }
 
-    private void loadTrainImages(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
-        // Setup progress monitor..
-        final int numberOfWagonTypes = world.size(SharedKey.CargoTypes);
-        progressMonitorModel.nextStep(numberOfWagonTypes);
-        int progress = 0;
-        progressMonitorModel.setValue(progress);
-
+    private void loadTrainImages(UnmodifiableWorld world) throws IOException {
         // Load wagon images.
-        for (int i = 0; i < numberOfWagonTypes; i++) {
-            CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, i);
+        for (CargoType cargoType: world.getCargoTypes()) {
             String name = cargoType.getName();
             TrainImages ti = new TrainImages(imageManager, name);
             wagonImages.add(ti);
-            progressMonitorModel.setValue(++progress);
         }
 
         // Load engine images
@@ -107,21 +95,17 @@ public class RendererRootImpl implements RendererRoot {
         }
     }
 
-    private TrackPieceRendererList loadTrackViews(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
-        return new TrackPieceRendererList(world, imageManager, progressMonitorModel);
+    private TrackPieceRendererList loadTrackViews(UnmodifiableWorld world) throws IOException {
+        return new TrackPieceRendererList(world, imageManager);
     }
 
     // TODO this tile renderer list must have a certain length and structure otherwise the scenario start will hang, fix this behavior and simplify
-    private TileRendererList loadNewTileViewList(UnmodifiableWorld world, ProgressMonitorModel progressMonitorModel) throws IOException {
+    private TileRendererList loadNewTileViewList(UnmodifiableWorld world) throws IOException {
         ArrayList<TileRenderer> tileRenderers = new ArrayList<>();
 
         // Setup progress monitor..
 
         int numberOfTypes = world.size(SharedKey.TerrainTypes);
-        progressMonitorModel.nextStep(numberOfTypes);
-
-        int progress = 0;
-        progressMonitorModel.setValue(progress);
 
         // for all terrain types
         for (int i = 0; i < numberOfTypes; i++) {
@@ -129,7 +113,6 @@ public class RendererRootImpl implements RendererRoot {
             int[] typesTreatedAsTheSame = new int[]{i};
 
             TileRenderer tileRenderer;
-            progressMonitorModel.setValue(++progress);
 
             // TODO not a nice hack, unhack
             try {
@@ -254,11 +237,11 @@ public class RendererRootImpl implements RendererRoot {
     }
 
     /**
-     * @param type
+     * @param cargoTypeId
      * @return
      */
-    public TrainImages getWagonImages(int type) {
-        return wagonImages.get(type);
+    public TrainImages getWagonImages(int cargoTypeId) {
+        return wagonImages.get(cargoTypeId);
     }
 
     /**

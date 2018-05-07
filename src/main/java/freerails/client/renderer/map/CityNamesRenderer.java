@@ -23,7 +23,7 @@
  */
 package freerails.client.renderer.map;
 
-import freerails.model.terrain.City2;
+import freerails.model.terrain.City;
 import freerails.util.ui.Painter;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
@@ -54,7 +54,7 @@ public class CityNamesRenderer implements Painter {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
 
         // draw city names onto map
-        for (City2 city: world.getCities()) {
+        for (City city: world.getCities()) {
             Vec2D location = city.getLocation();
             final int xpos = location.x * ModelConstants.TILE_SIZE;
             final int ypos = location.y * ModelConstants.TILE_SIZE + 10;

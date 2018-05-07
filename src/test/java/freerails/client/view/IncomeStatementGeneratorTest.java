@@ -18,17 +18,22 @@
 
 package freerails.client.view;
 
+import freerails.io.GsonManager;
+import freerails.model.cargo.CargoCategory;
+import freerails.model.cargo.CargoType;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoType;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Money;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
+
+import java.io.File;
+import java.net.URL;
+import java.util.SortedSet;
 
 /**
  * Test for IncomeStatementGenerator.
@@ -46,20 +51,21 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money m = balanceSheetGenerator.mailTotal;
         assertEquals(0, m.amount);
 
-        CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, 0);
-        assertEquals(CargoCategory.Mail, ct.getCategory());
+        CargoType ct = world.getCargoType(0);
+        assertEquals(CargoCategory.MAIL, ct.getCategory());
 
         Money amount = new Money(100);
-        addTrans(CargoCategory.Mail, amount);
-        addTrans(CargoCategory.Passengers, amount);
+        addTrans(CargoCategory.MAIL, amount);
+        addTrans(CargoCategory.PASSENGER, amount);
         balanceSheetGenerator.calculateAll();
         m = balanceSheetGenerator.mailTotal;
         assertEquals(amount, m);
     }
 
     private void addTrans(CargoCategory category, Money amount) {
-        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
-            CargoType ct = (CargoType) world.get(SharedKey.CargoTypes, i);
+        // TODO i is not an id
+        for (int i = 0; i < world.getCargoTypes().size(); i++) {
+            CargoType ct = world.getCargoType(i);
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);
@@ -78,9 +84,14 @@ public class IncomeStatementGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().build();
+
+        // load cargo types
+        URL url = IncomeStatementGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
+        File file = new File(url.toURI());
+        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+
+        world = new World.Builder().setCargoTypes(cargoTypes).build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        MapFixtureFactory.generateCargoTypesList(world);
         balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PRINCIPAL);
     }
 }

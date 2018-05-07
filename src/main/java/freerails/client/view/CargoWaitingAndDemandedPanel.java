@@ -26,11 +26,10 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
+import freerails.model.cargo.CargoType;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.CargoType;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
@@ -171,17 +170,16 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
         final List<String> typeWaiting = new ArrayList<>();
         final List<Integer> quantityWaiting = new ArrayList<>();
         final Collection<String> typeDemanded = new ArrayList<>();
-        for (int i = 0; i < world.size(SharedKey.CargoTypes); i++) {
-            CargoType cargoType = (CargoType) world.get(SharedKey.CargoTypes, i);
-            int amountWaiting = cargoWaiting.getAmountOfType(i);
+        for (CargoType cargoType: world.getCargoTypes()) {
+            int amountWaiting = cargoWaiting.getAmountOfType(cargoType.getId());
 
             if (0 != amountWaiting) {
-                typeWaiting.add(cargoType.getDisplayName());
+                typeWaiting.add(cargoType.getName());
                 int carloads = amountWaiting / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
                 quantityWaiting.add(carloads);
             }
-            if (station.getDemandForCargo().isCargoDemanded(i)) {
-                typeDemanded.add(cargoType.getDisplayName());
+            if (station.getDemandForCargo().isCargoDemanded(cargoType.getId())) {
+                typeDemanded.add(cargoType.getName());
             }
         }
 

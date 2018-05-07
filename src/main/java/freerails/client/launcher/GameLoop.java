@@ -114,6 +114,7 @@ public class GameLoop implements Runnable {
                                      * the game straight away to avoid
                                      * hard-to-track-down bugs.
                                      */
+                                    re.printStackTrace();
                                     LauncherFrame.emergencyStop();
                                 } finally {
                                     g.dispose();
@@ -161,6 +162,7 @@ public class GameLoop implements Runnable {
                 loopMonitor.notify();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             LauncherFrame.emergencyStop();
         }
     }

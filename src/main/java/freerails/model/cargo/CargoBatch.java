@@ -30,20 +30,20 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
     // TODO Why is cargoType an int here and not CargoCategory or CargoType??
     private static final long serialVersionUID = 3257006557605540149L;
-    private final int cargoType;
+    private final int cargoTypeId;
     private final Vec2D sourceP;
     // TODO call it originalStationID
     private final int stationOfOrigin;
     private final long creationTime;
 
     /**
-     * @param cargoType
+     * @param cargoTypeId
      * @param p
      * @param time
      * @param origin
      */
-    public CargoBatch(int cargoType, Vec2D p, long time, int origin) {
-        this.cargoType = cargoType;
+    public CargoBatch(int cargoTypeId, Vec2D p, long time, int origin) {
+        this.cargoTypeId = cargoTypeId;
         sourceP = p;
         creationTime = time;
         stationOfOrigin = origin;
@@ -59,8 +59,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     /**
      * @return
      */
-    public int getCargoType() {
-        return cargoType;
+    public int getCargoTypeId() {
+        return cargoTypeId;
     }
 
     /**
@@ -75,7 +75,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (obj instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) obj;
 
-            return test.cargoType == cargoType && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.stationOfOrigin == stationOfOrigin;
+            return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.stationOfOrigin == stationOfOrigin;
         }
         return false;
     }
@@ -83,7 +83,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 37 * result + cargoType;
+        result = 37 * result + cargoTypeId;
         result = 37 * result + sourceP.hashCode();
         result = 37 * result + stationOfOrigin;
         result = 37 * result + (int) (creationTime ^ (creationTime >>> 32));
@@ -93,7 +93,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
     public int compareTo(CargoBatch o) {
         if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
-        if (cargoType != o.cargoType) return cargoType - o.cargoType;
+        if (cargoTypeId != o.cargoTypeId) return cargoTypeId - o.cargoTypeId;
         if (stationOfOrigin != o.stationOfOrigin) return stationOfOrigin - o.stationOfOrigin;
         if (!sourceP.equals(o.sourceP)) return sourceP.compareTo(o.sourceP);
         return 0;

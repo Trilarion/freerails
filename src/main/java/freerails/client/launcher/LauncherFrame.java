@@ -59,7 +59,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     private final Icon errorIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_ERROR));
     private final Icon warningIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_WARNING));
     private final Icon infoIcon = new ImageIcon(getClass().getResource(ClientConstants.ICON_INFO));
-    private final ProgressPanelModel progressPanel = new ProgressPanelModel(this);
     private JLabel infoLabel;
     private JPanel jPanel1;
     private JButton nextButton;
@@ -147,7 +146,6 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         jPanel1.add(wizardPages[1], "1");
         jPanel1.add(wizardPages[2], "2");
         jPanel1.add(wizardPages[3], "3");
-        jPanel1.add(progressPanel, "4");
         pack();
         hideAllMessages();
     }
@@ -173,6 +171,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             Thread t = new Thread(run, "Client main loop");
             t.start();
         } catch (Exception e) {
+            e.printStackTrace();
             emergencyStop();
         }
     }
@@ -200,6 +199,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             Thread t = new Thread(r, "FreerailsGameServer");
             t.start();
         } catch (Exception e) {
+            e.printStackTrace();
             emergencyStop();
         }
     }
@@ -264,6 +264,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
             Thread t = new Thread(run, "Client main loop");
             t.start();
         } catch (Exception e) {
+            e.printStackTrace();
             emergencyStop();
         }
     }
@@ -330,7 +331,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                         throw new NullPointerException("Couldn't resolve hostname.");
                     }
                     String playerName = clientOptionsPanel.getPlayerName();
-                    client = new LauncherClient(playerName, progressPanel, mode, clientOptionsPanel.getDisplayMode());
+                    client = new LauncherClient(playerName, mode, clientOptionsPanel.getDisplayMode());
 
                     String hostname = serverInetAddress.getHostName();
                     int port = serverInetAddress.getPort();
@@ -547,7 +548,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                             int mode = cop.getScreenMode();
 
                             prepareToHostNetworkGame(msp.getServerPort());
-                            client = new LauncherClient(cop.getPlayerName(), progressPanel, mode, cop.getDisplayMode());
+                            client = new LauncherClient(cop.getPlayerName(), mode, cop.getDisplayMode());
                             client.connect(server, cop.getPlayerName(), "password");
                         }
                     } else {
@@ -587,6 +588,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
                     throw new IllegalArgumentException(String.valueOf(currentPage));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             emergencyStop();
         }
     }

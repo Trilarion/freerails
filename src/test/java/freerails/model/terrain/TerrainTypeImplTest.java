@@ -22,8 +22,11 @@
 package freerails.model.terrain;
 
 import freerails.util.TestUtils;
+import freerails.util.Utils;
 import junit.framework.TestCase;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,9 +38,9 @@ public class TerrainTypeImplTest extends TestCase {
      *
      */
     public void testTileTypeImpl() {
-        List<TileProduction> productions = List.of(new TileProduction(69, 10));
-        List<TileConsumption> consumptions = List.of(new TileConsumption(4, 4), new TileConsumption(4, 5));
-        List<TileConversion> conversions1 = List.of(new TileConversion(50, 30));
+        List<TileProduction> productions = asList(new TileProduction(69, 10));
+        List<TileConsumption> consumptions = asList(new TileConsumption(4, 4), new TileConsumption(4, 5));
+        List<TileConversion> conversions1 = asList(new TileConversion(50, 30));
 
         TestUtils.assertCloneBySerializationBehavesWell(productions.get(0));
         TestUtils.assertCloneBySerializationBehavesWell(consumptions.get(0));
@@ -47,10 +50,15 @@ public class TerrainTypeImplTest extends TestCase {
 
         TestUtils.assertCloneBySerializationBehavesWell(terrainTypeImpl1);
 
-        List<TileConversion> conversions2 = List.of(new TileConversion(5, 30));
+        List<TileConversion> conversions2 = asList(new TileConversion(5, 30));
         TerrainTypeImpl terrainTypeImpl2 = new TerrainTypeImpl(0, TerrainCategory.Country, "Grassland", 100, productions, consumptions, conversions2, 10);
 
         assertFalse(terrainTypeImpl1.equals(terrainTypeImpl2));
+    }
+
+    public static <E> List<E> asList(E... e) {
+        Utils.verifyNotNull(e);
+        return Collections.unmodifiableList(Arrays.asList(e));
     }
 
 

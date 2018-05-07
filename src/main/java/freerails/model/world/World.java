@@ -23,7 +23,8 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.activity.ActivityIteratorImpl;
-import freerails.model.terrain.City2;
+import freerails.model.cargo.CargoType;
+import freerails.model.terrain.City;
 import freerails.model.train.Engine;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
@@ -73,21 +74,28 @@ public class World implements UnmodifiableWorld {
     public GameTime time = new GameTime(0);
 
     private final SortedSet<Engine> engines;
-    private final SortedSet<City2> cities;
+    private final SortedSet<City> cities;
+    private final SortedSet<CargoType> cargoTypes;
 
     public static class Builder {
 
         private SortedSet<Engine> engines = new TreeSet<>();
-        private SortedSet<City2> cities = new TreeSet<>();
+        private SortedSet<City> cities = new TreeSet<>();
+        private SortedSet<CargoType> cargoTypes = new TreeSet<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
         public Builder setEngines(SortedSet<Engine> engines) {
-            this.engines = engines;
+            this.engines = Utils.verifyNotNull(engines);
             return this;
         }
 
-        public Builder setCities(SortedSet<City2> cities) {
-            this.cities = cities;
+        public Builder setCities(SortedSet<City> cities) {
+            this.cities = Utils.verifyNotNull(cities);
+            return this;
+        }
+
+        public Builder setCargoTypes(SortedSet<CargoType> cargoTypes) {
+            this.cargoTypes = Utils.verifyNotNull(cargoTypes);
             return this;
         }
 
@@ -104,6 +112,7 @@ public class World implements UnmodifiableWorld {
     public World(Builder builder) {
         engines = builder.engines;
         cities = builder.cities;
+        cargoTypes = builder.cargoTypes;
 
         for (int i = 0; i < WorldItem.values().length; i++) {
             items.add(null);
@@ -117,6 +126,8 @@ public class World implements UnmodifiableWorld {
         setupMap(builder.mapSize);
     }
 
+    // TODO getNumberXXX
+
     // TODO unmodifiable collection?
     public Collection<Engine> getEngines() {
         return engines;
@@ -127,12 +138,21 @@ public class World implements UnmodifiableWorld {
     }
 
     // TODO unmodifiable collection
-    public Collection<City2> getCities() {
+    public Collection<City> getCities() {
         return cities;
     }
 
-    public City2 getCity(int id) {
+    public City getCity(int id) {
         return get(id, cities);
+    }
+
+    // TODO unmodifiable collection?
+    public Collection<CargoType> getCargoTypes() {
+        return cargoTypes;
+    }
+
+    public CargoType getCargoType(int id) {
+        return get(id, cargoTypes);
     }
 
     private <E extends Identifiable> E get(final int id, @NotNull final Collection<E> c) {

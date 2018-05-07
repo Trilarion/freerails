@@ -38,10 +38,10 @@ public interface RendererRoot extends TileRendererList {
     TrackPieceRenderer getTrackPieceView(int i);
 
     /**
-     * @param type
+     * @param cargoTypeId
      * @return
      */
-    TrainImages getWagonImages(int type);
+    TrainImages getWagonImages(int cargoTypeId);
 
     /**
      * @param type

@@ -18,7 +18,8 @@
 
 package freerails.model.world;
 
-import freerails.model.terrain.City2;
+import freerails.model.cargo.CargoType;
+import freerails.model.terrain.City;
 import freerails.model.train.Engine;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
@@ -64,9 +65,13 @@ public interface UnmodifiableWorld extends Serializable {
 
     Engine getEngine(int id);
 
-    Collection<City2> getCities();
+    Collection<City> getCities();
 
-    City2 getCity(int id);
+    City getCity(int id);
+
+    Collection<CargoType> getCargoTypes();
+
+    CargoType getCargoType(int id);
 
     /**
      * @return

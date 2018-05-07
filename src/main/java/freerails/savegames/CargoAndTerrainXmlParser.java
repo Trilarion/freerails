@@ -135,9 +135,6 @@ public class CargoAndTerrainXmlParser implements ContentHandler {
             case "Tile":
                 handler.startTile(attributes);
                 break;
-            case "Cargo":
-                handler.handleCargo(attributes);
-                break;
             case "Consumes":
                 handler.handleConsumptions(attributes);
                 break;

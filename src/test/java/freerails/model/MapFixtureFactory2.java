@@ -18,7 +18,8 @@
 
 package freerails.model;
 
-import freerails.gson.GsonManager;
+import freerails.io.GsonManager;
+import freerails.model.cargo.CargoType;
 import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
@@ -59,7 +60,13 @@ public class MapFixtureFactory2 {
      */
     public static synchronized World getCopy() {
         if (null == world) {
-            world = generateWorld();
+            try {
+                world = generateWorld();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
         /**
          * Returns a copy of this world object - making changes to this copy will
@@ -72,7 +79,7 @@ public class MapFixtureFactory2 {
      *
      * @return
      */
-    private static World generateWorld() {
+    private static World generateWorld() throws IOException, URISyntaxException {
 
         URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
         File file = null;
@@ -87,7 +94,13 @@ public class MapFixtureFactory2 {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).build();
+
+        // load cargo types
+        url = MapCreator.class.getResource("/freerails/data/scenario/cargo_types.json");
+        file = new File(url.toURI());
+        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+
+        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargoTypes(cargoTypes).build();
         MapCreator.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);

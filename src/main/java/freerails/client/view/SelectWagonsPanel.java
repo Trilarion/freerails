@@ -23,11 +23,12 @@
 
 package freerails.client.view;
 
+import freerails.client.StaticListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.WagonCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
-import freerails.model.world.SharedKey;
+import freerails.model.cargo.CargoType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +50,7 @@ public class SelectWagonsPanel extends JPanel implements View {
     private RendererRoot rendererRoot;
     private JLabel label1;
     private JButton okButton;
-    private JList wagonTypesJList;
+    private JList<CargoType> wagonTypesJList;
 
     /**
      *
@@ -234,10 +235,10 @@ public class SelectWagonsPanel extends JPanel implements View {
      * @param closeAction
      */
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        WorldToListModelAdapter w2lma = new WorldToListModelAdapter(modelRoot.getWorld(), SharedKey.CargoTypes);
-        wagonTypesJList.setModel(w2lma);
+        ListModel<CargoType> listModel = new StaticListModel<>(modelRoot.getWorld().getCargoTypes());
+        wagonTypesJList.setModel(listModel);
         this.rendererRoot = rendererRoot;
-        ListCellRenderer wagonCellRenderer = new WagonCellRenderer(w2lma, this.rendererRoot);
+        ListCellRenderer<CargoType> wagonCellRenderer = new WagonCellRenderer(listModel, this.rendererRoot);
         wagonTypesJList.setCellRenderer(wagonCellRenderer);
         okButton.addActionListener(closeAction);
     }

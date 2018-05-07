@@ -18,11 +18,11 @@
 
 package freerails.savegames;
 
+import freerails.model.cargo.CargoCategory;
+import freerails.model.cargo.CargoType;
 import freerails.util.ui.UiUtils;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
-import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoType;
 import freerails.model.terrain.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -41,6 +41,20 @@ import java.util.*;
 public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler {
 
     private final HashMap<String, Integer> cargoNameToCargoTypeNumber = new HashMap<>();
+    {
+        cargoNameToCargoTypeNumber.put("Mail", 0);
+        cargoNameToCargoTypeNumber.put("Passengers", 1);
+        cargoNameToCargoTypeNumber.put("Food", 2);
+        cargoNameToCargoTypeNumber.put("Livestock", 3);
+        cargoNameToCargoTypeNumber.put("Mfg._Goods", 4);
+        cargoNameToCargoTypeNumber.put("Grain", 5);
+        cargoNameToCargoTypeNumber.put("Coffee", 6);
+        cargoNameToCargoTypeNumber.put("Export_Goods", 7);
+        cargoNameToCargoTypeNumber.put("Petroleum", 8);
+        cargoNameToCargoTypeNumber.put("Oil", 9);
+        cargoNameToCargoTypeNumber.put("Wood", 10);
+        cargoNameToCargoTypeNumber.put("Sugar", 11);
+    }
     private final Collection<Integer> rgbValuesAlreadyUsed = new HashSet<>();
     private final List<TileConsumption> typeConsumes = new ArrayList<>();
     private final List<TileProduction> typeProduces = new ArrayList<>();
@@ -104,17 +118,6 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
     public void endTile() {
         Serializable tileType = new TerrainTypeImpl(tileRGB, tileCategory, tileID, tileROW, Collections.unmodifiableList(typeProduces), Collections.unmodifiableList(typeConsumes), Collections.unmodifiableList(typeConverts), tileBuildCost);
         world.add(SharedKey.TerrainTypes, tileType);
-    }
-
-    public void handleCargo(final Attributes attributes) {
-        String cargoID = attributes.getValue("id");
-        String cargoCategory = attributes.getValue("Category");
-        int unitWeight = Integer.parseInt(attributes.getValue("unitWeight"));
-        Serializable cargoType = new CargoType(unitWeight, cargoID, CargoCategory.valueOf(cargoCategory));
-
-        int cargoNumber = world.size(SharedKey.CargoTypes);
-        cargoNameToCargoTypeNumber.put(cargoID, cargoNumber);
-        world.add(SharedKey.CargoTypes, cargoType);
     }
 
     public void handleConsumptions(final Attributes attributes) throws SAXException {
