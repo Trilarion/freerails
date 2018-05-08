@@ -18,16 +18,75 @@
 
 package freerails.model.terrain;
 
+import freerails.model.track.NullTrackPiece;
+import freerails.model.track.NullTrackType;
+import freerails.model.track.TrackPiece;
+
 import java.io.Serializable;
 
 /**
- * Defines the interface of a terrain tile.
+ * A tile on the map.
+ *
  */
-public interface TerrainTile extends Serializable {
+// TODO find better name for what it really is
+public class TerrainTile implements Serializable {
 
-    // TODO what is the meaning of the terrain type id? defines how it is rendered, why int, why not the TerrainType type
+    private static final long serialVersionUID = 3617574907538847544L;
+    private final TrackPiece trackPiece;
+    private final int terrainTypeId;
+
+    public TerrainTile(int terrainTypeId) {
+        this.terrainTypeId = terrainTypeId;
+        trackPiece = NullTrackPiece.getInstance();
+    }
+
+    public TerrainTile(int terrainTypeId, TrackPiece trackPiece) {
+        this.terrainTypeId = terrainTypeId;
+        this.trackPiece = trackPiece;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        final TerrainTile that = (TerrainTile) obj;
+
+        if (terrainTypeId != that.terrainTypeId) return false;
+        return trackPiece != null ? trackPiece.equals(that.trackPiece) : that.trackPiece == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = (trackPiece != null ? trackPiece.hashCode() : 0);
+        result = 29 * result + terrainTypeId;
+        return result;
+    }
+
     /**
      * @return
      */
-    int getTerrainTypeID();
+    public int getTerrainTypeId() {
+        return terrainTypeId;
+    }
+
+    @Override
+    public String toString() {
+        return "trackPiece=" + trackPiece.toString() + " and terrainType is " + terrainTypeId;
+    }
+
+    /**
+     * @return
+     */
+    public TrackPiece getTrackPiece() {
+        return trackPiece;
+    }
+
+    /**
+     * @return
+     */
+    public boolean hasTrack() {
+        return trackPiece.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
+    }
 }

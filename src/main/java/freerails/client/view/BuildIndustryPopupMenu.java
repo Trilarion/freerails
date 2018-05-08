@@ -24,6 +24,7 @@ package freerails.client.view;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.terrain.TerrainType;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vec2D;
@@ -33,7 +34,6 @@ import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
-import freerails.model.terrain.TerrainType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

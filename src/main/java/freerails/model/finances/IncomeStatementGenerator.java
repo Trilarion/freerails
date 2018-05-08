@@ -18,7 +18,7 @@
 
 package freerails.model.finances;
 
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.util.Pair;
 import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
@@ -78,7 +78,7 @@ public class IncomeStatementGenerator {
             if (transaction instanceof CargoDeliveryMoneyTransaction) {
                 CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
                 int cargoTypeId = cargoDeliveryMoneyTransaction.getCargoBatch().getCargoTypeId();
-                CargoType ct = world.getCargoType(cargoTypeId);
+                Cargo ct = world.getCargoType(cargoTypeId);
                 switch (ct.getCategory()) {
                     case BULK_FREIGHT:
                         bulkFreightTotal += cargoDeliveryMoneyTransaction.price().amount;

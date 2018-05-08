@@ -22,7 +22,6 @@
 package freerails.model.train;
 
 import freerails.model.activity.ActivityIterator;
-import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
@@ -70,7 +69,7 @@ public class TrainAccessor {
     public static ImmutableList<Integer> spaceAvailable2(UnmodifiableWorld world, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
-        final int NUM_CARGO_TYPES = world.getCargoTypes().size();
+        final int NUM_CARGO_TYPES = world.getCargos().size();
         Integer[] spaceAvailable = new Integer[NUM_CARGO_TYPES];
         Arrays.fill(spaceAvailable, 0);
 

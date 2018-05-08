@@ -60,7 +60,7 @@ public class StationBoxRenderer implements Painter {
         Image wagonImage = rendererRoot.getWagonImages(0).getSideOnImage();
         wagonImageWidth = wagonImage.getWidth(null) * ClientConstants.WAGON_IMAGE_HEIGHT / wagonImage.getHeight(null);
 
-        int nrOfCargoTypes = world.getCargoTypes().size();
+        int nrOfCargoTypes = world.getCargos().size();
         cargoImages = new Image[nrOfCargoTypes];
         for (int i = 0; i < nrOfCargoTypes; i++) {
             String wagonFilename = rendererRoot.getWagonImages(i).sideOnFileName;
@@ -128,7 +128,7 @@ public class StationBoxRenderer implements Painter {
      */
     private Map<CargoCategory, List<Integer>> calculateCarLoads(CargoBatchBundle cargoBatchBundle) {
         // TODO overly complicated, easier way possible?
-        int numCargoTypes = world.getCargoTypes().size();
+        int numCargoTypes = world.getCargos().size();
         Map<CargoCategory, Integer> numberOfCarLoads = new HashMap<>();
         for (CargoCategory cargoCategory: CargoCategory.values()) {
             numberOfCarLoads.put(cargoCategory, 0);
@@ -143,7 +143,7 @@ public class StationBoxRenderer implements Painter {
             cars.put(cargoCategory, map);
         }
         for (int i = 0; i < numCargoTypes; i++) {
-            CargoType ct = world.getCargoType(i);
+            Cargo ct = world.getCargoType(i);
             int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads.put(ct.getCategory(), numberOfCarLoads.get(ct.getCategory()) + carsOfThisCargo);
             cars.get(ct.getCategory()).put(i, cars.get(ct.getCategory()).get(i) + carsOfThisCargo);

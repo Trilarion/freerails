@@ -26,7 +26,6 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vec2D;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
@@ -66,7 +65,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) world.getTile(Vec2D.ZERO)).getTrackPiece();
+        oldTrackPiece = world.getTile(Vec2D.ZERO).getTrackPiece();
 
         TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, 0);
         int owner = WorldUtils.getPlayerIndex(world, MapFixtureFactory.TEST_PRINCIPAL);

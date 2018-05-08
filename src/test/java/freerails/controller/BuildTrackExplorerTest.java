@@ -31,10 +31,10 @@ import freerails.model.*;
 import freerails.model.game.GameRules;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.terrain.TileTransition;
-import freerails.model.terrain.TerrainTypeImpl;
+import freerails.model.terrain.TerrainType;
 import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.World;
@@ -106,9 +106,9 @@ public class BuildTrackExplorerTest extends TestCase {
     public void test2() {
         // Check the the Ocean type is where we think it is.
         int occeanTypeNumber = 4;
-        TerrainTypeImpl ocean = (TerrainTypeImpl) world.get(SharedKey.TerrainTypes,
+        TerrainType ocean = (TerrainType) world.get(SharedKey.TerrainTypes,
                 occeanTypeNumber);
-        assertEquals(TerrainCategory.Ocean, ocean.getCategory());
+        assertEquals(TerrainCategory.OCEAN, ocean.getCategory());
 
         // Check that track cannot be built on ocean.
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
@@ -117,7 +117,7 @@ public class BuildTrackExplorerTest extends TestCase {
         }
 
         // Place some ocean.
-        FullTerrainTile tile = FullTerrainTile.getInstance(occeanTypeNumber);
+        TerrainTile tile = new TerrainTile(occeanTypeNumber);
         world.setTile(new Vec2D(10, 9), tile);
         world.setTile(new Vec2D(11, 10), tile);
 

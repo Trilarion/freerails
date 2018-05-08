@@ -21,15 +21,15 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.terrain.TerrainType;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
-import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 
@@ -41,8 +41,8 @@ public class ChangeTileMove implements MapUpdateMove {
 
     private static final long serialVersionUID = 3256726169272662320L;
     private final Vec2D location;
-    private final FullTerrainTile before;
-    private final FullTerrainTile after;
+    private final TerrainTile before;
+    private final TerrainTile after;
 
     /**
      * @param world
@@ -51,8 +51,8 @@ public class ChangeTileMove implements MapUpdateMove {
      */
     public ChangeTileMove(UnmodifiableWorld world, Vec2D location, int terrainTypeAfter) {
         this.location = location;
-        before = (FullTerrainTile) world.getTile(this.location);
-        after = FullTerrainTile.getInstance(terrainTypeAfter, before.getTrackPiece());
+        before = (TerrainTile) world.getTile(this.location);
+        after = new TerrainTile(terrainTypeAfter, before.getTrackPiece());
     }
 
     @Override
@@ -77,10 +77,10 @@ public class ChangeTileMove implements MapUpdateMove {
     }
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
-        FullTerrainTile actual = (FullTerrainTile) world.getTile(location);
-        TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, actual.getTerrainTypeID());
+        TerrainTile actual = world.getTile(location);
+        TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, actual.getTerrainTypeId());
 
-        if (type.getCategory() != TerrainCategory.Country) {
+        if (type.getCategory() != TerrainCategory.COUNTRY) {
             return MoveStatus.moveFailed("Can only build on clear terrain.");
         }
 
@@ -91,7 +91,7 @@ public class ChangeTileMove implements MapUpdateMove {
     }
 
     public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
-        FullTerrainTile actual = (FullTerrainTile) world.getTile(location);
+        TerrainTile actual = world.getTile(location);
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;
         }

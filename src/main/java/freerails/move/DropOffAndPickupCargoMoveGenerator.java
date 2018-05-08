@@ -28,7 +28,6 @@ import freerails.move.listmove.TransferCargoAtStationMove;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.MutableCargoBatchBundle;
@@ -100,7 +99,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             StationDemand demand = station.getDemandForCargo();
 
             // TODO i is not an id
-            for (int i = 0; i < world.getCargoTypes().size(); i++) {
+            for (int i = 0; i < world.getCargos().size(); i++) {
                 // If this cargo is demanded at the next scheduled station.
                 if (demand.isCargoDemanded(i)) {
                     int amount = stationAfter.getAmountOfType(i);

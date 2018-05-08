@@ -36,7 +36,7 @@ import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.track.TrackPiece;
@@ -287,8 +287,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         // Check whether the desired track section is single or double track.
         Vec2D tileA = desiredTrackSection.tileA();
         Vec2D tileB = desiredTrackSection.tileB();
-        FullTerrainTile fta = (FullTerrainTile) world.getTile(tileA);
-        FullTerrainTile ftb = (FullTerrainTile) world.getTile(tileB);
+        TerrainTile fta = (TerrainTile) world.getTile(tileA);
+        TerrainTile ftb = (TerrainTile) world.getTile(tileB);
         TrackPiece tpa = fta.getTrackPiece();
         TrackPiece tpb = ftb.getTrackPiece();
         int tracks = 1;

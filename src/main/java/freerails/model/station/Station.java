@@ -22,7 +22,7 @@ import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackRule;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -148,7 +148,7 @@ public class Station implements Serializable {
      * Return Station number if station exists at location or -1
      */
     public static int getStationNumberAtLocation(UnmodifiableWorld world, FreerailsPrincipal principal, Vec2D location) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
+        TerrainTile tile = (TerrainTile) world.getTile(location);
 
         TrackRule trackRule = tile.getTrackPiece().getTrackRule();
         if (trackRule.isStation() && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {

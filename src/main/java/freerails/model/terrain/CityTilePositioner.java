@@ -18,11 +18,9 @@
 
 package freerails.model.terrain;
 
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -35,9 +33,9 @@ import java.util.Random;
 public class CityTilePositioner {
 
     private final Random random = new Random();
-    private final List<TerrainType> urbanTerrainTypes = new ArrayList<>();
-    private final List<TerrainType> resourceTerrainTypes = new ArrayList<>();
-
+    private final List<TerrainType2> urbanTerrainTypes = new ArrayList<>();
+    private final List<TerrainType2> resourceTerrainTypes = new ArrayList<>();
+    private final List<TerrainType2> industryTerrainTypes = new ArrayList<>();
     private final World world;
 
     /**
@@ -47,18 +45,16 @@ public class CityTilePositioner {
         this.world = world;
 
         // get the different types of Urban/Industry/Resource terrain
-        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
-            TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, i);
-            switch (type.getCategory().ordinal()) {
-                case 0:
-                    urbanTerrainTypes.add(type);
+        for (TerrainType2 terrainType: world.getTerrainTypes()) {
+            switch (terrainType.getCategory()) {
+                case URBAN:
+                    urbanTerrainTypes.add(terrainType);
                     break;
-                case 6:
-                    Collection<TerrainType> industryTerrainTypes = new ArrayList<>();
-                    industryTerrainTypes.add(type);
+                case INDUSTRY:
+                    industryTerrainTypes.add(terrainType);
                     break;
-                case 7:
-                    resourceTerrainTypes.add(type);
+                case RESOURCE:
+                    resourceTerrainTypes.add(terrainType);
                     break;
             }
         }
@@ -93,7 +89,7 @@ public class CityTilePositioner {
 
     private void addResourceTile(CityModel city) {
         int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
-        TerrainType type = resourceTerrainTypes.get(tileTypeNo);
+        TerrainType2 type = resourceTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 
@@ -102,14 +98,14 @@ public class CityTilePositioner {
 
         if (size > 0) {
             int tileTypeNo = random.nextInt(size);
-            TerrainType type = city.industriesNotAtCity.get(tileTypeNo);
+            TerrainType2 type = city.industriesNotAtCity.get(tileTypeNo);
             city.addTile(type);
         }
     }
 
     private void addUrbanTile(CityModel city) {
         int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
-        TerrainType type = urbanTerrainTypes.get(tileTypeNo);
+        TerrainType2 type = urbanTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 

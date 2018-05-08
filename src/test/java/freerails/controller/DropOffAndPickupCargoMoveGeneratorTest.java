@@ -29,7 +29,6 @@ import freerails.move.MoveStatus;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.cargo.*;
 import freerails.model.player.Player;
@@ -65,9 +64,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // load cargo types
         URL url = IncomeStatementGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
         File file = new File(url.toURI());
-        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
 
-        world = new World.Builder().setCargoTypes(cargoTypes).build();
+        world = new World.Builder().setCargos(cargos).build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
 
         // Set up station
@@ -76,7 +75,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int stationCargoBundleId = world.add(MapFixtureFactory.TEST_PRINCIPAL,
                 PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
         String stationName = "Station 1";
-        Station station = new Station(new Vec2D(x, y), stationName, world.getCargoTypes().size(), stationCargoBundleId);
+        Station station = new Station(new Vec2D(x, y), stationName, world.getCargos().size(), stationCargoBundleId);
         world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
 
         // Set up train

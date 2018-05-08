@@ -22,7 +22,6 @@ import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.io.GsonManager;
 import freerails.model.train.Engine;
-import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.move.receiver.TestMoveReceiver;
 import freerails.savegames.MapCreator;
@@ -113,7 +112,7 @@ class DialogueBoxTester extends JFrame {
         actionRoot.setDialogueBoxController(dialogueBoxController);
         dialogueBoxController.setDefaultFocusOwner(this);
 
-        int numberOfCargoTypes = world.getCargoTypes().size();
+        int numberOfCargoTypes = world.getCargos().size();
         Station bristol = new Station(new Vec2D(10, 10), "Bristol", numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 

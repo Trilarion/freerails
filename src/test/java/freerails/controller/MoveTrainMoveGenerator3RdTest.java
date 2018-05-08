@@ -34,7 +34,7 @@ import freerails.model.train.PositionOnTrack;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import junit.framework.TestCase;
 
 /**
@@ -82,7 +82,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
     }
 
     private void findPath2Target(Vec2D target1, TileTransition[] expectedPath) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(target1);
+        TerrainTile tile = world.getTile(target1);
         assertTrue(tile.hasTrack());
         PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vec2D(10, 10), TileTransition.EAST);
         for (int i = 0; i < expectedPath.length; i++) {

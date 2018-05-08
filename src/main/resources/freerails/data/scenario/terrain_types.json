@@ -1,0 +1,117 @@
+[
+  {
+    "name": "City",
+    "category": "URBAN",
+    "id": 0
+  },
+  {
+    "name": "Refinery",
+    "category": "INDUSTRY",
+    "id": 1
+  },
+  {
+    "name": "Village",
+    "category": "URBAN",
+    "id": 2
+  },
+  {
+    "name": "Factory",
+    "category": "INDUSTRY",
+    "id": 3
+  },
+  {
+    "name": "Clear",
+    "category": "COUNTRY",
+    "id": 4
+  },
+  {
+    "name": "Farm",
+    "category": "COUNTRY",
+    "id": 5
+  },
+  {
+    "name": "Desert",
+    "category": "COUNTRY",
+    "id": 6
+  },
+  {
+    "name": "Ocean",
+    "category": "OCEAN",
+    "id": 7
+  },
+  {
+    "name": "Harbour",
+    "category": "OCEAN",
+    "id": 8
+  },
+  {
+    "name": "Stock-Yard",
+    "category": "INDUSTRY",
+    "id": 9
+  },
+  {
+    "name": "Food_Proc._Plant",
+    "category": "INDUSTRY",
+    "id": 10
+  },
+  {
+    "name": "Cattle_Ranch",
+    "category": "RESOURCE",
+    "id": 11
+  },
+  {
+    "name": "Grain_Elevator",
+    "category": "RESOURCE",
+    "id": 12
+  },
+  {
+    "name": "Oil_Well",
+    "category": "RESOURCE",
+    "id": 13
+  },
+  {
+    "name": "Lumber_Mill",
+    "category": "RESOURCE",
+    "id": 14
+  },
+  {
+    "name": "Sugar_Plant.",
+    "category": "RESOURCE",
+    "id": 15
+  },
+  {
+    "name": "River",
+    "category": "RIVER",
+    "id": 16
+  },
+  {
+    "name": "Landing",
+    "category": "RIVER",
+    "id": 17
+  },
+  {
+    "name": "Terminal",
+    "category": "SPECIAL",
+    "id": 18
+  },
+  {
+    "name": "Jungle",
+    "category": "COUNTRY",
+    "id": 19
+  },
+  {
+    "name": "Hills",
+    "category": "HILL",
+    "id": 20
+  },
+  {
+    "name": "Foothills",
+    "category": "HILL",
+    "id": 21
+  },
+  {
+    "name": "Mountain",
+    "category": "HILL",
+    "id": 22
+  }
+]

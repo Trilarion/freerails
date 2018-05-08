@@ -19,7 +19,8 @@
 package freerails.model;
 
 import freerails.io.GsonManager;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
+import freerails.model.terrain.TerrainType;
 import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
@@ -34,8 +35,7 @@ import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
 
 import java.io.File;
@@ -98,9 +98,9 @@ public class MapFixtureFactory2 {
         // load cargo types
         url = MapCreator.class.getResource("/freerails/data/scenario/cargo_types.json");
         file = new File(url.toURI());
-        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
 
-        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargoTypes(cargoTypes).build();
+        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).build();
         MapCreator.addTerrainTileTypesList(world);
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
@@ -129,7 +129,7 @@ public class MapFixtureFactory2 {
                 break;
             }
         }
-        FullTerrainTile tile = FullTerrainTile.getInstance(clearTypeID);
+        TerrainTile tile = new TerrainTile(clearTypeID);
         Vec2D mapSize = world.getMapSize();
         for (int x = 0; x < mapSize.x; x++) {
             for (int y = 0; y < mapSize.y; y++) {

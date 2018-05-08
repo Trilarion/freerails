@@ -27,14 +27,14 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.world.*;
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -211,7 +211,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
             Station station = (Station) world.get(modelRoot.getPrincipal(), PlayerKey.Stations, stationNumber);
-            FullTerrainTile tile = (FullTerrainTile) world.getTile(station.location);
+            TerrainTile tile = (TerrainTile) world.getTile(station.location);
             String stationTypeName = tile.getTrackPiece().getTrackRule().getTypeName();
             cargoBundleIndex = station.getCargoBundleID();
             CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(modelRoot.getPrincipal(), PlayerKey.CargoBundles, station.getCargoBundleID());
@@ -228,8 +228,8 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
             table1.append("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td>&nbsp;</td>\n    <td>Demand</td>\n    <td>Supplies<br/>(cars/year)</td><td>Ready<br />(loads)</td>  </tr>");
 
-            for (CargoType cargoType: world.getCargoTypes()) {
-                int id = cargoType.getId();
+            for (Cargo cargo : world.getCargos()) {
+                int id = cargo.getId();
 
                 String demanded = (station.getDemandForCargo().isCargoDemanded(id) ? "Yes" : "No");
 
@@ -243,7 +243,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
                 // build the html
                 if (station.getDemandForCargo().isCargoDemanded(id) || isSupplied) {
                     table1.append("<tr>");
-                    table1.append("<td>").append(cargoType.getName()).append("</td>");
+                    table1.append("<td>").append(cargo.getName()).append("</td>");
                     table1.append("<td align=center>").append(demanded).append("</td>");
                     table1.append("<td align=center>").append(supply).append("</td>");
                     table1.append("<td align=center>").append(waiting).append("</td>");

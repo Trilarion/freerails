@@ -37,7 +37,6 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.server.GameModel;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackPiece;
@@ -179,7 +178,7 @@ public class BuildTrackController implements GameModel {
             TileTransition vector = TileTransition.getInstance(Vec2D.subtract(point, oldPosition));
 
             // If there is already track between the two tiles, do nothing
-            FullTerrainTile tile = (FullTerrainTile) unmodifiableWorld.getTile(oldPosition);
+            TerrainTile tile = (TerrainTile) unmodifiableWorld.getTile(oldPosition);
 
             if (tile.getTrackPiece().getTrackConfiguration().contains(vector)) {
                 oldPosition = point;
@@ -231,13 +230,13 @@ public class BuildTrackController implements GameModel {
      * direction on the worldDiff object.
      */
     private MoveStatus planBuildingTrack(Vec2D point, TileTransition tileTransition) {
-        TerrainTile tileA = (FullTerrainTile) world.getTile(point);
+        TerrainTile tileA = world.getTile(point);
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
-        int trackTypeAID = buildTrackStrategy.getRule(tileA.getTerrainTypeID());
+        int trackTypeAID = buildTrackStrategy.getRule(tileA.getTerrainTypeId());
         TrackRule trackRuleA = (TrackRule) unmodifiableWorld.get(SharedKey.TrackRules, trackTypeAID);
 
-        TerrainTile tileB = (FullTerrainTile) world.getTile(Vec2D.add(point, tileTransition.getD()));
-        int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeID());
+        TerrainTile tileB = world.getTile(Vec2D.add(point, tileTransition.getD()));
+        int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeId());
         TrackRule trackRuleB = (TrackRule) unmodifiableWorld.get(SharedKey.TrackRules, trackTypeBID);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, tileTransition, trackRuleA, trackRuleB, world, principal);
@@ -430,8 +429,8 @@ public class BuildTrackController implements GameModel {
 
                             case UPGRADE_TRACK:
 
-                                FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
-                                int tt = tile.getTerrainTypeID();
+                                TerrainTile tile = world.getTile(location);
+                                int tt = tile.getTerrainTypeId();
                                 int trackRuleID = getBuildTrackStrategy().getRule(tt);
 
                                 /*

@@ -20,43 +20,38 @@ package freerails.model.terrain;
 
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
+import java.util.function.BiConsumer;
 
 /**
  * Lets the server analyse and alter cities.
  */
 public class CityModel {
 
-    public final Collection<CityTile> urbanCityTiles = new ArrayList<>();
-    public final Collection<CityTile> industryCityTiles = new ArrayList<>();
-    public final List<TerrainType> industriesNotAtCity = new ArrayList<>();
-    private final Collection<CityTile> resourceCityTiles = new ArrayList<>();
+    /**
+     * Map location -> terrainTypeId
+     */
+    public final Map<Vec2D, Integer> urbanCityTiles = new HashMap<>();
+    public final Map<Vec2D, Integer> industryCityTiles = new HashMap<>();
+    public final List<TerrainType2> industriesNotAtCity = new ArrayList<>();
+    private final Map<Vec2D, Integer> resourceCityTiles = new HashMap<>();
     public final List<Vec2D> clearTiles = new ArrayList<>();
     /**
      * The number of stations within this city's bounds.
      */
     public int stations = 0;
 
-    private static void writeTile(World world, CityTile cityTile) {
-        int type = 0;
-
-        while (!world.get(SharedKey.TerrainTypes, type).equals(cityTile.terrainType)) {
-            type++;
-        }
-
-        FullTerrainTile fTile = (FullTerrainTile) world.getTile(cityTile.location);
-        fTile = FullTerrainTile.getInstance(type, fTile.getTrackPiece());
-        world.setTile(cityTile.location, fTile);
+    private static void writeTile(World world, Vec2D location, int terrainTypeId) {
+        TerrainTile terrainTile = world.getTile(location);
+        terrainTile = new TerrainTile(terrainTypeId, terrainTile.getTrackPiece());
+        world.setTile(location, terrainTile);
     }
 
-    public void addTile(TerrainType type) {
+    public void addTile(TerrainType2 terrainType) {
         Random rand = new Random();
 
         // Pick a spot at random at which to place the tile.
@@ -64,18 +59,18 @@ public class CityModel {
             int tilePos = rand.nextInt(clearTiles.size());
             Vec2D p = clearTiles.remove(tilePos);
 
-            switch (type.getCategory()) {
-                case Urban:
-                    urbanCityTiles.add(new CityTile(p, type));
+            switch (terrainType.getCategory()) {
+                case URBAN:
+                    urbanCityTiles.put(p, terrainType.getId());
                     break;
-                case Industry:
-                    industryCityTiles.add(new CityTile(p, type));
-                    industriesNotAtCity.remove(type);
+                case INDUSTRY:
+                    industryCityTiles.put(p, terrainType.getId());
+                    industriesNotAtCity.remove(terrainType);
                     break;
-                case Country:
+                case COUNTRY:
                     throw new IllegalArgumentException("call remove(.) to replace a city tile with a country tile!");
-                case Resource:
-                    resourceCityTiles.add(new CityTile(p, type));
+                case RESOURCE:
+                    resourceCityTiles.put(p, terrainType.getId());
                     break;
             }
         }
@@ -91,11 +86,9 @@ public class CityModel {
         // Set up the list of industries not at the city.
         industriesNotAtCity.clear();
 
-        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
-            TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, i);
-
-            if (type.getCategory() == TerrainCategory.Industry) {
-                industriesNotAtCity.add(type);
+        for (TerrainType2 terrainType: world.getTerrainTypes()) {
+            if (terrainType.getCategory().equals(TerrainCategory.INDUSTRY)) {
+                industriesNotAtCity.add(terrainType);
             }
         }
 
@@ -112,30 +105,30 @@ public class CityModel {
         // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
+                TerrainTile tile = (TerrainTile) world.getTile(new Vec2D(x, y));
 
                 // Count the number of stations at the city.
                 if (tile.getTrackPiece().getTrackRule().isStation()) {
                     stations++;
                 }
 
-                int terrainTypeNumber = tile.getTerrainTypeID();
-                TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, terrainTypeNumber);
+                int terrainTypeId = tile.getTerrainTypeId();
+                TerrainType2 type = world.getTerrainType(terrainTypeId);
 
                 Vec2D location = new Vec2D(x, y);
                 switch (type.getCategory()) {
-                    case Urban:
-                        urbanCityTiles.add(new CityTile(location, type));
+                    case URBAN:
+                        urbanCityTiles.put(location, type.getId());
                         break;
-                    case Industry:
-                        industryCityTiles.add(new CityTile(location, type));
+                    case INDUSTRY:
+                        industryCityTiles.put(location, type.getId());
                         industriesNotAtCity.remove(type);
                         break;
-                    case Country:
+                    case COUNTRY:
                         clearTiles.add(location);
                         break;
-                    case Resource:
-                        resourceCityTiles.add(new CityTile(location, type));
+                    case RESOURCE:
+                        resourceCityTiles.put(location, type.getId());
                         break;
                 }
             }
@@ -147,17 +140,10 @@ public class CityModel {
     }
 
     public void writeToMap(World world) {
-        for (CityTile urbanCityTile : urbanCityTiles) {
-            writeTile(world, urbanCityTile);
-        }
-
-        for (CityTile industryCityTile : industryCityTiles) {
-            writeTile(world, industryCityTile);
-        }
-
-        for (CityTile resourceCityTile : resourceCityTiles) {
-            writeTile(world, resourceCityTile);
-        }
+        BiConsumer<Vec2D, Integer> f = (location, terrainTypeId) -> writeTile(world, location, terrainTypeId);
+        urbanCityTiles.forEach(f);
+        industryCityTiles.forEach(f);
+        resourceCityTiles.forEach(f);
     }
 
 }

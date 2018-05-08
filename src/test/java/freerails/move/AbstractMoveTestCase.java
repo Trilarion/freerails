@@ -31,7 +31,7 @@ import freerails.model.*;
 import freerails.model.game.GameCalendar;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.PathOnTiles;
 import freerails.model.world.World;
@@ -308,7 +308,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
      */
     protected void assertTrackHere(int x, int y) {
 
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
+        TerrainTile tile = world.getTile(new Vec2D(x, y));
         assertTrue(tile.hasTrack());
     }
 

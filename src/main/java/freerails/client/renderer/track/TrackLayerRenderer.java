@@ -3,7 +3,7 @@ package freerails.client.renderer.track;
 import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.map.MapLayerRenderer;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackPiece;
 import freerails.model.world.UnmodifiableWorld;
@@ -48,8 +48,8 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
             for (int tileY = tilesToPaint.y - 1; tileY < (tilesToPaint.y + tilesToPaint.height + 1); tileY++) {
                 if ((tileX >= 0) && (tileX < mapSize.x) && (tileY >= 0) && (tileY < mapSize.y)) {
                     Vec2D tileLocation = new Vec2D(tileX, tileY);
-                    FullTerrainTile fullTerrainTile = (FullTerrainTile) world.getTile(tileLocation);
-                    TrackPiece trackPiece = fullTerrainTile.getTrackPiece();
+                    TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
+                    TrackPiece trackPiece = terrainTile.getTrackPiece();
                     int graphicsNumber = trackPiece.getTrackGraphicID();
 
                     int ruleNumber = trackPiece.getTrackTypeID();

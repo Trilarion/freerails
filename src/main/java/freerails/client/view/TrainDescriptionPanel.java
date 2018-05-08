@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
@@ -125,11 +125,11 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, cargoBundleID);
         StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
         int numberOfTypesInBundle = 0;
-        for (CargoType cargoType: world.getCargoTypes()) {
-            int id = cargoType.getId();
+        for (Cargo cargo : world.getCargos()) {
+            int id = cargo.getId();
             int amount = cb.getAmountOfType(id);
             if (0 != amount) {
-                String cargoTypeName = cargoType.getName();
+                String cargoTypeName = cargo.getName();
                 if (0 != numberOfTypesInBundle) {
                     s.append("; ");
                 }

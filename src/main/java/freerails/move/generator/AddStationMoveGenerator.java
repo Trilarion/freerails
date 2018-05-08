@@ -35,7 +35,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackPieceImpl;
 import freerails.model.track.TrackRule;
@@ -97,11 +97,11 @@ public class AddStationMoveGenerator implements MoveGenerator {
     public Move generate(UnmodifiableWorld world) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
 
-        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(location);
+        TerrainTile oldTile = (TerrainTile) world.getTile(location);
         String cityName;
         String stationName;
 
-        FullTerrainTile ft = (FullTerrainTile) world.getTile(location);
+        TerrainTile ft = (TerrainTile) world.getTile(location);
         TrackPiece before = ft.getTrackPiece();
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 

@@ -41,7 +41,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
         if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
             TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
 
-            int typeNumber = terrainTile.getTerrainTypeID();
+            int typeNumber = terrainTile.getTerrainTypeId();
             TileRenderer tileRenderer = tiles.getTileRendererByIndex(typeNumber);
 
             if (null == tileRenderer) {

@@ -25,7 +25,7 @@ import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
 import java.awt.*;
@@ -77,7 +77,7 @@ public class BuildTrackRenderer implements Painter {
              */
             for (Vec2D p : proposedTrack.keySet()) {
                 Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
-                FullTerrainTile before = (FullTerrainTile) realWorld.getTile(p);
+                TerrainTile before = (TerrainTile) realWorld.getTile(p);
                 TrackPiece trackPiece = proposedTrack.get(p);
 
                 boolean trackRemoved = !trackPiece.getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());

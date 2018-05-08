@@ -25,7 +25,6 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.track.OccupiedTracks;
-import freerails.model.world.SharedKey;
 import freerails.model.world.PlayerKey;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
@@ -417,7 +416,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
                 .toImmutableCargoBundle());
 
         // Make station2 demand cargo #0;
-        boolean[] boolArray = new boolean[world.getCargoTypes().size()];
+        boolean[] boolArray = new boolean[world.getCargos().size()];
         boolArray[0] = true;
         StationDemand demand = new StationDemand(boolArray);
         Station station2 = (Station) world.get(principal, PlayerKey.Stations, 2);

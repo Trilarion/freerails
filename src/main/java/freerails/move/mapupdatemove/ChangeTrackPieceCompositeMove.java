@@ -30,7 +30,7 @@ import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameRules;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
 
@@ -94,7 +94,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         int owner = WorldUtils.getPlayerIndex(world, principal);
 
         if (world.boundsContain(p)) {
-            oldTrackPiece = ((FullTerrainTile) world.getTile(p)).getTrackPiece();
+            oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
@@ -116,7 +116,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackPiece newTrackPiece;
 
         if (world.boundsContain(p)) {
-            oldTrackPiece = ((FullTerrainTile) world.getTile(p)).getTrackPiece();
+            oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
 
             if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);

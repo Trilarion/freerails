@@ -3,12 +3,15 @@ package freerails.io;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import freerails.client.ARGBColor;
+import freerails.io.adapter.ColorAdapter;
 import freerails.io.adapter.MoneyAdapter;
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.finances.Money;
 import freerails.model.terrain.City;
+import freerails.model.terrain.TerrainType2;
 import freerails.model.train.Engine;
 import org.apache.commons.io.FileUtils;
 
@@ -17,6 +20,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
+/**
+ *
+ */
 public class GsonManager {
 
     private static Gson gson;
@@ -24,28 +30,67 @@ public class GsonManager {
     {
         GsonBuilder builder = new GsonBuilder().serializeNulls().setPrettyPrinting();
         builder.registerTypeAdapter(Money.class, new MoneyAdapter());
+        builder.registerTypeAdapter(ARGBColor.class, new ColorAdapter());
         gson = builder.create();
     }
 
     private static final Type enginesListType = new TypeToken<List<Engine>>(){}.getType();
     private static final Type citiesListType = new TypeToken<List<City>>(){}.getType();
-    private static final Type cargoTypesListType = new TypeToken<List<CargoType>>(){}.getType();
+    private static final Type cargoTypesListType = new TypeToken<List<Cargo>>(){}.getType();
+    private static final Type terrainTypesListType = new TypeToken<List<TerrainType2>>(){}.getType();
+    private static final Type terrainColorsMapType = new TypeToken<Map<Integer, ARGBColor>>(){}.getType();
 
     private GsonManager() {}
 
     public static SortedSet<Engine> loadEngines(File file) throws IOException {
-        return load(file, enginesListType);
+        return loadAsSortedSet(file, enginesListType);
     }
 
     public static SortedSet<City> loadCities(File file) throws IOException {
-        return load(file, citiesListType);
+        return loadAsSortedSet(file, citiesListType);
     }
 
-    public static SortedSet<CargoType> loadCargoTypes(File file) throws IOException {
-        return load(file, cargoTypesListType);
+    public static SortedSet<Cargo> loadCargoTypes(File file) throws IOException {
+        return loadAsSortedSet(file, cargoTypesListType);
     }
 
-    private static <T extends Identifiable> SortedSet<T> load(File file, Type type) throws IOException {
+    public static SortedSet<TerrainType2> loadTerrainTypes(File file) throws IOException {
+        return loadAsSortedSet(file, terrainTypesListType);
+    }
+
+    public static Map<Integer, ARGBColor> loadTerrainColors(File file) throws  IOException {
+        return loadAsMap(file, terrainColorsMapType);
+    }
+
+    /**
+     *
+     * @param file
+     * @param type
+     * @param <K>
+     * @param <V>
+     * @return
+     * @throws IOException
+     */
+    private static <K, V> Map<K, V> loadAsMap(File file, Type type) throws IOException {
+        // load json
+        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
+
+        // deserialize json
+        Map<K, V> map = gson.fromJson(json, type);
+
+        return map;
+    }
+
+    /**
+     * Additionally checks that no id is used twice.
+     *
+     * @param file
+     * @param type
+     * @param <T>
+     * @return
+     * @throws IOException
+     */
+    private static <T extends Identifiable> SortedSet<T> loadAsSortedSet(File file, Type type) throws IOException {
         // load json
         String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
 

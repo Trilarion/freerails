@@ -38,7 +38,6 @@ import freerails.util.Utils;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.station.TrainBlueprint;
-import freerails.model.terrain.FullTerrainTile;
 import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
@@ -336,8 +335,8 @@ public class DialogueBoxController implements WorldListListener {
      * @param p
      */
     private void showTerrainInfo(Vec2D p) {
-        TerrainTile tile = (FullTerrainTile) world.getTile(p);
-        int terrainType = tile.getTerrainTypeID();
+        TerrainTile tile = (TerrainTile) world.getTile(p);
+        int terrainType = tile.getTerrainTypeId();
         showTerrainInfo(terrainType);
     }
 

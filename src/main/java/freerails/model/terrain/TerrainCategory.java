@@ -18,12 +18,10 @@
 
 package freerails.model.terrain;
 
-import java.io.Serializable;
-
 /**
  * Category of a terrain.
  */
-public enum TerrainCategory implements Serializable {
+public enum TerrainCategory {
 
-    Urban, River, Ocean, Hill, Country, Special, Industry, Resource
+    URBAN, RIVER, OCEAN, HILL, COUNTRY, SPECIAL, INDUSTRY, RESOURCE
 }

@@ -22,10 +22,10 @@
  */
 package freerails.client.renderer.tile;
 
+import freerails.model.terrain.TerrainType;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.terrain.TerrainType;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

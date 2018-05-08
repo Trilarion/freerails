@@ -37,7 +37,7 @@ import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
 import freerails.model.ModelConstants;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NullTrackType;
 import freerails.model.track.PathIterator;
@@ -110,7 +110,7 @@ class TrainMotionExperiment extends JComponent {
         g.setColor(Color.GREEN);
         for (int x = 0; x < world.getMapSize().x; x++) {
             for (int y = 0; y < world.getMapSize().y; y++) {
-                FullTerrainTile tile = (FullTerrainTile) world.getTile(new Vec2D(x, y));
+                TerrainTile tile = world.getTile(new Vec2D(x, y));
                 if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
                     g.drawRect(x * ModelConstants.TILE_SIZE, y * ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE);
                 }

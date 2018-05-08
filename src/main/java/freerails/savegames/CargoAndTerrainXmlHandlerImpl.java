@@ -18,8 +18,6 @@
 
 package freerails.savegames;
 
-import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoType;
 import freerails.util.ui.UiUtils;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
@@ -116,7 +114,7 @@ public class CargoAndTerrainXmlHandlerImpl implements CargoAndTerrainXmlHandler 
     }
 
     public void endTile() {
-        Serializable tileType = new TerrainTypeImpl(tileRGB, tileCategory, tileID, tileROW, Collections.unmodifiableList(typeProduces), Collections.unmodifiableList(typeConsumes), Collections.unmodifiableList(typeConverts), tileBuildCost);
+        Serializable tileType = new TerrainType(tileRGB, tileCategory, tileID, tileROW, Collections.unmodifiableList(typeProduces), Collections.unmodifiableList(typeConsumes), Collections.unmodifiableList(typeConverts), tileBuildCost);
         world.add(SharedKey.TerrainTypes, tileType);
     }
 

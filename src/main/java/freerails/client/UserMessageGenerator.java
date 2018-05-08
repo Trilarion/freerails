@@ -18,7 +18,7 @@
 
 package freerails.client;
 
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.move.*;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.Utils;
@@ -117,13 +117,13 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(station.getStationName());
             message.append('\n');
             Money revenue = Money.ZERO;
-            Map<CargoType, Integer> cargoQuantities = new HashMap<>();
+            Map<Cargo, Integer> cargoQuantities = new HashMap<>();
             for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
                 revenue = Money.add(revenue, receipt.price());
                 cargoQuantities.put(world.getCargoType(batch.getCargoTypeId()), receipt.getQuantity());
             }
-            for (Map.Entry<CargoType, Integer> entry: cargoQuantities.entrySet()) {
+            for (Map.Entry<Cargo, Integer> entry: cargoQuantities.entrySet()) {
                 if (entry.getValue() > 0) {
                     message.append(entry.getValue());
                     message.append(' ');

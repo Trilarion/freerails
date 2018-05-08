@@ -47,7 +47,7 @@
 
         <!ELEMENT Tile (Converts|Consumes|Produces)*>
         <!ATTLIST Tile
-                Category (Urban | River | Ocean | Hill | Country | Special | Industry | Resource) #REQUIRED
+                Category (URBAN | RIVER | OCEAN | HILL | COUNTRY | SPECIAL | INDUSTRY | RESOURCE) #REQUIRED
                 right-of-way CDATA #REQUIRED
                 build_cost CDATA #IMPLIED
                 rgb CDATA #REQUIRED

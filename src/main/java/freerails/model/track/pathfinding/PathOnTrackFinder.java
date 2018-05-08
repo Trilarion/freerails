@@ -25,7 +25,7 @@ import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.NoTrackException;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.PositionOnTrack;
 import org.apache.log4j.Logger;
@@ -105,8 +105,8 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         logger.debug("Find track path from " + from + " to " + target);
 
         // Check there is track at both the points.
-        FullTerrainTile tileA = (FullTerrainTile) world.getTile(from);
-        FullTerrainTile tileB = (FullTerrainTile) world.getTile(target);
+        TerrainTile tileA = (TerrainTile) world.getTile(from);
+        TerrainTile tileB = (TerrainTile) world.getTile(target);
         if (!tileA.hasTrack()) {
             throw new PathNotFoundException("No track at " + from.x + ", " + from.y + '.');
         }

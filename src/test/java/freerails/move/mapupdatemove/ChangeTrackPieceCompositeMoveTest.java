@@ -33,7 +33,7 @@ import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
 import freerails.model.world.World;
@@ -78,12 +78,12 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         // Remove only track piece built.
         assertRemoveTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST);
-        TrackConfiguration trackConfiguration = ((FullTerrainTile) getWorld()
-                .getTile(new Vec2D(0, 5))).getTrackPiece().getTrackConfiguration();
+        TrackConfiguration trackConfiguration = getWorld()
+                .getTile(new Vec2D(0, 5)).getTrackPiece().getTrackConfiguration();
         TrackConfiguration expected = NullTrackPiece.getInstance().getTrackConfiguration();
         assertEquals(expected, trackConfiguration);
-        TrackConfiguration trackConfiguration2 = ((FullTerrainTile) getWorld()
-                .getTile(new Vec2D(1, 5))).getTrackPiece().getTrackConfiguration();
+        TrackConfiguration trackConfiguration2 = getWorld()
+                .getTile(new Vec2D(1, 5)).getTrackPiece().getTrackConfiguration();
 
         assertEquals(expected, trackConfiguration2);
     }
@@ -126,11 +126,11 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackSucceeds(new Vec2D(0, 6), TileTransition.EAST, trackRule);
         // Now change the owner of the track piece at (1, 6);
         int anotherPlayer = 999;
-        FullTerrainTile oldTile = (FullTerrainTile) world.getTile(new Vec2D(1, 6));
+        TerrainTile oldTile = world.getTile(new Vec2D(1, 6));
         TrackPiece tp = oldTile.getTrackPiece();
         TrackPiece newTrackPiece = new TrackPieceImpl(tp.getTrackConfiguration(), tp.getTrackRule(), anotherPlayer,
                 TRACK_RULE_ID);
-        FullTerrainTile newTile = FullTerrainTile.getInstance(oldTile.getTerrainTypeID(), newTrackPiece);
+        TerrainTile newTile = new TerrainTile(oldTile.getTerrainTypeId(), newTrackPiece);
         world.setTile(new Vec2D(1, 6), newTile);
         assertBuildTrackFails(new Vec2D(1, 6), TileTransition.EAST, trackRule);
         world.setTile(new Vec2D(1, 6), oldTile);

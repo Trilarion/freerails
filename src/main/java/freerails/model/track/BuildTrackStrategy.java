@@ -23,9 +23,9 @@
 
 package freerails.model.track;
 
+import freerails.model.terrain.TerrainType;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.terrain.TerrainType;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -23,7 +23,7 @@ import freerails.client.model.StationBuildModel;
 import freerails.client.renderer.map.detail.StationRadiusRenderer;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -58,7 +58,7 @@ public class StationTypesPopup extends JPopupMenu {
      */
     public boolean canBuiltStationHere(Vec2D p) {
         stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
-        FullTerrainTile tile = (FullTerrainTile) modelRoot.getWorld().getTile(p);
+        TerrainTile tile = (TerrainTile) modelRoot.getWorld().getTile(p);
         return tile.hasTrack();
     }
 

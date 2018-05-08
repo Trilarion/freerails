@@ -32,7 +32,6 @@ import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
@@ -68,7 +67,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Vec2D.ZERO)).getTrackPiece();
+        oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
 
         final int trackRuleID = 0;
         final TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, trackRuleID);
@@ -118,7 +117,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Vec2D.ZERO)).getTrackPiece();
+        oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);
         newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
@@ -139,7 +138,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
         assertEquals(true, moveStatus.succeeds());
-        TrackConfiguration actual = ((FullTerrainTile) getWorld().getTile(Vec2D.ZERO))
+        TrackConfiguration actual = getWorld().getTile(Vec2D.ZERO)
                 .getTrackPiece().getTrackConfiguration();
         assertEquals(newTrackPiece.getTrackConfiguration(), actual);
     }
@@ -152,7 +151,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
         newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = ((FullTerrainTile) getWorld().getTile(Vec2D.ZERO))
+        oldTrackPiece = getWorld().getTile(Vec2D.ZERO)
                 .getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);

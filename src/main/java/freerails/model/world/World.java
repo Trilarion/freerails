@@ -23,8 +23,9 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.activity.ActivityIteratorImpl;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.terrain.City;
+import freerails.model.terrain.TerrainType2;
 import freerails.model.train.Engine;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
@@ -35,7 +36,7 @@ import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -68,20 +69,23 @@ public class World implements UnmodifiableWorld {
      * A 3D list: D1 is player, D2 is type, D3 is element.
      */
     public Map<FreerailsPrincipal, Map<PlayerKey, List<Serializable>>> playerLists = new HashMap<>();
-    private Serializable[][] map;
+    private Vec2D mapSize;
+    private TerrainTile[] map;
     public List<Player> players = new ArrayList<>();
     public Map<SharedKey, List<Serializable>> sharedKeyLists = new HashMap<>();
     public GameTime time = new GameTime(0);
 
     private final SortedSet<Engine> engines;
     private final SortedSet<City> cities;
-    private final SortedSet<CargoType> cargoTypes;
+    private final SortedSet<Cargo> cargos;
+    private final SortedSet<TerrainType2> terrainTypes;
 
     public static class Builder {
 
         private SortedSet<Engine> engines = new TreeSet<>();
         private SortedSet<City> cities = new TreeSet<>();
-        private SortedSet<CargoType> cargoTypes = new TreeSet<>();
+        private SortedSet<Cargo> cargos = new TreeSet<>();
+        private SortedSet<TerrainType2> terrainTypes = new TreeSet<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
         public Builder setEngines(SortedSet<Engine> engines) {
@@ -94,8 +98,13 @@ public class World implements UnmodifiableWorld {
             return this;
         }
 
-        public Builder setCargoTypes(SortedSet<CargoType> cargoTypes) {
-            this.cargoTypes = Utils.verifyNotNull(cargoTypes);
+        public Builder setCargos(SortedSet<Cargo> cargos) {
+            this.cargos = Utils.verifyNotNull(cargos);
+            return this;
+        }
+
+        public Builder setTerrainTypes(SortedSet<TerrainType2> terrainTypes) {
+            this.terrainTypes = Utils.verifyNotNull(terrainTypes);
             return this;
         }
 
@@ -112,7 +121,8 @@ public class World implements UnmodifiableWorld {
     public World(Builder builder) {
         engines = builder.engines;
         cities = builder.cities;
-        cargoTypes = builder.cargoTypes;
+        cargos = builder.cargos;
+        terrainTypes = builder.terrainTypes;
 
         for (int i = 0; i < WorldItem.values().length; i++) {
             items.add(null);
@@ -147,12 +157,21 @@ public class World implements UnmodifiableWorld {
     }
 
     // TODO unmodifiable collection?
-    public Collection<CargoType> getCargoTypes() {
-        return cargoTypes;
+    public Collection<Cargo> getCargos() {
+        return cargos;
     }
 
-    public CargoType getCargoType(int id) {
-        return get(id, cargoTypes);
+    public Cargo getCargoType(int id) {
+        return get(id, cargos);
+    }
+
+    // TODO unmodifiable collection?
+    public Collection<TerrainType2> getTerrainTypes() {
+        return terrainTypes;
+    }
+
+    public TerrainType2 getTerrainType(int id) {
+        return get(id, terrainTypes);
     }
 
     private <E extends Identifiable> E get(final int id, @NotNull final Collection<E> c) {
@@ -376,13 +395,7 @@ public class World implements UnmodifiableWorld {
     }
 
     public Vec2D getMapSize() {
-        if (map.length == 0) {
-            return Vec2D.ZERO;
-        }
-        // When the map size is 0*0 we get a
-        // java.lang.ArrayIndexOutOfBoundsException: 0
-        // if we don't have the check above.
-        return new Vec2D(map.length, map[0].length);
+        return mapSize;
     }
 
     /**
@@ -408,8 +421,12 @@ public class World implements UnmodifiableWorld {
         return players.get(i);
     }
 
-    public Serializable getTile(Vec2D location) {
-        return map[location.x][location.y];
+    private int getMapIndex(Vec2D location) {
+        return location.x * mapSize.y + location.y;
+    }
+
+    public TerrainTile getTile(Vec2D location) {
+        return map[getMapIndex(location)];
     }
 
     /**
@@ -463,14 +480,6 @@ public class World implements UnmodifiableWorld {
      */
     public Serializable removeLast(FreerailsPrincipal principal, PlayerKey playerKey) {
         List<Serializable> serializables = playerLists.get(principal).get(playerKey);
-        return serializables.remove(serializables.size() - 1);
-    }
-
-    /**
-     * Removes the last element from the specified list.
-     */
-    public Serializable removeLast(SharedKey key) {
-        List<Serializable> serializables = sharedKeyLists.get(key);
         return serializables.remove(serializables.size() - 1);
     }
 
@@ -567,8 +576,8 @@ public class World implements UnmodifiableWorld {
      * Replaces the tile at the specified position on the map with the specified
      * tile.
      */
-    public void setTile(Vec2D p, Serializable tile) {
-        map[p.x][p.y] = tile;
+    public void setTile(Vec2D location, TerrainTile tile) {
+        map[getMapIndex(location)] = tile;
     }
 
     // TODO instead of setting a new time, call advance on the time.
@@ -583,12 +592,12 @@ public class World implements UnmodifiableWorld {
      * @param mapSize
      */
     public void setupMap(Vec2D mapSize) {
-        map = new Serializable[mapSize.x][mapSize.y];
+        this.mapSize = mapSize;
+        map = new TerrainTile[mapSize.x * mapSize.y];
 
-        for (int x = 0; x < mapSize.x; x++) {
-            for (int y = 0; y < mapSize.y; y++) {
-                map[x][y] = FullTerrainTile.NULL;
-            }
+        // TODO what is a good default initializer here or should we stay with null?
+        for (int i = 0; i < map.length; i++) {
+            map[i] = new TerrainTile(0);
         }
     }
 

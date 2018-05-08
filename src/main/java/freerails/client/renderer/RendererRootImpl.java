@@ -19,7 +19,8 @@
 package freerails.client.renderer;
 
 import freerails.client.ClientConstants;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
+import freerails.model.terrain.TerrainType;
 import freerails.model.train.Engine;
 import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
@@ -30,7 +31,6 @@ import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.terrain.TerrainCategory;
-import freerails.model.terrain.TerrainType;
 import org.apache.log4j.Logger;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -70,9 +70,9 @@ public class RendererRootImpl implements RendererRoot {
         // Pre-load sounds..
         String[] soundsFiles = {ClientConstants.SOUND_BUILD_TRACK, ClientConstants.SOUND_CASH, ClientConstants.SOUND_REMOVE_TRACK, ClientConstants.SOUND_WHISTLE};
         SoundManager sm = SoundManager.getInstance();
-        for (int i = 0; i < soundsFiles.length; i++) {
+        for (String soundsFile : soundsFiles) {
             try {
-                sm.addClip(soundsFiles[i]);
+                sm.addClip(soundsFile);
             } catch (IOException | UnsupportedAudioFileException e) {
                 e.printStackTrace();
             }
@@ -81,8 +81,8 @@ public class RendererRootImpl implements RendererRoot {
 
     private void loadTrainImages(UnmodifiableWorld world) throws IOException {
         // Load wagon images.
-        for (CargoType cargoType: world.getCargoTypes()) {
-            String name = cargoType.getName();
+        for (Cargo cargo : world.getCargos()) {
+            String name = cargo.getName();
             TrainImages ti = new TrainImages(imageManager, name);
             wagonImages.add(ti);
         }
@@ -120,7 +120,7 @@ public class RendererRootImpl implements RendererRoot {
                 // treat harbours as the same type.
                 TerrainCategory thisTerrainCategory = terrainType.getCategory();
 
-                if (thisTerrainCategory == TerrainCategory.River || thisTerrainCategory == TerrainCategory.Ocean) {
+                if (thisTerrainCategory == TerrainCategory.RIVER || thisTerrainCategory == TerrainCategory.OCEAN) {
                     // Count number of types with category "water"
                     int count = 0;
 
@@ -128,7 +128,7 @@ public class RendererRootImpl implements RendererRoot {
                         TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory == TerrainCategory.Ocean || terrainCategory == thisTerrainCategory) {
+                        if (terrainCategory == TerrainCategory.OCEAN || terrainCategory == thisTerrainCategory) {
                             count++;
                         }
                     }
@@ -140,7 +140,7 @@ public class RendererRootImpl implements RendererRoot {
                         TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
                         TerrainCategory terrainCategory = t2.getCategory();
 
-                        if (terrainCategory == TerrainCategory.Ocean || terrainCategory == thisTerrainCategory) {
+                        if (terrainCategory == TerrainCategory.OCEAN || terrainCategory == thisTerrainCategory) {
                             typesTreatedAsTheSame[count] = j;
                             count++;
                         }

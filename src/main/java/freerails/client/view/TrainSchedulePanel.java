@@ -21,7 +21,7 @@ package freerails.client.view;
 import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.world.*;
 import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.move.Move;
@@ -459,10 +459,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void setupWagonsPopup() {
         addWagonJMenu.removeAll(); // Remove existing menu items.
 
-        for (CargoType cargoType: modelRoot.getWorld().getCargoTypes()) {
+        for (Cargo cargo : modelRoot.getWorld().getCargos()) {
             JMenuItem wagonMenuItem = new JMenuItem();
-            final int cargoTypeId = cargoType.getId();
-            wagonMenuItem.setText(cargoType.getName());
+            final int cargoTypeId = cargo.getId();
+            wagonMenuItem.setText(cargo.getName());
             Image image = vl.getWagonImages(cargoTypeId).getSideOnImage();
             int height = image.getHeight(null);
             int width = image.getWidth(null);

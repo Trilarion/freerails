@@ -1,7 +1,7 @@
 package freerails.savegames;
 
 import freerails.io.GsonManager;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
@@ -62,9 +62,14 @@ public class MapCreator {
         // load cargo types
         url = MapCreator.class.getResource("/freerails/data/scenario/cargo_types.json");
         file = new File(url.toURI());
-        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
 
-        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargoTypes(cargoTypes);
+        // load terrain types
+        url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        file = new File(url.toURI());
+        SortedSet<TerrainType2> terrainTypes = GsonManager.loadTerrainTypes(file);
+
+        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes);
         World world = builder.build();
 
         addTerrainTileTypesList(world);
@@ -96,6 +101,7 @@ public class MapCreator {
             rgb2TerrainType.put(terrainType.getRGB(), i);
         }
 
+        // TODO what is the purpose of the following section
         TerrainType terrainTypeTile;
         final List<Integer> countryTypes = new ArrayList();
         final List<Integer> non_countryTypes = new ArrayList();
@@ -103,13 +109,13 @@ public class MapCreator {
         for (int c = 0; c < world.size(SharedKey.TerrainTypes); c++) {
             terrainTypeTile = (TerrainType) world.get(SharedKey.TerrainTypes, c);
 
-            if (terrainTypeTile.getCategory() == TerrainCategory.Country) {
+            if (terrainTypeTile.getCategory() == TerrainCategory.COUNTRY) {
                 if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
                     countryTypes.add(c);
                 }
             }
 
-            if (terrainTypeTile.getCategory() == TerrainCategory.Ocean || terrainTypeTile.getCategory() == TerrainCategory.River || terrainTypeTile.getCategory() == TerrainCategory.Hill) {
+            if (terrainTypeTile.getCategory() == TerrainCategory.OCEAN || terrainTypeTile.getCategory() == TerrainCategory.RIVER || terrainTypeTile.getCategory() == TerrainCategory.HILL) {
                 non_countryTypes.add(c);
             }
         }
@@ -124,17 +130,17 @@ public class MapCreator {
         for (int x = 0; x < mapRect.width; x++) {
             for (int y = 0; y < mapRect.height; y++) {
                 int rgb = mapBufferedImage.getRGB(x, y);
-                FullTerrainTile tile;
+                TerrainTile tile;
                 Integer type = rgb2TerrainType.get(rgb);
 
                 if (null == type) {
                     throw new NullPointerException("There is no terrain type mapped to rgb value " + rgb + " at location " + x + ", " + y);
                 }
 
-                tile = FullTerrainTile.getInstance(terrainRandomizer.getNewType(type));
+                tile = new TerrainTile(terrainRandomizer.getNewType(type));
                 Vec2D location = new Vec2D(x, y);
-                if (countryTypes.contains(tile.getTerrainTypeID())) {
-                    locations.add(new TerrainAtLocation(location, tile.getTerrainTypeID()));
+                if (countryTypes.contains(tile.getTerrainTypeId())) {
+                    locations.add(new TerrainAtLocation(location, tile.getTerrainTypeId()));
                 }
 
                 world.setTile(location, tile);
@@ -142,7 +148,7 @@ public class MapCreator {
         }
 
         for (TerrainAtLocation terrainAtLocation : locations) {
-            FullTerrainTile tile = FullTerrainTile.getInstance(terrainAtLocation.getType());
+            TerrainTile tile = new TerrainTile(terrainAtLocation.getType());
 
             Vec2D location = terrainAtLocation.getLocation();
             int val = 3;
@@ -155,7 +161,7 @@ public class MapCreator {
                     for (int n = location.y - val; n < location.y + val; n++) {
                         if (Math.random() > prob) {
                             Vec2D p = new Vec2D(m, n);
-                            if (!non_countryTypes.contains(((FullTerrainTile) world.getTile(p)).getTerrainTypeID())) {
+                            if (!non_countryTypes.contains(world.getTile(p).getTerrainTypeId())) {
                                 world.setTile(p, tile);
                             }
                         }
@@ -218,5 +224,23 @@ public class MapCreator {
             throw new RuntimeException(e);
         }
         */
+
+        // convert terraintypes from xml to json
+        File file = new File("terrain_types.json");
+        //File f2 = new File("terrain_colors.json");
+        SortedSet<TerrainType2> terrainTypes = new TreeSet<>();
+        //Map<Integer, ARGBColor> rgbMap = new HashMap<>();
+        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
+            TerrainType a = (TerrainType) world.get(SharedKey.TerrainTypes, i);
+            TerrainType2 b = new TerrainType2(i, a.getTerrainTypeName(), a.getCategory());
+            terrainTypes.add(b);
+            //rgbMap.put(i, new ARGBColor(a.getRGB()));
+        }
+        try {
+            GsonManager.save(file, terrainTypes);
+            // GsonManager.save(f2, rgbMap);
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

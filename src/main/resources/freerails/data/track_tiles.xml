@@ -23,14 +23,14 @@
         <TrackType type="standard track" X="0" Y="0" signalTower="false" doubleTrack="false" category="track"
                    maxConsecutivePieces="-1" RGBvalue="000000" price="10000" maintenance="1000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="Urban"/>
+                <TerrainType name="URBAN"/>
 
-                <TerrainType name="Country"/>
+                <TerrainType name="COUNTRY"/>
 
-                <TerrainType name="Industry"/>
+                <TerrainType name="INDUSTRY"/>
 
-                <TerrainType name="Resource"/>
-                <TerrainType name="Special"/>
+                <TerrainType name="RESOURCE"/>
+                <TerrainType name="SPECIAL"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -97,14 +97,14 @@
         <TrackType type="double track" X="0" Y="15" signalTower="false" doubleTrack="true" category="track"
                    maxConsecutivePieces="-1" RGBvalue="000001" price="20000" maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="Urban"/>
+                <TerrainType name="URBAN"/>
 
-                <TerrainType name="Country"/>
+                <TerrainType name="COUNTRY"/>
 
-                <TerrainType name="Special"/>
-                <TerrainType name="Industry"/>
+                <TerrainType name="SPECIAL"/>
+                <TerrainType name="INDUSTRY"/>
 
-                <TerrainType name="Resource"/>
+                <TerrainType name="RESOURCE"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -150,7 +150,7 @@
         <TrackType type="wooden trestle bridge" X="9" Y="2" signalTower="false" doubleTrack="false" category="bridge"
                    maxConsecutivePieces="-1" RGBvalue="000003" price="10000" fixedCost="50000" maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="River"/>
+                <TerrainType name="RIVER"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -171,7 +171,7 @@
         <TrackType type="tunnel" X="9" Y="0" signalTower="false" doubleTrack="false" category="tunnel"
                    maxConsecutivePieces="-1" RGBvalue="000002" price="40000" maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="Hill"/>
+                <TerrainType name="HILL"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -192,7 +192,7 @@
         <TrackType type="steel girder bridge" X="9" Y="4" signalTower="false" doubleTrack="false" category="bridge"
                    maxConsecutivePieces="-1" RGBvalue="000004" price="10000" fixedCost="100000" maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="River"/>
+                <TerrainType name="RIVER"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -213,7 +213,7 @@
         <TrackType type="stone masonry bridge" X="9" Y="6" signalTower="false" doubleTrack="false" category="bridge"
                    maxConsecutivePieces="-1" RGBvalue="000005" price="10000" fixedCost="200000" maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="River"/>
+                <TerrainType name="RIVER"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -235,14 +235,14 @@
         <TrackType type="depot" X="9" Y="10" signalTower="true" doubleTrack="false" category="station" stationRadius="1"
                    maxConsecutivePieces="-1" RGBvalue="000007" price="10000" fixedCost="50000" maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="Urban"/>
+                <TerrainType name="URBAN"/>
 
-                <TerrainType name="Country"/>
+                <TerrainType name="COUNTRY"/>
 
-                <TerrainType name="Special"/>
-                <TerrainType name="Industry"/>
+                <TerrainType name="SPECIAL"/>
+                <TerrainType name="INDUSTRY"/>
 
-                <TerrainType name="Resource"/>
+                <TerrainType name="RESOURCE"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -264,14 +264,14 @@
                    maxConsecutivePieces="-1" stationRadius="2" RGBvalue="000008" price="10000" fixedCost="100000"
                    maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="Urban"/>
+                <TerrainType name="URBAN"/>
 
-                <TerrainType name="Country"/>
+                <TerrainType name="COUNTRY"/>
 
-                <TerrainType name="Special"/>
-                <TerrainType name="Industry"/>
+                <TerrainType name="SPECIAL"/>
+                <TerrainType name="INDUSTRY"/>
 
-                <TerrainType name="Resource"/>
+                <TerrainType name="RESOURCE"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>
@@ -293,14 +293,14 @@
                    maxConsecutivePieces="-1" stationRadius="3" RGBvalue="000009" price="10000" fixedCost="200000"
                    maintenance="2000">
             <CanOnlyBuildOnTheseTerrainTypes>
-                <TerrainType name="Urban"/>
+                <TerrainType name="URBAN"/>
 
-                <TerrainType name="Country"/>
+                <TerrainType name="COUNTRY"/>
 
-                <TerrainType name="Special"/>
-                <TerrainType name="Industry"/>
+                <TerrainType name="SPECIAL"/>
+                <TerrainType name="INDUSTRY"/>
 
-                <TerrainType name="Resource"/>
+                <TerrainType name="RESOURCE"/>
             </CanOnlyBuildOnTheseTerrainTypes>
 
             <ListOfTrackPieceTemplates>

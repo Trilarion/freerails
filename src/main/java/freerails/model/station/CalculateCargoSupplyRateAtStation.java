@@ -62,7 +62,7 @@ public class CalculateCargoSupplyRateAtStation {
         populateSuppliesVector();
 
         // TODO demand and converts should be a MAP instead
-        int numCargoTypes = world.getCargoTypes().size();
+        int numCargoTypes = world.getCargos().size();
         demand = new int[numCargoTypes];
         converts = StationCargoConversion.emptyConversionArray(numCargoTypes);
     }
@@ -76,7 +76,7 @@ public class CalculateCargoSupplyRateAtStation {
 
     // TODO inline this but be careful because this and super must be on the first line
     private static int findTrackRule(Vec2D location, UnmodifiableWorld world) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
+        TerrainTile tile = (TerrainTile) world.getTile(location);
         return tile.getTrackPiece().getTrackTypeID();
     }
 
@@ -91,7 +91,7 @@ public class CalculateCargoSupplyRateAtStation {
      * @return
      */
     private StationDemand getDemand() {
-        final int n = world.getCargoTypes().size();
+        final int n = world.getCargos().size();
         boolean[] demandboolean = new boolean[n];
 
         for (int i = 0; i < n; i++) {
@@ -104,7 +104,7 @@ public class CalculateCargoSupplyRateAtStation {
     }
 
     private void incrementSupplyAndDemand(Vec2D p) {
-        int tileTypeNumber = ((FullTerrainTile) world.getTile(p)).getTerrainTypeID();
+        int tileTypeNumber = ((TerrainTile) world.getTile(p)).getTerrainTypeId();
 
         TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tileTypeNumber);
 
@@ -152,7 +152,7 @@ public class CalculateCargoSupplyRateAtStation {
         // get the correct list of cargoes from the world object
         CargoElementObject tempCargoElement;
 
-        for (int i = 0; i < world.getCargoTypes().size(); i++) {
+        for (int i = 0; i < world.getCargos().size(); i++) {
             // cT = (CargoType) world.get(SKEY.CARGO_TYPES, i);
             tempCargoElement = new CargoElementObject(0, i);
             supplies.add(tempCargoElement);
@@ -207,7 +207,7 @@ public class CalculateCargoSupplyRateAtStation {
      * @param station A Station object to be processed
      */
     public Station calculations(Station station) {
-        Integer[] cargoSupplied = new Integer[world.getCargoTypes().size()];
+        Integer[] cargoSupplied = new Integer[world.getCargos().size()];
 
         List<CargoElementObject> supply = scanAdjacentTiles();
 

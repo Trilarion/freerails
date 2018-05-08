@@ -33,17 +33,22 @@
  */
 package freerails.client.renderer.map.overview;
 
+import freerails.client.ARGBColor;
 import freerails.client.renderer.map.MapRenderer;
+import freerails.io.GsonManager;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
-import freerails.model.terrain.FullTerrainTile;
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.track.NullTrackPiece;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * Draws the overview map.
@@ -52,22 +57,33 @@ public class OverviewMapRenderer implements MapRenderer {
 
     private final Vec2D imageSize;
     private final Vec2D mapSize;
-    private final Vec2D mapLocation;
+    private final Vec2D mapLocation = Vec2D.ZERO;
     private final UnmodifiableWorld world;
     private final AffineTransform affineTransform;
+    // TODO used many time, could be static
     private final GraphicsConfiguration defaultConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
     private BufferedImage oneToOneImage;
     private BufferedImage mapImage;
     private boolean isDirty = true;
+    private Map<Integer, ARGBColor> terrainColors;
 
-    private OverviewMapRenderer(UnmodifiableWorld world, Vec2D imageSize, Vec2D mapLocation, Vec2D mapSize) {
+    private OverviewMapRenderer(UnmodifiableWorld world, Vec2D imageSize) {
         this.world = world;
-        this.mapSize = mapSize;
+        this.mapSize = world.getMapSize();
         this.imageSize = imageSize;
+
+        // TODO this should probably be loaded by the client at some point before
+        URL url = OverviewMapRenderer.class.getResource("/freerails/client/terrain_colors.json");
+        File file = null;
+        try {
+            file = new File(url.toURI());
+            terrainColors = GsonManager.loadTerrainColors(file);
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
         double scalingFactor = ((double) imageSize.y) / mapSize.y;
         affineTransform = AffineTransform.getScaleInstance(scalingFactor, scalingFactor);
-        this.mapLocation = mapLocation;
         refresh();
     }
 
@@ -92,7 +108,7 @@ public class OverviewMapRenderer implements MapRenderer {
         double height = scale * worldHeight;
         double width = scale * worldWidth;
 
-        return new OverviewMapRenderer(world, new Vec2D((int) width, (int) height), Vec2D.ZERO, mapSize);
+        return new OverviewMapRenderer(world, new Vec2D((int) width, (int) height));
     }
 
     /**
@@ -126,12 +142,11 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     public void refreshTile(Vec2D tileLocation) {
-        FullTerrainTile tt = (FullTerrainTile) world.getTile(tileLocation);
+        TerrainTile tt = (TerrainTile) world.getTile(tileLocation);
 
         if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-            int typeNumber = tt.getTerrainTypeID();
-            TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, typeNumber);
-            oneToOneImage.setRGB(tileLocation.x, tileLocation.y, terrainType.getRGB());
+            int terrainTypeId = tt.getTerrainTypeId();
+            oneToOneImage.setRGB(tileLocation.x, tileLocation.y, terrainColors.get(terrainTypeId).getARGB());
         } else {
             // black with alpha of 1
             oneToOneImage.setRGB(tileLocation.x, tileLocation.y, 0xff000000);
@@ -162,12 +177,11 @@ public class OverviewMapRenderer implements MapRenderer {
 
         for (int tileX = mapLocation.x; tileX < mapSize.x + mapLocation.x; tileX++) {
             for (int tileY = mapLocation.y; tileY < mapSize.y + mapLocation.y; tileY++) {
-                FullTerrainTile tt = (FullTerrainTile) world.getTile(new Vec2D(tileX, tileY));
+                TerrainTile tt = (TerrainTile) world.getTile(new Vec2D(tileX, tileY));
 
                 if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-                    int typeNumber = tt.getTerrainTypeID();
-                    TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, typeNumber);
-                    oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, terrainType.getRGB());
+                    int terrainTypeId = tt.getTerrainTypeId();
+                    oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, terrainColors.get(terrainTypeId).getARGB());
                 } else {
                     // black with alpha of 1
                     oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, 0xff000000);

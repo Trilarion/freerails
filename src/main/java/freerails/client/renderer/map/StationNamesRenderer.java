@@ -28,7 +28,7 @@ import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
@@ -87,7 +87,7 @@ public class StationNamesRenderer implements Painter {
                 }
                 // First draw station sphere of influence
                 if (showStationBorders) {
-                    FullTerrainTile tile = (FullTerrainTile) world.getTile(location);
+                    TerrainTile tile = (TerrainTile) world.getTile(location);
                     int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
                     int diameterInPixels = (radius * 2 + 1) * ModelConstants.TILE_SIZE;
                     int radiusX = (location.x - radius) * ModelConstants.TILE_SIZE;

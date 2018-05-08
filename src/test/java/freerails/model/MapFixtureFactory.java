@@ -18,23 +18,20 @@
 
 package freerails.model;
 
-import freerails.io.GsonManager;
 import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoType;
-import freerails.model.finances.IncomeStatementGenerator;
+import freerails.model.cargo.Cargo;
+import freerails.model.terrain.TerrainType2;
 import freerails.model.world.SharedKey;
 import freerails.util.Vec2D;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
-import freerails.model.terrain.TerrainTypeImpl;
+import freerails.model.terrain.TerrainType;
 import freerails.model.track.*;
 import freerails.model.world.World;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -65,15 +62,15 @@ public class MapFixtureFactory {
      * @return
      */
     public static World getWorld(Vec2D mapSize) throws IOException {
-        FullTerrainTile tile = FullTerrainTile.getInstance(0);
-        SortedSet<CargoType> cargoTypes = new TreeSet<>();
-        cargoTypes.add(new CargoType(0, "Mail", CargoCategory.MAIL, 1));
-        cargoTypes.add(new CargoType(1, "Passengers", CargoCategory.PASSENGER, 1));
-        cargoTypes.add(new CargoType(2, "Goods", CargoCategory.FAST_FREIGHT, 2));
-        cargoTypes.add(new CargoType(3, "Steel", CargoCategory.SLOW_FREIGHT, 4));
-        cargoTypes.add(new CargoType(4, "Coal", CargoCategory.BULK_FREIGHT, 8));
+        TerrainTile tile = new TerrainTile(0);
+        SortedSet<Cargo> cargos = new TreeSet<>();
+        cargos.add(new Cargo(0, "Mail", CargoCategory.MAIL, 1));
+        cargos.add(new Cargo(1, "Passengers", CargoCategory.PASSENGER, 1));
+        cargos.add(new Cargo(2, "Goods", CargoCategory.FAST_FREIGHT, 2));
+        cargos.add(new Cargo(3, "Steel", CargoCategory.SLOW_FREIGHT, 4));
+        cargos.add(new Cargo(4, "Coal", CargoCategory.BULK_FREIGHT, 8));
 
-        World world = new World.Builder().setMapSize(mapSize).setCargoTypes(cargoTypes).build();
+        World world = new World.Builder().setMapSize(mapSize).setCargos(cargos).setTerrainTypes(generateTerrainTypesListNew()).build();
         generateTerrainTypesList(world);
 
         for (int x = 0; x < mapSize.x; x++) {
@@ -94,7 +91,7 @@ public class MapFixtureFactory {
         ValidTrackConfigurations[] validTrackConfigurations = new ValidTrackConfigurations[3];
         ValidTrackPlacement[] validTrackPlacement = new ValidTrackPlacement[3];
         HashSet<TerrainCategory> cannotBuildOnTheseTerrainTypes = new HashSet<>();
-        cannotBuildOnTheseTerrainTypes.add(TerrainCategory.Ocean);
+        cannotBuildOnTheseTerrainTypes.add(TerrainCategory.OCEAN);
 
         // 1st track type..
         String[] trackTemplates0 = {"000010000", "010010000", "010010010",
@@ -148,18 +145,31 @@ public class MapFixtureFactory {
     }
 
     /**
+     * Adds hard coded terrain types new style
+     */
+    private static SortedSet<TerrainType2> generateTerrainTypesListNew() {
+        SortedSet<TerrainType2> terrainTypes = new TreeSet<>();
+        terrainTypes.add(new TerrainType2(0, "Grassland", TerrainCategory.COUNTRY));
+        terrainTypes.add(new TerrainType2(1, "City", TerrainCategory.URBAN));
+        terrainTypes.add(new TerrainType2(2, "Mine", TerrainCategory.RESOURCE));
+        terrainTypes.add(new TerrainType2(3, "Factory", TerrainCategory.INDUSTRY));
+        terrainTypes.add(new TerrainType2(4, "Ocean", TerrainCategory.OCEAN));
+        return terrainTypes;
+    }
+
+    /**
      * Adds hard coded terrain types.
      */
     private static void generateTerrainTypesList(World world) {
-        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
-                TerrainCategory.Country, "Grassland"));
-        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
-                TerrainCategory.Urban, "City"));
-        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
-                TerrainCategory.Resource, "Mine"));
-        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
-                TerrainCategory.Industry, "Factory"));
-        world.add(SharedKey.TerrainTypes, new TerrainTypeImpl(
-                TerrainCategory.Ocean, "Ocean"));
+        world.add(SharedKey.TerrainTypes, new TerrainType(
+                TerrainCategory.COUNTRY, "Grassland"));
+        world.add(SharedKey.TerrainTypes, new TerrainType(
+                TerrainCategory.URBAN, "City"));
+        world.add(SharedKey.TerrainTypes, new TerrainType(
+                TerrainCategory.RESOURCE, "Mine"));
+        world.add(SharedKey.TerrainTypes, new TerrainType(
+                TerrainCategory.INDUSTRY, "Factory"));
+        world.add(SharedKey.TerrainTypes, new TerrainType(
+                TerrainCategory.OCEAN, "Ocean"));
     }
 }

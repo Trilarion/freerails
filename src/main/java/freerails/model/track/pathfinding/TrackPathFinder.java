@@ -27,7 +27,7 @@ import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
@@ -80,7 +80,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     private int[] findTargets(Vec2D targetPoint) {
-        FullTerrainTile tile = (FullTerrainTile) world.getTile(targetPoint);
+        TerrainTile tile = (TerrainTile) world.getTile(targetPoint);
         TrackPiece trackPiece = tile.getTrackPiece();
         int ruleNumber = trackPiece.getTrackTypeID();
 

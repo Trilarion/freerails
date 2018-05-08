@@ -22,11 +22,11 @@
  */
 package freerails.client.renderer.tile;
 
+import freerails.model.terrain.TerrainTile;
+import freerails.model.terrain.TerrainType;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.terrain.TerrainTile;
-import freerails.model.terrain.TerrainType;
 
 import java.awt.*;
 import java.io.File;
@@ -103,7 +103,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
             for (int typeNumber : typeNumbers) {
                 TerrainTile terrainTile = (TerrainTile) world.getTile(location);
 
-                if (terrainTile.getTerrainTypeID() == typeNumber) {
+                if (terrainTile.getTerrainTypeId() == typeNumber) {
                     match = 1;
                     // A match
                 }

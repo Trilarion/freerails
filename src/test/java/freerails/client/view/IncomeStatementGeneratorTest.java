@@ -20,10 +20,9 @@ package freerails.client.view;
 
 import freerails.io.GsonManager;
 import freerails.model.cargo.CargoCategory;
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.util.Vec2D;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
@@ -51,7 +50,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money m = balanceSheetGenerator.mailTotal;
         assertEquals(0, m.amount);
 
-        CargoType ct = world.getCargoType(0);
+        Cargo ct = world.getCargoType(0);
         assertEquals(CargoCategory.MAIL, ct.getCategory());
 
         Money amount = new Money(100);
@@ -64,8 +63,8 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
     private void addTrans(CargoCategory category, Money amount) {
         // TODO i is not an id
-        for (int i = 0; i < world.getCargoTypes().size(); i++) {
-            CargoType ct = world.getCargoType(i);
+        for (int i = 0; i < world.getCargos().size(); i++) {
+            Cargo ct = world.getCargoType(i);
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);
@@ -88,9 +87,9 @@ public class IncomeStatementGeneratorTest extends TestCase {
         // load cargo types
         URL url = IncomeStatementGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
         File file = new File(url.toURI());
-        SortedSet<CargoType> cargoTypes = GsonManager.loadCargoTypes(file);
+        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
 
-        world = new World.Builder().setCargoTypes(cargoTypes).build();
+        world = new World.Builder().setCargos(cargos).build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
         balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PRINCIPAL);
     }

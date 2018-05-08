@@ -23,7 +23,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.util.Vec2D;
 import freerails.model.station.Station;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.terrain.FullTerrainTile;
+import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -153,7 +153,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
                 setSelectedIndex(stationInfoIndex);
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
-                terrainInfoPanel.setTerrainType(((FullTerrainTile) world.getTile(location)).getTerrainTypeID());
+                terrainInfoPanel.setTerrainType(((TerrainTile) world.getTile(location)).getTerrainTypeId());
                 setSelectedIndex(terrainInfoIndex);
             }
         }

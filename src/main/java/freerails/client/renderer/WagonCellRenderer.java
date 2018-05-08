@@ -1,18 +1,18 @@
 package freerails.client.renderer;
 
-import freerails.model.cargo.CargoType;
+import freerails.model.cargo.Cargo;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class WagonCellRenderer implements ListCellRenderer<CargoType> {
+public class WagonCellRenderer implements ListCellRenderer<Cargo> {
 
     private final Component[] labels;
 
-    public WagonCellRenderer(ListModel w2lma, RendererRoot rendererRoot) {
+    public WagonCellRenderer(ListModel listModel, RendererRoot rendererRoot) {
 
-        labels = new Component[w2lma.getSize()];
-        for (int i = 0; i < w2lma.getSize(); i++) {
+        labels = new Component[listModel.getSize()];
+        for (int i = 0; i < listModel.getSize(); i++) {
             JLabel label = new JLabel();
             label.setFont(new Font("Dialog", 0, 12));
             Image image = rendererRoot.getWagonImages(i).getSideOnImage();
@@ -35,7 +35,7 @@ public class WagonCellRenderer implements ListCellRenderer<CargoType> {
      * @param cellHasFocus the list and the cell have the focus
      * @return
      */
-    public Component getListCellRendererComponent(JList<? extends CargoType> list, CargoType value,
+    public Component getListCellRendererComponent(JList<? extends Cargo> list, Cargo value,
                                                   int index,
                                                   boolean isSelected,
                                                   boolean cellHasFocus)  {
