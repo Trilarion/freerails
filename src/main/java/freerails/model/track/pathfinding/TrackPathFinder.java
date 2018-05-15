@@ -130,12 +130,12 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @param start
      * @param targetPoint
-     * @param bts
+     * @param buildTrackStrategy
      * @return
      * @throws PathNotFoundException
      */
-    public List generatePath(Vec2D start, Vec2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
-        setupSearch(start, targetPoint, bts);
+    public List generatePath(Vec2D start, Vec2D targetPoint, BuildTrackStrategy buildTrackStrategy) throws PathNotFoundException {
+        setupSearch(start, targetPoint, buildTrackStrategy);
         pathFinder.search(-1);
 
         List<Integer> path = pathFinder.retrievePath();
@@ -188,10 +188,10 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @param startPoint
      * @param targetPoint
-     * @param bts
+     * @param buildTrackStrategy
      * @throws PathNotFoundException
      */
-    public void setupSearch(Vec2D startPoint, Vec2D targetPoint, BuildTrackStrategy bts) throws PathNotFoundException {
+    public void setupSearch(Vec2D startPoint, Vec2D targetPoint, BuildTrackStrategy buildTrackStrategy) throws PathNotFoundException {
         logger.debug("Find track path from " + startPoint + " to " + targetPoint);
 
         this.startPoint = startPoint;
@@ -199,7 +199,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         int[] startInts = findTargets(startPoint);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal, startPoint);
-        explorer.setBuildTrackStrategy(bts);
+        explorer.setBuildTrackStrategy(buildTrackStrategy);
 
         pathFinder.setupSearch(startInts, targetInts, explorer);
     }

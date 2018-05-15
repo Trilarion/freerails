@@ -32,20 +32,20 @@ public class ItemTransaction implements Transaction {
     private final Money amount;
     private final TransactionCategory category;
     private final int quantity;
-    private final int type;
+    private final int terrainTypeId;
 
 
     // TODO what is the difference between category and type??
 
     /**
      * @param category
-     * @param type
+     * @param terrainTypeId
      * @param quantity
      * @param amount
      */
-    public ItemTransaction(TransactionCategory category, int type, int quantity, Money amount) {
+    public ItemTransaction(TransactionCategory category, int terrainTypeId, int quantity, Money amount) {
         this.category = category;
-        this.type = type;
+        this.terrainTypeId = terrainTypeId;
         this.quantity = quantity;
         this.amount = amount;
     }
@@ -55,7 +55,7 @@ public class ItemTransaction implements Transaction {
         if (obj instanceof ItemTransaction) {
             ItemTransaction test = (ItemTransaction) obj;
 
-            return amount.equals(test.amount) && category == test.category && type == test.type && quantity == test.quantity;
+            return amount.equals(test.amount) && category == test.category && terrainTypeId == test.terrainTypeId && quantity == test.quantity;
         }
         return false;
     }
@@ -81,15 +81,15 @@ public class ItemTransaction implements Transaction {
     /**
      * @return
      */
-    public int getType() {
-        return type;
+    public int getTerrainTypeId() {
+        return terrainTypeId;
     }
 
     @Override
     public int hashCode() {
         int result;
         result = category.hashCode();
-        result = 29 * result + type;
+        result = 29 * result + terrainTypeId;
         result = 29 * result + quantity;
         result = 29 * result + amount.hashCode();
         return result;
@@ -97,6 +97,6 @@ public class ItemTransaction implements Transaction {
 
     @Override
     public String toString() {
-        return "ItemTransaction " + category + ", type " + type + ", quantity " + quantity + ", amount " + amount;
+        return "ItemTransaction " + category + ", type " + terrainTypeId + ", quantity " + quantity + ", amount " + amount;
     }
 }

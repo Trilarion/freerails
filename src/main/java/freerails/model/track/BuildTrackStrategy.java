@@ -23,25 +23,31 @@
 
 package freerails.model.track;
 
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
+import freerails.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A BuildTrackStrategy determines which track types to build (or upgrade to) on different terrains.
  */
 public class BuildTrackStrategy {
 
-    private final int[] rules;
+    /**
+     * Map TerrainType.Id -> Rule
+     */
+    private final Map<Integer, Integer> rules;
 
     /**
      * Creates a new instance of BuildTrackStrategy
      */
-    private BuildTrackStrategy(int[] rules) {
-        this.rules = rules;
+    private BuildTrackStrategy(Map<Integer, Integer> rules) {
+        this.rules = Utils.verifyNotNull(rules);
     }
 
     /**
@@ -50,10 +56,9 @@ public class BuildTrackStrategy {
      * @return
      */
     public static BuildTrackStrategy getSingleRuleInstance(int trackTypeID, UnmodifiableWorld world) {
-        int numberTerrainTypes = world.size(SharedKey.TerrainTypes);
-        int[] rules = new int[numberTerrainTypes];
-        for (int i = 0; i < numberTerrainTypes; i++) {
-            rules[i] = trackTypeID;
+        Map<Integer, Integer> rules = new HashMap<>();
+        for (Terrain terrain: world.getTerrains()) {
+            rules.put(terrain.getId(), trackTypeID);
         }
 
         return new BuildTrackStrategy(rules);
@@ -65,7 +70,7 @@ public class BuildTrackStrategy {
      * @return
      */
     public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, UnmodifiableWorld world) {
-        int[] rules = generateRules(ruleIDs, world);
+        Map<Integer, Integer> rules = generateRules(ruleIDs, world);
         return new BuildTrackStrategy(rules);
     }
 
@@ -96,17 +101,15 @@ public class BuildTrackStrategy {
         return cheapestID;
     }
 
-    private static int[] generateRules(Iterable<Integer> allowable, UnmodifiableWorld world) {
-        int noTerrainTypes = world.size(SharedKey.TerrainTypes);
-        int[] newRules = new int[noTerrainTypes];
-        for (int i = 0; i < noTerrainTypes; i++) {
-            TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, i);
-            newRules[i] = -1; // the default value.
+    private static Map<Integer, Integer> generateRules(Iterable<Integer> allowable, UnmodifiableWorld world) {
+
+        Map<Integer, Integer> newRules = new HashMap<>();
+        for (Terrain terrainType: world.getTerrains()) {
             for (Integer rule : allowable) {
                 if (null != rule) {
                     TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, rule);
                     if (trackRule.canBuildOnThisTerrainType(terrainType.getCategory())) {
-                        newRules[i] = rule;
+                        newRules.put(terrainType.getId(), rule);
                         break;
                     }
                 }
@@ -116,11 +119,11 @@ public class BuildTrackStrategy {
     }
 
     /**
-     * @param terrainType
+     * @param terrainId
      * @return
      */
-    public int getRule(int terrainType) {
-        return rules[terrainType];
+    public int getRule(int terrainId) {
+        return rules.getOrDefault(terrainId, -1);
     }
 
 }

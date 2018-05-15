@@ -18,11 +18,14 @@
 
 package freerails.controller;
 
+import freerails.io.GsonManager;
+import freerails.model.terrain.Terrain;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
+import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
@@ -34,7 +37,10 @@ import freerails.model.train.PositionOnTrack;
 import freerails.model.world.World;
 import junit.framework.TestCase;
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashSet;
+import java.util.SortedSet;
 
 /**
  * Test for FlatTrackExplorer.
@@ -50,7 +56,12 @@ public class FlatTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).build();
+        // load terrain types
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        File file = new File(url.toURI());
+        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);

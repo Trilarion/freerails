@@ -37,7 +37,7 @@ public class CityModel {
      */
     public final Map<Vec2D, Integer> urbanCityTiles = new HashMap<>();
     public final Map<Vec2D, Integer> industryCityTiles = new HashMap<>();
-    public final List<TerrainType2> industriesNotAtCity = new ArrayList<>();
+    public final List<Terrain> industriesNotAtCity = new ArrayList<>();
     private final Map<Vec2D, Integer> resourceCityTiles = new HashMap<>();
     public final List<Vec2D> clearTiles = new ArrayList<>();
     /**
@@ -51,7 +51,7 @@ public class CityModel {
         world.setTile(location, terrainTile);
     }
 
-    public void addTile(TerrainType2 terrainType) {
+    public void addTile(Terrain terrainType) {
         Random rand = new Random();
 
         // Pick a spot at random at which to place the tile.
@@ -86,7 +86,7 @@ public class CityModel {
         // Set up the list of industries not at the city.
         industriesNotAtCity.clear();
 
-        for (TerrainType2 terrainType: world.getTerrainTypes()) {
+        for (Terrain terrainType: world.getTerrains()) {
             if (terrainType.getCategory().equals(TerrainCategory.INDUSTRY)) {
                 industriesNotAtCity.add(terrainType);
             }
@@ -113,7 +113,7 @@ public class CityModel {
                 }
 
                 int terrainTypeId = tile.getTerrainTypeId();
-                TerrainType2 type = world.getTerrainType(terrainTypeId);
+                Terrain type = world.getTerrain(terrainTypeId);
 
                 Vec2D location = new Vec2D(x, y);
                 switch (type.getCategory()) {

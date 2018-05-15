@@ -22,7 +22,7 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A special tile's icon gets drawn over the icon of a normal tile.
@@ -42,13 +43,13 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
 
     /**
      * @param imageManager
-     * @param rgbValues
+     * @param treatTypeAsSame
      * @param tileModel
      * @param parentTileView
      * @throws IOException
      */
-    public SpecialTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel, TileRenderer parentTileView) throws IOException {
-        super(tileModel, rgbValues, 1);
+    public SpecialTileRenderer(ImageManager imageManager, List<Integer> treatTypeAsSame, Terrain tileModel, TileRenderer parentTileView) throws IOException {
+        super(tileModel, treatTypeAsSame, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
         this.parentTileView = parentTileView;
     }

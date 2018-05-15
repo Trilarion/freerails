@@ -23,9 +23,12 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.io.GsonManager;
+import freerails.model.terrain.Terrain;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
+import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.game.GameRules;
@@ -37,6 +40,10 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackPieceImpl;
 import freerails.model.track.TrackRule;
+
+import java.io.File;
+import java.net.URL;
+import java.util.SortedSet;
 
 /**
  *
@@ -50,7 +57,12 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         setHasSetupBeenCalled(true);
-        setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).build());
+        // load terrain types
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        File file = new File(url.toURI());
+        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
+
+        setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).setTerrainTypes(terrainTypes).build());
         getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(getWorld());
     }

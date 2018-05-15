@@ -98,7 +98,6 @@ class DialogueBoxTester extends JFrame {
         modelRoot.setMoveFork(new MoveChainFork());
         modelRoot.setMoveReceiver(dummyReceiver);
 
-        MapCreator.addTerrainTileTypesList(world);
         world.addPlayer(TEST_PLAYER);
         try {
             vl = new RendererRootImpl(world);

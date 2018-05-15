@@ -18,6 +18,8 @@
 
 package freerails.model.station;
 
+import freerails.model.cargo.CargoConversion;
+import freerails.model.cargo.CargoProductionOrConsumption;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
@@ -41,7 +43,7 @@ public class CalculateCargoSupplyRateAtStation {
 
     private final Integer[] converts;
     private final int[] demand;
-    private final List<CargoElementObject> supplies;
+    private final List<CargoProductionOrConsumption> supplies;
     private final UnmodifiableWorld world;
     private final Vec2D location;
     private final int stationRadius;
@@ -106,16 +108,16 @@ public class CalculateCargoSupplyRateAtStation {
     private void incrementSupplyAndDemand(Vec2D p) {
         int tileTypeNumber = ((TerrainTile) world.getTile(p)).getTerrainTypeId();
 
-        TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tileTypeNumber);
+        Terrain terrainType = world.getTerrain(tileTypeNumber);
 
         // Calculate supply.
-        List<TileProduction> production = terrainType.getProduction();
+        List<CargoProductionOrConsumption> production = terrainType.getProductions();
 
         // loop through the production array and increment
         // the supply rates for the station
-        for (TileProduction aProduction : production) {
-            int type = aProduction.getCargoTypeId();
-            int rate = aProduction.getRate();
+        for (CargoProductionOrConsumption aProduction : production) {
+            int type = aProduction.getCargoId();
+            double rate = aProduction.getRate();
 
             // loop through supplies vector and increment the cargo values as
             // required
@@ -123,38 +125,34 @@ public class CalculateCargoSupplyRateAtStation {
         }
 
         // Now calculate demand.
-        List<TileConsumption> consumption = terrainType.getConsumption();
+        List<CargoProductionOrConsumption> consumption = terrainType.getConsumptions();
 
-        for (TileConsumption aConsumption : consumption) {
-            int type = aConsumption.getCargoTypeId();
-            int prerequisite = aConsumption.getPrerequisite();
+        // TODO take into account pre-requisite for station demand (minimum number of tiles of certain type...)
+        for (CargoProductionOrConsumption aConsumption : consumption) {
+            int type = aConsumption.getCargoId();
 
-            // The prerequisite is the number tiles of this type that must
-            // be within the station radius before the station demands the
-            // cargo.
-            demand[type] += ModelConstants.PREREQUISITE_FOR_DEMAND / prerequisite;
+            demand[type] += 1;
         }
 
-        List<TileConversion> conversion = terrainType.getConversion();
+        List<CargoConversion> conversion = terrainType.getConversions();
 
-        for (TileConversion aConversion : conversion) {
-            int type = aConversion.getInputCargoTypeId();
+        for (CargoConversion aConversion : conversion) {
+            int type = aConversion.getSourceCargoId();
 
-            // Only one tile that converts the cargo type is needed for the
-            // station to demand the cargo type.
-            demand[type] += ModelConstants.PREREQUISITE_FOR_DEMAND;
-            converts[type] = aConversion.getOutputCargoTypeId();
+            // TODO Only one tile that converts the cargo type is needed for the station to demand the cargo type.
+            demand[type] += 1;
+            converts[type] = aConversion.getProductCargoId();
         }
     }
 
     private void populateSuppliesVector() {
         // fill supplies vector with 0 values for all cargo types
         // get the correct list of cargoes from the world object
-        CargoElementObject tempCargoElement;
+        CargoProductionOrConsumption tempCargoElement;
 
         for (int i = 0; i < world.getCargos().size(); i++) {
             // cT = (CargoType) world.get(SKEY.CARGO_TYPES, i);
-            tempCargoElement = new CargoElementObject(0, i);
+            tempCargoElement = new CargoProductionOrConsumption(0, i);
             supplies.add(tempCargoElement);
         }
     }
@@ -162,7 +160,7 @@ public class CalculateCargoSupplyRateAtStation {
     /**
      * @return
      */
-    private List<CargoElementObject> scanAdjacentTiles() {
+    private List<CargoProductionOrConsumption> scanAdjacentTiles() {
         int stationDiameter = stationRadius * 2 + 1;
 
         Rectangle stationRadiusRect = new Rectangle(location.x - stationRadius, location.y - stationRadius, stationDiameter, stationDiameter);
@@ -187,14 +185,15 @@ public class CalculateCargoSupplyRateAtStation {
         return supplies;
     }
 
-    private void updateSupplyRate(int type, int rate) {
+    private void updateSupplyRate(int type, double rate) {
         // loop through supplies vector and increment the cargo values as
         // required
-        for (CargoElementObject tempElement : supplies) {
-            if (tempElement.getType() == type) {
+        for (CargoProductionOrConsumption tempElement : supplies) {
+            if (tempElement.getCargoId() == type) {
                 // cargo types are the same, so increment the rate in supply
                 // with the rate.
-                tempElement.setRate(tempElement.getRate() + rate);
+                // TODO that doesn't work that easily because CargoSupplyOrDemand is immutable
+                // tempElement.setRate(tempElement.getRate() + rate);
 
                 break; // no need to go through the rest if we've found a match
             }
@@ -209,11 +208,12 @@ public class CalculateCargoSupplyRateAtStation {
     public Station calculations(Station station) {
         Integer[] cargoSupplied = new Integer[world.getCargos().size()];
 
-        List<CargoElementObject> supply = scanAdjacentTiles();
+        List<CargoProductionOrConsumption> supply = scanAdjacentTiles();
 
         // grab the supply rates from the vector
         for (int i = 0; i < supply.size(); i++) {
-            cargoSupplied[i] = supply.get(i).getRate();
+            // TODO where should the rounding take place? here?
+            cargoSupplied[i] = (int) supply.get(i).getRate();
         }
 
         // set the supply rates for the current station

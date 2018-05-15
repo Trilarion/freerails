@@ -2,116 +2,405 @@
   {
     "name": "City",
     "category": "URBAN",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 0,
+        "rate": 40.0
+      },
+      {
+        "cargoId": 1,
+        "rate": 80.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [
+      {
+        "cargoId": 0,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 1,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 4,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 2,
+        "rate": 1.0
+      }
+    ],
     "id": 0
   },
   {
     "name": "Refinery",
     "category": "INDUSTRY",
+    "rightOfWayCost": 0,
+    "buildCost": 300000,
+    "productions": [],
+    "conversions": [
+      {
+        "sourceCargoId": 9,
+        "productCargoId": 8,
+        "conversionRate": 1.0
+      }
+    ],
+    "consumptions": [],
     "id": 1
   },
   {
     "name": "Village",
     "category": "URBAN",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 0,
+        "rate": 10.0
+      },
+      {
+        "cargoId": 1,
+        "rate": 40.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [
+      {
+        "cargoId": 4,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 0,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 1,
+        "rate": 1.0
+      }
+    ],
     "id": 2
   },
   {
     "name": "Factory",
     "category": "INDUSTRY",
+    "rightOfWayCost": 1000,
+    "buildCost": 600000,
+    "productions": [],
+    "conversions": [
+      {
+        "sourceCargoId": 6,
+        "productCargoId": 7,
+        "conversionRate": 1.0
+      },
+      {
+        "sourceCargoId": 10,
+        "productCargoId": 7,
+        "conversionRate": 1.0
+      },
+      {
+        "sourceCargoId": 11,
+        "productCargoId": 7,
+        "conversionRate": 1.0
+      },
+      {
+        "sourceCargoId": 8,
+        "productCargoId": 7,
+        "conversionRate": 1.0
+      }
+    ],
+    "consumptions": [],
     "id": 3
   },
   {
     "name": "Clear",
     "category": "COUNTRY",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 4
   },
   {
     "name": "Farm",
     "category": "COUNTRY",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 5
   },
   {
     "name": "Desert",
     "category": "COUNTRY",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 6
   },
   {
     "name": "Ocean",
     "category": "OCEAN",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 7
   },
   {
     "name": "Harbour",
     "category": "OCEAN",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 0,
+        "rate": 40.0
+      },
+      {
+        "cargoId": 1,
+        "rate": 40.0
+      },
+      {
+        "cargoId": 4,
+        "rate": 160.0
+      }
+    ],
+    "conversions": [
+      {
+        "sourceCargoId": 5,
+        "productCargoId": 2,
+        "conversionRate": 1.0
+      },
+      {
+        "sourceCargoId": 7,
+        "productCargoId": 4,
+        "conversionRate": 1.0
+      }
+    ],
+    "consumptions": [
+      {
+        "cargoId": 5,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 6,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 10,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 11,
+        "rate": 1.0
+      }
+    ],
     "id": 8
   },
   {
     "name": "Stock-Yard",
     "category": "INDUSTRY",
+    "rightOfWayCost": 0,
+    "buildCost": 200000,
+    "productions": [],
+    "conversions": [
+      {
+        "sourceCargoId": 3,
+        "productCargoId": 2,
+        "conversionRate": 1.0
+      }
+    ],
+    "consumptions": [],
     "id": 9
   },
   {
     "name": "Food_Proc._Plant",
     "category": "INDUSTRY",
+    "rightOfWayCost": 0,
+    "buildCost": 200000,
+    "productions": [],
+    "conversions": [
+      {
+        "sourceCargoId": 5,
+        "productCargoId": 2,
+        "conversionRate": 1.0
+      }
+    ],
+    "consumptions": [],
     "id": 10
   },
   {
     "name": "Cattle_Ranch",
     "category": "RESOURCE",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 3,
+        "rate": 160.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [],
     "id": 11
   },
   {
     "name": "Grain_Elevator",
     "category": "RESOURCE",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 5,
+        "rate": 160.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [],
     "id": 12
   },
   {
     "name": "Oil_Well",
     "category": "RESOURCE",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 9,
+        "rate": 160.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [],
     "id": 13
   },
   {
     "name": "Lumber_Mill",
     "category": "RESOURCE",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 10,
+        "rate": 160.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [],
     "id": 14
   },
   {
     "name": "Sugar_Plant.",
     "category": "RESOURCE",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [
+      {
+        "cargoId": 11,
+        "rate": 160.0
+      }
+    ],
+    "conversions": [],
+    "consumptions": [],
     "id": 15
   },
   {
     "name": "River",
     "category": "RIVER",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 16
   },
   {
     "name": "Landing",
     "category": "RIVER",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [
+      {
+        "cargoId": 5,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 6,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 7,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 10,
+        "rate": 1.0
+      },
+      {
+        "cargoId": 11,
+        "rate": 1.0
+      }
+    ],
     "id": 17
   },
   {
     "name": "Terminal",
     "category": "SPECIAL",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 18
   },
   {
     "name": "Jungle",
     "category": "COUNTRY",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 19
   },
   {
     "name": "Hills",
     "category": "HILL",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 20
   },
   {
     "name": "Foothills",
     "category": "HILL",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 21
   },
   {
     "name": "Mountain",
     "category": "HILL",
+    "rightOfWayCost": 0,
+    "buildCost": null,
+    "productions": [],
+    "conversions": [],
+    "consumptions": [],
     "id": 22
   }
 ]

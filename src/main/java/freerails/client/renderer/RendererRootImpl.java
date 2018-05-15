@@ -20,7 +20,7 @@ package freerails.client.renderer;
 
 import freerails.client.ClientConstants;
 import freerails.model.cargo.Cargo;
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.model.train.Engine;
 import freerails.util.ui.SoundManager;
 import freerails.util.ui.ImageManager;
@@ -29,7 +29,6 @@ import freerails.client.renderer.tile.*;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.renderer.track.TrackPieceRendererList;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.terrain.TerrainCategory;
 import org.apache.log4j.Logger;
 
@@ -105,44 +104,24 @@ public class RendererRootImpl implements RendererRoot {
 
         // Setup progress monitor..
 
-        int numberOfTypes = world.size(SharedKey.TerrainTypes);
-
         // for all terrain types
-        for (int i = 0; i < numberOfTypes; i++) {
-            TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, i);
-            int[] typesTreatedAsTheSame = new int[]{i};
-
+        for (Terrain terrainType: world.getTerrains()) {
             TileRenderer tileRenderer;
 
-            // TODO not a nice hack, unhack
+            // TODO not a nice hack, unhack, provide information about neighoring tiles differently or better inside the Renderer
+            List<Integer> typesTreatedAsTheSame = new ArrayList<>();
             try {
-                // XXX hack to make rivers flow into ocean and harbours & ocean
+                // TODO hack to make rivers flow into ocean and harbours & ocean
                 // treat harbours as the same type.
                 TerrainCategory thisTerrainCategory = terrainType.getCategory();
 
                 if (thisTerrainCategory == TerrainCategory.RIVER || thisTerrainCategory == TerrainCategory.OCEAN) {
-                    // Count number of types with category "water"
-                    int count = 0;
 
-                    for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
-                        TerrainCategory terrainCategory = t2.getCategory();
+                    for (Terrain terrain : world.getTerrains()) {
+                        TerrainCategory terrainCategory = terrain.getCategory();
 
                         if (terrainCategory == TerrainCategory.OCEAN || terrainCategory == thisTerrainCategory) {
-                            count++;
-                        }
-                    }
-
-                    typesTreatedAsTheSame = new int[count];
-                    count = 0;
-
-                    for (int j = 0; j < numberOfTypes; j++) {
-                        TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
-                        TerrainCategory terrainCategory = t2.getCategory();
-
-                        if (terrainCategory == TerrainCategory.OCEAN || terrainCategory == thisTerrainCategory) {
-                            typesTreatedAsTheSame[count] = j;
-                            count++;
+                            typesTreatedAsTheSame.add(terrain.getId());
                         }
                     }
                 }
@@ -181,26 +160,17 @@ public class RendererRootImpl implements RendererRoot {
         // add special tile renderer for harbours
         TileRenderer oceanTileRenderer = null;
 
-        for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
-            String terrainName = t2.getTerrainTypeName();
+        for (Terrain terrainType: world.getTerrains()) {
 
-            if (terrainName.equalsIgnoreCase("Ocean")) {
-                oceanTileRenderer = tileRenderers.get(j);
-
-                break;
+            if (terrainType.getCategory().equals(TerrainCategory.OCEAN)) {
+                oceanTileRenderer = tileRenderers.get(terrainType.getId());
             }
         }
 
-        for (int j = 0; j < numberOfTypes; j++) {
-            TerrainType t2 = (TerrainType) world.get(SharedKey.TerrainTypes, j);
-            String terrainName = t2.getTerrainTypeName();
-
-            if (terrainName.equalsIgnoreCase("Harbour")) {
-                TerrainType t = (TerrainType) world.get(SharedKey.TerrainTypes, j);
-                TileRenderer tr = new SpecialTileRenderer(imageManager, new int[]{j}, t, oceanTileRenderer);
-                tileRenderers.set(j, tr);
-                break;
+        for (Terrain terrainType: world.getTerrains()) {
+            if (terrainType.getName().equals("Harbour")) {
+                TileRenderer tr = new SpecialTileRenderer(imageManager, new ArrayList<>(), terrainType , oceanTileRenderer);
+                tileRenderers.set(terrainType.getId(), tr);
             }
         }
 

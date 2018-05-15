@@ -121,7 +121,7 @@ public class UserMessageGenerator implements MoveReceiver {
             for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
                 revenue = Money.add(revenue, receipt.price());
-                cargoQuantities.put(world.getCargoType(batch.getCargoTypeId()), receipt.getQuantity());
+                cargoQuantities.put(world.getCargo(batch.getCargoTypeId()), receipt.getQuantity());
             }
             for (Map.Entry<Cargo, Integer> entry: cargoQuantities.entrySet()) {
                 if (entry.getValue() > 0) {

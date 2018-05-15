@@ -20,10 +20,9 @@ package freerails.model;
 
 import freerails.io.GsonManager;
 import freerails.model.cargo.Cargo;
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
-import freerails.model.world.SharedKey;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
@@ -100,8 +99,12 @@ public class MapFixtureFactory2 {
         file = new File(url.toURI());
         SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
 
-        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).build();
-        MapCreator.addTerrainTileTypesList(world);
+        // load terrain types
+        url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        file = new File(url.toURI());
+        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
+
+        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).setTerrainTypes(terrainTypes).build();
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
 
@@ -122,11 +125,9 @@ public class MapFixtureFactory2 {
 
         int clearTypeID = 0;
         // Fill the world with clear terrain.
-        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
-            TerrainType tt = (TerrainType) world.get(SharedKey.TerrainTypes, i);
-            if ("Clear".equals(tt.getTerrainTypeName())) {
-                clearTypeID = i;
-                break;
+        for (Terrain terrain: world.getTerrains()) {
+            if (terrain.getName().equals("Clear")) {
+                clearTypeID = terrain.getId();
             }
         }
         TerrainTile tile = new TerrainTile(clearTypeID);

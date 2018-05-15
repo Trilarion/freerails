@@ -21,6 +21,9 @@
  */
 package freerails.model.terrain;
 
+import freerails.model.cargo.CargoConversion;
+import freerails.model.cargo.CargoProductionOrConsumption;
+import freerails.model.finances.Money;
 import freerails.util.TestUtils;
 import freerails.util.Utils;
 import junit.framework.TestCase;
@@ -38,22 +41,17 @@ public class TerrainTypeTest extends TestCase {
      *
      */
     public void testTileTypeImpl() {
-        List<TileProduction> productions = asList(new TileProduction(69, 10));
-        List<TileConsumption> consumptions = asList(new TileConsumption(4, 4), new TileConsumption(4, 5));
-        List<TileConversion> conversions1 = asList(new TileConversion(50, 30));
+        List<CargoProductionOrConsumption> productions = asList(new CargoProductionOrConsumption(69, 10));
+        List<CargoProductionOrConsumption> consumptions = asList(new CargoProductionOrConsumption(4, 4), new CargoProductionOrConsumption(4, 5));
+        List<CargoConversion> conversions1 = asList(new CargoConversion(50, 30, 1));
 
         TestUtils.assertCloneBySerializationBehavesWell(productions.get(0));
         TestUtils.assertCloneBySerializationBehavesWell(consumptions.get(0));
         TestUtils.assertCloneBySerializationBehavesWell(conversions1.get(0));
 
-        TerrainType terrainType1 = new TerrainType(0, TerrainCategory.COUNTRY, "Grassland", 100, productions, consumptions, conversions1, 10);
+        Terrain terrainType1 = new Terrain(1, "Grassland", TerrainCategory.COUNTRY, new Money(100), new Money(10), productions, conversions1, consumptions);
 
         TestUtils.assertCloneBySerializationBehavesWell(terrainType1);
-
-        List<TileConversion> conversions2 = asList(new TileConversion(5, 30));
-        TerrainType terrainType2 = new TerrainType(0, TerrainCategory.COUNTRY, "Grassland", 100, productions, consumptions, conversions2, 10);
-
-        assertFalse(terrainType1.equals(terrainType2));
     }
 
     @SafeVarargs

@@ -18,7 +18,7 @@
 
 package freerails.move.mapupdatemove;
 
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -251,7 +251,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         int terrainType = world.getTile(location).getTerrainTypeId();
-        TerrainType tt = (TerrainType) world.get(SharedKey.TerrainTypes, terrainType);
+        Terrain tt = world.getTerrain(terrainType);
 
         if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(tt.getCategory())) {
             String thisTrackType = newTrackPiece.getTrackRule().getTypeName();

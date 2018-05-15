@@ -53,7 +53,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         }
 
         ItemTransaction itemTransaction = (ItemTransaction) transaction;
-        boolean isTypeAcceptable = (type == ANY_VALUE) || (type == itemTransaction.getType());
+        boolean isTypeAcceptable = (type == ANY_VALUE) || (type == itemTransaction.getTerrainTypeId());
         boolean isCategoryAcceptable = (category == null) || (category == itemTransaction.getCategory());
 
         return isCategoryAcceptable && isTypeAcceptable;

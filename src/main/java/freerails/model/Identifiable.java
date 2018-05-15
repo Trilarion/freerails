@@ -3,7 +3,8 @@ package freerails.model;
 import java.io.Serializable;
 
 /**
- *
+ * All objects derived from Identifiable must not implement their own equals() or hashCode() functions. The idea is that
+ * objects with the same id are equal.
  */
 public class Identifiable implements Comparable<Identifiable>, Serializable {
 

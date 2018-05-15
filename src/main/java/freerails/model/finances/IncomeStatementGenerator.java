@@ -78,7 +78,7 @@ public class IncomeStatementGenerator {
             if (transaction instanceof CargoDeliveryMoneyTransaction) {
                 CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
                 int cargoTypeId = cargoDeliveryMoneyTransaction.getCargoBatch().getCargoTypeId();
-                Cargo ct = world.getCargoType(cargoTypeId);
+                Cargo ct = world.getCargo(cargoTypeId);
                 switch (ct.getCategory()) {
                     case BULK_FREIGHT:
                         bulkFreightTotal += cargoDeliveryMoneyTransaction.price().amount;

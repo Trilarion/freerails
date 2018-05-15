@@ -20,21 +20,22 @@ package freerails.model;
 
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.Cargo;
-import freerails.model.terrain.TerrainType2;
+import freerails.model.cargo.CargoConversion;
+import freerails.model.cargo.CargoProductionOrConsumption;
+import freerails.model.finances.Money;
+import freerails.model.terrain.Terrain;
 import freerails.model.world.SharedKey;
+import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
-import freerails.model.terrain.TerrainType;
 import freerails.model.track.*;
 import freerails.model.world.World;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Is used to generate fixtures for Junit tests.
@@ -71,7 +72,6 @@ public class MapFixtureFactory {
         cargos.add(new Cargo(4, "Coal", CargoCategory.BULK_FREIGHT, 8));
 
         World world = new World.Builder().setMapSize(mapSize).setCargos(cargos).setTerrainTypes(generateTerrainTypesListNew()).build();
-        generateTerrainTypesList(world);
 
         for (int x = 0; x < mapSize.x; x++) {
             for (int y = 0; y < mapSize.y; y++) {
@@ -137,39 +137,20 @@ public class MapFixtureFactory {
         for (TrackRule aTrackRulesArray : trackRulesArray) {
             world.add(SharedKey.TrackRules, aTrackRulesArray);
         }
-
-        // Add the terrain types if necessary.
-        if (world.size(SharedKey.TerrainTypes) == 0) {
-            generateTerrainTypesList(world);
-        }
     }
 
     /**
      * Adds hard coded terrain types new style
      */
-    private static SortedSet<TerrainType2> generateTerrainTypesListNew() {
-        SortedSet<TerrainType2> terrainTypes = new TreeSet<>();
-        terrainTypes.add(new TerrainType2(0, "Grassland", TerrainCategory.COUNTRY));
-        terrainTypes.add(new TerrainType2(1, "City", TerrainCategory.URBAN));
-        terrainTypes.add(new TerrainType2(2, "Mine", TerrainCategory.RESOURCE));
-        terrainTypes.add(new TerrainType2(3, "Factory", TerrainCategory.INDUSTRY));
-        terrainTypes.add(new TerrainType2(4, "Ocean", TerrainCategory.OCEAN));
+    private static SortedSet<Terrain> generateTerrainTypesListNew() {
+        SortedSet<Terrain> terrainTypes = new TreeSet<>();
+        List<CargoProductionOrConsumption> x = Utils.immutableList(new ArrayList<>());
+        List<CargoConversion> y = Utils.immutableList(new ArrayList<>());
+        terrainTypes.add(new Terrain(0, "Grassland", TerrainCategory.COUNTRY, Money.ZERO, Money.ZERO, x, y, x));
+        terrainTypes.add(new Terrain(1, "City", TerrainCategory.URBAN, Money.ZERO, Money.ZERO, x, y, x));
+        terrainTypes.add(new Terrain(2, "Mine", TerrainCategory.RESOURCE, Money.ZERO, Money.ZERO, x, y, x));
+        terrainTypes.add(new Terrain(3, "Factory", TerrainCategory.INDUSTRY, Money.ZERO, Money.ZERO, x, y, x));
+        terrainTypes.add(new Terrain(4, "Ocean", TerrainCategory.OCEAN, Money.ZERO, Money.ZERO, x, y, x));
         return terrainTypes;
-    }
-
-    /**
-     * Adds hard coded terrain types.
-     */
-    private static void generateTerrainTypesList(World world) {
-        world.add(SharedKey.TerrainTypes, new TerrainType(
-                TerrainCategory.COUNTRY, "Grassland"));
-        world.add(SharedKey.TerrainTypes, new TerrainType(
-                TerrainCategory.URBAN, "City"));
-        world.add(SharedKey.TerrainTypes, new TerrainType(
-                TerrainCategory.RESOURCE, "Mine"));
-        world.add(SharedKey.TerrainTypes, new TerrainType(
-                TerrainCategory.INDUSTRY, "Factory"));
-        world.add(SharedKey.TerrainTypes, new TerrainType(
-                TerrainCategory.OCEAN, "Ocean"));
     }
 }

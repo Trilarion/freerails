@@ -20,7 +20,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
 import freerails.model.world.WorldUtils;
 import freerails.move.*;
@@ -145,12 +145,12 @@ public class TrackMoveProducer {
             int x = xs[i];
             int y = ys[i];
             TerrainTile tile = (TerrainTile) world.getTile(new Vec2D(x, y));
-            int tt = tile.getTerrainTypeId();
-            ruleIDs[i] = getBuildTrackStrategy().getRule(tt);
+            int terrainTypeId = tile.getTerrainTypeId();
+            ruleIDs[i] = getBuildTrackStrategy().getRule(terrainTypeId);
 
             if (ruleIDs[i] == -1) {
-                TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, tt);
-                String message = "Non of the selected track types can be built on " + terrainType.getDisplayName();
+                Terrain terrainType = world.getTerrain(terrainTypeId);
+                String message = "Non of the selected track types can be built on " + terrainType.getName();
                 return MoveStatus.moveFailed(message);
             }
             rules[i] = (TrackRule) world.get(SharedKey.TrackRules, ruleIDs[i]);

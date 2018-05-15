@@ -21,13 +21,14 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.util.BinaryNumberFormatter;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Selects a tile icon to use based on the type of the tiles to the North, East, South and West.
@@ -40,12 +41,12 @@ public class RiverStyleTileRenderer extends AbstractTileRenderer {
 
     /**
      * @param imageManager
-     * @param rgbValues
+     * @param typesTreatedAsSame
      * @param tileModel
      * @throws IOException
      */
-    public RiverStyleTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType tileModel) throws IOException {
-        super(tileModel, rgbValues, 16);
+    public RiverStyleTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain tileModel) throws IOException {
+        super(tileModel, typesTreatedAsSame, 16);
 
         for (int i = 0; i < getTileIcons().length; i++) {
             String fileName = generateRelativeFileName(i);

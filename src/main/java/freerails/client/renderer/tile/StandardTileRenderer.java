@@ -21,13 +21,14 @@
  */
 package freerails.client.renderer.tile;
 
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Paints a tile for which there only one tile icon.
@@ -36,12 +37,12 @@ public class StandardTileRenderer extends AbstractTileRenderer {
 
     /**
      * @param imageManager
-     * @param rgbValues
+     * @param typesTreatedAsSame
      * @param terrainType
      * @throws IOException
      */
-    public StandardTileRenderer(ImageManager imageManager, int[] rgbValues, TerrainType terrainType) throws IOException {
-        super(terrainType, rgbValues, 1);
+    public StandardTileRenderer(ImageManager imageManager, List<Integer> typesTreatedAsSame, Terrain terrainType) throws IOException {
+        super(terrainType, typesTreatedAsSame, 1);
         getTileIcons()[0] = imageManager.getImage(generateFilename());
     }
 

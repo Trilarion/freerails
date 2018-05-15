@@ -143,7 +143,7 @@ public class StationBoxRenderer implements Painter {
             cars.put(cargoCategory, map);
         }
         for (int i = 0; i < numCargoTypes; i++) {
-            Cargo ct = world.getCargoType(i);
+            Cargo ct = world.getCargo(i);
             int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
             numberOfCarLoads.put(ct.getCategory(), numberOfCarLoads.get(ct.getCategory()) + carsOfThisCargo);
             cars.get(ct.getCategory()).put(i, cars.get(ct.getCategory()).get(i) + carsOfThisCargo);

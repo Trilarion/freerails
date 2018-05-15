@@ -21,24 +21,27 @@
  */
 package freerails.controller;
 
+import freerails.io.GsonManager;
+import freerails.model.terrain.*;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
+import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
-import freerails.model.terrain.TerrainTile;
-import freerails.model.terrain.TerrainCategory;
-import freerails.model.terrain.TileTransition;
-import freerails.model.terrain.TerrainType;
 import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.World;
 import junit.framework.TestCase;
+
+import java.io.File;
+import java.net.URL;
+import java.util.SortedSet;
 
 /**
  * Test for BuildTrackExplorer.
@@ -55,7 +58,12 @@ public class BuildTrackExplorerTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).build();
+        // load terrain types
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        File file = new File(url.toURI());
+        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();
@@ -105,9 +113,8 @@ public class BuildTrackExplorerTest extends TestCase {
      */
     public void test2() {
         // Check the the Ocean type is where we think it is.
-        int occeanTypeNumber = 4;
-        TerrainType ocean = (TerrainType) world.get(SharedKey.TerrainTypes,
-                occeanTypeNumber);
+        int occeanTypeNumber = 7;
+        Terrain ocean = world.getTerrain(occeanTypeNumber);
         assertEquals(TerrainCategory.OCEAN, ocean.getCategory());
 
         // Check that track cannot be built on ocean.
@@ -129,8 +136,7 @@ public class BuildTrackExplorerTest extends TestCase {
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
-        // We miss out SW, S, and SE since we don't want to double back on
-        // ourselves.
+        // We miss out SW, S, and SE since we don't want to double back on ourselves.
         assertNextVertexIs(TileTransition.WEST, 9, 10, explorer);
         assertNextVertexIs(TileTransition.NORTH_WEST, 9, 9, explorer);
         assertFalse(explorer.hasNextEdge());
@@ -187,7 +193,8 @@ public class BuildTrackExplorerTest extends TestCase {
         assertTrue(explorer.hasNextEdge());
         explorer.nextEdge();
         PositionOnTrack pos = new PositionOnTrack(explorer.getVertexConnectedByEdge());
-        assertEquals(PositionOnTrack.createComingFrom(new Vec2D(x, y), oneTileMoveVector), pos);
+        PositionOnTrack pos2 = PositionOnTrack.createComingFrom(new Vec2D(x, y), oneTileMoveVector);
+        assertEquals(pos2, pos);
     }
 
     private void buildTrack(int x, int y, TileTransition direction) {

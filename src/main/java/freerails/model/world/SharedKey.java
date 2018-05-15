@@ -24,7 +24,7 @@ package freerails.model.world;
  */
 public enum SharedKey {
 
-    TerrainTypes(0), TrackRules(5);
+    TrackRules(5);
 
     private final int id;
 

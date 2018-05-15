@@ -63,7 +63,7 @@ public class MapFixtureFactory2Test extends TestCase {
 
         assertTrue(world.getCargos().size() > 0);
         assertTrue(world.size(SharedKey.TrackRules) > 0);
-        assertTrue(world.size(SharedKey.TerrainTypes) > 0);
+        assertTrue(world.getTerrains().size() > 0);
     }
 
     /**

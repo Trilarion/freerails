@@ -54,7 +54,7 @@ public class BondInterestMoveGenerator {
 
                 if (transaction instanceof BondItemTransaction) {
                     BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
-                    int interestRate = bondItemTransaction.getType();
+                    int interestRate = bondItemTransaction.getTerrainTypeId();
                     // TODO Money arithmetics
                     long bondAmount = ModelConstants.BOND_VALUE_ISSUE.amount;
                     interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();

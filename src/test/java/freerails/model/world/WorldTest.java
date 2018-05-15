@@ -43,8 +43,8 @@ public class WorldTest extends TestCase {
      */
     public void testGet() {
         World world = new World.Builder().build();
-        world.add(SharedKey.TerrainTypes, fs);
-        assertEquals(world.get(SharedKey.TerrainTypes, 0), fs);
+        world.add(SharedKey.TrackRules, fs);
+        assertEquals(world.get(SharedKey.TrackRules, 0), fs);
     }
 
     /**
@@ -71,12 +71,12 @@ public class WorldTest extends TestCase {
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
 
-        copy.add(SharedKey.TerrainTypes, fs);
+        copy.add(SharedKey.TrackRules, fs);
 
         assertFalse(original.equals(copy));
         assertFalse(copy.equals(original));
-        assertEquals(1, copy.size(SharedKey.TerrainTypes));
-        assertEquals(0, original.size(SharedKey.TerrainTypes));
+        assertEquals(1, copy.size(SharedKey.TrackRules));
+        assertEquals(0, original.size(SharedKey.TrackRules));
     }
 
     /**

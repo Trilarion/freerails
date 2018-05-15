@@ -21,7 +21,11 @@
  */
 package freerails.model.track.pathfinding;
 
+import freerails.model.finances.Money;
+import freerails.model.terrain.Terrain;
+import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.game.GameRules;
@@ -30,7 +34,10 @@ import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Test for TrackPathFinder.
@@ -46,7 +53,11 @@ public class TrackPathFinderTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).build();
+        // load terrain types
+        SortedSet<Terrain> terrainTypes = new TreeSet<>();
+        terrainTypes.add(new Terrain(0, "Terrain", TerrainCategory.COUNTRY, Money.ZERO, Money.ZERO, Utils.immutableList(new ArrayList<>()), Utils.immutableList(new ArrayList<>()), Utils.immutableList(new ArrayList<>())));
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         MapFixtureFactory.generateTrackRuleList(world);
@@ -69,6 +80,7 @@ public class TrackPathFinderTest extends TestCase {
             list2 = pathFinder.generatePath(new Vec2D(5, 10), new Vec2D(5,5), buildTrackStrategy);
             assertEquals(5, list2.size());
         } catch (PathNotFoundException e) {
+            e.printStackTrace();
             fail();
         }
     }

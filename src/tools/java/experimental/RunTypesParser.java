@@ -22,8 +22,6 @@
  */
 package experimental;
 
-import freerails.savegames.CargoAndTerrainXmlHandlerImpl;
-import freerails.savegames.CargoAndTerrainXmlParser;
 import freerails.model.world.World;
 
 /**

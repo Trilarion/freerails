@@ -33,9 +33,9 @@ import java.util.Random;
 public class CityTilePositioner {
 
     private final Random random = new Random();
-    private final List<TerrainType2> urbanTerrainTypes = new ArrayList<>();
-    private final List<TerrainType2> resourceTerrainTypes = new ArrayList<>();
-    private final List<TerrainType2> industryTerrainTypes = new ArrayList<>();
+    private final List<Terrain> urbanTerrainTypes = new ArrayList<>();
+    private final List<Terrain> resourceTerrainTypes = new ArrayList<>();
+    private final List<Terrain> industryTerrainTypes = new ArrayList<>();
     private final World world;
 
     /**
@@ -45,7 +45,7 @@ public class CityTilePositioner {
         this.world = world;
 
         // get the different types of Urban/Industry/Resource terrain
-        for (TerrainType2 terrainType: world.getTerrainTypes()) {
+        for (Terrain terrainType: world.getTerrains()) {
             switch (terrainType.getCategory()) {
                 case URBAN:
                     urbanTerrainTypes.add(terrainType);
@@ -89,7 +89,7 @@ public class CityTilePositioner {
 
     private void addResourceTile(CityModel city) {
         int tileTypeNo = random.nextInt(resourceTerrainTypes.size());
-        TerrainType2 type = resourceTerrainTypes.get(tileTypeNo);
+        Terrain type = resourceTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 
@@ -98,14 +98,14 @@ public class CityTilePositioner {
 
         if (size > 0) {
             int tileTypeNo = random.nextInt(size);
-            TerrainType2 type = city.industriesNotAtCity.get(tileTypeNo);
+            Terrain type = city.industriesNotAtCity.get(tileTypeNo);
             city.addTile(type);
         }
     }
 
     private void addUrbanTile(CityModel city) {
         int tileTypeNo = random.nextInt(urbanTerrainTypes.size());
-        TerrainType2 type = urbanTerrainTypes.get(tileTypeNo);
+        Terrain type = urbanTerrainTypes.get(tileTypeNo);
         city.addTile(type);
     }
 

@@ -59,13 +59,13 @@ public class FinancialDataGatherer extends TransactionAggregator {
         if (transaction instanceof ItemTransaction) {
             ItemTransaction ait = (ItemTransaction) transaction;
 
-            if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getType() == -1) {
+            if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getTerrainTypeId() == -1) {
                 // If it is a change in the total number of shares issued.
                 StockItemTransaction ist = (StockItemTransaction) transaction;
                 totalShares += ist.getQuantity();
             } else if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
                 //
-                stockInRRs[ait.getType()] += ait.getQuantity();
+                stockInRRs[ait.getTerrainTypeId()] += ait.getQuantity();
             } else if (transaction instanceof BondItemTransaction) {
                 bonds += ait.getQuantity();
             }

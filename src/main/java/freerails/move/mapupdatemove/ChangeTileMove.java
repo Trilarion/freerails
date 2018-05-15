@@ -21,11 +21,10 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
@@ -78,7 +77,7 @@ public class ChangeTileMove implements MapUpdateMove {
 
     public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
         TerrainTile actual = world.getTile(location);
-        TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, actual.getTerrainTypeId());
+        Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
         if (type.getCategory() != TerrainCategory.COUNTRY) {
             return MoveStatus.moveFailed("Can only build on clear terrain.");

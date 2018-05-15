@@ -25,7 +25,7 @@ import freerails.model.activity.ActivityIterator;
 import freerails.model.activity.ActivityIteratorImpl;
 import freerails.model.cargo.Cargo;
 import freerails.model.terrain.City;
-import freerails.model.terrain.TerrainType2;
+import freerails.model.terrain.Terrain;
 import freerails.model.train.Engine;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
@@ -78,14 +78,14 @@ public class World implements UnmodifiableWorld {
     private final SortedSet<Engine> engines;
     private final SortedSet<City> cities;
     private final SortedSet<Cargo> cargos;
-    private final SortedSet<TerrainType2> terrainTypes;
+    private final SortedSet<Terrain> terrainTypes;
 
     public static class Builder {
 
         private SortedSet<Engine> engines = new TreeSet<>();
         private SortedSet<City> cities = new TreeSet<>();
         private SortedSet<Cargo> cargos = new TreeSet<>();
-        private SortedSet<TerrainType2> terrainTypes = new TreeSet<>();
+        private SortedSet<Terrain> terrainTypes = new TreeSet<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
         public Builder setEngines(SortedSet<Engine> engines) {
@@ -103,7 +103,7 @@ public class World implements UnmodifiableWorld {
             return this;
         }
 
-        public Builder setTerrainTypes(SortedSet<TerrainType2> terrainTypes) {
+        public Builder setTerrainTypes(SortedSet<Terrain> terrainTypes) {
             this.terrainTypes = Utils.verifyNotNull(terrainTypes);
             return this;
         }
@@ -161,16 +161,16 @@ public class World implements UnmodifiableWorld {
         return cargos;
     }
 
-    public Cargo getCargoType(int id) {
+    public Cargo getCargo(int id) {
         return get(id, cargos);
     }
 
     // TODO unmodifiable collection?
-    public Collection<TerrainType2> getTerrainTypes() {
+    public Collection<Terrain> getTerrains() {
         return terrainTypes;
     }
 
-    public TerrainType2 getTerrainType(int id) {
+    public Terrain getTerrain(int id) {
         return get(id, terrainTypes);
     }
 
@@ -588,6 +588,7 @@ public class World implements UnmodifiableWorld {
         time = t;
     }
 
+    // TODO inline in constructor, we do not change the map size afterwards
     /**
      * @param mapSize
      */
@@ -596,6 +597,7 @@ public class World implements UnmodifiableWorld {
         map = new TerrainTile[mapSize.x * mapSize.y];
 
         // TODO what is a good default initializer here or should we stay with null?
+        // TODO terrainTypeId 0 must also exist as terrain, how to make sure
         for (int i = 0; i < map.length; i++) {
             map[i] = new TerrainTile(0);
         }

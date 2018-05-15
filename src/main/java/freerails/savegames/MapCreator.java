@@ -10,18 +10,14 @@ import freerails.model.terrain.*;
 import freerails.model.train.Engine;
 import freerails.model.world.World;
 import freerails.model.world.WorldItem;
-import freerails.model.world.SharedKey;
+import freerails.util.Array2D;
 import freerails.util.Vec2D;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 /**
  *
@@ -67,12 +63,10 @@ public class MapCreator {
         // load terrain types
         url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
         file = new File(url.toURI());
-        SortedSet<TerrainType2> terrainTypes = GsonManager.loadTerrainTypes(file);
+        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
         World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes);
         World world = builder.build();
-
-        addTerrainTileTypesList(world);
 
         URL track_xml_url = MapCreator.class.getResource("/freerails/data/track_tiles.xml");
 
@@ -80,43 +74,65 @@ public class MapCreator {
 
         trackSetFactory.addTrackRules(world);
 
+        /*
         // Load the terrain map
         URL map_url = MapCreator.class.getResource("/freerails/data/" + mapName + ".png");
 
         // converts an image file into a map.
         // Implemented Terrain Randomisation to randomly position the terrain types for each tile on the map.
 
-
         Image mapImage = (new ImageIcon(map_url)).getImage();
         Rectangle mapRect = new Rectangle(0, 0, mapImage.getWidth(null), mapImage.getHeight(null));
         BufferedImage mapBufferedImage = new BufferedImage(mapRect.width, mapRect.height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = mapBufferedImage.getGraphics();
         g.drawImage(mapImage, 0, 0, null);
-        world.setupMap(new Vec2D(mapRect.width, mapRect.height));
 
         Map<Integer, Integer> rgb2TerrainType = new HashMap<>();
 
-        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
-            TerrainType terrainType = (TerrainType) world.get(SharedKey.TerrainTypes, i);
+        for (int i = 0; i < world.getTerrains().size(); i++) {
+            TerrainType terrainType = (TerrainType) world.get(SharedKey.TrackRules, i);
             rgb2TerrainType.put(terrainType.getRGB(), i);
         }
+        */
 
-        // TODO what is the purpose of the following section
-        TerrainType terrainTypeTile;
+
+        // Load the terrain map
+
+        /*
+        // special code to store terrain type from map in json
+        final int width = mapImage.getWidth(null);
+        final int height = mapImage.getHeight(null);
+        Array2D map = new Array2D(width, height);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int rgb = mapBufferedImage.getRGB(j, i);
+                map.set(j, i, rgb2TerrainType.get(rgb));
+            }
+        }
+        file = new File(mapName + "_map.json");
+        GsonManager.saveCompact(file, map);
+        */
+
+        url = MapCreator.class.getResource("/freerails/data/scenario/" + mapName + "_map.json");
+        file = new File(url.toURI());
+        Array2D map = GsonManager.loadArray2D(file);
+
+        world.setupMap(map.getSize());
+
+        // TODO what is the purpose of the following section (randomization)
         final List<Integer> countryTypes = new ArrayList();
         final List<Integer> non_countryTypes = new ArrayList();
 
-        for (int c = 0; c < world.size(SharedKey.TerrainTypes); c++) {
-            terrainTypeTile = (TerrainType) world.get(SharedKey.TerrainTypes, c);
+        for (Terrain terrainType: world.getTerrains()) {
 
-            if (terrainTypeTile.getCategory() == TerrainCategory.COUNTRY) {
-                if ((!terrainTypeTile.getTerrainTypeName().equals("Clear"))) {
-                    countryTypes.add(c);
+            if (terrainType.getCategory() == TerrainCategory.COUNTRY) {
+                if ((!terrainType.getName().equals("Clear"))) {
+                    countryTypes.add(terrainType.getId());
                 }
             }
 
-            if (terrainTypeTile.getCategory() == TerrainCategory.OCEAN || terrainTypeTile.getCategory() == TerrainCategory.RIVER || terrainTypeTile.getCategory() == TerrainCategory.HILL) {
-                non_countryTypes.add(c);
+            if (terrainType.getCategory() == TerrainCategory.OCEAN || terrainType.getCategory() == TerrainCategory.RIVER || terrainType.getCategory() == TerrainCategory.HILL) {
+                non_countryTypes.add(terrainType.getId());
             }
         }
 
@@ -127,15 +143,10 @@ public class MapCreator {
          */
         List<TerrainAtLocation> locations = new ArrayList();
 
-        for (int x = 0; x < mapRect.width; x++) {
-            for (int y = 0; y < mapRect.height; y++) {
-                int rgb = mapBufferedImage.getRGB(x, y);
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = 0; y < map.getHeight(); y++) {
                 TerrainTile tile;
-                Integer type = rgb2TerrainType.get(rgb);
-
-                if (null == type) {
-                    throw new NullPointerException("There is no terrain type mapped to rgb value " + rgb + " at location " + x + ", " + y);
-                }
+                Integer type = map.get(x, y);
 
                 tile = new TerrainTile(terrainRandomizer.getNewType(type));
                 Vec2D location = new Vec2D(x, y);
@@ -188,59 +199,4 @@ public class MapCreator {
         return world;
     }
 
-    /**
-     * Adds cargo and terrain types defined in an XML file to a World
-     *
-     * @param world
-     */
-    public static void addTerrainTileTypesList(World world) {
-        try {
-            URL url = MapCreator.class.getResource("/freerails/data/cargo_and_terrain.xml");
-
-            CargoAndTerrainXmlParser.parse(url, new CargoAndTerrainXmlHandlerImpl(world));
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-
-        /*
-        // convert cargotypes from xml to json
-        Map<CargoCategory, CargoCategory> conversion = new HashMap<>();
-        conversion.put(CargoCategory.MAIL, CargoCategory.MAIL);
-        conversion.put(CargoCategory.PASSENGER, CargoCategory.PASSENGER);
-        conversion.put(CargoCategory.FAST_FREIGHT, CargoCategory.FAST_FREIGHT);
-        conversion.put(CargoCategory.BULK_FREIGHT, CargoCategory.BULK_FREIGHT);
-        conversion.put(CargoCategory.SLOW_FREIGHT, CargoCategory.SLOW_FREIGHT);
-
-        File file = new File("cargo_types.json");
-        SortedSet<CargoType2> cargoTypes = new TreeSet<>();
-        for (int i = 0; i < world.getCargoTypes().size(); i++) {
-            CargoType a = (CargoType) world.get(SharedKey.CargoTypes, i);
-            CargoType2 b = new CargoType2(i, a.getName(), conversion.get(a.getCategory()), a.getUnitWeight());
-            cargoTypes.add(b);
-        }
-        try {
-            GsonManager.save(file, cargoTypes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        */
-
-        // convert terraintypes from xml to json
-        File file = new File("terrain_types.json");
-        //File f2 = new File("terrain_colors.json");
-        SortedSet<TerrainType2> terrainTypes = new TreeSet<>();
-        //Map<Integer, ARGBColor> rgbMap = new HashMap<>();
-        for (int i = 0; i < world.size(SharedKey.TerrainTypes); i++) {
-            TerrainType a = (TerrainType) world.get(SharedKey.TerrainTypes, i);
-            TerrainType2 b = new TerrainType2(i, a.getTerrainTypeName(), a.getCategory());
-            terrainTypes.add(b);
-            //rgbMap.put(i, new ARGBColor(a.getRGB()));
-        }
-        try {
-            GsonManager.save(file, terrainTypes);
-            // GsonManager.save(f2, rgbMap);
-        } catch(IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

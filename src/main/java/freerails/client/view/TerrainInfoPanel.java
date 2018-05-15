@@ -26,12 +26,10 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.model.ModelConstants;
 import freerails.model.cargo.Cargo;
-import freerails.model.terrain.TerrainType;
+import freerails.model.cargo.CargoConversion;
+import freerails.model.cargo.CargoProductionOrConsumption;
+import freerails.model.terrain.*;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
-import freerails.model.terrain.TileConsumption;
-import freerails.model.terrain.TileConversion;
-import freerails.model.terrain.TileProduction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -93,21 +91,21 @@ class TerrainInfoPanel extends JPanel {
 
     public void setTerrainType(int terrainId) {
 
-        TerrainType type = (TerrainType) world.get(SharedKey.TerrainTypes, terrainId);
+        Terrain type = world.getTerrain(terrainId);
 
-        String row = "<p>Right-of-Way costs $" + type.getRightOfWay() + " per mile. </p>";
+        String row = "<p>Right-of-Way costs $" + type.getRightOfWayCost() + " per mile. </p>";
         StringBuilder tableString = new StringBuilder();
-        int cargosProduced = type.getProduction().size();
-        int cargosConsumed = type.getConsumption().size();
-        int cargosConverted = type.getConversion().size();
+        int cargosProduced = type.getProductions().size();
+        int cargosConsumed = type.getConsumptions().size();
+        int cargosConverted = type.getConversions().size();
         if ((cargosProduced + cargosConsumed + cargosConverted) > 0) {
             // if the terrain type produces, consumes, or converts anything.
             tableString = new StringBuilder("<table width=\"75%\" >");
             if (cargosProduced != 0) {
                 tableString.append("<tr> <td><strong>Supplies</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosProduced; i++) {
-                    TileProduction p = type.getProduction().get(i);
-                    Cargo c = world.getCargoType(p.getCargoTypeId());
+                    CargoProductionOrConsumption p = type.getProductions().get(i);
+                    Cargo c = world.getCargo(p.getCargoId());
                     String supply = String.valueOf(p.getRate() / ModelConstants.UNITS_OF_CARGO_PER_WAGON);
                     tableString.append("<tr> <td>").append(c.getName()).append(" </td><td>").append(supply).append("</td></tr>");
                 }
@@ -115,17 +113,17 @@ class TerrainInfoPanel extends JPanel {
             if (cargosConsumed != 0) {
                 tableString.append("<tr> <td><strong>Demands</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConsumed; i++) {
-                    TileConsumption consumption = type.getConsumption().get(i);
-                    Cargo cargo = world.getCargoType(consumption.getCargoTypeId());
+                    CargoProductionOrConsumption consumption = type.getConsumptions().get(i);
+                    Cargo cargo = world.getCargo(consumption.getCargoId());
                     tableString.append("<tr> <td>").append(cargo.getName()).append(" </td><td>&nbsp;</td></tr>");
                 }
             }
             if (cargosConverted != 0) {
                 tableString.append("<tr> <td><strong>Converts</strong></td> <td>&nbsp;</td> </tr>");
                 for (int i = 0; i < cargosConverted; i++) {
-                    TileConversion p = type.getConversion().get(i);
-                    Cargo input = world.getCargoType(p.getInputCargoTypeId());
-                    Cargo output = world.getCargoType(p.getOutputCargoTypeId());
+                    CargoConversion p = type.getConversions().get(i);
+                    Cargo input = world.getCargo(p.getSourceCargoId());
+                    Cargo output = world.getCargo(p.getProductCargoId());
                     tableString.append("<tr> <td colspan=\"2\">").append(input.getName()).append(" to ").append(output.getName()).append("</td></tr>");
                 }
             }
@@ -133,7 +131,7 @@ class TerrainInfoPanel extends JPanel {
         }
         String labelString = "<html>" + row + tableString + "</html>";
         terrainDescription.setText(labelString);
-        terrainName.setText(type.getDisplayName());
+        terrainName.setText(type.getName());
 
         Image tileIcon = rendererRoot.getTileRendererByIndex(terrainId).getDefaultIcon();
         terrainImage.setIcon(new ImageIcon(tileIcon));

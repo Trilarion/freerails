@@ -50,7 +50,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
         Money m = balanceSheetGenerator.mailTotal;
         assertEquals(0, m.amount);
 
-        Cargo ct = world.getCargoType(0);
+        Cargo ct = world.getCargo(0);
         assertEquals(CargoCategory.MAIL, ct.getCategory());
 
         Money amount = new Money(100);
@@ -64,7 +64,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
     private void addTrans(CargoCategory category, Money amount) {
         // TODO i is not an id
         for (int i = 0; i < world.getCargos().size(); i++) {
-            Cargo ct = world.getCargoType(i);
+            Cargo ct = world.getCargo(i);
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);

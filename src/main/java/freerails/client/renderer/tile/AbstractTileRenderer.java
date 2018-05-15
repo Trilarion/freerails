@@ -23,27 +23,28 @@
 package freerails.client.renderer.tile;
 
 import freerails.model.terrain.TerrainTile;
-import freerails.model.terrain.TerrainType;
+import freerails.model.terrain.Terrain;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
 import java.io.File;
+import java.util.List;
 
 /**
  * Encapsulates the visible properties of a tile.
  */
 public abstract class AbstractTileRenderer implements TileRenderer {
 
-    private final int[] typeNumbers;
-    private final TerrainType terrainType;
+    private final List<Integer> typesTreatedAsSame;
+    private final Terrain terrainType;
     private Image[] tileIcons;
 
     // TODO if only mapSize is needed, do not send the full world here
-    public AbstractTileRenderer(TerrainType terrainType, int[] rgbValues, int numberTileIcons) {
+    public AbstractTileRenderer(Terrain terrainType, List<Integer> typesTreatedAsSame, int numberTileIcons) {
         this.terrainType = Utils.verifyNotNull(terrainType);
-        typeNumbers = Utils.verifyNotNull(rgbValues);
+        this.typesTreatedAsSame = Utils.verifyNotNull(typesTreatedAsSame);
         tileIcons = new Image[numberTileIcons]; // TODO check > 0
     }
 
@@ -69,7 +70,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     }
 
     public String getTerrainTypeName() {
-        return terrainType.getTerrainTypeName();
+        return terrainType.getName();
     }
 
     /**
@@ -100,7 +101,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
         // TODO vector2D arithmetic
         Vec2D mapSize = world.getMapSize();
         if ((location.x < mapSize.x) && (location.x >= 0) && (location.y < mapSize.y) && (location.y >= 0)) {
-            for (int typeNumber : typeNumbers) {
+            for (int typeNumber : typesTreatedAsSame) {
                 TerrainTile terrainTile = (TerrainTile) world.getTile(location);
 
                 if (terrainTile.getTerrainTypeId() == typeNumber) {

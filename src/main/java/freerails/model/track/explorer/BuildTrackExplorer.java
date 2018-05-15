@@ -274,6 +274,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         return currentBranch.toInt();
     }
 
+    // TODO this is bad style because it changes the internal state, not expected for hasXXX functions
     /**
      * @return
      */
@@ -311,9 +312,9 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     * @param trackStrategy
+     * @param buildTrackStrategy
      */
-    public void setBuildTrackStrategy(BuildTrackStrategy trackStrategy) {
-        buildTrackStrategy = Utils.verifyNotNull(trackStrategy);
+    public void setBuildTrackStrategy(BuildTrackStrategy buildTrackStrategy) {
+        this.buildTrackStrategy = Utils.verifyNotNull(buildTrackStrategy);
     }
 }
