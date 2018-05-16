@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.track.TrackRule;
 import freerails.model.world.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
@@ -29,8 +30,6 @@ import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackPieceImpl;
-import freerails.model.track.TrackRule;
 import junit.framework.TestCase;
 
 /**
@@ -69,7 +68,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
 
         TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, 0);
         int owner = WorldUtils.getPlayerIndex(world, MapFixtureFactory.TEST_PRINCIPAL);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, owner, 0);
+        newTrackPiece = new TrackPiece(newConfig, r, owner, 0);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);

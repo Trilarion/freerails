@@ -33,7 +33,6 @@ import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackPiece;
 import junit.framework.TestCase;
 
@@ -76,10 +75,8 @@ public class TrackBuildingTest extends TestCase {
         try {
             // Check there is no track before we build it.
             for (int x = 5; x <= 10; x++) {
-                TrackPiece tp = world.getTile(new Vec2D(x, 5))
-                        .getTrackPiece();
-                assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp
-                        .getTrackTypeID());
+                TrackPiece trackPiece = world.getTile(new Vec2D(x, 5)).getTrackPiece();
+                assertEquals(null, trackPiece);
             }
             pathFinder.setupSearch(from, to, bts);
             pathFinder.search(-1);
@@ -112,12 +109,10 @@ public class TrackBuildingTest extends TestCase {
             // Check there is no track before we build it.
 
             TrackPiece tp1 = world.getTile(new Vec2D(5, 5)).getTrackPiece();
-            assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp1
-                    .getTrackTypeID());
+            assertEquals(null, tp1);
 
             TrackPiece tp2 = world.getTile(new Vec2D(6, 5)).getTrackPiece();
-            assertEquals(NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER, tp2
-                    .getTrackTypeID());
+            assertEquals(null, tp2);
 
             pathFinder.setupSearch(from, to, bts);
             pathFinder.search(-1);
@@ -190,10 +185,8 @@ public class TrackBuildingTest extends TestCase {
             MoveStatus moveStatus = producer.buildTrack(a, path);
             assertTrue(moveStatus.succeeds());
 
-            TrackPiece tp = world.getTile(b)
-                    .getTrackPiece();
-            assertEquals("We just build double track here.", trackTypeID, tp
-                    .getTrackTypeID());
+            TrackPiece tp = world.getTile(b).getTrackPiece();
+            assertEquals("We just build double track here.", trackTypeID, tp.getTrackTypeID());
 
             pathFinder.setupSearch(b, c, bts);
             pathFinder.search(-1);

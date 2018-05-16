@@ -24,6 +24,8 @@ package freerails.move.generator;
 import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.terrain.NearestCityFinder;
 import freerails.model.station.VerifyStationName;
+import freerails.model.track.TrackConfiguration;
+import freerails.model.track.TrackRule;
 import freerails.model.world.WorldUtils;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
@@ -37,8 +39,6 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackPieceImpl;
-import freerails.model.track.TrackRule;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -106,12 +106,12 @@ public class AddStationMoveGenerator implements MoveGenerator {
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 
         int owner = WorldUtils.getPlayerIndex(world, principal);
-        TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, ruleNumber);
+        TrackPiece after = new TrackPiece(before == null ? TrackConfiguration.from9bitTemplate(0) : before.getTrackConfiguration(), trackRule, owner, ruleNumber);
         Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
 
         CompositeMove move;
 
-        if (!oldTile.getTrackPiece().getTrackRule().isStation()) {
+        if (oldTile.getTrackPiece() == null || !oldTile.getTrackPiece().getTrackRule().isStation()) {
             // There isn't already a station here, we need to pick a name and
             // add an entry to the station list.
             NearestCityFinder nearestCityFinder = new NearestCityFinder(world, location);

@@ -32,7 +32,7 @@ import org.junit.Assert;
 /**
  *
  */
-public class TrackPieceImplTest extends TestCase {
+public class TrackPieceTest extends TestCase {
 
     private World world;
 
@@ -54,10 +54,10 @@ public class TrackPieceImplTest extends TestCase {
         TrackRule rule0 = (TrackRule) world.get(SharedKey.TrackRules, 0);
         TrackRule rule4 = (TrackRule) world.get(SharedKey.TrackRules, 4);
 
-        TrackPieceImpl trackPiece1 = new TrackPieceImpl(trackConfiguration, rule0, 0, 0);
+        TrackPiece trackPiece1 = new TrackPiece(trackConfiguration, rule0, 0, 0);
         assertEquals(trackPiece1, trackPiece1);
 
-        TrackPieceImpl trackPiece2 = new TrackPieceImpl(trackConfiguration, rule4, 0, 4);
+        TrackPiece trackPiece2 = new TrackPiece(trackConfiguration, rule4, 0, 4);
         Assert.assertNotEquals(trackPiece1, trackPiece2);
 
         TestUtils.assertCloneBySerializationBehavesWell(trackPiece1);

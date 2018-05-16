@@ -35,7 +35,6 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.NullTrackPiece;
 import freerails.model.train.schedule.MutableSchedule;
 import freerails.model.train.TrainOrders;
 
@@ -248,8 +247,8 @@ public class SelectStationPanel extends JPanel implements View {
         Vec2D mapSize = world.getMapSize();
         for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, mapSize.x); x++) {
             for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, mapSize.y); y++) {
-                TerrainTile tt = (TerrainTile) world.getTile(new Vec2D(x, y));
-                if (!tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
+                TerrainTile terrainTile = (TerrainTile) world.getTile(new Vec2D(x, y));
+                if (terrainTile.getTrackPiece() != null) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;
                     double yDouble = y - visableMapTiles.y;

@@ -22,12 +22,11 @@
  */
 package freerails.client.renderer.track;
 
+import freerails.model.track.TrackRule;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
-import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackConfiguration;
-import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -61,9 +60,6 @@ public class TrackPieceRendererList {
      * @return
      */
     public TrackPieceRenderer getTrackPieceView(int i) {
-        if (NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER == i) {
-            return NullTrackPieceRenderer.instance;
-        }
         return trackPieceViewArray[i];
     }
 
@@ -80,7 +76,7 @@ public class TrackPieceRendererList {
             TrackPieceRenderer trackPieceView = getTrackPieceView(i);
 
             if (null == trackPieceView) {
-                logger.warn("No track piece view for the following track type: " + trackRule.getTypeName());
+                logger.warn("No track piece view for the following track type: " + trackRule.getName());
 
                 return false;
             }
@@ -90,7 +86,7 @@ public class TrackPieceRendererList {
                 Image img = trackPieceView.getTrackPieceIcon(trackGraphicsNo);
 
                 if (null == img) {
-                    logger.warn("No track piece image for the following track type: " + trackRule.getTypeName() + ", with configuration: " + trackGraphicsNo);
+                    logger.warn("No track piece image for the following track type: " + trackRule.getName() + ", with configuration: " + trackGraphicsNo);
                     okSoFar = false;
                 }
             }

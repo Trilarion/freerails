@@ -20,6 +20,7 @@ package freerails.controller;
 
 import freerails.io.GsonManager;
 import freerails.model.terrain.Terrain;
+import freerails.model.track.TrackRule;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
@@ -32,7 +33,6 @@ import freerails.model.game.GameRules;
 import freerails.model.player.Player;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
-import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.World;
 import junit.framework.TestCase;

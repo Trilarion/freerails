@@ -18,11 +18,10 @@
 
 package freerails.model.terrain;
 
-import freerails.model.track.NullTrackPiece;
-import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackPiece;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A tile on the map.
@@ -37,7 +36,7 @@ public class TerrainTile implements Serializable {
 
     public TerrainTile(int terrainTypeId) {
         this.terrainTypeId = terrainTypeId;
-        trackPiece = NullTrackPiece.getInstance();
+        trackPiece = null;
     }
 
     public TerrainTile(int terrainTypeId, TrackPiece trackPiece) {
@@ -73,7 +72,7 @@ public class TerrainTile implements Serializable {
 
     @Override
     public String toString() {
-        return "trackPiece=" + trackPiece.toString() + " and terrainType is " + terrainTypeId;
+        return "trackPiece=" + Objects.toString(trackPiece) + " and terrainType is " + terrainTypeId;
     }
 
     /**
@@ -87,6 +86,6 @@ public class TerrainTile implements Serializable {
      * @return
      */
     public boolean hasTrack() {
-        return trackPiece.getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER;
+        return trackPiece != null;
     }
 }

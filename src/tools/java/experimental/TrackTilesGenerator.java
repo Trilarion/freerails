@@ -22,7 +22,6 @@ import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.savegames.TrackTilesXmlHandlerImpl;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackConfiguration;
-import freerails.model.track.TrackRule;
 
 import javax.swing.*;
 import java.awt.*;
@@ -97,19 +96,19 @@ class TrackTilesGenerator extends JPanel {
         for (TrackRule rule : rules) {
             TrackCategory category = rule.getCategory();
             Image icon;
-            if (category == TrackCategory.bridge || category == TrackCategory.station) {
-                tr.setIcon(rule.getTypeName());
+            if (category == TrackCategory.BRIDGE || category == TrackCategory.STATION) {
+                tr.setIcon(rule.getName());
                 icon = tr.icon;
             } else {
                 icon = null;
             }
-            tr.tunnel = category == TrackCategory.tunnel;
+            tr.tunnel = category == TrackCategory.TUNNEL;
             tr.doubleTrack = rule.isDouble();
 
             for (int i = 0; i < 512; i++) {
                 if (rule.testTrackPieceLegality(i)) {
 
-                    String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
+                    String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getName());
                     TrackConfiguration conf = TrackConfiguration.from9bitTemplate(i);
 
                     Image smallImage = imageManager.newBlankImage(60, 60);
@@ -155,7 +154,7 @@ class TrackTilesGenerator extends JPanel {
 
         for (TrackRule rule : rules) {
 
-            String typeName = rule.getTypeName();
+            String typeName = rule.getName();
             typeName += rule.isDouble() ? " (Double) " : " (Single)";
 
             g.drawString(typeName, 10, 10);
@@ -164,7 +163,7 @@ class TrackTilesGenerator extends JPanel {
 
             for (int i = 0; i < 512; i++) {
                 if (rule.testTrackPieceLegality(i)) {
-                    String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getTypeName());
+                    String fileName = TrackPieceRendererImpl.generateFilename(i, rule.getName());
                     Image tile;
                     try {
                         tile = imageManager.getImage(fileName);

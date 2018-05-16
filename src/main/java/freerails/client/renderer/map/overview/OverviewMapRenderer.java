@@ -39,7 +39,6 @@ import freerails.io.GsonManager;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
-import freerails.model.track.NullTrackPiece;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -142,10 +141,10 @@ public class OverviewMapRenderer implements MapRenderer {
     }
 
     public void refreshTile(Vec2D tileLocation) {
-        TerrainTile tt = (TerrainTile) world.getTile(tileLocation);
+        TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
 
-        if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-            int terrainTypeId = tt.getTerrainTypeId();
+        if (terrainTile.getTrackPiece() == null) {
+            int terrainTypeId = terrainTile.getTerrainTypeId();
             oneToOneImage.setRGB(tileLocation.x, tileLocation.y, terrainColors.get(terrainTypeId).getARGB());
         } else {
             // black with alpha of 1
@@ -177,10 +176,10 @@ public class OverviewMapRenderer implements MapRenderer {
 
         for (int tileX = mapLocation.x; tileX < mapSize.x + mapLocation.x; tileX++) {
             for (int tileY = mapLocation.y; tileY < mapSize.y + mapLocation.y; tileY++) {
-                TerrainTile tt = (TerrainTile) world.getTile(new Vec2D(tileX, tileY));
+                TerrainTile terrainTile = (TerrainTile) world.getTile(new Vec2D(tileX, tileY));
 
-                if (tt.getTrackPiece().equals(NullTrackPiece.getInstance())) {
-                    int terrainTypeId = tt.getTerrainTypeId();
+                if (terrainTile.getTrackPiece() == null) {
+                    int terrainTypeId = terrainTile.getTerrainTypeId();
                     oneToOneImage.setRGB(tileX - mapLocation.x, tileY - mapLocation.y, terrainColors.get(terrainTypeId).getARGB());
                 } else {
                     // black with alpha of 1

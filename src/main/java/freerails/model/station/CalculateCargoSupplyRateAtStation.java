@@ -20,12 +20,12 @@ package freerails.model.station;
 
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
+import freerails.model.track.TrackRule;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.terrain.*;
-import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.awt.*;

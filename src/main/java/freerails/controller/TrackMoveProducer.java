@@ -192,14 +192,14 @@ public class TrackMoveProducer {
         UnmodifiableWorld world = executor.getWorld();
         TrackPiece before = ((TerrainTile) world.getTile(point)).getTrackPiece();
         // Check whether there is track here.
-        if (before.getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+        if (before == null) {
             return MoveStatus.moveFailed("No track to upgrade.");
         }
 
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = WorldUtils.getPlayerIndex(world, principal);
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
-        TrackPiece after = new TrackPieceImpl(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
+        TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
         if (before.getTrackRule().isStation()) {

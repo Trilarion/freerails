@@ -39,7 +39,6 @@ import freerails.model.ModelConstants;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.NullTrackType;
 import freerails.model.track.PathIterator;
 import freerails.model.train.*;
 import freerails.model.train.schedule.ImmutableSchedule;

@@ -23,7 +23,6 @@ import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.model.train.PositionOnTrack;
@@ -51,7 +50,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     public FlatTrackExplorer(UnmodifiableWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
         TerrainTile tile = (TerrainTile) world.getTile(positionOnTrack.getLocation());
-        if (tile.getTrackPiece().getTrackTypeID() == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+        if (tile.getTrackPiece() == null) {
             throw new NoTrackException(positionOnTrack.toString());
         }
 
@@ -65,8 +64,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * center of the tile)
      */
     public static PositionOnTrack[] getPossiblePositions(UnmodifiableWorld world, Vec2D location) {
-        TrackPiece tp = ((TerrainTile) world.getTile(location)).getTrackPiece();
-        TrackConfiguration conf = tp.getTrackConfiguration();
+        TrackPiece trackPiece = ((TerrainTile) world.getTile(location)).getTrackPiece();
+        TrackConfiguration conf = trackPiece.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
 
         // Count the number of possible positions.

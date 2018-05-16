@@ -21,13 +21,13 @@
  */
 package freerails.savegames;
 
+import freerails.model.finances.Money;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.*;
 import org.xml.sax.Attributes;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,12 +44,15 @@ import java.util.List;
 public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
 
     private List<TrackRule> ruleList;
-    private TrackRuleProperties trackRuleProperties;
     private ValidTrackConfigurations validTrackConfigurations;
     private ArrayList<String> legalTemplates;
     private HashSet<TerrainCategory> terrainTypes;
     private ValidTrackPlacement validTrackPlacement;
-    private int maxConsequ;
+    private TrackCategory category;
+    private String name;
+    private boolean doubleTracked;
+    private int stationRadius;
+    private Money price, maintenance, fixedCost;
 
     /**
      * @param trackXmlUrl
@@ -65,7 +68,7 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
     }
 
     public void endCanOnlyBuildOnTheseTerrainTypes() {
-        validTrackPlacement = new ValidTrackPlacement(terrainTypes, PlacementRule.ONLY_ON_THESE);
+        validTrackPlacement = new ValidTrackPlacement(terrainTypes, true);
         terrainTypes = null;
     }
 
@@ -74,7 +77,7 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
     }
 
     public void endListOfTrackPieceTemplates() {
-        validTrackConfigurations = new ValidTrackConfigurations(maxConsequ, legalTemplates);
+        validTrackConfigurations = new ValidTrackConfigurations(legalTemplates);
         legalTemplates = null;
     }
 
@@ -83,30 +86,17 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
     }
 
     public void endCannotBuildOnTheseTerrainTypes() {
-        validTrackPlacement = new ValidTrackPlacement(terrainTypes, PlacementRule.ANYWHERE_EXCEPT_ON_THESE);
+        validTrackPlacement = new ValidTrackPlacement(terrainTypes, false);
         terrainTypes = null;
     }
 
     public void startTrackType(final Attributes attributes) {
-        int rGBvalue;
-        String rgbString = attributes.getValue("RGBvalue");
-        rGBvalue = Integer.parseInt(rgbString, 16);
+        category = TrackCategory.valueOf(attributes.getValue("category"));
 
-        /*
-         * We need to change the format of the rgb value to the same one as used
-         * by the the BufferedImage that stores the map. See
-         * freerails.common.Map
-         */
-        rGBvalue = new Color(rGBvalue).getRGB();
-
-        TrackCategory category = TrackCategory.valueOf(attributes.getValue("category"));
-
-        boolean enableDoubleTrack = Boolean.valueOf(attributes.getValue("doubleTrack"));
-        String typeName = attributes.getValue("type");
-        maxConsequ = Integer.parseInt(attributes.getValue("maxConsecutivePieces"));
+        doubleTracked = Boolean.valueOf(attributes.getValue("doubleTrack"));
+        name = attributes.getValue("type");
 
         String stationRadiusString = attributes.getValue("stationRadius");
-        int stationRadius;
 
         if (null != stationRadiusString) {
             stationRadius = Integer.parseInt(stationRadiusString);
@@ -115,29 +105,25 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
         }
 
         String priceString = attributes.getValue("price");
-        int price = Integer.parseInt(priceString);
+        price = new Money(Integer.parseInt(priceString));
 
         String fixedCostString = attributes.getValue("fixedCost");
-        int fixedCost;
 
         if (null != fixedCostString) {
-            fixedCost = Integer.parseInt(fixedCostString);
+            fixedCost = new Money(Integer.parseInt(fixedCostString));
         } else {
-            fixedCost = 0;
+            fixedCost = Money.ZERO;
         }
 
         String maintenanceString = attributes.getValue("maintenance");
-        int maintenance = Integer.parseInt(maintenanceString);
-
-        trackRuleProperties = new TrackRuleProperties(rGBvalue, enableDoubleTrack, typeName, category, stationRadius, price, maintenance, fixedCost);
+        maintenance = new Money(Integer.parseInt(maintenanceString));
     }
 
     public void endTrackType() {
-        TrackRule trackRuleImpl = new freerails.model.track.TrackRuleImpl(trackRuleProperties, validTrackConfigurations, validTrackPlacement);
+        TrackRule trackRuleImpl = new TrackRule(validTrackConfigurations, validTrackPlacement, category, name, doubleTracked, stationRadius, maintenance, price, fixedCost);
         ruleList.add(trackRuleImpl);
 
         validTrackConfigurations = null;
-        trackRuleProperties = null;
         validTrackPlacement = null;
     }
 

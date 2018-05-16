@@ -26,6 +26,7 @@ import freerails.controller.*;
 import freerails.client.ModelRootProperty;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.model.track.TrackRule;
 import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
 import freerails.util.Vec2D;
@@ -33,7 +34,6 @@ import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
-import freerails.model.track.TrackRule;
 import junit.framework.TestCase;
 
 /**
@@ -68,10 +68,10 @@ public class BuildTrackControllerTest extends TestCase {
             final Integer ruleID = i;
             TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
 
-            if (rule.getTypeName().equals("standard track")) {
+            if (rule.getName().equals("standard track")) {
                 singleTrackRuleID = ruleID;
             }
-            if (rule.getTypeName().equals("double track")) {
+            if (rule.getName().equals("double track")) {
                 doubleTrackRuleID = ruleID;
             }
         }

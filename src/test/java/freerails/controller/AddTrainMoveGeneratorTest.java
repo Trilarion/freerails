@@ -101,8 +101,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
 
-        TrainAccessor ta = new TrainAccessor(world, principal, 0);
-        TrainMotion motion = ta.findCurrentMotion(0);
+        TrainAccessor trainAccessor = new TrainAccessor(world, principal, 0);
+        TrainMotion motion = trainAccessor.findCurrentMotion(0);
         assertNotNull(motion);
         PathOnTiles path = motion.getTiles(motion.duration());
         assertTrackHere(path);
@@ -112,8 +112,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0),
-                stationA, principal, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, principal, defaultSchedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());

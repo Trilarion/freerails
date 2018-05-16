@@ -21,6 +21,7 @@ package freerails.controller;
 import freerails.client.ClientConstants;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
+import freerails.model.track.TrackRule;
 import freerails.model.world.World;
 import freerails.model.world.WorldUtils;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -40,8 +41,6 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackPieceImpl;
-import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -179,10 +178,9 @@ public class BuildTrackController implements GameModel {
 
             // If there is already track between the two tiles, do nothing
             TerrainTile tile = (TerrainTile) unmodifiableWorld.getTile(oldPosition);
-
-            if (tile.getTrackPiece().getTrackConfiguration().contains(vector)) {
+            TrackPiece trackPiece = tile.getTrackPiece();
+            if (trackPiece != null && trackPiece.getTrackConfiguration().contains(vector)) {
                 oldPosition = point;
-
                 continue;
             }
             piecesOfNewTrack++;
@@ -443,7 +441,7 @@ public class BuildTrackController implements GameModel {
 
                                 int owner = WorldUtils.getPlayerIndex(unmodifiableWorld, fp);
                                 TrackRule trackRule = (TrackRule) unmodifiableWorld.get(SharedKey.TrackRules, trackRuleID);
-                                TrackPiece after = new TrackPieceImpl(tile.getTrackPiece().getTrackConfiguration(), trackRule, owner, trackRuleID);
+                                TrackPiece after = new TrackPiece(tile.getTrackPiece().getTrackConfiguration(), trackRule, owner, trackRuleID);
 
                                 /*
                                  * We don't want to 'upgrade' a station to track.

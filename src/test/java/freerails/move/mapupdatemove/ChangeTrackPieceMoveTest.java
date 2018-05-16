@@ -25,6 +25,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.io.GsonManager;
 import freerails.model.terrain.Terrain;
+import freerails.model.track.TrackRule;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -38,8 +39,6 @@ import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackPieceImpl;
-import freerails.model.track.TrackRule;
 
 import java.io.File;
 import java.net.URL;
@@ -84,7 +83,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         final int trackRuleID = 0;
         final TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, trackRuleID);
 
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
+        newTrackPiece = new TrackPiece(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
@@ -97,8 +96,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         assertNotNull(moveStatus);
         assertFalse(moveStatus.succeeds());
 
-        // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece,
-        // should fail.
+        // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece, Vec2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
@@ -113,7 +111,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         // Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
 
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, trackRuleID);
+        newTrackPiece = new TrackPiece(newConfig, r, 0, trackRuleID);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
         moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
         assertFalse(moveStatus.succeeds());
@@ -132,7 +130,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
 
         TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
+        newTrackPiece = new TrackPiece(newConfig, r, 0, 0);
 
         assertMoveDoMoveIsOk(oldTrackPiece, newTrackPiece);
     }
@@ -159,18 +157,13 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        TrackPiece oldTrackPiece;
-        TrackPiece newTrackPiece;
-        TrackConfiguration newConfig;
-        newConfig = TrackConfiguration.getFlatInstance("000010000");
-        oldTrackPiece = getWorld().getTile(Vec2D.ZERO)
-                .getTrackPiece();
+        TrackPiece oldTrackPiece = getWorld().getTile(Vec2D.ZERO).getTrackPiece();
 
-        TrackRule r = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);
-        newTrackPiece = new TrackPieceImpl(newConfig, r, 0, 0);
+        TrackConfiguration newConfig = TrackConfiguration.getFlatInstance("000010000");
+        TrackRule trackRule = (TrackRule) getWorld().get(SharedKey.TrackRules, 0);
+        TrackPiece newTrackPiece = new TrackPiece(newConfig, trackRule, 0, 0);;
 
-        Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece,
-                Vec2D.ZERO);
+        Move move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 
         assertSurvivesSerialisation(move);
 

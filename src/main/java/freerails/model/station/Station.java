@@ -18,12 +18,13 @@
 
 package freerails.model.station;
 
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackRule;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
-import freerails.model.track.TrackRule;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.io.Serializable;
@@ -149,18 +150,22 @@ public class Station implements Serializable {
      */
     public static int getStationNumberAtLocation(UnmodifiableWorld world, FreerailsPrincipal principal, Vec2D location) {
         TerrainTile tile = (TerrainTile) world.getTile(location);
+        TrackPiece trackPiece = tile.getTrackPiece();
 
-        TrackRule trackRule = tile.getTrackPiece().getTrackRule();
-        if (trackRule.isStation() && tile.getTrackPiece().getOwnerID() == world.getID(principal)) {
+        if (trackPiece != null) {
+            TrackRule trackRule = trackPiece.getTrackRule();
+            if (trackRule.isStation() && trackPiece.getOwnerID() == world.getID(principal)) {
 
-            for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
-                Station station = (Station) world.get(principal, PlayerKey.Stations, i);
+                for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
+                    Station station = (Station) world.get(principal, PlayerKey.Stations, i);
 
-                if (null != station && location.equals(station.location)) {
-                    return i;
+                    if (null != station && location.equals(station.location)) {
+                        return i;
+                    }
                 }
             }
         }
+
         return -1;
         // Don't show terrain...
     }

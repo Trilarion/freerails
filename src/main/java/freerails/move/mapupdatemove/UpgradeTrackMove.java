@@ -23,6 +23,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.move.CompositeMove;
 import freerails.move.Move;
+import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.track.TrackPiece;
 
@@ -47,6 +48,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
      * @return
      */
     public static Move generateMove(TrackPiece before, TrackPiece after, Vec2D p) {
+        Utils.verifyNotNull(before);
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(before, after, p);
 
         return new UpgradeTrackMove(changeTrackPieceMove);

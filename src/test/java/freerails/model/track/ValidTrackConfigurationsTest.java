@@ -43,7 +43,7 @@ public class ValidTrackConfigurationsTest extends TestCase {
         ArrayList<String> templates = new ArrayList<>();
         templates.add("000111000");
 
-        ValidTrackConfigurations validTrackConfigurations = new ValidTrackConfigurations(-1, templates);
+        ValidTrackConfigurations validTrackConfigurations = new ValidTrackConfigurations( templates);
 
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("010010010");
         assertEquals(true, validTrackConfigurations.trackConfigurationIsLegal(trackConfiguration));

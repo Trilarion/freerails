@@ -21,6 +21,7 @@
  */
 package freerails.server;
 
+import freerails.model.track.TrackRule;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
@@ -33,7 +34,6 @@ import freerails.model.finances.MoneyTransaction;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.track.TrackRule;
 
 // TODO does not really follow the MoveGenerator interface, should it maybe?
 /**
@@ -69,7 +69,7 @@ public class TrackMaintenanceMoveGenerator {
 
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
-            // TODO Money arithmetics
+            // TODO Money arithmetic
             long maintenanceCost = trackRule.getMaintenanceCost().amount;
 
             // Is the track type the category we are interested in?

@@ -21,6 +21,7 @@
  */
 package freerails.model.track.pathfinding;
 
+import freerails.model.track.TrackRule;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vec2D;
@@ -31,7 +32,6 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
 import org.apache.log4j.Logger;
 
@@ -82,15 +82,14 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private int[] findTargets(Vec2D targetPoint) {
         TerrainTile tile = (TerrainTile) world.getTile(targetPoint);
         TrackPiece trackPiece = tile.getTrackPiece();
-        int ruleNumber = trackPiece.getTrackTypeID();
-
         int[] targetInts;
 
-        if (tile.hasTrack()) {
+        if (trackPiece != null) {
             /*
              * If there is already track here, we need to check what directions
              * we can build in without creating an illegal track config.
              */
+            int ruleNumber = trackPiece.getTrackTypeID();
             TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
 
             // Count number of possible directions.

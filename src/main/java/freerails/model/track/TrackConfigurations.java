@@ -24,13 +24,13 @@ import java.io.Serializable;
  * Defines methods that encode a track configuration as an int.
  */
 public interface TrackConfigurations extends Serializable {
+
     /**
      * @param ftt the TrackConfigurations which may be a subset of this
      *            TrackConfigurations.
      * @return true if the vectors represented by this TrackConfigurations are a
      * superset of the vectors of the specified TrackConfigurations
      */
-
     boolean contains(TrackConfigurations ftt);
 
     /**

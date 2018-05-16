@@ -54,13 +54,18 @@ public class BuildTrackRenderer implements Painter {
      */
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
-        Map<Vec2D, TrackPiece> proposedTrack = null;
-        if (modelRoot != null) {
-            proposedTrack = (Map<Vec2D, TrackPiece>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+        if (modelRoot == null) {
+            return;
         }
-        if (null != proposedTrack) {
-            for (Vec2D point : proposedTrack.keySet()) {
-                TrackPiece trackPiece = proposedTrack.get(point);
+        Map<Vec2D, TrackPiece> proposedTrack = (Map<Vec2D, TrackPiece>) modelRoot.getProperty(ModelRootProperty.PROPOSED_TRACK);
+
+        if (proposedTrack == null) {
+            return;
+        }
+
+        for (Vec2D point : proposedTrack.keySet()) {
+            TrackPiece trackPiece = proposedTrack.get(point);
+            if (trackPiece != null) {
 
                 int graphicsNumber = trackPiece.getTrackGraphicID();
 
@@ -68,23 +73,29 @@ public class BuildTrackRenderer implements Painter {
                 TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
                 trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConstants.TILE_SIZE);
             }
+        }
 
-            UnmodifiableWorld realWorld = modelRoot.getWorld();
-            /*
-             * Draw small dots for each tile whose track has changed. The dots
-             * are white if track has been added or upgraded and red if it has
-             * been removed.
-             */
-            for (Vec2D p : proposedTrack.keySet()) {
-                Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
-                TerrainTile before = (TerrainTile) realWorld.getTile(p);
-                TrackPiece trackPiece = proposedTrack.get(p);
+        UnmodifiableWorld world = modelRoot.getWorld();
+        /*
+         * Draw small dots for each tile whose track has changed. The dots
+         * are white if track has been added or upgraded and red if it has
+         * been removed.
+         */
+        for (Vec2D p : proposedTrack.keySet()) {
+            Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
+            TerrainTile before = (TerrainTile) world.getTile(p);
+            TrackPiece trackPieceBefore = before.getTrackPiece();
+            TrackPiece trackPiece = proposedTrack.get(p);
 
-                boolean trackRemoved = !trackPiece.getTrackConfiguration().contains(before.getTrackPiece().getTrackConfiguration());
-                Color dotColor = trackRemoved ? Color.RED : Color.WHITE;
-                g.setColor(dotColor);
-                g.fillOval(location.x, location.y, ClientConstants.SMALL_DOT_WIDTH, ClientConstants.SMALL_DOT_WIDTH);
+            boolean trackAdded = true;
+            if (trackPiece == null) {
+                trackAdded = false;
+            } else if(trackPieceBefore != null) {
+                trackAdded = trackPiece.getTrackConfiguration().contains(trackPieceBefore.getTrackConfiguration());
             }
+            Color dotColor = trackAdded ? Color.WHITE : Color.RED;
+            g.setColor(dotColor);
+            g.fillOval(location.x, location.y, ClientConstants.SMALL_DOT_WIDTH, ClientConstants.SMALL_DOT_WIDTH);
         }
     }
 

@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.track.TrackRule;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
@@ -30,10 +31,8 @@ import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.track.NullTrackType;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,46 +114,55 @@ public class TrackMoveTransactionsGenerator {
 
     private void processMove(ChangeTrackPieceMove move) {
         TrackPiece newTrackPiece = move.getNewTrackPiece();
-        TrackRule newTrackRule = newTrackPiece.getTrackRule();
-        final int ruleAfter = newTrackPiece.getTrackTypeID();
         TrackPiece oldTrackPiece = move.getOldTrackPiece();
-        final int ruleBefore = oldTrackPiece.getTrackTypeID();
 
-        final int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
-        final int newLength = newTrackPiece.getTrackConfiguration().getLength();
+        if (oldTrackPiece != null && newTrackPiece != null) {
+            int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
+            int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
-        if (ruleAfter != ruleBefore) {
-            TrackCategory category = newTrackRule.getCategory();
-            switch (category) {
-                case station: {
-                    // TODO Money arithmetic
-                    fixedCostsStations -= newTrackRule.getFixedCost().amount;
-                    break;
+            int ruleBefore = oldTrackPiece.getTrackTypeID();
+            int ruleAfter = newTrackPiece.getTrackTypeID();
+
+            TrackRule newTrackRule = newTrackPiece.getTrackRule();
+
+            if (ruleAfter != ruleBefore) {
+                TrackCategory category = newTrackRule.getCategory();
+                switch (category) {
+                    case STATION: {
+                        // TODO Money arithmetic
+                        fixedCostsStations -= newTrackRule.getFixedCost().amount;
+                        break;
+                    }
+                    case BRIDGE: {
+                        // TODO Money arithmetic
+                        fixedCostsBridges -= newTrackRule.getFixedCost().amount;
+                        break;
+                    }
+                    default: {
+                    }
                 }
-                case bridge: {
-                    // TODO Money arithmetics
-                    fixedCostsBridges -= newTrackRule.getFixedCost().amount;
-                    break;
+            }
+
+            if (ruleAfter == ruleBefore) {
+                if (oldLength < newLength) {
+                    trackAdded[ruleAfter] += (newLength - oldLength);
+                } else if (oldLength > newLength) {
+                    trackRemoved[ruleAfter] += (oldLength - newLength);
                 }
-                default: {}
+
+                return;
             }
         }
 
-        if (ruleAfter == ruleBefore) {
-            if (oldLength < newLength) {
-                trackAdded[ruleAfter] += (newLength - oldLength);
-            } else if (oldLength > newLength) {
-                trackRemoved[ruleAfter] += (oldLength - newLength);
-            }
-
-            return;
-        }
-
-        if (ruleAfter != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+        if (oldTrackPiece == null) {
+            int ruleAfter = newTrackPiece.getTrackTypeID();
+            int newLength = newTrackPiece.getTrackConfiguration().getLength();
             trackAdded[ruleAfter] += newLength;
         }
 
-        if (ruleBefore != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+        if (newTrackPiece == null) {
+            int ruleBefore = oldTrackPiece.getTrackTypeID();
+            int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
             trackRemoved[ruleBefore] += oldLength;
         }
     }

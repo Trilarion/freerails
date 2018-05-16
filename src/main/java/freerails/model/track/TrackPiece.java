@@ -22,32 +22,87 @@ import java.io.Serializable;
 
 /**
  * Defines methods to access the properties of the track on a tile.
+ * Represents the track on a tile.
  */
-public interface TrackPiece extends Serializable {
+public class TrackPiece implements Serializable {
+
+    private static final long serialVersionUID = 4049080423458027569L;
+    private final TrackConfiguration trackConfiguration;
+    private final TrackRule trackRule;
+    private final int ownerID;
+    private final int ruleNumber;
+
+    /**
+     * @param trackConfiguration
+     * @param trackRule
+     * @param owner
+     * @param rule
+     */
+    // TODO is rule number really needed?
+    public TrackPiece(TrackConfiguration trackConfiguration, TrackRule trackRule, int owner, int rule) {
+        this.trackConfiguration = trackConfiguration;
+        this.trackRule = trackRule;
+        ownerID = owner;
+        ruleNumber = rule;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        final TrackPiece that = (TrackPiece) obj;
+
+        if (ownerID != that.ownerID) return false;
+        if (ruleNumber != that.ruleNumber) return false;
+        if (!trackConfiguration.equals(that.trackConfiguration)) return false;
+        return trackRule.equals(that.trackRule);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        result = trackConfiguration.hashCode();
+        result = 29 * result + trackRule.hashCode();
+        result = 29 * result + ownerID;
+        result = 29 * result + ruleNumber;
+        return result;
+    }
 
     /**
      * @return
      */
-    int getTrackGraphicID();
+    public int getTrackGraphicID() {
+        return trackConfiguration.getConfiguration();
+    }
+
+    /**
+     * @return
+     */
+    public TrackRule getTrackRule() {
+        return trackRule;
+    }
+
+    /**
+     * @return
+     */
+    public TrackConfiguration getTrackConfiguration() {
+        return trackConfiguration;
+    }
+
+    /**
+     * @return
+     */
+    public int getOwnerID() {
+        return ownerID;
+    }
 
     // TODO make TrackTypeID an enum
     /**
      * @return
      */
-    int getTrackTypeID();
-
-    /**
-     * @return
-     */
-    TrackRule getTrackRule();
-
-    /**
-     * @return
-     */
-    TrackConfiguration getTrackConfiguration();
-
-    /**
-     * @return
-     */
-    int getOwnerID();
+    // TODO abuse of rule number?
+    public int getTrackTypeID() {
+        return ruleNumber;
+    }
 }

@@ -18,12 +18,12 @@
 
 package freerails.move;
 
+import freerails.model.track.TrackRule;
 import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.track.TrackRule;
 import org.apache.log4j.Logger;
 
 import java.util.NoSuchElementException;
@@ -102,7 +102,7 @@ public class StationBuilder {
         for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
             TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, i);
 
-            if (string.equals(r.getTypeName())) {
+            if (string.equals(r.getName())) {
                 return i;
             }
         }

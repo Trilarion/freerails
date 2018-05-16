@@ -34,15 +34,15 @@ public class ValidTrackPlacement implements Serializable {
 
     private static final long serialVersionUID = 3616445687756437049L;
     private final Set<TerrainCategory> terrainTypes;
-    private final PlacementRule placementRule;
+    private final boolean including;
 
     /**
      * @param types
-     * @param placementRule
+     * @param including
      */
-    public ValidTrackPlacement(Iterable<TerrainCategory> types, PlacementRule placementRule) {
+    public ValidTrackPlacement(Iterable<TerrainCategory> types, boolean including) {
 
-        this.placementRule = placementRule;
+        this.including = including;
         Iterator<TerrainCategory> iterator = types.iterator();
         Set<TerrainCategory> temp = new HashSet<>();
         while (iterator.hasNext()) {
@@ -53,7 +53,7 @@ public class ValidTrackPlacement implements Serializable {
 
     @Override
     public int hashCode() {
-        return placementRule != null ? placementRule.hashCode() : 0;
+        return Boolean.hashCode(including);
     }
 
     /**
@@ -61,10 +61,11 @@ public class ValidTrackPlacement implements Serializable {
      * @return
      */
     public boolean canBuildOnThisTerrain(TerrainCategory terrainType) {
-        if (PlacementRule.ONLY_ON_THESE == placementRule) {
+        if (including) {
             return terrainTypes.contains(terrainType);
+        } else {
+            return !terrainTypes.contains(terrainType);
         }
-        return !terrainTypes.contains(terrainType);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class ValidTrackPlacement implements Serializable {
         if (obj instanceof ValidTrackPlacement) {
             ValidTrackPlacement test = (ValidTrackPlacement) obj;
 
-            return placementRule == test.placementRule && terrainTypes.equals(test.terrainTypes);
+            return including == test.including && terrainTypes.equals(test.terrainTypes);
         }
         return false;
     }

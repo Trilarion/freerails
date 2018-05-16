@@ -25,6 +25,7 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
+import freerails.model.track.TrackRule;
 import freerails.move.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
@@ -32,7 +33,6 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackConfiguration;
-import freerails.model.track.TrackRule;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -91,7 +91,7 @@ public class StationBuildModel {
             if (trackRule.isStation()) {
                 TrackPieceRenderer renderer = rendererRoot.getTrackPieceView(i);
                 Action action = new StationChooseAction(i);
-                String trackType = trackRule.getTypeName();
+                String trackType = trackRule.getName();
                 Money price = trackRule.getFixedCost();
                 String shortDescrpt = trackType + " $" + price.toString();
                 action.putValue(Action.SHORT_DESCRIPTION, shortDescrpt);
@@ -116,7 +116,7 @@ public class StationBuildModel {
      * @return
      */
     public Action[] getStationChooseActions() {
-        return stationChooseActions.toArray(new Action[stationChooseActions.size()]);
+        return stationChooseActions.toArray(new Action[0]);
     }
 
     /**
@@ -170,9 +170,7 @@ public class StationBuildModel {
 
             TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(SharedKey.TrackRules, actionId);
 
-            // Show the relevant station radius when the station type's menu
-            // item
-            // gets focus.
+            // Show the relevant station radius when the station type's menu item gets focus.
             stationBuildAction.putValue(StationBuildAction.STATION_RADIUS_KEY, trackRule.getStationRadius());
             stationBuildAction.setEnabled(true);
         }

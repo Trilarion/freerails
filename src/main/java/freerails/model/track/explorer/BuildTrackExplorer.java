@@ -22,6 +22,8 @@
 package freerails.model.track.explorer;
 
 import freerails.model.track.BuildTrackStrategy;
+import freerails.model.track.TrackPiece;
+import freerails.model.track.TrackRule;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -31,7 +33,6 @@ import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackConfiguration;
-import freerails.model.track.TrackRule;
 import freerails.model.train.PositionOnTrack;
 
 import java.util.NoSuchElementException;
@@ -82,8 +83,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     }
 
     /**
-     * Tests whether we can build track in the direction specified by
-     * m_direction.
+     * Tests whether we can build track in the direction specified by m_direction.
      *
      * If we enter a tile from a given direction, the tiles we can build track
      * to depend on the following. (1) The terrain type of the surrounding tiles -
@@ -113,8 +113,8 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false;
         }
 
-        TrackRule rule4nextTile;
-        TrackRule rule4lastTile;
+        TrackRule ruleForNextTile;
+        TrackRule ruleForLastTile;
 
         // Determine the track rule for the next tile.
         final TerrainTile nextTile = (TerrainTile) world.getTile(newP);
@@ -126,23 +126,30 @@ public class BuildTrackExplorer implements GraphExplorer {
             }
         }
 
-        rule4nextTile = getAppropriateTrackRule(newP);
+        ruleForNextTile = getAppropriateTrackRule(newP);
 
-        if (null == rule4nextTile) {
+        if (null == ruleForNextTile) {
             return false; // We can't build track on the tile.
         }
 
-        rule4lastTile = getAppropriateTrackRule(currentP);
+        ruleForLastTile = getAppropriateTrackRule(currentP);
 
-        if (null == rule4lastTile) {
+        if (null == ruleForLastTile) {
             return false; // We can't build track on the tile.
         }
         // Determine the track rule for the current tile.
         TerrainTile currentTile = (TerrainTile) world.getTile(currentP);
 
         // Check for illegal track configurations.
-        final TrackConfiguration trackAlreadyPresent1 = currentTile.getTrackPiece().getTrackConfiguration();
-        final TrackConfiguration trackAlreadyPresent2 = nextTile.getTrackPiece().getTrackConfiguration();
+        TrackPiece currentTileTrackPiece = currentTile.getTrackPiece();
+        TrackPiece nextTileTrackPiece = nextTile.getTrackPiece();
+
+        if (currentTileTrackPiece == null || nextTileTrackPiece == null) {
+            return true;
+        }
+
+        final TrackConfiguration trackAlreadyPresent1 = currentTileTrackPiece.getTrackConfiguration();
+        final TrackConfiguration trackAlreadyPresent2 = nextTileTrackPiece.getTrackConfiguration();
         TrackConfiguration fromConfig = trackAlreadyPresent1;
 
         fromConfig = TrackConfiguration.add(fromConfig, opposite2current);
@@ -151,7 +158,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TileTransition goingTo = TileTransition.getInstance(directionInt);
         fromConfig = TrackConfiguration.add(fromConfig, goingTo);
 
-        if (!rule4lastTile.trackPieceIsLegal(fromConfig)) {
+        if (!ruleForLastTile.trackPieceIsLegal(fromConfig)) {
             return false;
         }
 
@@ -162,13 +169,16 @@ public class BuildTrackExplorer implements GraphExplorer {
             // We did a bounds check above.
             assert (world.boundsContain(new Vec2D(currentP.x, y2check)));
 
-            TerrainTile tile2Check = (TerrainTile) world.getTile(new Vec2D(currentP.x, y2check));
-            TrackConfiguration config2check = tile2Check.getTrackPiece().getTrackConfiguration();
-            TileTransition vector2check = TileTransition.getInstance(new Vec2D(directionOfNextTile.deltaX, -directionOfNextTile.deltaY));
+            TerrainTile tileToCheck = (TerrainTile) world.getTile(new Vec2D(currentP.x, y2check));
+            TrackPiece trackPiece = tileToCheck.getTrackPiece();
+            if (trackPiece != null) {
+                TrackConfiguration configToCheck = tileToCheck.getTrackPiece().getTrackConfiguration();
+                TileTransition vectorToCheck = TileTransition.getInstance(new Vec2D(directionOfNextTile.deltaX, -directionOfNextTile.deltaY));
 
-            if (config2check.contains(vector2check)) {
-                // then we have a diagonal conflict.
-                return false;
+                if (configToCheck.contains(vectorToCheck)) {
+                    // then we have a diagonal conflict.
+                    return false;
+                }
             }
         }
 
@@ -180,7 +190,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TileTransition goingBack = TileTransition.getInstance(directionInt).getOpposite();
         fromConfig2 = TrackConfiguration.add(fromConfig2, goingBack);
 
-        if (!rule4nextTile.trackPieceIsLegal(fromConfig2)) {
+        if (!ruleForNextTile.trackPieceIsLegal(fromConfig2)) {
             return false;
         }
 
@@ -245,11 +255,14 @@ public class BuildTrackExplorer implements GraphExplorer {
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
             TerrainTile a = (TerrainTile) world.getTile(new Vec2D(x[0], y[0]));
-            TrackRule currentRuleA = a.getTrackPiece().getTrackRule();
-            if (!currentRuleA.equals(ruleA)) {
-                assert (!currentRuleA.isStation()); // We shouldn't be upgrading
-                // a station.
-                cost += ruleA.getFixedCost().amount * ModelConstants.TILE_SIZE;
+            TrackPiece trackPiece = a.getTrackPiece();
+            if (trackPiece != null) {
+                TrackRule currentRuleA = a.getTrackPiece().getTrackRule();
+                if (!currentRuleA.equals(ruleA)) {
+                    assert (!currentRuleA.isStation()); // We shouldn't be upgrading
+                    // a station.
+                    cost += ruleA.getFixedCost().amount * ModelConstants.TILE_SIZE;
+                }
             }
         }
         return cost;

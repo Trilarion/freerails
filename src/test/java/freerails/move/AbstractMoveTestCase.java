@@ -198,9 +198,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
         moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(moveStatus);
-        assertEquals(
-                "Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!",
-                MoveStatus.MOVE_OK, moveStatus);
+        assertEquals("Second try failed, this suggests that the tryDoMove method failed to leave the world unchanged!", MoveStatus.MOVE_OK, moveStatus);
     }
 
     /**

@@ -96,15 +96,15 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         if (world.boundsContain(p)) {
             oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
 
-            if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
+            if (oldTrackPiece != null) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
-                newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
+                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
             } else {
                 newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, world));
             }
         } else {
             newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, world));
-            oldTrackPiece = NullTrackPiece.getInstance();
+            oldTrackPiece = null;
         }
 
         return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
@@ -118,14 +118,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         if (world.boundsContain(p)) {
             oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
 
-            if (oldTrackPiece.getTrackRule() != NullTrackType.getInstance()) {
+            if (oldTrackPiece != null) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
                     int owner = WorldUtils.getPlayerIndex(world, principal);
-                    newTrackPiece = new TrackPieceImpl(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
+                    newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
                 } else {
-                    newTrackPiece = NullTrackPiece.getInstance();
+                    newTrackPiece = null;
                 }
             } else {
                 // There is no track to remove.
@@ -133,8 +133,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 throw new Exception();
             }
         } else {
-            newTrackPiece = NullTrackPiece.getInstance();
-            oldTrackPiece = NullTrackPiece.getInstance();
+            newTrackPiece = null;
+            oldTrackPiece = null;
         }
 
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
@@ -151,7 +151,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance("000010000");
         TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
 
-        return new TrackPieceImpl(trackConfiguration, trackRule, owner, ruleNumber);
+        return new TrackPiece(trackConfiguration, trackRule, owner, ruleNumber);
     }
 
     /**
@@ -196,10 +196,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
                     ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);
-                    int ruleBeforeA = a.trackPieceBefore.getTrackTypeID();
-                    int ruleBeforeB = b.trackPieceBefore.getTrackTypeID();
 
-                    if (ruleBeforeA == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER && ruleBeforeB == NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+                    if (a.trackPieceBefore == null && b.trackPieceBefore == null) {
                         return MoveStatus.moveFailed("Must connect to existing track");
                     }
                 } catch (ClassCastException e) {

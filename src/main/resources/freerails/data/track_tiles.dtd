@@ -54,7 +54,7 @@
                 RGBvalue CDATA #REQUIRED
                 doubleTrack (true|false)  #REQUIRED
                 maxConsecutivePieces CDATA #REQUIRED
-                category (track|tunnel|bridge|station) #REQUIRED
+                category (TRACK|TUNNEL|BRIDGE|STATION) #REQUIRED
                 stationRadius (0|1|2|3) #IMPLIED
                 fixedCost CDATA #IMPLIED
                 type CDATA #REQUIRED

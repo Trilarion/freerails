@@ -5,6 +5,5 @@ package freerails.model.track;
  */
 public enum TrackCategory {
 
-    // TODO rename to uppercase (requires change in rules.xml too!)
-    track, bridge, tunnel, station, non
+    TRACK, BRIDGE, TUNNEL, STATION
 }

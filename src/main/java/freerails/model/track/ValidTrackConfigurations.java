@@ -28,14 +28,11 @@ public class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
     private final Set<TrackConfiguration> legalTrackConfigurations;
-    private final int maximumConsecutivePieces;
 
     /**
-     * @param max
      * @param legalTrackTemplateStrings
      */
-    public ValidTrackConfigurations(int max, Iterable<String> legalTrackTemplateStrings) {
-        maximumConsecutivePieces = max;
+    public ValidTrackConfigurations(Iterable<String> legalTrackTemplateStrings) {
 
         Set<TrackConfiguration> trackConfigurations = new HashSet<>();
         // Iterate over the track templates.
@@ -50,7 +47,6 @@ public class ValidTrackConfigurations implements Serializable {
      * @param legalTrackTemplatesArray
      */
     public ValidTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
-        maximumConsecutivePieces = max;
         Set<TrackConfiguration> temp = new HashSet<>();
         for (String aLegalTrackTemplatesArray : legalTrackTemplatesArray) {
             processTemplate(aLegalTrackTemplatesArray, temp);
@@ -82,7 +78,7 @@ public class ValidTrackConfigurations implements Serializable {
         if (obj instanceof ValidTrackConfigurations) {
             ValidTrackConfigurations test = (ValidTrackConfigurations) obj;
 
-            return maximumConsecutivePieces == test.maximumConsecutivePieces && legalTrackConfigurations.equals(test.legalTrackConfigurations);
+            return legalTrackConfigurations.equals(test.legalTrackConfigurations);
         }
         return false;
     }
@@ -96,11 +92,7 @@ public class ValidTrackConfigurations implements Serializable {
 
     @Override
     public int hashCode() {
-        int result;
-        result = maximumConsecutivePieces;
-        result = 29 * result + (legalTrackConfigurations != null ? legalTrackConfigurations.hashCode() : 0);
-
-        return result;
+        return (legalTrackConfigurations != null ? legalTrackConfigurations.hashCode() : 0);
     }
 
     /**

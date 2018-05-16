@@ -80,9 +80,9 @@ public class BuildTrackStrategy {
      */
     public static BuildTrackStrategy getDefault(UnmodifiableWorld world) {
         Collection<Integer> allowable = new ArrayList<>();
-        allowable.add(getCheapest(TrackCategory.track, world));
-        allowable.add(getCheapest(TrackCategory.bridge, world));
-        allowable.add(getCheapest(TrackCategory.tunnel, world));
+        allowable.add(getCheapest(TrackCategory.TRACK, world));
+        allowable.add(getCheapest(TrackCategory.BRIDGE, world));
+        allowable.add(getCheapest(TrackCategory.TUNNEL, world));
         return new BuildTrackStrategy(generateRules(allowable, world));
     }
 
