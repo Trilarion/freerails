@@ -12,6 +12,7 @@ import freerails.model.cargo.Cargo;
 import freerails.model.finances.Money;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
+import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.util.Array2D;
 import org.apache.commons.io.FileUtils;
@@ -32,13 +33,14 @@ public class GsonManager {
         GsonBuilder builder = new GsonBuilder().serializeNulls().setPrettyPrinting();
         builder.registerTypeAdapter(Money.class, new MoneyAdapter());
         builder.registerTypeAdapter(ARGBColor.class, new ColorAdapter());
+        builder.setExclusionStrategies(new ExclusionStrategy());
         gson = builder.create();
     }
-    private static Gson gson2;
+    private static Gson compact_gson;
     static
     {
         GsonBuilder builder = new GsonBuilder();
-        gson2 = builder.create();
+        compact_gson = builder.create();
     }
 
     private static final Type enginesListType = new TypeToken<List<Engine>>(){}.getType();
@@ -46,6 +48,7 @@ public class GsonManager {
     private static final Type cargoTypesListType = new TypeToken<List<Cargo>>(){}.getType();
     private static final Type terrainTypesListType = new TypeToken<List<Terrain>>(){}.getType();
     private static final Type terrainColorsMapType = new TypeToken<Map<Integer, ARGBColor>>(){}.getType();
+    private static final Type trackTypeListType = new TypeToken<List<TrackType>>(){}.getType();
 
     private static final TypeToken<Array2D> typeTokenArray2D = new TypeToken<Array2D>() {};
 
@@ -73,6 +76,15 @@ public class GsonManager {
 
     public static Array2D loadArray2D(File file) throws  IOException {
         return load(file, typeTokenArray2D);
+    }
+
+    public static SortedSet<TrackType> loadTrackTypes(File file) throws IOException {
+        SortedSet<TrackType> trackTypes = loadAsSortedSet(file, trackTypeListType);
+        // prepare
+        for (TrackType trackType: trackTypes) {
+            trackType.prepare();
+        }
+        return trackTypes;
     }
 
     private static <E> E load(File file, TypeToken<E> typeToken) throws IOException {
@@ -142,9 +154,16 @@ public class GsonManager {
         FileUtils.writeStringToFile(file, json, ModelConstants.defaultCharset);
     }
 
+    /**
+     * Used for saving Array2D (maps, etc. ...).
+     *
+     * @param file
+     * @param object
+     * @throws IOException
+     */
     public static void saveCompact(File file, Object object) throws IOException {
         // serialize to json
-        String json = gson2.toJson(object);
+        String json = compact_gson.toJson(object);
 
         // write json
         FileUtils.writeStringToFile(file, json, ModelConstants.defaultCharset);

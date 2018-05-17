@@ -41,6 +41,17 @@ class EightRotationsOfTrackPieceProducer {
      * the template.
      */
     public static int[] getRotations(int trackBlueprint) {
+
+
+        /*
+        int[] d = new int[8];
+        int t = trackBlueprint;
+        for (int i = 0; i < 8; i++) {
+            d[i] = t;
+            t = ((t >> 1) | (t << 7)) & 255;
+        }
+        return d; */
+
         int trackTemplate = trackBlueprint;
         int[] derivedTrackPieces = new int[8];
 

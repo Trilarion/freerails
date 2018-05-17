@@ -259,8 +259,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             if (trackPiece != null) {
                 TrackRule currentRuleA = a.getTrackPiece().getTrackRule();
                 if (!currentRuleA.equals(ruleA)) {
-                    assert (!currentRuleA.isStation()); // We shouldn't be upgrading
-                    // a station.
+                    assert (!currentRuleA.isStation()); // We shouldn't be upgrading a station.
                     cost += ruleA.getFixedCost().amount * ModelConstants.TILE_SIZE;
                 }
             }

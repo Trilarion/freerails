@@ -21,6 +21,7 @@ package freerails.model.world;
 import freerails.model.cargo.Cargo;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
+import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
@@ -77,6 +78,10 @@ public interface UnmodifiableWorld extends Serializable {
     Collection<Terrain> getTerrains();
 
     Terrain getTerrain(int id);
+
+    Collection<TrackType> getTrackTypes();
+
+    TrackType getTrackType(int id);
 
     /**
      * @return

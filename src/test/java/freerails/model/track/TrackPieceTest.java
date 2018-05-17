@@ -52,12 +52,14 @@ public class TrackPieceTest extends TestCase {
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
 
         TrackRule rule0 = (TrackRule) world.get(SharedKey.TrackRules, 0);
+        TrackType type0 = world.getTrackType(0);
         TrackRule rule4 = (TrackRule) world.get(SharedKey.TrackRules, 4);
+        TrackType type4 = world.getTrackType(4);
 
-        TrackPiece trackPiece1 = new TrackPiece(trackConfiguration, rule0, 0, 0);
+        TrackPiece trackPiece1 = new TrackPiece(trackConfiguration, rule0, type0,0, 0);
         assertEquals(trackPiece1, trackPiece1);
 
-        TrackPiece trackPiece2 = new TrackPiece(trackConfiguration, rule4, 0, 4);
+        TrackPiece trackPiece2 = new TrackPiece(trackConfiguration, rule4, type4,0, 4);
         Assert.assertNotEquals(trackPiece1, trackPiece2);
 
         TestUtils.assertCloneBySerializationBehavesWell(trackPiece1);

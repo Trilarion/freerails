@@ -30,6 +30,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.ImmutableList;
+import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.*;
@@ -420,7 +421,9 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         boolArray[0] = true;
         StationDemand demand = new StationDemand(boolArray);
         Station station2 = (Station) world.get(principal, PlayerKey.Stations, 2);
-        Station stationWithNewDemand = new Station(station2, demand);
+
+        Station stationWithNewDemand = (Station) Utils.cloneBySerialisation(station2);
+        stationWithNewDemand.setDemandForCargo(demand);
         world.set(principal, PlayerKey.Stations, 2, stationWithNewDemand);
 
         // The train should be bound for station 1.

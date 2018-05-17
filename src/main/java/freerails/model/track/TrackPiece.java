@@ -29,6 +29,7 @@ public class TrackPiece implements Serializable {
     private static final long serialVersionUID = 4049080423458027569L;
     private final TrackConfiguration trackConfiguration;
     private final TrackRule trackRule;
+    private final TrackType trackType;
     private final int ownerID;
     private final int ruleNumber;
 
@@ -39,9 +40,10 @@ public class TrackPiece implements Serializable {
      * @param rule
      */
     // TODO is rule number really needed?
-    public TrackPiece(TrackConfiguration trackConfiguration, TrackRule trackRule, int owner, int rule) {
+    public TrackPiece(TrackConfiguration trackConfiguration, TrackRule trackRule, TrackType trackType, int owner, int rule) {
         this.trackConfiguration = trackConfiguration;
         this.trackRule = trackRule;
+        this.trackType = trackType;
         ownerID = owner;
         ruleNumber = rule;
     }
@@ -104,5 +106,9 @@ public class TrackPiece implements Serializable {
     // TODO abuse of rule number?
     public int getTrackTypeID() {
         return ruleNumber;
+    }
+
+    public TrackType getTrackType() {
+        return trackType;
     }
 }

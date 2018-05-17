@@ -78,4 +78,7 @@ public class ValidTrackPlacement implements Serializable {
         return false;
     }
 
+    public Set<TerrainCategory> getTerrainTypes() {
+        return terrainTypes;
+    }
 }

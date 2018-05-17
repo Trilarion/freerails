@@ -39,6 +39,10 @@ public final class Money implements Serializable, Comparable<Money> {
         this.amount = amount;
     }
 
+    public boolean isNonNegative() {
+        return amount >= 0;
+    }
+
     /**
      *
      * @param moneyA

@@ -29,7 +29,9 @@ import freerails.model.world.UnmodifiableWorld;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 
+// TODO doesn't know if depot, station, terminal? why not?
 /**
  * Represents a station. with a position, a name, a supply, a demand, a conversion (of cargo).
  * The content is effectively immutable.
@@ -39,31 +41,13 @@ public class Station implements Serializable {
     private static final long serialVersionUID = 3256442503979874355L;
     public final Vec2D location;
     private final String name;
-    private final StationSupply supply;
-    private final StationDemand demandForCargo;
-    private final StationCargoConversion cargoConversion;
+    private StationSupply supply;
+    private StationDemand demandForCargo;
+    private StationCargoConversion cargoConversion;
     // TODO what is the cargo bundle number and what is it good for?
     private final int cargoBundleNumber;
-    /**
-     * What this station is building.
-     */
-    // TODO remove ImmutableList
-    private final ImmutableList<TrainBlueprint> production;
 
-    // TODO this may be a misuse, instead add cargoConversion, where is this used
-
-    /**
-     * Makes a copy of the station
-     */
-    public Station(Station station, StationCargoConversion cargoConversion) {
-        this.cargoConversion = cargoConversion;
-        cargoBundleNumber = station.cargoBundleNumber;
-        demandForCargo = station.demandForCargo;
-        name = station.name;
-        production = station.production;
-        supply = station.supply;
-        location = station.location;
-    }
+    private ImmutableList<TrainBlueprint> production;
 
     /**
      * @param location
@@ -83,66 +67,6 @@ public class Station implements Serializable {
         production = new ImmutableList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
-    }
-
-    // TODO are these meaningful values
-    /**
-     *
-     */
-    public Station() {
-        name = "No name";
-        location = Vec2D.ZERO;
-        demandForCargo = new StationDemand(new boolean[0]);
-        supply = new StationSupply(new Integer[0]);
-        cargoConversion = new StationCargoConversion(new Integer[0]);
-        production = new ImmutableList<>();
-        cargoBundleNumber = 0;
-    }
-
-    // TODO this might be a misuse, just add production as method instead, copy should not be necessary
-    /**
-     * @param station
-     * @param production
-     */
-    public Station(Station station, ImmutableList<TrainBlueprint> production) {
-        this.production = production;
-        demandForCargo = station.demandForCargo;
-        cargoBundleNumber = station.cargoBundleNumber;
-        cargoConversion = station.cargoConversion;
-        name = station.name;
-        supply = station.supply;
-        location = station.location;
-    }
-
-    // TODO possible misuse, see above
-    /**
-     * @param station
-     * @param demandForCargo
-     */
-    public Station(Station station, StationDemand demandForCargo) {
-        this.demandForCargo = demandForCargo;
-        cargoBundleNumber = station.cargoBundleNumber;
-        cargoConversion = station.cargoConversion;
-        name = station.name;
-        production = station.production;
-        supply = station.supply;
-        location = station.location;
-    }
-
-    // TODO possible misuse, see above
-    /**
-     * @param station
-     * @param supply
-     */
-    public Station(Station station, StationSupply supply) {
-        this.supply = supply;
-        demandForCargo = station.demandForCargo;
-
-        cargoBundleNumber = station.cargoBundleNumber;
-        cargoConversion = station.cargoConversion;
-        name = station.name;
-        production = station.production;
-        location = station.location;
     }
 
     /**
@@ -221,6 +145,8 @@ public class Station implements Serializable {
     }
 
     /**
+     * What this station is building.
+     */ /**
      * @return
      */
     public ImmutableList<TrainBlueprint> getProduction() {
@@ -248,4 +174,19 @@ public class Station implements Serializable {
         return cargoBundleNumber;
     }
 
+    public void setCargoConversion(StationCargoConversion cargoConversion) {
+        this.cargoConversion = cargoConversion;
+    }
+
+    public void setDemandForCargo(StationDemand demandForCargo) {
+        this.demandForCargo = demandForCargo;
+    }
+
+    public void setSupply(StationSupply supply) {
+        this.supply = supply;
+    }
+
+    public void setProduction(ImmutableList<TrainBlueprint> production) {
+        this.production = production;
+    }
 }

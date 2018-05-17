@@ -26,6 +26,7 @@ import freerails.model.activity.ActivityIteratorImpl;
 import freerails.model.cargo.Cargo;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
+import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
@@ -79,6 +80,7 @@ public class World implements UnmodifiableWorld {
     private final SortedSet<City> cities;
     private final SortedSet<Cargo> cargos;
     private final SortedSet<Terrain> terrainTypes;
+    private final SortedSet<TrackType> trackTypes;
 
     public static class Builder {
 
@@ -86,6 +88,7 @@ public class World implements UnmodifiableWorld {
         private SortedSet<City> cities = new TreeSet<>();
         private SortedSet<Cargo> cargos = new TreeSet<>();
         private SortedSet<Terrain> terrainTypes = new TreeSet<>();
+        private SortedSet<TrackType> trackTypes = new TreeSet<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
         public Builder setEngines(SortedSet<Engine> engines) {
@@ -108,6 +111,11 @@ public class World implements UnmodifiableWorld {
             return this;
         }
 
+        public Builder setTrackTypes(SortedSet<TrackType> trackTypes) {
+            this.trackTypes = trackTypes;
+            return this;
+        }
+
         public Builder setMapSize(Vec2D mapSize) {
             this.mapSize = mapSize;
             return this;
@@ -123,6 +131,7 @@ public class World implements UnmodifiableWorld {
         cities = builder.cities;
         cargos = builder.cargos;
         terrainTypes = builder.terrainTypes;
+        trackTypes = builder.trackTypes;
 
         for (int i = 0; i < WorldItem.values().length; i++) {
             items.add(null);
@@ -174,6 +183,22 @@ public class World implements UnmodifiableWorld {
         return get(id, terrainTypes);
     }
 
+    // TODO unmodifiable collection?
+    public Collection<TrackType> getTrackTypes() {
+        return trackTypes;
+    }
+
+    public TrackType getTrackType(int id) {
+        return get(id, trackTypes);
+    }
+
+    /**
+     *
+     * @param id
+     * @param c
+     * @param <E>
+     * @return
+     */
     private <E extends Identifiable> E get(final int id, @NotNull final Collection<E> c) {
         for (E e: c) {
             if (e.getId() == id) {

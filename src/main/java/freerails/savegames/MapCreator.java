@@ -7,6 +7,7 @@ import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.*;
+import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.world.World;
 import freerails.model.world.WorldItem;
@@ -65,13 +66,17 @@ public class MapCreator {
         file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes);
+        // load track types
+        url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
+        file = new File(url.toURI());
+        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
+
+        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes);
         World world = builder.build();
 
         URL track_xml_url = MapCreator.class.getResource("/freerails/data/track_tiles.xml");
 
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
-
         trackSetFactory.addTrackRules(world);
 
         /*

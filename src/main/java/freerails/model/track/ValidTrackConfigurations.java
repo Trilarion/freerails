@@ -28,6 +28,7 @@ public class ValidTrackConfigurations implements Serializable {
 
     private static final long serialVersionUID = 3617295631735928119L;
     private final Set<TrackConfiguration> legalTrackConfigurations;
+    private Set<String> legalTrackStrings = new TreeSet<>();
 
     /**
      * @param legalTrackTemplateStrings
@@ -37,6 +38,7 @@ public class ValidTrackConfigurations implements Serializable {
         Set<TrackConfiguration> trackConfigurations = new HashSet<>();
         // Iterate over the track templates.
         for (String trackTemplateString : legalTrackTemplateStrings) {
+            legalTrackStrings.add(trackTemplateString);
             processTemplate(trackTemplateString, trackConfigurations);
         }
         legalTrackConfigurations = Collections.unmodifiableSet(trackConfigurations);
@@ -49,6 +51,7 @@ public class ValidTrackConfigurations implements Serializable {
     public ValidTrackConfigurations(int max, String[] legalTrackTemplatesArray) {
         Set<TrackConfiguration> temp = new HashSet<>();
         for (String aLegalTrackTemplatesArray : legalTrackTemplatesArray) {
+            legalTrackStrings.add(aLegalTrackTemplatesArray);
             processTemplate(aLegalTrackTemplatesArray, temp);
         }
         legalTrackConfigurations = Collections.unmodifiableSet(temp);
@@ -101,5 +104,9 @@ public class ValidTrackConfigurations implements Serializable {
      */
     public boolean trackConfigurationIsLegal(TrackConfiguration trackConfiguration) {
         return legalTrackConfigurations.contains(trackConfiguration);
+    }
+
+    public Set<String> getLegalTrackStrings() {
+        return legalTrackStrings;
     }
 }

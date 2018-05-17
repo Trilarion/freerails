@@ -116,8 +116,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
         if (status.succeeds()) {
             Station station = (Station) world.get(this.principal, PlayerKey.Stations, stationNumber);
-            station = new Station(station, after);
-            world.set(this.principal, PlayerKey.Stations, stationNumber, station);
+            station.setProduction(after);
         }
         return status;
     }
@@ -127,8 +126,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
         if (status.succeeds()) {
             Station station = (Station) world.get(this.principal, PlayerKey.Stations, stationNumber);
-            station = new Station(station, before);
-            world.set(this.principal, PlayerKey.Stations, stationNumber, station);
+            station.setProduction(before);
         }
         return status;
     }

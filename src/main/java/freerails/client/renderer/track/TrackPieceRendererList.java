@@ -63,6 +63,7 @@ public class TrackPieceRendererList {
         return trackPieceViewArray[i];
     }
 
+    // TODO this should be a test, in the application we would just fail (no difference anyway)
     /**
      * @param world
      * @return

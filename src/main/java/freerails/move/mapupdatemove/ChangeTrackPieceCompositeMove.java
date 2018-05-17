@@ -64,9 +64,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param principal
      * @return
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackRule ruleA, TrackRule ruleB, UnmodifiableWorld world, FreerailsPrincipal principal) {
-        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, world, principal);
-        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, world, principal);
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackRule ruleA, TrackType typeA, TrackRule ruleB, TrackType typeB, UnmodifiableWorld world, FreerailsPrincipal principal) {
+        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, ruleA, typeA, world, principal);
+        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), ruleB, typeB, world, principal);
 
         return new ChangeTrackPieceCompositeMove(a, b, principal);
     }
@@ -87,7 +87,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackRule trackRule, UnmodifiableWorld world, FreerailsPrincipal principal) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackRule trackRule, TrackType trackType, UnmodifiableWorld world, FreerailsPrincipal principal) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -98,12 +98,12 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
             if (oldTrackPiece != null) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
-                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
+                newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackRule(), oldTrackPiece.getTrackType(), owner, oldTrackPiece.getTrackTypeID());
             } else {
-                newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, world));
+                newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, trackType, owner, findRuleID(trackRule, world));
             }
         } else {
-            newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, owner, findRuleID(trackRule, world));
+            newTrackPiece = getTrackPieceWhenOldTrackPieceIsNull(direction, trackRule, trackType, owner, findRuleID(trackRule, world));
             oldTrackPiece = null;
         }
 
@@ -123,7 +123,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
                     int owner = WorldUtils.getPlayerIndex(world, principal);
-                    newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackRule(), owner, oldTrackPiece.getTrackTypeID());
+                    newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackRule(), oldTrackPiece.getTrackType(), owner, oldTrackPiece.getTrackTypeID());
                 } else {
                     newTrackPiece = null;
                 }
@@ -141,17 +141,17 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
         // If we are removing a station, we also need to remove the station from
         // the station list.
-        if (oldTrackPiece.getTrackRule().isStation() && !newTrackPiece.getTrackRule().isStation()) {
+        if (oldTrackPiece.getTrackType().isStation() && !newTrackPiece.getTrackType().isStation()) {
             return RemoveStationMove.getInstance(world, changeTrackPieceMove, principal);
         }
         return changeTrackPieceMove;
     }
 
-    private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackRule trackRule, int owner, int ruleNumber) {
+    private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackRule trackRule, TrackType trackType, int owner, int ruleNumber) {
         TrackConfiguration simplestConfig = TrackConfiguration.getFlatInstance("000010000");
         TrackConfiguration trackConfiguration = TrackConfiguration.add(simplestConfig, direction);
 
-        return new TrackPiece(trackConfiguration, trackRule, owner, ruleNumber);
+        return new TrackPiece(trackConfiguration, trackRule, trackType, owner, ruleNumber);
     }
 
     /**

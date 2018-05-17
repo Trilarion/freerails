@@ -21,6 +21,7 @@
  */
 package freerails.savegames;
 
+import freerails.io.GsonManager;
 import freerails.model.finances.Money;
 import freerails.model.world.SharedKey;
 import freerails.model.world.World;
@@ -28,11 +29,10 @@ import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.*;
 import org.xml.sax.Attributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Processes Track_TilesHandle events, generates track rules, and provides a
@@ -60,7 +60,9 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
     public TrackTilesXmlHandlerImpl(URL trackXmlUrl) {
         try {
             TrackTilesXmlParser.parse(trackXmlUrl, this);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
     }
 
     public void startCanOnlyBuildOnTheseTerrainTypes(final Attributes attributes) {
@@ -149,9 +151,36 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
      * @param world
      */
     public void addTrackRules(World world) {
+        
         for (TrackRule trackRule : ruleList) {
             world.add(SharedKey.TrackRules, trackRule);
         }
+        /*
+        // with storage
+        SortedSet<TrackType> trackTypes = new TreeSet<>();
+        for (int i = 0; i < ruleList.size(); i++) {
+            TrackRule t = ruleList.get(i);
+            world.add(SharedKey.TrackRules, t);
+            Set<TrackProperty> propertyList = new TreeSet<>();
+            switch (t.getCategory()) {
+                case BRIDGE:
+                    propertyList.add(TrackProperty.BRIDGE);
+                    break;
+                case TUNNEL:
+                    propertyList.add(TrackProperty.TUNNEL);
+                    break;
+            }
+            propertyList.add(t.isDouble() ? TrackProperty.DOUBLE : TrackProperty.SINGLE);
+            TrackType trackType = new TrackType(i, t.getName(), t.getCategory(), propertyList, t.getMaintenanceCost(), t.getPrice(), t.getValidTrackPlacement().getTerrainTypes(), t.getValidTrackConfigurations().getLegalTrackStrings());
+            trackType.prepare();
+            trackTypes.add(trackType);
+        }
+        File file = new File("track_types.json");
+        try {
+            GsonManager.save(file, trackTypes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }/**/
     }
 
     /**
@@ -159,5 +188,9 @@ public class TrackTilesXmlHandlerImpl implements TrackTilesXmlHandler {
      */
     public List<TrackRule> getRuleList() {
         return ruleList;
+    }
+
+    public ValidTrackPlacement getValidTrackPlacement() {
+        return validTrackPlacement;
     }
 }

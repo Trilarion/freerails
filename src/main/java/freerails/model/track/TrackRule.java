@@ -203,4 +203,12 @@ public class TrackRule implements Serializable, Comparable<TrackRule> {
     public Money getFixedCost() {
         return fixedCost;
     }
+
+    public ValidTrackPlacement getValidTrackPlacement() {
+        return validTrackPlacement;
+    }
+
+    public ValidTrackConfigurations getValidTrackConfigurations() {
+        return validTrackConfigurations;
+    }
 }

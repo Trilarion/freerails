@@ -21,6 +21,7 @@ package freerails.model;
 import freerails.io.GsonManager;
 import freerails.model.cargo.Cargo;
 import freerails.model.terrain.Terrain;
+import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
@@ -104,7 +105,12 @@ public class MapFixtureFactory2 {
         file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).setTerrainTypes(terrainTypes).build();
+        // load track types
+        url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
+        file = new File(url.toURI());
+        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
+
+        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
         TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
 

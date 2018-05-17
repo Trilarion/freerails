@@ -26,14 +26,6 @@ import java.io.Serializable;
 public interface TrackConfigurations extends Serializable {
 
     /**
-     * @param ftt the TrackConfigurations which may be a subset of this
-     *            TrackConfigurations.
-     * @return true if the vectors represented by this TrackConfigurations are a
-     * superset of the vectors of the specified TrackConfigurations
-     */
-    boolean contains(TrackConfigurations ftt);
-
-    /**
      * @return the integer representing the vector(s) of this object.
      */
     int get9bitTemplate();

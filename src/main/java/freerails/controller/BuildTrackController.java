@@ -22,6 +22,7 @@ import freerails.client.ClientConstants;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.model.world.World;
 import freerails.model.world.WorldUtils;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
@@ -232,12 +233,14 @@ public class BuildTrackController implements GameModel {
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
         int trackTypeAID = buildTrackStrategy.getRule(tileA.getTerrainTypeId());
         TrackRule trackRuleA = (TrackRule) unmodifiableWorld.get(SharedKey.TrackRules, trackTypeAID);
+        TrackType trackTypeA = unmodifiableWorld.getTrackType(trackTypeAID);
 
         TerrainTile tileB = world.getTile(Vec2D.add(point, tileTransition.getD()));
         int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeId());
         TrackRule trackRuleB = (TrackRule) unmodifiableWorld.get(SharedKey.TrackRules, trackTypeBID);
+        TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, tileTransition, trackRuleA, trackRuleB, world, principal);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, tileTransition, trackRuleA, trackTypeA, trackRuleB, trackTypeB, world, principal);
 
         // add to proposed track
         ChangeTrackPieceMove m = (ChangeTrackPieceMove) move.getMove(0);
@@ -441,13 +444,14 @@ public class BuildTrackController implements GameModel {
 
                                 int owner = WorldUtils.getPlayerIndex(unmodifiableWorld, fp);
                                 TrackRule trackRule = (TrackRule) unmodifiableWorld.get(SharedKey.TrackRules, trackRuleID);
-                                TrackPiece after = new TrackPiece(tile.getTrackPiece().getTrackConfiguration(), trackRule, owner, trackRuleID);
+                                TrackType trackType = unmodifiableWorld.getTrackType(trackRuleID);
+                                TrackPiece after = new TrackPiece(tile.getTrackPiece().getTrackConfiguration(), trackRule, trackType, owner, trackRuleID);
 
                                 /*
                                  * We don't want to 'upgrade' a station to track.
                                  * See bug 874416.
                                  */
-                                if (tile.getTrackPiece().getTrackRule().isStation()) {
+                                if (tile.getTrackPiece().getTrackType().isStation()) {
                                     break attemptMove;
                                 }
 

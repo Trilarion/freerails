@@ -53,7 +53,6 @@ public class TrackConfiguration implements TrackConfigurations {
         // Calculate length.
         int tempLength = 0;
         TileTransition[] vectors = TileTransition.getTransitions();
-
         for (TileTransition vector : vectors) {
             if (contains(vector.get9bitTemplate())) {
                 tempLength += vector.getLength();
@@ -94,6 +93,7 @@ public class TrackConfiguration implements TrackConfigurations {
      */
     public static TrackConfiguration getFlatInstance(String trackTemplate) {
         String templateString = trackTemplate;
+        // TODO do not do hack
         // Hack - so that result is as expected by earlier written code.
         StringBuffer strb = new StringBuffer(templateString);
         strb = strb.reverse();
@@ -106,19 +106,24 @@ public class TrackConfiguration implements TrackConfigurations {
     }
 
     /**
-     * @return the TrackConfiguration representing the track section c minus the
-     * track sections represented by v.
+     * @return the TrackConfiguration representing the track section c minus the track sections represented by v.
      */
     public static TrackConfiguration subtract(TrackConfigurations c, TrackConfigurations v) {
         int newTemplate = c.get9bitTemplate() & (~v.get9bitTemplate());
         return from9bitTemplate(newTemplate);
     }
 
+    /**
+     * @param ftt the TrackConfigurations which may be a subset of this
+     *            TrackConfigurations.
+     * @return true if the vectors represented by this TrackConfigurations are a
+     * superset of the vectors of the specified TrackConfigurations
+     */
     public boolean contains(TrackConfigurations ftt) {
         int trackTemplate = ftt.get9bitTemplate();
-
         return contains(trackTemplate);
     }
+
 
     /**
      * @param trackTemplate
@@ -128,6 +133,7 @@ public class TrackConfiguration implements TrackConfigurations {
         return (trackTemplate | configuration) == configuration;
     }
 
+    // TODO just shave the 9th bit of
     /**
      * @return
      */
@@ -144,6 +150,7 @@ public class TrackConfiguration implements TrackConfigurations {
         return newTemplate;
     }
 
+    // TODO why is a 9th bit needed anyway?
     /**
      * @return an int representing this track configuration.
      */

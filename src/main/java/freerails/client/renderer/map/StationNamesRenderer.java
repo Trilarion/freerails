@@ -88,7 +88,7 @@ public class StationNamesRenderer implements Painter {
                 // First draw station sphere of influence
                 if (showStationBorders) {
                     TerrainTile tile = (TerrainTile) world.getTile(location);
-                    int radius = tile.getTrackPiece().getTrackRule().getStationRadius();
+                    int radius = tile.getTrackPiece().getTrackType().getStationRadius();
                     int diameterInPixels = (radius * 2 + 1) * ModelConstants.TILE_SIZE;
                     int radiusX = (location.x - radius) * ModelConstants.TILE_SIZE;
                     int radiusY = (location.y - radius) * ModelConstants.TILE_SIZE;

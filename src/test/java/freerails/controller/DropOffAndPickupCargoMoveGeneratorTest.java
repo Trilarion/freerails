@@ -189,7 +189,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set the station to demand cargo type 0.
         Station station = (Station) world.get(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, 0);
         StationDemand demand = new StationDemand(new boolean[]{true, false, false, false});
-        station = new Station(station, demand);
+        station.setDemandForCargo(demand);
         world.set(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, 0, station);
 
         // Check that the station demands what we think it does.
@@ -285,7 +285,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         Station station = (Station) world.get(
                 MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, 0);
         StationDemand demand = new StationDemand(new boolean[]{true, false, false, false});
-        station = new Station(station, demand);
+        station.setDemandForCargo(demand);
         world.set(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, 0, station);
 
         assertTrue(station.getDemandForCargo().isCargoDemanded(0));

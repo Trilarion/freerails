@@ -2,6 +2,7 @@ package freerails.util;
 
 import java.util.Arrays;
 
+// TODO what about double, boolean, objects
 /**
  * 2D Int array with get and set methods.
  */

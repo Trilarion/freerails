@@ -292,7 +292,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrackPiece tpa = fta.getTrackPiece();
         TrackPiece tpb = ftb.getTrackPiece();
         int tracks = 1;
-        if (tpa.getTrackRule().isDouble() && tpb.getTrackRule().isDouble()) {
+        if (tpa.getTrackType().isDouble() && tpb.getTrackType().isDouble()) {
             tracks = 2;
         }
         Integer trains = occupiedTracks.occupiedTrackSections.get(desiredTrackSection);

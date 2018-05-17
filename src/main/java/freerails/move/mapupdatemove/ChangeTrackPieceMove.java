@@ -20,6 +20,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -74,7 +75,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
          */
-        TrackRule thisStationType = trackPiece.getTrackRule();
+        TrackType thisStationType = trackPiece.getTrackType();
         assert thisStationType.isStation();
 
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {
@@ -94,7 +95,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
                 }
 
                 TerrainTile tile = world.getTile(station.location);
-                TrackRule otherStationType = tile.getTrackPiece().getTrackRule();
+                TrackType otherStationType = tile.getTrackPiece().getTrackType();
                 assert otherStationType.isStation();
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
@@ -237,7 +238,8 @@ public final class ChangeTrackPieceMove implements TrackMove {
             }
 
             // Check that oldTrackPiece is not the same as newTrackPiece
-            if (newTrackPiece != null && (oldTrackPiece.getTrackConfiguration() == newTrackPiece.getTrackConfiguration()) && (oldTrackPiece.getTrackRule() == newTrackPiece.getTrackRule())) {
+            // TODO equals instead of ==
+            if (newTrackPiece != null && (oldTrackPiece.getTrackConfiguration() == newTrackPiece.getTrackConfiguration()) && (oldTrackPiece.getTrackType().equals(newTrackPiece.getTrackType()))) {
                 return MoveStatus.moveFailed("Already track here!");
             }
 
@@ -263,14 +265,14 @@ public final class ChangeTrackPieceMove implements TrackMove {
             }
 
             if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(terrain.getCategory())) {
-                String thisTrackType = newTrackPiece.getTrackRule().getName();
+                String thisTrackType = newTrackPiece.getTrackType().getName();
                 String terrainCategory = terrain.getCategory().toString().toLowerCase();
 
                 return MoveStatus.moveFailed("Can't build " + thisTrackType + " on " + terrainCategory);
             }
 
             // Check for overlapping stations.
-            if (newTrackPiece.getTrackRule().isStation()) {
+            if (newTrackPiece.getTrackType().isStation()) {
                 MoveStatus moveStatus = ChangeTrackPieceMove.checkForOverlap(world, location, newTrackPiece);
                 if (!moveStatus.succeeds()) return moveStatus;
             }

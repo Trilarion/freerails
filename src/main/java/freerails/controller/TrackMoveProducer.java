@@ -139,6 +139,7 @@ public class TrackMoveProducer {
 
         int[] ruleIDs = new int[2];
         TrackRule[] rules = new TrackRule[2];
+        TrackType[] types = new TrackType[2];
         int[] xs = {from.x, from.x + trackVector.deltaX};
         int[] ys = {from.y, from.y + trackVector.deltaY};
         for (int i = 0; i < ruleIDs.length; i++) {
@@ -154,6 +155,7 @@ public class TrackMoveProducer {
                 return MoveStatus.moveFailed(message);
             }
             rules[i] = (TrackRule) world.get(SharedKey.TrackRules, ruleIDs[i]);
+            types[i] = world.getTrackType(ruleIDs[i]);
         }
 
         switch (getBuildMode()) {
@@ -177,7 +179,7 @@ public class TrackMoveProducer {
                 return MoveStatus.MOVE_OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, rules[0], rules[1], world, principal);
+                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, rules[0], types[0], rules[1], types[1], world, principal);
 
                 Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -199,10 +201,11 @@ public class TrackMoveProducer {
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = WorldUtils.getPlayerIndex(world, principal);
         TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
-        TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackRule, owner, trackRuleID);
+        TrackType trackType = world.getTrackType(trackRuleID);
+        TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackRule, trackType, owner, trackRuleID);
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
-        if (before.getTrackRule().isStation()) {
+        if (before.getTrackType().isStation()) {
             return MoveStatus.moveFailed("No need to upgrade track at station.");
         }
 
@@ -255,7 +258,7 @@ public class TrackMoveProducer {
     private boolean isStationHere(Vec2D p) {
         UnmodifiableWorld world = executor.getWorld();
         TerrainTile tile = (TerrainTile) world.getTile(p);
-        return tile.getTrackPiece().getTrackRule().isStation();
+        return tile.getTrackPiece().getTrackType().isStation();
     }
 
     private BuildTrackStrategy getBuildTrackStrategy() {

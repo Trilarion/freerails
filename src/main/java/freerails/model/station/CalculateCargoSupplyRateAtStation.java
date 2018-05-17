@@ -218,9 +218,9 @@ public class CalculateCargoSupplyRateAtStation {
 
         // set the supply rates for the current station
         StationSupply stationSupply = new StationSupply(cargoSupplied);
-        station = new Station(station, stationSupply);
-        station = new Station(station, getDemand());
-        station = new Station(station, getConversion());
+        station.setSupply(stationSupply);
+        station.setDemandForCargo(getDemand());
+        station.setCargoConversion(getConversion());
 
         return station;
     }

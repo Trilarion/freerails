@@ -121,7 +121,7 @@ class DialogueBoxTester extends JFrame {
         }
 
         StationDemand demand = new StationDemand(demandArray);
-        bristol = new Station(bristol, demand);
+        bristol.setDemandForCargo(demand);
         world.add(TEST_PRINCIPAL, PlayerKey.Stations, bristol);
         world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vec2D(50, 100), "Bath",
                 numberOfCargoTypes, 0));

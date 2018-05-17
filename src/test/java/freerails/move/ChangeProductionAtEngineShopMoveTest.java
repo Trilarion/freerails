@@ -21,11 +21,11 @@
  */
 package freerails.move;
 
+import freerails.model.station.*;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
-import freerails.model.station.TrainBlueprint;
-import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
+import freerails.util.Vec2D;
 
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
@@ -42,9 +42,10 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, new Station());
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, new Station());
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, new Station());
+        Station station = new Station(Vec2D.ZERO, "no name", 0, 0);
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
+        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
 
         engineType = 0;
         int wagonType = 0;

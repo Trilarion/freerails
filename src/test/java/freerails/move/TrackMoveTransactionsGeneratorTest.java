@@ -21,16 +21,23 @@
  */
 package freerails.move;
 
+import freerails.io.GsonManager;
 import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.model.world.*;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
+import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import junit.framework.TestCase;
+
+import java.io.File;
+import java.net.URL;
+import java.util.SortedSet;
 
 /**
  * Test for TrackMoveTransactionsGenerator.
@@ -46,7 +53,13 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
+
+        // load track types
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
+        File file = new File(url.toURI());
+        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
+
+        world = new World.Builder().setMapSize(new Vec2D(10, 10)).setTrackTypes(trackTypes).build();
         MapFixtureFactory.generateTrackRuleList(world);
         Player player = new Player("test player", 0);
         world.addPlayer(player);
@@ -66,9 +79,10 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         newConfig = TrackConfiguration.getFlatInstance("000010000");
         oldTrackPiece = world.getTile(Vec2D.ZERO).getTrackPiece();
 
-        TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, 0);
+        TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, 0);
+        TrackType trackType = world.getTrackType(0);
         int owner = WorldUtils.getPlayerIndex(world, MapFixtureFactory.TEST_PRINCIPAL);
-        newTrackPiece = new TrackPiece(newConfig, r, owner, 0);
+        newTrackPiece = new TrackPiece(newConfig, trackRule, trackType, owner, 0);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 
         Move move = transactionGenerator.addTransactions(trackMove);

@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.io.GsonManager;
 import freerails.model.terrain.*;
 import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.model.world.WorldItem;
 import freerails.model.world.SharedKey;
@@ -63,7 +64,12 @@ public class BuildTrackExplorerTest extends TestCase {
         File file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).build();
+        // load track types
+        url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
+        file = new File(url.toURI());
+        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();
@@ -201,9 +207,9 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, 0);
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                .generateBuildTrackMove(new Vec2D(x, y), direction, rule,
-                        rule, world, MapFixtureFactory.TEST_PRINCIPAL);
+        TrackType trackType = world.getTrackType(0);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, rule, trackType,
+                        rule, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.succeeds());
     }

@@ -1,0 +1,188 @@
+[
+  {
+    "name": "standard track",
+    "category": "TRACK",
+    "properties": [
+      "SINGLE"
+    ],
+    "yearlyMaintenance": 1000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "INDUSTRY",
+      "SPECIAL",
+      "URBAN",
+      "COUNTRY",
+      "RESOURCE"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010001",
+      "010010010",
+      "010010011",
+      "010010110",
+      "010011000",
+      "011010000"
+    ],
+    "id": 0
+  },
+  {
+    "name": "double track",
+    "category": "TRACK",
+    "properties": [
+      "DOUBLE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 20000,
+    "validTerrainCategories": [
+      "INDUSTRY",
+      "SPECIAL",
+      "URBAN",
+      "COUNTRY",
+      "RESOURCE"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010001",
+      "010010010",
+      "010010011",
+      "010010110",
+      "010111010"
+    ],
+    "id": 1
+  },
+  {
+    "name": "wooden trestle bridge",
+    "category": "BRIDGE",
+    "properties": [
+      "SINGLE",
+      "BRIDGE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "RIVER"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 2
+  },
+  {
+    "name": "steel girder bridge",
+    "category": "BRIDGE",
+    "properties": [
+      "SINGLE",
+      "BRIDGE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "RIVER"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 3
+  },
+  {
+    "name": "stone masonry bridge",
+    "category": "BRIDGE",
+    "properties": [
+      "SINGLE",
+      "BRIDGE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "RIVER"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 4
+  },
+  {
+    "name": "tunnel",
+    "category": "TUNNEL",
+    "properties": [
+      "SINGLE",
+      "TUNNEL"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 40000,
+    "validTerrainCategories": [
+      "HILL"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 5
+  },
+  {
+    "name": "depot",
+    "category": "STATION",
+    "properties": [
+      "SINGLE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "INDUSTRY",
+      "SPECIAL",
+      "URBAN",
+      "COUNTRY",
+      "RESOURCE"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 6
+  },
+  {
+    "name": "station",
+    "category": "STATION",
+    "properties": [
+      "DOUBLE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "INDUSTRY",
+      "SPECIAL",
+      "URBAN",
+      "COUNTRY",
+      "RESOURCE"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 7
+  },
+  {
+    "name": "terminal",
+    "category": "STATION",
+    "properties": [
+      "DOUBLE"
+    ],
+    "yearlyMaintenance": 2000,
+    "purchasingPrice": 10000,
+    "validTerrainCategories": [
+      "INDUSTRY",
+      "SPECIAL",
+      "URBAN",
+      "COUNTRY",
+      "RESOURCE"
+    ],
+    "validTrackConfigurations": [
+      "010010000",
+      "010010010"
+    ],
+    "id": 8
+  }
+]
