@@ -29,7 +29,6 @@ import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
@@ -138,7 +137,6 @@ public class TrackMoveProducer {
         assert (getBuildMode() == BuildMode.BUILD_TRACK || getBuildMode() == BuildMode.UPGRADE_TRACK);
 
         int[] ruleIDs = new int[2];
-        TrackRule[] rules = new TrackRule[2];
         TrackType[] types = new TrackType[2];
         int[] xs = {from.x, from.x + trackVector.deltaX};
         int[] ys = {from.y, from.y + trackVector.deltaY};
@@ -154,7 +152,6 @@ public class TrackMoveProducer {
                 String message = "Non of the selected track types can be built on " + terrainType.getName();
                 return MoveStatus.moveFailed(message);
             }
-            rules[i] = (TrackRule) world.get(SharedKey.TrackRules, ruleIDs[i]);
             types[i] = world.getTrackType(ruleIDs[i]);
         }
 
@@ -162,7 +159,7 @@ public class TrackMoveProducer {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
                 TerrainTile tileA = (TerrainTile) world.getTile(from);
-                if (tileA.getTrackPiece().getTrackTypeID() != ruleIDs[0] && !isStationHere(from)) {
+                if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !isStationHere(from)) {
                     MoveStatus moveStatus = upgradeTrack(from, ruleIDs[0]);
                     if (!moveStatus.succeeds()) {
                         return moveStatus;
@@ -170,7 +167,7 @@ public class TrackMoveProducer {
                 }
                 Vec2D point = Vec2D.add(from, trackVector.getD());
                 TerrainTile tileB = (TerrainTile) world.getTile(point);
-                if (tileB.getTrackPiece().getTrackTypeID() != ruleIDs[1] && !isStationHere(point)) {
+                if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !isStationHere(point)) {
                     MoveStatus moveStatus = upgradeTrack(point, ruleIDs[1]);
                     if (!moveStatus.succeeds()) {
                         return moveStatus;
@@ -179,7 +176,7 @@ public class TrackMoveProducer {
                 return MoveStatus.MOVE_OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, rules[0], types[0], rules[1], types[1], world, principal);
+                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, types[0], types[1], world, principal);
 
                 Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -200,9 +197,8 @@ public class TrackMoveProducer {
 
         FreerailsPrincipal principal = executor.getPrincipal();
         int owner = WorldUtils.getPlayerIndex(world, principal);
-        TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
         TrackType trackType = world.getTrackType(trackRuleID);
-        TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackRule, trackType, owner, trackRuleID);
+        TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackType, owner);
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
         if (before.getTrackType().isStation()) {

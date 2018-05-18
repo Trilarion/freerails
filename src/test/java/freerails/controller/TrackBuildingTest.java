@@ -91,7 +91,7 @@ public class TrackBuildingTest extends TestCase {
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
                 TrackPiece tp = world.getTile(new Vec2D(x, 5)).getTrackPiece();
-                assertEquals(0, tp.getTrackTypeID());
+                assertEquals(0, tp.getTrackType().getId());
             }
         } catch (PathNotFoundException e) {
             fail();
@@ -126,10 +126,10 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
             // Check track has been built.
             tp1 = world.getTile(new Vec2D(5, 5)).getTrackPiece();
-            assertEquals(0, tp1.getTrackTypeID());
+            assertEquals(0, tp1.getTrackType().getId());
 
             tp2 = world.getTile(new Vec2D(6, 5)).getTrackPiece();
-            assertEquals(0, tp2.getTrackTypeID());
+            assertEquals(0, tp2.getTrackType().getId());
         } catch (PathNotFoundException e) {
             fail();
         }
@@ -186,7 +186,7 @@ public class TrackBuildingTest extends TestCase {
             assertTrue(moveStatus.succeeds());
 
             TrackPiece tp = world.getTile(b).getTrackPiece();
-            assertEquals("We just build double track here.", trackTypeID, tp.getTrackTypeID());
+            assertEquals("We just build double track here.", trackTypeID, tp.getTrackType().getId());
 
             pathFinder.setupSearch(b, c, bts);
             pathFinder.search(-1);

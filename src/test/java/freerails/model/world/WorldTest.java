@@ -41,15 +41,6 @@ public class WorldTest extends TestCase {
     /**
      *
      */
-    public void testGet() {
-        World world = new World.Builder().build();
-        world.add(SharedKey.TrackRules, fs);
-        assertEquals(world.get(SharedKey.TrackRules, 0), fs);
-    }
-
-    /**
-     *
-     */
     public void testConstructor() {
         World world = new World.Builder().build();
         assertEquals(world.getMapSize(), Vec2D.ZERO);
@@ -70,13 +61,6 @@ public class WorldTest extends TestCase {
         copy = (World) Utils.cloneBySerialisation(original);
         assertNotSame("The copies should be different objects.", original, copy);
         assertEquals("The copies should be logically equal.", original, copy);
-
-        copy.add(SharedKey.TrackRules, fs);
-
-        assertFalse(original.equals(copy));
-        assertFalse(copy.equals(original));
-        assertEquals(1, copy.size(SharedKey.TrackRules));
-        assertEquals(0, original.size(SharedKey.TrackRules));
     }
 
     /**

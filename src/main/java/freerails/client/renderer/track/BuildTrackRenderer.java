@@ -69,7 +69,7 @@ public class BuildTrackRenderer implements Painter {
 
                 int graphicsNumber = trackPiece.getTrackGraphicID();
 
-                int ruleNumber = trackPiece.getTrackTypeID();
+                int ruleNumber = trackPiece.getTrackType().getId();
                 TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
                 trackPieceView.drawTrackPieceIcon(g, graphicsNumber, point, ClientConstants.TILE_SIZE);
             }

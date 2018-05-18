@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Type of a track.
@@ -137,5 +136,18 @@ public class TrackType extends Identifiable {
 
     public boolean isDouble() {
         return hasProperty(TrackProperty.DOUBLE);
+    }
+
+    public boolean trackPieceIsLegal(TrackConfiguration config) {
+        return allValidTrackConfigurations.contains(config);
+    }
+
+    public boolean testTrackPieceLegality(int a9bitTemplate) {
+        TrackConfiguration trackConfiguration = TrackConfiguration.from9bitTemplate(a9bitTemplate);
+        return trackPieceIsLegal(trackConfiguration);
+    }
+
+    public boolean canBuildOnThisTerrainType(TerrainCategory terrainCategory) {
+        return validTerrainCategories.contains(terrainCategory);
     }
 }

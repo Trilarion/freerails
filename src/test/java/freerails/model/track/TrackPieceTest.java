@@ -23,7 +23,6 @@ package freerails.model.track;
 
 import freerails.util.TestUtils;
 import freerails.model.MapFixtureFactory2;
-import freerails.model.world.SharedKey;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
 import junit.framework.TestCase;
@@ -51,15 +50,13 @@ public class TrackPieceTest extends TestCase {
     public void testEqualsObject() {
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance(TileTransition.NORTH);
 
-        TrackRule rule0 = (TrackRule) world.get(SharedKey.TrackRules, 0);
         TrackType type0 = world.getTrackType(0);
-        TrackRule rule4 = (TrackRule) world.get(SharedKey.TrackRules, 4);
         TrackType type4 = world.getTrackType(4);
 
-        TrackPiece trackPiece1 = new TrackPiece(trackConfiguration, rule0, type0,0, 0);
+        TrackPiece trackPiece1 = new TrackPiece(trackConfiguration, type0,0);
         assertEquals(trackPiece1, trackPiece1);
 
-        TrackPiece trackPiece2 = new TrackPiece(trackConfiguration, rule4, type4,0, 4);
+        TrackPiece trackPiece2 = new TrackPiece(trackConfiguration, type4,0);
         Assert.assertNotEquals(trackPiece1, trackPiece2);
 
         TestUtils.assertCloneBySerializationBehavesWell(trackPiece1);

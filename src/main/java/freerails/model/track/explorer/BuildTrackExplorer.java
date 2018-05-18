@@ -21,18 +21,14 @@
  */
 package freerails.model.track.explorer;
 
-import freerails.model.track.BuildTrackStrategy;
-import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackRule;
+import freerails.model.track.*;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.TrackConfiguration;
 import freerails.model.train.PositionOnTrack;
 
 import java.util.NoSuchElementException;
@@ -113,8 +109,8 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false;
         }
 
-        TrackRule ruleForNextTile;
-        TrackRule ruleForLastTile;
+        TrackType ruleForNextTile;
+        TrackType ruleForLastTile;
 
         // Determine the track rule for the next tile.
         final TerrainTile nextTile = (TerrainTile) world.getTile(newP);
@@ -126,13 +122,13 @@ public class BuildTrackExplorer implements GraphExplorer {
             }
         }
 
-        ruleForNextTile = getAppropriateTrackRule(newP);
+        ruleForNextTile = getAppropriateTrackType(newP);
 
         if (null == ruleForNextTile) {
             return false; // We can't build track on the tile.
         }
 
-        ruleForLastTile = getAppropriateTrackRule(currentP);
+        ruleForLastTile = getAppropriateTrackType(currentP);
 
         if (null == ruleForLastTile) {
             return false; // We can't build track on the tile.
@@ -208,20 +204,21 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @param p
      * @return
      */
-    private TrackRule getAppropriateTrackRule(Vec2D p) {
+    private TrackType getAppropriateTrackType(Vec2D p) {
         final TerrainTile tile = (TerrainTile) world.getTile(p);
-        TrackRule rule;
+        TrackType type;
         if (!tile.hasTrack()) {
             int terrainTypeID = tile.getTerrainTypeId();
             int trackRuleID = buildTrackStrategy.getRule(terrainTypeID);
             if (trackRuleID == -1) {
                 return null; // Can't build on this terrain!
             }
-            rule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
+            // rule = (TrackRule) world.get(SharedKey.TrackRules, trackRuleID);
+            type = world.getTrackType(trackRuleID);
         } else {
-            rule = tile.getTrackPiece().getTrackRule();
+            type = tile.getTrackPiece().getTrackType();
         }
-        return rule;
+        return type;
     }
 
     /**
@@ -242,25 +239,26 @@ public class BuildTrackExplorer implements GraphExplorer {
             Vec2D p = currentPosition.getLocation();
             int[] x = {p.x, p.x + edgeDirection.deltaX};
             int[] y = {p.y, p.y + edgeDirection.deltaY};
-            TrackRule ruleA = getAppropriateTrackRule(new Vec2D(x[0], y[0]));
-            TrackRule ruleB = getAppropriateTrackRule(new Vec2D(x[1], y[1]));
+            TrackType ruleA = getAppropriateTrackType(new Vec2D(x[0], y[0]));
+            TrackType ruleB = getAppropriateTrackType(new Vec2D(x[1], y[1]));
             /*
              * If there is a station at either of the points, don't include its
              * price in the cost calculation since it has already been paid.
              * Otherwise, add the cost of building the track.
              */
             // TODO use Money arithmetics
-            long priceA = ruleA.getPrice().amount;
-            long priceB = ruleB.getPrice().amount;
+            long priceA = ruleA.getPurchasingPrice().amount;
+            long priceB = ruleB.getPurchasingPrice().amount;
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
             TerrainTile a = (TerrainTile) world.getTile(new Vec2D(x[0], y[0]));
             TrackPiece trackPiece = a.getTrackPiece();
             if (trackPiece != null) {
-                TrackRule currentRuleA = a.getTrackPiece().getTrackRule();
+                TrackType currentRuleA = a.getTrackPiece().getTrackType();
                 if (!currentRuleA.equals(ruleA)) {
                     assert (!currentRuleA.isStation()); // We shouldn't be upgrading a station.
-                    cost += ruleA.getFixedCost().amount * ModelConstants.TILE_SIZE;
+                    // TODO was getFixedCost(), meaning?,
+                    cost += ruleA.getYearlyMaintenance().amount * ModelConstants.TILE_SIZE;
                 }
             }
         }

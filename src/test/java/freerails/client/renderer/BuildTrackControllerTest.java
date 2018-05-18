@@ -26,11 +26,10 @@ import freerails.controller.*;
 import freerails.client.ModelRootProperty;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.BuildTrackStrategy;
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
 import freerails.util.Vec2D;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
@@ -63,16 +62,12 @@ public class BuildTrackControllerTest extends TestCase {
         MoveExecutor executor = new SimpleMoveExecutor(world, 0);
         trackBuilder = new TrackMoveProducer(executor, world, modelRoot);
 
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-
-            final Integer ruleID = i;
-            TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-
-            if (rule.getName().equals("standard track")) {
-                singleTrackRuleID = ruleID;
+        for (TrackType trackType: world.getTrackTypes()) {
+            if (trackType.getName().equals("standard track")) {
+                singleTrackRuleID = trackType.getId();
             }
-            if (rule.getName().equals("double track")) {
-                doubleTrackRuleID = ruleID;
+            if (trackType.getName().equals("double track")) {
+                doubleTrackRuleID = trackType.getId();
             }
         }
         assertFalse(singleTrackRuleID == -1);
@@ -125,16 +120,16 @@ public class BuildTrackControllerTest extends TestCase {
         buildTrackController.updateWorld(trackBuilder);
 
         TerrainTile tile = world.getTile(new Vec2D(10, 10));
-        assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
+        assertEquals(singleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
 
         tile = world.getTile(new Vec2D(15, 10));
-        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
+        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
 
         tile = world.getTile(new Vec2D(17, 10));
-        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
+        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
 
         tile = world.getTile(new Vec2D(20, 10));
-        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackTypeID());
+        assertEquals(doubleTrackRuleID, tile.getTrackPiece().getTrackType().getId());
     }
 
     /**

@@ -27,7 +27,6 @@ import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
-import freerails.savegames.TrackTilesXmlHandlerImpl;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.game.GameCalendar;
@@ -62,9 +61,7 @@ public class MapFixtureFactory2 {
         if (null == world) {
             try {
                 world = generateWorld();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         }
@@ -112,9 +109,6 @@ public class MapFixtureFactory2 {
 
         World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
-        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
-
-        trackSetFactory.addTrackRules(world);
 
         // Add 4 players
         for (int i = 0; i < 4; i++) {

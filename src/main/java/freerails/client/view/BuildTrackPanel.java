@@ -26,7 +26,7 @@ package freerails.client.view;
 import freerails.client.ActionRoot;
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootProperty;
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
 import freerails.client.model.StationBuildModel;
@@ -36,7 +36,6 @@ import freerails.client.ModelRoot;
 import freerails.controller.TrackMoveProducer;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackCategory;
 
@@ -278,65 +277,63 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
         // Add the new set of buttons.
         UnmodifiableWorld world = modelRoot.getWorld();
 
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
+        for (TrackType trackType: world.getTrackTypes()) {
             JToggleButton toggleButton = new JToggleButton();
-            final Integer ruleID = i;
-            TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-            TrackCategory category = rule.getCategory();
+            TrackCategory category = trackType.getCategory();
             Money price = null;
             switch (category) {
                 case TRACK:
                     trackButtonGroup.add(toggleButton);
-                    toggleButton.setIcon(getIcon(rule.getName()));
+                    toggleButton.setIcon(getIcon(trackType.getName()));
                     toggleButton.addActionListener(e -> {
-                        selectionSet.put(TrackCategory.TRACK, ruleID);
+                        selectionSet.put(TrackCategory.TRACK, trackType.getId());
                         setBuildTrackStrategy();
                     });
-                    price = rule.getPrice();
+                    price = trackType.getPurchasingPrice();
                     trackJPanel.add(toggleButton);
 
                     break;
                 case BRIDGE:
                     bridgeButtonGroup.add(toggleButton);
-                    toggleButton.setIcon(getIcon(rule.getName()));
+                    toggleButton.setIcon(getIcon(trackType.getName()));
                     toggleButton.addActionListener(e -> {
-                        selectionSet.put(TrackCategory.BRIDGE, ruleID);
+                        selectionSet.put(TrackCategory.BRIDGE, trackType.getId());
                         setBuildTrackStrategy();
                     });
 
                     bridgesJPanel.add(toggleButton);
-                    price = rule.getFixedCost();
+                    price = trackType.getPurchasingPrice();
                     break;
                 case TUNNEL:
 
                     tunnelButtonGroup.add(toggleButton);
-                    toggleButton.setIcon(getIcon(rule.getName()));
+                    toggleButton.setIcon(getIcon(trackType.getName()));
                     toggleButton.addActionListener(e -> {
-                        selectionSet.put(TrackCategory.TUNNEL, ruleID);
+                        selectionSet.put(TrackCategory.TUNNEL, trackType.getId());
                         setBuildTrackStrategy();
                     });
-                    price = rule.getPrice();
+                    price = trackType.getPurchasingPrice();
                     tunnelsJPanel.add(toggleButton);
                     break;
                 case STATION:
 
                     stationButtonGroup.add(toggleButton);
 
-                    toggleButton.setAction(stationBuildModel.getStationChooseAction(ruleID));
+                    toggleButton.setAction(stationBuildModel.getStationChooseAction(trackType.getId()));
 
-                    toggleButton.setIcon(getIcon(rule.getName()));
+                    toggleButton.setIcon(getIcon(trackType.getName()));
 
-                    toggleButton.addActionListener(e -> selectionSet.put(TrackCategory.STATION, ruleID));
+                    toggleButton.addActionListener(e -> selectionSet.put(TrackCategory.STATION, trackType.getId()));
 
                     stationsJPanel.add(toggleButton);
-                    price = rule.getFixedCost();
+                    price = trackType.getPurchasingPrice();
                     break;
             }
             toggleButton.setPreferredSize(new Dimension(36, 36));
-            String tooltip = rule.getName() + " $" + price.toString();
+            String tooltip = trackType.getName() + " $" + price.toString();
             toggleButton.setToolTipText(tooltip);
             if (!selectionSet.containsKey(category)) {
-                selectionSet.put(category, i);
+                selectionSet.put(category, trackType.getId());
                 toggleButton.setSelected(true);
             }
         }

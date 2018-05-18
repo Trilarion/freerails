@@ -2,11 +2,10 @@ package freerails.model.statistics;
 
 import freerails.model.ModelConstants;
 import freerails.model.finances.*;
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.FreerailsPrincipal;
-import freerails.model.world.SharedKey;
 
 /**
  *
@@ -75,14 +74,13 @@ public class Statistics {
         aggregator.setCategory(TransactionCategory.TRACK);
         long amount = 0;
 
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-            TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
-            // TODO Money arithmetics
-            long trackValue = trackRule.getPrice().amount;
+        for (TrackType trackType: world.getTrackTypes()) {
+            // TODO Money arithmetic
+            long trackValue = trackType.getPurchasingPrice().amount;
 
             GameTime[] times = new GameTime[]{startTime, GameTime.DOOMSDAY};
 
-            aggregator.setType(i);
+            aggregator.setType(trackType.getId());
             aggregator.setTimes(times);
             int quantity = aggregator.calculateQuantity();
             amount += trackValue * quantity / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;

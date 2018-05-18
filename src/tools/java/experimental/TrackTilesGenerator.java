@@ -19,7 +19,9 @@
 package experimental;
 
 import freerails.client.renderer.track.TrackPieceRendererImpl;
-import freerails.savegames.TrackTilesXmlHandlerImpl;
+import freerails.io.GsonManager;
+import freerails.model.track.TrackType;
+import freerails.savegames.MapCreator;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackConfiguration;
 
@@ -27,10 +29,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Point2D;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * Generates track graphic image files.
@@ -40,7 +44,7 @@ class TrackTilesGenerator extends JPanel {
     private static final long serialVersionUID = 3618982273966487859L;
     private final ImageManagerImpl imageManager = new ImageManagerImpl("/experimental/", "/experimental/");
 
-    private final List<TrackRule> rules;
+    private final SortedSet<TrackType> rules;
 
     private final TrackRenderer tr;
 
@@ -60,10 +64,17 @@ class TrackTilesGenerator extends JPanel {
         track[1] = TrackRenderer.createAdjacentCurve(track[0], 0, 0);
         track[2] = TrackRenderer.createAdjacentCurve(track[0], -60, -60);
         tr = new TrackRenderer();
-        URL track_xml_url = TrackTilesGenerator.class.getResource("/freerails/data/track_tiles.xml");
 
-        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
-        rules = trackSetFactory.getRuleList();
+        // load track types
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
+        File file = null;
+        try {
+            file = new File(url.toURI());
+            rules = GsonManager.loadTrackTypes(file);
+        } catch (URISyntaxException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
         generateTiles();
     }
 
@@ -93,7 +104,7 @@ class TrackTilesGenerator extends JPanel {
 
     private void generateTiles() {
 
-        for (TrackRule rule : rules) {
+        for (TrackType rule : rules) {
             TrackCategory category = rule.getCategory();
             Image icon;
             if (category == TrackCategory.BRIDGE || category == TrackCategory.STATION) {
@@ -137,7 +148,7 @@ class TrackTilesGenerator extends JPanel {
         int height = 90 * rules.size();
         int width = 0;
         int lastWidth = 0;
-        for (TrackRule rule : rules) {
+        for (TrackType rule : rules) {
             width = Math.max(width, lastWidth);
             lastWidth = 0;
             Iterator<TrackConfiguration> it = rule.getLegalConfigurationsIterator();
@@ -152,7 +163,7 @@ class TrackTilesGenerator extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (TrackRule rule : rules) {
+        for (TrackType rule : rules) {
 
             String typeName = rule.getName();
             typeName += rule.isDouble() ? " (Double) " : " (Single)";

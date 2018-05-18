@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 // TODO why is it important to only return non-null elements
-
+// TODO can we remove it
 /**
  * Iterates over one of the lists on the world object only returning non null
  * elements.
@@ -36,23 +36,11 @@ import java.util.NoSuchElementException;
 public class NonNullElementWorldIterator implements WorldIterator {
 
     private final PlayerKey playerKey;
-    private final SharedKey sharedKey;
     private final UnmodifiableWorld world;
     private final FreerailsPrincipal principal;
     private int index = BEFORE_FIRST;
     private int row = BEFORE_FIRST;
     private int size = -1;
-
-    /**
-     * @param k
-     * @param world
-     */
-    public NonNullElementWorldIterator(SharedKey k, UnmodifiableWorld world) {
-        playerKey = null;
-        principal = null;
-        sharedKey = Utils.verifyNotNull(k);
-        this.world = Utils.verifyNotNull(world);
-    }
 
     /**
      * @param k
@@ -63,7 +51,6 @@ public class NonNullElementWorldIterator implements WorldIterator {
         playerKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
         this.principal = Utils.verifyNotNull(principal);
-        sharedKey = null;
     }
 
     /**
@@ -116,17 +103,11 @@ public class NonNullElementWorldIterator implements WorldIterator {
     }
 
     private Serializable listGet(int i) {
-        if (null == sharedKey) {
-            return world.get(principal, playerKey, i);
-        }
-        return world.get(sharedKey, i);
+        return world.get(principal, playerKey, i);
     }
 
     private int listSize() {
-        if (null == sharedKey) {
-            return world.size(principal, playerKey);
-        }
-        return world.size(sharedKey);
+        return world.size(principal, playerKey);
     }
 
     public int getIndex() {

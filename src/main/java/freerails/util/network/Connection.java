@@ -71,7 +71,7 @@ public class Connection {
                     close();
                 } catch (SocketException e ) {
                     // close was called from outside
-                    assert open == false;
+                    assert !open;
                 } catch (IOException | ClassNotFoundException e) {
                     // unexpected
                     throw new RuntimeException(e);

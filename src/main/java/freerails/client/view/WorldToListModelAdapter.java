@@ -25,7 +25,6 @@ import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 
 import javax.swing.*;
@@ -39,15 +38,6 @@ import javax.swing.event.ListDataListener;
 class WorldToListModelAdapter implements ListModel {
 
     private final NonNullElementWorldIterator elements;
-
-    /**
-     * @param world
-     * @param key
-     */
-    public WorldToListModelAdapter(UnmodifiableWorld world, SharedKey key) {
-        Utils.verifyNotNull(key);
-        elements = new NonNullElementWorldIterator(key, world);
-    }
 
     /**
      * @param world

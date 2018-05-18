@@ -21,17 +21,13 @@
  */
 package freerails.model.track.pathfinding;
 
-import freerails.model.track.TrackRule;
+import freerails.model.track.*;
 import freerails.model.track.explorer.BuildTrackExplorer;
-import freerails.model.track.BuildTrackStrategy;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.TrackConfiguration;
-import freerails.model.track.TrackPiece;
 import freerails.model.train.PositionOnTrack;
 import org.apache.log4j.Logger;
 
@@ -89,8 +85,8 @@ public class TrackPathFinder implements IncrementalPathFinder {
              * If there is already track here, we need to check what directions
              * we can build in without creating an illegal track config.
              */
-            int ruleNumber = trackPiece.getTrackTypeID();
-            TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
+            int ruleNumber = trackPiece.getTrackType().getId();
+            TrackType trackType = world.getTrackType(ruleNumber);
 
             // Count number of possible directions.
             List<TileTransition> possibleDirections = new ArrayList<>();
@@ -100,7 +96,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
                 TrackConfiguration config = trackPiece.getTrackConfiguration();
                 TrackConfiguration testConfig = TrackConfiguration.add(config, direction);
 
-                if (trackRule.trackPieceIsLegal(testConfig)) {
+                if (trackType.trackPieceIsLegal(testConfig)) {
                     possibleDirections.add(direction);
                 }
             }

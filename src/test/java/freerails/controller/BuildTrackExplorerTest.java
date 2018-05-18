@@ -23,11 +23,9 @@ package freerails.controller;
 
 import freerails.io.GsonManager;
 import freerails.model.terrain.*;
-import freerails.model.track.TrackRule;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.model.world.WorldItem;
-import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
@@ -64,16 +62,13 @@ public class BuildTrackExplorerTest extends TestCase {
         File file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        // load track types
-        url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
-        file = new File(url.toURI());
-        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
+        // generate track types
+        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
 
         world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
         principal = testPlayer.getPrincipal();
-        MapFixtureFactory.generateTrackRuleList(world);
     }
 
     /**
@@ -124,9 +119,8 @@ public class BuildTrackExplorerTest extends TestCase {
         assertEquals(TerrainCategory.OCEAN, ocean.getCategory());
 
         // Check that track cannot be built on ocean.
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-            TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-            assertFalse(rule.canBuildOnThisTerrainType(ocean.getCategory()));
+        for (TrackType trackType: world.getTrackTypes()) {
+            assertFalse(trackType.canBuildOnThisTerrainType(ocean.getCategory()));
         }
 
         // Place some ocean.
@@ -162,15 +156,16 @@ public class BuildTrackExplorerTest extends TestCase {
             x += tileTransition.deltaX;
             y += tileTransition.deltaY;
         }
-        // TODO this test is temporarily switched off until the whole track thing is smoothed again
-        if (true) {
-            return;
-        }
 
         // If we enter 10, 10 from the south, we should be able to build track S & SW.
         PositionOnTrack start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.SOUTH);
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
         explorer.setPosition(start.toInt());
+
+        // TODO this fails now and I don't know why, debugging postponed until the BuildTrackExplorer is investigated
+        if (true)
+            return;
+
         // SE is going along existing track
         assertNextVertexIs(TileTransition.SOUTH_EAST, 11, 11, explorer);
         // S is building new track.
@@ -206,10 +201,8 @@ public class BuildTrackExplorerTest extends TestCase {
     }
 
     private void buildTrack(int x, int y, TileTransition direction) {
-        TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, 0);
         TrackType trackType = world.getTrackType(0);
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, rule, trackType,
-                        rule, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.succeeds());
     }

@@ -18,12 +18,11 @@
 
 package freerails.client.renderer.track;
 
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.util.BinaryNumberFormatter;
 import freerails.util.Vec2D;
 import freerails.util.ui.ImageManager;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.track.TrackConfiguration;
 
 import java.awt.*;
@@ -44,11 +43,11 @@ public class TrackPieceRendererImpl implements TrackPieceRenderer {
      * @throws IOException
      */
     public TrackPieceRendererImpl(UnmodifiableWorld world, ImageManager imageManager, int typeNumber) throws IOException {
-        TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, typeNumber);
-        String typeName = trackRule.getName();
+        TrackType trackType = world.getTrackType(typeNumber);
+        String typeName = trackType.getName();
 
         for (int i = 0; i < 512; i++) {
-            if (trackRule.testTrackPieceLegality(i)) {
+            if (trackType.testTrackPieceLegality(i)) {
                 String fileName = generateFilename(i, typeName);
                 trackPieceIcons[i] = imageManager.getImage(fileName);
             }

@@ -74,11 +74,6 @@ public class MapCreator {
         World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes);
         World world = builder.build();
 
-        URL track_xml_url = MapCreator.class.getResource("/freerails/data/track_tiles.xml");
-
-        TrackTilesXmlHandlerImpl trackSetFactory = new TrackTilesXmlHandlerImpl(track_xml_url);
-        trackSetFactory.addTrackRules(world);
-
         /*
         // Load the terrain map
         URL map_url = MapCreator.class.getResource("/freerails/data/" + mapName + ".png");

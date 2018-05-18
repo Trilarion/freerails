@@ -25,7 +25,6 @@ import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.terrain.NearestCityFinder;
 import freerails.model.station.VerifyStationName;
 import freerails.model.track.TrackConfiguration;
-import freerails.model.track.TrackRule;
 import freerails.model.track.TrackType;
 import freerails.model.world.WorldUtils;
 import freerails.move.*;
@@ -35,7 +34,6 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
@@ -104,11 +102,10 @@ public class AddStationMoveGenerator implements MoveGenerator {
 
         TerrainTile ft = (TerrainTile) world.getTile(location);
         TrackPiece before = ft.getTrackPiece();
-        TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, ruleNumber);
         TrackType trackType = world.getTrackType(ruleNumber);
 
         int owner = WorldUtils.getPlayerIndex(world, principal);
-        TrackPiece after = new TrackPiece(before == null ? TrackConfiguration.from9bitTemplate(0) : before.getTrackConfiguration(), trackRule, trackType, owner, ruleNumber);
+        TrackPiece after = new TrackPiece(before == null ? TrackConfiguration.from9bitTemplate(0) : before.getTrackConfiguration(), trackType, owner);
         Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
 
         CompositeMove move;

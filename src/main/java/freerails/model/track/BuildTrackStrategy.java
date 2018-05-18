@@ -25,7 +25,6 @@ package freerails.model.track;
 
 import freerails.model.terrain.Terrain;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.util.Utils;
 
 import java.util.ArrayList;
@@ -87,14 +86,13 @@ public class BuildTrackStrategy {
     }
 
     private static Integer getCheapest(TrackCategory category, UnmodifiableWorld world) {
-        TrackRule cheapest = null;
+        TrackType cheapest = null;
         Integer cheapestID = null;
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-            TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-            if (rule.getCategory() == category) {
-                if (null == cheapest || cheapest.getPrice().compareTo(rule.getPrice()) > 0) {
-                    cheapest = rule;
-                    cheapestID = i;
+        for (TrackType trackType: world.getTrackTypes()) {
+            if (trackType.getCategory() == category) {
+                if (null == cheapest || cheapest.getPurchasingPrice().compareTo(trackType.getPurchasingPrice()) > 0) {
+                    cheapest = trackType;
+                    cheapestID = trackType.getId();
                 }
             }
         }
@@ -107,8 +105,8 @@ public class BuildTrackStrategy {
         for (Terrain terrainType: world.getTerrains()) {
             for (Integer rule : allowable) {
                 if (null != rule) {
-                    TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, rule);
-                    if (trackRule.canBuildOnThisTerrainType(terrainType.getCategory())) {
+                    TrackType trackType = world.getTrackType(rule);
+                    if (trackType.canBuildOnThisTerrainType(terrainType.getCategory())) {
                         newRules.put(terrainType.getId(), rule);
                         break;
                     }

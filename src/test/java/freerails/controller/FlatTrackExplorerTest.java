@@ -20,11 +20,9 @@ package freerails.controller;
 
 import freerails.io.GsonManager;
 import freerails.model.terrain.Terrain;
-import freerails.model.track.TrackRule;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.world.WorldItem;
-import freerails.model.world.SharedKey;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
@@ -62,17 +60,13 @@ public class FlatTrackExplorerTest extends TestCase {
         File file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        // load track types
-        url = MapCreator.class.getResource("/freerails/data/scenario/track_types.json");
-        file = new File(url.toURI());
-        SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
+        // generate track types
+        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
 
         world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
-        MapFixtureFactory.generateTrackRuleList(world);
 
-        TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, 0);
         TrackType trackType = world.getTrackType(0);
 
         TileTransition[] vectors = {TileTransition.WEST, TileTransition.EAST, TileTransition.NORTH_EAST};
@@ -81,7 +75,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                    .generateBuildTrackMove(points[i], vectors[i], rule, trackType, rule, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
+                    .generateBuildTrackMove(points[i], vectors[i], trackType, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(moveStatus.succeeds());
         }

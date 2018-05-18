@@ -73,7 +73,6 @@ public class World implements UnmodifiableWorld {
     private Vec2D mapSize;
     private TerrainTile[] map;
     public List<Player> players = new ArrayList<>();
-    public Map<SharedKey, List<Serializable>> sharedKeyLists = new HashMap<>();
     public GameTime time = new GameTime(0);
 
     private final SortedSet<Engine> engines;
@@ -135,9 +134,6 @@ public class World implements UnmodifiableWorld {
 
         for (int i = 0; i < WorldItem.values().length; i++) {
             items.add(null);
-        }
-        for (SharedKey key: SharedKey.values()) {
-            sharedKeyLists.put(key, new ArrayList<>());
         }
 
         set(WorldItem.Calendar, new GameCalendar(1200, 1840));
@@ -234,27 +230,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Appends the specified element to the end of the specified list and returns
-     * the index that can be used to retrieve it.
-     */
-    public int add(SharedKey key, Serializable element) {
-        List<Serializable> serializables = sharedKeyLists.get(key);
-        serializables.add(element);
-        return serializables.size() - 1;
-    }
-
-
-    // TODO really all the lists in a hashmap, what about different lists instead (better type inference)?
-    /**
-     *
-     * @param key
-     * @param list
-     */
-    public void set(SharedKey key, List<Serializable> list) {
-        sharedKeyLists.put(key, list);
-    }
-
-    /**
      * @param principal
      * @param element
      * @return
@@ -348,9 +323,6 @@ public class World implements UnmodifiableWorld {
             if (!playerLists.equals(other.playerLists)) {
                 return false;
             }
-            if (!sharedKeyLists.equals(other.sharedKeyLists)) {
-                return false;
-            }
             if (!activities.equals(other.activities)) {
                 return false;
             }
@@ -387,10 +359,6 @@ public class World implements UnmodifiableWorld {
 
     public Serializable get(WorldItem item) {
         return items.get(item.getId());
-    }
-
-    public Serializable get(SharedKey key, int index) {
-        return sharedKeyLists.get(key).get(index);
     }
 
     /**
@@ -590,14 +558,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Replaces the element at the specified position in the specified list with
-     * the specified element.
-     */
-    public void set(SharedKey key, int index, Serializable element) {
-        sharedKeyLists.get(key).set(index, element);
-    }
-
-    /**
      * Replaces the tile at the specified position on the map with the specified
      * tile.
      */
@@ -635,9 +595,4 @@ public class World implements UnmodifiableWorld {
     public int size(FreerailsPrincipal principal, PlayerKey key) {
         return playerLists.get(principal).get(key).size();
     }
-
-    public int size(SharedKey key) {
-        return sharedKeyLists.get(key).size();
-    }
-
 }

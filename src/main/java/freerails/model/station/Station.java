@@ -19,7 +19,7 @@
 package freerails.model.station;
 
 import freerails.model.track.TrackPiece;
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
@@ -29,7 +29,6 @@ import freerails.model.world.UnmodifiableWorld;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
 
 // TODO doesn't know if depot, station, terminal? why not?
 /**
@@ -77,8 +76,8 @@ public class Station implements Serializable {
         TrackPiece trackPiece = tile.getTrackPiece();
 
         if (trackPiece != null) {
-            TrackRule trackRule = trackPiece.getTrackRule();
-            if (trackRule.isStation() && trackPiece.getOwnerID() == world.getID(principal)) {
+            TrackType trackType = trackPiece.getTrackType();
+            if (trackType.isStation() && trackPiece.getOwnerID() == world.getID(principal)) {
 
                 for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
                     Station station = (Station) world.get(principal, PlayerKey.Stations, i);

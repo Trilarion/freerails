@@ -21,12 +21,11 @@
  */
 package freerails.server;
 
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.finances.ItemsTransactionAggregator;
-import freerails.model.world.SharedKey;
 import freerails.model.world.World;
 import freerails.model.ModelConstants;
 import freerails.model.finances.Money;
@@ -67,16 +66,15 @@ public class TrackMaintenanceMoveGenerator {
 
         long amount = 0;
 
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-            TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
+        for (TrackType trackType: world.getTrackTypes()) {
             // TODO Money arithmetic
-            long maintenanceCost = trackRule.getMaintenanceCost().amount;
+            long maintenanceCost = trackType.getYearlyMaintenance().amount;
 
             // Is the track type the category we are interested in?
-            boolean rightType = TransactionCategory.TRACK_MAINTENANCE == category ? !trackRule.isStation() : trackRule.isStation();
+            boolean rightType = TransactionCategory.TRACK_MAINTENANCE == category ? !trackType.isStation() : trackType.isStation();
 
             if (rightType) {
-                aggregator.setType(i);
+                aggregator.setType(trackType.getId());
                 amount += maintenanceCost * aggregator.calculateQuantity() / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE;
             }
         }

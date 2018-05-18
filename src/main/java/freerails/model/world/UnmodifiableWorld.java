@@ -112,11 +112,6 @@ public interface UnmodifiableWorld extends Serializable {
     Serializable get(FreerailsPrincipal principal, PlayerKey key, int index);
 
     /**
-     * Returns the element at the specified position in the specified list.
-     */
-    Serializable get(SharedKey key, int index);
-
-    /**
      * @param principal
      * @param index
      * @return
@@ -195,11 +190,6 @@ public interface UnmodifiableWorld extends Serializable {
      * Returns the number of elements in the specified list.
      */
     int size(FreerailsPrincipal principal, PlayerKey key);
-
-    /**
-     * Returns the number of elements in the specified list.
-     */
-    int size(SharedKey key);
 
     /**
      * Returns number of active entities belonging to the specified principal.

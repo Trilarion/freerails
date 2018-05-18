@@ -18,11 +18,10 @@
 
 package freerails.move;
 
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.player.FreerailsPrincipal;
 import org.apache.log4j.Logger;
 
@@ -43,19 +42,14 @@ public class StationBuilder {
      */
     public StationBuilder(MoveExecutor executor) {
         this.executor = executor;
-
-        TrackRule trackRule;
-
-        int i = -1;
-
         UnmodifiableWorld world = executor.getWorld();
 
-        do {
-            i++;
-            trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
-        } while (!trackRule.isStation());
-
-        ruleNumber = i;
+        for (TrackType trackType: world.getTrackTypes()) {
+            if (trackType.isStation()) {
+                ruleNumber = trackType.getId();
+                break;
+            }
+        }
     }
 
     /**
@@ -99,11 +93,9 @@ public class StationBuilder {
 
     public int getTrackTypeID(String string) {
         UnmodifiableWorld world = executor.getWorld();
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-            TrackRule r = (TrackRule) world.get(SharedKey.TrackRules, i);
-
-            if (string.equals(r.getName())) {
-                return i;
+        for (TrackType trackType: world.getTrackTypes()) {
+            if (string.equals(trackType.getName())) {
+                return trackType.getId();
             }
         }
         throw new NoSuchElementException();

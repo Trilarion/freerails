@@ -24,7 +24,6 @@ import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
 import freerails.model.finances.Money;
 import freerails.model.terrain.Terrain;
-import freerails.model.world.SharedKey;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.player.FreerailsPrincipal;
@@ -83,40 +82,34 @@ public class MapFixtureFactory {
     }
 
     /**
-     * @param world
      */
-    public static void generateTrackRuleList(World world) {
-        TrackRule[] trackRulesArray = new TrackRule[3];
-        ValidTrackConfigurations[] validTrackConfigurations = new ValidTrackConfigurations[3];
-        ValidTrackPlacement[] validTrackPlacement = new ValidTrackPlacement[3];
-        HashSet<TerrainCategory> cannotBuildOnTheseTerrainTypes = new HashSet<>();
-        cannotBuildOnTheseTerrainTypes.add(TerrainCategory.OCEAN);
+    public static SortedSet<TrackType> generateTrackRuleList() {
+        SortedSet<TrackType> trackTypes = new TreeSet<>();
+
+        // everywhere except on ocean
+        Set<TerrainCategory> validTerrainCategories = EnumSet.allOf(TerrainCategory.class);
+        validTerrainCategories.remove(TerrainCategory.OCEAN);
 
         // 1st track type..
         String[] trackTemplates0 = {"000010000", "010010000", "010010010", "100111000", "001111000", "010110000", "100110000", "100011000"};
-
-        validTrackConfigurations[0] = new ValidTrackConfigurations(-1, trackTemplates0);
-        validTrackPlacement[0] = new ValidTrackPlacement(cannotBuildOnTheseTerrainTypes, false);
-        trackRulesArray[0] = new TrackRule(validTrackConfigurations[0], validTrackPlacement[0], TrackCategory.TRACK, "type0", false, 0, Money.ZERO, new Money(0), Money.ZERO);
+        Set<TrackProperty> trackProperties = EnumSet.of(TrackProperty.SINGLE);
+        TrackType trackType = new TrackType(0, "type0", TrackCategory.TRACK, trackProperties, Money.ZERO, Money.ZERO, validTerrainCategories, new HashSet<>(Arrays.asList(trackTemplates0)));
+        trackType.prepare();
+        trackTypes.add(trackType);
 
         // 2nd track type..
         String[] trackTemplates1 = {"000010000", "010010000", "010010010"};
-        validTrackConfigurations[1] = new ValidTrackConfigurations(-1, trackTemplates1);
-
-        validTrackPlacement[1] = new ValidTrackPlacement(cannotBuildOnTheseTerrainTypes, false);
-        trackRulesArray[1] = new TrackRule(validTrackConfigurations[1], validTrackPlacement[1], TrackCategory.TRACK, "type1",false, 0, Money.ZERO, new Money(0), Money.ZERO);
+        trackType = new TrackType(1, "type1", TrackCategory.TRACK, trackProperties, Money.ZERO, Money.ZERO, validTerrainCategories, new HashSet<>(Arrays.asList(trackTemplates1)));
+        trackType.prepare();
+        trackTypes.add(trackType);
 
         // 3rd track type..
-
         String[] trackTemplates2 = {"000010000"};
-        validTrackConfigurations[2] = new ValidTrackConfigurations(-1, trackTemplates2);
-        validTrackPlacement[2] = new ValidTrackPlacement(cannotBuildOnTheseTerrainTypes, false);
-        trackRulesArray[2] = new TrackRule(validTrackConfigurations[2], validTrackPlacement[2], TrackCategory.TRACK, "type2",false, 0, Money.ZERO, new Money(0), Money.ZERO);
+        trackType = new TrackType(2, "type2", TrackCategory.TRACK, trackProperties, Money.ZERO, Money.ZERO, validTerrainCategories, new HashSet<>(Arrays.asList(trackTemplates2)));
+        trackType.prepare();
+        trackTypes.add(trackType);
 
-        // Add track rules to world
-        for (TrackRule aTrackRulesArray : trackRulesArray) {
-            world.add(SharedKey.TrackRules, aTrackRulesArray);
-        }
+        return trackTypes;
     }
 
     /**

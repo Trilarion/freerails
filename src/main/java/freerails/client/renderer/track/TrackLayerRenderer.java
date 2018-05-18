@@ -51,7 +51,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
                     TrackPiece trackPiece = terrainTile.getTrackPiece();
                     if (trackPiece != null) {
                         int graphicsNumber = trackPiece.getTrackGraphicID();
-                        int ruleNumber = trackPiece.getTrackTypeID();
+                        int ruleNumber = trackPiece.getTrackType().getId();
                         TrackPieceRenderer trackPieceView = rendererRoot.getTrackPieceView(ruleNumber);
                         trackPieceView.drawTrackPieceIcon(g, graphicsNumber, tileLocation, ClientConstants.TILE_SIZE);
                     }

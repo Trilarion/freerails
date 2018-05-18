@@ -25,12 +25,11 @@ import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.move.StationBuilder;
 import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.finances.Money;
 import freerails.model.track.TrackConfiguration;
 
@@ -69,7 +68,7 @@ public class StationBuildModel {
     private final ActionListener stationCancelAction = new StationCancelAction();
     private final StationBuilder stationBuilder;
     private final ModelRoot modelRoot;
-    private final Map<Integer, Action> id2Action = new HashMap<>();
+    private final Map<Integer, Action> idToAction = new HashMap<>();
     /**
      * Whether the station's position can should change when the mouse moves.
      */
@@ -85,21 +84,21 @@ public class StationBuildModel {
         this.modelRoot = modelRoot;
 
         UnmodifiableWorld world = this.modelRoot.getWorld();
-        for (int i = 0; i < world.size(SharedKey.TrackRules); i++) {
-            final TrackRule trackRule = (TrackRule) world.get(SharedKey.TrackRules, i);
 
-            if (trackRule.isStation()) {
-                TrackPieceRenderer renderer = rendererRoot.getTrackPieceView(i);
-                Action action = new StationChooseAction(i);
-                String trackType = trackRule.getName();
-                Money price = trackRule.getFixedCost();
-                String shortDescrpt = trackType + " $" + price.toString();
+        for (TrackType trackType: world.getTrackTypes()) {
+
+            if (trackType.isStation()) {
+                TrackPieceRenderer renderer = rendererRoot.getTrackPieceView(trackType.getId());
+                Action action = new StationChooseAction(trackType.getId());
+                String name = trackType.getName();
+                Money price = trackType.getPurchasingPrice();
+                String shortDescrpt = name + " $" + price.toString();
                 action.putValue(Action.SHORT_DESCRIPTION, shortDescrpt);
-                action.putValue(Action.NAME, "Build " + trackType);
+                action.putValue(Action.NAME, "Build " + name);
 
                 action.putValue(Action.SMALL_ICON, new ImageIcon(renderer.getTrackPieceIcon(trackTemplate)));
                 stationChooseActions.add(action);
-                id2Action.put(i, action);
+                idToAction.put(trackType.getId(), action);
             }
         }
     }
@@ -109,7 +108,7 @@ public class StationBuildModel {
      * @return
      */
     public Action getStationChooseAction(Integer ruleID) {
-        return id2Action.get(ruleID);
+        return idToAction.get(ruleID);
     }
 
     /**
@@ -168,7 +167,7 @@ public class StationBuildModel {
         public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
 
-            TrackRule trackRule = (TrackRule) modelRoot.getWorld().get(SharedKey.TrackRules, actionId);
+            TrackType trackRule = modelRoot.getWorld().getTrackType(actionId);
 
             // Show the relevant station radius when the station type's menu item gets focus.
             stationBuildAction.putValue(StationBuildAction.STATION_RADIUS_KEY, trackRule.getStationRadius());

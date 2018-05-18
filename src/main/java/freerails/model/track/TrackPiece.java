@@ -28,24 +28,17 @@ public class TrackPiece implements Serializable {
 
     private static final long serialVersionUID = 4049080423458027569L;
     private final TrackConfiguration trackConfiguration;
-    private final TrackRule trackRule;
     private final TrackType trackType;
     private final int ownerID;
-    private final int ruleNumber;
 
     /**
      * @param trackConfiguration
-     * @param trackRule
      * @param owner
-     * @param rule
      */
-    // TODO is rule number really needed?
-    public TrackPiece(TrackConfiguration trackConfiguration, TrackRule trackRule, TrackType trackType, int owner, int rule) {
+    public TrackPiece(TrackConfiguration trackConfiguration, TrackType trackType, int owner) {
         this.trackConfiguration = trackConfiguration;
-        this.trackRule = trackRule;
         this.trackType = trackType;
         ownerID = owner;
-        ruleNumber = rule;
     }
 
     @Override
@@ -53,21 +46,19 @@ public class TrackPiece implements Serializable {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
 
-        final TrackPiece that = (TrackPiece) obj;
+        final TrackPiece other = (TrackPiece) obj;
 
-        if (ownerID != that.ownerID) return false;
-        if (ruleNumber != that.ruleNumber) return false;
-        if (!trackConfiguration.equals(that.trackConfiguration)) return false;
-        return trackRule.equals(that.trackRule);
+        if (ownerID != other.ownerID) return false;
+        if (!trackConfiguration.equals(other.trackConfiguration)) return false;
+        return trackType.equals(other.trackType);
     }
 
     @Override
     public int hashCode() {
         int result;
         result = trackConfiguration.hashCode();
-        result = 29 * result + trackRule.hashCode();
+        result = 29 * result + trackType.hashCode();
         result = 29 * result + ownerID;
-        result = 29 * result + ruleNumber;
         return result;
     }
 
@@ -76,13 +67,6 @@ public class TrackPiece implements Serializable {
      */
     public int getTrackGraphicID() {
         return trackConfiguration.getConfiguration();
-    }
-
-    /**
-     * @return
-     */
-    public TrackRule getTrackRule() {
-        return trackRule;
     }
 
     /**
@@ -97,15 +81,6 @@ public class TrackPiece implements Serializable {
      */
     public int getOwnerID() {
         return ownerID;
-    }
-
-    // TODO make TrackTypeID an enum
-    /**
-     * @return
-     */
-    // TODO abuse of rule number?
-    public int getTrackTypeID() {
-        return ruleNumber;
     }
 
     public TrackType getTrackType() {

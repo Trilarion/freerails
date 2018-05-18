@@ -110,7 +110,7 @@ class TrainMotionExperiment extends JComponent {
         for (int x = 0; x < world.getMapSize().x; x++) {
             for (int y = 0; y < world.getMapSize().y; y++) {
                 TerrainTile tile = world.getTile(new Vec2D(x, y));
-                if (tile.getTrackPiece().getTrackTypeID() != NullTrackType.NULL_TRACK_TYPE_RULE_NUMBER) {
+                if (tile.getTrackPiece() != null) {
                     g.drawRect(x * ModelConstants.TILE_SIZE, y * ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE, ModelConstants.TILE_SIZE);
                 }
             }

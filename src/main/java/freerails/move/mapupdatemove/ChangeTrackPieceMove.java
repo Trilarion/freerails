@@ -19,7 +19,6 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
-import freerails.model.track.TrackRule;
 import freerails.model.track.TrackType;
 import freerails.model.world.*;
 import freerails.move.MoveStatus;
@@ -230,8 +229,8 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         if (oldTrackPiece != null) {
-            TrackRule expectedTrackRule = oldTrackPiece.getTrackRule();
-            TrackRule actualTrackRule = currentTrackPieceAtLocation.getTrackRule();
+            TrackType expectedTrackRule = oldTrackPiece.getTrackType();
+            TrackType actualTrackRule = currentTrackPieceAtLocation.getTrackType();
 
             if (!expectedTrackRule.equals(actualTrackRule)) {
                 return MoveStatus.moveFailed("Expected '" + expectedTrackRule.getName() + "' but found '" + actualTrackRule.getName() + "' at " + location.x + " ," + location.y);
@@ -244,7 +243,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
             }
 
             // Check for illegal track configurations.
-            if (!(oldTrackPiece.getTrackRule().trackPieceIsLegal(oldTrackPiece.getTrackConfiguration()))) {
+            if (!(oldTrackPiece.getTrackType().trackPieceIsLegal(oldTrackPiece.getTrackConfiguration()))) {
                 return MoveStatus.moveFailed("Illegal track configuration.");
             }
 
@@ -260,11 +259,11 @@ public final class ChangeTrackPieceMove implements TrackMove {
             Terrain terrain = world.getTerrain(terrainType);
 
             // Check for illegal track configurations.
-            if (!(newTrackPiece.getTrackRule().trackPieceIsLegal(newTrackPiece.getTrackConfiguration()))) {
+            if (!(newTrackPiece.getTrackType().trackPieceIsLegal(newTrackPiece.getTrackConfiguration()))) {
                 return MoveStatus.moveFailed("Illegal track configuration.");
             }
 
-            if (!newTrackPiece.getTrackRule().canBuildOnThisTerrainType(terrain.getCategory())) {
+            if (!newTrackPiece.getTrackType().canBuildOnThisTerrainType(terrain.getCategory())) {
                 String thisTrackType = newTrackPiece.getTrackType().getName();
                 String terrainCategory = terrain.getCategory().toString().toLowerCase();
 
@@ -326,7 +325,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         int radius = 1;
 
         if (trackPieceAfter != null) {
-            TrackRule trackRuleAfter = trackPieceAfter.getTrackRule();
+            TrackType trackRuleAfter = trackPieceAfter.getTrackType();
 
             if (trackRuleAfter.isStation()) {
                 radius = Math.max(radius, trackRuleAfter.getStationRadius());
@@ -334,7 +333,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         if (trackPieceBefore != null) {
-            TrackRule trackRuleBefore = trackPieceBefore.getTrackRule();
+            TrackType trackRuleBefore = trackPieceBefore.getTrackType();
             if (trackRuleBefore.isStation()) {
                 radius = Math.max(radius, trackRuleBefore.getStationRadius());
             }

@@ -20,10 +20,9 @@ package freerails.model.station;
 
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.terrain.*;
 import org.apache.log4j.Logger;
@@ -57,8 +56,8 @@ public class CalculateCargoSupplyRateAtStation {
         this.world = world;
         this.location = location;
 
-        TrackRule trackRule = (TrackRule) this.world.get(SharedKey.TrackRules, trackRuleNo);
-        stationRadius = trackRule.getStationRadius();
+        TrackType trackType = world.getTrackType(trackRuleNo);
+        stationRadius = trackType.getStationRadius();
 
         supplies = new ArrayList<>();
         populateSuppliesVector();
@@ -79,7 +78,7 @@ public class CalculateCargoSupplyRateAtStation {
     // TODO inline this but be careful because this and super must be on the first line
     private static int findTrackRule(Vec2D location, UnmodifiableWorld world) {
         TerrainTile tile = (TerrainTile) world.getTile(location);
-        return tile.getTrackPiece().getTrackTypeID();
+        return tile.getTrackPiece().getTrackType().getId();
     }
 
     /**

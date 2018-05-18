@@ -60,8 +60,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
      *
      */
     public void testNext() {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world,
-                MapFixtureFactory.TEST_PRINCIPAL);
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, MapFixtureFactory.TEST_PRINCIPAL);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
@@ -79,9 +78,6 @@ public class NonNullElementWorldIteratorTest extends TestCase {
         assertEquals(2, wi.getIndex());
         assertEquals(1, wi.getRowID());
         assertEquals(station2, wi.getElement());
-
-        WorldIterator wi2 = new NonNullElementWorldIterator(SharedKey.TrackRules, world);
-        assertTrue(!wi2.next());
     }
 
     /**

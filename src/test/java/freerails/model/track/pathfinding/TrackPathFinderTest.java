@@ -25,6 +25,7 @@ import freerails.model.finances.Money;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.BuildTrackStrategy;
+import freerails.model.track.TrackType;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
@@ -57,10 +58,12 @@ public class TrackPathFinderTest extends TestCase {
         SortedSet<Terrain> terrainTypes = new TreeSet<>();
         terrainTypes.add(new Terrain(0, "Terrain", TerrainCategory.COUNTRY, Money.ZERO, Money.ZERO, Utils.immutableList(new ArrayList<>()), Utils.immutableList(new ArrayList<>()), Utils.immutableList(new ArrayList<>())));
 
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).build();
+        // generate track types
+        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
-        MapFixtureFactory.generateTrackRuleList(world);
     }
 
     /**

@@ -21,10 +21,9 @@
  */
 package freerails.move;
 
-import freerails.model.track.TrackRule;
+import freerails.model.track.TrackType;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.SharedKey;
 import freerails.model.ModelConstants;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
@@ -78,7 +77,7 @@ public class TrackMoveTransactionsGenerator {
      * @return
      */
     public CompositeMove addTransactions(Move move) {
-        int numberOfTrackTypes = world.size(SharedKey.TrackRules);
+        int numberOfTrackTypes = world.getTrackTypes().size();
         trackAdded = new int[numberOfTrackTypes];
         trackRemoved = new int[numberOfTrackTypes];
         fixedCostsStations = 0;
@@ -120,22 +119,25 @@ public class TrackMoveTransactionsGenerator {
             int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
             int newLength = newTrackPiece.getTrackConfiguration().getLength();
 
-            int ruleBefore = oldTrackPiece.getTrackTypeID();
-            int ruleAfter = newTrackPiece.getTrackTypeID();
+            // TODO instead of comparing ids, use equal (which does the some)
+            int ruleBefore = oldTrackPiece.getTrackType().getId();
+            int ruleAfter = newTrackPiece.getTrackType().getId();
 
-            TrackRule newTrackRule = newTrackPiece.getTrackRule();
+            TrackType newTrackRule = newTrackPiece.getTrackType();
 
             if (ruleAfter != ruleBefore) {
                 TrackCategory category = newTrackRule.getCategory();
                 switch (category) {
                     case STATION: {
                         // TODO Money arithmetic
-                        fixedCostsStations -= newTrackRule.getFixedCost().amount;
+                        // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
+                        fixedCostsStations -= newTrackRule.getYearlyMaintenance().amount;
                         break;
                     }
                     case BRIDGE: {
                         // TODO Money arithmetic
-                        fixedCostsBridges -= newTrackRule.getFixedCost().amount;
+                        // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
+                        fixedCostsBridges -= newTrackRule.getYearlyMaintenance().amount;
                         break;
                     }
                     default: {
@@ -155,14 +157,16 @@ public class TrackMoveTransactionsGenerator {
         }
 
         if (oldTrackPiece == null) {
-            int ruleAfter = newTrackPiece.getTrackTypeID();
+            int ruleAfter = newTrackPiece.getTrackType().getId();
             int newLength = newTrackPiece.getTrackConfiguration().getLength();
+            // TODO trackAdded should be a Map
             trackAdded[ruleAfter] += newLength;
         }
 
         if (newTrackPiece == null) {
-            int ruleBefore = oldTrackPiece.getTrackTypeID();
+            int ruleBefore = oldTrackPiece.getTrackType().getId();
             int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
+            // TODO trackRemoved should be a Map (id, int)
             trackRemoved[ruleBefore] += oldLength;
         }
     }
@@ -176,9 +180,8 @@ public class TrackMoveTransactionsGenerator {
             int numberAdded = trackAdded[i];
 
             if (0 != numberAdded) {
-                TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-                Money price = rule.getPrice();
-                // TODO Money arithmetics
+                Money price = world.getTrackType(i).getPurchasingPrice();
+                // TODO Money arithmetic
                 Money total = new Money(-price.amount * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
                 Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
                 transactions.add(transaction);
@@ -187,10 +190,9 @@ public class TrackMoveTransactionsGenerator {
             int numberRemoved = trackRemoved[i];
 
             if (0 != numberRemoved) {
-                TrackRule rule = (TrackRule) world.get(SharedKey.TrackRules, i);
-                Money m = rule.getPrice();
-                // TODO Money arithmetics
-                Money total = new Money((m.amount * numberRemoved) / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Money price = world.getTrackType(i).getPurchasingPrice();
+                // TODO Money arithmetic
+                Money total = new Money((price.amount * numberRemoved) / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
 
                 // You only get half the money back.
                 total = Money.divide(total, 2);

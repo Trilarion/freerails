@@ -21,12 +21,14 @@
  */
 package freerails.model.finances;
 
+import freerails.model.track.TrackType;
 import freerails.model.world.World;
 import freerails.model.MapFixtureFactory;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
+import java.util.SortedSet;
 
 /**
  * Test for ItemTransactionAggregator.
@@ -41,9 +43,12 @@ public class ItemTransactionAggregatorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
+
+        // generate track types
+        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
+
+        world = new World.Builder().setMapSize(new Vec2D(10, 10)).setTrackTypes(trackTypes).build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        MapFixtureFactory.generateTrackRuleList(world);
     }
 
     /**

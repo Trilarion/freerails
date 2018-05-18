@@ -43,6 +43,8 @@ public class ValidTrackConfigurationsTest extends TestCase {
         ArrayList<String> templates = new ArrayList<>();
         templates.add("000111000");
 
+        // TODO need to test that at a later moment again, will be a test for TrackType
+        /*
         ValidTrackConfigurations validTrackConfigurations = new ValidTrackConfigurations( templates);
 
         TrackConfiguration trackConfiguration = TrackConfiguration.getFlatInstance("010010010");
@@ -50,5 +52,6 @@ public class ValidTrackConfigurationsTest extends TestCase {
 
         trackConfiguration = TrackConfiguration.getFlatInstance("010111000");
         assertFalse(validTrackConfigurations.trackConfigurationIsLegal(trackConfiguration));
+        */
     }
 }
