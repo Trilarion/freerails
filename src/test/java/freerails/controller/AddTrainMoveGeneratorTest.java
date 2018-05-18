@@ -30,7 +30,6 @@ import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.terrain.TileTransition;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.train.*;
 import freerails.model.train.schedule.ImmutableSchedule;
@@ -41,7 +40,7 @@ import freerails.model.train.schedule.MutableSchedule;
  */
 public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
-    private FreerailsPrincipal principal;
+    private Player principal;
     private ImmutableSchedule defaultSchedule;
     private Vec2D stationA;
 

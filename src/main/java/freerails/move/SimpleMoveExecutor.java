@@ -21,7 +21,6 @@ package freerails.move;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 
 /**
@@ -31,7 +30,7 @@ import freerails.model.player.Player;
 public class SimpleMoveExecutor implements MoveExecutor {
 
     private final World world;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
     /**
      * @param world
@@ -41,7 +40,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
     public SimpleMoveExecutor(World world, int playerID) {
         this.world = world;
         Player player = this.world.getPlayer(playerID);
-        principal = player.getPrincipal();
+        principal = player;
     }
 
     /**
@@ -79,7 +78,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
     /**
      * @return
      */
-    public FreerailsPrincipal getPrincipal() {
+    public Player getPrincipal() {
         return principal;
     }
 

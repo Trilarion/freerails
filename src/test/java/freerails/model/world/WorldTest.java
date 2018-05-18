@@ -25,7 +25,6 @@ import freerails.model.activity.Activity;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.finances.*;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import junit.framework.TestCase;
 
@@ -76,7 +75,7 @@ public class WorldTest extends TestCase {
          */
         copy = (World) Utils.cloneBySerialisation(original);
 
-        Player player = new Player("Name", 0);
+        Player player = new Player(0, "Name");
         int index = copy.addPlayer(player);
         assertEquals(index, 0);
         assertFalse(copy.equals(original));
@@ -86,8 +85,8 @@ public class WorldTest extends TestCase {
         assertTrue(Utils.equalsBySerialization(original, copy));
 
         Transaction transaction = new MoneyTransaction(new Money(100), TransactionCategory.MISC_INCOME);
-        copy.addTransaction(player.getPrincipal(), transaction);
-        assertEquals(new Money(100), copy.getCurrentBalance(player.getPrincipal()));
+        copy.addTransaction(player, transaction);
+        assertEquals(new Money(100), copy.getCurrentBalance(player));
         assertFalse(copy.equals(original));
     }
 
@@ -109,8 +108,8 @@ public class WorldTest extends TestCase {
          */
         copy2 = (World) Utils.cloneBySerialisation(original);
         // Test adding players.
-        Player a = new Player("Fred");
-        Player b = new Player("John");
+        Player a = new Player(0, "Fred");
+        Player b = new Player(1, "John");
         original.addPlayer(a);
         copy.addPlayer(b);
         assertFalse(copy.equals(original));
@@ -121,9 +120,9 @@ public class WorldTest extends TestCase {
      */
     public void testActivityLists() {
         World world = new World.Builder().build();
-        Player player = new Player("Name", 0);
+        Player player = new Player(0, "Name");
         world.addPlayer(player);
-        FreerailsPrincipal principal = player.getPrincipal();
+        Player principal = player;
 
         // Test adding activities.
         assertEquals(0, world.size(principal));
@@ -163,10 +162,10 @@ public class WorldTest extends TestCase {
      */
     public void testBankAccount() {
         World world = new World.Builder().build();
-        Player player = new Player("Test", 0);
+        Player player = new Player(0, "Test");
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);
-        FreerailsPrincipal principal = world.getPlayer(playerID).getPrincipal();
+        Player principal = world.getPlayer(playerID);
         Transaction transaction = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(100));
         assertEquals(new Money(0), world.getCurrentBalance(principal));
         world.addTransaction(principal, transaction);

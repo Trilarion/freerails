@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.model.player.Player;
 import freerails.model.statistics.BalanceSheetGenerator;
 import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
@@ -30,7 +31,6 @@ import freerails.model.*;
 import freerails.model.finances.Money;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
@@ -47,7 +47,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
      *
      */
     public void testBondsFigure() {
-        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
+        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player);
         Money expectedBondValue = ModelConstants.BOND_VALUE_ISSUE;
         assertEquals(Money.opposite(expectedBondValue), generator.total.loans);
         assertEquals(Money.opposite(expectedBondValue), generator.ytd.loans);
@@ -57,7 +57,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
      *
      */
     public void testStockHolderEquityFigure() {
-        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player.getPrincipal());
+        BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player);
         Money expectStockHolderEquity = new Money(-500000);
         assertEquals(expectStockHolderEquity, generator.total.equity);
     }
@@ -70,12 +70,12 @@ public class BalanceSheetGeneratorTest extends TestCase {
         super.setUp();
 
         world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
-        player = new Player("Player X", world.getNumberOfPlayers());
+        player = new Player(world.getNumberOfPlayers(), "Player X");
         world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-        MoveStatus moveStatus = addPlayerMove.doMove(world, player.getPrincipal());
+        MoveStatus moveStatus = addPlayerMove.doMove(world, player);
         assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
 
         world.setTime(new GameTime(100));

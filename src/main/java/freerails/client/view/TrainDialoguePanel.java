@@ -25,7 +25,7 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.*;
 import org.apache.log4j.Logger;
 
@@ -50,7 +50,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     private JButton trainListJButton;
     private WorldIterator worldIterator;
     private UnmodifiableWorld world;
-    private FreerailsPrincipal principal;
+    private Player principal;
 
     public TrainDialoguePanel() {
         GridBagConstraints gridBagConstraints;
@@ -159,14 +159,14 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
-    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, Player principal) {
         newTrainSchedulePanel1.listUpdated(key, index, principal);
     }
 
-    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, Player principal) {
     }
 
-    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, Player principal) {
     }
 
     void setTrainDetailsButtonActionListener(ActionListener l) {

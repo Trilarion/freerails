@@ -31,7 +31,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.train.Train;
 
 import javax.swing.*;
@@ -47,7 +47,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
 
     private static final long serialVersionUID = 3977018444325664049L;
     private UnmodifiableWorld world;
-    private FreerailsPrincipal principal;
+    private Player principal;
     private int trainNumber = -1;
     private Serializable lastTrain, lastCargoBundle;
     private JLabel label1;

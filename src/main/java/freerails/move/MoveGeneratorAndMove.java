@@ -4,6 +4,7 @@ import freerails.move.generator.MoveGenerator;
 
 import java.io.Serializable;
 
+// TODO remove this, only used in MovePrecommitter
 /**
  *
  */

@@ -36,7 +36,6 @@ import freerails.model.ModelConstants;
 import freerails.model.finances.BondItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.StockItemTransaction;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 
 import javax.swing.*;
@@ -155,7 +154,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private void enableAndDisableActions() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        FreerailsPrincipal principal = modelRoot.getPrincipal();
+        Player principal = modelRoot.getPrincipal();
 
         FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, principal);
 
@@ -165,7 +164,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         // Enable and disable stock actions.
         for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
             Player temp = modelRoot.getWorld().getPlayer(playerId);
-            FreerailsPrincipal otherPrincipal = temp.getPrincipal();
+            Player otherPrincipal = temp;
             FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPrincipal);
 
             // If this RR has stock in other RR, then enable sell stock
@@ -200,7 +199,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        FreerailsPrincipal principal = modelRoot.getPrincipal();
+        Player principal = modelRoot.getPrincipal();
 
         BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, principal);
 
@@ -212,8 +211,8 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         populatedTemplate.append(populateTokens(template, brokerScreenGenerator));
 
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (!(world.getPlayer(i).getPrincipal().equals(principal))) {
-                BrokerScreenGenerator temp = new BrokerScreenGenerator(world, world.getPlayer(i).getPrincipal());
+            if (!(world.getPlayer(i).equals(principal))) {
+                BrokerScreenGenerator temp = new BrokerScreenGenerator(world, world.getPlayer(i));
                 populatedTemplate.append(populateTokens(template, temp));
             }
         }
@@ -228,7 +227,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+        Player playerPrincipal = modelRoot.getPrincipal();
         int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 
         int lastNumTransactions = 0;

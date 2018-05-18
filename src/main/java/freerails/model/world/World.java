@@ -35,7 +35,6 @@ import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionRecord;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import org.jetbrains.annotations.NotNull;
@@ -61,15 +60,15 @@ import java.util.*;
 public class World implements UnmodifiableWorld {
 
     private static final long serialVersionUID = 3544393612684505393L;
-    public Map<FreerailsPrincipal, Map<Integer, List<ActivityAndTime>>> activities = new HashMap<>();
-    public Map<FreerailsPrincipal, List<TransactionRecord>> transactionLogs = new HashMap<>();
+    public Map<Player, Map<Integer, List<ActivityAndTime>>> activities = new HashMap<>();
+    public Map<Player, List<TransactionRecord>> transactionLogs = new HashMap<>();
     public List<Money> currentBalance = new ArrayList<>();
     public List<Serializable> items = new ArrayList<>();
 
     /**
      * A 3D list: D1 is player, D2 is type, D3 is element.
      */
-    public Map<FreerailsPrincipal, Map<PlayerKey, List<Serializable>>> playerLists = new HashMap<>();
+    public Map<Player, Map<PlayerKey, List<Serializable>>> playerLists = new HashMap<>();
     private Vec2D mapSize;
     private TerrainTile[] map;
     public List<Player> players = new ArrayList<>();
@@ -209,7 +208,7 @@ public class World implements UnmodifiableWorld {
      * @param index
      * @param activity
      */
-    public void addActivity(FreerailsPrincipal principal, int index, Activity activity) {
+    public void addActivity(Player principal, int index, Activity activity) {
         int lastId = activities.get(principal).get(index).size() - 1;
         ActivityAndTime last = activities.get(principal).get(index).get(lastId);
         double duration = last.act.duration();
@@ -223,7 +222,7 @@ public class World implements UnmodifiableWorld {
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
-    public int add(FreerailsPrincipal principal, PlayerKey playerKey, Serializable element) {
+    public int add(Player principal, PlayerKey playerKey, Serializable element) {
         List<Serializable> serializables = playerLists.get(principal).get(playerKey);
         serializables.add(element);
         return serializables.size() - 1;
@@ -234,7 +233,7 @@ public class World implements UnmodifiableWorld {
      * @param element
      * @return
      */
-    public int addActiveEntity(FreerailsPrincipal principal, Activity element) {
+    public int addActiveEntity(Player principal, Activity element) {
         int index = activities.get(principal).size();
         activities.get(principal).put(index, new ArrayList<>());
         ActivityAndTime ant = new ActivityAndTime(element, currentTime().getTicks());
@@ -252,15 +251,15 @@ public class World implements UnmodifiableWorld {
         players.add(player);
         int index = players.size() - 1;
 
-        transactionLogs.put(player.getPrincipal(), new ArrayList<>());
+        transactionLogs.put(player, new ArrayList<>());
         currentBalance.add(Money.ZERO);
 
-        playerLists.put(player.getPrincipal(), new HashMap<>());
+        playerLists.put(player, new HashMap<>());
         for (PlayerKey key: PlayerKey.values()) {
-            playerLists.get(player.getPrincipal()).put(key, new ArrayList<>());
+            playerLists.get(player).put(key, new ArrayList<>());
         }
 
-        activities.put(player.getPrincipal(), new HashMap<>());
+        activities.put(player, new HashMap<>());
 
         return index;
     }
@@ -268,7 +267,7 @@ public class World implements UnmodifiableWorld {
     /**
      * Adds the specified transaction to the specified principal's bank account.
      */
-    public void addTransaction(FreerailsPrincipal principal, Transaction transaction) {
+    public void addTransaction(Player principal, Transaction transaction) {
         int playerIndex = principal.getWorldIndex();
         TransactionRecord transactionRecord = new TransactionRecord(transaction, time);
         transactionLogs.get(principal).add(transactionRecord);
@@ -283,7 +282,7 @@ public class World implements UnmodifiableWorld {
      * @param index
      * @return
      */
-    public boolean boundsContain(FreerailsPrincipal principal, PlayerKey key, int index) {
+    public boolean boundsContain(Player principal, PlayerKey key, int index) {
         if (!isPlayer(principal)) {
             return false;
         } else return index >= 0 && index < size(principal, key);
@@ -353,7 +352,7 @@ public class World implements UnmodifiableWorld {
         return false;
     }
 
-    public Serializable get(FreerailsPrincipal principal, PlayerKey key, int index) {
+    public Serializable get(Player principal, PlayerKey key, int index) {
         return playerLists.get(principal).get(key).get(index);
     }
 
@@ -366,7 +365,7 @@ public class World implements UnmodifiableWorld {
      * @param index
      * @return
      */
-    public ActivityIterator getActivities(final FreerailsPrincipal principal, int index) {
+    public ActivityIterator getActivities(final Player principal, int index) {
         return new ActivityIteratorImpl(this, principal, index);
     }
 
@@ -374,7 +373,7 @@ public class World implements UnmodifiableWorld {
      * @param principal
      * @return
      */
-    public Money getCurrentBalance(FreerailsPrincipal principal) {
+    public Money getCurrentBalance(Player principal) {
         int playerIndex = principal.getWorldIndex();
         return currentBalance.get(playerIndex);
     }
@@ -383,7 +382,7 @@ public class World implements UnmodifiableWorld {
      * @param principal
      * @return
      */
-    public int getID(FreerailsPrincipal principal) {
+    public int getID(Player principal) {
         return principal.getWorldIndex();
     }
 
@@ -402,7 +401,7 @@ public class World implements UnmodifiableWorld {
      * @param principal
      * @return
      */
-    public int getNumberOfTransactions(FreerailsPrincipal principal) {
+    public int getNumberOfTransactions(Player principal) {
         return transactionLogs.get(principal).size();
     }
 
@@ -427,7 +426,7 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
-    public Transaction getTransaction(FreerailsPrincipal principal, int i) {
+    public Transaction getTransaction(Player principal, int i) {
         TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
         return transactionRecord.getTransaction();
     }
@@ -437,7 +436,7 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
-    public GameTime getTransactionTimeStamp(FreerailsPrincipal principal, int i) {
+    public GameTime getTransactionTimeStamp(Player principal, int i) {
         TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
         return transactionRecord.getTimestamp();
     }
@@ -447,7 +446,7 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
-    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal principal, int i) {
+    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player principal, int i) {
         TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
         return new Pair<>(transactionRecord.getTransaction(), transactionRecord.getTimestamp());
     }
@@ -464,14 +463,14 @@ public class World implements UnmodifiableWorld {
      * @param principal
      * @return
      */
-    public boolean isPlayer(FreerailsPrincipal principal) {
+    public boolean isPlayer(Player principal) {
         return principal.getWorldIndex() >= 0 && principal.getWorldIndex() < players.size();
     }
 
     /**
      * Removes the last element from the specified list.
      */
-    public Serializable removeLast(FreerailsPrincipal principal, PlayerKey playerKey) {
+    public Serializable removeLast(Player principal, PlayerKey playerKey) {
         List<Serializable> serializables = playerLists.get(principal).get(playerKey);
         return serializables.remove(serializables.size() - 1);
     }
@@ -480,7 +479,7 @@ public class World implements UnmodifiableWorld {
      * @param principal
      * @return
      */
-    public Activity removeLastActiveEntity(FreerailsPrincipal principal) {
+    public Activity removeLastActiveEntity(Player principal) {
         int lastId = activities.get(principal).size() - 1;
         List<ActivityAndTime> serializables = activities.get(principal).get(lastId);
         Activity act = serializables.remove(serializables.size() - 1).act;
@@ -493,7 +492,7 @@ public class World implements UnmodifiableWorld {
      * @param index
      * @return
      */
-    public void removeLastActivity(FreerailsPrincipal principal, int index) {
+    public void removeLastActivity(Player principal, int index) {
         if (activities.get(principal).get(index).size() < 2) {
             throw new IllegalStateException();
         }
@@ -529,7 +528,7 @@ public class World implements UnmodifiableWorld {
      * principal's bank account. This method is only here so that moves that add
      * transactions can be undone.
      */
-    public Transaction removeLastTransaction(FreerailsPrincipal principal) {
+    public Transaction removeLastTransaction(Player principal) {
         int playerIndex = principal.getWorldIndex();
 
         List<TransactionRecord> transactions = transactionLogs.get(principal);
@@ -545,7 +544,7 @@ public class World implements UnmodifiableWorld {
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
-    public void set(FreerailsPrincipal principal, PlayerKey playerKey, int index, Serializable element) {
+    public void set(Player principal, PlayerKey playerKey, int index, Serializable element) {
         playerLists.get(principal).get(playerKey).set(index, element);
     }
 
@@ -588,11 +587,11 @@ public class World implements UnmodifiableWorld {
         }
     }
 
-    public int size(FreerailsPrincipal principal) {
+    public int size(Player principal) {
         return activities.get(principal).size();
     }
 
-    public int size(FreerailsPrincipal principal, PlayerKey key) {
+    public int size(Player principal, PlayerKey key) {
         return playerLists.get(principal).get(key).size();
     }
 }

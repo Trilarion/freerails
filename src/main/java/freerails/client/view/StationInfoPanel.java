@@ -32,7 +32,7 @@ import freerails.model.world.*;
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
@@ -264,7 +264,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     @Override
     protected void paintComponent(Graphics g) {
         // We need to update if the cargo bundle has changed.
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+        Player playerPrincipal = modelRoot.getPrincipal();
 
         /*
          * Avoid a array out of bounds exception when there are no stations and
@@ -312,15 +312,15 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
     }
 
-    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, Player principal) {
         if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, false);
     }
 
-    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, Player principal) {
         if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, true);
     }
 
-    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, Player principal) {
         if (modelRoot.getPrincipal().equals(principal)) reactToUpdate(key, index, false);
     }
 

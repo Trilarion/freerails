@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.util.Utils;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +89,7 @@ public class CompositeMove implements Move {
         return moves;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         // Since whether a move later in the list goes through could
         // depend on whether an earlier move has been executed, we need
         // actually execute moves, then undo them to test whether the
@@ -106,7 +106,7 @@ public class CompositeMove implements Move {
         return moveStatus;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         MoveStatus moveStatus = undoMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -116,7 +116,7 @@ public class CompositeMove implements Move {
         return moveStatus;
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus moveStatus = compositeTest(world);
 
         if (!moveStatus.succeeds()) {
@@ -137,7 +137,7 @@ public class CompositeMove implements Move {
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus moveStatus = MoveStatus.MOVE_OK;
 
         for (int i = moves.size() - 1; i >= 0; i--) {
@@ -154,7 +154,7 @@ public class CompositeMove implements Move {
         return moveStatus;
     }
 
-    private void undoMoves(World world, int number, FreerailsPrincipal principal) {
+    private void undoMoves(World world, int number, Player principal) {
         for (int i = number; i >= 0; i--) {
             MoveStatus moveStatus = moves.get(i).undoMove(world, principal);
 
@@ -164,7 +164,7 @@ public class CompositeMove implements Move {
         }
     }
 
-    private void redoMoves(World world, int number, FreerailsPrincipal principal) {
+    private void redoMoves(World world, int number, Player principal) {
         for (int i = number; i < moves.size(); i++) {
             MoveStatus moveStatus = moves.get(i).doMove(world, principal);
 

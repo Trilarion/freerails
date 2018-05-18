@@ -23,7 +23,7 @@ import freerails.model.track.TrackType;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -71,7 +71,7 @@ public class Station implements Serializable {
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(UnmodifiableWorld world, FreerailsPrincipal principal, Vec2D location) {
+    public static int getStationNumberAtLocation(UnmodifiableWorld world, Player principal, Vec2D location) {
         TerrainTile tile = (TerrainTile) world.getTile(location);
         TrackPiece trackPiece = tile.getTrackPiece();
 

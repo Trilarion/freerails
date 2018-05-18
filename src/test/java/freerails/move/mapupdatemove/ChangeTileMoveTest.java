@@ -21,12 +21,12 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.MoveStatus;
 import freerails.model.MapFixtureFactory2;
 import freerails.util.Vec2D;
-import freerails.model.player.Player;
 
 /**
  *

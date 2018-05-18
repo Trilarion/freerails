@@ -24,7 +24,7 @@ package freerails.move.listmove;
 import freerails.move.MoveStatus;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.io.Serializable;
 
@@ -37,9 +37,9 @@ public class RemoveItemFromListMove implements ListMove {
     private final Serializable item;
     private final PlayerKey playerKey;
     private final int index;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
-    public RemoveItemFromListMove(PlayerKey key, int i, Serializable item, FreerailsPrincipal principal) {
+    public RemoveItemFromListMove(PlayerKey key, int i, Serializable item, Player principal) {
         this.item = item;
         playerKey = key;
         index = i;
@@ -65,7 +65,7 @@ public class RemoveItemFromListMove implements ListMove {
         return playerKey;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         if (world.size(this.principal, playerKey) < (index + 1)) {
             return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, playerKey) + " but index =" + index);
         }
@@ -84,7 +84,7 @@ public class RemoveItemFromListMove implements ListMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         if (world.size(this.principal, playerKey) < (index + 1)) {
             return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, playerKey) + " but index =" + index);
         }
@@ -97,7 +97,7 @@ public class RemoveItemFromListMove implements ListMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -107,7 +107,7 @@ public class RemoveItemFromListMove implements ListMove {
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -138,7 +138,7 @@ public class RemoveItemFromListMove implements ListMove {
     /**
      * @return
      */
-    public FreerailsPrincipal getPrincipal() {
+    public Player getPrincipal() {
         return principal;
     }
 }

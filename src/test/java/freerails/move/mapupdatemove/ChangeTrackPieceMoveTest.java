@@ -24,6 +24,7 @@
 package freerails.move.mapupdatemove;
 
 import freerails.io.GsonManager;
+import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.move.AbstractMoveTestCase;
@@ -34,7 +35,6 @@ import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
-import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;

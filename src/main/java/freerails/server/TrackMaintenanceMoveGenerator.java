@@ -32,7 +32,7 @@ import freerails.model.finances.Money;
 import freerails.model.finances.MoneyTransaction;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 // TODO does not really follow the MoveGenerator interface, should it maybe?
 /**
@@ -56,7 +56,7 @@ public class TrackMaintenanceMoveGenerator {
      * @param category
      * @return
      */
-    private static Move generateMove(World world, FreerailsPrincipal principal, TransactionCategory category) {
+    private static Move generateMove(World world, Player principal, TransactionCategory category) {
         if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }
@@ -89,7 +89,7 @@ public class TrackMaintenanceMoveGenerator {
      */
     public void update(World world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Player principal = world.getPlayer(i);
             Move move = generateMove(world, principal, TransactionCategory.TRACK_MAINTENANCE);
             moveReceiver.process(move);
 

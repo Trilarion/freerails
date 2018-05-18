@@ -32,7 +32,7 @@ import freerails.model.finances.Money;
 import freerails.model.finances.MoneyTransaction;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 // TODO does not really follow the movegenerator interface, should it maybe?
 /**
@@ -55,7 +55,7 @@ public class TrainMaintenanceMoveGenerator {
      */
     public void update(World world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Player principal = world.getPlayer(i);
             WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, principal);
             int numberOfTrains = trains.size();
             long amount = numberOfTrains * 5000;

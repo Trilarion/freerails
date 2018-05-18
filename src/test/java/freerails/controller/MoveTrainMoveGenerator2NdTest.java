@@ -35,7 +35,7 @@ import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.*;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
@@ -50,11 +50,11 @@ import freerails.model.world.World;
  */
 public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
-    private FreerailsPrincipal principal;
+    private Player principal;
     private Vec2D station1Location;
     private Vec2D station2Location;
 
-    public static void incrTime(World world, FreerailsPrincipal principal) {
+    public static void incrTime(World world, Player principal) {
         ActivityIterator activityIterator = world.getActivities(principal, 0);
         while (activityIterator.hasNext())
             activityIterator.nextActivity();

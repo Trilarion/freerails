@@ -29,7 +29,7 @@ import freerails.util.Vec2D;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameRules;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
@@ -43,9 +43,9 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
     private static final long serialVersionUID = 3616443518780978743L;
     private final int x, y, w, h;
-    private final FreerailsPrincipal builder;
+    private final Player builder;
 
-    private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, FreerailsPrincipal fp) {
+    private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, Player fp) {
         super(a, b);
         Rectangle r = a.getUpdatedTiles().union(b.getUpdatedTiles());
         x = r.x;
@@ -62,7 +62,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param principal
      * @return
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player principal) {
         ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, principal);
         ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), typeB, world, principal);
 
@@ -77,7 +77,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @return
      * @throws Exception
      */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, FreerailsPrincipal principal) throws Exception {
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, Player principal) throws Exception {
         TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, principal);
         TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, principal);
 
@@ -85,7 +85,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, FreerailsPrincipal principal) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player principal) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -109,7 +109,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, FreerailsPrincipal principal) throws Exception {
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player principal) throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -137,8 +137,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 
-        // If we are removing a station, we also need to remove the station from
-        // the station list.
+        // If we are removing a station, we also need to remove the station from the station list.
         if (oldTrackPiece.getTrackType().isStation() && !newTrackPiece.getTrackType().isStation()) {
             return RemoveStationMove.getInstance(world, changeTrackPieceMove, principal);
         }
@@ -155,7 +154,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     /**
      * Returns true if some track has been built.
      */
-    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, Player principal) {
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
         aggregator.setCategory(TransactionCategory.TRACK);
 
@@ -195,13 +194,13 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     @Override
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveTrainMoveGenerator.clearCache();
         return super.doMove(world, principal);
     }
 
     @Override
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveTrainMoveGenerator.clearCache();
         return super.undoMove(world, principal);
     }

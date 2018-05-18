@@ -36,7 +36,7 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.server.GameModel;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackPiece;
@@ -57,7 +57,7 @@ public class BuildTrackController implements GameModel {
     private final ModelRoot modelRoot;
     private final TrackPathFinder trackPathFinder;
     private final PathOnTrackFinder pathOnTrackFinder;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final UnmodifiableWorld unmodifiableWorld;
     private World world;
     private final Map<Vec2D, TrackPiece> proposedTrack = new HashMap<>();
@@ -402,7 +402,7 @@ public class BuildTrackController implements GameModel {
                 BuildMode mode = getBuildMode();
 
                 Vec2D location = new Vec2D(startPoint);
-                FreerailsPrincipal fp = modelRoot.getPrincipal();
+                Player fp = modelRoot.getPrincipal();
                 for (TileTransition v : path) {
                     Move move;
                     attemptMove:

@@ -21,11 +21,11 @@
  */
 package freerails.network;
 
+import freerails.model.player.Player;
 import freerails.move.*;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.game.GameTime;
 import freerails.model.world.World;
-import freerails.model.player.Player;
 import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;

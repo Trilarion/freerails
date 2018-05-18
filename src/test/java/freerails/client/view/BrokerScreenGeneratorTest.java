@@ -32,7 +32,6 @@ import freerails.model.*;
 import freerails.model.finances.Money;
 import freerails.model.finances.StockItemTransaction;
 import freerails.model.game.GameCalendar;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
@@ -44,7 +43,7 @@ import junit.framework.TestCase;
 public class BrokerScreenGeneratorTest extends TestCase {
 
     private int playerID;
-    private FreerailsPrincipal principal;
+    private Player principal;
     private World world;
 
     /**
@@ -62,7 +61,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
         MoveStatus moveStatus = apm.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
         playerID = world.getNumberOfPlayers() - 1;
-        principal = player.getPrincipal();
+        principal = player;
     }
 
     /**

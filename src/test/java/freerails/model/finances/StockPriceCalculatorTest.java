@@ -28,7 +28,7 @@ import freerails.model.game.GameTime;
 import freerails.model.world.WorldItem;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import junit.framework.TestCase;
 
 /**
@@ -78,7 +78,7 @@ public class StockPriceCalculatorTest extends TestCase {
         long income = 100000;
         Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
                 batch, 0);
-        FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
+        Player princ = world.getPlayer(0);
         world.addTransaction(princ, transaction);
         assertEquals(initialNetworth, calc.netWorth(0));
 
@@ -136,7 +136,7 @@ public class StockPriceCalculatorTest extends TestCase {
     private void addIncome(long income) {
         CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
         Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0, batch, 0);
-        FreerailsPrincipal princ = world.getPlayer(0).getPrincipal();
+        Player princ = world.getPlayer(0);
         world.addTransaction(princ, transaction);
     }
 

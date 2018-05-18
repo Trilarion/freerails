@@ -16,12 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move;
+package freerails.move.generator;
 
 import freerails.model.ModelConstants;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Money;
+import freerails.move.AddTransactionMove;
+import freerails.move.Move;
 import freerails.move.listmove.ChangeCargoBundleMove;
 import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.listmove.TransferCargoAtStationMove;
@@ -31,7 +33,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.MutableCargoBatchBundle;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
@@ -54,7 +56,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private final TrainAccessor trainAccessor;
     private final int trainId;
     private final int stationId;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final boolean waitingForFullLoad;
     private final boolean autoConsist;
     private int trainBundleId;
@@ -73,7 +75,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param stationNo ID of the station
      * @param world     The world object
      */
-    public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo, UnmodifiableWorld world, FreerailsPrincipal principal, boolean waiting, boolean autoConsist) {
+    public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo, UnmodifiableWorld world, Player principal, boolean waiting, boolean autoConsist) {
         this.principal = principal;
         trainId = trainNo;
         stationId = stationNo;
@@ -173,7 +175,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @param trainId
      * @return
      */
-    public static List<Move> processCargo(UnmodifiableWorld world, CargoBatchBundle bundle, int stationID, FreerailsPrincipal principal, int trainId) {
+    public static List<Move> processCargo(UnmodifiableWorld world, CargoBatchBundle bundle, int stationID, Player principal, int trainId) {
         Station thisStation = (Station) world.get(principal, PlayerKey.Stations, stationID);
         Iterator<CargoBatch> batches = bundle.cargoBatchIterator();
 

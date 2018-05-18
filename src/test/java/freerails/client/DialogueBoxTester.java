@@ -35,7 +35,6 @@ import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.MutableCargoBatchBundle;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
@@ -58,8 +57,7 @@ import java.util.SortedSet;
 class DialogueBoxTester extends JFrame {
 
     private static final long serialVersionUID = 4050764909631780659L;
-    private static final Player TEST_PLAYER = new Player("test player", 0);
-    private static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
+    private static final Player TEST_PLAYER = new Player(0, "test player");
     private final DialogueBoxController dialogueBoxController;
     private final ModelRootImpl modelRoot;
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
@@ -104,7 +102,7 @@ class DialogueBoxTester extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        modelRoot.setup(world, TEST_PLAYER.getPrincipal());
+        modelRoot.setup(world, TEST_PLAYER);
         ActionRoot actionRoot = new ActionRoot(new ServerControlModel(modelRoot));
         actionRoot.setup(modelRoot, vl);
         dialogueBoxController = new DialogueBoxController(this, modelRoot);
@@ -122,14 +120,14 @@ class DialogueBoxTester extends JFrame {
 
         StationDemand demand = new StationDemand(demandArray);
         bristol.setDemandForCargo(demand);
-        world.add(TEST_PRINCIPAL, PlayerKey.Stations, bristol);
-        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vec2D(50, 100), "Bath",
+        world.add(TEST_PLAYER, PlayerKey.Stations, bristol);
+        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(50, 100), "Bath",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vec2D(40, 10), "Cardiff",
+        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(40, 10), "Cardiff",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vec2D(100, 10), "London",
+        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(100, 10), "London",
                 numberOfCargoTypes, 0));
-        world.add(TEST_PRINCIPAL, PlayerKey.Stations, new Station(new Vec2D(90, 50), "Swansea",
+        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(90, 50), "Swansea",
                 numberOfCargoTypes, 0));
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
@@ -140,7 +138,7 @@ class DialogueBoxTester extends JFrame {
         cb.setAmount(new CargoBatch(1, new Vec2D(10, 10), 9, 0), 140);
         cb.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
         cb.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
-        world.add(TEST_PRINCIPAL, PlayerKey.CargoBundles, cb.toImmutableCargoBundle());
+        world.add(TEST_PLAYER, PlayerKey.CargoBundles, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
         TrainOrders order = new TrainOrders(0, new ImmutableList<>(0, 0, 0),
@@ -151,17 +149,17 @@ class DialogueBoxTester extends JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        int scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new Train(0, new ImmutableList<>(0, 0), scheduleID));
+        int scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        world.add(TEST_PLAYER, PlayerKey.Trains, new Train(0, new ImmutableList<>(0, 0), scheduleID));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new Train(1, new ImmutableList<>(1, 1), scheduleID));
+        scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        world.add(TEST_PLAYER, PlayerKey.Trains, new Train(1, new ImmutableList<>(1, 1), scheduleID));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = world.add(TEST_PRINCIPAL, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
-        world.add(TEST_PRINCIPAL, PlayerKey.Trains, new Train(0, new ImmutableList<>(1, 2, 0), scheduleID));
+        scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        world.add(TEST_PLAYER, PlayerKey.Trains, new Train(0, new ImmutableList<>(1, 2, 0), scheduleID));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);

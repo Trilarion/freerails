@@ -34,7 +34,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private UnmodifiableWorld world;
-    private FreerailsPrincipal principal;
+    private Player principal;
     private TrainListCellRenderer trainListCellRenderer1;
     private JLabel headingLabel;
     private JLabel trainIncomeLabel;

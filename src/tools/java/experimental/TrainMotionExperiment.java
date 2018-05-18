@@ -36,7 +36,7 @@ import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
 import freerails.model.ModelConstants;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
@@ -56,7 +56,7 @@ class TrainMotionExperiment extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
     private final World world;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private double finishTime = 0;
     private long startTime;
 

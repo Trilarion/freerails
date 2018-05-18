@@ -34,7 +34,7 @@ import freerails.client.view.*;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.util.Vec2D;
 import freerails.model.game.GameSpeed;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -391,7 +391,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param index
      * @param principal
      */
-    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, Player principal) {
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
         if (PlayerKey.Trains == key && rightPrincipal) {
@@ -406,7 +406,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param index
      * @param principal
      */
-    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, Player principal) {
     }
 
     /**
@@ -414,7 +414,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param index
      * @param principal
      */
-    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, Player principal) {
         boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
 
         if (PlayerKey.Trains == key && rightPrincipal) {

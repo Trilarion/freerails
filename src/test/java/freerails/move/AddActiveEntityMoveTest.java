@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.model.activity.Activity;
 import freerails.model.world.TestActivity;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  *
@@ -34,7 +34,7 @@ public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        FreerailsPrincipal principal = getPrincipal();
+        Player principal = getPrincipal();
         Activity a = new TestActivity(50);
         AddActiveEntityMove move = new AddActiveEntityMove(a, 0, principal);
         assertSurvivesSerialisation(move);

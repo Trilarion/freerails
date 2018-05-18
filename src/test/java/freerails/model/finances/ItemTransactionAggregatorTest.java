@@ -61,7 +61,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
 
         /*
          * actual = ItemsTransactionAggregator.calculateNumberOfEachTrackType(world,
-         * MapFixtureFactory.TEST_PRINCIPAL, 0);
+         * MapFixtureFactory.TEST_PLAYER, 0);
          */
         expected = new int[]{0, 0, 0}; // No track has been built yet.
         assertTrue(Arrays.equals(expected, actual));
@@ -85,7 +85,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
      */
     private int[] calNumOfEachTrackType() {
         int[] actual;
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, MapFixtureFactory.TEST_PRINCIPAL);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, MapFixtureFactory.TEST_PLAYER);
         actual = new int[3];
         aggregator.setType(0);
         actual[0] = aggregator.calculateQuantity();
@@ -104,6 +104,6 @@ public class ItemTransactionAggregatorTest extends TestCase {
     private void addTrack(int trackType, int quantity) {
         ItemTransaction transaction = new ItemTransaction(TransactionCategory.TRACK, trackType, quantity,
                 new Money(trackType));
-        world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL, transaction);
+        world.addTransaction(MapFixtureFactory.TEST_PLAYER, transaction);
     }
 }

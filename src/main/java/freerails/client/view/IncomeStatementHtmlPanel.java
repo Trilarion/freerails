@@ -23,7 +23,7 @@ import freerails.model.finances.IncomeStatementGenerator;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +62,7 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
 
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+        Player playerPrincipal = modelRoot.getPrincipal();
         IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(world, playerPrincipal);
         balanceSheetGenerator.calculateAll();
         String populatedTemplate = populateTokens(template, balanceSheetGenerator);
@@ -73,7 +73,7 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
-        FreerailsPrincipal playerPrincipal = modelRoot.getPrincipal();
+        Player playerPrincipal = modelRoot.getPrincipal();
         int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
 
         int lastNumTransactions = 0;

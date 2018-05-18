@@ -29,7 +29,7 @@ import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
 
@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class TrackMoveTransactionsGenerator {
 
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     /*
      * Note, trackAdded and trackRemoved cannot be combined, since it may cost
      * more to added a unit of track than is refunded when you removed it.
@@ -67,7 +67,7 @@ public class TrackMoveTransactionsGenerator {
      * @param principal the Principal on behalf of which this object generates
      *          transactions for
      */
-    public TrackMoveTransactionsGenerator(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public TrackMoveTransactionsGenerator(UnmodifiableWorld world, Player principal) {
         this.world = world;
         this.principal = principal;
     }

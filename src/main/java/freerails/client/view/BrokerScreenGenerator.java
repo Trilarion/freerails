@@ -33,7 +33,7 @@ import freerails.model.finances.Money;
 import freerails.model.finances.TransactionCategory;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.text.DecimalFormat;
 
@@ -48,7 +48,7 @@ class BrokerScreenGenerator {
     /**
      * Creates a new instance of BrokerScreenGenerator
      */
-    public BrokerScreenGenerator(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public BrokerScreenGenerator(UnmodifiableWorld world, Player principal) {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, principal);
 
         int playerId = world.getID(principal);

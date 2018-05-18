@@ -27,7 +27,7 @@ import freerails.model.finances.NetWorthCalculator;
 import freerails.model.finances.Money;
 import freerails.model.finances.PlayerDetails;
 import freerails.model.finances.TransactionAggregator;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
@@ -117,7 +117,7 @@ public class LeaderBoardPanel extends JPanel implements View {
         submitButtonCallBack = closeAction;
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {
             PlayerDetails details = new PlayerDetails();
-            FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
+            Player principal = world.getPlayer(player);
             details.name = principal.getName();
             WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
             details.stations = stations.size();

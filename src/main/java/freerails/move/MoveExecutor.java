@@ -20,7 +20,7 @@ package freerails.move;
 
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * Lets the caller try and execute Moves.
@@ -53,5 +53,5 @@ public interface MoveExecutor {
     /**
      * @return
      */
-    FreerailsPrincipal getPrincipal();
+    Player getPrincipal();
 }

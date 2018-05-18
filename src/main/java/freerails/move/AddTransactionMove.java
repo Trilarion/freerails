@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.util.Utils;
 import freerails.model.world.World;
 import freerails.model.finances.Transaction;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
@@ -34,7 +34,7 @@ public class AddTransactionMove implements Move {
 
     private static final long serialVersionUID = 3976738055925019701L;
     private final Transaction transaction;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
     /**
      * Whether the move fails if there is not enough cash.
@@ -45,7 +45,7 @@ public class AddTransactionMove implements Move {
      * @param account
      * @param transaction
      */
-    public AddTransactionMove(FreerailsPrincipal account, Transaction transaction) {
+    public AddTransactionMove(Player account, Transaction transaction) {
         principal = account;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = false;
@@ -56,7 +56,7 @@ public class AddTransactionMove implements Move {
      * @param transaction
      * @param constrain
      */
-    public AddTransactionMove(FreerailsPrincipal account, Transaction transaction, boolean constrain) {
+    public AddTransactionMove(Player account, Transaction transaction, boolean constrain) {
         principal = account;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = constrain;
@@ -79,7 +79,7 @@ public class AddTransactionMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         if (world.isPlayer(this.principal)) {
             if (cashConstrained) {
                 // TODO Money arithmetics
@@ -97,7 +97,7 @@ public class AddTransactionMove implements Move {
         return MoveStatus.moveFailed(principal.getName() + " does not have a bank account.");
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         int size = world.getNumberOfTransactions(this.principal);
 
         if (0 == size) {
@@ -112,7 +112,7 @@ public class AddTransactionMove implements Move {
         return MoveStatus.moveFailed("Expected " + transaction + "but found " + lastTransaction);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -122,7 +122,7 @@ public class AddTransactionMove implements Move {
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -145,7 +145,7 @@ public class AddTransactionMove implements Move {
     /**
      * @return
      */
-    public FreerailsPrincipal getPrincipal() {
+    public Player getPrincipal() {
         return principal;
     }
 }

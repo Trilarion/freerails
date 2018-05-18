@@ -22,7 +22,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +84,7 @@ public class VerifyStationName {
 
     private boolean existsStationName(String name) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Player principal = world.getPlayer(i);
 
             WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 

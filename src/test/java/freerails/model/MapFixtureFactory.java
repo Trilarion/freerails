@@ -26,7 +26,6 @@ import freerails.model.finances.Money;
 import freerails.model.terrain.Terrain;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
@@ -44,12 +43,7 @@ public class MapFixtureFactory {
     /**
      * Only subclasses should use these constants.
      */
-    public static final Player TEST_PLAYER = new Player("test player", 0);
-
-    /**
-     *
-     */
-    public static final FreerailsPrincipal TEST_PRINCIPAL = TEST_PLAYER.getPrincipal();
+    public static final Player TEST_PLAYER = new Player(0, "test player");
 
     private MapFixtureFactory() {
     }

@@ -21,12 +21,12 @@
  */
 package freerails.move.receiver;
 
+import freerails.model.player.Player;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.util.Utils;
 import freerails.model.world.World;
-import freerails.model.player.Player;
 
 /**
  * An UntriedMoveReceiver that executes moves on the world object passed to its constructor.

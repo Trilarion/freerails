@@ -34,7 +34,7 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
@@ -50,9 +50,9 @@ public class AddStationMoveGenerator implements MoveGenerator {
     private static final long serialVersionUID = 3258131349411148085L;
     private final Vec2D location;
     private final int ruleNumber;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
-    private AddStationMoveGenerator(Vec2D location, int trackRule, FreerailsPrincipal principal) {
+    private AddStationMoveGenerator(Vec2D location, int trackRule, Player principal) {
         this.location = location;
         ruleNumber = trackRule;
         this.principal = principal;
@@ -64,7 +64,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
      * @param principal
      * @return
      */
-    public static AddStationMoveGenerator newStation(Vec2D p, int trackRule, FreerailsPrincipal principal) {
+    public static AddStationMoveGenerator newStation(Vec2D p, int trackRule, Player principal) {
         return new AddStationMoveGenerator(p, trackRule, principal);
     }
 

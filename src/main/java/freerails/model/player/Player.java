@@ -21,97 +21,69 @@ package freerails.model.player;
 import freerails.util.Utils;
 
 import java.io.Serializable;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 
-// TODO What is the difference between Player and PlayerPrincipal?
+// TODO derive Player from Identifiable
+// TODO on the client side, one should not create a player but a add new player move or so...
 /**
- * Represents a player within the game. The player model is such that a user can
- * start a client, create a new player on the server and start playing. They can
- * disconnect from the server, which may continue running with other players
- * still active. The server can then save the list of players and be stopped and
- * restarted again, the clients can then authenticate themselves to the server
- * and continue their sessions where they left off.
+ * This interface identifies a principal. This interface may be extended in the
+ * future in order to provide faster lookups, rather than using name
+ * comparisons.
  *
- * XXX the player is only authenticated when the connection is opened, and
- * subsequent exchanges are not authenticated.
- *
- * TODO implement a more complete authentication system using certificates rather than public keys.
+ * A principal represents an entity which can view or alter the game world. A
+ * principal usually corresponds to a player's identity, but may also represent
+ * an authoritative server, or a another game entity such as a corporation.
+ * All entities which may own game world objects must be represented by a
+ * principal.
  */
 public class Player implements Serializable {
 
-    // TODO What is the meaning of the AUTHORITATIVE principal? Probably everything what the server does by itself
-    /**
-     * This Principal can be granted all permissions.
-     */
-    public static final FreerailsPrincipal AUTHORITATIVE = new FreerailsPrincipal(-1, "Authoritative Server");
-    private static final long serialVersionUID = 4849154251645451999L;
-
-    /**
-     * Name of the player.
-     */
+    private static final long serialVersionUID = 4673561105333981501L;
+    public static final Player AUTHORITATIVE = new Player(-1, "Authoritative Server");
+    // TODO what is the meaning of the world index/id? (position in player list and the other lists)
+    private final int id;
     private final String name;
-    private FreerailsPrincipal principal;
 
     /**
-     * Used by the client to generate a player with a particular name.
+     * @param id
      */
-    public Player(String name) {
-        this.name = name;
-
-        KeyPairGenerator kpg;
-
-        // generate our key pair
-        try {
-            kpg = KeyPairGenerator.getInstance("DSA");
-            kpg.initialize(1024);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Used by the server to generate a player with a particular name and public
-     * key.
-     */
-    public Player(String name, int id) {
-        assert(id >= 0);
+    public Player(int id, String name) {
+        this.id = id;
         this.name = Utils.verifyNotNull(name);
-        principal = new FreerailsPrincipal(id, name);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Player)) {
-            return false;
-        }
-        return name.equals(((Player) obj).name);
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return name;
     }
 
     /**
-     * @return
+     * returns -1 if it's not a player
+     *
+     * @return the index in the world structures
      */
+    public int getWorldIndex() {
+        return id;
+    }
+
+
     public String getName() {
         return name;
     }
 
-    /**
-     * @return
-     */
-    public FreerailsPrincipal getPrincipal() {
-        return principal;
+    @Override
+    public int hashCode() {
+        return id;
     }
+
+    @Override
+    public String toString() {
+        return "Principal " + id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Player)) return false;
+
+        final Player other = (Player) obj;
+
+        if (!(id == other.id)) return false;
+        return name.equals(other.name);
+    }
+
 }

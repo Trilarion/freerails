@@ -68,7 +68,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);
-                world.addTransaction(MapFixtureFactory.TEST_PRINCIPAL,
+                world.addTransaction(MapFixtureFactory.TEST_PLAYER,
                         new CargoDeliveryMoneyTransaction(amount, 10, 0, cb, 1));
                 return;
             }
@@ -91,6 +91,6 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
         world = new World.Builder().setCargos(cargos).build();
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PRINCIPAL);
+        balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PLAYER);
     }
 }

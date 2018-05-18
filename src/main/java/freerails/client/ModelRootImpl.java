@@ -33,7 +33,7 @@ import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldListListener;
 import freerails.model.world.WorldMapListener;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.util.ui.SoundManager;
 
 import java.util.*;
@@ -48,7 +48,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final Collection<ModelRootListener> listeners = new ArrayList<>();
     private MoveChainFork moveFork = new MoveChainFork();
     private UntriedMoveReceiver moveReceiver;
-    private FreerailsPrincipal playerPrincipal;
+    private Player playerPrincipal;
     private ServerCommandReceiver serverCommandReceiver;
     private UnmodifiableWorld world;
 
@@ -136,7 +136,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @return
      */
-    public FreerailsPrincipal getPrincipal() {
+    public Player getPrincipal() {
         return Utils.verifyNotNull(playerPrincipal);
     }
 
@@ -204,7 +204,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model. Call this when the world model is changed (e.g. new map is loaded)
      */
-    public void setup(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public void setup(UnmodifiableWorld world, Player principal) {
         this.world = Utils.verifyNotNull(world);
         assert principal != null;
         assert world.isPlayer(principal);

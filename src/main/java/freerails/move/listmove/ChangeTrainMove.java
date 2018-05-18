@@ -24,7 +24,7 @@ package freerails.move.listmove;
 import freerails.move.Move;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.train.Train;
 
 import java.io.Serializable;
@@ -36,7 +36,7 @@ public class ChangeTrainMove extends ChangeItemInListMove {
     
     private static final long serialVersionUID = 3257854272514242873L;
 
-    private ChangeTrainMove(int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
+    private ChangeTrainMove(int index, Serializable before, Serializable after, Player principal) {
         super(PlayerKey.Trains, index, before, after, principal);
     }
 
@@ -48,7 +48,7 @@ public class ChangeTrainMove extends ChangeItemInListMove {
      * @param principal
      * @return
      */
-    public static Move generateMove(int id, Train before, int newEngine, ImmutableList<Integer> newWagons, FreerailsPrincipal principal) {
+    public static Move generateMove(int id, Train before, int newEngine, ImmutableList<Integer> newWagons, Player principal) {
         Train after = before.getNewInstance(newEngine, newWagons);
 
         return new ChangeTrainMove(id, before, after, principal);

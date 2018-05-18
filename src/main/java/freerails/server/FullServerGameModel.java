@@ -24,7 +24,7 @@ package freerails.server;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.cargo.MutableCargoBatchBundle;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.station.Station;
 import freerails.model.station.StationSupply;
@@ -74,7 +74,7 @@ public class FullServerGameModel implements ServerGameModel {
     public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+            Player principal = world.getPlayer(k);
 
             NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
@@ -229,8 +229,9 @@ public class FullServerGameModel implements ServerGameModel {
         TrainMaintenanceMoveGenerator trainMaintenanceMoveGenerator = new TrainMaintenanceMoveGenerator(moveReceiver);
         trainMaintenanceMoveGenerator.update(world);
 
-        BondInterestMoveGenerator bondInterestMoveGenerator = new BondInterestMoveGenerator(moveReceiver);
-        bondInterestMoveGenerator.update(world);
+        for (Move move: BondInterestMoveGenerator.generate(world)) {
+            moveReceiver.process(move);
+        }
 
         // Grow cities
         Move move = new GrowCitiesMove();
@@ -251,7 +252,7 @@ public class FullServerGameModel implements ServerGameModel {
      */
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Player principal = world.getPlayer(i);
             NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             while (iterator.next()) {

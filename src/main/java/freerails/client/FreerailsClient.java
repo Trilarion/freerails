@@ -19,6 +19,7 @@
 package freerails.client;
 
 import freerails.client.launcher.LauncherFrame;
+import freerails.model.player.Player;
 import freerails.move.Move;
 import freerails.move.MovePrecommitter;
 import freerails.move.MoveStatus;
@@ -31,7 +32,6 @@ import freerails.move.receiver.MoveChainFork;
 import freerails.move.receiver.UntriedMoveReceiver;
 import freerails.model.world.World;
 import freerails.server.GameModel;
-import freerails.model.player.Player;
 import freerails.util.network.Connection;
 import org.apache.log4j.Logger;
 

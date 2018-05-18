@@ -22,7 +22,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.TrainOrders;
 
@@ -39,7 +39,7 @@ public class TrainSummeryModel {
     private final Map<Integer, String> lastStations;
     private UnmodifiableWorld world = null;
     private int lastNrOfTransactions = 0;
-    private FreerailsPrincipal principal = null;
+    private Player principal = null;
     private int maxTrainNum = 0;
     private long lastUpdate;
     private long lastStationUpdate;
@@ -57,7 +57,7 @@ public class TrainSummeryModel {
      * @param world
      * @param principal
      */
-    public void setWorld(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public void setWorld(UnmodifiableWorld world, Player principal) {
         if (this.world != world) {
             this.world = world;
         }

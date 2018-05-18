@@ -34,7 +34,7 @@ import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.train.*;
@@ -52,7 +52,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private final int engineId;
     private final ImmutableList<Integer> wagons;
     private final Vec2D point;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final ImmutableSchedule schedule;
 
     /**
@@ -62,7 +62,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * @param principal
      * @param schedule
      */
-    public AddTrainMoveGenerator(int engineId, ImmutableList<Integer> wagons, Vec2D p, FreerailsPrincipal principal, ImmutableSchedule schedule) {
+    public AddTrainMoveGenerator(int engineId, ImmutableList<Integer> wagons, Vec2D p, Player principal, ImmutableSchedule schedule) {
         this.engineId = engineId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);

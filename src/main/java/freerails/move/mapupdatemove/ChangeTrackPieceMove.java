@@ -25,7 +25,7 @@ import freerails.move.MoveStatus;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.GameRules;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
@@ -78,7 +78,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         assert thisStationType.isStation();
 
         for (int player = 0; player < world.getNumberOfPlayers(); player++) {
-            FreerailsPrincipal principal = world.getPlayer(player).getPrincipal();
+            Player principal = world.getPlayer(player);
             WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             while (wi.next()) {
@@ -194,7 +194,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return trackPieceAfter;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         return tryMove(world, trackPieceBefore, trackPieceAfter);
     }
 
@@ -281,11 +281,11 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         return tryMove(world, trackPieceAfter, trackPieceBefore);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveTrainMoveGenerator.clearCache();
         MoveStatus moveStatus = tryDoMove(world, principal);
 
@@ -305,7 +305,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         world.setTile(location, newTile);
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveTrainMoveGenerator.clearCache();
         MoveStatus moveStatus = tryUndoMove(world, principal);
 

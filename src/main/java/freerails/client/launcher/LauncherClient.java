@@ -27,6 +27,7 @@ import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.RendererRootImpl;
 import freerails.controller.BuildTrackController;
+import freerails.model.player.Player;
 import freerails.network.command.ClientProperty;
 import freerails.util.Vec2D;
 import freerails.model.world.WorldItem;
@@ -34,7 +35,6 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
-import freerails.model.player.Player;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -115,7 +115,7 @@ public class LauncherClient extends FreerailsClient {
                 Player player = world.getPlayer(i);
 
                 if (player.getName().equals(name)) {
-                    modelRoot.setup(world, player.getPrincipal());
+                    modelRoot.setup(world, player);
                 }
             }
 

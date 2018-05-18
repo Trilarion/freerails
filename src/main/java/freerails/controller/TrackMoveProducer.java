@@ -30,7 +30,7 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 
@@ -59,7 +59,7 @@ public class TrackMoveProducer {
     public TrackMoveProducer(MoveExecutor executor, UnmodifiableWorld world, ModelRoot modelRoot) {
         this.executor = executor;
         this.modelRoot = Utils.verifyNotNull(modelRoot);
-        FreerailsPrincipal principal = executor.getPrincipal();
+        Player principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
     }
@@ -74,7 +74,7 @@ public class TrackMoveProducer {
 
         UnmodifiableWorld world = executor.getWorld();
 
-        FreerailsPrincipal principal = executor.getPrincipal();
+        Player principal = executor.getPrincipal();
         transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
     }
@@ -108,7 +108,7 @@ public class TrackMoveProducer {
     public MoveStatus buildTrack(Vec2D from, TileTransition trackVector) {
 
         UnmodifiableWorld world = executor.getWorld();
-        FreerailsPrincipal principal = executor.getPrincipal();
+        Player principal = executor.getPrincipal();
         switch (getBuildMode()) {
             case IGNORE_TRACK: {
                 return MoveStatus.MOVE_OK;
@@ -195,7 +195,7 @@ public class TrackMoveProducer {
             return MoveStatus.moveFailed("No track to upgrade.");
         }
 
-        FreerailsPrincipal principal = executor.getPrincipal();
+        Player principal = executor.getPrincipal();
         int owner = WorldUtils.getPlayerIndex(world, principal);
         TrackType trackType = world.getTrackType(trackRuleID);
         TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackType, owner);

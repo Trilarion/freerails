@@ -43,9 +43,9 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         Station station = new Station(Vec2D.ZERO, "no name", 0, 0);
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
-        getWorld().add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station);
+        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
+        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
+        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
 
         engineType = 0;
         int wagonType = 0;
@@ -62,17 +62,17 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         ChangeProductionAtEngineShopMove m;
 
         // Should fail because current production at station 0 is null;
-        m = new ChangeProductionAtEngineShopMove(after, before, 0, MapFixtureFactory.TEST_PRINCIPAL);
+        m = new ChangeProductionAtEngineShopMove(after, before, 0, MapFixtureFactory.TEST_PLAYER);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         // Should fail because station 6 does not exist.
-        m = new ChangeProductionAtEngineShopMove(before, after, 6, MapFixtureFactory.TEST_PRINCIPAL);
+        m = new ChangeProductionAtEngineShopMove(before, after, 6, MapFixtureFactory.TEST_PLAYER);
         assertTryMoveFails(m);
         assertDoMoveFails(m);
 
         // Should go through
-        m = new ChangeProductionAtEngineShopMove(before, after, 0, MapFixtureFactory.TEST_PRINCIPAL);
+        m = new ChangeProductionAtEngineShopMove(before, after, 0, MapFixtureFactory.TEST_PLAYER);
         assertTryMoveIsOk(m);
         assertDoMoveIsOk(m);
         assertTryUndoMoveIsOk(m);

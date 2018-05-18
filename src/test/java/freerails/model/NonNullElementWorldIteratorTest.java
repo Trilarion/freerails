@@ -48,19 +48,19 @@ public class NonNullElementWorldIteratorTest extends TestCase {
         station2 = new Station(new Vec2D(15, 16), "Station2", 4, 1);
         Station station3 = new Station(new Vec2D(30, 50), "Station3", 4, 2);
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station1);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, null);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station2);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, null);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, null);
-        world.add(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.Stations, station3);
+        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station1);
+        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, null);
+        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station2);
+        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, null);
+        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, null);
+        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station3);
     }
 
     /**
      *
      */
     public void testNext() {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, MapFixtureFactory.TEST_PRINCIPAL);
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, MapFixtureFactory.TEST_PLAYER);
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, wi.getIndex());
 
@@ -85,7 +85,7 @@ public class NonNullElementWorldIteratorTest extends TestCase {
      */
     public void testGotoIndex() {
         WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world,
-                MapFixtureFactory.TEST_PRINCIPAL);
+                MapFixtureFactory.TEST_PLAYER);
         assertEquals(WorldIterator.BEFORE_FIRST, worldIterator.getRowID());
         assertEquals(WorldIterator.BEFORE_FIRST, worldIterator.getIndex());
 

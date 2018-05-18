@@ -18,7 +18,7 @@
 
 package freerails.model.finances;
 
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
 /**
@@ -36,7 +36,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      * @param world
      * @param principal
      */
-    public ItemsTransactionAggregator(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public ItemsTransactionAggregator(UnmodifiableWorld world, Player principal) {
         super(world, principal);
     }
 

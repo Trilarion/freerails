@@ -21,7 +21,7 @@ package freerails.move;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * Changes the time item on the world object.
@@ -72,7 +72,7 @@ public class TimeTickMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         if (world.currentTime().equals(oldTime)) {
             return MoveStatus.MOVE_OK;
         }
@@ -81,7 +81,7 @@ public class TimeTickMove implements Move {
         return MoveStatus.moveFailed(string);
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         GameTime time = world.currentTime();
 
         if (time.equals(newTime)) {
@@ -90,7 +90,7 @@ public class TimeTickMove implements Move {
         return MoveStatus.moveFailed("Expected " + newTime + ", found " + time);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.succeeds()) {
@@ -100,7 +100,7 @@ public class TimeTickMove implements Move {
         return status;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.succeeds()) {

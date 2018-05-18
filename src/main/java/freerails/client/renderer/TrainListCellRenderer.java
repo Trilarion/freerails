@@ -29,7 +29,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldListListener;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.Train;
@@ -54,7 +54,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     private int scheduleOrderNumber;
     private int scheduleID = -1;
     private int height = 100;
-    private FreerailsPrincipal principal;
+    private Player principal;
     private Image[] images = new Image[0];
     /**
      * Whether this JPanel should one of the trains orders from the schedule
@@ -224,7 +224,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param index
      * @param principal
      */
-    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, Player principal) {
         if (showingOrder) {
             if (PlayerKey.TrainSchedules == key && scheduleID == index) {
                 display(trainNumber, scheduleOrderNumber);
@@ -241,7 +241,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param index
      * @param principal
      */
-    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, Player principal) {
     }
 
     /**
@@ -249,6 +249,6 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param index
      * @param principal
      */
-    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, Player principal) {
     }
 }

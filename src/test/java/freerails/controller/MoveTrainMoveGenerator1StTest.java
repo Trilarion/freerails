@@ -31,7 +31,7 @@ import freerails.model.MapFixtureFactory2;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.train.*;
 import freerails.model.train.motion.Motion;
 import freerails.model.train.schedule.ImmutableSchedule;
@@ -42,7 +42,7 @@ import freerails.model.train.schedule.MutableSchedule;
  */
 public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
-    private FreerailsPrincipal principal;
+    private Player principal;
     private int validEngineId;
 
     /**

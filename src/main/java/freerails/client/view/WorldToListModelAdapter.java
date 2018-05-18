@@ -25,7 +25,7 @@ import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
@@ -44,7 +44,7 @@ class WorldToListModelAdapter implements ListModel {
      * @param playerKey
      * @param principal
      */
-    public WorldToListModelAdapter(UnmodifiableWorld world, PlayerKey playerKey, FreerailsPrincipal principal) {
+    public WorldToListModelAdapter(UnmodifiableWorld world, PlayerKey playerKey, Player principal) {
         Utils.verifyNotNull(playerKey);
         Utils.verifyNotNull(principal);
         // Check that the principal exists.

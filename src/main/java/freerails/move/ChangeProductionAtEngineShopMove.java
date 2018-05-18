@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.util.ImmutableList;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.TrainBlueprint;
 
@@ -38,7 +38,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     private final ImmutableList<TrainBlueprint> before;
     private final ImmutableList<TrainBlueprint> after;
     private final int stationNumber;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
     /**
      * @param b
@@ -46,7 +46,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param station
      * @param principal
      */
-    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, FreerailsPrincipal principal) {
+    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, Player principal) {
         before = b;
         after = a;
         stationNumber = station;
@@ -78,7 +78,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         return tryMove(world, before);
     }
 
@@ -107,11 +107,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return MoveStatus.moveFailed(stationNumber + " " + principal);
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         return tryMove(world, after);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus status = tryDoMove(world, principal);
 
         if (status.succeeds()) {
@@ -121,7 +121,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return status;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus status = tryUndoMove(world, principal);
 
         if (status.succeeds()) {

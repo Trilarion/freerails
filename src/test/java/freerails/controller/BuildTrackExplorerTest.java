@@ -32,7 +32,6 @@ import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.World;
@@ -49,7 +48,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
     private World world;
-    private FreerailsPrincipal principal;
+    private Player principal;
 
     /**
      * @throws Exception
@@ -68,7 +67,7 @@ public class BuildTrackExplorerTest extends TestCase {
         world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
-        principal = testPlayer.getPrincipal();
+        principal = testPlayer;
     }
 
     /**
@@ -202,7 +201,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, MapFixtureFactory.TEST_PLAYER);
         MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.succeeds());
     }

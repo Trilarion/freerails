@@ -32,7 +32,7 @@ import freerails.move.StationBuilder;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.track.TrackPiece;
 import junit.framework.TestCase;
 
@@ -59,7 +59,7 @@ public class TrackBuildingTest extends TestCase {
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
         ModelRoot modelRoot = new ModelRootImpl();
         producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
-        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
+        Player principal = world.getPlayer(0);
         pathFinder = new TrackPathFinder(world, principal);
         stationBuilder = new StationBuilder(moveExecutor);
         bts = BuildTrackStrategy.getDefault(world);

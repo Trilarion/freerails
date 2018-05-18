@@ -22,7 +22,7 @@
 package freerails.model.world;
 
 import freerails.util.Utils;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.io.Serializable;
 import java.util.NoSuchElementException;
@@ -37,7 +37,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
     private final PlayerKey playerKey;
     private final UnmodifiableWorld world;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private int index = BEFORE_FIRST;
     private int row = BEFORE_FIRST;
     private int size = -1;
@@ -47,7 +47,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param world
      * @param principal
      */
-    public NonNullElementWorldIterator(PlayerKey k, UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public NonNullElementWorldIterator(PlayerKey k, UnmodifiableWorld world, Player principal) {
         playerKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
         this.principal = Utils.verifyNotNull(principal);
@@ -60,7 +60,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
      * @param row
      * @return
      */
-    public static int rowToIndex(UnmodifiableWorld world, PlayerKey playerKey, FreerailsPrincipal principal, int row) {
+    public static int rowToIndex(UnmodifiableWorld world, PlayerKey playerKey, Player principal, int row) {
         int count = 0;
         for (int i = 0; i < world.size(principal, playerKey); i++) {
 

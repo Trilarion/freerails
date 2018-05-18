@@ -34,7 +34,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -63,7 +63,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     private static int cacheCleared = 0;
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final int trainID;
     private final OccupiedTracks occupiedTracks;
 
@@ -72,7 +72,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * @param p
      * @param occupiedTracks
      */
-    public MoveTrainMoveGenerator(int id, FreerailsPrincipal p, OccupiedTracks occupiedTracks) {
+    public MoveTrainMoveGenerator(int id, Player p, OccupiedTracks occupiedTracks) {
         trainID = id;
         principal = p;
         this.occupiedTracks = occupiedTracks;

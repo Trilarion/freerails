@@ -21,9 +21,9 @@
  */
 package freerails.move;
 
+import freerails.model.player.Player;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
-import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;

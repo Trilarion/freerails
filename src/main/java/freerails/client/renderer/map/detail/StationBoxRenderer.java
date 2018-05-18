@@ -26,7 +26,7 @@ import freerails.model.world.*;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.model.*;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 
 import java.awt.*;
@@ -82,7 +82,7 @@ public class StationBoxRenderer implements Painter {
 
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.
-            FreerailsPrincipal principal = modelRoot.getPrincipal();
+            Player principal = modelRoot.getPrincipal();
             WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
 
             // TODO can there be null stations?

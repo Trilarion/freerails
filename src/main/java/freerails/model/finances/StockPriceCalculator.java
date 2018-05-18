@@ -25,7 +25,7 @@ import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * Calculates the stock price for each of the players.
@@ -70,7 +70,7 @@ public class StockPriceCalculator {
      * transaction for the specified player.
      */
     boolean isFirstYear(int playerId) {
-        FreerailsPrincipal principal = world.getPlayer(playerId).getPrincipal();
+        Player principal = world.getPlayer(playerId);
         GameTime firstTransactionTime = world.getTransactionTimeStamp(principal, 0);
         GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
         int year = calendar.getYear(firstTransactionTime.getTicks());
@@ -83,7 +83,7 @@ public class StockPriceCalculator {
      * Returns the players net worth at the start of this year.
      */
     public long netWorth(int playerId) {
-        FreerailsPrincipal principal = world.getPlayer(playerId).getPrincipal();
+        Player principal = world.getPlayer(playerId);
         NetWorthCalculator netWorthCalculator = new NetWorthCalculator(world, principal);
 
         // Set the interval to beginning of time to start of this year.
@@ -99,7 +99,7 @@ public class StockPriceCalculator {
     }
 
     public long profitsLastYear(int playerId) {
-        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
+        Player pr = world.getPlayer(playerId);
 
         GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
         GameTime currentTime = world.currentTime();
@@ -123,13 +123,13 @@ public class StockPriceCalculator {
     }
 
     private int sharesOwnedByPublic(int playerId) {
-        FreerailsPrincipal pr = world.getPlayer(playerId).getPrincipal();
+        Player pr = world.getPlayer(playerId);
         FinancialDataGatherer gatherer = new FinancialDataGatherer(world, pr);
         return gatherer.sharesHeldByPublic();
     }
 
     private int sharesOwnedByOtherPlayers(int playerId) {
-        FreerailsPrincipal principal = world.getPlayer(playerId).getPrincipal();
+        Player principal = world.getPlayer(playerId);
         FinancialDataGatherer gatherer = new FinancialDataGatherer(world, principal);
         int[] stakes = gatherer.getStockInThisRRs();
         int total = 0;

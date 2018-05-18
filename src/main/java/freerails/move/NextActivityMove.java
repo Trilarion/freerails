@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  *
@@ -33,7 +33,7 @@ public class NextActivityMove implements Move {
 
     private static final long serialVersionUID = -1783556069173689661L;
     private final Activity activity;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final int index;
 
     /**
@@ -41,7 +41,7 @@ public class NextActivityMove implements Move {
      * @param index
      * @param principal
      */
-    public NextActivityMove(Activity activity, int index, FreerailsPrincipal principal) {
+    public NextActivityMove(Activity activity, int index, Player principal) {
         this.activity = activity;
         this.index = index;
 
@@ -70,7 +70,7 @@ public class NextActivityMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         // Check that active entity exists.
         if (world.size(this.principal) <= index)
             return MoveStatus.moveFailed("Index out of range. " + world.size(this.principal) + "<= " + index);
@@ -78,7 +78,7 @@ public class NextActivityMove implements Move {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         ActivityIterator ai = world.getActivities(this.principal, index);
         ai.gotoLastActivity();
 
@@ -88,13 +88,13 @@ public class NextActivityMove implements Move {
         return MoveStatus.moveFailed("Expected " + activity + " but found " + act);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus moveStatus = tryDoMove(world, principal);
         if (moveStatus.succeeds()) world.addActivity(this.principal, index, activity);
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus moveStatus = tryUndoMove(world, principal);
         if (moveStatus.succeeds()) world.removeLastActivity(this.principal, index);
         return moveStatus;

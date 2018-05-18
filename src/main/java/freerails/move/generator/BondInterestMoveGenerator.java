@@ -20,33 +20,28 @@ package freerails.move.generator;
 
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
 import freerails.model.finances.*;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
+// TODO generates multiple moves and immediately processes them
 /**
  * Iterates over the entries in the bank account and counts the number
  * of outstanding bonds, then calculates the interest due.
  */
 public class BondInterestMoveGenerator {
 
-    private final MoveReceiver moveReceiver;
-
-    /**
-     * @param moveReceiver
-     */
-    public BondInterestMoveGenerator(MoveReceiver moveReceiver) {
-        this.moveReceiver = moveReceiver;
-    }
-
     /**
      * @param world
      */
-    public void update(UnmodifiableWorld world) {
+    public static List<Move> generate(UnmodifiableWorld world) {
+        List<Move> moves = new ArrayList<>();
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Player principal = world.getPlayer(i);
             long interestDue = 0;
 
             for (int i1 = 0; i1 < world.getNumberOfTransactions(principal); i1++) {
@@ -55,7 +50,7 @@ public class BondInterestMoveGenerator {
                 if (transaction instanceof BondItemTransaction) {
                     BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
                     int interestRate = bondItemTransaction.getTerrainTypeId();
-                    // TODO Money arithmetics
+                    // TODO Money arithmetic
                     long bondAmount = ModelConstants.BOND_VALUE_ISSUE.amount;
                     interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
                 }
@@ -64,7 +59,8 @@ public class BondInterestMoveGenerator {
             Transaction transaction = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
 
             Move move = new AddTransactionMove(principal, transaction);
-            moveReceiver.process(move);
+            moves.add(move);
         }
+        return moves;
     }
 }

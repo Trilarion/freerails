@@ -20,7 +20,7 @@ package freerails.move.listmove;
 
 import freerails.move.Move;
 import freerails.model.world.PlayerKey;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * This interface provides information about changes to the lists in the World
@@ -41,5 +41,5 @@ public interface ListMove extends Move {
     /**
      * @return
      */
-    FreerailsPrincipal getPrincipal();
+    Player getPrincipal();
 }

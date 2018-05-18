@@ -24,7 +24,7 @@ import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * Generates the income statement- note, its fields are read using reflection so
@@ -33,13 +33,13 @@ import freerails.model.player.FreerailsPrincipal;
 public class IncomeStatementGenerator {
 
     private final UnmodifiableWorld world;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final GameCalendar cal;
     private final int startyear;
 
     public Money mailTotal;
 
-    public IncomeStatementGenerator(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public IncomeStatementGenerator(UnmodifiableWorld world, Player principal) {
         this.world = world;
         this.principal = principal;
         cal = (GameCalendar) world.get(WorldItem.Calendar);

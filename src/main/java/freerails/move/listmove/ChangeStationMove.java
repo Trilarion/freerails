@@ -19,7 +19,7 @@
 package freerails.move.listmove;
 
 import freerails.model.world.PlayerKey;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.io.Serializable;
 
@@ -36,7 +36,7 @@ public final class ChangeStationMove extends ChangeItemInListMove {
      * @param after
      * @param principal
      */
-    public ChangeStationMove(int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
+    public ChangeStationMove(int index, Serializable before, Serializable after, Player principal) {
         super(PlayerKey.Stations, index, before, after, principal);
     }
 }

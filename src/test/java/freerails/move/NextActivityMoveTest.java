@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.TestActivity;
 import freerails.model.world.World;
 
@@ -38,7 +38,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() {
         World world = getWorld();
-        FreerailsPrincipal principal = getPrincipal();
+        Player principal = getPrincipal();
         Activity act = new TestActivity(50);
         world.addActiveEntity(principal, act);
 
@@ -53,7 +53,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     public void testMove2() {
         World world = getWorld();
-        FreerailsPrincipal principal = getPrincipal();
+        Player principal = getPrincipal();
         Activity act = new TestActivity(50);
         world.addActiveEntity(principal, act);
 
@@ -67,7 +67,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     public void testStackingOfActivities() {
         World world = getWorld();
-        FreerailsPrincipal principal = getPrincipal();
+        Player principal = getPrincipal();
         Activity act = new TestActivity(50);
         world.addActiveEntity(principal, act);
 

@@ -23,6 +23,7 @@ package freerails.move;
 
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.world.World;
+import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.listmove.ChangeTrainMove;
 import freerails.move.listmove.ChangeTrainScheduleMove;
 import freerails.model.track.NoTrackException;
@@ -31,7 +32,6 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
@@ -54,7 +54,7 @@ public class TrainStopsHandler implements Serializable {
     private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
     private static final int NOT_AT_STATION = -1;
     private static final long serialVersionUID = 3257567287094882872L;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final int trainId;
     private World world;
     private final List<Move> moves = new ArrayList<>();
@@ -65,7 +65,7 @@ public class TrainStopsHandler implements Serializable {
      * @param principal
      * @param unmodifiableWorld
      */
-    public TrainStopsHandler(int id, FreerailsPrincipal principal, UnmodifiableWorld unmodifiableWorld) {
+    public TrainStopsHandler(int id, Player principal, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
         this.principal = principal;
         this.world =  (World) Utils.cloneBySerialisation(unmodifiableWorld);

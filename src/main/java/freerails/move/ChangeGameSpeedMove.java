@@ -21,7 +21,7 @@ package freerails.move;
 import freerails.model.world.WorldItem;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * Changes the game speed item on the world object.
@@ -38,7 +38,7 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     // TODO could this also be private?
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         GameSpeed actualSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed));
 
         // check that old speed and actual speed are consistent
@@ -49,7 +49,7 @@ public class ChangeGameSpeedMove implements Move {
         return MoveStatus.moveFailed(string);
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         GameSpeed actualSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed));
 
         if (actualSpeed.equals(newSpeed)) {
@@ -58,7 +58,7 @@ public class ChangeGameSpeedMove implements Move {
         return MoveStatus.moveFailed("Expected " + newSpeed + ", found " + actualSpeed);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         // TODO is this the convention to try exactly before?
         MoveStatus status = tryDoMove(world, principal);
 
@@ -69,7 +69,7 @@ public class ChangeGameSpeedMove implements Move {
         return status;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         // TODO is this the convention to try exactly before
         MoveStatus status = tryUndoMove(world, principal);
 

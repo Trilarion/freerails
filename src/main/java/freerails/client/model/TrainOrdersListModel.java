@@ -25,7 +25,7 @@ package freerails.client.model;
 import freerails.client.view.TrainSchedulePanel;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.Train;
@@ -46,14 +46,14 @@ public class TrainOrdersListModel extends AbstractListModel {
     private static final long serialVersionUID = 3762537827703009847L;
     private final int trainNumber;
     private final UnmodifiableWorld world;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
     /**
      * @param world
      * @param trainNumber
      * @param principal
      */
-    public TrainOrdersListModel(UnmodifiableWorld world, int trainNumber, FreerailsPrincipal principal) {
+    public TrainOrdersListModel(UnmodifiableWorld world, int trainNumber, Player principal) {
         this.trainNumber = trainNumber;
         this.world = world;
         this.principal = principal;

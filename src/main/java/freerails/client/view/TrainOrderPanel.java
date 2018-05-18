@@ -30,7 +30,7 @@ import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 
 import javax.swing.*;
@@ -51,7 +51,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private final Map<TrainOrderModel, TrainOrderPanelSingle> lines;
     public UnmodifiableWorld world;
-    public FreerailsPrincipal principal;
+    public Player principal;
     private Action closeAction;
     private RendererRoot vl;
     private ModelRoot modelRoot;

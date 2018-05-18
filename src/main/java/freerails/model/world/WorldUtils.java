@@ -1,6 +1,6 @@
 package freerails.model.world;
 
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  *
@@ -17,9 +17,9 @@ public class WorldUtils {
      * @param principal
      * @return
      */
-    public static int getPlayerIndex(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public static int getPlayerIndex(UnmodifiableWorld world, Player principal) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (world.getPlayer(i).getPrincipal().equals(principal)) {
+            if (world.getPlayer(i).equals(principal)) {
                 return i;
             }
         }

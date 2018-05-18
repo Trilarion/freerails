@@ -26,7 +26,7 @@ import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.io.Serializable;
 
@@ -41,7 +41,7 @@ public class ChangeItemInListMove implements ListMove {
     private final int index;
     private final Serializable before;
     private final Serializable after;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
 
     /**
      * @param k
@@ -50,7 +50,7 @@ public class ChangeItemInListMove implements ListMove {
      * @param after
      * @param principal
      */
-    public ChangeItemInListMove(PlayerKey k, int index, Serializable before, Serializable after, FreerailsPrincipal principal) {
+    public ChangeItemInListMove(PlayerKey k, int index, Serializable before, Serializable after, Player principal) {
         this.before = before;
         this.after = after;
         this.index = index;
@@ -65,7 +65,7 @@ public class ChangeItemInListMove implements ListMove {
         return Utils.equal(before, after);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         return move(after, before, world);
     }
 
@@ -102,7 +102,7 @@ public class ChangeItemInListMove implements ListMove {
     /**
      * @return
      */
-    public FreerailsPrincipal getPrincipal() {
+    public Player getPrincipal() {
         return principal;
     }
 
@@ -139,7 +139,7 @@ public class ChangeItemInListMove implements ListMove {
         return getClass().getName() + " before: " + before.toString() + " after: " + after.toString();
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         return tryMove(after, before, world);
     }
 
@@ -169,11 +169,11 @@ public class ChangeItemInListMove implements ListMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         return tryMove(before, after, world);
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         return move(before, after, world);
     }
 }

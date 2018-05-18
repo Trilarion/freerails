@@ -19,6 +19,7 @@
 package freerails.controller;
 
 import freerails.io.GsonManager;
+import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.FlatTrackExplorer;
@@ -29,7 +30,6 @@ import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.game.GameRules;
-import freerails.model.player.Player;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.train.PositionOnTrack;
@@ -75,7 +75,7 @@ public class FlatTrackExplorerTest extends TestCase {
 
         for (int i = 0; i < points.length; i++) {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                    .generateBuildTrackMove(points[i], vectors[i], trackType, trackType, world, MapFixtureFactory.TEST_PRINCIPAL);
+                    .generateBuildTrackMove(points[i], vectors[i], trackType, trackType, world, MapFixtureFactory.TEST_PLAYER);
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(moveStatus.succeeds());
         }

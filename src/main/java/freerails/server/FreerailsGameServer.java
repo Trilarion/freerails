@@ -30,7 +30,6 @@ import freerails.savegames.SaveGamesManager;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.ImmutableList;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.util.network.Connection;
 import org.apache.log4j.Logger;
@@ -277,7 +276,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         // Add players to world.
         for (int i = 0; i < players.size(); i++) {
             String name = players.get(i).getUsername();
-            Player player = new Player(name, i);
+            Player player = new Player(i, name);
 
             Move addPlayerMove = AddPlayerMove.generateMove(world, player);
             MoveStatus moveStatus = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
@@ -422,7 +421,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             connection.sendObject(cStatus);
                         } else if (message instanceof Move || message instanceof MoveGenerator) {
                             Player player2 = serverGameModel.getWorld().getPlayer(players.indexOf(player));
-                            FreerailsPrincipal principal = player2.getPrincipal();
+                            Player principal = player2;
 
                             Move move;
                             boolean isMove = message instanceof Move;

@@ -31,7 +31,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.TrainBlueprint;
 import freerails.model.track.NoTrackException;
@@ -70,7 +70,7 @@ public class TrainUpdater implements Serializable {
      * @param principal
      * @param world
      */
-    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, FreerailsPrincipal principal, UnmodifiableWorld world) {
+    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, Player principal, UnmodifiableWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -102,7 +102,7 @@ public class TrainUpdater implements Serializable {
      */
     public void buildTrains(UnmodifiableWorld world) {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+            Player principal = world.getPlayer(k);
 
             for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
                 Station station = (Station) world.get(principal, PlayerKey.Stations, i);
@@ -129,7 +129,7 @@ public class TrainUpdater implements Serializable {
         int time = world.currentTime().getTicks();
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            FreerailsPrincipal principal = world.getPlayer(k).getPrincipal();
+            Player principal = world.getPlayer(k);
             OccupiedTracks occupiedTracks = new OccupiedTracks(principal, world);
             // If a train is moving, we want it to keep moving rather than stop
             // to allow an already stationary train to start moving. To achieve

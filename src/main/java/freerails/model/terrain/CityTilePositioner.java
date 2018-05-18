@@ -125,7 +125,6 @@ public class CityTilePositioner {
                     case 0:
                     case 1:
                         addResourceTile(cityModel); // 20% chance
-
                         break;
 
                     case 2:

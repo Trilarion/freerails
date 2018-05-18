@@ -31,7 +31,7 @@ import freerails.move.MoveExecutor;
 import freerails.move.SimpleMoveExecutor;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import junit.framework.TestCase;
 
@@ -56,7 +56,7 @@ public class BuildTrackControllerTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         modelRoot = new ModelRootImpl();
-        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
+        Player principal = world.getPlayer(0);
         modelRoot.setup(world, principal);
         buildTrackController = new BuildTrackController(world, modelRoot);
         MoveExecutor executor = new SimpleMoveExecutor(world, 0);

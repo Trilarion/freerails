@@ -21,8 +21,8 @@
  */
 package freerails.move;
 
-import freerails.util.Utils;
 import freerails.model.player.Player;
+import freerails.util.Utils;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        Player newPlayer = new Player("New Player");
+        Player newPlayer = new Player(0, "New Player");
         assertTrue("Check reflexivity of Player.equals(.)", Utils.equalsBySerialization(newPlayer, newPlayer));
         AddPlayerMove move = AddPlayerMove.generateMove(getWorld(), newPlayer);
         assertSurvivesSerialisation(move);
@@ -45,7 +45,7 @@ public class AddPlayerMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        Player newPlayer = new Player("New Player");
+        Player newPlayer = new Player(1, "New Player");
 
         AddPlayerMove move = AddPlayerMove.generateMove(getWorld(), newPlayer);
         // TODO fails because removeLastPlayer in FullWord does not work currently

@@ -20,6 +20,7 @@ package freerails.model;
 
 import freerails.io.GsonManager;
 import freerails.model.cargo.Cargo;
+import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
@@ -33,7 +34,6 @@ import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
-import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
 
@@ -113,7 +113,7 @@ public class MapFixtureFactory2 {
         // Add 4 players
         for (int i = 0; i < 4; i++) {
             String name = "player" + i;
-            Player player = new Player(name, i);
+            Player player = new Player(i, name);
             AddPlayerMove move = AddPlayerMove.generateMove(world, player);
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assert (moveStatus.succeeds());

@@ -22,7 +22,7 @@
 package freerails.move.listmove;
 
 import freerails.model.world.PlayerKey;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import java.io.Serializable;
 
@@ -37,7 +37,7 @@ public class AddCargoBundleMove extends AddItemToListMove {
      * @param item
      * @param principal
      */
-    public AddCargoBundleMove(int i, Serializable item, FreerailsPrincipal principal) {
+    public AddCargoBundleMove(int i, Serializable item, Player principal) {
         super(PlayerKey.CargoBundles, i, item, principal);
     }
 }

@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * A move that adds an active entity. An active entity is something whose state
@@ -37,7 +37,7 @@ public class AddActiveEntityMove implements Move {
 
     private static final long serialVersionUID = 8732702087937675013L;
     private final Activity activity;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final int index;
 
     /**
@@ -45,7 +45,7 @@ public class AddActiveEntityMove implements Move {
      * @param index
      * @param principal
      */
-    public AddActiveEntityMove(Activity activity, int index, FreerailsPrincipal principal) {
+    public AddActiveEntityMove(Activity activity, int index, Player principal) {
         this.activity = activity;
         this.index = index;
 
@@ -75,13 +75,13 @@ public class AddActiveEntityMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         if (index != world.size(this.principal)) return MoveStatus.moveFailed("index != world.size(listKey, p)");
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         int expectedSize = index + 1;
         if (expectedSize != world.size(this.principal))
             return MoveStatus.moveFailed("(index + 1) != world.size(listKey, principal)");
@@ -97,14 +97,14 @@ public class AddActiveEntityMove implements Move {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus moveStatus = tryDoMove(world, principal);
         if (moveStatus.succeeds()) world.addActiveEntity(this.principal, activity);
 
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus moveStatus = tryUndoMove(world, principal);
         if (moveStatus.succeeds()) world.removeLastActiveEntity(this.principal);
 

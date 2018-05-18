@@ -28,7 +28,7 @@ import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackSection;
@@ -46,7 +46,7 @@ import java.util.HashSet;
 public class TrainAccessor {
 
     private final UnmodifiableWorld world;
-    private final FreerailsPrincipal principal;
+    private final Player principal;
     private final int id;
 
     /**
@@ -54,7 +54,7 @@ public class TrainAccessor {
      * @param principal
      * @param id
      */
-    public TrainAccessor(final UnmodifiableWorld world, final FreerailsPrincipal principal, final int id) {
+    public TrainAccessor(final UnmodifiableWorld world, final Player principal, final int id) {
         this.world = world;
         this.principal = principal;
         this.id = id;

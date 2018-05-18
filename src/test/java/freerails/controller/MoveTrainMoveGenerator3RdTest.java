@@ -33,7 +33,7 @@ import freerails.util.Vec2D;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.terrain.TileTransition;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import junit.framework.TestCase;
 
@@ -55,7 +55,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
-        FreerailsPrincipal principal = moveExecutor.getPrincipal();
+        Player principal = moveExecutor.getPrincipal();
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);

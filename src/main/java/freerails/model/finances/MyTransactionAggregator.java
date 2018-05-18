@@ -1,7 +1,7 @@
 package freerails.model.finances;
 
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
 /**
@@ -10,7 +10,7 @@ import freerails.model.world.UnmodifiableWorld;
 public class MyTransactionAggregator extends TransactionAggregator {
     private final GameTime[] totalTimeInterval;
 
-    public MyTransactionAggregator(UnmodifiableWorld world, FreerailsPrincipal principal, GameTime[] totalTimeInterval) {
+    public MyTransactionAggregator(UnmodifiableWorld world, Player principal, GameTime[] totalTimeInterval) {
         super(world, principal);
         this.totalTimeInterval = totalTimeInterval;
     }

@@ -29,7 +29,6 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.*;
 import freerails.model.game.GameCalendar;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -238,8 +237,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertEquals(MoveStatus.MOVE_OK, moveStatus);
     }
 
-    FreerailsPrincipal getPrincipal() {
-        return world.getPlayer(0).getPrincipal();
+    Player getPrincipal() {
+        return world.getPlayer(0);
     }
 
     public World getWorld() {

@@ -29,7 +29,6 @@ import freerails.model.activity.ActivityIterator;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
 import freerails.model.player.Player;
 
 import java.io.Serializable;
@@ -94,7 +93,7 @@ public interface UnmodifiableWorld extends Serializable {
      * @param index
      * @return
      */
-    boolean boundsContain(FreerailsPrincipal principal, PlayerKey key, int index);
+    boolean boundsContain(Player principal, PlayerKey key, int index);
 
     /**
      * @return
@@ -109,26 +108,26 @@ public interface UnmodifiableWorld extends Serializable {
     /**
      * Returns the element at the specified position in the specified list.
      */
-    Serializable get(FreerailsPrincipal principal, PlayerKey key, int index);
+    Serializable get(Player principal, PlayerKey key, int index);
 
     /**
      * @param principal
      * @param index
      * @return
      */
-    ActivityIterator getActivities(FreerailsPrincipal principal, int index);
+    ActivityIterator getActivities(Player principal, int index);
 
     /**
      * @param principal
      * @return
      */
-    Money getCurrentBalance(FreerailsPrincipal principal);
+    Money getCurrentBalance(Player principal);
 
     /**
      * @param principal
      * @return
      */
-    int getID(FreerailsPrincipal principal);
+    int getID(Player principal);
 
     /**
      * Returns the width and height of the map in tiles.
@@ -146,7 +145,7 @@ public interface UnmodifiableWorld extends Serializable {
      * @param principal
      * @return
      */
-    int getNumberOfTransactions(FreerailsPrincipal principal);
+    int getNumberOfTransactions(Player principal);
 
     /**
      * @param i
@@ -164,35 +163,35 @@ public interface UnmodifiableWorld extends Serializable {
      * @param i
      * @return
      */
-    Transaction getTransaction(FreerailsPrincipal principal, int i);
+    Transaction getTransaction(Player principal, int i);
 
     /**
      * @param principal
      * @param i
      * @return
      */
-    GameTime getTransactionTimeStamp(FreerailsPrincipal principal, int i);
+    GameTime getTransactionTimeStamp(Player principal, int i);
 
     /**
      * @param principal
      * @param i
      * @return
      */
-    Pair<Transaction, GameTime> getTransactionAndTimeStamp(FreerailsPrincipal principal, int i);
+    Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player principal, int i);
 
     /**
      * @param principal
      * @return
      */
-    boolean isPlayer(FreerailsPrincipal principal);
+    boolean isPlayer(Player principal);
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(FreerailsPrincipal principal, PlayerKey key);
+    int size(Player principal, PlayerKey key);
 
     /**
      * Returns number of active entities belonging to the specified principal.
      */
-    int size(FreerailsPrincipal principal);
+    int size(Player principal);
 }

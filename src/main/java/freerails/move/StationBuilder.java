@@ -22,7 +22,7 @@ import freerails.model.track.TrackType;
 import freerails.move.generator.AddStationMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import java.util.NoSuchElementException;
@@ -59,7 +59,7 @@ public class StationBuilder {
     public MoveStatus tryBuildingStation(Vec2D location) {
         UnmodifiableWorld world = executor.getWorld();
 
-        FreerailsPrincipal principal = executor.getPrincipal();
+        Player principal = executor.getPrincipal();
         AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, principal);
         Move move = preMove.generate(world);
 
@@ -74,7 +74,7 @@ public class StationBuilder {
         // Only build a station if there is track at the specified point.
         MoveStatus status = tryBuildingStation(location);
         if (status.succeeds()) {
-            FreerailsPrincipal principal = executor.getPrincipal();
+            Player principal = executor.getPrincipal();
             AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, principal);
             return executor.doPreMove(preMove);
         }

@@ -26,7 +26,7 @@ import freerails.move.MoveStatus;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
 
@@ -75,7 +75,7 @@ public class ChangeTileMove implements MapUpdateMove {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryDoMove(World world, Player principal) {
         TerrainTile actual = world.getTile(location);
         Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
@@ -89,7 +89,7 @@ public class ChangeTileMove implements MapUpdateMove {
         return MoveStatus.moveFailed("Expected " + before + " but found " + actual);
     }
 
-    public MoveStatus tryUndoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus tryUndoMove(World world, Player principal) {
         TerrainTile actual = world.getTile(location);
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;
@@ -97,7 +97,7 @@ public class ChangeTileMove implements MapUpdateMove {
         return MoveStatus.moveFailed("Expected " + after + " but found " + actual);
     }
 
-    public MoveStatus doMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus doMove(World world, Player principal) {
         MoveStatus moveStatus = tryDoMove(world, principal);
 
         if (moveStatus.succeeds()) {
@@ -107,7 +107,7 @@ public class ChangeTileMove implements MapUpdateMove {
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, FreerailsPrincipal principal) {
+    public MoveStatus undoMove(World world, Player principal) {
         MoveStatus moveStatus = tryUndoMove(world, principal);
 
         if (moveStatus.succeeds()) {

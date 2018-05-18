@@ -22,6 +22,7 @@
 package freerails.model.track.pathfinding;
 
 import freerails.model.finances.Money;
+import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;
 import freerails.model.track.BuildTrackStrategy;
@@ -31,7 +32,6 @@ import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.game.GameRules;
 import freerails.model.world.WorldItem;
-import freerails.model.player.Player;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
@@ -45,7 +45,7 @@ import java.util.TreeSet;
  */
 public class TrackPathFinderTest extends TestCase {
 
-    private final Player testPlayer = new Player("test", 0);
+    private final Player testPlayer = new Player(0, "test");
     private World world;
 
     /**
@@ -73,7 +73,7 @@ public class TrackPathFinderTest extends TestCase {
         try {
             BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getSingleRuleInstance(0, world);
 
-            TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer.getPrincipal());
+            TrackPathFinder pathFinder = new TrackPathFinder(world, testPlayer);
             List l = pathFinder.generatePath(Vec2D.ZERO, new Vec2D(0,5), buildTrackStrategy);
             assertEquals(5, l.size());
 

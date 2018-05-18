@@ -35,7 +35,7 @@ import freerails.network.command.RefreshListOfGamesCommandToServer;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.TrainBlueprint;
 import freerails.model.terrain.TerrainTile;
@@ -511,7 +511,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param principal
      */
-    public void listUpdated(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void listUpdated(PlayerKey key, int index, Player principal) {
     }
 
     /**
@@ -519,7 +519,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param principal
      */
-    public void itemAdded(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemAdded(PlayerKey key, int index, Player principal) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
          * After building station show supply and demand
@@ -538,6 +538,6 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param principal
      */
-    public void itemRemoved(PlayerKey key, int index, FreerailsPrincipal principal) {
+    public void itemRemoved(PlayerKey key, int index, Player principal) {
     }
 }

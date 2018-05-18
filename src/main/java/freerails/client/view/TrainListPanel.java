@@ -30,7 +30,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldIterator;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -45,7 +45,7 @@ public class TrainListPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3832905463863064626L;
     private UnmodifiableWorld world;
-    private FreerailsPrincipal principal;
+    private Player principal;
     private int lastNumberOfTrains = -1;
     private boolean rhsjTabPane = false; // if the train list is for the
 

@@ -46,9 +46,9 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move move = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(), MapFixtureFactory.TEST_PRINCIPAL);
+        Move move = new AddCargoBundleMove(0, bundleA.toImmutableCargoBundle(), MapFixtureFactory.TEST_PLAYER);
         assertDoMoveIsOk(move);
-        assertEquals(getWorld().size(MapFixtureFactory.TEST_PRINCIPAL, PlayerKey.CargoBundles), 1);
+        assertEquals(getWorld().size(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles), 1);
         assertUndoMoveIsOk(move);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);

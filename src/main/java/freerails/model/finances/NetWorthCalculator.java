@@ -19,7 +19,7 @@
 package freerails.model.finances;
 
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 
 /**
  * A TransactionAggregator that calculates the net worth of a player by totalling
@@ -31,7 +31,7 @@ public class NetWorthCalculator extends TransactionAggregator {
      * @param world
      * @param principal
      */
-    public NetWorthCalculator(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public NetWorthCalculator(UnmodifiableWorld world, Player principal) {
         super(world, principal);
     }
 

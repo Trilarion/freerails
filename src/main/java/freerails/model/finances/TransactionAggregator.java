@@ -19,7 +19,7 @@
 package freerails.model.finances;
 
 import freerails.model.game.GameTime;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
 /**
@@ -31,7 +31,7 @@ import freerails.model.world.UnmodifiableWorld;
 public abstract class TransactionAggregator {
 
     protected final UnmodifiableWorld world;
-    protected final FreerailsPrincipal principal;
+    protected final Player principal;
     private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
     public Money[] monetaryTotals;
     public int runningTotal = 0;
@@ -41,7 +41,7 @@ public abstract class TransactionAggregator {
      * @param world
      * @param principal
      */
-    public TransactionAggregator(UnmodifiableWorld world, FreerailsPrincipal principal) {
+    public TransactionAggregator(UnmodifiableWorld world, Player principal) {
         this.world = world;
         this.principal = principal;
     }

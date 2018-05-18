@@ -22,7 +22,7 @@ import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionCategory;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;
@@ -83,7 +83,7 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testThatStockIsIssued() {
-        FreerailsPrincipal principal = world.getPlayer(0).getPrincipal();
+        Player principal = world.getPlayer(0);
         int stock = 0;
         Money cash = world.getCurrentBalance(principal);
         assertEquals(new Money(1000000), cash);

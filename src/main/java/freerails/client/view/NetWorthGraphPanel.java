@@ -26,13 +26,13 @@ import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.finances.NetWorthCalculator;
+import freerails.model.player.Player;
 import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.TransactionAggregator;
 import freerails.model.finances.Money;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.player.Player;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -331,7 +331,7 @@ public class NetWorthGraphPanel extends JPanel implements View {
                 int ticks = calender.getTicks(startYear + year - 1);
                 times[year] = new GameTime(ticks);
             }
-            TransactionAggregator aggregator = new NetWorthCalculator(world, player.getPrincipal());
+            TransactionAggregator aggregator = new NetWorthCalculator(world, player);
             aggregator.setTimes(times);
             Money[] values = aggregator.calculateValues();
             int stopYear = currentYear - startYear + 1;

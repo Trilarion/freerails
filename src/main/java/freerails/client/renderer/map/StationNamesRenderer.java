@@ -26,7 +26,7 @@ import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;
 import freerails.model.*;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
@@ -70,7 +70,7 @@ public class StationNamesRenderer implements Painter {
 
         // for all players
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            FreerailsPrincipal principal = world.getPlayer(i).getPrincipal();
+            Player principal = world.getPlayer(i);
 
             // draw station names onto map
 

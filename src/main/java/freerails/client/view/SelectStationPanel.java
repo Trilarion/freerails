@@ -31,7 +31,7 @@ import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.station.NearestStationFinder;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.player.FreerailsPrincipal;
+import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -59,7 +59,7 @@ public class SelectStationPanel extends JPanel implements View {
     private Rectangle visableMapTiles = new Rectangle();
     private double scale = 1;
     private boolean needsUpdating = true;
-    private FreerailsPrincipal principal;
+    private Player principal;
     private CargoWaitingAndDemandedPanel cargoWaitingAndDemandedPanel1;
     private JLabel label1;
     
