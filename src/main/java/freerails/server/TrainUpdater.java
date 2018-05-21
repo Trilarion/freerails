@@ -67,17 +67,17 @@ public class TrainUpdater implements Serializable {
      * @param engineId
      * @param wagons
      * @param location
-     * @param principal
+     * @param player
      * @param world
      */
-    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, Player principal, UnmodifiableWorld world) {
+    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, Player player, UnmodifiableWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
 
         // generate initial schedule
 
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         MutableSchedule schedule = new MutableSchedule();
 
         // Add up to 4 stations to the schedule.
@@ -90,7 +90,7 @@ public class TrainUpdater implements Serializable {
 
         ImmutableSchedule is = schedule.toImmutableSchedule();
 
-        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagons, location, principal, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagons, location, player, is);
 
         Move move = addTrain.generate(world);
         moveReceiver.process(move);
@@ -102,10 +102,10 @@ public class TrainUpdater implements Serializable {
      */
     public void buildTrains(UnmodifiableWorld world) {
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player principal = world.getPlayer(k);
+            Player player = world.getPlayer(k);
 
-            for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
-                Station station = (Station) world.get(principal, PlayerKey.Stations, i);
+            for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
+                Station station = (Station) world.get(player, PlayerKey.Stations, i);
                 if (null != station) {
 
                     ImmutableList<TrainBlueprint> production = station.getProduction();
@@ -114,10 +114,10 @@ public class TrainUpdater implements Serializable {
                         for (TrainBlueprint aProduction : production) {
                             int engineId = aProduction.getEngineId();
                             ImmutableList<Integer> wagonTypes = aProduction.getWagonTypes();
-                            buildTrain(engineId, wagonTypes, station.location, principal, world);
+                            buildTrain(engineId, wagonTypes, station.location, player, world);
                         }
 
-                        Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, principal);
+                        Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, player);
                         moveReceiver.process(move);
                     }
                 }
@@ -129,22 +129,22 @@ public class TrainUpdater implements Serializable {
         int time = world.currentTime().getTicks();
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player principal = world.getPlayer(k);
-            OccupiedTracks occupiedTracks = new OccupiedTracks(principal, world);
+            Player player = world.getPlayer(k);
+            OccupiedTracks occupiedTracks = new OccupiedTracks(player, world);
             // If a train is moving, we want it to keep moving rather than stop
             // to allow an already stationary train to start moving. To achieve
             // this
             // we process moving trains first.
             Collection<MoveTrainMoveGenerator> movingTrains = new ArrayList<>();
             Collection<MoveTrainMoveGenerator> stoppedTrains = new ArrayList<>();
-            for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
+            for (int i = 0; i < world.size(player, PlayerKey.Trains); i++) {
 
-                Train train = (Train) world.get(principal, PlayerKey.Trains, i);
+                Train train = (Train) world.get(player, PlayerKey.Trains, i);
                 if (null == train) continue;
 
-                MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(i, principal, occupiedTracks);
+                MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(i, player, occupiedTracks);
                 if (moveTrain.isUpdateDue(world)) {
-                    TrainAccessor ta = new TrainAccessor(world, principal, i);
+                    TrainAccessor ta = new TrainAccessor(world, player, i);
                     if (ta.isMoving(time)) {
                         movingTrains.add(moveTrain);
                     } else {

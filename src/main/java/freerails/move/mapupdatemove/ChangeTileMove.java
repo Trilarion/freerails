@@ -75,7 +75,7 @@ public class ChangeTileMove implements MapUpdateMove {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         TerrainTile actual = world.getTile(location);
         Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
@@ -89,7 +89,7 @@ public class ChangeTileMove implements MapUpdateMove {
         return MoveStatus.moveFailed("Expected " + before + " but found " + actual);
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         TerrainTile actual = world.getTile(location);
         if (actual.equals(after)) {
             return MoveStatus.MOVE_OK;
@@ -97,8 +97,8 @@ public class ChangeTileMove implements MapUpdateMove {
         return MoveStatus.moveFailed("Expected " + after + " but found " + actual);
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
 
         if (moveStatus.succeeds()) {
             world.setTile(location, after);
@@ -107,8 +107,8 @@ public class ChangeTileMove implements MapUpdateMove {
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
 
         if (moveStatus.succeeds()) {
             world.setTile(location, before);

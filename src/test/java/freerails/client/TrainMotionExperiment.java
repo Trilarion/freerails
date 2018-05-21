@@ -16,13 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package experimental;
+package freerails.client;
 
-import freerails.client.ClientConstants;
-import freerails.client.ModelRoot;
 import freerails.client.launcher.GameLoop;
 import freerails.client.launcher.ScreenHandler;
-import freerails.client.ModelRootImpl;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.OccupiedTracks;
@@ -56,7 +53,7 @@ class TrainMotionExperiment extends JComponent {
 
     private static final long serialVersionUID = 3690191057862473264L;
     private final World world;
-    private final Player principal;
+    private final Player player;
     private double finishTime = 0;
     private long startTime;
 
@@ -65,8 +62,8 @@ class TrainMotionExperiment extends JComponent {
      */
     private TrainMotionExperiment() {
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
-        principal = moveExecutor.getPrincipal();
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
+        player = moveExecutor.getPlayer();
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
@@ -76,10 +73,10 @@ class TrainMotionExperiment extends JComponent {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ImmutableList<>(), from, principal, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ImmutableList<>(), from, player, is);
 
         Move move = addTrain.generate(world);
-        moveStatus = move.doMove(world, principal);
+        moveStatus = move.doMove(world, player);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
         startTime = System.currentTimeMillis();
@@ -125,7 +122,7 @@ class TrainMotionExperiment extends JComponent {
             updateTrainPosition();
         }
 
-        ActivityIterator ai = world.getActivities(principal, 0);
+        ActivityIterator ai = world.getActivities(player, 0);
         while (ai.getFinishTime() < ticks && ai.hasNext()) {
             ai.nextActivity();
         }
@@ -178,17 +175,17 @@ class TrainMotionExperiment extends JComponent {
 
     private void updateTrainPosition() {
         Random rand = new Random(System.currentTimeMillis());
-        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, principal, new OccupiedTracks(principal, world));
+        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         Move move;
         if (rand.nextInt(10) == 0) {
             move = moveTrain.stopTrain(world);
         } else {
             move = moveTrain.generate(world);
         }
-        MoveStatus moveStatus = move.doMove(world, principal);
+        MoveStatus moveStatus = move.doMove(world, player);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
-        ActivityIterator ai = world.getActivities(principal, 0);
+        ActivityIterator ai = world.getActivities(player, 0);
 
         while (ai.hasNext()) {
             ai.nextActivity();

@@ -59,7 +59,7 @@ public class SelectStationPanel extends JPanel implements View {
     private Rectangle visableMapTiles = new Rectangle();
     private double scale = 1;
     private boolean needsUpdating = true;
-    private Player principal;
+    private Player player;
     private CargoWaitingAndDemandedPanel cargoWaitingAndDemandedPanel1;
     private JLabel label1;
     
@@ -136,7 +136,7 @@ public class SelectStationPanel extends JPanel implements View {
         try {
             TileTransition tileTransition = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
             // now find nearest station in direction of the vector.
-            NearestStationFinder stationFinder = new NearestStationFinder(world, principal);
+            NearestStationFinder stationFinder = new NearestStationFinder(world, player);
             int station = stationFinder.findNearestStationInDirection(selectedStationID, tileTransition);
 
             if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
@@ -166,7 +166,7 @@ public class SelectStationPanel extends JPanel implements View {
         double y = evt.getY();
         y = y / scale + visableMapTiles.y;
 
-        NearestStationFinder stationFinder = new NearestStationFinder(world, principal);
+        NearestStationFinder stationFinder = new NearestStationFinder(world, player);
         int station = stationFinder.findNearestStation(new Vec2D((int)x, (int)y));
 
         if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
@@ -204,7 +204,7 @@ public class SelectStationPanel extends JPanel implements View {
         int bottomRightX = Integer.MIN_VALUE;
         int bottomRightY = Integer.MIN_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         while (it.next()) {
             Station station = (Station) it.getElement();
             // TODO min, max of two Points2D
@@ -240,7 +240,7 @@ public class SelectStationPanel extends JPanel implements View {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
         // Draw track
         g2.setColor(Color.BLACK);
@@ -309,7 +309,7 @@ public class SelectStationPanel extends JPanel implements View {
         cargoWaitingAndDemandedPanel1.setup(modelRoot, rendererRoot, null);
         world = modelRoot.getWorld();
         submitButtonCallBack = closeAction;
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
     }
 
     public MutableSchedule generateNewSchedule() {

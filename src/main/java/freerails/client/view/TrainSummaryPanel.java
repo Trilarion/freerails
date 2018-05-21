@@ -50,7 +50,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
     private final Color selectedColor = (Color) UIManager.getDefaults().get("List.selectionBackground");
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private UnmodifiableWorld world;
-    private Player principal;
+    private Player player;
     private TrainListCellRenderer trainListCellRenderer1;
     private JLabel headingLabel;
     private JLabel trainIncomeLabel;
@@ -117,11 +117,11 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
         world = modelRoot.getWorld();
         trainListCellRenderer1 = new TrainListCellRenderer(modelRoot, rendererRoot);
         trainListCellRenderer1.setHeight(15);
-        model.setWorld(world, principal);
+        model.setWorld(world, player);
     }
 
     private String findStationName(int trainNum) {
@@ -135,7 +135,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, principal, index);
+        int trainID = NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, index);
         String trainNumText = "#" + (trainID + 1);
 
         trainNumLabel.setText(trainNumText);

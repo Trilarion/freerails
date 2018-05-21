@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.move.listmove;
+package freerails.move;
 
 import freerails.move.CompositeMove;
 import freerails.move.Move;
-import freerails.move.listmove.ChangeCargoBundleMove;
+import freerails.move.listmove.ChangeItemInListMove;
 
 import java.util.List;
 
@@ -43,17 +43,21 @@ public class TransferCargoAtStationMove extends CompositeMove {
     }
 
     /**
+     * Change of CargoBundle
+     *
      * @return
      */
-    public ChangeCargoBundleMove getChangeAtStation() {
-        return (ChangeCargoBundleMove) super.getMoves().get(CHANGE_AT_STATION_INDEX);
+    public ChangeItemInListMove getChangeAtStation() {
+        return (ChangeItemInListMove) super.getMoves().get(CHANGE_AT_STATION_INDEX);
     }
 
     /**
+     * Change of CargoBundle
+     *
      * @return
      */
-    public ChangeCargoBundleMove getChangeOnTrain() {
-        return (ChangeCargoBundleMove) super.getMoves().get(CHANGE_ON_TRAIN_INDEX);
+    public ChangeItemInListMove getChangeOnTrain() {
+        return (ChangeItemInListMove) super.getMoves().get(CHANGE_ON_TRAIN_INDEX);
     }
 
 }

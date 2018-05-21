@@ -34,7 +34,7 @@ public class AddTransactionMove implements Move {
 
     private static final long serialVersionUID = 3976738055925019701L;
     private final Transaction transaction;
-    private final Player principal;
+    private final Player player;
 
     /**
      * Whether the move fails if there is not enough cash.
@@ -46,7 +46,7 @@ public class AddTransactionMove implements Move {
      * @param transaction
      */
     public AddTransactionMove(Player account, Transaction transaction) {
-        principal = account;
+        player = account;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = false;
     }
@@ -57,7 +57,7 @@ public class AddTransactionMove implements Move {
      * @param constrain
      */
     public AddTransactionMove(Player account, Transaction transaction, boolean constrain) {
-        principal = account;
+        player = account;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = constrain;
     }
@@ -73,17 +73,17 @@ public class AddTransactionMove implements Move {
     public int hashCode() {
         int result;
         result = transaction.hashCode();
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
         result = 29 * result + (cashConstrained ? 1 : 0);
 
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
-        if (world.isPlayer(this.principal)) {
+    public MoveStatus tryDoMove(World world, Player player) {
+        if (world.isPlayer(this.player)) {
             if (cashConstrained) {
-                // TODO Money arithmetics
-                long bankBalance = world.getCurrentBalance(this.principal).amount;
+                // TODO Money arithmetic
+                long bankBalance = world.getCurrentBalance(this.player).amount;
                 long transactionAmount = transaction.price().amount;
                 long balanceAfter = bankBalance + transactionAmount;
 
@@ -94,17 +94,17 @@ public class AddTransactionMove implements Move {
 
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed(principal.getName() + " does not have a bank account.");
+        return MoveStatus.moveFailed(player.getName() + " does not have a bank account.");
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
-        int size = world.getNumberOfTransactions(this.principal);
+    public MoveStatus tryUndoMove(World world, Player player) {
+        int size = world.getNumberOfTransactions(this.player);
 
         if (0 == size) {
             return MoveStatus.moveFailed("No transactions to remove!");
         }
 
-        Transaction lastTransaction = world.getTransaction(this.principal, size - 1);
+        Transaction lastTransaction = world.getTransaction(this.player, size - 1);
 
         if (lastTransaction.equals(transaction)) {
             return MoveStatus.MOVE_OK;
@@ -112,21 +112,21 @@ public class AddTransactionMove implements Move {
         return MoveStatus.moveFailed("Expected " + transaction + "but found " + lastTransaction);
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
 
         if (moveStatus.succeeds()) {
-            world.addTransaction(this.principal, transaction);
+            world.addTransaction(this.player, transaction);
         }
 
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
 
         if (moveStatus.succeeds()) {
-            world.removeLastTransaction(this.principal);
+            world.removeLastTransaction(this.player);
         }
 
         return moveStatus;
@@ -137,7 +137,7 @@ public class AddTransactionMove implements Move {
         if (obj instanceof AddTransactionMove) {
             AddTransactionMove test = (AddTransactionMove) obj;
 
-            return test.principal.equals(principal) && test.transaction.equals(transaction);
+            return test.player.equals(player) && test.transaction.equals(transaction);
         }
         return false;
     }
@@ -145,7 +145,7 @@ public class AddTransactionMove implements Move {
     /**
      * @return
      */
-    public Player getPrincipal() {
-        return principal;
+    public Player getPlayer() {
+        return player;
     }
 }

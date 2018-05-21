@@ -84,9 +84,9 @@ public class VerifyStationName {
 
     private boolean existsStationName(String name) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player principal = world.getPlayer(i);
+            Player player = world.getPlayer(i);
 
-            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (worldIterator.next()) { // loop over non null stations
                 Station station = (Station) worldIterator.getElement();

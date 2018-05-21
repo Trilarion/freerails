@@ -42,15 +42,15 @@ class WorldToListModelAdapter implements ListModel {
     /**
      * @param world
      * @param playerKey
-     * @param principal
+     * @param player
      */
-    public WorldToListModelAdapter(UnmodifiableWorld world, PlayerKey playerKey, Player principal) {
+    public WorldToListModelAdapter(UnmodifiableWorld world, PlayerKey playerKey, Player player) {
         Utils.verifyNotNull(playerKey);
-        Utils.verifyNotNull(principal);
-        // Check that the principal exists.
-        if (!world.isPlayer(principal)) throw new IllegalArgumentException(principal.getName());
+        Utils.verifyNotNull(player);
+        // Check that the player exists.
+        if (!world.isPlayer(player)) throw new IllegalArgumentException(player.getName());
 
-        elements = new NonNullElementWorldIterator(playerKey, world, principal);
+        elements = new NonNullElementWorldIterator(playerKey, world, player);
     }
 
     public int getSize() {

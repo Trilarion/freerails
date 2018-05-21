@@ -38,19 +38,19 @@ public class ChangeProductionAtEngineShopMove implements Move {
     private final ImmutableList<TrainBlueprint> before;
     private final ImmutableList<TrainBlueprint> after;
     private final int stationNumber;
-    private final Player principal;
+    private final Player player;
 
     /**
      * @param b
      * @param a
      * @param station
-     * @param principal
+     * @param player
      */
-    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, Player principal) {
+    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, Player player) {
         before = b;
         after = a;
         stationNumber = station;
-        this.principal = principal;
+        this.player = player;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
             return false;
         if (before != null ? !before.equals(changeProductionAtEngineShopMove.before) : changeProductionAtEngineShopMove.before != null)
             return false;
-        return principal.equals(changeProductionAtEngineShopMove.principal);
+        return player.equals(changeProductionAtEngineShopMove.player);
     }
 
     @Override
@@ -74,24 +74,24 @@ public class ChangeProductionAtEngineShopMove implements Move {
         result = (before != null ? before.hashCode() : 0);
         result = 29 * result + (after != null ? after.hashCode() : 0);
         result = 29 * result + stationNumber;
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         return tryMove(world, before);
     }
 
     private MoveStatus tryMove(World world, ImmutableList<TrainBlueprint> stateA) {
         // Check that the specified station exists.
-        if (!world.boundsContain(principal, PlayerKey.Stations, stationNumber)) {
-            return MoveStatus.moveFailed(stationNumber + " " + principal);
+        if (!world.boundsContain(player, PlayerKey.Stations, stationNumber)) {
+            return MoveStatus.moveFailed(stationNumber + " " + player);
         }
 
-        Station station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
+        Station station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
 
         if (null == station) {
-            return MoveStatus.moveFailed(stationNumber + " " + principal + " is does null");
+            return MoveStatus.moveFailed(stationNumber + " " + player + " is does null");
         }
 
         // Check that the station is building what we expect.
@@ -99,33 +99,33 @@ public class ChangeProductionAtEngineShopMove implements Move {
             if (null == stateA) {
                 return MoveStatus.MOVE_OK;
             }
-            return MoveStatus.moveFailed(stationNumber + " " + principal);
+            return MoveStatus.moveFailed(stationNumber + " " + player);
         }
         if (station.getProduction().equals(stateA)) {
             return MoveStatus.MOVE_OK;
         }
-        return MoveStatus.moveFailed(stationNumber + " " + principal);
+        return MoveStatus.moveFailed(stationNumber + " " + player);
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         return tryMove(world, after);
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus status = tryDoMove(world, principal);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus status = tryDoMove(world, player);
 
         if (status.succeeds()) {
-            Station station = (Station) world.get(this.principal, PlayerKey.Stations, stationNumber);
+            Station station = (Station) world.get(this.player, PlayerKey.Stations, stationNumber);
             station.setProduction(after);
         }
         return status;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus status = tryUndoMove(world, principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
-            Station station = (Station) world.get(this.principal, PlayerKey.Stations, stationNumber);
+            Station station = (Station) world.get(this.player, PlayerKey.Stations, stationNumber);
             station.setProduction(before);
         }
         return status;

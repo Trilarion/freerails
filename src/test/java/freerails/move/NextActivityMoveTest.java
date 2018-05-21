@@ -38,12 +38,12 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() {
         World world = getWorld();
-        Player principal = getPrincipal();
+        Player player = getPlayer();
         Activity act = new TestActivity(50);
-        world.addActiveEntity(principal, act);
+        world.addActiveEntity(player, act);
 
         Activity act2 = new TestActivity(60);
-        Move move = new NextActivityMove(act2, 0, principal);
+        Move move = new NextActivityMove(act2, 0, player);
         assertSurvivesSerialisation(move);
         assertOkAndRepeatable(move);
     }
@@ -53,12 +53,12 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     public void testMove2() {
         World world = getWorld();
-        Player principal = getPrincipal();
+        Player player = getPlayer();
         Activity act = new TestActivity(50);
-        world.addActiveEntity(principal, act);
+        world.addActiveEntity(player, act);
 
         Activity act2 = new TestActivity(60);
-        Move move = new NextActivityMove(act2, 0, principal);
+        Move move = new NextActivityMove(act2, 0, player);
         assertDoThenUndoLeavesWorldUnchanged(move);
     }
 
@@ -67,17 +67,17 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
      */
     public void testStackingOfActivities() {
         World world = getWorld();
-        Player principal = getPrincipal();
+        Player player = getPlayer();
         Activity act = new TestActivity(50);
-        world.addActiveEntity(principal, act);
+        world.addActiveEntity(player, act);
 
         Activity act2 = new TestActivity(60);
-        Move move = new NextActivityMove(act2, 0, principal);
+        Move move = new NextActivityMove(act2, 0, player);
         assertDoMoveIsOk(move);
 
         GameTime currentTime = new GameTime(0);
         assertEquals(currentTime, world.currentTime());
-        ActivityIterator it = world.getActivities(principal, 0);
+        ActivityIterator it = world.getActivities(player, 0);
 
         assertEquals(it.getActivity(), act);
         assertEquals(it.getStartTime(), currentTime.getTicks(), 0.00001);

@@ -24,8 +24,7 @@ package freerails.move;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
-import freerails.move.listmove.ChangeTrainMove;
-import freerails.move.listmove.ChangeTrainScheduleMove;
+import freerails.move.listmove.ChangeItemInListMove;
 import freerails.model.track.NoTrackException;
 import freerails.util.ImmutableList;
 import freerails.util.Vec2D;
@@ -54,7 +53,7 @@ public class TrainStopsHandler implements Serializable {
     private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
     private static final int NOT_AT_STATION = -1;
     private static final long serialVersionUID = 3257567287094882872L;
-    private final Player principal;
+    private final Player player;
     private final int trainId;
     private World world;
     private final List<Move> moves = new ArrayList<>();
@@ -62,12 +61,12 @@ public class TrainStopsHandler implements Serializable {
 
     /**
      * @param id
-     * @param principal
+     * @param player
      * @param unmodifiableWorld
      */
-    public TrainStopsHandler(int id, Player principal, UnmodifiableWorld unmodifiableWorld) {
+    public TrainStopsHandler(int id, Player player, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
-        this.principal = principal;
+        this.player = player;
         this.world =  (World) Utils.cloneBySerialisation(unmodifiableWorld);
         this.unmodifiableWorld = unmodifiableWorld;
     }
@@ -113,7 +112,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public void arrivesAtPoint(Vec2D location) {
-        TrainAccessor trainAccessor = new TrainAccessor(world, principal, trainId);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         Vec2D targetPoint = trainAccessor.getTargetLocation();
 
         if (location.equals(targetPoint)) {
@@ -149,8 +148,8 @@ public class TrainStopsHandler implements Serializable {
      */
     public int getStationId(Vec2D location) {
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
-            Station station = (Station) world.get(principal, PlayerKey.Stations, i);
+        for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
+            Station station = (Station) world.get(player, PlayerKey.Stations, i);
 
             if (null != station && location.equals(station.location)) {
                 return i; // train is at the station at location tempPoint
@@ -164,7 +163,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public int getTrainLength() {
-        TrainAccessor trainAccessor = new TrainAccessor(world, principal, trainId);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         return trainAccessor.getTrain().getLength();
     }
 
@@ -172,7 +171,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     private boolean isTrainFull() {
-        TrainAccessor trainAccessor = new TrainAccessor(world, principal, trainId);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         ImmutableList<Integer> spaceAvailable = trainAccessor.spaceAvailable();
         return Utils.sumOfIntegerImmutableList(spaceAvailable) == 0;
     }
@@ -181,9 +180,9 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public boolean isWaitingForFullLoad() {
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainId);
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainId);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
+        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {
             return false;
@@ -195,11 +194,11 @@ public class TrainStopsHandler implements Serializable {
     private void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
 
         // train is at a station so do the cargo processing
-        DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, world, principal, waiting, autoConsist);
+        DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, world, player, waiting, autoConsist);
         Move move = transfer.generateMove();
         if (null != move) {
             moves.add(move);
-            MoveStatus moveStatus = move.doMove(world, principal);
+            MoveStatus moveStatus = move.doMove(world, player);
             if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
         }
     }
@@ -212,7 +211,7 @@ public class TrainStopsHandler implements Serializable {
      */
     public boolean refreshWaitingForFullLoad() {
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, principal, trainId);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         ImmutableSchedule schedule = trainAccessor.getSchedule();
 
         int stationId = trainAccessor.getStationId(Double.MAX_VALUE);
@@ -235,9 +234,11 @@ public class TrainStopsHandler implements Serializable {
 
             // TODO newTrain is computed in the ChangeTrainMove also
             Train newTrain = trainAccessor.getTrain().getNewInstance(engineId, order.consist);
-            // worldDiffs.set(principal, PlayerKey.Trains, trainId, newTrain);
-            Move move = ChangeTrainMove.generateMove(trainId, trainAccessor.getTrain(), engineId, order.consist, principal);
-            move.doMove(world, principal);
+            // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
+            Train before = trainAccessor.getTrain();
+            Train after = before.getNewInstance(engineId, order.consist);
+            Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
+            move.doMove(world, player);
             moves.add(move);
 
             int newLength = newTrain.getLength();
@@ -250,7 +251,7 @@ public class TrainStopsHandler implements Serializable {
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
                 // Create a new Move object.
-                Move trainMove = new NextActivityMove(nextMotion, trainId, principal);
+                Move trainMove = new NextActivityMove(nextMotion, trainId, player);
                 moves.add(trainMove);
                 MoveStatus moveStatus = trainMove.doMove(world, Player.AUTHORITATIVE);
                 if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
@@ -271,8 +272,8 @@ public class TrainStopsHandler implements Serializable {
 
     private void scheduledStop() {
 
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainId);
-        Schedule schedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainId);
+        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
 
         ImmutableList<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -284,10 +285,11 @@ public class TrainStopsHandler implements Serializable {
 
         if (null != wagonsToAdd) {
             int engineType = train.getEngineId();
-            Move move = ChangeTrainMove.generateMove(trainId, train, engineType, wagonsToAdd, principal);
+            Train after = train.getNewInstance(engineType, wagonsToAdd);
+            Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, train, after, player);
             // TODO instead of doing the move, add them to a list
             moves.add(move);
-            move.doMove(world, principal);
+            move.doMove(world, player);
         }
         updateSchedule();
         int stationToGoto = schedule.getStationToGoto();
@@ -295,9 +297,9 @@ public class TrainStopsHandler implements Serializable {
     }
 
     private void updateSchedule() {
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainId);
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainId);
         int scheduleID = train.getScheduleID();
-        ImmutableSchedule currentSchedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
+        ImmutableSchedule currentSchedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         Station station;
 
@@ -308,13 +310,13 @@ public class TrainStopsHandler implements Serializable {
             schedule.gotoNextStation();
 
             ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
-            // worldDiffs.set(principal, PlayerKey.TrainSchedules, scheduleID, newSchedule);
-            Move move = new ChangeTrainScheduleMove(scheduleID, currentSchedule, newSchedule, principal);
-            move.doMove(world, principal);
+            // worldDiffs.set(player, PlayerKey.TrainSchedules, scheduleID, newSchedule);
+            Move move = new ChangeItemInListMove(PlayerKey.TrainSchedules, scheduleID, currentSchedule, newSchedule, player);
+            move.doMove(world, player);
             moves.add(move);
 
             int stationNumber = schedule.getStationToGoto();
-            station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
+            station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
 
             if (null == station) {
                 logger.warn("null == station, train " + trainId + " doesn't know where to go next!");

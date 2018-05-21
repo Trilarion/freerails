@@ -30,7 +30,6 @@ public class Train implements Serializable {
 
     private static final long serialVersionUID = 3545235825756812339L;
     private final int scheduleId;
-    // TODO replace engine type id with an enum maybe? or by a class?
     private final int engineId;
     private final ImmutableList<Integer> wagonTypes;
     private final int cargoBundleId;

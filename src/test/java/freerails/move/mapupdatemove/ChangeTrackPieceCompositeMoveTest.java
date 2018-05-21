@@ -30,7 +30,7 @@ import freerails.model.world.WorldItem;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.TrackMoveTransactionsGenerator;
+import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.*;

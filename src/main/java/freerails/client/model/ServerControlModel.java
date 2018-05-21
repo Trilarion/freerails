@@ -232,7 +232,7 @@ public class ServerControlModel implements ModelRootListener {
              * from a text box String filename =
              * JOptionPane.showInputDialog(null, "Saved Game Name:", "Save
              * Game", JOptionPane.QUESTION_MESSAGE, null, null,
-             * modelRoot.getPrincipal().getName()).toString(); // Save the
+             * modelRoot.getPlayer().getName()).toString(); // Save the
              * current game using the string
              * modelRoot.setProperty(Property.QUICK_MESSAGE, "Saved game " +
              * filename); CommandToServer message2 = new

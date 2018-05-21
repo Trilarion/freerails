@@ -45,7 +45,7 @@ public class TrainListPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3832905463863064626L;
     private UnmodifiableWorld world;
-    private Player principal;
+    private Player player;
     private int lastNumberOfTrains = -1;
     private boolean rhsjTabPane = false; // if the train list is for the
 
@@ -197,7 +197,7 @@ public class TrainListPanel extends JPanel implements View {
         trainSummaryPanel1.setup(modelRoot, rendererRoot, null);
 
         if (rhsjTabPane) {
-            list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), PlayerKey.Trains, modelRoot.getPrincipal()));
+            list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), PlayerKey.Trains, modelRoot.getPlayer()));
             TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, rendererRoot);
             list1.setCellRenderer(trainView);
             trainView.setHeight(trainViewHeight);
@@ -208,7 +208,7 @@ public class TrainListPanel extends JPanel implements View {
             closeJButton.removeActionListener(oldListener);
         }
         closeJButton.addActionListener(closeAction);
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
     }
 
     void setShowTrainDetailsActionListener(ActionListener l) {
@@ -221,7 +221,7 @@ public class TrainListPanel extends JPanel implements View {
          * been removed are not shown on the list.
          */
         int row = list1.getSelectedIndex();
-        return NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, principal, row);
+        return NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, row);
     }
 
 
@@ -250,10 +250,10 @@ public class TrainListPanel extends JPanel implements View {
     @Override
     public void paint(Graphics g) {
         if (null != world) {
-            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, principal);
+            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
             int newNumberOfTrains = trains.size();
             if (newNumberOfTrains != lastNumberOfTrains) {
-                list1.setModel(new WorldToListModelAdapter(world, PlayerKey.Trains, principal));
+                list1.setModel(new WorldToListModelAdapter(world, PlayerKey.Trains, player));
                 if (newNumberOfTrains > 0) {
                     list1.setSelectedIndex(0);
                 }

@@ -38,18 +38,18 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         World world = new World.Builder().build();
         Player player = new Player(0, "name");
         world.addPlayer(player);
-        Player principal = world.getPlayer(0);
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
+        player = world.getPlayer(0);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setCategory(TransactionCategory.TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
         Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 5, new Money(100));
-        world.addTransaction(principal, transaction);
+        world.addTransaction(player, transaction);
 
         quant = aggregator.calculateQuantity();
         assertEquals(5, quant);
         transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
-        world.addTransaction(principal, transaction);
+        world.addTransaction(player, transaction);
     }
 
 }

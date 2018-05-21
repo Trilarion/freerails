@@ -45,7 +45,7 @@ public class AddPlayerMove implements Move {
      * @return
      */
     public static AddPlayerMove generateMove(UnmodifiableWorld world, Player player) {
-        // create a new player with a corresponding Principal
+        // create a new player with a corresponding Player
         Player player2add = new Player(world.getNumberOfPlayers(), player.getName());
 
         return new AddPlayerMove(player2add);
@@ -66,14 +66,14 @@ public class AddPlayerMove implements Move {
         return playerToAdd.hashCode();
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         if (isAlreadyASimilarPlayer(world))
             return MoveStatus.moveFailed("There is already a player with the same name.");
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         int numPlayers = world.getNumberOfPlayers();
         Player pp = world.getPlayer(numPlayers - 1);
         if (pp.equals(playerToAdd)) {
@@ -82,22 +82,22 @@ public class AddPlayerMove implements Move {
         return MoveStatus.moveFailed("The last player is " + pp.getName() + "not " + playerToAdd.getName());
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
         if (!moveStatus.succeeds()) return moveStatus;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
-        Player principal2 = playerToAdd;
-        world.addTransaction(principal2, BondItemTransaction.issueBond(5));
+        Player player2 = playerToAdd;
+        world.addTransaction(player2, BondItemTransaction.issueBond(5));
         // Issue stock
         Money initialStockPrice = new Money(5);
         Transaction transaction = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
-        world.addTransaction(principal2, transaction);
+        world.addTransaction(player2, transaction);
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
         if (!moveStatus.succeeds()) return moveStatus;
 
         world.removeLastTransaction(playerToAdd);

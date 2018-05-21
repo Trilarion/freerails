@@ -51,7 +51,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
     private final Color selectedColorNotFocused = Color.LIGHT_GRAY;
     private final Map<TrainOrderModel, TrainOrderPanelSingle> lines;
     public UnmodifiableWorld world;
-    public Player principal;
+    public Player player;
     private Action closeAction;
     private RendererRoot vl;
     private ModelRoot modelRoot;
@@ -74,7 +74,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         this.vl = rendererRoot;
         this.closeAction = closeAction;
         world = modelRoot.getWorld();
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
     }
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -82,7 +82,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
 
         // Set station name
         int stationNumber = trainOrders.order.stationId;
-        Station station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
+        Station station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
         String stationName = station.getStationName();
 
         // Set wait until full

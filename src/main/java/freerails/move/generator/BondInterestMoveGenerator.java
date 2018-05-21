@@ -41,11 +41,11 @@ public class BondInterestMoveGenerator {
     public static List<Move> generate(UnmodifiableWorld world) {
         List<Move> moves = new ArrayList<>();
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player principal = world.getPlayer(i);
+            Player player = world.getPlayer(i);
             long interestDue = 0;
 
-            for (int i1 = 0; i1 < world.getNumberOfTransactions(principal); i1++) {
-                Transaction transaction = world.getTransaction(principal, i1);
+            for (int i1 = 0; i1 < world.getNumberOfTransactions(player); i1++) {
+                Transaction transaction = world.getTransaction(player, i1);
 
                 if (transaction instanceof BondItemTransaction) {
                     BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
@@ -58,7 +58,7 @@ public class BondInterestMoveGenerator {
 
             Transaction transaction = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
 
-            Move move = new AddTransactionMove(principal, transaction);
+            Move move = new AddTransactionMove(player, transaction);
             moves.add(move);
         }
         return moves;

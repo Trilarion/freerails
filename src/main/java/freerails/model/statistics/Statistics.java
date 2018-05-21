@@ -17,17 +17,17 @@ public class Statistics {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      * @param totalTimeInterval
      */
-    public Statistics(UnmodifiableWorld world, Player principal, final GameTime[] totalTimeInterval) {
-        TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, principal, totalTimeInterval);
+    public Statistics(UnmodifiableWorld world, Player player, final GameTime[] totalTimeInterval) {
+        TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, player, totalTimeInterval);
 
         Money operatingFunds = operatingFundsAggregator.calculateValue();
 
-        Money track = calculateTrackTotal(world, principal, totalTimeInterval[0]);
+        Money track = calculateTrackTotal(world, player, totalTimeInterval[0]);
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setTimes(totalTimeInterval);
 
         aggregator.setCategory(TransactionCategory.STATIONS);
@@ -46,7 +46,7 @@ public class Statistics {
         // If we don't initialize this variable we get a NPE when we don't own any stock in others RRs
         Money otherRrStock = Money.ZERO;
 
-        int thisPlayerId = world.getID(principal);
+        int thisPlayerId = world.getID(player);
 
         StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();
         for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
@@ -64,13 +64,13 @@ public class Statistics {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      * @param startTime
      * @return
      */
-    public static Money calculateTrackTotal(UnmodifiableWorld world, Player principal, GameTime startTime) {
+    public static Money calculateTrackTotal(UnmodifiableWorld world, Player player, GameTime startTime) {
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setCategory(TransactionCategory.TRACK);
         long amount = 0;
 

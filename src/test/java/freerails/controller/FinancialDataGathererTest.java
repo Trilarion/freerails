@@ -91,16 +91,15 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testTreasuryStock() {
-        Player principal = player;
-        FinancialDataGatherer fdg = new FinancialDataGatherer(world, principal);
+        FinancialDataGatherer fdg = new FinancialDataGatherer(world, player);
         assertEquals(0, fdg.treasuryStock());
 
         int treasuryStock = 10000;
         int totalStock = ModelConstants.IPO_SIZE;
         int publicStock = totalStock - treasuryStock;
         Transaction transaction = StockItemTransaction.buyOrSellStock(0, treasuryStock, new Money(5));
-        world.addTransaction(principal, transaction);
-        fdg = new FinancialDataGatherer(world, principal);
+        world.addTransaction(player, transaction);
+        fdg = new FinancialDataGatherer(world, player);
         assertEquals(treasuryStock, fdg.treasuryStock());
         assertEquals(totalStock, fdg.totalShares());
         assertEquals(publicStock, fdg.sharesHeldByPublic());

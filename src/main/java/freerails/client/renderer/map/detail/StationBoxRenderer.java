@@ -82,8 +82,8 @@ public class StationBoxRenderer implements Painter {
 
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.
-            Player principal = modelRoot.getPrincipal();
-            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            Player player = modelRoot.getPlayer();
+            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             // TODO can there be null stations?
             while (worldIterator.next()) { // loop over non null stations
@@ -99,7 +99,7 @@ public class StationBoxRenderer implements Painter {
                     g.setStroke(new BasicStroke(1.0f));
                     g.drawRect(r.x, r.y, r.width, r.height);
 
-                    CargoBatchBundle cargoBatchBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
+                    CargoBatchBundle cargoBatchBundle = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
                     Map<CargoCategory, List<Integer>> carsLoads = calculateCarLoads(cargoBatchBundle);
                     int i = 0;
                     for (CargoCategory cargoCategory: CargoCategory.values()) {

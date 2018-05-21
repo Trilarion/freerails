@@ -19,9 +19,12 @@
 /*
  *
  */
-package freerails.move;
+package freerails.move.generator;
 
 import freerails.model.track.TrackType;
+import freerails.move.AddTransactionMove;
+import freerails.move.CompositeMove;
+import freerails.move.Move;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
@@ -44,7 +47,7 @@ import java.util.List;
  */
 public class TrackMoveTransactionsGenerator {
 
-    private final Player principal;
+    private final Player player;
     /*
      * Note, trackAdded and trackRemoved cannot be combined, since it may cost
      * more to added a unit of track than is refunded when you removed it.
@@ -64,12 +67,12 @@ public class TrackMoveTransactionsGenerator {
     private int[] trackRemoved;
 
     /**
-     * @param principal the Principal on behalf of which this object generates
+     * @param player the Player on behalf of which this object generates
      *          transactions for
      */
-    public TrackMoveTransactionsGenerator(UnmodifiableWorld world, Player principal) {
+    public TrackMoveTransactionsGenerator(UnmodifiableWorld world, Player player) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
     }
 
     /**
@@ -91,7 +94,7 @@ public class TrackMoveTransactionsGenerator {
 
         for (int i = 0; i < transactions.size(); i++) {
             Transaction transaction = transactions.get(i);
-            moves[i + 1] = new AddTransactionMove(principal, transaction, true);
+            moves[i + 1] = new AddTransactionMove(player, transaction, true);
         }
 
         return new CompositeMove(moves);

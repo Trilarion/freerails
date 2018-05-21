@@ -114,17 +114,17 @@ public class MoveChainFork implements MoveReceiver {
             if (move instanceof AddItemToListMove) {
                 ListMove listMove = (AddItemToListMove) move;
                 for (WorldListListener listener : listListeners) {
-                    listener.itemAdded(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+                    listener.itemAdded(listMove.getKey(), listMove.getIndex(), listMove.getPlayer());
                 }
             } else if (move instanceof ChangeItemInListMove) {
                 ListMove listMove = (ChangeItemInListMove) move;
                 for (WorldListListener listener : listListeners) {
-                    listener.listUpdated(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+                    listener.listUpdated(listMove.getKey(), listMove.getIndex(), listMove.getPlayer());
                 }
             } else if (move instanceof RemoveItemFromListMove) {
                 ListMove listMove = (RemoveItemFromListMove) move;
                 for (WorldListListener listener : listListeners) {
-                    listener.itemRemoved(listMove.getKey(), listMove.getIndex(), listMove.getPrincipal());
+                    listener.itemRemoved(listMove.getKey(), listMove.getIndex(), listMove.getPlayer());
                 }
             } else if (move instanceof MapUpdateMove) {
                 Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();

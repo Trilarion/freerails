@@ -41,5 +41,5 @@ public interface ListMove extends Move {
     /**
      * @return
      */
-    Player getPrincipal();
+    Player getPlayer();
 }

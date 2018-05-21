@@ -43,7 +43,7 @@ import junit.framework.TestCase;
 public class BrokerScreenGeneratorTest extends TestCase {
 
     private int playerID;
-    private Player principal;
+    private Player player;
     private World world;
 
     /**
@@ -55,13 +55,13 @@ public class BrokerScreenGeneratorTest extends TestCase {
         world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
         // Set the time..
         world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
-        Player player = MapFixtureFactory.TEST_PLAYER;
+        Player playr = MapFixtureFactory.TEST_PLAYER;
 
-        AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
+        AddPlayerMove apm = AddPlayerMove.generateMove(world, playr);
         MoveStatus moveStatus = apm.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
         playerID = world.getNumberOfPlayers() - 1;
-        principal = player;
+        player = world.getPlayer(playerID);
     }
 
     /**
@@ -75,11 +75,11 @@ public class BrokerScreenGeneratorTest extends TestCase {
             Money sharePrice = stockPrice.treasuryBuyPrice;
             StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(playerID,
                     ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
-            Move move = new AddTransactionMove(principal, stockItemTransaction);
+            Move move = new AddTransactionMove(player, stockItemTransaction);
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assertTrue(moveStatus.succeeds());
             // The line below threw an exception that caused bug 1341365.
-            BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, principal);
+            BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, player);
             assertNotNull(brokerScreenGenerator);
         }
     }

@@ -46,17 +46,17 @@ import java.util.HashSet;
 public class TrainAccessor {
 
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
     private final int id;
 
     /**
      * @param world
-     * @param principal
+     * @param player
      * @param id
      */
-    public TrainAccessor(final UnmodifiableWorld world, final Player principal, final int id) {
+    public TrainAccessor(final UnmodifiableWorld world, final Player player, final int id) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
         this.id = id;
     }
 
@@ -105,8 +105,8 @@ public class TrainAccessor {
         Vec2D location = positionOnTrack.getLocation();
 
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
-            Station station = (Station) world.get(principal, PlayerKey.Stations, i);
+        for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
+            Station station = (Station) world.get(player, PlayerKey.Stations, i);
 
             if (null != station && location.equals(station.location)) {
                 return i; // train is at the station at location tempPoint
@@ -122,7 +122,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
-        ActivityIterator activityIterator = world.getActivities(principal, id);
+        ActivityIterator activityIterator = world.getActivities(player, id);
 
         // goto last
         activityIterator.gotoLastActivity();
@@ -153,7 +153,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainMotion findCurrentMotion(double time) {
-        ActivityIterator activityIterator = world.getActivities(principal, id);
+        ActivityIterator activityIterator = world.getActivities(player, id);
         boolean afterFinish = activityIterator.getFinishTime() < time;
         if (afterFinish) {
             activityIterator.gotoLastActivity();
@@ -165,7 +165,7 @@ public class TrainAccessor {
      * @return
      */
     public Train getTrain() {
-        return (Train) world.get(principal, PlayerKey.Trains, id);
+        return (Train) world.get(player, PlayerKey.Trains, id);
     }
 
     /**
@@ -173,7 +173,7 @@ public class TrainAccessor {
      */
     public ImmutableSchedule getSchedule() {
         Train train = getTrain();
-        return (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
+        return (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
     }
 
     /**
@@ -181,7 +181,7 @@ public class TrainAccessor {
      */
     public CargoBatchBundle getCargoBundle() {
         Train train = getTrain();
-        return (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, train.getCargoBundleID());
+        return (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleID());
     }
 
     /**
@@ -213,9 +213,9 @@ public class TrainAccessor {
      * towards.
      */
     public Vec2D getTargetLocation() {
-        Train train = (Train) world.get(principal, PlayerKey.Trains, id);
+        Train train = (Train) world.get(player, PlayerKey.Trains, id);
         int scheduleID = train.getScheduleID();
-        Schedule schedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
+        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {
@@ -223,7 +223,7 @@ public class TrainAccessor {
             return Vec2D.ZERO;
         }
 
-        Station station = (Station) world.get(principal, PlayerKey.Stations, stationNumber);
+        Station station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
         return station.location;
     }
 
@@ -263,8 +263,8 @@ public class TrainAccessor {
      */
     public ImmutableList<Integer> spaceAvailable() {
 
-        Train train = (Train) world.get(principal, PlayerKey.Trains, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, train.getCargoBundleID());
+        Train train = (Train) world.get(player, PlayerKey.Trains, id);
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleID());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
     }
 

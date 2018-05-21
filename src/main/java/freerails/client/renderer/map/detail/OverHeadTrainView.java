@@ -67,14 +67,14 @@ public class OverHeadTrainView implements Painter {
         Double time = (Double) modelRoot.getProperty(ModelRootProperty.TIME);
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player principal = world.getPlayer(k);
+            Player player = world.getPlayer(k);
 
-            for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
-                Train train = (Train) world.get(principal, PlayerKey.Trains, i);
+            for (int i = 0; i < world.size(player, PlayerKey.Trains); i++) {
+                Train train = (Train) world.get(player, PlayerKey.Trains, i);
 
                 // TrainPositionOnMap pos = (TrainPositionOnMap) world.get(
-                // principal, KEY.TRAIN_POSITIONS, i);
-                TrainAccessor ta = new TrainAccessor(world, principal, i);
+                // player, KEY.TRAIN_POSITIONS, i);
+                TrainAccessor ta = new TrainAccessor(world, player, i);
                 TrainPositionOnMap pos = ta.findPosition(time, newVisibleRectangle);
                 if (pos == null) continue;
                 if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= ModelConstants.TRAIN_CRASH_FRAMES_COUNT)) {

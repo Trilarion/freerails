@@ -37,13 +37,13 @@ public class RemoveItemFromListMove implements ListMove {
     private final Serializable item;
     private final PlayerKey playerKey;
     private final int index;
-    private final Player principal;
+    private final Player player;
 
-    public RemoveItemFromListMove(PlayerKey key, int i, Serializable item, Player principal) {
+    public RemoveItemFromListMove(PlayerKey key, int i, Serializable item, Player player) {
         this.item = item;
         playerKey = key;
         index = i;
-        this.principal = principal;
+        this.player = player;
     }
 
     public int getIndex() {
@@ -56,7 +56,7 @@ public class RemoveItemFromListMove implements ListMove {
         result = (item != null ? item.hashCode() : 0);
         result = 29 * result + playerKey.hashCode();
         result = 29 * result + index;
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
 
         return result;
     }
@@ -65,12 +65,12 @@ public class RemoveItemFromListMove implements ListMove {
         return playerKey;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
-        if (world.size(this.principal, playerKey) < (index + 1)) {
-            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, playerKey) + " but index =" + index);
+    public MoveStatus tryDoMove(World world, Player player) {
+        if (world.size(this.player, playerKey) < (index + 1)) {
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.player, playerKey) + " but index =" + index);
         }
 
-        Serializable item2remove = world.get(this.principal, playerKey, index);
+        Serializable item2remove = world.get(this.player, playerKey, index);
 
         if (null == item2remove) {
             return MoveStatus.moveFailed("The item at position " + index + " has already been removed.");
@@ -84,34 +84,34 @@ public class RemoveItemFromListMove implements ListMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
-        if (world.size(this.principal, playerKey) < (index + 1)) {
-            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.principal, playerKey) + " but index =" + index);
+    public MoveStatus tryUndoMove(World world, Player player) {
+        if (world.size(this.player, playerKey) < (index + 1)) {
+            return MoveStatus.moveFailed("world.size(listKey)=" + world.size(this.player, playerKey) + " but index =" + index);
         }
 
-        if (null != world.get(this.principal, playerKey, index)) {
-            String reason = "The item at position " + index + " in the list (" + world.get(this.principal, playerKey, index).toString() + ") is not the expected item (null).";
+        if (null != world.get(this.player, playerKey, index)) {
+            String reason = "The item at position " + index + " in the list (" + world.get(this.player, playerKey, index).toString() + ") is not the expected item (null).";
 
             return MoveStatus.moveFailed(reason);
         }
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
 
         if (moveStatus.succeeds()) {
-            world.set(this.principal, playerKey, index, null);
+            world.set(this.player, playerKey, index, null);
         }
 
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
 
         if (moveStatus.succeeds()) {
-            world.set(this.principal, playerKey, index, item);
+            world.set(this.player, playerKey, index, item);
         }
 
         return moveStatus;
@@ -138,7 +138,7 @@ public class RemoveItemFromListMove implements ListMove {
     /**
      * @return
      */
-    public Player getPrincipal() {
-        return principal;
+    public Player getPlayer() {
+        return player;
     }
 }

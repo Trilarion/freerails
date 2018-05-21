@@ -50,7 +50,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     private JButton trainListJButton;
     private WorldIterator worldIterator;
     private UnmodifiableWorld world;
-    private Player principal;
+    private Player player;
 
     public TrainDialoguePanel() {
         GridBagConstraints gridBagConstraints;
@@ -136,12 +136,12 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         newTrainSchedulePanel1.setup(modelRoot, rendererRoot, closeAction);
         trainDetailsJPanel1.setup(modelRoot, rendererRoot, closeAction);
         setCancelButtonActionListener(closeAction);
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
         world = modelRoot.getWorld();
     }
 
     public void display(int trainNumber) {
-        worldIterator = new NonNullElementWorldIterator(PlayerKey.Trains, world, principal);
+        worldIterator = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
         worldIterator.gotoIndex(trainNumber);
         if (worldIterator.getRowID() > 0) {
             previousJButton.setEnabled(true);
@@ -159,14 +159,14 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
-    public void listUpdated(PlayerKey key, int index, Player principal) {
-        newTrainSchedulePanel1.listUpdated(key, index, principal);
+    public void listUpdated(PlayerKey key, int index, Player player) {
+        newTrainSchedulePanel1.listUpdated(key, index, player);
     }
 
-    public void itemAdded(PlayerKey key, int index, Player principal) {
+    public void itemAdded(PlayerKey key, int index, Player player) {
     }
 
-    public void itemRemoved(PlayerKey key, int index, Player principal) {
+    public void itemRemoved(PlayerKey key, int index, Player player) {
     }
 
     void setTrainDetailsButtonActionListener(ActionListener l) {

@@ -59,37 +59,37 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      * @param from
      * @param direction
      * @param world
-     * @param principal
+     * @param player
      * @return
      */
-    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player principal) {
-        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, principal);
-        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), typeB, world, principal);
+    public static ChangeTrackPieceCompositeMove generateBuildTrackMove(Vec2D from, TileTransition direction, TrackType typeA, TrackType typeB, UnmodifiableWorld world, Player player) {
+        ChangeTrackPieceMove a = getBuildTrackChangeTrackPieceMove(from, direction, typeA, world, player);
+        ChangeTrackPieceMove b = getBuildTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), typeB, world, player);
 
-        return new ChangeTrackPieceCompositeMove(a, b, principal);
+        return new ChangeTrackPieceCompositeMove(a, b, player);
     }
 
     /**
      * @param from
      * @param direction
      * @param world
-     * @param principal
+     * @param player
      * @return
      * @throws Exception
      */
-    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, Player principal) throws Exception {
-        TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, principal);
-        TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, principal);
+    public static ChangeTrackPieceCompositeMove generateRemoveTrackMove(Vec2D from, TileTransition direction, UnmodifiableWorld world, Player player) throws Exception {
+        TrackMove a = getRemoveTrackChangeTrackPieceMove(from, direction, world, player);
+        TrackMove b = getRemoveTrackChangeTrackPieceMove(direction.createRelocatedPoint(from), direction.getOpposite(), world, player);
 
-        return new ChangeTrackPieceCompositeMove(a, b, principal);
+        return new ChangeTrackPieceCompositeMove(a, b, player);
     }
 
     // utility method.
-    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player principal) {
+    private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        int owner = WorldUtils.getPlayerIndex(world, principal);
+        int owner = WorldUtils.getPlayerIndex(world, player);
 
         if (world.boundsContain(p)) {
             oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
@@ -109,7 +109,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     // utility method.
-    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player principal) throws Exception {
+    private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
@@ -120,7 +120,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-                    int owner = WorldUtils.getPlayerIndex(world, principal);
+                    int owner = WorldUtils.getPlayerIndex(world, player);
                     newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), owner);
                 } else {
                     newTrackPiece = null;
@@ -139,7 +139,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
         // If we are removing a station, we also need to remove the station from the station list.
         if (oldTrackPiece.getTrackType().isStation() && !newTrackPiece.getTrackType().isStation()) {
-            return RemoveStationMove.getInstance(world, changeTrackPieceMove, principal);
+            return RemoveStationMove.getInstance(world, changeTrackPieceMove, player);
         }
         return changeTrackPieceMove;
     }
@@ -154,8 +154,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     /**
      * Returns true if some track has been built.
      */
-    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, Player principal) {
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
+    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, Player player) {
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setCategory(TransactionCategory.TRACK);
 
         return aggregator.calculateQuantity() > 0;
@@ -194,14 +194,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     @Override
-    public MoveStatus doMove(World world, Player principal) {
+    public MoveStatus doMove(World world, Player player) {
         MoveTrainMoveGenerator.clearCache();
-        return super.doMove(world, principal);
+        return super.doMove(world, player);
     }
 
     @Override
-    public MoveStatus undoMove(World world, Player principal) {
+    public MoveStatus undoMove(World world, Player player) {
         MoveTrainMoveGenerator.clearCache();
-        return super.undoMove(world, principal);
+        return super.undoMove(world, player);
     }
 }

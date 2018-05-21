@@ -36,20 +36,20 @@ public class AddItemToListMove implements ListMove {
     private static final long serialVersionUID = 3256721779916747824L;
     private final PlayerKey listPlayerKey;
     private final int index;
-    private final Player principal;
+    private final Player player;
     private final Serializable item;
 
     /**
      * @param playerKey
      * @param i
      * @param item
-     * @param principal
+     * @param player
      */
-    public AddItemToListMove(PlayerKey playerKey, int i, Serializable item, Player principal) {
+    public AddItemToListMove(PlayerKey playerKey, int i, Serializable item, Player player) {
         listPlayerKey = playerKey;
         index = i;
         this.item = item;
-        this.principal = principal;
+        this.player = player;
     }
 
     public int getIndex() {
@@ -61,7 +61,7 @@ public class AddItemToListMove implements ListMove {
         int result;
         result = listPlayerKey.hashCode();
         result = 29 * result + index;
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
         result = 29 * result + (item != null ? item.hashCode() : 0);
 
         return result;
@@ -71,39 +71,39 @@ public class AddItemToListMove implements ListMove {
         return listPlayerKey;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
-        if (world.size(this.principal, listPlayerKey) != index) {
-            return MoveStatus.moveFailed("Expected size of " + listPlayerKey.toString() + " list is " + index + " but actual size is " + world.size(this.principal, listPlayerKey));
+    public MoveStatus tryDoMove(World world, Player player) {
+        if (world.size(this.player, listPlayerKey) != index) {
+            return MoveStatus.moveFailed("Expected size of " + listPlayerKey.toString() + " list is " + index + " but actual size is " + world.size(this.player, listPlayerKey));
         }
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         int expectListSize = index + 1;
 
-        if (world.size(this.principal, listPlayerKey) != expectListSize) {
-            return MoveStatus.moveFailed("Expected size of " + listPlayerKey.toString() + " list is " + expectListSize + " but actual size is " + world.size(this.principal, listPlayerKey));
+        if (world.size(this.player, listPlayerKey) != expectListSize) {
+            return MoveStatus.moveFailed("Expected size of " + listPlayerKey.toString() + " list is " + expectListSize + " but actual size is " + world.size(this.player, listPlayerKey));
         }
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
 
         if (moveStatus.succeeds()) {
-            world.add(this.principal, listPlayerKey, item);
+            world.add(this.player, listPlayerKey, item);
         }
 
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
 
         if (moveStatus.succeeds()) {
-            world.removeLast(this.principal, listPlayerKey);
+            world.removeLast(this.player, listPlayerKey);
         }
 
         return moveStatus;
@@ -144,7 +144,7 @@ public class AddItemToListMove implements ListMove {
     /**
      * @return
      */
-    public Player getPrincipal() {
-        return principal;
+    public Player getPlayer() {
+        return player;
     }
 }

@@ -81,6 +81,6 @@ public class TrainOrderPanelSingle extends JPanel implements View {
         TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;
         trainViewJPanel.setHeight(15);
         trainViewJPanel.setup(modelRoot, rendererRoot, null);
-        trainOrderPanel.principal = modelRoot.getPrincipal();
+        trainOrderPanel.player = modelRoot.getPlayer();
     }
 }

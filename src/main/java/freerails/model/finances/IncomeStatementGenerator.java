@@ -33,15 +33,15 @@ import freerails.model.player.Player;
 public class IncomeStatementGenerator {
 
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
     private final GameCalendar cal;
     private final int startyear;
 
     public Money mailTotal;
 
-    public IncomeStatementGenerator(UnmodifiableWorld world, Player principal) {
+    public IncomeStatementGenerator(UnmodifiableWorld world, Player player) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
         cal = (GameCalendar) world.get(WorldItem.Calendar);
         GameTime time = world.currentTime();
         startyear = cal.getYear(time.getTicks());
@@ -70,9 +70,9 @@ public class IncomeStatementGenerator {
         long trackMaintenanceYtd = 0;
         long stationMaintenanceYtd = 0;
 
-        int numberOfTransactions = world.getNumberOfTransactions(this.principal);
+        int numberOfTransactions = world.getNumberOfTransactions(this.player);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
             if (transaction instanceof CargoDeliveryMoneyTransaction) {
@@ -167,9 +167,9 @@ public class IncomeStatementGenerator {
         // TODO use Money arithmetic
         long[] amount = new long[money.length];
 
-        int numberOfTransactions = world.getNumberOfTransactions(this.principal);
+        int numberOfTransactions = world.getNumberOfTransactions(this.player);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(principal, i);
+            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
             if (transaction instanceof CargoDeliveryMoneyTransaction && cal.getYear(time.getTicks()) >= this.startyear) {

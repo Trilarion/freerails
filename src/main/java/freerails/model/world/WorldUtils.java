@@ -14,12 +14,12 @@ public class WorldUtils {
      * Gets the player index in the world.
      *
      * @param world
-     * @param principal
+     * @param player
      * @return
      */
-    public static int getPlayerIndex(UnmodifiableWorld world, Player principal) {
+    public static int getPlayerIndex(UnmodifiableWorld world, Player player) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (world.getPlayer(i).equals(principal)) {
+            if (world.getPlayer(i).equals(player)) {
                 return i;
             }
         }

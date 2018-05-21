@@ -48,19 +48,19 @@ class BrokerScreenGenerator {
     /**
      * Creates a new instance of BrokerScreenGenerator
      */
-    public BrokerScreenGenerator(UnmodifiableWorld world, Player principal) {
-        FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, principal);
+    public BrokerScreenGenerator(UnmodifiableWorld world, Player player) {
+        FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, player);
 
-        int playerId = world.getID(principal);
+        int playerId = world.getID(player);
         String playername = world.getPlayer(playerId).getName();
 
         GameCalendar cal = (GameCalendar) world.get(WorldItem.Calendar);
         GameTime time = world.currentTime();
         final int startyear = cal.getYear(time.getTicks());
         String year = String.valueOf(startyear);
-        Money cash = world.getCurrentBalance(principal);
+        Money cash = world.getCurrentBalance(player);
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
 
         aggregator.setCategory(TransactionCategory.BOND);
         Money loansTotal = aggregator.calculateValue();

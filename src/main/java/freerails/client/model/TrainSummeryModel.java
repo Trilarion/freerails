@@ -39,7 +39,7 @@ public class TrainSummeryModel {
     private final Map<Integer, String> lastStations;
     private UnmodifiableWorld world = null;
     private int lastNrOfTransactions = 0;
-    private Player principal = null;
+    private Player player = null;
     private int maxTrainNum = 0;
     private long lastUpdate;
     private long lastStationUpdate;
@@ -55,14 +55,14 @@ public class TrainSummeryModel {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public void setWorld(UnmodifiableWorld world, Player principal) {
+    public void setWorld(UnmodifiableWorld world, Player player) {
         if (this.world != world) {
             this.world = world;
         }
-        if (this.principal != principal) {
-            this.principal = principal;
+        if (this.player != player) {
+            this.player = player;
         }
     }
 
@@ -71,7 +71,7 @@ public class TrainSummeryModel {
      * @return
      */
     public Money findTrainIncome(int trainNum) {
-        int numberOfTransactions = world.getNumberOfTransactions(principal);
+        int numberOfTransactions = world.getNumberOfTransactions(player);
         long currentTime = System.currentTimeMillis();
         if (lastUpdate + MINIMUM_WAIT_TIME > currentTime || numberOfTransactions == lastNrOfTransactions) {
             // not necessary ...
@@ -84,7 +84,7 @@ public class TrainSummeryModel {
             lastNrOfTransactions = numberOfTransactions;
             lastUpdate = currentTime;
         }
-        IncomeStatementGenerator income = new IncomeStatementGenerator(world, principal);
+        IncomeStatementGenerator income = new IncomeStatementGenerator(world, player);
         maxTrainNum = Math.max(maxTrainNum, trainNum);
         Money[] m = new Money[maxTrainNum + 1];
         income.calTrainRevenue(m);
@@ -108,7 +108,7 @@ public class TrainSummeryModel {
         }
         lastStationUpdate = currentTime;
         TrainOrders orders = null;
-        TrainOrdersListModel ordersList = new TrainOrdersListModel(world, trainNum, principal);
+        TrainOrdersListModel ordersList = new TrainOrdersListModel(world, trainNum, player);
         int size = ordersList.getSize();
         for (int i = 0; i < size; ++i) {
             TrainOrdersListElement element = (TrainOrdersListElement) ordersList.getElementAt(i);
@@ -117,7 +117,7 @@ public class TrainSummeryModel {
                 break;
             }
         }
-        Station station = (Station) world.get(principal, PlayerKey.Stations, orders.getStationID());
+        Station station = (Station) world.get(player, PlayerKey.Stations, orders.getStationID());
         String stationName = station.getStationName();
         lastStations.put(trainNum, stationName);
         return stationName;

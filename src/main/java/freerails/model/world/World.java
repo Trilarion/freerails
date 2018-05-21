@@ -204,40 +204,40 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param principal
+     * @param player
      * @param index
      * @param activity
      */
-    public void addActivity(Player principal, int index, Activity activity) {
-        int lastId = activities.get(principal).get(index).size() - 1;
-        ActivityAndTime last = activities.get(principal).get(index).get(lastId);
+    public void addActivity(Player player, int index, Activity activity) {
+        int lastId = activities.get(player).get(index).size() - 1;
+        ActivityAndTime last = activities.get(player).get(index).get(lastId);
         double duration = last.act.duration();
         double lastFinishTime = last.startTime + duration;
         double thisStartTime = Math.max(lastFinishTime, currentTime().getTicks());
         ActivityAndTime ant = new ActivityAndTime(activity, thisStartTime);
-        activities.get(principal).get(index).add(ant);
+        activities.get(player).get(index).add(ant);
     }
 
     /**
      * Appends the specified element to the end of the specified list and returns
      * the index that can be used to retrieve it.
      */
-    public int add(Player principal, PlayerKey playerKey, Serializable element) {
-        List<Serializable> serializables = playerLists.get(principal).get(playerKey);
+    public int add(Player player, PlayerKey playerKey, Serializable element) {
+        List<Serializable> serializables = playerLists.get(player).get(playerKey);
         serializables.add(element);
         return serializables.size() - 1;
     }
 
     /**
-     * @param principal
+     * @param player
      * @param element
      * @return
      */
-    public int addActiveEntity(Player principal, Activity element) {
-        int index = activities.get(principal).size();
-        activities.get(principal).put(index, new ArrayList<>());
+    public int addActiveEntity(Player player, Activity element) {
+        int index = activities.get(player).size();
+        activities.get(player).put(index, new ArrayList<>());
         ActivityAndTime ant = new ActivityAndTime(element, currentTime().getTicks());
-        activities.get(principal).get(index).add(ant);
+        activities.get(player).get(index).add(ant);
         return index;
     }
 
@@ -265,27 +265,27 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Adds the specified transaction to the specified principal's bank account.
+     * Adds the specified transaction to the specified player's bank account.
      */
-    public void addTransaction(Player principal, Transaction transaction) {
-        int playerIndex = principal.getWorldIndex();
+    public void addTransaction(Player player, Transaction transaction) {
+        int playerIndex = player.getId();
         TransactionRecord transactionRecord = new TransactionRecord(transaction, time);
-        transactionLogs.get(principal).add(transactionRecord);
+        transactionLogs.get(player).add(transactionRecord);
         Money oldBalance = currentBalance.get(playerIndex);
         Money newBalance = Money.add(transaction.price(), oldBalance);
         currentBalance.set(playerIndex, newBalance);
     }
 
     /**
-     * @param principal
+     * @param player
      * @param key
      * @param index
      * @return
      */
-    public boolean boundsContain(Player principal, PlayerKey key, int index) {
-        if (!isPlayer(principal)) {
+    public boolean boundsContain(Player player, PlayerKey key, int index) {
+        if (!isPlayer(player)) {
             return false;
-        } else return index >= 0 && index < size(principal, key);
+        } else return index >= 0 && index < size(player, key);
     }
 
     /**
@@ -352,8 +352,8 @@ public class World implements UnmodifiableWorld {
         return false;
     }
 
-    public Serializable get(Player principal, PlayerKey key, int index) {
-        return playerLists.get(principal).get(key).get(index);
+    public Serializable get(Player player, PlayerKey key, int index) {
+        return playerLists.get(player).get(key).get(index);
     }
 
     public Serializable get(WorldItem item) {
@@ -361,29 +361,29 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param principal
+     * @param player
      * @param index
      * @return
      */
-    public ActivityIterator getActivities(final Player principal, int index) {
-        return new ActivityIteratorImpl(this, principal, index);
+    public ActivityIterator getActivities(final Player player, int index) {
+        return new ActivityIteratorImpl(this, player, index);
     }
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    public Money getCurrentBalance(Player principal) {
-        int playerIndex = principal.getWorldIndex();
+    public Money getCurrentBalance(Player player) {
+        int playerIndex = player.getId();
         return currentBalance.get(playerIndex);
     }
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    public int getID(Player principal) {
-        return principal.getWorldIndex();
+    public int getID(Player player) {
+        return player.getId();
     }
 
     public Vec2D getMapSize() {
@@ -398,11 +398,11 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    public int getNumberOfTransactions(Player principal) {
-        return transactionLogs.get(principal).size();
+    public int getNumberOfTransactions(Player player) {
+        return transactionLogs.get(player).size();
     }
 
     /**
@@ -422,32 +422,32 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param principal
+     * @param player
      * @param i
      * @return
      */
-    public Transaction getTransaction(Player principal, int i) {
-        TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
+    public Transaction getTransaction(Player player, int i) {
+        TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
         return transactionRecord.getTransaction();
     }
 
     /**
-     * @param principal
+     * @param player
      * @param i
      * @return
      */
-    public GameTime getTransactionTimeStamp(Player principal, int i) {
-        TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
+    public GameTime getTransactionTimeStamp(Player player, int i) {
+        TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
         return transactionRecord.getTimestamp();
     }
 
     /**
-     * @param principal
+     * @param player
      * @param i
      * @return
      */
-    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player principal, int i) {
-        TransactionRecord transactionRecord = transactionLogs.get(principal).get(i);
+    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player player, int i) {
+        TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
         return new Pair<>(transactionRecord.getTransaction(), transactionRecord.getTimestamp());
     }
 
@@ -460,43 +460,43 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    public boolean isPlayer(Player principal) {
-        return principal.getWorldIndex() >= 0 && principal.getWorldIndex() < players.size();
+    public boolean isPlayer(Player player) {
+        return player.getId() >= 0 && player.getId() < players.size();
     }
 
     /**
      * Removes the last element from the specified list.
      */
-    public Serializable removeLast(Player principal, PlayerKey playerKey) {
-        List<Serializable> serializables = playerLists.get(principal).get(playerKey);
+    public Serializable removeLast(Player player, PlayerKey playerKey) {
+        List<Serializable> serializables = playerLists.get(player).get(playerKey);
         return serializables.remove(serializables.size() - 1);
     }
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    public Activity removeLastActiveEntity(Player principal) {
-        int lastId = activities.get(principal).size() - 1;
-        List<ActivityAndTime> serializables = activities.get(principal).get(lastId);
+    public Activity removeLastActiveEntity(Player player) {
+        int lastId = activities.get(player).size() - 1;
+        List<ActivityAndTime> serializables = activities.get(player).get(lastId);
         Activity act = serializables.remove(serializables.size() - 1).act;
-        activities.get(principal).remove(lastId);
+        activities.get(player).remove(lastId);
         return act;
     }
 
     /**
-     * @param principal
+     * @param player
      * @param index
      * @return
      */
-    public void removeLastActivity(Player principal, int index) {
-        if (activities.get(principal).get(index).size() < 2) {
+    public void removeLastActivity(Player player, int index) {
+        if (activities.get(player).get(index).size() < 2) {
             throw new IllegalStateException();
         }
-        List<ActivityAndTime> list = activities.get(principal).get(index);
+        List<ActivityAndTime> list = activities.get(player).get(index);
         list.remove(list.size() - 1);
       }
 
@@ -525,13 +525,13 @@ public class World implements UnmodifiableWorld {
 
     /**
      * Removes and returns the last transaction added the the specified
-     * principal's bank account. This method is only here so that moves that add
+     * player's bank account. This method is only here so that moves that add
      * transactions can be undone.
      */
-    public Transaction removeLastTransaction(Player principal) {
-        int playerIndex = principal.getWorldIndex();
+    public Transaction removeLastTransaction(Player player) {
+        int playerIndex = player.getId();
 
-        List<TransactionRecord> transactions = transactionLogs.get(principal);
+        List<TransactionRecord> transactions = transactionLogs.get(player);
         TransactionRecord transactionRecord = transactions.remove(transactions.size()-1);
 
         Money oldBalance = currentBalance.get(playerIndex);
@@ -544,8 +544,8 @@ public class World implements UnmodifiableWorld {
      * Replaces the element at the specified position in the specified list with
      * the specified element.
      */
-    public void set(Player principal, PlayerKey playerKey, int index, Serializable element) {
-        playerLists.get(principal).get(playerKey).set(index, element);
+    public void set(Player player, PlayerKey playerKey, int index, Serializable element) {
+        playerLists.get(player).get(playerKey).set(index, element);
     }
 
     /**
@@ -587,11 +587,11 @@ public class World implements UnmodifiableWorld {
         }
     }
 
-    public int size(Player principal) {
-        return activities.get(principal).size();
+    public int size(Player player) {
+        return activities.get(player).size();
     }
 
-    public int size(Player principal, PlayerKey key) {
-        return playerLists.get(principal).get(key).size();
+    public int size(Player player, PlayerKey key) {
+        return playerLists.get(player).get(key).size();
     }
 }

@@ -53,5 +53,5 @@ public interface MoveExecutor {
     /**
      * @return
      */
-    Player getPrincipal();
+    Player getPlayer();
 }

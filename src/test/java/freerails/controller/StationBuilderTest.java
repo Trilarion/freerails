@@ -48,7 +48,7 @@ public class StationBuilderTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         World world = MapFixtureFactory2.getCopy();
-        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
         ModelRoot modelRoot = new ModelRootImpl();
         trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
         stationBuilder = new StationBuilder(moveExecutor);

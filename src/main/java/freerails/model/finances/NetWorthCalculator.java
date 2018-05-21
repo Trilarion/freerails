@@ -29,15 +29,15 @@ public class NetWorthCalculator extends TransactionAggregator {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public NetWorthCalculator(UnmodifiableWorld world, Player principal) {
-        super(world, principal);
+    public NetWorthCalculator(UnmodifiableWorld world, Player player) {
+        super(world, player);
     }
 
     @Override
     protected boolean condition(int transactionID) {
-        Transaction transaction = super.world.getTransaction(super.principal, transactionID);
+        Transaction transaction = super.world.getTransaction(super.player, transactionID);
 
         if (transaction instanceof ItemTransaction) {
             return transaction.getCategory() == TransactionCategory.ISSUE_STOCK;

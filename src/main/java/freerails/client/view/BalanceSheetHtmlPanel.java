@@ -62,8 +62,8 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
 
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player playerPrincipal = modelRoot.getPrincipal();
-        BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world, playerPrincipal);
+        Player playerPlayer = modelRoot.getPlayer();
+        BalanceSheetGenerator balanceSheetGenerator = new BalanceSheetGenerator(world, playerPlayer);
         String populatedTemplate = populateTokens(template, balanceSheetGenerator);
         setHtml(populatedTemplate);
     }
@@ -72,8 +72,8 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
+        Player playerPlayer = modelRoot.getPlayer();
+        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPlayer);
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

@@ -70,8 +70,8 @@ public class StockPriceCalculator {
      * transaction for the specified player.
      */
     boolean isFirstYear(int playerId) {
-        Player principal = world.getPlayer(playerId);
-        GameTime firstTransactionTime = world.getTransactionTimeStamp(principal, 0);
+        Player player = world.getPlayer(playerId);
+        GameTime firstTransactionTime = world.getTransactionTimeStamp(player, 0);
         GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
         int year = calendar.getYear(firstTransactionTime.getTicks());
         GameTime currentTime = world.currentTime();
@@ -83,8 +83,8 @@ public class StockPriceCalculator {
      * Returns the players net worth at the start of this year.
      */
     public long netWorth(int playerId) {
-        Player principal = world.getPlayer(playerId);
-        NetWorthCalculator netWorthCalculator = new NetWorthCalculator(world, principal);
+        Player player = world.getPlayer(playerId);
+        NetWorthCalculator netWorthCalculator = new NetWorthCalculator(world, player);
 
         // Set the interval to beginning of time to start of this year.
         GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
@@ -113,7 +113,7 @@ public class StockPriceCalculator {
         TransactionAggregator aggregator = new TransactionAggregator(world, pr) {
             @Override
             protected boolean condition(int transactionID) {
-                Transaction transaction = super.world.getTransaction(super.principal, transactionID);
+                Transaction transaction = super.world.getTransaction(super.player, transactionID);
                 return !(transaction instanceof ItemTransaction);
             }
         };
@@ -129,8 +129,8 @@ public class StockPriceCalculator {
     }
 
     private int sharesOwnedByOtherPlayers(int playerId) {
-        Player principal = world.getPlayer(playerId);
-        FinancialDataGatherer gatherer = new FinancialDataGatherer(world, principal);
+        Player player = world.getPlayer(playerId);
+        FinancialDataGatherer gatherer = new FinancialDataGatherer(world, player);
         int[] stakes = gatherer.getStockInThisRRs();
         int total = 0;
         for (int i = 0; i < stakes.length; i++) {

@@ -37,7 +37,7 @@ public class CashLabel extends JLabel implements View {
 
     private static final long serialVersionUID = 3257853181542412341L;
     private UnmodifiableWorld world;
-    private Player principal;
+    private Player player;
 
     /**
      *
@@ -53,13 +53,13 @@ public class CashLabel extends JLabel implements View {
      */
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         if (null != world) {
-            Money m = world.getCurrentBalance(principal);
+            Money m = world.getCurrentBalance(player);
             String s = m.toString();
             setText('$' + s);
         }

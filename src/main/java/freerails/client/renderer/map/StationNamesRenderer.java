@@ -70,12 +70,12 @@ public class StationNamesRenderer implements Painter {
 
         // for all players
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player principal = world.getPlayer(i);
+            Player player = world.getPlayer(i);
 
             // draw station names onto map
 
             // for all stations of this player
-            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
             while (worldIterator.next()) { // loop over non null stations
                 Station station = (Station) worldIterator.getElement();
 

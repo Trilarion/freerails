@@ -42,16 +42,16 @@ public class TrackPathFinder implements IncrementalPathFinder {
     private static final Logger logger = Logger.getLogger(TrackPathFinder.class.getName());
     private final SimpleAStarPathFinder pathFinder = new SimpleAStarPathFinder();
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
     private Vec2D startPoint;
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public TrackPathFinder(UnmodifiableWorld world, Player principal) {
+    public TrackPathFinder(UnmodifiableWorld world, Player player) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
     }
 
     private static List<Vec2D> convertPathToPoints(List<Integer> path) {
@@ -193,7 +193,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
         int[] targetInts = findTargets(targetPoint);
         int[] startInts = findTargets(startPoint);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal, startPoint);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, player, startPoint);
         explorer.setBuildTrackStrategy(buildTrackStrategy);
 
         pathFinder.setupSearch(startInts, targetInts, explorer);

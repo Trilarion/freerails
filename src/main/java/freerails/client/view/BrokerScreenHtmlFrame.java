@@ -56,7 +56,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         private static final long serialVersionUID = 440368637080877578L;
 
         public void actionPerformed(ActionEvent e) {
-            Move bondTransaction = new AddTransactionMove(modelRoot.getPrincipal(), BondItemTransaction.repayBond(5));
+            Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), BondItemTransaction.repayBond(5));
             modelRoot.doMove(bondTransaction);
         }
     };
@@ -68,7 +68,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         public void actionPerformed(ActionEvent e) {
 
             if (financialDataGatherer.canIssueBond()) {
-                Move bondTransaction = new AddTransactionMove(modelRoot.getPrincipal(), BondItemTransaction.issueBond(financialDataGatherer.nextBondInterestRate()));
+                Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), BondItemTransaction.issueBond(financialDataGatherer.nextBondInterestRate()));
                 modelRoot.doMove(bondTransaction);
             }
         }
@@ -94,7 +94,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     @Override
     public void setup(final ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
         super.setup(m, rendererRoot, closeAction);
-        financialDataGatherer = new FinancialDataGatherer(m.getWorld(), m.getPrincipal());
+        financialDataGatherer = new FinancialDataGatherer(m.getWorld(), m.getPlayer());
         this.modelRoot = m;
 
         setupStockMenu();
@@ -107,7 +107,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     private void setupStockMenu() {
         stocks.removeAll();
         UnmodifiableWorld world = modelRoot.getWorld();
-        int thisPlayerId = world.getID(modelRoot.getPrincipal());
+        int thisPlayerId = world.getID(modelRoot.getPlayer());
         int numberOfPlayers = world.getNumberOfPlayers();
         buyStock = new Action[numberOfPlayers];
         sellStock = new Action[numberOfPlayers];
@@ -127,7 +127,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
                     StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
-                    Move move = new AddTransactionMove(modelRoot.getPrincipal(), stockItemTransaction);
+                    Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
                 }
@@ -141,7 +141,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
                     StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
-                    Move move = new AddTransactionMove(modelRoot.getPrincipal(), stockItemTransaction);
+                    Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
                 }
@@ -154,18 +154,18 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private void enableAndDisableActions() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player principal = modelRoot.getPrincipal();
+        Player player = modelRoot.getPlayer();
 
-        FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, principal);
+        FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, player);
 
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
         // TODO use Money arithmetic
-        long highestAffordablePrice = world.getCurrentBalance(principal).amount / ModelConstants.STOCK_BUNDLE_SIZE;
+        long highestAffordablePrice = world.getCurrentBalance(player).amount / ModelConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
         for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
             Player temp = modelRoot.getWorld().getPlayer(playerId);
-            Player otherPrincipal = temp;
-            FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPrincipal);
+            Player otherPlayer = temp;
+            FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPlayer);
 
             // If this RR has stock in other RR, then enable sell stock
             boolean hasStockInRR = thisDataGatherer.getStockInRRs()[playerId] > 0;
@@ -176,7 +176,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
             buyStock[playerId].setEnabled(isStockAvailable);
 
             // Don't let player buy 100% of treasury stock.
-            if (otherPrincipal.equals(principal)) {
+            if (otherPlayer.equals(player)) {
                 int treasuryStock = otherDataGatherer.treasuryStock();
                 int totalStock = otherDataGatherer.totalShares();
                 if (ModelConstants.STOCK_BUNDLE_SIZE + treasuryStock >= totalStock) {
@@ -199,9 +199,9 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player principal = modelRoot.getPrincipal();
+        Player player = modelRoot.getPlayer();
 
-        BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, principal);
+        BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, player);
 
         // this is where the Menu get Enable and Disable by if you own any stock
         // or if the TotalShares are 0
@@ -211,7 +211,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         populatedTemplate.append(populateTokens(template, brokerScreenGenerator));
 
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (!(world.getPlayer(i).equals(principal))) {
+            if (!(world.getPlayer(i).equals(player))) {
                 BrokerScreenGenerator temp = new BrokerScreenGenerator(world, world.getPlayer(i));
                 populatedTemplate.append(populateTokens(template, temp));
             }
@@ -227,8 +227,8 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
+        Player playerPlayer = modelRoot.getPlayer();
+        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPlayer);
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

@@ -30,17 +30,16 @@ import freerails.model.player.Player;
 public class SimpleMoveExecutor implements MoveExecutor {
 
     private final World world;
-    private final Player principal;
+    private final Player player;
 
     /**
      * @param world
-     * @param playerID
+     * @param player
      */
-    // TODO we really need principal here, have it as argument instead of playerID
-    public SimpleMoveExecutor(World world, int playerID) {
+    // TODO we really need player here, have it as argument instead of playerID
+    public SimpleMoveExecutor(World world, Player player) {
         this.world = world;
-        Player player = this.world.getPlayer(playerID);
-        principal = player;
+        this.player = player;
     }
 
     /**
@@ -48,7 +47,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus doMove(Move move) {
-        return move.doMove(world, principal);
+        return move.doMove(world, player);
     }
 
     /**
@@ -57,7 +56,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      */
     public MoveStatus doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
-        return move.doMove(world, principal);
+        return move.doMove(world, player);
     }
 
     /**
@@ -65,7 +64,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @return
      */
     public MoveStatus tryDoMove(Move move) {
-        return move.tryDoMove(world, principal);
+        return move.tryDoMove(world, player);
     }
 
     /**
@@ -78,8 +77,8 @@ public class SimpleMoveExecutor implements MoveExecutor {
     /**
      * @return
      */
-    public Player getPrincipal() {
-        return principal;
+    public Player getPlayer() {
+        return player;
     }
 
 }

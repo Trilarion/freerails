@@ -52,21 +52,21 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private final int engineId;
     private final ImmutableList<Integer> wagons;
     private final Vec2D point;
-    private final Player principal;
+    private final Player player;
     private final ImmutableSchedule schedule;
 
     /**
      * @param engineId
      * @param wagons
      * @param p
-     * @param principal
+     * @param player
      * @param schedule
      */
-    public AddTrainMoveGenerator(int engineId, ImmutableList<Integer> wagons, Vec2D p, Player principal, ImmutableSchedule schedule) {
+    public AddTrainMoveGenerator(int engineId, ImmutableList<Integer> wagons, Vec2D p, Player player, ImmutableSchedule schedule) {
         this.engineId = engineId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);
-        this.principal = Utils.verifyNotNull(principal);
+        this.player = Utils.verifyNotNull(player);
         this.schedule = Utils.verifyNotNull(schedule);
     }
 
@@ -79,7 +79,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
 
         if (engineId != addTrainPreMove.engineId) return false;
         if (!point.equals(addTrainPreMove.point)) return false;
-        if (!principal.equals(addTrainPreMove.principal)) return false;
+        if (!player.equals(addTrainPreMove.player)) return false;
         if (!schedule.equals(addTrainPreMove.schedule)) return false;
         return wagons.equals(addTrainPreMove.wagons);
     }
@@ -89,7 +89,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         int result;
         result = engineId;
         result = 29 * result + point.hashCode();
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
         result = 29 * result + schedule.hashCode();
         return result;
     }
@@ -139,18 +139,19 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      */
     public Move generate(UnmodifiableWorld world) {
         // Add cargo bundle.
-        int bundleId = world.size(principal, PlayerKey.CargoBundles);
+        int bundleId = world.size(player, PlayerKey.CargoBundles);
         ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;
-        AddItemToListMove addCargoBundle = new AddItemToListMove(PlayerKey.CargoBundles, bundleId, cargo, principal);
+        AddItemToListMove addCargoBundle = new AddItemToListMove(PlayerKey.CargoBundles, bundleId, cargo, player);
 
         // Add schedule
-        int scheduleId = world.size(principal, PlayerKey.TrainSchedules);
-        AddItemToListMove addSchedule = new AddItemToListMove(PlayerKey.TrainSchedules, scheduleId, schedule, principal);
+        int scheduleId = world.size(player, PlayerKey.TrainSchedules);
+        AddItemToListMove addSchedule = new AddItemToListMove(PlayerKey.TrainSchedules, scheduleId, schedule, player);
 
         // Add train to train list.
         Train train = new Train(engineId, wagons, scheduleId, bundleId);
-        int trainId = world.size(principal, PlayerKey.Trains);
-        AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, principal);
+        // TODO this is a quite good idea and ensures unique ids (should be done on the server side only)
+        int trainId = world.size(player, PlayerKey.Trains);
+        AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, player);
 
         // Pay for train.
         int quantity = 1;
@@ -158,13 +159,13 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         Engine engine = world.getEngine(engineId);
         Money price = engine.getPrice();
         Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineId, quantity, Money.opposite(price));
-        AddTransactionMove transactionMove = new AddTransactionMove(principal, transaction);
+        AddTransactionMove transactionMove = new AddTransactionMove(player, transaction);
 
         // Setup and add train position.
         PathOnTiles path = initPositionStep1(world);
         TrainMotion motion = initPositionStep2(path);
 
-        Move addPosition = new AddActiveEntityMove(motion, trainId, principal);
+        Move addPosition = new AddActiveEntityMove(motion, trainId, player);
 
         return new CompositeMove(addCargoBundle, addSchedule, addTrain, transactionMove, addPosition);
     }

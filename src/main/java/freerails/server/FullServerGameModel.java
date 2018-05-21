@@ -33,8 +33,7 @@ import freerails.move.GrowCitiesMove;
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.move.generator.BondInterestMoveGenerator;
-import freerails.move.listmove.ChangeCargoBundleMove;
-import freerails.move.listmove.ChangeStationMove;
+import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameSpeed;
@@ -74,14 +73,14 @@ public class FullServerGameModel implements ServerGameModel {
     public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
 
         for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player principal = world.getPlayer(k);
+            Player player = world.getPlayer(k);
 
-            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (nonNullStations.next()) {
                 Station station = (Station) nonNullStations.getElement();
                 StationSupply supply = station.getSupply();
-                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
+                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
                 MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
                 MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
                 int stationNumber = nonNullStations.getIndex();
@@ -121,7 +120,7 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                Move move = new ChangeCargoBundleMove(before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), station.getCargoBundleID(), principal);
+                Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, station.getCargoBundleID(), before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), player);
                 moveReceiver.process(move);
             }
         }
@@ -252,8 +251,8 @@ public class FullServerGameModel implements ServerGameModel {
      */
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player principal = world.getPlayer(i);
-            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+            Player player = world.getPlayer(i);
+            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (iterator.next()) {
                 Station stationBefore = (Station) iterator.getElement();
@@ -263,7 +262,7 @@ public class FullServerGameModel implements ServerGameModel {
                 Station stationAfter = supplyRate.calculations(stationBefore);
 
                 if (!stationAfter.equals(stationBefore)) {
-                    Move move = new ChangeStationMove(iterator.getIndex(), stationBefore, stationAfter, principal);
+                    Move move = new ChangeItemInListMove(PlayerKey.Stations, iterator.getIndex(), stationBefore, stationAfter, player);
                     moveReceiver.process(move);
                 }
             }

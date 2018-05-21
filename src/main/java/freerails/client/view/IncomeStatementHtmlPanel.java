@@ -62,8 +62,8 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
 
     private void updateHtml() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player playerPrincipal = modelRoot.getPrincipal();
-        IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(world, playerPrincipal);
+        Player playerPlayer = modelRoot.getPlayer();
+        IncomeStatementGenerator balanceSheetGenerator = new IncomeStatementGenerator(world, playerPlayer);
         balanceSheetGenerator.calculateAll();
         String populatedTemplate = populateTokens(template, balanceSheetGenerator);
         setHtml(populatedTemplate);
@@ -73,8 +73,8 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player playerPrincipal = modelRoot.getPrincipal();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPrincipal);
+        Player playerPlayer = modelRoot.getPlayer();
+        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPlayer);
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

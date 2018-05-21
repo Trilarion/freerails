@@ -45,8 +45,8 @@ public class ChangeCargoBundleMoveTest extends AbstractMoveTestCase {
         before.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         after.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 8);
 
-        Move move = new ChangeCargoBundleMove(before.toImmutableCargoBundle(),
-                after.toImmutableCargoBundle(), 0, MapFixtureFactory.TEST_PLAYER);
+        Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, 0, before.toImmutableCargoBundle(),
+                after.toImmutableCargoBundle(), MapFixtureFactory.TEST_PLAYER);
         assertSurvivesSerialisation(move);
 
         assertTryMoveFails(move);

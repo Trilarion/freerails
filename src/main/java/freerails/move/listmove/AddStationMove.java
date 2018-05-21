@@ -47,16 +47,16 @@ public class AddStationMove extends CompositeMove {
      * @param stationName
      * @param location
      * @param upgradeTrackMove
-     * @param principal
+     * @param player
      * @return
      */
-    public static AddStationMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player principal) {
-        int cargoBundleNumber = world.size(principal, PlayerKey.CargoBundles);
-        Move addCargoBundleMove = new AddCargoBundleMove(cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, principal);
-        int stationNumber = world.size(principal, PlayerKey.Stations);
+    public static AddStationMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
+        int cargoBundleNumber = world.size(player, PlayerKey.CargoBundles);
+        Move addCargoBundleMove = new AddItemToListMove(PlayerKey.CargoBundles, cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, player);
+        int stationNumber = world.size(player, PlayerKey.Stations);
         Station station = new Station(location, stationName, world.getCargos().size(), cargoBundleNumber);
 
-        Move addStation = new AddItemToListMove(PlayerKey.Stations, stationNumber, station, principal);
+        Move addStation = new AddItemToListMove(PlayerKey.Stations, stationNumber, station, player);
 
         return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
     }

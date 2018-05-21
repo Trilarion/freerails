@@ -24,6 +24,7 @@ package freerails.move;
 import freerails.model.player.Player;
 import freerails.model.track.TrackType;
 import freerails.model.world.*;
+import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vec2D;

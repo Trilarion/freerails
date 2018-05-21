@@ -77,9 +77,9 @@ public final class ChangeTrackPieceMove implements TrackMove {
         TrackType thisStationType = trackPiece.getTrackType();
         assert thisStationType.isStation();
 
-        for (int player = 0; player < world.getNumberOfPlayers(); player++) {
-            Player principal = world.getPlayer(player);
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            Player player = world.getPlayer(i);
+            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -194,7 +194,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return trackPieceAfter;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         return tryMove(world, trackPieceBefore, trackPieceAfter);
     }
 
@@ -281,13 +281,13 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         return tryMove(world, trackPieceAfter, trackPieceBefore);
     }
 
-    public MoveStatus doMove(World world, Player principal) {
+    public MoveStatus doMove(World world, Player player) {
         MoveTrainMoveGenerator.clearCache();
-        MoveStatus moveStatus = tryDoMove(world, principal);
+        MoveStatus moveStatus = tryDoMove(world, player);
 
         if (!moveStatus.succeeds()) {
             return moveStatus;
@@ -305,9 +305,9 @@ public final class ChangeTrackPieceMove implements TrackMove {
         world.setTile(location, newTile);
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
+    public MoveStatus undoMove(World world, Player player) {
         MoveTrainMoveGenerator.clearCache();
-        MoveStatus moveStatus = tryUndoMove(world, principal);
+        MoveStatus moveStatus = tryUndoMove(world, player);
 
         if (!moveStatus.succeeds()) {
             return moveStatus;

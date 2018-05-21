@@ -11,24 +11,24 @@ import freerails.model.world.World;
 public class GrowCitiesMove implements Move {
 
     @Override
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         return MoveStatus.MOVE_OK;
     }
 
     @Override
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         return MoveStatus.moveFailed("cannot undo grow cities move");
     }
 
     @Override
-    public MoveStatus doMove(World world, Player principal) {
+    public MoveStatus doMove(World world, Player player) {
         CityTilePositioner cityTilePositioner = new CityTilePositioner(world);
         cityTilePositioner.growCities();
         return MoveStatus.MOVE_OK;
     }
 
     @Override
-    public MoveStatus undoMove(World world, Player principal) {
+    public MoveStatus undoMove(World world, Player player) {
         return MoveStatus.moveFailed("cannot undo grow cities move");
     }
 }

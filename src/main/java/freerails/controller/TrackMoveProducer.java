@@ -24,6 +24,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
 import freerails.model.world.WorldUtils;
 import freerails.move.*;
+import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.UpgradeTrackMove;
 import freerails.util.Vec2D;
@@ -59,8 +60,8 @@ public class TrackMoveProducer {
     public TrackMoveProducer(MoveExecutor executor, UnmodifiableWorld world, ModelRoot modelRoot) {
         this.executor = executor;
         this.modelRoot = Utils.verifyNotNull(modelRoot);
-        Player principal = executor.getPrincipal();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
+        Player player = executor.getPlayer();
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
     }
 
@@ -74,8 +75,8 @@ public class TrackMoveProducer {
 
         UnmodifiableWorld world = executor.getWorld();
 
-        Player principal = executor.getPrincipal();
-        transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
+        Player player = executor.getPlayer();
+        transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
         setBuildTrackStrategy(BuildTrackStrategy.getDefault(world));
     }
 
@@ -108,14 +109,14 @@ public class TrackMoveProducer {
     public MoveStatus buildTrack(Vec2D from, TileTransition trackVector) {
 
         UnmodifiableWorld world = executor.getWorld();
-        Player principal = executor.getPrincipal();
+        Player player = executor.getPlayer();
         switch (getBuildMode()) {
             case IGNORE_TRACK: {
                 return MoveStatus.MOVE_OK;
             }
             case REMOVE_TRACK: {
                 try {
-                    ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from, trackVector, world, principal);
+                    ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateRemoveTrackMove(from, trackVector, world, player);
 
                     Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -176,7 +177,7 @@ public class TrackMoveProducer {
                 return MoveStatus.MOVE_OK;
             }
             case BUILD_TRACK: {
-                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, types[0], types[1], world, principal);
+                ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
 
                 Move moveAndTransaction = transactionsGenerator.addTransactions(move);
 
@@ -195,8 +196,8 @@ public class TrackMoveProducer {
             return MoveStatus.moveFailed("No track to upgrade.");
         }
 
-        Player principal = executor.getPrincipal();
-        int owner = WorldUtils.getPlayerIndex(world, principal);
+        Player player = executor.getPlayer();
+        int owner = WorldUtils.getPlayerIndex(world, player);
         TrackType trackType = world.getTrackType(trackRuleID);
         TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackType, owner);
 

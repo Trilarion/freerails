@@ -34,12 +34,12 @@ public class AddActiveEntityMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        Player principal = getPrincipal();
+        Player player = getPlayer();
         Activity a = new TestActivity(50);
-        AddActiveEntityMove move = new AddActiveEntityMove(a, 0, principal);
+        AddActiveEntityMove move = new AddActiveEntityMove(a, 0, player);
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);
-        AddActiveEntityMove move2 = new AddActiveEntityMove(a, 2, principal);
+        AddActiveEntityMove move2 = new AddActiveEntityMove(a, 2, player);
         assertTryMoveFails(move2);
     }
 

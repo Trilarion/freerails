@@ -23,7 +23,7 @@ package freerails.move.mapupdatemove;
 
 import freerails.move.CompositeMove;
 import freerails.move.Move;
-import freerails.move.listmove.ChangeTrainScheduleMove;
+import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
@@ -49,8 +49,8 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
         super(moves);
     }
 
-    public static TrackMove getInstance(UnmodifiableWorld world, ChangeTrackPieceMove removeTrackMove, Player principal) {
-        WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+    public static TrackMove getInstance(UnmodifiableWorld world, ChangeTrackPieceMove removeTrackMove, Player player) {
+        WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         int stationIndex = -1;
 
         while (worldIterator.next()) {
@@ -67,13 +67,13 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
             throw new IllegalArgumentException("Could find a station at " + removeTrackMove.getLocation());
         }
 
-        Station stationToRemove = (Station) world.get(principal, PlayerKey.Stations, stationIndex);
+        Station stationToRemove = (Station) world.get(player, PlayerKey.Stations, stationIndex);
         ArrayList<Move> moves = new ArrayList<>();
         moves.add(removeTrackMove);
-        moves.add(new RemoveItemFromListMove(PlayerKey.Stations, stationIndex, stationToRemove, principal));
+        moves.add(new RemoveItemFromListMove(PlayerKey.Stations, stationIndex, stationToRemove, player));
 
         // Now update any train schedules that include this station.
-        worldIterator = new NonNullElementWorldIterator(PlayerKey.TrainSchedules, world, principal);
+        worldIterator = new NonNullElementWorldIterator(PlayerKey.TrainSchedules, world, player);
 
         while (worldIterator.next()) {
             ImmutableSchedule schedule = (ImmutableSchedule) worldIterator.getElement();
@@ -82,7 +82,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
                 MutableSchedule mutableSchedule = new MutableSchedule(schedule);
                 mutableSchedule.removeAllStopsAtStation(stationIndex);
 
-                Move changeScheduleMove = new ChangeTrainScheduleMove(worldIterator.getIndex(), schedule, mutableSchedule.toImmutableSchedule(), principal);
+                Move changeScheduleMove = new ChangeItemInListMove(PlayerKey.TrainSchedules, worldIterator.getIndex(), schedule, mutableSchedule.toImmutableSchedule(), player);
                 moves.add(changeScheduleMove);
             }
         }

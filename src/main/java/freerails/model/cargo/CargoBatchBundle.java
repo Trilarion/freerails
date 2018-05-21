@@ -51,8 +51,9 @@ import java.util.Iterator;
  * <td>10</td>
  * </tr>
  * </table>
+ *
+ * Cargo bundles are used to represent the cargo carried by trains and the cargo waiting at stations).
  */
-
 public interface CargoBatchBundle {
 
     /**

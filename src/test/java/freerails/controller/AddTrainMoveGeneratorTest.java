@@ -40,7 +40,7 @@ import freerails.model.train.schedule.MutableSchedule;
  */
 public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
-    private Player principal;
+    private Player player;
     private ImmutableSchedule defaultSchedule;
     private Vec2D stationA;
 
@@ -51,8 +51,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     protected void setupWorld() {
         world = MapFixtureFactory2.getCopy();
         validEngineId = world.getEngines().iterator().next().getId();
-        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
-        principal = moveExecutor.getPrincipal();
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
+        player = moveExecutor.getPlayer();
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);
@@ -83,7 +83,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, principal, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
         assertDoMoveIsOk(move);
         assertUndoMoveIsOk(move);
@@ -95,12 +95,12 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
      * track.
      */
     public void testPathOnTiles() {
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, principal, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, principal, 0);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         TrainMotion motion = trainAccessor.findCurrentMotion(0);
         assertNotNull(motion);
         PathOnTiles path = motion.getTiles(motion.duration());
@@ -111,11 +111,11 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, principal, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
-        ActivityIterator ai = world.getActivities(principal, 0);
+        ActivityIterator ai = world.getActivities(player, 0);
         TrainMotion tm = (TrainMotion) ai.getActivity();
         assertEquals(0.0d, tm.duration());
         assertEquals(0.0d, tm.getSpeedAtEnd());
@@ -132,8 +132,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
      */
     public void testGetSchedule() {
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
-        principal = moveExecutor.getPrincipal();
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
+        player = moveExecutor.getPlayer();
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
@@ -145,13 +145,13 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(), from, principal, is);
+        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(), from, player, is);
         Move move = addTrain.generate(world);
-        moveStatus = move.doMove(world, principal);
+        moveStatus = move.doMove(world, player);
         if (!moveStatus.succeeds())
             throw new IllegalStateException(moveStatus.getMessage());
 
-        TrainAccessor ta = new TrainAccessor(world, principal, 0);
+        TrainAccessor ta = new TrainAccessor(world, player, 0);
         assertNotNull(ta.getTargetLocation());
     }
 }

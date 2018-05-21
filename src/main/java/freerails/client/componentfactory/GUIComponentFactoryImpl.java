@@ -127,7 +127,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     private void countStations() {
-        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
         boolean enabled;
 
         enabled = stations.size() > 0;
@@ -137,7 +137,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     private void countTrains() {
-        WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, modelRoot.getWorld(), modelRoot.getPrincipal());
+        WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, modelRoot.getWorld(), modelRoot.getPlayer());
         boolean enabled;
 
         enabled = trains.size() > 0;
@@ -389,14 +389,14 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void itemAdded(PlayerKey key, int index, Player principal) {
-        boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
+    public void itemAdded(PlayerKey key, int index, Player player) {
+        boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Trains == key && rightPrincipal) {
+        if (PlayerKey.Trains == key && rightPlayer) {
             countTrains();
-        } else if (PlayerKey.Stations == key && rightPrincipal) {
+        } else if (PlayerKey.Stations == key && rightPlayer) {
             countStations();
         }
     }
@@ -404,22 +404,22 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void itemRemoved(PlayerKey key, int index, Player principal) {
+    public void itemRemoved(PlayerKey key, int index, Player player) {
     }
 
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void listUpdated(PlayerKey key, int index, Player principal) {
-        boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
+    public void listUpdated(PlayerKey key, int index, Player player) {
+        boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Trains == key && rightPrincipal) {
+        if (PlayerKey.Trains == key && rightPlayer) {
             countTrains();
-        } else if (PlayerKey.Stations == key && rightPrincipal) {
+        } else if (PlayerKey.Stations == key && rightPlayer) {
             countStations();
         }
     }
@@ -501,7 +501,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         countStations();
         countTrains();
 
-        String name = modelRoot.getPrincipal().getName();
+        String name = modelRoot.getPlayer().getName();
         String serverDetails = (String) modelRoot.getProperty(ModelRootProperty.SERVER);
         String frameTitle;
         // frameTitle = name + " - Freerails";

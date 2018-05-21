@@ -106,7 +106,7 @@ public class DialogueBoxController implements WorldListListener {
         private static final long serialVersionUID = -1672545312581874156L;
 
         public void actionPerformed(ActionEvent e) {
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
 
             if (wi.next()) {
                 Station station = (Station) wi.getElement();
@@ -116,7 +116,7 @@ public class DialogueBoxController implements WorldListListener {
                 Integer[] wagonTypes = selectWagons.getWagons();
                 ImmutableList<TrainBlueprint> after = new ImmutableList<>(new TrainBlueprint(engineId, wagonTypes));
 
-                Move move = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPrincipal());
+                Move move = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPlayer());
                 modelRoot.doMove(move);
             }
             closeContent();
@@ -229,7 +229,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Trains, world, modelRoot.getPrincipal());
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Trains, world, modelRoot.getPlayer());
 
         if (!wi.next()) {
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
@@ -243,7 +243,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, modelRoot.getPrincipal());
+        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, modelRoot.getPlayer());
 
         if (!wi.next()) {
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
@@ -368,7 +368,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainList() {
-        if (world.size(modelRoot.getPrincipal(), PlayerKey.Trains) > 0) {
+        if (world.size(modelRoot.getPlayer(), PlayerKey.Trains) > 0) {
             final TrainListPanel trainList = new TrainListPanel();
             trainList.setup(modelRoot, vl, closeCurrentDialogue);
             trainList.setShowTrainDetailsActionListener(e -> {
@@ -497,7 +497,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param p
      */
     public void showStationOrTerrainInfo(Vec2D p) {
-        int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPrincipal(), p);
+        int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPlayer(), p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);
         } else {
@@ -509,26 +509,26 @@ public class DialogueBoxController implements WorldListListener {
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void listUpdated(PlayerKey key, int index, Player principal) {
+    public void listUpdated(PlayerKey key, int index, Player player) {
     }
 
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void itemAdded(PlayerKey key, int index, Player principal) {
+    public void itemAdded(PlayerKey key, int index, Player player) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
          * After building station show supply and demand
          */
-        boolean rightPrincipal = principal.equals(modelRoot.getPrincipal());
+        boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Trains == key && rightPrincipal) {
+        if (PlayerKey.Trains == key && rightPlayer) {
             showTrainOrders(index);
-        } else if (PlayerKey.Stations == key && rightPrincipal) {
+        } else if (PlayerKey.Stations == key && rightPlayer) {
             showStationInfo(index);
         }
     }
@@ -536,8 +536,8 @@ public class DialogueBoxController implements WorldListListener {
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void itemRemoved(PlayerKey key, int index, Player principal) {
+    public void itemRemoved(PlayerKey key, int index, Player player) {
     }
 }

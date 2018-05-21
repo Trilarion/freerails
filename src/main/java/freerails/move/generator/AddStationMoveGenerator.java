@@ -50,22 +50,22 @@ public class AddStationMoveGenerator implements MoveGenerator {
     private static final long serialVersionUID = 3258131349411148085L;
     private final Vec2D location;
     private final int ruleNumber;
-    private final Player principal;
+    private final Player player;
 
-    private AddStationMoveGenerator(Vec2D location, int trackRule, Player principal) {
+    private AddStationMoveGenerator(Vec2D location, int trackRule, Player player) {
         this.location = location;
         ruleNumber = trackRule;
-        this.principal = principal;
+        this.player = player;
     }
 
     /**
      * @param p
      * @param trackRule
-     * @param principal
+     * @param player
      * @return
      */
-    public static AddStationMoveGenerator newStation(Vec2D p, int trackRule, Player principal) {
-        return new AddStationMoveGenerator(p, trackRule, principal);
+    public static AddStationMoveGenerator newStation(Vec2D p, int trackRule, Player player) {
+        return new AddStationMoveGenerator(p, trackRule, player);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
 
         if (ruleNumber != addStationPreMove.ruleNumber) return false;
         if (!location.equals(addStationPreMove.location)) return false;
-        return principal.equals(addStationPreMove.principal);
+        return player.equals(addStationPreMove.player);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
         int result;
         result = location.hashCode();
         result = 29 * result + ruleNumber;
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
         return result;
     }
 
@@ -94,7 +94,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
      * @return
      */
     public Move generate(UnmodifiableWorld world) {
-        TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, principal);
+        TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
 
         TerrainTile oldTile = (TerrainTile) world.getTile(location);
         String cityName;
@@ -104,7 +104,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
         TrackPiece before = ft.getTrackPiece();
         TrackType trackType = world.getTrackType(ruleNumber);
 
-        int owner = WorldUtils.getPlayerIndex(world, principal);
+        int owner = WorldUtils.getPlayerIndex(world, player);
         TrackPiece after = new TrackPiece(before == null ? TrackConfiguration.from9bitTemplate(0) : before.getTrackConfiguration(), trackType, owner);
         Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
 
@@ -122,11 +122,11 @@ public class AddStationMoveGenerator implements MoveGenerator {
             } catch (NoSuchElementException e) {
                 // there are no cities, this should never happen during a proper
                 // game. However, some of the unit tests create stations when there are no cities.
-                stationName = "Central Station #" + world.size(principal, PlayerKey.Stations);
+                stationName = "Central Station #" + world.size(player, PlayerKey.Stations);
             }
 
             // check the terrain to see if we can build a station on it...
-            move = AddStationMove.generateMove(world, stationName, location, upgradeTrackMove, principal);
+            move = AddStationMove.generateMove(world, stationName, location, upgradeTrackMove, player);
             move = addSupplyAndDemand(move, world);
             move = transactionsGenerator.addTransactions(move);
         } else {
@@ -153,7 +153,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
                     CalculateCargoSupplyRateAtStation supplyRate;
                     supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location, ruleNumber);
                     Station stationAfter = supplyRate.calculations(station);
-                    moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPrincipal());
+                    moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPlayer());
                 }
             }
         }

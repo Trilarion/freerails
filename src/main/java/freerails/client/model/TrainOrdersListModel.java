@@ -46,17 +46,17 @@ public class TrainOrdersListModel extends AbstractListModel {
     private static final long serialVersionUID = 3762537827703009847L;
     private final int trainNumber;
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
 
     /**
      * @param world
      * @param trainNumber
-     * @param principal
+     * @param player
      */
-    public TrainOrdersListModel(UnmodifiableWorld world, int trainNumber, Player principal) {
+    public TrainOrdersListModel(UnmodifiableWorld world, int trainNumber, Player player) {
         this.trainNumber = trainNumber;
         this.world = world;
-        this.principal = principal;
+        this.player = player;
         assert (null != getSchedule());
     }
 
@@ -102,10 +102,10 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     private Schedule getSchedule() {
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
         ImmutableSchedule sched = null;
         if (train != null) {
-            sched = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
+            sched = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
         }
         return sched;
     }

@@ -407,8 +407,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         }
 
         try {
-            for (LogOnCredentials player : acceptedConnections.keySet()) {
-                Connection connection = acceptedConnections.get(player);
+            for (LogOnCredentials credentials : acceptedConnections.keySet()) {
+                Connection connection = acceptedConnections.get(credentials);
 
                 if (connection.isOpen()) {
                     List<Serializable> messages = connection.getReceivedObjects();
@@ -420,8 +420,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                             logger.debug(command.toString());
                             connection.sendObject(cStatus);
                         } else if (message instanceof Move || message instanceof MoveGenerator) {
-                            Player player2 = serverGameModel.getWorld().getPlayer(players.indexOf(player));
-                            Player principal = player2;
+                            Player player = serverGameModel.getWorld().getPlayer(players.indexOf(credentials));
 
                             Move move;
                             boolean isMove = message instanceof Move;
@@ -433,10 +432,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                                 move = moveGenerator.generate(serverGameModel.getWorld());
                             }
 
-                            MoveStatus mStatus = move.tryDoMove(serverGameModel.getWorld(), principal);
+                            MoveStatus mStatus = move.tryDoMove(serverGameModel.getWorld(), player);
 
                             if (mStatus.succeeds()) {
-                                move.doMove(serverGameModel.getWorld(), principal);
+                                move.doMove(serverGameModel.getWorld(), player);
 
                                 /*
                                  * We don't send the move to the client that
@@ -456,7 +455,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                     }
                 } else {
                     // Remove connection.
-                    removeConnection(player);
+                    removeConnection(credentials);
                 }
             }
         } catch (IOException e) {

@@ -237,7 +237,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
         assertEquals(MoveStatus.MOVE_OK, moveStatus);
     }
 
-    Player getPrincipal() {
+    Player getPlayer() {
         return world.getPlayer(0);
     }
 

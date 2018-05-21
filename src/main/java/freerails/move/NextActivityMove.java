@@ -33,19 +33,19 @@ public class NextActivityMove implements Move {
 
     private static final long serialVersionUID = -1783556069173689661L;
     private final Activity activity;
-    private final Player principal;
+    private final Player player;
     private final int index;
 
     /**
      * @param activity
      * @param index
-     * @param principal
+     * @param player
      */
-    public NextActivityMove(Activity activity, int index, Player principal) {
+    public NextActivityMove(Activity activity, int index, Player player) {
         this.activity = activity;
         this.index = index;
 
-        this.principal = principal;
+        this.player = player;
     }
 
     @Override
@@ -57,29 +57,29 @@ public class NextActivityMove implements Move {
 
         if (index != nextActivityMove.index) return false;
         if (!activity.equals(nextActivityMove.activity)) return false;
-        return principal.equals(nextActivityMove.principal);
+        return player.equals(nextActivityMove.player);
     }
 
     @Override
     public int hashCode() {
         int result;
         result = activity.hashCode();
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
 
         result = 29 * result + index;
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         // Check that active entity exists.
-        if (world.size(this.principal) <= index)
-            return MoveStatus.moveFailed("Index out of range. " + world.size(this.principal) + "<= " + index);
+        if (world.size(this.player) <= index)
+            return MoveStatus.moveFailed("Index out of range. " + world.size(this.player) + "<= " + index);
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
-        ActivityIterator ai = world.getActivities(this.principal, index);
+    public MoveStatus tryUndoMove(World world, Player player) {
+        ActivityIterator ai = world.getActivities(this.player, index);
         ai.gotoLastActivity();
 
         Activity act = ai.getActivity();
@@ -88,15 +88,15 @@ public class NextActivityMove implements Move {
         return MoveStatus.moveFailed("Expected " + activity + " but found " + act);
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
-        if (moveStatus.succeeds()) world.addActivity(this.principal, index, activity);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
+        if (moveStatus.succeeds()) world.addActivity(this.player, index, activity);
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
-        if (moveStatus.succeeds()) world.removeLastActivity(this.principal, index);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
+        if (moveStatus.succeeds()) world.removeLastActivity(this.player, index);
         return moveStatus;
     }
 }

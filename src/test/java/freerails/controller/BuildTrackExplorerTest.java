@@ -48,7 +48,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
     private World world;
-    private Player principal;
+    private Player player;
 
     /**
      * @throws Exception
@@ -67,7 +67,7 @@ public class BuildTrackExplorerTest extends TestCase {
         world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
         world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
-        principal = testPlayer;
+        player = testPlayer;
     }
 
     /**
@@ -80,7 +80,7 @@ public class BuildTrackExplorerTest extends TestCase {
         // Test starting in the middle of the map.
         start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.NORTH);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 9, explorer);
         assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
@@ -132,7 +132,7 @@ public class BuildTrackExplorerTest extends TestCase {
         // Test starting in the middle of the map.
         start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.NORTH);
 
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH_EAST, 11, 9, explorer);
         // We miss out SW, S, and SE since we don't want to double back on ourselves.
@@ -158,7 +158,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
         // If we enter 10, 10 from the south, we should be able to build track S & SW.
         PositionOnTrack start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.SOUTH);
-        BuildTrackExplorer explorer = new BuildTrackExplorer(world, principal);
+        BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
 
         // TODO this fails now and I don't know why, debugging postponed until the BuildTrackExplorer is investigated

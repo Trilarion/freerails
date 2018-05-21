@@ -25,11 +25,11 @@ public class ActivityIteratorImpl implements ActivityIterator {
     private ActivityAndTime activityAndTime;
 
     /**
-     * @param principal
+     * @param player
      * @param index
      */
-    public ActivityIteratorImpl(World world, Player principal, int index) {
-        currentList = world.activities.get(principal).get(index);
+    public ActivityIteratorImpl(World world, Player player, int index) {
+        currentList = world.activities.get(player).get(index);
         size = currentList.size();
         activityAndTime = currentList.get(activityIndex);
     }

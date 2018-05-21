@@ -88,12 +88,12 @@ public interface UnmodifiableWorld extends Serializable {
     boolean boundsContain(Vec2D location);
 
     /**
-     * @param principal
+     * @param player
      * @param key
      * @param index
      * @return
      */
-    boolean boundsContain(Player principal, PlayerKey key, int index);
+    boolean boundsContain(Player player, PlayerKey key, int index);
 
     /**
      * @return
@@ -108,26 +108,26 @@ public interface UnmodifiableWorld extends Serializable {
     /**
      * Returns the element at the specified position in the specified list.
      */
-    Serializable get(Player principal, PlayerKey key, int index);
+    Serializable get(Player player, PlayerKey key, int index);
 
     /**
-     * @param principal
+     * @param player
      * @param index
      * @return
      */
-    ActivityIterator getActivities(Player principal, int index);
+    ActivityIterator getActivities(Player player, int index);
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    Money getCurrentBalance(Player principal);
+    Money getCurrentBalance(Player player);
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    int getID(Player principal);
+    int getID(Player player);
 
     /**
      * Returns the width and height of the map in tiles.
@@ -142,10 +142,10 @@ public interface UnmodifiableWorld extends Serializable {
     int getNumberOfPlayers();
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    int getNumberOfTransactions(Player principal);
+    int getNumberOfTransactions(Player player);
 
     /**
      * @param i
@@ -159,39 +159,39 @@ public interface UnmodifiableWorld extends Serializable {
     Serializable getTile(Vec2D location);
 
     /**
-     * @param principal
+     * @param player
      * @param i
      * @return
      */
-    Transaction getTransaction(Player principal, int i);
+    Transaction getTransaction(Player player, int i);
 
     /**
-     * @param principal
+     * @param player
      * @param i
      * @return
      */
-    GameTime getTransactionTimeStamp(Player principal, int i);
+    GameTime getTransactionTimeStamp(Player player, int i);
 
     /**
-     * @param principal
+     * @param player
      * @param i
      * @return
      */
-    Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player principal, int i);
+    Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player player, int i);
 
     /**
-     * @param principal
+     * @param player
      * @return
      */
-    boolean isPlayer(Player principal);
+    boolean isPlayer(Player player);
 
     /**
      * Returns the number of elements in the specified list.
      */
-    int size(Player principal, PlayerKey key);
+    int size(Player player, PlayerKey key);
 
     /**
-     * Returns number of active entities belonging to the specified principal.
+     * Returns number of active entities belonging to the specified player.
      */
-    int size(Player principal);
+    int size(Player player);
 }

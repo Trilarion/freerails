@@ -18,72 +18,41 @@
 
 package freerails.model.player;
 
+import freerails.model.Identifiable;
 import freerails.util.Utils;
 
 import java.io.Serializable;
 
-// TODO derive Player from Identifiable
 // TODO on the client side, one should not create a player but a add new player move or so...
 /**
- * This interface identifies a principal. This interface may be extended in the
- * future in order to provide faster lookups, rather than using name
- * comparisons.
+ * This interface identifies a player.
  *
- * A principal represents an entity which can view or alter the game world. A
- * principal usually corresponds to a player's identity, but may also represent
+ * A player represents an entity which can view or alter the game world. A
+ * player usually corresponds to a user's identity, but may also represent
  * an authoritative server, or a another game entity such as a corporation.
  * All entities which may own game world objects must be represented by a
- * principal.
+ * player.
  */
-public class Player implements Serializable {
+public class Player extends Identifiable {
 
     private static final long serialVersionUID = 4673561105333981501L;
-    public static final Player AUTHORITATIVE = new Player(-1, "Authoritative Server");
-    // TODO what is the meaning of the world index/id? (position in player list and the other lists)
-    private final int id;
+    public static final Player AUTHORITATIVE = new Player(-1, "Authoritative player");
     private final String name;
 
     /**
      * @param id
      */
     public Player(int id, String name) {
-        this.id = id;
+        super(id);
         this.name = Utils.verifyNotNull(name);
     }
-
-    /**
-     * returns -1 if it's not a player
-     *
-     * @return the index in the world structures
-     */
-    public int getWorldIndex() {
-        return id;
-    }
-
 
     public String getName() {
         return name;
     }
 
     @Override
-    public int hashCode() {
-        return id;
-    }
-
-    @Override
     public String toString() {
-        return "Principal " + id;
+        return "Player: " + name + " " + String.valueOf(getId());
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Player)) return false;
-
-        final Player other = (Player) obj;
-
-        if (!(id == other.id)) return false;
-        return name.equals(other.name);
-    }
-
 }

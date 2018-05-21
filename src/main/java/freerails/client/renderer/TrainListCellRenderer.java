@@ -54,7 +54,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     private int scheduleOrderNumber;
     private int scheduleID = -1;
     private int height = 100;
-    private Player principal;
+    private Player player;
     private Image[] images = new Image[0];
     /**
      * Whether this JPanel should one of the trains orders from the schedule
@@ -98,7 +98,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         showingOrder = false;
         trainNumber = newTrainNumber;
 
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
         display(train.getEngineId(), train.getConsist());
         resetPreferredSize();
     }
@@ -135,10 +135,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
         scheduleOrderNumber = newScheduleOrderID;
 
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
         scheduleID = train.getScheduleID();
 
-        Schedule schedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
+        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         TrainOrders order = schedule.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
@@ -170,12 +170,12 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
         this.vl = rendererRoot;
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
     }
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, principal, index);
+        int trainID = NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, index);
         display(trainID);
 
         if (isSelected) {
@@ -222,9 +222,9 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void listUpdated(PlayerKey key, int index, Player principal) {
+    public void listUpdated(PlayerKey key, int index, Player player) {
         if (showingOrder) {
             if (PlayerKey.TrainSchedules == key && scheduleID == index) {
                 display(trainNumber, scheduleOrderNumber);
@@ -239,16 +239,16 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void itemAdded(PlayerKey key, int index, Player principal) {
+    public void itemAdded(PlayerKey key, int index, Player player) {
     }
 
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    public void itemRemoved(PlayerKey key, int index, Player principal) {
+    public void itemRemoved(PlayerKey key, int index, Player player) {
     }
 }

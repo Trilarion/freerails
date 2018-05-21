@@ -31,7 +31,7 @@ import freerails.model.world.UnmodifiableWorld;
 public abstract class TransactionAggregator {
 
     protected final UnmodifiableWorld world;
-    protected final Player principal;
+    protected final Player player;
     private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
     public Money[] monetaryTotals;
     public int runningTotal = 0;
@@ -39,11 +39,11 @@ public abstract class TransactionAggregator {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public TransactionAggregator(UnmodifiableWorld world, Player principal) {
+    public TransactionAggregator(UnmodifiableWorld world, Player player) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
     }
 
     /**
@@ -84,11 +84,11 @@ public abstract class TransactionAggregator {
         setTotalsArrayLength(timeValues.length - 1);
 
         int timeIndex = 0;
-        int numberOfTransactions = world.getNumberOfTransactions(principal);
+        int numberOfTransactions = world.getNumberOfTransactions(player);
         setTotalsArrayLength(timeValues.length - 1);
 
         for (int i = 0; i < numberOfTransactions; i++) {
-            GameTime time = world.getTransactionTimeStamp(principal, i);
+            GameTime time = world.getTransactionTimeStamp(player, i);
             int transactionTime = time.getTicks();
 
             while (timeValues[timeIndex].getTicks() <= transactionTime) {
@@ -145,7 +145,7 @@ public abstract class TransactionAggregator {
      * @param transactionID
      */
     protected void incrementRunningTotal(int transactionID) {
-        Transaction transaction = world.getTransaction(principal, transactionID);
+        Transaction transaction = world.getTransaction(player, transactionID);
         // TODO use Money arithmetic and use Money for runingTotal
         runningTotal += transaction.price().amount;
     }

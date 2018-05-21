@@ -52,16 +52,16 @@ public class TrackMaintenanceMoveGenerator {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      * @param category
      * @return
      */
-    private static Move generateMove(World world, Player principal, TransactionCategory category) {
+    private static Move generateMove(World world, Player player, TransactionCategory category) {
         if (TransactionCategory.TRACK_MAINTENANCE != category && TransactionCategory.STATION_MAINTENANCE != category) {
             throw new IllegalArgumentException(String.valueOf(category));
         }
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, principal);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setCategory(TransactionCategory.TRACK);
 
         long amount = 0;
@@ -81,7 +81,7 @@ public class TrackMaintenanceMoveGenerator {
 
         Transaction transaction = new MoneyTransaction(new Money(-amount), category);
 
-        return new AddTransactionMove(principal, transaction);
+        return new AddTransactionMove(player, transaction);
     }
 
     /**
@@ -89,11 +89,11 @@ public class TrackMaintenanceMoveGenerator {
      */
     public void update(World world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player principal = world.getPlayer(i);
-            Move move = generateMove(world, principal, TransactionCategory.TRACK_MAINTENANCE);
+            Player player = world.getPlayer(i);
+            Move move = generateMove(world, player, TransactionCategory.TRACK_MAINTENANCE);
             moveReceiver.process(move);
 
-            move = generateMove(world, principal, TransactionCategory.STATION_MAINTENANCE);
+            move = generateMove(world, player, TransactionCategory.STATION_MAINTENANCE);
             moveReceiver.process(move);
         }
     }

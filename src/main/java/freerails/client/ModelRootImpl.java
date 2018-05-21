@@ -48,7 +48,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     private final Collection<ModelRootListener> listeners = new ArrayList<>();
     private MoveChainFork moveFork = new MoveChainFork();
     private UntriedMoveReceiver moveReceiver;
-    private Player playerPrincipal;
+    private Player playerPlayer;
     private ServerCommandReceiver serverCommandReceiver;
     private UnmodifiableWorld world;
 
@@ -136,8 +136,8 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @return
      */
-    public Player getPrincipal() {
-        return Utils.verifyNotNull(playerPrincipal);
+    public Player getPlayer() {
+        return Utils.verifyNotNull(playerPlayer);
     }
 
     /**
@@ -204,11 +204,11 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * Updates the ModelRoot with those properties which are dependent upon the
      * world model. Call this when the world model is changed (e.g. new map is loaded)
      */
-    public void setup(UnmodifiableWorld world, Player principal) {
+    public void setup(UnmodifiableWorld world, Player player) {
         this.world = Utils.verifyNotNull(world);
-        assert principal != null;
-        assert world.isPlayer(principal);
-        playerPrincipal = principal;
+        assert player != null;
+        assert world.isPlayer(player);
+        playerPlayer = player;
         BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getDefault(world);
         setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }

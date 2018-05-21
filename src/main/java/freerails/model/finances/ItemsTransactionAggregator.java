@@ -34,10 +34,10 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public ItemsTransactionAggregator(UnmodifiableWorld world, Player principal) {
-        super(world, principal);
+    public ItemsTransactionAggregator(UnmodifiableWorld world, Player player) {
+        super(world, player);
     }
 
     /**
@@ -46,7 +46,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
      */
     @Override
     protected boolean condition(int transactionID) {
-        Transaction transaction = world.getTransaction(principal, transactionID);
+        Transaction transaction = world.getTransaction(player, transactionID);
 
         if (!(transaction instanceof ItemTransaction)) {
             return false;
@@ -74,7 +74,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
     protected void incrementRunningTotal(int transactionID) {
         super.incrementRunningTotal(transactionID);
 
-        Transaction transaction = world.getTransaction(principal, transactionID);
+        Transaction transaction = world.getTransaction(player, transactionID);
         ItemTransaction itemTransaction = (ItemTransaction) transaction;
         quantityRunningTotal += itemTransaction.getQuantity();
     }

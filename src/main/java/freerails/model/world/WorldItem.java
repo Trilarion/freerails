@@ -18,6 +18,7 @@
 
 package freerails.model.world;
 
+// TODO instead use getter and setter in the world
 /**
  * Provides a set of items to access the items of which there can only
  * be one instance in the game world (for example, the current time).

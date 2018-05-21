@@ -73,7 +73,7 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                     public void actionPerformed(ActionEvent e) {
                         Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainTypeId);
                         Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainTypeId, 1, Money.opposite(price));
-                        Move m2 = new AddTransactionMove(modelRoot.getPrincipal(), transaction);
+                        Move m2 = new AddTransactionMove(modelRoot.getPlayer(), transaction);
                         Move m3 = new CompositeMove(move, m2);
                         MoveStatus moveStatus = modelRoot.doMove(m3);
 

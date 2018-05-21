@@ -56,10 +56,10 @@ public class BuildTrackControllerTest extends TestCase {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
         modelRoot = new ModelRootImpl();
-        Player principal = world.getPlayer(0);
-        modelRoot.setup(world, principal);
+        Player player = world.getPlayer(0);
+        modelRoot.setup(world, player);
         buildTrackController = new BuildTrackController(world, modelRoot);
-        MoveExecutor executor = new SimpleMoveExecutor(world, 0);
+        MoveExecutor executor = new SimpleMoveExecutor(world, player);
         trackBuilder = new TrackMoveProducer(executor, world, modelRoot);
 
         for (TrackType trackType: world.getTrackTypes()) {

@@ -122,24 +122,23 @@ public class WorldTest extends TestCase {
         World world = new World.Builder().build();
         Player player = new Player(0, "Name");
         world.addPlayer(player);
-        Player principal = player;
 
         // Test adding activities.
-        assertEquals(0, world.size(principal));
+        assertEquals(0, world.size(player));
         Activity act = new TestActivity(30);
-        int actIndex = world.addActiveEntity(principal, act);
+        int actIndex = world.addActiveEntity(player, act);
         assertEquals(0, actIndex);
-        assertEquals(1, world.size(principal));
-        actIndex = world.addActiveEntity(principal, act);
+        assertEquals(1, world.size(player));
+        actIndex = world.addActiveEntity(player, act);
         assertEquals(1, actIndex);
-        assertEquals(2, world.size(principal));
+        assertEquals(2, world.size(player));
 
         // Then removing them.
         Activity expected = new TestActivity(30);
         assertEquals(expected, act);
-        Activity actual = world.removeLastActiveEntity(principal);
+        Activity actual = world.removeLastActiveEntity(player);
         assertEquals(actual, expected);
-        assertEquals(1, world.size(principal));
+        assertEquals(1, world.size(player));
     }
 
     /**
@@ -165,17 +164,17 @@ public class WorldTest extends TestCase {
         Player player = new Player(0, "Test");
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);
-        Player principal = world.getPlayer(playerID);
+        player = world.getPlayer(playerID);
         Transaction transaction = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(100));
-        assertEquals(new Money(0), world.getCurrentBalance(principal));
-        world.addTransaction(principal, transaction);
-        assertEquals(1, world.getNumberOfTransactions(principal));
-        assertEquals(new Money(100), world.getCurrentBalance(principal));
-        Transaction t2 = world.getTransaction(principal, 0);
+        assertEquals(new Money(0), world.getCurrentBalance(player));
+        world.addTransaction(player, transaction);
+        assertEquals(1, world.getNumberOfTransactions(player));
+        assertEquals(new Money(100), world.getCurrentBalance(player));
+        Transaction t2 = world.getTransaction(player, 0);
         assertEquals(transaction, t2);
-        Transaction t3 = world.removeLastTransaction(principal);
+        Transaction t3 = world.removeLastTransaction(player);
         assertEquals(transaction, t3);
-        assertEquals(new Money(0), world.getCurrentBalance(principal));
+        assertEquals(new Money(0), world.getCurrentBalance(player));
     }
 
 }

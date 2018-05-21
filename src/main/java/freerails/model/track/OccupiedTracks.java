@@ -35,16 +35,16 @@ public class OccupiedTracks {
     private final Map<Integer, List<TrackSection>> trainToTrackList;
 
     /**
-     * @param principal
+     * @param player
      * @param world
      */
-    public OccupiedTracks(Player principal, UnmodifiableWorld world) {
+    public OccupiedTracks(Player player, UnmodifiableWorld world) {
 
         occupiedTrackSections = new HashMap<>();
         trainToTrackList = new HashMap<>();
 
-        for (int i = 0; i < world.size(principal, PlayerKey.Trains); i++) {
-            TrainAccessor ta = new TrainAccessor(world, principal, i);
+        for (int i = 0; i < world.size(player, PlayerKey.Trains); i++) {
+            TrainAccessor ta = new TrainAccessor(world, player, i);
             GameTime gameTime = world.currentTime();
 
             if (ta.isMoving(gameTime.getTicks())) {

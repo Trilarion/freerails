@@ -32,21 +32,21 @@ public interface WorldListListener {
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    void listUpdated(PlayerKey key, int index, Player principal);
+    void listUpdated(PlayerKey key, int index, Player player);
 
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    void itemAdded(PlayerKey key, int index, Player principal);
+    void itemAdded(PlayerKey key, int index, Player player);
 
     /**
      * @param key
      * @param index
-     * @param principal
+     * @param player
      */
-    void itemRemoved(PlayerKey key, int index, Player principal);
+    void itemRemoved(PlayerKey key, int index, Player player);
 }

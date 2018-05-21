@@ -61,25 +61,25 @@ public interface Move extends Serializable {
      *
      * This method must leave the world object unchanged.
      */
-    MoveStatus tryDoMove(World world, Player principal);
+    MoveStatus tryDoMove(World world, Player player);
 
     /**
      * Tests whether this Move can be undone on the specified world object.
      *
      * This method must leave the world object unchanged.
      */
-    MoveStatus tryUndoMove(World world, Player principal);
+    MoveStatus tryUndoMove(World world, Player player);
 
     // TODO does this method also has to tryDoMove at the beginning
     /**
      * Executes this move on the specified world object.
      */
-    MoveStatus doMove(World world, Player principal);
+    MoveStatus doMove(World world, Player player);
 
     /**
      * If {@code doMove} has just been executed on the specified world
      * object, calling this method changes the state of the world object back to
      * how it was before {@code doMove} was called.
      */
-    MoveStatus undoMove(World world, Player principal);
+    MoveStatus undoMove(World world, Player player);
 }

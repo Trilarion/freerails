@@ -71,16 +71,16 @@ public class Station implements Serializable {
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(UnmodifiableWorld world, Player principal, Vec2D location) {
+    public static int getStationNumberAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
         TerrainTile tile = (TerrainTile) world.getTile(location);
         TrackPiece trackPiece = tile.getTrackPiece();
 
         if (trackPiece != null) {
             TrackType trackType = trackPiece.getTrackType();
-            if (trackType.isStation() && trackPiece.getOwnerID() == world.getID(principal)) {
+            if (trackType.isStation() && trackPiece.getOwnerID() == world.getID(player)) {
 
-                for (int i = 0; i < world.size(principal, PlayerKey.Stations); i++) {
-                    Station station = (Station) world.get(principal, PlayerKey.Stations, i);
+                for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
+                    Station station = (Station) world.get(player, PlayerKey.Stations, i);
 
                     if (null != station && location.equals(station.location)) {
                         return i;

@@ -47,7 +47,7 @@ public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
         bundleB.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         TestCase.assertEquals(bundleA, bundleB);
 
-        Move move = new RemoveCargoBundleMove(0, bundleB.toImmutableCargoBundle(), MapFixtureFactory.TEST_PLAYER);
+        Move move = new RemoveItemFromListMove(PlayerKey.CargoBundles, 0, bundleB.toImmutableCargoBundle(), MapFixtureFactory.TEST_PLAYER);
         assertSurvivesSerialisation(move);
 
         assertTryMoveFails(move);

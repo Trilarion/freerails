@@ -41,21 +41,21 @@ public class ChangeItemInListMove implements ListMove {
     private final int index;
     private final Serializable before;
     private final Serializable after;
-    private final Player principal;
+    private final Player player;
 
     /**
      * @param k
      * @param index
      * @param before
      * @param after
-     * @param principal
+     * @param player
      */
-    public ChangeItemInListMove(PlayerKey k, int index, Serializable before, Serializable after, Player principal) {
+    public ChangeItemInListMove(PlayerKey k, int index, Serializable before, Serializable after, Player player) {
         this.before = before;
         this.after = after;
         this.index = index;
         listPlayerKey = k;
-        this.principal = principal;
+        this.player = player;
     }
 
     /**
@@ -65,7 +65,7 @@ public class ChangeItemInListMove implements ListMove {
         return Utils.equal(before, after);
     }
 
-    public MoveStatus doMove(World world, Player principal) {
+    public MoveStatus doMove(World world, Player player) {
         return move(after, before, world);
     }
 
@@ -102,8 +102,8 @@ public class ChangeItemInListMove implements ListMove {
     /**
      * @return
      */
-    public Player getPrincipal() {
-        return principal;
+    public Player getPlayer() {
+        return player;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ChangeItemInListMove implements ListMove {
         result = 29 * result + index;
         result = 29 * result + (before != null ? before.hashCode() : 0);
         result = 29 * result + (after != null ? after.hashCode() : 0);
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
 
         return result;
     }
@@ -128,7 +128,7 @@ public class ChangeItemInListMove implements ListMove {
         MoveStatus moveStatus = tryMove(to, from, world);
 
         if (moveStatus.succeeds()) {
-            world.set(principal, listPlayerKey, index, to);
+            world.set(player, listPlayerKey, index, to);
         }
 
         return moveStatus;
@@ -139,7 +139,7 @@ public class ChangeItemInListMove implements ListMove {
         return getClass().getName() + " before: " + before.toString() + " after: " + after.toString();
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
+    public MoveStatus tryDoMove(World world, Player player) {
         return tryMove(after, before, world);
     }
 
@@ -150,11 +150,11 @@ public class ChangeItemInListMove implements ListMove {
      * @return
      */
     private MoveStatus tryMove(Serializable to, Serializable from, UnmodifiableWorld world) {
-        if (index >= world.size(principal, listPlayerKey)) {
-            return MoveStatus.moveFailed("world.size(listKey) is " + world.size(principal, listPlayerKey) + " but index is " + index);
+        if (index >= world.size(player, listPlayerKey)) {
+            return MoveStatus.moveFailed("world.size(listKey) is " + world.size(player, listPlayerKey) + " but index is " + index);
         }
 
-        Serializable item2change = world.get(principal, listPlayerKey, index);
+        Serializable item2change = world.get(player, listPlayerKey, index);
 
         if (null == item2change) {
             if (null == from) {
@@ -169,11 +169,11 @@ public class ChangeItemInListMove implements ListMove {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         return tryMove(before, after, world);
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
+    public MoveStatus undoMove(World world, Player player) {
         return move(before, after, world);
     }
 }

@@ -34,15 +34,15 @@ public class NearestStationFinder {
     public static final int NOT_FOUND = Integer.MIN_VALUE;
     public static final int MAX_DISTANCE_TO_SELECT_SQUARED = 20 * 20;
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public NearestStationFinder(UnmodifiableWorld world, Player principal) {
+    public NearestStationFinder(UnmodifiableWorld world, Player player) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
     }
 
     /**
@@ -71,7 +71,7 @@ public class NearestStationFinder {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         int nearestStation = NOT_FOUND;
 
         while (it.next()) {
@@ -96,9 +96,9 @@ public class NearestStationFinder {
      */
     public int findNearestStationInDirection(int startStation, TileTransition direction) {
         int distanceToClosestSquared = Integer.MAX_VALUE;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, principal);
+        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
-        Station currentStation = (Station) world.get(principal, PlayerKey.Stations, startStation);
+        Station currentStation = (Station) world.get(player, PlayerKey.Stations, startStation);
 
         int nearestStation = NOT_FOUND;
 

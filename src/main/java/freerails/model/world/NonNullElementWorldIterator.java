@@ -37,7 +37,7 @@ public class NonNullElementWorldIterator implements WorldIterator {
 
     private final PlayerKey playerKey;
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
     private int index = BEFORE_FIRST;
     private int row = BEFORE_FIRST;
     private int size = -1;
@@ -45,26 +45,26 @@ public class NonNullElementWorldIterator implements WorldIterator {
     /**
      * @param k
      * @param world
-     * @param principal
+     * @param player
      */
-    public NonNullElementWorldIterator(PlayerKey k, UnmodifiableWorld world, Player principal) {
+    public NonNullElementWorldIterator(PlayerKey k, UnmodifiableWorld world, Player player) {
         playerKey = Utils.verifyNotNull(k);
         this.world = Utils.verifyNotNull(world);
-        this.principal = Utils.verifyNotNull(principal);
+        this.player = Utils.verifyNotNull(player);
     }
 
     /**
      * @param world
      * @param playerKey
-     * @param principal
+     * @param player
      * @param row
      * @return
      */
-    public static int rowToIndex(UnmodifiableWorld world, PlayerKey playerKey, Player principal, int row) {
+    public static int rowToIndex(UnmodifiableWorld world, PlayerKey playerKey, Player player, int row) {
         int count = 0;
-        for (int i = 0; i < world.size(principal, playerKey); i++) {
+        for (int i = 0; i < world.size(player, playerKey); i++) {
 
-            if (world.get(principal, playerKey, i) != null) {
+            if (world.get(player, playerKey, i) != null) {
                 if (count == row) {
                     return i;
                 }
@@ -103,11 +103,11 @@ public class NonNullElementWorldIterator implements WorldIterator {
     }
 
     private Serializable listGet(int i) {
-        return world.get(principal, playerKey, i);
+        return world.get(player, playerKey, i);
     }
 
     private int listSize() {
-        return world.size(principal, playerKey);
+        return world.size(player, playerKey);
     }
 
     public int getIndex() {

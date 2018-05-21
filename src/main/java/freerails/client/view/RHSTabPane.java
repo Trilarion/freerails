@@ -147,7 +147,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that
-            int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPrincipal(), location);
+            int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPlayer(), location);
             if (stationNumberAtLocation > -1) {
                 stationInfoPanel.setStation(stationNumberAtLocation);
                 setSelectedIndex(stationInfoIndex);

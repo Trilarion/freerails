@@ -23,7 +23,7 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.cargo.Cargo;
 import freerails.model.world.*;
-import freerails.move.listmove.ChangeTrainScheduleMove;
+import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.Move;
 import freerails.util.ImmutableList;
 import freerails.util.Utils;
@@ -417,11 +417,11 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     public void display(int newTrainNumber) {
         trainNumber = newTrainNumber;
-        Player principal = modelRoot.getPrincipal();
+        Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = (Train) world.get(principal, PlayerKey.Trains, newTrainNumber);
+        Train train = (Train) world.get(player, PlayerKey.Trains, newTrainNumber);
         scheduleID = train.getScheduleID();
-        listModel = new TrainOrdersListModel(world, newTrainNumber, principal);
+        listModel = new TrainOrdersListModel(world, newTrainNumber, player);
         orders.setModel(listModel);
         orders.setFixedCellWidth(250);
         listModel.fireRefresh();
@@ -437,10 +437,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private MutableSchedule getSchedule() {
-        Player principal = modelRoot.getPrincipal();
+        Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
-        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, train.getScheduleID());
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
+        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
         return new MutableSchedule(immutableSchedule);
     }
 
@@ -449,7 +449,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
      * exists: this method returns the id of the first station that exists.
      */
     private int getFirstStationID() {
-        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPrincipal());
+        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
         if (stations.next()) {
             return stations.getIndex();
         }
@@ -565,27 +565,27 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void sendUpdateMove(MutableSchedule mutableSchedule) {
-        Player principal = modelRoot.getPrincipal();
+        Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = (Train) world.get(principal, PlayerKey.Trains, trainNumber);
+        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
         // int scheduleID = train.getScheduleID();
         assert (scheduleID == train.getScheduleID());
-        ImmutableSchedule before = (ImmutableSchedule) world.get(principal, PlayerKey.TrainSchedules, scheduleID);
+        ImmutableSchedule before = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
-        Move move = new ChangeTrainScheduleMove(scheduleID, before, after, principal);
+        Move move = new ChangeItemInListMove(PlayerKey.TrainSchedules, scheduleID, before, after, player);
         modelRoot.doMove(move);
     }
 
-    public void listUpdated(PlayerKey key, int index, Player principal) {
+    public void listUpdated(PlayerKey key, int index, Player player) {
         if (PlayerKey.TrainSchedules == key && scheduleID == index) {
             listModel.fireRefresh();
             enableButtons();
         }
     }
 
-    public void itemAdded(PlayerKey key, int index, Player principal) {}
+    public void itemAdded(PlayerKey key, int index, Player player) {}
 
-    public void itemRemoved(PlayerKey key, int index, Player principal) {}
+    public void itemRemoved(PlayerKey key, int index, Player player) {}
 
     /**
      * Show the popup that lets the user select a station, called when a new

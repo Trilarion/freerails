@@ -57,7 +57,7 @@ public class BuildTrackController implements GameModel {
     private final ModelRoot modelRoot;
     private final TrackPathFinder trackPathFinder;
     private final PathOnTrackFinder pathOnTrackFinder;
-    private final Player principal;
+    private final Player player;
     private final UnmodifiableWorld unmodifiableWorld;
     private World world;
     private final Map<Vec2D, TrackPiece> proposedTrack = new HashMap<>();
@@ -77,10 +77,10 @@ public class BuildTrackController implements GameModel {
     public BuildTrackController(UnmodifiableWorld unmodifiableWorld, ModelRoot modelRoot) {
         world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
         this.unmodifiableWorld = unmodifiableWorld;
-        trackPathFinder = new TrackPathFinder(unmodifiableWorld, modelRoot.getPrincipal());
+        trackPathFinder = new TrackPathFinder(unmodifiableWorld, modelRoot.getPlayer());
         pathOnTrackFinder = new PathOnTrackFinder(unmodifiableWorld);
         this.modelRoot = modelRoot;
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
         this.modelRoot.setProperty(ModelRootProperty.PROPOSED_TRACK, proposedTrack);
     }
 
@@ -236,7 +236,7 @@ public class BuildTrackController implements GameModel {
         int trackTypeBID = buildTrackStrategy.getRule(tileB.getTerrainTypeId());
         TrackType trackTypeB = unmodifiableWorld.getTrackType(trackTypeBID);
 
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, principal);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(point, tileTransition, trackTypeA, trackTypeB, world, player);
 
         // add to proposed track
         ChangeTrackPieceMove m = (ChangeTrackPieceMove) move.getMove(0);
@@ -244,7 +244,7 @@ public class BuildTrackController implements GameModel {
         m = (ChangeTrackPieceMove) move.getMove(1);
         proposedTrack.put(m.location, m.trackPieceAfter);
 
-        return move.doMove(world, principal);
+        return move.doMove(world, player);
     }
 
     /**
@@ -402,7 +402,7 @@ public class BuildTrackController implements GameModel {
                 BuildMode mode = getBuildMode();
 
                 Vec2D location = new Vec2D(startPoint);
-                Player fp = modelRoot.getPrincipal();
+                Player fp = modelRoot.getPlayer();
                 for (TileTransition v : path) {
                     Move move;
                     attemptMove:

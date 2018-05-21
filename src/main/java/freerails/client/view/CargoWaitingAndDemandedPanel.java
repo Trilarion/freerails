@@ -51,7 +51,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3760559784860071476L;
     private UnmodifiableWorld world;
-    private Player principal;
+    private Player player;
     private JList demandsJList;
     private JLabel stationName;
     private JTable waitingJTable;
@@ -155,16 +155,16 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
      */
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
-        principal = modelRoot.getPrincipal();
+        player = modelRoot.getPlayer();
     }
 
     /**
      * @param newStationID
      */
     public void display(int newStationID) {
-        Station station = (Station) world.get(principal, PlayerKey.Stations, newStationID);
+        Station station = (Station) world.get(player, PlayerKey.Stations, newStationID);
         stationName.setText(station.getStationName());
-        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(principal, PlayerKey.CargoBundles, station.getCargoBundleID());
+        final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
 
         // count the number of cargo types waiting and demanded.
         final List<String> typeWaiting = new ArrayList<>();

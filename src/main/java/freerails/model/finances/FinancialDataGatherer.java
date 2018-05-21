@@ -39,13 +39,13 @@ public class FinancialDataGatherer extends TransactionAggregator {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public FinancialDataGatherer(UnmodifiableWorld world, Player principal) {
-        super(world, principal);
+    public FinancialDataGatherer(UnmodifiableWorld world, Player player) {
+        super(world, player);
         stockInRRs = new int[world.getNumberOfPlayers()];
         calculateValues();
-        playerID = world.getID(principal);
+        playerID = world.getID(player);
     }
 
     /**
@@ -53,7 +53,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     @Override
     protected void incrementRunningTotal(int transactionID) {
-        Transaction transaction = super.world.getTransaction(super.principal, transactionID);
+        Transaction transaction = super.world.getTransaction(super.player, transactionID);
 
         if (transaction instanceof ItemTransaction) {
             ItemTransaction ait = (ItemTransaction) transaction;
@@ -118,7 +118,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      * @return
      */
     public Money netWorth() {
-        NetWorthCalculator nwc = new NetWorthCalculator(world, principal);
+        NetWorthCalculator nwc = new NetWorthCalculator(world, player);
         GameTime[] times = {GameTime.BIG_BANG, GameTime.DOOMSDAY};
         nwc.setTimes(times);
         return nwc.calculateValue();

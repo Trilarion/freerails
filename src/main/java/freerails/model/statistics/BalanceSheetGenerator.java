@@ -35,19 +35,19 @@ public class BalanceSheetGenerator {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public BalanceSheetGenerator(UnmodifiableWorld world, Player principal) {
+    public BalanceSheetGenerator(UnmodifiableWorld world, Player player) {
         GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
         // Calculate totals
         GameTime time = world.currentTime();
         final int startYear = calendar.getYear(time.getTicks());
         GameTime startOfYear = new GameTime(calendar.getTicks(startYear));
         GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
-        total = new Statistics(world, principal, totalTimeInterval);
+        total = new Statistics(world, player, totalTimeInterval);
 
         GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
-        ytd = new Statistics(world, principal, ytdTimeInterval);
+        ytd = new Statistics(world, player, ytdTimeInterval);
     }
 
 }

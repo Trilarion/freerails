@@ -54,8 +54,8 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
-        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, 0);
-        Player principal = moveExecutor.getPrincipal();
+        MoveExecutor moveExecutor = new SimpleMoveExecutor(world, world.getPlayer(0));
+        Player player = moveExecutor.getPlayer();
         ModelRoot modelRoot = new ModelRootImpl();
         TrackMoveProducer trackBuilder = new TrackMoveProducer(moveExecutor, world, modelRoot);
         StationBuilder stationBuilder = new StationBuilder(moveExecutor);

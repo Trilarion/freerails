@@ -43,7 +43,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
     private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
-    private final Player principal;
+    private final Player player;
     private boolean beforeFirst = true;
     private int directionInt = 0;
     private BuildTrackStrategy buildTrackStrategy;
@@ -51,20 +51,20 @@ public class BuildTrackExplorer implements GraphExplorer {
 
     /**
      * @param world
-     * @param principal
+     * @param player
      */
-    public BuildTrackExplorer(UnmodifiableWorld world, Player principal) {
-        this(world, principal, null);
+    public BuildTrackExplorer(UnmodifiableWorld world, Player player) {
+        this(world, player, null);
     }
 
     /**
      * @param world
-     * @param principal
+     * @param player
      * @param start
      */
-    public BuildTrackExplorer(UnmodifiableWorld world, Player principal, Vec2D start) {
+    public BuildTrackExplorer(UnmodifiableWorld world, Player player, Vec2D start) {
         this.world = world;
-        this.principal = principal;
+        this.player = player;
         PositionOnTrack pos;
 
         if (null == start) {
@@ -117,7 +117,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
-            if (nextTile.getTrackPiece().getOwnerID() != world.getID(principal)) {
+            if (nextTile.getTrackPiece().getOwnerID() != world.getID(player)) {
                 return false;
             }
         }

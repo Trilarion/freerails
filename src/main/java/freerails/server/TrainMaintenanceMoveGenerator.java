@@ -55,13 +55,13 @@ public class TrainMaintenanceMoveGenerator {
      */
     public void update(World world) {
         for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player principal = world.getPlayer(i);
-            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, principal);
+            Player player = world.getPlayer(i);
+            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
             int numberOfTrains = trains.size();
             long amount = numberOfTrains * 5000;
             Transaction transaction = new MoneyTransaction(new Money(-amount), TransactionCategory.TRAIN_MAINTENANCE);
 
-            Move move = new AddTransactionMove(principal, transaction);
+            Move move = new AddTransactionMove(player, transaction);
             moveReceiver.process(move);
         }
     }

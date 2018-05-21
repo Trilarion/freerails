@@ -90,7 +90,7 @@ public class UserMessageGenerator implements MoveReceiver {
             Move move = moves.getMoves().get(i);
             if (move instanceof AddTransactionMove) {
                 AddTransactionMove atm = (AddTransactionMove) move;
-                if (!atm.getPrincipal().equals(modelRoot.getPrincipal())) {
+                if (!atm.getPlayer().equals(modelRoot.getPlayer())) {
                     // We don't want to know about other players' income!
                     return;
                 }
@@ -113,7 +113,7 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(trainId + 1); // So that the first train
             // is #1, not #0.
             message.append(" arrives at ");
-            Station station = (Station) world.get(modelRoot.getPrincipal(), PlayerKey.Stations, stationId);
+            Station station = (Station) world.get(modelRoot.getPlayer(), PlayerKey.Stations, stationId);
             message.append(station.getStationName());
             message.append('\n');
             Money revenue = Money.ZERO;

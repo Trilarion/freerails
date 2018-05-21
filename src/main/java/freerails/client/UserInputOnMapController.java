@@ -224,7 +224,7 @@ public class UserInputOnMapController extends KeyAdapter {
                     ServerControlModel cont = actionRoot.getServerControls();
                     // String name = JOptionPane.showInputDialog(null, "Saved Game
                     // Name:","Save
-                    // Game",JOptionPane.QUESTION_MESSAGE,null,null,modelRoot.getPrincipal().getName()).toString();
+                    // Game",JOptionPane.QUESTION_MESSAGE,null,null,modelRoot.getPlayer().getName()).toString();
                     // modelRoot.setProperty(Property.QUICK_MESSAGE, name);
                     cont.getSaveGameAction().actionPerformed(null);
                 }

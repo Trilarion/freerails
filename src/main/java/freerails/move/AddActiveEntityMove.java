@@ -37,19 +37,19 @@ public class AddActiveEntityMove implements Move {
 
     private static final long serialVersionUID = 8732702087937675013L;
     private final Activity activity;
-    private final Player principal;
+    private final Player player;
     private final int index;
 
     /**
      * @param activity
      * @param index
-     * @param principal
+     * @param player
      */
-    public AddActiveEntityMove(Activity activity, int index, Player principal) {
+    public AddActiveEntityMove(Activity activity, int index, Player player) {
         this.activity = activity;
         this.index = index;
 
-        this.principal = principal;
+        this.player = player;
     }
 
     @Override
@@ -62,31 +62,31 @@ public class AddActiveEntityMove implements Move {
         if (index != addActiveEntityMove.index) return false;
         if (!activity.equals(addActiveEntityMove.activity)) return false;
 
-        return principal.equals(addActiveEntityMove.principal);
+        return player.equals(addActiveEntityMove.player);
     }
 
     @Override
     public int hashCode() {
         int result;
         result = activity.hashCode();
-        result = 29 * result + principal.hashCode();
+        result = 29 * result + player.hashCode();
 
         result = 29 * result + index;
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player principal) {
-        if (index != world.size(this.principal)) return MoveStatus.moveFailed("index != world.size(listKey, p)");
+    public MoveStatus tryDoMove(World world, Player player) {
+        if (index != world.size(this.player)) return MoveStatus.moveFailed("index != world.size(listKey, p)");
 
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player principal) {
+    public MoveStatus tryUndoMove(World world, Player player) {
         int expectedSize = index + 1;
-        if (expectedSize != world.size(this.principal))
-            return MoveStatus.moveFailed("(index + 1) != world.size(listKey, principal)");
+        if (expectedSize != world.size(this.player))
+            return MoveStatus.moveFailed("(index + 1) != world.size(listKey, player)");
 
-        ActivityIterator ai = world.getActivities(this.principal, index);
+        ActivityIterator ai = world.getActivities(this.player, index);
         if (ai.hasNext()) return MoveStatus.moveFailed("There should be exactly one activity!");
 
         Activity act = ai.getActivity();
@@ -97,16 +97,16 @@ public class AddActiveEntityMove implements Move {
         return MoveStatus.MOVE_OK;
     }
 
-    public MoveStatus doMove(World world, Player principal) {
-        MoveStatus moveStatus = tryDoMove(world, principal);
-        if (moveStatus.succeeds()) world.addActiveEntity(this.principal, activity);
+    public MoveStatus doMove(World world, Player player) {
+        MoveStatus moveStatus = tryDoMove(world, player);
+        if (moveStatus.succeeds()) world.addActiveEntity(this.player, activity);
 
         return moveStatus;
     }
 
-    public MoveStatus undoMove(World world, Player principal) {
-        MoveStatus moveStatus = tryUndoMove(world, principal);
-        if (moveStatus.succeeds()) world.removeLastActiveEntity(this.principal);
+    public MoveStatus undoMove(World world, Player player) {
+        MoveStatus moveStatus = tryUndoMove(world, player);
+        if (moveStatus.succeeds()) world.removeLastActiveEntity(this.player);
 
         return moveStatus;
     }
