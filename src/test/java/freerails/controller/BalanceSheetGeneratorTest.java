@@ -23,13 +23,11 @@ package freerails.controller;
 
 import freerails.model.player.Player;
 import freerails.model.statistics.BalanceSheetGenerator;
-import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
 import freerails.model.*;
 import freerails.model.finances.Money;
-import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
@@ -71,7 +69,6 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
         player = new Player(world.getNumberOfPlayers(), "Player X");
-        world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
         world.setTime(new GameTime(0));
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);

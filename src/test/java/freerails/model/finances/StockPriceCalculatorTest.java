@@ -25,7 +25,6 @@ import freerails.model.MapFixtureFactory2;
 import freerails.util.Vec2D;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
-import freerails.model.world.WorldItem;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.player.Player;
@@ -54,7 +53,7 @@ public class StockPriceCalculatorTest extends TestCase {
      */
     public void testIsFirstYear() {
         assertTrue(calc.isFirstYear(0));
-        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = world.getCalendar();
         int tpy = calendar.getTicksPerYear();
         int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + tpy + 1);
@@ -82,7 +81,7 @@ public class StockPriceCalculatorTest extends TestCase {
         world.addTransaction(princ, transaction);
         assertEquals(initialNetworth, calc.netWorth(0));
 
-        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = world.getCalendar();
         int tpy = calendar.getTicksPerYear();
         currentTicks = world.currentTime().getTicks();
         newTime = new GameTime(currentTicks + tpy);
@@ -105,7 +104,7 @@ public class StockPriceCalculatorTest extends TestCase {
      *
      */
     private void advanceTimeOneYear() {
-        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = world.getCalendar();
         int tpy = calendar.getTicksPerYear();
         int currentTicks = world.currentTime().getTicks();
         GameTime newTime = new GameTime(currentTicks + tpy);

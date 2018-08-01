@@ -112,7 +112,7 @@ public class FullServerGameModel implements ServerGameModel {
 
                         // Obtain the month
                         GameTime time = world.currentTime();
-                        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+                        GameCalendar calendar = world.getCalendar();
                         int month = calendar.getMonth(time.getTicks());
 
                         int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
@@ -149,7 +149,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             trainUpdater.buildTrains(world);
 
-            int gameSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed)).getSpeed();
+            int gameSpeed = world.getGameSpeed().getSpeed();
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
@@ -160,7 +160,7 @@ public class FullServerGameModel implements ServerGameModel {
 
                 // Check whether we are about to start a new year..
                 GameTime time = world.currentTime();
-                GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+                GameCalendar calendar = world.getCalendar();
                 int yearNextTick = calendar.getYear(time.getTicks() + 1);
                 int yearThisTick = calendar.getYear(time.getTicks());
 

@@ -34,7 +34,6 @@ import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.game.GameRules;
-import freerails.model.world.WorldItem;
 import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
@@ -64,7 +63,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
 
         setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build());
-        getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
+        getWorld().setGameRules(GameRules.NO_RESTRICTIONS);
     }
 
     /**

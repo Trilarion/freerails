@@ -26,7 +26,6 @@ package freerails.move.mapupdatemove;
 import freerails.io.GsonManager;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
-import freerails.model.world.WorldItem;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -67,7 +66,6 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
 
         setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build());
-        getWorld().set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
         getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
 
         transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(), MapFixtureFactory.TEST_PLAYER);
@@ -77,7 +75,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testRemoveTrack() {
-        getWorld().set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
+        getWorld().setGameRules(GameRules.NO_RESTRICTIONS);
 
         TrackType trackType = getWorld().getTrackType(0);
 

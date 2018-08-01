@@ -32,7 +32,7 @@ public class EconomicClimate implements Serializable {
     // TODO why start with 2
     public static final EconomicClimate BOOM = new EconomicClimate("BOOM", 2);
     public static final EconomicClimate PROSPERITY = new EconomicClimate("PROSPERITY", 3);
-    public static final Serializable MODERATION = new EconomicClimate("MODERATION", 4);
+    public static final EconomicClimate MODERATION = new EconomicClimate("MODERATION", 4);
     public static final EconomicClimate RECESSION = new EconomicClimate("RECESSION", 5);
     public static final EconomicClimate PANIC = new EconomicClimate("PANIC", 6);
     private static final long serialVersionUID = 3834025840475321136L;

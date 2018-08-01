@@ -25,7 +25,6 @@ import freerails.io.GsonManager;
 import freerails.model.terrain.*;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
-import freerails.model.world.WorldItem;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
@@ -66,7 +65,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
         world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
-        world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
+        world.setGameRules(GameRules.NO_RESTRICTIONS);
         player = testPlayer;
     }
 

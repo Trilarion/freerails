@@ -21,7 +21,6 @@
  */
 package freerails.model.finances;
 
-import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -72,7 +71,7 @@ public class StockPriceCalculator {
     boolean isFirstYear(int playerId) {
         Player player = world.getPlayer(playerId);
         GameTime firstTransactionTime = world.getTransactionTimeStamp(player, 0);
-        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = world.getCalendar();
         int year = calendar.getYear(firstTransactionTime.getTicks());
         GameTime currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
@@ -87,7 +86,7 @@ public class StockPriceCalculator {
         NetWorthCalculator netWorthCalculator = new NetWorthCalculator(world, player);
 
         // Set the interval to beginning of time to start of this year.
-        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = world.getCalendar();
         GameTime currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
@@ -101,7 +100,7 @@ public class StockPriceCalculator {
     public long profitsLastYear(int playerId) {
         Player pr = world.getPlayer(playerId);
 
-        GameCalendar calendar = (GameCalendar) world.get(WorldItem.Calendar);
+        GameCalendar calendar = world.getCalendar();
         GameTime currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int lastyear = currentYear - 1;

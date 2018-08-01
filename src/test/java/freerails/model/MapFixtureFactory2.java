@@ -24,15 +24,11 @@ import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
-import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.MoveStatus;
 import freerails.savegames.MapCreator;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameRules;
-import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
@@ -118,10 +114,8 @@ public class MapFixtureFactory2 {
             MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
             assert (moveStatus.succeeds());
         }
-        world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
+        // TODO this should be done in the builder build method
         world.setTime(new GameTime(0));
-        world.set(WorldItem.GameSpeed, new GameSpeed(10));
-        world.set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
 
         int clearTypeID = 0;
         // Fill the world with clear terrain.

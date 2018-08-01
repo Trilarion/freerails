@@ -31,7 +31,6 @@ import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.game.GameRules;
-import freerails.model.world.WorldItem;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
@@ -63,7 +62,7 @@ public class TrackPathFinderTest extends TestCase {
 
         world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
         world.addPlayer(testPlayer);
-        world.set(WorldItem.GameRules, GameRules.NO_RESTRICTIONS);
+        world.setGameRules(GameRules.NO_RESTRICTIONS);
     }
 
     /**

@@ -23,7 +23,6 @@ package freerails.client.view;
 
 import freerails.model.finances.StockPriceCalculator;
 import freerails.model.finances.StockPrice;
-import freerails.model.world.WorldItem;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
@@ -31,7 +30,6 @@ import freerails.move.MoveStatus;
 import freerails.model.*;
 import freerails.model.finances.Money;
 import freerails.model.finances.StockItemTransaction;
-import freerails.model.game.GameCalendar;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
@@ -54,14 +52,13 @@ public class BrokerScreenGeneratorTest extends TestCase {
         super.setUp();
         world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
         // Set the time..
-        world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
-        Player playr = MapFixtureFactory.TEST_PLAYER;
+        Player player = MapFixtureFactory.TEST_PLAYER;
 
-        AddPlayerMove apm = AddPlayerMove.generateMove(world, playr);
+        AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
         MoveStatus moveStatus = apm.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
         playerID = world.getNumberOfPlayers() - 1;
-        player = world.getPlayer(playerID);
+        this.player = world.getPlayer(playerID);
     }
 
     /**

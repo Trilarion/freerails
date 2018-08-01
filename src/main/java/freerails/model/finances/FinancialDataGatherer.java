@@ -21,7 +21,6 @@
  */
 package freerails.model.finances;
 
-import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
@@ -84,8 +83,8 @@ public class FinancialDataGatherer extends TransactionAggregator {
      * @return
      */
     public double nextBondInterestRate() {
-        EconomicClimate ec = (EconomicClimate) world.get(WorldItem.EconomicClimate);
-        return bonds + ec.getBaseInterestRate();
+        EconomicClimate economicClimate = world.getEconomicClimate();
+        return bonds + economicClimate.getBaseInterestRate();
     }
 
     /**

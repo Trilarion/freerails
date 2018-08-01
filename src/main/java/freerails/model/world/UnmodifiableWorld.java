@@ -19,6 +19,10 @@
 package freerails.model.world;
 
 import freerails.model.cargo.Cargo;
+import freerails.model.finances.EconomicClimate;
+import freerails.model.game.GameCalendar;
+import freerails.model.game.GameRules;
+import freerails.model.game.GameSpeed;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
@@ -82,6 +86,14 @@ public interface UnmodifiableWorld extends Serializable {
 
     TrackType getTrackType(int id);
 
+    GameCalendar getCalendar();
+
+    EconomicClimate getEconomicClimate();
+
+    GameRules getGameRules();
+
+    GameSpeed getGameSpeed();
+
     /**
      * @return
      */
@@ -99,11 +111,6 @@ public interface UnmodifiableWorld extends Serializable {
      * @return
      */
     GameTime currentTime();
-
-    /**
-     * Returns the element mapped to the specified item.
-     */
-    Serializable get(WorldItem item);
 
     /**
      * Returns the element at the specified position in the specified list.

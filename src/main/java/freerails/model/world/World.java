@@ -24,6 +24,8 @@ import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.activity.ActivityIteratorImpl;
 import freerails.model.cargo.Cargo;
+import freerails.model.game.GameRules;
+import freerails.model.game.GameSpeed;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
@@ -63,7 +65,6 @@ public class World implements UnmodifiableWorld {
     public Map<Player, Map<Integer, List<ActivityAndTime>>> activities = new HashMap<>();
     public Map<Player, List<TransactionRecord>> transactionLogs = new HashMap<>();
     public List<Money> currentBalance = new ArrayList<>();
-    public List<Serializable> items = new ArrayList<>();
 
     /**
      * A 3D list: D1 is player, D2 is type, D3 is element.
@@ -79,6 +80,12 @@ public class World implements UnmodifiableWorld {
     private final SortedSet<Cargo> cargos;
     private final SortedSet<Terrain> terrainTypes;
     private final SortedSet<TrackType> trackTypes;
+
+    // single instance objects in the game world
+    private final GameCalendar calendar;
+    private EconomicClimate economicClimate;
+    private GameRules gameRules;
+    private GameSpeed gameSpeed;
 
     public static class Builder {
 
@@ -131,12 +138,10 @@ public class World implements UnmodifiableWorld {
         terrainTypes = builder.terrainTypes;
         trackTypes = builder.trackTypes;
 
-        for (int i = 0; i < WorldItem.values().length; i++) {
-            items.add(null);
-        }
-
-        set(WorldItem.Calendar, new GameCalendar(1200, 1840));
-        set(WorldItem.EconomicClimate, EconomicClimate.MODERATION);
+        calendar = new GameCalendar(1200, 1840);
+        economicClimate = EconomicClimate.MODERATION;
+        gameRules = GameRules.DEFAULT_RULES;
+        gameSpeed = new GameSpeed(10);
         setupMap(builder.mapSize);
     }
 
@@ -201,6 +206,30 @@ public class World implements UnmodifiableWorld {
             }
         }
         throw new IllegalArgumentException(String.format("Element with Id=%d not existing in collection.", id));
+    }
+
+    public GameCalendar getCalendar() {
+        return calendar;
+    }
+
+    public EconomicClimate getEconomicClimate() {
+        return economicClimate;
+    }
+
+    public GameRules getGameRules() {
+        return gameRules;
+    }
+
+    public void setGameRules(@NotNull GameRules gameRules) {
+        this.gameRules = gameRules;
+    }
+
+    public GameSpeed getGameSpeed() {
+        return gameSpeed;
+    }
+
+    public void setGameSpeed(@NotNull GameSpeed gameSpeed) {
+        this.gameSpeed = gameSpeed;
     }
 
     /**
@@ -325,12 +354,11 @@ public class World implements UnmodifiableWorld {
             if (!activities.equals(other.activities)) {
                 return false;
             }
-            if (!items.equals(other.items)) {
-                return false;
-            }
             if (!transactionLogs.equals(other.transactionLogs)) {
                 return false;
             }
+
+            // TODO compare calender, gamespeed, economic climate, ...
 
             // Compare maps
             Vec2D mapSize = getMapSize();
@@ -354,10 +382,6 @@ public class World implements UnmodifiableWorld {
 
     public Serializable get(Player player, PlayerKey key, int index) {
         return playerLists.get(player).get(key).get(index);
-    }
-
-    public Serializable get(WorldItem item) {
-        return items.get(item.getId());
     }
 
     /**
@@ -546,14 +570,6 @@ public class World implements UnmodifiableWorld {
      */
     public void set(Player player, PlayerKey playerKey, int index, Serializable element) {
         playerLists.get(player).get(playerKey).set(index, element);
-    }
-
-    /**
-     * Replaces the element mapped to the specified item with the specified
-     * element.
-     */
-    public void set(WorldItem worldItem, Serializable element) {
-        items.set(worldItem.getId(), element);
     }
 
     /**

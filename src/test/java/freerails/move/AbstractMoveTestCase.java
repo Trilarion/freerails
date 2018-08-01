@@ -23,12 +23,10 @@ package freerails.move;
 
 import freerails.io.GsonManager;
 import freerails.model.train.Engine;
-import freerails.model.world.WorldItem;
 import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.*;
-import freerails.model.game.GameCalendar;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -293,7 +291,6 @@ public abstract class AbstractMoveTestCase extends TestCase {
         validEngineId = engines.iterator().next().getId(); // more or less gets a valid id of an engine
         this.world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(10, 10)).build();
         // Set the time..
-        world.set(WorldItem.Calendar, new GameCalendar(12000, 1840));
         world.addPlayer(MapFixtureFactory.TEST_PLAYER);
     }
 

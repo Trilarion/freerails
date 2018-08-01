@@ -171,7 +171,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     @Override
     public MoveStatus compositeTest(World world) {
         // must connect to existing track
-        GameRules rules = (GameRules) world.get(WorldItem.GameRules);
+        GameRules rules = world.getGameRules();
 
         if (rules.mustConnectToExistingTrack()) {
             if (hasAnyTrackBeenBuilt(world, builder)) {

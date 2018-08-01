@@ -18,7 +18,6 @@
 
 package freerails.move;
 
-import freerails.model.world.WorldItem;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
 import freerails.model.player.Player;
@@ -40,7 +39,7 @@ public class ChangeGameSpeedMove implements Move {
 
     // TODO could this also be private?
     public MoveStatus tryDoMove(World world, Player player) {
-        GameSpeed actualSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed));
+        GameSpeed actualSpeed = world.getGameSpeed();
 
         // check that old speed and actual speed are consistent
         if (actualSpeed.equals(oldSpeed)) {
@@ -51,7 +50,7 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     public MoveStatus tryUndoMove(World world, Player player) {
-        GameSpeed actualSpeed = ((GameSpeed) world.get(WorldItem.GameSpeed));
+        GameSpeed actualSpeed = world.getGameSpeed();
 
         if (actualSpeed.equals(newSpeed)) {
             return MoveStatus.MOVE_OK;
@@ -64,7 +63,7 @@ public class ChangeGameSpeedMove implements Move {
         MoveStatus status = tryDoMove(world, player);
 
         if (status.succeeds()) {
-            world.set(WorldItem.GameSpeed, newSpeed);
+            world.setGameSpeed(newSpeed);
         }
 
         return status;
@@ -75,7 +74,7 @@ public class ChangeGameSpeedMove implements Move {
         MoveStatus status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
-            world.set(WorldItem.GameSpeed, oldSpeed);
+            world.setGameSpeed(oldSpeed);
         }
 
         return status;

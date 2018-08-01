@@ -20,7 +20,6 @@ package freerails.model.finances;
 
 import freerails.model.cargo.Cargo;
 import freerails.util.Pair;
-import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -34,7 +33,7 @@ public class IncomeStatementGenerator {
 
     private final UnmodifiableWorld world;
     private final Player player;
-    private final GameCalendar cal;
+    private final GameCalendar calendar;
     private final int startyear;
 
     public Money mailTotal;
@@ -42,9 +41,9 @@ public class IncomeStatementGenerator {
     public IncomeStatementGenerator(UnmodifiableWorld world, Player player) {
         this.world = world;
         this.player = player;
-        cal = (GameCalendar) world.get(WorldItem.Calendar);
+        calendar = world.getCalendar();
         GameTime time = world.currentTime();
-        startyear = cal.getYear(time.getTicks());
+        startyear = calendar.getYear(time.getTicks());
     }
 
     /**
@@ -82,31 +81,31 @@ public class IncomeStatementGenerator {
                 switch (ct.getCategory()) {
                     case BULK_FREIGHT:
                         bulkFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
-                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        if (calendar.getYear(time.getTicks()) >= this.startyear) {
                             bulkFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
                     case FAST_FREIGHT:
                         fastFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
-                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        if (calendar.getYear(time.getTicks()) >= this.startyear) {
                             fastFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
                     case MAIL:
                         mailTotal += cargoDeliveryMoneyTransaction.price().amount;
-                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        if (calendar.getYear(time.getTicks()) >= this.startyear) {
                             mailYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
                     case PASSENGER:
                         passengersTotal += cargoDeliveryMoneyTransaction.price().amount;
-                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        if (calendar.getYear(time.getTicks()) >= this.startyear) {
                             passengersYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
                     case SLOW_FREIGHT:
                         slowFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
-                        if (cal.getYear(time.getTicks()) >= this.startyear) {
+                        if (calendar.getYear(time.getTicks()) >= this.startyear) {
                             slowFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
                         }
                         break;
@@ -115,25 +114,25 @@ public class IncomeStatementGenerator {
             switch (transaction.getCategory()) {
                 case INTEREST_CHARGE:
                     interestTotal += transaction.price().amount;
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    if (calendar.getYear(time.getTicks()) >= this.startyear) {
                         interestYtd += transaction.price().amount;
                     }
                     break;
                 case TRAIN_MAINTENANCE:
                     trainMaintenanceTotal += transaction.price().amount;
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    if (calendar.getYear(time.getTicks()) >= this.startyear) {
                         trainMaintenanceYtd += transaction.price().amount;
                     }
                     break;
                 case TRACK_MAINTENANCE:
                     trackMaintenanceTotal += transaction.price().amount;
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    if (calendar.getYear(time.getTicks()) >= this.startyear) {
                         trackMaintenanceYtd += transaction.price().amount;
                     }
                     break;
                 case STATION_MAINTENANCE:
                     stationMaintenanceTotal += transaction.price().amount;
-                    if (cal.getYear(time.getTicks()) >= this.startyear) {
+                    if (calendar.getYear(time.getTicks()) >= this.startyear) {
                         stationMaintenanceYtd += transaction.price().amount;
                     }
                     break;
@@ -172,7 +171,7 @@ public class IncomeStatementGenerator {
             Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (transaction instanceof CargoDeliveryMoneyTransaction && cal.getYear(time.getTicks()) >= this.startyear) {
+            if (transaction instanceof CargoDeliveryMoneyTransaction && calendar.getYear(time.getTicks()) >= this.startyear) {
                 CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
                 int trainId = cargoDeliveryMoneyTransaction.getTrainId();
                 if (trainId < money.length) {

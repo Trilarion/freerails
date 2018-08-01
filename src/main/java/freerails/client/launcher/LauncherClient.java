@@ -30,7 +30,6 @@ import freerails.controller.BuildTrackController;
 import freerails.model.player.Player;
 import freerails.network.command.ClientProperty;
 import freerails.util.Vec2D;
-import freerails.model.world.WorldItem;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.game.GameSpeed;
@@ -85,7 +84,7 @@ public class LauncherClient extends FreerailsClient {
         double dt = currentTime - lastTick;
         UnmodifiableWorld world2 = modelRoot.getWorld();
         if (world2 != null) {
-            GameSpeed gameSpeed = (GameSpeed) world2.get(WorldItem.GameSpeed);
+            GameSpeed gameSpeed = world2.getGameSpeed();
             GameTime currentGameTime = world2.currentTime();
             double ticks = currentGameTime.getTicks();
             if (!gameSpeed.isPaused()) {

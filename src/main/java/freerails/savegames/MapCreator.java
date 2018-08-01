@@ -2,15 +2,11 @@ package freerails.savegames;
 
 import freerails.io.GsonManager;
 import freerails.model.cargo.Cargo;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameRules;
-import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.*;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.world.World;
-import freerails.model.world.WorldItem;
 import freerails.util.Array2D;
 import freerails.util.Vec2D;
 
@@ -185,12 +181,8 @@ public class MapCreator {
         CityTilePositioner cityTilePositioner = new CityTilePositioner(world);
         cityTilePositioner.initCities();
 
-        // Set the time..
-        world.set(WorldItem.Calendar, new GameCalendar(1200, 1840));
-        // TODO is this necessary, should be this by default
+        // TODO is this necessary, should be this by default in the build method!
         world.setTime(new GameTime(0));
-        world.set(WorldItem.GameSpeed, new GameSpeed(10));
-        world.set(WorldItem.GameRules, GameRules.DEFAULT_RULES);
 
         /*
          * Note, money used to get added to player finances here, now it is done
