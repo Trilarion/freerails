@@ -24,10 +24,11 @@ package freerails.controller;
 import freerails.io.GsonManager;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.model.player.Player;
+import freerails.model.train.Train;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
@@ -35,11 +36,13 @@ import freerails.model.cargo.*;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
-import freerails.model.train.Train;
 import junit.framework.TestCase;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.SortedSet;
 
 /**
@@ -72,20 +75,18 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set up station
         int x = 10;
         int y = 10;
-        int stationCargoBundleId = world.add(MapFixtureFactory.TEST_PLAYER,
-                PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
+        int stationCargoBundleId = world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
         String stationName = "Station 1";
         Station station = new Station(new Vec2D(x, y), stationName, world.getCargos().size(), stationCargoBundleId);
         world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
 
         // Set up train
-        int trainCargoBundleId = world.add(MapFixtureFactory.TEST_PLAYER,
-                PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
+        int trainCargoBundleId = world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
 
         // 3 wagons to carry cargo type 0.
-        ImmutableList<Integer> wagons = new ImmutableList<>(0, 0, 0);
-        Train train = new Train(wagons, trainCargoBundleId);
-        world.add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Trains, train);
+        List<Integer> wagons = Arrays.asList(0, 0, 0);
+        Train train = new Train(0, 0, wagons, trainCargoBundleId, 0);
+        world.addTrain(MapFixtureFactory.TEST_PLAYER, train);
     }
 
     /**
@@ -95,8 +96,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // Set up the variables for this test.
         MutableCargoBatchBundle cargoBundleWith2CarloadsOfCargo0 = new MutableCargoBatchBundle();
 
-        // cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2,
-        // 2);
+        // cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 2);
         cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 80);
 
         assertEquals("There shouldn't be any cargo at the station yet",
@@ -148,10 +148,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * the type of wagons it has when it is picking up cargo.
      */
     public void testPickUpCargo3() {
-        ImmutableList<Integer> wagons = new ImmutableList<>(0, 0, 2, 2);
+        List<Integer> wagons = Arrays.asList(0, 0, 2, 2);
 
         // 2 wagons for cargo type 0; 2 wagons for cargo type 2.
-        addWagons(wagons);
+        setWagons(wagons);
 
         // Set cargo on train.
         setCargoOnTrain(this.cargoType0FromStation2, 30);
@@ -199,8 +199,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 .getDemandForCargo().isCargoDemanded(1));
 
         // Add 2 wagons for cargo type 0 and 1 for cargo type 1 to train.
-        ImmutableList<Integer> wagons = new ImmutableList<>(0, 0, 1, 1);
-        addWagons(wagons);
+        List<Integer> wagons = Arrays.asList(0, 0, 1, 1);
+        setWagons(wagons);
 
         // Add quantities of cargo type 0 and 2 to the train.
         setCargoOnTrain(this.cargoType0FromStation2, 50);
@@ -302,13 +302,14 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void removeAllWagonsFromTrain() {
-        addWagons(new ImmutableList<>());
+        setWagons(new ArrayList<>());
     }
 
-    private void addWagons(ImmutableList<Integer> wagons) {
-        Train train = (Train) world.get(MapFixtureFactory.TEST_PLAYER, PlayerKey.Trains, 0);
-        Train newTrain = train.getNewInstance(train.getEngineId(), wagons);
-        world.set(MapFixtureFactory.TEST_PLAYER, PlayerKey.Trains, 0, newTrain);
+    private void setWagons(List<Integer> wagons) {
+        Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
+        Train newTrain = new Train(train.getId(), train.getEngineId(), wagons, train.getCargoBundleId(), train.getScheduleId());
+        world.removeTrain(MapFixtureFactory.TEST_PLAYER, 0);
+        world.addTrain(MapFixtureFactory.TEST_PLAYER, newTrain);
     }
 
     private void stopAtStation() {
@@ -336,10 +337,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private ImmutableCargoBatchBundle getCargoOnTrain() {
-        Train train = (Train) world.get(MapFixtureFactory.TEST_PLAYER, PlayerKey.Trains, 0);
+        Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
 
         return (ImmutableCargoBatchBundle) world.get(
-                MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, train.getCargoBundleID());
+                MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, train.getCargoBundleId());
     }
 
     private void setCargoAtStation(CargoBatch cb, int amount) {
@@ -352,9 +353,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void setCargoOnTrain(CargoBatch cb, int amount) {
-        Train train = (Train) world.get(MapFixtureFactory.TEST_PLAYER, PlayerKey.Trains, 0);
+        Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
         MutableCargoBatchBundle bundle = new MutableCargoBatchBundle(getCargoOnTrain());
         bundle.setAmount(cb, amount);
-        world.set(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, train.getCargoBundleID(), bundle.toImmutableCargoBundle());
+        world.set(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, train.getCargoBundleId(), bundle.toImmutableCargoBundle());
     }
 }

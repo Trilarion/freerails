@@ -73,6 +73,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
             }
         }
     };
+    // TODO should be maps, not arrays
     private Action[] buyStock, sellStock;
 
     /**
@@ -108,7 +109,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         stocks.removeAll();
         UnmodifiableWorld world = modelRoot.getWorld();
         int thisPlayerId = world.getID(modelRoot.getPlayer());
-        int numberOfPlayers = world.getNumberOfPlayers();
+        int numberOfPlayers = world.getPlayers().size();
         buyStock = new Action[numberOfPlayers];
         sellStock = new Action[numberOfPlayers];
         for (int playerId = 0; playerId < numberOfPlayers; playerId++) {
@@ -162,32 +163,30 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         // TODO use Money arithmetic
         long highestAffordablePrice = world.getCurrentBalance(player).amount / ModelConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
-        for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
-            Player temp = modelRoot.getWorld().getPlayer(playerId);
-            Player otherPlayer = temp;
+        for (Player otherPlayer: world.getPlayers()) {
             FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPlayer);
 
             // If this RR has stock in other RR, then enable sell stock
-            boolean hasStockInRR = thisDataGatherer.getStockInRRs()[playerId] > 0;
-            sellStock[playerId].setEnabled(hasStockInRR);
+            boolean hasStockInRR = thisDataGatherer.getStockInRRs()[otherPlayer.getId()] > 0;
+            sellStock[otherPlayer.getId()].setEnabled(hasStockInRR);
 
             // If the public own some stock, then enable buy stock.
             boolean isStockAvailable = otherDataGatherer.sharesHeldByPublic() > 0;
-            buyStock[playerId].setEnabled(isStockAvailable);
+            buyStock[otherPlayer.getId()].setEnabled(isStockAvailable);
 
             // Don't let player buy 100% of treasury stock.
             if (otherPlayer.equals(player)) {
                 int treasuryStock = otherDataGatherer.treasuryStock();
                 int totalStock = otherDataGatherer.totalShares();
                 if (ModelConstants.STOCK_BUNDLE_SIZE + treasuryStock >= totalStock) {
-                    buyStock[playerId].setEnabled(false);
+                    buyStock[otherPlayer.getId()].setEnabled(false);
                 }
             }
 
             // Don't let the player buy stock if they cannot afford it.
             // TODO use Money arithmetic
-            if (stockPrices[playerId].currentPrice.amount > highestAffordablePrice) {
-                buyStock[playerId].setEnabled(false);
+            if (stockPrices[otherPlayer.getId()].currentPrice.amount > highestAffordablePrice) {
+                buyStock[otherPlayer.getId()].setEnabled(false);
             }
         }
 
@@ -203,16 +202,15 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
         BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, player);
 
-        // this is where the Menu get Enable and Disable by if you own any stock
-        // or if the TotalShares are 0
+        // this is where the Menu get Enable and Disable by if you own any stock or if the TotalShares are 0
 
         StringBuilder populatedTemplate = new StringBuilder();
         populatedTemplate.append("<html>");
         populatedTemplate.append(populateTokens(template, brokerScreenGenerator));
 
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            if (!(world.getPlayer(i).equals(player))) {
-                BrokerScreenGenerator temp = new BrokerScreenGenerator(world, world.getPlayer(i));
+        for (Player otherPlayer: world.getPlayers()) {
+            if (!(otherPlayer.equals(player))) {
+                BrokerScreenGenerator temp = new BrokerScreenGenerator(world, otherPlayer);
                 populatedTemplate.append(populateTokens(template, temp));
             }
         }

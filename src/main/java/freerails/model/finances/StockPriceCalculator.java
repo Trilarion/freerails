@@ -48,7 +48,8 @@ public class StockPriceCalculator {
      * @return
      */
     public StockPrice[] calculate() {
-        StockPrice[] stockPrices = new StockPrice[world.getNumberOfPlayers()];
+        // TODO use maps instead of arrays
+        StockPrice[] stockPrices = new StockPrice[world.getPlayers().size()];
         for (int playerId = 0; playerId < stockPrices.length; playerId++) {
             long profitLastYear;
             if (isFirstYear(playerId)) {

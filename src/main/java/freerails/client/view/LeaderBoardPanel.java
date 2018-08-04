@@ -115,9 +115,8 @@ public class LeaderBoardPanel extends JPanel implements View {
         UnmodifiableWorld world = modelRoot.getWorld();
         values.clear();
         submitButtonCallBack = closeAction;
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+        for (Player player: world.getPlayers()) {
             PlayerDetails details = new PlayerDetails();
-            Player player = world.getPlayer(i);
             details.name = player.getName();
             WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
             details.stations = stations.size();

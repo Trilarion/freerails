@@ -113,14 +113,12 @@ public abstract class AbstractMoveTestCase extends TestCase {
      * @param m m
      */
     protected void assertSurvivesSerialisation(Serializable m) {
-        assertEquals("Reflexivity violated: the move does not equal itself", m,
-                m);
+        assertEquals("Reflexivity violated: the move does not equal itself", m, m);
 
         try {
             Object o = Utils.cloneBySerialisation(m);
             assertEquals(m, o);
-            assertEquals("The hashcodes should be the same!", m.hashCode(), o
-                    .hashCode());
+            assertEquals("The hashcodes should be the same!", m.hashCode(), o.hashCode());
         } catch (Exception e) {
             assertTrue(false);
         }

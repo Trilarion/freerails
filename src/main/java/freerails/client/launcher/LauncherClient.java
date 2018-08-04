@@ -110,9 +110,7 @@ public class LauncherClient extends FreerailsClient {
             }
 
             // Should be a smarter way of doing this..
-            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-                Player player = world.getPlayer(i);
-
+            for (Player player: world.getPlayers()) {
                 if (player.getName().equals(name)) {
                     modelRoot.setup(world, player);
                 }

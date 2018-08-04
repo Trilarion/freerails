@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 group 'org.freerails'
 version '0.4.1'
 
@@ -43,20 +45,30 @@ jar {
     }
 }
 
-task generateSources {
+task generateVersionInfo {
+    // gets the short SHA of the last commit and the information if there are uncommited changes (-M indicating that there is a modification)
+    String git_revision = "git rev-parse --short HEAD".execute().text.trim() + ("git diff-index --quiet HEAD --".execute().waitFor() == 1 ? "-M" : "")
+    // get current date and time in a fixed format
+    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    String date = sdfDate.format(new Date())
+
     def outputDir = file("$buildDir/../src/main/java/freerails")
     outputs.dir outputDir
     doFirst {
         outputDir.exists() || outputDir.mkdirs()
         def srcFile = new File(outputDir, "Version.java")
         srcFile.write(
-                """package freerails;
+                """
+package freerails;
+
 public final class Version {
     public static final String VERSION = "$project.version";
+    public static final String GIT_REVISION = "$git_revision";
+    public static final String CREATION_DATE = "$date";
 }
 """)
     }
 }
 
-compileJava.dependsOn generateSources
-compileJava.source generateSources.outputs.files, sourceSets.main.java
+compileJava.dependsOn generateVersionInfo
+compileJava.source generateVersionInfo.outputs.files, sourceSets.main.java

@@ -250,9 +250,9 @@ public class TrainListPanel extends JPanel implements View {
     @Override
     public void paint(Graphics g) {
         if (null != world) {
-            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
-            int newNumberOfTrains = trains.size();
+            int newNumberOfTrains = world.getTrains(player).size();
             if (newNumberOfTrains != lastNumberOfTrains) {
+                // TODO we should set a different model there
                 list1.setModel(new WorldToListModelAdapter(world, PlayerKey.Trains, player));
                 if (newNumberOfTrains > 0) {
                     list1.setSelectedIndex(0);

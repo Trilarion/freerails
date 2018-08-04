@@ -22,7 +22,11 @@ import freerails.network.command.ClientProperty;
 import freerails.network.AbstractFreerailsServerTestCase;
 import freerails.network.LogOnResponse;
 import freerails.network.command.CommandToClient;
-import freerails.util.ImmutableList;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * Tests FreerailsClient with a network server.
@@ -43,7 +47,7 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             assertEquals(1, server.getNumberOpenConnections());
 
             assertMapsAndSaveGamesReceived(client);
-            assertConnectClientsEquals(client, new ImmutableList<>("name"));
+            assertConnectClientsEquals(client, Arrays.asList("name"));
 
             // Test 2 : a client that has already logged on.
             FreerailsClient client2 = new FreerailsClient();
@@ -58,9 +62,9 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
             assertEquals(2, server.getNumberOpenConnections());
 
             // read list of connected clients.
-            assertConnectClientsEquals(client, new ImmutableList<>("name", "name3"));
+            assertConnectClientsEquals(client, Arrays.asList("name", "name3"));
             assertMapsAndSaveGamesReceived(client3);
-            assertConnectClientsEquals(client3, new ImmutableList<>("name", "name3"));
+            assertConnectClientsEquals(client3, Arrays.asList("name", "name3"));
 
             // Test 4 : disconnect the client from test 1.
             client.disconnect();
@@ -71,11 +75,11 @@ public class FreerailsClientTest extends AbstractFreerailsServerTestCase {
         }
     }
 
-    private void assertConnectClientsEquals(FreerailsClient client, ImmutableList<String> expectedPlayerNames) {
+    private void assertConnectClientsEquals(FreerailsClient client, List<String> expectedPlayerNames) {
         CommandToClient commandToClient = (CommandToClient) client.read();
         commandToClient.execute(client);
 
-        ImmutableList<String> actualPlayerNames = (ImmutableList<String>) client.getProperty(ClientProperty.CONNECTED_CLIENTS);
+        List<String> actualPlayerNames = (List<String>) client.getProperty(ClientProperty.CONNECTED_CLIENTS);
         assertNotNull(actualPlayerNames);
         assertEquals(expectedPlayerNames, actualPlayerNames);
     }

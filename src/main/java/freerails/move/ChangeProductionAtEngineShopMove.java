@@ -21,12 +21,14 @@
  */
 package freerails.move;
 
-import freerails.util.ImmutableList;
+
 import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.TrainBlueprint;
+
+import java.util.List;
 
 /**
  * This Move changes what is being built at an engine shop - when a client wants
@@ -35,8 +37,8 @@ import freerails.model.station.TrainBlueprint;
 public class ChangeProductionAtEngineShopMove implements Move {
 
     private static final long serialVersionUID = 3905519384997737520L;
-    private final ImmutableList<TrainBlueprint> before;
-    private final ImmutableList<TrainBlueprint> after;
+    private final List<TrainBlueprint> before;
+    private final List<TrainBlueprint> after;
     private final int stationNumber;
     private final Player player;
 
@@ -46,7 +48,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param station
      * @param player
      */
-    public ChangeProductionAtEngineShopMove(ImmutableList<TrainBlueprint> b, ImmutableList<TrainBlueprint> a, int station, Player player) {
+    public ChangeProductionAtEngineShopMove(List<TrainBlueprint> b, List<TrainBlueprint> a, int station, Player player) {
         before = b;
         after = a;
         stationNumber = station;
@@ -82,7 +84,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return tryMove(world, before);
     }
 
-    private MoveStatus tryMove(World world, ImmutableList<TrainBlueprint> stateA) {
+    private MoveStatus tryMove(World world, List<TrainBlueprint> stateA) {
         // Check that the specified station exists.
         if (!world.boundsContain(player, PlayerKey.Stations, stationNumber)) {
             return MoveStatus.moveFailed(stationNumber + " " + player);

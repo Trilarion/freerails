@@ -24,7 +24,7 @@ package freerails.client.renderer;
 
 import freerails.client.view.View;
 import freerails.client.ModelRoot;
-import freerails.util.ImmutableList;
+import freerails.model.train.Train;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
@@ -32,12 +32,13 @@ import freerails.model.world.WorldListListener;
 import freerails.model.player.Player;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.Schedule;
-import freerails.model.train.Train;
 import freerails.model.train.TrainOrders;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Displays an engine and a number of wagons.
@@ -98,12 +99,12 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         showingOrder = false;
         trainNumber = newTrainNumber;
 
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
+        Train train = world.getTrain(player, trainNumber);
         display(train.getEngineId(), train.getConsist());
         resetPreferredSize();
     }
 
-    private void display(int engine, ImmutableList<Integer> wagons) {
+    private void display(int engine, List<Integer> wagons) {
         images = new Image[1 + wagons.size()];
         // images[0] = vl.getTrainImages().getSideOnEngineImage(
         // train.getEngineId(), height);
@@ -135,8 +136,8 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
         scheduleOrderNumber = newScheduleOrderID;
 
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
-        scheduleID = train.getScheduleID();
+        Train train =  world.getTrain(player, trainNumber);
+        scheduleID = train.getScheduleId();
 
         Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         TrainOrders order = schedule.getOrder(newScheduleOrderID);
@@ -175,7 +176,8 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
 
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-        int trainID = NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, index);
+        // TODO this is probably supposed to be the index.th entry of a list
+        int trainID = index;
         display(trainID);
 
         if (isSelected) {

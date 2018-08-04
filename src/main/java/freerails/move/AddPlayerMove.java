@@ -46,7 +46,7 @@ public class AddPlayerMove implements Move {
      */
     public static AddPlayerMove generateMove(UnmodifiableWorld world, Player player) {
         // create a new player with a corresponding Player
-        Player player2add = new Player(world.getNumberOfPlayers(), player.getName());
+        Player player2add = new Player(world.getPlayers().size(), player.getName());
 
         return new AddPlayerMove(player2add);
     }
@@ -74,7 +74,7 @@ public class AddPlayerMove implements Move {
     }
 
     public MoveStatus tryUndoMove(World world, Player player) {
-        int numPlayers = world.getNumberOfPlayers();
+        int numPlayers = world.getPlayers().size();
         Player pp = world.getPlayer(numPlayers - 1);
         if (pp.equals(playerToAdd)) {
             return MoveStatus.MOVE_OK;
@@ -108,9 +108,8 @@ public class AddPlayerMove implements Move {
     }
 
     private boolean isAlreadyASimilarPlayer(UnmodifiableWorld world) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player pp = world.getPlayer(i);
-            if (pp.getName().equalsIgnoreCase(playerToAdd.getName())) {
+        for (Player player: world.getPlayers()) {
+            if (player.getName().equalsIgnoreCase(playerToAdd.getName())) {
                 return true;
             }
         }

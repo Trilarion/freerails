@@ -59,12 +59,4 @@ public class PlayerKeyTest extends TestCase {
             }
         }
     }
-
-    /**
-     *
-     */
-    public void testToString() {
-
-        assertEquals("Key.toString() should return the field name", "Trains", PlayerKey.Trains.toString());
-    }
 }

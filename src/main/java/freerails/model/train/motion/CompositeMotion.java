@@ -21,10 +21,14 @@
  */
 package freerails.model.train.motion;
 
-import freerails.util.ImmutableList;
+
 import freerails.model.activity.Activity;
 import freerails.model.train.TrainState;
 import freerails.util.Utils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -32,14 +36,14 @@ import freerails.util.Utils;
 public class CompositeMotion implements Activity<SpeedTimeAndStatus>, Motion {
 
     private static final long serialVersionUID = 3146586143114534610L;
-    private final ImmutableList<Motion> motions;
+    private final List<Motion> motions;
     private final double totalTime, totalDistance;
 
     /**
      * @param motions
      */
     public CompositeMotion(Motion... motions) {
-        this.motions = new ImmutableList<>(motions);
+        this.motions = new ArrayList<>(Arrays.asList(motions));
         Utils.verifyNoneNull(this.motions);
         double time = 0, distance = 0;
         for (Motion motion : motions) {

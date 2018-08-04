@@ -57,7 +57,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
         AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
         MoveStatus moveStatus = apm.doMove(world, Player.AUTHORITATIVE);
         assertTrue(moveStatus.succeeds());
-        playerID = world.getNumberOfPlayers() - 1;
+        playerID = world.getPlayers().size() - 1;
         this.player = world.getPlayer(playerID);
     }
 

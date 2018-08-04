@@ -1,11 +1,12 @@
 package freerails.client;
 
-import freerails.util.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -13,14 +14,14 @@ import java.util.Collection;
  */
 public class StaticListModel<E> implements ListModel<E> {
 
-    private ImmutableList<E> list;
+    private List<E> list;
 
-    public StaticListModel(@NotNull ImmutableList<E> list) {
+    public StaticListModel(@NotNull List<E> list) {
         this.list = list;
     }
 
     public StaticListModel(@NotNull Collection<? extends E> c) {
-        list = new ImmutableList<>(c);
+        list = new ArrayList<>(c);
     }
 
     @Override

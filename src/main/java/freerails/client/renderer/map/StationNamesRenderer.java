@@ -69,9 +69,7 @@ public class StationNamesRenderer implements Painter {
         Boolean showStationBorders = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_BORDERS);
 
         // for all players
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
-
+        for (Player player: world.getPlayers()) {
             // draw station names onto map
 
             // for all stations of this player

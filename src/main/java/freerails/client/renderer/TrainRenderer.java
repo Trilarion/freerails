@@ -18,13 +18,10 @@
 
 package freerails.client.renderer;
 
+import freerails.model.train.*;
 import freerails.util.LineSegment;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
-import freerails.model.train.PathWalker;
-import freerails.model.train.PathWalkerImpl;
-import freerails.model.train.Train;
-import freerails.model.train.TrainPositionOnMap;
 
 import java.awt.*;
 
@@ -62,7 +59,7 @@ public class TrainRenderer {
 
         // renderer wagons.
         for (int i = 0; i < train.getNumberOfWagons(); i++) {
-            int wagonType = train.getWagon(i);
+            int wagonType = train.getWagonType(i);
             renderWagon(g, pw, wagonType, false);
         }
     }

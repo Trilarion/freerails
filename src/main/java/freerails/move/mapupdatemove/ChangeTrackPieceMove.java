@@ -76,8 +76,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         TrackType thisStationType = trackPiece.getTrackType();
         assert thisStationType.isStation();
 
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
+        for (Player player: world.getPlayers()) {
             WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (wi.next()) {

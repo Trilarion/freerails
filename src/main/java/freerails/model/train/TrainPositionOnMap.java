@@ -18,7 +18,7 @@
 
 package freerails.model.train;
 
-import freerails.util.ImmutableList;
+
 import freerails.util.LineSegment;
 import freerails.util.Pair;
 import freerails.model.track.PathIterator;
@@ -26,6 +26,7 @@ import freerails.model.track.SimplePathIteratorImpl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // TODO does not use any Train motion
@@ -90,8 +91,8 @@ import java.util.List;
 public class TrainPositionOnMap implements Serializable {
 
     private static final long serialVersionUID = 3979269144611010865L;
-    private final ImmutableList<Integer> xpoints;
-    private final ImmutableList<Integer> ypoints;
+    private final List<Integer> xpoints;
+    private final List<Integer> ypoints;
     private final double speed, acceleration;
     private final TrainState activity;
 
@@ -100,8 +101,8 @@ public class TrainPositionOnMap implements Serializable {
             throw new IllegalArgumentException();
         }
 
-        xpoints = new ImmutableList<>(xs);
-        ypoints = new ImmutableList<>(ys);
+        xpoints = Arrays.asList(xs);
+        ypoints = Arrays.asList(ys);
         this.acceleration = acceleration;
         this.speed = speed;
         this.activity = activity;

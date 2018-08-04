@@ -26,7 +26,6 @@ import freerails.model.terrain.NearestCityFinder;
 import freerails.model.station.VerifyStationName;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
-import freerails.model.world.WorldUtils;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
 import freerails.move.listmove.AddStationMove;
@@ -104,7 +103,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
         TrackPiece before = ft.getTrackPiece();
         TrackType trackType = world.getTrackType(ruleNumber);
 
-        int owner = WorldUtils.getPlayerIndex(world, player);
+        int owner = player.getId();
         TrackPiece after = new TrackPiece(before == null ? TrackConfiguration.from9bitTemplate(0) : before.getTrackConfiguration(), trackType, owner);
         Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
 

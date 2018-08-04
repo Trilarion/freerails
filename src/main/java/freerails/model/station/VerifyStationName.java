@@ -83,11 +83,10 @@ public class VerifyStationName {
     }
 
     private boolean existsStationName(String name) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
-
+        // for all players
+        for (Player player: world.getPlayers()) {
+            // for all stations of the player
             WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-
             while (worldIterator.next()) { // loop over non null stations
                 Station station = (Station) worldIterator.getElement();
 

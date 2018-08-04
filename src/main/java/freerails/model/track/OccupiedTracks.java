@@ -43,7 +43,8 @@ public class OccupiedTracks {
         occupiedTrackSections = new HashMap<>();
         trainToTrackList = new HashMap<>();
 
-        for (int i = 0; i < world.size(player, PlayerKey.Trains); i++) {
+        // TODO we want to iterate over world.getTrains directly
+        for (int i = 0; i < world.getTrains(player).size(); i++) {
             TrainAccessor ta = new TrainAccessor(world, player, i);
             GameTime gameTime = world.currentTime();
 

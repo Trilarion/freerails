@@ -18,10 +18,11 @@
 
 package freerails.model.station;
 
-import freerails.util.ImmutableList;
+
 import freerails.util.Utils;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Represents the demand for cargo at a station.
@@ -29,13 +30,13 @@ import java.io.Serializable;
 public class StationDemand implements Serializable {
 
     private static final long serialVersionUID = 3257565088071038009L;
-    private final ImmutableList<Integer> demand;
+    private final List<Integer> demand;
 
     /**
      * @param demandArray
      */
     public StationDemand(boolean[] demandArray) {
-        demand = Utils.integerImmutableListFromBoolean(demandArray);
+        demand = Utils.integerListFromBoolean(demandArray);
     }
 
     @Override

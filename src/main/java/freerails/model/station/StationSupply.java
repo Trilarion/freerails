@@ -18,9 +18,12 @@
 
 package freerails.model.station;
 
-import freerails.util.ImmutableList;
+
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents the supply at a station.
@@ -28,7 +31,7 @@ import java.io.Serializable;
 public class StationSupply implements Serializable {
 
     private static final long serialVersionUID = 4049918272826847286L;
-    private final ImmutableList<Integer> supply;
+    private final List<Integer> supply;
 
     // TODO what is the meaning of cargoWaiting and do we need it?
 
@@ -36,7 +39,7 @@ public class StationSupply implements Serializable {
      * @param cargoWaiting
      */
     public StationSupply(Integer[] cargoWaiting) {
-        supply = new ImmutableList<>(cargoWaiting);
+        supply = new ArrayList<>(Arrays.asList(cargoWaiting));
     }
 
     // TODO why is cargType an int, not the class from world.cargo

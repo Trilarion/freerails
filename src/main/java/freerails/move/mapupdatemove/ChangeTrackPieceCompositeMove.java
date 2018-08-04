@@ -89,7 +89,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackPiece oldTrackPiece;
         TrackPiece newTrackPiece;
 
-        int owner = WorldUtils.getPlayerIndex(world, player);
+        int owner = player.getId();
 
         if (world.boundsContain(p)) {
             oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
@@ -120,7 +120,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
 
                 if (trackConfiguration != TrackConfiguration.getFlatInstance("000010000")) {
-                    int owner = WorldUtils.getPlayerIndex(world, player);
+                    int owner = player.getId();
                     newTrackPiece = new TrackPiece(trackConfiguration, oldTrackPiece.getTrackType(), owner);
                 } else {
                     newTrackPiece = null;

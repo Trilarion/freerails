@@ -23,7 +23,6 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.track.TrackType;
 import freerails.model.world.World;
-import freerails.model.world.WorldUtils;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.ui.SoundManager;
 import freerails.model.track.pathfinding.*;
@@ -438,7 +437,7 @@ public class BuildTrackController implements GameModel {
                                     break attemptMove;
                                 }
 
-                                int owner = WorldUtils.getPlayerIndex(unmodifiableWorld, fp);
+                                int owner = fp.getId();
                                 TrackType trackType = unmodifiableWorld.getTrackType(trackRuleID);
                                 TrackPiece after = new TrackPiece(tile.getTrackPiece().getTrackConfiguration(), trackType, owner);
 

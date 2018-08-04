@@ -36,7 +36,7 @@ public strictfp class PathOnTiles implements Serializable {
 
     private static final long serialVersionUID = 3544386994122536753L;
     private final Vec2D start;
-    private final ImmutableList<TileTransition> vectors;
+    private final List<TileTransition> vectors;
 
     /**
      * @throws NullPointerException if null == start
@@ -44,7 +44,7 @@ public strictfp class PathOnTiles implements Serializable {
      * @throws NullPointerException if null == vectorsList.get(i) for any i;
      */
     public PathOnTiles(Vec2D start, List<TileTransition> tileTransitions) {
-        vectors = new ImmutableList<>(tileTransitions);
+        vectors = new ArrayList<>(tileTransitions);
         Utils.verifyNoneNull(vectors);
         this.start = Utils.verifyNotNull(start);
     }
@@ -56,7 +56,7 @@ public strictfp class PathOnTiles implements Serializable {
      */
     // TODO remove this constructor only used from tests
     public PathOnTiles(Vec2D start, TileTransition... tileTransitions) {
-        vectors = new ImmutableList<>(tileTransitions);
+        vectors = new ArrayList<>(Arrays.asList(tileTransitions));
         Utils.verifyNoneNull(vectors);
         this.start = Utils.verifyNotNull(start);
     }

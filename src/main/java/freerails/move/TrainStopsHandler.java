@@ -26,7 +26,7 @@ import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.model.track.NoTrackException;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
@@ -135,8 +135,8 @@ public class TrainStopsHandler implements Serializable {
      *
      * @return
      */
-    public ImmutableList<Move> getMoves() {
-        ImmutableList<Move> currentMoves = new ImmutableList<>(moves);
+    public List<Move> getMoves() {
+        List<Move> currentMoves = new ArrayList<>(moves);
         moves.clear();
         world = (World) Utils.cloneBySerialisation(unmodifiableWorld);
         return currentMoves;
@@ -172,16 +172,16 @@ public class TrainStopsHandler implements Serializable {
      */
     private boolean isTrainFull() {
         TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        ImmutableList<Integer> spaceAvailable = trainAccessor.spaceAvailable();
-        return Utils.sumOfIntegerImmutableList(spaceAvailable) == 0;
+        List<Integer> spaceAvailable = trainAccessor.spaceAvailable();
+        return Utils.sumOfIntegerList(spaceAvailable) == 0;
     }
 
     /**
      * @return
      */
     public boolean isWaitingForFullLoad() {
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainId);
-        int scheduleID = train.getScheduleID();
+        Train train = world.getTrain(player, trainId);
+        int scheduleID = train.getScheduleId();
         Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {
@@ -226,18 +226,22 @@ public class TrainStopsHandler implements Serializable {
         }
 
         // Should we change the consist?
-        ImmutableList<Integer> consist = trainAccessor.getTrain().getConsist();
+        List<Integer> consist = trainAccessor.getTrain().getConsist();
         if (!consist.equals(order.consist)) {
             // ..if so, we should change the consist.
             int oldLength = trainAccessor.getTrain().getLength();
             int engineId = trainAccessor.getTrain().getEngineId();
 
             // TODO newTrain is computed in the ChangeTrainMove also
-            Train newTrain = trainAccessor.getTrain().getNewInstance(engineId, order.consist);
+            // TODO need a way to get a new id for trains, this is not the best way so far
+            int id = world.getTrains(player).size();
+            Train newTrain = new Train(id, engineId, order.consist, trainAccessor.getTrain().getScheduleId(), trainAccessor.getTrain().getCargoBundleId());
             // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
             Train before = trainAccessor.getTrain();
-            Train after = before.getNewInstance(engineId, order.consist);
-            Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
+            Train after = new Train(id, engineId, order.consist, before.getScheduleId(), before.getCargoBundleId());
+            // TODO need dedicated change train move instead
+            // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
+            Move move = new ChangeTrainMove(player, after);
             move.doMove(world, player);
             moves.add(move);
 
@@ -272,10 +276,10 @@ public class TrainStopsHandler implements Serializable {
 
     private void scheduledStop() {
 
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainId);
-        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
+        Train train = world.getTrain(player, trainId);
+        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
 
-        ImmutableList<Integer> wagonsToAdd = schedule.getWagonsToAdd();
+        List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
         // Loading and unloading cargo takes time, so we make the train wait for
         // a few ticks.
@@ -285,8 +289,12 @@ public class TrainStopsHandler implements Serializable {
 
         if (null != wagonsToAdd) {
             int engineType = train.getEngineId();
-            Train after = train.getNewInstance(engineType, wagonsToAdd);
-            Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, train, after, player);
+            // TODO need a way to get a new id for trains, this is not the best way so far
+            int id = world.getTrains(player).size();
+            Train after = new Train(trainId, engineType, wagonsToAdd, train.getCargoBundleId(), train.getScheduleId());
+            // TODO need dedicated change train move
+            // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, train, after, player);
+            Move move = new ChangeTrainMove(player, after);
             // TODO instead of doing the move, add them to a list
             moves.add(move);
             move.doMove(world, player);
@@ -297,8 +305,8 @@ public class TrainStopsHandler implements Serializable {
     }
 
     private void updateSchedule() {
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainId);
-        int scheduleID = train.getScheduleID();
+        Train train =  world.getTrain(player, trainId);
+        int scheduleID = train.getScheduleId();
         ImmutableSchedule currentSchedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         MutableSchedule schedule = new MutableSchedule(currentSchedule);
         Station station;

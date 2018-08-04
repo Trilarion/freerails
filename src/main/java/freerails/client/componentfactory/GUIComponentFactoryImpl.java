@@ -137,10 +137,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     private void countTrains() {
-        WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, modelRoot.getWorld(), modelRoot.getPlayer());
-        boolean enabled;
-
-        enabled = trains.size() > 0;
+        boolean enabled = !modelRoot.getWorld().getTrains(modelRoot.getPlayer()).isEmpty();
 
         trainsJTabPane.setTrainTabEnabled(enabled);
         trainListJMenuItem.setEnabled(enabled);

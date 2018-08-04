@@ -18,9 +18,12 @@
 
 package freerails.model.track;
 
-import freerails.util.ImmutableList;
+
 import freerails.util.LineSegment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -29,15 +32,15 @@ import java.util.NoSuchElementException;
 public class SimplePathIteratorImpl implements PathIterator {
 
     private static final long serialVersionUID = 3618420406261003576L;
-    private final ImmutableList<Integer> x;
-    private final ImmutableList<Integer> y;
+    private final List<Integer> x;
+    private final List<Integer> y;
     private int position = 0;
 
     /**
      * @param xpoints
      * @param ypoints
      */
-    public SimplePathIteratorImpl(ImmutableList<Integer> xpoints, ImmutableList<Integer> ypoints) {
+    public SimplePathIteratorImpl(List<Integer> xpoints, List<Integer> ypoints) {
         x = xpoints;
         y = ypoints;
 
@@ -51,8 +54,8 @@ public class SimplePathIteratorImpl implements PathIterator {
      * @param ypoints
      */
     public SimplePathIteratorImpl(Integer[] xpoints, Integer[] ypoints) {
-        x = new ImmutableList<>(xpoints);
-        y = new ImmutableList<>(ypoints); // defensive copy.
+        x = new ArrayList<>(Arrays.asList(xpoints));
+        y = new ArrayList<>(Arrays.asList(ypoints)); // defensive copy.
 
         if (x.size() != y.size()) {
             throw new IllegalArgumentException("The array length of the array must be even");

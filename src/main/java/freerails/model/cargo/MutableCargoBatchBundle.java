@@ -32,6 +32,7 @@ import java.util.TreeMap;
 public class MutableCargoBatchBundle implements CargoBatchBundle {
 
     private final SortedMap<CargoBatch, Integer> cargoMap;
+    // TODO meaning and sense of updateID?
     private int updateID = 0;
 
     public MutableCargoBatchBundle() {

@@ -28,7 +28,7 @@ import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 // TODO why is it important to only return non-null elements
-// TODO can we remove it
+// TODO can we remove it please, we should not have null elements there anyway
 /**
  * Iterates over one of the lists on the world object only returning non null
  * elements.

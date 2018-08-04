@@ -21,10 +21,13 @@
  */
 package freerails.model.train.schedule;
 
-import freerails.util.ImmutableList;
+
 import freerails.model.train.TrainOrders;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 // TODO look at MutableSchedule and combine both
 /**
@@ -33,7 +36,7 @@ import java.io.Serializable;
 public class ImmutableSchedule implements Schedule, Serializable {
 
     private static final long serialVersionUID = 3977858458324318264L;
-    private final ImmutableList<TrainOrders> orders;
+    private final List<TrainOrders> orders;
     private final int nextScheduledOrder;
     private final boolean hasPriorityOrders;
 
@@ -43,7 +46,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
      * @param hasPriorityOrders
      */
     public ImmutableSchedule(TrainOrders[] orders, int gotoStation, boolean hasPriorityOrders) {
-        this.orders = new ImmutableList<>(orders);
+        this.orders = Arrays.asList(orders);
         nextScheduledOrder = gotoStation;
         this.hasPriorityOrders = hasPriorityOrders;
     }
@@ -79,7 +82,7 @@ public class ImmutableSchedule implements Schedule, Serializable {
         return order.getStationID();
     }
 
-    public ImmutableList<Integer> getWagonsToAdd() {
+    public List<Integer> getWagonsToAdd() {
         TrainOrders order = orders.get(getOrderToGoto());
         return order.consist;
     }

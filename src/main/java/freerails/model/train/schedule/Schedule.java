@@ -21,8 +21,10 @@
  */
 package freerails.model.train.schedule;
 
-import freerails.util.ImmutableList;
+
 import freerails.model.train.TrainOrders;
+
+import java.util.List;
 
 /**
  * Defines methods to access a train's schedule.
@@ -53,7 +55,7 @@ public interface Schedule {
      * Returns the wagons to add at the next scheduled stop.
      */
 
-    ImmutableList<Integer> getWagonsToAdd();
+    List<Integer> getWagonsToAdd();
 
     /**
      * Returns the value for the autoconsist flag at the next scheduled stop.

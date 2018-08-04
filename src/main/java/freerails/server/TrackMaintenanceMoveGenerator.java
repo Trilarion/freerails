@@ -88,8 +88,7 @@ public class TrackMaintenanceMoveGenerator {
      * @param world
      */
     public void update(World world) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
+        for (Player player: world.getPlayers()) {
             Move move = generateMove(world, player, TransactionCategory.TRACK_MAINTENANCE);
             moveReceiver.process(move);
 

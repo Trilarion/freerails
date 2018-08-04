@@ -141,6 +141,8 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     }
 
     public void display(int trainNumber) {
+        // TODO this enables and disables the next/previous buttons, we need to re-implement this
+        /*
         worldIterator = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
         worldIterator.gotoIndex(trainNumber);
         if (worldIterator.getRowID() > 0) {
@@ -154,6 +156,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         } else {
             nextJButton.setEnabled(false);
         }
+        */
 
         newTrainSchedulePanel1.display(trainNumber);
         trainDetailsJPanel1.displayTrain(trainNumber);

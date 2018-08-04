@@ -24,7 +24,7 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.receiver.MoveReceiver;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
@@ -42,6 +42,7 @@ import freerails.model.train.schedule.MutableSchedule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 // TODO why should the client not use this? include this in the full server game model
 /**
@@ -70,7 +71,7 @@ public class TrainUpdater implements Serializable {
      * @param player
      * @param world
      */
-    private void buildTrain(int engineId, ImmutableList<Integer> wagons, Vec2D location, Player player, UnmodifiableWorld world) {
+    private void buildTrain(int engineId, List<Integer> wagons, Vec2D location, Player player, UnmodifiableWorld world) {
 
         // If there are no wagons, setup an automatic schedule.
         boolean autoSchedule = 0 == wagons.size();
@@ -101,23 +102,21 @@ public class TrainUpdater implements Serializable {
      * production field set.
      */
     public void buildTrains(UnmodifiableWorld world) {
-        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player player = world.getPlayer(k);
-
+        for (Player player: world.getPlayers()) {
             for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
                 Station station = (Station) world.get(player, PlayerKey.Stations, i);
                 if (null != station) {
 
-                    ImmutableList<TrainBlueprint> production = station.getProduction();
+                    List<TrainBlueprint> production = station.getProduction();
                     if (production.size() > 0) {
 
                         for (TrainBlueprint aProduction : production) {
                             int engineId = aProduction.getEngineId();
-                            ImmutableList<Integer> wagonTypes = aProduction.getWagonTypes();
+                            List<Integer> wagonTypes = aProduction.getWagonTypes();
                             buildTrain(engineId, wagonTypes, station.location, player, world);
                         }
 
-                        Move move = new ChangeProductionAtEngineShopMove(production, new ImmutableList<>(), i, player);
+                        Move move = new ChangeProductionAtEngineShopMove(production, new ArrayList<>(), i, player);
                         moveReceiver.process(move);
                     }
                 }
@@ -128,8 +127,7 @@ public class TrainUpdater implements Serializable {
     public void moveTrains(UnmodifiableWorld world) {
         int time = world.currentTime().getTicks();
 
-        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player player = world.getPlayer(k);
+        for (Player player: world.getPlayers()) {
             OccupiedTracks occupiedTracks = new OccupiedTracks(player, world);
             // If a train is moving, we want it to keep moving rather than stop
             // to allow an already stationary train to start moving. To achieve
@@ -137,9 +135,10 @@ public class TrainUpdater implements Serializable {
             // we process moving trains first.
             Collection<MoveTrainMoveGenerator> movingTrains = new ArrayList<>();
             Collection<MoveTrainMoveGenerator> stoppedTrains = new ArrayList<>();
-            for (int i = 0; i < world.size(player, PlayerKey.Trains); i++) {
+            for (int i = 0; i < world.getTrains(player).size(); i++) {
 
-                Train train = (Train) world.get(player, PlayerKey.Trains, i);
+                Train train = world.getTrain(player, i);
+                // TODO this should never happen, we should not check here
                 if (null == train) continue;
 
                 MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(i, player, occupiedTracks);

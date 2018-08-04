@@ -316,10 +316,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
         xAxisLabel2.setText(String.valueOf(startYear + 50));
         xAxisLabel3.setText(String.valueOf(endYear));
 
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+        for (Player player: world.getPlayers()) {
 
-            Color c = PlayerColors.getColor(i);
-            Player player = world.getPlayer(i);
+            // TODO different way to get a player color
+            Color c = PlayerColors.getColor(player.getId());
             String name = player.getName();
 
             logger.debug("Adding player " + name + " to net worth graph.");

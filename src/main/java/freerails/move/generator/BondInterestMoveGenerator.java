@@ -40,8 +40,7 @@ public class BondInterestMoveGenerator {
      */
     public static List<Move> generate(UnmodifiableWorld world) {
         List<Move> moves = new ArrayList<>();
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
+        for (Player player: world.getPlayers()) {
             long interestDue = 0;
 
             for (int i1 = 0; i1 < world.getNumberOfTransactions(player); i1++) {

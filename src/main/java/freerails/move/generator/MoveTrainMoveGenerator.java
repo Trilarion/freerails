@@ -27,7 +27,7 @@ import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.track.OccupiedTracks;
 import freerails.move.*;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.PlayerKey;
@@ -146,7 +146,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrainState trainState = ta.getStatus(finishTime);
         if (trainState == TrainState.WAITING_FOR_FULL_LOAD) {
             // Check whether there is any cargo that can be added to the train.
-            ImmutableList<Integer> spaceAvailable = ta.spaceAvailable();
+            List<Integer> spaceAvailable = ta.spaceAvailable();
             int stationId = ta.getStationId(ticks);
             if (stationId == -1) throw new IllegalStateException();
 
@@ -157,13 +157,10 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 int space = spaceAvailable.get(i);
                 int atStation = cb.getAmountOfType(i);
                 if (space * atStation > 0) {
-
                     logger.debug("There is cargo to transfer!");
-
                     return true;
                 }
             }
-
             return !ta.keepWaiting();
         }
         return hasFinishedLastActivity;
@@ -234,9 +231,11 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                     nextMotion = new TrainMotion(path, currentTrainLength, durationOfStationStop, status);
 
                     // Create a new Move object.
-                    Move trainMove = new NextActivityMove(nextMotion, trainID, player);
+                    // TODO needed dedicated move for train moves
+                    // Move trainMove = new NextActivityMove(nextMotion, trainID, player);
+                    Move trainMove = new MoveTrainActivityMove(player, trainID, nextMotion);
 
-                    ImmutableList<Move> cargoMoves = stopsHandler.getMoves();
+                    List<Move> cargoMoves = stopsHandler.getMoves();
                     return new CompositeMove(trainMove, cargoMoves);
                 }
                 return moveTrain(world, occupiedTracks);
@@ -245,7 +244,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, player, world);
 
                 boolean waitingForfullLoad = stopsHandler.refreshWaitingForFullLoad();
-                ImmutableList<Move> cargoMoves = stopsHandler.getMoves();
+                List<Move> cargoMoves = stopsHandler.getMoves();
                 if (!waitingForfullLoad) {
                     Move trainMove = moveTrain(world, occupiedTracks);
                     if (null != trainMove) {
@@ -276,6 +275,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return (TrainMotion) ai.getActivity();
     }
 
+    // TODO this should be in model.train
     private Move moveTrain(UnmodifiableWorld world, OccupiedTracks occupiedTracks) {
         // Find the next vector.
         TileTransition nextVector = nextStep(world);

@@ -48,16 +48,16 @@ public class Statistics {
 
         int thisPlayerId = world.getID(player);
 
+        // TODO use maps instead of arrays
         StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();
-        for (int playerId = 0; playerId < world.getNumberOfPlayers(); playerId++) {
-
+        for (Player otherPlayer: world.getPlayers()) {
             aggregator.setCategory(TransactionCategory.TRANSFER_STOCK);
             aggregator.setType(thisPlayerId);
             int quantity = aggregator.calculateQuantity();
-            if (playerId == thisPlayerId) {
-                Money treasuryStock = Money.multiply(stockPrices[playerId].currentPrice, quantity);
+            if (otherPlayer.getId() == thisPlayerId) {
+                Money treasuryStock = Money.multiply(stockPrices[otherPlayer.getId()].currentPrice, quantity);
             } else {
-                otherRrStock = Money.add(Money.multiply(stockPrices[playerId].currentPrice, quantity), otherRrStock);
+                otherRrStock = Money.add(Money.multiply(stockPrices[otherPlayer.getId()].currentPrice, quantity), otherRrStock);
             }
         }
     }

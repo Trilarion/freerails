@@ -27,7 +27,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
-import freerails.util.ImmutableList;
+
 import freerails.util.LineSegment;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
@@ -42,6 +42,7 @@ import freerails.model.train.schedule.ImmutableSchedule;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
@@ -73,7 +74,7 @@ class TrainMotionExperiment extends JComponent {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ImmutableList<>(), from, player, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ArrayList<>(), from, player, is);
 
         Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, player);

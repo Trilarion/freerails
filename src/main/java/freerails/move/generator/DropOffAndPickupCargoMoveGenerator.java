@@ -23,10 +23,11 @@ import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Money;
 import freerails.move.AddTransactionMove;
+import freerails.move.ChangeTrainMove;
 import freerails.move.Move;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.TransferCargoAtStationMove;
-import freerails.util.ImmutableList;
+
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatch;
@@ -39,10 +40,7 @@ import freerails.model.station.StationDemand;
 import freerails.model.train.*;
 import freerails.model.train.schedule.Schedule;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Generates moves that transfer cargo between train and the stations
@@ -65,7 +63,7 @@ public class DropOffAndPickupCargoMoveGenerator {
     private MutableCargoBatchBundle trainAfter;
     private MutableCargoBatchBundle trainBefore;
     private List<Move> moves;
-    private ImmutableList<Integer> consist;
+    private List<Integer> consist;
 
     /**
      * Constructor.
@@ -90,7 +88,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (autoConsist) {
             List<WagonLoad> wagonsAvailable = new ArrayList<>();
 
-            assert (trainAccessor.equals(world.get(this.player, PlayerKey.Trains, trainId)));
+            assert trainAccessor.equals(world.getTrain(player, trainId));
             Schedule schedule = trainAccessor.getSchedule();
             TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
 
@@ -126,7 +124,7 @@ public class DropOffAndPickupCargoMoveGenerator {
                 WagonLoad wagonload = wagonsAvailable.get(i);
                 temp[i] = wagonload.cargoType;
             }
-            consist = new ImmutableList<>(temp);
+            consist = new ArrayList<>(Arrays.asList(temp));
         }
 
         processStationBundle(); // ie. load train / pickup cargo
@@ -210,8 +208,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (autoConsist) {
             int engine = trainAccessor.getTrain().getEngineId();
             Train before = trainAccessor.getTrain();
-            Train after = before.getNewInstance(engine, consist);
-            Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
+            Train after = new Train(before.getId(), engine, consist, before.getScheduleId(), before.getCargoBundleId());
+            // TODO we need a dedicated ChangeTrainMove
+            // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
+            Move move = new ChangeTrainMove(player, after);
             moves.add(move);
         } else if (waitingForFullLoad) {
             // Only generate a move if there is some cargo to add..
@@ -227,8 +227,8 @@ public class DropOffAndPickupCargoMoveGenerator {
     }
 
     private void getBundles() {
-        Train train = ((Train) world.get(player, PlayerKey.Trains, trainId));
-        trainBundleId = train.getCargoBundleID();
+        Train train = world.getTrain(player, trainId);
+        trainBundleId = train.getCargoBundleId();
         trainBefore = getCopyOfBundle(trainBundleId);
         trainAfter = getCopyOfBundle(trainBundleId);
 
@@ -277,7 +277,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
         // Unload the cargo that there isn't space for on the train regardless
         // of whether the station demands it.
-        ImmutableList<Integer> spaceAvailable = trainAccessor.spaceAvailable();
+        List<Integer> spaceAvailable = trainAccessor.spaceAvailable();
 
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
@@ -293,7 +293,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * available on the train.
      */
     private void processStationBundle() {
-        ImmutableList<Integer> spaceAvailable = TrainAccessor.spaceAvailable2(world, trainAfter.toImmutableCargoBundle(), consist);
+        List<Integer> spaceAvailable = TrainAccessor.spaceAvailable2(world, trainAfter.toImmutableCargoBundle(), consist);
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
             int amountToTransfer = Math.min(quantity, stationAfter.getAmountOfType(cargoType));

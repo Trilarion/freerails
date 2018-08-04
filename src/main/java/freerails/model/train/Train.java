@@ -1,92 +1,27 @@
-/*
- * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package freerails.model.train;
 
+import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
-import freerails.util.ImmutableList;
 
-import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a train.
  */
-public class Train implements Serializable {
+public class Train extends Identifiable {
 
-    private static final long serialVersionUID = 3545235825756812339L;
-    private final int scheduleId;
     private final int engineId;
-    private final ImmutableList<Integer> wagonTypes;
+    private final List<Integer> wagonTypes;
     private final int cargoBundleId;
+    private final int scheduleId;
 
-    /**
-     * @param engine
-     * @param wagons
-     * @param scheduleID
-     * @param BundleId
-     */
-    public Train(int engine, ImmutableList<Integer> wagons, int scheduleID, int BundleId) {
-        engineId = engine;
-        wagonTypes = wagons;
-        scheduleId = scheduleID;
-        cargoBundleId = BundleId;
-    }
-
-    /**
-     * @param wagons
-     * @param BundleId
-     */
-    public Train(ImmutableList<Integer> wagons, int BundleId) {
-        wagonTypes = wagons;
-        cargoBundleId = BundleId;
-        engineId = 0;
-        scheduleId = 0;
-    }
-
-    /**
-     * @param engine
-     * @param wagons
-     * @param scheduleID
-     */
-    public Train(int engine, ImmutableList<Integer> wagons, int scheduleID) {
-        engineId = engine;
-        wagonTypes = wagons;
-        scheduleId = scheduleID;
-        cargoBundleId = 0;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = scheduleId;
-        result = 29 * result + engineId;
-        result = 29 * result + cargoBundleId;
-
-        return result;
-    }
-
-    /**
-     * @param engineId
-     * @param newWagons
-     * @return
-     */
-    public Train getNewInstance(int engineId, ImmutableList<Integer> newWagons) {
-        return new Train(engineId, newWagons, scheduleId, cargoBundleId);
+    public Train(int id, int engineId, List<Integer> wagonTypes, int cargoBundleId, int scheduleId) {
+        super(id);
+        this.engineId = engineId;
+        this.wagonTypes = Collections.unmodifiableList(wagonTypes);
+        this.cargoBundleId = cargoBundleId;
+        this.scheduleId = scheduleId;
     }
 
     /**
@@ -104,11 +39,11 @@ public class Train implements Serializable {
     }
 
     /**
-     * @param i
+     * @param position
      * @return
      */
-    public int getWagon(int i) {
-        return wagonTypes.get(i);
+    public int getWagonType(int position) {
+        return wagonTypes.get(position);
     }
 
     /**
@@ -121,31 +56,21 @@ public class Train implements Serializable {
     /**
      * @return
      */
-    public int getCargoBundleID() {
+    public int getCargoBundleId() {
         return cargoBundleId;
     }
 
     /**
      * @return
      */
-    public int getScheduleID() {
+    public int getScheduleId() {
         return scheduleId;
     }
 
     /**
      * @return
      */
-    public ImmutableList<Integer> getConsist() {
+    public List<Integer> getConsist() {
         return wagonTypes;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Train) {
-            Train test = (Train) obj;
-
-            return cargoBundleId == test.cargoBundleId && engineId == test.engineId && wagonTypes.equals(test.wagonTypes) && scheduleId == test.scheduleId;
-        }
-        return false;
     }
 }

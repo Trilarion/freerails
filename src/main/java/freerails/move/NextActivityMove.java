@@ -72,8 +72,9 @@ public class NextActivityMove implements Move {
 
     public MoveStatus tryDoMove(World world, Player player) {
         // Check that active entity exists.
-        if (world.size(this.player) <= index)
-            return MoveStatus.moveFailed("Index out of range. " + world.size(this.player) + "<= " + index);
+        // TODO we change activities anyway, therefore that gets commented out
+        // if (world.size(this.player) <= index)
+        //    return MoveStatus.moveFailed("Index out of range. " + world.size(this.player) + "<= " + index);
 
         return MoveStatus.MOVE_OK;
     }

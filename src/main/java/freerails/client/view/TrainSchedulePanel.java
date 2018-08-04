@@ -25,7 +25,7 @@ import freerails.model.cargo.Cargo;
 import freerails.model.world.*;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.Move;
-import freerails.util.ImmutableList;
+
 import freerails.util.Utils;
 import freerails.model.player.Player;
 import freerails.model.train.*;
@@ -38,7 +38,10 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.List;
 
 /**
  * Displays a train's schedule and provides controls that let you
@@ -419,8 +422,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         trainNumber = newTrainNumber;
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = (Train) world.get(player, PlayerKey.Trains, newTrainNumber);
-        scheduleID = train.getScheduleID();
+        Train train = world.getTrain(player, newTrainNumber);
+        scheduleID = train.getScheduleId();
         listModel = new TrainOrdersListModel(world, newTrainNumber, player);
         orders.setModel(listModel);
         orders.setFixedCellWidth(250);
@@ -439,8 +442,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private MutableSchedule getSchedule() {
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
-        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
+        Train train = world.getTrain(player, trainNumber);
+        ImmutableSchedule immutableSchedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
         return new MutableSchedule(immutableSchedule);
     }
 
@@ -528,7 +531,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         } else {
             newConsist = new Integer[]{wagonTypeNumber};
         }
-        newOrders = new TrainOrders(oldOrders.getStationID(), new ImmutableList<>(newConsist), oldOrders.getWaitUntilFull(), false);
+        newOrders = new TrainOrders(oldOrders.getStationID(), Arrays.asList(newConsist), oldOrders.getWaitUntilFull(), false);
         schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -538,7 +541,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         MutableSchedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
         oldOrders = schedule.getOrder(orderNumber);
-        newOrders = new TrainOrders(oldOrders.getStationID(), new ImmutableList<>(), false, false);
+        newOrders = new TrainOrders(oldOrders.getStationID(), new ArrayList<>(), false, false);
         schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -551,13 +554,16 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         if (oldOrders.consist == null) {
             return;
         }
-        ImmutableList<Integer> oldConsist = oldOrders.consist;
+        List<Integer> oldConsist = oldOrders.consist;
         int newLength = oldConsist.size() - 1;
         if (newLength < 0) {
             // No wagons to remove!
             return;
         }
-        ImmutableList<Integer> newConsist = Utils.removeLastOfImmutableList(oldConsist);
+        // TODO unmodifiable list? needs to copy then
+        oldConsist.remove(oldConsist.size() - 1);
+        List<Integer> newConsist = oldConsist;
+        // List<Integer> newConsist = Utils.removeLastOfList(oldConsist);
 
         newOrders = new TrainOrders(oldOrders.getStationID(), newConsist, oldOrders.waitUntilFull, false);
         schedule.setOrder(orderNumber, newOrders);
@@ -567,9 +573,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void sendUpdateMove(MutableSchedule mutableSchedule) {
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
-        // int scheduleID = train.getScheduleID();
-        assert (scheduleID == train.getScheduleID());
+        Train train = world.getTrain(player, trainNumber);
+        assert (scheduleID == train.getScheduleId());
         ImmutableSchedule before = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         ImmutableSchedule after = mutableSchedule.toImmutableSchedule();
         Move move = new ChangeItemInListMove(PlayerKey.TrainSchedules, scheduleID, before, after, player);

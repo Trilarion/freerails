@@ -24,7 +24,7 @@ package freerails.move.generator;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
@@ -50,7 +50,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 4050201951105069624L;
     private final int engineId;
-    private final ImmutableList<Integer> wagons;
+    private final List<Integer> wagons;
     private final Vec2D point;
     private final Player player;
     private final ImmutableSchedule schedule;
@@ -62,7 +62,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * @param player
      * @param schedule
      */
-    public AddTrainMoveGenerator(int engineId, ImmutableList<Integer> wagons, Vec2D p, Player player, ImmutableSchedule schedule) {
+    public AddTrainMoveGenerator(int engineId, List<Integer> wagons, Vec2D p, Player player, ImmutableSchedule schedule) {
         this.engineId = engineId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);
@@ -104,7 +104,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         }
 
         List<TileTransition> tileTransitions = new ArrayList<>();
-        int length = calTrainLength();
+        int length = calculateTrainLength();
         int distanceTravelled = 0;
         PositionOnTrack p = new PositionOnTrack();
         while (distanceTravelled < length) {
@@ -118,13 +118,14 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         return new PathOnTiles(point, tileTransitions);
     }
 
-    private int calTrainLength() {
-        Train train = new Train(engineId, wagons, 0);
+    private int calculateTrainLength() {
+        // TODO is this a good idea, how often is this called, should it maybe only be called once?
+        Train train = new Train(0, engineId, wagons, 0, 0);
         return train.getLength();
     }
 
     private TrainMotion initPositionStep2(PathOnTiles path) {
-        return new TrainMotion(path, path.steps(), calTrainLength(), ConstantAccelerationMotion.STOPPED);
+        return new TrainMotion(path, path.steps(), calculateTrainLength(), ConstantAccelerationMotion.STOPPED);
     }
 
     /**
@@ -148,10 +149,14 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         AddItemToListMove addSchedule = new AddItemToListMove(PlayerKey.TrainSchedules, scheduleId, schedule, player);
 
         // Add train to train list.
-        Train train = new Train(engineId, wagons, scheduleId, bundleId);
+        // TODO need a way to get a new id for trains, this is not the best way so far
+        int id = world.getTrains(player).size();
+        Train train = new Train(id, engineId, wagons, bundleId, scheduleId);
         // TODO this is a quite good idea and ensures unique ids (should be done on the server side only)
-        int trainId = world.size(player, PlayerKey.Trains);
-        AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, player);
+        int trainId = world.getTrains(player).size();
+        // TODO we need an AddTrainMove
+        // AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, player);
+        AddTrainMove addTrain = new AddTrainMove(player, train);
 
         // Pay for train.
         int quantity = 1;

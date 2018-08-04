@@ -30,6 +30,7 @@ import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
+import freerails.model.train.Train;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
 import freerails.model.finances.Money;
@@ -75,11 +76,15 @@ public class World implements UnmodifiableWorld {
     public List<Player> players = new ArrayList<>();
     public GameTime time = new GameTime(0);
 
+    // global lists
     private final SortedSet<Engine> engines;
     private final SortedSet<City> cities;
     private final SortedSet<Cargo> cargos;
     private final SortedSet<Terrain> terrainTypes;
     private final SortedSet<TrackType> trackTypes;
+
+    // player specific lists
+    private final Map<Player, SortedSet<Train>> trains; // a list of trains by player
 
     // single instance objects in the game world
     private final GameCalendar calendar;
@@ -94,6 +99,7 @@ public class World implements UnmodifiableWorld {
         private SortedSet<Cargo> cargos = new TreeSet<>();
         private SortedSet<Terrain> terrainTypes = new TreeSet<>();
         private SortedSet<TrackType> trackTypes = new TreeSet<>();
+        private Map<Player, SortedSet<Train>> trains = new HashMap<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
         public Builder setEngines(SortedSet<Engine> engines) {
@@ -137,6 +143,7 @@ public class World implements UnmodifiableWorld {
         cargos = builder.cargos;
         terrainTypes = builder.terrainTypes;
         trackTypes = builder.trackTypes;
+        trains = builder.trains;
 
         calendar = new GameCalendar(1200, 1840);
         economicClimate = EconomicClimate.MODERATION;
@@ -192,6 +199,28 @@ public class World implements UnmodifiableWorld {
         return get(id, trackTypes);
     }
 
+    // TODO unmodifiable collection?
+    public Collection<Train> getTrains(Player player) {
+        return trains.get(player);
+    }
+
+    public Train getTrain(Player player, int id) {
+        return get(id, trains.get(player));
+    }
+
+    public void addTrain(Player player, Train train) {
+        if (contains(train.getId(), trains.get(player))) {
+            throw new IllegalArgumentException("Train with id already existing. Cannot add.");
+        }
+        trains.get(player).add(train);
+    }
+
+    public void removeTrain(Player player, int id) {
+        trains.get(player).remove(get(id, trains.get(player)));
+    }
+
+
+
     /**
      *
      * @param id
@@ -206,6 +235,22 @@ public class World implements UnmodifiableWorld {
             }
         }
         throw new IllegalArgumentException(String.format("Element with Id=%d not existing in collection.", id));
+    }
+
+    /**
+     *
+     * @param id
+     * @param c
+     * @param <E>
+     * @return
+     */
+    private <E extends Identifiable> boolean contains(final int id, @NotNull final Collection<E> c) {
+        for (E e: c) {
+            if (e.getId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public GameCalendar getCalendar() {
@@ -288,6 +333,12 @@ public class World implements UnmodifiableWorld {
             playerLists.get(player).put(key, new ArrayList<>());
         }
 
+        // add trains
+        if (trains.containsKey(player)) {
+            throw new RuntimeException("something wrong");
+        }
+        trains.put(player, new TreeSet<>());
+
         activities.put(player, new HashMap<>());
 
         return index;
@@ -340,11 +391,8 @@ public class World implements UnmodifiableWorld {
             World other = (World) obj;
 
             // Compare players
-            int numberOfPlayers = getNumberOfPlayers();
-            if (numberOfPlayers != other.getNumberOfPlayers()) return false;
-
-            for (int i = 0; i < numberOfPlayers; i++) {
-                if (!getPlayer(i).equals(other.getPlayer(i))) return false;
+            if (!players.equals(other.players)) {
+                return false;
             }
 
             // Compare lists
@@ -414,11 +462,8 @@ public class World implements UnmodifiableWorld {
         return mapSize;
     }
 
-    /**
-     * @return
-     */
-    public int getNumberOfPlayers() {
-        return players.size();
+    public Collection<Player> getPlayers() {
+        return Collections.unmodifiableCollection(players);
     }
 
     /**

@@ -28,7 +28,7 @@ import freerails.network.command.*;
 import freerails.savegames.MapCreator;
 import freerails.savegames.SaveGamesManager;
 import freerails.move.receiver.MoveReceiver;
-import freerails.util.ImmutableList;
+
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.util.network.Connection;
@@ -109,10 +109,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                 }
 
                 // Just send to the new client.
-                Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
-
-                ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
-                Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, savedGameNames);
+                Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(MapCreator.getAvailableMapNames())));
+                Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
 
                 connection.sendObject(setMaps);
                 connection.sendObject(setSaveGames);
@@ -202,7 +200,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         ServerGameModel serverGameModel = saveGamesManager.loadGame(saveGameName);
         String[] passwords = serverGameModel.getPasswords();
         World world = serverGameModel.getWorld();
-        assert(passwords.length == world.getNumberOfPlayers());
+        assert(passwords.length == world.getPlayers().size());
         ArrayList<LogOnCredentials> newPlayers = new ArrayList<>();
         for (int i = 0; i < passwords.length; i++) {
             Player player = world.getPlayer(i);
@@ -325,8 +323,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String[] saves = saveGamesManager.getSaveGameNames();
-        Serializable request = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ImmutableList<>(saves));
+        Serializable request = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
         sendToAll(request);
     }
 
@@ -361,9 +358,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
     private void sendListOfConnectedPlayers2Clients() {
         // Send the client the list of players.
-        String[] playerNames = getPlayerNames();
 
-        Serializable request = new SetPropertyCommandToClient(ClientProperty.CONNECTED_CLIENTS, new ImmutableList<>(playerNames));
+        Serializable request = new SetPropertyCommandToClient(ClientProperty.CONNECTED_CLIENTS, new ArrayList<>(Arrays.asList(getPlayerNames())));
 
         sendToAll(request);
     }
@@ -466,9 +462,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      *
      */
     public void refreshSavedGames() {
-        Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ImmutableList<>(MapCreator.getAvailableMapNames()));
-        ImmutableList<String> savedGameNames = new ImmutableList<>(saveGamesManager.getSaveGameNames());
-        Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, savedGameNames);
+        Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(MapCreator.getAvailableMapNames())));
+        Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));
         sendToAll(setMaps);
         sendToAll(setSaveGames);
     }

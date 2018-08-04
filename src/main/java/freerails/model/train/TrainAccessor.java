@@ -23,7 +23,7 @@ package freerails.model.train;
 
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.PlayerKey;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.CargoBatchBundle;
@@ -37,8 +37,10 @@ import freerails.model.train.schedule.Schedule;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Provides convenience methods to access the properties of a train from the world object.
@@ -66,7 +68,7 @@ public class TrainAccessor {
      * @param consist
      * @return
      */
-    public static ImmutableList<Integer> spaceAvailable2(UnmodifiableWorld world, CargoBatchBundle onTrain, ImmutableList<Integer> consist) {
+    public static List<Integer> spaceAvailable2(UnmodifiableWorld world, CargoBatchBundle onTrain, List<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = world.getCargos().size();
@@ -82,7 +84,7 @@ public class TrainAccessor {
         for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
             spaceAvailable[cargoType] = spaceAvailable[cargoType] - onTrain.getAmountOfType(cargoType);
         }
-        return new ImmutableList<>(spaceAvailable);
+        return new ArrayList<>(Arrays.asList(spaceAvailable));
     }
 
     /**
@@ -165,7 +167,7 @@ public class TrainAccessor {
      * @return
      */
     public Train getTrain() {
-        return (Train) world.get(player, PlayerKey.Trains, id);
+        return world.getTrain(player, id);
     }
 
     /**
@@ -173,7 +175,7 @@ public class TrainAccessor {
      */
     public ImmutableSchedule getSchedule() {
         Train train = getTrain();
-        return (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleID());
+        return (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
     }
 
     /**
@@ -181,17 +183,16 @@ public class TrainAccessor {
      */
     public CargoBatchBundle getCargoBundle() {
         Train train = getTrain();
-        return (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleID());
+        return (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
     }
 
     /**
-     * Returns true iff all the following hold.
+     * Returns true if all the following hold.
      * <ol>
      * <li>The train is waiting for a full load at some station X.</li>
      * <li>The current train order tells the train to goto station X.</li>
      * <li>The current train order tells the train to wait for a full load.</li>
-     * <li>The current train order specifies a consist that matches the train's
-     * current consist.</li>
+     * <li>The current train order specifies a consist that matches the train's current consist.</li>
      * </ol>
      */
     public boolean keepWaiting() {
@@ -213,8 +214,8 @@ public class TrainAccessor {
      * towards.
      */
     public Vec2D getTargetLocation() {
-        Train train = (Train) world.get(player, PlayerKey.Trains, id);
-        int scheduleID = train.getScheduleID();
+        Train train = world.getTrain(player, id);
+        int scheduleID = train.getScheduleId();
         Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
@@ -261,10 +262,10 @@ public class TrainAccessor {
     /**
      * The space available on the train measured in cargo units.
      */
-    public ImmutableList<Integer> spaceAvailable() {
+    public List<Integer> spaceAvailable() {
 
-        Train train = (Train) world.get(player, PlayerKey.Trains, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleID());
+        Train train = world.getTrain(player, id);
+        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
     }
 

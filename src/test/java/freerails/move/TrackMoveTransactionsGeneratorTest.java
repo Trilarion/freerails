@@ -73,7 +73,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         oldTrackPiece = world.getTile(Vec2D.ZERO).getTrackPiece();
 
         TrackType trackType = world.getTrackType(0);
-        int owner = WorldUtils.getPlayerIndex(world, MapFixtureFactory.TEST_PLAYER);
+        int owner = MapFixtureFactory.TEST_PLAYER.getId();
         newTrackPiece = new TrackPiece(newConfig, trackType, owner);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 

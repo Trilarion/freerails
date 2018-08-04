@@ -27,12 +27,12 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.cargo.Cargo;
+import freerails.model.train.Train;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.train.Train;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -93,9 +93,9 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     }
 
     private void updateIfNecessary() {
-        Train train = (Train) world.get(player, PlayerKey.Trains, trainNumber);
+        Train train = world.getTrain(player, trainNumber);
 
-        int cargoBundleID = train.getCargoBundleID();
+        int cargoBundleID = train.getCargoBundleId();
         Serializable cb = world.get(player, PlayerKey.CargoBundles, cargoBundleID);
 
         if (train != lastTrain || cb != lastCargoBundle) displayTrain(trainNumber);
@@ -113,17 +113,16 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
 
     public void displayTrain(int newTrainNumber) {
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
-        it.gotoIndex(newTrainNumber);
-
         trainNumber = newTrainNumber;
 
         trainViewJPanel1.display(newTrainNumber);
-        Train train = (Train) world.get(player, PlayerKey.Trains, newTrainNumber);
+        Train train = world.getTrain(player, newTrainNumber);
 
-        int cargoBundleID = train.getCargoBundleID();
+        int cargoBundleID = train.getCargoBundleId();
         ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, cargoBundleID);
-        StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
+        // TODO natural number is the number in the list/set
+        // StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
+        StringBuilder s = new StringBuilder("Train #" + ": ");
         int numberOfTypesInBundle = 0;
         for (Cargo cargo : world.getCargos()) {
             int id = cargo.getId();

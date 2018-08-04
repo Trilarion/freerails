@@ -24,6 +24,7 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
+import freerails.model.train.Train;
 import freerails.model.world.*;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
@@ -32,7 +33,7 @@ import freerails.move.ChangeProductionAtEngineShopMove;
 import freerails.move.Move;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.RefreshListOfGamesCommandToServer;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
@@ -45,7 +46,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.List;
 
 /**
  * Is responsible for displaying dialogue boxes, adding borders to
@@ -111,10 +113,10 @@ public class DialogueBoxController implements WorldListListener {
             if (wi.next()) {
                 Station station = (Station) wi.getElement();
 
-                ImmutableList<TrainBlueprint> before = station.getProduction();
+                List<TrainBlueprint> before = station.getProduction();
                 int engineId = selectEngine.getSelectedEngineId();
                 Integer[] wagonTypes = selectWagons.getWagons();
-                ImmutableList<TrainBlueprint> after = new ImmutableList<>(new TrainBlueprint(engineId, wagonTypes));
+                List<TrainBlueprint> after = Arrays.asList(new TrainBlueprint(engineId, wagonTypes));
 
                 Move move = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPlayer());
                 modelRoot.doMove(move);
@@ -229,12 +231,13 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainOrders() {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Trains, world, modelRoot.getPlayer());
+        Collection<Train> trains = world.getTrains(modelRoot.getPlayer());
 
-        if (!wi.next()) {
+        if (trains.isEmpty()) {
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
         } else {
-            trainDialoguePanel.display(wi.getIndex());
+            // TODO there should be something reasonable here, like the next and so one, but I don't know what this is supposed to do
+            trainDialoguePanel.display(0);
             showContent(trainDialoguePanel);
         }
     }
@@ -368,7 +371,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showTrainList() {
-        if (world.size(modelRoot.getPlayer(), PlayerKey.Trains) > 0) {
+        if (!world.getTrains(modelRoot.getPlayer()).isEmpty()) {
             final TrainListPanel trainList = new TrainListPanel();
             trainList.setup(modelRoot, vl, closeCurrentDialogue);
             trainList.setShowTrainDetailsActionListener(e -> {

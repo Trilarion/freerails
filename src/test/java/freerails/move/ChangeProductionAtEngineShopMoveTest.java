@@ -22,17 +22,21 @@
 package freerails.move;
 
 import freerails.model.station.*;
-import freerails.util.ImmutableList;
+
 import freerails.model.world.PlayerKey;
 import freerails.model.MapFixtureFactory;
 import freerails.util.Vec2D;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Junit TestCase for ChangeProductionAtEngineShopMove.
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
-    private ImmutableList<TrainBlueprint> after;
+    private List<TrainBlueprint> after;
     private int engineType;
     private Integer[] wagons;
 
@@ -50,14 +54,14 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
         engineType = 0;
         int wagonType = 0;
         wagons = new Integer[]{wagonType, wagonType};
-        after = new ImmutableList<>(new TrainBlueprint(engineType, wagons));
+        after = Arrays.asList(new TrainBlueprint(engineType, wagons));
     }
 
     /**
      *
      */
     public void testMove() {
-        ImmutableList<TrainBlueprint> before = new ImmutableList<>();
+        List<TrainBlueprint> before = new ArrayList<>();
 
         ChangeProductionAtEngineShopMove m;
 

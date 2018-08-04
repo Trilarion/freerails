@@ -31,6 +31,7 @@ import freerails.model.player.Player;
 public class FinancialDataGatherer extends TransactionAggregator {
 
     private final int playerID;
+    // TODO use maps instead of arrays
     private final int[] stockInRRs;
     private int totalShares = 100000;
     private int bonds;
@@ -42,7 +43,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     public FinancialDataGatherer(UnmodifiableWorld world, Player player) {
         super(world, player);
-        stockInRRs = new int[world.getNumberOfPlayers()];
+        stockInRRs = new int[world.getPlayers().size()];
         calculateValues();
         playerID = world.getID(player);
     }
@@ -134,8 +135,8 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     public int[] getStockInThisRRs() {
         if (null == stockInThisRRs) {
-            stockInThisRRs = new int[world.getNumberOfPlayers()];
-            for (int i = 0; i < world.getNumberOfPlayers(); i++) {
+            stockInThisRRs = new int[world.getPlayers().size()];
+            for (int i = 0; i < world.getPlayers().size(); i++) {
                 Player player = world.getPlayer(i);
                 FinancialDataGatherer temp = new FinancialDataGatherer(world, player);
                 stockInThisRRs[i] = temp.stockInRRs[playerID];

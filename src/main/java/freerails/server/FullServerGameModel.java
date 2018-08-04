@@ -72,9 +72,7 @@ public class FullServerGameModel implements ServerGameModel {
      */
     public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
 
-        for (int k = 0; k < world.getNumberOfPlayers(); k++) {
-            Player player = world.getPlayer(k);
-
+        for (Player player: world.getPlayers()) {
             NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (nonNullStations.next()) {
@@ -250,8 +248,7 @@ public class FullServerGameModel implements ServerGameModel {
      * cargoes that they supply, demand, and convert.
      */
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
+        for (Player player: world.getPlayers()) {
             NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
             while (iterator.next()) {

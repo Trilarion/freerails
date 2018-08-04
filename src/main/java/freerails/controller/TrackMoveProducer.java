@@ -22,7 +22,6 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
-import freerails.model.world.WorldUtils;
 import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
@@ -197,7 +196,7 @@ public class TrackMoveProducer {
         }
 
         Player player = executor.getPlayer();
-        int owner = WorldUtils.getPlayerIndex(world, player);
+        int owner = player.getId();
         TrackType trackType = world.getTrackType(trackRuleID);
         TrackPiece after = new TrackPiece(before.getTrackConfiguration(), trackType, owner);
 

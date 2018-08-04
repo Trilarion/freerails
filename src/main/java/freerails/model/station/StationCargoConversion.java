@@ -18,9 +18,10 @@
 
 package freerails.model.station;
 
-import freerails.util.ImmutableList;
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Records which cargo is converted to other cargo at a station.
@@ -31,14 +32,14 @@ public class StationCargoConversion implements Serializable {
     // TODO what about Null as standard value
     private static final int NOT_CONVERTED = Integer.MIN_VALUE;
     // this should probably be a map
-    private final ImmutableList<Integer> convertedTo;
+    private final List<Integer> convertedTo;
 
     // TODO provide as map
     /**
      * @param convertedTo
      */
     public StationCargoConversion(Integer[] convertedTo) {
-        this.convertedTo = new ImmutableList<>(convertedTo);
+        this.convertedTo = new ArrayList<>(Arrays.asList(convertedTo));
     }
 
     // TODO is this really needed

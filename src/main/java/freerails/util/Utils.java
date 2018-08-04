@@ -218,18 +218,18 @@ public final class Utils {
      * @param values
      * @return
      */
-    public static ImmutableList<Integer> integerImmutableListFromBoolean(boolean... values) {
+    public static List<Integer> integerListFromBoolean(boolean... values) {
         Integer[] integers = new Integer[values.length];
         for (int i = 0; i < values.length; i++) {
             integers[i] = values[i] ? 1 : 0;
         }
-        return new ImmutableList<>(integers);
+        return new ArrayList<>(Arrays.asList(integers));
     }
 
     /**
      * Returns the sum of the ints stored in the list.
      */
-    public static int sumOfIntegerImmutableList(ImmutableList<Integer> list) {
+    public static int sumOfIntegerList(List<Integer> list) {
         int sum = 0;
         for (Integer value : list) {
             sum += value;
@@ -240,15 +240,15 @@ public final class Utils {
     /**
      * @return
      */
-    public static <T extends Serializable> ImmutableList<T> removeLastOfImmutableList(ImmutableList<T> list) {
+    public static <T extends Serializable> List<T> removeLastOfList(List<T> list) {
         T[] values = (T[]) new Serializable[list.size() - 1];
         for (int i = 0; i < list.size() - 1; i++) {
             values[i] = list.get(i);
         }
-        return new ImmutableList<>(values);
+        return new ArrayList<>(Arrays.asList(values));
     }
 
-    public static <T extends Serializable> ImmutableList<T> combineTwoImmutableLists(ImmutableList<T> listA, ImmutableList<T> listB) {
+    public static <T extends Serializable> List<T> combineTwoLists(List<T> listA, List<T> listB) {
         T[] values = (T[]) new Serializable[listA.size() + listB.size()];
         for (int i = 0; i < listA.size(); i++) {
             values[i] = listA.get(i);
@@ -256,7 +256,7 @@ public final class Utils {
         for (int i = 0; i < listB.size(); i++) {
             values[listA.size() + i] = listB.get(i);
         }
-        return new ImmutableList<>(values);
+        return new ArrayList<>(Arrays.asList(values));
     }
 
     /**

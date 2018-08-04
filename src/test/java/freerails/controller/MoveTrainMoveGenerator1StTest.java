@@ -28,7 +28,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
@@ -36,6 +36,9 @@ import freerails.model.train.*;
 import freerails.model.train.motion.Motion;
 import freerails.model.train.schedule.ImmutableSchedule;
 import freerails.model.train.schedule.MutableSchedule;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Test for MoveTrainPreMove, tests moving round a loop of track.
@@ -80,7 +83,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         ImmutableSchedule defaultSchedule = schedule.toImmutableSchedule();
 
         Vec2D start = new Vec2D(10, 10);
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(0, 0), start, player, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), start, player, defaultSchedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, player);
         assertTrue(moveStatus.succeeds());
@@ -210,7 +213,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         TrainOrders[] orders = {};
         ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
-        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ImmutableList<>(), from,
+        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from,
                 player, is);
 
         Move move = addTrain.generate(world);

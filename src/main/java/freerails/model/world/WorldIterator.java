@@ -24,6 +24,7 @@ package freerails.model.world;
 import java.io.Serializable;
 import java.util.NoSuchElementException;
 
+// TODO can we get rid of this and replace by standard library uses?
 /**
  * This interface lets the caller access the results of a search in the
  * game world. It is similar in concept to {@code java.sql.ResultSet}.

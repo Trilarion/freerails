@@ -76,7 +76,7 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testPlayers() {
-        assertEquals(4, world.getNumberOfPlayers());
+        assertEquals(4, world.getPlayers().size());
     }
 
     /**

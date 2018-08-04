@@ -20,7 +20,7 @@ package freerails.model.station;
 
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
-import freerails.util.ImmutableList;
+
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.player.Player;
@@ -28,7 +28,9 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 // TODO doesn't know if depot, station, terminal? why not?
 /**
@@ -46,7 +48,7 @@ public class Station implements Serializable {
     // TODO what is the cargo bundle number and what is it good for?
     private final int cargoBundleNumber;
 
-    private ImmutableList<TrainBlueprint> production;
+    private List<TrainBlueprint> production;
 
     /**
      * @param location
@@ -63,7 +65,7 @@ public class Station implements Serializable {
         Integer[] a = new Integer[numberOfCargoTypes];
         Arrays.fill(a, 0);
         supply = new StationSupply(a);
-        production = new ImmutableList<>();
+        production = new ArrayList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
     }
@@ -148,7 +150,7 @@ public class Station implements Serializable {
      */ /**
      * @return
      */
-    public ImmutableList<TrainBlueprint> getProduction() {
+    public List<TrainBlueprint> getProduction() {
         return production;
     }
 
@@ -185,7 +187,7 @@ public class Station implements Serializable {
         this.supply = supply;
     }
 
-    public void setProduction(ImmutableList<TrainBlueprint> production) {
+    public void setProduction(List<TrainBlueprint> production) {
         this.production = production;
     }
 }

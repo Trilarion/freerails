@@ -27,6 +27,7 @@ import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
+import freerails.model.train.Train;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
@@ -86,6 +87,10 @@ public interface UnmodifiableWorld extends Serializable {
 
     TrackType getTrackType(int id);
 
+    Collection<Train> getTrains(Player player);
+
+    Train getTrain(Player player, int id);
+
     GameCalendar getCalendar();
 
     EconomicClimate getEconomicClimate();
@@ -144,11 +149,6 @@ public interface UnmodifiableWorld extends Serializable {
     Vec2D getMapSize();
 
     /**
-     * @return
-     */
-    int getNumberOfPlayers();
-
-    /**
      * @param player
      * @return
      */
@@ -159,6 +159,8 @@ public interface UnmodifiableWorld extends Serializable {
      * @return
      */
     Player getPlayer(int i);
+
+    Collection<Player> getPlayers();
 
     /**
      * Returns the tile at the specified position on the map.

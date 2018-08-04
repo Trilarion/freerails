@@ -21,9 +21,12 @@
  */
 package freerails.model.station;
 
-import freerails.util.ImmutableList;
+
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents the blue print for what an engine shop is producing.
@@ -33,7 +36,7 @@ public class TrainBlueprint implements Serializable {
     private static final long serialVersionUID = 3545515106038592057L;
     private final int engineId;
     // TODO wagon type?? (make if ordinary immutable arraylist)
-    private final ImmutableList<Integer> wagonTypes;
+    private final List<Integer> wagonTypes;
 
     /**
      * @param engineId
@@ -41,7 +44,7 @@ public class TrainBlueprint implements Serializable {
      */
     public TrainBlueprint(int engineId, Integer[] wagonTypes) {
         this.engineId = engineId;
-        this.wagonTypes = new ImmutableList<>(wagonTypes);
+        this.wagonTypes = new ArrayList<>(Arrays.asList(wagonTypes));
     }
 
     @Override
@@ -70,7 +73,7 @@ public class TrainBlueprint implements Serializable {
     /**
      * @return
      */
-    public ImmutableList<Integer> getWagonTypes() {
+    public List<Integer> getWagonTypes() {
         return wagonTypes;
     }
 

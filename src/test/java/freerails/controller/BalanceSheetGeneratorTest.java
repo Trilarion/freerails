@@ -68,7 +68,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
         super.setUp();
 
         world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
-        player = new Player(world.getNumberOfPlayers(), "Player X");
+        player = new Player(world.getPlayers().size(), "Player X");
         world.setTime(new GameTime(0));
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);

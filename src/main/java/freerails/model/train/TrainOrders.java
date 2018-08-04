@@ -22,9 +22,10 @@
  */
 package freerails.model.train;
 
-import freerails.util.ImmutableList;
+
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Encapsulates the orders for a train.
@@ -38,7 +39,7 @@ public class TrainOrders implements Serializable {
     /**
      * The wagon types to add; if null, then no change.
      */
-    public final ImmutableList<Integer> consist;
+    public final List<Integer> consist;
     /**
      * The number of the station to goto.
      */
@@ -50,7 +51,7 @@ public class TrainOrders implements Serializable {
      * @param wait
      * @param auto
      */
-    public TrainOrders(int station, ImmutableList<Integer> newConsist, boolean wait, boolean auto) {
+    public TrainOrders(int station, List<Integer> newConsist, boolean wait, boolean auto) {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
@@ -87,7 +88,7 @@ public class TrainOrders implements Serializable {
      * @return either (1) an array of cargo type ids or (2) null to represent
      * 'no change'.
      */
-    public ImmutableList<Integer> getConsist() {
+    public List<Integer> getConsist() {
         return consist;
     }
 

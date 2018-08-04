@@ -54,10 +54,9 @@ public class TrainMaintenanceMoveGenerator {
      * @param world
      */
     public void update(World world) {
-        for (int i = 0; i < world.getNumberOfPlayers(); i++) {
-            Player player = world.getPlayer(i);
-            WorldIterator trains = new NonNullElementWorldIterator(PlayerKey.Trains, world, player);
-            int numberOfTrains = trains.size();
+        for (Player player: world.getPlayers()) {
+            int numberOfTrains = world.getTrains(player).size();
+            // TODO hardcoded constant, move to constants
             long amount = numberOfTrains * 5000;
             Transaction transaction = new MoneyTransaction(new Money(-amount), TransactionCategory.TRAIN_MAINTENANCE);
 

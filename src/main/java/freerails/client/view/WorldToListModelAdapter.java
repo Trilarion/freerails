@@ -30,6 +30,7 @@ import freerails.model.player.Player;
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
 
+// TODO try to get rid of this
 /**
  * Converts the interface of a list on the world object to a ListModel interface
  * that can be used by JLists. Currently, change notification is <b>not</b>
