@@ -26,6 +26,7 @@ import freerails.model.activity.ActivityIteratorImpl;
 import freerails.model.cargo.Cargo;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
+import freerails.model.station.Station;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
@@ -218,8 +219,6 @@ public class World implements UnmodifiableWorld {
     public void removeTrain(Player player, int id) {
         trains.get(player).remove(get(id, trains.get(player)));
     }
-
-
 
     /**
      *

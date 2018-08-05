@@ -39,21 +39,17 @@ import java.awt.event.*;
 
 /**
 * Displays a list of trains, used for the train list window and the
- * train roaster tab.
- */
+* train roaster tab.
+*/
 public class TrainListPanel extends JPanel implements View {
 
     private static final long serialVersionUID = 3832905463863064626L;
     private UnmodifiableWorld world;
     private Player player;
     private int lastNumberOfTrains = -1;
-    private boolean rhsjTabPane = false; // if the train list is for the
-
-    // rhsjTabPane then use the original
-    // renderer, if not use the
-    // trainsummaryjpanel
-    private ActionListener showTrainDetails = e -> {
-    };
+    private boolean rhsjTabPane = false; // if the train list is for the rhsjTabPane then use the original renderer, if not use the trainsummaryjpanel
+    // TODO empty showTrainDetails
+    private ActionListener showTrainDetails = e -> {};
     private JButton closeJButton;
     private JList list1;
     private JScrollPane jScrollPane1;
@@ -197,7 +193,8 @@ public class TrainListPanel extends JPanel implements View {
         trainSummaryPanel1.setup(modelRoot, rendererRoot, null);
 
         if (rhsjTabPane) {
-            list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), PlayerKey.Trains, modelRoot.getPlayer()));
+            // TODO this was broken with the transition of trains, need to remake
+            // list1.setModel(new WorldToListModelAdapter(modelRoot.getWorld(), PlayerKey.Trains, modelRoot.getPlayer()));
             TrainListCellRenderer trainView = new TrainListCellRenderer(modelRoot, rendererRoot);
             list1.setCellRenderer(trainView);
             trainView.setHeight(trainViewHeight);
@@ -221,7 +218,9 @@ public class TrainListPanel extends JPanel implements View {
          * been removed are not shown on the list.
          */
         int row = list1.getSelectedIndex();
-        return NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, row);
+        // TODO this is broken with the transition of Trains from PlayerKey and playerlists, make new
+        //return NonNullElementWorldIterator.rowToIndex(world, PlayerKey.Trains, player, row);
+        return 0;
     }
 
 
@@ -252,8 +251,8 @@ public class TrainListPanel extends JPanel implements View {
         if (null != world) {
             int newNumberOfTrains = world.getTrains(player).size();
             if (newNumberOfTrains != lastNumberOfTrains) {
-                // TODO we should set a different model there
-                list1.setModel(new WorldToListModelAdapter(world, PlayerKey.Trains, player));
+                // TODO we should set a different model there, was broken
+                // list1.setModel(new WorldToListModelAdapter(world, PlayerKey.Trains, player));
                 if (newNumberOfTrains > 0) {
                     list1.setSelectedIndex(0);
                 }

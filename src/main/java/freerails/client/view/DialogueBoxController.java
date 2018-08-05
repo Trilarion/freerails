@@ -529,9 +529,11 @@ public class DialogueBoxController implements WorldListListener {
          */
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Trains == key && rightPlayer) {
-            showTrainOrders(index);
-        } else if (PlayerKey.Stations == key && rightPlayer) {
+        // TODO after newly created train with AddTrainMove, this is not done right now
+        //if (PlayerKey.Trains == key && rightPlayer) {
+        //    showTrainOrders(index);
+
+        if (PlayerKey.Stations == key && rightPlayer) {
             showStationInfo(index);
         }
     }

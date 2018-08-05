@@ -238,7 +238,7 @@ public class TrainStopsHandler implements Serializable {
             Train newTrain = new Train(id, engineId, order.consist, trainAccessor.getTrain().getScheduleId(), trainAccessor.getTrain().getCargoBundleId());
             // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
             Train before = trainAccessor.getTrain();
-            Train after = new Train(id, engineId, order.consist, before.getScheduleId(), before.getCargoBundleId());
+            Train after = new Train(id, engineId, order.consist, before.getCargoBundleId(), before.getScheduleId());
             // TODO need dedicated change train move instead
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
             Move move = new ChangeTrainMove(player, after);

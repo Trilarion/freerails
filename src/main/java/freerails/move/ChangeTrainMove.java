@@ -31,8 +31,8 @@ public class ChangeTrainMove implements Move {
 
     @Override
     public MoveStatus doMove(World world, Player player) {
-        world.removeTrain(player, train.getId());
-        world.addTrain(player, train);
+        world.removeTrain(this.player, train.getId());
+        world.addTrain(this.player, train);
         return MoveStatus.MOVE_OK;
     }
 

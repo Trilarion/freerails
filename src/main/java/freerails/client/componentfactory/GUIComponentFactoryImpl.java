@@ -136,6 +136,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         stationInfoJMenuItem.setEnabled(enabled);
     }
 
+    // TODO currently after AddTrainMove the count is not updated!
     private void countTrains() {
         boolean enabled = !modelRoot.getWorld().getTrains(modelRoot.getPlayer()).isEmpty();
 
@@ -391,9 +392,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     public void itemAdded(PlayerKey key, int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Trains == key && rightPlayer) {
-            countTrains();
-        } else if (PlayerKey.Stations == key && rightPlayer) {
+        if (PlayerKey.Stations == key && rightPlayer) {
             countStations();
         }
     }
@@ -414,9 +413,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     public void listUpdated(PlayerKey key, int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Trains == key && rightPlayer) {
-            countTrains();
-        } else if (PlayerKey.Stations == key && rightPlayer) {
+        if (PlayerKey.Stations == key && rightPlayer) {
             countStations();
         }
     }

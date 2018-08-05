@@ -232,9 +232,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
                 display(trainNumber, scheduleOrderNumber);
             }
         } else {
-            if (PlayerKey.Trains == key && trainNumber == index) {
-                display(trainNumber);
-            }
+            // TODO since we use AddTrainMove this is not done right anymore! fix it!
+            //if (PlayerKey.Trains == key && trainNumber == index) {
+            //    display(trainNumber);
+            //}
         }
     }
 
