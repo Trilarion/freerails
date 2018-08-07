@@ -63,6 +63,7 @@ public class NearestStationFinder {
         return !deltaXisLongerThanDeltaY && sameXDirection;
     }
 
+    // TODO should this maybe be static (so that the world reference can be removed)
     /**
      * @param p
      * @return
@@ -71,18 +72,15 @@ public class NearestStationFinder {
         // Find nearest station.
         int distanceToClosestSquared = Integer.MAX_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         int nearestStation = NOT_FOUND;
 
-        while (it.next()) {
-            Station station = (Station) it.getElement();
-
+        for (Station station: world.getStations(player)) {
             Vec2D delta = Vec2D.subtract(p, station.location);
             int distanceSquared = delta.x * delta.x + delta.y * delta.y;
 
             if (distanceSquared < distanceToClosestSquared && MAX_DISTANCE_TO_SELECT_SQUARED > distanceSquared) {
                 distanceToClosestSquared = distanceSquared;
-                nearestStation = it.getIndex();
+                nearestStation = station.getId();
             }
         }
 
@@ -96,23 +94,20 @@ public class NearestStationFinder {
      */
     public int findNearestStationInDirection(int startStation, TileTransition direction) {
         int distanceToClosestSquared = Integer.MAX_VALUE;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-
-        Station currentStation = (Station) world.get(player, PlayerKey.Stations, startStation);
+        Station currentStation = world.getStation(player, startStation);
 
         int nearestStation = NOT_FOUND;
 
-        while (it.next()) {
-            Station station = (Station) it.getElement();
+        for (Station station: world.getStations(player)) {
             Vec2D delta = Vec2D.subtract(station.location, currentStation.location);
             int distanceSquared = delta.x * delta.x + delta.y * delta.y;
             boolean closer = distanceSquared < distanceToClosestSquared;
-            boolean notTheSameStation = startStation != it.getIndex();
+            boolean notTheSameStation = startStation != station.getId();
             boolean inRightDirection = isInRightDirection(direction, delta);
 
             if (closer && inRightDirection && notTheSameStation) {
                 distanceToClosestSquared = distanceSquared;
-                nearestStation = it.getIndex();
+                nearestStation = station.getId();
             }
         }
 

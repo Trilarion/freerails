@@ -18,6 +18,7 @@
 
 package freerails.model.station;
 
+import freerails.model.Identifiable;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 
@@ -37,7 +38,7 @@ import java.util.List;
  * Represents a station. with a position, a name, a supply, a demand, a conversion (of cargo).
  * The content is effectively immutable.
  */
-public class Station implements Serializable {
+public class Station extends Identifiable {
 
     private static final long serialVersionUID = 3256442503979874355L;
     public final Vec2D location;
@@ -56,7 +57,8 @@ public class Station implements Serializable {
      * @param numberOfCargoTypes
      * @param cargoBundleNumber
      */
-    public Station(Vec2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(int id, Vec2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+        super(id);
         name = stationName;
         this.location = location;
         this.cargoBundleNumber = cargoBundleNumber;
@@ -70,10 +72,11 @@ public class Station implements Serializable {
         cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
     }
 
+    // TODO static code somewhere else?
     /**
      * Return Station number if station exists at location or -1
      */
-    public static int getStationNumberAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
+    public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
         TerrainTile tile = (TerrainTile) world.getTile(location);
         TrackPiece trackPiece = tile.getTrackPiece();
 
@@ -81,11 +84,9 @@ public class Station implements Serializable {
             TrackType trackType = trackPiece.getTrackType();
             if (trackType.isStation() && trackPiece.getOwnerID() == world.getID(player)) {
 
-                for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
-                    Station station = (Station) world.get(player, PlayerKey.Stations, i);
-
-                    if (null != station && location.equals(station.location)) {
-                        return i;
+                for (Station station: world.getStations(player)) {
+                    if (location.equals(station.location)) {
+                        return station.getId();
                     }
                 }
             }
@@ -93,35 +94,6 @@ public class Station implements Serializable {
 
         return -1;
         // Don't show terrain...
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Station)) return false;
-        final Station station = (Station) obj;
-        if (cargoBundleNumber != station.cargoBundleNumber) return false;
-        if (!location.equals(station.location)) return false;
-        if (cargoConversion != null ? !cargoConversion.equals(station.cargoConversion) : station.cargoConversion != null)
-            return false;
-        if (demandForCargo != null ? !demandForCargo.equals(station.demandForCargo) : station.demandForCargo != null)
-            return false;
-        if (!name.equals(station.name)) return false;
-        if (production != null ? !production.equals(station.production) : station.production != null) return false;
-        return supply != null ? supply.equals(station.supply) : station.supply == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        result = location.hashCode();
-        result = 29 * result + (name != null ? name.hashCode() : 0);
-        result = 29 * result + (supply != null ? supply.hashCode() : 0);
-        result = 29 * result + (demandForCargo != null ? demandForCargo.hashCode() : 0);
-        result = 29 * result + (cargoConversion != null ? cargoConversion.hashCode() : 0);
-        result = 29 * result + cargoBundleNumber;
-        result = 29 * result + production.size();
-        return result;
     }
 
     /**

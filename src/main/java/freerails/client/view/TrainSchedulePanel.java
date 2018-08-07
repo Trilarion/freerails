@@ -22,6 +22,7 @@ import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.cargo.Cargo;
+import freerails.model.station.Station;
 import freerails.model.world.*;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.Move;
@@ -38,9 +39,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.List;
 
 /**
@@ -452,11 +451,11 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
      * exists: this method returns the id of the first station that exists.
      */
     private int getFirstStationID() {
-        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
-        if (stations.next()) {
-            return stations.getIndex();
+        Collection<Station> stations = modelRoot.getWorld().getStations(modelRoot.getPlayer());
+        if (stations.isEmpty()) {
+            throw new NoSuchElementException();
         }
-        throw new NoSuchElementException();
+        return stations.iterator().next().getId();
     }
 
     private void setupWagonsPopup() {

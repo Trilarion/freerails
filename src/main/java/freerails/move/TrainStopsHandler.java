@@ -142,17 +142,16 @@ public class TrainStopsHandler implements Serializable {
         return currentMoves;
     }
 
+    // TODO again the same code as in Station.getStationIdByLocation
     /**
      * @return the number of the station the train is currently at, or NOT_AT_STATION if no
      * current station.
      */
     public int getStationId(Vec2D location) {
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
-            Station station = (Station) world.get(player, PlayerKey.Stations, i);
-
-            if (null != station && location.equals(station.location)) {
-                return i; // train is at the station at location tempPoint
+        for (Station station: world.getStations(player)) {
+            if (location.equals(station.location)) {
+                return station.getId(); // train is at the station at location tempPoint
             }
         }
         return NOT_AT_STATION;
@@ -195,7 +194,7 @@ public class TrainStopsHandler implements Serializable {
 
         // train is at a station so do the cargo processing
         DropOffAndPickupCargoMoveGenerator transfer = new DropOffAndPickupCargoMoveGenerator(trainId, stationId, world, player, waiting, autoConsist);
-        Move move = transfer.generateMove();
+        Move move = transfer.generate();
         if (null != move) {
             moves.add(move);
             MoveStatus moveStatus = move.doMove(world, player);
@@ -324,7 +323,7 @@ public class TrainStopsHandler implements Serializable {
             moves.add(move);
 
             int stationNumber = schedule.getStationToGoto();
-            station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
+            station = world.getStation(player, stationNumber);
 
             if (null == station) {
                 logger.warn("null == station, train " + trainId + " doesn't know where to go next!");

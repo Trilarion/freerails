@@ -82,7 +82,7 @@ public class TrainOrderPanel implements View, ListCellRenderer {
 
         // Set station name
         int stationNumber = trainOrders.order.stationId;
-        Station station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
+        Station station = world.getStation(player, stationNumber);
         String stationName = station.getStationName();
 
         // Set wait until full

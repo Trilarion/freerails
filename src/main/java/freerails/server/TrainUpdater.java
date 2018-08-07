@@ -42,12 +42,12 @@ import freerails.model.train.schedule.MutableSchedule;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 // TODO why should the client not use this? include this in the full server game model
 /**
- * Is used by the server to generate moves that add trains, move
- * trains, and handle stops at stations.
+ * Is used by the server to generate moves that add trains, move trains, and handle stops at stations.
  *
  * Note: The client should not use this class to build trains, instead it should request that a train gets built by
  * setting production at an engine shop.
@@ -77,13 +77,12 @@ public class TrainUpdater implements Serializable {
         boolean autoSchedule = 0 == wagons.size();
 
         // generate initial schedule
-
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         MutableSchedule schedule = new MutableSchedule();
 
         // Add up to 4 stations to the schedule.
-        while (wi.next() && schedule.getNumOrders() < 5) {
-            TrainOrders orders = new TrainOrders(wi.getIndex(), null, false, autoSchedule);
+        Iterator<Station> wi = world.getStations(player).iterator();
+        while (wi.hasNext() && schedule.getNumOrders() < 5) {
+            TrainOrders orders = new TrainOrders(wi.next().getId(), null, false, autoSchedule);
             schedule.addOrder(orders);
         }
 
@@ -102,23 +101,21 @@ public class TrainUpdater implements Serializable {
      * production field set.
      */
     public void buildTrains(UnmodifiableWorld world) {
+        // for all player
         for (Player player: world.getPlayers()) {
-            for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
-                Station station = (Station) world.get(player, PlayerKey.Stations, i);
-                if (null != station) {
+            // for all stations of that player
+            for (Station station: world.getStations(player)) {
+                List<TrainBlueprint> production = station.getProduction();
+                if (production.size() > 0) {
 
-                    List<TrainBlueprint> production = station.getProduction();
-                    if (production.size() > 0) {
-
-                        for (TrainBlueprint aProduction : production) {
-                            int engineId = aProduction.getEngineId();
-                            List<Integer> wagonTypes = aProduction.getWagonTypes();
-                            buildTrain(engineId, wagonTypes, station.location, player, world);
-                        }
-
-                        Move move = new ChangeProductionAtEngineShopMove(production, new ArrayList<>(), i, player);
-                        moveReceiver.process(move);
+                    for (TrainBlueprint aProduction : production) {
+                        int engineId = aProduction.getEngineId();
+                        List<Integer> wagonTypes = aProduction.getWagonTypes();
+                        buildTrain(engineId, wagonTypes, station.location, player, world);
                     }
+
+                    Move move = new ChangeProductionAtEngineShopMove(production, new ArrayList<>(), station.getId(), player);
+                    moveReceiver.process(move);
                 }
             }
         }

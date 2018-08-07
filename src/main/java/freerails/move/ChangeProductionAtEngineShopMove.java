@@ -86,11 +86,16 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
     private MoveStatus tryMove(World world, List<TrainBlueprint> stateA) {
         // Check that the specified station exists.
+        // TODO check that station is existing, do we need a dedicated function for that
+        /*
         if (!world.boundsContain(player, PlayerKey.Stations, stationNumber)) {
             return MoveStatus.moveFailed(stationNumber + " " + player);
-        }
+        } */
 
-        Station station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
+        Station station = null;
+        try {
+            station = world.getStation(player, stationNumber);
+        } catch (Exception e) {};
 
         if (null == station) {
             return MoveStatus.moveFailed(stationNumber + " " + player + " is does null");
@@ -117,7 +122,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryDoMove(world, player);
 
         if (status.succeeds()) {
-            Station station = (Station) world.get(this.player, PlayerKey.Stations, stationNumber);
+            Station station = world.getStation(this.player, stationNumber);
             station.setProduction(after);
         }
         return status;
@@ -127,7 +132,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         MoveStatus status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
-            Station station = (Station) world.get(this.player, PlayerKey.Stations, stationNumber);
+            Station station = world.getStation(this.player, stationNumber);
             station.setProduction(before);
         }
         return status;

@@ -29,6 +29,7 @@ import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.station.Station;
 import freerails.model.station.StationSupply;
 import freerails.model.world.*;
+import freerails.move.ChangeStationMove;
 import freerails.move.GrowCitiesMove;
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
@@ -71,17 +72,15 @@ public class FullServerGameModel implements ServerGameModel {
      * the surrounding tiles supply.
      */
     public static void cargoAtStationsUpdate(World world, MoveReceiver moveReceiver) {
-
+        // for all players
         for (Player player: world.getPlayers()) {
-            NonNullElementWorldIterator nonNullStations = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-
-            while (nonNullStations.next()) {
-                Station station = (Station) nonNullStations.getElement();
+            // for all stations of a player
+            for (Station station: world.getStations(player)) {
                 StationSupply supply = station.getSupply();
                 ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
                 MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
                 MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
-                int stationNumber = nonNullStations.getIndex();
+                int stationNumber = station.getId();
 
                 /*
                  * Get the iterator from a copy to avoid a
@@ -243,23 +242,21 @@ public class FullServerGameModel implements ServerGameModel {
         cargoAtStationsUpdate(world, moveReceiver);
     }
 
+    // TODO move static code to model? what about a generator
     /**
      * Loops through all of the known stations and recalculates the
      * cargoes that they supply, demand, and convert.
      */
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
-            NonNullElementWorldIterator iterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-
-            while (iterator.next()) {
-                Station stationBefore = (Station) iterator.getElement();
+            for (Station station: world.getStations(player)) {
                 CalculateCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalculateCargoSupplyRateAtStation(world, stationBefore.location);
+                supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location);
 
-                Station stationAfter = supplyRate.calculations(stationBefore);
+                Station stationAfter = supplyRate.calculations(station);
 
-                if (!stationAfter.equals(stationBefore)) {
-                    Move move = new ChangeItemInListMove(PlayerKey.Stations, iterator.getIndex(), stationBefore, stationAfter, player);
+                if (!stationAfter.equals(station)) {
+                    Move move = new ChangeStationMove(player, stationAfter);
                     moveReceiver.process(move);
                 }
             }

@@ -29,7 +29,7 @@ import java.util.List;
  * This {@link CompositeMove} transfers cargo from a train to a station and
  * vice-versa.
  */
-public class TransferCargoAtStationMove extends CompositeMove {
+public class TransferCargoAtStationCompositeMove extends CompositeMove {
 
     public static final int CHANGE_ON_TRAIN_INDEX = 1;
     public static final int CHANGE_AT_STATION_INDEX = 0;
@@ -38,7 +38,7 @@ public class TransferCargoAtStationMove extends CompositeMove {
     /**
      * @param moves
      */
-    public TransferCargoAtStationMove(List<Move> moves) {
+    public TransferCargoAtStationCompositeMove(List<Move> moves) {
         super(moves);
     }
 

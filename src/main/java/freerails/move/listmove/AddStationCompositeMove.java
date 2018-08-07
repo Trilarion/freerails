@@ -21,6 +21,7 @@
  */
 package freerails.move.listmove;
 
+import freerails.move.AddStationMove;
 import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.util.Vec2D;
@@ -35,10 +36,10 @@ import freerails.model.station.Station;
  * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
  * list.
  */
-public class AddStationMove extends CompositeMove {
+public class AddStationCompositeMove extends CompositeMove {
     private static final long serialVersionUID = 3256728398461089080L;
 
-    private AddStationMove(Move[] moves) {
+    public AddStationCompositeMove(Move[] moves) {
         super(moves);
     }
 
@@ -50,23 +51,17 @@ public class AddStationMove extends CompositeMove {
      * @param player
      * @return
      */
-    public static AddStationMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
+    public static AddStationCompositeMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
         int cargoBundleNumber = world.size(player, PlayerKey.CargoBundles);
         Move addCargoBundleMove = new AddItemToListMove(PlayerKey.CargoBundles, cargoBundleNumber, ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, player);
-        int stationNumber = world.size(player, PlayerKey.Stations);
-        Station station = new Station(location, stationName, world.getCargos().size(), cargoBundleNumber);
+        // TODO maybe a different way of getting new ids (more random, but without collisions)
+        int stationNumber = world.getStations(player).size();
+        // TODO the same as station number
+        int id = world.getStations(player).size();
+        Station station = new Station(id, location, stationName, world.getCargos().size(), cargoBundleNumber);
+        Move addStation = new AddStationMove(player, station);
 
-        Move addStation = new AddItemToListMove(PlayerKey.Stations, stationNumber, station, player);
-
-        return new AddStationMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
-    }
-
-    /**
-     * @param upgradeTrackMove
-     * @return
-     */
-    public static AddStationMove upgradeStation(Move upgradeTrackMove) {
-        return new AddStationMove(new Move[]{upgradeTrackMove});
+        return new AddStationCompositeMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
     }
 
 }

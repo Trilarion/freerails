@@ -126,11 +126,9 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         this.modelRoot.addCompleteMoveReceiver(userMessageGenerator);
     }
 
+    // TODO this does more then just count stations! currently not updated anymore
     private void countStations() {
-        WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
-        boolean enabled;
-
-        enabled = stations.size() > 0;
+        boolean enabled = world.getStations(modelRoot.getPlayer()).size() > 0;
 
         trainsJTabPane.setStationTabEnabled(enabled);
         stationInfoJMenuItem.setEnabled(enabled);
@@ -392,7 +390,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     public void itemAdded(PlayerKey key, int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Stations == key && rightPlayer) {
+        // TODO when is this called? when a station is added?
+        if (rightPlayer) {
             countStations();
         }
     }
@@ -413,7 +412,8 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     public void listUpdated(PlayerKey key, int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
-        if (PlayerKey.Stations == key && rightPlayer) {
+        // TODO when is this called? when a station is added/removed?
+        if (rightPlayer) {
             countStations();
         }
     }

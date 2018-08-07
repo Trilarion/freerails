@@ -118,8 +118,7 @@ public class LeaderBoardPanel extends JPanel implements View {
         for (Player player: world.getPlayers()) {
             PlayerDetails details = new PlayerDetails();
             details.name = player.getName();
-            WorldIterator stations = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-            details.stations = stations.size();
+            details.stations = world.getStations(player).size();
             TransactionAggregator networth = new NetWorthCalculator(world, player);
             details.networth = networth.calculateValue();
             values.add(details);

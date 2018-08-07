@@ -28,7 +28,7 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
-import freerails.move.listmove.AddStationMove;
+import freerails.move.listmove.AddStationCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
@@ -119,23 +119,25 @@ public class AddStationMoveGenerator implements MoveGenerator {
                 VerifyStationName vSN = new VerifyStationName(world, cityName);
                 stationName = vSN.getName();
             } catch (NoSuchElementException e) {
+                // TODO can we do better here?
                 // there are no cities, this should never happen during a proper
                 // game. However, some of the unit tests create stations when there are no cities.
-                stationName = "Central Station #" + world.size(player, PlayerKey.Stations);
+                stationName = "Central Station #" + world.getStations(player).size();
             }
 
             // check the terrain to see if we can build a station on it...
-            move = AddStationMove.generateMove(world, stationName, location, upgradeTrackMove, player);
+            move = AddStationCompositeMove.generateMove(world, stationName, location, upgradeTrackMove, player);
             move = addSupplyAndDemand(move, world);
             move = transactionsGenerator.addTransactions(move);
         } else {
             // Upgrade an existing station.
-            move = AddStationMove.upgradeStation(upgradeTrackMove);
+            move = new AddStationCompositeMove(new Move[]{upgradeTrackMove});
         }
 
         return move;
     }
 
+    // TODO frankly, this looks like a hack, moves are modified after their creation
     private CompositeMove addSupplyAndDemand(CompositeMove compositeMove, UnmodifiableWorld world) {
         List<Move> moves2 = compositeMove.getMoves();
         Move[] moves = new Move[moves2.size()];
@@ -144,16 +146,14 @@ public class AddStationMoveGenerator implements MoveGenerator {
         }
 
         for (int i = 0; i < moves.length; i++) {
-            if (moves[i] instanceof AddItemToListMove) {
-                AddItemToListMove move = (AddItemToListMove) moves[i];
+            if (moves[i] instanceof AddStationMove) {
+                AddStationMove move = (AddStationMove) moves[i];
 
-                if (move.getKey().equals(PlayerKey.Stations)) {
-                    Station station = (Station) move.getAfter();
-                    CalculateCargoSupplyRateAtStation supplyRate;
-                    supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location, ruleNumber);
-                    Station stationAfter = supplyRate.calculations(station);
-                    moves[i] = new AddItemToListMove(move.getKey(), move.getIndex(), stationAfter, move.getPlayer());
-                }
+                Station station = move.getStation();
+                CalculateCargoSupplyRateAtStation supplyRate;
+                supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location, ruleNumber);
+                Station stationAfter = supplyRate.calculations(station);
+                moves[i] = new AddStationMove(move.getPlayer(), stationAfter);
             }
         }
 

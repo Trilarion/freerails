@@ -30,7 +30,7 @@ import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
-import freerails.move.mapupdatemove.UpgradeTrackMove;
+import freerails.move.mapupdatemove.UpgradeTrackCompositeMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -449,10 +449,10 @@ public class BuildTrackController implements GameModel {
                                     break attemptMove;
                                 }
 
-                                move = UpgradeTrackMove.generateMove(tile.getTrackPiece(), after, location);
+                                move = UpgradeTrackCompositeMove.generateMove(tile.getTrackPiece(), after, location);
 
                                 // add to proposed track
-                                ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((UpgradeTrackMove) move).getMove(0);
+                                ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((UpgradeTrackCompositeMove) move).getMove(0);
                                 proposedTrack.put(m.location, m.trackPieceAfter);
 
                                 break;

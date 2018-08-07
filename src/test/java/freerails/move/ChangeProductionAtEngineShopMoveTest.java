@@ -46,10 +46,10 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Station station = new Station(Vec2D.ZERO, "no name", 0, 0);
-        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
-        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
-        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations, station);
+        Station station = new Station(0, Vec2D.ZERO, "no name", 0, 0);
+        getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
+        //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
+        //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
 
         engineType = 0;
         int wagonType = 0;

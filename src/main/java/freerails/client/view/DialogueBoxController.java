@@ -108,17 +108,13 @@ public class DialogueBoxController implements WorldListListener {
         private static final long serialVersionUID = -1672545312581874156L;
 
         public void actionPerformed(ActionEvent e) {
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
-
-            if (wi.next()) {
-                Station station = (Station) wi.getElement();
-
+            for (Station station: world.getStations(modelRoot.getPlayer())) {
                 List<TrainBlueprint> before = station.getProduction();
                 int engineId = selectEngine.getSelectedEngineId();
                 Integer[] wagonTypes = selectWagons.getWagons();
                 List<TrainBlueprint> after = Arrays.asList(new TrainBlueprint(engineId, wagonTypes));
 
-                Move move = new ChangeProductionAtEngineShopMove(before, after, wi.getIndex(), modelRoot.getPlayer());
+                Move move = new ChangeProductionAtEngineShopMove(before, after, station.getId(), modelRoot.getPlayer());
                 modelRoot.doMove(move);
             }
             closeContent();
@@ -246,9 +242,7 @@ public class DialogueBoxController implements WorldListListener {
      *
      */
     public void showSelectEngine() {
-        WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, modelRoot.getPlayer());
-
-        if (!wi.next()) {
+        if (world.getStations(modelRoot.getPlayer()).isEmpty()) {
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Can't" + " build train since there are no stations");
         } else {
             showContent(selectEngine);
@@ -500,7 +494,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param p
      */
     public void showStationOrTerrainInfo(Vec2D p) {
-        int stationNumberAtLocation = Station.getStationNumberAtLocation(world, modelRoot.getPlayer(), p);
+        int stationNumberAtLocation = Station.getStationIdAtLocation(world, modelRoot.getPlayer(), p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);
         } else {
@@ -530,10 +524,12 @@ public class DialogueBoxController implements WorldListListener {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
         // TODO after newly created train with AddTrainMove, this is not done right now
-        //if (PlayerKey.Trains == key && rightPlayer) {
-        //    showTrainOrders(index);
+        if (rightPlayer) {
+            //showTrainOrders(index);
+        }
 
-        if (PlayerKey.Stations == key && rightPlayer) {
+        // TODO when is this called? when a station is added?
+        if (rightPlayer) {
             showStationInfo(index);
         }
     }

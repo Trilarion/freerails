@@ -32,28 +32,26 @@ import freerails.model.MapFixtureFactory;
  */
 public class CompositeMoveTest extends AbstractMoveTestCase {
 
-    private final Station station1 = new Station(new Vec2D(1, 1), "station1", 10, 0);
-    private final Station station2 = new Station(new Vec2D(2, 3), "station2", 10, 0);
-    private final Station station3 = new Station(new Vec2D(3, 3), "station3", 10, 0);
-    private final Station station4 = new Station(new Vec2D(4, 4), "station4", 10, 0);
+    private final Station station1 = new Station(0, new Vec2D(1, 1), "station1", 10, 0);
+    private final Station station2 = new Station(1, new Vec2D(2, 3), "station2", 10, 0);
+    private final Station station3 = new Station(2, new Vec2D(3, 3), "station3", 10, 0);
+    private final Station station4 = new Station(3, new Vec2D(4, 4), "station4", 10, 0);
 
     /**
      *
      */
     public void testMove() {
         Move[] moves = new Move[4];
-        moves[0] = new AddItemToListMove(PlayerKey.Stations, 0, station1, MapFixtureFactory.TEST_PLAYER);
-        moves[1] = new AddItemToListMove(PlayerKey.Stations, 1, station2, MapFixtureFactory.TEST_PLAYER);
-        moves[2] = new AddItemToListMove(PlayerKey.Stations, 2, station3, MapFixtureFactory.TEST_PLAYER);
-        moves[3] = new AddItemToListMove(PlayerKey.Stations, 3, station4, MapFixtureFactory.TEST_PLAYER);
+        moves[0] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station1);
+        moves[1] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station2);
+        moves[2] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station3);
+        moves[3] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station4);
         Move compositeMove = new CompositeMove(moves);
         assertSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);
-        assertEquals("The stations should not have been add yet.", 0,
-                getWorld().size(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations));
+        assertEquals("The stations should not have been add yet.", 0, getWorld().getStations(MapFixtureFactory.TEST_PLAYER).size());
         assertDoMoveIsOk(compositeMove);
-        assertEquals("The stations should have been add now.", 4, getWorld()
-                .size(MapFixtureFactory.TEST_PLAYER, PlayerKey.Stations));
+        assertEquals("The stations should have been add now.", 4, getWorld().getStations(MapFixtureFactory.TEST_PLAYER).size());
         assertTryUndoMoveIsOk(compositeMove);
         assertUndoMoveIsOk(compositeMove);
         assertOkButNotRepeatable(compositeMove);

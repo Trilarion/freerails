@@ -96,6 +96,7 @@ public class TrainAccessor {
         return trainMotion.getTrainState();
     }
 
+    // TODO the same as Station.getStationIdAtLocation...
     /**
      * @return the id of the station the train is currently at, or -1 if no
      * current station.
@@ -107,11 +108,9 @@ public class TrainAccessor {
         Vec2D location = positionOnTrack.getLocation();
 
         // loop through the station list to check if train is at the same Point2D as a station
-        for (int i = 0; i < world.size(player, PlayerKey.Stations); i++) {
-            Station station = (Station) world.get(player, PlayerKey.Stations, i);
-
-            if (null != station && location.equals(station.location)) {
-                return i; // train is at the station at location tempPoint
+        for (Station station: world.getStations(player)) {
+            if (location.equals(station.location)) {
+                return station.getId(); // train is at the station at location tempPoint
             }
         }
 
@@ -224,7 +223,7 @@ public class TrainAccessor {
             return Vec2D.ZERO;
         }
 
-        Station station = (Station) world.get(player, PlayerKey.Stations, stationNumber);
+        Station station = world.getStation(player, stationNumber);
         return station.location;
     }
 

@@ -162,7 +162,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
      * @param newStationID
      */
     public void display(int newStationID) {
-        Station station = (Station) world.get(player, PlayerKey.Stations, newStationID);
+        Station station = world.getStation(player, newStationID);
         stationName.setText(station.getStationName());
         final CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
 

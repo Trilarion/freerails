@@ -63,6 +63,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return rules.canConnectToOtherRRTrack();
     }
 
+    // TODO move static code to model
     /**
      * This method may be called under 3 possible conditions: (1) when a station
      * is getting built, (2) when a station is getting upgraded, (3) when a
@@ -76,12 +77,10 @@ public final class ChangeTrackPieceMove implements TrackMove {
         TrackType thisStationType = trackPiece.getTrackType();
         assert thisStationType.isStation();
 
+        // for all player
         for (Player player: world.getPlayers()) {
-            WorldIterator wi = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-
-            while (wi.next()) {
-                Station station = (Station) wi.getElement();
-
+            // for all stations of a player
+            for (Station station: world.getStations(player)) {
                 /*
                  * Fix for bug 948675 - Can't upgrade station types If locations
                  * are the same, then we are upgrading a station so it doesn't

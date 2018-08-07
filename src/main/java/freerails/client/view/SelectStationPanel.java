@@ -204,9 +204,7 @@ public class SelectStationPanel extends JPanel implements View {
         int bottomRightX = Integer.MIN_VALUE;
         int bottomRightY = Integer.MIN_VALUE;
 
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-        while (it.next()) {
-            Station station = (Station) it.getElement();
+        for (Station station: world.getStations(player)) {
             // TODO min, max of two Points2D
             if (station.location.x < topLeftX) topLeftX = station.location.x;
             if (station.location.y < topLeftY) topLeftY = station.location.y;
@@ -240,7 +238,6 @@ public class SelectStationPanel extends JPanel implements View {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g;
-        NonNullElementWorldIterator it = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
 
         // Draw track
         g2.setColor(Color.BLACK);
@@ -258,7 +255,7 @@ public class SelectStationPanel extends JPanel implements View {
             }
         }
         // Draw stations
-        while (it.next()) {
+        for (Station station: world.getStations(player)) {
 
             /*
              * (1) The selected station is drawn green. (2) Non-selected
@@ -270,7 +267,6 @@ public class SelectStationPanel extends JPanel implements View {
              * drawn above the stations are drawn using the same colour as used
              * to draw the station.
              */
-            Station station = (Station) it.getElement();
             double x = station.location.x - visableMapTiles.x;
             x = x * scale;
             double y = station.location.y - visableMapTiles.y;
@@ -282,7 +278,7 @@ public class SelectStationPanel extends JPanel implements View {
             boolean stationIsOnSchedule = false;
             for (int orderNumber = 0; orderNumber < schedule.getNumOrders(); orderNumber++) {
                 int stationID = orderNumber == selectedOrderNumber ? selectedStationID : schedule.getOrder(orderNumber).getStationID();
-                if (it.getIndex() == stationID) {
+                if (station.getId() == stationID) {
                     if (stationIsOnSchedule) {
                         stopNumbersString.append(", ").append(String.valueOf(orderNumber + 1));
                     } else {
@@ -292,7 +288,8 @@ public class SelectStationPanel extends JPanel implements View {
                 }
             }
             if (stationIsOnSchedule) {
-                if (it.getIndex() == selectedStationID) {
+                // TODO is the selectedStationID the right one, or is it a running number in a list?
+                if (station.getId() == selectedStationID) {
                     g2.setColor(Color.GREEN);
                 } else {
                     g2.setColor(Color.BLUE);

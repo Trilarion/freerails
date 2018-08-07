@@ -23,12 +23,12 @@ package freerails.move.mapupdatemove;
 
 import freerails.move.CompositeMove;
 import freerails.move.Move;
+import freerails.move.RemoveStationMove;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.WorldIterator;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.schedule.ImmutableSchedule;
@@ -41,24 +41,22 @@ import java.util.List;
 /**
  * This Move removes a station from the station list and from the map.
  */
-public class RemoveStationMove extends CompositeMove implements TrackMove {
+public class RemoveStationCompositeMove extends CompositeMove implements TrackMove {
 
     private static final long serialVersionUID = 3760847865429702969L;
 
-    private RemoveStationMove(List<Move> moves) {
+    private RemoveStationCompositeMove(List<Move> moves) {
         super(moves);
     }
 
+    // TODO move static code to model, something like get station by location
     public static TrackMove getInstance(UnmodifiableWorld world, ChangeTrackPieceMove removeTrackMove, Player player) {
-        WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
         int stationIndex = -1;
 
-        while (worldIterator.next()) {
-            Station station = (Station) worldIterator.getElement();
-
+        for (Station station: world.getStations(player)) {
             if (station.location.equals(removeTrackMove.getLocation())) {
                 // We have found the station!
-                stationIndex = worldIterator.getIndex();
+                stationIndex = station.getId();
                 break;
             }
         }
@@ -67,13 +65,13 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
             throw new IllegalArgumentException("Could find a station at " + removeTrackMove.getLocation());
         }
 
-        Station stationToRemove = (Station) world.get(player, PlayerKey.Stations, stationIndex);
+        Station stationToRemove = world.getStation(player, stationIndex);
         ArrayList<Move> moves = new ArrayList<>();
         moves.add(removeTrackMove);
-        moves.add(new RemoveItemFromListMove(PlayerKey.Stations, stationIndex, stationToRemove, player));
+        moves.add(new RemoveStationMove(player, stationIndex));
 
         // Now update any train schedules that include this station.
-        worldIterator = new NonNullElementWorldIterator(PlayerKey.TrainSchedules, world, player);
+        NonNullElementWorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.TrainSchedules, world, player);
 
         while (worldIterator.next()) {
             ImmutableSchedule schedule = (ImmutableSchedule) worldIterator.getElement();
@@ -87,7 +85,7 @@ public class RemoveStationMove extends CompositeMove implements TrackMove {
             }
         }
 
-        return new RemoveStationMove(moves);
+        return new RemoveStationCompositeMove(moves);
     }
 
     /**

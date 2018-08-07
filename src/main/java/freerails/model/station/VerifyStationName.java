@@ -27,6 +27,7 @@ import freerails.model.player.Player;
 import java.util.Arrays;
 import java.util.List;
 
+// TODO move to static code
 /**
  * Class to verify that the chosen name for a station hasn't already been taken
  * by another station. If the name has been used, a minor alteration in the name
@@ -82,14 +83,12 @@ public class VerifyStationName {
         return tempName;
     }
 
+    // TODO static method?
     private boolean existsStationName(String name) {
         // for all players
         for (Player player: world.getPlayers()) {
             // for all stations of the player
-            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-            while (worldIterator.next()) { // loop over non null stations
-                Station station = (Station) worldIterator.getElement();
-
+            for (Station station: world.getStations(player)) {
                 if (name.equals(station.getStationName())) {
                     // station already exists with that name
                     return true;

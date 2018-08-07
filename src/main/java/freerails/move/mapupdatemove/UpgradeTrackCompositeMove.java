@@ -33,11 +33,11 @@ import java.awt.*;
  * This CompositeMove changes the track type at a point on the map and charges
  * the players account for the cost of the change.
  */
-public class UpgradeTrackMove extends CompositeMove implements TrackMove {
+public class UpgradeTrackCompositeMove extends CompositeMove implements TrackMove {
 
     private static final long serialVersionUID = 3907215961470875442L;
 
-    private UpgradeTrackMove(ChangeTrackPieceMove trackMove) {
+    private UpgradeTrackCompositeMove(ChangeTrackPieceMove trackMove) {
         super(trackMove);
     }
 
@@ -51,7 +51,7 @@ public class UpgradeTrackMove extends CompositeMove implements TrackMove {
         Utils.verifyNotNull(before);
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(before, after, p);
 
-        return new UpgradeTrackMove(changeTrackPieceMove);
+        return new UpgradeTrackCompositeMove(changeTrackPieceMove);
     }
 
     /**

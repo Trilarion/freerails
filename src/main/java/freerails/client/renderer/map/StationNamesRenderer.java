@@ -73,10 +73,7 @@ public class StationNamesRenderer implements Painter {
             // draw station names onto map
 
             // for all stations of this player
-            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-            while (worldIterator.next()) { // loop over non null stations
-                Station station = (Station) worldIterator.getElement();
-
+            for (Station station: world.getStations(player)) {
                 Vec2D location = station.getLocation();
                 Vec2D displayLocation = Vec2D.multiply(location, ModelConstants.TILE_SIZE);
                 Rectangle stationBox = new Rectangle(displayLocation.x - ModelConstants.TILE_SIZE * 3, displayLocation.y - ModelConstants.TILE_SIZE * 3, ModelConstants.TILE_SIZE * 7, ModelConstants.TILE_SIZE * 7);

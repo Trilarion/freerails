@@ -111,7 +111,7 @@ class DialogueBoxTester extends JFrame {
         dialogueBoxController.setDefaultFocusOwner(this);
 
         int numberOfCargoTypes = world.getCargos().size();
-        Station bristol = new Station(new Vec2D(10, 10), "Bristol", numberOfCargoTypes, 0);
+        Station bristol = new Station(0, new Vec2D(10, 10), "Bristol", numberOfCargoTypes, 0);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 
         // Make the stations demand all cargo..
@@ -121,15 +121,12 @@ class DialogueBoxTester extends JFrame {
 
         StationDemand demand = new StationDemand(demandArray);
         bristol.setDemandForCargo(demand);
-        world.add(TEST_PLAYER, PlayerKey.Stations, bristol);
-        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(50, 100), "Bath",
-                numberOfCargoTypes, 0));
-        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(40, 10), "Cardiff",
-                numberOfCargoTypes, 0));
-        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(100, 10), "London",
-                numberOfCargoTypes, 0));
-        world.add(TEST_PLAYER, PlayerKey.Stations, new Station(new Vec2D(90, 50), "Swansea",
-                numberOfCargoTypes, 0));
+        world.addStation(TEST_PLAYER, bristol);
+
+        world.addStation(TEST_PLAYER, new Station(1, new Vec2D(50, 100), "Bath", numberOfCargoTypes, 0));
+        world.addStation(TEST_PLAYER, new Station(2, new Vec2D(40, 10), "Cardiff", numberOfCargoTypes, 0));
+        world.addStation(TEST_PLAYER, new Station(3, new Vec2D(100, 10), "London", numberOfCargoTypes, 0));
+        world.addStation(TEST_PLAYER, new Station(4, new Vec2D(90, 50), "Swansea", numberOfCargoTypes, 0));
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
         // same one.
@@ -142,10 +139,8 @@ class DialogueBoxTester extends JFrame {
         world.add(TEST_PLAYER, PlayerKey.CargoBundles, cb.toImmutableCargoBundle());
 
         MutableSchedule schedule = new MutableSchedule();
-        TrainOrders order = new TrainOrders(0, Arrays.asList(0, 0, 0),
-                false, false);
-        TrainOrders order2 = new TrainOrders(1, Arrays.asList(1, 2, 0,
-                0, 0), true, false);
+        TrainOrders order = new TrainOrders(0, Arrays.asList(0, 0, 0),false, false);
+        TrainOrders order2 = new TrainOrders(1, Arrays.asList(1, 2, 0, 0, 0), true, false);
         TrainOrders order3 = new TrainOrders(2, null, true, false);
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);

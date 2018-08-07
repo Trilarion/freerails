@@ -150,7 +150,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
             int stationId = ta.getStationId(ticks);
             if (stationId == -1) throw new IllegalStateException();
 
-            Station station = (Station) world.get(player, PlayerKey.Stations, stationId);
+            Station station = world.getStation(player, stationId);
             CargoBatchBundle cb = (CargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
 
             for (int i = 0; i < spaceAvailable.size(); i++) {

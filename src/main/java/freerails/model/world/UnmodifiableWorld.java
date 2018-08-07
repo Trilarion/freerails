@@ -23,6 +23,7 @@ import freerails.model.finances.EconomicClimate;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
+import freerails.model.station.Station;
 import freerails.model.terrain.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
@@ -90,6 +91,10 @@ public interface UnmodifiableWorld extends Serializable {
     Collection<Train> getTrains(Player player);
 
     Train getTrain(Player player, int id);
+
+    Collection<Station> getStations(Player player);
+
+    Station getStation(Player player, int id);
 
     GameCalendar getCalendar();
 

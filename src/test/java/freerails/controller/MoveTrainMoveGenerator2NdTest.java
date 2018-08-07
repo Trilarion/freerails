@@ -235,7 +235,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         CargoBatch cb = new CargoBatch(0, new Vec2D(6, 6), 0, stationId);
         MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
         mb.addCargo(cb, amount);
-        Station station1Model = (Station) world.get(player, PlayerKey.Stations, stationId);
+        Station station1Model = world.getStation(player, stationId);
         int station1BundleId = station1Model.getCargoBundleID();
         world.set(player, PlayerKey.CargoBundles, station1BundleId, mb.toImmutableCargoBundle());
     }
@@ -410,24 +410,23 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
         // Add 35 unit of cargo #0 to station 1.
-        Station station0 = (Station) world.get(player,
-                PlayerKey.Stations, 1);
+        Station station0 = world.getStation(player, 1);
         int cargoBundleId = station0.getCargoBundleID();
         MutableCargoBatchBundle mcb = new MutableCargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
         mcb.addCargo(new CargoBatch(0, Vec2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
-        world.set(player, PlayerKey.CargoBundles, cargoBundleId, mcb
-                .toImmutableCargoBundle());
+        world.set(player, PlayerKey.CargoBundles, cargoBundleId, mcb.toImmutableCargoBundle());
 
         // Make station2 demand cargo #0;
         boolean[] boolArray = new boolean[world.getCargos().size()];
         boolArray[0] = true;
         StationDemand demand = new StationDemand(boolArray);
-        Station station2 = (Station) world.get(player, PlayerKey.Stations, 2);
+        Station station2 = world.getStation(player, 2);
 
         Station stationWithNewDemand = (Station) Utils.cloneBySerialisation(station2);
         stationWithNewDemand.setDemandForCargo(demand);
-        world.set(player, PlayerKey.Stations, 2, stationWithNewDemand);
+        world.removeStation(player, 2);
+        world.addStation(player, stationWithNewDemand);
 
         // The train should be bound for station 1.
         assertEquals(1, ta.getSchedule().getStationToGoto());

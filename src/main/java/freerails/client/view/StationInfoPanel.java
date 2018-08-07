@@ -44,19 +44,20 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+// TODO with the demise of the NonNullWorldIterator this is broken completely, need a bidirectional iterator over stations
 /**
  * Displays the supply and demand at a station.
  */
-
 public class StationInfoPanel extends JPanel implements View, WorldListListener {
 
     private static final Logger logger = Logger.getLogger(StationInfoPanel.class.getName());
     private static final long serialVersionUID = 4050759377680150585L;
     private UnmodifiableWorld world;
     private ModelRoot modelRoot;
-    private WorldIterator worldIterator;
+    private Iterator<Station> worldIterator;
 
     /**
      * The index of the cargoBundle associated with this station.
@@ -74,18 +75,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
         @Override
         public void componentShown(ComponentEvent evt) {
-
-            int i = worldIterator.getIndex();
-            worldIterator.reset();
-            if (i != WorldIterator.BEFORE_FIRST) {
-                try {
-                    worldIterator.gotoIndex(i);
-                } catch (NoSuchElementException e) {
-                    e.printStackTrace();
-                    logger.info("Exception ignored in StationInfoPanel (NoSuchElement).");
-                    return; // ignore silently
-                }
-            }
             display();
         }
     };
@@ -157,6 +146,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
 
     private void previousStationActionPerformed(ActionEvent evt) {
 
+        /**
         // Add your handling code here:
         if (worldIterator.previous()) {
             Vec2D p = ((Station) worldIterator.getElement()).getLocation();
@@ -166,13 +156,14 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         } else {
             throw new IllegalStateException();
         }
+         <*/
     }
 
     private void nextStationActionPerformed(ActionEvent evt) {
 
         // Add your handling code here:
-        if (worldIterator.next()) {
-            Vec2D p = ((Station) worldIterator.getElement()).getLocation();
+        if (worldIterator.hasNext()) {
+            Vec2D p = (worldIterator.next()).getLocation();
             modelRoot.setProperty(ModelRootProperty.CURSOR_POSITION, p);
             display();
         } else {
@@ -181,7 +172,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
-        worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, modelRoot.getWorld(), modelRoot.getPlayer());
+        worldIterator = modelRoot.getWorld().getStations(modelRoot.getPlayer()).iterator();
         addComponentListener(componentListener);
         world = modelRoot.getWorld();
         this.modelRoot = modelRoot;
@@ -189,12 +180,13 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     }
 
     public void setStation(int stationNumber) {
-        worldIterator.gotoIndex(stationNumber);
+        // TODO broken with the demise of the NonNullWorldIterator
+        //worldIterator.gotoIndex(stationNumber);
         display();
     }
 
     private void display() {
-
+/*
         if (worldIterator.getRowID() > 0) {
             previousStation.setEnabled(true);
         } else {
@@ -207,10 +199,11 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
             nextStation.setEnabled(false);
         }
 
+
         int stationNumber = worldIterator.getIndex();
         String label;
         if (stationNumber != WorldIterator.BEFORE_FIRST) {
-            Station station = (Station) world.get(modelRoot.getPlayer(), PlayerKey.Stations, stationNumber);
+            Station station = world.getStation(modelRoot.getPlayer(), stationNumber);
             TerrainTile tile = (TerrainTile) world.getTile(station.location);
             String stationTypeName = tile.getTrackPiece().getTrackType().getName();
             cargoBundleIndex = station.getCargoBundleID();
@@ -259,6 +252,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
         label1.setText(label);
         repaint();
+        */
     }
 
     @Override
@@ -285,6 +279,8 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
             return;
         }
 
+        // TODO enable this again
+        /*
         int currentIndex = worldIterator.getIndex();
         if (playerKey == PlayerKey.CargoBundles) {
             if (changedIndex == cargoBundleIndex) {
@@ -310,6 +306,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
                 display();
             }
         }
+        */
     }
 
     public void listUpdated(PlayerKey key, int index, Player player) {

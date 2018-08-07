@@ -83,11 +83,7 @@ public class StationBoxRenderer implements Painter {
         if (showCargoWaiting) {
             // We only show the station boxes for the current player.
             Player player = modelRoot.getPlayer();
-            WorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.Stations, world, player);
-
-            // TODO can there be null stations?
-            while (worldIterator.next()) { // loop over non null stations
-                Station station = (Station) worldIterator.getElement();
+            for (Station station: world.getStations(player)) {
                 // TODO which position is meant here?
                 int positionX = (station.getLocation().x * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE / 2;
                 int positionY = (station.getLocation().y * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE * 2;

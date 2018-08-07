@@ -25,7 +25,7 @@ import freerails.model.track.*;
 import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
-import freerails.move.mapupdatemove.UpgradeTrackMove;
+import freerails.move.mapupdatemove.UpgradeTrackCompositeMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -205,7 +205,7 @@ public class TrackMoveProducer {
             return MoveStatus.moveFailed("No need to upgrade track at station.");
         }
 
-        Move move = UpgradeTrackMove.generateMove(before, after, point);
+        Move move = UpgradeTrackCompositeMove.generateMove(before, after, point);
         Move move2 = transactionsGenerator.addTransactions(move);
 
         return sendMove(move2);

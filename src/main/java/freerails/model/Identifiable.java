@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 /**
  * All objects derived from Identifiable must not implement their own equals() or hashCode() functions. The idea is that
- * objects with the same id are equal.
+ * objects with the same id are equal. Objects of that type are typically used in some sort of set and can be identified
+ * by their id from outside.
  */
 public class Identifiable implements Comparable<Identifiable>, Serializable {
 

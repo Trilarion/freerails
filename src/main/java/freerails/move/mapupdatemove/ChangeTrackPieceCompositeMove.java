@@ -139,7 +139,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
         // If we are removing a station, we also need to remove the station from the station list.
         if (oldTrackPiece.getTrackType().isStation() && !newTrackPiece.getTrackType().isStation()) {
-            return RemoveStationMove.getInstance(world, changeTrackPieceMove, player);
+            return RemoveStationCompositeMove.getInstance(world, changeTrackPieceMove, player);
         }
         return changeTrackPieceMove;
     }

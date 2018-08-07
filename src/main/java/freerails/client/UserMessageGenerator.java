@@ -112,7 +112,7 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append(trainId + 1); // So that the first train
             // is #1, not #0.
             message.append(" arrives at ");
-            Station station = (Station) world.get(modelRoot.getPlayer(), PlayerKey.Stations, stationId);
+            Station station = world.getStation(modelRoot.getPlayer(), stationId);
             message.append(station.getStationName());
             message.append('\n');
             Money revenue = Money.ZERO;

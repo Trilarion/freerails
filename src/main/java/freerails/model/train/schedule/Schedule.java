@@ -22,6 +22,7 @@
 package freerails.model.train.schedule;
 
 
+import freerails.model.Identifiable;
 import freerails.model.train.TrainOrders;
 
 import java.util.List;
