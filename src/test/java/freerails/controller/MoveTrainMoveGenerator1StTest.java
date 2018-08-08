@@ -81,10 +81,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Schedule schedule = new Schedule();
         schedule.addOrder(order0);
         schedule.addOrder(order1);
-        UnmodifiableSchedule defaultSchedule = schedule;
 
         Vec2D start = new Vec2D(10, 10);
-        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), start, player, defaultSchedule);
+        AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), start, player, schedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, player);
         assertTrue(moveStatus.succeeds());
@@ -213,9 +212,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertTrue(moveStatus.succeeds());
 
         TrainOrder[] orders = {};
-        UnmodifiableSchedule is = new Schedule(orders, -1, false);
-        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from,
-                player, is);
+        UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
+        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, player);

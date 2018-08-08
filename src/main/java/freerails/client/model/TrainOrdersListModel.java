@@ -102,11 +102,7 @@ public class TrainOrdersListModel extends AbstractListModel {
 
     private UnmodifiableSchedule getSchedule() {
         Train train = world.getTrain(player, trainNumber);
-        UnmodifiableSchedule schedule = null;
-        if (train != null) {
-            schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
-        }
-        return schedule;
+        return train.getSchedule();
     }
 
     /**

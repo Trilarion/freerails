@@ -28,10 +28,7 @@ import freerails.model.finances.Money;
 import freerails.model.finances.PlayerDetails;
 import freerails.model.finances.TransactionAggregator;
 import freerails.model.player.Player;
-import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.WorldIterator;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

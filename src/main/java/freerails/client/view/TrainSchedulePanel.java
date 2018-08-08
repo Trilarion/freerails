@@ -25,6 +25,7 @@ import freerails.model.cargo.Cargo;
 import freerails.model.station.Station;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.*;
+import freerails.move.ChangeTrainMove;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.Move;
 
@@ -63,7 +64,6 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private TrainOrderPanel trainOrderPanel1;
     private JMenu waitJMenu;
     private int trainNumber = -1;
-    private int scheduleID = -1;
     private TrainOrdersListModel listModel;
     private ModelRoot modelRoot;
     private RendererRoot vl;
@@ -421,7 +421,6 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
         Train train = world.getTrain(player, newTrainNumber);
-        scheduleID = train.getScheduleId();
         listModel = new TrainOrdersListModel(world, newTrainNumber, player);
         orders.setModel(listModel);
         orders.setFixedCellWidth(250);
@@ -441,7 +440,8 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
         Train train = world.getTrain(player, trainNumber);
-        UnmodifiableSchedule unmodifiableSchedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
+        UnmodifiableSchedule unmodifiableSchedule = train.getSchedule();
+        // TODO really want to copy the Schedule here?
         return new Schedule(unmodifiableSchedule);
     }
 
@@ -560,10 +560,9 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         }
         // TODO unmodifiable list? needs to copy then
         oldConsist.remove(oldConsist.size() - 1);
-        List<Integer> newConsist = oldConsist;
         // List<Integer> newConsist = Utils.removeLastOfList(oldConsist);
 
-        newOrders = new TrainOrder(oldOrders.getStationID(), newConsist, oldOrders.isWaitUntilFull(), false);
+        newOrders = new TrainOrder(oldOrders.getStationID(), oldConsist, oldOrders.isWaitUntilFull(), false);
         schedule.setOrder(orderNumber, newOrders);
         sendUpdateMove(schedule);
     }
@@ -572,18 +571,17 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
         Train train = world.getTrain(player, trainNumber);
-        assert (scheduleID == train.getScheduleId());
-        UnmodifiableSchedule before = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
-        UnmodifiableSchedule after = schedule;
-        Move move = new ChangeItemInListMove(PlayerKey.TrainSchedules, scheduleID, before, after, player);
+        train.setSchedule(schedule);
+        Move move = new ChangeTrainMove(player, train);
         modelRoot.doMove(move);
     }
 
     public void listUpdated(PlayerKey key, int index, Player player) {
-        if (PlayerKey.TrainSchedules == key && scheduleID == index) {
-            listModel.fireRefresh();
-            enableButtons();
-        }
+        // TODO this is out of order with the removal of ChangeInListMoves, need to listen differently to changes
+        //if (PlayerKey.TrainSchedules == key) {
+        //    listModel.fireRefresh();
+        //    enableButtons();
+        //}
     }
 
     public void itemAdded(PlayerKey key, int index, Player player) {}

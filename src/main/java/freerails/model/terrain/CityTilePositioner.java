@@ -29,7 +29,7 @@ import java.util.Random;
  * directly to the world object, so if the game has already started, use
  * WorldDifferences and MapDiffMove to pass changes to the clients.
  */
-// TODO what is random used for? Seed of random generator?
+// TODO what is random used for? Seed of random generator?, convert to static code maybe?
 public class CityTilePositioner {
 
     private final Random random = new Random();

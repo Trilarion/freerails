@@ -2,6 +2,9 @@ package freerails.model.train;
 
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
+import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,14 +17,23 @@ public class Train extends Identifiable {
     private final int engineId;
     private final List<Integer> wagonTypes;
     private final int cargoBundleId;
-    private final int scheduleId;
+    private Schedule schedule;
 
-    public Train(int id, int engineId, List<Integer> wagonTypes, int cargoBundleId, int scheduleId) {
+    /**
+     * Makes a copy of the schedule.
+     *
+     * @param id
+     * @param engineId
+     * @param wagonTypes
+     * @param cargoBundleId
+     * @param schedule
+     */
+    public Train(int id, int engineId, List<Integer> wagonTypes, int cargoBundleId, UnmodifiableSchedule schedule) {
         super(id);
         this.engineId = engineId;
         this.wagonTypes = Collections.unmodifiableList(wagonTypes);
         this.cargoBundleId = cargoBundleId;
-        this.scheduleId = scheduleId;
+        this.schedule = new Schedule(schedule);
     }
 
     /**
@@ -63,8 +75,16 @@ public class Train extends Identifiable {
     /**
      * @return
      */
-    public int getScheduleId() {
-        return scheduleId;
+    public UnmodifiableSchedule getSchedule() {
+        return schedule;
+    }
+
+    /**
+     *
+     * @param schedule
+     */
+    public void setSchedule(@NotNull Schedule schedule) {
+        this.schedule = schedule;
     }
 
     /**

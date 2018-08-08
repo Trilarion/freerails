@@ -29,7 +29,6 @@ import freerails.client.ModelRoot;
 import freerails.model.cargo.Cargo;
 import freerails.model.train.Train;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.Player;

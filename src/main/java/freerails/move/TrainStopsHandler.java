@@ -180,8 +180,7 @@ public class TrainStopsHandler implements Serializable {
      */
     public boolean isWaitingForFullLoad() {
         Train train = world.getTrain(player, trainId);
-        int scheduleID = train.getScheduleId();
-        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        UnmodifiableSchedule schedule = train.getSchedule();
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {
             return false;
@@ -234,10 +233,10 @@ public class TrainStopsHandler implements Serializable {
             // TODO newTrain is computed in the ChangeTrainMove also
             // TODO need a way to get a new id for trains, this is not the best way so far
             int id = world.getTrains(player).size();
-            Train newTrain = new Train(id, engineId, order.getConsist(), trainAccessor.getTrain().getScheduleId(), trainAccessor.getTrain().getCargoBundleId());
+            Train newTrain = new Train(id, engineId, order.getConsist(), trainAccessor.getTrain().getCargoBundleId(), trainAccessor.getTrain().getSchedule());
             // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
             Train before = trainAccessor.getTrain();
-            Train after = new Train(id, engineId, order.getConsist(), before.getCargoBundleId(), before.getScheduleId());
+            Train after = new Train(id, engineId, order.getConsist(), before.getCargoBundleId(), before.getSchedule());
             // TODO need dedicated change train move instead
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
             Move move = new ChangeTrainMove(player, after);
@@ -276,7 +275,7 @@ public class TrainStopsHandler implements Serializable {
     private void scheduledStop() {
 
         Train train = world.getTrain(player, trainId);
-        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
+        UnmodifiableSchedule schedule = train.getSchedule();
 
         List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -290,7 +289,7 @@ public class TrainStopsHandler implements Serializable {
             int engineType = train.getEngineId();
             // TODO need a way to get a new id for trains, this is not the best way so far
             int id = world.getTrains(player).size();
-            Train after = new Train(trainId, engineType, wagonsToAdd, train.getCargoBundleId(), train.getScheduleId());
+            Train after = new Train(trainId, engineType, wagonsToAdd, train.getCargoBundleId(), train.getSchedule());
             // TODO need dedicated change train move
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, train, after, player);
             Move move = new ChangeTrainMove(player, after);
@@ -305,25 +304,21 @@ public class TrainStopsHandler implements Serializable {
 
     private void updateSchedule() {
         Train train =  world.getTrain(player, trainId);
-        int scheduleID = train.getScheduleId();
-        UnmodifiableSchedule currentSchedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
-        Schedule schedule = new Schedule(currentSchedule);
-        Station station;
+        Schedule schedule = new Schedule(train.getSchedule());
 
         TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
         boolean waitingForFullLoad = order.isWaitUntilFull() && !isTrainFull();
 
         if (!waitingForFullLoad) {
+            // TODO needs a mutable schedule
             schedule.gotoNextStation();
-
-            UnmodifiableSchedule newSchedule = schedule;
-            // worldDiffs.set(player, PlayerKey.TrainSchedules, scheduleID, newSchedule);
-            Move move = new ChangeItemInListMove(PlayerKey.TrainSchedules, scheduleID, currentSchedule, newSchedule, player);
+            train.setSchedule(schedule);
+            Move move = new ChangeTrainMove(player, train);
             move.doMove(world, player);
             moves.add(move);
 
             int stationNumber = schedule.getStationToGoto();
-            station = world.getStation(player, stationNumber);
+            Station station = world.getStation(player, stationNumber);
 
             if (null == station) {
                 logger.warn("null == station, train " + trainId + " doesn't know where to go next!");

@@ -21,7 +21,9 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.train.Train;
 import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.move.ChangeTrainMove;
 import freerails.move.CompositeMove;
 import freerails.move.Move;
 import freerails.move.RemoveStationMove;
@@ -69,18 +71,17 @@ public class RemoveStationCompositeMove extends CompositeMove implements TrackMo
         moves.add(removeTrackMove);
         moves.add(new RemoveStationMove(player, stationIndex));
 
-        // Now update any train schedules that include this station.
-        NonNullElementWorldIterator worldIterator = new NonNullElementWorldIterator(PlayerKey.TrainSchedules, world, player);
-
-        while (worldIterator.next()) {
-            UnmodifiableSchedule schedule = (UnmodifiableSchedule) worldIterator.getElement();
-
-            if (schedule.stopsAtStation(stationIndex)) {
-                Schedule mutableSchedule = new Schedule(schedule);
-                mutableSchedule.removeAllStopsAtStation(stationIndex);
-
-                Move changeScheduleMove = new ChangeItemInListMove(PlayerKey.TrainSchedules, worldIterator.getIndex(), schedule, mutableSchedule, player);
-                moves.add(changeScheduleMove);
+        // Now update any train schedules that include this station by iterating over all trains
+        for (Player player1: world.getPlayers()) {
+            for (Train train: world.getTrains(player1)) {
+                UnmodifiableSchedule schedule = train.getSchedule();
+                if (schedule.stopsAtStation(stationIndex)) {
+                    Schedule schedule1 = new Schedule(schedule);
+                    schedule1.removeAllStopsAtStation(stationIndex);
+                    train.setSchedule(schedule1);
+                    Move changeScheduleMove = new ChangeTrainMove(player, train);
+                    moves.add(changeScheduleMove);
+                }
             }
         }
 

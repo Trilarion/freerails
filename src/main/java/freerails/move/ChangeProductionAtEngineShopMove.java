@@ -22,7 +22,6 @@
 package freerails.move;
 
 
-import freerails.model.world.PlayerKey;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -95,7 +94,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         Station station = null;
         try {
             station = world.getStation(player, stationNumber);
-        } catch (Exception e) {};
+        } catch (Exception e) {}
 
         if (null == station) {
             return MoveStatus.moveFailed(stationNumber + " " + player + " is does null");

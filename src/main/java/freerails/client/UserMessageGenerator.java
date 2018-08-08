@@ -22,7 +22,6 @@ import freerails.model.cargo.Cargo;
 import freerails.move.*;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.Utils;
-import freerails.model.world.PlayerKey;
 import freerails.model.finances.Money;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatch;

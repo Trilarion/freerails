@@ -4,7 +4,7 @@ import freerails.model.world.World;
 
 public interface Nove {
 
-    public Status applicable();
+    Status applicable();
 
-    public void apply(World world);
+    void apply(World world);
 }

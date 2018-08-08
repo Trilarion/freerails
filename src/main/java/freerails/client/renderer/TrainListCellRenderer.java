@@ -135,9 +135,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         scheduleOrderNumber = newScheduleOrderID;
 
         Train train =  world.getTrain(player, trainNumber);
-        scheduleID = train.getScheduleId();
-
-        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        UnmodifiableSchedule schedule = train.getSchedule();
         TrainOrder order = schedule.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
@@ -226,9 +224,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      */
     public void listUpdated(PlayerKey key, int index, Player player) {
         if (showingOrder) {
-            if (PlayerKey.TrainSchedules == key && scheduleID == index) {
-                display(trainNumber, scheduleOrderNumber);
-            }
+            // TODO since Schedule is part of train, this is not right anymore, fix it
+            //if (PlayerKey.TrainSchedules == key) {
+            //    display(trainNumber, scheduleOrderNumber);
+            //}
         } else {
             // TODO since we use AddTrainMove this is not done right anymore! fix it!
             //if (PlayerKey.Trains == key && trainNumber == index) {

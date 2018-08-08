@@ -1,5 +1,7 @@
 package freerails.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -65,7 +67,7 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
      * @return
      */
     @Override
-    public int compareTo(Identifiable o) {
+    public int compareTo(@NotNull Identifiable o) {
         return Integer.compare(id, o.id);
     }
 

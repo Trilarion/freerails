@@ -23,7 +23,6 @@ package freerails.move;
 
 import freerails.model.station.*;
 
-import freerails.model.world.PlayerKey;
 import freerails.model.MapFixtureFactory;
 import freerails.util.Vec2D;
 

@@ -37,7 +37,6 @@ import freerails.move.generator.BondInterestMoveGenerator;
 import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.game.GameCalendar;
-import freerails.model.game.GameSpeed;
 import freerails.model.game.GameTime;
 
 import java.util.Iterator;

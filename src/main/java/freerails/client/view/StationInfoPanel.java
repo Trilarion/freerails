@@ -26,15 +26,10 @@ package freerails.client.view;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.ModelConstants;
-import freerails.model.cargo.Cargo;
 import freerails.model.world.*;
 import freerails.util.Vec2D;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -45,7 +40,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 // TODO with the demise of the NonNullWorldIterator this is broken completely, need a bidirectional iterator over stations
 /**

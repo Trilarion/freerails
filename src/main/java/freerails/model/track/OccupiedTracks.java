@@ -18,7 +18,6 @@
 
 package freerails.model.track;
 
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;

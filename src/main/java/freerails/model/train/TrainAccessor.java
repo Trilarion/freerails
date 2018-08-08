@@ -174,7 +174,7 @@ public class TrainAccessor {
      */
     public UnmodifiableSchedule getSchedule() {
         Train train = getTrain();
-        return (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
+        return train.getSchedule();
     }
 
     /**
@@ -214,8 +214,7 @@ public class TrainAccessor {
      */
     public Vec2D getTargetLocation() {
         Train train = world.getTrain(player, id);
-        int scheduleID = train.getScheduleId();
-        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        UnmodifiableSchedule schedule = train.getSchedule();
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {

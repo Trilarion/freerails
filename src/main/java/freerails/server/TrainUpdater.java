@@ -19,7 +19,6 @@
 package freerails.server;
 
 import freerails.model.track.OccupiedTracks;
-import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
@@ -86,9 +85,7 @@ public class TrainUpdater implements Serializable {
 
         schedule.setOrderToGoto(0);
 
-        UnmodifiableSchedule is = schedule;
-
-        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagons, location, player, is);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagons, location, player, schedule);
 
         Move move = addTrain.generate(world);
         moveReceiver.process(move);

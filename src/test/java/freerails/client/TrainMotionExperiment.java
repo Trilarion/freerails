@@ -75,8 +75,8 @@ class TrainMotionExperiment extends JComponent {
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
         TrainOrder[] orders = {};
-        UnmodifiableSchedule is = new Schedule(orders, -1, false);
-        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ArrayList<>(), from, player, is);
+        UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
+        MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, player);

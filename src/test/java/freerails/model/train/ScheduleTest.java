@@ -21,7 +21,6 @@
  */
 package freerails.model.train;
 
-import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.TrainOrder;
 import junit.framework.TestCase;
@@ -45,8 +44,7 @@ public class ScheduleTest extends TestCase {
         int stationToGoto = schedule.getStationToGoto();
         assertEquals(0, stationToGoto);
 
-        UnmodifiableSchedule unmodifiableSchedule = schedule;
-        assertEquals(0, unmodifiableSchedule.getStationToGoto());
+        assertEquals(0, schedule.getStationToGoto());
     }
 
 }

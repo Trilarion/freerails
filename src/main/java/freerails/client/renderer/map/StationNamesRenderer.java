@@ -19,9 +19,6 @@
 package freerails.client.renderer.map;
 
 import freerails.client.ModelRootProperty;
-import freerails.model.world.NonNullElementWorldIterator;
-import freerails.model.world.PlayerKey;
-import freerails.model.world.WorldIterator;
 import freerails.util.ui.Painter;
 import freerails.client.ModelRoot;
 import freerails.util.Vec2D;

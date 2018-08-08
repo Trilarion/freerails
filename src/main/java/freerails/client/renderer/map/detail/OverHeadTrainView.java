@@ -68,7 +68,7 @@ public class OverHeadTrainView implements Painter {
         for (Player player: world.getPlayers()) {
 
             for (int i = 0; i < world.getTrains(player).size(); i++) {
-                Train train = world.getTrain(player, i);;
+                Train train = world.getTrain(player, i);
 
                 // TrainPositionOnMap pos = (TrainPositionOnMap) world.get(
                 // player, KEY.TRAIN_POSITIONS, i);

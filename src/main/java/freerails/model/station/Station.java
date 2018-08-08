@@ -23,12 +23,10 @@ import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 
 import freerails.util.Vec2D;
-import freerails.model.world.PlayerKey;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

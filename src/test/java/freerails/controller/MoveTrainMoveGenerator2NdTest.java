@@ -116,11 +116,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Schedule schedule = new Schedule();
         schedule.addOrder(order0);
         schedule.addOrder(order1);
-        UnmodifiableSchedule defaultSchedule = schedule;
 
         Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0),
-                start, player, defaultSchedule);
+                start, player, schedule);
         Move move = preMove.generate(world);
         MoveStatus moveStatus = move.doMove(world, player);
         assertTrue(moveStatus.succeeds());
@@ -301,16 +300,13 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      * waits.
      */
     public void testStops5() {
-
-        PositionOnTrack positionOnTrack;
-        TrainMotion trainMotion;
         putTrainAtStationWaiting4FullLoad();
 
         // Add enough cargo to fill up the train.
         addCargoAtStation(2, 70);
 
-        trainMotion = moveTrain();
-        positionOnTrack = trainMotion.getFinalPosition();
+        TrainMotion trainMotion = moveTrain();
+        PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
 
         assertEquals(station2Location.x - 1, positionOnTrack.getLocation().x);
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
@@ -324,8 +320,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         Schedule schedule = new Schedule(ta.getSchedule());
         schedule.setOrder(0, order0);
-        UnmodifiableSchedule imSchedule = schedule;
-        world.set(player, PlayerKey.TrainSchedules, 0, imSchedule);
+        ta.getTrain().setSchedule(schedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
         assertTrue(ta.getSchedule().getOrder(0).isWaitUntilFull());
 
@@ -371,8 +366,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         Schedule schedule = new Schedule(ta.getSchedule());
         schedule.setOrder(0, order0);
-        UnmodifiableSchedule imSchedule = schedule;
-        world.set(player, PlayerKey.TrainSchedules, 0, imSchedule);
+        ta.getTrain().setSchedule(schedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
         assertFalse(ta.getSchedule().getOrder(0).isWaitUntilFull());
 
@@ -395,7 +389,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Remove all wagons from the train.
         Train train = ta.getTrain();
-        train = new Train(train.getId(), train.getEngineId(), new ArrayList<>(), train.getScheduleId(), train.getCargoBundleId());
+        train = new Train(train.getId(), train.getEngineId(), new ArrayList<>(), train.getCargoBundleId(), train.getSchedule());
         world.removeTrain(player, 0);
         world.addTrain(player, train);
 
@@ -405,7 +399,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Schedule schedule = new Schedule();
         schedule.addOrder(order0);
         schedule.addOrder(order1);
-        world.set(player, PlayerKey.TrainSchedules, 0, schedule);
 
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
@@ -476,8 +469,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         Schedule schedule = new Schedule(ta.getSchedule());
         schedule.setOrder(0, order0);
-        UnmodifiableSchedule imSchedule = schedule;
-        world.set(player, PlayerKey.TrainSchedules, 0, imSchedule);
+        ta.getTrain().setSchedule(schedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
         // Move the train to the station.
@@ -499,7 +491,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         trainMotion = moveTrain();
         trainMotion = moveTrain();
         train = ta.getTrain();
-        assertEquals(6, ta.getTrain().getNumberOfWagons());
+        assertEquals(6, train.getNumberOfWagons());
         assertTrue(trainMotion.getInitialPosition() >= train.getLength());
     }
 }

@@ -23,6 +23,8 @@
 package freerails.model.train.schedule;
 
 
+import freerails.model.Identifiable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,14 +53,14 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     /**
-     * @param s
+     * @param schedule
      */
-    public Schedule(UnmodifiableSchedule s) {
-        nextScheduledOrder = s.getNextScheduledOrder();
-        hasPriorityOrders = s.hasPriorityOrders();
+    public Schedule(UnmodifiableSchedule schedule) {
+        nextScheduledOrder = schedule.getNextScheduledOrder();
+        hasPriorityOrders = schedule.hasPriorityOrders();
 
-        for (int i = 0; i < s.getNumOrders(); i++) {
-            orders.add(s.getOrder(i));
+        for (int i = 0; i < schedule.getNumOrders(); i++) {
+            orders.add(schedule.getOrder(i));
         }
     }
 

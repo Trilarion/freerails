@@ -21,8 +21,6 @@ package freerails.model.player;
 import freerails.model.Identifiable;
 import freerails.util.Utils;
 
-import java.io.Serializable;
-
 // TODO on the client side, one should not create a player but a add new player move or so...
 /**
  * This interface identifies a player.

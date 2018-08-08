@@ -25,6 +25,7 @@ import freerails.io.GsonManager;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.model.player.Player;
 import freerails.model.train.Train;
+import freerails.model.train.schedule.Schedule;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
 import freerails.move.MoveStatus;
@@ -85,7 +86,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
         // 3 wagons to carry cargo type 0.
         List<Integer> wagons = Arrays.asList(0, 0, 0);
-        Train train = new Train(0, 0, wagons, trainCargoBundleId, 0);
+        Train train = new Train(0, 0, wagons, trainCargoBundleId, new Schedule());
         world.addTrain(MapFixtureFactory.TEST_PLAYER, train);
     }
 
@@ -310,7 +311,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     private void setWagons(List<Integer> wagons) {
         Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
-        Train newTrain = new Train(train.getId(), train.getEngineId(), wagons, train.getCargoBundleId(), train.getScheduleId());
+        Train newTrain = new Train(train.getId(), train.getEngineId(), wagons, train.getCargoBundleId(), train.getSchedule());
         world.removeTrain(MapFixtureFactory.TEST_PLAYER, 0);
         world.addTrain(MapFixtureFactory.TEST_PLAYER, newTrain);
     }

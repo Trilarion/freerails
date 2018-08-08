@@ -148,8 +148,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
             throw new IllegalStateException(moveStatus.getMessage());
 
         TrainOrder[] orders = {};
-        UnmodifiableSchedule is = new Schedule(orders, -1, false);
-        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, is);
+        UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
+        AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
         Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, player);
         if (!moveStatus.succeeds())

@@ -23,7 +23,6 @@ import freerails.network.AbstractFreerailsServerTestCase;
 import freerails.network.LogOnResponse;
 import freerails.network.command.CommandToClient;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

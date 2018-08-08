@@ -23,6 +23,6 @@ package freerails.model.world;
  */
 public enum PlayerKey {
 
-    XXX, YYY, CargoBundles, TrainSchedules
+    XXX, YYY, CargoBundles, ZZZ
 
 }
