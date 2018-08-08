@@ -18,13 +18,12 @@
 package freerails.client.model;
 
 import freerails.client.model.TrainOrdersListModel.TrainOrdersListElement;
-import freerails.model.world.PlayerKey;
 import freerails.model.finances.IncomeStatementGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.train.TrainOrders;
+import freerails.model.train.schedule.TrainOrder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,7 +106,7 @@ public class TrainSummeryModel {
             }
         }
         lastStationUpdate = currentTime;
-        TrainOrders orders = null;
+        TrainOrder orders = null;
         TrainOrdersListModel ordersList = new TrainOrdersListModel(world, trainNum, player);
         int size = ordersList.getSize();
         for (int i = 0; i < size; ++i) {

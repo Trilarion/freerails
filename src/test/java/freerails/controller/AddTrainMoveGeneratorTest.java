@@ -23,6 +23,8 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
@@ -32,8 +34,7 @@ import freerails.model.activity.ActivityIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
 import freerails.model.train.*;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.MutableSchedule;
+import freerails.model.train.schedule.Schedule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +45,7 @@ import java.util.Arrays;
 public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
 
     private Player player;
-    private ImmutableSchedule defaultSchedule;
+    private UnmodifiableSchedule defaultSchedule;
     private Vec2D stationA;
 
     /**
@@ -74,12 +75,12 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         MoveStatus ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.succeeds());
 
-        TrainOrders order0 = new TrainOrders(0, null, false, false);
-        TrainOrders order1 = new TrainOrders(1, null, false, false);
-        MutableSchedule schedule = new MutableSchedule();
+        TrainOrder order0 = new TrainOrder(0, null, false, false);
+        TrainOrder order1 = new TrainOrder(1, null, false, false);
+        Schedule schedule = new Schedule();
         schedule.addOrder(order0);
         schedule.addOrder(order1);
-        defaultSchedule = schedule.toImmutableSchedule();
+        defaultSchedule = schedule;
     }
 
     /**
@@ -146,8 +147,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         if (!moveStatus.succeeds())
             throw new IllegalStateException(moveStatus.getMessage());
 
-        TrainOrders[] orders = {};
-        ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
+        TrainOrder[] orders = {};
+        UnmodifiableSchedule is = new Schedule(orders, -1, false);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, is);
         Move move = addTrain.generate(world);
         moveStatus = move.doMove(world, player);

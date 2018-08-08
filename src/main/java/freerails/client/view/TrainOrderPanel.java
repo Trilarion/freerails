@@ -28,7 +28,6 @@ import freerails.client.model.TrainOrdersListModel;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -81,12 +80,12 @@ public class TrainOrderPanel implements View, ListCellRenderer {
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement) value;
 
         // Set station name
-        int stationNumber = trainOrders.order.stationId;
+        int stationNumber = trainOrders.order.getStationId();
         Station station = world.getStation(player, stationNumber);
         String stationName = station.getStationName();
 
         // Set wait until full
-        String waitUntilFull = trainOrders.order.waitUntilFull ? "Wait until full" : "";
+        String waitUntilFull = trainOrders.order.isWaitUntilFull() ? "Wait until full" : "";
         Selection select;
         if (isSelected) {
             if (list.isFocusOwner()) {
@@ -98,8 +97,8 @@ public class TrainOrderPanel implements View, ListCellRenderer {
             select = Selection.unselect;
         }
         String orderText;
-        if (null == trainOrders.order.consist) {
-            if (trainOrders.order.autoConsist) {
+        if (null == trainOrders.order.getConsist()) {
+            if (trainOrders.order.isAutoConsist()) {
                 orderText = "Select wagons automatically";
             } else {
                 orderText = "No Change";
@@ -156,8 +155,8 @@ public class TrainOrderPanel implements View, ListCellRenderer {
             }
 
             // Check for 'No change'
-            if (null == trainOrders.order.consist) {
-                if (trainOrders.order.autoConsist) {
+            if (null == trainOrders.order.getConsist()) {
+                if (trainOrders.order.isAutoConsist()) {
                     panelSingle.noChangeJLabel.setText("Select wagons automatically");
                 } else {
                     panelSingle.noChangeJLabel.setText("No Change");

@@ -22,6 +22,7 @@
 package freerails.move.generator;
 
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 import freerails.move.listmove.AddItemToListMove;
 
@@ -39,7 +40,6 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
 import freerails.model.train.*;
 import freerails.model.train.motion.ConstantAccelerationMotion;
-import freerails.model.train.schedule.ImmutableSchedule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     private final List<Integer> wagons;
     private final Vec2D point;
     private final Player player;
-    private final ImmutableSchedule schedule;
+    private final UnmodifiableSchedule schedule;
 
     /**
      * @param engineId
@@ -62,7 +62,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * @param player
      * @param schedule
      */
-    public AddTrainMoveGenerator(int engineId, List<Integer> wagons, Vec2D p, Player player, ImmutableSchedule schedule) {
+    public AddTrainMoveGenerator(int engineId, List<Integer> wagons, Vec2D p, Player player, UnmodifiableSchedule schedule) {
         this.engineId = engineId;
         this.wagons = Utils.verifyNotNull(wagons);
         point = Utils.verifyNotNull(p);

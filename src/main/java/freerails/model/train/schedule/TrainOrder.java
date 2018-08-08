@@ -17,12 +17,10 @@
  */
 
 /*
- * TrainOrders.java
+ * TrainOrder.java
  *
  */
-package freerails.model.train;
-
-
+package freerails.model.train.schedule;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,20 +28,14 @@ import java.util.List;
 /**
  * Encapsulates the orders for a train.
  */
-public class TrainOrders implements Serializable {
+public class TrainOrder implements Serializable {
 
     private static final long serialVersionUID = 3616453397155559472L;
     private static final int MAXIMUM_NUMBER_OF_WAGONS = 6;
-    public final boolean waitUntilFull;
-    public final boolean autoConsist;
-    /**
-     * The wagon types to add; if null, then no change.
-     */
-    public final List<Integer> consist;
-    /**
-     * The number of the station to goto.
-     */
-    public final int stationId;
+    private final boolean waitUntilFull;
+    private final boolean autoConsist;
+    private final List<Integer> consist;
+    private final int stationId;
 
     /**
      * @param station
@@ -51,7 +43,7 @@ public class TrainOrders implements Serializable {
      * @param wait
      * @param auto
      */
-    public TrainOrders(int station, List<Integer> newConsist, boolean wait, boolean auto) {
+    public TrainOrder(int station, List<Integer> newConsist, boolean wait, boolean auto) {
         // If there are no wagons, set wait = false.
         wait = (null == newConsist || 0 == newConsist.size()) ? false : wait;
 
@@ -64,27 +56,29 @@ public class TrainOrders implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainOrders)) return false;
+        if (!(obj instanceof TrainOrder)) return false;
 
-        final TrainOrders trainOrders = (TrainOrders) obj;
+        final TrainOrder trainOrder = (TrainOrder) obj;
 
-        if (autoConsist != trainOrders.autoConsist) return false;
-        if (stationId != trainOrders.stationId) return false;
-        if (waitUntilFull != trainOrders.waitUntilFull) return false;
-        return consist != null ? consist.equals(trainOrders.consist) : trainOrders.consist == null;
+        if (isAutoConsist() != trainOrder.isAutoConsist()) return false;
+        if (getStationId() != trainOrder.getStationId()) return false;
+        if (isWaitUntilFull() != trainOrder.isWaitUntilFull()) return false;
+        return getConsist() != null ? getConsist().equals(trainOrder.getConsist()) : trainOrder.getConsist() == null;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = (waitUntilFull ? 1 : 0);
-        result = 29 * result + (autoConsist ? 1 : 0);
-        result = 29 * result + (consist != null ? consist.hashCode() : 0);
-        result = 29 * result + stationId;
+        result = (isWaitUntilFull() ? 1 : 0);
+        result = 29 * result + (isAutoConsist() ? 1 : 0);
+        result = 29 * result + (getConsist() != null ? getConsist().hashCode() : 0);
+        result = 29 * result + getStationId();
         return result;
     }
 
     /**
+     * The wagon types to add; if null, then no change.
+     */ /**
      * @return either (1) an array of cargo type ids or (2) null to represent
      * 'no change'.
      */
@@ -96,28 +90,28 @@ public class TrainOrders implements Serializable {
      * @return
      */
     public int getStationID() {
-        return stationId;
+        return getStationId();
     }
 
     /**
      * @return
      */
     public boolean getWaitUntilFull() {
-        return waitUntilFull;
+        return isWaitUntilFull();
     }
 
     /**
      * @return
      */
     public boolean orderHasWagons() {
-        return null != consist && 0 != consist.size();
+        return null != getConsist() && 0 != getConsist().size();
     }
 
     /**
      * @return
      */
     public boolean hasLessThanMaximumNumberOfWagons() {
-        return null == consist || consist.size() < MAXIMUM_NUMBER_OF_WAGONS;
+        return null == getConsist() || getConsist().size() < MAXIMUM_NUMBER_OF_WAGONS;
     }
 
     /**
@@ -125,5 +119,16 @@ public class TrainOrders implements Serializable {
      */
     public boolean isAutoConsist() {
         return autoConsist;
+    }
+
+    public boolean isWaitUntilFull() {
+        return waitUntilFull;
+    }
+
+    /**
+     * The number of the station to goto.
+     */
+    public int getStationId() {
+        return stationId;
     }
 }

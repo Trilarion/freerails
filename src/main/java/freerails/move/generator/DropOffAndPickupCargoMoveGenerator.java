@@ -22,6 +22,7 @@ import freerails.model.ModelConstants;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.finances.CargoDeliveryMoneyTransaction;
 import freerails.model.finances.Money;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.move.AddTransactionMove;
 import freerails.move.ChangeTrainMove;
 import freerails.move.Move;
@@ -38,7 +39,7 @@ import freerails.model.station.Station;
 import freerails.model.station.StationCargoConversion;
 import freerails.model.station.StationDemand;
 import freerails.model.train.*;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 
 import java.util.*;
 
@@ -89,10 +90,10 @@ public class DropOffAndPickupCargoMoveGenerator {
             List<WagonLoad> wagonsAvailable = new ArrayList<>();
 
             assert trainAccessor.equals(world.getTrain(player, trainId));
-            Schedule schedule = trainAccessor.getSchedule();
-            TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
+            UnmodifiableSchedule schedule = trainAccessor.getSchedule();
+            TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
 
-            int nextStationId = order.stationId;
+            int nextStationId = order.getStationId();
 
             Station station = world.getStation(this.player, nextStationId);
             StationDemand demand = station.getDemandForCargo();

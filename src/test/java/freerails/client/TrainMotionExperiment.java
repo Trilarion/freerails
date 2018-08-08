@@ -23,6 +23,9 @@ import freerails.client.launcher.ScreenHandler;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.OccupiedTracks;
+import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -38,7 +41,6 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 import freerails.model.train.*;
-import freerails.model.train.schedule.ImmutableSchedule;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,8 +74,8 @@ class TrainMotionExperiment extends JComponent {
         MoveStatus moveStatus = producer.buildTrack(from, trackPath);
         if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
 
-        TrainOrders[] orders = {};
-        ImmutableSchedule is = new ImmutableSchedule(orders, -1, false);
+        TrainOrder[] orders = {};
+        UnmodifiableSchedule is = new Schedule(orders, -1, false);
         MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ArrayList<>(), from, player, is);
 
         Move move = addTrain.generate(world);

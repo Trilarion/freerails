@@ -24,12 +24,11 @@ package freerails.client.model;
 
 import freerails.client.view.TrainSchedulePanel;
 import freerails.model.train.Train;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.Schedule;
-import freerails.model.train.TrainOrders;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 
 import javax.swing.*;
 
@@ -61,7 +60,7 @@ public class TrainOrdersListModel extends AbstractListModel {
     }
 
     public Object getElementAt(int index) {
-        Schedule schedule = getSchedule();
+        UnmodifiableSchedule schedule = getSchedule();
         int gotoStatus;
 
         if (schedule.getNextScheduledOrder() == index) {
@@ -80,13 +79,13 @@ public class TrainOrdersListModel extends AbstractListModel {
         }
 
         boolean isPriorityOrders = 0 == index && schedule.hasPriorityOrders();
-        TrainOrders order = getSchedule().getOrder(index);
+        TrainOrder order = getSchedule().getOrder(index);
 
         return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
     }
 
     public int getSize() {
-        Schedule schedule = getSchedule();
+        UnmodifiableSchedule schedule = getSchedule();
         int size = 0;
         if (schedule != null) {
             size = schedule.getNumOrders();
@@ -101,11 +100,11 @@ public class TrainOrdersListModel extends AbstractListModel {
         super.fireContentsChanged(this, 0, getSize());
     }
 
-    private Schedule getSchedule() {
+    private UnmodifiableSchedule getSchedule() {
         Train train = world.getTrain(player, trainNumber);
-        ImmutableSchedule schedule = null;
+        UnmodifiableSchedule schedule = null;
         if (train != null) {
-            schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
+            schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
         }
         return schedule;
     }
@@ -130,7 +129,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         /**
          *
          */
-        public final TrainOrders order;
+        public final TrainOrder order;
 
         /**
          *
@@ -143,7 +142,7 @@ public class TrainOrdersListModel extends AbstractListModel {
          * @param order
          * @param trainNumber
          */
-        private TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrders order, int trainNumber) {
+        private TrainOrdersListElement(boolean isPriorityOrder, int gotoStatus, TrainOrder order, int trainNumber) {
             this.isPriorityOrder = isPriorityOrder;
             this.gotoStatus = gotoStatus;
             this.order = order;

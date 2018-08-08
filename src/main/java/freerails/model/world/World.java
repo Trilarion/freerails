@@ -32,7 +32,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
 import freerails.model.finances.Money;
@@ -88,7 +88,7 @@ public class World implements UnmodifiableWorld {
     // player specific lists
     private final Map<Player, SortedSet<Train>> trains; // a list of trains by player
     private final Map<Player, SortedSet<Station>> stations; // list of stations by player
-    private final Map<Player, SortedSet<Schedule>> schedules; // list of train schedules by player
+    private final Map<Player, SortedSet<UnmodifiableSchedule>> schedules; // list of train schedules by player
 
     // single instance objects in the game world
     private final GameCalendar calendar;
@@ -105,7 +105,7 @@ public class World implements UnmodifiableWorld {
         private SortedSet<TrackType> trackTypes = new TreeSet<>();
         private Map<Player, SortedSet<Train>> trains = new HashMap<>();
         private Map<Player, SortedSet<Station>> stations = new HashMap<>();
-        private Map<Player, SortedSet<Schedule>> schedules = new HashMap<>();
+        private Map<Player, SortedSet<UnmodifiableSchedule>> schedules = new HashMap<>();
         private Vec2D mapSize = Vec2D.ZERO;
 
         public Builder setEngines(SortedSet<Engine> engines) {
@@ -248,15 +248,15 @@ public class World implements UnmodifiableWorld {
     }
 
     // TODO unmodifiable collection?
-    public Collection<Schedule> getSchedules(Player player) {
+    public Collection<UnmodifiableSchedule> getSchedules(Player player) {
         return schedules.get(player);
     }
 
-    public Schedule getSchedule(Player player, int id) {
+    public UnmodifiableSchedule getSchedule(Player player, int id) {
         return null;// return get(id, schedules.get(player));
     }
 
-    public void addSchedule(Player player, Schedule schedule) {
+    public void addSchedule(Player player, UnmodifiableSchedule schedule) {
         //if (contains(schedule.getId(), schedules.get(player))) {
             //throw new IllegalArgumentException("Schedule with id already existing. Cannot add.");
         //}

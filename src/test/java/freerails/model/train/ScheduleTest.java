@@ -21,31 +21,32 @@
  */
 package freerails.model.train;
 
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.MutableSchedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.TrainOrder;
 import junit.framework.TestCase;
 
 /**
  *
  */
-public class MutableScheduleTest extends TestCase {
+public class ScheduleTest extends TestCase {
 
     /**
      *
      */
     public void test1() {
-        TrainOrders trainOrders1 = new TrainOrders(0, null, false, false);
-        TrainOrders trainOrders2 = new TrainOrders(1, null, false, false);
+        TrainOrder trainOrder1 = new TrainOrder(0, null, false, false);
+        TrainOrder trainOrder2 = new TrainOrder(1, null, false, false);
 
-        MutableSchedule mutableSchedule = new MutableSchedule();
-        mutableSchedule.addOrder(trainOrders1);
-        mutableSchedule.addOrder(trainOrders2);
+        Schedule schedule = new Schedule();
+        schedule.addOrder(trainOrder1);
+        schedule.addOrder(trainOrder2);
 
-        int stationToGoto = mutableSchedule.getStationToGoto();
+        int stationToGoto = schedule.getStationToGoto();
         assertEquals(0, stationToGoto);
 
-        ImmutableSchedule immutableSchedule = mutableSchedule.toImmutableSchedule();
-        assertEquals(0, immutableSchedule.getStationToGoto());
+        UnmodifiableSchedule unmodifiableSchedule = schedule;
+        assertEquals(0, unmodifiableSchedule.getStationToGoto());
     }
 
 }

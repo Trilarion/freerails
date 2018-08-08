@@ -22,6 +22,7 @@
 package freerails.model.train;
 
 import freerails.model.activity.ActivityIterator;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.PlayerKey;
 
 import freerails.util.Vec2D;
@@ -32,8 +33,7 @@ import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackSection;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
@@ -172,9 +172,9 @@ public class TrainAccessor {
     /**
      * @return
      */
-    public ImmutableSchedule getSchedule() {
+    public UnmodifiableSchedule getSchedule() {
         Train train = getTrain();
-        return (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
+        return (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
     }
 
     /**
@@ -200,10 +200,10 @@ public class TrainAccessor {
         if (stationId == -1) return false;
         TrainState act = getStatus(time);
         if (act != TrainState.WAITING_FOR_FULL_LOAD) return false;
-        ImmutableSchedule schedule = getSchedule();
-        TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
-        if (order.stationId != stationId) return false;
-        if (!order.waitUntilFull) return false;
+        UnmodifiableSchedule schedule = getSchedule();
+        TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
+        if (order.getStationId() != stationId) return false;
+        if (!order.isWaitUntilFull()) return false;
         Train train = getTrain();
         return order.getConsist().equals(train.getConsist());
     }
@@ -215,7 +215,7 @@ public class TrainAccessor {
     public Vec2D getTargetLocation() {
         Train train = world.getTrain(player, id);
         int scheduleID = train.getScheduleId();
-        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         int stationNumber = schedule.getStationToGoto();
 
         if (-1 == stationNumber) {

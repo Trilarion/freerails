@@ -26,13 +26,11 @@ import freerails.client.view.View;
 import freerails.client.ModelRoot;
 import freerails.model.train.Train;
 import freerails.model.world.PlayerKey;
-import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldListListener;
 import freerails.model.player.Player;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.Schedule;
-import freerails.model.train.TrainOrders;
+import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.train.schedule.TrainOrder;
 
 import javax.swing.*;
 
@@ -139,12 +137,12 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         Train train =  world.getTrain(player, trainNumber);
         scheduleID = train.getScheduleId();
 
-        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
-        TrainOrders order = schedule.getOrder(newScheduleOrderID);
+        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        TrainOrder order = schedule.getOrder(newScheduleOrderID);
 
         // Set up the array of images.
-        if (null != order.consist) {
-            display(train.getEngineId(), order.consist);
+        if (null != order.getConsist()) {
+            display(train.getEngineId(), order.getConsist());
         } else {
             images = new Image[0];
         }

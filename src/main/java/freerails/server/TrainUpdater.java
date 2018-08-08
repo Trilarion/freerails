@@ -19,6 +19,8 @@
 package freerails.server;
 
 import freerails.model.track.OccupiedTracks;
+import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -27,17 +29,13 @@ import freerails.move.receiver.MoveReceiver;
 
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.PlayerKey;
-import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.WorldIterator;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.TrainBlueprint;
 import freerails.model.track.NoTrackException;
 import freerails.model.train.*;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.MutableSchedule;
+import freerails.model.train.schedule.Schedule;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,18 +75,18 @@ public class TrainUpdater implements Serializable {
         boolean autoSchedule = 0 == wagons.size();
 
         // generate initial schedule
-        MutableSchedule schedule = new MutableSchedule();
+        Schedule schedule = new Schedule();
 
         // Add up to 4 stations to the schedule.
         Iterator<Station> wi = world.getStations(player).iterator();
         while (wi.hasNext() && schedule.getNumOrders() < 5) {
-            TrainOrders orders = new TrainOrders(wi.next().getId(), null, false, autoSchedule);
+            TrainOrder orders = new TrainOrder(wi.next().getId(), null, false, autoSchedule);
             schedule.addOrder(orders);
         }
 
         schedule.setOrderToGoto(0);
 
-        ImmutableSchedule is = schedule.toImmutableSchedule();
+        UnmodifiableSchedule is = schedule;
 
         MoveGenerator addTrain = new AddTrainMoveGenerator(engineId, wagons, location, player, is);
 

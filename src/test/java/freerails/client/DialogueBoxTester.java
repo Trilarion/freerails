@@ -23,6 +23,7 @@ import freerails.client.renderer.RendererRootImpl;
 import freerails.io.GsonManager;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.PlayerKey;
 import freerails.move.receiver.TestMoveReceiver;
 import freerails.savegames.MapCreator;
@@ -39,8 +40,7 @@ import freerails.model.cargo.MutableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
-import freerails.model.train.schedule.MutableSchedule;
-import freerails.model.train.TrainOrders;
+import freerails.model.train.schedule.Schedule;
 import freerails.model.world.World;
 
 import javax.swing.*;
@@ -138,23 +138,23 @@ class DialogueBoxTester extends JFrame {
         cb.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
         world.add(TEST_PLAYER, PlayerKey.CargoBundles, cb.toImmutableCargoBundle());
 
-        MutableSchedule schedule = new MutableSchedule();
-        TrainOrders order = new TrainOrders(0, Arrays.asList(0, 0, 0),false, false);
-        TrainOrders order2 = new TrainOrders(1, Arrays.asList(1, 2, 0, 0, 0), true, false);
-        TrainOrders order3 = new TrainOrders(2, null, true, false);
+        Schedule schedule = new Schedule();
+        TrainOrder order = new TrainOrder(0, Arrays.asList(0, 0, 0),false, false);
+        TrainOrder order2 = new TrainOrder(1, Arrays.asList(1, 2, 0, 0, 0), true, false);
+        TrainOrder order3 = new TrainOrder(2, null, true, false);
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        int scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        int scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule);
         world.addTrain(TEST_PLAYER, new Train(0,0, Arrays.asList(0, 0), scheduleID, 0));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule);
         world.addTrain(TEST_PLAYER, new Train(1,1, Arrays.asList(1, 1), scheduleID, 0));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule.toImmutableSchedule());
+        scheduleID = world.add(TEST_PLAYER, PlayerKey.TrainSchedules, schedule);
         world.addTrain(TEST_PLAYER, new Train(2,0, Arrays.asList(1, 2, 0), scheduleID, 0));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();

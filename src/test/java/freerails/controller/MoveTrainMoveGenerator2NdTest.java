@@ -25,6 +25,7 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.track.OccupiedTracks;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.PlayerKey;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
@@ -40,9 +41,8 @@ import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.*;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.MutableSchedule;
 import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.World;
 
 import java.util.ArrayList;
@@ -111,12 +111,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         MoveStatus ms3 = stationBuilder.buildStation(station2Location);
         assertTrue(ms3.succeeds());
 
-        TrainOrders order0 = new TrainOrders(2, null, false, false);
-        TrainOrders order1 = new TrainOrders(0, null, false, false);
-        MutableSchedule schedule = new MutableSchedule();
+        TrainOrder order0 = new TrainOrder(2, null, false, false);
+        TrainOrder order1 = new TrainOrder(0, null, false, false);
+        Schedule schedule = new Schedule();
         schedule.addOrder(order0);
         schedule.addOrder(order1);
-        ImmutableSchedule defaultSchedule = schedule.toImmutableSchedule();
+        UnmodifiableSchedule defaultSchedule = schedule;
 
         Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0),
@@ -185,7 +185,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     public void testStops2() {
         // Check that there two stations on the schedule: station0 and station2;
         TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
-        ImmutableSchedule schedule = trainAccessor.getSchedule();
+        UnmodifiableSchedule schedule = trainAccessor.getSchedule();
         assertEquals(2, schedule.getNumOrders());
         assertEquals(2, schedule.getOrder(0).getStationID());
 
@@ -264,7 +264,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // The train should be heading for station 1.
         TrainAccessor ta = new TrainAccessor(world, player, 0);
-        Schedule schedule1 = ta.getSchedule();
+        UnmodifiableSchedule schedule1 = ta.getSchedule();
         assertEquals(0, schedule1.getOrderToGoto());
         assertEquals(2, schedule1.getStationToGoto());
         assertEquals(station2Location, ta.getTargetLocation());
@@ -277,7 +277,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getTrainState());
 
         // The train should be heading for station 0.
-        Schedule schedule2 = ta.getSchedule();
+        UnmodifiableSchedule schedule2 = ta.getSchedule();
         assertFalse(schedule2.equals(schedule1));
         assertEquals(1, schedule2.getOrderToGoto());
         assertEquals(0, schedule2.getStationToGoto());
@@ -320,14 +320,14 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private void putTrainAtStationWaiting4FullLoad() {
         // Set wait until full on schedule.
         List<Integer> newConsist = Arrays.asList(0, 0);
-        TrainOrders order0 = new TrainOrders(2, newConsist,true,false);
+        TrainOrder order0 = new TrainOrder(2, newConsist,true,false);
         TrainAccessor ta = new TrainAccessor(world, player, 0);
-        MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
+        Schedule schedule = new Schedule(ta.getSchedule());
         schedule.setOrder(0, order0);
-        ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
+        UnmodifiableSchedule imSchedule = schedule;
         world.set(player, PlayerKey.TrainSchedules, 0, imSchedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
-        assertTrue(ta.getSchedule().getOrder(0).waitUntilFull);
+        assertTrue(ta.getSchedule().getOrder(0).isWaitUntilFull());
 
         // Add some cargo to station #2, but not enough to fill the train.
         addCargoAtStation(2, 20);
@@ -367,14 +367,14 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Now change the train's orders.
         List<Integer> newConsist = Arrays.asList(0, 0);
-        TrainOrders order0 = new TrainOrders(2, newConsist,false,false);
+        TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
         TrainAccessor ta = new TrainAccessor(world, player, 0);
-        MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
+        Schedule schedule = new Schedule(ta.getSchedule());
         schedule.setOrder(0, order0);
-        ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
+        UnmodifiableSchedule imSchedule = schedule;
         world.set(player, PlayerKey.TrainSchedules, 0, imSchedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
-        assertFalse(ta.getSchedule().getOrder(0).waitUntilFull);
+        assertFalse(ta.getSchedule().getOrder(0).isWaitUntilFull());
 
         // Then the train should continue.
         trainMotion = moveTrain();
@@ -400,12 +400,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         world.addTrain(player, train);
 
         // Change trains schedule to auto consist.
-        TrainOrders order0 = new TrainOrders(1, null, false, true);
-        TrainOrders order1 = new TrainOrders(2, null, false, true);
-        MutableSchedule schedule = new MutableSchedule();
+        TrainOrder order0 = new TrainOrder(1, null, false, true);
+        TrainOrder order1 = new TrainOrder(2, null, false, true);
+        Schedule schedule = new Schedule();
         schedule.addOrder(order0);
         schedule.addOrder(order1);
-        world.set(player, PlayerKey.TrainSchedules, 0, schedule.toImmutableSchedule());
+        world.set(player, PlayerKey.TrainSchedules, 0, schedule);
 
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 
@@ -472,11 +472,11 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     public void testLengtheningTrain() {
         // Set the train to add wagons at station2.
         List<Integer> newConsist = Arrays.asList(0, 0, 0, 0, 0, 0);
-        TrainOrders order0 = new TrainOrders(2, newConsist,false,false);
+        TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
         TrainAccessor ta = new TrainAccessor(world, player, 0);
-        MutableSchedule schedule = new MutableSchedule(ta.getSchedule());
+        Schedule schedule = new Schedule(ta.getSchedule());
         schedule.setOrder(0, order0);
-        ImmutableSchedule imSchedule = schedule.toImmutableSchedule();
+        UnmodifiableSchedule imSchedule = schedule;
         world.set(player, PlayerKey.TrainSchedules, 0, imSchedule);
         assertEquals(0, ta.getSchedule().getOrderToGoto());
 

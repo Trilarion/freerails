@@ -26,17 +26,15 @@ package freerails.client.view;
 import freerails.client.KeyCodeToOneTileMoveVector;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.util.Vec2D;
-import freerails.model.world.PlayerKey;
-import freerails.model.world.NonNullElementWorldIterator;
 import freerails.model.station.NearestStationFinder;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
-import freerails.model.train.schedule.MutableSchedule;
-import freerails.model.train.TrainOrders;
+import freerails.model.train.schedule.Schedule;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -55,7 +53,7 @@ public class SelectStationPanel extends JPanel implements View {
     private ActionListener submitButtonCallBack;
     private int selectedStationID = 0;
     private int selectedOrderNumber = 1;
-    private MutableSchedule schedule;
+    private Schedule schedule;
     private Rectangle visableMapTiles = new Rectangle();
     private double scale = 1;
     private boolean needsUpdating = true;
@@ -177,10 +175,10 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
-    public void display(MutableSchedule newSchedule, int orderNumber) {
+    public void display(Schedule newSchedule, int orderNumber) {
         schedule = newSchedule;
         selectedOrderNumber = orderNumber;
-        TrainOrders order = newSchedule.getOrder(selectedOrderNumber);
+        TrainOrder order = newSchedule.getOrder(selectedOrderNumber);
         selectedStationID = order.getStationID();
 
         // Set the text on the title JLabel.
@@ -309,10 +307,10 @@ public class SelectStationPanel extends JPanel implements View {
         player = modelRoot.getPlayer();
     }
 
-    public MutableSchedule generateNewSchedule() {
-        TrainOrders oldOrders, newOrders;
+    public Schedule generateNewSchedule() {
+        TrainOrder oldOrders, newOrders;
         oldOrders = schedule.getOrder(selectedOrderNumber);
-        newOrders = new TrainOrders(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
+        newOrders = new TrainOrder(selectedStationID, oldOrders.getConsist(), oldOrders.getWaitUntilFull(), oldOrders.isAutoConsist());
         schedule.setOrder(selectedOrderNumber, newOrders);
         return schedule;
     }

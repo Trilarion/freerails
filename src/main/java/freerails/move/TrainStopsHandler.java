@@ -22,6 +22,7 @@
 package freerails.move;
 
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.listmove.ChangeItemInListMove;
@@ -35,9 +36,8 @@ import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.*;
-import freerails.model.train.schedule.ImmutableSchedule;
-import freerails.model.train.schedule.MutableSchedule;
 import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -181,13 +181,13 @@ public class TrainStopsHandler implements Serializable {
     public boolean isWaitingForFullLoad() {
         Train train = world.getTrain(player, trainId);
         int scheduleID = train.getScheduleId();
-        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
         int orderToGoto = schedule.getOrderToGoto();
         if (orderToGoto < 0) {
             return false;
         }
-        TrainOrders order = schedule.getOrder(orderToGoto);
-        return !isTrainFull() && order.waitUntilFull;
+        TrainOrder order = schedule.getOrder(orderToGoto);
+        return !isTrainFull() && order.isWaitUntilFull();
     }
 
     private void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
@@ -211,22 +211,22 @@ public class TrainStopsHandler implements Serializable {
     public boolean refreshWaitingForFullLoad() {
 
         TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        ImmutableSchedule schedule = trainAccessor.getSchedule();
+        UnmodifiableSchedule schedule = trainAccessor.getSchedule();
 
         int stationId = trainAccessor.getStationId(Double.MAX_VALUE);
         if (stationId < 0) throw new IllegalStateException();
 
         // The train's orders may have changed...
-        TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
+        TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
 
         // Should we go to another station?
-        if (stationId != order.stationId) {
+        if (stationId != order.getStationId()) {
             return false;
         }
 
         // Should we change the consist?
         List<Integer> consist = trainAccessor.getTrain().getConsist();
-        if (!consist.equals(order.consist)) {
+        if (!consist.equals(order.getConsist())) {
             // ..if so, we should change the consist.
             int oldLength = trainAccessor.getTrain().getLength();
             int engineId = trainAccessor.getTrain().getEngineId();
@@ -234,10 +234,10 @@ public class TrainStopsHandler implements Serializable {
             // TODO newTrain is computed in the ChangeTrainMove also
             // TODO need a way to get a new id for trains, this is not the best way so far
             int id = world.getTrains(player).size();
-            Train newTrain = new Train(id, engineId, order.consist, trainAccessor.getTrain().getScheduleId(), trainAccessor.getTrain().getCargoBundleId());
+            Train newTrain = new Train(id, engineId, order.getConsist(), trainAccessor.getTrain().getScheduleId(), trainAccessor.getTrain().getCargoBundleId());
             // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
             Train before = trainAccessor.getTrain();
-            Train after = new Train(id, engineId, order.consist, before.getCargoBundleId(), before.getScheduleId());
+            Train after = new Train(id, engineId, order.getConsist(), before.getCargoBundleId(), before.getScheduleId());
             // TODO need dedicated change train move instead
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
             Move move = new ChangeTrainMove(player, after);
@@ -262,10 +262,10 @@ public class TrainStopsHandler implements Serializable {
         }
 
         // Add any cargo that is waiting.
-        loadAndUnloadCargo(schedule.getStationToGoto(), order.waitUntilFull, order.autoConsist);
+        loadAndUnloadCargo(schedule.getStationToGoto(), order.isWaitUntilFull(), order.isAutoConsist());
 
         // Should we stop waiting?
-        if (!order.waitUntilFull || isTrainFull()) {
+        if (!order.isWaitUntilFull() || isTrainFull()) {
             updateSchedule();
             return false;
         }
@@ -276,7 +276,7 @@ public class TrainStopsHandler implements Serializable {
     private void scheduledStop() {
 
         Train train = world.getTrain(player, trainId);
-        Schedule schedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
+        UnmodifiableSchedule schedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, train.getScheduleId());
 
         List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
@@ -306,17 +306,17 @@ public class TrainStopsHandler implements Serializable {
     private void updateSchedule() {
         Train train =  world.getTrain(player, trainId);
         int scheduleID = train.getScheduleId();
-        ImmutableSchedule currentSchedule = (ImmutableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
-        MutableSchedule schedule = new MutableSchedule(currentSchedule);
+        UnmodifiableSchedule currentSchedule = (UnmodifiableSchedule) world.get(player, PlayerKey.TrainSchedules, scheduleID);
+        Schedule schedule = new Schedule(currentSchedule);
         Station station;
 
-        TrainOrders order = schedule.getOrder(schedule.getOrderToGoto());
-        boolean waitingForFullLoad = order.waitUntilFull && !isTrainFull();
+        TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
+        boolean waitingForFullLoad = order.isWaitUntilFull() && !isTrainFull();
 
         if (!waitingForFullLoad) {
             schedule.gotoNextStation();
 
-            ImmutableSchedule newSchedule = schedule.toImmutableSchedule();
+            UnmodifiableSchedule newSchedule = schedule;
             // worldDiffs.set(player, PlayerKey.TrainSchedules, scheduleID, newSchedule);
             Move move = new ChangeItemInListMove(PlayerKey.TrainSchedules, scheduleID, currentSchedule, newSchedule, player);
             move.doMove(world, player);
