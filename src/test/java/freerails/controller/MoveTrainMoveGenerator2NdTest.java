@@ -214,7 +214,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getTrainState());
 
         // 80 Units of cargo should have been transferred to the train!
-        CargoBatchBundle onTrain = trainAccessor.getCargoBundle();
+        UnmodifiableCargoBatchBundle onTrain = trainAccessor.getCargoBundle();
         int amount = onTrain.getAmountOfType(0);
         assertEquals(80, amount);
 
@@ -231,12 +231,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      */
     private void addCargoAtStation(int stationId, int amount) {
 
-        CargoBatch cb = new CargoBatch(0, new Vec2D(6, 6), 0, stationId);
-        MutableCargoBatchBundle mb = new MutableCargoBatchBundle();
-        mb.addCargo(cb, amount);
+        CargoBatch cargoBatch = new CargoBatch(0, new Vec2D(6, 6), 0, stationId);
+        CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
+        cargoBatchBundle.addCargo(cargoBatch, amount);
         Station station1Model = world.getStation(player, stationId);
         int station1BundleId = station1Model.getCargoBundleID();
-        world.set(player, PlayerKey.CargoBundles, station1BundleId, mb.toImmutableCargoBundle());
+        world.set(player, PlayerKey.CargoBundles, station1BundleId, cargoBatchBundle);
     }
 
     /**
@@ -283,7 +283,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // 80 Units of cargo should have been transferred to the train!
 
-        CargoBatchBundle onTrain = ta.getCargoBundle();
+        UnmodifiableCargoBatchBundle onTrain = ta.getCargoBundle();
         int amount = onTrain.getAmountOfType(0);
         assertEquals(80, amount);
 
@@ -405,10 +405,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Add 35 unit of cargo #0 to station 1.
         Station station0 = world.getStation(player, 1);
         int cargoBundleId = station0.getCargoBundleID();
-        MutableCargoBatchBundle mcb = new MutableCargoBatchBundle();
+        CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
-        mcb.addCargo(new CargoBatch(0, Vec2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
-        world.set(player, PlayerKey.CargoBundles, cargoBundleId, mcb.toImmutableCargoBundle());
+        cargoBatchBundle.addCargo(new CargoBatch(0, Vec2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
+        world.set(player, PlayerKey.CargoBundles, cargoBundleId, cargoBatchBundle);
 
         // Make station2 demand cargo #0;
         boolean[] boolArray = new boolean[world.getCargos().size()];

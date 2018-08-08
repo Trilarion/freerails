@@ -27,8 +27,7 @@ import freerails.model.world.PlayerKey;
 
 import freerails.util.Vec2D;
 import freerails.model.*;
-import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
@@ -68,7 +67,7 @@ public class TrainAccessor {
      * @param consist
      * @return
      */
-    public static List<Integer> spaceAvailable2(UnmodifiableWorld world, CargoBatchBundle onTrain, List<Integer> consist) {
+    public static List<Integer> spaceAvailable2(UnmodifiableWorld world, UnmodifiableCargoBatchBundle onTrain, List<Integer> consist) {
         // This array will store the amount of space available on the train for
         // each cargo type.
         final int NUM_CARGO_TYPES = world.getCargos().size();
@@ -180,9 +179,9 @@ public class TrainAccessor {
     /**
      * @return
      */
-    public CargoBatchBundle getCargoBundle() {
+    public UnmodifiableCargoBatchBundle getCargoBundle() {
         Train train = getTrain();
-        return (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
+        return (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
     }
 
     /**
@@ -263,7 +262,7 @@ public class TrainAccessor {
     public List<Integer> spaceAvailable() {
 
         Train train = world.getTrain(player, id);
-        CargoBatchBundle bundleOnTrain = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
+        UnmodifiableCargoBatchBundle bundleOnTrain = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
         return spaceAvailable2(world, bundleOnTrain, train.getConsist());
     }
 

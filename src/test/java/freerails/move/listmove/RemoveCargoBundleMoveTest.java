@@ -26,7 +26,7 @@ import freerails.move.Move;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.MutableCargoBatchBundle;
+import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.MapFixtureFactory;
 import junit.framework.TestCase;
 
@@ -39,20 +39,20 @@ public class RemoveCargoBundleMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        MutableCargoBatchBundle bundleA;
-        MutableCargoBatchBundle bundleB;
-        bundleA = new MutableCargoBatchBundle();
-        bundleB = new MutableCargoBatchBundle();
+        CargoBatchBundle bundleA;
+        CargoBatchBundle bundleB;
+        bundleA = new CargoBatchBundle();
+        bundleB = new CargoBatchBundle();
         bundleA.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         bundleB.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         TestCase.assertEquals(bundleA, bundleB);
 
-        Move move = new RemoveItemFromListMove(PlayerKey.CargoBundles, 0, bundleB.toImmutableCargoBundle(), MapFixtureFactory.TEST_PLAYER);
+        Move move = new RemoveItemFromListMove(PlayerKey.CargoBundles, 0, bundleB, MapFixtureFactory.TEST_PLAYER);
         assertSurvivesSerialisation(move);
 
         assertTryMoveFails(move);
         assertTryUndoMoveFails(move);
-        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, bundleA.toImmutableCargoBundle());
+        getWorld().add(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles, bundleA);
         assertTryMoveIsOk(move);
 
         assertOkButNotRepeatable(move);

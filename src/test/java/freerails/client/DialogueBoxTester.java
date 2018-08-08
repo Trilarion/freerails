@@ -36,7 +36,7 @@ import freerails.move.receiver.UntriedMoveReceiver;
 
 import freerails.util.Vec2D;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.MutableCargoBatchBundle;
+import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
@@ -130,13 +130,13 @@ class DialogueBoxTester extends JFrame {
         // Set up cargo bundle, for the purpose of this test code all the trains
         // can share the
         // same one.
-        MutableCargoBatchBundle cb = new MutableCargoBatchBundle();
-        cb.setAmount(new CargoBatch(0, new Vec2D(10, 10), 8, 0), 80);
-        cb.setAmount(new CargoBatch(0, new Vec2D(10, 10), 9, 0), 60);
-        cb.setAmount(new CargoBatch(1, new Vec2D(10, 10), 9, 0), 140);
-        cb.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
-        cb.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
-        world.add(TEST_PLAYER, PlayerKey.CargoBundles, cb.toImmutableCargoBundle());
+        CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
+        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 8, 0), 80);
+        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 9, 0), 60);
+        cargoBatchBundle.setAmount(new CargoBatch(1, new Vec2D(10, 10), 9, 0), 140);
+        cargoBatchBundle.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
+        cargoBatchBundle.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
+        world.add(TEST_PLAYER, PlayerKey.CargoBundles, cargoBatchBundle);
 
         Schedule schedule = new Schedule();
         TrainOrder order = new TrainOrder(0, Arrays.asList(0, 0, 0),false, false);

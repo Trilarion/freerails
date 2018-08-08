@@ -37,8 +37,8 @@ public class CargoBatchBundleTest extends TestCase {
      */
     public void testEquals() {
 
-        MutableCargoBatchBundle bundle1 = new MutableCargoBatchBundle();
-        MutableCargoBatchBundle bundle2 = new MutableCargoBatchBundle();
+        CargoBatchBundle bundle1 = new CargoBatchBundle();
+        CargoBatchBundle bundle2 = new CargoBatchBundle();
 
         CargoBatch batch1 = new CargoBatch(1, new Vec2D(2, 3), 4, 5);
         CargoBatch batch2 = new CargoBatch(4, new Vec2D(2, 3), 4, 5);
@@ -65,7 +65,7 @@ public class CargoBatchBundleTest extends TestCase {
         assertBundlesEqual(bundle1, bundle2);
     }
 
-    private void assertBundlesEqual(MutableCargoBatchBundle bundle1, MutableCargoBatchBundle bundle2) {
+    private void assertBundlesEqual(CargoBatchBundle bundle1, CargoBatchBundle bundle2) {
 
         // equals with itself
         assertEquals(bundle1, bundle1);
@@ -76,7 +76,7 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(bundle2, bundle1);
 
         // copy to immutable cargo batch bundle
-        ImmutableCargoBatchBundle immutableBundle1 = bundle1.toImmutableCargoBundle();
+        UnmodifiableCargoBatchBundle immutableBundle1 = bundle1;
 
         // equals with everything else
         assertEquals(immutableBundle1, immutableBundle1);
@@ -84,7 +84,7 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(immutableBundle1, bundle2);
 
         // copy to immutable cargo batch bundle
-        ImmutableCargoBatchBundle immutableBundle2 = bundle2.toImmutableCargoBundle();
+        UnmodifiableCargoBatchBundle immutableBundle2 = bundle2;
 
         // equal with everything else
         assertEquals(immutableBundle2, immutableBundle2);
@@ -98,15 +98,15 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(cloneA, cloneB);
     }
 
-    private void assertBundlesNotEqual(MutableCargoBatchBundle bundle1, MutableCargoBatchBundle bundle2) {
+    private void assertBundlesNotEqual(CargoBatchBundle bundle1, CargoBatchBundle bundle2) {
 
         // not equal with each other
         assertFalse(bundle1.equals(bundle2));
         assertFalse(bundle2.equals(bundle1));
 
         // copy to immutable cargo batch bundle
-        ImmutableCargoBatchBundle immutableBundle1 = bundle1.toImmutableCargoBundle();
-        ImmutableCargoBatchBundle immutableBundle2 = bundle2.toImmutableCargoBundle();
+        UnmodifiableCargoBatchBundle immutableBundle1 = bundle1;
+        UnmodifiableCargoBatchBundle immutableBundle2 = bundle2;
 
         // not equal with immutable bundles
         assertFalse(bundle1.equals(immutableBundle2));

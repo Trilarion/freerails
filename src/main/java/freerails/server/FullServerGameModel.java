@@ -22,8 +22,8 @@
 package freerails.server;
 
 import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
-import freerails.model.cargo.MutableCargoBatchBundle;
+import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.station.Station;
@@ -76,9 +76,9 @@ public class FullServerGameModel implements ServerGameModel {
             // for all stations of a player
             for (Station station: world.getStations(player)) {
                 StationSupply supply = station.getSupply();
-                ImmutableCargoBatchBundle cargoBundle = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
-                MutableCargoBatchBundle before = new MutableCargoBatchBundle(cargoBundle);
-                MutableCargoBatchBundle after = new MutableCargoBatchBundle(cargoBundle);
+                UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
+                CargoBatchBundle before = new CargoBatchBundle(cargoBatchBundle);
+                CargoBatchBundle after = new CargoBatchBundle(cargoBatchBundle);
                 int stationNumber = station.getId();
 
                 /*
@@ -86,7 +86,7 @@ public class FullServerGameModel implements ServerGameModel {
                  * ConcurrentModificationException if the amount gets set to
                  * zero and the CargoBatch removed from the cargo bundle. LL
                  */
-                Iterator<CargoBatch> it = after.toImmutableCargoBundle().cargoBatchIterator();
+                Iterator<CargoBatch> it = after.cargoBatchIterator();
 
                 while (it.hasNext()) {
                     CargoBatch cb = it.next();
@@ -116,7 +116,7 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, station.getCargoBundleID(), before.toImmutableCargoBundle(), after.toImmutableCargoBundle(), player);
+                Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, station.getCargoBundleID(), before, after, player);
                 moveReceiver.process(move);
             }
         }

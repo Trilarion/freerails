@@ -21,73 +21,194 @@
  */
 package freerails.model.cargo;
 
-import java.util.Iterator;
-
-// TODO should the amount already be included in the cargo batch
+import java.util.*;
 
 /**
- * Holds a number of cargo batches with an amount for each cargo batch.
- *
- * <table width="75%" border="0">
- * <caption>Example</caption>
- * <tr>
- * <td><strong>Cargo Batch</strong></td>
- * <td><strong>Amount</strong></td>
- * </tr>
- * <tr>
- * <td>passengers from (1, 5) created at 01:00</td>
- * <td>2</td>
- * </tr>
- * <tr>
- * <td>passengers from (1, 5) created at 01:25</td>
- * <td>1</td>
- * </tr>
- * <tr>
- * <td>coal from (4,10) created at 02:50</td>
- * <td>8</td>
- * </tr>
- * <tr>
- * <td>mail from (6, 10) created at 04:45</td>
- * <td>10</td>
- * </tr>
- * </table>
- *
- * Cargo bundles are used to represent the cargo carried by trains and the cargo waiting at stations).
+ * This CargoBatchBundle implementation uses a {@code java.util.SortedMap} to map quantities to cargo batches.
+ * Represents a bundle of cargo made up of quantities of cargo from
+ * different {@link CargoBatch}s.
  */
-public interface CargoBatchBundle {
+public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
+
+    public static final UnmodifiableCargoBatchBundle EMPTY_CARGO_BATCH_BUNDLE = new CargoBatchBundle();
+    private final SortedMap<CargoBatch, Integer> cargoMap;
+    // TODO meaning and sense of updateID?
+    private int updateID = 0;
+
+    public CargoBatchBundle() {
+        cargoMap = new TreeMap<>();
+    }
 
     /**
-     * Iterator over the cargo batches.
+     * @param cargoBatchBundle
+     */
+    public CargoBatchBundle(UnmodifiableCargoBatchBundle cargoBatchBundle) {
+        this();
+
+        Iterator<CargoBatch> it = cargoBatchBundle.cargoBatchIterator();
+
+        while (it.hasNext()) {
+            CargoBatch cargoBatch = it.next();
+            addCargo(cargoBatch, cargoBatchBundle.getAmount(cargoBatch));
+        }
+    }
+
+    /**
+     * Adds a cargo batch with a certain amount.
+     */
+    public void addCargo(CargoBatch cargoBatch, int amount) {
+        setAmount(cargoBatch, amount + getAmount(cargoBatch));
+        updateID++;
+    }
+
+    /**
+     * Makes a copy.
      *
+     * @return
+     */
+    public Collection<CargoBatch> getCargoBatches() {
+        return Collections.unmodifiableCollection(new ArrayList<>(cargoMap.keySet()));
+    }
+
+    // TODO should the iterator be able to modify the cargobatchbundle? I guess not
+    // TODO just return the iterator (or a collection instead)
+    /**
      * Note, calling hasNext() or next() on the returned iterator throws a
      * ConcurrentModificationException if this CargoBatchBundle has changed since the
      * iterator was acquired.
      */
-    Iterator<CargoBatch> cargoBatchIterator();
+    public Iterator<CargoBatch> cargoBatchIterator() {
+        final Iterator<CargoBatch> it = cargoMap.keySet().iterator();
+        return it;
+
+        // TODO Does Java already has a nonmo
+        /*
+         * A ConcurrentModificationException used to get thrown when the amount
+         * of cargo was set to 0, since this resulted in the key being removed
+         * from the hash map. The iterator below throws a
+         * ConcurrentModificationException whenever this CargoBatchBundle has been
+         * changed since the iterator was acquired. This should mean that if the
+         * cargo bundle gets changed while the iterator is in use, you will know
+         * about it straight away.
+
+        return new Iterator<CargoBatch>() {
+            private final int updateIDAtCreation = updateID;
+
+            public boolean hasNext() {
+                if (updateIDAtCreation != updateID) {
+                    throw new ConcurrentModificationException();
+                }
+
+                return it.hasNext();
+            }
+
+            public CargoBatch next() {
+                if (updateIDAtCreation != updateID) {
+                    throw new ConcurrentModificationException();
+                }
+
+                return it.next();
+            }
+
+            public void remove() {
+                throw new UnsupportedOperationException("Use CargoBatchBundle.setAmount(CargoBatch cb, 0)");
+            }
+        };
+        */
+    }
 
     /**
-     * @return True if this cargo batch is contained.
+     * @param cargoBatch
+     * @return
      */
-    boolean contains(CargoBatch cargoBatch);
+    public boolean contains(CargoBatch cargoBatch) {
+        return cargoMap.containsKey(cargoBatch);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (null == obj) {
+            return false;
+        }
+        return obj instanceof UnmodifiableCargoBatchBundle && equals(this, (UnmodifiableCargoBatchBundle) obj);
+    }
 
     /**
-     * @param cargoBatch A cargo batch.
-     * @return The amount of this cargo batch or 0 if the cargo batch is not contained.
+     * @param a
+     * @param b
+     * @return
      */
-    int getAmount(CargoBatch cargoBatch);
+    public static boolean equals(UnmodifiableCargoBatchBundle a, UnmodifiableCargoBatchBundle b) {
+        if (a.size() != b.size()) return false;
+
+        Iterator<CargoBatch> it = a.cargoBatchIterator();
+        while (it.hasNext()) {
+            CargoBatch batch = it.next();
+            if (a.getAmount(batch) != b.getAmount(batch)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
-     * Convenience. Iterates over all contained cargo batches and returns the total amount
-     * of a specific cargo type.
-     *
-     * @param cargoType A cargo type.
-     * @return The cumulative amount of all contained batches of this type.
+     * @param cargoType
+     * @return
      */
-    int getAmountOfType(int cargoType);
+    public int getAmountOfType(int cargoType) {
+        int amount = 0;
+        for (CargoBatch cargoBatch : cargoMap.keySet()) {
+            if (cargoBatch.getCargoTypeId() == cargoType) {
+                amount += getAmount(cargoBatch);
+            }
+        }
+        return amount;
+    }
+
+    @Override
+    public int hashCode() {
+        return cargoMap.size();
+    }
+
+    public int getAmount(CargoBatch cargoBatch) {
+        if (contains(cargoBatch)) {
+            return cargoMap.get(cargoBatch);
+        }
+        return 0;
+    }
 
     /**
-     * @return Number of contained cargo batches.
+     * @param cargoBatch
+     * @param amount
      */
-    int size();
+    public void setAmount(CargoBatch cargoBatch, int amount) {
+        if (0 == amount) {
+            cargoMap.remove(cargoBatch);
+        } else {
+            cargoMap.put(cargoBatch, amount);
+        }
 
+        updateID++;
+    }
+
+    public int size() {
+        return cargoMap.size();
+    }
+
+    // TODO this involves some crazy copying just for the name, make the interface abstract instead
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CargoBatchBundle {\n");
+
+        for (CargoBatch cargoBatch : cargoMap.keySet()) {
+            sb.append(cargoMap.get(cargoBatch));
+            sb.append(" units of cargo type ");
+            sb.append(cargoBatch);
+            sb.append('\n');
+        }
+        sb.append('}');
+
+        return sb.toString();
+    }
 }

@@ -21,6 +21,8 @@
  */
 package freerails.move.generator;
 
+import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
@@ -31,7 +33,6 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.Transaction;
@@ -142,8 +143,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
     public Move generate(UnmodifiableWorld world) {
         // Add cargo bundle.
         int bundleId = world.size(player, PlayerKey.CargoBundles);
-        ImmutableCargoBatchBundle cargo = ImmutableCargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE;
-        AddItemToListMove addCargoBundle = new AddItemToListMove(PlayerKey.CargoBundles, bundleId, cargo, player);
+        AddItemToListMove addCargoBundle = new AddItemToListMove(PlayerKey.CargoBundles, bundleId, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, player);
 
         // Add train to train list.
         // TODO need a way to get a new id for trains, this is not the best way so far

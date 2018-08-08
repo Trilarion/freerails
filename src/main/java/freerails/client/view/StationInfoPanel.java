@@ -201,7 +201,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
             TerrainTile tile = (TerrainTile) world.getTile(station.location);
             String stationTypeName = tile.getTrackPiece().getTrackType().getName();
             cargoBundleIndex = station.getCargoBundleID();
-            CargoBatchBundle cargoWaiting = (ImmutableCargoBatchBundle) world.get(modelRoot.getPlayer(), PlayerKey.CargoBundles, station.getCargoBundleID());
+            CargoBatchBundle cargoWaiting = (UnmodifiableCargoBatchBundle) world.get(modelRoot.getPlayer(), PlayerKey.CargoBundles, station.getCargoBundleID());
 
             StringBuilder table1 = new StringBuilder();
 

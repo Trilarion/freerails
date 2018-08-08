@@ -27,10 +27,10 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainListCellRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.cargo.Cargo;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.Train;
 import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.cargo.ImmutableCargoBatchBundle;
 import freerails.model.player.Player;
 
 import javax.swing.*;
@@ -118,14 +118,14 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         Train train = world.getTrain(player, newTrainNumber);
 
         int cargoBundleID = train.getCargoBundleId();
-        ImmutableCargoBatchBundle cb = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, cargoBundleID);
+        UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, cargoBundleID);
         // TODO natural number is the number in the list/set
         // StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
         StringBuilder s = new StringBuilder("Train #" + ": ");
         int numberOfTypesInBundle = 0;
         for (Cargo cargo : world.getCargos()) {
             int id = cargo.getId();
-            int amount = cb.getAmountOfType(id);
+            int amount = cargoBatchBundle.getAmountOfType(id);
             if (0 != amount) {
                 String cargoTypeName = cargo.getName();
                 if (0 != numberOfTypesInBundle) {
@@ -141,7 +141,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         }
         s.append('.');
         label1.setText(s.toString());
-        lastCargoBundle = cb;
+        lastCargoBundle = cargoBatchBundle;
         lastTrain = train;
     }
 

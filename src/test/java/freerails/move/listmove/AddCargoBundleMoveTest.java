@@ -26,7 +26,7 @@ import freerails.move.Move;
 import freerails.util.Vec2D;
 import freerails.model.world.PlayerKey;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.MutableCargoBatchBundle;
+import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.MapFixtureFactory;
 
 /**
@@ -38,15 +38,15 @@ public class AddCargoBundleMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        MutableCargoBatchBundle bundleA;
-        MutableCargoBatchBundle bundleB;
-        bundleA = new MutableCargoBatchBundle();
-        bundleB = new MutableCargoBatchBundle();
+        CargoBatchBundle bundleA;
+        CargoBatchBundle bundleB;
+        bundleA = new CargoBatchBundle();
+        bundleB = new CargoBatchBundle();
         bundleA.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         bundleB.setAmount(new CargoBatch(1, new Vec2D(2, 3), 4, 0), 5);
         assertEquals(bundleA, bundleB);
 
-        Move move = new AddItemToListMove(PlayerKey.CargoBundles, 0, bundleA.toImmutableCargoBundle(), MapFixtureFactory.TEST_PLAYER);
+        Move move = new AddItemToListMove(PlayerKey.CargoBundles, 0, bundleA, MapFixtureFactory.TEST_PLAYER);
         assertDoMoveIsOk(move);
         assertEquals(getWorld().size(MapFixtureFactory.TEST_PLAYER, PlayerKey.CargoBundles), 1);
         assertUndoMoveIsOk(move);

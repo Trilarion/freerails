@@ -95,7 +95,7 @@ public class StationBoxRenderer implements Painter {
                     g.setStroke(new BasicStroke(1.0f));
                     g.drawRect(r.x, r.y, r.width, r.height);
 
-                    CargoBatchBundle cargoBatchBundle = (ImmutableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
+                    UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
                     Map<CargoCategory, List<Integer>> carsLoads = calculateCarLoads(cargoBatchBundle);
                     int i = 0;
                     for (CargoCategory cargoCategory: CargoCategory.values()) {
@@ -122,7 +122,7 @@ public class StationBoxRenderer implements Painter {
      * array are the type of the cargo. E.g. if the bundle contained 2 carloads
      * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
      */
-    private Map<CargoCategory, List<Integer>> calculateCarLoads(CargoBatchBundle cargoBatchBundle) {
+    private Map<CargoCategory, List<Integer>> calculateCarLoads(UnmodifiableCargoBatchBundle cargoBatchBundle) {
         // TODO overly complicated, easier way possible?
         int numCargoTypes = world.getCargos().size();
         Map<CargoCategory, Integer> numberOfCarLoads = new HashMap<>();
