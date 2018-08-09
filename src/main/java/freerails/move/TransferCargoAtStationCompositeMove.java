@@ -18,10 +18,6 @@
 
 package freerails.move;
 
-import freerails.move.CompositeMove;
-import freerails.move.Move;
-import freerails.move.listmove.ChangeItemInListMove;
-
 import java.util.List;
 
 // TODO this should probably not derive from CompositeMove ??
@@ -47,8 +43,8 @@ public class TransferCargoAtStationCompositeMove extends CompositeMove {
      *
      * @return
      */
-    public ChangeItemInListMove getChangeAtStation() {
-        return (ChangeItemInListMove) super.getMoves().get(CHANGE_AT_STATION_INDEX);
+    public Move getChangeAtStation() {
+        return super.getMoves().get(CHANGE_AT_STATION_INDEX);
     }
 
     /**
@@ -56,8 +52,8 @@ public class TransferCargoAtStationCompositeMove extends CompositeMove {
      *
      * @return
      */
-    public ChangeItemInListMove getChangeOnTrain() {
-        return (ChangeItemInListMove) super.getMoves().get(CHANGE_ON_TRAIN_INDEX);
+    public Move getChangeOnTrain() {
+        return super.getMoves().get(CHANGE_ON_TRAIN_INDEX);
     }
 
 }

@@ -68,10 +68,6 @@ public class World implements UnmodifiableWorld {
     public Map<Player, List<TransactionRecord>> transactionLogs = new HashMap<>();
     public List<Money> currentBalance = new ArrayList<>();
 
-    /**
-     * A 3D list: D1 is player, D2 is type, D3 is element.
-     */
-    public Map<Player, Map<PlayerKey, List<Serializable>>> playerLists = new HashMap<>();
     private Vec2D mapSize;
     private TerrainTile[] map;
     public List<Player> players = new ArrayList<>();
@@ -315,16 +311,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Appends the specified element to the end of the specified list and returns
-     * the index that can be used to retrieve it.
-     */
-    public int add(Player player, PlayerKey playerKey, Serializable element) {
-        List<Serializable> serializables = playerLists.get(player).get(playerKey);
-        serializables.add(element);
-        return serializables.size() - 1;
-    }
-
-    /**
      * @param player
      * @param element
      * @return
@@ -349,11 +335,6 @@ public class World implements UnmodifiableWorld {
 
         transactionLogs.put(player, new ArrayList<>());
         currentBalance.add(Money.ZERO);
-
-        playerLists.put(player, new HashMap<>());
-        for (PlayerKey key: PlayerKey.values()) {
-            playerLists.get(player).put(key, new ArrayList<>());
-        }
 
         // add trains
         if (trains.containsKey(player)) {
@@ -385,18 +366,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param player
-     * @param key
-     * @param index
-     * @return
-     */
-    public boolean boundsContain(Player player, PlayerKey key, int index) {
-        if (!isPlayer(player)) {
-            return false;
-        } else return index >= 0 && index < size(player, key);
-    }
-
-    /**
      * @param location
      * @return
      */
@@ -424,9 +393,6 @@ public class World implements UnmodifiableWorld {
             }
 
             // Compare lists
-            if (!playerLists.equals(other.playerLists)) {
-                return false;
-            }
             if (!activities.equals(other.activities)) {
                 return false;
             }
@@ -454,10 +420,6 @@ public class World implements UnmodifiableWorld {
             return true;
         }
         return false;
-    }
-
-    public Serializable get(Player player, PlayerKey key, int index) {
-        return playerLists.get(player).get(key).get(index);
     }
 
     /**
@@ -565,14 +527,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Removes the last element from the specified list.
-     */
-    public Serializable removeLast(Player player, PlayerKey playerKey) {
-        List<Serializable> serializables = playerLists.get(player).get(playerKey);
-        return serializables.remove(serializables.size() - 1);
-    }
-
-    /**
      * @param player
      * @return
      */
@@ -638,14 +592,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * Replaces the element at the specified position in the specified list with
-     * the specified element.
-     */
-    public void set(Player player, PlayerKey playerKey, int index, Serializable element) {
-        playerLists.get(player).get(playerKey).set(index, element);
-    }
-
-    /**
      * Replaces the tile at the specified position on the map with the specified
      * tile.
      */
@@ -680,7 +626,4 @@ public class World implements UnmodifiableWorld {
         return activities.get(player).size();
     }
 
-    public int size(Player player, PlayerKey key) {
-        return playerLists.get(player).get(key).size();
-    }
 }

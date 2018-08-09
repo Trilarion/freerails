@@ -2,6 +2,9 @@ package freerails.model.train;
 
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
+import freerails.model.cargo.CargoBatch;
+import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +19,7 @@ public class Train extends Identifiable {
 
     private final int engineId;
     private final List<Integer> wagonTypes;
-    private final int cargoBundleId;
+    private CargoBatchBundle cargoBatchBundle;
     private Schedule schedule;
 
     /**
@@ -25,14 +28,14 @@ public class Train extends Identifiable {
      * @param id
      * @param engineId
      * @param wagonTypes
-     * @param cargoBundleId
+     * @param cargoBatchBundle
      * @param schedule
      */
-    public Train(int id, int engineId, List<Integer> wagonTypes, int cargoBundleId, UnmodifiableSchedule schedule) {
+    public Train(int id, int engineId, List<Integer> wagonTypes, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle, @NotNull UnmodifiableSchedule schedule) {
         super(id);
         this.engineId = engineId;
         this.wagonTypes = Collections.unmodifiableList(wagonTypes);
-        this.cargoBundleId = cargoBundleId;
+        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
         this.schedule = new Schedule(schedule);
     }
 
@@ -68,8 +71,17 @@ public class Train extends Identifiable {
     /**
      * @return
      */
-    public int getCargoBundleId() {
-        return cargoBundleId;
+    public UnmodifiableCargoBatchBundle getCargoBatchBundle() {
+        return cargoBatchBundle;
+    }
+
+    /**
+     * Makes a copy.
+     *
+     * @param cargoBatchBundle
+     */
+    public void setCargoBatchBundle(@NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
+        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
     }
 
     /**
@@ -80,11 +92,11 @@ public class Train extends Identifiable {
     }
 
     /**
-     *
+     * Makes a copy of the schedule.
      * @param schedule
      */
-    public void setSchedule(@NotNull Schedule schedule) {
-        this.schedule = schedule;
+    public void setSchedule(@NotNull UnmodifiableSchedule schedule) {
+        this.schedule = new Schedule(schedule);
     }
 
     /**

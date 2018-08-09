@@ -30,7 +30,6 @@ import freerails.move.*;
 
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.game.GameTime;
@@ -151,7 +150,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
             if (stationId == -1) throw new IllegalStateException();
 
             Station station = world.getStation(player, stationId);
-            UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
+            UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
 
             for (int i = 0; i < spaceAvailable.size(); i++) {
                 int space = spaceAvailable.get(i);

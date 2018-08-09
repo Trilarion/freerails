@@ -26,7 +26,6 @@ import freerails.model.station.Station;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.*;
 import freerails.move.ChangeTrainMove;
-import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.Move;
 
 import freerails.model.player.Player;
@@ -576,7 +575,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         modelRoot.doMove(move);
     }
 
-    public void listUpdated(PlayerKey key, int index, Player player) {
+    public void listUpdated(int index, Player player) {
         // TODO this is out of order with the removal of ChangeInListMoves, need to listen differently to changes
         //if (PlayerKey.TrainSchedules == key) {
         //    listModel.fireRefresh();
@@ -584,9 +583,9 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         //}
     }
 
-    public void itemAdded(PlayerKey key, int index, Player player) {}
+    public void itemAdded(int index, Player player) {}
 
-    public void itemRemoved(PlayerKey key, int index, Player player) {}
+    public void itemRemoved(int index, Player player) {}
 
     /**
      * Show the popup that lets the user select a station, called when a new

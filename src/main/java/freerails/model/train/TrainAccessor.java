@@ -23,7 +23,6 @@ package freerails.model.train;
 
 import freerails.model.activity.ActivityIterator;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.model.world.PlayerKey;
 
 import freerails.util.Vec2D;
 import freerails.model.*;
@@ -181,7 +180,7 @@ public class TrainAccessor {
      */
     public UnmodifiableCargoBatchBundle getCargoBundle() {
         Train train = getTrain();
-        return (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
+        return train.getCargoBatchBundle();
     }
 
     /**
@@ -262,8 +261,7 @@ public class TrainAccessor {
     public List<Integer> spaceAvailable() {
 
         Train train = world.getTrain(player, id);
-        UnmodifiableCargoBatchBundle bundleOnTrain = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, train.getCargoBundleId());
-        return spaceAvailable2(world, bundleOnTrain, train.getConsist());
+        return spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
     }
 
 }

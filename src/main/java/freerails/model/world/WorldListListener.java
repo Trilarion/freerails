@@ -30,23 +30,20 @@ import freerails.model.player.Player;
 public interface WorldListListener {
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    void listUpdated(PlayerKey key, int index, Player player);
+    void listUpdated(int index, Player player);
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    void itemAdded(PlayerKey key, int index, Player player);
+    void itemAdded(int index, Player player);
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    void itemRemoved(PlayerKey key, int index, Player player);
+    void itemRemoved(int index, Player player);
 }

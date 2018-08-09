@@ -26,7 +26,6 @@ import freerails.client.ModelRootImpl;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.model.world.PlayerKey;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -234,9 +233,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         CargoBatch cargoBatch = new CargoBatch(0, new Vec2D(6, 6), 0, stationId);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         cargoBatchBundle.addCargo(cargoBatch, amount);
-        Station station1Model = world.getStation(player, stationId);
-        int station1BundleId = station1Model.getCargoBundleID();
-        world.set(player, PlayerKey.CargoBundles, station1BundleId, cargoBatchBundle);
+        Station station = world.getStation(player, stationId);
+        station.setCargoBatchBundle(cargoBatchBundle);
     }
 
     /**
@@ -389,7 +387,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Remove all wagons from the train.
         Train train = ta.getTrain();
-        train = new Train(train.getId(), train.getEngineId(), new ArrayList<>(), train.getCargoBundleId(), train.getSchedule());
+        train = new Train(train.getId(), train.getEngineId(), new ArrayList<>(), train.getCargoBatchBundle(), train.getSchedule());
         world.removeTrain(player, 0);
         world.addTrain(player, train);
 
@@ -404,11 +402,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Add 35 unit of cargo #0 to station 1.
         Station station0 = world.getStation(player, 1);
-        int cargoBundleId = station0.getCargoBundleID();
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
         final int AMOUNT_OF_CARGO = 35;
         cargoBatchBundle.addCargo(new CargoBatch(0, Vec2D.ZERO, 0, 0), AMOUNT_OF_CARGO);
-        world.set(player, PlayerKey.CargoBundles, cargoBundleId, cargoBatchBundle);
+        station0.setCargoBatchBundle(cargoBatchBundle);
 
         // Make station2 demand cargo #0;
         boolean[] boolArray = new boolean[world.getCargos().size()];

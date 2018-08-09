@@ -504,19 +504,17 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void listUpdated(PlayerKey key, int index, Player player) {
+    public void listUpdated(int index, Player player) {
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void itemAdded(PlayerKey key, int index, Player player) {
+    public void itemAdded(int index, Player player) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
          * After building station show supply and demand
@@ -535,10 +533,9 @@ public class DialogueBoxController implements WorldListListener {
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void itemRemoved(PlayerKey key, int index, Player player) {
+    public void itemRemoved(int index, Player player) {
     }
 }

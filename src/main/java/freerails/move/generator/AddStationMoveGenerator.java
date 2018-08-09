@@ -27,7 +27,7 @@ import freerails.model.station.VerifyStationName;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
-import freerails.move.listmove.AddStationCompositeMove;
+import freerails.move.AddStationCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;

@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.cargo.CargoBatchBundle;
 import freerails.util.Vec2D;
 import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
@@ -30,10 +31,10 @@ import freerails.model.MapFixtureFactory;
  */
 public class CompositeMoveTest extends AbstractMoveTestCase {
 
-    private final Station station1 = new Station(0, new Vec2D(1, 1), "station1", 10, 0);
-    private final Station station2 = new Station(1, new Vec2D(2, 3), "station2", 10, 0);
-    private final Station station3 = new Station(2, new Vec2D(3, 3), "station3", 10, 0);
-    private final Station station4 = new Station(3, new Vec2D(4, 4), "station4", 10, 0);
+    private final Station station1 = new Station(0, new Vec2D(1, 1), "station1", 10, new CargoBatchBundle());
+    private final Station station2 = new Station(1, new Vec2D(2, 3), "station2", 10, new CargoBatchBundle());
+    private final Station station3 = new Station(2, new Vec2D(3, 3), "station3", 10, new CargoBatchBundle());
+    private final Station station4 = new Station(3, new Vec2D(4, 4), "station4", 10, new CargoBatchBundle());
 
     /**
      *

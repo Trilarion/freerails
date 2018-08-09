@@ -19,6 +19,8 @@
 package freerails.model.station;
 
 import freerails.model.Identifiable;
+import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 
@@ -26,6 +28,7 @@ import freerails.util.Vec2D;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.UnmodifiableWorld;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,8 +47,7 @@ public class Station extends Identifiable {
     private StationSupply supply;
     private StationDemand demandForCargo;
     private StationCargoConversion cargoConversion;
-    // TODO what is the cargo bundle number and what is it good for?
-    private final int cargoBundleNumber;
+    private CargoBatchBundle cargoBatchBundle;
 
     private List<TrainBlueprint> production;
 
@@ -53,13 +55,13 @@ public class Station extends Identifiable {
      * @param location
      * @param stationName
      * @param numberOfCargoTypes
-     * @param cargoBundleNumber
+     * @param cargoBatchBundle
      */
-    public Station(int id, Vec2D location, String stationName, int numberOfCargoTypes, int cargoBundleNumber) {
+    public Station(int id, Vec2D location, String stationName, int numberOfCargoTypes, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
         super(id);
         name = stationName;
         this.location = location;
-        this.cargoBundleNumber = cargoBundleNumber;
+        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
 
         // TODO array creation necessary here?
         Integer[] a = new Integer[numberOfCargoTypes];
@@ -141,8 +143,17 @@ public class Station extends Identifiable {
     /**
      * @return
      */
-    public int getCargoBundleID() {
-        return cargoBundleNumber;
+    public UnmodifiableCargoBatchBundle getCargoBatchBundle() {
+        return cargoBatchBundle;
+    }
+
+    /**
+     * Makes a copy.
+     *
+     * @param cargoBatchBundle
+     */
+    public void setCargoBatchBundle(@NotNull UnmodifiableCargoBatchBundle cargoBatchBundle) {
+        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
     }
 
     public void setCargoConversion(StationCargoConversion cargoConversion) {

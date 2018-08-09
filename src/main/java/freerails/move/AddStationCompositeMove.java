@@ -19,14 +19,10 @@
 /*
  *
  */
-package freerails.move.listmove;
+package freerails.move;
 
 import freerails.model.cargo.CargoBatchBundle;
-import freerails.move.AddStationMove;
-import freerails.move.CompositeMove;
-import freerails.move.Move;
 import freerails.util.Vec2D;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -52,16 +48,12 @@ public class AddStationCompositeMove extends CompositeMove {
      * @return
      */
     public static AddStationCompositeMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
-        int cargoBundleNumber = world.size(player, PlayerKey.CargoBundles);
-        Move addCargoBundleMove = new AddItemToListMove(PlayerKey.CargoBundles, cargoBundleNumber, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, player);
-        // TODO maybe a different way of getting new ids (more random, but without collisions)
-        int stationNumber = world.getStations(player).size();
-        // TODO the same as station number
+        // TODO maybe a better way to get an id
         int id = world.getStations(player).size();
-        Station station = new Station(id, location, stationName, world.getCargos().size(), cargoBundleNumber);
+        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
         Move addStation = new AddStationMove(player, station);
 
-        return new AddStationCompositeMove(new Move[]{upgradeTrackMove, addCargoBundleMove, addStation});
+        return new AddStationCompositeMove(new Move[]{upgradeTrackMove, addStation});
     }
 
 }

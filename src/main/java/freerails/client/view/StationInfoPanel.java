@@ -56,7 +56,6 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
     /**
      * The index of the cargoBundle associated with this station.
      */
-    private int cargoBundleIndex;
     private Serializable lastCargoBundle = null;
     private JButton close;
     private JLabel label1;
@@ -200,8 +199,8 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
             Station station = world.getStation(modelRoot.getPlayer(), stationNumber);
             TerrainTile tile = (TerrainTile) world.getTile(station.location);
             String stationTypeName = tile.getTrackPiece().getTrackType().getName();
-            cargoBundleIndex = station.getCargoBundleID();
-            CargoBatchBundle cargoWaiting = (UnmodifiableCargoBatchBundle) world.get(modelRoot.getPlayer(), PlayerKey.CargoBundles, station.getCargoBundleID());
+            cargoBundleIndex = station.getCargoBatchBundle();
+            CargoBatchBundle cargoWaiting = (UnmodifiableCargoBatchBundle) world.get(modelRoot.getPlayer(), PlayerKey.CargoBundles, station.getCargoBatchBundle());
 
             StringBuilder table1 = new StringBuilder();
 
@@ -258,17 +257,18 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
          * Avoid a array out of bounds exception when there are no stations and
          * the stations tab is visible.
          */
-        if (world.boundsContain(playerPlayer, PlayerKey.CargoBundles, cargoBundleIndex)) {
+        // TODO unclear how cargoBundleIndex ever got set to anything meaningful?
+        /**
             Serializable currentCargoBundle = world.get(playerPlayer, PlayerKey.CargoBundles, cargoBundleIndex);
             if (lastCargoBundle != currentCargoBundle) {
                 display();
                 lastCargoBundle = currentCargoBundle;
             }
-        }
+         */
         super.paintComponent(g);
     }
 
-    private void reactToUpdate(PlayerKey playerKey, int changedIndex, boolean isAddition) {
+    private void reactToUpdate(int changedIndex, boolean isAddition) {
         if (!isVisible()) {
             return;
         }
@@ -303,16 +303,16 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         */
     }
 
-    public void listUpdated(PlayerKey key, int index, Player player) {
-        if (modelRoot.getPlayer().equals(player)) reactToUpdate(key, index, false);
+    public void listUpdated(int index, Player player) {
+        if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, false);
     }
 
-    public void itemAdded(PlayerKey key, int index, Player player) {
-        if (modelRoot.getPlayer().equals(player)) reactToUpdate(key, index, true);
+    public void itemAdded(int index, Player player) {
+        if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, true);
     }
 
-    public void itemRemoved(PlayerKey key, int index, Player player) {
-        if (modelRoot.getPlayer().equals(player)) reactToUpdate(key, index, false);
+    public void itemRemoved(int index, Player player) {
+        if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, false);
     }
 
     void removeCloseButton() {

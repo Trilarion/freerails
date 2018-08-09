@@ -95,7 +95,7 @@ public class StationBoxRenderer implements Painter {
                     g.setStroke(new BasicStroke(1.0f));
                     g.drawRect(r.x, r.y, r.width, r.height);
 
-                    UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
+                    UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
                     Map<CargoCategory, List<Integer>> carsLoads = calculateCarLoads(cargoBatchBundle);
                     int i = 0;
                     for (CargoCategory cargoCategory: CargoCategory.values()) {

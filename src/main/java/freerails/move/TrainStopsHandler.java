@@ -25,12 +25,10 @@ import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
-import freerails.move.listmove.ChangeItemInListMove;
 import freerails.model.track.NoTrackException;
 
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -233,10 +231,10 @@ public class TrainStopsHandler implements Serializable {
             // TODO newTrain is computed in the ChangeTrainMove also
             // TODO need a way to get a new id for trains, this is not the best way so far
             int id = world.getTrains(player).size();
-            Train newTrain = new Train(id, engineId, order.getConsist(), trainAccessor.getTrain().getCargoBundleId(), trainAccessor.getTrain().getSchedule());
+            Train newTrain = new Train(id, engineId, order.getConsist(), trainAccessor.getTrain().getCargoBatchBundle(), trainAccessor.getTrain().getSchedule());
             // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
             Train before = trainAccessor.getTrain();
-            Train after = new Train(id, engineId, order.getConsist(), before.getCargoBundleId(), before.getSchedule());
+            Train after = new Train(id, engineId, order.getConsist(), before.getCargoBatchBundle(), before.getSchedule());
             // TODO need dedicated change train move instead
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
             Move move = new ChangeTrainMove(player, after);
@@ -289,7 +287,7 @@ public class TrainStopsHandler implements Serializable {
             int engineType = train.getEngineId();
             // TODO need a way to get a new id for trains, this is not the best way so far
             int id = world.getTrains(player).size();
-            Train after = new Train(trainId, engineType, wagonsToAdd, train.getCargoBundleId(), train.getSchedule());
+            Train after = new Train(trainId, engineType, wagonsToAdd, train.getCargoBatchBundle(), train.getSchedule());
             // TODO need dedicated change train move
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, train, after, player);
             Move move = new ChangeTrainMove(player, after);

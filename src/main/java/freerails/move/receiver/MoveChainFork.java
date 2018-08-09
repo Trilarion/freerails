@@ -19,10 +19,6 @@
 package freerails.move.receiver;
 
 import freerails.move.*;
-import freerails.move.listmove.AddItemToListMove;
-import freerails.move.listmove.ChangeItemInListMove;
-import freerails.move.listmove.ListMove;
-import freerails.move.listmove.RemoveItemFromListMove;
 import freerails.move.mapupdatemove.MapUpdateMove;
 import freerails.util.Utils;
 import freerails.model.world.WorldListListener;
@@ -111,22 +107,7 @@ public class MoveChainFork implements MoveReceiver {
                 moveReceiver.process(move);
             }
 
-            if (move instanceof AddItemToListMove) {
-                ListMove listMove = (AddItemToListMove) move;
-                for (WorldListListener listener : listListeners) {
-                    listener.itemAdded(listMove.getKey(), listMove.getIndex(), listMove.getPlayer());
-                }
-            } else if (move instanceof ChangeItemInListMove) {
-                ListMove listMove = (ChangeItemInListMove) move;
-                for (WorldListListener listener : listListeners) {
-                    listener.listUpdated(listMove.getKey(), listMove.getIndex(), listMove.getPlayer());
-                }
-            } else if (move instanceof RemoveItemFromListMove) {
-                ListMove listMove = (RemoveItemFromListMove) move;
-                for (WorldListListener listener : listListeners) {
-                    listener.itemRemoved(listMove.getKey(), listMove.getIndex(), listMove.getPlayer());
-                }
-            } else if (move instanceof MapUpdateMove) {
+            if (move instanceof MapUpdateMove) {
                 Rectangle rectangle = ((MapUpdateMove) move).getUpdatedTiles();
                 // TODO can r be 0,0,0,0
                 if (rectangle.x != 0 && rectangle.y != 0 && rectangle.width != 0 && rectangle.height != 0) {

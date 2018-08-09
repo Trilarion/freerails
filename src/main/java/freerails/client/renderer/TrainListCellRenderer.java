@@ -25,7 +25,6 @@ package freerails.client.renderer;
 import freerails.client.view.View;
 import freerails.client.ModelRoot;
 import freerails.model.train.Train;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.WorldListListener;
 import freerails.model.player.Player;
@@ -218,11 +217,10 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void listUpdated(PlayerKey key, int index, Player player) {
+    public void listUpdated(int index, Player player) {
         if (showingOrder) {
             // TODO since Schedule is part of train, this is not right anymore, fix it
             //if (PlayerKey.TrainSchedules == key) {
@@ -237,18 +235,16 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void itemAdded(PlayerKey key, int index, Player player) {
+    public void itemAdded(int index, Player player) {
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void itemRemoved(PlayerKey key, int index, Player player) {
+    public void itemRemoved(int index, Player player) {
     }
 }

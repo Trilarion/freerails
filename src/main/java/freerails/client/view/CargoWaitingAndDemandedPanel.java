@@ -27,7 +27,6 @@ import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.ModelConstants;
 import freerails.model.cargo.Cargo;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
@@ -163,7 +162,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
     public void display(int newStationID) {
         Station station = world.getStation(player, newStationID);
         stationName.setText(station.getStationName());
-        final UnmodifiableCargoBatchBundle cargoWaiting = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
+        final UnmodifiableCargoBatchBundle cargoWaiting = station.getCargoBatchBundle();
 
         // count the number of cargo types waiting and demanded.
         final List<String> typeWaiting = new ArrayList<>();

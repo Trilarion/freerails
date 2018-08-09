@@ -29,12 +29,8 @@ import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.station.Station;
 import freerails.model.station.StationSupply;
 import freerails.model.world.*;
-import freerails.move.ChangeStationMove;
-import freerails.move.GrowCitiesMove;
-import freerails.move.Move;
-import freerails.move.TimeTickMove;
+import freerails.move.*;
 import freerails.move.generator.BondInterestMoveGenerator;
-import freerails.move.listmove.ChangeItemInListMove;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -76,25 +72,17 @@ public class FullServerGameModel implements ServerGameModel {
             // for all stations of a player
             for (Station station: world.getStations(player)) {
                 StationSupply supply = station.getSupply();
-                UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, station.getCargoBundleID());
+                UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
                 CargoBatchBundle before = new CargoBatchBundle(cargoBatchBundle);
                 CargoBatchBundle after = new CargoBatchBundle(cargoBatchBundle);
-                int stationNumber = station.getId();
+                int stationId = station.getId();
 
-                /*
-                 * Get the iterator from a copy to avoid a
-                 * ConcurrentModificationException if the amount gets set to
-                 * zero and the CargoBatch removed from the cargo bundle. LL
-                 */
-                Iterator<CargoBatch> it = after.cargoBatchIterator();
-
-                while (it.hasNext()) {
-                    CargoBatch cb = it.next();
-                    int amount = after.getAmount(cb);
+                for (CargoBatch cargoBatch: after.getCargoBatches()) {
+                    int amount = after.getAmount(cargoBatch);
 
                     if (amount > 0) {
                         // (23/24)^12 = 0.60
-                        after.setAmount(cb, amount * 23 / 24);
+                        after.setAmount(cargoBatch, amount * 23 / 24);
                     }
                 }
 
@@ -103,7 +91,7 @@ public class FullServerGameModel implements ServerGameModel {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cb = new CargoBatch(i, station.location, 0, stationNumber);
+                        CargoBatch cb = new CargoBatch(i, station.location, 0, stationId);
                         int amountAlready = after.getAmount(cb);
 
                         // Obtain the month
@@ -116,7 +104,9 @@ public class FullServerGameModel implements ServerGameModel {
                     }
                 }
 
-                Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, station.getCargoBundleID(), before, after, player);
+                // TODO change station move instead
+                // Move move = new ChangeItemInListMove(PlayerKey.CargoBundles, station.getCargoBatchBundle(), before, after, player);
+                Move move = new ChangeCargoAtStationMove(player, stationId, after);
                 moveReceiver.process(move);
             }
         }

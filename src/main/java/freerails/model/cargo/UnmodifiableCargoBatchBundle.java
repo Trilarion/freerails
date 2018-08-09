@@ -22,6 +22,7 @@
 package freerails.model.cargo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 
 // TODO should the amount already be included in the cargo batch
@@ -58,13 +59,10 @@ import java.util.Iterator;
 public interface UnmodifiableCargoBatchBundle extends Serializable {
 
     /**
-     * Iterator over the cargo batches.
-     *
-     * Note, calling hasNext() or next() on the returned iterator throws a
-     * ConcurrentModificationException if this CargoBatchBundle has changed since the
-     * iterator was acquired.
+     * Presents a copy of the cargo batches present when the function was called.
+     * @return
      */
-    Iterator<CargoBatch> cargoBatchIterator();
+    Collection<CargoBatch> getCargoBatches();
 
     /**
      * @return True if this cargo batch is contained.

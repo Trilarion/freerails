@@ -24,7 +24,6 @@ import freerails.io.GsonManager;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.model.world.PlayerKey;
 import freerails.move.receiver.TestMoveReceiver;
 import freerails.savegames.MapCreator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
@@ -110,8 +109,16 @@ class DialogueBoxTester extends JFrame {
         actionRoot.setDialogueBoxController(dialogueBoxController);
         dialogueBoxController.setDefaultFocusOwner(this);
 
+        // Set up cargo bundle, for the purpose of this test code all the trains and stations can share the same one.
+        CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
+        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 8, 0), 80);
+        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 9, 0), 60);
+        cargoBatchBundle.setAmount(new CargoBatch(1, new Vec2D(10, 10), 9, 0), 140);
+        cargoBatchBundle.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
+        cargoBatchBundle.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
+
         int numberOfCargoTypes = world.getCargos().size();
-        Station bristol = new Station(0, new Vec2D(10, 10), "Bristol", numberOfCargoTypes, 0);
+        Station bristol = new Station(0, new Vec2D(10, 10), "Bristol", numberOfCargoTypes, cargoBatchBundle);
         boolean[] demandArray = new boolean[numberOfCargoTypes];
 
         // Make the stations demand all cargo..
@@ -123,20 +130,12 @@ class DialogueBoxTester extends JFrame {
         bristol.setDemandForCargo(demand);
         world.addStation(TEST_PLAYER, bristol);
 
-        world.addStation(TEST_PLAYER, new Station(1, new Vec2D(50, 100), "Bath", numberOfCargoTypes, 0));
-        world.addStation(TEST_PLAYER, new Station(2, new Vec2D(40, 10), "Cardiff", numberOfCargoTypes, 0));
-        world.addStation(TEST_PLAYER, new Station(3, new Vec2D(100, 10), "London", numberOfCargoTypes, 0));
-        world.addStation(TEST_PLAYER, new Station(4, new Vec2D(90, 50), "Swansea", numberOfCargoTypes, 0));
-        // Set up cargo bundle, for the purpose of this test code all the trains
-        // can share the
-        // same one.
-        CargoBatchBundle cargoBatchBundle = new CargoBatchBundle();
-        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 8, 0), 80);
-        cargoBatchBundle.setAmount(new CargoBatch(0, new Vec2D(10, 10), 9, 0), 60);
-        cargoBatchBundle.setAmount(new CargoBatch(1, new Vec2D(10, 10), 9, 0), 140);
-        cargoBatchBundle.setAmount(new CargoBatch(3, new Vec2D(10, 10), 9, 0), 180);
-        cargoBatchBundle.setAmount(new CargoBatch(5, new Vec2D(10, 10), 9, 0), 10);
-        world.add(TEST_PLAYER, PlayerKey.CargoBundles, cargoBatchBundle);
+        world.addStation(TEST_PLAYER, new Station(1, new Vec2D(50, 100), "Bath", numberOfCargoTypes, cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(2, new Vec2D(40, 10), "Cardiff", numberOfCargoTypes, cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(3, new Vec2D(100, 10), "London", numberOfCargoTypes, cargoBatchBundle));
+        world.addStation(TEST_PLAYER, new Station(4, new Vec2D(90, 50), "Swansea", numberOfCargoTypes, cargoBatchBundle));
+
+
 
         Schedule schedule = new Schedule();
         TrainOrder order = new TrainOrder(0, Arrays.asList(0, 0, 0),false, false);
@@ -145,14 +144,14 @@ class DialogueBoxTester extends JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        world.addTrain(TEST_PLAYER, new Train(0,0, Arrays.asList(0, 0), 0, schedule));
+        world.addTrain(TEST_PLAYER, new Train(0,0, Arrays.asList(0, 0), cargoBatchBundle, schedule));
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        world.addTrain(TEST_PLAYER, new Train(1,1, Arrays.asList(1, 1), 0, schedule));
+        world.addTrain(TEST_PLAYER, new Train(1,1, Arrays.asList(1, 1), cargoBatchBundle, schedule));
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        world.addTrain(TEST_PLAYER, new Train(2,0, Arrays.asList(1, 2, 0), 0, schedule));
+        world.addTrain(TEST_PLAYER, new Train(2,0, Arrays.asList(1, 2, 0), cargoBatchBundle, schedule));
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);

@@ -111,24 +111,6 @@ public interface UnmodifiableWorld extends Serializable {
 
     /**
      * @param player
-     * @param key
-     * @param index
-     * @return
-     */
-    boolean boundsContain(Player player, PlayerKey key, int index);
-
-    /**
-     * @return
-     */
-    GameTime currentTime();
-
-    /**
-     * Returns the element at the specified position in the specified list.
-     */
-    Serializable get(Player player, PlayerKey key, int index);
-
-    /**
-     * @param player
      * @param index
      * @return
      */
@@ -179,6 +161,8 @@ public interface UnmodifiableWorld extends Serializable {
      */
     Transaction getTransaction(Player player, int i);
 
+    GameTime currentTime();
+
     /**
      * @param player
      * @param i
@@ -198,11 +182,6 @@ public interface UnmodifiableWorld extends Serializable {
      * @return
      */
     boolean isPlayer(Player player);
-
-    /**
-     * Returns the number of elements in the specified list.
-     */
-    int size(Player player, PlayerKey key);
 
     /**
      * Returns number of active entities belonging to the specified player.

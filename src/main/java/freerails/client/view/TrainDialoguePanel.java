@@ -48,7 +48,6 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
     private JButton previousJButton;
     private TrainDescriptionPanel trainDetailsJPanel1;
     private JButton trainListJButton;
-    private WorldIterator worldIterator;
     private UnmodifiableWorld world;
     private Player player;
 
@@ -116,20 +115,26 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
 
     private void previousJButtonActionPerformed(ActionEvent evt) {
         // Add your handling code here:
+        // TODO need bidirectional iterator over trains
+        /*
         if (worldIterator.previous()) {
             display(worldIterator.getIndex());
         } else {
             logger.warn("Couldn't get previous");
         }
+        */
     }
 
     private void nextJButtonActionPerformed(ActionEvent evt) {
         // Add your handling code here:
+        // TODO need bidirectional iterator over trains
+        /*
         if (worldIterator.next()) {
             display(worldIterator.getIndex());
         } else {
             logger.warn("Couldn't get next");
         }
+        */
     }
 
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
@@ -162,14 +167,14 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
-    public void listUpdated(PlayerKey key, int index, Player player) {
-        newTrainSchedulePanel1.listUpdated(key, index, player);
+    public void listUpdated(int index, Player player) {
+        newTrainSchedulePanel1.listUpdated(index, player);
     }
 
-    public void itemAdded(PlayerKey key, int index, Player player) {
+    public void itemAdded(int index, Player player) {
     }
 
-    public void itemRemoved(PlayerKey key, int index, Player player) {
+    public void itemRemoved(int index, Player player) {
     }
 
     void setTrainDetailsButtonActionListener(ActionListener l) {

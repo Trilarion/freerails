@@ -29,7 +29,6 @@ import freerails.client.ModelRoot;
 import freerails.model.cargo.Cargo;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.Train;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 
@@ -94,8 +93,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     private void updateIfNecessary() {
         Train train = world.getTrain(player, trainNumber);
 
-        int cargoBundleID = train.getCargoBundleId();
-        Serializable cb = world.get(player, PlayerKey.CargoBundles, cargoBundleID);
+        Serializable cb = train.getCargoBatchBundle();
 
         if (train != lastTrain || cb != lastCargoBundle) displayTrain(trainNumber);
     }
@@ -117,8 +115,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
         trainViewJPanel1.display(newTrainNumber);
         Train train = world.getTrain(player, newTrainNumber);
 
-        int cargoBundleID = train.getCargoBundleId();
-        UnmodifiableCargoBatchBundle cargoBatchBundle = (UnmodifiableCargoBatchBundle) world.get(player, PlayerKey.CargoBundles, cargoBundleID);
+        UnmodifiableCargoBatchBundle cargoBatchBundle = train.getCargoBatchBundle();
         // TODO natural number is the number in the list/set
         // StringBuilder s = new StringBuilder("Train #" + it.getNaturalNumber() + ": ");
         StringBuilder s = new StringBuilder("Train #" + ": ");

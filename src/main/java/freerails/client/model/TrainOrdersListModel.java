@@ -25,7 +25,6 @@ package freerails.client.model;
 import freerails.client.view.TrainSchedulePanel;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.train.schedule.UnmodifiableSchedule;

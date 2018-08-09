@@ -22,16 +22,13 @@
 package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
-import freerails.move.listmove.AddItemToListMove;
 
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.world.PlayerKey;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.ItemTransaction;
 import freerails.model.finances.Money;
@@ -122,7 +119,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
 
     private int calculateTrainLength() {
         // TODO is this a good idea, how often is this called, should it maybe only be called once?
-        Train train = new Train(0, engineId, wagons, 0, new Schedule());
+        Train train = new Train(0, engineId, wagons, new CargoBatchBundle(), new Schedule());
         return train.getLength();
     }
 
@@ -141,14 +138,10 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * </ol>
      */
     public Move generate(UnmodifiableWorld world) {
-        // Add cargo bundle.
-        int bundleId = world.size(player, PlayerKey.CargoBundles);
-        AddItemToListMove addCargoBundle = new AddItemToListMove(PlayerKey.CargoBundles, bundleId, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, player);
-
         // Add train to train list.
         // TODO need a way to get a new id for trains, this is not the best way so far
         int id = world.getTrains(player).size();
-        Train train = new Train(id, engineId, wagons, bundleId, schedule);
+        Train train = new Train(id, engineId, wagons, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, schedule);
         // TODO this is a quite good idea and ensures unique ids (should be done on the server side only)
         int trainId = world.getTrains(player).size();
         // TODO we need an AddTrainMove
@@ -169,7 +162,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
 
         Move addPosition = new AddActiveEntityMove(motion, trainId, player);
 
-        return new CompositeMove(addCargoBundle, addTrain, transactionMove, addPosition);
+        return new CompositeMove(addTrain, transactionMove, addPosition);
     }
 
 }

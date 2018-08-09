@@ -45,10 +45,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     public CargoBatchBundle(UnmodifiableCargoBatchBundle cargoBatchBundle) {
         this();
 
-        Iterator<CargoBatch> it = cargoBatchBundle.cargoBatchIterator();
-
-        while (it.hasNext()) {
-            CargoBatch cargoBatch = it.next();
+        for (CargoBatch cargoBatch: cargoBatchBundle.getCargoBatches()) {
             addCargo(cargoBatch, cargoBatchBundle.getAmount(cargoBatch));
         }
     }
@@ -70,53 +67,6 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         return Collections.unmodifiableCollection(new ArrayList<>(cargoMap.keySet()));
     }
 
-    // TODO should the iterator be able to modify the cargobatchbundle? I guess not
-    // TODO just return the iterator (or a collection instead)
-    /**
-     * Note, calling hasNext() or next() on the returned iterator throws a
-     * ConcurrentModificationException if this CargoBatchBundle has changed since the
-     * iterator was acquired.
-     */
-    public Iterator<CargoBatch> cargoBatchIterator() {
-        final Iterator<CargoBatch> it = cargoMap.keySet().iterator();
-        return it;
-
-        // TODO Does Java already has a nonmo
-        /*
-         * A ConcurrentModificationException used to get thrown when the amount
-         * of cargo was set to 0, since this resulted in the key being removed
-         * from the hash map. The iterator below throws a
-         * ConcurrentModificationException whenever this CargoBatchBundle has been
-         * changed since the iterator was acquired. This should mean that if the
-         * cargo bundle gets changed while the iterator is in use, you will know
-         * about it straight away.
-
-        return new Iterator<CargoBatch>() {
-            private final int updateIDAtCreation = updateID;
-
-            public boolean hasNext() {
-                if (updateIDAtCreation != updateID) {
-                    throw new ConcurrentModificationException();
-                }
-
-                return it.hasNext();
-            }
-
-            public CargoBatch next() {
-                if (updateIDAtCreation != updateID) {
-                    throw new ConcurrentModificationException();
-                }
-
-                return it.next();
-            }
-
-            public void remove() {
-                throw new UnsupportedOperationException("Use CargoBatchBundle.setAmount(CargoBatch cb, 0)");
-            }
-        };
-        */
-    }
-
     /**
      * @param cargoBatch
      * @return
@@ -126,30 +76,21 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (null == other) {
             return false;
         }
-        return obj instanceof UnmodifiableCargoBatchBundle && equals(this, (UnmodifiableCargoBatchBundle) obj);
-    }
-
-    /**
-     * @param a
-     * @param b
-     * @return
-     */
-    public static boolean equals(UnmodifiableCargoBatchBundle a, UnmodifiableCargoBatchBundle b) {
-        if (a.size() != b.size()) return false;
-
-        Iterator<CargoBatch> it = a.cargoBatchIterator();
-        while (it.hasNext()) {
-            CargoBatch batch = it.next();
-            if (a.getAmount(batch) != b.getAmount(batch)) {
-                return false;
-            }
+        if (!(other instanceof CargoBatchBundle)) {
+            return false;
         }
-        return true;
+        CargoBatchBundle o = (CargoBatchBundle) other;
+        return cargoMap.equals(o.cargoMap);
     }
+
+
 
     /**
      * @param cargoType

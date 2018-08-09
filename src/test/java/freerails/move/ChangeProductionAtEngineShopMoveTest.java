@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.station.*;
 
 import freerails.model.MapFixtureFactory;
@@ -45,7 +46,7 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        Station station = new Station(0, Vec2D.ZERO, "no name", 0, 0);
+        Station station = new Station(0, Vec2D.ZERO, "no name", 0, new CargoBatchBundle());
         getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
         //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);
         //getWorld().addStation(MapFixtureFactory.TEST_PLAYER, station);

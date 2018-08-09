@@ -382,11 +382,10 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void itemAdded(PlayerKey key, int index, Player player) {
+    public void itemAdded(int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
         // TODO when is this called? when a station is added?
@@ -396,19 +395,17 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void itemRemoved(PlayerKey key, int index, Player player) {
+    public void itemRemoved(int index, Player player) {
     }
 
     /**
-     * @param key
      * @param index
      * @param player
      */
-    public void listUpdated(PlayerKey key, int index, Player player) {
+    public void listUpdated(int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
         // TODO when is this called? when a station is added/removed?
