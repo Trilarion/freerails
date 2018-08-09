@@ -79,7 +79,7 @@ public class AddTransactionMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         if (world.isPlayer(this.player)) {
             if (cashConstrained) {
                 // TODO Money arithmetic
@@ -88,48 +88,48 @@ public class AddTransactionMove implements Move {
                 long balanceAfter = bankBalance + transactionAmount;
 
                 if (transactionAmount < 0 && balanceAfter < 0) {
-                    return MoveStatus.moveFailed("You can't afford that!");
+                    return Status.moveFailed("You can't afford that!");
                 }
             }
 
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed(player.getName() + " does not have a bank account.");
+        return Status.moveFailed(player.getName() + " does not have a bank account.");
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         int size = world.getNumberOfTransactions(this.player);
 
         if (0 == size) {
-            return MoveStatus.moveFailed("No transactions to remove!");
+            return Status.moveFailed("No transactions to remove!");
         }
 
         Transaction lastTransaction = world.getTransaction(this.player, size - 1);
 
         if (lastTransaction.equals(transaction)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed("Expected " + transaction + "but found " + lastTransaction);
+        return Status.moveFailed("Expected " + transaction + "but found " + lastTransaction);
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus moveStatus = tryDoMove(world, player);
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             world.addTransaction(this.player, transaction);
         }
 
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus moveStatus = tryUndoMove(world, player);
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             world.removeLastTransaction(this.player);
         }
 
-        return moveStatus;
+        return status;
     }
 
     @Override

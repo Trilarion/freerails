@@ -22,6 +22,10 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.station.Station;
+import freerails.model.train.Train;
+import freerails.model.train.schedule.Schedule;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -35,6 +39,8 @@ import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This Move changes adds, removes, or upgrades the track between two tiles.
@@ -43,16 +49,16 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
     private static final long serialVersionUID = 3616443518780978743L;
     private final int x, y, w, h;
-    private final Player builder;
+    private final Player player;
 
-    private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, Player fp) {
-        super(a, b);
+    private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, Player player) {
+        super(Arrays.asList(a, b));
         Rectangle r = a.getUpdatedTiles().union(b.getUpdatedTiles());
         x = r.x;
         y = r.y;
         w = r.width;
         h = r.height;
-        builder = fp;
+        this.player = player;
     }
 
     /**
@@ -138,10 +144,44 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         ChangeTrackPieceMove changeTrackPieceMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
 
         // If we are removing a station, we also need to remove the station from the station list.
-        if (oldTrackPiece.getTrackType().isStation() && !newTrackPiece.getTrackType().isStation()) {
-            return RemoveStationCompositeMove.getInstance(world, changeTrackPieceMove, player);
+        if (oldTrackPiece.getTrackType().isStation() && (newTrackPiece == null || !newTrackPiece.getTrackType().isStation())) {
+            int stationIndex = -1;
+
+            for (Station station: world.getStations(player)) {
+                if (station.location.equals(changeTrackPieceMove.getLocation())) {
+                    // We have found the station!
+                    stationIndex = station.getId();
+                    break;
+                }
+            }
+
+            if (-1 == stationIndex) {
+                throw new IllegalArgumentException("Could find a station at " + changeTrackPieceMove.getLocation());
+            }
+
+            Station stationToRemove = world.getStation(player, stationIndex);
+            ArrayList<Move> moves = new ArrayList<>();
+            moves.add(changeTrackPieceMove);
+            moves.add(new RemoveStationMove(player, stationIndex));
+
+            // Now update any train schedules that include this station by iterating over all trains
+            for (Player player1: world.getPlayers()) {
+                for (Train train: world.getTrains(player1)) {
+                    UnmodifiableSchedule schedule = train.getSchedule();
+                    if (schedule.stopsAtStation(stationIndex)) {
+                        Schedule schedule1 = new Schedule(schedule);
+                        schedule1.removeAllStopsAtStation(stationIndex);
+                        train.setSchedule(schedule1);
+                        Move changeScheduleMove = new ChangeTrainMove(player, train);
+                        moves.add(changeScheduleMove);
+                    }
+                }
+            }
+
+            return new RemoveStationCompositeMove(moves);
+        } else {
+            return changeTrackPieceMove;
         }
-        return changeTrackPieceMove;
     }
 
     private static TrackPiece getTrackPieceWhenOldTrackPieceIsNull(TrackConfigurations direction, TrackType trackType, int owner, int ruleNumber) {
@@ -169,38 +209,38 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     @Override
-    public MoveStatus compositeTest(World world) {
+    public Status compositeTest(World world) {
         // must connect to existing track
         GameRules rules = world.getGameRules();
 
         if (rules.mustConnectToExistingTrack()) {
-            if (hasAnyTrackBeenBuilt(world, builder)) {
+            if (hasAnyTrackBeenBuilt(world, player)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
                     ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);
 
                     if (a.trackPieceBefore == null && b.trackPieceBefore == null) {
-                        return MoveStatus.moveFailed("Must connect to existing track");
+                        return Status.moveFailed("Must connect to existing track");
                     }
                 } catch (ClassCastException e) {
                     // It was not the type of move we expected.
                     // We end up here when we are removing a station.
-                    return MoveStatus.MOVE_OK;
+                    // TODO and what if it must indeed connect to other tracks???
+                    return Status.OK;
                 }
             }
         }
-
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus doMove(World world, Player player) {
+    public Status doMove(World world, Player player) {
         MoveTrainMoveGenerator.clearCache();
         return super.doMove(world, player);
     }
 
     @Override
-    public MoveStatus undoMove(World world, Player player) {
+    public Status undoMove(World world, Player player) {
         MoveTrainMoveGenerator.clearCache();
         return super.undoMove(world, player);
     }

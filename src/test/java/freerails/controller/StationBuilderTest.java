@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.move.MoveExecutor;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
@@ -61,16 +61,16 @@ public class StationBuilderTest extends TestCase {
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
 
-        MoveStatus moveStatus = trackBuilder.buildTrack(new Vec2D(10, 10), track);
-        assertTrue(moveStatus.succeeds());
+        Status status = trackBuilder.buildTrack(new Vec2D(10, 10), track);
+        assertTrue(status.succeeds());
         assertTrue(stationBuilder.tryBuildingStation(new Vec2D(10, 10)).succeeds());
         assertTrue(stationBuilder.tryBuildingStation(new Vec2D(13, 10)).succeeds());
 
-        moveStatus = stationBuilder.buildStation(new Vec2D(10, 10));
-        assertTrue(moveStatus.succeeds());
+        status = stationBuilder.buildStation(new Vec2D(10, 10));
+        assertTrue(status.succeeds());
 
-        moveStatus = stationBuilder.buildStation(new Vec2D(13, 10));
-        assertFalse(moveStatus.succeeds());
+        status = stationBuilder.buildStation(new Vec2D(13, 10));
+        assertFalse(status.succeeds());
     }
 
 }

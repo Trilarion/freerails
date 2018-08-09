@@ -70,34 +70,34 @@ public class NextActivityMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         // Check that active entity exists.
         // TODO we change activities anyway, therefore that gets commented out
         // if (world.size(this.player) <= index)
         //    return MoveStatus.moveFailed("Index out of range. " + world.size(this.player) + "<= " + index);
 
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         ActivityIterator ai = world.getActivities(this.player, index);
         ai.gotoLastActivity();
 
         Activity act = ai.getActivity();
-        if (act.equals(activity)) return MoveStatus.MOVE_OK;
+        if (act.equals(activity)) return Status.OK;
 
-        return MoveStatus.moveFailed("Expected " + activity + " but found " + act);
+        return Status.moveFailed("Expected " + activity + " but found " + act);
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus moveStatus = tryDoMove(world, player);
-        if (moveStatus.succeeds()) world.addActivity(this.player, index, activity);
-        return moveStatus;
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
+        if (status.succeeds()) world.addActivity(this.player, index, activity);
+        return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus moveStatus = tryUndoMove(world, player);
-        if (moveStatus.succeeds()) world.removeLastActivity(this.player, index);
-        return moveStatus;
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
+        if (status.succeeds()) world.removeLastActivity(this.player, index);
+        return status;
     }
 }

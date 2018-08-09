@@ -63,25 +63,25 @@ public class MovePrecommitter {
 
     public void fromServer(Move move) {
         rollBackPrecommittedMoves();
-        MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-        if (!moveStatus.succeeds()) {
-            throw new IllegalStateException(moveStatus.getMessage());
+        Status status = move.doMove(world, Player.AUTHORITATIVE);
+        if (!status.succeeds()) {
+            throw new IllegalStateException(status.getMessage());
         }
     }
 
     /**
      * Indicates that the server has processed a move we sent.
      */
-    public void fromServer(MoveStatus moveStatus) {
+    public void fromServer(Status status) {
         precommitMoves();
 
         if (!precomitted.isEmpty()) {
             Move move = (Move) precomitted.removeFirst();
 
-            if (!moveStatus.succeeds()) {
-                logger.info("Move rejected by server: " + moveStatus.getMessage());
+            if (!status.succeeds()) {
+                logger.info("Move rejected by server: " + status.getMessage());
 
-                MoveStatus undoStatus = move.undoMove(world, Player.AUTHORITATIVE);
+                Status undoStatus = move.undoMove(world, Player.AUTHORITATIVE);
 
                 if (!undoStatus.succeeds()) {
                     throw new IllegalStateException();
@@ -90,8 +90,8 @@ public class MovePrecommitter {
                 logger.debug("Move accepted by server: " + move.toString());
             }
         } else {
-            if (!moveStatus.succeeds()) {
-                logger.debug("Clear the blockage " + moveStatus.getMessage());
+            if (!status.succeeds()) {
+                logger.debug("Clear the blockage " + status.getMessage());
 
                 uncomitted.removeFirst();
                 precommitMoves();
@@ -113,17 +113,17 @@ public class MovePrecommitter {
 
         MoveGenerator moveGenerator = (MoveGenerator) uncomitted.removeFirst();
 
-        if (tryMoveStatus.moveStatus.succeeds()) {
+        if (tryMoveStatus.status.succeeds()) {
             logger.debug("PreMove accepted by server: " + tryMoveStatus.toString());
 
             Move move = moveGenerator.generate(world);
-            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+            Status status = move.doMove(world, Player.AUTHORITATIVE);
 
-            if (!moveStatus.succeeds()) {
+            if (!status.succeeds()) {
                 throw new IllegalStateException();
             }
         } else {
-            logger.info("PreMove rejected by server: " + tryMoveStatus.moveStatus.getMessage());
+            logger.info("PreMove rejected by server: " + tryMoveStatus.status.getMessage());
         }
 
         precommitMoves();
@@ -137,9 +137,9 @@ public class MovePrecommitter {
 
             if (first instanceof Move) {
                 Move move = (Move) first;
-                MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+                Status status = move.doMove(world, Player.AUTHORITATIVE);
 
-                if (moveStatus.succeeds()) {
+                if (status.succeeds()) {
                     uncomitted.removeFirst();
                     precomitted.addLast(move);
                 } else {
@@ -148,9 +148,9 @@ public class MovePrecommitter {
             } else if (first instanceof MoveGenerator) {
                 MoveGenerator moveGenerator = (MoveGenerator) first;
                 Move move = moveGenerator.generate(world);
-                MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
+                Status status = move.doMove(world, Player.AUTHORITATIVE);
 
-                if (moveStatus.succeeds()) {
+                if (status.succeeds()) {
                     uncomitted.removeFirst();
 
                     Serializable pmam = new MoveGeneratorAndMove(moveGenerator, move);
@@ -183,10 +183,10 @@ public class MovePrecommitter {
                 throw new IllegalStateException();
             }
 
-            MoveStatus moveStatus = move2undo.undoMove(world, Player.AUTHORITATIVE);
+            Status status = move2undo.undoMove(world, Player.AUTHORITATIVE);
 
-            if (!moveStatus.succeeds()) {
-                throw new IllegalStateException(moveStatus.getMessage());
+            if (!status.succeeds()) {
+                throw new IllegalStateException(status.getMessage());
             }
 
             uncomitted.addFirst(obj2add2uncomitted);

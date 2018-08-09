@@ -26,9 +26,10 @@ package freerails.move.mapupdatemove;
 import freerails.io.GsonManager;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
@@ -125,7 +126,8 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testCannotConnect2OtherRRsTrack() {
-        assertFalse(ChangeTrackPieceMove.canConnectToOtherRRsTrack(world));
+        GameRules rules = ((UnmodifiableWorld) world).getGameRules();
+        assertFalse(rules.canConnectToOtherRRTrack());
         final int TRACK_RULE_ID = 0;
         TrackType trackType = getWorld().getTrackType(TRACK_RULE_ID);
 
@@ -185,7 +187,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), MapFixtureFactory.TEST_PLAYER);
-        MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+        Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertFalse(status.succeeds());
     }
 
@@ -193,7 +195,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), MapFixtureFactory.TEST_PLAYER);
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-        MoveStatus status = moveAndTransaction.doMove(getWorld(), Player.AUTHORITATIVE);
+        Status status = moveAndTransaction.doMove(getWorld(), Player.AUTHORITATIVE);
         assertEquals(true, status.succeeds());
     }
 
@@ -201,7 +203,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         try {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateRemoveTrackMove(p, v, getWorld(), MapFixtureFactory.TEST_PLAYER);
-            MoveStatus status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+            Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
             assertEquals(true, status.succeeds());
         } catch (Exception e) {
             e.printStackTrace();

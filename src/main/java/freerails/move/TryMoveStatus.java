@@ -26,12 +26,12 @@ import java.io.Serializable;
  */
 public class TryMoveStatus implements Serializable {
 
-    public static final TryMoveStatus TRY_MOVE_OK = new TryMoveStatus(MoveStatus.MOVE_OK);
+    public static final TryMoveStatus TRY_MOVE_OK = new TryMoveStatus(Status.OK);
     private static final long serialVersionUID = 3978145456646009140L;
-    public final MoveStatus moveStatus;
+    public final Status status;
 
-    private TryMoveStatus(MoveStatus moveStatus) {
-        this.moveStatus = moveStatus;
+    private TryMoveStatus(Status status) {
+        this.status = status;
     }
 
     /**
@@ -39,18 +39,18 @@ public class TryMoveStatus implements Serializable {
      * @return
      */
     public static TryMoveStatus failed(String reason) {
-        return new TryMoveStatus(MoveStatus.moveFailed(reason));
+        return new TryMoveStatus(Status.moveFailed(reason));
     }
 
     /**
-     * @param moveStatus
+     * @param status
      * @return
      */
-    public static Serializable fromMoveStatus(MoveStatus moveStatus) {
-        if (moveStatus.succeeds()) {
+    public static Serializable fromMoveStatus(Status status) {
+        if (status.succeeds()) {
             return TRY_MOVE_OK;
         }
-        return new TryMoveStatus(moveStatus);
+        return new TryMoveStatus(status);
     }
 
     @Override
@@ -60,19 +60,19 @@ public class TryMoveStatus implements Serializable {
 
         final TryMoveStatus tryMoveStatus = (TryMoveStatus) obj;
 
-        return moveStatus.equals(tryMoveStatus.moveStatus);
+        return status.equals(tryMoveStatus.status);
     }
 
     @Override
     public int hashCode() {
-        return moveStatus.hashCode();
+        return status.hashCode();
     }
 
     /**
      * Avoid creating a duplicate when deserializing.
      */
     private Object readResolve() {
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             return TRY_MOVE_OK;
         }
         return this;

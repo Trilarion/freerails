@@ -46,7 +46,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param move
      * @return
      */
-    public MoveStatus doMove(Move move) {
+    public Status doMove(Move move) {
         return move.doMove(world, player);
     }
 
@@ -54,7 +54,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param moveGenerator
      * @return
      */
-    public MoveStatus doPreMove(MoveGenerator moveGenerator) {
+    public Status doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
         return move.doMove(world, player);
     }
@@ -63,7 +63,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param move
      * @return
      */
-    public MoveStatus tryDoMove(Move move) {
+    public Status tryDoMove(Move move) {
         return move.tryDoMove(world, player);
     }
 

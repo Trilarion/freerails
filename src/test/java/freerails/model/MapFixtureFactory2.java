@@ -25,7 +25,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.move.AddPlayerMove;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.savegames.MapCreator;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
@@ -111,8 +111,8 @@ public class MapFixtureFactory2 {
             String name = "player" + i;
             Player player = new Player(i, name);
             AddPlayerMove move = AddPlayerMove.generateMove(world, player);
-            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-            assert (moveStatus.succeeds());
+            Status status = move.doMove(world, Player.AUTHORITATIVE);
+            assert (status.succeeds());
         }
         // TODO this should be done in the builder build method
         world.setTime(new GameTime(0));

@@ -195,8 +195,8 @@ public class DropOffAndPickupCargoMoveGenerator {
         // TODO a train change instead would be good
         Move changeOnTrain = new ChangeCargoAtTrainMove(player, trainId, trainAfter);
 
-        moves.add(TransferCargoAtStationCompositeMove.CHANGE_AT_STATION_INDEX, changeAtStation);
-        moves.add(TransferCargoAtStationCompositeMove.CHANGE_ON_TRAIN_INDEX, changeOnTrain);
+        moves.add(changeAtStation);
+        moves.add(changeOnTrain);
 
         if (autoConsist) {
             int engine = trainAccessor.getTrain().getEngineId();
@@ -211,11 +211,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             if (trainAfter.equals(trainBefore)) return null;
         }
 
-        TransferCargoAtStationCompositeMove move = new TransferCargoAtStationCompositeMove(moves);
-
-        assert move.getChangeAtStation() == changeAtStation;
-        assert move.getChangeOnTrain() == changeOnTrain;
-
+        CompositeMove move = new CompositeMove(moves);
         return move;
     }
 

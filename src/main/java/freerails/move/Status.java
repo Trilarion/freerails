@@ -18,23 +18,25 @@
 
 package freerails.move;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
- * Records the status or failure of an attempt to execute a move.
+ * Records the status or failure of, among other things, an attempt to execute a move.
  */
-public class MoveStatus implements Serializable {
+public class Status implements Serializable {
 
     /**
      *
      */
-    public static final MoveStatus MOVE_OK = new MoveStatus(true, null);
+    public static final Status OK = new Status(true, null);
     private static final long serialVersionUID = 3258129171879309624L;
 
     private final boolean status;
     private final String message;
 
-    private MoveStatus(boolean status, String message) {
+    private Status(boolean status, String message) {
         this.status = status;
         this.message = message;
     }
@@ -43,19 +45,19 @@ public class MoveStatus implements Serializable {
      * @param reason
      * @return
      */
-    public static MoveStatus moveFailed(String reason) {
-        return new MoveStatus(false, reason);
+    public static Status moveFailed(@NotNull String reason) {
+        return new Status(false, reason);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof MoveStatus)) return false;
+        if (!(obj instanceof Status)) return false;
 
-        final MoveStatus moveStatus = (MoveStatus) obj;
+        final Status status = (Status) obj;
 
-        if (status != moveStatus.status) return false;
-        return message != null ? message.equals(moveStatus.message) : moveStatus.message == null;
+        if (this.status != status.status) return false;
+        return message != null ? message.equals(status.message) : status.message == null;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class MoveStatus implements Serializable {
      */
     private Object readResolve() {
         if (status) {
-            return MOVE_OK;
+            return OK;
         }
         return this;
     }

@@ -31,19 +31,19 @@ public interface MoveExecutor {
      * @param move
      * @return
      */
-    MoveStatus doMove(Move move);
+    Status doMove(Move move);
 
     /**
      * @param moveGenerator
      * @return
      */
-    MoveStatus doPreMove(MoveGenerator moveGenerator);
+    Status doPreMove(MoveGenerator moveGenerator);
 
     /**
      * @param move
      * @return
      */
-    MoveStatus tryDoMove(Move move);
+    Status tryDoMove(Move move);
 
     /**
      * @return

@@ -44,36 +44,36 @@ public class AddStationMove implements Move {
     }
 
     @Override
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         if (World.contains(this.station.getId(), world.getStations(this.player))) {
-            return MoveStatus.moveFailed("Station with id already existing");
+            return Status.moveFailed("Station with id already existing");
         }
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         if (!World.contains(this.station.getId(), world.getStations(this.player))) {
-            return MoveStatus.moveFailed("Station with id not existing");
+            return Status.moveFailed("Station with id not existing");
         }
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus doMove(World world, Player player) {
+    public Status doMove(World world, Player player) {
         if (World.contains(this.station.getId(), world.getStations(this.player))) {
-            return MoveStatus.moveFailed("Station with id already existing");
+            return Status.moveFailed("Station with id already existing");
         }
         world.addStation(this.player, station);
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus undoMove(World world, Player player) {
+    public Status undoMove(World world, Player player) {
         if (!World.contains(this.station.getId(), world.getStations(this.player))) {
-            return MoveStatus.moveFailed("Station with id not existing");
+            return Status.moveFailed("Station with id not existing");
         }
         world.removeStation(this.player, station.getId());
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 }

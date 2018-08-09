@@ -25,7 +25,7 @@ import freerails.model.player.Player;
 import freerails.model.statistics.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.model.*;
 import freerails.model.finances.Money;
 import freerails.model.game.GameTime;
@@ -72,8 +72,8 @@ public class BalanceSheetGeneratorTest extends TestCase {
         world.setTime(new GameTime(0));
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-        MoveStatus moveStatus = addPlayerMove.doMove(world, player);
-        assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
+        Status status = addPlayerMove.doMove(world, player);
+        assertTrue(status.getMessage(), status.succeeds());
 
         world.setTime(new GameTime(100));
     }

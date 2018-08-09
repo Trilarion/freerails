@@ -23,7 +23,7 @@ package freerails.controller;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.model.finances.*;
 import freerails.model.ModelConstants;
 import freerails.model.world.World;
@@ -48,8 +48,8 @@ public class FinancialDataGathererTest extends TestCase {
         world = new World.Builder().build();
 
         Move addPlayer = AddPlayerMove.generateMove(world, player);
-        MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = addPlayer.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
     }
 
     /**
@@ -114,8 +114,8 @@ public class FinancialDataGathererTest extends TestCase {
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(i, "Player " + i);
             Move addPlayer = AddPlayerMove.generateMove(world, players[i]);
-            MoveStatus moveStatus = addPlayer.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(moveStatus.succeeds());
+            Status status = addPlayer.doMove(world, Player.AUTHORITATIVE);
+            assertTrue(status.succeeds());
         }
 
         // Make player #0 buy stock in player #1

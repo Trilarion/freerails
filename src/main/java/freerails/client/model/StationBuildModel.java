@@ -27,7 +27,7 @@ import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.track.TrackType;
 import freerails.move.StationBuilder;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
@@ -206,13 +206,13 @@ public class StationBuildModel {
 
         public void actionPerformed(ActionEvent e) {
             java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
-            MoveStatus moveStatus = stationBuilder.buildStation(new Vec2D(value.x, value.y));
+            Status status = stationBuilder.buildStation(new Vec2D(value.x, value.y));
             String message = null;
 
-            if (moveStatus.succeeds()) {
+            if (status.succeeds()) {
                 stationBuildAction.setEnabled(false);
             } else {
-                message = moveStatus.getMessage();
+                message = status.getMessage();
             }
 
             modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, message);

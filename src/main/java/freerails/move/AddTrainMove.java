@@ -36,24 +36,24 @@ public class AddTrainMove implements Move {
     }
 
     @Override
-    public MoveStatus tryDoMove(World world, Player player) {
-        return MoveStatus.MOVE_OK;
+    public Status tryDoMove(World world, Player player) {
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus tryUndoMove(World world, Player player) {
-        return MoveStatus.MOVE_OK;
+    public Status tryUndoMove(World world, Player player) {
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus doMove(World world, Player player) {
+    public Status doMove(World world, Player player) {
         world.addTrain(this.player, train);
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus undoMove(World world, Player player) {
+    public Status undoMove(World world, Player player) {
         world.removeTrain(this.player, train.getId());
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 }

@@ -20,7 +20,7 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
@@ -277,8 +277,8 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             Player player = new Player(i, name);
 
             Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-            MoveStatus moveStatus = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
-            if (!moveStatus.succeeds()) throw new IllegalStateException();
+            Status status = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
+            if (!status.succeeds()) throw new IllegalStateException();
             passwords[i] = players.get(i).getPassword();
         }
 
@@ -380,12 +380,12 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         this.serverGameModel = serverGameModel;
 
         MoveReceiver moveReceiver = move -> {
-            MoveStatus moveStatus = move.doMove(this.serverGameModel.getWorld(), Player.AUTHORITATIVE);
+            Status status = move.doMove(this.serverGameModel.getWorld(), Player.AUTHORITATIVE);
 
-            if (moveStatus.succeeds()) {
+            if (status.succeeds()) {
                 sendToAll(move);
             } else {
-                logger.warn(moveStatus.getMessage());
+                logger.warn(status.getMessage());
             }
         };
 
@@ -428,7 +428,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                                 move = moveGenerator.generate(serverGameModel.getWorld());
                             }
 
-                            MoveStatus mStatus = move.tryDoMove(serverGameModel.getWorld(), player);
+                            Status mStatus = move.tryDoMove(serverGameModel.getWorld(), player);
 
                             if (mStatus.succeeds()) {
                                 move.doMove(serverGameModel.getWorld(), player);

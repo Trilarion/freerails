@@ -26,7 +26,7 @@ import freerails.model.finances.StockPrice;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.model.*;
 import freerails.model.finances.Money;
 import freerails.model.finances.StockItemTransaction;
@@ -55,8 +55,8 @@ public class BrokerScreenGeneratorTest extends TestCase {
         Player player = MapFixtureFactory.TEST_PLAYER;
 
         AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
-        MoveStatus moveStatus = apm.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = apm.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
         playerID = world.getPlayers().size() - 1;
         this.player = world.getPlayer(playerID);
     }
@@ -73,8 +73,8 @@ public class BrokerScreenGeneratorTest extends TestCase {
             StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(playerID,
                     ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
             Move move = new AddTransactionMove(player, stockItemTransaction);
-            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(moveStatus.succeeds());
+            Status status = move.doMove(world, Player.AUTHORITATIVE);
+            assertTrue(status.succeeds());
             // The line below threw an exception that caused bug 1341365.
             BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, player);
             assertNotNull(brokerScreenGenerator);

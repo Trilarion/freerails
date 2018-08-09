@@ -49,7 +49,7 @@ import java.io.Serializable;
  * (6) The tryDoMove and tryUndoMove methods should test whether the move is
  * valid but leave the game world unchanged.
  *
- * @see MoveStatus
+ * @see Status
  * @see World
  * @see MoveGenerator
  */
@@ -61,25 +61,25 @@ public interface Move extends Serializable {
      *
      * This method must leave the world object unchanged.
      */
-    MoveStatus tryDoMove(World world, Player player);
+    Status tryDoMove(World world, Player player);
 
     /**
      * Tests whether this Move can be undone on the specified world object.
      *
      * This method must leave the world object unchanged.
      */
-    MoveStatus tryUndoMove(World world, Player player);
+    Status tryUndoMove(World world, Player player);
 
     // TODO does this method also has to tryDoMove at the beginning
     /**
      * Executes this move on the specified world object.
      */
-    MoveStatus doMove(World world, Player player);
+    Status doMove(World world, Player player);
 
     /**
      * If {@code doMove} has just been executed on the specified world
      * object, calling this method changes the state of the world object back to
      * how it was before {@code doMove} was called.
      */
-    MoveStatus undoMove(World world, Player player);
+    Status undoMove(World world, Player player);
 }

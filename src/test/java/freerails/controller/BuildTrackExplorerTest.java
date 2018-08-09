@@ -26,7 +26,7 @@ import freerails.model.terrain.*;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.*;
@@ -201,7 +201,7 @@ public class BuildTrackExplorerTest extends TestCase {
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, MapFixtureFactory.TEST_PLAYER);
-        MoveStatus ms = move.doMove(world, Player.AUTHORITATIVE);
+        Status ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.succeeds());
     }
 }

@@ -29,8 +29,7 @@ import freerails.model.track.pathfinding.*;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
-import freerails.move.mapupdatemove.UpgradeTrackCompositeMove;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -148,14 +147,14 @@ public class BuildTrackController implements GameModel {
      * @param track        List
      * @param trackBuilder TrackMoveProducer
      */
-    private MoveStatus moveCursorMoreTiles(List<Vec2D> track, TrackMoveProducer trackBuilder) {
+    private Status moveCursorMoreTiles(List<Vec2D> track, TrackMoveProducer trackBuilder) {
         Vec2D oldPosition = getCursorPosition();
 
         if (!TileTransition.checkValidity(oldPosition, track.get(0))) {
             throw new IllegalStateException(oldPosition.toString() + " and " + track.get(0).toString());
         }
 
-        MoveStatus moveStatus = null;
+        Status status = null;
         int piecesOfNewTrack = 0;
 
         if (null != trackBuilder) {
@@ -184,18 +183,18 @@ public class BuildTrackController implements GameModel {
             piecesOfNewTrack++;
 
             if (trackBuilder != null) {
-                moveStatus = trackBuilder.buildTrack(oldPosition, vector);
+                status = trackBuilder.buildTrack(oldPosition, vector);
             } else {
-                moveStatus = planBuildingTrack(oldPosition, vector);
+                status = planBuildingTrack(oldPosition, vector);
             }
 
-            if (moveStatus.succeeds()) {
+            if (status.succeeds()) {
                 setCursorMessage("");
             } else {
-                setCursorMessage(moveStatus.getMessage());
+                setCursorMessage(status.getMessage());
                 reset();
 
-                return moveStatus;
+                return status;
             }
 
             oldPosition = point;
@@ -203,7 +202,7 @@ public class BuildTrackController implements GameModel {
 
         // Check whether there is already track at every point.
         if (piecesOfNewTrack == 0) {
-            MoveStatus moveFailed = MoveStatus.moveFailed("Track already here");
+            Status moveFailed = Status.moveFailed("Track already here");
             setCursorMessage(moveFailed.getMessage());
 
             return moveFailed;
@@ -212,20 +211,20 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = true;
 
         // If track has actually been built, play the build track sound.
-        if (trackBuilder != null && moveStatus.succeeds()) {
+        if (trackBuilder != null && status.succeeds()) {
             if (trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
                 SoundManager.getInstance().playSound(ClientConstants.SOUND_BUILD_TRACK, 0);
             }
         }
 
-        return moveStatus;
+        return status;
     }
 
     /**
      * Attempts to building track from the specified point in the specified
      * direction on the worldDiff object.
      */
-    private MoveStatus planBuildingTrack(Vec2D point, TileTransition tileTransition) {
+    private Status planBuildingTrack(Vec2D point, TileTransition tileTransition) {
         TerrainTile tileA = world.getTile(point);
         BuildTrackStrategy buildTrackStrategy = getBuildTrackStrategy();
         int trackTypeAID = buildTrackStrategy.getRule(tileA.getTerrainTypeId());
@@ -449,10 +448,11 @@ public class BuildTrackController implements GameModel {
                                     break attemptMove;
                                 }
 
-                                move = UpgradeTrackCompositeMove.generateMove(tile.getTrackPiece(), after, location);
+                                move = new ChangeTrackPieceMove(tile.getTrackPiece(), after, location);
+                                // move = SpecialTrackCompositeMove.generateUpgradeTrackCompositeMove(tile.getTrackPiece(), after, location);
 
                                 // add to proposed track
-                                ChangeTrackPieceMove m = (ChangeTrackPieceMove) ((UpgradeTrackCompositeMove) move).getMove(0);
+                                ChangeTrackPieceMove m = (ChangeTrackPieceMove) move;
                                 proposedTrack.put(m.location, m.trackPieceAfter);
 
                                 break;
@@ -461,8 +461,8 @@ public class BuildTrackController implements GameModel {
                                 throw new IllegalStateException(mode.toString());
                         }
 
-                        MoveStatus moveStatus = move.doMove(world, fp);
-                        okSoFar = moveStatus.succeeds() && okSoFar;
+                        Status status = move.doMove(world, fp);
+                        okSoFar = status.succeeds() && okSoFar;
                     }// end of attemptMove
                     location = Vec2D.add(location, v.getD());
                 }
@@ -490,19 +490,19 @@ public class BuildTrackController implements GameModel {
 
         if (buildNewTrack) {
             if (!builtTrack.isEmpty()) {
-                MoveStatus moveStatus = moveCursorMoreTiles(builtTrack, trackBuilder);
+                Status status = moveCursorMoreTiles(builtTrack, trackBuilder);
 
                 // Note, reset() will have been called if moveStatus.success == false
-                if (moveStatus.succeeds()) {
+                if (status.succeeds()) {
                     actPoint = builtTrack.get(builtTrack.size() - 1);
                     builtTrack = new ArrayList<>();
                 }
             }
         } else {
             trackBuilder.setBuildTrackStrategy(getBuildTrackStrategy());
-            MoveStatus moveStatus = trackBuilder.buildTrack(actPoint, path);
+            Status status = trackBuilder.buildTrack(actPoint, path);
 
-            if (moveStatus.succeeds()) {
+            if (status.succeeds()) {
                 actPoint = targetPoint;
                 setCursorMessage("");
                 if (BuildMode.REMOVE_TRACK == getBuildMode()) {
@@ -511,7 +511,7 @@ public class BuildTrackController implements GameModel {
                     SoundManager.getInstance().playSound(ClientConstants.SOUND_BUILD_TRACK, 0);
                 }
             } else {
-                setCursorMessage(moveStatus.getMessage());
+                setCursorMessage(status.getMessage());
                 reset();
             }
         }

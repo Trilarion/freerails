@@ -66,25 +66,25 @@ public class AddPlayerMove implements Move {
         return playerToAdd.hashCode();
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         if (isAlreadyASimilarPlayer(world))
-            return MoveStatus.moveFailed("There is already a player with the same name.");
+            return Status.moveFailed("There is already a player with the same name.");
 
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         int numPlayers = world.getPlayers().size();
         Player pp = world.getPlayer(numPlayers - 1);
         if (pp.equals(playerToAdd)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed("The last player is " + pp.getName() + "not " + playerToAdd.getName());
+        return Status.moveFailed("The last player is " + pp.getName() + "not " + playerToAdd.getName());
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus moveStatus = tryDoMove(world, player);
-        if (!moveStatus.succeeds()) return moveStatus;
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
+        if (!status.succeeds()) return status;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         Player player2 = playerToAdd;
@@ -93,18 +93,18 @@ public class AddPlayerMove implements Move {
         Money initialStockPrice = new Money(5);
         Transaction transaction = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
         world.addTransaction(player2, transaction);
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus moveStatus = tryUndoMove(world, player);
-        if (!moveStatus.succeeds()) return moveStatus;
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
+        if (!status.succeeds()) return status;
 
         world.removeLastTransaction(playerToAdd);
         world.removeLastTransaction(playerToAdd);
         world.removeLastPlayer();
 
-        return moveStatus;
+        return status;
     }
 
     private boolean isAlreadyASimilarPlayer(UnmodifiableWorld world) {

@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.move.MoveExecutor;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -64,12 +64,12 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
 
         Vec2D stationA = new Vec2D(10, 10);
-        MoveStatus moveStatus = trackBuilder.buildTrack(stationA, line1);
-        assertTrue(moveStatus.succeeds());
-        moveStatus = trackBuilder.buildTrack(stationA, line2);
-        assertTrue(moveStatus.succeeds());
-        moveStatus = trackBuilder.buildTrack(stationA, line3);
-        assertTrue(moveStatus.succeeds());
+        Status status = trackBuilder.buildTrack(stationA, line1);
+        assertTrue(status.succeeds());
+        status = trackBuilder.buildTrack(stationA, line2);
+        assertTrue(status.succeeds());
+        status = trackBuilder.buildTrack(stationA, line3);
+        assertTrue(status.succeeds());
     }
 
     /**

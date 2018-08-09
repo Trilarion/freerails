@@ -38,29 +38,29 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     // TODO could this also be private?
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         GameSpeed actualSpeed = world.getGameSpeed();
 
         // check that old speed and actual speed are consistent
         if (actualSpeed.equals(oldSpeed)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
         String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + actualSpeed.getSpeed();
-        return MoveStatus.moveFailed(string);
+        return Status.moveFailed(string);
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         GameSpeed actualSpeed = world.getGameSpeed();
 
         if (actualSpeed.equals(newSpeed)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed("Expected " + newSpeed + ", found " + actualSpeed);
+        return Status.moveFailed("Expected " + newSpeed + ", found " + actualSpeed);
     }
 
-    public MoveStatus doMove(World world, Player player) {
+    public Status doMove(World world, Player player) {
         // TODO is this the convention to try exactly before?
-        MoveStatus status = tryDoMove(world, player);
+        Status status = tryDoMove(world, player);
 
         if (status.succeeds()) {
             world.setGameSpeed(newSpeed);
@@ -69,9 +69,9 @@ public class ChangeGameSpeedMove implements Move {
         return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
+    public Status undoMove(World world, Player player) {
         // TODO is this the convention to try exactly before
-        MoveStatus status = tryUndoMove(world, player);
+        Status status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
             world.setGameSpeed(oldSpeed);

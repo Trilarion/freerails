@@ -28,7 +28,7 @@ import freerails.model.train.Train;
 import freerails.model.train.schedule.Schedule;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 
 import freerails.util.Vec2D;
 import freerails.model.world.World;
@@ -316,8 +316,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 0, 0, world, MapFixtureFactory.TEST_PLAYER, false, false);
         Move move = moveGenerator.generate();
         if (null != move) {
-            MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-            assertEquals(MoveStatus.MOVE_OK, moveStatus);
+            Status status = move.doMove(world, Player.AUTHORITATIVE);
+            assertEquals(Status.OK, status);
         }
     }
 

@@ -72,26 +72,26 @@ public class TimeTickMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         if (world.currentTime().equals(oldTime)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
         String string = "oldTime = " + oldTime.getTicks() + " <=> " + "currentTime " + (world.currentTime()).getTicks();
 
-        return MoveStatus.moveFailed(string);
+        return Status.moveFailed(string);
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         GameTime time = world.currentTime();
 
         if (time.equals(newTime)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed("Expected " + newTime + ", found " + time);
+        return Status.moveFailed("Expected " + newTime + ", found " + time);
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus status = tryDoMove(world, player);
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
 
         if (status.succeeds()) {
             world.setTime(newTime);
@@ -100,8 +100,8 @@ public class TimeTickMove implements Move {
         return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus status = tryUndoMove(world, player);
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
             world.setTime(oldTime);

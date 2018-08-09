@@ -36,6 +36,7 @@ import freerails.model.finances.TransactionCategory;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 /**
  * A JPopupMenu that displays the list of industries that can be built. This
@@ -74,11 +75,11 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                         Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainTypeId);
                         Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainTypeId, 1, Money.opposite(price));
                         Move m2 = new AddTransactionMove(modelRoot.getPlayer(), transaction);
-                        Move m3 = new CompositeMove(move, m2);
-                        MoveStatus moveStatus = modelRoot.doMove(m3);
+                        Move m3 = new CompositeMove(Arrays.asList(move, m2));
+                        Status status = modelRoot.doMove(m3);
 
-                        if (!moveStatus.succeeds()) {
-                            modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, moveStatus.getMessage());
+                        if (!status.succeeds()) {
+                            modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, status.getMessage());
                         }
                     }
                 });

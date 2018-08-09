@@ -22,7 +22,7 @@ import freerails.controller.BuildMode;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.ServerCommandReceiver;
 import freerails.move.receiver.MoveChainFork;
@@ -114,23 +114,23 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param move
      * @return
      */
-    public MoveStatus doMove(Move move) {
-        MoveStatus moveStatus = moveReceiver.tryDoMove(move);
+    public Status doMove(Move move) {
+        Status status = moveReceiver.tryDoMove(move);
         moveReceiver.process(move);
 
-        return moveStatus;
+        return status;
     }
 
     /**
      * @param moveGenerator
      * @return
      */
-    public MoveStatus doPreMove(MoveGenerator moveGenerator) {
+    public Status doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
-        MoveStatus moveStatus = moveReceiver.tryDoMove(move);
+        Status status = moveReceiver.tryDoMove(move);
         moveReceiver.processMoveGenerator(moveGenerator);
 
-        return moveStatus;
+        return status;
     }
 
     /**
@@ -217,7 +217,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param move
      * @return
      */
-    public MoveStatus tryDoMove(Move move) {
+    public Status tryDoMove(Move move) {
         return moveReceiver.tryDoMove(move);
     }
 }

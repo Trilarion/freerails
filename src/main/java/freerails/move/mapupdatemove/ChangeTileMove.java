@@ -22,7 +22,7 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
@@ -75,46 +75,46 @@ public class ChangeTileMove implements MapUpdateMove {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         TerrainTile actual = world.getTile(location);
         Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
         if (type.getCategory() != TerrainCategory.COUNTRY) {
-            return MoveStatus.moveFailed("Can only build on clear terrain.");
+            return Status.moveFailed("Can only build on clear terrain.");
         }
 
         if (actual.equals(before)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed("Expected " + before + " but found " + actual);
+        return Status.moveFailed("Expected " + before + " but found " + actual);
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         TerrainTile actual = world.getTile(location);
         if (actual.equals(after)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed("Expected " + after + " but found " + actual);
+        return Status.moveFailed("Expected " + after + " but found " + actual);
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus moveStatus = tryDoMove(world, player);
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             world.setTile(location, after);
         }
 
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus moveStatus = tryUndoMove(world, player);
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             world.setTile(location, before);
         }
 
-        return moveStatus;
+        return status;
     }
 
     /**

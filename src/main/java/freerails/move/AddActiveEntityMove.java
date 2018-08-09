@@ -75,40 +75,40 @@ public class AddActiveEntityMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
-        if (index != world.size(this.player)) return MoveStatus.moveFailed("index != world.size(listKey, p)");
+    public Status tryDoMove(World world, Player player) {
+        if (index != world.size(this.player)) return Status.moveFailed("index != world.size(listKey, p)");
 
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         int expectedSize = index + 1;
         if (expectedSize != world.size(this.player))
-            return MoveStatus.moveFailed("(index + 1) != world.size(listKey, player)");
+            return Status.moveFailed("(index + 1) != world.size(listKey, player)");
 
         ActivityIterator ai = world.getActivities(this.player, index);
-        if (ai.hasNext()) return MoveStatus.moveFailed("There should be exactly one activity!");
+        if (ai.hasNext()) return Status.moveFailed("There should be exactly one activity!");
 
         Activity act = ai.getActivity();
 
         if (!act.equals(activity))
-            return MoveStatus.moveFailed("Expected " + activity.toString() + " but found " + act.toString());
+            return Status.moveFailed("Expected " + activity.toString() + " but found " + act.toString());
 
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus moveStatus = tryDoMove(world, player);
-        if (moveStatus.succeeds()) world.addActiveEntity(this.player, activity);
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
+        if (status.succeeds()) world.addActiveEntity(this.player, activity);
 
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus moveStatus = tryUndoMove(world, player);
-        if (moveStatus.succeeds()) world.removeLastActiveEntity(this.player);
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
+        if (status.succeeds()) world.removeLastActiveEntity(this.player);
 
-        return moveStatus;
+        return status;
     }
 
 }

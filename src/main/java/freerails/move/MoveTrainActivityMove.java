@@ -23,23 +23,23 @@ public class MoveTrainActivityMove implements Move {
     }
 
     @Override
-    public MoveStatus tryDoMove(World world, Player player) {
-        return MoveStatus.MOVE_OK;
+    public Status tryDoMove(World world, Player player) {
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus tryUndoMove(World world, Player player) {
-        return MoveStatus.MOVE_OK;
+    public Status tryUndoMove(World world, Player player) {
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus doMove(World world, Player player) {
+    public Status doMove(World world, Player player) {
         world.addActivity(this.player, trainId, trainMotion);
-        return MoveStatus.MOVE_OK;
+        return Status.OK;
     }
 
     @Override
-    public MoveStatus undoMove(World world, Player player) {
-        return MoveStatus.MOVE_OK;
+    public Status undoMove(World world, Player player) {
+        return Status.OK;
     }
 }

@@ -65,14 +65,14 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         stationA = new Vec2D(10, 10);
-        MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
+        Status ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.succeeds());
 
         // Build 2 stations.
-        MoveStatus ms1 = stationBuilder.buildStation(stationA);
+        Status ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.succeeds());
         Vec2D stationB = new Vec2D(19, 10);
-        MoveStatus ms2 = stationBuilder.buildStation(stationB);
+        Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.succeeds());
 
         TrainOrder order0 = new TrainOrder(0, null, false, false);
@@ -101,8 +101,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     public void testPathOnTiles() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
-        MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
 
         TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         TrainMotion motion = trainAccessor.findCurrentMotion(0);
@@ -117,8 +117,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     public void testMove2() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
-        MoveStatus moveStatus = move.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.doMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
         ActivityIterator ai = world.getActivities(player, 0);
         TrainMotion tm = (TrainMotion) ai.getActivity();
         assertEquals(0.0d, tm.duration());
@@ -143,17 +143,17 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Vec2D from = new Vec2D(5, 5);
-        MoveStatus moveStatus = producer.buildTrack(from, trackPath);
-        if (!moveStatus.succeeds())
-            throw new IllegalStateException(moveStatus.getMessage());
+        Status status = producer.buildTrack(from, trackPath);
+        if (!status.succeeds())
+            throw new IllegalStateException(status.getMessage());
 
         TrainOrder[] orders = {};
         UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
         Move move = addTrain.generate(world);
-        moveStatus = move.doMove(world, player);
-        if (!moveStatus.succeeds())
-            throw new IllegalStateException(moveStatus.getMessage());
+        status = move.doMove(world, player);
+        if (!status.succeeds())
+            throw new IllegalStateException(status.getMessage());
 
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         assertNotNull(ta.getTargetLocation());

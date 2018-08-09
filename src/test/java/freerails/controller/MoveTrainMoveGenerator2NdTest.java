@@ -97,17 +97,17 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         }
         Vec2D station0Location = new Vec2D(10, 10);
 
-        MoveStatus moveStatus1 = trackBuilder.buildTrack(station0Location, track);
-        assertTrue(moveStatus1.succeeds());
+        Status status1 = trackBuilder.buildTrack(station0Location, track);
+        assertTrue(status1.succeeds());
 
         // Build 2 stations.
-        MoveStatus ms1 = stationBuilder.buildStation(station0Location);
+        Status ms1 = stationBuilder.buildStation(station0Location);
         assertTrue(ms1.succeeds());
         station1Location = new Vec2D(20, 10);
-        MoveStatus ms2 = stationBuilder.buildStation(station1Location);
+        Status ms2 = stationBuilder.buildStation(station1Location);
         assertTrue(ms2.succeeds());
         station2Location = new Vec2D(28, 10);
-        MoveStatus ms3 = stationBuilder.buildStation(station2Location);
+        Status ms3 = stationBuilder.buildStation(station2Location);
         assertTrue(ms3.succeeds());
 
         TrainOrder order0 = new TrainOrder(2, null, false, false);
@@ -120,8 +120,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0),
                 start, player, schedule);
         Move move = preMove.generate(world);
-        MoveStatus moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.doMove(world, player);
+        assertTrue(status.succeeds());
     }
 
     /**
@@ -170,7 +170,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player,
                 new OccupiedTracks(player, world));
         Move move = preMove.generate(world);
-        MoveStatus ms = move.doMove(world, player);
+        Status ms = move.doMove(world, player);
         assertTrue(ms.getMessage(), ms.succeeds());
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         return ta.findCurrentMotion(Integer.MAX_VALUE);
@@ -450,8 +450,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         assertTrue(preMove.isUpdateDue(world));
         Move move = preMove.generate(world);
-        MoveStatus moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.getMessage(), moveStatus.succeeds());
+        Status status = move.doMove(world, player);
+        assertTrue(status.getMessage(), status.succeeds());
         assertFalse(preMove.isUpdateDue(world));
     }
 

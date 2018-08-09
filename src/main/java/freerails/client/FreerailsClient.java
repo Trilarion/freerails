@@ -22,7 +22,7 @@ import freerails.client.launcher.LauncherFrame;
 import freerails.model.player.Player;
 import freerails.move.Move;
 import freerails.move.MovePrecommitter;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
@@ -188,9 +188,9 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
             Move move = (Move) message;
             movePrecommitter.fromServer(move);
             moveChainFork.process(move);
-        } else if (message instanceof MoveStatus) {
-            MoveStatus moveStatus = (MoveStatus) message;
-            movePrecommitter.fromServer(moveStatus);
+        } else if (message instanceof Status) {
+            Status status = (Status) message;
+            movePrecommitter.fromServer(status);
         } else if (message instanceof MoveGenerator) {
             MoveGenerator moveGenerator = (MoveGenerator) message;
             Move move = movePrecommitter.fromServer(moveGenerator);
@@ -222,7 +222,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Tests a move before sending it to the server.
      */
-    public final MoveStatus tryDoMove(Move move) {
+    public final Status tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 

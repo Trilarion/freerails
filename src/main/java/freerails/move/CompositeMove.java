@@ -26,6 +26,7 @@ import freerails.model.world.World;
 import freerails.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,13 +51,6 @@ public class CompositeMove implements Move {
         moves = new ArrayList<>();
         moves.add(move);
         moves.addAll(moreMoves);
-    }
-
-    /**
-     * @param moves
-     */
-    public CompositeMove(Move... moves) {
-        this.moves = Utils.immutableList(moves);
     }
 
     @Override
@@ -89,87 +83,87 @@ public class CompositeMove implements Move {
         return moves;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         // Since whether a move later in the list goes through could
         // depend on whether an earlier move has been executed, we need
         // actually execute moves, then undo them to test whether the
         // array of moves can be executed successfully.
-        MoveStatus moveStatus = doMove(world, player);
+        Status status = doMove(world, player);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             // We just wanted to see if we could do them so we undo them again.
             undoMoves(world, moves.size() - 1, player);
         }
 
         // If its not success, then doMove would have undone the moves so we don't
         // need to undo them.
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
-        MoveStatus moveStatus = undoMove(world, player);
+    public Status tryUndoMove(World world, Player player) {
+        Status status = undoMove(world, player);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             redoMoves(world, 0, player);
         }
 
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus moveStatus = compositeTest(world);
+    public Status doMove(World world, Player player) {
+        Status status = compositeTest(world);
 
-        if (!moveStatus.succeeds()) {
-            return moveStatus;
+        if (!status.succeeds()) {
+            return status;
         }
 
         for (int i = 0; i < moves.size(); i++) {
-            moveStatus = moves.get(i).doMove(world, player);
+            status = moves.get(i).doMove(world, player);
 
-            if (!moveStatus.succeeds()) {
+            if (!status.succeeds()) {
                 // Undo any moves we have already done.
                 undoMoves(world, i - 1, player);
 
-                return moveStatus;
+                return status;
             }
         }
 
-        return moveStatus;
+        return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus moveStatus = MoveStatus.MOVE_OK;
+    public Status undoMove(World world, Player player) {
+        Status status = Status.OK;
 
         for (int i = moves.size() - 1; i >= 0; i--) {
-            moveStatus = moves.get(i).undoMove(world, player);
+            status = moves.get(i).undoMove(world, player);
 
-            if (!moveStatus.succeeds()) {
+            if (!status.succeeds()) {
                 // Redo any moves we have already undone.
                 redoMoves(world, i + 1, player);
 
-                return moveStatus;
+                return status;
             }
         }
 
-        return moveStatus;
+        return status;
     }
 
     private void undoMoves(World world, int number, Player player) {
         for (int i = number; i >= 0; i--) {
-            MoveStatus moveStatus = moves.get(i).undoMove(world, player);
+            Status status = moves.get(i).undoMove(world, player);
 
-            if (!moveStatus.succeeds()) {
-                throw new IllegalStateException(moveStatus.getMessage());
+            if (!status.succeeds()) {
+                throw new IllegalStateException(status.getMessage());
             }
         }
     }
 
     private void redoMoves(World world, int number, Player player) {
         for (int i = number; i < moves.size(); i++) {
-            MoveStatus moveStatus = moves.get(i).doMove(world, player);
+            Status status = moves.get(i).doMove(world, player);
 
-            if (!moveStatus.succeeds()) {
-                throw new IllegalStateException(moveStatus.getMessage());
+            if (!status.succeeds()) {
+                throw new IllegalStateException(status.getMessage());
             }
         }
     }
@@ -178,8 +172,8 @@ public class CompositeMove implements Move {
      * Subclasses may override this method to perform tests which pass or fail
      * depending on the combination of moves making up this composite move.
      */
-    public MoveStatus compositeTest(World world) {
-        return MoveStatus.MOVE_OK;
+    public Status compositeTest(World world) {
+        return Status.OK;
     }
 
     /**

@@ -29,7 +29,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
@@ -74,7 +74,7 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         TrackPiece newTrackPiece;
         TrackConfiguration newConfig;
         TrackMove move;
-        MoveStatus moveStatus;
+        Status status;
 
         // Try building the simplest piece of track.
         newConfig = TrackConfiguration.getFlatInstance("000010000");
@@ -85,36 +85,36 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
 
         newTrackPiece = new TrackPiece(newConfig, trackType, 0);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
-        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(moveStatus);
-        assertEquals(true, moveStatus.succeeds());
+        status = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(status);
+        assertEquals(true, status.succeeds());
 
         // As above but with newTrackPiece and oldTrackPiece in the wrong order,
         // should fail.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, Vec2D.ZERO);
-        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(moveStatus);
-        assertFalse(moveStatus.succeeds());
+        status = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(status);
+        assertFalse(status.succeeds());
 
         // Try a move that does nothing, i.e. oldTrackPiece==newTrackPiece, should fail.
         move = new ChangeTrackPieceMove(oldTrackPiece, oldTrackPiece, Vec2D.ZERO);
-        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(moveStatus);
-        assertFalse(moveStatus.succeeds());
+        status = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(status);
+        assertFalse(status.succeeds());
 
         // Try to build track outside the map.
         move = new ChangeTrackPieceMove(newTrackPiece, oldTrackPiece, new Vec2D(100, 0));
-        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(moveStatus);
-        assertFalse(moveStatus.succeeds());
+        status = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(status);
+        assertFalse(status.succeeds());
 
         // Try building an illegal track configuration.
         newConfig = TrackConfiguration.getFlatInstance("000011111");
 
         newTrackPiece = new TrackPiece(newConfig, trackType,0);
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
-        moveStatus = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
-        assertFalse(moveStatus.succeeds());
+        status = move.tryDoMove(getWorld(), Player.AUTHORITATIVE);
+        assertFalse(status.succeeds());
     }
 
     /**
@@ -141,12 +141,12 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
      */
     private void assertMoveDoMoveIsOk(TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
         TrackMove move;
-        MoveStatus moveStatus;
+        Status status;
 
         move = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
-        moveStatus = move.doMove(getWorld(), Player.AUTHORITATIVE);
-        assertNotNull(moveStatus);
-        assertEquals(true, moveStatus.succeeds());
+        status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+        assertNotNull(status);
+        assertEquals(true, status.succeeds());
         TrackConfiguration actual = getWorld().getTile(Vec2D.ZERO)
                 .getTrackPiece().getTrackConfiguration();
         assertEquals(newTrackPiece.getTrackConfiguration(), actual);

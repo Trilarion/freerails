@@ -79,11 +79,11 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return result;
     }
 
-    public MoveStatus tryDoMove(World world, Player player) {
+    public Status tryDoMove(World world, Player player) {
         return tryMove(world, before);
     }
 
-    private MoveStatus tryMove(World world, List<TrainBlueprint> stateA) {
+    private Status tryMove(World world, List<TrainBlueprint> stateA) {
         // Check that the specified station exists.
         // TODO check that station is existing, do we need a dedicated function for that
         /*
@@ -97,28 +97,28 @@ public class ChangeProductionAtEngineShopMove implements Move {
         } catch (Exception e) {}
 
         if (null == station) {
-            return MoveStatus.moveFailed(stationNumber + " " + player + " is does null");
+            return Status.moveFailed(stationNumber + " " + player + " is does null");
         }
 
         // Check that the station is building what we expect.
         if (null == station.getProduction()) {
             if (null == stateA) {
-                return MoveStatus.MOVE_OK;
+                return Status.OK;
             }
-            return MoveStatus.moveFailed(stationNumber + " " + player);
+            return Status.moveFailed(stationNumber + " " + player);
         }
         if (station.getProduction().equals(stateA)) {
-            return MoveStatus.MOVE_OK;
+            return Status.OK;
         }
-        return MoveStatus.moveFailed(stationNumber + " " + player);
+        return Status.moveFailed(stationNumber + " " + player);
     }
 
-    public MoveStatus tryUndoMove(World world, Player player) {
+    public Status tryUndoMove(World world, Player player) {
         return tryMove(world, after);
     }
 
-    public MoveStatus doMove(World world, Player player) {
-        MoveStatus status = tryDoMove(world, player);
+    public Status doMove(World world, Player player) {
+        Status status = tryDoMove(world, player);
 
         if (status.succeeds()) {
             Station station = world.getStation(this.player, stationNumber);
@@ -127,8 +127,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return status;
     }
 
-    public MoveStatus undoMove(World world, Player player) {
-        MoveStatus status = tryUndoMove(world, player);
+    public Status undoMove(World world, Player player) {
+        Status status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
             Station station = world.getStation(this.player, stationNumber);

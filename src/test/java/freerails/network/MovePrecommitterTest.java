@@ -56,8 +56,8 @@ public class MovePrecommitterTest extends TestCase {
         assertFalse(oldtime.equals(newTime));
 
         Move move = new TimeTickMove(oldtime, newTime);
-        MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.tryDoMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
 
         committer.toServer(move);
 
@@ -67,7 +67,7 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(0, committer.uncomitted.size());
         assertEquals(1, committer.precomitted.size());
 
-        committer.fromServer(moveStatus);
+        committer.fromServer(status);
 
         // The move m should now be full committed.
         assertFalse(committer.blocked);
@@ -85,8 +85,8 @@ public class MovePrecommitterTest extends TestCase {
         assertFalse(oldtime.equals(newTime));
 
         Move move = new TimeTickMove(oldtime, newTime);
-        MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.tryDoMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
 
         committer.toServer(move);
 
@@ -118,7 +118,7 @@ public class MovePrecommitterTest extends TestCase {
         Move m2 = new TimeTickMove(newTime, oldtime);
         committer.fromServer(m2);
         assertEquals(oldtime, getTime());
-        committer.fromServer(moveStatus);
+        committer.fromServer(status);
         assertEquals(newTime, getTime());
         assertFalse(committer.blocked);
         assertEquals(0, committer.uncomitted.size());
@@ -134,8 +134,8 @@ public class MovePrecommitterTest extends TestCase {
         assertFalse(oldtime.equals(newTime));
 
         Move move = new TimeTickMove(oldtime, newTime);
-        MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.tryDoMove(world, Player.AUTHORITATIVE);
+        assertTrue(status.succeeds());
 
         committer.toServer(move);
 
@@ -146,7 +146,7 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(1, committer.precomitted.size());
 
         // Now, suppose the server rejected the move..
-        MoveStatus rejection = MoveStatus.moveFailed("Rejected!");
+        Status rejection = Status.moveFailed("Rejected!");
         committer.fromServer(rejection);
         assertEquals(oldtime, getTime());
         assertFalse(committer.blocked);
@@ -164,15 +164,15 @@ public class MovePrecommitterTest extends TestCase {
 
         // the following move should fail!
         Move move = new TimeTickMove(newTime, oldtime);
-        MoveStatus moveStatus = move.tryDoMove(world, Player.AUTHORITATIVE);
-        assertFalse(moveStatus.succeeds());
+        Status status = move.tryDoMove(world, Player.AUTHORITATIVE);
+        assertFalse(status.succeeds());
 
         committer.toServer(move);
         assertTrue(committer.blocked);
         assertEquals(1, committer.uncomitted.size());
         assertEquals(0, committer.precomitted.size());
 
-        committer.fromServer(moveStatus);
+        committer.fromServer(status);
         assertFalse(committer.blocked);
         assertEquals(0, committer.uncomitted.size());
         assertEquals(0, committer.precomitted.size());

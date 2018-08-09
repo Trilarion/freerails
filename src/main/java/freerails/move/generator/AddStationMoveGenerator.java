@@ -21,13 +21,13 @@
  */
 package freerails.move.generator;
 
+import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.terrain.NearestCityFinder;
 import freerails.model.station.VerifyStationName;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
-import freerails.move.AddStationCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
@@ -36,6 +36,7 @@ import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -124,15 +125,36 @@ public class AddStationMoveGenerator implements MoveGenerator {
             }
 
             // check the terrain to see if we can build a station on it...
-            move = AddStationCompositeMove.generateMove(world, stationName, location, upgradeTrackMove, player);
+            move = generateMove(world, stationName, location, upgradeTrackMove, player);
             move = addSupplyAndDemand(move, world);
             move = transactionsGenerator.addTransactions(move);
         } else {
             // Upgrade an existing station.
-            move = new AddStationCompositeMove(new Move[]{upgradeTrackMove});
+            move = new CompositeMove(Arrays.asList(upgradeTrackMove));
         }
 
         return move;
+    }
+
+    /**
+     * This {@link CompositeMove}adds a station to the station list and adds a
+     * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
+     * list.
+     *
+     * @param world
+     * @param stationName
+     * @param location
+     * @param upgradeTrackMove
+     * @param player
+     * @return
+     */
+    private static CompositeMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
+        // TODO maybe a better way to get an id
+        int id = world.getStations(player).size();
+        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
+        Move addStation = new AddStationMove(player, station);
+
+        return new CompositeMove(Arrays.asList(upgradeTrackMove, addStation));
     }
 
     // TODO frankly, this looks like a hack, moves are modified after their creation
@@ -155,6 +177,6 @@ public class AddStationMoveGenerator implements MoveGenerator {
             }
         }
 
-        return new CompositeMove(moves);
+        return new CompositeMove(Arrays.asList(moves));
     }
 }

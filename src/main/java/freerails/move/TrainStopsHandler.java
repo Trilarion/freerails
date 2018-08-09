@@ -194,8 +194,8 @@ public class TrainStopsHandler implements Serializable {
         Move move = transfer.generate();
         if (null != move) {
             moves.add(move);
-            MoveStatus moveStatus = move.doMove(world, player);
-            if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
+            Status status = move.doMove(world, player);
+            if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
         }
     }
 
@@ -253,7 +253,7 @@ public class TrainStopsHandler implements Serializable {
                 // Create a new Move object.
                 Move trainMove = new NextActivityMove(nextMotion, trainId, player);
                 moves.add(trainMove);
-                MoveStatus moveStatus = trainMove.doMove(world, Player.AUTHORITATIVE);
+                Status moveStatus = trainMove.doMove(world, Player.AUTHORITATIVE);
                 if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
             }
         }

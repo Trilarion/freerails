@@ -56,7 +56,7 @@ public class StationBuilder {
      * @param location
      * @return
      */
-    public MoveStatus tryBuildingStation(Vec2D location) {
+    public Status tryBuildingStation(Vec2D location) {
         UnmodifiableWorld world = executor.getWorld();
 
         Player player = executor.getPlayer();
@@ -70,9 +70,9 @@ public class StationBuilder {
      * @param location
      * @return
      */
-    public MoveStatus buildStation(Vec2D location) {
+    public Status buildStation(Vec2D location) {
         // Only build a station if there is track at the specified point.
-        MoveStatus status = tryBuildingStation(location);
+        Status status = tryBuildingStation(location);
         if (status.succeeds()) {
             Player player = executor.getPlayer();
             AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, player);

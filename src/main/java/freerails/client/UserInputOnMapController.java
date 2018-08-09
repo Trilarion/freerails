@@ -26,7 +26,7 @@ import freerails.client.view.*;
 import freerails.controller.BuildMode;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.controller.TrackMoveProducer;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -257,13 +257,13 @@ public class UserInputOnMapController extends KeyAdapter {
 
         if (null != trackMoveProducer && b) {
             trackMoveProducer.setBuildTrackStrategy(getBts());
-            MoveStatus moveStatus = trackMoveProducer.buildTrack(oldPosition, vector);
+            Status status = trackMoveProducer.buildTrack(oldPosition, vector);
 
-            if (moveStatus.succeeds()) {
+            if (status.succeeds()) {
                 setCursorMessage("");
                 playAppropriateSound();
             } else {
-                setCursorMessage(moveStatus.getMessage());
+                setCursorMessage(status.getMessage());
             }
         } else {
             logger.warn("No track builder available!");

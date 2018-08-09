@@ -24,7 +24,7 @@ package freerails.move.receiver;
 import freerails.model.player.Player;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.move.MoveStatus;
+import freerails.move.Status;
 import freerails.util.Utils;
 import freerails.model.world.World;
 
@@ -46,7 +46,7 @@ public class TestMoveReceiver implements UntriedMoveReceiver {
      * @param move
      * @return
      */
-    public MoveStatus tryDoMove(Move move) {
+    public Status tryDoMove(Move move) {
         return move.tryDoMove(world, Player.AUTHORITATIVE);
     }
 

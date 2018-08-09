@@ -66,14 +66,14 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         stationBuilder.setStationType(stationBuilder.getTrackTypeID("terminal"));
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         Vec2D stationA = new Vec2D(10, 10);
-        MoveStatus ms0 = trackBuilder.buildTrack(stationA, track);
+        Status ms0 = trackBuilder.buildTrack(stationA, track);
         assertTrue(ms0.succeeds());
 
         // Build 2 stations.
-        MoveStatus ms1 = stationBuilder.buildStation(stationA);
+        Status ms1 = stationBuilder.buildStation(stationA);
         assertTrue(ms1.succeeds());
         Vec2D stationB = new Vec2D(19, 10);
-        MoveStatus ms2 = stationBuilder.buildStation(stationB);
+        Status ms2 = stationBuilder.buildStation(stationB);
         assertTrue(ms2.succeeds());
 
         TrainOrder order0 = new TrainOrder(1, null, false, false);
@@ -85,8 +85,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), start, player, schedule);
         Move move = preMove.generate(world);
-        MoveStatus moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.succeeds());
+        Status status = move.doMove(world, player);
+        assertTrue(status.succeeds());
     }
 
     /**
@@ -128,7 +128,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
      *
      */
     public void testMove2() {
-        MoveStatus moveStatus;
+        Status status;
         Move move;
         setupLoopOfTrack();
 
@@ -152,8 +152,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertEquals(TileTransition.NORTH_EAST, moveTrain.nextStep(world));
 
         move = moveTrain.generate(world);
-        moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.succeeds());
+        status = move.doMove(world, player);
+        assertTrue(status.succeeds());
 
         TrainMotion tm2 = ta.findCurrentMotion(3);
         assertFalse(trainMotion.equals(tm2));
@@ -177,8 +177,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         MoveTrainMoveGenerator2NdTest.incrTime(world, player);
         move = moveTrain.generate(world);
-        moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.succeeds());
+        status = move.doMove(world, player);
+        assertTrue(status.succeeds());
 
         TrainMotion tm3 = ta.findCurrentMotion(100);
         assertFalse(tm3.equals(tm2));
@@ -195,8 +195,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         MoveTrainMoveGenerator2NdTest.incrTime(world, player);
         move = moveTrain.generate(world);
 
-        moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.succeeds());
+        status = move.doMove(world, player);
+        assertTrue(status.succeeds());
     }
 
     private void setupLoopOfTrack() {
@@ -208,16 +208,16 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST,
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Vec2D from = new Vec2D(5, 5);
-        MoveStatus moveStatus = producer.buildTrack(from, trackPath);
-        assertTrue(moveStatus.succeeds());
+        Status status = producer.buildTrack(from, trackPath);
+        assertTrue(status.succeeds());
 
         TrainOrder[] orders = {};
         UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);
-        moveStatus = move.doMove(world, player);
-        assertTrue(moveStatus.succeeds());
+        status = move.doMove(world, player);
+        assertTrue(status.succeeds());
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         TrainMotion motion = ta.findCurrentMotion(0);
         assertNotNull(motion);

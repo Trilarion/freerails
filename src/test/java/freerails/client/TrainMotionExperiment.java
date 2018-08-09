@@ -71,16 +71,16 @@ class TrainMotionExperiment extends JComponent {
         TrackMoveProducer producer = new TrackMoveProducer(moveExecutor, world, modelRoot);
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Vec2D from = new Vec2D(5, 5);
-        MoveStatus moveStatus = producer.buildTrack(from, trackPath);
-        if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
+        Status status = producer.buildTrack(from, trackPath);
+        if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
 
         TrainOrder[] orders = {};
         UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
         MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);
-        moveStatus = move.doMove(world, player);
-        if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
+        status = move.doMove(world, player);
+        if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
 
         startTime = System.currentTimeMillis();
     }
@@ -185,8 +185,8 @@ class TrainMotionExperiment extends JComponent {
         } else {
             move = moveTrain.generate(world);
         }
-        MoveStatus moveStatus = move.doMove(world, player);
-        if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
+        Status status = move.doMove(world, player);
+        if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
 
         ActivityIterator ai = world.getActivities(player, 0);
 

@@ -25,7 +25,7 @@ import freerails.model.track.*;
 import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
-import freerails.move.mapupdatemove.UpgradeTrackCompositeMove;
+import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -84,8 +84,8 @@ public class TrackMoveProducer {
      * @param path
      * @return
      */
-    public MoveStatus buildTrack(Vec2D from, TileTransition[] path) {
-        MoveStatus returnValue = MoveStatus.MOVE_OK;
+    public Status buildTrack(Vec2D from, TileTransition[] path) {
+        Status returnValue = Status.OK;
         int x = from.x;
         int y = from.y;
         for (TileTransition aPath : path) {
@@ -105,13 +105,13 @@ public class TrackMoveProducer {
      * @param trackVector
      * @return
      */
-    public MoveStatus buildTrack(Vec2D from, TileTransition trackVector) {
+    public Status buildTrack(Vec2D from, TileTransition trackVector) {
 
         UnmodifiableWorld world = executor.getWorld();
         Player player = executor.getPlayer();
         switch (getBuildMode()) {
             case IGNORE_TRACK: {
-                return MoveStatus.MOVE_OK;
+                return Status.OK;
             }
             case REMOVE_TRACK: {
                 try {
@@ -123,7 +123,7 @@ public class TrackMoveProducer {
                 } catch (Exception e) {
                     // thrown when there is no track to remove.
                     // Fix for bug [ 948670 ] Removing non-existent track
-                    return MoveStatus.moveFailed("No track to remove.");
+                    return Status.moveFailed("No track to remove.");
                 }
             }
             case BUILD_TRACK:
@@ -150,7 +150,7 @@ public class TrackMoveProducer {
             if (ruleIDs[i] == -1) {
                 Terrain terrainType = world.getTerrain(terrainTypeId);
                 String message = "Non of the selected track types can be built on " + terrainType.getName();
-                return MoveStatus.moveFailed(message);
+                return Status.moveFailed(message);
             }
             types[i] = world.getTrackType(ruleIDs[i]);
         }
@@ -160,20 +160,20 @@ public class TrackMoveProducer {
                 // upgrade the from tile if necessary.
                 TerrainTile tileA = (TerrainTile) world.getTile(from);
                 if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !isStationHere(from)) {
-                    MoveStatus moveStatus = upgradeTrack(from, ruleIDs[0]);
-                    if (!moveStatus.succeeds()) {
-                        return moveStatus;
+                    Status status = upgradeTrack(from, ruleIDs[0]);
+                    if (!status.succeeds()) {
+                        return status;
                     }
                 }
                 Vec2D point = Vec2D.add(from, trackVector.getD());
                 TerrainTile tileB = (TerrainTile) world.getTile(point);
                 if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !isStationHere(point)) {
-                    MoveStatus moveStatus = upgradeTrack(point, ruleIDs[1]);
-                    if (!moveStatus.succeeds()) {
-                        return moveStatus;
+                    Status status = upgradeTrack(point, ruleIDs[1]);
+                    if (!status.succeeds()) {
+                        return status;
                     }
                 }
-                return MoveStatus.MOVE_OK;
+                return Status.OK;
             }
             case BUILD_TRACK: {
                 ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(from, trackVector, types[0], types[1], world, player);
@@ -187,12 +187,12 @@ public class TrackMoveProducer {
         }
     }
 
-    private MoveStatus upgradeTrack(Vec2D point, int trackRuleID) {
+    private Status upgradeTrack(Vec2D point, int trackRuleID) {
         UnmodifiableWorld world = executor.getWorld();
         TrackPiece before = ((TerrainTile) world.getTile(point)).getTrackPiece();
         // Check whether there is track here.
         if (before == null) {
-            return MoveStatus.moveFailed("No track to upgrade.");
+            return Status.moveFailed("No track to upgrade.");
         }
 
         Player player = executor.getPlayer();
@@ -202,10 +202,11 @@ public class TrackMoveProducer {
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
         if (before.getTrackType().isStation()) {
-            return MoveStatus.moveFailed("No need to upgrade track at station.");
+            return Status.moveFailed("No need to upgrade track at station.");
         }
 
-        Move move = UpgradeTrackCompositeMove.generateMove(before, after, point);
+        Move move = new ChangeTrackPieceMove(before, after, point);
+        // Move move = SpecialTrackCompositeMove.generateUpgradeTrackCompositeMove(before, after, point);
         Move move2 = transactionsGenerator.addTransactions(move);
 
         return sendMove(move2);
@@ -240,15 +241,15 @@ public class TrackMoveProducer {
         setBuildMode(i);
     }
 
-    private MoveStatus sendMove(Move move) {
-        MoveStatus moveStatus = executor.doMove(move);
+    private Status sendMove(Move move) {
+        Status status = executor.doMove(move);
 
-        if (moveStatus.succeeds()) {
+        if (status.succeeds()) {
             clearStackIfStale();
             moveStack.add(move);
         }
 
-        return moveStatus;
+        return status;
     }
 
     private boolean isStationHere(Vec2D p) {
