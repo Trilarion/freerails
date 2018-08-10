@@ -2,12 +2,15 @@ package freerails.model.train;
 
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
+import freerails.model.activity.Activity;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.util.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class Train extends Identifiable {
     private final List<Integer> wagonTypes;
     private CargoBatchBundle cargoBatchBundle;
     private Schedule schedule;
+    private List<Pair<Activity, Double>> activities;
 
     /**
      * Makes a copy of the schedule.
@@ -36,6 +40,7 @@ public class Train extends Identifiable {
         this.wagonTypes = Collections.unmodifiableList(wagonTypes);
         this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
         this.schedule = new Schedule(schedule);
+        this.activities = new ArrayList<>();
     }
 
     /**

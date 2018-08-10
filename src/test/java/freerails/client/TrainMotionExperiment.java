@@ -127,16 +127,22 @@ class TrainMotionExperiment extends JComponent {
             updateTrainPosition();
         }
 
-        ActivityIterator ai = world.getActivities(player, 0);
-        while (ai.getFinishTime() < ticks && ai.hasNext()) {
-            ai.nextActivity();
+        ActivityIterator activityIterator = world.getActivities(player, 0);
+        while (activityIterator.getStartTime() + activityIterator.getActivity().duration() < ticks && activityIterator.hasNext()) {
+            activityIterator.nextActivity();
         }
-        double t = Math.min(ticks, ai.getFinishTime());
-        t = t - ai.getStartTime();
+        double t = Math.min(ticks, activityIterator.getStartTime() + activityIterator.getActivity().duration());
+        t = t - activityIterator.getStartTime();
 
-        TrainMotion motion = (TrainMotion) ai.getActivity();
+        TrainMotion motion = (TrainMotion) activityIterator.getActivity();
 
-        TrainPositionOnMap pos = (TrainPositionOnMap) ai.getState(ticks);
+        /** Converts an absolute time value to a time value relative to the start of
+        * the current activity. If absoluteTime is greater then getFinishTime(), getDuration() is
+        * returned. */
+        double dt = ticks - activityIterator.getStartTime();
+        dt = Math.min(dt, activityIterator.getActivity().duration());
+
+        TrainPositionOnMap pos = (TrainPositionOnMap) activityIterator.getActivity().getStateAtTime(dt);
 
         PathOnTiles pathOT = motion.getPath();
         Iterator<Vec2D> it = pathOT.tilesIterator();
@@ -194,7 +200,7 @@ class TrainMotionExperiment extends JComponent {
 
         while (ai.hasNext()) {
             ai.nextActivity();
-            finishTime = ai.getFinishTime();
+            finishTime = ai.getStartTime() + ai.getActivity().duration();
         }
     }
 }

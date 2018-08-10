@@ -1,91 +1,89 @@
-/*
- * FreeRails
- * Copyright (C) 2000-2018 The FreeRails Team
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-/*
- *
- */
 package freerails.model.activity;
 
-import java.io.Serializable;
+import freerails.util.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 
-// TODO this activity iterator can do far too much, use a standard iterator instead and put the extra features into an activity
+// TODO what about a standard list iterator?
 /**
  *
  */
-public interface ActivityIterator {
-
-    /**
-     * @returnhh
-     */
-    boolean hasNext();
-
-    /**
-     * @throws NoSuchElementException
-     */
-    void nextActivity() throws NoSuchElementException;
-
-    /**
-     * Returns the time the current activity starts.
-     */
-    double getStartTime();
-
-    /**
-     * Returns the time the current activity ends.
-     */
-    double getFinishTime();
-
-    /**
-     * @return
-     */
-    double getDuration();
-
-    /**
-     * Converts an absolute time value to a time value relative to the start of
-     * the current activity. If absoluteTime is greater then getFinishTime(), getDuration() is
-     * returned.
-     */
-
-    double absoluteToRelativeTime(double absoluteTime);
-
-    /**
-     * @param absoluteTime
-     * @return
-     */
-    Serializable getState(double absoluteTime);
-
-    /**
-     * @return
-     */
-    Activity getActivity();
+public class ActivityIterator {
 
     /**
      *
      */
-    void gotoLastActivity();
+    private final List<Pair<Activity, Double>> activities;
 
     /**
-     * @throws NoSuchElementException
+     *
      */
-    void previousActivity() throws NoSuchElementException;
+    private int currentIndex;
+    private Pair<Activity, Double> currentActivityWithTime;
+
+    /**
+     */
+    public ActivityIterator(@NotNull List<Pair<Activity, Double>> activities) {
+        this.activities = activities;
+        currentIndex = 0;
+        currentActivityWithTime = this.activities.get(currentIndex);
+    }
 
     /**
      * @return
      */
-    boolean hasPrevious();
+    public Activity getActivity() {
+        return currentActivityWithTime.getA();
+    }
+
+    public double getStartTime() {
+        return currentActivityWithTime.getB();
+    }
+
+    /**
+     * @return
+     */
+    public boolean hasNext() {
+        return (currentIndex + 1) < activities.size();
+    }
+
+    /**
+     *
+     */
+    public void nextActivity() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        currentIndex++;
+        currentActivityWithTime = activities.get(currentIndex);
+    }
+
+    /**
+     *
+     */
+    public void gotoLastActivity() {
+        currentIndex = activities.size() - 1;
+        currentActivityWithTime = activities.get(currentIndex);
+    }
+
+    /**
+     * @return
+     */
+    public boolean hasPrevious() {
+        return currentIndex > 0;
+    }
+
+    /**
+     * @throws NoSuchElementException
+     */
+    public void previousActivity() throws NoSuchElementException {
+        if (!hasPrevious()) {
+            throw new NoSuchElementException();
+        }
+        currentIndex--;
+        currentActivityWithTime = activities.get(currentIndex);
+    }
+
 }

@@ -77,19 +77,19 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 
         GameTime currentTime = new GameTime(0);
         assertEquals(currentTime, world.currentTime());
-        ActivityIterator it = world.getActivities(player, 0);
+        ActivityIterator activityIterator = world.getActivities(player, 0);
 
-        assertEquals(it.getActivity(), act);
-        assertEquals(it.getStartTime(), currentTime.getTicks(), 0.00001);
-        assertEquals(50.0d, it.getDuration(), 0.00001);
-        assertEquals(50.0d, it.getFinishTime(), 0.00001);
+        assertEquals(activityIterator.getActivity(), act);
+        assertEquals(activityIterator.getStartTime(), currentTime.getTicks(), 0.00001);
+        assertEquals(50.0d, activityIterator.getActivity().duration(), 0.00001);
+        assertEquals(50.0d, activityIterator.getStartTime() + activityIterator.getActivity().duration(), 0.00001);
 
-        assertTrue(it.hasNext());
-        it.nextActivity();
-        assertEquals(it.getActivity(), act2);
-        assertEquals(50, it.getStartTime(), 0.00001);
-        assertEquals(60, it.getDuration(), 0.0001d);
-        assertEquals(110, it.getFinishTime(), 0.00001);
+        assertTrue(activityIterator.hasNext());
+        activityIterator.nextActivity();
+        assertEquals(activityIterator.getActivity(), act2);
+        assertEquals(50, activityIterator.getStartTime(), 0.00001);
+        assertEquals(60, activityIterator.getActivity().duration(), 0.0001d);
+        assertEquals(110, activityIterator.getStartTime() + activityIterator.getActivity().duration(), 0.00001);
     }
 
 }

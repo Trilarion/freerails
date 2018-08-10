@@ -99,6 +99,7 @@ public class AddActiveEntityMove implements Move {
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
+        // TODO it's a wonder this actually works
         if (status.succeeds()) world.addActiveEntity(this.player, activity);
 
         return status;

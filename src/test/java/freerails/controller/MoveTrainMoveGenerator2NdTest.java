@@ -63,7 +63,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         while (activityIterator.hasNext())
             activityIterator.nextActivity();
 
-        double finishTime = activityIterator.getFinishTime();
+        double finishTime = activityIterator.getStartTime() + activityIterator.getActivity().duration();
         GameTime newTime = new GameTime((int) Math.floor(finishTime));
         world.setTime(newTime);
     }

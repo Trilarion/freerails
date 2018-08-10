@@ -18,6 +18,8 @@
 
 package freerails.util;
 
+import java.io.Serializable;
+
 /**
  * Generic immutable Pair<A, B> implementation to help when you really only need
  * a simple, immutable Pair, nothing else.
@@ -28,10 +30,12 @@ package freerails.util;
  *
  * Should be HashMap/Comparable/Iterable save.
  *
+ * Inspired by https://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-c-pairl-r-in-java
+ *
  * @param <A> Type of first element.
  * @param <B> Type of second element.
  */
-public class Pair<A, B> {
+public class Pair<A, B> implements Serializable{
 
     /**
      * Two final elements of two different types.
@@ -89,6 +93,7 @@ public class Pair<A, B> {
      * @return True if they are of the same class and not null and both elements
      * are equal.
      */
+    // TODO use Objects.equals() to include null checks correctly
     @Override
     public boolean equals(Object obj) {
         if (obj != null && getClass() == obj.getClass() && a != null && b != null) {

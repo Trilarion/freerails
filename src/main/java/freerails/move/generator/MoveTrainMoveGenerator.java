@@ -140,7 +140,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         ActivityIterator ai = world.getActivities(player, trainId);
         ai.gotoLastActivity();
 
-        double finishTime = ai.getFinishTime();
+        double finishTime = ai.getStartTime() + ai.getActivity().duration();
         double ticks = currentTime.getTicks();
 
         boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;

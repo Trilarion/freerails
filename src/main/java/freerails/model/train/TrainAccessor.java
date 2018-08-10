@@ -85,19 +85,20 @@ public class TrainAccessor {
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
         ActivityIterator activityIterator = world.getActivities(player, trainId);
 
+        // TODO why starting at the end and going backwards?
         // goto last
         activityIterator.gotoLastActivity();
         // search backwards
-        while (activityIterator.getFinishTime() >= time && activityIterator.hasPrevious()) {
+        while (activityIterator.getStartTime() + activityIterator.getActivity().duration() >= time && activityIterator.hasPrevious()) {
             activityIterator.previousActivity();
         }
-        boolean afterFinish = activityIterator.getFinishTime() < time;
+        boolean afterFinish = activityIterator.getStartTime() + activityIterator.getActivity().duration() < time;
         while (afterFinish && activityIterator.hasNext()) {
             activityIterator.nextActivity();
-            afterFinish = activityIterator.getFinishTime() < time;
+            afterFinish = activityIterator.getStartTime() + activityIterator.getActivity().duration() < time;
         }
         double dt = time - activityIterator.getStartTime();
-        dt = Math.min(dt, activityIterator.getDuration());
+        dt = Math.min(dt, activityIterator.getActivity().duration());
         TrainMotion trainMotion = (TrainMotion) activityIterator.getActivity();
 
         Vec2D start = trainMotion.getPath().getStart();
@@ -115,7 +116,7 @@ public class TrainAccessor {
      */
     public TrainMotion findCurrentMotion(double time) {
         ActivityIterator activityIterator = world.getActivities(player, trainId);
-        boolean afterFinish = activityIterator.getFinishTime() < time;
+        boolean afterFinish = activityIterator.getStartTime() + activityIterator.getActivity().duration() < time;
         if (afterFinish) {
             activityIterator.gotoLastActivity();
         }

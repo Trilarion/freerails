@@ -20,9 +20,7 @@ package freerails.model.world;
 
 import freerails.model.Identifiable;
 import freerails.model.activity.Activity;
-import freerails.model.activity.ActivityAndTime;
 import freerails.model.activity.ActivityIterator;
-import freerails.model.activity.ActivityIteratorImpl;
 import freerails.model.cargo.Cargo;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
@@ -63,7 +61,7 @@ import java.util.*;
 public class World implements UnmodifiableWorld {
 
     private static final long serialVersionUID = 3544393612684505393L;
-    public Map<Player, Map<Integer, List<ActivityAndTime>>> activities = new HashMap<>();
+    public Map<Player, Map<Integer, List<Pair<Activity, Double>>>> activities = new HashMap<>();
     public Map<Player, List<TransactionRecord>> transactionLogs = new HashMap<>();
     public List<Money> currentBalance = new ArrayList<>();
 
@@ -301,11 +299,11 @@ public class World implements UnmodifiableWorld {
      */
     public void addActivity(Player player, int index, Activity activity) {
         int lastId = activities.get(player).get(index).size() - 1;
-        ActivityAndTime last = activities.get(player).get(index).get(lastId);
-        double duration = last.act.duration();
-        double lastFinishTime = last.startTime + duration;
+        Pair<Activity, Double> last = activities.get(player).get(index).get(lastId);
+        double duration = last.getA().duration();
+        double lastFinishTime = last.getB() + duration;
         double thisStartTime = Math.max(lastFinishTime, currentTime().getTicks());
-        ActivityAndTime ant = new ActivityAndTime(activity, thisStartTime);
+        Pair<Activity, Double> ant = new Pair<Activity, Double>(activity, thisStartTime);
         activities.get(player).get(index).add(ant);
     }
 
@@ -317,7 +315,7 @@ public class World implements UnmodifiableWorld {
     public int addActiveEntity(Player player, Activity activity) {
         int index = activities.get(player).size();
         activities.get(player).put(index, new ArrayList<>());
-        ActivityAndTime ant = new ActivityAndTime(activity, currentTime().getTicks());
+        Pair<Activity, Double> ant = new Pair<Activity, Double>(activity, (double) (currentTime().getTicks()));
         activities.get(player).get(index).add(ant);
         return index;
     }
@@ -427,7 +425,9 @@ public class World implements UnmodifiableWorld {
      * @return
      */
     public ActivityIterator getActivities(final Player player, int index) {
-        return new ActivityIteratorImpl(this, player, index);
+        // return new ActivityIterator(this, player, index);
+        List<Pair<Activity, Double>> list = activities.get(player).get(index);
+        return new ActivityIterator(list);
     }
 
     /**
@@ -531,10 +531,10 @@ public class World implements UnmodifiableWorld {
      */
     public Activity removeLastActiveEntity(Player player) {
         int lastId = activities.get(player).size() - 1;
-        List<ActivityAndTime> serializables = activities.get(player).get(lastId);
-        Activity act = serializables.remove(serializables.size() - 1).act;
+        List<Pair<Activity, Double>> serializables = activities.get(player).get(lastId);
+        Activity activity = serializables.remove(serializables.size() - 1).getA();
         activities.get(player).remove(lastId);
-        return act;
+        return activity;
     }
 
     /**
@@ -546,7 +546,7 @@ public class World implements UnmodifiableWorld {
         if (activities.get(player).get(index).size() < 2) {
             throw new IllegalStateException();
         }
-        List<ActivityAndTime> list = activities.get(player).get(index);
+        List<Pair<Activity, Double>> list = activities.get(player).get(index);
         list.remove(list.size() - 1);
       }
 
