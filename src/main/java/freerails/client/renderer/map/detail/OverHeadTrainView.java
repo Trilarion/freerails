@@ -30,7 +30,7 @@ import freerails.client.ModelRootProperty;
 import freerails.model.train.TrainAccessor;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.train.TrainPositionOnMap;
+import freerails.model.train.motion.TrainPositionOnMap;
 
 import java.awt.*;
 

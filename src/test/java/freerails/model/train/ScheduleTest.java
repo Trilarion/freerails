@@ -41,10 +41,10 @@ public class ScheduleTest extends TestCase {
         schedule.addOrder(trainOrder1);
         schedule.addOrder(trainOrder2);
 
-        int stationToGoto = schedule.getStationToGoto();
+        int stationToGoto = schedule.getNextStationId();
         assertEquals(0, stationToGoto);
 
-        assertEquals(0, schedule.getStationToGoto());
+        assertEquals(0, schedule.getNextStationId());
     }
 
 }

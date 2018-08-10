@@ -20,6 +20,7 @@ package freerails.model.game;
 
 import java.io.Serializable;
 
+// TODO serialize to json and load/define default, no restriction rules through files, better naming
 /**
  * Stores rules governing what players are allowed to do, for example whether
  * they can connect their track to the track of other players.

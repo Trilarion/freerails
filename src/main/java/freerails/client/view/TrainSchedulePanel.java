@@ -367,7 +367,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void ordersMouseClicked(MouseEvent evt) {
         int i = orders.getSelectedIndex();
         Schedule schedule = getSchedule();
-        if (i >= schedule.getNumOrders()) {
+        if (i >= schedule.getNumberOfOrders()) {
             // The selected index does not exist!
             // For some reason, the JList hasn't updated yet.
             i = -1;

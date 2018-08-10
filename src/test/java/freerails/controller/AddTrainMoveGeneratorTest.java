@@ -23,6 +23,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
@@ -155,7 +156,6 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         if (!status.succeeds())
             throw new IllegalStateException(status.getMessage());
 
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        assertNotNull(ta.getTargetLocation());
+        assertNotNull(TrainUtils.getTargetLocation(world, player, 0));
     }
 }

@@ -22,6 +22,7 @@
 package freerails.move;
 
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
@@ -110,8 +111,7 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public void arrivesAtPoint(Vec2D location) {
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        Vec2D targetPoint = trainAccessor.getTargetLocation();
+        Vec2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
 
         if (location.equals(targetPoint)) {
             /*
@@ -160,16 +160,17 @@ public class TrainStopsHandler implements Serializable {
      * @return
      */
     public int getTrainLength() {
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        return trainAccessor.getTrain().getLength();
+        return world.getTrain(player, trainId).getLength();
     }
 
     /**
      * @return
      */
     private boolean isTrainFull() {
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        List<Integer> spaceAvailable = trainAccessor.spaceAvailable();
+        // determine the space available on the train measured in cargo units.
+        Train train = world.getTrain(player, trainId);
+        List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
+        // TODO this is not fully correct, because there could also be negative numbers returned from spaceAvailable and they could sum up to zero
         return Utils.sumOfIntegerList(spaceAvailable) == 0;
     }
 
@@ -179,7 +180,7 @@ public class TrainStopsHandler implements Serializable {
     public boolean isWaitingForFullLoad() {
         Train train = world.getTrain(player, trainId);
         UnmodifiableSchedule schedule = train.getSchedule();
-        int orderToGoto = schedule.getOrderToGoto();
+        int orderToGoto = schedule.getCurrentOrderIndex();
         if (orderToGoto < 0) {
             return false;
         }
@@ -208,13 +209,14 @@ public class TrainStopsHandler implements Serializable {
     public boolean refreshWaitingForFullLoad() {
 
         TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        UnmodifiableSchedule schedule = trainAccessor.getSchedule();
+        Train train = world.getTrain(player, trainId);
+        UnmodifiableSchedule schedule = train.getSchedule();
 
         int stationId = trainAccessor.getStationId(Double.MAX_VALUE);
         if (stationId < 0) throw new IllegalStateException();
 
         // The train's orders may have changed...
-        TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
+        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
 
         // Should we go to another station?
         if (stationId != order.getStationId()) {
@@ -222,19 +224,19 @@ public class TrainStopsHandler implements Serializable {
         }
 
         // Should we change the consist?
-        List<Integer> consist = trainAccessor.getTrain().getConsist();
+        List<Integer> consist = train.getConsist();
         if (!consist.equals(order.getConsist())) {
             // ..if so, we should change the consist.
-            int oldLength = trainAccessor.getTrain().getLength();
-            int engineId = trainAccessor.getTrain().getEngineId();
+            int oldLength = train.getLength();
+            int engineId = train.getEngineId();
 
+            // TODO does this change the consist?
             // TODO newTrain is computed in the ChangeTrainMove also
             // TODO need a way to get a new id for trains, this is not the best way so far
             int id = world.getTrains(player).size();
-            Train newTrain = new Train(id, engineId, order.getConsist(), trainAccessor.getTrain().getCargoBatchBundle(), trainAccessor.getTrain().getSchedule());
+            Train newTrain = new Train(id, engineId, order.getConsist(), train.getCargoBatchBundle(), train.getSchedule());
             // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
-            Train before = trainAccessor.getTrain();
-            Train after = new Train(id, engineId, order.getConsist(), before.getCargoBatchBundle(), before.getSchedule());
+            Train after = new Train(id, engineId, order.getConsist(), train.getCargoBatchBundle(), train.getSchedule());
             // TODO need dedicated change train move instead
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
             Move move = new ChangeTrainMove(player, after);
@@ -259,7 +261,7 @@ public class TrainStopsHandler implements Serializable {
         }
 
         // Add any cargo that is waiting.
-        loadAndUnloadCargo(schedule.getStationToGoto(), order.isWaitUntilFull(), order.isAutoConsist());
+        loadAndUnloadCargo(schedule.getNextStationId(), order.isWaitUntilFull(), order.isAutoConsist());
 
         // Should we stop waiting?
         if (!order.isWaitUntilFull() || isTrainFull()) {
@@ -296,7 +298,7 @@ public class TrainStopsHandler implements Serializable {
             move.doMove(world, player);
         }
         updateSchedule();
-        int stationToGoto = schedule.getStationToGoto();
+        int stationToGoto = schedule.getNextStationId();
         loadAndUnloadCargo(stationToGoto, true, autoConsist);
     }
 
@@ -304,7 +306,7 @@ public class TrainStopsHandler implements Serializable {
         Train train =  world.getTrain(player, trainId);
         Schedule schedule = new Schedule(train.getSchedule());
 
-        TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
+        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
         boolean waitingForFullLoad = order.isWaitUntilFull() && !isTrainFull();
 
         if (!waitingForFullLoad) {
@@ -315,7 +317,7 @@ public class TrainStopsHandler implements Serializable {
             move.doMove(world, player);
             moves.add(move);
 
-            int stationNumber = schedule.getStationToGoto();
+            int stationNumber = schedule.getNextStationId();
             Station station = world.getStation(player, stationNumber);
 
             if (null == station) {

@@ -22,11 +22,12 @@
 package freerails.model.train;
 
 import freerails.model.activity.ActivityIterator;
+import freerails.model.train.motion.TrainMotion;
+import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.model.train.schedule.TrainOrder;
 
 import freerails.util.Vec2D;
 import freerails.model.*;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TileTransition;
@@ -35,10 +36,7 @@ import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * Provides convenience methods to access the properties of a train from the world object.
@@ -47,60 +45,25 @@ public class TrainAccessor {
 
     private final UnmodifiableWorld world;
     private final Player player;
-    private final int id;
+    private final int trainId;
 
     /**
      * @param world
      * @param player
-     * @param id
+     * @param trainId
      */
-    public TrainAccessor(final UnmodifiableWorld world, final Player player, final int id) {
+    public TrainAccessor(final UnmodifiableWorld world, final Player player, final int trainId) {
         this.world = world;
         this.player = player;
-        this.id = id;
-    }
-
-    /**
-     * @param world
-     * @param onTrain
-     * @param consist
-     * @return
-     */
-    public static List<Integer> spaceAvailable2(UnmodifiableWorld world, UnmodifiableCargoBatchBundle onTrain, List<Integer> consist) {
-        // This array will store the amount of space available on the train for
-        // each cargo type.
-        final int NUM_CARGO_TYPES = world.getCargos().size();
-        Integer[] spaceAvailable = new Integer[NUM_CARGO_TYPES];
-        Arrays.fill(spaceAvailable, 0);
-
-        // First calculate the train's total capacity.
-        for (Integer aConsist : consist) {
-            int cargoType = aConsist;
-            spaceAvailable[cargoType] += ModelConstants.UNITS_OF_CARGO_PER_WAGON;
-        }
-
-        for (int cargoType = 0; cargoType < NUM_CARGO_TYPES; cargoType++) {
-            spaceAvailable[cargoType] = spaceAvailable[cargoType] - onTrain.getAmountOfType(cargoType);
-        }
-        return new ArrayList<>(Arrays.asList(spaceAvailable));
-    }
-
-    /**
-     * @param time
-     * @return
-     */
-    public TrainState getStatus(double time) {
-        TrainMotion trainMotion = findCurrentMotion(time);
-        return trainMotion.getTrainState();
+        this.trainId = trainId;
     }
 
     // TODO the same as Station.getStationIdAtLocation...
     /**
-     * @return the id of the station the train is currently at, or -1 if no
+     * @return the trainId of the station the train is currently at, or -1 if no
      * current station.
      */
     public int getStationId(double time) {
-
         TrainMotion trainMotion = findCurrentMotion(time);
         PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
         Vec2D location = positionOnTrack.getLocation();
@@ -111,7 +74,6 @@ public class TrainAccessor {
                 return station.getId(); // train is at the station at location tempPoint
             }
         }
-
         return -1;
     }
 
@@ -121,7 +83,7 @@ public class TrainAccessor {
      * @return
      */
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
-        ActivityIterator activityIterator = world.getActivities(player, id);
+        ActivityIterator activityIterator = world.getActivities(player, trainId);
 
         // goto last
         activityIterator.gotoLastActivity();
@@ -152,35 +114,12 @@ public class TrainAccessor {
      * @return
      */
     public TrainMotion findCurrentMotion(double time) {
-        ActivityIterator activityIterator = world.getActivities(player, id);
+        ActivityIterator activityIterator = world.getActivities(player, trainId);
         boolean afterFinish = activityIterator.getFinishTime() < time;
         if (afterFinish) {
             activityIterator.gotoLastActivity();
         }
         return (TrainMotion) activityIterator.getActivity();
-    }
-
-    /**
-     * @return
-     */
-    public Train getTrain() {
-        return world.getTrain(player, id);
-    }
-
-    /**
-     * @return
-     */
-    public UnmodifiableSchedule getSchedule() {
-        Train train = getTrain();
-        return train.getSchedule();
-    }
-
-    /**
-     * @return
-     */
-    public UnmodifiableCargoBatchBundle getCargoBundle() {
-        Train train = getTrain();
-        return train.getCargoBatchBundle();
     }
 
     /**
@@ -196,33 +135,18 @@ public class TrainAccessor {
         double time = world.currentTime().getTicks();
         int stationId = getStationId(time);
         if (stationId == -1) return false;
-        TrainState act = getStatus(time);
-        if (act != TrainState.WAITING_FOR_FULL_LOAD) return false;
-        UnmodifiableSchedule schedule = getSchedule();
-        TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
+        TrainMotion trainMotion = findCurrentMotion(time);
+        TrainState trainState = trainMotion.getTrainState();
+        if (trainState != TrainState.WAITING_FOR_FULL_LOAD) return false;
+        Train train = world.getTrain(player, trainId);
+        UnmodifiableSchedule schedule = train.getSchedule();
+        TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
         if (order.getStationId() != stationId) return false;
         if (!order.isWaitUntilFull()) return false;
-        Train train = getTrain();
         return order.getConsist().equals(train.getConsist());
     }
 
-    /**
-     * @return the location of the station the train is currently heading
-     * towards.
-     */
-    public Vec2D getTargetLocation() {
-        Train train = world.getTrain(player, id);
-        UnmodifiableSchedule schedule = train.getSchedule();
-        int stationNumber = schedule.getStationToGoto();
-
-        if (-1 == stationNumber) {
-            // There are no stations on the schedule.
-            return Vec2D.ZERO;
-        }
-
-        Station station = world.getStation(player, stationNumber);
-        return station.location;
-    }
+    // TODO this could be part of train utils
 
     /**
      * @param time
@@ -253,15 +177,6 @@ public class TrainAccessor {
         TrainMotion trainMotion = findCurrentMotion(time);
         double speed = trainMotion.getSpeedAtEnd();
         return speed != 0;
-    }
-
-    /**
-     * The space available on the train measured in cargo units.
-     */
-    public List<Integer> spaceAvailable() {
-
-        Train train = world.getTrain(player, id);
-        return spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
     }
 
 }

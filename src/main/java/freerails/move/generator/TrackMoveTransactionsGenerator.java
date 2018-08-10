@@ -89,12 +89,11 @@ public class TrackMoveTransactionsGenerator {
         generateTransactions();
 
         int numberOfMoves = 1 + transactions.size();
-        Move[] moves = new Move[numberOfMoves];
-        moves[0] = move;
+        List<Move> moves = new ArrayList<>(numberOfMoves);
+        moves.add(move);
 
-        for (int i = 0; i < transactions.size(); i++) {
-            Transaction transaction = transactions.get(i);
-            moves[i + 1] = new AddTransactionMove(player, transaction, true);
+        for (Transaction transaction: transactions) {
+            moves.add(new AddTransactionMove(player, transaction, true));
         }
 
         return new CompositeMove(moves);

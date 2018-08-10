@@ -23,7 +23,6 @@ package freerails.model.cargo;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 
 // TODO should the amount already be included in the cargo batch
 

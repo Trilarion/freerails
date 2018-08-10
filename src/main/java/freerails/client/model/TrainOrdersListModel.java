@@ -87,7 +87,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         UnmodifiableSchedule schedule = getSchedule();
         int size = 0;
         if (schedule != null) {
-            size = schedule.getNumOrders();
+            size = schedule.getNumberOfOrders();
         }
         return size;
     }

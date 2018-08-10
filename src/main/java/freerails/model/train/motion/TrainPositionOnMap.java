@@ -16,9 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.train;
+package freerails.model.train.motion;
 
 
+import freerails.model.train.TrainState;
 import freerails.util.LineSegment;
 import freerails.util.Pair;
 import freerails.model.track.PathIterator;

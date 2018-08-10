@@ -76,25 +76,23 @@ public class CargoBatchBundleTest extends TestCase {
         assertEquals(bundle2, bundle1);
 
         // copy to immutable cargo batch bundle
-        UnmodifiableCargoBatchBundle immutableBundle1 = bundle1;
 
         // equals with everything else
-        assertEquals(immutableBundle1, immutableBundle1);
-        assertEquals(immutableBundle1, bundle1);
-        assertEquals(immutableBundle1, bundle2);
+        assertEquals(bundle1, bundle1);
+        assertEquals(bundle1, bundle1);
+        assertEquals(bundle1, bundle2);
 
         // copy to immutable cargo batch bundle
-        UnmodifiableCargoBatchBundle immutableBundle2 = bundle2;
 
         // equal with everything else
-        assertEquals(immutableBundle2, immutableBundle2);
-        assertEquals(immutableBundle2, immutableBundle1);
-        assertEquals(immutableBundle2, bundle1);
-        assertEquals(immutableBundle2, bundle2);
+        assertEquals(bundle2, bundle2);
+        assertEquals(bundle2, bundle1);
+        assertEquals(bundle2, bundle1);
+        assertEquals(bundle2, bundle2);
 
         // serialize
-        Serializable cloneA = Utils.cloneBySerialisation(immutableBundle1);
-        Serializable cloneB = Utils.cloneBySerialisation(immutableBundle2);
+        Serializable cloneA = Utils.cloneBySerialisation(bundle1);
+        Serializable cloneB = Utils.cloneBySerialisation(bundle2);
         assertEquals(cloneA, cloneB);
     }
 
@@ -105,17 +103,15 @@ public class CargoBatchBundleTest extends TestCase {
         assertFalse(bundle2.equals(bundle1));
 
         // copy to immutable cargo batch bundle
-        UnmodifiableCargoBatchBundle immutableBundle1 = bundle1;
-        UnmodifiableCargoBatchBundle immutableBundle2 = bundle2;
 
         // not equal with immutable bundles
-        assertFalse(bundle1.equals(immutableBundle2));
-        assertFalse(immutableBundle2.equals(bundle1));
+        assertFalse(bundle1.equals(bundle2));
+        assertFalse(((UnmodifiableCargoBatchBundle) bundle2).equals(bundle1));
 
-        assertFalse(bundle2.equals(immutableBundle1));
-        assertFalse(immutableBundle1.equals(bundle2));
+        assertFalse(bundle2.equals(bundle1));
+        assertFalse(((UnmodifiableCargoBatchBundle) bundle1).equals(bundle2));
 
-        assertFalse(immutableBundle2.equals(immutableBundle1));
-        assertFalse(immutableBundle1.equals(immutableBundle2));
+        assertFalse(((UnmodifiableCargoBatchBundle) bundle2).equals(bundle1));
+        assertFalse(((UnmodifiableCargoBatchBundle) bundle1).equals(bundle2));
     }
 }

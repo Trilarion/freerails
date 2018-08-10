@@ -104,7 +104,6 @@ public class MapFixtureFactory2 {
         SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
 
         World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(50, 50)).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
-        URL track_xml_url = MapFixtureFactory2.class.getResource("/freerails/data/track_tiles.xml");
 
         // Add 4 players
         for (int i = 0; i < 4; i++) {

@@ -23,6 +23,8 @@ import freerails.client.launcher.ScreenHandler;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
 import freerails.model.track.OccupiedTracks;
+import freerails.model.train.motion.TrainMotion;
+import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.TrainOrder;

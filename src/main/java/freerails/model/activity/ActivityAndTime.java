@@ -2,6 +2,7 @@ package freerails.model.activity;
 
 import java.io.Serializable;
 
+// TODO include time in Activity
 /**
  *
  */

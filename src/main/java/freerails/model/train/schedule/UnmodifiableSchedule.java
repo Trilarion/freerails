@@ -34,21 +34,21 @@ public interface UnmodifiableSchedule extends Serializable {
     int MAXIMUM_NUMBER_OF_ORDER = 6;
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    TrainOrder getOrder(int i);
+    TrainOrder getOrder(int index);
 
     /**
      * Returns the number of the order the train is currently carry out.
      */
-    int getOrderToGoto();
+    int getCurrentOrderIndex();
 
     /**
      * Returns the station number of the next station the train is scheduled to
      * stop at.
      */
-    int getStationToGoto();
+    int getNextStationId();
 
     /**
      * Returns the wagons to add at the next scheduled stop.
@@ -57,7 +57,7 @@ public interface UnmodifiableSchedule extends Serializable {
     List<Integer> getWagonsToAdd();
 
     /**
-     * Returns the value for the autoconsist flag at the next scheduled stop.
+     * Returns the value for the auto consist flag at the next scheduled stop.
      */
     boolean autoConsist();
 
@@ -71,7 +71,7 @@ public interface UnmodifiableSchedule extends Serializable {
      *
      * @return Number of orders.
      */
-    int getNumOrders();
+    int getNumberOfOrders();
 
     /**
      * @return
@@ -80,8 +80,8 @@ public interface UnmodifiableSchedule extends Serializable {
 
     /**
      *
-     * @param stationNumber
+     * @param stationId
      * @return
      */
-    boolean stopsAtStation(int stationNumber);
+    boolean stopsAtStation(int stationId);
 }

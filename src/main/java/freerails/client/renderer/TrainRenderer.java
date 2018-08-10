@@ -19,6 +19,7 @@
 package freerails.client.renderer;
 
 import freerails.model.train.*;
+import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.util.LineSegment;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;

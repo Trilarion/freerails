@@ -43,7 +43,6 @@ import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -312,13 +311,13 @@ public class World implements UnmodifiableWorld {
 
     /**
      * @param player
-     * @param element
+     * @param activity
      * @return
      */
-    public int addActiveEntity(Player player, Activity element) {
+    public int addActiveEntity(Player player, Activity activity) {
         int index = activities.get(player).size();
         activities.get(player).put(index, new ArrayList<>());
-        ActivityAndTime ant = new ActivityAndTime(element, currentTime().getTicks());
+        ActivityAndTime ant = new ActivityAndTime(activity, currentTime().getTicks());
         activities.get(player).get(index).add(ant);
         return index;
     }

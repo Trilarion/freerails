@@ -18,6 +18,7 @@
 
 package freerails.model.train;
 
+import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.util.LineSegment;
 import freerails.util.TestUtils;
 import freerails.model.track.PathIterator;

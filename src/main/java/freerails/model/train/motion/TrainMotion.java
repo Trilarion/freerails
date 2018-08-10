@@ -19,17 +19,17 @@
 /*
  *
  */
-package freerails.model.train;
+package freerails.model.train.motion;
 
 import freerails.model.ModelConstants;
+import freerails.model.train.PathOnTiles;
+import freerails.model.train.PositionOnTrack;
+import freerails.model.train.TrainState;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
 import freerails.model.activity.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
-import freerails.model.train.motion.CompositeMotion;
-import freerails.model.train.motion.ConstantAccelerationMotion;
-import freerails.model.train.motion.Motion;
 
 import java.util.ArrayList;
 

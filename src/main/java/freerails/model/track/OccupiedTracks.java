@@ -18,6 +18,7 @@
 
 package freerails.model.track;
 
+import freerails.model.train.Train;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
@@ -42,16 +43,15 @@ public class OccupiedTracks {
         occupiedTrackSections = new HashMap<>();
         trainToTrackList = new HashMap<>();
 
-        // TODO we want to iterate over world.getTrains directly
-        for (int i = 0; i < world.getTrains(player).size(); i++) {
-            TrainAccessor ta = new TrainAccessor(world, player, i);
+        for (Train train: world.getTrains(player)) {
+            TrainAccessor trainAccessor = new TrainAccessor(world, player, train.getId());
             GameTime gameTime = world.currentTime();
 
-            if (ta.isMoving(gameTime.getTicks())) {
+            if (trainAccessor.isMoving(gameTime.getTicks())) {
 
-                HashSet<TrackSection> sections = ta.occupiedTrackSection(gameTime.getTicks());
+                HashSet<TrackSection> sections = trainAccessor.occupiedTrackSection(gameTime.getTicks());
                 List<TrackSection> trackList = new ArrayList<>(sections);
-                trainToTrackList.put(i, trackList);
+                trainToTrackList.put(train.getId(), trackList);
                 for (TrackSection section : sections) {
                     Integer count = occupiedTrackSections.get(section);
                     if (count == null) {

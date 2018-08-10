@@ -21,6 +21,7 @@
  */
 package freerails.model.train;
 
+import freerails.model.train.motion.TrainMotion;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.motion.CompositeMotion;
@@ -74,6 +75,6 @@ public class TrainMotionTest extends TestCase {
         assertTrue(tooLongDuration > actualDuration);
 
         // This method used to throw an exception
-        Object o = motion.getStateAtTime(actualDuration);
+        motion.getStateAtTime(actualDuration);
     }
 }

@@ -115,7 +115,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         String templateString = "101000101";
         // Hack - so that result is as expected by earlier written code.
         StringBuffer strb = new StringBuffer(templateString);
-        strb = strb.reverse();
+        strb.reverse();
         templateString = strb.toString();
 
         // End of hack

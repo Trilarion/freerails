@@ -23,8 +23,6 @@
 package freerails.model.train.schedule;
 
 
-import freerails.model.Identifiable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,7 +57,7 @@ public class Schedule implements UnmodifiableSchedule {
         nextScheduledOrder = schedule.getNextScheduledOrder();
         hasPriorityOrders = schedule.hasPriorityOrders();
 
-        for (int i = 0; i < schedule.getNumOrders(); i++) {
+        for (int i = 0; i < schedule.getNumberOfOrders(); i++) {
             orders.add(schedule.getOrder(i));
         }
     }
@@ -170,17 +168,17 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     /**
-     * @param i
+     * @param index
      * @return
      */
-    public TrainOrder getOrder(int i) {
-        return orders.get(i);
+    public TrainOrder getOrder(int index) {
+        return orders.get(index);
     }
 
     /**
      * Returns the number of the order the train is currently carry out.
      */
-    public int getOrderToGoto() {
+    public int getCurrentOrderIndex() {
         return hasPriorityOrders ? 0 : nextScheduledOrder;
     }
 
@@ -199,8 +197,8 @@ public class Schedule implements UnmodifiableSchedule {
      * Returns the station number of the next station the train is scheduled to
      * stop at.
      */
-    public int getStationToGoto() {
-        int orderToGoto = getOrderToGoto();
+    public int getNextStationId() {
+        int orderToGoto = getCurrentOrderIndex();
 
         if (-1 == orderToGoto) {
             return -1;
@@ -213,7 +211,7 @@ public class Schedule implements UnmodifiableSchedule {
      * Returns the wagons to add at the next scheduled stop.
      */
     public List<Integer> getWagonsToAdd() {
-        TrainOrder order = orders.get(getOrderToGoto());
+        TrainOrder order = orders.get(getCurrentOrderIndex());
         return order.getConsist();
     }
 
@@ -251,7 +249,7 @@ public class Schedule implements UnmodifiableSchedule {
      *
      * @return Number of orders.
      */
-    public int getNumOrders() {
+    public int getNumberOfOrders() {
         return orders.size();
     }
 
@@ -319,7 +317,7 @@ public class Schedule implements UnmodifiableSchedule {
     public boolean canAddOrder() {
         int max = hasPriorityOrders ? MAXIMUM_NUMBER_OF_ORDER + 1 : MAXIMUM_NUMBER_OF_ORDER;
 
-        return max > getNumOrders();
+        return max > getNumberOfOrders();
     }
 
     /**
@@ -338,14 +336,14 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     /**
-     * @param stationNumber
+     * @param stationId
      * @return
      */
-    public boolean stopsAtStation(int stationNumber) {
-        for (int i = 0; i < getNumOrders(); i++) {
+    public boolean stopsAtStation(int stationId) {
+        for (int i = 0; i < getNumberOfOrders(); i++) {
             TrainOrder order = getOrder(i);
 
-            if (order.getStationID() == stationNumber) {
+            if (order.getStationID() == stationId) {
                 return true;
             }
         }
@@ -359,7 +357,7 @@ public class Schedule implements UnmodifiableSchedule {
     public void removeAllStopsAtStation(int stationNumber) {
         int i = 0;
 
-        while (i < getNumOrders()) {
+        while (i < getNumberOfOrders()) {
             TrainOrder order = getOrder(i);
 
             if (order.getStationID() == stationNumber) {
@@ -371,7 +369,7 @@ public class Schedule implements UnmodifiableSchedule {
     }
 
     public boolean autoConsist() {
-        TrainOrder order = orders.get(getOrderToGoto());
+        TrainOrder order = orders.get(getCurrentOrderIndex());
         return order.isAutoConsist();
     }
 

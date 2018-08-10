@@ -19,6 +19,7 @@
 package freerails.model.cargo;
 
 import freerails.util.Vec2D;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
@@ -32,8 +33,8 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoTypeId;
     private final Vec2D sourceP;
-    // TODO call it originalStationID
-    private final int stationOfOrigin;
+    private final int originalStationId;
+    // TODO creation time maybe as game time?
     private final long creationTime;
 
     /**
@@ -46,14 +47,14 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         this.cargoTypeId = cargoTypeId;
         sourceP = p;
         creationTime = time;
-        stationOfOrigin = origin;
+        originalStationId = origin;
     }
 
     /**
      * @return
      */
-    public int getStationOfOrigin() {
-        return stationOfOrigin;
+    public int getOriginalStationId() {
+        return originalStationId;
     }
 
     /**
@@ -75,7 +76,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         if (obj instanceof CargoBatch) {
             CargoBatch test = (CargoBatch) obj;
 
-            return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.stationOfOrigin == stationOfOrigin;
+            return test.cargoTypeId == cargoTypeId && sourceP.equals(test.sourceP) && test.creationTime == creationTime && test.originalStationId == originalStationId;
         }
         return false;
     }
@@ -85,16 +86,16 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         int result = 17;
         result = 37 * result + cargoTypeId;
         result = 37 * result + sourceP.hashCode();
-        result = 37 * result + stationOfOrigin;
+        result = 37 * result + originalStationId;
         result = 37 * result + (int) (creationTime ^ (creationTime >>> 32));
 
         return result;
     }
 
-    public int compareTo(CargoBatch o) {
+    public int compareTo(@NotNull CargoBatch o) {
         if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
         if (cargoTypeId != o.cargoTypeId) return cargoTypeId - o.cargoTypeId;
-        if (stationOfOrigin != o.stationOfOrigin) return stationOfOrigin - o.stationOfOrigin;
+        if (originalStationId != o.originalStationId) return originalStationId - o.originalStationId;
         if (!sourceP.equals(o.sourceP)) return sourceP.compareTo(o.sourceP);
         return 0;
     }

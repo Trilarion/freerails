@@ -34,18 +34,6 @@
  * <td><strong>then extend</strong></td>
  * </tr>
  * <tr>
- * <td>adds an item to a list</td>
- * <td>{@link freerails.move.listmove.AddItemToListMove}</td>
- * </tr>
- * <tr>
- * <td>removes an item from a list</td>
- * <td>{@link freerails.move.listmove.RemoveItemFromListMove}</td>
- * </tr>
- * <tr>
- * <td>changes an item in a list</td>
- * <td>{@link freerails.move.listmove.ChangeItemInListMove}</td>
- * </tr>
- * <tr>
  * <td>does several things</td>
  * <td>{@link freerails.move.CompositeMove}</td>
  * </tr>

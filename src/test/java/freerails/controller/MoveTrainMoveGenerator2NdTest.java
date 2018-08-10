@@ -25,6 +25,7 @@ import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.track.OccupiedTracks;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
@@ -183,13 +184,14 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     public void testStops2() {
         // Check that there two stations on the schedule: station0 and station2;
         TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
-        UnmodifiableSchedule schedule = trainAccessor.getSchedule();
-        assertEquals(2, schedule.getNumOrders());
+        Train train = world.getTrain(player, 0);
+        UnmodifiableSchedule schedule = train.getSchedule();
+        assertEquals(2, schedule.getNumberOfOrders());
         assertEquals(2, schedule.getOrder(0).getStationID());
 
         // Check the train should have 2 wagons for cargo #0
         List<Integer> expectedConsist = Arrays.asList(0, 0);
-        List<Integer> actualConsist = trainAccessor.getTrain().getConsist();
+        List<Integer> actualConsist = train.getConsist();
         assertEquals(expectedConsist, actualConsist);
 
         addCargoAtStation(1, 800);
@@ -213,7 +215,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getTrainState());
 
         // 80 Units of cargo should have been transferred to the train!
-        UnmodifiableCargoBatchBundle onTrain = trainAccessor.getCargoBundle();
+        UnmodifiableCargoBatchBundle onTrain = train.getCargoBatchBundle();
         int amount = onTrain.getAmountOfType(0);
         assertEquals(80, amount);
 
@@ -260,11 +262,11 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(TrainState.READY, trainMotion.getTrainState());
 
         // The train should be heading for station 1.
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        UnmodifiableSchedule schedule1 = ta.getSchedule();
-        assertEquals(0, schedule1.getOrderToGoto());
-        assertEquals(2, schedule1.getStationToGoto());
-        assertEquals(station2Location, ta.getTargetLocation());
+        Train train2 = world.getTrain(player, 0);
+        UnmodifiableSchedule schedule1 = train2.getSchedule();
+        assertEquals(0, schedule1.getCurrentOrderIndex());
+        assertEquals(2, schedule1.getNextStationId());
+        assertEquals(station2Location, TrainUtils.getTargetLocation(world, player, 0));
 
         // The next train motion should represent the stop at the station.
         trainMotion = moveTrain();
@@ -274,14 +276,16 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(TrainState.STOPPED_AT_STATION, trainMotion.getTrainState());
 
         // The train should be heading for station 0.
-        UnmodifiableSchedule schedule2 = ta.getSchedule();
+        Train train1 = world.getTrain(player, 0);
+        UnmodifiableSchedule schedule2 = train1.getSchedule();
         assertFalse(schedule2.equals(schedule1));
-        assertEquals(1, schedule2.getOrderToGoto());
-        assertEquals(0, schedule2.getStationToGoto());
+        assertEquals(1, schedule2.getCurrentOrderIndex());
+        assertEquals(0, schedule2.getNextStationId());
 
         // 80 Units of cargo should have been transferred to the train!
 
-        UnmodifiableCargoBatchBundle onTrain = ta.getCargoBundle();
+        Train train = world.getTrain(player, 0);
+        UnmodifiableCargoBatchBundle onTrain = train.getCargoBatchBundle();
         int amount = onTrain.getAmountOfType(0);
         assertEquals(80, amount);
 
@@ -315,12 +319,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Set wait until full on schedule.
         List<Integer> newConsist = Arrays.asList(0, 0);
         TrainOrder order0 = new TrainOrder(2, newConsist,true,false);
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        Schedule schedule = new Schedule(ta.getSchedule());
+        Train train2 = world.getTrain(player, 0);
+        Schedule schedule = new Schedule(train2.getSchedule());
         schedule.setOrder(0, order0);
-        ta.getTrain().setSchedule(schedule);
-        assertEquals(0, ta.getSchedule().getOrderToGoto());
-        assertTrue(ta.getSchedule().getOrder(0).isWaitUntilFull());
+        train2.setSchedule(schedule);
+        assertEquals(0, train2.getSchedule().getCurrentOrderIndex());
+        assertTrue(train2.getSchedule().getOrder(0).isWaitUntilFull());
 
         // Add some cargo to station #2, but not enough to fill the train.
         addCargoAtStation(2, 20);
@@ -361,12 +365,13 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Now change the train's orders.
         List<Integer> newConsist = Arrays.asList(0, 0);
         TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        Schedule schedule = new Schedule(ta.getSchedule());
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
+        Train train = world.getTrain(player, 0);
+        Schedule schedule = new Schedule(train.getSchedule());
         schedule.setOrder(0, order0);
-        ta.getTrain().setSchedule(schedule);
-        assertEquals(0, ta.getSchedule().getOrderToGoto());
-        assertFalse(ta.getSchedule().getOrder(0).isWaitUntilFull());
+        train.setSchedule(schedule);
+        assertEquals(0, train.getSchedule().getCurrentOrderIndex());
+        assertFalse(train.getSchedule().getOrder(0).isWaitUntilFull());
 
         // Then the train should continue.
         trainMotion = moveTrain();
@@ -383,10 +388,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // TODO this test fails, disable temporarily
         if (1 == 1) return;
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
 
         // Remove all wagons from the train.
-        Train train = ta.getTrain();
+        Train train = world.getTrain(player, 0);
         train = new Train(train.getId(), train.getEngineId(), new ArrayList<>(), train.getCargoBatchBundle(), train.getSchedule());
         world.removeTrain(player, 0);
         world.addTrain(player, train);
@@ -398,7 +403,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         schedule.addOrder(order0);
         schedule.addOrder(order1);
 
-        assertEquals(0, ta.getSchedule().getOrderToGoto());
+        Train train4 = world.getTrain(player, 0);
+        assertEquals(0, train4.getSchedule().getCurrentOrderIndex());
 
         // Add 35 unit of cargo #0 to station 1.
         Station station0 = world.getStation(player, 1);
@@ -419,7 +425,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         world.addStation(player, stationWithNewDemand);
 
         // The train should be bound for station 1.
-        assertEquals(1, ta.getSchedule().getStationToGoto());
+        Train train3 = world.getTrain(player, 0);
+        assertEquals(1, train3.getSchedule().getNextStationId());
 
         // Make train call at station 1.
         PositionOnTrack positionOnTrack;
@@ -435,12 +442,14 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         positionOnTrack = trainMotion.getFinalPosition();
 
         // The train should be bound for station 2.
-        assertEquals(2, ta.getSchedule().getStationToGoto());
+        Train train2 = world.getTrain(player, 0);
+        assertEquals(2, train2.getSchedule().getNextStationId());
 
         // Check that the train has picked up the cargo.
         // The train should have one wagon of type #0
-        assertEquals(new ArrayList<>(0), ta.getTrain().getConsist());
-        assertEquals(AMOUNT_OF_CARGO, ta.getCargoBundle().getAmountOfType(0));
+        assertEquals(new ArrayList<>(0), world.getTrain(player, 0).getConsist());
+        Train train1 = world.getTrain(player, 0);
+        assertEquals(AMOUNT_OF_CARGO, train1.getCargoBatchBundle().getAmountOfType(0));
     }
 
     /**
@@ -463,11 +472,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Set the train to add wagons at station2.
         List<Integer> newConsist = Arrays.asList(0, 0, 0, 0, 0, 0);
         TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        Schedule schedule = new Schedule(ta.getSchedule());
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
+        Train train = world.getTrain(player, 0);
+        Schedule schedule = new Schedule(train.getSchedule());
         schedule.setOrder(0, order0);
-        ta.getTrain().setSchedule(schedule);
-        assertEquals(0, ta.getSchedule().getOrderToGoto());
+        train.setSchedule(schedule);
+        assertEquals(0, train.getSchedule().getCurrentOrderIndex());
 
         // Move the train to the station.
         PositionOnTrack positionOnTrack;
@@ -480,14 +490,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertEquals(station2Location.y, positionOnTrack.getLocation().y);
         assertEquals(TrainState.READY, trainMotion.getTrainState());
 
-        Train train = ta.getTrain();
         assertEquals(2, train.getNumberOfWagons());
 
         assertTrue(trainMotion.getInitialPosition() >= train.getLength());
 
         trainMotion = moveTrain();
-        trainMotion = moveTrain();
-        train = ta.getTrain();
+        train = world.getTrain(player, 0);
         assertEquals(6, train.getNumberOfWagons());
         assertTrue(trainMotion.getInitialPosition() >= train.getLength());
     }

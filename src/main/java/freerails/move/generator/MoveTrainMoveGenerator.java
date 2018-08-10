@@ -26,6 +26,7 @@ import freerails.model.track.explorer.GraphExplorer;
 import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.track.OccupiedTracks;
+import freerails.model.train.motion.TrainMotion;
 import freerails.move.*;
 
 import freerails.util.Vec2D;
@@ -47,6 +48,7 @@ import freerails.model.train.motion.Motion;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,17 +65,17 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     private static int cacheHit = 0;
     private static int cacheMiss = 0;
     private final Player player;
-    private final int trainID;
+    private final int trainId;
     private final OccupiedTracks occupiedTracks;
 
     /**
-     * @param id
-     * @param p
+     * @param trainId
+     * @param player
      * @param occupiedTracks
      */
-    public MoveTrainMoveGenerator(int id, Player p, OccupiedTracks occupiedTracks) {
-        trainID = id;
-        player = p;
+    public MoveTrainMoveGenerator(int trainId, Player player, OccupiedTracks occupiedTracks) {
+        this.trainId = trainId;
+        this.player = player;
         this.occupiedTracks = occupiedTracks;
     }
 
@@ -134,19 +136,22 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      */
     public boolean isUpdateDue(UnmodifiableWorld world) {
         GameTime currentTime = world.currentTime();
-        TrainAccessor ta = new TrainAccessor(world, player, trainID);
-        ActivityIterator ai = world.getActivities(player, trainID);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
+        ActivityIterator ai = world.getActivities(player, trainId);
         ai.gotoLastActivity();
 
         double finishTime = ai.getFinishTime();
         double ticks = currentTime.getTicks();
 
         boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
-        TrainState trainState = ta.getStatus(finishTime);
+        TrainMotion trainMotion = trainAccessor.findCurrentMotion(finishTime);
+        TrainState trainState = trainMotion.getTrainState();
         if (trainState == TrainState.WAITING_FOR_FULL_LOAD) {
             // Check whether there is any cargo that can be added to the train.
-            List<Integer> spaceAvailable = ta.spaceAvailable();
-            int stationId = ta.getStationId(ticks);
+            // determine the space available on the train measured in cargo units.
+            Train train = world.getTrain(player, trainId);
+            List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
+            int stationId = trainAccessor.getStationId(ticks);
             if (stationId == -1) throw new IllegalStateException();
 
             Station station = world.getStation(player, stationId);
@@ -160,17 +165,10 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                     return true;
                 }
             }
-            return !ta.keepWaiting();
+            return !trainAccessor.keepWaiting();
         }
         return hasFinishedLastActivity;
     }
-
-    private Vec2D currentTrainTarget(UnmodifiableWorld world) {
-        TrainAccessor ta = new TrainAccessor(world, player, trainID);
-        return ta.getTargetLocation();
-    }
-
-    // TODO optimize
 
     @Override
     public boolean equals(Object obj) {
@@ -179,7 +177,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
         final MoveTrainMoveGenerator moveTrainPreMove = (MoveTrainMoveGenerator) obj;
 
-        if (trainID != moveTrainPreMove.trainID) return false;
+        if (trainId != moveTrainPreMove.trainId) return false;
         return player.equals(moveTrainPreMove.player);
     }
 
@@ -194,7 +192,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
             throw new IllegalStateException();
         }
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainID);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         TrainMotion trainMotion = trainAccessor.findCurrentMotion(Double.MAX_VALUE);
 
         TrainState trainState = trainMotion.getTrainState();
@@ -204,7 +202,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 return moveTrain(world, occupiedTracks);
             case READY: {
                 // Are we at a station?
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, player, world);
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainId, player, world);
                 trainAccessor.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
                 Vec2D location = positionOnTrack.getLocation();
@@ -231,16 +229,16 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
                     // Create a new Move object.
                     // TODO needed dedicated move for train moves
-                    // Move trainMove = new NextActivityMove(nextMotion, trainID, player);
-                    Move trainMove = new MoveTrainActivityMove(player, trainID, nextMotion);
-
-                    List<Move> cargoMoves = stopsHandler.getMoves();
-                    return new CompositeMove(trainMove, cargoMoves);
+                    // Move trainMove = new NextActivityMove(nextMotion, trainId, player);
+                    List<Move> moves = new LinkedList<>();
+                    moves.add(new MoveTrainActivityMove(player, trainId, nextMotion));
+                    moves.addAll(stopsHandler.getMoves());
+                    return new CompositeMove(moves);
                 }
                 return moveTrain(world, occupiedTracks);
             }
             case WAITING_FOR_FULL_LOAD: {
-                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainID, player, world);
+                TrainStopsHandler stopsHandler = new TrainStopsHandler(trainId, player, world);
 
                 boolean waitingForfullLoad = stopsHandler.refreshWaitingForFullLoad();
                 List<Move> cargoMoves = stopsHandler.getMoves();
@@ -263,13 +261,13 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     @Override
     public int hashCode() {
         int result;
-        result = trainID;
+        result = trainId;
         result = 29 * result + player.hashCode();
         return result;
     }
 
     private TrainMotion lastMotion(UnmodifiableWorld world) {
-        ActivityIterator ai = world.getActivities(player, trainID);
+        ActivityIterator ai = world.getActivities(player, trainId);
         ai.gotoLastActivity();
         return (TrainMotion) ai.getActivity();
     }
@@ -298,13 +296,13 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         if (trains != null) {
             if (trains >= tracks) {
                 // We need to wait for the track ahead to clear.
-                occupiedTracks.stopTrain(trainID);
+                occupiedTracks.stopTrain(trainId);
                 return stopTrain(world);
             }
         }
         // Create a new train motion object.
         TrainMotion nextMotion = nextMotion(world, nextVector);
-        return new NextActivityMove(nextMotion, trainID, player);
+        return new NextActivityMove(nextMotion, trainId, player);
     }
 
     private TrainMotion nextMotion(UnmodifiableWorld world, TileTransition tileTransition) {
@@ -318,13 +316,12 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     }
 
     public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainID);
         TrainMotion lastMotion = lastMotion(world);
 
         double u = lastMotion.getSpeedAtEnd();
         double s = tileTransition.getLength();
 
-        int wagons = trainAccessor.getTrain().getNumberOfWagons();
+        int wagons = world.getTrain(player, trainId).getNumberOfWagons();
         double a0 = 0.5d / (wagons + 1);
         double topSpeed = (double) (10 / (wagons + 1));
 
@@ -349,7 +346,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         TrainMotion currentMotion = lastMotion(world);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
-        Vec2D targetPoint = currentTrainTarget(world);
+        Vec2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
         return findNextStep(world, currentPosition, targetPoint);
     }
 
@@ -366,6 +363,6 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         PathOnTiles tiles = motion.getTiles(duration);
         int engineDist = tiles.steps();
         TrainMotion nextMotion = new TrainMotion(tiles, engineDist, trainLength, stopped);
-        return new NextActivityMove(nextMotion, trainID, player);
+        return new NextActivityMove(nextMotion, trainId, player);
     }
 }

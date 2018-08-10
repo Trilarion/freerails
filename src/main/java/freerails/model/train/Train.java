@@ -2,7 +2,6 @@ package freerails.model.train;
 
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
-import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.schedule.Schedule;

@@ -21,6 +21,8 @@
  */
 package freerails.model.game;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -87,7 +89,7 @@ public class GameTime implements Serializable, Comparable<GameTime> {
      * GameTime is before t; and a value greater than 0 if this GameTime
      * is after t.
      */
-    public int compareTo(GameTime o) {
+    public int compareTo(@NotNull GameTime o) {
         return ticks - o.ticks;
     }
 

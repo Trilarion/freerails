@@ -78,7 +78,7 @@ public class TrainUpdater implements Serializable {
 
         // Add up to 4 stations to the schedule.
         Iterator<Station> wi = world.getStations(player).iterator();
-        while (wi.hasNext() && schedule.getNumOrders() < 5) {
+        while (wi.hasNext() && schedule.getNumberOfOrders() < 5) {
             TrainOrder orders = new TrainOrder(wi.next().getId(), null, false, autoSchedule);
             schedule.addOrder(orders);
         }

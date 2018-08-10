@@ -23,6 +23,7 @@ package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
@@ -41,6 +42,7 @@ import freerails.model.train.*;
 import freerails.model.train.motion.ConstantAccelerationMotion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -160,9 +162,10 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         PathOnTiles path = initPositionStep1(world);
         TrainMotion motion = initPositionStep2(path);
 
+        // TODO replace with AddActivityMove
         Move addPosition = new AddActiveEntityMove(motion, trainId, player);
 
-        return new CompositeMove(addTrain, transactionMove, addPosition);
+        return new CompositeMove(Arrays.asList(addTrain, transactionMove, addPosition));
     }
 
 }

@@ -246,7 +246,7 @@ public class BuildTrackExplorer implements GraphExplorer {
              * price in the cost calculation since it has already been paid.
              * Otherwise, add the cost of building the track.
              */
-            // TODO use Money arithmetics
+            // TODO use Money arithmetic
             long priceA = ruleA.getPurchasingPrice().amount;
             long priceB = ruleB.getPurchasingPrice().amount;
             cost += length * (priceA + priceB);

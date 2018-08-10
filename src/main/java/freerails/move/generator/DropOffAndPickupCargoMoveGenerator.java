@@ -61,19 +61,19 @@ public class DropOffAndPickupCargoMoveGenerator {
     /**
      * Constructor.
      *
-     * @param trainNo   ID of the train
-     * @param stationNo ID of the station
+     * @param trainId   ID of the train
+     * @param stationId ID of the station
      * @param world     The world object
      */
-    public DropOffAndPickupCargoMoveGenerator(int trainNo, int stationNo, UnmodifiableWorld world, Player player, boolean waiting, boolean autoConsist) {
+    public DropOffAndPickupCargoMoveGenerator(int trainId, int stationId, UnmodifiableWorld world, Player player, boolean waiting, boolean autoConsist) {
         this.player = player;
-        trainId = trainNo;
-        stationId = stationNo;
+        this.trainId = trainId;
+        this.stationId = stationId;
         this.world = world;
         this.autoConsist = autoConsist;
         waitingForFullLoad = waiting;
-        trainAccessor = new TrainAccessor(this.world, this.player, trainNo);
-        consist = trainAccessor.getTrain().getConsist();
+        trainAccessor = new TrainAccessor(this.world, this.player, trainId);
+        consist = world.getTrain(player, trainId).getConsist();
         getBundles();
 
         // TODO should this be done here? I thought this is only a Move generator
@@ -82,9 +82,10 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (autoConsist) {
             List<WagonLoad> wagonsAvailable = new ArrayList<>();
 
-            assert trainAccessor.equals(world.getTrain(player, trainId));
-            UnmodifiableSchedule schedule = trainAccessor.getSchedule();
-            TrainOrder order = schedule.getOrder(schedule.getOrderToGoto());
+            assert trainAccessor.equals(world.getTrain(player, this.trainId));
+            Train train = world.getTrain(player, this.trainId);
+            UnmodifiableSchedule schedule = train.getSchedule();
+            TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
 
             int nextStationId = order.getStationId();
 
@@ -199,8 +200,8 @@ public class DropOffAndPickupCargoMoveGenerator {
         moves.add(changeOnTrain);
 
         if (autoConsist) {
-            int engine = trainAccessor.getTrain().getEngineId();
-            Train before = trainAccessor.getTrain();
+            Train before = this.world.getTrain(this.player, this.trainId);
+            int engine = before.getEngineId();
             Train after = new Train(before.getId(), engine, consist, before.getCargoBatchBundle(), before.getSchedule());
             // TODO we need a dedicated ChangeTrainMove
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
@@ -211,8 +212,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             if (trainAfter.equals(trainBefore)) return null;
         }
 
-        CompositeMove move = new CompositeMove(moves);
-        return move;
+        return new CompositeMove(moves);
     }
 
     private void getBundles() {
@@ -237,7 +237,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             StationDemand demand = station.getDemandForCargo();
             int cargoType = cb.getCargoTypeId();
 
-            if ((demand.isCargoDemanded(cargoType)) && (stationId != cb.getStationOfOrigin())) {
+            if ((demand.isCargoDemanded(cargoType)) && (stationId != cb.getOriginalStationId())) {
                 int amount = trainAfter.getAmount(cb);
                 cargoDroppedOff.addCargo(cb, amount);
 
@@ -258,7 +258,9 @@ public class DropOffAndPickupCargoMoveGenerator {
 
         // Unload the cargo that there isn't space for on the train regardless
         // of whether the station demands it.
-        List<Integer> spaceAvailable = trainAccessor.spaceAvailable();
+        // determine the space available on the train measured in cargo units.
+        Train train = world.getTrain(player, trainId);
+        List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
 
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
@@ -274,7 +276,7 @@ public class DropOffAndPickupCargoMoveGenerator {
      * available on the train.
      */
     private void processStationBundle() {
-        List<Integer> spaceAvailable = TrainAccessor.spaceAvailable2(world, trainAfter, consist);
+        List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, trainAfter, consist);
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
             int amountToTransfer = Math.min(quantity, stationAfter.getAmountOfType(cargoType));

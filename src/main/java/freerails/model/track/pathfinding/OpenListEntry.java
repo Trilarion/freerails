@@ -1,5 +1,7 @@
 package freerails.model.track.pathfinding;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
@@ -13,7 +15,7 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
         this.node = node;
     }
 
-    public int compareTo(OpenListEntry o) {
+    public int compareTo(@NotNull OpenListEntry o) {
         if (f == o.f) {
             return node - o.node;
         }

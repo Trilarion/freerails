@@ -26,6 +26,9 @@ import freerails.util.Vec2D;
 import freerails.model.station.Station;
 import freerails.model.MapFixtureFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  */
@@ -40,11 +43,11 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testMove() {
-        Move[] moves = new Move[4];
-        moves[0] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station1);
-        moves[1] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station2);
-        moves[2] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station3);
-        moves[3] = new AddStationMove(MapFixtureFactory.TEST_PLAYER, station4);
+        List<Move> moves = new ArrayList<>(4);
+        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station1));
+        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station2));
+        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station3));
+        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station4));
         Move compositeMove = new CompositeMove(moves);
         assertSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);

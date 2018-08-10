@@ -79,7 +79,8 @@ public class BlankMapRenderer implements MapRenderer {
         int y = (int) (100 * scale);
         int height = (int) (200 * scale);
         int width = (int) (200 * scale);
-        g.fillRect(x, y, height, width);
+        // g.fillRect(x, y, height, width);
+        g.fillRect(x, y, width, height);
     }
 
     /**

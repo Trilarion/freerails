@@ -274,7 +274,7 @@ public class SelectStationPanel extends JPanel implements View {
 
             StringBuilder stopNumbersString = new StringBuilder();
             boolean stationIsOnSchedule = false;
-            for (int orderNumber = 0; orderNumber < schedule.getNumOrders(); orderNumber++) {
+            for (int orderNumber = 0; orderNumber < schedule.getNumberOfOrders(); orderNumber++) {
                 int stationID = orderNumber == selectedOrderNumber ? selectedStationID : schedule.getOrder(orderNumber).getStationID();
                 if (station.getId() == stationID) {
                     if (stationIsOnSchedule) {

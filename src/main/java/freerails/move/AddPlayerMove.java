@@ -102,6 +102,7 @@ public class AddPlayerMove implements Move {
 
         world.removeLastTransaction(playerToAdd);
         world.removeLastTransaction(playerToAdd);
+        // TODO remove player instead
         world.removeLastPlayer();
 
         return status;

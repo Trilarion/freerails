@@ -142,7 +142,7 @@ public class MapCreator {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = 0; y < map.getHeight(); y++) {
                 TerrainTile tile;
-                Integer type = map.get(x, y);
+                int type = map.get(x, y);
 
                 tile = new TerrainTile(terrainRandomizer.getNewType(type));
                 Vec2D location = new Vec2D(x, y);
