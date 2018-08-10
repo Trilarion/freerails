@@ -26,9 +26,9 @@ package freerails.client.view;
 import freerails.client.KeyCodeToOneTileMoveVector;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.station.StationUtils;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.util.Vec2D;
-import freerails.model.station.NearestStationFinder;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -134,11 +134,10 @@ public class SelectStationPanel extends JPanel implements View {
         try {
             TileTransition tileTransition = KeyCodeToOneTileMoveVector.getInstanceMappedToKey(evt.getKeyCode());
             // now find nearest station in direction of the vector.
-            NearestStationFinder stationFinder = new NearestStationFinder(world, player);
-            int station = stationFinder.findNearestStationInDirection(selectedStationID, tileTransition);
+            int stationId = StationUtils.findNearestStationInDirection(world, player, selectedStationID, tileTransition);
 
-            if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
-                selectedStationID = station;
+            if (selectedStationID != stationId && stationId != StationUtils.NOT_FOUND) {
+                selectedStationID = stationId;
                 cargoWaitingAndDemandedPanel1.display(selectedStationID);
                 validate();
                 repaint();
@@ -164,10 +163,9 @@ public class SelectStationPanel extends JPanel implements View {
         double y = evt.getY();
         y = y / scale + visableMapTiles.y;
 
-        NearestStationFinder stationFinder = new NearestStationFinder(world, player);
-        int station = stationFinder.findNearestStation(new Vec2D((int)x, (int)y));
+        int station = StationUtils.findNearestStation(world, player, new Vec2D((int)x, (int)y));
 
-        if (selectedStationID != station && station != NearestStationFinder.NOT_FOUND) {
+        if (selectedStationID != station && station != StationUtils.NOT_FOUND) {
             selectedStationID = station;
             cargoWaitingAndDemandedPanel1.display(selectedStationID);
             validate();
@@ -204,10 +202,10 @@ public class SelectStationPanel extends JPanel implements View {
 
         for (Station station: world.getStations(player)) {
             // TODO min, max of two Points2D
-            if (station.location.x < topLeftX) topLeftX = station.location.x;
-            if (station.location.y < topLeftY) topLeftY = station.location.y;
-            if (station.location.x > bottomRightX) bottomRightX = station.location.x;
-            if (station.location.y > bottomRightY) bottomRightY = station.location.y;
+            if (station.getLocation().x < topLeftX) topLeftX = station.getLocation().x;
+            if (station.getLocation().y < topLeftY) topLeftY = station.getLocation().y;
+            if (station.getLocation().x > bottomRightX) bottomRightX = station.getLocation().x;
+            if (station.getLocation().y > bottomRightY) bottomRightY = station.getLocation().y;
         }
         // Add some padding.
         topLeftX -= 10;
@@ -265,9 +263,9 @@ public class SelectStationPanel extends JPanel implements View {
              * drawn above the stations are drawn using the same colour as used
              * to draw the station.
              */
-            double x = station.location.x - visableMapTiles.x;
+            double x = station.getLocation().x - visableMapTiles.x;
             x = x * scale;
-            double y = station.location.y - visableMapTiles.y;
+            double y = station.getLocation().y - visableMapTiles.y;
             y = y * scale;
             int xInt = (int) x;
             int yInt = (int) y;

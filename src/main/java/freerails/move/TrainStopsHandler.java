@@ -148,7 +148,7 @@ public class TrainStopsHandler implements Serializable {
     public int getStationId(Vec2D location) {
         // loop through the station list to check if train is at the same Point2D as a station
         for (Station station: world.getStations(player)) {
-            if (location.equals(station.location)) {
+            if (location.equals(station.getLocation())) {
                 return station.getId(); // train is at the station at location tempPoint
             }
         }

@@ -38,7 +38,7 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.station.TrainBlueprint;
+import freerails.model.train.TrainTemplate;
 import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
 
@@ -109,10 +109,10 @@ public class DialogueBoxController implements WorldListListener {
 
         public void actionPerformed(ActionEvent e) {
             for (Station station: world.getStations(modelRoot.getPlayer())) {
-                List<TrainBlueprint> before = station.getProduction();
+                List<TrainTemplate> before = station.getProduction();
                 int engineId = selectEngine.getSelectedEngineId();
-                Integer[] wagonTypes = selectWagons.getWagons();
-                List<TrainBlueprint> after = Arrays.asList(new TrainBlueprint(engineId, wagonTypes));
+                List<Integer> wagonTypes = selectWagons.getWagons();
+                List<TrainTemplate> after = Arrays.asList(new TrainTemplate(engineId, wagonTypes));
 
                 Move move = new ChangeProductionAtEngineShopMove(before, after, station.getId(), modelRoot.getPlayer());
                 modelRoot.doMove(move);

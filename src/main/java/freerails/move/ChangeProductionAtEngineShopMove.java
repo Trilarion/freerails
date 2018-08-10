@@ -25,7 +25,7 @@ package freerails.move;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.station.TrainBlueprint;
+import freerails.model.train.TrainTemplate;
 
 import java.util.List;
 
@@ -36,8 +36,8 @@ import java.util.List;
 public class ChangeProductionAtEngineShopMove implements Move {
 
     private static final long serialVersionUID = 3905519384997737520L;
-    private final List<TrainBlueprint> before;
-    private final List<TrainBlueprint> after;
+    private final List<TrainTemplate> before;
+    private final List<TrainTemplate> after;
     private final int stationNumber;
     private final Player player;
 
@@ -47,7 +47,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
      * @param station
      * @param player
      */
-    public ChangeProductionAtEngineShopMove(List<TrainBlueprint> b, List<TrainBlueprint> a, int station, Player player) {
+    public ChangeProductionAtEngineShopMove(List<TrainTemplate> b, List<TrainTemplate> a, int station, Player player) {
         before = b;
         after = a;
         stationNumber = station;
@@ -83,7 +83,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return tryMove(world, before);
     }
 
-    private Status tryMove(World world, List<TrainBlueprint> stateA) {
+    private Status tryMove(World world, List<TrainTemplate> stateA) {
         // Check that the specified station exists.
         // TODO check that station is existing, do we need a dedicated function for that
         /*

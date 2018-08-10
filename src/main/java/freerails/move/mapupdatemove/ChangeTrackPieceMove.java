@@ -77,17 +77,17 @@ public final class ChangeTrackPieceMove implements TrackMove {
                  * are the same, then we are upgrading a station so it doesn't
                  * matter if the radii overlap.
                  */
-                if (location.equals(station.location)) {
+                if (location.equals(station.getLocation())) {
                     continue;
                 }
 
-                TerrainTile tile = world.getTile(station.location);
+                TerrainTile tile = world.getTile(station.getLocation());
                 TrackType otherStationType = tile.getTrackPiece().getTrackType();
                 assert otherStationType.isStation();
 
                 int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
                 int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                Vec2D delta = Vec2D.subtract(station.location, location);
+                Vec2D delta = Vec2D.subtract(station.getLocation(), location);
 
                 // Do radii overlap?
                 boolean xOverlap = sumOfRadiiSquared >= delta.x * delta.x;

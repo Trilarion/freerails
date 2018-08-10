@@ -174,7 +174,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
         for (CargoBatch cargoBatch: cargoBatchBundle.getCargoBatches()) {
             // TODO own function for that
-            double distanceSquared = (cargoBatch.getSourceP().x - thisStation.location.x) * (cargoBatch.getSourceP().x - thisStation.location.x) + (cargoBatch.getSourceP().y - thisStation.location.y) * (cargoBatch.getSourceP().y - thisStation.location.y);
+            double distanceSquared = (cargoBatch.getSourceP().x - thisStation.getLocation().x) * (cargoBatch.getSourceP().x - thisStation.getLocation().x) + (cargoBatch.getSourceP().y - thisStation.getLocation().y) * (cargoBatch.getSourceP().y - thisStation.getLocation().y);
             double dist = Math.sqrt(distanceSquared);
             int quantity = cargoBatchBundle.getAmount(cargoBatch);
 
@@ -246,7 +246,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
                 if (converted.convertsCargo(cargoType)) {
                     int newCargoType = converted.getConversion(cargoType);
-                    CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.location, 0, stationId);
+                    CargoBatch newCargoBatch = new CargoBatch(newCargoType, station.getLocation(), 0, stationId);
                     stationAfter.addCargo(newCargoBatch, amount);
                 }
 

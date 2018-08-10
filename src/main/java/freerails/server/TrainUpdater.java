@@ -31,7 +31,7 @@ import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.station.TrainBlueprint;
+import freerails.model.train.TrainTemplate;
 import freerails.model.track.NoTrackException;
 import freerails.model.train.*;
 import freerails.model.train.schedule.Schedule;
@@ -100,13 +100,13 @@ public class TrainUpdater implements Serializable {
         for (Player player: world.getPlayers()) {
             // for all stations of that player
             for (Station station: world.getStations(player)) {
-                List<TrainBlueprint> production = station.getProduction();
+                List<TrainTemplate> production = station.getProduction();
                 if (production.size() > 0) {
 
-                    for (TrainBlueprint aProduction : production) {
+                    for (TrainTemplate aProduction : production) {
                         int engineId = aProduction.getEngineId();
                         List<Integer> wagonTypes = aProduction.getWagonTypes();
-                        buildTrain(engineId, wagonTypes, station.location, player, world);
+                        buildTrain(engineId, wagonTypes, station.getLocation(), player, world);
                     }
 
                     Move move = new ChangeProductionAtEngineShopMove(production, new ArrayList<>(), station.getId(), player);

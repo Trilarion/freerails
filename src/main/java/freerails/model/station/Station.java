@@ -24,6 +24,7 @@ import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 
+import freerails.model.train.TrainTemplate;
 import freerails.util.Vec2D;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -42,14 +43,14 @@ import java.util.List;
 public class Station extends Identifiable {
 
     private static final long serialVersionUID = 3256442503979874355L;
-    public final Vec2D location;
+    private final Vec2D location;
     private final String name;
     private StationSupply supply;
     private StationDemand demandForCargo;
     private StationCargoConversion cargoConversion;
     private CargoBatchBundle cargoBatchBundle;
 
-    private List<TrainBlueprint> production;
+    private List<TrainTemplate> production;
 
     /**
      * @param location
@@ -85,7 +86,7 @@ public class Station extends Identifiable {
             if (trackType.isStation() && trackPiece.getOwnerID() == world.getID(player)) {
 
                 for (Station station: world.getStations(player)) {
-                    if (location.equals(station.location)) {
+                    if (location.equals(station.getLocation())) {
                         return station.getId();
                     }
                 }
@@ -122,7 +123,7 @@ public class Station extends Identifiable {
      */ /**
      * @return
      */
-    public List<TrainBlueprint> getProduction() {
+    public List<TrainTemplate> getProduction() {
         return production;
     }
 
@@ -168,7 +169,7 @@ public class Station extends Identifiable {
         this.supply = supply;
     }
 
-    public void setProduction(List<TrainBlueprint> production) {
+    public void setProduction(List<TrainTemplate> production) {
         this.production = production;
     }
 }

@@ -25,6 +25,7 @@ import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.station.*;
 
 import freerails.model.MapFixtureFactory;
+import freerails.model.train.TrainTemplate;
 import freerails.util.Vec2D;
 
 import java.util.ArrayList;
@@ -36,9 +37,9 @@ import java.util.List;
  */
 public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
-    private List<TrainBlueprint> after;
+    private List<TrainTemplate> after;
     private int engineType;
-    private Integer[] wagons;
+    private List<Integer> wagons = new ArrayList<>();
 
     /**
      * @throws Exception
@@ -53,15 +54,14 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
         engineType = 0;
         int wagonType = 0;
-        wagons = new Integer[]{wagonType, wagonType};
-        after = Arrays.asList(new TrainBlueprint(engineType, wagons));
+        after = Arrays.asList(new TrainTemplate(engineType, Arrays.asList(wagonType, wagonType)));
     }
 
     /**
      *
      */
     public void testMove() {
-        List<TrainBlueprint> before = new ArrayList<>();
+        List<TrainTemplate> before = new ArrayList<>();
 
         ChangeProductionAtEngineShopMove m;
 
@@ -92,10 +92,10 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testProductionAtEngineShopEquals() {
-        TrainBlueprint b;
-        TrainBlueprint c;
-        b = new TrainBlueprint(engineType, wagons);
-        c = new TrainBlueprint(engineType, wagons);
+        TrainTemplate b;
+        TrainTemplate c;
+        b = new TrainTemplate(engineType, wagons);
+        c = new TrainTemplate(engineType, wagons);
         assertEquals(c, b);
         assertEquals(b, c);
     }

@@ -148,7 +148,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
             int stationIndex = -1;
 
             for (Station station: world.getStations(player)) {
-                if (station.location.equals(changeTrackPieceMove.getLocation())) {
+                if (station.getLocation().equals(changeTrackPieceMove.getLocation())) {
                     // We have found the station!
                     stationIndex = station.getId();
                     break;

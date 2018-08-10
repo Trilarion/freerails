@@ -246,13 +246,8 @@ public class SelectWagonsPanel extends JPanel implements View {
     /**
      * @return
      */
-    public Integer[] getWagons() {
-        Integer[] wagonsArray = new Integer[wagons.size()];
-        for (int i = 0; i < wagons.size(); i++) {
-            Integer type = wagons.get(i);
-            wagonsArray[i] = type;
-        }
-        return wagonsArray;
+    public List<Integer> getWagons() {
+        return wagons;
     }
 
     /**

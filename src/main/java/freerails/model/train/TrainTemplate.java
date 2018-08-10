@@ -19,32 +19,31 @@
 /*
  *
  */
-package freerails.model.station;
+package freerails.model.train;
 
-
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Represents the blue print for what an engine shop is producing.
  */
-public class TrainBlueprint implements Serializable {
+public class TrainTemplate implements Serializable {
 
     private static final long serialVersionUID = 3545515106038592057L;
     private final int engineId;
-    // TODO wagon type?? (make if ordinary immutable arraylist)
     private final List<Integer> wagonTypes;
 
     /**
      * @param engineId
      * @param wagonTypes
      */
-    public TrainBlueprint(int engineId, Integer[] wagonTypes) {
+    public TrainTemplate(int engineId, @NotNull List<Integer> wagonTypes) {
         this.engineId = engineId;
-        this.wagonTypes = new ArrayList<>(Arrays.asList(wagonTypes));
+        this.wagonTypes = Collections.unmodifiableList(new ArrayList<>(wagonTypes));
     }
 
     @Override
@@ -55,9 +54,9 @@ public class TrainBlueprint implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof TrainBlueprint)) return false;
+        if (!(obj instanceof TrainTemplate)) return false;
 
-        final TrainBlueprint productionAtEngineShop = (TrainBlueprint) obj;
+        final TrainTemplate productionAtEngineShop = (TrainTemplate) obj;
 
         if (engineId != productionAtEngineShop.engineId) return false;
         return wagonTypes.equals(productionAtEngineShop.wagonTypes);

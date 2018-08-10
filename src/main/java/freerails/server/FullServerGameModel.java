@@ -25,9 +25,10 @@ import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.station.CalculateCargoSupplyRateAtStation;
 import freerails.model.station.Station;
 import freerails.model.station.StationSupply;
+import freerails.model.station.StationUtils;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.BondInterestMoveGenerator;
@@ -89,7 +90,7 @@ public class FullServerGameModel implements ServerGameModel {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cb = new CargoBatch(i, station.location, 0, stationId);
+                        CargoBatch cb = new CargoBatch(i, station.getLocation(), 0, stationId);
                         int amountAlready = after.getAmount(cb);
 
                         // Obtain the month
@@ -237,10 +238,9 @@ public class FullServerGameModel implements ServerGameModel {
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
             for (Station station: world.getStations(player)) {
-                CalculateCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location);
-
-                Station stationAfter = supplyRate.calculations(station);
+                TerrainTile tile = (TerrainTile) world.getTile(station.getLocation());
+                int trackRuleId = tile.getTrackPiece().getTrackType().getId();
+                Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, trackRuleId, station);
 
                 if (!stationAfter.equals(station)) {
                     Move move = new ChangeStationMove(player, stationAfter);

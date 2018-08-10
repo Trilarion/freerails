@@ -63,6 +63,6 @@ public final class TrainUtils {
         }
 
         Station station = world.getStation(player, stationId);
-        return station.location;
+        return station.getLocation();
     }
 }

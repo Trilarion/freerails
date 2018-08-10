@@ -22,9 +22,8 @@
 package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.station.CalculateCargoSupplyRateAtStation;
+import freerails.model.station.StationUtils;
 import freerails.model.terrain.NearestCityFinder;
-import freerails.model.station.VerifyStationName;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
@@ -114,9 +113,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
             NearestCityFinder nearestCityFinder = new NearestCityFinder(world, location);
             try {
                 cityName = nearestCityFinder.findNearestCity();
-
-                VerifyStationName vSN = new VerifyStationName(world, cityName);
-                stationName = vSN.getName();
+                stationName = StationUtils.createStationName(world, cityName);
             } catch (NoSuchElementException e) {
                 // TODO can we do better here?
                 // there are no cities, this should never happen during a proper
@@ -170,9 +167,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
                 AddStationMove move = (AddStationMove) moves[i];
 
                 Station station = move.getStation();
-                CalculateCargoSupplyRateAtStation supplyRate;
-                supplyRate = new CalculateCargoSupplyRateAtStation(world, station.location, ruleNumber);
-                Station stationAfter = supplyRate.calculations(station);
+                Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
                 moves[i] = new AddStationMove(move.getPlayer(), stationAfter);
             }
         }
