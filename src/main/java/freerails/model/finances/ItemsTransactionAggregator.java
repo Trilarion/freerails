@@ -18,6 +18,9 @@
 
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -53,7 +56,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         }
 
         ItemTransaction itemTransaction = (ItemTransaction) transaction;
-        boolean isTypeAcceptable = (type == ANY_VALUE) || (type == itemTransaction.getTerrainTypeId());
+        boolean isTypeAcceptable = (type == ANY_VALUE) || (type == itemTransaction.getId());
         boolean isCategoryAcceptable = (category == null) || (category == itemTransaction.getCategory());
 
         return isCategoryAcceptable && isTypeAcceptable;

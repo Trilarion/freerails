@@ -21,6 +21,7 @@
  */
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.*;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
@@ -45,7 +46,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
         super(world, player);
         stockInRRs = new int[world.getPlayers().size()];
         calculateValues();
-        playerID = world.getID(player);
+        playerID = player.getId();
     }
 
     /**
@@ -58,13 +59,13 @@ public class FinancialDataGatherer extends TransactionAggregator {
         if (transaction instanceof ItemTransaction) {
             ItemTransaction ait = (ItemTransaction) transaction;
 
-            if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getTerrainTypeId() == -1) {
+            if (transaction instanceof ItemTransaction && ait.getCategory() == TransactionCategory.ISSUE_STOCK && ait.getId() == -1) {
                 // If it is a change in the total number of shares issued.
-                StockItemTransaction ist = (StockItemTransaction) transaction;
+                ItemTransaction ist = (ItemTransaction) transaction;
                 totalShares += ist.getQuantity();
-            } else if (transaction instanceof StockItemTransaction && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
+            } else if (transaction instanceof ItemTransaction && ait.getCategory() == TransactionCategory.TRANSFER_STOCK) {
                 //
-                stockInRRs[ait.getTerrainTypeId()] += ait.getQuantity();
+                stockInRRs[ait.getId()] += ait.getQuantity();
             } else if (transaction instanceof BondItemTransaction) {
                 bonds += ait.getQuantity();
             }

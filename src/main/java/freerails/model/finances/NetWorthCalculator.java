@@ -18,6 +18,9 @@
 
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 

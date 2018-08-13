@@ -16,38 +16,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.finances;
+package freerails.model.finances.transactions;
 
-// TODO remove type from here and
+// TODO implement hashcode and equals correctly (with calls to super)
+import freerails.model.finances.Money;
+
 /**
  * This Transaction represents the charge/credit for buying/selling an item.
  *
  * Characterized by a category, a type, a quantity and an amount of money of course.
  *
  * Example: Buy 4 tiles of standard track
+ *
+ * Stock transaction: A transaction that occurs when a new company is founded or when a company
+ * issues additional shares. Additionally to the values necessary for an item transaction also a player id is needed.
  */
-public class ItemTransaction implements Transaction {
+public class ItemTransaction extends Transaction {
 
     private static final long serialVersionUID = 3690471411852326457L;
-    private final Money amount;
-    private final TransactionCategory category;
     private final int quantity;
-    private final int terrainTypeId;
-
-
-    // TODO what is the difference between category and type??
+    private final int id;
 
     /**
      * @param category
-     * @param terrainTypeId
-     * @param quantity
      * @param amount
+     * @param quantity
+     * @param id
      */
-    public ItemTransaction(TransactionCategory category, int terrainTypeId, int quantity, Money amount) {
-        this.category = category;
-        this.terrainTypeId = terrainTypeId;
+    public ItemTransaction(TransactionCategory category, Money amount, int quantity, int id) {
+        super(category, amount);
         this.quantity = quantity;
-        this.amount = amount;
+        this.id = id;
     }
 
     @Override
@@ -55,20 +54,9 @@ public class ItemTransaction implements Transaction {
         if (obj instanceof ItemTransaction) {
             ItemTransaction test = (ItemTransaction) obj;
 
-            return amount.equals(test.amount) && category == test.category && terrainTypeId == test.terrainTypeId && quantity == test.quantity;
+            return id == test.id && quantity == test.quantity;
         }
         return false;
-    }
-
-    public Money price() {
-        return amount;
-    }
-
-    /**
-     * @return
-     */
-    public TransactionCategory getCategory() {
-        return category;
     }
 
     /**
@@ -81,22 +69,20 @@ public class ItemTransaction implements Transaction {
     /**
      * @return
      */
-    public int getTerrainTypeId() {
-        return terrainTypeId;
+    public int getId() {
+        return id;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = category.hashCode();
-        result = 29 * result + terrainTypeId;
+        int result = super.hashCode();
+        result = 29 * result + id;
         result = 29 * result + quantity;
-        result = 29 * result + amount.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return "ItemTransaction " + category + ", type " + terrainTypeId + ", quantity " + quantity + ", amount " + amount;
+        return "ItemTransaction " + getQuantity() + ", type " + id + ", quantity " + quantity + ", money " + getAmount();
     }
 }

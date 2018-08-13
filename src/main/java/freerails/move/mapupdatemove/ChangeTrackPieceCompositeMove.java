@@ -31,7 +31,7 @@ import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.finances.ItemsTransactionAggregator;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.game.GameRules;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;

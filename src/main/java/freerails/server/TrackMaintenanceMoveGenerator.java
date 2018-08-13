@@ -29,9 +29,8 @@ import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.World;
 import freerails.model.ModelConstants;
 import freerails.model.finances.Money;
-import freerails.model.finances.MoneyTransaction;
-import freerails.model.finances.Transaction;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 
 // TODO does not really follow the MoveGenerator interface, should it maybe?
@@ -79,7 +78,7 @@ public class TrackMaintenanceMoveGenerator {
             }
         }
 
-        Transaction transaction = new MoneyTransaction(new Money(-amount), category);
+        Transaction transaction = new Transaction(category, new Money(-amount));
 
         return new AddTransactionMove(player, transaction);
     }

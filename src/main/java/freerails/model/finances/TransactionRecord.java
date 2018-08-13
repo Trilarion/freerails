@@ -18,6 +18,7 @@
 
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.game.GameTime;
 
 import java.io.Serializable;

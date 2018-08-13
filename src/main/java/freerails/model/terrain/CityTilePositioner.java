@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// TODO does two things, initial position of tiles and growing of cities
 /**
  * Initialises cities and controls their growth. It makes changes to
  * directly to the world object, so if the game has already started, use
@@ -94,11 +95,11 @@ public class CityTilePositioner {
     }
 
     private void addIndustryTile(CityModel city) {
-        int size = city.industriesNotAtCity.size();
+        int size = city.getIndustriesNotAtCity().size();
 
         if (size > 0) {
             int tileTypeNo = random.nextInt(size);
-            Terrain type = city.industriesNotAtCity.get(tileTypeNo);
+            Terrain type = city.getIndustriesNotAtCity().get(tileTypeNo);
             city.addTile(type);
         }
     }
@@ -120,7 +121,7 @@ public class CityTilePositioner {
             cityModel.loadFromMap(world, city.getId());
 
             // Only increase cities with stations and less than 16 tiles
-            if (cityModel.size() < 16 && cityModel.stations > 0) {
+            if (cityModel.getUrbanCityTiles().size() + cityModel.getIndustryCityTiles().size() + cityModel.getResourceCityTiles().size() < 16 && cityModel.getStations() > 0) {
                 switch (random.nextInt(10)) {
                     case 0:
                     case 1:

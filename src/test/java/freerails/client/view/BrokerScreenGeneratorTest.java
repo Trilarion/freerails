@@ -21,15 +21,13 @@
  */
 package freerails.client.view;
 
-import freerails.model.finances.StockPriceCalculator;
-import freerails.model.finances.StockPrice;
+import freerails.model.finances.*;
+import freerails.model.finances.transactions.ItemTransaction;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.Status;
 import freerails.model.*;
-import freerails.model.finances.Money;
-import freerails.model.finances.StockItemTransaction;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
@@ -70,7 +68,7 @@ public class BrokerScreenGeneratorTest extends TestCase {
         for (int i = 0; i < 9; i++) {
             StockPrice stockPrice = new StockPriceCalculator(world).calculate()[playerID];
             Money sharePrice = stockPrice.treasuryBuyPrice;
-            StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(playerID,
+            ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(playerID,
                     ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
             Move move = new AddTransactionMove(player, stockItemTransaction);
             Status status = move.doMove(world, Player.AUTHORITATIVE);

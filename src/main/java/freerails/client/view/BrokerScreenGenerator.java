@@ -29,7 +29,7 @@ import freerails.model.finances.StockPrice;
 import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
@@ -50,7 +50,7 @@ class BrokerScreenGenerator {
     public BrokerScreenGenerator(UnmodifiableWorld world, Player player) {
         FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, player);
 
-        int playerId = world.getID(player);
+        int playerId = player.getId();
         String playername = world.getPlayer(playerId).getName();
 
         GameCalendar calendar = world.getCalendar();

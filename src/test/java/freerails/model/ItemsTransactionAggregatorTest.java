@@ -22,6 +22,9 @@
 package freerails.model;
 
 import freerails.model.finances.*;
+import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import junit.framework.TestCase;
@@ -43,12 +46,12 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         aggregator.setCategory(TransactionCategory.TRACK);
         int quant = aggregator.calculateQuantity();
         assertEquals(0, quant);
-        Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 5, new Money(100));
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(100), 5, 10);
         world.addTransaction(player, transaction);
 
         quant = aggregator.calculateQuantity();
         assertEquals(5, quant);
-        transaction = new ItemTransaction(TransactionCategory.TRACK, 10, 11, new Money(200));
+        transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(200), 11, 10);
         world.addTransaction(player, transaction);
     }
 

@@ -18,6 +18,7 @@
 
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
@@ -147,7 +148,7 @@ public abstract class TransactionAggregator {
     protected void incrementRunningTotal(int transactionID) {
         Transaction transaction = world.getTransaction(player, transactionID);
         // TODO use Money arithmetic and use Money for runingTotal
-        runningTotal += transaction.price().amount;
+        runningTotal += transaction.getAmount().amount;
     }
 
     /**

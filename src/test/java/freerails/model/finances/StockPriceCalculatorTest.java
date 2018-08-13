@@ -22,6 +22,8 @@
 package freerails.model.finances;
 
 import freerails.model.MapFixtureFactory2;
+import freerails.model.finances.transactions.CargoDeliveryTransaction;
+import freerails.model.finances.transactions.Transaction;
 import freerails.util.Vec2D;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -75,8 +77,8 @@ public class StockPriceCalculatorTest extends TestCase {
         world.setTime(newTime);
         CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
         long income = 100000;
-        Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0,
-                batch, 0);
+        Transaction transaction = new CargoDeliveryTransaction(new Money(income), 10, 0,
+                0, batch);
         Player princ = world.getPlayer(0);
         world.addTransaction(princ, transaction);
         assertEquals(initialNetworth, calc.netWorth(0));
@@ -134,7 +136,7 @@ public class StockPriceCalculatorTest extends TestCase {
      */
     private void addIncome(long income) {
         CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
-        Transaction transaction = new CargoDeliveryMoneyTransaction(new Money(income), 10, 0, batch, 0);
+        Transaction transaction = new CargoDeliveryTransaction(new Money(income), 10, 0, 0, batch);
         Player princ = world.getPlayer(0);
         world.addTransaction(princ, transaction);
     }

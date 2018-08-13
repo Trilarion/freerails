@@ -21,6 +21,8 @@
  */
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.track.TrackType;
 import freerails.model.world.World;
 import freerails.model.MapFixtureFactory;
@@ -102,8 +104,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
      * type.
      */
     private void addTrack(int trackType, int quantity) {
-        ItemTransaction transaction = new ItemTransaction(TransactionCategory.TRACK, trackType, quantity,
-                new Money(trackType));
+        ItemTransaction transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(trackType), quantity, trackType);
         world.addTransaction(MapFixtureFactory.TEST_PLAYER, transaction);
     }
 }

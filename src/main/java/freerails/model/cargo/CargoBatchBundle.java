@@ -32,8 +32,6 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
 
     public static final UnmodifiableCargoBatchBundle EMPTY_CARGO_BATCH_BUNDLE = new CargoBatchBundle();
     private final SortedMap<CargoBatch, Integer> cargoMap;
-    // TODO meaning and sense of updateID?
-    private int updateID = 0;
 
     public CargoBatchBundle() {
         cargoMap = new TreeMap<>();
@@ -55,7 +53,6 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
      */
     public void addCargo(CargoBatch cargoBatch, int amount) {
         setAmount(cargoBatch, amount + getAmount(cargoBatch));
-        updateID++;
     }
 
     /**
@@ -128,15 +125,12 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         } else {
             cargoMap.put(cargoBatch, amount);
         }
-
-        updateID++;
     }
 
     public int size() {
         return cargoMap.size();
     }
 
-    // TODO this involves some crazy copying just for the name, make the interface abstract instead
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

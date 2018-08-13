@@ -18,12 +18,10 @@
 
 package freerails.move;
 
+import freerails.model.finances.*;
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.finances.BondItemTransaction;
-import freerails.model.finances.Money;
-import freerails.model.finances.StockItemTransaction;
-import freerails.model.finances.Transaction;
 import freerails.model.player.Player;
 
 // TODO what about a remove of a player?
@@ -88,10 +86,10 @@ public class AddPlayerMove implements Move {
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         Player player2 = playerToAdd;
-        world.addTransaction(player2, BondItemTransaction.issueBond(5));
+        world.addTransaction(player2, TransactionUtils.issueBond(5));
         // Issue stock
         Money initialStockPrice = new Money(5);
-        Transaction transaction = StockItemTransaction.issueStock(playerId, 100000, initialStockPrice);
+        Transaction transaction = TransactionUtils.issueStock(playerId, 100000, initialStockPrice);
         world.addTransaction(player2, transaction);
         return status;
     }

@@ -132,8 +132,6 @@ public class MapCreator {
             }
         }
 
-        TerrainRandomizer terrainRandomizer = new TerrainRandomizer(countryTypes, non_countryTypes);
-
         /*
          * create vector to keep track of terrain randomisation 'clumping'
          */
@@ -144,7 +142,7 @@ public class MapCreator {
                 TerrainTile tile;
                 int type = map.get(x, y);
 
-                tile = new TerrainTile(terrainRandomizer.getNewType(type));
+                tile = new TerrainTile(TerrainUtils.randomizeTerrain(type, countryTypes, non_countryTypes));
                 Vec2D location = new Vec2D(x, y);
                 if (countryTypes.contains(tile.getTerrainTypeId())) {
                     locations.add(new TerrainAtLocation(location, tile.getTerrainTypeId()));
@@ -154,8 +152,9 @@ public class MapCreator {
             }
         }
 
+        // TODO another probability, should this also be part of TerrainUtils.randomizeTerrain?
         for (TerrainAtLocation terrainAtLocation : locations) {
-            TerrainTile tile = new TerrainTile(terrainAtLocation.getType());
+            TerrainTile tile = new TerrainTile(terrainAtLocation.getTerrainType());
 
             Vec2D location = terrainAtLocation.getLocation();
             int val = 3;

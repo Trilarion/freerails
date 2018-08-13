@@ -7,10 +7,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PlayerDetails implements Comparable<PlayerDetails> {
 
-    // TODO make not public
-    public String name = "player";
-    public Money networth = Money.ZERO;
-    public int stations = 0;
+    // TODO set in constructor?
+    private String name = "player";
+    private Money networth = Money.ZERO;
+    private int stations = 0;
 
     @Override
     public String toString() {
@@ -21,4 +21,27 @@ public class PlayerDetails implements Comparable<PlayerDetails> {
         return networth.compareTo(o.networth);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Money getNetworth() {
+        return networth;
+    }
+
+    public void setNetworth(Money networth) {
+        this.networth = networth;
+    }
+
+    public int getStations() {
+        return stations;
+    }
+
+    public void setStations(int stations) {
+        this.stations = stations;
+    }
 }

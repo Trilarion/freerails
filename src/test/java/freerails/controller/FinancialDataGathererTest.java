@@ -21,6 +21,7 @@
  */
 package freerails.controller;
 
+import freerails.model.finances.transactions.Transaction;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
 import freerails.move.Status;
@@ -71,7 +72,7 @@ public class FinancialDataGathererTest extends TestCase {
      * avoid copy & paste in testCanIssueBond().
      */
     private boolean addBond() {
-        world.addTransaction(player, BondItemTransaction.issueBond(5));
+        world.addTransaction(player, TransactionUtils.issueBond(5));
         FinancialDataGatherer financialDataGatherer = new FinancialDataGatherer(world, player);
         return financialDataGatherer.canIssueBond();
     }
@@ -82,7 +83,7 @@ public class FinancialDataGathererTest extends TestCase {
     public void testNextBondInterestRate() {
         FinancialDataGatherer financialDataGatherer = new FinancialDataGatherer(world, player);
         assertEquals(5.0, financialDataGatherer.nextBondInterestRate());
-        world.addTransaction(player, BondItemTransaction.issueBond(5));
+        world.addTransaction(player, TransactionUtils.issueBond(5));
         financialDataGatherer = new FinancialDataGatherer(world, player);
         assertEquals(6.0, financialDataGatherer.nextBondInterestRate());
     }
@@ -97,7 +98,7 @@ public class FinancialDataGathererTest extends TestCase {
         int treasuryStock = 10000;
         int totalStock = ModelConstants.IPO_SIZE;
         int publicStock = totalStock - treasuryStock;
-        Transaction transaction = StockItemTransaction.buyOrSellStock(0, treasuryStock, new Money(5));
+        Transaction transaction = TransactionUtils.buyOrSellStock(0, treasuryStock, new Money(5));
         world.addTransaction(player, transaction);
         fdg = new FinancialDataGatherer(world, player);
         assertEquals(treasuryStock, fdg.treasuryStock());
@@ -120,7 +121,7 @@ public class FinancialDataGathererTest extends TestCase {
 
         // Make player #0 buy stock in player #1
         int quantity = 10000;
-        Transaction transaction = StockItemTransaction.buyOrSellStock(1, quantity, new Money(5));
+        Transaction transaction = TransactionUtils.buyOrSellStock(1, quantity, new Money(5));
         world.addTransaction(players[0], transaction);
         FinancialDataGatherer fdg = new FinancialDataGatherer(world, players[0]);
         assertEquals(0, fdg.treasuryStock());

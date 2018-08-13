@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.track.TrackType;
 import freerails.move.AddTransactionMove;
 import freerails.move.CompositeMove;
@@ -28,10 +29,9 @@ import freerails.move.Move;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
-import freerails.model.finances.ItemTransaction;
+import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.Money;
-import freerails.model.finances.Transaction;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackPiece;
@@ -86,7 +86,43 @@ public class TrackMoveTransactionsGenerator {
         fixedCostsStations = 0;
         fixedCostsBridges = 0;
         unpackMove(move);
-        generateTransactions();
+        // generate transactions
+        transactions.clear();
+
+        // For each track type, generate a transaction if any pieces of the type have been added or removed.
+        for (int i = 0; i < trackAdded.length; i++) {
+            int numberAdded = trackAdded[i];
+
+            if (0 != numberAdded) {
+                Money price = world.getTrackType(i).getPurchasingPrice();
+                // TODO Money arithmetic
+                Money total = new Money(-price.amount * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+                Transaction transaction1 = new ItemTransaction(TransactionCategory.TRACK, total, numberAdded, i);
+                transactions.add(transaction1);
+            }
+
+            int numberRemoved = trackRemoved[i];
+
+            if (0 != numberRemoved) {
+                Money price = world.getTrackType(i).getPurchasingPrice();
+                // TODO Money arithmetic
+                Money total = new Money((price.amount * numberRemoved) / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
+
+                // You only get half the money back.
+                total = Money.divide(total, 2);
+
+                Transaction transaction1 = new ItemTransaction(TransactionCategory.TRACK, total, -numberRemoved, i);
+                transactions.add(transaction1);
+            }
+        }
+        if (0 != fixedCostsStations) {
+            Transaction transaction1 = new Transaction(TransactionCategory.STATIONS, new Money(fixedCostsStations));
+            transactions.add(transaction1);
+        }
+        if (0 != fixedCostsBridges) {
+            Transaction transaction1 = new Transaction(TransactionCategory.BRIDGES, new Money(fixedCostsBridges));
+            transactions.add(transaction1);
+        }
 
         int numberOfMoves = 1 + transactions.size();
         List<Move> moves = new ArrayList<>(numberOfMoves);
@@ -102,7 +138,64 @@ public class TrackMoveTransactionsGenerator {
     private void unpackMove(Move move) {
         if (move instanceof ChangeTrackPieceMove) {
             ChangeTrackPieceMove tm = (ChangeTrackPieceMove) move;
-            processMove(tm);
+            // process move
+            TrackPiece newTrackPiece = tm.getNewTrackPiece();
+            TrackPiece oldTrackPiece = tm.getOldTrackPiece();
+
+            if (oldTrackPiece != null && newTrackPiece != null) {
+                int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
+                int newLength = newTrackPiece.getTrackConfiguration().getLength();
+
+                // TODO instead of comparing ids, use equal (which does the some)
+                int ruleBefore = oldTrackPiece.getTrackType().getId();
+                int ruleAfter = newTrackPiece.getTrackType().getId();
+
+                TrackType newTrackRule = newTrackPiece.getTrackType();
+
+                if (ruleAfter != ruleBefore) {
+                    TrackCategory category = newTrackRule.getCategory();
+                    switch (category) {
+                        case STATION: {
+                            // TODO Money arithmetic
+                            // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
+                            fixedCostsStations -= newTrackRule.getYearlyMaintenance().amount;
+                            break;
+                        }
+                        case BRIDGE: {
+                            // TODO Money arithmetic
+                            // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
+                            fixedCostsBridges -= newTrackRule.getYearlyMaintenance().amount;
+                            break;
+                        }
+                        default: {
+                        }
+                    }
+                }
+
+                if (ruleAfter == ruleBefore) {
+                    if (oldLength < newLength) {
+                        trackAdded[ruleAfter] += (newLength - oldLength);
+                    } else if (oldLength > newLength) {
+                        trackRemoved[ruleAfter] += (oldLength - newLength);
+                    }
+
+                    return;
+                }
+            }
+
+            if (oldTrackPiece == null) {
+                int ruleAfter = newTrackPiece.getTrackType().getId();
+                int newLength = newTrackPiece.getTrackConfiguration().getLength();
+                // TODO trackAdded should be a Map
+                trackAdded[ruleAfter] += newLength;
+            }
+
+            if (newTrackPiece == null) {
+                int ruleBefore = oldTrackPiece.getTrackType().getId();
+                int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
+                // TODO trackRemoved should be a Map (id, int)
+                trackRemoved[ruleBefore] += oldLength;
+            }
         } else if (move instanceof CompositeMove) {
             CompositeMove cm = (CompositeMove) move;
             List<Move> moves = cm.getMoves();
@@ -113,103 +206,4 @@ public class TrackMoveTransactionsGenerator {
         }
     }
 
-    private void processMove(ChangeTrackPieceMove move) {
-        TrackPiece newTrackPiece = move.getNewTrackPiece();
-        TrackPiece oldTrackPiece = move.getOldTrackPiece();
-
-        if (oldTrackPiece != null && newTrackPiece != null) {
-            int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
-            int newLength = newTrackPiece.getTrackConfiguration().getLength();
-
-            // TODO instead of comparing ids, use equal (which does the some)
-            int ruleBefore = oldTrackPiece.getTrackType().getId();
-            int ruleAfter = newTrackPiece.getTrackType().getId();
-
-            TrackType newTrackRule = newTrackPiece.getTrackType();
-
-            if (ruleAfter != ruleBefore) {
-                TrackCategory category = newTrackRule.getCategory();
-                switch (category) {
-                    case STATION: {
-                        // TODO Money arithmetic
-                        // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
-                        fixedCostsStations -= newTrackRule.getYearlyMaintenance().amount;
-                        break;
-                    }
-                    case BRIDGE: {
-                        // TODO Money arithmetic
-                        // TODO was getFixedCost(), now not anymore, was is meaning of fixed cost?
-                        fixedCostsBridges -= newTrackRule.getYearlyMaintenance().amount;
-                        break;
-                    }
-                    default: {
-                    }
-                }
-            }
-
-            if (ruleAfter == ruleBefore) {
-                if (oldLength < newLength) {
-                    trackAdded[ruleAfter] += (newLength - oldLength);
-                } else if (oldLength > newLength) {
-                    trackRemoved[ruleAfter] += (oldLength - newLength);
-                }
-
-                return;
-            }
-        }
-
-        if (oldTrackPiece == null) {
-            int ruleAfter = newTrackPiece.getTrackType().getId();
-            int newLength = newTrackPiece.getTrackConfiguration().getLength();
-            // TODO trackAdded should be a Map
-            trackAdded[ruleAfter] += newLength;
-        }
-
-        if (newTrackPiece == null) {
-            int ruleBefore = oldTrackPiece.getTrackType().getId();
-            int oldLength = oldTrackPiece.getTrackConfiguration().getLength();
-            // TODO trackRemoved should be a Map (id, int)
-            trackRemoved[ruleBefore] += oldLength;
-        }
-    }
-
-    private void generateTransactions() {
-        transactions.clear();
-
-        // For each track type, generate a transaction if any pieces of the type
-        // have been added or removed.
-        for (int i = 0; i < trackAdded.length; i++) {
-            int numberAdded = trackAdded[i];
-
-            if (0 != numberAdded) {
-                Money price = world.getTrackType(i).getPurchasingPrice();
-                // TODO Money arithmetic
-                Money total = new Money(-price.amount * numberAdded / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-                Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, numberAdded, total);
-                transactions.add(transaction);
-            }
-
-            int numberRemoved = trackRemoved[i];
-
-            if (0 != numberRemoved) {
-                Money price = world.getTrackType(i).getPurchasingPrice();
-                // TODO Money arithmetic
-                Money total = new Money((price.amount * numberRemoved) / ModelConstants.LENGTH_OF_STRAIGHT_TRACK_PIECE);
-
-                // You only get half the money back.
-                total = Money.divide(total, 2);
-
-                Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, i, -numberRemoved, total);
-                transactions.add(transaction);
-            }
-        }
-        if (0 != fixedCostsStations) {
-            Transaction transaction = new ItemTransaction(TransactionCategory.STATIONS, -1, -1, new Money(fixedCostsStations));
-            transactions.add(transaction);
-        }
-        if (0 != fixedCostsBridges) {
-            Transaction transaction = new ItemTransaction(TransactionCategory.BRIDGES, -1, -1, new Money(fixedCostsBridges));
-            transactions.add(transaction);
-        }
-    }
 }

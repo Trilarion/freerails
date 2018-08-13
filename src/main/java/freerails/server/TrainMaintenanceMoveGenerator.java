@@ -26,9 +26,8 @@ import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.world.World;
 import freerails.model.finances.Money;
-import freerails.model.finances.MoneyTransaction;
-import freerails.model.finances.Transaction;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 
 // TODO does not really follow the movegenerator interface, should it maybe?
@@ -55,7 +54,7 @@ public class TrainMaintenanceMoveGenerator {
             int numberOfTrains = world.getTrains(player).size();
             // TODO hardcoded constant, move to constants
             long amount = numberOfTrains * 5000;
-            Transaction transaction = new MoneyTransaction(new Money(-amount), TransactionCategory.TRAIN_MAINTENANCE);
+            Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, new Money(-amount));
 
             Move move = new AddTransactionMove(player, transaction);
             moveReceiver.process(move);

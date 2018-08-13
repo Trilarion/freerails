@@ -117,7 +117,7 @@ public class BuildTrackExplorer implements GraphExplorer {
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
-            if (nextTile.getTrackPiece().getOwnerID() != world.getID(player)) {
+            if (nextTile.getTrackPiece().getOwnerID() != player.getId()) {
                 return false;
             }
         }

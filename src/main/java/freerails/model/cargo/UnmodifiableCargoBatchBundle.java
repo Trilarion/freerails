@@ -24,8 +24,7 @@ package freerails.model.cargo;
 import java.io.Serializable;
 import java.util.Collection;
 
-// TODO should the amount already be included in the cargo batch
-
+// TODO should the amount already be included in the cargo batch?
 /**
  * Holds a number of cargo batches with an amount for each cargo batch.
  *

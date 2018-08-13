@@ -25,17 +25,13 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.finances.FinancialDataGatherer;
+import freerails.model.finances.*;
 import freerails.client.ModelRoot;
-import freerails.model.finances.StockPriceCalculator;
-import freerails.model.finances.StockPrice;
+import freerails.model.finances.transactions.ItemTransaction;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
-import freerails.model.finances.BondItemTransaction;
-import freerails.model.finances.Money;
-import freerails.model.finances.StockItemTransaction;
 import freerails.model.player.Player;
 
 import javax.swing.*;
@@ -56,7 +52,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         private static final long serialVersionUID = 440368637080877578L;
 
         public void actionPerformed(ActionEvent e) {
-            Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), BondItemTransaction.repayBond(5));
+            Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.repayBond(5));
             modelRoot.doMove(bondTransaction);
         }
     };
@@ -68,7 +64,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         public void actionPerformed(ActionEvent e) {
 
             if (financialDataGatherer.canIssueBond()) {
-                Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), BondItemTransaction.issueBond(financialDataGatherer.nextBondInterestRate()));
+                Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.issueBond(financialDataGatherer.nextBondInterestRate()));
                 modelRoot.doMove(bondTransaction);
             }
         }
@@ -108,7 +104,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     private void setupStockMenu() {
         stocks.removeAll();
         UnmodifiableWorld world = modelRoot.getWorld();
-        int thisPlayerId = world.getID(modelRoot.getPlayer());
+        int thisPlayerId = modelRoot.getPlayer().getId();
         int numberOfPlayers = world.getPlayers().size();
         buyStock = new Action[numberOfPlayers];
         sellStock = new Action[numberOfPlayers];
@@ -127,7 +123,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
-                    StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
                     Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
@@ -141,7 +137,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
-                    StockItemTransaction stockItemTransaction = StockItemTransaction.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
                     Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();

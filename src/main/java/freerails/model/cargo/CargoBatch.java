@@ -29,7 +29,7 @@ import java.io.Serializable;
  */
 public class CargoBatch implements Serializable, Comparable<CargoBatch> {
 
-    // TODO Why is cargoType an int here and not CargoCategory or CargoType??
+    // TODO Why is cargoType an int here and not Cargo directly?? Because we have a list in the world for that?
     private static final long serialVersionUID = 3257006557605540149L;
     private final int cargoTypeId;
     private final Vec2D sourceP;

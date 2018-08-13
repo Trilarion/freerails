@@ -2,6 +2,7 @@ package freerails.model.statistics;
 
 import freerails.model.ModelConstants;
 import freerails.model.finances.*;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.track.TrackType;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameTime;
@@ -21,10 +22,6 @@ public class Statistics {
      * @param totalTimeInterval
      */
     public Statistics(UnmodifiableWorld world, Player player, final GameTime[] totalTimeInterval) {
-        TransactionAggregator operatingFundsAggregator = new MyTransactionAggregator(world, player, totalTimeInterval);
-
-        Money operatingFunds = operatingFundsAggregator.calculateValue();
-
         Money track = calculateTrackTotal(world, player, totalTimeInterval[0]);
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
@@ -46,7 +43,7 @@ public class Statistics {
         // If we don't initialize this variable we get a NPE when we don't own any stock in others RRs
         Money otherRrStock = Money.ZERO;
 
-        int thisPlayerId = world.getID(player);
+        int thisPlayerId = player.getId();
 
         // TODO use maps instead of arrays
         StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();

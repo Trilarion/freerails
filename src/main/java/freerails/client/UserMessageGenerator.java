@@ -19,14 +19,14 @@
 package freerails.client;
 
 import freerails.model.cargo.Cargo;
+import freerails.model.finances.transactions.Transaction;
 import freerails.move.*;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.Utils;
 import freerails.model.finances.Money;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.finances.CargoDeliveryMoneyTransaction;
-import freerails.model.finances.Transaction;
+import freerails.model.finances.transactions.CargoDeliveryTransaction;
 import freerails.model.game.GameSpeed;
 import freerails.model.station.Station;
 import freerails.util.ui.SoundManager;
@@ -83,7 +83,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     private void trainArrives(CompositeMove moves) {
         // TODO does this work anymore, was a WorldDiffMove before
-        List<CargoDeliveryMoneyTransaction> cargoDelivered = new ArrayList<>();
+        List<CargoDeliveryTransaction> cargoDelivered = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {
             Move move = moves.getMoves().get(i);
             if (move instanceof AddTransactionMove) {
@@ -94,8 +94,8 @@ public class UserMessageGenerator implements MoveReceiver {
                 }
 
                 Transaction transaction = atm.getTransaction();
-                if (transaction instanceof CargoDeliveryMoneyTransaction) {
-                    CargoDeliveryMoneyTransaction receipt = (CargoDeliveryMoneyTransaction) transaction;
+                if (transaction instanceof CargoDeliveryTransaction) {
+                    CargoDeliveryTransaction receipt = (CargoDeliveryTransaction) transaction;
                     cargoDelivered.add(receipt);
                 }
             }
@@ -104,7 +104,7 @@ public class UserMessageGenerator implements MoveReceiver {
             UnmodifiableWorld world = modelRoot.getWorld();
 
             StringBuilder message = new StringBuilder();
-            CargoDeliveryMoneyTransaction first = cargoDelivered.get(0);
+            CargoDeliveryTransaction first = cargoDelivered.get(0);
             int stationId = first.getStationId();
             int trainId = first.getTrainId();
             message.append("Train #");
@@ -116,9 +116,9 @@ public class UserMessageGenerator implements MoveReceiver {
             message.append('\n');
             Money revenue = Money.ZERO;
             Map<Cargo, Integer> cargoQuantities = new HashMap<>();
-            for (CargoDeliveryMoneyTransaction receipt : cargoDelivered) {
+            for (CargoDeliveryTransaction receipt : cargoDelivered) {
                 CargoBatch batch = receipt.getCargoBatch();
-                revenue = Money.add(revenue, receipt.price());
+                revenue = Money.add(revenue, receipt.getAmount());
                 cargoQuantities.put(world.getCargo(batch.getCargoTypeId()), receipt.getQuantity());
             }
             for (Map.Entry<Cargo, Integer> entry: cargoQuantities.entrySet()) {

@@ -22,6 +22,9 @@
 package freerails.model.world;
 
 import freerails.model.activity.Activity;
+import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.finances.*;
@@ -84,7 +87,7 @@ public class WorldTest extends TestCase {
 
         assertTrue(Utils.equalsBySerialization(original, copy));
 
-        Transaction transaction = new MoneyTransaction(new Money(100), TransactionCategory.MISC_INCOME);
+        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100));
         copy.addTransaction(player, transaction);
         assertEquals(new Money(100), copy.getCurrentBalance(player));
         assertFalse(copy.equals(original));
@@ -165,7 +168,7 @@ public class WorldTest extends TestCase {
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);
         player = world.getPlayer(playerID);
-        Transaction transaction = new ItemTransaction(TransactionCategory.BOND, 1, 2, new Money(100));
+        Transaction transaction = new Transaction(TransactionCategory.BOND, new Money(100));
         assertEquals(new Money(0), world.getCurrentBalance(player));
         world.addTransaction(player, transaction);
         assertEquals(1, world.getNumberOfTransactions(player));

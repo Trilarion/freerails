@@ -27,6 +27,14 @@ public class StockPrice {
         treasuryBuyPrice = calculateStockPrice(netWorth, profitLastYear, publicShares - ModelConstants.STOCK_BUNDLE_SIZE, otherRRShares);
     }
 
+    /**
+     *
+     * @param netWorth
+     * @param profitLastyear
+     * @param publicShares
+     * @param otherRRShares
+     * @return
+     */
     public static Money calculateStockPrice(long netWorth, long profitLastyear, int publicShares, int otherRRShares) {
         if ((publicShares + otherRRShares) == 0) return new Money(Long.MAX_VALUE);
         long price = 2 * (5 * profitLastyear + netWorth) / (2 * publicShares + otherRRShares);

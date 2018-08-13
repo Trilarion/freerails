@@ -18,6 +18,9 @@
 
 package freerails.move.generator;
 
+import freerails.model.finances.transactions.BondItemTransaction;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.model.world.UnmodifiableWorld;
@@ -48,14 +51,14 @@ public class BondInterestMoveGenerator {
 
                 if (transaction instanceof BondItemTransaction) {
                     BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
-                    int interestRate = bondItemTransaction.getTerrainTypeId();
+                    int interestRate = bondItemTransaction.getId();
                     // TODO Money arithmetic
                     long bondAmount = ModelConstants.BOND_VALUE_ISSUE.amount;
                     interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
                 }
             }
 
-            Transaction transaction = new MoneyTransaction(new Money(-interestDue), TransactionCategory.INTEREST_CHARGE);
+            Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, new Money(-interestDue));
 
             Move move = new AddTransactionMove(player, transaction);
             moves.add(move);

@@ -1,4 +1,4 @@
-package freerails.model.finances;
+package freerails.model.finances.transactions;
 
 /**
  * Category of a financial transaction.

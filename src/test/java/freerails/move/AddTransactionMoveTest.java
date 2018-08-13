@@ -23,7 +23,8 @@ package freerails.move;
 
 import freerails.model.finances.*;
 import freerails.model.MapFixtureFactory;
-import freerails.model.player.Player;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 
 /**
  *
@@ -37,21 +38,14 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PLAYER);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction transaction = new MoneyTransaction(new Money(100), TransactionCategory.MISC_INCOME);
+        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100));
         Move move1 = new AddTransactionMove(MapFixtureFactory.TEST_PLAYER, transaction);
         assertTryMoveIsOk(move1);
         assertTryUndoMoveFails(move1);
         assertDoMoveIsOk(move1);
         currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PLAYER);
         assertEquals(new Money(100), currentBalance);
-
-        final Player PLAYER_WITHOUT_ACCOUNT = new Player(4, "PLAYER_WITHOUT_ACCOUNT");
-
         assertSurvivesSerialisation(move1);
-
-        Move move2 = new AddTransactionMove(PLAYER_WITHOUT_ACCOUNT, transaction);
-        assertTryMoveFails(move2);
-        assertOkAndRepeatable(move1);
     }
 
     /**
@@ -61,7 +55,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Money currentBalance = getWorld().getCurrentBalance(MapFixtureFactory.TEST_PLAYER);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction transaction = new MoneyTransaction(new Money(-100), TransactionCategory.MISC_INCOME);
+        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(-100));
         Move move = new AddTransactionMove(MapFixtureFactory.TEST_PLAYER, transaction, true);
 
         // This move should fail since there is no money in the account and it is constrained is set to true.

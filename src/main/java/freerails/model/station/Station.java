@@ -83,7 +83,7 @@ public class Station extends Identifiable {
 
         if (trackPiece != null) {
             TrackType trackType = trackPiece.getTrackType();
-            if (trackType.isStation() && trackPiece.getOwnerID() == world.getID(player)) {
+            if (trackType.isStation() && trackPiece.getOwnerID() == player.getId()) {
 
                 for (Station station: world.getStations(player)) {
                     if (location.equals(station.getLocation())) {

@@ -23,7 +23,7 @@ package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.station.StationUtils;
-import freerails.model.terrain.NearestCityFinder;
+import freerails.model.terrain.CityUtils;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;
@@ -110,9 +110,8 @@ public class AddStationMoveGenerator implements MoveGenerator {
         if (oldTile.getTrackPiece() == null || !oldTile.getTrackPiece().getTrackType().isStation()) {
             // There isn't already a station here, we need to pick a name and
             // add an entry to the station list.
-            NearestCityFinder nearestCityFinder = new NearestCityFinder(world, location);
             try {
-                cityName = nearestCityFinder.findNearestCity();
+                cityName = CityUtils.findNearestCity(world, location);
                 stationName = StationUtils.createStationName(world, cityName);
             } catch (NoSuchElementException e) {
                 // TODO can we do better here?

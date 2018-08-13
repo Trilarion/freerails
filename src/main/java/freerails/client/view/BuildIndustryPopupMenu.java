@@ -24,14 +24,14 @@ package freerails.client.view;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.terrain.Terrain;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
 import freerails.util.Vec2D;
-import freerails.model.finances.ItemTransaction;
+import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.Money;
-import freerails.model.finances.Transaction;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.TransactionCategory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -63,17 +63,17 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
     public void setup(final ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         removeAll();
 
-        for (Terrain terrainType: modelRoot.getWorld().getTerrains()) {
-            final Money price = terrainType.getBuildCost();
+        for (Terrain terrain: modelRoot.getWorld().getTerrains()) {
+            final Money price = terrain.getBuildCost();
 
             if (null != price) {
-                JMenuItem item = new JMenuItem(terrainType.getName() + ' ' + price);
+                JMenuItem item = new JMenuItem(terrain.getName() + ' ' + price);
                 item.addActionListener(new ActionListener() {
-                    private final int terrainTypeId = terrainType.getId();
+                    private final int terrainId = terrain.getId();
 
                     public void actionPerformed(ActionEvent e) {
-                        Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainTypeId);
-                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, terrainTypeId, 1, Money.opposite(price));
+                        Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainId);
+                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, Money.opposite(price), 1, terrainId);
                         Move m2 = new AddTransactionMove(modelRoot.getPlayer(), transaction);
                         Move m3 = new CompositeMove(Arrays.asList(move, m2));
                         Status status = modelRoot.doMove(m3);

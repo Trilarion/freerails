@@ -16,27 +16,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.finances;
+package freerails.model.finances.transactions;
 
-import java.io.Serializable;
+import freerails.model.finances.Money;
 
 /**
- * A Transaction is a change in a player's bank balance and/or assets.
+ * A Transaction that adds or removes a Bond.
  */
-public interface Transaction extends Serializable {
+public class BondItemTransaction extends ItemTransaction {
 
-    // TODO is money always needed, if so, can we already implement it
+    private static final long serialVersionUID = 3257562923491473465L;
+    private final double rate;
+
+    public BondItemTransaction(Money amount, int quantity, double rate) {
+        super(TransactionCategory.BOND, amount, quantity, -1);
+        this.rate = rate;
+    }
 
     /**
-     * Positive means credit.
-     */
-    Money price();
-
-    // TODO what is this category good for
-
-    /**
+     *
      * @return
      */
-    TransactionCategory getCategory();
-
+    public double getRate() {
+        return rate;
+    }
 }

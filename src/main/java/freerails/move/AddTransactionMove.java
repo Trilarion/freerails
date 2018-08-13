@@ -21,9 +21,9 @@
  */
 package freerails.move;
 
+import freerails.model.finances.transactions.Transaction;
 import freerails.util.Utils;
 import freerails.model.world.World;
-import freerails.model.finances.Transaction;
 import freerails.model.player.Player;
 
 /**
@@ -80,21 +80,18 @@ public class AddTransactionMove implements Move {
     }
 
     public Status tryDoMove(World world, Player player) {
-        if (world.isPlayer(this.player)) {
-            if (cashConstrained) {
-                // TODO Money arithmetic
-                long bankBalance = world.getCurrentBalance(this.player).amount;
-                long transactionAmount = transaction.price().amount;
-                long balanceAfter = bankBalance + transactionAmount;
+        if (cashConstrained) {
+            // TODO Money arithmetic
+            long bankBalance = world.getCurrentBalance(this.player).amount;
+            long transactionAmount = transaction.getAmount().amount;
+            long balanceAfter = bankBalance + transactionAmount;
 
-                if (transactionAmount < 0 && balanceAfter < 0) {
-                    return Status.moveFailed("You can't afford that!");
-                }
+            if (transactionAmount < 0 && balanceAfter < 0) {
+                return Status.moveFailed("You can't afford that!");
             }
-
-            return Status.OK;
         }
-        return Status.moveFailed(player.getName() + " does not have a bank account.");
+
+        return Status.OK;
     }
 
     public Status tryUndoMove(World world, Player player) {

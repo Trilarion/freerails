@@ -23,10 +23,10 @@ package freerails.model.finances;
 
 import java.io.Serializable;
 
+// TODO serialize this and read from json file
 /**
  * Represents the state of the economy.
  */
-
 public class EconomicClimate implements Serializable {
 
     // TODO why start with 2

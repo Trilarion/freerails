@@ -19,6 +19,8 @@
 package freerails.model.finances;
 
 import freerails.model.cargo.Cargo;
+import freerails.model.finances.transactions.CargoDeliveryTransaction;
+import freerails.model.finances.transactions.Transaction;
 import freerails.util.Pair;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
@@ -74,66 +76,66 @@ public class IncomeStatementGenerator {
             Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (transaction instanceof CargoDeliveryMoneyTransaction) {
-                CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
-                int cargoTypeId = cargoDeliveryMoneyTransaction.getCargoBatch().getCargoTypeId();
+            if (transaction instanceof CargoDeliveryTransaction) {
+                CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
+                int cargoTypeId = cargoDeliveryTransaction.getCargoBatch().getCargoTypeId();
                 Cargo ct = world.getCargo(cargoTypeId);
                 switch (ct.getCategory()) {
                     case BULK_FREIGHT:
-                        bulkFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
+                        bulkFreightTotal += cargoDeliveryTransaction.getAmount().amount;
                         if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                            bulkFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
+                            bulkFreightYtd += cargoDeliveryTransaction.getAmount().amount;
                         }
                         break;
                     case FAST_FREIGHT:
-                        fastFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
+                        fastFreightTotal += cargoDeliveryTransaction.getAmount().amount;
                         if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                            fastFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
+                            fastFreightYtd += cargoDeliveryTransaction.getAmount().amount;
                         }
                         break;
                     case MAIL:
-                        mailTotal += cargoDeliveryMoneyTransaction.price().amount;
+                        mailTotal += cargoDeliveryTransaction.getAmount().amount;
                         if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                            mailYtd += cargoDeliveryMoneyTransaction.price().amount;
+                            mailYtd += cargoDeliveryTransaction.getAmount().amount;
                         }
                         break;
                     case PASSENGER:
-                        passengersTotal += cargoDeliveryMoneyTransaction.price().amount;
+                        passengersTotal += cargoDeliveryTransaction.getAmount().amount;
                         if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                            passengersYtd += cargoDeliveryMoneyTransaction.price().amount;
+                            passengersYtd += cargoDeliveryTransaction.getAmount().amount;
                         }
                         break;
                     case SLOW_FREIGHT:
-                        slowFreightTotal += cargoDeliveryMoneyTransaction.price().amount;
+                        slowFreightTotal += cargoDeliveryTransaction.getAmount().amount;
                         if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                            slowFreightYtd += cargoDeliveryMoneyTransaction.price().amount;
+                            slowFreightYtd += cargoDeliveryTransaction.getAmount().amount;
                         }
                         break;
                 }
             }
             switch (transaction.getCategory()) {
                 case INTEREST_CHARGE:
-                    interestTotal += transaction.price().amount;
+                    interestTotal += transaction.getAmount().amount;
                     if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                        interestYtd += transaction.price().amount;
+                        interestYtd += transaction.getAmount().amount;
                     }
                     break;
                 case TRAIN_MAINTENANCE:
-                    trainMaintenanceTotal += transaction.price().amount;
+                    trainMaintenanceTotal += transaction.getAmount().amount;
                     if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                        trainMaintenanceYtd += transaction.price().amount;
+                        trainMaintenanceYtd += transaction.getAmount().amount;
                     }
                     break;
                 case TRACK_MAINTENANCE:
-                    trackMaintenanceTotal += transaction.price().amount;
+                    trackMaintenanceTotal += transaction.getAmount().amount;
                     if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                        trackMaintenanceYtd += transaction.price().amount;
+                        trackMaintenanceYtd += transaction.getAmount().amount;
                     }
                     break;
                 case STATION_MAINTENANCE:
-                    stationMaintenanceTotal += transaction.price().amount;
+                    stationMaintenanceTotal += transaction.getAmount().amount;
                     if (calendar.getYear(time.getTicks()) >= this.startyear) {
-                        stationMaintenanceYtd += transaction.price().amount;
+                        stationMaintenanceYtd += transaction.getAmount().amount;
                     }
                     break;
             }
@@ -171,11 +173,11 @@ public class IncomeStatementGenerator {
             Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
             GameTime time = transactionAndTimeStamp.getB();
-            if (transaction instanceof CargoDeliveryMoneyTransaction && calendar.getYear(time.getTicks()) >= this.startyear) {
-                CargoDeliveryMoneyTransaction cargoDeliveryMoneyTransaction = (CargoDeliveryMoneyTransaction) transaction;
-                int trainId = cargoDeliveryMoneyTransaction.getTrainId();
+            if (transaction instanceof CargoDeliveryTransaction && calendar.getYear(time.getTicks()) >= this.startyear) {
+                CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
+                int trainId = cargoDeliveryTransaction.getTrainId();
                 if (trainId < money.length) {
-                    amount[trainId] += cargoDeliveryMoneyTransaction.price().amount;
+                    amount[trainId] += cargoDeliveryTransaction.getAmount().amount;
                 }
             }
         }

@@ -16,15 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.finances;
+package freerails.model.finances.transactions;
 
 import freerails.model.cargo.CargoBatch;
+import freerails.model.finances.Money;
 
 // TODO Is this an Item transaction or a money transaction or something more complex?
 /**
  * A credit for delivering cargo.
  */
-public class CargoDeliveryMoneyTransaction extends MoneyTransaction {
+public class CargoDeliveryTransaction extends Transaction {
 
     private static final long serialVersionUID = 3257009851963160372L;
     private final CargoBatch cargoBatch;
@@ -33,14 +34,14 @@ public class CargoDeliveryMoneyTransaction extends MoneyTransaction {
     private final int trainId;
 
     /**
-     * @param money
+     * @param amount
      * @param quantity
      * @param stationId
-     * @param cargoBatch
      * @param trainId
+     * @param cargoBatch
      */
-    public CargoDeliveryMoneyTransaction(Money money, int quantity, int stationId, CargoBatch cargoBatch, int trainId) {
-        super(money, TransactionCategory.CARGO_DELIVERY);
+    public CargoDeliveryTransaction(Money amount, int quantity, int stationId, int trainId, CargoBatch cargoBatch) {
+        super(TransactionCategory.CARGO_DELIVERY, amount);
         this.stationId = stationId;
         this.quantity = quantity;
         this.cargoBatch = cargoBatch;

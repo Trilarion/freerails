@@ -21,11 +21,14 @@
  */
 package freerails.model.finances;
 
+import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 
+// TODO StockPrice seems to contain its own calculation model
 /**
  * Calculates the stock price for each of the players.
  *

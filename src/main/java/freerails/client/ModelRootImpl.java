@@ -207,7 +207,6 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     public void setup(UnmodifiableWorld world, Player player) {
         this.world = Utils.verifyNotNull(world);
         assert player != null;
-        assert world.isPlayer(player);
         playerPlayer = player;
         BuildTrackStrategy buildTrackStrategy = BuildTrackStrategy.getDefault(world);
         setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);

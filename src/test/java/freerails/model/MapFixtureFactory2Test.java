@@ -18,10 +18,10 @@
 
 package freerails.model;
 
-import freerails.model.finances.ItemTransaction;
+import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.Money;
-import freerails.model.finances.Transaction;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.Transaction;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;

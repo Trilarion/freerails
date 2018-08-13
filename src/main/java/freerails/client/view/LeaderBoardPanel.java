@@ -59,7 +59,7 @@ public class LeaderBoardPanel extends JPanel implements View {
         Random rand = new Random();
         for (int i = 0; i < 5; i++) {
             PlayerDetails p = new PlayerDetails();
-            p.networth = new Money(rand.nextInt(100));
+            p.setNetworth(new Money(rand.nextInt(100)));
             values.add(p);
         }
         initialize();
@@ -114,10 +114,10 @@ public class LeaderBoardPanel extends JPanel implements View {
         submitButtonCallBack = closeAction;
         for (Player player: world.getPlayers()) {
             PlayerDetails details = new PlayerDetails();
-            details.name = player.getName();
-            details.stations = world.getStations(player).size();
+            details.setName(player.getName());
+            details.setStations(world.getStations(player).size());
             TransactionAggregator networth = new NetWorthCalculator(world, player);
-            details.networth = networth.calculateValue();
+            details.setNetworth(networth.calculateValue());
             values.add(details);
         }
         Collections.sort(values);

@@ -471,7 +471,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
 
     private void setTrackBuilderMode(BuildMode mode) {
         trackMoveProducer.setTrackBuilderMode(mode);
-        modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
+        // modelRoot.setProperty(ModelRootProperty.TRACK_BUILDER_MODE, mode);
     }
 
 

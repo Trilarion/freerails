@@ -20,6 +20,7 @@ package freerails.model.world;
 
 import freerails.model.cargo.Cargo;
 import freerails.model.finances.EconomicClimate;
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
@@ -33,7 +34,6 @@ import freerails.util.Pair;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.finances.Money;
-import freerails.model.finances.Transaction;
 import freerails.model.game.GameTime;
 import freerails.model.player.Player;
 
@@ -123,12 +123,6 @@ public interface UnmodifiableWorld extends Serializable {
     Money getCurrentBalance(Player player);
 
     /**
-     * @param player
-     * @return
-     */
-    int getID(Player player);
-
-    /**
      * Returns the width and height of the map in tiles.
      *
      * @return
@@ -176,12 +170,6 @@ public interface UnmodifiableWorld extends Serializable {
      * @return
      */
     Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player player, int i);
-
-    /**
-     * @param player
-     * @return
-     */
-    boolean isPlayer(Player player);
 
     /**
      * Returns number of active entities belonging to the specified player.

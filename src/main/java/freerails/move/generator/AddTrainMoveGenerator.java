@@ -22,6 +22,7 @@
 package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.Schedule;
@@ -31,10 +32,9 @@ import freerails.move.*;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finances.ItemTransaction;
+import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.Money;
-import freerails.model.finances.Transaction;
-import freerails.model.finances.TransactionCategory;
+import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.NoTrackException;
@@ -150,12 +150,11 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         // AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, player);
         AddTrainMove addTrain = new AddTrainMove(player, train);
 
-        // Pay for train.
-        int quantity = 1;
+        // Pay for thre train.
         // Determine the price of the train.
         Engine engine = world.getEngine(engineId);
         Money price = engine.getPrice();
-        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, engineId, quantity, Money.opposite(price));
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, Money.opposite(price), 1, engineId);
         AddTransactionMove transactionMove = new AddTransactionMove(player, transaction);
 
         // Setup and add train position.

@@ -19,34 +19,43 @@
 /*
  *
  */
-package freerails.model.finances;
+package freerails.model.finances.transactions;
+
+import freerails.model.finances.Money;
+
+import java.io.Serializable;
 
 /**
- * For example, the cost of buying a trains.
+ * A Transaction is a change in a player's bank balance and/or assets.
+ *
+ * For example, the cost of buying a train.
  */
-public class MoneyTransaction implements Transaction {
+public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 3258416144497782835L;
     private final Money money;
     private final TransactionCategory category;
 
     /**
-     * @param money
      * @param category
+     * @param amount
      */
-    public MoneyTransaction(Money money, TransactionCategory category) {
-        this.money = money;
+    public Transaction(TransactionCategory category, Money amount) {
+        this.money = amount;
         this.category = category;
     }
 
-    public Money price() {
+    /**
+     * Positive means credit.
+     */
+    public Money getAmount() {
         return money;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MoneyTransaction) {
-            MoneyTransaction other = (MoneyTransaction) obj;
+        if (obj instanceof Transaction) {
+            Transaction other = (Transaction) obj;
             return other.money.equals(money) && category == other.category;
         }
         return false;

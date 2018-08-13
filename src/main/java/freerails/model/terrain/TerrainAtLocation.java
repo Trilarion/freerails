@@ -47,7 +47,7 @@ public class TerrainAtLocation {
     /**
      * @return
      */
-    public int getType() {
+    public int getTerrainType() {
         return terrainType;
     }
 }

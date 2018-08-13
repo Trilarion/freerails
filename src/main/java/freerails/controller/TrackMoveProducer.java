@@ -235,10 +235,10 @@ public class TrackMoveProducer {
     }
 
     /**
-     * @param i
+     * @param buildMode
      */
-    public void setTrackBuilderMode(BuildMode i) {
-        setBuildMode(i);
+    public void setTrackBuilderMode(BuildMode buildMode) {
+        setBuildMode(buildMode);
     }
 
     private Status sendMove(Move move) {
@@ -270,7 +270,6 @@ public class TrackMoveProducer {
         modelRoot.setProperty(ModelRootProperty.BUILD_TRACK_STRATEGY, buildTrackStrategy);
     }
 
-    // TODO remove modelRoot, instead use BuildMode as an construction time argument
     /**
      * @return
      */

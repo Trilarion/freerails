@@ -22,6 +22,7 @@ import freerails.model.Identifiable;
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.cargo.Cargo;
+import freerails.model.finances.transactions.Transaction;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
 import freerails.model.station.Station;
@@ -33,7 +34,6 @@ import freerails.model.train.Train;
 import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
 import freerails.model.finances.Money;
-import freerails.model.finances.Transaction;
 import freerails.model.finances.TransactionRecord;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -358,7 +358,7 @@ public class World implements UnmodifiableWorld {
         TransactionRecord transactionRecord = new TransactionRecord(transaction, time);
         transactionLogs.get(player).add(transactionRecord);
         Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = Money.add(transaction.price(), oldBalance);
+        Money newBalance = Money.add(transaction.getAmount(), oldBalance);
         currentBalance.set(playerIndex, newBalance);
     }
 
@@ -439,14 +439,6 @@ public class World implements UnmodifiableWorld {
         return currentBalance.get(playerIndex);
     }
 
-    /**
-     * @param player
-     * @return
-     */
-    public int getID(Player player) {
-        return player.getId();
-    }
-
     public Vec2D getMapSize() {
         return mapSize;
     }
@@ -521,14 +513,6 @@ public class World implements UnmodifiableWorld {
      * @param player
      * @return
      */
-    public boolean isPlayer(Player player) {
-        return player.getId() >= 0 && player.getId() < players.size();
-    }
-
-    /**
-     * @param player
-     * @return
-     */
     public Activity removeLastActiveEntity(Player player) {
         int lastId = activities.get(player).size() - 1;
         List<Pair<Activity, Double>> serializables = activities.get(player).get(lastId);
@@ -585,7 +569,7 @@ public class World implements UnmodifiableWorld {
         TransactionRecord transactionRecord = transactions.remove(transactions.size()-1);
 
         Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = Money.subtract(oldBalance, transactionRecord.getTransaction().price());
+        Money newBalance = Money.subtract(oldBalance, transactionRecord.getTransaction().getAmount());
         currentBalance.set(playerIndex, newBalance);
         return transactionRecord.getTransaction();
     }

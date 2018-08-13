@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-// TODO what about a standard list iterator?
+// TODO what about a standard list iterator? need a bidirectional iterator, but not hard to write a generic one
 /**
  *
  */
