@@ -31,7 +31,7 @@ import freerails.model.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO generates multiple moves and immediately processes them
+// TODO generates multiple moves, good idea?
 /**
  * Iterates over the entries in the bank account and counts the number
  * of outstanding bonds, then calculates the interest due.

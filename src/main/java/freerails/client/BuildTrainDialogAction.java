@@ -18,30 +18,27 @@
 
 package freerails.client;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
 /**
- * ARGB value in an int. Needs its own class, so gson can convert to/from hex value in json de/serialization.
+ *
  */
-public class ARGBColor {
+class BuildTrainDialogAction extends AbstractAction {
+    private static final long serialVersionUID = 3257853173002416948L;
+    private ActionRoot actionRoot;
 
-    private int argb;
-
-    public ARGBColor(int argb) {
-        this.argb = argb;
+    BuildTrainDialogAction(ActionRoot actionRoot) {
+        super("Build Train");
+        this.actionRoot = actionRoot;
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+        putValue(SHORT_DESCRIPTION, "Build a new train");
     }
 
-    public int getARGB() {
-        return argb;
-    }
-
-    public static String toHexString(ARGBColor color) {
-        return String.format("#%s", Integer.toHexString(color.getARGB()));
-    }
-
-    public static ARGBColor fromHexString(String hexString) {
-        if (!(hexString.charAt(0) == '#')) {
-            throw new IllegalArgumentException();
+    public void actionPerformed(ActionEvent e) {
+        if (actionRoot.getDialogueBoxController() != null) {
+            actionRoot.getDialogueBoxController().showSelectEngine();
         }
-        int argb = Integer.parseUnsignedInt(hexString.substring(1), 16);
-        return new ARGBColor(argb);
     }
 }

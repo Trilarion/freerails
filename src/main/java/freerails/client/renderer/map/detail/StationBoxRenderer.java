@@ -84,7 +84,7 @@ public class StationBoxRenderer implements Painter {
             // We only show the station boxes for the current player.
             Player player = modelRoot.getPlayer();
             for (Station station: world.getStations(player)) {
-                // TODO which position is meant here?
+                // position of station box (below station)
                 int positionX = (station.getLocation().x * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE / 2;
                 int positionY = (station.getLocation().y * ModelConstants.TILE_SIZE) + ModelConstants.TILE_SIZE * 2;
                 Rectangle r = new Rectangle(positionX, positionY, ClientConstants.MAX_WIDTH, ClientConstants.MAX_HEIGHT);
@@ -96,7 +96,7 @@ public class StationBoxRenderer implements Painter {
                     g.drawRect(r.x, r.y, r.width, r.height);
 
                     UnmodifiableCargoBatchBundle cargoBatchBundle = station.getCargoBatchBundle();
-                    Map<CargoCategory, List<Integer>> carsLoads = calculateCarLoads(cargoBatchBundle);
+                    Map<CargoCategory, List<Integer>> carsLoads = CargoUtils.calculateCarLoads(world, cargoBatchBundle);
                     int i = 0;
                     for (CargoCategory cargoCategory: CargoCategory.values()) {
                         int alternateWidth = (ClientConstants.MAX_WIDTH - 2 * ClientConstants.SPACING) / (carsLoads.get(cargoCategory).size() + 1);
@@ -113,49 +113,5 @@ public class StationBoxRenderer implements Painter {
                 }
             }
         }
-    }
-
-    // TODO move this to cargo batch bundle maybe? however, depends on the world
-    /**
-     * The length of the returned array is the number of complete carloads of
-     * the specified cargo category in the specified bundle. The values in the
-     * array are the type of the cargo. E.g. if the bundle contained 2 carloads
-     * of cargo type 3 and 1 of type 7, {3, 3, 7} would be returned.
-     */
-    private Map<CargoCategory, List<Integer>> calculateCarLoads(UnmodifiableCargoBatchBundle cargoBatchBundle) {
-        // TODO overly complicated, easier way possible?
-        int numCargoTypes = world.getCargos().size();
-        Map<CargoCategory, Integer> numberOfCarLoads = new HashMap<>();
-        for (CargoCategory cargoCategory: CargoCategory.values()) {
-            numberOfCarLoads.put(cargoCategory, 0);
-        }
-        Map<CargoCategory, Map<Integer, Integer>> cars = new HashMap<>();
-        for (CargoCategory cargoCategory: CargoCategory.values()) {
-            Map<Integer, Integer> map = new HashMap<>();
-            // TODO int i is not an ID, this will break if ids are not going from 0 to number of types - 1
-            for (int i = 0; i < numCargoTypes; i++) {
-                map.put(i, 0);
-            }
-            cars.put(cargoCategory, map);
-        }
-        for (int i = 0; i < numCargoTypes; i++) {
-            Cargo ct = world.getCargo(i);
-            int carsOfThisCargo = cargoBatchBundle.getAmountOfType(i) / ModelConstants.UNITS_OF_CARGO_PER_WAGON;
-            numberOfCarLoads.put(ct.getCategory(), numberOfCarLoads.get(ct.getCategory()) + carsOfThisCargo);
-            cars.get(ct.getCategory()).put(i, cars.get(ct.getCategory()).get(i) + carsOfThisCargo);
-        }
-
-        Map<CargoCategory, List<Integer>> returnMatrix = new HashMap<>();
-        for (CargoCategory cargoCategory: CargoCategory.values()) {
-            List<Integer> returnValue = new ArrayList<>();
-
-            for (int cargoType = 0; cargoType < numCargoTypes; cargoType++) {
-                for (int j = 0; j < cars.get(cargoCategory).get(cargoType); j++) {
-                    returnValue.add(cargoType);
-                }
-            }
-            returnMatrix.put(cargoCategory, returnValue);
-        }
-        return returnMatrix;
     }
 }

@@ -41,18 +41,6 @@ public class TimeTickMove implements Move {
         this.newTime = newTime;
     }
 
-    /**
-     * @param world
-     * @return
-     */
-    public static Move generate(UnmodifiableWorld world) {
-
-        GameTime oldTime = world.currentTime();
-        GameTime newTime = new GameTime(oldTime.getTicks() + 1);
-
-        return new TimeTickMove(oldTime, newTime);
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

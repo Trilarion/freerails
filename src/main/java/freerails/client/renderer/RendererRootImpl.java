@@ -108,7 +108,7 @@ public class RendererRootImpl implements RendererRoot {
         for (Terrain terrainType: world.getTerrains()) {
             TileRenderer tileRenderer;
 
-            // TODO not a nice hack, unhack, provide information about neighoring tiles differently or better inside the Renderer
+            // TODO not a nice hack, unhack, provide information about neighboring tiles differently or better inside the Renderer
             List<Integer> typesTreatedAsTheSame = new ArrayList<>();
             try {
                 // TODO hack to make rivers flow into ocean and harbours & ocean

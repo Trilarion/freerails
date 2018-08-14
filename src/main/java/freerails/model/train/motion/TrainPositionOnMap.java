@@ -18,7 +18,6 @@
 
 package freerails.model.train.motion;
 
-
 import freerails.model.train.TrainState;
 import freerails.util.LineSegment;
 import freerails.util.Pair;
@@ -123,7 +122,32 @@ public class TrainPositionOnMap implements Serializable {
      * @return
      */
     public static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path) {
-        return createInSameDirectionAsPath(path, 0.0d, 0.0d, TrainState.READY);
+        List<Integer> xPointsIntArray = new ArrayList<>();
+        List<Integer> yPointsIntArray = new ArrayList<>();
+        LineSegment line = new LineSegment();
+        int i = 0;
+
+        while (path.hasNext()) {
+            path.nextSegment(line);
+            xPointsIntArray.add(i, line.getX1());
+            yPointsIntArray.add(i, line.getY1());
+            i++;
+
+            if (i > 10000) {
+                throw new IllegalStateException("The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
+            }
+        }
+
+        xPointsIntArray.add(i, line.getX2());
+        yPointsIntArray.add(i, line.getY2());
+
+        Integer[] xPoints;
+        Integer[] yPoints;
+
+        xPoints = xPointsIntArray.toArray(new Integer[0]);
+        yPoints = yPointsIntArray.toArray(new Integer[0]);
+
+        return new TrainPositionOnMap(xPoints, yPoints, 0.0d, 0.0d, TrainState.READY);
     }
 
     /**
@@ -156,42 +180,6 @@ public class TrainPositionOnMap implements Serializable {
 
         xPoints[0] = line.getX2();
         yPoints[0] = line.getY2();
-
-        return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration, activity);
-    }
-
-    /**
-     * @param path
-     * @param speed
-     * @param acceleration
-     * @param activity
-     * @return
-     */
-    private static TrainPositionOnMap createInSameDirectionAsPath(PathIterator path, double speed, double acceleration, TrainState activity) {
-        List<Integer> xPointsIntArray = new ArrayList<>();
-        List<Integer> yPointsIntArray = new ArrayList<>();
-        LineSegment line = new LineSegment();
-        int i = 0;
-
-        while (path.hasNext()) {
-            path.nextSegment(line);
-            xPointsIntArray.add(i, line.getX1());
-            yPointsIntArray.add(i, line.getY1());
-            i++;
-
-            if (i > 10000) {
-                throw new IllegalStateException("The TrainPosition has more than 10,000 points, which suggests that something is wrong.");
-            }
-        }
-
-        xPointsIntArray.add(i, line.getX2());
-        yPointsIntArray.add(i, line.getY2());
-
-        Integer[] xPoints;
-        Integer[] yPoints;
-
-        xPoints = xPointsIntArray.toArray(new Integer[0]);
-        yPoints = yPointsIntArray.toArray(new Integer[0]);
 
         return new TrainPositionOnMap(xPoints, yPoints, speed, acceleration, activity);
     }

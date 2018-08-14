@@ -69,7 +69,7 @@ public class BuildTrackStrategy {
      * @return
      */
     public static BuildTrackStrategy getMultipleRuleInstance(Iterable<Integer> ruleIDs, UnmodifiableWorld world) {
-        Map<Integer, Integer> rules = generateRules(ruleIDs, world);
+        Map<Integer, Integer> rules = TrackUtils.generateRules(ruleIDs, world);
         return new BuildTrackStrategy(rules);
     }
 
@@ -79,41 +79,10 @@ public class BuildTrackStrategy {
      */
     public static BuildTrackStrategy getDefault(UnmodifiableWorld world) {
         Collection<Integer> allowable = new ArrayList<>();
-        allowable.add(getCheapest(TrackCategory.TRACK, world));
-        allowable.add(getCheapest(TrackCategory.BRIDGE, world));
-        allowable.add(getCheapest(TrackCategory.TUNNEL, world));
-        return new BuildTrackStrategy(generateRules(allowable, world));
-    }
-
-    private static Integer getCheapest(TrackCategory category, UnmodifiableWorld world) {
-        TrackType cheapest = null;
-        Integer cheapestID = null;
-        for (TrackType trackType: world.getTrackTypes()) {
-            if (trackType.getCategory() == category) {
-                if (null == cheapest || cheapest.getPurchasingPrice().compareTo(trackType.getPurchasingPrice()) > 0) {
-                    cheapest = trackType;
-                    cheapestID = trackType.getId();
-                }
-            }
-        }
-        return cheapestID;
-    }
-
-    private static Map<Integer, Integer> generateRules(Iterable<Integer> allowable, UnmodifiableWorld world) {
-
-        Map<Integer, Integer> newRules = new HashMap<>();
-        for (Terrain terrainType: world.getTerrains()) {
-            for (Integer rule : allowable) {
-                if (null != rule) {
-                    TrackType trackType = world.getTrackType(rule);
-                    if (trackType.canBuildOnThisTerrainType(terrainType.getCategory())) {
-                        newRules.put(terrainType.getId(), rule);
-                        break;
-                    }
-                }
-            }
-        }
-        return newRules;
+        allowable.add(TrackUtils.getCheapest(TrackCategory.TRACK, world));
+        allowable.add(TrackUtils.getCheapest(TrackCategory.BRIDGE, world));
+        allowable.add(TrackUtils.getCheapest(TrackCategory.TUNNEL, world));
+        return new BuildTrackStrategy(TrackUtils.generateRules(allowable, world));
     }
 
     /**

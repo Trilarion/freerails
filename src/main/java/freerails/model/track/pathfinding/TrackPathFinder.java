@@ -54,20 +54,6 @@ public class TrackPathFinder implements IncrementalPathFinder {
         this.player = player;
     }
 
-    private static List<Vec2D> convertPathToPoints(List<Integer> path) {
-        PositionOnTrack positionOnTrack = new PositionOnTrack();
-        List<Vec2D> proposedTrack = new ArrayList<>();
-
-        for (Integer aPath : path) {
-            positionOnTrack.setValuesFromInt(aPath);
-            Vec2D p = positionOnTrack.getLocation();
-            proposedTrack.add(p);
-            logger.debug("Adding point " + p);
-        }
-
-        return proposedTrack;
-    }
-
     /**
      *
      */
@@ -135,7 +121,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
         List<Integer> path = pathFinder.retrievePath();
 
-        return convertPathToPoints(path);
+        return TrackUtils.convertPathToPoints(path);
     }
 
     /**
@@ -151,7 +137,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     public List<Vec2D> pathAsPoints() {
         List<Integer> path = pathFinder.retrievePath();
 
-        return convertPathToPoints(path);
+        return TrackUtils.convertPathToPoints(path);
     }
 
     /**

@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.game.GameTime;
 import freerails.move.Move;
 import freerails.move.TimeTickMove;
 import freerails.model.world.UnmodifiableWorld;
@@ -41,7 +42,11 @@ public class TimeTickMoveGenerator implements MoveGenerator {
      * @return
      */
     public Move generate(UnmodifiableWorld world) {
-        return TimeTickMove.generate(world);
+
+        GameTime oldTime = world.currentTime();
+        GameTime newTime = new GameTime(oldTime.getTicks() + 1);
+
+        return new TimeTickMove(oldTime, newTime);
     }
 
     protected Object readResolve() {

@@ -129,7 +129,7 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
     }
 
     /**
-     *
+     * Pointwise multiplication.
      * @param a
      * @param b
      * @return
@@ -139,7 +139,7 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
     }
 
     /**
-     *
+     * Pointwise multiplication.
      * @param a
      * @param b
      * @return
@@ -149,7 +149,7 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
     }
 
     /**
-     *
+     * Pointwise division by an int.
      * @param a
      * @param b
      * @return
@@ -158,6 +158,27 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
         return new Vec2D(a.x / b, a.y / b);
     }
 
+    /**
+     * Pointwise maximum.
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D max(Vec2D a, Vec2D b) {
+        return new Vec2D(Math.max(a.x, b.x), Math.max(a.y, b.y));
+    }
+
+    /**
+     * Pointwise minimum.
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Vec2D min(Vec2D a, Vec2D b) {
+        return new Vec2D(Math.min(a.x, b.x), Math.min(a.y, b.y));
+    }
 
     /**
      *
@@ -167,6 +188,42 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
     public int compareTo(Vec2D o) {
         if (o.y != y) return y - o.y;
         else return x - o.x;
+    }
+
+    /**
+     * Both members below the members of another vector.
+     * @param o
+     * @return
+     */
+    public boolean below(Vec2D o) {
+        return x < o.x && y < o.y;
+    }
+
+    /**
+     * Both members below or equal of the members of another vector.
+     * @param o
+     * @return
+     */
+    public boolean belowOrEqual(Vec2D o) {
+        return x <= o.x && y <= o.y;
+    }
+
+    /**
+     * Both members above the members of another vector.
+     * @param o
+     * @return
+     */
+    public boolean above(Vec2D o) {
+        return x > o.x && y > o.y;
+    }
+
+    /**
+     * Both members above or equal of the members of another vector.
+     * @param o
+     * @return
+     */
+    public boolean aboveOrEqual(Vec2D o) {
+        return x >= o.x && y >= o.y;
     }
 
     /**

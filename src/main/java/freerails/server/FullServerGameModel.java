@@ -32,6 +32,7 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.BondInterestMoveGenerator;
+import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.move.receiver.MoveReceiver;
 import freerails.model.game.GameCalendar;
 import freerails.model.game.GameTime;
@@ -138,7 +139,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
-                moveReceiver.process(TimeTickMove.generate(world));
+                moveReceiver.process(TimeTickMoveGenerator.INSTANCE.generate(world));
 
                 // now do the other updates like moving the trains
                 trainUpdater.moveTrains(world);

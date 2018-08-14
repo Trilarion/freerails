@@ -27,8 +27,6 @@ import freerails.controller.TrackMoveProducer;
 import freerails.model.world.UnmodifiableWorld;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 // TODO what is this good for, probably can move to somewhere else
 /**
@@ -52,7 +50,7 @@ public class ActionRoot {
      * @return
      */
     public Action getBuildTrainDialogAction() {
-        return new BuildTrainDialogAction();
+        return new BuildTrainDialogAction(this);
     }
 
     /**
@@ -101,23 +99,6 @@ public class ActionRoot {
         if (world.getTrackTypes().size() > 0) {
             trackMoveProducer = new TrackMoveProducer(modelRoot);
             stationBuildModel = new StationBuildModel(new StationBuilder(modelRoot), rendererRoot, modelRoot);
-        }
-    }
-
-    // TODO too convoluted, remove this inner class
-    private class BuildTrainDialogAction extends AbstractAction {
-        private static final long serialVersionUID = 3257853173002416948L;
-
-        private BuildTrainDialogAction() {
-            super("Build Train");
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
-            putValue(SHORT_DESCRIPTION, "Build a new train");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (dialogueBoxController != null) {
-                dialogueBoxController.showSelectEngine();
-            }
         }
     }
 

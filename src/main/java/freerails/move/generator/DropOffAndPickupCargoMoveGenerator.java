@@ -19,15 +19,13 @@
 package freerails.move.generator;
 
 import freerails.model.ModelConstants;
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.cargo.*;
 import freerails.model.finances.transactions.CargoDeliveryTransaction;
 import freerails.model.finances.Money;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.cargo.CargoBatch;
-import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.StationCargoConversion;
@@ -74,7 +72,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         waitingForFullLoad = waiting;
         trainAccessor = new TrainAccessor(this.world, this.player, trainId);
         consist = world.getTrain(player, trainId).getConsist();
-        getBundles();
+        setupBundles();
 
         // TODO should this be done here? I thought this is only a Move generator
         processTrainBundle(); // ie. unload train / drop-off cargo
@@ -117,7 +115,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             Integer[] temp = new Integer[numWagonsToadd];
             for (int i = 0; i < numWagonsToadd; i++) {
                 WagonLoad wagonload = wagonsAvailable.get(i);
-                temp[i] = wagonload.cargoType;
+                temp[i] = wagonload.getCargoType();
             }
             consist = new ArrayList<>(Arrays.asList(temp));
         }
@@ -125,37 +123,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         processStationBundle(); // ie. load train / pickup cargo
     }
 
-    /**
-     * Move the specified quantity of the specified cargo type from one bundle to another.
-     */
-    private static void transferCargo(int cargoTypeToTransfer, int amountToTransfer, CargoBatchBundle from, CargoBatchBundle to) {
-        if (0 == amountToTransfer) {
-            return;
-        }
-        int amountTransferedSoFar = 0;
-
-        for (CargoBatch cb: from.getCargoBatches()) {
-            if (amountTransferedSoFar > amountToTransfer) {
-                break;
-            }
-
-            if (cb.getCargoTypeId() == cargoTypeToTransfer) {
-                int amount = from.getAmount(cb);
-                int amountOfThisBatchToTransfer;
-
-                if (amount < amountToTransfer - amountTransferedSoFar) {
-                    amountOfThisBatchToTransfer = amount;
-                    from.setAmount(cb, 0);
-                } else {
-                    amountOfThisBatchToTransfer = amountToTransfer - amountTransferedSoFar;
-                    from.addCargo(cb, -amountOfThisBatchToTransfer);
-                }
-
-                to.addCargo(cb, amountOfThisBatchToTransfer);
-                amountTransferedSoFar += amountOfThisBatchToTransfer;
-            }
-        }
-    }
+    // TODO part of this should go to the model
 
     /**
      * Generates Moves that pay the player for delivering the cargo.
@@ -172,7 +140,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
         List<Move> moves = new ArrayList<>();
 
-        for (CargoBatch cargoBatch: cargoBatchBundle.getCargoBatches()) {
+        for (CargoBatch cargoBatch : cargoBatchBundle.getCargoBatches()) {
             // TODO own function for that
             double distanceSquared = (cargoBatch.getSourceP().x - thisStation.getLocation().x) * (cargoBatch.getSourceP().x - thisStation.getLocation().x) + (cargoBatch.getSourceP().y - thisStation.getLocation().y) * (cargoBatch.getSourceP().y - thisStation.getLocation().y);
             double dist = Math.sqrt(distanceSquared);
@@ -215,7 +183,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         return new CompositeMove(moves);
     }
 
-    private void getBundles() {
+    private void setupBundles() {
         Train train = world.getTrain(player, trainId);
         UnmodifiableCargoBatchBundle cargoBatchBundle = train.getCargoBatchBundle();
         trainBefore = new CargoBatchBundle(cargoBatchBundle);
@@ -232,7 +200,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         CargoBatchBundle cargoDroppedOff = new CargoBatchBundle();
 
         // Unload the cargo that the station demands
-        for (CargoBatch cb: trainAfter.getCargoBatches()) {
+        for (CargoBatch cb : trainAfter.getCargoBatches()) {
             // if the cargo is demanded and its not from this station originally...
             StationDemand demand = station.getDemandForCargo();
             int cargoType = cb.getCargoTypeId();
@@ -266,7 +234,7 @@ public class DropOffAndPickupCargoMoveGenerator {
             int quantity = spaceAvailable.get(cargoType);
             if (quantity < 0) {
                 int amountToTransfer = -quantity;
-                transferCargo(cargoType, amountToTransfer, trainAfter, stationAfter);
+                CargoUtils.transferCargo(cargoType, amountToTransfer, trainAfter, stationAfter);
             }
         }
     }
@@ -280,26 +248,7 @@ public class DropOffAndPickupCargoMoveGenerator {
         for (int cargoType = 0; cargoType < spaceAvailable.size(); cargoType++) {
             int quantity = spaceAvailable.get(cargoType);
             int amountToTransfer = Math.min(quantity, stationAfter.getAmountOfType(cargoType));
-            transferCargo(cargoType, amountToTransfer, stationAfter, trainAfter);
-        }
-    }
-
-    // TODO why needed here, maybe more general and should be needed more often?
-    /**
-     * Stores the type and quantity of cargo in a wagon.
-     */
-    private static class WagonLoad implements Comparable<WagonLoad> {
-
-        private final int quantity;
-        private final int cargoType;
-
-        private WagonLoad(int quantity, int cargoType) {
-            this.quantity = quantity;
-            this.cargoType = cargoType;
-        }
-
-        public int compareTo(WagonLoad o) {
-            return quantity - o.quantity;
+            CargoUtils.transferCargo(cargoType, amountToTransfer, stationAfter, trainAfter);
         }
     }
 }

@@ -98,9 +98,8 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     public int checkTile(Vec2D location, UnmodifiableWorld world) {
         int match = 0;
 
-        // TODO vector2D arithmetic
         Vec2D mapSize = world.getMapSize();
-        if ((location.x < mapSize.x) && (location.x >= 0) && (location.y < mapSize.y) && (location.y >= 0)) {
+        if (location.below(mapSize) && location.aboveOrEqual(Vec2D.ZERO)) {
             for (int typeNumber : typesTreatedAsSame) {
                 TerrainTile terrainTile = (TerrainTile) world.getTile(location);
 

@@ -305,7 +305,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         return gameMenu;
     }
 
-    // TODO the whole help menu is pretty dead
+    // TODO the whole help menu is pretty dead, needs redesign
     /**
      * @return
      */
@@ -438,6 +438,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         modelRoot.addMapListener(this);
         modelRoot.addListListener(this);
 
+        // TODO this should be a test, all rendererroots should be compatible
         if (!rendererRoot.validate(this.world)) {
             throw new IllegalArgumentException("The specified" + " RendererRoot are not compatible with the clients" + "world!");
         }
@@ -502,7 +503,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         mapViewJComponent.requestFocus();
     }
 
-    // TODO change to often, ~10% of time
+    // TODO change too often, ~10% of time
     /**
      * Part of the WorldMapListener interface, invoked by MoveChainFork upon a MapUpdateMove
      *

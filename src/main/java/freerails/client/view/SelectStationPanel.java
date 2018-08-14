@@ -195,27 +195,18 @@ public class SelectStationPanel extends JPanel implements View {
         Rectangle r = cargoWaitingAndDemandedPanel1.getBounds();
         mapRect.width -= r.width;
 
-        int topLeftX = Integer.MAX_VALUE;
-        int topLeftY = Integer.MAX_VALUE;
-        int bottomRightX = Integer.MIN_VALUE;
-        int bottomRightY = Integer.MIN_VALUE;
+        Vec2D topLeft = new Vec2D(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        Vec2D bottomRight = new Vec2D(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
         for (Station station: world.getStations(player)) {
-            // TODO min, max of two Points2D
-            if (station.getLocation().x < topLeftX) topLeftX = station.getLocation().x;
-            if (station.getLocation().y < topLeftY) topLeftY = station.getLocation().y;
-            if (station.getLocation().x > bottomRightX) bottomRightX = station.getLocation().x;
-            if (station.getLocation().y > bottomRightY) bottomRightY = station.getLocation().y;
+            topLeft = Vec2D.min(topLeft, station.getLocation());
+            bottomRight = Vec2D.max(bottomRight, station.getLocation());
         }
-        // Add some padding.
-        topLeftX -= 10;
-        topLeftY -= 10;
-        bottomRightX += 10;
-        bottomRightY += 10;
+        Vec2D margin = new Vec2D(10, 10);
+        topLeft = Vec2D.subtract(topLeft, margin);
+        bottomRight = Vec2D.add(bottomRight, margin);
 
-        int width = bottomRightX - topLeftX;
-        int height = bottomRightY - topLeftY;
-        visableMapTiles = new Rectangle(topLeftX, topLeftY, width, height);
+        visableMapTiles = new Rectangle(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
         boolean heightConstraintBinds = (visableMapTiles.getHeight() / visableMapTiles.getWidth()) > (mapRect.getHeight() / mapRect.getWidth());
         if (heightConstraintBinds) {
             scale = mapRect.getHeight() / visableMapTiles.getHeight();
@@ -263,13 +254,6 @@ public class SelectStationPanel extends JPanel implements View {
              * drawn above the stations are drawn using the same colour as used
              * to draw the station.
              */
-            double x = station.getLocation().x - visableMapTiles.x;
-            x = x * scale;
-            double y = station.getLocation().y - visableMapTiles.y;
-            y = y * scale;
-            int xInt = (int) x;
-            int yInt = (int) y;
-
             StringBuilder stopNumbersString = new StringBuilder();
             boolean stationIsOnSchedule = false;
             for (int orderNumber = 0; orderNumber < schedule.getNumberOfOrders(); orderNumber++) {
@@ -283,6 +267,15 @@ public class SelectStationPanel extends JPanel implements View {
                     stationIsOnSchedule = true;
                 }
             }
+
+            // TODO Vector arithmetic
+            double x = station.getLocation().x - visableMapTiles.x;
+            x = x * scale;
+            double y = station.getLocation().y - visableMapTiles.y;
+            y = y * scale;
+            int xInt = (int) x;
+            int yInt = (int) y;
+
             if (stationIsOnSchedule) {
                 // TODO is the selectedStationID the right one, or is it a running number in a list?
                 if (station.getId() == selectedStationID) {

@@ -232,7 +232,7 @@ public class DialogueBoxController implements WorldListListener {
         if (trains.isEmpty()) {
             modelRoot.setProperty(ModelRootProperty.QUICK_MESSAGE, "Cannot" + " show train orders since there are no" + " trains!");
         } else {
-            // TODO there should be something reasonable here, like the next and so one, but I don't know what this is supposed to do
+            // TODO there should be something reasonable here, like the next and so on, but I don't know what this is supposed to do
             trainDialoguePanel.display(0);
             showContent(trainDialoguePanel);
         }

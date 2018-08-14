@@ -20,6 +20,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
+import freerails.model.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
 import freerails.move.*;
@@ -159,7 +160,7 @@ public class TrackMoveProducer {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
                 TerrainTile tileA = (TerrainTile) world.getTile(from);
-                if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !isStationHere(from)) {
+                if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)) {
                     Status status = upgradeTrack(from, ruleIDs[0]);
                     if (!status.succeeds()) {
                         return status;
@@ -167,7 +168,7 @@ public class TrackMoveProducer {
                 }
                 Vec2D point = Vec2D.add(from, trackVector.getD());
                 TerrainTile tileB = (TerrainTile) world.getTile(point);
-                if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !isStationHere(point)) {
+                if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
                     Status status = upgradeTrack(point, ruleIDs[1]);
                     if (!status.succeeds()) {
                         return status;
@@ -250,12 +251,6 @@ public class TrackMoveProducer {
         }
 
         return status;
-    }
-
-    private boolean isStationHere(Vec2D p) {
-        UnmodifiableWorld world = executor.getWorld();
-        TerrainTile tile = (TerrainTile) world.getTile(p);
-        return tile.getTrackPiece().getTrackType().isStation();
     }
 
     private BuildTrackStrategy getBuildTrackStrategy() {

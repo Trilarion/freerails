@@ -50,7 +50,7 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
      */
     public SpecialTileRenderer(ImageManager imageManager, List<Integer> treatTypeAsSame, Terrain tileModel, TileRenderer parentTileView) throws IOException {
         super(tileModel, treatTypeAsSame, 1);
-        getTileIcons()[0] = imageManager.getImage(generateFilename());
+        getTileIcons()[0] = imageManager.getImage("terrain" + File.separator + getTerrainTypeName() + ".png");
         this.parentTileView = parentTileView;
     }
 
@@ -85,11 +85,6 @@ public class SpecialTileRenderer extends AbstractTileRenderer {
     @Override
     public int selectTileIconIndex(Vec2D mapLocation, UnmodifiableWorld world) {
         return 0;
-    }
-
-    // TODO move this somewhere else
-    private String generateFilename() {
-        return "terrain" + File.separator + getTerrainTypeName() + ".png";
     }
 
     /**

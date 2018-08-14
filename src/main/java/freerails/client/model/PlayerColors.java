@@ -23,7 +23,7 @@ package freerails.client.model;
 
 import java.awt.*;
 
-// TODO store this somewhere else (in the save game maybe)
+// TODO store this in a json file and read upon start (is it part of the model or of the client configuration?)
 /**
  * Stores a list of colours to use to represent different players.
  */

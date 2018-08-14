@@ -20,13 +20,13 @@ package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
+import freerails.model.track.TrackUtils;
 import freerails.model.world.*;
 import freerails.move.Status;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.GameRules;
 import freerails.model.player.Player;
-import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
@@ -52,103 +52,6 @@ public final class ChangeTrackPieceMove implements TrackMove {
         trackPieceBefore = before;
         trackPieceAfter = after;
         location = p;
-    }
-
-    // TODO move static code to model
-    /**
-     * This method may be called under 3 possible conditions: (1) when a station
-     * is getting built, (2) when a station is getting upgraded, (3) when a
-     * station is getting removed.
-     */
-    private static Status checkForOverlap(World world, Vec2D location, TrackPiece trackPiece) {
-        /*
-         * Fix for 915945 (Stations should not overlap) Check that there is not
-         * another station whose radius overlaps with the one we are building.
-         */
-        TrackType thisStationType = trackPiece.getTrackType();
-        assert thisStationType.isStation();
-
-        // for all player
-        for (Player player: world.getPlayers()) {
-            // for all stations of a player
-            for (Station station: world.getStations(player)) {
-                /*
-                 * Fix for bug 948675 - Can't upgrade station types If locations
-                 * are the same, then we are upgrading a station so it doesn't
-                 * matter if the radii overlap.
-                 */
-                if (location.equals(station.getLocation())) {
-                    continue;
-                }
-
-                TerrainTile tile = world.getTile(station.getLocation());
-                TrackType otherStationType = tile.getTrackPiece().getTrackType();
-                assert otherStationType.isStation();
-
-                int sumOfRadii = otherStationType.getStationRadius() + thisStationType.getStationRadius();
-                int sumOfRadiiSquared = sumOfRadii * sumOfRadii;
-                Vec2D delta = Vec2D.subtract(station.getLocation(), location);
-
-                // Do radii overlap?
-                boolean xOverlap = sumOfRadiiSquared >= delta.x * delta.x;
-                boolean yOverlap = sumOfRadiiSquared >= delta.y * delta.y;
-
-                if (xOverlap && yOverlap) {
-                    String message = "Too close to " + station.getStationName();
-
-                    return Status.moveFailed(message);
-                }
-            }
-        }
-
-        return Status.OK;
-    }
-
-    private static boolean noDiagonalTrackConflicts(Vec2D point, int trackTemplate, World world) {
-        /*
-         * This method is needs replacing. It only deals with flat track pieces, and is rather hard to make sense of. LL
-         */
-
-        // int trackTemplate = (1 << (3 * (1 + tv.getY()) + (1 + tv.getX())));
-        int trackTemplateAbove;
-        int trackTemplateBelow;
-        String templateString = "101000101";
-        // Hack - so that result is as expected by earlier written code.
-        StringBuffer strb = new StringBuffer(templateString);
-        strb.reverse();
-        templateString = strb.toString();
-
-        // End of hack
-        int cornersTemplate = Integer.parseInt(templateString, 2);
-        trackTemplate = trackTemplate & cornersTemplate;
-
-        Vec2D mapSize = world.getMapSize();
-
-        // Avoid array-out-of-bounds exceptions.
-        trackTemplateAbove = 0;
-        if (point.y > 0) {
-            TerrainTile ft = world.getTile(new Vec2D(point.x, point.y - 1));
-            TrackPiece tp = ft.getTrackPiece();
-            if (tp != null) {
-                trackTemplateAbove = tp.getTrackGraphicID();
-            }
-        }
-
-        trackTemplateBelow = 0;
-        if ((point.y + 1) < mapSize.y) {
-            TerrainTile ft = world.getTile(new Vec2D(point.x, point.y + 1));
-            TrackPiece tp = ft.getTrackPiece();
-            if (tp != null) {
-                trackTemplateBelow = tp.getTrackGraphicID();
-            }
-        }
-
-        trackTemplateAbove = trackTemplateAbove >> 6;
-        trackTemplateBelow = trackTemplateBelow << 6;
-        trackTemplate = trackTemplate & (trackTemplateAbove | trackTemplateBelow);
-
-        return trackTemplate == 0;
-        // Things are success.
     }
 
     /**
@@ -237,7 +140,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
             }
 
             // Check for diagonal conflicts.
-            if (newTrackPiece != null && !(noDiagonalTrackConflicts(location, oldTrackPiece.getTrackGraphicID(), world) && noDiagonalTrackConflicts(location, newTrackPiece.getTrackGraphicID(), world))) {
+            if (newTrackPiece != null && !(TrackUtils.noDiagonalTrackConflicts(location, oldTrackPiece.getTrackGraphicID(), world) && TrackUtils.noDiagonalTrackConflicts(location, newTrackPiece.getTrackGraphicID(), world))) {
                 return Status.moveFailed("Illegal track configuration - diagonal conflict");
             }
         }
@@ -261,7 +164,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
             // Check for overlapping stations.
             if (newTrackPiece.getTrackType().isStation()) {
-                Status status = ChangeTrackPieceMove.checkForOverlap(world, location, newTrackPiece);
+                Status status = TrackUtils.checkForOverlap(world, location, newTrackPiece);
                 if (!status.succeeds()) return status;
             }
 

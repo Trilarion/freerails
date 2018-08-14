@@ -71,7 +71,7 @@ public class OverviewMapRenderer implements MapRenderer {
         this.mapSize = world.getMapSize();
         this.imageSize = imageSize;
 
-        // TODO this should probably be loaded by the client at some point before
+        // TODO this should probably be loaded by the client at some point before (should they be model or client specific)
         URL url = OverviewMapRenderer.class.getResource("/freerails/client/terrain_colors.json");
         File file = null;
         try {

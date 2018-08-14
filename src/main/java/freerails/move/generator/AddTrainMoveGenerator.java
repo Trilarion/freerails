@@ -23,9 +23,7 @@ package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.finances.transactions.Transaction;
-import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
 
@@ -36,12 +34,8 @@ import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.Money;
 import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
-import freerails.model.terrain.TileTransition;
-import freerails.model.track.NoTrackException;
 import freerails.model.train.*;
-import freerails.model.train.motion.ConstantAccelerationMotion;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,40 +89,6 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    private PathOnTiles initPositionStep1(UnmodifiableWorld world) {
-        PositionOnTrack[] pp = FlatTrackExplorer.getPossiblePositions(world, point);
-        FlatTrackExplorer fte;
-        try {
-            fte = new FlatTrackExplorer(world, pp[0]);
-        } catch (NoTrackException e) {
-            throw new IllegalArgumentException(e.getMessage(), e);
-        }
-
-        List<TileTransition> tileTransitions = new ArrayList<>();
-        int length = calculateTrainLength();
-        int distanceTravelled = 0;
-        PositionOnTrack p = new PositionOnTrack();
-        while (distanceTravelled < length) {
-            fte.nextEdge();
-            fte.moveForward();
-            p.setValuesFromInt(fte.getPosition());
-            TileTransition v = p.cameFrom();
-            distanceTravelled += v.getLength();
-            tileTransitions.add(v);
-        }
-        return new PathOnTiles(point, tileTransitions);
-    }
-
-    private int calculateTrainLength() {
-        // TODO is this a good idea, how often is this called, should it maybe only be called once?
-        Train train = new Train(0, engineId, wagons, new CargoBatchBundle(), new Schedule());
-        return train.getLength();
-    }
-
-    private TrainMotion initPositionStep2(PathOnTiles path) {
-        return new TrainMotion(path, path.steps(), calculateTrainLength(), ConstantAccelerationMotion.STOPPED);
-    }
-
     /**
      * Generates a move that does the following.
      * <ol>
@@ -150,7 +110,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         // AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, player);
         AddTrainMove addTrain = new AddTrainMove(player, train);
 
-        // Pay for thre train.
+        // Pay for the train.
         // Determine the price of the train.
         Engine engine = world.getEngine(engineId);
         Money price = engine.getPrice();
@@ -158,8 +118,8 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         AddTransactionMove transactionMove = new AddTransactionMove(player, transaction);
 
         // Setup and add train position.
-        PathOnTiles path = initPositionStep1(world);
-        TrainMotion motion = initPositionStep2(path);
+        PathOnTiles path = TrainUtils.initPositionTrainGetPath(world, point, engineId, wagons);
+        TrainMotion motion = TrainUtils.initPositionTrainGetMotion(path, engineId, wagons);
 
         // TODO replace with AddActivityMove
         Move addPosition = new AddActiveEntityMove(motion, trainId, player);

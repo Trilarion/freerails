@@ -16,32 +16,31 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client;
+package freerails.model.cargo;
 
+// TODO should this be used more often?
 /**
- * ARGB value in an int. Needs its own class, so gson can convert to/from hex value in json de/serialization.
+ * Stores the type and quantity of cargo in a wagon.
  */
-public class ARGBColor {
+public class WagonLoad implements Comparable<WagonLoad> {
 
-    private int argb;
+    private final int quantity;
+    private final int cargoType;
 
-    public ARGBColor(int argb) {
-        this.argb = argb;
+    public WagonLoad(int quantity, int cargoType) {
+        this.quantity = quantity;
+        this.cargoType = cargoType;
     }
 
-    public int getARGB() {
-        return argb;
+    public int compareTo(WagonLoad o) {
+        return quantity - o.quantity;
     }
 
-    public static String toHexString(ARGBColor color) {
-        return String.format("#%s", Integer.toHexString(color.getARGB()));
+    public int getQuantity() {
+        return quantity;
     }
 
-    public static ARGBColor fromHexString(String hexString) {
-        if (!(hexString.charAt(0) == '#')) {
-            throw new IllegalArgumentException();
-        }
-        int argb = Integer.parseUnsignedInt(hexString.substring(1), 16);
-        return new ARGBColor(argb);
+    public int getCargoType() {
+        return cargoType;
     }
 }

@@ -16,32 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.client;
+package freerails.model.train.motion;
+
+import freerails.model.activity.ActivityIterator;
+import freerails.model.player.Player;
+import freerails.model.world.UnmodifiableWorld;
 
 /**
- * ARGB value in an int. Needs its own class, so gson can convert to/from hex value in json de/serialization.
+ *
  */
-public class ARGBColor {
+public final class MotionUtils {
 
-    private int argb;
-
-    public ARGBColor(int argb) {
-        this.argb = argb;
+    private MotionUtils() {
     }
 
-    public int getARGB() {
-        return argb;
-    }
-
-    public static String toHexString(ARGBColor color) {
-        return String.format("#%s", Integer.toHexString(color.getARGB()));
-    }
-
-    public static ARGBColor fromHexString(String hexString) {
-        if (!(hexString.charAt(0) == '#')) {
-            throw new IllegalArgumentException();
-        }
-        int argb = Integer.parseUnsignedInt(hexString.substring(1), 16);
-        return new ARGBColor(argb);
+    public static TrainMotion lastMotion(UnmodifiableWorld world, Player player, int trainId) {
+        ActivityIterator ai = world.getActivities(player, trainId);
+        ai.gotoLastActivity();
+        return (TrainMotion) ai.getActivity();
     }
 }

@@ -26,7 +26,7 @@ import freerails.model.track.explorer.GraphExplorer;
 import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.PathOnTrackFinder;
 import freerails.model.track.OccupiedTracks;
-import freerails.model.train.motion.TrainMotion;
+import freerails.model.train.motion.*;
 import freerails.move.*;
 
 import freerails.util.Vec2D;
@@ -42,9 +42,6 @@ import freerails.model.track.NoTrackException;
 import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackSection;
 import freerails.model.train.*;
-import freerails.model.train.motion.CompositeMotion;
-import freerails.model.train.motion.ConstantAccelerationMotion;
-import freerails.model.train.motion.Motion;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -266,18 +263,12 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return result;
     }
 
-    private TrainMotion lastMotion(UnmodifiableWorld world) {
-        ActivityIterator ai = world.getActivities(player, trainId);
-        ai.gotoLastActivity();
-        return (TrainMotion) ai.getActivity();
-    }
-
-    // TODO this should be in model.train
+    // TODO parts of this should be in the model.train
     private Move moveTrain(UnmodifiableWorld world, OccupiedTracks occupiedTracks) {
         // Find the next vector.
         TileTransition nextVector = nextStep(world);
 
-        TrainMotion motion = lastMotion(world);
+        TrainMotion motion = MotionUtils.lastMotion(world, player, trainId);
         PositionOnTrack positionOnTrack = motion.getFinalPosition();
         TrackSection desiredTrackSection = new TrackSection(nextVector, positionOnTrack.getLocation());
 
@@ -306,7 +297,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     }
 
     private TrainMotion nextMotion(UnmodifiableWorld world, TileTransition tileTransition) {
-        TrainMotion motion = lastMotion(world);
+        TrainMotion motion = MotionUtils.lastMotion(world, player, trainId);
 
         Motion speeds = nextSpeeds(world, tileTransition);
 
@@ -316,7 +307,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     }
 
     public Motion nextSpeeds(UnmodifiableWorld world, TileTransition tileTransition) {
-        TrainMotion lastMotion = lastMotion(world);
+        TrainMotion lastMotion = MotionUtils.lastMotion(world, player, trainId);
 
         double u = lastMotion.getSpeedAtEnd();
         double s = tileTransition.getLength();
@@ -343,7 +334,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
     public TileTransition nextStep(UnmodifiableWorld world) {
         // Find current position.
-        TrainMotion currentMotion = lastMotion(world);
+        TrainMotion currentMotion = MotionUtils.lastMotion(world, player, trainId);
         PositionOnTrack currentPosition = currentMotion.getFinalPosition();
         // Find targets
         Vec2D targetPoint = TrainUtils.getTargetLocation(world, player, trainId);
@@ -355,7 +346,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * @return
      */
     public Move stopTrain(UnmodifiableWorld world) {
-        TrainMotion motion = lastMotion(world);
+        TrainMotion motion = MotionUtils.lastMotion(world, player, trainId);
         Motion stopped = ConstantAccelerationMotion.STOPPED;
         double duration = motion.duration();
 

@@ -334,7 +334,6 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private void addStationJButtonActionPerformed(ActionEvent evt) {
         Schedule schedule = getSchedule();
         try {
-            // TODO fix bug? which bug?
             int newOrderNumber = schedule.addOrder(new TrainOrder(getFirstStationID(), null, false, false));
             showSelectStation(schedule, newOrderNumber);
         } catch (NoSuchElementException e) {
@@ -544,6 +543,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void removeLastWagon() {
+        // TODO should the code be in the model
         TrainOrder oldOrders, newOrders;
         Schedule schedule = getSchedule();
         int orderNumber = orders.getSelectedIndex();
