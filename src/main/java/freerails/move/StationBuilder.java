@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import java.util.NoSuchElementException;
 
+// TODO should this and the moveexecutor be part of the controller instead?
 /**
  * Class to build a station at a given point, names station after nearest city.
  * If that name is taken then a "Junction" or "Siding" is added to the name.

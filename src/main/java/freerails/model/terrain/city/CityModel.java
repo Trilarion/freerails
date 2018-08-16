@@ -16,8 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.terrain;
+package freerails.model.terrain.city;
 
+import freerails.model.terrain.Terrain;
+import freerails.model.terrain.TerrainCategory;
+import freerails.model.terrain.TerrainTile;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;

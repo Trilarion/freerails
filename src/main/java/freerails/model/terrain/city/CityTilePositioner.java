@@ -16,8 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.terrain;
+package freerails.model.terrain.city;
 
+import freerails.model.terrain.Terrain;
 import freerails.model.world.World;
 
 import java.util.ArrayList;

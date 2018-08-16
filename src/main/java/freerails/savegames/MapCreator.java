@@ -22,6 +22,8 @@ import freerails.io.GsonManager;
 import freerails.model.cargo.Cargo;
 import freerails.model.game.GameTime;
 import freerails.model.terrain.*;
+import freerails.model.terrain.city.City;
+import freerails.model.terrain.city.CityTilePositioner;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.world.World;

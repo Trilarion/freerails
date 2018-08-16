@@ -19,10 +19,9 @@
 package freerails.model.track;
 
 
-import freerails.util.LineSegment;
+import freerails.util.Segment;
+import freerails.util.Vec2D;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -32,49 +31,27 @@ import java.util.NoSuchElementException;
 public class SimplePathIteratorImpl implements PathIterator {
 
     private static final long serialVersionUID = 3618420406261003576L;
-    private final List<Integer> x;
-    private final List<Integer> y;
+    private final List<Vec2D> points;
     private int position = 0;
 
     /**
-     * @param xpoints
-     * @param ypoints
+     * @param points
      */
-    public SimplePathIteratorImpl(List<Integer> xpoints, List<Integer> ypoints) {
-        x = xpoints;
-        y = ypoints;
-
-        if (x.size() != y.size()) {
-            throw new IllegalArgumentException("The array length of the array must be even");
-        }
+    public SimplePathIteratorImpl(List<Vec2D> points) {
+        this.points = points;
     }
 
-    /**
-     * @param xpoints
-     * @param ypoints
-     */
-    public SimplePathIteratorImpl(Integer[] xpoints, Integer[] ypoints) {
-        x = new ArrayList<>(Arrays.asList(xpoints));
-        y = new ArrayList<>(Arrays.asList(ypoints)); // defensive copy.
-
-        if (x.size() != y.size()) {
-            throw new IllegalArgumentException("The array length of the array must be even");
-        }
-    }
-
-    public void nextSegment(LineSegment line) {
-        if (hasNext()) {
-            line.setX1(x.get(position));
-            line.setY1(y.get(position));
-            line.setX2(x.get(position + 1));
-            line.setY2(y.get(position + 1));
-            position++;
-        } else {
+    public Segment nextSegment() {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
+
+        Segment line = new Segment(points.get(position), points.get(position+1));
+        position++;
+        return line;
     }
 
     public boolean hasNext() {
-        return (position + 1) < x.size();
+        return (position + 1) < points.size();
     }
 }

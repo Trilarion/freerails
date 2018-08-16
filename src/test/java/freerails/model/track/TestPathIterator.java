@@ -21,9 +21,9 @@
  */
 package freerails.model.track;
 
-import freerails.util.LineSegment;
+import freerails.util.Segment;
+import freerails.util.Vec2D;
 
-import java.awt.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,7 +34,7 @@ public class TestPathIterator implements PathIterator {
 
     private static final long serialVersionUID = 3258411750679720758L;
     private final boolean forwards;
-    private final List<Point> points;
+    private final List<Vec2D> points;
     private int position;
 
     /**
@@ -42,7 +42,7 @@ public class TestPathIterator implements PathIterator {
      * @param l
      * @param f
      */
-    public TestPathIterator(List<Point> l, boolean f) {
+    public TestPathIterator(List<Vec2D> l, boolean f) {
         points = l;
         forwards = f;
 
@@ -58,7 +58,7 @@ public class TestPathIterator implements PathIterator {
      * @param l
      * @return
      */
-    public static PathIterator forwardsIterator(List<Point> l) {
+    public static PathIterator forwardsIterator(List<Vec2D> l) {
         return new TestPathIterator(l, true);
     }
 
@@ -69,27 +69,23 @@ public class TestPathIterator implements PathIterator {
         return (position - 1) >= 0;
     }
 
-    public void nextSegment(LineSegment line) {
-        if (hasNext()) {
-            Point a;
-            Point b;
-
-            if (forwards) {
-                position++;
-                a = points.get(position - 1);
-                b = points.get(position);
-            } else {
-                position--;
-                a = points.get(position + 1);
-                b = points.get(position);
-            }
-
-            line.setX1(a.x);
-            line.setY1(a.y);
-            line.setX2(b.x);
-            line.setY2(b.y);
-        } else {
+    public Segment nextSegment() {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
+        Vec2D a;
+        Vec2D b;
+
+        if (forwards) {
+            position++;
+            a = points.get(position - 1);
+            b = points.get(position);
+        } else {
+            position--;
+            a = points.get(position + 1);
+            b = points.get(position);
+        }
+
+        return new Segment(a, b);
     }
 }

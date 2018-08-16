@@ -24,6 +24,7 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.ModelRootImpl;
+import freerails.model.station.StationUtils;
 import freerails.model.train.Train;
 import freerails.model.world.*;
 import freerails.util.ui.MyGlassPanel;
@@ -494,7 +495,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param p
      */
     public void showStationOrTerrainInfo(Vec2D p) {
-        int stationNumberAtLocation = Station.getStationIdAtLocation(world, modelRoot.getPlayer(), p);
+        int stationNumberAtLocation = StationUtils.getStationIdAtLocation(world, modelRoot.getPlayer(), p);
         if (stationNumberAtLocation > -1) {
             showStationInfo(stationNumberAtLocation);
         } else {

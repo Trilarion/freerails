@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.station.StationUtils;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.explorer.GraphExplorer;
 import freerails.model.track.pathfinding.PathNotFoundException;
@@ -203,7 +204,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 trainAccessor.getStationId(Integer.MAX_VALUE);
                 PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
                 Vec2D location = positionOnTrack.getLocation();
-                boolean atStation = stopsHandler.getStationId(location) >= 0;
+                boolean atStation = StationUtils.getStationId(world, player, location) >= 0;
 
                 TrainMotion nextMotion;
                 if (atStation) {
@@ -212,14 +213,14 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
                     stopsHandler.arrivesAtPoint(location);
 
-                    TrainState status = stopsHandler.isWaitingForFullLoad() ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
+                    TrainState status = TrainUtils.isWaitingForFullLoad(world, player, trainId) ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
                     PathOnTiles path = trainMotion.getPath();
                     int lastTrainLength = trainMotion.getTrainLength();
                     int currentTrainLength = stopsHandler.getTrainLength();
 
                     // If we are adding wagons we may need to lengthen the path.
                     if (lastTrainLength < currentTrainLength) {
-                        path = TrainStopsHandler.lengthenPath(world, path, currentTrainLength);
+                        path = TrainUtils.lengthenPath(world, path, currentTrainLength);
                     }
 
                     nextMotion = new TrainMotion(path, currentTrainLength, durationOfStationStop, status);

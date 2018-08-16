@@ -18,6 +18,7 @@
 
 package freerails.model.terrain;
 
+import freerails.model.terrain.city.City;
 import freerails.util.TestUtils;
 import freerails.util.Vec2D;
 import junit.framework.TestCase;

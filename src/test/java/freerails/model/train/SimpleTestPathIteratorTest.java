@@ -18,11 +18,14 @@
 
 package freerails.model.train;
 
-import freerails.util.LineSegment;
+import freerails.util.Segment;
 import freerails.util.TestUtils;
 import freerails.model.track.PathIterator;
 import freerails.model.track.SimplePathIteratorImpl;
+import freerails.util.Vec2D;
 import junit.framework.TestCase;
+
+import java.util.Arrays;
 
 /**
  *
@@ -33,12 +36,10 @@ public class SimpleTestPathIteratorTest extends TestCase {
      *
      */
     public void testHasNext() {
-        Integer[] xpoints = {0, 100};
-        Integer[] ypoints = {0, 0};
-
-        PathIterator pathIterator = new SimplePathIteratorImpl(xpoints, ypoints);
+        Vec2D[] points = {Vec2D.ZERO, new Vec2D(100, 0)};
+        PathIterator pathIterator = new SimplePathIteratorImpl(Arrays.asList(points));
         assertTrue(pathIterator.hasNext());
-        pathIterator.nextSegment(new LineSegment(0, 0, 0, 0));
+        Segment line = pathIterator.nextSegment();
         assertTrue(!pathIterator.hasNext());
     }
 
@@ -46,18 +47,16 @@ public class SimpleTestPathIteratorTest extends TestCase {
      *
      */
     public void testNextSegment() {
-        Integer[] xpoints = {1, 2, 3};
-        Integer[] ypoints = {4, 5, 6};
+        Vec2D[] points = {new Vec2D(1, 4), new Vec2D(2, 5), new Vec2D(3, 6)};
 
-        PathIterator pathIterator = new SimplePathIteratorImpl(xpoints, ypoints);
+        PathIterator pathIterator = new SimplePathIteratorImpl(Arrays.asList(points));
         assertTrue(pathIterator.hasNext());
 
-        LineSegment segment = new LineSegment(0, 0, 0, 0);
-        pathIterator.nextSegment(segment);
-        TestUtils.assertLineSegmentEquals(1, 4, 2, 5, segment);
+        Segment segment = pathIterator.nextSegment();
+        TestUtils.assertLineSegmentEquals(points[0], points[1], segment);
         assertTrue(pathIterator.hasNext());
-        pathIterator.nextSegment(segment);
-        TestUtils.assertLineSegmentEquals(2, 5, 3, 6, segment);
+        segment = pathIterator.nextSegment();
+        TestUtils.assertLineSegmentEquals(points[1], points[2], segment);
         assertTrue(!pathIterator.hasNext());
     }
 

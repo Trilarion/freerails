@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-// TODO doesn't know if depot, station, terminal? why not?
+// TODO doesn't know what type it is (depot, station, terminal)? why not? should know.
 /**
  * Represents a station. with a position, a name, a supply, a demand, a conversion (of cargo).
  * The content is effectively immutable.
@@ -71,30 +71,6 @@ public class Station extends Identifiable {
         production = new ArrayList<>();
         demandForCargo = new StationDemand(new boolean[numberOfCargoTypes]);
         cargoConversion = StationCargoConversion.emptyInstance(numberOfCargoTypes);
-    }
-
-    // TODO static code somewhere else?
-    /**
-     * Return Station number if station exists at location or -1
-     */
-    public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
-        TerrainTile tile = (TerrainTile) world.getTile(location);
-        TrackPiece trackPiece = tile.getTrackPiece();
-
-        if (trackPiece != null) {
-            TrackType trackType = trackPiece.getTrackType();
-            if (trackType.isStation() && trackPiece.getOwnerID() == player.getId()) {
-
-                for (Station station: world.getStations(player)) {
-                    if (location.equals(station.getLocation())) {
-                        return station.getId();
-                    }
-                }
-            }
-        }
-
-        return -1;
-        // Don't show terrain...
     }
 
     /**

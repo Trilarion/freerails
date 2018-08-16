@@ -21,19 +21,17 @@
  */
 package freerails.move;
 
-import freerails.model.track.explorer.FlatTrackExplorer;
+import freerails.model.station.StationUtils;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
-import freerails.model.track.NoTrackException;
 
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.terrain.TileTransition;
 import freerails.model.train.*;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
@@ -50,7 +48,6 @@ import java.util.List;
 public class TrainStopsHandler implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TrainStopsHandler.class.getName());
-    private static final int NOT_AT_STATION = -1;
     private static final long serialVersionUID = 3257567287094882872L;
     private final Player player;
     private final int trainId;
@@ -71,43 +68,6 @@ public class TrainStopsHandler implements Serializable {
     }
 
     /**
-     * If wagons are added to a train, we need to increase its length.
-     */
-    public static PathOnTiles lengthenPath(UnmodifiableWorld world, PathOnTiles path, int currentTrainLength) {
-        double pathDistance = path.getTotalDistance();
-        double extraDistanceNeeded = currentTrainLength - pathDistance;
-
-        List<TileTransition> tileTransitions = new ArrayList<>();
-        Vec2D start = path.getStart();
-        TileTransition firstTileTransition = path.getStep(0);
-        PositionOnTrack nextPositionOnTrack = PositionOnTrack.createComingFrom(start, firstTileTransition);
-
-        while (extraDistanceNeeded > 0) {
-
-            FlatTrackExplorer flatTrackExplorer;
-            try {
-                flatTrackExplorer = new FlatTrackExplorer(world, nextPositionOnTrack);
-            } catch (NoTrackException e) {
-                throw new IllegalArgumentException(e.getMessage(), e);
-            }
-            flatTrackExplorer.nextEdge();
-            nextPositionOnTrack.setValuesFromInt(flatTrackExplorer.getVertexConnectedByEdge());
-            TileTransition cameFrom = nextPositionOnTrack.facing();
-            tileTransitions.add(0, cameFrom);
-            extraDistanceNeeded -= cameFrom.getLength();
-        }
-
-        // Add existing tileTransitions
-        for (int i = 0; i < path.steps(); i++) {
-            TileTransition tileTransition = path.getStep(i);
-            tileTransitions.add(tileTransition);
-        }
-
-        path = new PathOnTiles(nextPositionOnTrack.getLocation(), tileTransitions);
-        return path;
-    }
-
-    /**
      * @return
      */
     public void arrivesAtPoint(Vec2D location) {
@@ -121,8 +81,8 @@ public class TrainStopsHandler implements Serializable {
             scheduledStop();
         } else {
             // not a scheduled stop but still a city
-            int stationNumber = getStationId(location);
-            if (NOT_AT_STATION != stationNumber) {
+            int stationNumber = StationUtils.getStationId(world, player, location);
+            if (-1 != stationNumber) {
                 loadAndUnloadCargo(stationNumber, false, false);
             }
         }
@@ -140,52 +100,11 @@ public class TrainStopsHandler implements Serializable {
         return currentMoves;
     }
 
-    // TODO again the same code as in Station.getStationIdByLocation
-    /**
-     * @return the number of the station the train is currently at, or NOT_AT_STATION if no
-     * current station.
-     */
-    public int getStationId(Vec2D location) {
-        // loop through the station list to check if train is at the same Point2D as a station
-        for (Station station: world.getStations(player)) {
-            if (location.equals(station.getLocation())) {
-                return station.getId(); // train is at the station at location tempPoint
-            }
-        }
-        return NOT_AT_STATION;
-        // there are no stations that exist where the train is currently
-    }
-
     /**
      * @return
      */
     public int getTrainLength() {
         return world.getTrain(player, trainId).getLength();
-    }
-
-    /**
-     * @return
-     */
-    private boolean isTrainFull() {
-        // determine the space available on the train measured in cargo units.
-        Train train = world.getTrain(player, trainId);
-        List<Integer> spaceAvailable = TrainUtils.spaceAvailable2(world, train.getCargoBatchBundle(), train.getConsist());
-        // TODO this is not fully correct, because there could also be negative numbers returned from spaceAvailable and they could sum up to zero
-        return Utils.sumOfIntegerList(spaceAvailable) == 0;
-    }
-
-    /**
-     * @return
-     */
-    public boolean isWaitingForFullLoad() {
-        Train train = world.getTrain(player, trainId);
-        UnmodifiableSchedule schedule = train.getSchedule();
-        int orderToGoto = schedule.getCurrentOrderIndex();
-        if (orderToGoto < 0) {
-            return false;
-        }
-        TrainOrder order = schedule.getOrder(orderToGoto);
-        return !isTrainFull() && order.isWaitUntilFull();
     }
 
     private void loadAndUnloadCargo(int stationId, boolean waiting, boolean autoConsist) {
@@ -248,8 +167,8 @@ public class TrainStopsHandler implements Serializable {
             if (newLength > oldLength) {
                 TrainMotion trainMotion = trainAccessor.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = trainMotion.getPath();
-                path = lengthenPath(world, path, oldLength);
-                TrainState status = isWaitingForFullLoad() ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
+                path = TrainUtils.lengthenPath(world, path, oldLength);
+                TrainState status = TrainUtils.isWaitingForFullLoad(world, player, trainId) ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
                 // Create a new Move object.
@@ -264,7 +183,7 @@ public class TrainStopsHandler implements Serializable {
         loadAndUnloadCargo(schedule.getNextStationId(), order.isWaitUntilFull(), order.isAutoConsist());
 
         // Should we stop waiting?
-        if (!order.isWaitUntilFull() || isTrainFull()) {
+        if (!order.isWaitUntilFull() || TrainUtils.isTrainFull(world, player, trainId)) {
             updateSchedule();
             return false;
         }
@@ -307,7 +226,7 @@ public class TrainStopsHandler implements Serializable {
         Schedule schedule = new Schedule(train.getSchedule());
 
         TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
-        boolean waitingForFullLoad = order.isWaitUntilFull() && !isTrainFull();
+        boolean waitingForFullLoad = order.isWaitUntilFull() && !TrainUtils.isTrainFull(world, player, trainId);
 
         if (!waitingForFullLoad) {
             // TODO needs a mutable schedule

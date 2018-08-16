@@ -20,9 +20,10 @@ package freerails.client.renderer;
 
 import freerails.model.train.*;
 import freerails.model.train.motion.TrainPositionOnMap;
-import freerails.util.LineSegment;
+import freerails.util.Segment;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
+import freerails.util.Vec2D;
 
 import java.awt.*;
 
@@ -65,31 +66,28 @@ public class TrainRenderer {
         }
     }
 
-    private void renderWagon(Graphics g, PathWalker pw, int type, boolean engine) {
-        LineSegment wagon = new LineSegment();
-
-        LineSegment line = new LineSegment();
-
-        pw.stepForward(16);
+    private void renderWagon(Graphics g, PathWalker pathWalker, int type, boolean engine) {
+        pathWalker.stepForward(16);
 
         boolean firstIteration = true;
 
-        while (pw.hasNext()) {
-            pw.nextSegment(line);
+        Vec2D p = null;
+        // get the start of the first and the end of the last
+        Segment line = null;
+        while (pathWalker.hasNext()) {
+            line = pathWalker.nextSegment();
 
             if (firstIteration) {
-                wagon.setX1(line.getX1());
-                wagon.setY1(line.getY1());
+                p = line.getA();
                 firstIteration = false;
             }
         }
 
-        wagon.setX2(line.getX2());
-        wagon.setY2(line.getY2());
+        Segment wagon = new Segment(p, line.getB());
 
-        TileTransition v = TileTransition.getNearestVector(wagon.getX2() - wagon.getX1(), wagon.getY2() - wagon.getY1());
-        Point p = new Point((wagon.getX2() + wagon.getX1()) / 2, (wagon.getY2() + wagon.getY1()) / 2);
-
+        Vec2D diff = Vec2D.subtract(wagon.getB(), wagon.getA());
+        TileTransition v = TileTransition.getNearestVector(diff.x, diff.y);
+        Vec2D center = Vec2D.divide(Vec2D.add(wagon.getA(), wagon.getB()), 2);
         Image image;
 
         if (engine) {
@@ -98,13 +96,13 @@ public class TrainRenderer {
             image = rendererRoot.getWagonImages(type).getOverheadImage(v.getID());
         }
 
-        g.drawImage(image, p.x - 15, p.y - 15, null);
+        g.drawImage(image, center.x - 15, center.y - 15, null);
 
         // The gap between wagons
-        pw.stepForward(8);
+        pathWalker.stepForward(8);
 
-        while (pw.hasNext()) {
-            pw.nextSegment(line);
+        while (pathWalker.hasNext()) {
+            line = pathWalker.nextSegment();
         }
     }
 }

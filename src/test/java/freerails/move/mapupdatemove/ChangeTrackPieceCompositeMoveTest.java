@@ -24,6 +24,7 @@
 package freerails.move.mapupdatemove;
 
 import freerails.io.GsonManager;
+import freerails.model.finances.TransactionUtils;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.world.UnmodifiableWorld;
@@ -106,7 +107,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         int numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PLAYER);
         assertEquals(0, numberOfTransactions);
 
-        boolean hasTrackBeenBuilt = ChangeTrackPieceCompositeMove.hasAnyTrackBeenBuilt(world, MapFixtureFactory.TEST_PLAYER);
+        boolean hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, MapFixtureFactory.TEST_PLAYER);
         assertFalse("No track has been built yet.", hasTrackBeenBuilt);
         assertBuildTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST, trackType);
 
@@ -114,7 +115,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PLAYER);
         assertTrue(0 < numberOfTransactions);
 
-        hasTrackBeenBuilt = ChangeTrackPieceCompositeMove.hasAnyTrackBeenBuilt(
+        hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(
                 world, MapFixtureFactory.TEST_PLAYER);
         assertTrue("One track piece has been built.", hasTrackBeenBuilt);
 

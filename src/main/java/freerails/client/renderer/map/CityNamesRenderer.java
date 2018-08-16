@@ -23,7 +23,7 @@
  */
 package freerails.client.renderer.map;
 
-import freerails.model.terrain.City;
+import freerails.model.terrain.city.City;
 import freerails.util.ui.Painter;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;

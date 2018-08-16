@@ -23,6 +23,7 @@ import freerails.model.finances.transactions.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.model.world.WorldUtils;
 
 // TODO what about a remove of a player?
 /**
@@ -65,7 +66,7 @@ public class AddPlayerMove implements Move {
     }
 
     public Status tryDoMove(World world, Player player) {
-        if (isAlreadyASimilarPlayer(world))
+        if (WorldUtils.isAlreadyASimilarPlayer(world, playerToAdd))
             return Status.moveFailed("There is already a player with the same name.");
 
         return Status.OK;
@@ -106,12 +107,4 @@ public class AddPlayerMove implements Move {
         return status;
     }
 
-    private boolean isAlreadyASimilarPlayer(UnmodifiableWorld world) {
-        for (Player player: world.getPlayers()) {
-            if (player.getName().equalsIgnoreCase(playerToAdd.getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

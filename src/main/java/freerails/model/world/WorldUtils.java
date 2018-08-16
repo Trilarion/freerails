@@ -16,27 +16,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.track;
+package freerails.model.world;
 
-import freerails.util.Segment;
+import freerails.model.player.Player;
 
 /**
- * This interface lets the caller retrieve a path made up of a series of
- * straight lines. E.g. it lets the path a train takes across a section of track
- * be retrieved without revealing the underlying objects that represent the
- * track.
+ *
  */
-// TODO what is it good for?
-public interface PathIterator {
+public final class WorldUtils {
 
-    /**
-     * Tests whether the path has another segment.
-     */
-    boolean hasNext();
+    private WorldUtils() {
+    }
 
-    /**
-     * Gets the next segment of the path, then moves the iterator forwards by one path segment.
-     */
-    Segment nextSegment();
-
+    public static boolean isAlreadyASimilarPlayer(UnmodifiableWorld world, Player playerToAdd) {
+        for (Player player: world.getPlayers()) {
+            if (player.getName().equalsIgnoreCase(playerToAdd.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

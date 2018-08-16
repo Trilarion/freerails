@@ -89,6 +89,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return tryMove(world, trackPieceBefore, trackPieceAfter);
     }
 
+    // TODO put part of it in model
     private Status tryMove(World world, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
         // Check that location is on the map.
         if (!world.boundsContain(location)) {

@@ -33,7 +33,7 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 
-import freerails.util.LineSegment;
+import freerails.util.Segment;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
@@ -173,11 +173,11 @@ class TrainMotionExperiment extends JComponent {
         }
 
         g.setColor(Color.BLACK);
-        LineSegment line = new LineSegment();
+        Segment line = null;
         PathIterator path = pos.path();
         while (path.hasNext()) {
-            path.nextSegment(line);
-            g.drawLine(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+            line = path.nextSegment();
+            g.drawLine(line.getA().x, line.getA().y, line.getB().x, line.getB().y);
         }
 
         int speed = (int) Math.round(pos.getSpeed());

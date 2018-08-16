@@ -67,8 +67,8 @@ public final class TestUtils {
         Assert.fail();
     }
 
-    public static void assertLineSegmentEquals(int x1, int y1, int x2, int y2, LineSegment segment) {
-        Assert.assertEquals(segment, new LineSegment(x1, y1, x2, y2));
+    public static void assertLineSegmentEquals(Vec2D a, Vec2D b, Segment segment) {
+        Assert.assertEquals(segment, new Segment(a, b));
     }
 
     public @FunctionalInterface interface FailingRunnable {

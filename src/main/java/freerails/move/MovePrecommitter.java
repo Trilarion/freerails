@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+// TODO Not sure what this is good for. can it be removed?
 /**
  * The class pre-commits moves we intend to send to the server and either fully
  * commits or undoes them depending on the server's response. Note, this class

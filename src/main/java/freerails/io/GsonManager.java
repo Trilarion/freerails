@@ -28,7 +28,7 @@ import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
 import freerails.model.cargo.Cargo;
 import freerails.model.finances.Money;
-import freerails.model.terrain.City;
+import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;

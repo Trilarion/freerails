@@ -18,8 +18,9 @@
 
 package freerails.model.train;
 
-import freerails.util.LineSegment;
+import freerails.util.Segment;
 import freerails.model.track.PathIterator;
+import freerails.util.Vec2D;
 
 import java.util.NoSuchElementException;
 
@@ -34,7 +35,7 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * current segment of the path we are on.
      */
-    private final LineSegment currentSegment = new LineSegment();
+    private Segment currentSegment = new Segment(Vec2D.ZERO, Vec2D.ZERO);
     private double distanceAlongCurrentSegment = 0;
     private double distanceOfThisStepRemaining = 0;
     private boolean beforeFirst = true;
@@ -77,24 +78,25 @@ public class PathWalkerImpl implements PathWalker {
         } else return it.hasNext();
     }
 
-    public void nextSegment(LineSegment line) {
+    public Segment nextSegment() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         // If we are at the end of the current segment, start a new one.
+        Vec2D start;
         if (currentSegment.getLength() <= distanceAlongCurrentSegment) {
-            startNewSegment(line);
+            start = startNewSegment();
         } else {
-            startInMiddleOfSegment(line);
+            start = startInMiddleOfSegment();
         }
 
         double remainingDistanceAlongCurrentSegment = currentSegment.getLength() - distanceAlongCurrentSegment;
 
+        Vec2D stop;
         if (distanceOfThisStepRemaining > remainingDistanceAlongCurrentSegment) {
-            endAtSegmentEnd(line, remainingDistanceAlongCurrentSegment);
+            stop = endAtSegmentEnd(remainingDistanceAlongCurrentSegment);
         } else {
-            endInMiddleOfSegment(line);
+            stop = endInMiddleOfSegment();
         }
 
         /*
@@ -103,47 +105,50 @@ public class PathWalkerImpl implements PathWalker {
          *
          */
         if (!beforeFirst) {
-            if (line.getX1() != lastX) {
+            if (start.x != lastX) {
                 throw new IllegalStateException();
             }
 
-            if (line.getY1() != lastY) {
+            if (start.y != lastY) {
                 throw new IllegalStateException();
             }
         }
 
-        lastX = line.getX2();
-        lastY = line.getY2();
+        lastX = stop.x;
+        lastY = stop.y;
         beforeFirst = false;
+
+        return new Segment(start, stop);
     }
 
-    private void endInMiddleOfSegment(LineSegment line) {
+    private Vec2D endInMiddleOfSegment() {
         distanceAlongCurrentSegment += distanceOfThisStepRemaining;
         distanceOfThisStepRemaining = 0;
-        line.setX2(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getX1(), currentSegment.getX2()));
-        line.setY2(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getY1(), currentSegment.getY2()));
+        int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().x, currentSegment.getB().x);
+        int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().y, currentSegment.getB().y);
+        return new Vec2D(x, y);
     }
 
-    private void endAtSegmentEnd(LineSegment line, double remainingDistanceAlongCurrentSegment) {
-        line.setX2(currentSegment.getX2());
-        line.setY2(currentSegment.getY2());
+    private Vec2D endAtSegmentEnd(double remainingDistanceAlongCurrentSegment) {
+        Vec2D stop = currentSegment.getB();
         distanceOfThisStepRemaining -= remainingDistanceAlongCurrentSegment;
         distanceAlongCurrentSegment = currentSegment.getLength();
+        return stop;
     }
 
-    private void startInMiddleOfSegment(LineSegment line) {
-        line.setX1(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getX1(), currentSegment.getX2()));
-        line.setY1(getCoorinateOnSegment(distanceAlongCurrentSegment, currentSegment.getY1(), currentSegment.getY2()));
+    private Vec2D startInMiddleOfSegment() {
+        int x = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().x, currentSegment.getB().x);
+        int y = getCoordinateOnSegment(distanceAlongCurrentSegment, currentSegment.getA().y, currentSegment.getB().y);
+        return new Vec2D(x, y);
     }
 
-    private void startNewSegment(LineSegment line) {
-        it.nextSegment(currentSegment);
+    private Vec2D startNewSegment() {
+        currentSegment = it.nextSegment();
         distanceAlongCurrentSegment = 0;
-        line.setX1(currentSegment.getX1());
-        line.setY1(currentSegment.getY1());
+        return currentSegment.getA();
     }
 
-    private int getCoorinateOnSegment(double distanceAlongSegment, int coordinate1, int coordinate2) {
+    private int getCoordinateOnSegment(double distanceAlongSegment, int coordinate1, int coordinate2) {
         double segmentLength = currentSegment.getLength();
         double delta = 0;
 

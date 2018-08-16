@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.model.player.Player;
-import freerails.model.terrain.CityTilePositioner;
+import freerails.model.terrain.city.CityTilePositioner;
 import freerails.model.world.World;
 
 /**

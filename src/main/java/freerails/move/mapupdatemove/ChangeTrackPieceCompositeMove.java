@@ -22,6 +22,7 @@
  */
 package freerails.move.mapupdatemove;
 
+import freerails.model.finances.TransactionUtils;
 import freerails.model.station.Station;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.Schedule;
@@ -30,8 +31,6 @@ import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
-import freerails.model.finances.ItemsTransactionAggregator;
-import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.game.GameRules;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
@@ -90,6 +89,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         return new ChangeTrackPieceCompositeMove(a, b, player);
     }
 
+    // TODO put part of it in model
     // utility method.
     private static ChangeTrackPieceMove getBuildTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, TrackType trackType, UnmodifiableWorld world, Player player) {
         TrackPiece oldTrackPiece;
@@ -114,6 +114,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         return new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, p);
     }
 
+    // TODO put part of it in model
     // utility method.
     private static TrackMove getRemoveTrackChangeTrackPieceMove(Vec2D p, TrackConfigurations direction, UnmodifiableWorld world, Player player) throws Exception {
         TrackPiece oldTrackPiece;
@@ -192,16 +193,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     /**
-     * Returns true if some track has been built.
-     */
-    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, Player player) {
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
-        aggregator.setCategory(TransactionCategory.TRACK);
-
-        return aggregator.calculateQuantity() > 0;
-    }
-
-    /**
      * @return
      */
     public Rectangle getUpdatedTiles() {
@@ -214,7 +205,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         GameRules rules = world.getGameRules();
 
         if (rules.mustConnectToExistingTrack()) {
-            if (hasAnyTrackBeenBuilt(world, player)) {
+            if (TransactionUtils.hasAnyTrackBeenBuilt(world, player)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
                     ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);

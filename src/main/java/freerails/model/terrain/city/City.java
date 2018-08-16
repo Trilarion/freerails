@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.terrain;
+package freerails.model.terrain.city;
 
 import freerails.model.Identifiable;
 import freerails.util.Vec2D;

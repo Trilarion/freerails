@@ -20,8 +20,8 @@ package freerails.client.view;
 
 import freerails.client.*;
 import freerails.client.renderer.RendererRoot;
+import freerails.model.station.StationUtils;
 import freerails.util.Vec2D;
-import freerails.model.station.Station;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.terrain.TerrainTile;
 import org.apache.log4j.Logger;
@@ -147,7 +147,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
 
             // select station at point and show stat info tab
             // if not, then do terrain info and show that
-            int stationNumberAtLocation = Station.getStationIdAtLocation(world, modelRoot.getPlayer(), location);
+            int stationNumberAtLocation = StationUtils.getStationIdAtLocation(world, modelRoot.getPlayer(), location);
             if (stationNumberAtLocation > -1) {
                 stationInfoPanel.setStation(stationNumberAtLocation);
                 setSelectedIndex(stationInfoIndex);

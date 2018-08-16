@@ -26,7 +26,7 @@ import freerails.model.finances.transactions.Transaction;
 import freerails.model.game.GameRules;
 import freerails.model.game.GameSpeed;
 import freerails.model.station.Station;
-import freerails.model.terrain.City;
+import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;

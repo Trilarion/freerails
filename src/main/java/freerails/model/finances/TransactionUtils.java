@@ -23,6 +23,8 @@ import freerails.model.finances.transactions.BondItemTransaction;
 import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.transactions.Transaction;
 import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.player.Player;
+import freerails.model.world.UnmodifiableWorld;
 
 /**
  *
@@ -70,5 +72,15 @@ public class TransactionUtils {
         // Buys another Players Stock, Uses another Category
         Money value = Money.multiply(stockPrice, -quantity);
         return new ItemTransaction(TransactionCategory.TRANSFER_STOCK, value, quantity, playerId);
+    }
+
+    /**
+     * Returns true if some track has been built.
+     */
+    public static boolean hasAnyTrackBeenBuilt(UnmodifiableWorld world, Player player) {
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
+        aggregator.setCategory(TransactionCategory.TRACK);
+
+        return aggregator.calculateQuantity() > 0;
     }
 }

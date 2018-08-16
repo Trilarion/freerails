@@ -397,19 +397,15 @@ public strictfp class PathOnTiles implements Serializable {
             return (index + 1) < points.size();
         }
 
-        public void nextSegment(LineSegment line) {
+        public Segment nextSegment() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             Vec2D a = points.get(index);
-            line.setX1(a.x);
-            line.setY1(a.y);
-
             Vec2D b = points.get(index + 1);
-            line.setX2(b.x);
-            line.setY2(b.y);
-
             index++;
+
+            return new Segment(a, b);
         }
     }
 }

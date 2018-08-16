@@ -37,7 +37,6 @@ public class ChangeGameSpeedMove implements Move {
         this.newSpeed = newSpeed;
     }
 
-    // TODO could this also be private?
     public Status tryDoMove(World world, Player player) {
         GameSpeed actualSpeed = world.getGameSpeed();
 

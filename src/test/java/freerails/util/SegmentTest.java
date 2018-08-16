@@ -23,13 +23,13 @@ import junit.framework.TestCase;
 /**
  *
  */
-public class LineSegmentTest extends TestCase {
+public class SegmentTest extends TestCase {
 
     /**
      *
      */
     public void testGetLength() {
-        LineSegment line = new LineSegment(0, 0, 100, 0);
+        Segment line = new Segment(Vec2D.ZERO, new Vec2D(100, 0));
         assertEquals(100, line.getLength(), 0.1);
     }
 }

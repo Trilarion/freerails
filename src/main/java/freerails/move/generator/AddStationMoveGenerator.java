@@ -23,7 +23,7 @@ package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.station.StationUtils;
-import freerails.model.terrain.CityUtils;
+import freerails.model.terrain.city.CityUtils;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackType;
 import freerails.move.*;

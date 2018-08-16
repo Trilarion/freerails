@@ -25,6 +25,7 @@ import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
+import freerails.model.track.TrackPiece;
 import freerails.model.track.TrackType;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Vec2D;
@@ -310,5 +311,43 @@ public final class StationUtils {
     public static boolean isStationHere(UnmodifiableWorld world, Vec2D location) {
         TerrainTile tile = (TerrainTile) world.getTile(location);
         return tile.getTrackPiece().getTrackType().isStation();
+    }
+
+    /**
+     * @return the number of the station the train is currently at, or NOT_AT_STATION if no
+     * current station.
+     */
+    public static int getStationId(UnmodifiableWorld world, Player player, Vec2D location) {
+        // loop through the station list to check if train is at the same Point2D as a station
+        for (Station station: world.getStations(player)) {
+            if (location.equals(station.getLocation())) {
+                return station.getId(); // train is at the station at location tempPoint
+            }
+        }
+        return -1;
+        // there are no stations that exist where the train is currently
+    }
+
+    /**
+     * Return Station number if station exists at location or -1
+     */
+    public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
+        TerrainTile tile = (TerrainTile) world.getTile(location);
+        TrackPiece trackPiece = tile.getTrackPiece();
+
+        if (trackPiece != null) {
+            TrackType trackType = trackPiece.getTrackType();
+            if (trackType.isStation() && trackPiece.getOwnerID() == player.getId()) {
+
+                for (Station station: world.getStations(player)) {
+                    if (location.equals(station.getLocation())) {
+                        return station.getId();
+                    }
+                }
+            }
+        }
+
+        return -1;
+        // Don't show terrain...
     }
 }

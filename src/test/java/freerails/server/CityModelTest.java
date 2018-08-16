@@ -18,8 +18,8 @@
 
 package freerails.server;
 
-import freerails.model.terrain.City;
-import freerails.model.terrain.CityModel;
+import freerails.model.terrain.city.City;
+import freerails.model.terrain.city.CityModel;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.MapFixtureFactory;
