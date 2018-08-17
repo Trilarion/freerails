@@ -32,7 +32,7 @@ public class GameCalenderTest extends TestCase {
      *
      */
     public void testGetYear() {
-        GameCalendar calendar = new GameCalendar(10, 1900);
+        Calendar calendar = new Calendar(10, 1900);
         assertEquals("1900", calendar.getYearAsString(0));
         assertEquals("1900", calendar.getYearAsString(5));
         assertEquals("1901", calendar.getYearAsString(10));
@@ -43,12 +43,12 @@ public class GameCalenderTest extends TestCase {
      *
      */
     public void testGetTimeOfDay() {
-        GameCalendar calendar = new GameCalendar(24, 1900);
+        Calendar calendar = new Calendar(24, 1900);
         assertEquals("00:00", calendar.getTimeOfDay(0));
         assertEquals("01:00", calendar.getTimeOfDay(1));
         assertEquals("15:00", calendar.getTimeOfDay(15));
 
-        calendar = new GameCalendar(24 * 60, 1900);
+        calendar = new Calendar(24 * 60, 1900);
         assertEquals("00:00", calendar.getTimeOfDay(0));
         assertEquals("00:10", calendar.getTimeOfDay(10));
         assertEquals("05:10", calendar.getTimeOfDay(310));
@@ -58,7 +58,7 @@ public class GameCalenderTest extends TestCase {
      *
      */
     public void testGetYearAndMonth() {
-        GameCalendar calendar = new GameCalendar(12, 1900);
+        Calendar calendar = new Calendar(12, 1900);
         assertEquals("Jan 1900", calendar.getYearAndMonth(0));
         assertEquals("Feb 1900", calendar.getYearAndMonth(1));
         assertEquals("Mar 1900", calendar.getYearAndMonth(2));

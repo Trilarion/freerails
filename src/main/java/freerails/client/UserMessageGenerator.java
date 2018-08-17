@@ -27,7 +27,7 @@ import freerails.model.finances.Money;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.finances.transactions.CargoDeliveryTransaction;
-import freerails.model.game.GameSpeed;
+import freerails.model.game.Speed;
 import freerails.model.station.Station;
 import freerails.util.ui.SoundManager;
 
@@ -144,7 +144,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     public void logSpeed() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        GameSpeed speed = world.getGameSpeed();
+        Speed speed = world.getSpeed();
         int gameSpeed = speed.getSpeed();
 
         if (gameSpeed <= 0) {

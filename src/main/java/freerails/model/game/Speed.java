@@ -31,7 +31,7 @@ import java.io.Serializable;
  *
  * I.e. pausing/unpausing is equal to multiply the speed by -1.
  */
-public class GameSpeed implements Serializable {
+public class Speed implements Serializable {
 
     private static final long serialVersionUID = 3257562901983081783L;
     private final int speed;
@@ -39,7 +39,7 @@ public class GameSpeed implements Serializable {
     /**
      * @param speed
      */
-    public GameSpeed(int speed) {
+    public Speed(int speed) {
         this.speed = speed;
     }
 
@@ -64,8 +64,8 @@ public class GameSpeed implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GameSpeed) {
-            GameSpeed test = (GameSpeed) obj;
+        if (obj instanceof Speed) {
+            Speed test = (Speed) obj;
 
             return speed == test.speed;
         }

@@ -30,7 +30,7 @@ import freerails.move.Status;
 import freerails.model.*;
 import freerails.model.player.Player;
 import freerails.model.world.World;
-import freerails.util.Vec2D;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 /**
@@ -48,9 +48,10 @@ public class BrokerScreenGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
+
+        world = WorldGenerator.minimalWorld();
         // Set the time..
-        Player player = MapFixtureFactory.TEST_PLAYER;
+        Player player = WorldGenerator.TEST_PLAYER;
 
         AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
         Status status = apm.doMove(world, Player.AUTHORITATIVE);

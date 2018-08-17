@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package experimental;
+package freerails;
 
+import freerails.model.track.TrackConfiguration;
 import freerails.util.ui.ImageManager;
 import freerails.util.ui.ImageManagerImpl;
 import freerails.model.terrain.TileTransition;
-import freerails.model.track.TrackConfigurations;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -34,7 +34,7 @@ import java.util.Collection;
 /**
  * Provides methods that render track pieces.
  *
- * @see experimental.TrackTilesGenerator
+ * @see freerails.TrackTilesGenerator
  */
 class TrackRenderer {
 
@@ -116,7 +116,7 @@ class TrackRenderer {
         return new BasicStroke((float) sleeperLength, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, phase);
     }
 
-    void paintTrackConf(Graphics2D g2, TrackConfigurations conf) {
+    void paintTrackConf(Graphics2D g2, TrackConfiguration conf) {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

@@ -21,6 +21,7 @@
  */
 package freerails.model.track.pathfinding;
 
+import freerails.io.GsonManager;
 import freerails.model.finances.Money;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
@@ -30,10 +31,12 @@ import freerails.model.track.TrackType;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
-import freerails.model.game.GameRules;
-import freerails.model.MapFixtureFactory;
+import freerails.model.game.Rules;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
@@ -58,11 +61,15 @@ public class TrackPathFinderTest extends TestCase {
         terrainTypes.add(new Terrain(0, "Terrain", TerrainCategory.COUNTRY, Money.ZERO, Money.ZERO, Utils.immutableList(new ArrayList<>()), Utils.immutableList(new ArrayList<>()), Utils.immutableList(new ArrayList<>())));
 
         // generate track types
-        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
+        SortedSet<TrackType> trackTypes = WorldGenerator.testTrackTypes();
 
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
+        // load rules
+        URL url = TrackPathFinderTest.class.getResource("/rules.without_restrictions.json");
+        File file = new File(url.toURI());
+        Rules rules = GsonManager.load(file, Rules.class);
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
-        world.setGameRules(GameRules.NO_RESTRICTIONS);
     }
 
     /**

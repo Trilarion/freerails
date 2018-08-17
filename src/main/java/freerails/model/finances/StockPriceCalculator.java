@@ -24,8 +24,8 @@ package freerails.model.finances;
 import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.transactions.Transaction;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 // TODO StockPrice seems to contain its own calculation model
@@ -74,10 +74,10 @@ public class StockPriceCalculator {
      */
     boolean isFirstYear(int playerId) {
         Player player = world.getPlayer(playerId);
-        GameTime firstTransactionTime = world.getTransactionTimeStamp(player, 0);
-        GameCalendar calendar = world.getCalendar();
+        Time firstTransactionTime = world.getTransactionTimeStamp(player, 0);
+        Calendar calendar = world.getCalendar();
         int year = calendar.getYear(firstTransactionTime.getTicks());
-        GameTime currentTime = world.currentTime();
+        Time currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         return year == currentYear;
     }
@@ -90,11 +90,11 @@ public class StockPriceCalculator {
         NetWorthCalculator netWorthCalculator = new NetWorthCalculator(world, player);
 
         // Set the interval to beginning of time to start of this year.
-        GameCalendar calendar = world.getCalendar();
-        GameTime currentTime = world.currentTime();
+        Calendar calendar = world.getCalendar();
+        Time currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
-        GameTime[] times = {GameTime.BIG_BANG, new GameTime(ticksAtStartOfyear + 1)};
+        Time[] times = {Time.BIG_BANG, new Time(ticksAtStartOfyear + 1)};
         netWorthCalculator.setTimes(times);
 
         // TODO return Money instead
@@ -104,13 +104,13 @@ public class StockPriceCalculator {
     public long profitsLastYear(int playerId) {
         Player pr = world.getPlayer(playerId);
 
-        GameCalendar calendar = world.getCalendar();
-        GameTime currentTime = world.currentTime();
+        Calendar calendar = world.getCalendar();
+        Time currentTime = world.currentTime();
         int currentYear = calendar.getYear(currentTime.getTicks());
         int lastyear = currentYear - 1;
         int ticksAtStartOfyear = calendar.getTicks(currentYear);
         int ticksAtStartOfLastYear = calendar.getTicks(lastyear);
-        GameTime[] interval = {new GameTime(ticksAtStartOfLastYear), new GameTime(ticksAtStartOfyear)};
+        Time[] interval = {new Time(ticksAtStartOfLastYear), new Time(ticksAtStartOfyear)};
 
         // TODO is this anonymous class necessary?
         TransactionAggregator aggregator = new TransactionAggregator(world, pr) {

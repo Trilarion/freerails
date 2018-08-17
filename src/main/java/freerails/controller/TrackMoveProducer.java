@@ -30,7 +30,7 @@ import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -50,7 +50,7 @@ public class TrackMoveProducer {
      * This generates the transactions - the charge - for the track being built.
      */
     private final TrackMoveTransactionsGenerator transactionsGenerator;
-    private GameTime lastMoveTime;
+    private Time lastMoveTime;
 
     /**
      * @param executor
@@ -220,7 +220,7 @@ public class TrackMoveProducer {
      */
     private void clearStackIfStale() {
         UnmodifiableWorld world = executor.getWorld();
-        GameTime currentTime = world.currentTime();
+        Time currentTime = world.currentTime();
 
         if (!currentTime.equals(lastMoveTime)) {
             moveStack.clear();

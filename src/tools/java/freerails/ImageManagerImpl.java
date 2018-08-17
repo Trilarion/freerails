@@ -19,7 +19,7 @@
 /*
  *
  */
-package experimental;
+package freerails;
 
 import freerails.util.ui.ImageManager;
 import javax.imageio.ImageIO;

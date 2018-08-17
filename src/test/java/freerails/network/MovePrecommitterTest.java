@@ -24,10 +24,11 @@ package freerails.network;
 import freerails.model.player.Player;
 import freerails.move.*;
 import freerails.move.generator.MoveGenerator;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.world.World;
 import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.util.Vec2D;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 /**
@@ -43,7 +44,7 @@ public class MovePrecommitterTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
+        world = WorldGenerator.minimalWorld();
         committer = new MovePrecommitter(world);
     }
 
@@ -51,8 +52,8 @@ public class MovePrecommitterTest extends TestCase {
      * Test simple case of precommitting then fully committing moves.
      */
     public void test1() {
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         Move move = new TimeTickMove(oldtime, newTime);
@@ -80,8 +81,8 @@ public class MovePrecommitterTest extends TestCase {
      * Test test clash.
      */
     public void test2() {
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         Move move = new TimeTickMove(oldtime, newTime);
@@ -129,8 +130,8 @@ public class MovePrecommitterTest extends TestCase {
      * Test test rejection 1.
      */
     public void test3() {
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         Move move = new TimeTickMove(oldtime, newTime);
@@ -158,8 +159,8 @@ public class MovePrecommitterTest extends TestCase {
      * Test test rejection 2.
      */
     public void test4() {
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
         assertFalse(oldtime.equals(newTime));
 
         // the following move should fail!
@@ -183,8 +184,8 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void testPreMoves1() {
         MoveGenerator moveGenerator = TimeTickMoveGenerator.INSTANCE;
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
         committer.fromServer(moveGenerator);
         assertEquals(newTime, getTime());
     }
@@ -194,8 +195,8 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void testPreMoves2() {
         MoveGenerator moveGenerator = TimeTickMoveGenerator.INSTANCE;
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
 
         // Send a premove to the server.
         committer.toServer(moveGenerator);
@@ -215,8 +216,8 @@ public class MovePrecommitterTest extends TestCase {
      */
     public void testPreMoves3() {
         MoveGenerator moveGenerator = TimeTickMoveGenerator.INSTANCE;
-        GameTime oldtime = getTime();
-        GameTime newTime = oldtime.advancedTime();
+        Time oldtime = getTime();
+        Time newTime = oldtime.advancedTime();
 
         // Send a premove to the server.
         committer.toServer(moveGenerator);
@@ -231,7 +232,7 @@ public class MovePrecommitterTest extends TestCase {
         assertEquals(oldtime, getTime());
     }
 
-    private GameTime getTime() {
+    private Time getTime() {
         return world.currentTime();
     }
 }

@@ -35,7 +35,7 @@ import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.*;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
@@ -64,7 +64,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
             activityIterator.nextActivity();
 
         double finishTime = activityIterator.getStartTime() + activityIterator.getActivity().duration();
-        GameTime newTime = new GameTime((int) Math.floor(finishTime));
+        Time newTime = new Time((int) Math.floor(finishTime));
         world.setTime(newTime);
     }
 

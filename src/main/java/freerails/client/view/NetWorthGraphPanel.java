@@ -30,8 +30,8 @@ import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.TransactionAggregator;
 import freerails.model.finances.Money;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -307,10 +307,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
         submitButtonCallBack = closeAction;
         UnmodifiableWorld world = modelRoot.getWorld();
         companies = new ArrayList<>();
-        GameCalendar calender = world.getCalendar();
+        Calendar calender = world.getCalendar();
         int startYear = calender.getYear(0);
         int endYear = startYear + 100;
-        GameTime currentTime = world.currentTime();
+        Time currentTime = world.currentTime();
         int currentYear = calender.getYear(currentTime.getTicks());
         xAxisLabel1.setText(String.valueOf(startYear));
         xAxisLabel2.setText(String.valueOf(startYear + 50));
@@ -325,10 +325,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
             logger.debug("Adding player " + name + " to net worth graph.");
 
             CompanyDetails companyDetails = new CompanyDetails(name, c);
-            GameTime[] times = new GameTime[101];
+            Time[] times = new Time[101];
             for (int year = 0; year < 101; year++) {
                 int ticks = calender.getTicks(startYear + year - 1);
-                times[year] = new GameTime(ticks);
+                times[year] = new Time(ticks);
             }
             TransactionAggregator aggregator = new NetWorthCalculator(world, player);
             aggregator.setTimes(times);

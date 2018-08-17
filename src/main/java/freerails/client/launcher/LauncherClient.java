@@ -32,8 +32,8 @@ import freerails.network.command.ClientProperty;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.game.GameSpeed;
-import freerails.model.game.GameTime;
+import freerails.model.game.Speed;
+import freerails.model.game.Time;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -84,10 +84,10 @@ public class LauncherClient extends FreerailsClient {
         double dt = currentTime - lastTick;
         UnmodifiableWorld world2 = modelRoot.getWorld();
         if (world2 != null) {
-            GameSpeed gameSpeed = world2.getGameSpeed();
-            GameTime currentGameTime = world2.currentTime();
+            Speed speed = world2.getSpeed();
+            Time currentGameTime = world2.currentTime();
             double ticks = currentGameTime.getTicks();
-            if (!gameSpeed.isPaused()) {
+            if (!speed.isPaused()) {
                 double subTicks = Math.min(dt, 1.0d);
                 ticks += subTicks;
             }

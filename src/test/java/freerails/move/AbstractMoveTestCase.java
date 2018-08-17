@@ -21,25 +21,17 @@
  */
 package freerails.move;
 
-import freerails.io.GsonManager;
-import freerails.model.train.Engine;
-import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.*;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.train.PathOnTiles;
 import freerails.model.world.World;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.SortedSet;
 
 /**
  * All TestCases for moves should extend this class.
@@ -273,23 +265,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
      *
      */
     protected void setupWorld() {
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        SortedSet<Engine> engines;
-        try {
-            engines = GsonManager.loadEngines(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        validEngineId = engines.iterator().next().getId(); // more or less gets a valid id of an engine
-        this.world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(10, 10)).build();
+        world = WorldGenerator.defaultWorld();
+
+        validEngineId = world.getEngines().iterator().next().getId(); // more or less gets a valid id of an engine
         // Set the time..
-        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        world.addPlayer(WorldGenerator.TEST_PLAYER);
     }
 
     /**

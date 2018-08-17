@@ -23,7 +23,7 @@ package freerails.model.finances;
 
 import freerails.model.finances.transactions.*;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 /**
@@ -120,7 +120,7 @@ public class FinancialDataGatherer extends TransactionAggregator {
      */
     public Money netWorth() {
         NetWorthCalculator nwc = new NetWorthCalculator(world, player);
-        GameTime[] times = {GameTime.BIG_BANG, GameTime.DOOMSDAY};
+        Time[] times = {Time.BIG_BANG, Time.DOOMSDAY};
         nwc.setTimes(times);
         return nwc.calculateValue();
     }

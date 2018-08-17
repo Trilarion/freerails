@@ -479,7 +479,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
         // TODO this is so that initially the game speed is displayed, this could also be done just by moves
-        int gameSpeed = world.getGameSpeed().getSpeed();
+        int gameSpeed = world.getSpeed().getSpeed();
         // Set the selected game speed radio button.
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);

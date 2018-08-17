@@ -33,10 +33,10 @@ import freerails.move.Status;
 import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
-import freerails.model.game.GameRules;
-import freerails.model.MapFixtureFactory;
+import freerails.model.game.Rules;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
+import freerails.util.WorldGenerator;
 
 import java.io.File;
 import java.net.URL;
@@ -60,10 +60,14 @@ public class ChangeTrackPieceMoveTest extends AbstractMoveTestCase {
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
         // generate track types
-        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
+        SortedSet<TrackType> trackTypes = WorldGenerator.testTrackTypes();
 
-        setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build());
-        getWorld().setGameRules(GameRules.NO_RESTRICTIONS);
+        // load rules
+        url = ChangeTrackPieceCompositeMoveTest.class.getResource("/rules.without_restrictions.json");
+        file = new File(url.toURI());
+        Rules rules = GsonManager.load(file, Rules.class);
+
+        setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build());
     }
 
     /**

@@ -18,7 +18,6 @@
 
 package freerails.client.view;
 
-import freerails.io.GsonManager;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.Cargo;
 import freerails.model.finances.IncomeStatementGenerator;
@@ -27,12 +26,8 @@ import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.finances.transactions.CargoDeliveryTransaction;
 import freerails.model.finances.Money;
-import freerails.model.MapFixtureFactory;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
-
-import java.io.File;
-import java.net.URL;
-import java.util.SortedSet;
 
 /**
  * Test for IncomeStatementGenerator.
@@ -47,18 +42,18 @@ public class IncomeStatementGeneratorTest extends TestCase {
      */
     public void testCalExpense() {
         balanceSheetGenerator.calculateAll();
-        Money m = balanceSheetGenerator.mailTotal;
-        assertEquals(0, m.amount);
+        Money money = balanceSheetGenerator.mailTotal;
+        assertEquals(0, money.amount);
 
-        Cargo ct = world.getCargo(0);
-        assertEquals(CargoCategory.MAIL, ct.getCategory());
+        Cargo cargo = world.getCargo(0);
+        assertEquals(CargoCategory.MAIL, cargo.getCategory());
 
         Money amount = new Money(100);
         addTrans(CargoCategory.MAIL, amount);
         addTrans(CargoCategory.PASSENGER, amount);
         balanceSheetGenerator.calculateAll();
-        m = balanceSheetGenerator.mailTotal;
-        assertEquals(amount, m);
+        money = balanceSheetGenerator.mailTotal;
+        assertEquals(amount, money);
     }
 
     private void addTrans(CargoCategory category, Money amount) {
@@ -68,7 +63,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
 
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);
-                world.addTransaction(MapFixtureFactory.TEST_PLAYER,
+                world.addTransaction(WorldGenerator.TEST_PLAYER,
                         new CargoDeliveryTransaction(amount, 10, 0, 1, cb));
                 return;
             }
@@ -84,13 +79,8 @@ public class IncomeStatementGeneratorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        // load cargo types
-        URL url = IncomeStatementGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
-        File file = new File(url.toURI());
-        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
-
-        world = new World.Builder().setCargos(cargos).build();
-        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
-        balanceSheetGenerator = new IncomeStatementGenerator(world, MapFixtureFactory.TEST_PLAYER);
+        world = WorldGenerator.defaultWorld();
+        world.addPlayer(WorldGenerator.TEST_PLAYER);
+        balanceSheetGenerator = new IncomeStatementGenerator(world, WorldGenerator.TEST_PLAYER);
     }
 }

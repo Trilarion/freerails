@@ -20,7 +20,8 @@ package freerails.savegames;
 
 import freerails.io.GsonManager;
 import freerails.model.cargo.Cargo;
-import freerails.model.game.GameTime;
+import freerails.model.game.Rules;
+import freerails.model.game.Time;
 import freerails.model.terrain.*;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityTilePositioner;
@@ -87,8 +88,10 @@ public class MapCreator {
         file = new File(url.toURI());
         SortedSet<TrackType> trackTypes = GsonManager.loadTrackTypes(file);
 
-        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes);
-        World world = builder.build();
+        // load rules
+        url = MapCreator.class.getResource("/freerails/data/scenario/rules.json");
+        file = new File(url.toURI());
+        Rules rules = GsonManager.load(file, Rules.class);
 
         /*
         // Load the terrain map
@@ -133,7 +136,8 @@ public class MapCreator {
         file = new File(url.toURI());
         Array2D map = GsonManager.loadArray2D(file);
 
-        world.setupMap(map.getSize());
+        World.Builder builder = new World.Builder().setEngines(engines).setCities(cities).setCargos(cargos).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).setMapSize(map.getSize());
+        World world = builder.build();
 
         // TODO what is the purpose of the following section (randomization)
         final List<Integer> countryTypes = new ArrayList();
@@ -201,7 +205,7 @@ public class MapCreator {
         cityTilePositioner.initCities();
 
         // TODO is this necessary, should be this by default in the build method!
-        world.setTime(new GameTime(0));
+        world.setTime(new Time(0));
 
         /*
          * Note, money used to get added to player finances here, now it is done

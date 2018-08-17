@@ -18,9 +18,8 @@
 
 package freerails.move;
 
-import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 /**
@@ -29,14 +28,14 @@ import freerails.model.player.Player;
 public class TimeTickMove implements Move {
 
     private static final long serialVersionUID = 3257290240212153393L;
-    private final GameTime oldTime;
-    private final GameTime newTime;
+    private final Time oldTime;
+    private final Time newTime;
 
     /**
      * @param oldTime
      * @param newTime
      */
-    public TimeTickMove(GameTime oldTime, GameTime newTime) {
+    public TimeTickMove(Time oldTime, Time newTime) {
         this.oldTime = oldTime;
         this.newTime = newTime;
     }
@@ -70,7 +69,7 @@ public class TimeTickMove implements Move {
     }
 
     public Status tryUndoMove(World world, Player player) {
-        GameTime time = world.currentTime();
+        Time time = world.currentTime();
 
         if (time.equals(newTime)) {
             return Status.OK;

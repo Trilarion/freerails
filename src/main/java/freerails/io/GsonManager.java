@@ -43,7 +43,7 @@ import java.util.*;
 /**
  *
  */
-public class GsonManager {
+public final class GsonManager {
 
     private static Gson gson;
     static
@@ -111,6 +111,21 @@ public class GsonManager {
 
         // deserialize
         return gson.fromJson(json, typeToken.getType());
+    }
+
+    /**
+     *
+     * @param file
+     * @param type
+     * @return
+     * @throws IOException
+     */
+    public static <E> E load(File file, Type type) throws IOException {
+        // load json
+        String json = FileUtils.readFileToString(file, ModelConstants.defaultCharset);
+
+        // deserialize json
+        return gson.fromJson(json, type);
     }
 
     /**

@@ -31,7 +31,7 @@ import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
-import freerails.model.game.GameRules;
+import freerails.model.game.Rules;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -202,7 +202,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     @Override
     public Status compositeTest(World world) {
         // must connect to existing track
-        GameRules rules = world.getGameRules();
+        Rules rules = world.getRules();
 
         if (rules.mustConnectToExistingTrack()) {
             if (TransactionUtils.hasAnyTrackBeenBuilt(world, player)) {

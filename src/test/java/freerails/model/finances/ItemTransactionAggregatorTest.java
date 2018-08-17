@@ -25,8 +25,8 @@ import freerails.model.finances.transactions.ItemTransaction;
 import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.track.TrackType;
 import freerails.model.world.World;
-import freerails.model.MapFixtureFactory;
 import freerails.util.Vec2D;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -45,12 +45,8 @@ public class ItemTransactionAggregatorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        // generate track types
-        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
-
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).setTrackTypes(trackTypes).build();
-        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        world = WorldGenerator.testWorld(true);
+        world.addPlayer(WorldGenerator.TEST_PLAYER);
     }
 
     /**
@@ -87,7 +83,7 @@ public class ItemTransactionAggregatorTest extends TestCase {
      */
     private int[] calNumOfEachTrackType() {
         int[] actual;
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, MapFixtureFactory.TEST_PLAYER);
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, WorldGenerator.TEST_PLAYER);
         actual = new int[3];
         aggregator.setType(0);
         actual[0] = aggregator.calculateQuantity();
@@ -105,6 +101,6 @@ public class ItemTransactionAggregatorTest extends TestCase {
      */
     private void addTrack(int trackType, int quantity) {
         ItemTransaction transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(trackType), quantity, trackType);
-        world.addTransaction(MapFixtureFactory.TEST_PLAYER, transaction);
+        world.addTransaction(WorldGenerator.TEST_PLAYER, transaction);
     }
 }

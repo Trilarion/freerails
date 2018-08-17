@@ -23,8 +23,8 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.cargo.Cargo;
 import freerails.model.finances.transactions.Transaction;
-import freerails.model.game.GameRules;
-import freerails.model.game.GameSpeed;
+import freerails.model.game.Rules;
+import freerails.model.game.Speed;
 import freerails.model.station.Station;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
@@ -35,8 +35,8 @@ import freerails.util.*;
 import freerails.model.finances.EconomicClimate;
 import freerails.model.finances.Money;
 import freerails.model.finances.TransactionRecord;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import org.jetbrains.annotations.NotNull;
@@ -68,7 +68,7 @@ public class World implements UnmodifiableWorld {
     private Vec2D mapSize;
     private TerrainTile[] map;
     public List<Player> players = new ArrayList<>();
-    public GameTime time = new GameTime(0);
+    public Time time = new Time(0);
 
     // global lists
     private final SortedSet<Engine> engines;
@@ -82,10 +82,10 @@ public class World implements UnmodifiableWorld {
     private final Map<Player, SortedSet<Station>> stations; // list of stations by player
 
     // single instance objects in the game world
-    private final GameCalendar calendar;
+    private final Calendar calendar;
     private EconomicClimate economicClimate;
-    private GameRules gameRules;
-    private GameSpeed gameSpeed;
+    private Rules rules;
+    private Speed speed;
 
     public static class Builder {
 
@@ -96,39 +96,54 @@ public class World implements UnmodifiableWorld {
         private SortedSet<TrackType> trackTypes = new TreeSet<>();
         private Map<Player, SortedSet<Train>> trains = new HashMap<>();
         private Map<Player, SortedSet<Station>> stations = new HashMap<>();
-        private Vec2D mapSize = Vec2D.ZERO;
+        private Rules rules = null;
+        private Vec2D mapSize = null;
 
-        public Builder setEngines(SortedSet<Engine> engines) {
+        public Builder setEngines(@NotNull SortedSet<Engine> engines) {
             this.engines = Utils.verifyNotNull(engines);
             return this;
         }
 
-        public Builder setCities(SortedSet<City> cities) {
+        public Builder setCities(@NotNull SortedSet<City> cities) {
             this.cities = Utils.verifyNotNull(cities);
             return this;
         }
 
-        public Builder setCargos(SortedSet<Cargo> cargos) {
+        public Builder setCargos(@NotNull SortedSet<Cargo> cargos) {
             this.cargos = Utils.verifyNotNull(cargos);
             return this;
         }
 
-        public Builder setTerrainTypes(SortedSet<Terrain> terrainTypes) {
+        public Builder setTerrainTypes(@NotNull SortedSet<Terrain> terrainTypes) {
             this.terrainTypes = Utils.verifyNotNull(terrainTypes);
             return this;
         }
 
-        public Builder setTrackTypes(SortedSet<TrackType> trackTypes) {
+        public Builder setTrackTypes(@NotNull SortedSet<TrackType> trackTypes) {
             this.trackTypes = trackTypes;
             return this;
         }
 
-        public Builder setMapSize(Vec2D mapSize) {
+        public Builder setMapSize(@NotNull Vec2D mapSize) {
             this.mapSize = mapSize;
             return this;
         }
 
+        public Builder setRules(@NotNull Rules rules) {
+            this.rules = rules;
+            return this;
+        }
+
         public World build() {
+            if (rules == null) {
+                throw new RuntimeException("Rules not specified");
+            }
+            if (mapSize == null) {
+                throw new RuntimeException("Map size not specified");
+            }
+            if (mapSize.x <= 0 | mapSize.y <= 0) {
+                throw new RuntimeException("Map size must have positive entries");
+            }
             return new World(this);
         }
     }
@@ -141,12 +156,22 @@ public class World implements UnmodifiableWorld {
         trackTypes = builder.trackTypes;
         trains = builder.trains;
         stations = builder.stations;
+        rules = builder.rules;
 
-        calendar = new GameCalendar(1200, 1840);
+        calendar = new Calendar(1200, 1840);
         economicClimate = EconomicClimate.MODERATION;
-        gameRules = GameRules.DEFAULT_RULES;
-        gameSpeed = new GameSpeed(10);
-        setupMap(builder.mapSize);
+
+        speed = new Speed(10);
+
+        // setup map
+        this.mapSize = builder.mapSize;
+        map = new TerrainTile[builder.mapSize.x * builder.mapSize.y];
+
+        // TODO what is a good default initializer here or should we stay with null?
+        // TODO terrainTypeId 0 must also exist as terrain, how to make sure
+        for (int i = 0; i < map.length; i++) {
+            map[i] = new TerrainTile(0);
+        }
     }
 
     // TODO getNumberXXX
@@ -268,7 +293,7 @@ public class World implements UnmodifiableWorld {
         return false;
     }
 
-    public GameCalendar getCalendar() {
+    public Calendar getCalendar() {
         return calendar;
     }
 
@@ -276,20 +301,20 @@ public class World implements UnmodifiableWorld {
         return economicClimate;
     }
 
-    public GameRules getGameRules() {
-        return gameRules;
+    public Rules getRules() {
+        return rules;
     }
 
-    public void setGameRules(@NotNull GameRules gameRules) {
-        this.gameRules = gameRules;
+    public void setRules(@NotNull Rules rules) {
+        this.rules = rules;
     }
 
-    public GameSpeed getGameSpeed() {
-        return gameSpeed;
+    public Speed getSpeed() {
+        return speed;
     }
 
-    public void setGameSpeed(@NotNull GameSpeed gameSpeed) {
-        this.gameSpeed = gameSpeed;
+    public void setSpeed(@NotNull Speed speed) {
+        this.speed = speed;
     }
 
     /**
@@ -375,7 +400,7 @@ public class World implements UnmodifiableWorld {
     /**
      * @return
      */
-    public GameTime currentTime() {
+    public Time currentTime() {
         return time;
     }
 
@@ -464,6 +489,9 @@ public class World implements UnmodifiableWorld {
     }
 
     private int getMapIndex(Vec2D location) {
+        if (location.x < 0 || location.x >= mapSize.x || location.y < 0 || location.y >= mapSize.y) {
+            throw new IndexOutOfBoundsException();
+        }
         return location.x * mapSize.y + location.y;
     }
 
@@ -486,7 +514,7 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
-    public GameTime getTransactionTimeStamp(Player player, int i) {
+    public Time getTransactionTimeStamp(Player player, int i) {
         TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
         return transactionRecord.getTimestamp();
     }
@@ -496,7 +524,7 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
-    public Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player player, int i) {
+    public Pair<Transaction, Time> getTransactionAndTimeStamp(Player player, int i) {
         TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
         return new Pair<>(transactionRecord.getTransaction(), transactionRecord.getTimestamp());
     }
@@ -586,23 +614,8 @@ public class World implements UnmodifiableWorld {
     /**
      * @param t
      */
-    public void setTime(GameTime t) {
+    public void setTime(Time t) {
         time = t;
-    }
-
-    // TODO inline in constructor, we do not change the map size afterwards
-    /**
-     * @param mapSize
-     */
-    public void setupMap(Vec2D mapSize) {
-        this.mapSize = mapSize;
-        map = new TerrainTile[mapSize.x * mapSize.y];
-
-        // TODO what is a good default initializer here or should we stay with null?
-        // TODO terrainTypeId 0 must also exist as terrain, how to make sure
-        for (int i = 0; i < map.length; i++) {
-            map[i] = new TerrainTile(0);
-        }
     }
 
     public int size(Player player) {

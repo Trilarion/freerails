@@ -23,8 +23,8 @@ import freerails.model.finances.transactions.CargoDeliveryTransaction;
 import freerails.model.finances.transactions.Transaction;
 import freerails.util.Pair;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 /**
@@ -35,7 +35,7 @@ public class IncomeStatementGenerator {
 
     private final UnmodifiableWorld world;
     private final Player player;
-    private final GameCalendar calendar;
+    private final Calendar calendar;
     private final int startyear;
 
     public Money mailTotal;
@@ -44,7 +44,7 @@ public class IncomeStatementGenerator {
         this.world = world;
         this.player = player;
         calendar = world.getCalendar();
-        GameTime time = world.currentTime();
+        Time time = world.currentTime();
         startyear = calendar.getYear(time.getTicks());
     }
 
@@ -73,9 +73,9 @@ public class IncomeStatementGenerator {
 
         int numberOfTransactions = world.getNumberOfTransactions(this.player);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
+            Pair<Transaction, Time> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
-            GameTime time = transactionAndTimeStamp.getB();
+            Time time = transactionAndTimeStamp.getB();
             if (transaction instanceof CargoDeliveryTransaction) {
                 CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
                 int cargoTypeId = cargoDeliveryTransaction.getCargoBatch().getCargoTypeId();
@@ -170,9 +170,9 @@ public class IncomeStatementGenerator {
 
         int numberOfTransactions = world.getNumberOfTransactions(this.player);
         for (int i = 0; i < numberOfTransactions; i++) {
-            Pair<Transaction, GameTime> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
+            Pair<Transaction, Time> transactionAndTimeStamp = world.getTransactionAndTimeStamp(player, i);
             Transaction transaction = transactionAndTimeStamp.getA();
-            GameTime time = transactionAndTimeStamp.getB();
+            Time time = transactionAndTimeStamp.getB();
             if (transaction instanceof CargoDeliveryTransaction && calendar.getYear(time.getTicks()) >= this.startyear) {
                 CargoDeliveryTransaction cargoDeliveryTransaction = (CargoDeliveryTransaction) transaction;
                 int trainId = cargoDeliveryTransaction.getTrainId();

@@ -32,14 +32,13 @@ import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
 import freerails.move.Status;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
-import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
-import freerails.model.*;
-import freerails.model.game.GameRules;
+import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
 import freerails.model.world.World;
+import freerails.util.WorldGenerator;
 
 import java.io.File;
 import java.net.URL;
@@ -59,25 +58,20 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         super.setHasSetupBeenCalled(true);
-        // load terrain types
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
-        File file = new File(url.toURI());
-        SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        // generate track types
-        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
+        setWorld(WorldGenerator.testWorld(true));
+        getWorld().addPlayer(WorldGenerator.TEST_PLAYER);
 
-        setWorld(new World.Builder().setMapSize(new Vec2D(10, 10)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build());
-        getWorld().addPlayer(MapFixtureFactory.TEST_PLAYER);
-
-        transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(), MapFixtureFactory.TEST_PLAYER);
+        transactionsGenerator = new TrackMoveTransactionsGenerator(getWorld(), WorldGenerator.TEST_PLAYER);
     }
 
     /**
      *
      */
     public void testRemoveTrack() {
-        getWorld().setGameRules(GameRules.NO_RESTRICTIONS);
+        // TODO need this rules change here really?
+        Rules rules = new Rules(false, false);
+        world.setRules(rules);
 
         TrackType trackType = getWorld().getTrackType(0);
 
@@ -103,20 +97,21 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      */
     public void testMustConnectToExistingTrack() {
         TrackType trackType = world.getTrackType(0);
+        Rules rules = world.getRules();
+        assertTrue(rules.mustConnectToExistingTrack());
 
-        int numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PLAYER);
+        int numberOfTransactions = world.getNumberOfTransactions(WorldGenerator.TEST_PLAYER);
         assertEquals(0, numberOfTransactions);
 
-        boolean hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, MapFixtureFactory.TEST_PLAYER);
+        boolean hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, WorldGenerator.TEST_PLAYER);
         assertFalse("No track has been built yet.", hasTrackBeenBuilt);
         assertBuildTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST, trackType);
 
         // Building the track should have added a transaction.
-        numberOfTransactions = world.getNumberOfTransactions(MapFixtureFactory.TEST_PLAYER);
+        numberOfTransactions = world.getNumberOfTransactions(WorldGenerator.TEST_PLAYER);
         assertTrue(0 < numberOfTransactions);
 
-        hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(
-                world, MapFixtureFactory.TEST_PLAYER);
+        hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, WorldGenerator.TEST_PLAYER);
         assertTrue("One track piece has been built.", hasTrackBeenBuilt);
 
         assertBuildTrackSucceeds(new Vec2D(1, 5), TileTransition.EAST, trackType);
@@ -127,7 +122,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testCannotConnect2OtherRRsTrack() {
-        GameRules rules = ((UnmodifiableWorld) world).getGameRules();
+        Rules rules = world.getRules();
         assertFalse(rules.canConnectToOtherRRTrack());
         final int TRACK_RULE_ID = 0;
         TrackType trackType = getWorld().getTrackType(TRACK_RULE_ID);
@@ -187,13 +182,13 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     }
 
     private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), MapFixtureFactory.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
         assertFalse(status.succeeds());
     }
 
     private void assertBuildTrackSucceeds(Vec2D p, TileTransition v, TrackType type) {
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), MapFixtureFactory.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
         Status status = moveAndTransaction.doMove(getWorld(), Player.AUTHORITATIVE);
@@ -203,7 +198,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private void assertRemoveTrackSucceeds(Vec2D p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
-                    .generateRemoveTrackMove(p, v, getWorld(), MapFixtureFactory.TEST_PLAYER);
+                    .generateRemoveTrackMove(p, v, getWorld(), WorldGenerator.TEST_PLAYER);
             Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
             assertEquals(true, status.succeeds());
         } catch (Exception e) {
@@ -219,7 +214,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         Vec2D pointA = Vec2D.ZERO;
         TrackType trackType = getWorld().getTrackType(0);
 
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), MapFixtureFactory.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);
 
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);

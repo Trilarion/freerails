@@ -29,6 +29,7 @@ import freerails.model.finances.*;
 import freerails.model.ModelConstants;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 /**
@@ -45,9 +46,9 @@ public class FinancialDataGathererTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        player = new Player(0, "Player X");
-        world = new World.Builder().build();
+        world = WorldGenerator.minimalWorld();
 
+        player = new Player(0, "Player X");
         Move addPlayer = AddPlayerMove.generateMove(world, player);
         Status status = addPlayer.doMove(world, Player.AUTHORITATIVE);
         assertTrue(status.succeeds());
@@ -110,7 +111,7 @@ public class FinancialDataGathererTest extends TestCase {
      *
      */
     public void testBuyingStakesInOtherRRs() {
-        world = new World.Builder().build();
+        world = WorldGenerator.minimalWorld();
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(i, "Player " + i);

@@ -30,8 +30,8 @@ import freerails.model.finances.ItemsTransactionAggregator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finances.Money;
 import freerails.model.finances.transactions.TransactionCategory;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 import java.text.DecimalFormat;
@@ -53,8 +53,8 @@ class BrokerScreenGenerator {
         int playerId = player.getId();
         String playername = world.getPlayer(playerId).getName();
 
-        GameCalendar calendar = world.getCalendar();
-        GameTime time = world.currentTime();
+        Calendar calendar = world.getCalendar();
+        Time time = world.currentTime();
         final int startyear = calendar.getYear(time.getTicks());
         String year = String.valueOf(startyear);
         Money cash = world.getCurrentBalance(player);

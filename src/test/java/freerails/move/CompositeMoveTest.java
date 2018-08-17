@@ -24,7 +24,7 @@ package freerails.move;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.util.Vec2D;
 import freerails.model.station.Station;
-import freerails.model.MapFixtureFactory;
+import freerails.util.WorldGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,16 +44,16 @@ public class CompositeMoveTest extends AbstractMoveTestCase {
      */
     public void testMove() {
         List<Move> moves = new ArrayList<>(4);
-        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station1));
-        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station2));
-        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station3));
-        moves.add(new AddStationMove(MapFixtureFactory.TEST_PLAYER, station4));
+        moves.add(new AddStationMove(WorldGenerator.TEST_PLAYER, station1));
+        moves.add(new AddStationMove(WorldGenerator.TEST_PLAYER, station2));
+        moves.add(new AddStationMove(WorldGenerator.TEST_PLAYER, station3));
+        moves.add(new AddStationMove(WorldGenerator.TEST_PLAYER, station4));
         Move compositeMove = new CompositeMove(moves);
         assertSurvivesSerialisation(compositeMove);
         assertTryMoveIsOk(compositeMove);
-        assertEquals("The stations should not have been add yet.", 0, getWorld().getStations(MapFixtureFactory.TEST_PLAYER).size());
+        assertEquals("The stations should not have been add yet.", 0, getWorld().getStations(WorldGenerator.TEST_PLAYER).size());
         assertDoMoveIsOk(compositeMove);
-        assertEquals("The stations should have been add now.", 4, getWorld().getStations(MapFixtureFactory.TEST_PLAYER).size());
+        assertEquals("The stations should have been add now.", 4, getWorld().getStations(WorldGenerator.TEST_PLAYER).size());
         assertTryUndoMoveIsOk(compositeMove);
         assertUndoMoveIsOk(compositeMove);
         assertOkButNotRepeatable(compositeMove);

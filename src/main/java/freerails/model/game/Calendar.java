@@ -25,7 +25,7 @@ import java.text.DecimalFormat;
  * Converts time measured in ticks since the game began into time
  * represented as <i>Month, Year</i> and <i>hour:minute</i>.
  */
-public class GameCalendar implements Serializable {
+public class Calendar implements Serializable {
 
     private static final long serialVersionUID = 3257568421033226805L;
     private final int ticksPerYear;
@@ -35,7 +35,7 @@ public class GameCalendar implements Serializable {
      * @param ticksPerYear
      * @param startYear
      */
-    public GameCalendar(int ticksPerYear, int startYear) {
+    public Calendar(int ticksPerYear, int startYear) {
         this.ticksPerYear = ticksPerYear;
         this.startYear = startYear;
     }
@@ -150,8 +150,8 @@ public class GameCalendar implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GameCalendar) {
-            GameCalendar test = (GameCalendar) obj;
+        if (obj instanceof Calendar) {
+            Calendar test = (Calendar) obj;
 
             return startYear == test.startYear && ticksPerYear == test.ticksPerYear;
         }

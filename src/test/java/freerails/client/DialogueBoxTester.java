@@ -26,6 +26,7 @@ import freerails.model.train.Train;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.receiver.TestMoveReceiver;
 import freerails.savegames.MapCreator;
+import freerails.util.WorldGenerator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import freerails.util.ui.MyGlassPanel;
 import freerails.client.renderer.RendererRoot;
@@ -74,21 +75,7 @@ class DialogueBoxTester extends JFrame {
      * Creates new form TestGlassPanelMethod.
      */
     private DialogueBoxTester() {
-
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/engines.json");
-        File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        SortedSet<Engine> engines;
-        try {
-            engines = GsonManager.loadEngines(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        World world = new World.Builder().setEngines(engines).setMapSize(new Vec2D(200, 200)).build();
+        World world = WorldGenerator.defaultWorld();
 
         UntriedMoveReceiver dummyReceiver = new TestMoveReceiver(world);
 

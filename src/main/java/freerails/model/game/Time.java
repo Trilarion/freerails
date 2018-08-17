@@ -28,23 +28,23 @@ import java.io.Serializable;
 /**
  * Represents a specific instant in time during a game.
  */
-public class GameTime implements Serializable, Comparable<GameTime> {
+public class Time implements Serializable, Comparable<Time> {
     /**
      * The first possible time.
      */
     // TODO BIG_BAND AND DOOMSDAY really used?
-    public static final GameTime BIG_BANG = new GameTime(Integer.MIN_VALUE);
+    public static final Time BIG_BANG = new Time(Integer.MIN_VALUE);
     /**
      * The last possible time.
      */
-    public static final GameTime DOOMSDAY = new GameTime(Integer.MAX_VALUE);
+    public static final Time DOOMSDAY = new Time(Integer.MAX_VALUE);
     private static final long serialVersionUID = 3691035461301055541L;
     private final int ticks;
 
     /**
      * @param ticks
      */
-    public GameTime(int ticks) {
+    public Time(int ticks) {
         this.ticks = ticks;
     }
 
@@ -61,8 +61,8 @@ public class GameTime implements Serializable, Comparable<GameTime> {
     /**
      * @return
      */
-    public GameTime advancedTime() {
-        return new GameTime(ticks + 1);
+    public Time advancedTime() {
+        return new Time(ticks + 1);
     }
 
     /**
@@ -74,8 +74,8 @@ public class GameTime implements Serializable, Comparable<GameTime> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof GameTime) {
-            GameTime test = (GameTime) obj;
+        if (obj instanceof Time) {
+            Time test = (Time) obj;
 
             return ticks == test.ticks;
         }
@@ -89,7 +89,7 @@ public class GameTime implements Serializable, Comparable<GameTime> {
      * GameTime is before t; and a value greater than 0 if this GameTime
      * is after t.
      */
-    public int compareTo(@NotNull GameTime o) {
+    public int compareTo(@NotNull Time o) {
         return ticks - o.ticks;
     }
 

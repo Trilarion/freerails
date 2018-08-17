@@ -19,7 +19,7 @@
 package freerails.move;
 
 import freerails.model.world.World;
-import freerails.model.game.GameSpeed;
+import freerails.model.game.Speed;
 import freerails.model.player.Player;
 
 // TODO old speed not really needed here (only for undo)
@@ -29,16 +29,16 @@ import freerails.model.player.Player;
 public class ChangeGameSpeedMove implements Move {
 
     private static final long serialVersionUID = 3545794368956086071L;
-    private final GameSpeed oldSpeed;
-    private final GameSpeed newSpeed;
+    private final Speed oldSpeed;
+    private final Speed newSpeed;
 
-    public ChangeGameSpeedMove(GameSpeed oldSpeed, GameSpeed newSpeed) {
+    public ChangeGameSpeedMove(Speed oldSpeed, Speed newSpeed) {
         this.oldSpeed = oldSpeed;
         this.newSpeed = newSpeed;
     }
 
     public Status tryDoMove(World world, Player player) {
-        GameSpeed actualSpeed = world.getGameSpeed();
+        Speed actualSpeed = world.getSpeed();
 
         // check that old speed and actual speed are consistent
         if (actualSpeed.equals(oldSpeed)) {
@@ -49,7 +49,7 @@ public class ChangeGameSpeedMove implements Move {
     }
 
     public Status tryUndoMove(World world, Player player) {
-        GameSpeed actualSpeed = world.getGameSpeed();
+        Speed actualSpeed = world.getSpeed();
 
         if (actualSpeed.equals(newSpeed)) {
             return Status.OK;
@@ -62,7 +62,7 @@ public class ChangeGameSpeedMove implements Move {
         Status status = tryDoMove(world, player);
 
         if (status.succeeds()) {
-            world.setGameSpeed(newSpeed);
+            world.setSpeed(newSpeed);
         }
 
         return status;
@@ -73,7 +73,7 @@ public class ChangeGameSpeedMove implements Move {
         Status status = tryUndoMove(world, player);
 
         if (status.succeeds()) {
-            world.setGameSpeed(oldSpeed);
+            world.setSpeed(oldSpeed);
         }
 
         return status;

@@ -21,6 +21,8 @@
  */
 package freerails.controller;
 
+import freerails.io.GsonManager;
+import freerails.model.game.Rules;
 import freerails.model.player.Player;
 import freerails.model.statistics.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
@@ -28,10 +30,15 @@ import freerails.move.Move;
 import freerails.move.Status;
 import freerails.model.*;
 import freerails.model.finances.Money;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.world.World;
+import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMoveTest;
 import freerails.util.Vec2D;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
+
+import java.io.File;
+import java.net.URL;
 
 /**
  * Test for BalanceSheetGenerator.
@@ -67,15 +74,15 @@ public class BalanceSheetGeneratorTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).build();
+        world = WorldGenerator.minimalWorld();
         player = new Player(world.getPlayers().size(), "Player X");
-        world.setTime(new GameTime(0));
+        world.setTime(new Time(0));
 
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);
         Status status = addPlayerMove.doMove(world, player);
         assertTrue(status.getMessage(), status.succeeds());
 
-        world.setTime(new GameTime(100));
+        world.setTime(new Time(100));
     }
 
 }

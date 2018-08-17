@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package experimental;
+package freerails;
 
 import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.io.GsonManager;
@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.SortedSet;
 
 /**
@@ -42,7 +41,7 @@ import java.util.SortedSet;
 class TrackTilesGenerator extends JPanel {
 
     private static final long serialVersionUID = 3618982273966487859L;
-    private final ImageManagerImpl imageManager = new ImageManagerImpl("/experimental/", "/experimental/");
+    private final ImageManagerImpl imageManager = new ImageManagerImpl("/freerails/", "/freerails/");
 
     private final SortedSet<TrackType> rules;
 
@@ -151,10 +150,7 @@ class TrackTilesGenerator extends JPanel {
         for (TrackType rule : rules) {
             width = Math.max(width, lastWidth);
             lastWidth = 0;
-            Iterator<TrackConfiguration> it = rule.getLegalConfigurationsIterator();
-            while (it.hasNext()) {
-                lastWidth += 60;
-            }
+            lastWidth += 60 * rule.getValidTrackConfigurations().size();
         }
         return new Dimension(width, height);
     }

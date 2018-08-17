@@ -22,7 +22,7 @@ dependencies {
     compile 'commons-io:commons-io:2.6'
     compile 'org.jetbrains:annotations:16.0.1'
     testCompile 'junit:junit:4.12'
-    toolsCompile sourceSets.main.output, sourceSets.test.output
+    toolsCompile sourceSets.main.output
 }
 
 mainClassName = 'freerails.client.launcher.LauncherFrame'

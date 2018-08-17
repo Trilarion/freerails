@@ -28,7 +28,7 @@ import freerails.client.ModelRootProperty;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.command.CommandToServer;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameSpeed;
+import freerails.model.game.Speed;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -125,7 +125,7 @@ public class ServerControlModel implements ModelRootListener {
      */
     private int getTargetTicksPerSecond() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        return world.getGameSpeed().getSpeed();
+        return world.getSpeed().getSpeed();
     }
 
     /**
@@ -273,7 +273,7 @@ public class ServerControlModel implements ModelRootListener {
                 // TODO this is not nice, do the conversion of values for the display not like this
                 speed2set = -1 * getTargetTicksPerSecond();
             }
-            modelRoot.doMove(new ChangeGameSpeedMove(modelRoot.getWorld().getGameSpeed(), new GameSpeed(speed2set)));
+            modelRoot.doMove(new ChangeGameSpeedMove(modelRoot.getWorld().getSpeed(), new Speed(speed2set)));
         }
     }
 

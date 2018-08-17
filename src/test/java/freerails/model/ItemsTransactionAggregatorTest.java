@@ -27,6 +27,7 @@ import freerails.model.finances.transactions.Transaction;
 import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.world.World;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 /**
@@ -38,7 +39,7 @@ public class ItemsTransactionAggregatorTest extends TestCase {
      *
      */
     public void test1() {
-        World world = new World.Builder().build();
+        World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "name");
         world.addPlayer(player);
         player = world.getPlayer(0);

@@ -21,8 +21,6 @@
  */
 package freerails.controller;
 
-import freerails.io.GsonManager;
-import freerails.model.finances.IncomeStatementGenerator;
 import freerails.model.player.Player;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.Schedule;
@@ -35,15 +33,12 @@ import freerails.model.world.World;
 import freerails.model.cargo.*;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
-import freerails.model.MapFixtureFactory;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
-import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.SortedSet;
 
 /**
  * This Junit TestCase tests whether a train picks up and drops off the right
@@ -62,27 +57,21 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        // Set up the world object with three cargo types, one station, and one
-        // train.
-        // load cargo types
-        URL url = IncomeStatementGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
-        File file = new File(url.toURI());
-        SortedSet<Cargo> cargos = GsonManager.loadCargoTypes(file);
-
-        world = new World.Builder().setCargos(cargos).build();
-        world.addPlayer(MapFixtureFactory.TEST_PLAYER);
+        // Set up the world object with three cargo types, one station, and one train.
+        world = WorldGenerator.defaultWorld();
+        world.addPlayer(WorldGenerator.TEST_PLAYER);
 
         // Set up station
         int x = 10;
         int y = 10;
         String stationName = "Station 1";
         Station station = new Station(0, new Vec2D(x, y), stationName, world.getCargos().size(), CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
-        world.addStation(MapFixtureFactory.TEST_PLAYER, station);
+        world.addStation(WorldGenerator.TEST_PLAYER, station);
 
         // Set up train: 3 wagons to carry cargo type 0.
         List<Integer> wagons = Arrays.asList(0, 0, 0);
         Train train = new Train(0, 0, wagons, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, new Schedule());
-        world.addTrain(MapFixtureFactory.TEST_PLAYER, train);
+        world.addTrain(WorldGenerator.TEST_PLAYER, train);
     }
 
     /**
@@ -156,7 +145,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         setCargoAtStation(this.cargoType0FromStation0, 110);
 
         // Check that station does not demand cargo type 0.
-        Station station = world.getStation(MapFixtureFactory.TEST_PLAYER, 0);
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         assertFalse(station.getDemandForCargo().isCargoDemanded(0));
 
         // Stop at station.
@@ -183,11 +172,11 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      */
     public void testDropOffCargo() {
         // Set the station to demand cargo type 0.
-        Station station = world.getStation(MapFixtureFactory.TEST_PLAYER, 0);
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         StationDemand demand = new StationDemand(new boolean[]{true, false, false, false});
         station.setDemandForCargo(demand);
-        world.removeStation(MapFixtureFactory.TEST_PLAYER, station.getId());
-        world.addStation(MapFixtureFactory.TEST_PLAYER, station);
+        world.removeStation(WorldGenerator.TEST_PLAYER, station.getId());
+        world.addStation(WorldGenerator.TEST_PLAYER, station);
 
         // Check that the station demands what we think it does.
         assertTrue("The station should demand cargo type 0.", station
@@ -279,13 +268,13 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         setCargoAtStation(this.cargoType0FromStation0, 200);
 
         // Set station to demand cargo 0.
-        Station station = world.getStation(MapFixtureFactory.TEST_PLAYER, 0);
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         StationDemand demand = new StationDemand(new boolean[]{true, false, false, false});
         station.setDemandForCargo(demand);
 
         // TODO if this is the same station the removal and addition is meaningless
-        world.removeStation(MapFixtureFactory.TEST_PLAYER, station.getId());
-        world.addStation(MapFixtureFactory.TEST_PLAYER, station);
+        world.removeStation(WorldGenerator.TEST_PLAYER, station.getId());
+        world.addStation(WorldGenerator.TEST_PLAYER, station);
 
         assertTrue(station.getDemandForCargo().isCargoDemanded(0));
         stopAtStation();
@@ -305,15 +294,15 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
     }
 
     private void setWagons(List<Integer> wagons) {
-        Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
+        Train train = world.getTrain(WorldGenerator.TEST_PLAYER, 0);
         Train newTrain = new Train(train.getId(), train.getEngineId(), wagons, train.getCargoBatchBundle(), train.getSchedule());
-        world.removeTrain(MapFixtureFactory.TEST_PLAYER, 0);
-        world.addTrain(MapFixtureFactory.TEST_PLAYER, newTrain);
+        world.removeTrain(WorldGenerator.TEST_PLAYER, 0);
+        world.addTrain(WorldGenerator.TEST_PLAYER, newTrain);
     }
 
     private void stopAtStation() {
         DropOffAndPickupCargoMoveGenerator moveGenerator = new DropOffAndPickupCargoMoveGenerator(
-                0, 0, world, MapFixtureFactory.TEST_PLAYER, false, false);
+                0, 0, world, WorldGenerator.TEST_PLAYER, false, false);
         Move move = moveGenerator.generate();
         if (null != move) {
             Status status = move.doMove(world, Player.AUTHORITATIVE);
@@ -326,7 +315,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private UnmodifiableCargoBatchBundle getCargoAtStation() {
-        Station station = world.getStation(MapFixtureFactory.TEST_PLAYER, 0);
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         return station.getCargoBatchBundle();
     }
 
@@ -335,19 +324,19 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * object.
      */
     private UnmodifiableCargoBatchBundle getCargoOnTrain() {
-        Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
+        Train train = world.getTrain(WorldGenerator.TEST_PLAYER, 0);
         return train.getCargoBatchBundle();
     }
 
     private void setCargoAtStation(CargoBatch cargoBatch, int amount) {
-        Station station = world.getStation(MapFixtureFactory.TEST_PLAYER, 0);
+        Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle(getCargoAtStation());
         cargoBatchBundle.setAmount(cargoBatch, amount);
         station.setCargoBatchBundle(cargoBatchBundle);
     }
 
     private void setCargoOnTrain(CargoBatch cargoBatch, int amount) {
-        Train train = world.getTrain(MapFixtureFactory.TEST_PLAYER, 0);
+        Train train = world.getTrain(WorldGenerator.TEST_PLAYER, 0);
         CargoBatchBundle cargoBatchBundle = new CargoBatchBundle(getCargoOnTrain());
         cargoBatchBundle.setAmount(cargoBatch, amount);
         train.setCargoBatchBundle(cargoBatchBundle);

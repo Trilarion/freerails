@@ -18,8 +18,8 @@
 
 package freerails.model.statistics;
 
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -37,15 +37,15 @@ public class BalanceSheetGenerator {
      * @param player
      */
     public BalanceSheetGenerator(UnmodifiableWorld world, Player player) {
-        GameCalendar calendar = world.getCalendar();
+        Calendar calendar = world.getCalendar();
         // Calculate totals
-        GameTime time = world.currentTime();
+        Time time = world.currentTime();
         final int startYear = calendar.getYear(time.getTicks());
-        GameTime startOfYear = new GameTime(calendar.getTicks(startYear));
-        GameTime[] totalTimeInterval = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
+        Time startOfYear = new Time(calendar.getTicks(startYear));
+        Time[] totalTimeInterval = new Time[]{Time.BIG_BANG, Time.DOOMSDAY};
         total = new Statistics(world, player, totalTimeInterval);
 
-        GameTime[] ytdTimeInterval = new GameTime[]{startOfYear, GameTime.DOOMSDAY};
+        Time[] ytdTimeInterval = new Time[]{startOfYear, Time.DOOMSDAY};
         ytd = new Statistics(world, player, ytdTimeInterval);
     }
 

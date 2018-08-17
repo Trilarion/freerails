@@ -29,6 +29,7 @@ import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.finances.*;
 import freerails.model.player.Player;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.Serializable;
@@ -44,8 +45,8 @@ public class WorldTest extends TestCase {
      *
      */
     public void testConstructor() {
-        World world = new World.Builder().build();
-        assertEquals(world.getMapSize(), Vec2D.ZERO);
+        World world = WorldGenerator.minimalWorld();
+        assertEquals(world.getMapSize(), new Vec2D(20, 20));
     }
 
     /**
@@ -55,7 +56,7 @@ public class WorldTest extends TestCase {
     public void testDefensiveCopy() {
         World original;
         World copy;
-        original = new World.Builder().build();
+        original = WorldGenerator.minimalWorld();
         /**
          * Returns a copy of this world object - making changes to this copy will
          * not change this object.
@@ -71,7 +72,7 @@ public class WorldTest extends TestCase {
     public void testEquals() {
         World original;
         World copy;
-        original = new World.Builder().build();
+        original = WorldGenerator.minimalWorld();
         /**
          * Returns a copy of this world object - making changes to this copy will
          * not change this object.
@@ -99,7 +100,7 @@ public class WorldTest extends TestCase {
     public void testEquals2() {
         World original;
         World copy, copy2;
-        original = new World.Builder().build();
+        original = WorldGenerator.minimalWorld();
         /**
          * Returns a copy of this world object - making changes to this copy will
          * not change this object.
@@ -122,7 +123,7 @@ public class WorldTest extends TestCase {
      *
      */
     public void testActivityLists() {
-        World world = new World.Builder().build();
+        World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "Name");
         world.addPlayer(player);
 
@@ -148,22 +149,18 @@ public class WorldTest extends TestCase {
      *
      */
     public void testBoundsContain() {
-        World world = new World.Builder().build();
-        assertFalse(world.boundsContain(new Vec2D(1, 1)));
-        assertFalse(world.boundsContain(Vec2D.ZERO));
-        assertFalse(world.boundsContain(new Vec2D(-1, -1)));
-        world = new World.Builder().setMapSize(new Vec2D(5, 10)).build();
+        World world = WorldGenerator.minimalWorld();
+        assertTrue(world.boundsContain(new Vec2D(1, 1)));
         assertTrue(world.boundsContain(Vec2D.ZERO));
-        assertTrue(world.boundsContain(new Vec2D(4, 9)));
         assertFalse(world.boundsContain(new Vec2D(-1, -1)));
-        assertFalse(world.boundsContain(new Vec2D(5, 10)));
+        assertFalse(world.boundsContain(new Vec2D(20, 20)));
     }
 
     /**
      *
      */
     public void testBankAccount() {
-        World world = new World.Builder().build();
+        World world = WorldGenerator.minimalWorld();
         Player player = new Player(0, "Test");
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);

@@ -19,7 +19,7 @@
 package freerails.model.finances;
 
 import freerails.model.finances.transactions.Transaction;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -33,10 +33,10 @@ public abstract class TransactionAggregator {
 
     protected final UnmodifiableWorld world;
     protected final Player player;
-    private final GameTime[] DEFAULT_INTERVAL = new GameTime[]{GameTime.BIG_BANG, GameTime.DOOMSDAY};
+    private final Time[] DEFAULT_INTERVAL = new Time[]{Time.BIG_BANG, Time.DOOMSDAY};
     public Money[] monetaryTotals;
     public int runningTotal = 0;
-    private GameTime[] timeValues = DEFAULT_INTERVAL;
+    private Time[] timeValues = DEFAULT_INTERVAL;
 
     /**
      * @param world
@@ -50,12 +50,12 @@ public abstract class TransactionAggregator {
     /**
      * @param times
      */
-    public void setTimes(GameTime[] times) {
+    public void setTimes(Time[] times) {
         if (1 > times.length) {
             throw new IllegalArgumentException("There must be at least two values.");
         }
 
-        timeValues = new GameTime[times.length];
+        timeValues = new Time[times.length];
 
         timeValues[0] = times[0]; // since we start counting at 1.
 
@@ -89,7 +89,7 @@ public abstract class TransactionAggregator {
         setTotalsArrayLength(timeValues.length - 1);
 
         for (int i = 0; i < numberOfTransactions; i++) {
-            GameTime time = world.getTransactionTimeStamp(player, i);
+            Time time = world.getTransactionTimeStamp(player, i);
             int transactionTime = time.getTicks();
 
             while (timeValues[timeIndex].getTicks() <= transactionTime) {

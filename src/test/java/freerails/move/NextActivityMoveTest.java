@@ -23,7 +23,7 @@ package freerails.move;
 
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.TestActivity;
 import freerails.model.world.World;
@@ -75,7 +75,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
         Move move = new NextActivityMove(act2, 0, player);
         assertDoMoveIsOk(move);
 
-        GameTime currentTime = new GameTime(0);
+        Time currentTime = new Time(0);
         assertEquals(currentTime, world.currentTime());
         ActivityIterator activityIterator = world.getActivities(player, 0);
 

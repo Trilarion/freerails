@@ -21,4 +21,4 @@
  * of the game - classes in other freerails packages should not import classes from
  * this package.
  */
-package experimental;
+package freerails;

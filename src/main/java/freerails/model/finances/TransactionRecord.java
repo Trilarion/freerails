@@ -19,7 +19,7 @@
 package freerails.model.finances;
 
 import freerails.model.finances.transactions.Transaction;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 
 import java.io.Serializable;
 
@@ -30,13 +30,13 @@ public class TransactionRecord implements Serializable {
 
     private static final long serialVersionUID = 1540065347606694456L;
     private final Transaction transaction;
-    private final GameTime timestamp;
+    private final Time timestamp;
 
     /**
      * @param transaction
      * @param timestamp
      */
-    public TransactionRecord(Transaction transaction, GameTime timestamp) {
+    public TransactionRecord(Transaction transaction, Time timestamp) {
         this.transaction = transaction;
         this.timestamp = timestamp;
     }
@@ -68,7 +68,7 @@ public class TransactionRecord implements Serializable {
     /**
      * @return
      */
-    public GameTime getTimestamp() {
+    public Time getTimestamp() {
         return timestamp;
     }
 }

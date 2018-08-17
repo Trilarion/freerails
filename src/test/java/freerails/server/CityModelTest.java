@@ -18,14 +18,19 @@
 
 package freerails.server;
 
+import freerails.model.cargo.Cargo;
+import freerails.model.cargo.CargoCategory;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityModel;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
-import freerails.model.MapFixtureFactory;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Test for CityModel
@@ -36,9 +41,18 @@ public class CityModelTest extends TestCase {
      * Tests generating populated CityModel from cities on the map.
      */
     public void testLoadFromMap() throws IOException {
-        World world = MapFixtureFactory.getWorld(new Vec2D(100, 100));
+        World world = WorldGenerator.testWorld(true);
+        Vec2D mapSize = world.getMapSize();
+
+        TerrainTile tile = new TerrainTile(0);
+        for (int x = 0; x < mapSize.x; x++) {
+            for (int y = 0; y < mapSize.y; y++) {
+                world.setTile(new Vec2D(x, y), tile);
+            }
+        }
+
         // TODO this is not supposed to work, but still works
-        City city = new City(1,"New York", new Vec2D(10, 20));
+        City city = new City(1,"New York", new Vec2D(5, 5));
         world.getCities().add(city);
 
         CityModel cityModel = new CityModel();

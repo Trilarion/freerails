@@ -25,7 +25,7 @@ import freerails.model.world.*;
 import freerails.move.Status;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
-import freerails.model.game.GameRules;
+import freerails.model.game.Rules;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
@@ -97,7 +97,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         // Check that we would not change another players track if this is not allowed.
-        GameRules rules = ((UnmodifiableWorld) world).getGameRules();
+        Rules rules = ((UnmodifiableWorld) world).getRules();
         if (!rules.canConnectToOtherRRTrack()) {
             // TODO what about removing track of someone else
             if (oldTrackPiece != null && newTrackPiece != null) {

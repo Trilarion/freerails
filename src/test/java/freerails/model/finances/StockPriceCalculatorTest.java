@@ -25,8 +25,8 @@ import freerails.model.MapFixtureFactory2;
 import freerails.model.finances.transactions.CargoDeliveryTransaction;
 import freerails.model.finances.transactions.Transaction;
 import freerails.util.Vec2D;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.player.Player;
@@ -55,13 +55,13 @@ public class StockPriceCalculatorTest extends TestCase {
      */
     public void testIsFirstYear() {
         assertTrue(calc.isFirstYear(0));
-        GameCalendar calendar = world.getCalendar();
+        Calendar calendar = world.getCalendar();
         int tpy = calendar.getTicksPerYear();
         int currentTicks = world.currentTime().getTicks();
-        GameTime newTime = new GameTime(currentTicks + tpy + 1);
+        Time newTime = new Time(currentTicks + tpy + 1);
         world.setTime(newTime);
         assertFalse(calc.isFirstYear(0));
-        newTime = new GameTime(currentTicks + tpy - 1);
+        newTime = new Time(currentTicks + tpy - 1);
         world.setTime(newTime);
         assertTrue(calc.isFirstYear(0));
     }
@@ -73,7 +73,7 @@ public class StockPriceCalculatorTest extends TestCase {
         long initialNetworth = 500000;
         assertEquals(initialNetworth, calc.netWorth(0));
         int currentTicks = world.currentTime().getTicks();
-        GameTime newTime = new GameTime(currentTicks + 1);
+        Time newTime = new Time(currentTicks + 1);
         world.setTime(newTime);
         CargoBatch batch = new CargoBatch(0, Vec2D.ZERO, 0, 0);
         long income = 100000;
@@ -83,10 +83,10 @@ public class StockPriceCalculatorTest extends TestCase {
         world.addTransaction(princ, transaction);
         assertEquals(initialNetworth, calc.netWorth(0));
 
-        GameCalendar calendar = world.getCalendar();
+        Calendar calendar = world.getCalendar();
         int tpy = calendar.getTicksPerYear();
         currentTicks = world.currentTime().getTicks();
-        newTime = new GameTime(currentTicks + tpy);
+        newTime = new Time(currentTicks + tpy);
         world.setTime(newTime);
 
         long expectedNetWorth = initialNetworth + income;
@@ -98,7 +98,7 @@ public class StockPriceCalculatorTest extends TestCase {
      */
     private void advanceTimeOneTick() {
         int currentTicks = world.currentTime().getTicks();
-        GameTime newTime = new GameTime(currentTicks + 1);
+        Time newTime = new Time(currentTicks + 1);
         world.setTime(newTime);
     }
 
@@ -106,10 +106,10 @@ public class StockPriceCalculatorTest extends TestCase {
      *
      */
     private void advanceTimeOneYear() {
-        GameCalendar calendar = world.getCalendar();
+        Calendar calendar = world.getCalendar();
         int tpy = calendar.getTicksPerYear();
         int currentTicks = world.currentTime().getTicks();
-        GameTime newTime = new GameTime(currentTicks + tpy);
+        Time newTime = new Time(currentTicks + tpy);
         world.setTime(newTime);
     }
 
@@ -119,7 +119,7 @@ public class StockPriceCalculatorTest extends TestCase {
     public void testProfitsLastYear() {
         assertEquals(0, calc.profitsLastYear(0));
         int currentTicks = world.currentTime().getTicks();
-        GameTime newTime = new GameTime(currentTicks + 10);
+        Time newTime = new Time(currentTicks + 10);
         world.setTime(newTime);
         assertEquals(0, calc.profitsLastYear(0));
 

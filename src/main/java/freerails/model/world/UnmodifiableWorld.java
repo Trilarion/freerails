@@ -21,9 +21,9 @@ package freerails.model.world;
 import freerails.model.cargo.Cargo;
 import freerails.model.finances.EconomicClimate;
 import freerails.model.finances.transactions.Transaction;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameRules;
-import freerails.model.game.GameSpeed;
+import freerails.model.game.Calendar;
+import freerails.model.game.Rules;
+import freerails.model.game.Speed;
 import freerails.model.station.Station;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
@@ -34,7 +34,7 @@ import freerails.util.Pair;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.finances.Money;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 import java.io.Serializable;
@@ -96,13 +96,13 @@ public interface UnmodifiableWorld extends Serializable {
 
     Station getStation(Player player, int id);
 
-    GameCalendar getCalendar();
+    Calendar getCalendar();
 
     EconomicClimate getEconomicClimate();
 
-    GameRules getGameRules();
+    Rules getRules();
 
-    GameSpeed getGameSpeed();
+    Speed getSpeed();
 
     /**
      * @return
@@ -155,21 +155,21 @@ public interface UnmodifiableWorld extends Serializable {
      */
     Transaction getTransaction(Player player, int i);
 
-    GameTime currentTime();
+    Time currentTime();
 
     /**
      * @param player
      * @param i
      * @return
      */
-    GameTime getTransactionTimeStamp(Player player, int i);
+    Time getTransactionTimeStamp(Player player, int i);
 
     /**
      * @param player
      * @param i
      * @return
      */
-    Pair<Transaction, GameTime> getTransactionAndTimeStamp(Player player, int i);
+    Pair<Transaction, Time> getTransactionAndTimeStamp(Player player, int i);
 
     /**
      * Returns number of active entities belonging to the specified player.

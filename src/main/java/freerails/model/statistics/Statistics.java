@@ -23,7 +23,7 @@ import freerails.model.finances.*;
 import freerails.model.finances.transactions.TransactionCategory;
 import freerails.model.track.TrackType;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameTime;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 
 /**
@@ -39,7 +39,7 @@ public class Statistics {
      * @param player
      * @param totalTimeInterval
      */
-    public Statistics(UnmodifiableWorld world, Player player, final GameTime[] totalTimeInterval) {
+    public Statistics(UnmodifiableWorld world, Player player, final Time[] totalTimeInterval) {
         Money track = calculateTrackTotal(world, player, totalTimeInterval[0]);
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
@@ -83,7 +83,7 @@ public class Statistics {
      * @param startTime
      * @return
      */
-    public static Money calculateTrackTotal(UnmodifiableWorld world, Player player, GameTime startTime) {
+    public static Money calculateTrackTotal(UnmodifiableWorld world, Player player, Time startTime) {
 
         ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
         aggregator.setCategory(TransactionCategory.TRACK);
@@ -93,7 +93,7 @@ public class Statistics {
             // TODO Money arithmetic
             long trackValue = trackType.getPurchasingPrice().amount;
 
-            GameTime[] times = new GameTime[]{startTime, GameTime.DOOMSDAY};
+            Time[] times = new Time[]{startTime, Time.DOOMSDAY};
 
             aggregator.setType(trackType.getId());
             aggregator.setTimes(times);

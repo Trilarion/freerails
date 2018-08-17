@@ -25,24 +25,22 @@ import java.io.Serializable;
  * Stores rules governing what players are allowed to do, for example whether
  * they can connect their track to the track of other players.
  */
-public class GameRules implements Serializable {
+public class Rules implements Serializable {
 
     private static final long serialVersionUID = 3258125847557978416L;
-    public static final GameRules DEFAULT_RULES = new GameRules(true, false);
-    public static final GameRules NO_RESTRICTIONS = new GameRules(false, true);
-    private final boolean canConnectToOtherRRTrack;
-    private final boolean mustConnectToExistingTrack;
+    private final boolean canConnectToOtherPlayersTracks;
+    private final boolean mustStayConnectedToExistingTrack;
 
-    private GameRules(boolean mustConnect, boolean canConnectToOthers) {
-        canConnectToOtherRRTrack = canConnectToOthers;
-        mustConnectToExistingTrack = mustConnect;
+    public Rules(boolean mustConnect, boolean canConnectToOthers) {
+        canConnectToOtherPlayersTracks = canConnectToOthers;
+        mustStayConnectedToExistingTrack = mustConnect;
     }
 
     @Override
     public int hashCode() {
         int result;
-        result = (canConnectToOtherRRTrack ? 1 : 0);
-        result = 29 * result + (mustConnectToExistingTrack ? 1 : 0);
+        result = (canConnectToOtherPlayersTracks ? 1 : 0);
+        result = 29 * result + (mustStayConnectedToExistingTrack ? 1 : 0);
 
         return result;
     }
@@ -51,24 +49,24 @@ public class GameRules implements Serializable {
      * @return
      */
     public synchronized boolean canConnectToOtherRRTrack() {
-        return canConnectToOtherRRTrack;
+        return canConnectToOtherPlayersTracks;
     }
 
     /**
      * @return
      */
     public synchronized boolean mustConnectToExistingTrack() {
-        return mustConnectToExistingTrack;
+        return mustStayConnectedToExistingTrack;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof GameRules)) {
+        if (!(obj instanceof Rules)) {
             return false;
         }
 
-        GameRules test = (GameRules) obj;
+        Rules test = (Rules) obj;
 
-        return canConnectToOtherRRTrack == test.canConnectToOtherRRTrack && mustConnectToExistingTrack == test.mustConnectToExistingTrack;
+        return canConnectToOtherPlayersTracks == test.canConnectToOtherPlayersTracks && mustStayConnectedToExistingTrack == test.mustStayConnectedToExistingTrack;
     }
 }

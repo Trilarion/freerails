@@ -27,13 +27,12 @@ import freerails.model.track.TrackType;
 import freerails.model.track.explorer.BuildTrackExplorer;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Status;
-import freerails.savegames.MapCreator;
 import freerails.util.Vec2D;
-import freerails.model.*;
-import freerails.model.game.GameRules;
+import freerails.model.game.Rules;
 import freerails.model.player.Player;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.World;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.File;
@@ -45,7 +44,7 @@ import java.util.SortedSet;
  */
 public class BuildTrackExplorerTest extends TestCase {
 
-    private final Player testPlayer = MapFixtureFactory.TEST_PLAYER;
+    private final Player testPlayer = WorldGenerator.TEST_PLAYER;
     private World world;
     private Player player;
 
@@ -56,16 +55,20 @@ public class BuildTrackExplorerTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         // load terrain types
-        URL url = MapCreator.class.getResource("/freerails/data/scenario/terrain_types.json");
+        URL url = BuildTrackExplorerTest.class.getResource("/freerails/data/scenario/terrain_types.json");
         File file = new File(url.toURI());
         SortedSet<Terrain> terrainTypes = GsonManager.loadTerrainTypes(file);
 
-        // generate track types
-        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
+        // load rules
+        url = BuildTrackExplorerTest.class.getResource("/rules.without_restrictions.json");
+        file = new File(url.toURI());
+        Rules rules = GsonManager.load(file, Rules.class);
 
-        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).build();
+        // generate track types
+        SortedSet<TrackType> trackTypes = WorldGenerator.testTrackTypes();
+
+        world = new World.Builder().setMapSize(new Vec2D(20, 20)).setTerrainTypes(terrainTypes).setTrackTypes(trackTypes).setRules(rules).build();
         world.addPlayer(testPlayer);
-        world.setGameRules(GameRules.NO_RESTRICTIONS);
         player = testPlayer;
     }
 
@@ -200,7 +203,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
     private void buildTrack(int x, int y, TileTransition direction) {
         TrackType trackType = world.getTrackType(0);
-        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, MapFixtureFactory.TEST_PLAYER);
+        ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(new Vec2D(x, y), direction, trackType, trackType, world, WorldGenerator.TEST_PLAYER);
         Status ms = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(ms.succeeds());
     }

@@ -28,9 +28,9 @@ import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
 import freerails.move.mapupdatemove.TrackMove;
 import freerails.util.Vec2D;
-import freerails.model.MapFixtureFactory;
 import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
+import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.util.SortedSet;
@@ -49,14 +49,9 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        // generate track types
-        SortedSet<TrackType> trackTypes = MapFixtureFactory.generateTrackRuleList();
-
-        world = new World.Builder().setMapSize(new Vec2D(10, 10)).setTrackTypes(trackTypes).build();
-        Player player = new Player(0, "test player");
-        world.addPlayer(player);
-        transactionGenerator = new TrackMoveTransactionsGenerator(world, player);
+        world = WorldGenerator.testWorld(true);
+        world.addPlayer(WorldGenerator.TEST_PLAYER);
+        transactionGenerator = new TrackMoveTransactionsGenerator(world, WorldGenerator.TEST_PLAYER);
     }
 
     /**
@@ -73,7 +68,7 @@ public class TrackMoveTransactionsGeneratorTest extends TestCase {
         oldTrackPiece = world.getTile(Vec2D.ZERO).getTrackPiece();
 
         TrackType trackType = world.getTrackType(0);
-        int owner = MapFixtureFactory.TEST_PLAYER.getId();
+        int owner = WorldGenerator.TEST_PLAYER.getId();
         newTrackPiece = new TrackPiece(newConfig, trackType, owner);
         trackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, Vec2D.ZERO);
 

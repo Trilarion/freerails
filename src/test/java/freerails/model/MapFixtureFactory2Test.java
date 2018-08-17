@@ -69,7 +69,7 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testMap() {
-        assertEquals(world.getMapSize(), new Vec2D(50, 50));
+        assertEquals(world.getMapSize(), new Vec2D(200, 200));
     }
 
     /**

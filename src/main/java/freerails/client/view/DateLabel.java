@@ -24,8 +24,8 @@ package freerails.client.view;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,8 +48,8 @@ public class DateLabel extends JLabel implements View {
     @Override
     protected void paintComponent(Graphics g) {
         if (null != world) {
-            GameTime time = world.currentTime();
-            GameCalendar calendar = world.getCalendar();
+            Time time = world.currentTime();
+            Calendar calendar = world.getCalendar();
             String s = calendar.getYearAndMonth(time.getTicks());
             super.setText(s);
         }

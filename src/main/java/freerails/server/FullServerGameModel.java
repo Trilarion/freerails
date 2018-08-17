@@ -34,8 +34,8 @@ import freerails.move.*;
 import freerails.move.generator.BondInterestMoveGenerator;
 import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.move.receiver.MoveReceiver;
-import freerails.model.game.GameCalendar;
-import freerails.model.game.GameTime;
+import freerails.model.game.Calendar;
+import freerails.model.game.Time;
 
 // TODO why does it have to be saved and not only the world during loading and saveing? Is there some internal state that should be part of the world?
 /**
@@ -95,8 +95,8 @@ public class FullServerGameModel implements ServerGameModel {
                         int amountAlready = after.getAmount(cb);
 
                         // Obtain the month
-                        GameTime time = world.currentTime();
-                        GameCalendar calendar = world.getCalendar();
+                        Time time = world.currentTime();
+                        Calendar calendar = world.getCalendar();
                         int month = calendar.getMonth(time.getTicks());
 
                         int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
@@ -135,7 +135,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             trainUpdater.buildTrains(world);
 
-            int gameSpeed = world.getGameSpeed().getSpeed();
+            int gameSpeed = world.getSpeed().getSpeed();
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
@@ -145,8 +145,8 @@ public class FullServerGameModel implements ServerGameModel {
                 trainUpdater.moveTrains(world);
 
                 // Check whether we are about to start a new year..
-                GameTime time = world.currentTime();
-                GameCalendar calendar = world.getCalendar();
+                Time time = world.currentTime();
+                Calendar calendar = world.getCalendar();
                 int yearNextTick = calendar.getYear(time.getTicks() + 1);
                 int yearThisTick = calendar.getYear(time.getTicks());
 
