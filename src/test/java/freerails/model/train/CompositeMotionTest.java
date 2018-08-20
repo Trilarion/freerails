@@ -39,7 +39,7 @@ public class CompositeMotionTest extends TestCase {
     public void testBounds() {
         Motion sat = ConstantAccelerationMotion.fromSpeedAccelerationDistance(10, 2, 400.0d);
         CompositeMotion csat = new CompositeMotion(sat);
-        double t = csat.duration();
+        double t = csat.getDuration();
         double t2 = csat.calculateTimeAtDistance(400.0d);
         assertEquals(t, t2);
         double s = csat.calculateDistanceAtTime(t);

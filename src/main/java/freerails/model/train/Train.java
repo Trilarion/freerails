@@ -20,45 +20,69 @@ package freerails.model.train;
 
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
-import freerails.model.activity.Activity;
+import freerails.model.game.Clock;
+import freerails.model.train.activity.Activity;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
-import freerails.util.Pair;
+import freerails.util.BidirectionalIterator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+// TODO add position on map to train
+// TODO delete Activities when they are finished
+// TODO naming of wagonTypes/consist clarify
+// TODO set default values for schedule, cargobatchbundle, consist and allow minimal constructor
 /**
  * Represents a train.
  */
 public class Train extends Identifiable {
 
-    private final int engineId;
-    private final List<Integer> wagonTypes;
-    private CargoBatchBundle cargoBatchBundle;
-    private Schedule schedule;
-    private List<Pair<Activity, Double>> activities;
+    private int engineId;
+    private List<Integer> wagonTypes = new ArrayList<>();
+    private UnmodifiableCargoBatchBundle cargoBatchBundle = CargoBatchBundle.EMPTY;
+    private UnmodifiableSchedule schedule = Schedule.EMPTY;
+    private List<Activity> activities = new ArrayList<>();
 
-    /**
-     * Makes a copy of the schedule.
-     *
-     * @param id
-     * @param engineId
-     * @param wagonTypes
-     * @param cargoBatchBundle
-     * @param schedule
-     */
-    public Train(int id, int engineId, List<Integer> wagonTypes, @NotNull UnmodifiableCargoBatchBundle cargoBatchBundle, @NotNull UnmodifiableSchedule schedule) {
+    // TODO we have to trust that the ids are valid, only the world can check this consistency
+    public Train(int id, int engineId) {
         super(id);
         this.engineId = engineId;
-        this.wagonTypes = Collections.unmodifiableList(wagonTypes);
-        this.cargoBatchBundle = new CargoBatchBundle(cargoBatchBundle);
-        this.schedule = new Schedule(schedule);
-        this.activities = new ArrayList<>();
+    }
+
+    public BidirectionalIterator<Activity> getActivities() {
+        return new BidirectionalIterator<>(activities);
+    }
+
+    // TODO not sure if this is a good idea, would like to use addActivity probably
+    public void setActivities(BidirectionalIterator<Activity> iterator) {
+        activities.clear();
+        while (iterator.hasNext()) {
+            iterator.next();
+            activities.add(iterator.get());
+        }
+    }
+
+    public void removeLastActivity() {
+        activities.remove(activities.size() - 1);
+    }
+
+    /**
+     * Does not start before the last activity has ended.
+     *
+     * @param activity
+     */
+    public void addActivity(@NotNull Activity activity) {
+        if (!activities.isEmpty()) {
+            Activity last = activities.get(activities.size() - 1);
+            double lastFinishTime = last.getStartTime() + last.getDuration();
+            activity.setStartTime(Math.max(activity.getStartTime(), lastFinishTime));
+        }
+        activities.add(activity);
     }
 
     /**
@@ -86,8 +110,12 @@ public class Train extends Identifiable {
     /**
      * @return
      */
-    public int getEngineId() {
+    public int getEngine() {
         return engineId;
+    }
+
+    public void setEngine(int engineId) {
+        this.engineId = engineId;
     }
 
     /**
@@ -126,5 +154,26 @@ public class Train extends Identifiable {
      */
     public List<Integer> getConsist() {
         return wagonTypes;
+    }
+
+    // TODO defensive copy?
+    public void setConsist(@NotNull List<Integer> wagonTypes) {
+        this.wagonTypes = wagonTypes;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Train)) {
+            return false;
+        }
+        // TODO there is a problem with the equality test on the sorted sets, only the id is tested (see https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#equals(java.lang.Object))
+        Train o = (Train) obj;
+        boolean equal = getId() == o.getId() && engineId == o.getEngine() && Objects.equals(wagonTypes, o.wagonTypes);
+        equal = equal && Objects.equals(cargoBatchBundle, o.cargoBatchBundle) && Objects.equals(schedule, o.schedule);
+        equal = equal && Objects.equals(activities, o.activities);
+        return equal;
     }
 }

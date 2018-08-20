@@ -21,7 +21,8 @@
  */
 package freerails.model.train;
 
-import freerails.model.activity.ActivityIterator;
+import freerails.model.train.activity.Activity;
+import freerails.util.BidirectionalIterator;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.model.train.schedule.TrainOrder;
@@ -83,23 +84,23 @@ public class TrainAccessor {
      * @return
      */
     public TrainPositionOnMap findPosition(double time, Rectangle view) {
-        ActivityIterator activityIterator = world.getActivities(player, trainId);
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
 
         // TODO why starting at the end and going backwards?
         // goto last
-        activityIterator.gotoLastActivity();
+        bidirectionalIterator.gotoLast();
         // search backwards
-        while (activityIterator.getStartTime() + activityIterator.getActivity().duration() >= time && activityIterator.hasPrevious()) {
-            activityIterator.previousActivity();
+        while (bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() >= time && bidirectionalIterator.hasPrevious()) {
+            bidirectionalIterator.previous();
         }
-        boolean afterFinish = activityIterator.getStartTime() + activityIterator.getActivity().duration() < time;
-        while (afterFinish && activityIterator.hasNext()) {
-            activityIterator.nextActivity();
-            afterFinish = activityIterator.getStartTime() + activityIterator.getActivity().duration() < time;
+        boolean afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
+        while (afterFinish && bidirectionalIterator.hasNext()) {
+            bidirectionalIterator.next();
+            afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
         }
-        double dt = time - activityIterator.getStartTime();
-        dt = Math.min(dt, activityIterator.getActivity().duration());
-        TrainMotion trainMotion = (TrainMotion) activityIterator.getActivity();
+        double dt = time - bidirectionalIterator.get().getStartTime();
+        dt = Math.min(dt, bidirectionalIterator.get().getDuration());
+        TrainMotion trainMotion = (TrainMotion) bidirectionalIterator.get();
 
         Vec2D start = trainMotion.getPath().getStart();
         int trainLength = trainMotion.getTrainLength();
@@ -115,12 +116,12 @@ public class TrainAccessor {
      * @return
      */
     public TrainMotion findCurrentMotion(double time) {
-        ActivityIterator activityIterator = world.getActivities(player, trainId);
-        boolean afterFinish = activityIterator.getStartTime() + activityIterator.getActivity().duration() < time;
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+        boolean afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
         if (afterFinish) {
-            activityIterator.gotoLastActivity();
+            bidirectionalIterator.gotoLast();
         }
-        return (TrainMotion) activityIterator.getActivity();
+        return (TrainMotion) bidirectionalIterator.get();
     }
 
     /**

@@ -23,6 +23,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
+import freerails.model.train.activity.Activity;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.TrainOrder;
@@ -32,7 +33,7 @@ import freerails.model.MapFixtureFactory2;
 
 import freerails.nove.Status;
 import freerails.util.Vec2D;
-import freerails.model.activity.ActivityIterator;
+import freerails.util.BidirectionalIterator;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
 import freerails.model.train.*;
@@ -109,7 +110,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         TrainMotion motion = trainAccessor.findCurrentMotion(0);
         assertNotNull(motion);
-        PathOnTiles path = motion.getTiles(motion.duration());
+        PathOnTiles path = motion.getTiles(motion.getDuration());
         assertTrackHere(path);
     }
 
@@ -121,9 +122,9 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         Move move = preMove.generate(world);
         Status status = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(status.isSuccess());
-        ActivityIterator ai = world.getActivities(player, 0);
-        TrainMotion tm = (TrainMotion) ai.getActivity();
-        assertEquals(0.0d, tm.duration());
+        BidirectionalIterator<Activity> activities = world.getTrain(player, 0).getActivities();
+        TrainMotion tm = (TrainMotion) activities.get();
+        assertEquals(0.0d, tm.getDuration());
         assertEquals(0.0d, tm.getSpeedAtEnd());
         assertEquals(0.0d, tm.getDistance(0));
         PositionOnTrack positionOnTrack = tm.getFinalPosition();

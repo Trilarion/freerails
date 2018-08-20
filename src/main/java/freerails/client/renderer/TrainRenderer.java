@@ -57,7 +57,7 @@ public class TrainRenderer {
         PathWalker pw = new PathWalkerImpl(it);
 
         // renderer engine.
-        renderWagon(g, pw, train.getEngineId(), true);
+        renderWagon(g, pw, train.getEngine(), true);
 
         // renderer wagons.
         for (int i = 0; i < train.getNumberOfWagons(); i++) {

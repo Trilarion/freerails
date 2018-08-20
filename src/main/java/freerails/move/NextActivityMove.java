@@ -21,8 +21,8 @@
  */
 package freerails.move;
 
-import freerails.model.activity.Activity;
-import freerails.model.activity.ActivityIterator;
+import freerails.model.train.activity.Activity;
+import freerails.util.BidirectionalIterator;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.nove.Status;
@@ -35,16 +35,16 @@ public class NextActivityMove implements Move {
     private static final long serialVersionUID = -1783556069173689661L;
     private final Activity activity;
     private final Player player;
-    private final int index;
+    private final int trainId;
 
     /**
      * @param activity
-     * @param index
+     * @param trainId
      * @param player
      */
-    public NextActivityMove(Activity activity, int index, Player player) {
+    public NextActivityMove(Activity activity, int trainId, Player player) {
         this.activity = activity;
-        this.index = index;
+        this.trainId = trainId;
 
         this.player = player;
     }
@@ -56,7 +56,7 @@ public class NextActivityMove implements Move {
 
         final NextActivityMove nextActivityMove = (NextActivityMove) obj;
 
-        if (index != nextActivityMove.index) return false;
+        if (trainId != nextActivityMove.trainId) return false;
         if (!activity.equals(nextActivityMove.activity)) return false;
         return player.equals(nextActivityMove.player);
     }
@@ -67,7 +67,7 @@ public class NextActivityMove implements Move {
         result = activity.hashCode();
         result = 29 * result + player.hashCode();
 
-        result = 29 * result + index;
+        result = 29 * result + trainId;
         return result;
     }
 
@@ -81,24 +81,24 @@ public class NextActivityMove implements Move {
     }
 
     public Status tryUndoMove(World world, Player player) {
-        ActivityIterator ai = world.getActivities(this.player, index);
-        ai.gotoLastActivity();
+        BidirectionalIterator<Activity> activityIterator = world.getTrain(this.player, trainId).getActivities();
+        activityIterator.gotoLast();
 
-        Activity act = ai.getActivity();
-        if (act.equals(activity)) return Status.OK;
+        Activity activity = activityIterator.get();
+        if (activity.equals(this.activity)) return Status.OK;
 
-        return Status.fail("Expected " + activity + " but found " + act);
+        return Status.fail("Expected " + this.activity + " but found " + activity);
     }
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
-        if (status.isSuccess()) world.addActivity(this.player, index, activity);
+        if (status.isSuccess()) world.addActivity(this.player, trainId, activity);
         return status;
     }
 
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
-        if (status.isSuccess()) world.removeLastActivity(this.player, index);
+        if (status.isSuccess()) world.getTrain(this.player, trainId).removeLastActivity();
         return status;
     }
 }

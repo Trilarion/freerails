@@ -23,6 +23,8 @@
 package freerails.model.train.schedule;
 
 
+import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +37,7 @@ public class Schedule implements UnmodifiableSchedule {
     /**
      * Vector of TrainOrder.
      */
+    public static final UnmodifiableSchedule EMPTY = new Schedule();
     private List<TrainOrder> orders = new ArrayList();
     private int nextScheduledOrder = -1;
 

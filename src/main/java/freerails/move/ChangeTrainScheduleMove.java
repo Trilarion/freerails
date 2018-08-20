@@ -20,23 +20,23 @@ package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.train.Train;
+import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.World;
 import freerails.nove.Status;
-import org.jetbrains.annotations.NotNull;
 
-// TODO maybe divide this into more cases like (change cargobatch, change schedule, ...) we already have next activity...
-// TODO no undo, equals, hashcode
 /**
  *
  */
-public class ChangeTrainMove implements Move {
+public class ChangeTrainScheduleMove implements Move {
 
     private final Player player;
-    private final Train train;
+    private final int trainId;
+    private final UnmodifiableSchedule schedule;
 
-    public ChangeTrainMove(@NotNull Player player, @NotNull Train train) {
+    public ChangeTrainScheduleMove(Player player, int trainId, UnmodifiableSchedule schedule) {
         this.player = player;
-        this.train = train;
+        this.trainId = trainId;
+        this.schedule = schedule;
     }
 
     @Override
@@ -51,18 +51,8 @@ public class ChangeTrainMove implements Move {
 
     @Override
     public Status doMove(World world, Player player) {
-        Train t = world.getTrain(this.player, train.getId());
-        // update consist
-        t.setConsist(train.getConsist());
-        // update engine
-        t.setEngine(train.getEngine());
-        // update cargobatchbundle
-        t.setCargoBatchBundle(train.getCargoBatchBundle());
-        // update schedule
-        t.setSchedule(train.getSchedule());
-        // update activities
-        t.setActivities(train.getActivities());
-
+        Train train = world.getTrain(this.player, trainId);
+        train.setSchedule(schedule);
         return Status.OK;
     }
 

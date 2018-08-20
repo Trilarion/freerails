@@ -124,14 +124,26 @@ class DialogueBoxTester extends JFrame {
         schedule.setOrder(0, order);
         schedule.setOrder(1, order2);
 
-        world.addTrain(TEST_PLAYER, new Train(0,0, Arrays.asList(0, 0), cargoBatchBundle, schedule));
+        Train train = new Train(0,0);
+        train.setConsist(Arrays.asList(0, 0));
+        train.setCargoBatchBundle(cargoBatchBundle);
+        train.setSchedule(schedule);
+        world.addTrain(TEST_PLAYER, train);
         schedule.setOrder(2, order2);
         schedule.setOrder(3, order3);
-        world.addTrain(TEST_PLAYER, new Train(1,1, Arrays.asList(1, 1), cargoBatchBundle, schedule));
+        train = new Train(1,1);
+        train.setConsist(Arrays.asList(1, 1));
+        train.setCargoBatchBundle(cargoBatchBundle);
+        train.setSchedule(schedule);
+        world.addTrain(TEST_PLAYER, train);
         schedule.setOrder(4, order2);
         schedule.setOrderToGoto(3);
         schedule.setPriorityOrders(order);
-        world.addTrain(TEST_PLAYER, new Train(2,0, Arrays.asList(1, 2, 0), cargoBatchBundle, schedule));
+        train = new Train(2,0);
+        train.setConsist(Arrays.asList(1, 2, 0));
+        train.setCargoBatchBundle(cargoBatchBundle);
+        train.setSchedule(schedule);
+        world.addTrain(TEST_PLAYER, train);
 
         final MyGlassPanel glassPanel = new MyGlassPanel();
         dialogueBoxController.setup(modelRoot, vl);

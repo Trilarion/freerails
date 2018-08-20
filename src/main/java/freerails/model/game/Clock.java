@@ -21,6 +21,7 @@ package freerails.model.game;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 // TODO store speed separately in World
 /**
@@ -154,5 +155,25 @@ public class Clock implements Serializable {
 
     public int getTicksPerYear() {
         return ticksPerYear;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Clock)) {
+            return false;
+        }
+        Clock o = (Clock) obj;
+        return Objects.equals(startYear, o.startYear) && Objects.equals(ticksPerYear, o.ticksPerYear) && Objects.equals(currentTime, o.currentTime);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = startYear;
+        result = 31 * result + ticksPerYear;
+        result = 31 * result + currentTime.hashCode();
+        return result;
     }
 }

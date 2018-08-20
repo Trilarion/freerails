@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.train.activity.Activity;
 import freerails.model.game.Time;
 import freerails.model.station.StationUtils;
 import freerails.model.track.explorer.FlatTrackExplorer;
@@ -32,7 +33,7 @@ import freerails.model.train.motion.*;
 import freerails.move.*;
 
 import freerails.util.Vec2D;
-import freerails.model.activity.ActivityIterator;
+import freerails.util.BidirectionalIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
@@ -135,10 +136,10 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     public boolean isUpdateDue(UnmodifiableWorld world) {
         Time currentTime = world.getClock().getCurrentTime();
         TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
-        ActivityIterator ai = world.getActivities(player, trainId);
-        ai.gotoLastActivity();
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+        bidirectionalIterator.gotoLast();
 
-        double finishTime = ai.getStartTime() + ai.getActivity().duration();
+        double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
         double ticks = currentTime.getTicks();
 
         boolean hasFinishedLastActivity = Math.floor(finishTime) <= ticks;
@@ -302,7 +303,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
         Motion speeds = nextSpeeds(world, tileTransition);
 
-        PathOnTiles currentTiles = motion.getTiles(motion.duration());
+        PathOnTiles currentTiles = motion.getTiles(motion.getDuration());
         PathOnTiles pathOnTiles = currentTiles.addStep(tileTransition);
         return new TrainMotion(pathOnTiles, currentTiles.steps(), motion.getTrainLength(), speeds);
     }
@@ -349,7 +350,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     public Move stopTrain(UnmodifiableWorld world) {
         TrainMotion motion = MotionUtils.lastMotion(world, player, trainId);
         Motion stopped = ConstantAccelerationMotion.STOPPED;
-        double duration = motion.duration();
+        double duration = motion.getDuration();
 
         int trainLength = motion.getTrainLength();
         PathOnTiles tiles = motion.getTiles(duration);

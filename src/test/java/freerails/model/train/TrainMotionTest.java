@@ -70,7 +70,7 @@ public class TrainMotionTest extends TestCase {
 
         // Different from above
         double tooLongDuration = 3.9936298481613424d;
-        actualDuration = motion.duration();
+        actualDuration = motion.getDuration();
 
         assertTrue(tooLongDuration > actualDuration);
 

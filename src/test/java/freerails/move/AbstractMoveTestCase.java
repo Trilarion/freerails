@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.train.Train;
 import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
@@ -271,6 +272,8 @@ public abstract class AbstractMoveTestCase extends TestCase {
         validEngineId = world.getEngines().iterator().next().getId(); // more or less gets a valid id of an engine
         // Set the time..
         world.addPlayer(WorldGenerator.TEST_PLAYER);
+        // add a train
+        world.addTrain(WorldGenerator.TEST_PLAYER, new Train(0, 0));
     }
 
     /**

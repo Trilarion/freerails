@@ -27,7 +27,7 @@ import freerails.model.train.PositionOnTrack;
 import freerails.model.train.TrainState;
 import freerails.util.Pair;
 import freerails.util.Vec2D;
-import freerails.model.activity.Activity;
+import freerails.model.train.activity.Activity;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.PathIterator;
 
@@ -55,7 +55,7 @@ import java.util.ArrayList;
  * @see freerails.model.train.PathOnTiles
  * @see CompositeMotion
  */
-public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
+public strictfp class TrainMotion extends Activity<TrainPositionOnMap> {
 
     private static final long serialVersionUID = 3618423722025891641L;
     private final double duration, distanceEngineWillTravel;
@@ -151,7 +151,7 @@ public strictfp class TrainMotion implements Activity<TrainPositionOnMap> {
     /**
      * @return
      */
-    public double duration() {
+    public double getDuration() {
         return duration;
     }
 

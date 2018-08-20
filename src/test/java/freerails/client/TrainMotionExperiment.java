@@ -22,12 +22,14 @@ import freerails.client.launcher.GameLoop;
 import freerails.client.launcher.ScreenHandler;
 import freerails.controller.*;
 import freerails.model.MapFixtureFactory2;
+import freerails.model.train.activity.Activity;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.TrainOrder;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
@@ -36,7 +38,7 @@ import freerails.move.generator.MoveGenerator;
 import freerails.nove.Status;
 import freerails.util.Segment;
 import freerails.util.Vec2D;
-import freerails.model.activity.ActivityIterator;
+import freerails.util.BidirectionalIterator;
 import freerails.model.world.World;
 import freerails.model.ModelConstants;
 import freerails.model.player.Player;
@@ -128,22 +130,22 @@ class TrainMotionExperiment extends JComponent {
             updateTrainPosition();
         }
 
-        ActivityIterator activityIterator = world.getActivities(player, 0);
-        while (activityIterator.getStartTime() + activityIterator.getActivity().duration() < ticks && activityIterator.hasNext()) {
-            activityIterator.nextActivity();
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
+        while (bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < ticks && bidirectionalIterator.hasNext()) {
+            bidirectionalIterator.next();
         }
-        double t = Math.min(ticks, activityIterator.getStartTime() + activityIterator.getActivity().duration());
-        t = t - activityIterator.getStartTime();
+        double t = Math.min(ticks, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration());
+        t = t - bidirectionalIterator.get().getStartTime();
 
-        TrainMotion motion = (TrainMotion) activityIterator.getActivity();
+        TrainMotion motion = (TrainMotion) bidirectionalIterator.get();
 
         /** Converts an absolute time value to a time value relative to the start of
         * the current activity. If absoluteTime is greater then getFinishTime(), getDuration() is
         * returned. */
-        double dt = ticks - activityIterator.getStartTime();
-        dt = Math.min(dt, activityIterator.getActivity().duration());
+        double dt = ticks - bidirectionalIterator.get().getStartTime();
+        dt = Math.min(dt, bidirectionalIterator.get().getDuration());
 
-        TrainPositionOnMap pos = (TrainPositionOnMap) activityIterator.getActivity().getStateAtTime(dt);
+        TrainPositionOnMap pos = (TrainPositionOnMap) bidirectionalIterator.get().getStateAtTime(dt);
 
         PathOnTiles pathOT = motion.getPath();
         Iterator<Vec2D> it = pathOT.tilesIterator();
@@ -197,11 +199,11 @@ class TrainMotionExperiment extends JComponent {
         Status status = move.doMove(world, player);
         if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
 
-        ActivityIterator ai = world.getActivities(player, 0);
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
 
-        while (ai.hasNext()) {
-            ai.nextActivity();
-            finishTime = ai.getStartTime() + ai.getActivity().duration();
+        while (bidirectionalIterator.hasNext()) {
+            bidirectionalIterator.next();
+            finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
         }
     }
 }

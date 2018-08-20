@@ -97,7 +97,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
         trainNumber = newTrainNumber;
 
         Train train = world.getTrain(player, trainNumber);
-        display(train.getEngineId(), train.getConsist());
+        display(train.getEngine(), train.getConsist());
         resetPreferredSize();
     }
 
@@ -139,7 +139,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
 
         // Set up the array of images.
         if (null != order.getConsist()) {
-            display(train.getEngineId(), order.getConsist());
+            display(train.getEngine(), order.getConsist());
         } else {
             images = new Image[0];
         }

@@ -76,6 +76,9 @@ public class Time implements Comparable<Time>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (!(obj instanceof Time)) {
             return false;
         }

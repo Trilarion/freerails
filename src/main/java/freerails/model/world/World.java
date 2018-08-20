@@ -19,8 +19,7 @@
 package freerails.model.world;
 
 import freerails.model.Identifiable;
-import freerails.model.activity.Activity;
-import freerails.model.activity.ActivityIterator;
+import freerails.model.train.activity.Activity;
 import freerails.model.cargo.Cargo;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.game.*;
@@ -57,7 +56,6 @@ import java.util.*;
 public class World implements UnmodifiableWorld {
 
     private static final long serialVersionUID = 3544393612684505393L;
-    public Map<Player, Map<Integer, List<Pair<Activity, Double>>>> activities = new HashMap<>();
     public Map<Player, List<Transaction>> transactions = new HashMap<>();
     public List<Money> currentBalance = new ArrayList<>();
 
@@ -78,7 +76,7 @@ public class World implements UnmodifiableWorld {
     private final SortedSet<Sentiment> sentiments;
 
     // player specific lists
-    private final Map<Player, SortedSet<Train>> trains; // a list of trains by player
+    private final Map<Player, List<Train>> trains; // a list of trains by player
     private final Map<Player, SortedSet<Station>> stations; // list of stations by player
 
 
@@ -87,6 +85,7 @@ public class World implements UnmodifiableWorld {
     private int currentSentimentId = 2;
 
     // TODO need something to fill the Builder in loading scenario as well as going the other way (when writing out scenario)
+    // TODO set trains?
     public static class Builder {
 
         private SortedSet<Engine> engines = new TreeSet<>();
@@ -95,7 +94,7 @@ public class World implements UnmodifiableWorld {
         private SortedSet<Terrain> terrainTypes = new TreeSet<>();
         private SortedSet<TrackType> trackTypes = new TreeSet<>();
         private SortedSet<Sentiment> sentiments = new TreeSet<>();
-        private Map<Player, SortedSet<Train>> trains = new HashMap<>();
+        private Map<Player, List<Train>> trains = new HashMap<>();
         private Map<Player, SortedSet<Station>> stations = new HashMap<>();
         private Rules rules = null;
         private Vec2D mapSize = null;
@@ -313,30 +312,13 @@ public class World implements UnmodifiableWorld {
 
     /**
      * @param player
-     * @param index
+     * @param trainId
      * @param activity
      */
-    public void addActivity(Player player, int index, Activity activity) {
-        int lastId = activities.get(player).get(index).size() - 1;
-        Pair<Activity, Double> last = activities.get(player).get(index).get(lastId);
-        double duration = last.getA().duration();
-        double lastFinishTime = last.getB() + duration;
-        double thisStartTime = Math.max(lastFinishTime, clock.getCurrentTime().getTicks());
-        Pair<Activity, Double> ant = new Pair<>(activity, thisStartTime);
-        activities.get(player).get(index).add(ant);
-    }
-
-    /**
-     * @param player
-     * @param activity
-     * @return
-     */
-    public int addActiveEntity(Player player, Activity activity) {
-        int index = activities.get(player).size();
-        activities.get(player).put(index, new ArrayList<>());
-        Pair<Activity, Double> ant = new Pair<>(activity, (double) (clock.getCurrentTime().getTicks()));
-        activities.get(player).get(index).add(ant);
-        return index;
+    public void addActivity(Player player, int trainId, Activity activity) {
+        Train train = getTrain(player, trainId);
+        activity.setStartTime(clock.getCurrentTime().getTicks());
+        train.addActivity(activity);
     }
 
     /**
@@ -356,15 +338,13 @@ public class World implements UnmodifiableWorld {
         if (trains.containsKey(player)) {
             throw new RuntimeException("something wrong");
         }
-        trains.put(player, new TreeSet<>());
+        trains.put(player, new ArrayList<>());
 
         // add stations
         if (stations.containsKey(player)) {
             throw new RuntimeException("something wrong");
         }
         stations.put(player, new TreeSet<>());
-
-        activities.put(player, new HashMap<>());
 
         return index;
     }
@@ -408,53 +388,35 @@ public class World implements UnmodifiableWorld {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof World) {
-            World other = (World) obj;
-
-            // Compare players
-            if (!players.equals(other.players)) {
-                return false;
-            }
-
-            // Compare lists
-            if (!activities.equals(other.activities)) {
-                return false;
-            }
-            if (!transactions.equals(other.transactions)) {
-                return false;
-            }
-
-            // TODO compare calender, gamespeed, economic climate, ...
-
-            // Compare maps
-            Vec2D mapSize = getMapSize();
-            if (!mapSize.equals(other.getMapSize())) {
-                return false;
-            }
-            for (int x = 0; x < mapSize.x; x++) {
-                for (int y = 0; y < mapSize.y; y++) {
-                    Vec2D p = new Vec2D(x, y);
-                    if (!getTile(p).equals(other.getTile(p))) {
-                        return false;
-                    }
-                }
-            }
-
-            // phew!
+        if (this == obj) {
             return true;
         }
-        return false;
-    }
+        if (!(obj instanceof World)) {
+            return false;
+        }
+        World o = (World) obj;
 
-    /**
-     * @param player
-     * @param index
-     * @return
-     */
-    public ActivityIterator getActivities(final Player player, int index) {
-        // return new ActivityIterator(this, player, index);
-        List<Pair<Activity, Double>> list = activities.get(player).get(index);
-        return new ActivityIterator(list);
+        boolean equal = Objects.equals(players, o.players) && Objects.equals(clock, o.clock) && Objects.equals(speed, o.speed);
+        equal = equal && Objects.equals(rules, o.rules) && Objects.equals(engines, o.engines) && Objects.equals(cities, o.cities);
+        equal = equal && Objects.equals(cargos, o.cargos) && Objects.equals(trains, o.trains) && Objects.equals(stations, o.stations);
+        equal = equal && Objects.equals(transactions, o.transactions);
+
+
+        // Compare maps
+        Vec2D mapSize = getMapSize();
+        if (!mapSize.equals(o.getMapSize())) {
+            return false;
+        }
+        for (int x = 0; x < mapSize.x; x++) {
+            for (int y = 0; y < mapSize.y; y++) {
+                Vec2D p = new Vec2D(x, y);
+                if (!getTile(p).equals(o.getTile(p))) {
+                    return false;
+                }
+            }
+        }
+
+        return equal;
     }
 
     /**
@@ -516,31 +478,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param player
-     * @return
-     */
-    public Activity removeLastActiveEntity(Player player) {
-        int lastId = activities.get(player).size() - 1;
-        List<Pair<Activity, Double>> serializables = activities.get(player).get(lastId);
-        Activity activity = serializables.remove(serializables.size() - 1).getA();
-        activities.get(player).remove(lastId);
-        return activity;
-    }
-
-    /**
-     * @param player
-     * @param index
-     * @return
-     */
-    public void removeLastActivity(Player player, int index) {
-        if (activities.get(player).get(index).size() < 2) {
-            throw new IllegalStateException();
-        }
-        List<Pair<Activity, Double>> list = activities.get(player).get(index);
-        list.remove(list.size() - 1);
-      }
-
-    /**
      * Removes the last player to be added.
      *
      * @return the player that was removed.
@@ -588,9 +525,4 @@ public class World implements UnmodifiableWorld {
     public void setTile(Vec2D location, TerrainTile tile) {
         map[getMapIndex(location)] = tile;
     }
-
-    public int size(Player player) {
-        return activities.get(player).size();
-    }
-
 }

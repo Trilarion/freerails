@@ -147,7 +147,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
     private static CompositeMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
         // TODO maybe a better way to get an id
         int id = world.getStations(player).size();
-        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
+        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY);
         Move addStation = new AddStationMove(player, station);
 
         return new CompositeMove(Arrays.asList(upgradeTrackMove, addStation));

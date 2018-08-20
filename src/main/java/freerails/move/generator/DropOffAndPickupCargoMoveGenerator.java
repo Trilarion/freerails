@@ -169,8 +169,12 @@ public class DropOffAndPickupCargoMoveGenerator {
 
         if (autoConsist) {
             Train before = this.world.getTrain(this.player, this.trainId);
-            int engine = before.getEngineId();
-            Train after = new Train(before.getId(), engine, consist, before.getCargoBatchBundle(), before.getSchedule());
+            int engine = before.getEngine();
+            Train after = new Train(before.getId(), engine);
+            after.setConsist(consist);
+            after.setCargoBatchBundle(before.getCargoBatchBundle());
+            after.setSchedule(before.getSchedule());
+            after.setActivities(before.getActivities());
             // TODO we need a dedicated ChangeTrainMove
             // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
             Move move = new ChangeTrainMove(player, after);

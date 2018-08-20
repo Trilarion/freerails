@@ -60,14 +60,15 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
      * @return
      */
     @Override
-    public final boolean equals(Object obj) {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj instanceof Identifiable) {
-            return this.compareTo((Identifiable) obj) == 0;
+        if (!(obj instanceof Identifiable)) {
+            return false;
         }
-        return false;
+        Identifiable o = (Identifiable) obj;
+        return this.compareTo(o) == 0;
     }
 
     /**

@@ -148,22 +148,10 @@ public class TrainStopsHandler implements Serializable {
         if (!consist.equals(order.getConsist())) {
             // ..if so, we should change the consist.
             int oldLength = train.getLength();
-            int engineId = train.getEngineId();
-
-            // TODO does this change the consist?
-            // TODO newTrain is computed in the ChangeTrainMove also
-            // TODO need a way to get a new id for trains, this is not the best way so far
-            int id = world.getTrains(player).size();
-            Train newTrain = new Train(id, engineId, order.getConsist(), train.getCargoBatchBundle(), train.getSchedule());
-            // worldDiffs.set(player, PlayerKey.Trains, trainId, newTrain);
-            Train after = new Train(id, engineId, order.getConsist(), train.getCargoBatchBundle(), train.getSchedule());
-            // TODO need dedicated change train move instead
-            // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
-            Move move = new ChangeTrainMove(player, after);
+            Move move = new ChangeTrainConsistMove(player, trainId, order.getConsist());
             move.doMove(world, player);
             moves.add(move);
-
-            int newLength = newTrain.getLength();
+            int newLength = train.getLength();
             // has the trains length increased?
             if (newLength > oldLength) {
                 TrainMotion trainMotion = trainAccessor.findCurrentMotion(Double.MAX_VALUE);
@@ -199,21 +187,14 @@ public class TrainStopsHandler implements Serializable {
 
         List<Integer> wagonsToAdd = schedule.getWagonsToAdd();
 
-        // Loading and unloading cargo takes time, so we make the train wait for
-        // a few ticks.
+        // Loading and unloading cargo takes time, so we make the train wait for a few ticks.
         makeTrainWait(50);
 
         boolean autoConsist = schedule.autoConsist();
 
         if (null != wagonsToAdd) {
-            int engineType = train.getEngineId();
-            // TODO need a way to get a new id for trains, this is not the best way so far
-            int id = world.getTrains(player).size();
-            Train after = new Train(trainId, engineType, wagonsToAdd, train.getCargoBatchBundle(), train.getSchedule());
-            // TODO need dedicated change train move
-            // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, train, after, player);
-            Move move = new ChangeTrainMove(player, after);
-            // TODO instead of doing the move, add them to a list
+            int engineType = train.getEngine();
+            Move move = new ChangeTrainConsistMove(player, trainId, wagonsToAdd);
             moves.add(move);
             move.doMove(world, player);
         }
@@ -230,10 +211,8 @@ public class TrainStopsHandler implements Serializable {
         boolean waitingForFullLoad = order.isWaitUntilFull() && !TrainUtils.isTrainFull(world, player, trainId);
 
         if (!waitingForFullLoad) {
-            // TODO needs a mutable schedule
             schedule.gotoNextStation();
-            train.setSchedule(schedule);
-            Move move = new ChangeTrainMove(player, train);
+            Move move = new ChangeTrainScheduleMove(player, trainId, schedule);
             move.doMove(world, player);
             moves.add(move);
 

@@ -95,7 +95,8 @@ public final class TrainUtils {
 
     public static int calculateTrainLength(int engineId, List<Integer> wagons) {
         // TODO is this a good idea, how often is this called, instead extract getLength() method
-        Train train = new Train(0, engineId, wagons, new CargoBatchBundle(), new Schedule());
+        Train train = new Train(0, engineId);
+        train.setConsist(wagons);
         return train.getLength();
     }
 

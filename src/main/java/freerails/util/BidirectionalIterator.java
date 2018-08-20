@@ -16,74 +16,67 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.model.activity;
+package freerails.util;
 
-import freerails.util.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-// TODO what about a standard list iterator? need a bidirectional iterator, but not hard to write a generic one
+// TODO to follow the iterator interface more closely make next and previous return the elements and not get (removes the need for current)
+// TODO implement Iterator interface
+// TODO if not has previous and hasNext is used at the same time, what about Iterator on standard reversed list?
 /**
  *
  */
-public class ActivityIterator {
+public class BidirectionalIterator<E> {
 
-    /**
-     *
-     */
-    private final List<Pair<Activity, Double>> activities;
+    private final List<E> list;
+    private int currentIndex = -1;
+    private E current = null;
 
-    /**
-     *
-     */
-    private int currentIndex;
-    private Pair<Activity, Double> currentActivityWithTime;
-
+    // TODO defensive copy of list?
     /**
      */
-    public ActivityIterator(@NotNull List<Pair<Activity, Double>> activities) {
-        this.activities = activities;
-        currentIndex = 0;
-        currentActivityWithTime = this.activities.get(currentIndex);
+    public BidirectionalIterator(@NotNull List<E> list) {
+        this.list = list;
+        if (!this.list.isEmpty()) {
+            currentIndex = 0;
+            current = list.get(currentIndex);
+        }
     }
 
     /**
      * @return
      */
-    public Activity getActivity() {
-        return currentActivityWithTime.getA();
-    }
-
-    public double getStartTime() {
-        return currentActivityWithTime.getB();
+    public E get() {
+        return current;
     }
 
     /**
      * @return
      */
     public boolean hasNext() {
-        return (currentIndex + 1) < activities.size();
+        return (currentIndex + 1) < list.size();
     }
 
     /**
      *
      */
-    public void nextActivity() {
+    public void next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
         currentIndex++;
-        currentActivityWithTime = activities.get(currentIndex);
+        current = list.get(currentIndex);
     }
 
     /**
      *
      */
-    public void gotoLastActivity() {
-        currentIndex = activities.size() - 1;
-        currentActivityWithTime = activities.get(currentIndex);
+    public void gotoLast() {
+        currentIndex = list.size() - 1;
+        current = list.get(currentIndex);
     }
 
     /**
@@ -96,12 +89,12 @@ public class ActivityIterator {
     /**
      * @throws NoSuchElementException
      */
-    public void previousActivity() throws NoSuchElementException {
+    public void previous() throws NoSuchElementException {
         if (!hasPrevious()) {
             throw new NoSuchElementException();
         }
         currentIndex--;
-        currentActivityWithTime = activities.get(currentIndex);
+        current = list.get(currentIndex);
     }
 
 }

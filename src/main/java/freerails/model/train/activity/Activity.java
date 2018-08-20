@@ -19,26 +19,40 @@
 /*
  *
  */
-package freerails.model.activity;
+package freerails.model.train.activity;
 
 import java.io.Serializable;
 
 /**
  * Mostly used for trains.
  *
+ * An activity is something whose state
+ * may be continually changing. An example is a train - it is an active entity
+ * since while it is moving its position is continually changing.
+ *
  * @param <E>
  */
-public interface Activity<E extends Serializable> extends Serializable {
+public abstract class Activity<E extends Serializable> implements Serializable {
+
+    private double startTime = Double.MIN_VALUE;
+
+    public double getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
+    }
 
     /**
      * @return
      */
-    double duration();
+    public abstract double getDuration();
 
     /**
      * @param time
      * @return
      */
-    E getStateAtTime(double time);
+    public abstract E getStateAtTime(double time);
 
 }

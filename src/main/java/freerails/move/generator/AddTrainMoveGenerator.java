@@ -101,9 +101,11 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      */
     public Move generate(UnmodifiableWorld world) {
         // Add train to train list.
-        // TODO need a way to get a new id for trains, this is not the best way so far
+        // TODO need a way to get a new id for trains, this is not the best way
         int id = world.getTrains(player).size();
-        Train train = new Train(id, engineId, wagons, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, schedule);
+        Train train = new Train(id, engineId);
+        train.setConsist(wagons);
+        train.setSchedule(schedule);
         // TODO this is a quite good idea and ensures unique ids (should be done on the server side only)
         int trainId = world.getTrains(player).size();
         // TODO we need an AddTrainMove
@@ -122,7 +124,8 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         TrainMotion motion = TrainUtils.initPositionTrainGetMotion(path, engineId, wagons);
 
         // TODO replace with AddActivityMove
-        Move addPosition = new AddActiveEntityMove(motion, trainId, player);
+        // Move addPosition = new AddActiveEntityMove(motion, trainId, player);
+        Move addPosition = new NextActivityMove(motion, trainId, player);
 
         return new CompositeMove(Arrays.asList(addTrain, transactionMove, addPosition));
     }

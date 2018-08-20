@@ -30,7 +30,7 @@ import java.util.*;
  */
 public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
 
-    public static final UnmodifiableCargoBatchBundle EMPTY_CARGO_BATCH_BUNDLE = new CargoBatchBundle();
+    public static final UnmodifiableCargoBatchBundle EMPTY = new CargoBatchBundle();
     private final SortedMap<CargoBatch, Integer> cargoMap;
 
     public CargoBatchBundle() {

@@ -134,10 +134,10 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Move move;
         setupLoopOfTrack();
 
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        TrainMotion trainMotion = ta.findCurrentMotion(3);
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
+        TrainMotion trainMotion = trainAccessor.findCurrentMotion(3);
 
-        assertEquals(0.0d, trainMotion.duration());
+        assertEquals(0.0d, trainMotion.getDuration());
 
         PathOnTiles expected = new PathOnTiles(new Vec2D(5, 5), TileTransition.SOUTH_WEST);
         assertEquals(expected, trainMotion.getPath());
@@ -148,8 +148,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertEquals(6, y);
         assertEquals(TileTransition.SOUTH_WEST, positionOnTrack.facing());
 
-        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, player,
-                new OccupiedTracks(player, world));
+        MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, player,  new OccupiedTracks(player, world));
 
         assertEquals(TileTransition.NORTH_EAST, moveTrain.nextStep(world));
 
@@ -157,16 +156,16 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         status = move.doMove(world, player);
         assertTrue(status.isSuccess());
 
-        TrainMotion tm2 = ta.findCurrentMotion(3);
+        TrainMotion tm2 = trainAccessor.findCurrentMotion(3);
         assertFalse(trainMotion.equals(tm2));
 
         expected = new PathOnTiles(new Vec2D(5, 5), TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
         assertEquals(expected, tm2.getPath());
 
-        assertTrue(tm2.duration() > 3.0d);
+        assertTrue(tm2.getDuration() > 3.0d);
         // The expected value is 3.481641930846211, found from
         // stepping thu code in debugger.
-        assertTrackHere(tm2.getTiles(tm2.duration()));
+        assertTrackHere(tm2.getTiles(tm2.getDuration()));
 
         positionOnTrack = tm2.getFinalPosition();
         assertEquals(4, x);
@@ -177,24 +176,24 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         assertEquals(TileTransition.EAST, moveTrain.nextStep(world));
 
-        MoveTrainMoveGenerator2NdTest.incrTime(world, player);
+        MoveTrainMoveGenerator2NdTest.incrementTime(world, player);
         move = moveTrain.generate(world);
         status = move.doMove(world, player);
         assertTrue(status.isSuccess());
 
-        TrainMotion tm3 = ta.findCurrentMotion(100);
+        TrainMotion tm3 = trainAccessor.findCurrentMotion(100);
         assertFalse(tm3.equals(tm2));
         expected = new PathOnTiles(new Vec2D(4, 6), TileTransition.NORTH_EAST, TileTransition.EAST);
         assertEquals(expected, tm3.getPath());
 
-        assertTrackHere(tm3.getTiles(tm3.duration()));
-        assertTrackHere(tm3.getTiles(tm3.duration() / 2));
+        assertTrackHere(tm3.getTiles(tm3.getDuration()));
+        assertTrackHere(tm3.getTiles(tm3.getDuration() / 2));
         assertTrackHere(tm3.getTiles(0));
         assertTrackHere(tm3.getPath());
 
         assertEquals(TileTransition.SOUTH_EAST, moveTrain.nextStep(world));
 
-        MoveTrainMoveGenerator2NdTest.incrTime(world, player);
+        MoveTrainMoveGenerator2NdTest.incrementTime(world, player);
         move = moveTrain.generate(world);
 
         status = move.doMove(world, player);
@@ -225,7 +224,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertNotNull(motion);
 
         PathOnTiles expected = new PathOnTiles(from, TileTransition.SOUTH_WEST);
-        PathOnTiles actual = motion.getTiles(motion.duration());
+        PathOnTiles actual = motion.getTiles(motion.getDuration());
         assertEquals(expected, actual);
     }
 
@@ -252,7 +251,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         TrainMotion motion = trainAccessor.findCurrentMotion(1);
-        double duration = motion.duration();
+        double duration = motion.getDuration();
         assertTrue(duration > 1);
         int trainLength = motion.getTrainLength();
         for (int i = 0; i < 10; i++) {

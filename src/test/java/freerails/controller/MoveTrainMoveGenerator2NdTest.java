@@ -23,7 +23,8 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
-import freerails.model.activity.ActivityIterator;
+import freerails.model.train.activity.Activity;
+import freerails.util.BidirectionalIterator;
 import freerails.model.game.Time;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.train.motion.TrainMotion;
@@ -59,12 +60,12 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
     private Vec2D station1Location;
     private Vec2D station2Location;
 
-    public static void incrTime(World world, Player player) {
-        ActivityIterator activityIterator = world.getActivities(player, 0);
-        while (activityIterator.hasNext())
-            activityIterator.nextActivity();
+    public static void incrementTime(World world, Player player) {
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
+        while (bidirectionalIterator.hasNext())
+            bidirectionalIterator.next();
 
-        double finishTime = activityIterator.getStartTime() + activityIterator.getActivity().duration();
+        double finishTime = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration();
         Time fTime = new Time((int) Math.floor(finishTime));
         while (world.getClock().getCurrentTime().compareTo(fTime) < 0) {
             world.getClock().advanceTime();
@@ -146,8 +147,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      * @return
      */
     private TileTransition nextStep() {
-        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player,
-                new OccupiedTracks(player, world));
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         return preMove.nextStep(world);
     }
 
@@ -170,14 +170,13 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      * @return
      */
     private TrainMotion moveTrain() {
-        incrTime(world, player);
-        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player,
-                new OccupiedTracks(player, world));
+        incrementTime(world, player);
+        MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         Move move = preMove.generate(world);
-        Status ms = move.doMove(world, player);
-        assertTrue(ms.getMessage(), ms.isSuccess());
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        return ta.findCurrentMotion(Integer.MAX_VALUE);
+        Status status = move.doMove(world, player);
+        assertTrue(status.getMessage(), status.isSuccess());
+        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
+        return trainAccessor.findCurrentMotion(Integer.MAX_VALUE);
     }
 
     /**
@@ -395,9 +394,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // Remove all wagons from the train.
         Train train = world.getTrain(player, 0);
-        train = new Train(train.getId(), train.getEngineId(), new ArrayList<>(), train.getCargoBatchBundle(), train.getSchedule());
-        world.removeTrain(player, 0);
-        world.addTrain(player, train);
+        train.setConsist(new ArrayList<>());
 
         // Change trains schedule to auto consist.
         TrainOrder order0 = new TrainOrder(1, null, false, true);

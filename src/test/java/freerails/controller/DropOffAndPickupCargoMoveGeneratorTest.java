@@ -65,12 +65,12 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         int x = 10;
         int y = 10;
         String stationName = "Station 1";
-        Station station = new Station(0, new Vec2D(x, y), stationName, world.getCargos().size(), CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE);
+        Station station = new Station(0, new Vec2D(x, y), stationName, world.getCargos().size(), CargoBatchBundle.EMPTY);
         world.addStation(WorldGenerator.TEST_PLAYER, station);
 
         // Set up train: 3 wagons to carry cargo type 0.
-        List<Integer> wagons = Arrays.asList(0, 0, 0);
-        Train train = new Train(0, 0, wagons, CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, new Schedule());
+        Train train = new Train(0, 0);
+        train.setConsist(Arrays.asList(0, 0, 0));
         world.addTrain(WorldGenerator.TEST_PLAYER, train);
     }
 
@@ -85,9 +85,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         cargoBundleWith2CarloadsOfCargo0.setAmount(cargoType0FromStation2, 80);
 
         assertEquals("There shouldn't be any cargo at the station yet",
-                CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoAtStation());
+                CargoBatchBundle.EMPTY, getCargoAtStation());
         assertEquals("There shouldn't be any cargo on the train yet",
-                CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoOnTrain());
+                CargoBatchBundle.EMPTY, getCargoOnTrain());
 
         // Now add 2 carloads of cargo type 0 to the station.
         // getCargoAtStation().setAmount(cargoType0FromStation2, 2);
@@ -100,7 +100,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         // The train should now have the two car loads of cargo and there should
         // be no cargo at the station.
         assertEquals("There should no longer be any cargo at the station",
-                CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoAtStation());
+                CargoBatchBundle.EMPTY, getCargoAtStation());
         assertEquals("The train should now have the two car loads of cargo",
                 cargoBundleWith2CarloadsOfCargo0, getCargoOnTrain());
     }
@@ -203,7 +203,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         expectedOnTrain.setAmount(this.cargoType1FromStation2, 40);
 
         assertEquals(expectedOnTrain, getCargoOnTrain());
-        assertEquals(CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoAtStation());
+        assertEquals(CargoBatchBundle.EMPTY, getCargoAtStation());
 
         // Now remove the wagons from the train.
         removeAllWagonsFromTrain();
@@ -219,7 +219,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         expectedAtStation.setAmount(this.cargoType1FromStation2, 40);
 
         assertEquals(expectedAtStation, getCargoAtStation());
-        assertEquals(CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoOnTrain());
+        assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
     }
 
     /**
@@ -239,7 +239,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         expectedOnTrain.setAmount(cargoType0FromStation2, 50);
 
         assertEquals(expectedOnTrain, getCargoOnTrain());
-        assertEquals(CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoAtStation());
+        assertEquals(CargoBatchBundle.EMPTY, getCargoAtStation());
 
         // Now remove the wagons from the train.
         removeAllWagonsFromTrain();
@@ -256,7 +256,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         expectedAtStation.setAmount(cargoType0FromStation2, 50);
 
         assertEquals(expectedAtStation, getCargoAtStation());
-        assertEquals(CargoBatchBundle.EMPTY_CARGO_BATCH_BUNDLE, getCargoOnTrain());
+        assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
     }
 
     /**
@@ -295,9 +295,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
 
     private void setWagons(List<Integer> wagons) {
         Train train = world.getTrain(WorldGenerator.TEST_PLAYER, 0);
-        Train newTrain = new Train(train.getId(), train.getEngineId(), wagons, train.getCargoBatchBundle(), train.getSchedule());
-        world.removeTrain(WorldGenerator.TEST_PLAYER, 0);
-        world.addTrain(WorldGenerator.TEST_PLAYER, newTrain);
+        train.setConsist(wagons);
     }
 
     private void stopAtStation() {

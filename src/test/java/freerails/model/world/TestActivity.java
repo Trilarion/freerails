@@ -18,14 +18,14 @@
 
 package freerails.model.world;
 
-import freerails.model.activity.Activity;
+import freerails.model.train.activity.Activity;
 
 import java.io.Serializable;
 
 /**
  *
  */
-public class TestActivity implements Activity {
+public class TestActivity extends Activity {
 
     private static final long serialVersionUID = 1298936498785131183L;
 
@@ -58,7 +58,7 @@ public class TestActivity implements Activity {
     /**
      * @return
      */
-    public double duration() {
+    public double getDuration() {
         return duration;
     }
 

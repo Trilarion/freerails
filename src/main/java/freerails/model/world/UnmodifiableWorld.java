@@ -28,7 +28,6 @@ import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
 import freerails.util.Vec2D;
-import freerails.model.activity.ActivityIterator;
 import freerails.model.finance.Money;
 import freerails.model.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -103,13 +102,6 @@ public interface UnmodifiableWorld extends Serializable {
 
     /**
      * @param player
-     * @param index
-     * @return
-     */
-    ActivityIterator getActivities(Player player, int index);
-
-    /**
-     * @param player
      * @return
      */
     Money getCurrentBalance(Player player);
@@ -148,11 +140,4 @@ public interface UnmodifiableWorld extends Serializable {
     Speed getSpeed();
 
     void setSpeed(@NotNull Speed speed);
-
-
-    // TODO this can go if activities are stored with trains
-    /**
-     * Returns number of active entities belonging to the specified player.
-     */
-    int size(Player player);
 }

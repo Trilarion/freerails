@@ -21,8 +21,8 @@
  */
 package freerails.move;
 
-import freerails.model.activity.Activity;
-import freerails.model.activity.ActivityIterator;
+import freerails.model.train.activity.Activity;
+import freerails.util.BidirectionalIterator;
 import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.TestActivity;
@@ -40,7 +40,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
         World world = getWorld();
         Player player = getPlayer();
         Activity act = new TestActivity(50);
-        world.addActiveEntity(player, act);
+        world.addActivity(player, 0, act);
 
         Activity act2 = new TestActivity(60);
         Move move = new NextActivityMove(act2, 0, player);
@@ -54,11 +54,11 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
     public void testMove2() {
         World world = getWorld();
         Player player = getPlayer();
-        Activity act = new TestActivity(50);
-        world.addActiveEntity(player, act);
+        Activity activity = new TestActivity(50);
+        world.addActivity(player, 0, activity);
 
-        Activity act2 = new TestActivity(60);
-        Move move = new NextActivityMove(act2, 0, player);
+        Activity activity1 = new TestActivity(60);
+        Move move = new NextActivityMove(activity1, 0, player);
         assertDoThenUndoLeavesWorldUnchanged(move);
     }
 
@@ -69,7 +69,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
         World world = getWorld();
         Player player = getPlayer();
         Activity act = new TestActivity(50);
-        world.addActiveEntity(player, act);
+        world.addActivity(player, 0, act);
 
         Activity act2 = new TestActivity(60);
         Move move = new NextActivityMove(act2, 0, player);
@@ -77,19 +77,19 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 
         Time currentTime = new Time(0);
         assertEquals(currentTime, world.getClock().getCurrentTime());
-        ActivityIterator activityIterator = world.getActivities(player, 0);
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
 
-        assertEquals(activityIterator.getActivity(), act);
-        assertEquals(activityIterator.getStartTime(), currentTime.getTicks(), 0.00001);
-        assertEquals(50.0d, activityIterator.getActivity().duration(), 0.00001);
-        assertEquals(50.0d, activityIterator.getStartTime() + activityIterator.getActivity().duration(), 0.00001);
+        assertEquals(bidirectionalIterator.get(), act);
+        assertEquals(bidirectionalIterator.get().getStartTime(), currentTime.getTicks(), 0.00001);
+        assertEquals(50.0d, bidirectionalIterator.get().getDuration(), 0.00001);
+        assertEquals(50.0d, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration(), 0.00001);
 
-        assertTrue(activityIterator.hasNext());
-        activityIterator.nextActivity();
-        assertEquals(activityIterator.getActivity(), act2);
-        assertEquals(50, activityIterator.getStartTime(), 0.00001);
-        assertEquals(60, activityIterator.getActivity().duration(), 0.0001d);
-        assertEquals(110, activityIterator.getStartTime() + activityIterator.getActivity().duration(), 0.00001);
+        assertTrue(bidirectionalIterator.hasNext());
+        bidirectionalIterator.next();
+        assertEquals(bidirectionalIterator.get(), act2);
+        assertEquals(50, bidirectionalIterator.get().getStartTime(), 0.00001);
+        assertEquals(60, bidirectionalIterator.get().getDuration(), 0.0001d);
+        assertEquals(110, bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration(), 0.00001);
     }
 
 }

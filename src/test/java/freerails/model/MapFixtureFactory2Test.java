@@ -46,13 +46,13 @@ public class MapFixtureFactory2Test extends TestCase {
      *
      */
     public void testGetCopy() {
-        World w2;
+        World world2;
         world = MapFixtureFactory2.getCopy();
         assertNotNull(world);
-        w2 = MapFixtureFactory2.getCopy();
-        assertNotNull(w2);
-        assertNotSame(world, w2);
-        assertEquals(world, w2);
+        world2 = MapFixtureFactory2.getCopy();
+        assertNotNull(world2);
+        assertNotSame(world, world2);
+        assertEquals(world, world2);
     }
 
     /**

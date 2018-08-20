@@ -21,7 +21,6 @@
  */
 package freerails.model.world;
 
-import freerails.model.activity.Activity;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.finance.transaction.TransactionCategory;
 import freerails.util.Vec2D;
@@ -116,32 +115,6 @@ public class WorldTest extends TestCase {
         original.addPlayer(a);
         copy.addPlayer(b);
         assertFalse(copy.equals(original));
-    }
-
-    /**
-     *
-     */
-    public void testActivityLists() {
-        World world = WorldGenerator.minimalWorld();
-        Player player = new Player(0, "Name");
-        world.addPlayer(player);
-
-        // Test adding activities.
-        assertEquals(0, world.size(player));
-        Activity act = new TestActivity(30);
-        int actIndex = world.addActiveEntity(player, act);
-        assertEquals(0, actIndex);
-        assertEquals(1, world.size(player));
-        actIndex = world.addActiveEntity(player, act);
-        assertEquals(1, actIndex);
-        assertEquals(2, world.size(player));
-
-        // Then removing them.
-        Activity expected = new TestActivity(30);
-        assertEquals(expected, act);
-        Activity actual = world.removeLastActiveEntity(player);
-        assertEquals(actual, expected);
-        assertEquals(1, world.size(player));
     }
 
     /**
