@@ -18,6 +18,8 @@
 
 package freerails.move;
 
+import freerails.nove.Status;
+
 import java.io.Serializable;
 
 // TODO not much difference to MoveStatus, maybe merge the two
@@ -39,7 +41,7 @@ public class TryMoveStatus implements Serializable {
      * @return
      */
     public static TryMoveStatus failed(String reason) {
-        return new TryMoveStatus(Status.moveFailed(reason));
+        return new TryMoveStatus(Status.fail(reason));
     }
 
     /**
@@ -47,7 +49,7 @@ public class TryMoveStatus implements Serializable {
      * @return
      */
     public static Serializable fromMoveStatus(Status status) {
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             return TRY_MOVE_OK;
         }
         return new TryMoveStatus(status);
@@ -72,7 +74,7 @@ public class TryMoveStatus implements Serializable {
      * Avoid creating a duplicate when deserializing.
      */
     private Object readResolve() {
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             return TRY_MOVE_OK;
         }
         return this;

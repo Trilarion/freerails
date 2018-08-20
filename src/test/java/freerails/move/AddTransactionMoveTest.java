@@ -21,9 +21,9 @@
  */
 package freerails.move;
 
-import freerails.model.finances.*;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.*;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.util.WorldGenerator;
 
 /**
@@ -38,7 +38,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Money currentBalance = getWorld().getCurrentBalance(WorldGenerator.TEST_PLAYER);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100));
+        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100), world.getClock().getCurrentTime());
         Move move1 = new AddTransactionMove(WorldGenerator.TEST_PLAYER, transaction);
         assertTryMoveIsOk(move1);
         assertTryUndoMoveFails(move1);
@@ -55,7 +55,7 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Money currentBalance = getWorld().getCurrentBalance(WorldGenerator.TEST_PLAYER);
         assertEquals(new Money(0), currentBalance);
 
-        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(-100));
+        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(-100), world.getClock().getCurrentTime());
         Move move = new AddTransactionMove(WorldGenerator.TEST_PLAYER, transaction, true);
 
         // This move should fail since there is no money in the account and it is constrained is set to true.

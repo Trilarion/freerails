@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.player.Player;
@@ -60,7 +61,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
         Status status = move.doMove(world, Player.AUTHORITATIVE);
         assertNotNull(status);
-        assertTrue("Move went through when it should have failed", !status.succeeds());
+        assertTrue("Move went through when it should have failed", !status.isSuccess());
     }
 
     /**
@@ -84,11 +85,11 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
             assertEquals(before, world);
 
-            assertTrue(move.doMove(world, Player.AUTHORITATIVE).succeeds());
+            assertTrue(move.doMove(world, Player.AUTHORITATIVE).isSuccess());
             World after = (World) Utils.cloneBySerialisation(world);
             assertFalse(after.equals(before));
 
-            boolean b = move.undoMove(world, Player.AUTHORITATIVE).succeeds();
+            boolean b = move.undoMove(world, Player.AUTHORITATIVE).isSuccess();
             assertTrue(b);
             assertEquals(before, world);
         } catch (Exception e) {
@@ -170,7 +171,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
         Status status = move.tryDoMove(world, Player.AUTHORITATIVE);
         assertNotNull(status);
-        assertTrue("Move went through when it should have failed", !status.succeeds());
+        assertTrue("Move went through when it should have failed", !status.isSuccess());
     }
 
     /**
@@ -196,7 +197,7 @@ public abstract class AbstractMoveTestCase extends TestCase {
 
         Status status = move.tryUndoMove(world, Player.AUTHORITATIVE);
         assertNotNull(status);
-        assertTrue("Move went through when it should have failed", !status.succeeds());
+        assertTrue("Move went through when it should have failed", !status.isSuccess());
     }
 
     /**

@@ -27,7 +27,8 @@ import freerails.io.adapter.MoneyAdapter;
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
 import freerails.model.cargo.Cargo;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
+import freerails.model.game.Sentiment;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
@@ -67,6 +68,7 @@ public final class GsonManager {
     private static final Type terrainTypesListType = new TypeToken<List<Terrain>>(){}.getType();
     private static final Type terrainColorsMapType = new TypeToken<Map<Integer, ARGBColor>>(){}.getType();
     private static final Type trackTypeListType = new TypeToken<List<TrackType>>(){}.getType();
+    private static final Type sentimentListType = new TypeToken<List<Sentiment>>(){}.getType();
 
     private static final TypeToken<Array2D> typeTokenArray2D = new TypeToken<Array2D>() {};
 
@@ -103,6 +105,10 @@ public final class GsonManager {
             trackType.prepare();
         }
         return trackTypes;
+    }
+
+    public static SortedSet<Sentiment> loadSentiments(File file) throws IOException {
+        return loadAsSortedSet(file, sentimentListType);
     }
 
     private static <E> E load(File file, TypeToken<E> typeToken) throws IOException {

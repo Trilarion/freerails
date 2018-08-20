@@ -25,6 +25,7 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 /**
  *
@@ -86,18 +87,18 @@ public class NextActivityMove implements Move {
         Activity act = ai.getActivity();
         if (act.equals(activity)) return Status.OK;
 
-        return Status.moveFailed("Expected " + activity + " but found " + act);
+        return Status.fail("Expected " + activity + " but found " + act);
     }
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
-        if (status.succeeds()) world.addActivity(this.player, index, activity);
+        if (status.isSuccess()) world.addActivity(this.player, index, activity);
         return status;
     }
 
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
-        if (status.succeeds()) world.removeLastActivity(this.player, index);
+        if (status.isSuccess()) world.removeLastActivity(this.player, index);
         return status;
     }
 }

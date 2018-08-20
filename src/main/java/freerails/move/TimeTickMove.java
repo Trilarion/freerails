@@ -18,9 +18,10 @@
 
 package freerails.move;
 
-import freerails.model.world.World;
 import freerails.model.game.Time;
+import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 /**
  * Changes the time item on the world object.
@@ -29,15 +30,12 @@ public class TimeTickMove implements Move {
 
     private static final long serialVersionUID = 3257290240212153393L;
     private final Time oldTime;
-    private final Time newTime;
 
     /**
      * @param oldTime
-     * @param newTime
      */
-    public TimeTickMove(Time oldTime, Time newTime) {
+    public TimeTickMove(Time oldTime) {
         this.oldTime = oldTime;
-        this.newTime = newTime;
     }
 
     @Override
@@ -46,8 +44,6 @@ public class TimeTickMove implements Move {
         if (!(obj instanceof TimeTickMove)) return false;
 
         final TimeTickMove timeTickMove = (TimeTickMove) obj;
-
-        if (!newTime.equals(timeTickMove.newTime)) return false;
         return oldTime.equals(timeTickMove.oldTime);
     }
 
@@ -55,33 +51,29 @@ public class TimeTickMove implements Move {
     public int hashCode() {
         int result;
         result = oldTime.hashCode();
-        result = 29 * result + newTime.hashCode();
         return result;
     }
 
     public Status tryDoMove(World world, Player player) {
-        if (world.currentTime().equals(oldTime)) {
+        if (world.getClock().getCurrentTime().equals(oldTime)) {
             return Status.OK;
         }
-        String string = "oldTime = " + oldTime.getTicks() + " <=> " + "currentTime " + (world.currentTime()).getTicks();
+        String string = "oldTime = " + oldTime.getTicks() + " <=> " + "currentTime " + world.getClock().getCurrentTime().getTicks();
 
-        return Status.moveFailed(string);
+        return Status.fail(string);
     }
 
     public Status tryUndoMove(World world, Player player) {
-        Time time = world.currentTime();
-
-        if (time.equals(newTime)) {
-            return Status.OK;
-        }
-        return Status.moveFailed("Expected " + newTime + ", found " + time);
+        Time time = world.getClock().getCurrentTime();
+        // TODO doesn't work anymore, we also advance the time
+        return Status.OK;
     }
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
 
-        if (status.succeeds()) {
-            world.setTime(newTime);
+        if (status.isSuccess()) {
+            world.getClock().advanceTime();
         }
 
         return status;
@@ -89,16 +81,13 @@ public class TimeTickMove implements Move {
 
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
-
-        if (status.succeeds()) {
-            world.setTime(oldTime);
-        }
+        // TODO doesn't work anymore, we also advance the time
 
         return status;
     }
 
     @Override
     public String toString() {
-        return "TimeTickMove: " + oldTime + "=>" + newTime;
+        return "TimeTickMove: " + oldTime + " advance";
     }
 }

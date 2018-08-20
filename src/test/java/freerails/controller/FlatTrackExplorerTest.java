@@ -24,7 +24,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TileTransition;
@@ -79,7 +79,7 @@ public class FlatTrackExplorerTest extends TestCase {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateBuildTrackMove(points[i], vectors[i], trackType, trackType, world, WorldGenerator.TEST_PLAYER);
             Status status = move.doMove(world, Player.AUTHORITATIVE);
-            assertTrue(status.succeeds());
+            assertTrue(status.isSuccess());
         }
     }
 

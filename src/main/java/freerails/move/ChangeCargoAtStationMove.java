@@ -22,6 +22,7 @@ import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.world.World;
+import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**

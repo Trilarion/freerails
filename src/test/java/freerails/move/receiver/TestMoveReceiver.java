@@ -24,7 +24,7 @@ package freerails.move.receiver;
 import freerails.model.player.Player;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.util.Utils;
 import freerails.model.world.World;
 

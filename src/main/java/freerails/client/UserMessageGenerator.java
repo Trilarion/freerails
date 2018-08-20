@@ -19,15 +19,15 @@
 package freerails.client;
 
 import freerails.model.cargo.Cargo;
-import freerails.model.finances.transactions.Transaction;
+import freerails.model.finance.transaction.Transaction;
 import freerails.move.*;
 import freerails.move.receiver.MoveReceiver;
 import freerails.util.Utils;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.finances.transactions.CargoDeliveryTransaction;
-import freerails.model.game.Speed;
+import freerails.model.finance.transaction.CargoDeliveryTransaction;
+
 import freerails.model.station.Station;
 import freerails.util.ui.SoundManager;
 
@@ -144,8 +144,7 @@ public class UserMessageGenerator implements MoveReceiver {
      */
     public void logSpeed() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        Speed speed = world.getSpeed();
-        int gameSpeed = speed.getSpeed();
+        int gameSpeed = world.getSpeed().getTicksPerSecond();
 
         if (gameSpeed <= 0) {
             modelRoot.setProperty(ModelRootProperty.PERMANENT_MESSAGE, "Game is paused.");

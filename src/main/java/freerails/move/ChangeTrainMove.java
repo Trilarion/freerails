@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.model.player.Player;
 import freerails.model.train.Train;
 import freerails.model.world.World;
+import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 // TODO no undo, equals, hashcode

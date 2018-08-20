@@ -18,10 +18,10 @@
 
 package freerails.model;
 
-import freerails.model.finances.transactions.ItemTransaction;
-import freerails.model.finances.Money;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.transaction.ItemTransaction;
+import freerails.model.finance.Money;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.Vec2D;
@@ -87,7 +87,7 @@ public class MapFixtureFactory2Test extends TestCase {
         int stock = 0;
         Money cash = world.getCurrentBalance(player);
         assertEquals(new Money(1000000), cash);
-        int numberOfTransactions = world.getNumberOfTransactions(player);
+        int numberOfTransactions = world.getTransactions(player).size();
         assertTrue(numberOfTransactions > 0);
         for (int i = 0; i < numberOfTransactions; i++) {
             Transaction transaction = world.getTransaction(player, i);

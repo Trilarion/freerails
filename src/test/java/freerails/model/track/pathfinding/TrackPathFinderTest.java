@@ -22,7 +22,7 @@
 package freerails.model.track.pathfinding;
 
 import freerails.io.GsonManager;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;

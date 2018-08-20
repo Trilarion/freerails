@@ -21,7 +21,7 @@ package freerails.model.terrain;
 import freerails.model.Identifiable;
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import freerails.util.Utils;
 import org.jetbrains.annotations.Nullable;
 

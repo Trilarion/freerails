@@ -19,7 +19,7 @@
 package freerails.client.view;
 
 import freerails.client.ClientConstants;
-import freerails.model.finances.IncomeStatementGenerator;
+import freerails.model.finance.IncomeStatementGenerator;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
@@ -73,8 +73,8 @@ public class IncomeStatementHtmlPanel extends HtmlPanel implements View {
     protected void paintComponent(Graphics g) {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
-        Player playerPlayer = modelRoot.getPlayer();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPlayer);
+        Player player = modelRoot.getPlayer();
+        int currentNumberOfTransactions = world.getTransactions(player).size();
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

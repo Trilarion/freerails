@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.model.player.Player;
 import freerails.model.terrain.city.CityTilePositioner;
 import freerails.model.world.World;
+import freerails.nove.Status;
 
 /**
  * Grows the cities (at the end of the year). This move cannot be undone
@@ -35,7 +36,7 @@ public class GrowCitiesMove implements Move {
 
     @Override
     public Status tryUndoMove(World world, Player player) {
-        return Status.moveFailed("cannot undo grow cities move");
+        return Status.fail("cannot undo grow cities move");
     }
 
     @Override
@@ -47,6 +48,6 @@ public class GrowCitiesMove implements Move {
 
     @Override
     public Status undoMove(World world, Player player) {
-        return Status.moveFailed("cannot undo grow cities move");
+        return Status.fail("cannot undo grow cities move");
     }
 }

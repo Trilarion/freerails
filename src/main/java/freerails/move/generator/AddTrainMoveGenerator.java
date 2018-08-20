@@ -22,7 +22,7 @@
 package freerails.move.generator;
 
 import freerails.model.cargo.CargoBatchBundle;
-import freerails.model.finances.transactions.Transaction;
+import freerails.model.finance.transaction.Transaction;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.move.*;
@@ -30,9 +30,9 @@ import freerails.move.*;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finances.transactions.ItemTransaction;
-import freerails.model.finances.Money;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.transaction.ItemTransaction;
+import freerails.model.finance.Money;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.model.player.Player;
 import freerails.model.train.*;
 
@@ -114,7 +114,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         // Determine the price of the train.
         Engine engine = world.getEngine(engineId);
         Money price = engine.getPrice();
-        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, Money.opposite(price), 1, engineId);
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, Money.opposite(price), world.getClock().getCurrentTime(), 1, engineId);
         AddTransactionMove transactionMove = new AddTransactionMove(player, transaction);
 
         // Setup and add train position.

@@ -21,7 +21,8 @@
  */
 package freerails.move;
 
-import freerails.model.finances.transactions.Transaction;
+import freerails.model.finance.transaction.Transaction;
+import freerails.nove.Status;
 import freerails.util.Utils;
 import freerails.model.world.World;
 import freerails.model.player.Player;
@@ -87,7 +88,7 @@ public class AddTransactionMove implements Move {
             long balanceAfter = bankBalance + transactionAmount;
 
             if (transactionAmount < 0 && balanceAfter < 0) {
-                return Status.moveFailed("You can't afford that!");
+                return Status.fail("You can't afford that!");
             }
         }
 
@@ -95,10 +96,10 @@ public class AddTransactionMove implements Move {
     }
 
     public Status tryUndoMove(World world, Player player) {
-        int size = world.getNumberOfTransactions(this.player);
+        int size = world.getTransactions(this.player).size();
 
         if (0 == size) {
-            return Status.moveFailed("No transactions to remove!");
+            return Status.fail("No transaction to remove!");
         }
 
         Transaction lastTransaction = world.getTransaction(this.player, size - 1);
@@ -106,13 +107,13 @@ public class AddTransactionMove implements Move {
         if (lastTransaction.equals(transaction)) {
             return Status.OK;
         }
-        return Status.moveFailed("Expected " + transaction + "but found " + lastTransaction);
+        return Status.fail("Expected " + transaction + "but found " + lastTransaction);
     }
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             world.addTransaction(this.player, transaction);
         }
 
@@ -122,7 +123,7 @@ public class AddTransactionMove implements Move {
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             world.removeLastTransaction(this.player);
         }
 

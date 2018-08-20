@@ -113,7 +113,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
                 for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
-                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed()))) {
+                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed().getTicksPerSecond()))) {
                         speedActions.setSelectedItem(actionName);
                     }
 
@@ -277,7 +277,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         JMenuItem loadGameJMenuItem = new JMenuItem(serverControlModel.getLoadGameAction());
 
         // Set up the game speed sub-menu.
-        JMenu gameSpeedSubMenu = new JMenu("Game Speed");
+        JMenu gameSpeedSubMenu = new JMenu("Game Clock.Speed");
 
         ButtonGroup group = new ButtonGroup();
 
@@ -479,7 +479,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         StationPlacementCursor.wireUp(actionRoot, mainMap.getStationRadius(), mapViewJComponent);
 
         // TODO this is so that initially the game speed is displayed, this could also be done just by moves
-        int gameSpeed = world.getSpeed().getSpeed();
+        int gameSpeed = world.getSpeed().getTicksPerSecond();
         // Set the selected game speed radio button.
         String actionName = actionRoot.getServerControls().getGameSpeedDesc(gameSpeed);
         speedActions.setSelectedItem(actionName);

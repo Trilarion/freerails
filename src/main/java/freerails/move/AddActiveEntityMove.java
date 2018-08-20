@@ -25,6 +25,7 @@ import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 /**
  * A move that adds an active entity. An active entity is something whose state
@@ -76,7 +77,7 @@ public class AddActiveEntityMove implements Move {
     }
 
     public Status tryDoMove(World world, Player player) {
-        if (index != world.size(this.player)) return Status.moveFailed("index != world.size(listKey, p)");
+        if (index != world.size(this.player)) return Status.fail("index != world.size(listKey, p)");
 
         return Status.OK;
     }
@@ -84,15 +85,15 @@ public class AddActiveEntityMove implements Move {
     public Status tryUndoMove(World world, Player player) {
         int expectedSize = index + 1;
         if (expectedSize != world.size(this.player))
-            return Status.moveFailed("(index + 1) != world.size(listKey, player)");
+            return Status.fail("(index + 1) != world.size(listKey, player)");
 
         ActivityIterator ai = world.getActivities(this.player, index);
-        if (ai.hasNext()) return Status.moveFailed("There should be exactly one activity!");
+        if (ai.hasNext()) return Status.fail("There should be exactly one activity!");
 
         Activity act = ai.getActivity();
 
         if (!act.equals(activity))
-            return Status.moveFailed("Expected " + activity.toString() + " but found " + act.toString());
+            return Status.fail("Expected " + activity.toString() + " but found " + act.toString());
 
         return Status.OK;
     }
@@ -100,14 +101,14 @@ public class AddActiveEntityMove implements Move {
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
         // TODO it's a wonder this actually works
-        if (status.succeeds()) world.addActiveEntity(this.player, activity);
+        if (status.isSuccess()) world.addActiveEntity(this.player, activity);
 
         return status;
     }
 
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
-        if (status.succeeds()) world.removeLastActiveEntity(this.player);
+        if (status.isSuccess()) world.removeLastActiveEntity(this.player);
 
         return status;
     }

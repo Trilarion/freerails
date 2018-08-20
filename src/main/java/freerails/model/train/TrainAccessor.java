@@ -133,7 +133,7 @@ public class TrainAccessor {
      * </ol>
      */
     public boolean keepWaiting() {
-        double time = world.currentTime().getTicks();
+        double time = world.getClock().getCurrentTime().getTicks();
         int stationId = getStationId(time);
         if (stationId == -1) return false;
         TrainMotion trainMotion = findCurrentMotion(time);

@@ -18,9 +18,9 @@
 package freerails.client.model;
 
 import freerails.client.model.TrainOrdersListModel.TrainOrdersListElement;
-import freerails.model.finances.IncomeStatementGenerator;
+import freerails.model.finance.IncomeStatementGenerator;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.schedule.TrainOrder;
@@ -70,7 +70,7 @@ public class TrainSummeryModel {
      * @return
      */
     public Money findTrainIncome(int trainNum) {
-        int numberOfTransactions = world.getNumberOfTransactions(player);
+        int numberOfTransactions = world.getTransactions(player).size();
         long currentTime = System.currentTimeMillis();
         if (lastUpdate + MINIMUM_WAIT_TIME > currentTime || numberOfTransactions == lastNrOfTransactions) {
             // not necessary ...

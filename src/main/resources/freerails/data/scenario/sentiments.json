@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Boom",
+    "rate": 2.0,
+    "id": 0
+  },
+  {
+    "name": "Prosperity",
+    "rate": 3.0,
+    "id": 1
+  },
+  {
+    "name": "Moderation",
+    "rate": 4.0,
+    "id": 2
+  },
+  {
+    "name": "Recession",
+    "rate": 5.0,
+    "id": 3
+  },
+  {
+    "name": "Panic",
+    "rate": 6.0,
+    "id": 4
+  }
+]

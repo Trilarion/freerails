@@ -22,9 +22,8 @@ import freerails.model.Identifiable;
 import freerails.model.activity.Activity;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.cargo.Cargo;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.game.Rules;
-import freerails.model.game.Speed;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.game.*;
 import freerails.model.station.Station;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
@@ -32,17 +31,14 @@ import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
 import freerails.util.*;
-import freerails.model.finances.EconomicClimate;
-import freerails.model.finances.Money;
-import freerails.model.finances.TransactionRecord;
-import freerails.model.game.Calendar;
-import freerails.model.game.Time;
+import freerails.model.finance.Money;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+// TODO for deserializing we might want to use playerId instead of Player as index in Maps
 /**
  * An implementation of World that uses standard java.util collections internally.
  *
@@ -62,13 +58,16 @@ public class World implements UnmodifiableWorld {
 
     private static final long serialVersionUID = 3544393612684505393L;
     public Map<Player, Map<Integer, List<Pair<Activity, Double>>>> activities = new HashMap<>();
-    public Map<Player, List<TransactionRecord>> transactionLogs = new HashMap<>();
+    public Map<Player, List<Transaction>> transactions = new HashMap<>();
     public List<Money> currentBalance = new ArrayList<>();
 
-    private Vec2D mapSize;
-    private TerrainTile[] map;
-    public List<Player> players = new ArrayList<>();
-    public Time time = new Time(0);
+    // single instances
+    private final Clock clock;
+    private Speed speed = Speed.MODERATE;
+    private Rules rules;
+    private final Vec2D mapSize;
+    private final TerrainTile[] map;
+    private final List<Player> players = new ArrayList<>();
 
     // global lists
     private final SortedSet<Engine> engines;
@@ -76,17 +75,18 @@ public class World implements UnmodifiableWorld {
     private final SortedSet<Cargo> cargos;
     private final SortedSet<Terrain> terrainTypes;
     private final SortedSet<TrackType> trackTypes;
+    private final SortedSet<Sentiment> sentiments;
 
     // player specific lists
     private final Map<Player, SortedSet<Train>> trains; // a list of trains by player
     private final Map<Player, SortedSet<Station>> stations; // list of stations by player
 
-    // single instance objects in the game world
-    private final Calendar calendar;
-    private EconomicClimate economicClimate;
-    private Rules rules;
-    private Speed speed;
 
+
+    // TODO this should also be set by the builder
+    private int currentSentimentId = 2;
+
+    // TODO need something to fill the Builder in loading scenario as well as going the other way (when writing out scenario)
     public static class Builder {
 
         private SortedSet<Engine> engines = new TreeSet<>();
@@ -94,10 +94,12 @@ public class World implements UnmodifiableWorld {
         private SortedSet<Cargo> cargos = new TreeSet<>();
         private SortedSet<Terrain> terrainTypes = new TreeSet<>();
         private SortedSet<TrackType> trackTypes = new TreeSet<>();
+        private SortedSet<Sentiment> sentiments = new TreeSet<>();
         private Map<Player, SortedSet<Train>> trains = new HashMap<>();
         private Map<Player, SortedSet<Station>> stations = new HashMap<>();
         private Rules rules = null;
         private Vec2D mapSize = null;
+        private Clock clock = new Clock(1840, 1200, new Time(0));
 
         public Builder setEngines(@NotNull SortedSet<Engine> engines) {
             this.engines = Utils.verifyNotNull(engines);
@@ -134,6 +136,11 @@ public class World implements UnmodifiableWorld {
             return this;
         }
 
+        public Builder setSentiments(@NotNull SortedSet<Sentiment> sentiments) {
+            this.sentiments = sentiments;
+            return this;
+        }
+
         public World build() {
             if (rules == null) {
                 throw new RuntimeException("Rules not specified");
@@ -157,11 +164,9 @@ public class World implements UnmodifiableWorld {
         trains = builder.trains;
         stations = builder.stations;
         rules = builder.rules;
+        sentiments = builder.sentiments;
 
-        calendar = new Calendar(1200, 1840);
-        economicClimate = EconomicClimate.MODERATION;
-
-        speed = new Speed(10);
+        clock = builder.clock;
 
         // setup map
         this.mapSize = builder.mapSize;
@@ -293,28 +298,17 @@ public class World implements UnmodifiableWorld {
         return false;
     }
 
-    public Calendar getCalendar() {
-        return calendar;
-    }
-
-    public EconomicClimate getEconomicClimate() {
-        return economicClimate;
+    public Sentiment getSentiment() {
+        return get(currentSentimentId, sentiments);
     }
 
     public Rules getRules() {
         return rules;
     }
 
+    // TODO undo this later, just for not breaking the tests
     public void setRules(@NotNull Rules rules) {
         this.rules = rules;
-    }
-
-    public Speed getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(@NotNull Speed speed) {
-        this.speed = speed;
     }
 
     /**
@@ -327,8 +321,8 @@ public class World implements UnmodifiableWorld {
         Pair<Activity, Double> last = activities.get(player).get(index).get(lastId);
         double duration = last.getA().duration();
         double lastFinishTime = last.getB() + duration;
-        double thisStartTime = Math.max(lastFinishTime, currentTime().getTicks());
-        Pair<Activity, Double> ant = new Pair<Activity, Double>(activity, thisStartTime);
+        double thisStartTime = Math.max(lastFinishTime, clock.getCurrentTime().getTicks());
+        Pair<Activity, Double> ant = new Pair<>(activity, thisStartTime);
         activities.get(player).get(index).add(ant);
     }
 
@@ -340,7 +334,7 @@ public class World implements UnmodifiableWorld {
     public int addActiveEntity(Player player, Activity activity) {
         int index = activities.get(player).size();
         activities.get(player).put(index, new ArrayList<>());
-        Pair<Activity, Double> ant = new Pair<Activity, Double>(activity, (double) (currentTime().getTicks()));
+        Pair<Activity, Double> ant = new Pair<>(activity, (double) (clock.getCurrentTime().getTicks()));
         activities.get(player).get(index).add(ant);
         return index;
     }
@@ -355,7 +349,7 @@ public class World implements UnmodifiableWorld {
         players.add(player);
         int index = players.size() - 1;
 
-        transactionLogs.put(player, new ArrayList<>());
+        transactions.put(player, new ArrayList<>());
         currentBalance.add(Money.ZERO);
 
         // add trains
@@ -375,15 +369,16 @@ public class World implements UnmodifiableWorld {
         return index;
     }
 
+    // TODO check that transaction time is not in the future and not older than last stored transaction
     /**
      * Adds the specified transaction to the specified player's bank account.
      */
     public void addTransaction(Player player, Transaction transaction) {
         int playerIndex = player.getId();
-        TransactionRecord transactionRecord = new TransactionRecord(transaction, time);
-        transactionLogs.get(player).add(transactionRecord);
-        Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = Money.add(transaction.getAmount(), oldBalance);
+        transactions.get(player).add(transaction);
+
+        // adjust balance
+        Money newBalance = Money.add(transaction.getAmount(), currentBalance.get(playerIndex));
         currentBalance.set(playerIndex, newBalance);
     }
 
@@ -397,11 +392,18 @@ public class World implements UnmodifiableWorld {
         return location.x >= 0 && location.x < mapSize.x && location.y >= 0 && location.y < mapSize.y;
     }
 
-    /**
-     * @return
-     */
-    public Time currentTime() {
-        return time;
+    public Clock getClock() {
+        return clock;
+    }
+
+    @Override
+    public Speed getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public void setSpeed(@NotNull Speed speed) {
+        this.speed = speed;
     }
 
     @Override
@@ -418,7 +420,7 @@ public class World implements UnmodifiableWorld {
             if (!activities.equals(other.activities)) {
                 return false;
             }
-            if (!transactionLogs.equals(other.transactionLogs)) {
+            if (!transactions.equals(other.transactions)) {
                 return false;
             }
 
@@ -473,14 +475,6 @@ public class World implements UnmodifiableWorld {
     }
 
     /**
-     * @param player
-     * @return
-     */
-    public int getNumberOfTransactions(Player player) {
-        return transactionLogs.get(player).size();
-    }
-
-    /**
      * @param i
      * @return
      */
@@ -505,28 +499,12 @@ public class World implements UnmodifiableWorld {
      * @return
      */
     public Transaction getTransaction(Player player, int i) {
-        TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
-        return transactionRecord.getTransaction();
+        return transactions.get(player).get(i);
     }
 
-    /**
-     * @param player
-     * @param i
-     * @return
-     */
-    public Time getTransactionTimeStamp(Player player, int i) {
-        TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
-        return transactionRecord.getTimestamp();
-    }
-
-    /**
-     * @param player
-     * @param i
-     * @return
-     */
-    public Pair<Transaction, Time> getTransactionAndTimeStamp(Player player, int i) {
-        TransactionRecord transactionRecord = transactionLogs.get(player).get(i);
-        return new Pair<>(transactionRecord.getTransaction(), transactionRecord.getTimestamp());
+    // TODO wrap in unmodifiable list
+    public Collection<Transaction> getTransactions(Player player) {
+        return transactions.get(player);
     }
 
     @Override
@@ -585,21 +563,22 @@ public class World implements UnmodifiableWorld {
         throw new UnsupportedOperationException();
     }
 
+    // TODO remove this, when undoing moves is eliminated
     /**
      * Removes and returns the last transaction added the the specified
      * player's bank account. This method is only here so that moves that add
-     * transactions can be undone.
+     * transaction can be undone.
      */
     public Transaction removeLastTransaction(Player player) {
         int playerIndex = player.getId();
 
-        List<TransactionRecord> transactions = transactionLogs.get(player);
-        TransactionRecord transactionRecord = transactions.remove(transactions.size()-1);
+        List<Transaction> transactions = this.transactions.get(player);
+        Transaction transactionRecord = transactions.remove(transactions.size()-1);
 
         Money oldBalance = currentBalance.get(playerIndex);
-        Money newBalance = Money.subtract(oldBalance, transactionRecord.getTransaction().getAmount());
+        Money newBalance = Money.subtract(oldBalance, transactionRecord.getAmount());
         currentBalance.set(playerIndex, newBalance);
-        return transactionRecord.getTransaction();
+        return transactionRecord;
     }
 
     /**
@@ -608,14 +587,6 @@ public class World implements UnmodifiableWorld {
      */
     public void setTile(Vec2D location, TerrainTile tile) {
         map[getMapIndex(location)] = tile;
-    }
-
-    // TODO instead of setting a new time, call advance on the time.
-    /**
-     * @param t
-     */
-    public void setTime(Time t) {
-        time = t;
     }
 
     public int size(Player player) {

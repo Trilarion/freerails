@@ -18,14 +18,14 @@
 
 package freerails.move.generator;
 
-import freerails.model.finances.transactions.BondItemTransaction;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.transaction.BondItemTransaction;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.ModelConstants;
-import freerails.model.finances.*;
+import freerails.model.finance.*;
 import freerails.model.player.Player;
 
 import java.util.ArrayList;
@@ -44,21 +44,18 @@ public class BondInterestMoveGenerator {
     public static List<Move> generate(UnmodifiableWorld world) {
         List<Move> moves = new ArrayList<>();
         for (Player player: world.getPlayers()) {
+            // TODO Money arithmetic on interestDue
             long interestDue = 0;
 
-            for (int i1 = 0; i1 < world.getNumberOfTransactions(player); i1++) {
-                Transaction transaction = world.getTransaction(player, i1);
-
+            for (Transaction transaction: world.getTransactions(player)) {
                 if (transaction instanceof BondItemTransaction) {
                     BondItemTransaction bondItemTransaction = (BondItemTransaction) transaction;
                     int interestRate = bondItemTransaction.getId();
-                    // TODO Money arithmetic
-                    long bondAmount = ModelConstants.BOND_VALUE_ISSUE.amount;
-                    interestDue += (interestRate * bondAmount / 100) * bondItemTransaction.getQuantity();
+                    interestDue += (interestRate * ModelConstants.BOND_VALUE_ISSUE.amount / 100) * bondItemTransaction.getQuantity();
                 }
             }
 
-            Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, new Money(-interestDue));
+            Transaction transaction = new Transaction(TransactionCategory.INTEREST_CHARGE, new Money(-interestDue), world.getClock().getCurrentTime());
 
             Move move = new AddTransactionMove(player, transaction);
             moves.add(move);

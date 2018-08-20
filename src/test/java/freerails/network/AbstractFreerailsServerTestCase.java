@@ -19,7 +19,7 @@
 package freerails.network;
 
 import freerails.server.FreerailsGameServer;
-import freerails.savegames.TestSaveGamesManager;
+import freerails.scenario.TestSaveGamesManager;
 import freerails.util.network.Connection;
 import freerails.util.network.ServerSocketAcceptor;
 import junit.framework.TestCase;

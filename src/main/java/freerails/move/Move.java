@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 import java.io.Serializable;
 

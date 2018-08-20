@@ -34,7 +34,7 @@ public interface Motion extends Serializable {
     double getTotalTime();
 
     /**
-     * @return The distance traveled during at time given by getTime().
+     * @return The distance traveled during at time given by getCurrentTime().
      */
     double getTotalDistance();
 
@@ -45,11 +45,11 @@ public interface Motion extends Serializable {
      * <li>s &ge; 0</li>
      * <li>s &le; getDistance()</li>
      * <li>s = 0 if t = 0 </li>
-     * <li>s = getDistance() if t = getTime()</li>
+     * <li>s = getDistance() if t = getCurrentTime()</li>
      * </ol>
      *
      * @return distance
-     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getTime()
+     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getCurrentTime()
      */
     double calculateDistanceAtTime(double time);
 
@@ -58,9 +58,9 @@ public interface Motion extends Serializable {
      * satisfies the following conditions:
      * <ol>
      * <li>t &ge; 0</li>
-     * <li>t &le; getTime()</li>
+     * <li>t &le; getCurrentTime()</li>
      * <li>t = 0 if s = 0 </li>
-     * <li>t = getTime() if s = getDistance()</li>
+     * <li>t = getCurrentTime() if s = getDistance()</li>
      * </ol>
      *
      * @return time
@@ -69,12 +69,12 @@ public interface Motion extends Serializable {
     double calculateTimeAtDistance(double distance);
 
     /**
-     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getTime()
+     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getCurrentTime()
      */
     double calculateSpeedAtTime(double time);
 
     /**
-     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getTime()
+     * @throws IllegalArgumentException if t &lt; 0 or t &gt; getCurrentTime()
      */
     double calculateAccelerationAtTime(double time);
 }

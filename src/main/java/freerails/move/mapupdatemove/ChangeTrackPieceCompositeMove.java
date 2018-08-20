@@ -22,7 +22,7 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.model.finances.TransactionUtils;
+import freerails.model.finance.TransactionUtils;
 import freerails.model.station.Station;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.Schedule;
@@ -30,6 +30,7 @@ import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.player.Player;
@@ -204,14 +205,14 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         // must connect to existing track
         Rules rules = world.getRules();
 
-        if (rules.mustConnectToExistingTrack()) {
+        if (rules.mustStayConnectedToExistingTrack()) {
             if (TransactionUtils.hasAnyTrackBeenBuilt(world, player)) {
                 try {
                     ChangeTrackPieceMove a = (ChangeTrackPieceMove) super.getMove(0);
                     ChangeTrackPieceMove b = (ChangeTrackPieceMove) super.getMove(1);
 
                     if (a.trackPieceBefore == null && b.trackPieceBefore == null) {
-                        return Status.moveFailed("Must connect to existing track");
+                        return Status.fail("Must connect to existing track");
                     }
                 } catch (ClassCastException e) {
                     // It was not the type of move we expected.

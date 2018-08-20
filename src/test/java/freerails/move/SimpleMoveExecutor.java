@@ -22,6 +22,7 @@ import freerails.move.generator.MoveGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 /**
  * A MoveExecutor that executes moves on the world object passed to its

@@ -23,7 +23,7 @@ package freerails.model.terrain;
 
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import freerails.util.TestUtils;
 import freerails.util.Utils;
 import junit.framework.TestCase;

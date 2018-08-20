@@ -21,16 +21,17 @@
  */
 package freerails.server;
 
+import freerails.model.game.Time;
 import freerails.model.track.TrackType;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
-import freerails.model.finances.ItemsTransactionAggregator;
+import freerails.model.finance.transaction.aggregator.ItemsTransactionAggregator;
 import freerails.model.world.World;
 import freerails.model.ModelConstants;
-import freerails.model.finances.Money;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.Money;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.model.player.Player;
 
 // TODO does not really follow the MoveGenerator interface, should it maybe?
@@ -60,7 +61,8 @@ public class TrackMaintenanceMoveGenerator {
             throw new IllegalArgumentException(String.valueOf(category));
         }
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
+        Time[] times = {Time.ZERO, world.getClock().getCurrentTime()};
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
         aggregator.setCategory(TransactionCategory.TRACK);
 
         long amount = 0;
@@ -78,7 +80,7 @@ public class TrackMaintenanceMoveGenerator {
             }
         }
 
-        Transaction transaction = new Transaction(category, new Money(-amount));
+        Transaction transaction = new Transaction(category, new Money(-amount), world.getClock().getCurrentTime());
 
         return new AddTransactionMove(player, transaction);
     }

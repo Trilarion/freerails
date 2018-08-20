@@ -21,13 +21,13 @@
  */
 package freerails.server;
 
+import freerails.model.world.UnmodifiableWorld;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.move.receiver.MoveReceiver;
-import freerails.model.world.World;
-import freerails.model.finances.Money;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.Money;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.model.player.Player;
 
 // TODO does not really follow the movegenerator interface, should it maybe?
@@ -49,12 +49,12 @@ public class TrainMaintenanceMoveGenerator {
     /**
      * @param world
      */
-    public void update(World world) {
+    public void update(UnmodifiableWorld world) {
         for (Player player: world.getPlayers()) {
             int numberOfTrains = world.getTrains(player).size();
             // TODO hardcoded constant, move to constants
             long amount = numberOfTrains * 5000;
-            Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, new Money(-amount));
+            Transaction transaction = new Transaction(TransactionCategory.TRAIN_MAINTENANCE, new Money(-amount), world.getClock().getCurrentTime());
 
             Move move = new AddTransactionMove(player, transaction);
             moveReceiver.process(move);

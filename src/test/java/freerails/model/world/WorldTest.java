@@ -22,12 +22,11 @@
 package freerails.model.world;
 
 import freerails.model.activity.Activity;
-import freerails.model.finances.transactions.ItemTransaction;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
-import freerails.model.finances.*;
+import freerails.model.finance.*;
 import freerails.model.player.Player;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
@@ -88,7 +87,7 @@ public class WorldTest extends TestCase {
 
         assertTrue(Utils.equalsBySerialization(original, copy));
 
-        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100));
+        Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100), copy.getClock().getCurrentTime());
         copy.addTransaction(player, transaction);
         assertEquals(new Money(100), copy.getCurrentBalance(player));
         assertFalse(copy.equals(original));
@@ -165,10 +164,10 @@ public class WorldTest extends TestCase {
         int playerID = world.addPlayer(player);
         assertEquals(0, playerID);
         player = world.getPlayer(playerID);
-        Transaction transaction = new Transaction(TransactionCategory.BOND, new Money(100));
+        Transaction transaction = new Transaction(TransactionCategory.BOND, new Money(100), world.getClock().getCurrentTime());
         assertEquals(new Money(0), world.getCurrentBalance(player));
         world.addTransaction(player, transaction);
-        assertEquals(1, world.getNumberOfTransactions(player));
+        assertEquals(1, world.getTransactions(player).size());
         assertEquals(new Money(100), world.getCurrentBalance(player));
         Transaction t2 = world.getTransaction(player, 0);
         assertEquals(transaction, t2);

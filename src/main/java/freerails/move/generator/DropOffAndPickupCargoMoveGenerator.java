@@ -20,8 +20,8 @@ package freerails.move.generator;
 
 import freerails.model.ModelConstants;
 import freerails.model.cargo.*;
-import freerails.model.finances.transactions.CargoDeliveryTransaction;
-import freerails.model.finances.Money;
+import freerails.model.finance.transaction.CargoDeliveryTransaction;
+import freerails.model.finance.Money;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
 
@@ -148,7 +148,7 @@ public class DropOffAndPickupCargoMoveGenerator {
 
             double amount = quantity * Math.log(dist) * ModelConstants.CARGO_DELIVERY_EARNINGS_FACTOR;
             Money money = new Money((long) amount);
-            CargoDeliveryTransaction receipt = new CargoDeliveryTransaction(money, quantity, stationID, trainId, cargoBatch);
+            CargoDeliveryTransaction receipt = new CargoDeliveryTransaction(money, world.getClock().getCurrentTime(), quantity, stationID, trainId, cargoBatch);
             moves.add(new AddTransactionMove(player, receipt));
         }
 

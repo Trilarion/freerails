@@ -16,64 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
 package freerails.model.game;
 
 import java.io.Serializable;
 
-// TODO possible range of values?, maybe split in two properties (boolean pause, speed)
 /**
- * Represents actual game speed. If the game speed {@code speed}
- * is lesser then zero, game is paused. After unpausing, the speed should be
- * {@code -speed}.
  *
- * I.e. pausing/unpausing is equal to multiply the speed by -1.
  */
-public class Speed implements Serializable {
+public enum Speed implements Serializable {
+    PAUSE(0), SLOW(10), MODERATE(20), FAST(30);
 
-    private static final long serialVersionUID = 3257562901983081783L;
-    private final int speed;
+    private final int ticksPerSecond;
 
-    /**
-     * @param speed
-     */
-    public Speed(int speed) {
-        this.speed = speed;
-    }
-
-    @Override
-    public String toString() {
-        return "GameSpeed:" + String.valueOf(speed);
-    }
-
-    /**
-     * @return
-     */
-    public int getSpeed() {
-        return speed;
-    }
-
-    /**
-     * @return
-     */
-    public boolean isPaused() {
-        return speed < 1;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Speed) {
-            Speed test = (Speed) obj;
-
-            return speed == test.speed;
+    Speed(int ticksPerSecond) {
+        if (ticksPerSecond < 0) {
+            throw new IllegalArgumentException();
         }
-        return false;
+        this.ticksPerSecond = ticksPerSecond;
     }
 
-    @Override
-    public int hashCode() {
-        return speed;
+    public int getTicksPerSecond() {
+        return ticksPerSecond;
     }
 }

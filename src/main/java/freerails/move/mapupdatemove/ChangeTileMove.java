@@ -22,7 +22,7 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
@@ -80,13 +80,13 @@ public class ChangeTileMove implements MapUpdateMove {
         Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
         if (type.getCategory() != TerrainCategory.COUNTRY) {
-            return Status.moveFailed("Can only build on clear terrain.");
+            return Status.fail("Can only build on clear terrain.");
         }
 
         if (actual.equals(before)) {
             return Status.OK;
         }
-        return Status.moveFailed("Expected " + before + " but found " + actual);
+        return Status.fail("Expected " + before + " but found " + actual);
     }
 
     public Status tryUndoMove(World world, Player player) {
@@ -94,13 +94,13 @@ public class ChangeTileMove implements MapUpdateMove {
         if (actual.equals(after)) {
             return Status.OK;
         }
-        return Status.moveFailed("Expected " + after + " but found " + actual);
+        return Status.fail("Expected " + after + " but found " + actual);
     }
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             world.setTile(location, after);
         }
 
@@ -110,7 +110,7 @@ public class ChangeTileMove implements MapUpdateMove {
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             world.setTile(location, before);
         }
 

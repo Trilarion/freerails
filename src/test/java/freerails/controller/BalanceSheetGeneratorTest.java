@@ -21,24 +21,16 @@
  */
 package freerails.controller;
 
-import freerails.io.GsonManager;
-import freerails.model.game.Rules;
 import freerails.model.player.Player;
-import freerails.model.statistics.BalanceSheetGenerator;
+import freerails.model.finance.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.model.*;
-import freerails.model.finances.Money;
-import freerails.model.game.Time;
+import freerails.model.finance.Money;
 import freerails.model.world.World;
-import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMoveTest;
-import freerails.util.Vec2D;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
-
-import java.io.File;
-import java.net.URL;
 
 /**
  * Test for BalanceSheetGenerator.
@@ -53,9 +45,8 @@ public class BalanceSheetGeneratorTest extends TestCase {
      */
     public void testBondsFigure() {
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player);
-        Money expectedBondValue = ModelConstants.BOND_VALUE_ISSUE;
-        assertEquals(Money.opposite(expectedBondValue), generator.total.loans);
-        assertEquals(Money.opposite(expectedBondValue), generator.ytd.loans);
+        assertEquals(ModelConstants.BOND_VALUE_ISSUE, generator.total.getLoans());
+        assertEquals(ModelConstants.BOND_VALUE_ISSUE, generator.ytd.getLoans());
     }
 
     /**
@@ -63,8 +54,7 @@ public class BalanceSheetGeneratorTest extends TestCase {
      */
     public void testStockHolderEquityFigure() {
         BalanceSheetGenerator generator = new BalanceSheetGenerator(world, player);
-        Money expectStockHolderEquity = new Money(-500000);
-        assertEquals(expectStockHolderEquity, generator.total.equity);
+        assertEquals(new Money(500000), generator.total.getEquity());
     }
 
     /**
@@ -76,13 +66,11 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         world = WorldGenerator.minimalWorld();
         player = new Player(world.getPlayers().size(), "Player X");
-        world.setTime(new Time(0));
-
         Move addPlayerMove = AddPlayerMove.generateMove(world, player);
         Status status = addPlayerMove.doMove(world, player);
-        assertTrue(status.getMessage(), status.succeeds());
+        assertTrue(status.getMessage(), status.isSuccess());
 
-        world.setTime(new Time(100));
+        // world.setTime(new Clock.Time(100));
     }
 
 }

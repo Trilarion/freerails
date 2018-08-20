@@ -23,15 +23,13 @@
 
 package freerails.client.view;
 
-import freerails.model.finances.FinancialDataGatherer;
-import freerails.model.finances.StockPriceCalculator;
-import freerails.model.finances.StockPrice;
-import freerails.model.finances.ItemsTransactionAggregator;
-import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finances.Money;
-import freerails.model.finances.transactions.TransactionCategory;
-import freerails.model.game.Calendar;
+import freerails.model.finance.*;
+import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
+import freerails.model.finance.transaction.aggregator.ItemsTransactionAggregator;
+import freerails.model.game.Clock;
 import freerails.model.game.Time;
+import freerails.model.world.UnmodifiableWorld;
+import freerails.model.finance.transaction.TransactionCategory;
 import freerails.model.player.Player;
 
 import java.text.DecimalFormat;
@@ -43,27 +41,27 @@ class BrokerScreenGenerator {
 
     private static final DecimalFormat DC = new DecimalFormat("#,###");
 
-    // TODO is the code here ever really used?
+    // TODO is the code here ever really used? move it to model.finance
     /**
      * Creates a new instance of BrokerScreenGenerator
      */
     public BrokerScreenGenerator(UnmodifiableWorld world, Player player) {
-        FinancialDataGatherer dataGatherer = new FinancialDataGatherer(world, player);
-
         int playerId = player.getId();
         String playername = world.getPlayer(playerId).getName();
 
-        Calendar calendar = world.getCalendar();
-        Time time = world.currentTime();
-        final int startyear = calendar.getYear(time.getTicks());
+        Clock clock = world.getClock();
+        final int startyear = clock.getCurrentYear();
         String year = String.valueOf(startyear);
         Money cash = world.getCurrentBalance(player);
 
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
+        Time[] times = {Time.ZERO, clock.getCurrentTime()};
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
 
         aggregator.setCategory(TransactionCategory.BOND);
-        Money loansTotal = aggregator.calculateValue();
+        aggregator.aggregate();
+        Money loansTotal = aggregator.getValues()[0];
 
+        FinancialDataAggregator dataGatherer = new FinancialDataAggregator(world, player, times);
         String publicShares = DC.format(dataGatherer.sharesHeldByPublic());
         Money netWorth = dataGatherer.netWorth();
         StockPrice[] stockPrices = (new StockPriceCalculator(world)).calculate();

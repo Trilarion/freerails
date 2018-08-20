@@ -18,11 +18,27 @@
 
 package freerails.nove;
 
+import freerails.model.player.Player;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import org.jetbrains.annotations.NotNull;
 
-public interface Nove {
+/**
+ *
+ */
+public abstract class Nove {
 
-    Status applicable();
+    private final Player player;
 
-    void apply(World world);
+    public Nove(@NotNull Player player) {
+        this.player = player;
+    }
+
+    protected Player getPlayer() {
+        return player;
+    }
+
+    public abstract Status applicable(UnmodifiableWorld world);
+
+    public abstract void apply(World world);
 }

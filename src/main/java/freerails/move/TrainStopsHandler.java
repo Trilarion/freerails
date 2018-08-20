@@ -27,6 +27,7 @@ import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -115,7 +116,7 @@ public class TrainStopsHandler implements Serializable {
         if (null != move) {
             moves.add(move);
             Status status = move.doMove(world, player);
-            if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
+            if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
         }
     }
 
@@ -175,7 +176,7 @@ public class TrainStopsHandler implements Serializable {
                 Move trainMove = new NextActivityMove(nextMotion, trainId, player);
                 moves.add(trainMove);
                 Status moveStatus = trainMove.doMove(world, Player.AUTHORITATIVE);
-                if (!moveStatus.succeeds()) throw new IllegalStateException(moveStatus.getMessage());
+                if (!moveStatus.isSuccess()) throw new IllegalStateException(moveStatus.getMessage());
             }
         }
 

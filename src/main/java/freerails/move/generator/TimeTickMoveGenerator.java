@@ -43,10 +43,8 @@ public class TimeTickMoveGenerator implements MoveGenerator {
      */
     public Move generate(UnmodifiableWorld world) {
 
-        Time oldTime = world.currentTime();
-        Time newTime = new Time(oldTime.getTicks() + 1);
-
-        return new TimeTickMove(oldTime, newTime);
+        Time oldTime = world.getClock().getCurrentTime();
+        return new TimeTickMove(oldTime);
     }
 
     protected Object readResolve() {

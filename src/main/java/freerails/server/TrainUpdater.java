@@ -31,7 +31,6 @@ import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
-import freerails.model.train.TrainTemplate;
 import freerails.model.track.NoTrackException;
 import freerails.model.train.*;
 import freerails.model.train.schedule.Schedule;
@@ -117,7 +116,7 @@ public class TrainUpdater implements Serializable {
     }
 
     public void moveTrains(UnmodifiableWorld world) {
-        int time = world.currentTime().getTicks();
+        int time = world.getClock().getCurrentTime().getTicks();
 
         for (Player player: world.getPlayers()) {
             OccupiedTracks occupiedTracks = new OccupiedTracks(player, world);

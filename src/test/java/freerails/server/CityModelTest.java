@@ -18,8 +18,6 @@
 
 package freerails.server;
 
-import freerails.model.cargo.Cargo;
-import freerails.model.cargo.CargoCategory;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.city.CityModel;
@@ -29,8 +27,6 @@ import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
 import java.io.IOException;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * Test for CityModel

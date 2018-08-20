@@ -21,10 +21,12 @@
  */
 package freerails.model;
 
-import freerails.model.finances.*;
-import freerails.model.finances.transactions.ItemTransaction;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.*;
+import freerails.model.finance.transaction.ItemTransaction;
+import freerails.model.finance.transaction.Transaction;
+import freerails.model.finance.transaction.TransactionCategory;
+import freerails.model.finance.transaction.aggregator.ItemsTransactionAggregator;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
@@ -43,16 +45,17 @@ public class ItemsTransactionAggregatorTest extends TestCase {
         Player player = new Player(0, "name");
         world.addPlayer(player);
         player = world.getPlayer(0);
-        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player);
+        Time[] times = {Time.ZERO, world.getClock().getCurrentTime().advance()};
+        ItemsTransactionAggregator aggregator = new ItemsTransactionAggregator(world, player, times);
         aggregator.setCategory(TransactionCategory.TRACK);
-        int quant = aggregator.calculateQuantity();
-        assertEquals(0, quant);
-        Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(100), 5, 10);
+        int quantity = aggregator.calculateQuantity();
+        assertEquals(0, quantity);
+        Transaction transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(100), world.getClock().getCurrentTime(), 5, 10);
         world.addTransaction(player, transaction);
 
-        quant = aggregator.calculateQuantity();
-        assertEquals(5, quant);
-        transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(200), 11, 10);
+        quantity = aggregator.calculateQuantity();
+        assertEquals(5, quantity);
+        transaction = new ItemTransaction(TransactionCategory.TRACK, new Money(200), world.getClock().getCurrentTime(), 11, 10);
         world.addTransaction(player, transaction);
     }
 

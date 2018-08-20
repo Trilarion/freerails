@@ -18,15 +18,31 @@
 
 package freerails.nove;
 
-public class Status {
+import org.jetbrains.annotations.NotNull;
 
-    public static final Status OK = new Status(true, "");
+import java.io.Serializable;
+import java.util.Objects;
+
+// TODO does it really have to be serializable?
+/**
+ * Records the status or failure of, among other things, an attempt to execute a move.
+ */
+public class Status implements Serializable {
+
+    public static final Status OK = new Status(true, null);
     private final boolean success;
     private final String message;
 
-    public Status(boolean success, String message) {
+    private Status(boolean success, String message) {
+        if (!success && message == null) {
+            throw new IllegalArgumentException();
+        }
         this.success = success;
         this.message = message;
+    }
+
+    public static Status fail(@NotNull String message) {
+        return new Status(false, message);
     }
 
     public boolean isSuccess() {
@@ -35,5 +51,30 @@ public class Status {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Status)) return false;
+
+        final Status other = (Status) obj;
+
+        if (this.success != other.success) return false;
+        return Objects.equals(this.message, other.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(success, message);
+    }
+
+    @Override
+    public String toString() {
+        if (success) {
+            return "OK";
+        } else {
+            return "Failed: " + message;
+        }
     }
 }

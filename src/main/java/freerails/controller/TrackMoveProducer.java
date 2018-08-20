@@ -20,6 +20,7 @@ package freerails.controller;
 
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
+import freerails.model.game.Time;
 import freerails.model.station.StationUtils;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.*;
@@ -27,10 +28,10 @@ import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
@@ -47,7 +48,7 @@ public class TrackMoveProducer {
     private final MoveExecutor executor;
     private final Collection<Move> moveStack = new Stack<>();
     /**
-     * This generates the transactions - the charge - for the track being built.
+     * This generates the transaction - the charge - for the track being built.
      */
     private final TrackMoveTransactionsGenerator transactionsGenerator;
     private Time lastMoveTime;
@@ -94,7 +95,7 @@ public class TrackMoveProducer {
             returnValue = buildTrack(new Vec2D(x, y), aPath);
             x += aPath.deltaX;
             y += aPath.deltaY;
-            if (!returnValue.succeeds()) {
+            if (!returnValue.isSuccess()) {
                 return returnValue;
             }
         }
@@ -124,7 +125,7 @@ public class TrackMoveProducer {
                 } catch (Exception e) {
                     // thrown when there is no track to remove.
                     // Fix for bug [ 948670 ] Removing non-existent track
-                    return Status.moveFailed("No track to remove.");
+                    return Status.fail("No track to remove.");
                 }
             }
             case BUILD_TRACK:
@@ -151,7 +152,7 @@ public class TrackMoveProducer {
             if (ruleIDs[i] == -1) {
                 Terrain terrainType = world.getTerrain(terrainTypeId);
                 String message = "Non of the selected track types can be built on " + terrainType.getName();
-                return Status.moveFailed(message);
+                return Status.fail(message);
             }
             types[i] = world.getTrackType(ruleIDs[i]);
         }
@@ -162,7 +163,7 @@ public class TrackMoveProducer {
                 TerrainTile tileA = (TerrainTile) world.getTile(from);
                 if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)) {
                     Status status = upgradeTrack(from, ruleIDs[0]);
-                    if (!status.succeeds()) {
+                    if (!status.isSuccess()) {
                         return status;
                     }
                 }
@@ -170,7 +171,7 @@ public class TrackMoveProducer {
                 TerrainTile tileB = (TerrainTile) world.getTile(point);
                 if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
                     Status status = upgradeTrack(point, ruleIDs[1]);
-                    if (!status.succeeds()) {
+                    if (!status.isSuccess()) {
                         return status;
                     }
                 }
@@ -193,7 +194,7 @@ public class TrackMoveProducer {
         TrackPiece before = ((TerrainTile) world.getTile(point)).getTrackPiece();
         // Check whether there is track here.
         if (before == null) {
-            return Status.moveFailed("No track to upgrade.");
+            return Status.fail("No track to upgrade.");
         }
 
         Player player = executor.getPlayer();
@@ -203,7 +204,7 @@ public class TrackMoveProducer {
 
         // We don't want to 'upgrade' a station to track. See bug 874416.
         if (before.getTrackType().isStation()) {
-            return Status.moveFailed("No need to upgrade track at station.");
+            return Status.fail("No need to upgrade track at station.");
         }
 
         Move move = new ChangeTrackPieceMove(before, after, point);
@@ -220,7 +221,7 @@ public class TrackMoveProducer {
      */
     private void clearStackIfStale() {
         UnmodifiableWorld world = executor.getWorld();
-        Time currentTime = world.currentTime();
+        Time currentTime = world.getClock().getCurrentTime();
 
         if (!currentTime.equals(lastMoveTime)) {
             moveStack.clear();
@@ -245,7 +246,7 @@ public class TrackMoveProducer {
     private Status sendMove(Move move) {
         Status status = executor.doMove(move);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             clearStackIfStale();
             moveStack.add(move);
         }

@@ -22,7 +22,7 @@ import freerails.controller.BuildMode;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.ServerCommandReceiver;
 import freerails.move.receiver.MoveChainFork;

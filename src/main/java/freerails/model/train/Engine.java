@@ -19,7 +19,7 @@
 package freerails.model.train;
 
 import freerails.model.Identifiable;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 
 // TODO doesn't upkeep/maintenance increase over age of the engine?
 /**

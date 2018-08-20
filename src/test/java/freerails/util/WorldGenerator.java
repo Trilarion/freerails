@@ -23,8 +23,9 @@ import freerails.model.cargo.Cargo;
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.CargoConversion;
 import freerails.model.cargo.CargoProductionOrConsumption;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import freerails.model.game.Rules;
+import freerails.model.game.Sentiment;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainCategory;
@@ -33,10 +34,9 @@ import freerails.model.track.TrackProperty;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.world.World;
+import freerails.scenario.MapCreator;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 
@@ -55,7 +55,12 @@ public final class WorldGenerator {
      */
     public static World minimalWorld() {
         World.Builder builder = new World.Builder();
-        builder.setRules(getUnrestrictedRules());
+        try {
+            builder.setRules(getUnrestrictedRules());
+            builder.setSentiments(getSentiments());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         builder.setMapSize(new Vec2D(20, 20));
         return builder.build();
     }
@@ -66,12 +71,17 @@ public final class WorldGenerator {
      */
     public static World defaultWorld() {
         World.Builder builder = new World.Builder();
-        builder.setRules(getDefaultRules());
         builder.setMapSize(new Vec2D(200, 200));
-        builder.setEngines(getEngines());
-        builder.setCargos(getCargos());
-        builder.setTerrainTypes(getTerrainTypes());
-        builder.setTrackTypes(getTrackTypes());
+        try {
+            builder.setRules(getDefaultRules());
+            builder.setEngines(getEngines());
+            builder.setCargos(getCargos());
+            builder.setTerrainTypes(getTerrainTypes());
+            builder.setTrackTypes(getTrackTypes());
+            builder.setSentiments(getSentiments());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return builder.build();
     }
 
@@ -81,10 +91,14 @@ public final class WorldGenerator {
      */
     public static World testWorld(boolean useDefaultRules) {
         World.Builder builder = new World.Builder();
-        if (useDefaultRules) {
-            builder.setRules(getDefaultRules());
-        } else {
-            builder.setRules(getUnrestrictedRules());
+        try {
+            if (useDefaultRules) {
+                builder.setRules(getDefaultRules());
+            } else {
+                builder.setRules(getUnrestrictedRules());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         builder.setTrackTypes(testTrackTypes());
         builder.setTerrainTypes(testTerrainTypes());
@@ -93,92 +107,59 @@ public final class WorldGenerator {
         return builder.build();
     }
 
-    private static Rules getDefaultRules() {
+    private static Rules getDefaultRules()  throws Exception {
         return getRules("/freerails/data/scenario/rules.json");
     }
 
-    private static Rules getUnrestrictedRules() {
+    private static Rules getUnrestrictedRules() throws Exception {
         return getRules("/rules.without_restrictions.json");
     }
 
-    private static Rules getRules(String location) {
+    private static Rules getRules(String location) throws Exception {
         // load rules
         URL url = WorldGenerator.class.getResource(location);
         File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return GsonManager.load(file, Rules.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        file = new File(url.toURI());
+        return GsonManager.load(file, Rules.class);
     }
 
-    private static SortedSet<Engine> getEngines() {
+    private static SortedSet<Engine> getEngines() throws Exception {
         // load engines
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/engines.json");
         File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return GsonManager.loadEngines(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        file = new File(url.toURI());
+        return GsonManager.loadEngines(file);
     }
 
-    private static SortedSet<Cargo> getCargos() {
+    private static SortedSet<Cargo> getCargos() throws Exception {
         // load cargo types
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/cargo_types.json");
         File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return GsonManager.loadCargoTypes(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        file = new File(url.toURI());
+        return GsonManager.loadCargoTypes(file);
     }
 
-    private static SortedSet<Terrain> getTerrainTypes() {
+    private static SortedSet<Terrain> getTerrainTypes() throws Exception {
         // load terrain types
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/terrain_types.json");
         File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return GsonManager.loadTerrainTypes(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        file = new File(url.toURI());
+        return GsonManager.loadTerrainTypes(file);
     }
 
-    private static SortedSet<TrackType> getTrackTypes() {
+    private static SortedSet<TrackType> getTrackTypes() throws Exception {
         // load track types
         URL url = WorldGenerator.class.getResource("/freerails/data/scenario/track_types.json");
         File file = null;
-        try {
-            file = new File(url.toURI());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return GsonManager.loadTrackTypes(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        file = new File(url.toURI());
+        return GsonManager.loadTrackTypes(file);
+    }
+
+    private static SortedSet<Sentiment> getSentiments() throws Exception {
+        // load sentiments
+        URL url = MapCreator.class.getResource("/freerails/data/scenario/sentiments.json");
+        File file = new File(url.toURI());
+        return GsonManager.loadSentiments(file);
     }
 
     /**

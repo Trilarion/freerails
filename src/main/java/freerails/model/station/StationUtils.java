@@ -140,19 +140,18 @@ public final class StationUtils {
      * @return
      */
     public static String createStationName(@NotNull UnmodifiableWorld world, @NotNull String name) {
-        String appropriateName = name;
         boolean found;
         String tempName = null;
 
-        found = StationUtils.existsStationName(world, appropriateName);
+        found = StationUtils.existsStationName(world, name);
 
         if (!found) {
-            return appropriateName;
+            return name;
         }
         // a station with that name already exists, so we need to find another
         // name
         for (String stationAlternative : StationUtils.stationAlternatives) {
-            tempName = appropriateName + ' ' + stationAlternative;
+            tempName = name + ' ' + stationAlternative;
             found = StationUtils.existsStationName(world, tempName);
             if (!found) {
                 return tempName;
@@ -163,7 +162,7 @@ public final class StationUtils {
 
         while (found) {
             j++;
-            tempName = appropriateName + "Station #" + j;
+            tempName = name + "Station #" + j;
             found = StationUtils.existsStationName(world, tempName);
         }
 
@@ -291,12 +290,10 @@ public final class StationUtils {
         }
 
         // return the supplied cargo rates
-        List<CargoProductionOrConsumption> supply = supplies;
-
         // grab the supply rates from the vector
-        for (int i = 0; i < supply.size(); i++) {
+        for (int i = 0; i < supplies.size(); i++) {
             // TODO where should the rounding take place? here?
-            cargoSupplied[i] = (int) supply.get(i).getRate();
+            cargoSupplied[i] = (int) supplies.get(i).getRate();
         }
 
         // set the supply rates for the current station

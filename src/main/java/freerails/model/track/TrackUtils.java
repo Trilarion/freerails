@@ -22,11 +22,10 @@ import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
-import freerails.model.track.pathfinding.TrackPathFinder;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 
 import java.util.ArrayList;
@@ -83,7 +82,7 @@ public final class TrackUtils {
                 if (xOverlap && yOverlap) {
                     String message = "Too close to " + station.getStationName();
 
-                    return Status.moveFailed(message);
+                    return Status.fail(message);
                 }
             }
         }

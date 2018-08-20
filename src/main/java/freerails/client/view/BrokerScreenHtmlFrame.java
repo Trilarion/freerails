@@ -25,9 +25,10 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.finances.*;
+import freerails.model.finance.*;
 import freerails.client.ModelRoot;
-import freerails.model.finances.transactions.ItemTransaction;
+import freerails.model.finance.transaction.ItemTransaction;
+import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
 import freerails.model.world.UnmodifiableWorld;
@@ -39,6 +40,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 
+// TODO simplify this code, creates too many FinancialDataAggregator instances
 /**
  */
 public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
@@ -52,19 +54,19 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         private static final long serialVersionUID = 440368637080877578L;
 
         public void actionPerformed(ActionEvent e) {
-            Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.repayBond(5));
+            Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.repayBond(5, modelRoot.getWorld().getClock().getCurrentTime()));
             modelRoot.doMove(bondTransaction);
         }
     };
-    private FinancialDataGatherer financialDataGatherer;
+    private FinancialDataAggregator financialDataAggregator;
     private final Action issueBondAction = new AbstractAction("Issue bond") {
 
         private static final long serialVersionUID = -8074364543650188583L;
 
         public void actionPerformed(ActionEvent e) {
 
-            if (financialDataGatherer.canIssueBond()) {
-                Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.issueBond(financialDataGatherer.nextBondInterestRate()));
+            if (financialDataAggregator.canIssueBond()) {
+                Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.issueBond(financialDataAggregator.nextBondInterestRate(), modelRoot.getWorld().getClock().getCurrentTime()));
                 modelRoot.doMove(bondTransaction);
             }
         }
@@ -91,7 +93,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     @Override
     public void setup(final ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
         super.setup(m, rendererRoot, closeAction);
-        financialDataGatherer = new FinancialDataGatherer(m.getWorld(), m.getPlayer());
+        financialDataAggregator = new FinancialDataAggregator(m.getWorld(), m.getPlayer());
         this.modelRoot = m;
 
         setupStockMenu();
@@ -123,7 +125,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
-                    ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice, modelRoot.getWorld().getClock().getCurrentTime());
                     Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
@@ -137,7 +139,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
-                    ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice);
+                    ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice, modelRoot.getWorld().getClock().getCurrentTime());
                     Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
                     modelRoot.doMove(move);
                     updateHtml();
@@ -153,14 +155,14 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         UnmodifiableWorld world = modelRoot.getWorld();
         Player player = modelRoot.getPlayer();
 
-        FinancialDataGatherer thisDataGatherer = new FinancialDataGatherer(world, player);
+        FinancialDataAggregator thisDataGatherer = new FinancialDataAggregator(world, player);
 
         StockPrice[] stockPrices = new StockPriceCalculator(world).calculate();
         // TODO use Money arithmetic
         long highestAffordablePrice = world.getCurrentBalance(player).amount / ModelConstants.STOCK_BUNDLE_SIZE;
         // Enable and disable stock actions.
         for (Player otherPlayer: world.getPlayers()) {
-            FinancialDataGatherer otherDataGatherer = new FinancialDataGatherer(world, otherPlayer);
+            FinancialDataAggregator otherDataGatherer = new FinancialDataAggregator(world, otherPlayer);
 
             // If this RR has stock in other RR, then enable sell stock
             boolean hasStockInRR = thisDataGatherer.getStockInRRs()[otherPlayer.getId()] > 0;
@@ -222,7 +224,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
         Player playerPlayer = modelRoot.getPlayer();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPlayer);
+        int currentNumberOfTransactions = world.getTransactions(playerPlayer).size();
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

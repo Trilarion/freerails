@@ -18,12 +18,13 @@
 
 package freerails.move;
 
-import freerails.model.finances.*;
-import freerails.model.finances.transactions.Transaction;
+import freerails.model.finance.*;
+import freerails.model.finance.transaction.Transaction;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.world.WorldUtils;
+import freerails.nove.Status;
 
 // TODO what about a remove of a player?
 /**
@@ -67,7 +68,7 @@ public class AddPlayerMove implements Move {
 
     public Status tryDoMove(World world, Player player) {
         if (WorldUtils.isAlreadyASimilarPlayer(world, playerToAdd))
-            return Status.moveFailed("There is already a player with the same name.");
+            return Status.fail("There is already a player with the same name.");
 
         return Status.OK;
     }
@@ -78,26 +79,26 @@ public class AddPlayerMove implements Move {
         if (pp.equals(playerToAdd)) {
             return Status.OK;
         }
-        return Status.moveFailed("The last player is " + pp.getName() + "not " + playerToAdd.getName());
+        return Status.fail("The last player is " + pp.getName() + "not " + playerToAdd.getName());
     }
 
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
-        if (!status.succeeds()) return status;
+        if (!status.isSuccess()) return status;
         int playerId = world.addPlayer(playerToAdd);
         // Sell the player 2 $500,000 bonds at 5% interest.
         Player player2 = playerToAdd;
-        world.addTransaction(player2, TransactionUtils.issueBond(5));
+        world.addTransaction(player2, TransactionUtils.issueBond(5, world.getClock().getCurrentTime()));
         // Issue stock
         Money initialStockPrice = new Money(5);
-        Transaction transaction = TransactionUtils.issueStock(playerId, 100000, initialStockPrice);
+        Transaction transaction = TransactionUtils.issueStock(playerId, 100000, initialStockPrice, world.getClock().getCurrentTime());
         world.addTransaction(player2, transaction);
         return status;
     }
 
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
-        if (!status.succeeds()) return status;
+        if (!status.isSuccess()) return status;
 
         world.removeLastTransaction(playerToAdd);
         world.removeLastTransaction(playerToAdd);

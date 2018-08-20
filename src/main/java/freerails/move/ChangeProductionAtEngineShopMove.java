@@ -26,6 +26,7 @@ import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.TrainTemplate;
+import freerails.nove.Status;
 
 import java.util.List;
 
@@ -97,7 +98,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
         } catch (Exception e) {}
 
         if (null == station) {
-            return Status.moveFailed(stationNumber + " " + player + " is does null");
+            return Status.fail(stationNumber + " " + player + " is does null");
         }
 
         // Check that the station is building what we expect.
@@ -105,12 +106,12 @@ public class ChangeProductionAtEngineShopMove implements Move {
             if (null == stateA) {
                 return Status.OK;
             }
-            return Status.moveFailed(stationNumber + " " + player);
+            return Status.fail(stationNumber + " " + player);
         }
         if (station.getProduction().equals(stateA)) {
             return Status.OK;
         }
-        return Status.moveFailed(stationNumber + " " + player);
+        return Status.fail(stationNumber + " " + player);
     }
 
     public Status tryUndoMove(World world, Player player) {
@@ -120,7 +121,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     public Status doMove(World world, Player player) {
         Status status = tryDoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             Station station = world.getStation(this.player, stationNumber);
             station.setProduction(after);
         }
@@ -130,7 +131,7 @@ public class ChangeProductionAtEngineShopMove implements Move {
     public Status undoMove(World world, Player player) {
         Status status = tryUndoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             Station station = world.getStation(this.player, stationNumber);
             station.setProduction(before);
         }

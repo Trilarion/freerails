@@ -29,7 +29,7 @@ import freerails.model.track.pathfinding.*;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -188,7 +188,7 @@ public class BuildTrackController implements GameModel {
                 status = planBuildingTrack(oldPosition, vector);
             }
 
-            if (status.succeeds()) {
+            if (status.isSuccess()) {
                 setCursorMessage("");
             } else {
                 setCursorMessage(status.getMessage());
@@ -202,7 +202,7 @@ public class BuildTrackController implements GameModel {
 
         // Check whether there is already track at every point.
         if (piecesOfNewTrack == 0) {
-            Status moveFailed = Status.moveFailed("Track already here");
+            Status moveFailed = Status.fail("Track already here");
             setCursorMessage(moveFailed.getMessage());
 
             return moveFailed;
@@ -211,7 +211,7 @@ public class BuildTrackController implements GameModel {
         isBuildTrackSuccessful = true;
 
         // If track has actually been built, play the build track sound.
-        if (trackBuilder != null && status.succeeds()) {
+        if (trackBuilder != null && status.isSuccess()) {
             if (trackBuilder.getTrackBuilderMode() == BuildMode.BUILD_TRACK) {
                 SoundManager.getInstance().playSound(ClientConstants.SOUND_BUILD_TRACK, 0);
             }
@@ -462,7 +462,7 @@ public class BuildTrackController implements GameModel {
                         }
 
                         Status status = move.doMove(world, fp);
-                        okSoFar = status.succeeds() && okSoFar;
+                        okSoFar = status.isSuccess() && okSoFar;
                     }// end of attemptMove
                     location = Vec2D.add(location, v.getD());
                 }
@@ -493,7 +493,7 @@ public class BuildTrackController implements GameModel {
                 Status status = moveCursorMoreTiles(builtTrack, trackBuilder);
 
                 // Note, reset() will have been called if moveStatus.success == false
-                if (status.succeeds()) {
+                if (status.isSuccess()) {
                     actPoint = builtTrack.get(builtTrack.size() - 1);
                     builtTrack = new ArrayList<>();
                 }
@@ -502,7 +502,7 @@ public class BuildTrackController implements GameModel {
             trackBuilder.setBuildTrackStrategy(getBuildTrackStrategy());
             Status status = trackBuilder.buildTrack(actPoint, path);
 
-            if (status.succeeds()) {
+            if (status.isSuccess()) {
                 actPoint = targetPoint;
                 setCursorMessage("");
                 if (BuildMode.REMOVE_TRACK == getBuildMode()) {

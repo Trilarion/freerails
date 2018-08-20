@@ -21,6 +21,7 @@ package freerails.move;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 /**
  * Lets the caller try and execute Moves.

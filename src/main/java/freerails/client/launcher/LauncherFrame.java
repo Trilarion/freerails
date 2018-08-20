@@ -27,7 +27,7 @@ import freerails.Options;
 import freerails.client.ClientConstants;
 import freerails.server.FreerailsGameServer;
 import freerails.network.LogOnResponse;
-import freerails.savegames.FullSaveGameManager;
+import freerails.scenario.FullSaveGameManager;
 import freerails.server.FullServerGameModel;
 import freerails.server.GameModel;
 import freerails.util.network.Connection;

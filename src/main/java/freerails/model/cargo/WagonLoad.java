@@ -19,6 +19,9 @@
 package freerails.model.cargo;
 
 // TODO should this be used more often?
+
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Stores the type and quantity of cargo in a wagon.
  */
@@ -32,7 +35,7 @@ public class WagonLoad implements Comparable<WagonLoad> {
         this.cargoType = cargoType;
     }
 
-    public int compareTo(WagonLoad o) {
+    public int compareTo(@NotNull WagonLoad o) {
         return quantity - o.quantity;
     }
 

@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.nove.Status;
 import freerails.util.Utils;
 import freerails.model.world.World;
 import freerails.model.player.Player;
@@ -89,7 +90,7 @@ public class CompositeMove implements Move {
         // array of moves can be executed successfully.
         Status status = doMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             // We just wanted to see if we could do them so we undo them again.
             undoMoves(world, moves.size() - 1, player);
         }
@@ -102,7 +103,7 @@ public class CompositeMove implements Move {
     public Status tryUndoMove(World world, Player player) {
         Status status = undoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             redoMoves(world, 0, player);
         }
 
@@ -112,14 +113,14 @@ public class CompositeMove implements Move {
     public Status doMove(World world, Player player) {
         Status status = compositeTest(world);
 
-        if (!status.succeeds()) {
+        if (!status.isSuccess()) {
             return status;
         }
 
         for (int i = 0; i < moves.size(); i++) {
             status = moves.get(i).doMove(world, player);
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 // Undo any moves we have already done.
                 undoMoves(world, i - 1, player);
 
@@ -136,7 +137,7 @@ public class CompositeMove implements Move {
         for (int i = moves.size() - 1; i >= 0; i--) {
             status = moves.get(i).undoMove(world, player);
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 // Redo any moves we have already undone.
                 redoMoves(world, i + 1, player);
 
@@ -151,7 +152,7 @@ public class CompositeMove implements Move {
         for (int i = number; i >= 0; i--) {
             Status status = moves.get(i).undoMove(world, player);
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 throw new IllegalStateException(status.getMessage());
             }
         }
@@ -161,7 +162,7 @@ public class CompositeMove implements Move {
         for (int i = number; i < moves.size(); i++) {
             Status status = moves.get(i).doMove(world, player);
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 throw new IllegalStateException(status.getMessage());
             }
         }

@@ -21,7 +21,7 @@ package freerails;
 import freerails.client.renderer.track.TrackPieceRendererImpl;
 import freerails.io.GsonManager;
 import freerails.model.track.TrackType;
-import freerails.savegames.MapCreator;
+import freerails.scenario.MapCreator;
 import freerails.model.track.TrackCategory;
 import freerails.model.track.TrackConfiguration;
 

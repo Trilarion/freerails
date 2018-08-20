@@ -21,7 +21,6 @@
  */
 package freerails.move;
 
-import freerails.model.player.Player;
 import freerails.model.track.TrackType;
 import freerails.model.world.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
@@ -32,8 +31,6 @@ import freerails.model.track.TrackConfiguration;
 import freerails.model.track.TrackPiece;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
-
-import java.util.SortedSet;
 
 /**
  * Test for TrackMoveTransactionsGenerator.

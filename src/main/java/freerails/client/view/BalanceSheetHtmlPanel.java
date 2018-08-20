@@ -20,7 +20,7 @@ package freerails.client.view;
 
 import freerails.client.ClientConstants;
 import freerails.client.renderer.RendererRoot;
-import freerails.model.statistics.BalanceSheetGenerator;
+import freerails.model.finance.BalanceSheetGenerator;
 import freerails.client.ModelRoot;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
@@ -73,7 +73,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
         // Check to see if the text needs updating before painting.
         UnmodifiableWorld world = modelRoot.getWorld();
         Player playerPlayer = modelRoot.getPlayer();
-        int currentNumberOfTransactions = world.getNumberOfTransactions(playerPlayer);
+        int currentNumberOfTransactions = world.getTransactions(playerPlayer).size();
 
         int lastNumTransactions = 0;
         if (currentNumberOfTransactions != lastNumTransactions) {

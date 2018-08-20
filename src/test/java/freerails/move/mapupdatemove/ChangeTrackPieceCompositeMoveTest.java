@@ -23,26 +23,18 @@
  */
 package freerails.move.mapupdatemove;
 
-import freerails.io.GsonManager;
-import freerails.model.finances.TransactionUtils;
+import freerails.model.finance.TransactionUtils;
 import freerails.model.player.Player;
-import freerails.model.terrain.Terrain;
-import freerails.model.world.UnmodifiableWorld;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.*;
-import freerails.model.world.World;
 import freerails.util.WorldGenerator;
-
-import java.io.File;
-import java.net.URL;
-import java.util.SortedSet;
 
 /**
  *
@@ -98,9 +90,9 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     public void testMustConnectToExistingTrack() {
         TrackType trackType = world.getTrackType(0);
         Rules rules = world.getRules();
-        assertTrue(rules.mustConnectToExistingTrack());
+        assertTrue(rules.mustStayConnectedToExistingTrack());
 
-        int numberOfTransactions = world.getNumberOfTransactions(WorldGenerator.TEST_PLAYER);
+        int numberOfTransactions = world.getTransactions(WorldGenerator.TEST_PLAYER).size();
         assertEquals(0, numberOfTransactions);
 
         boolean hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, WorldGenerator.TEST_PLAYER);
@@ -108,7 +100,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         assertBuildTrackSucceeds(new Vec2D(0, 5), TileTransition.EAST, trackType);
 
         // Building the track should have added a transaction.
-        numberOfTransactions = world.getNumberOfTransactions(WorldGenerator.TEST_PLAYER);
+        numberOfTransactions = world.getTransactions(WorldGenerator.TEST_PLAYER).size();
         assertTrue(0 < numberOfTransactions);
 
         hasTrackBeenBuilt = TransactionUtils.hasAnyTrackBeenBuilt(world, WorldGenerator.TEST_PLAYER);
@@ -123,7 +115,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
      */
     public void testCannotConnect2OtherRRsTrack() {
         Rules rules = world.getRules();
-        assertFalse(rules.canConnectToOtherRRTrack());
+        assertFalse(rules.canConnectToOtherPlayersTracks());
         final int TRACK_RULE_ID = 0;
         TrackType trackType = getWorld().getTrackType(TRACK_RULE_ID);
 
@@ -184,7 +176,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
     private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
         Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
-        assertFalse(status.succeeds());
+        assertFalse(status.isSuccess());
     }
 
     private void assertBuildTrackSucceeds(Vec2D p, TileTransition v, TrackType type) {
@@ -192,7 +184,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
         Move moveAndTransaction = transactionsGenerator.addTransactions(move);
         Status status = moveAndTransaction.doMove(getWorld(), Player.AUTHORITATIVE);
-        assertEquals(true, status.succeeds());
+        assertEquals(true, status.isSuccess());
     }
 
     private void assertRemoveTrackSucceeds(Vec2D p, TileTransition v) {
@@ -200,7 +192,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateRemoveTrackMove(p, v, getWorld(), WorldGenerator.TEST_PLAYER);
             Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
-            assertEquals(true, status.succeeds());
+            assertEquals(true, status.isSuccess());
         } catch (Exception e) {
             e.printStackTrace();
             fail();

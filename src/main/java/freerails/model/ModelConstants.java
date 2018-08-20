@@ -18,7 +18,7 @@
 
 package freerails.model;
 
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 
 import java.nio.charset.Charset;
 

@@ -26,7 +26,7 @@ import freerails.model.train.Train;
 import freerails.model.train.schedule.Schedule;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 
 import freerails.util.Vec2D;
 import freerails.model.world.World;

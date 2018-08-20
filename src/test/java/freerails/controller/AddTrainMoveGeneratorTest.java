@@ -30,6 +30,7 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.terrain.TileTransition;
@@ -67,14 +68,14 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         TileTransition[] track = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
         stationA = new Vec2D(10, 10);
         Status ms0 = trackBuilder.buildTrack(stationA, track);
-        assertTrue(ms0.succeeds());
+        assertTrue(ms0.isSuccess());
 
         // Build 2 stations.
         Status ms1 = stationBuilder.buildStation(stationA);
-        assertTrue(ms1.succeeds());
+        assertTrue(ms1.isSuccess());
         Vec2D stationB = new Vec2D(19, 10);
         Status ms2 = stationBuilder.buildStation(stationB);
-        assertTrue(ms2.succeeds());
+        assertTrue(ms2.isSuccess());
 
         TrainOrder order0 = new TrainOrder(0, null, false, false);
         TrainOrder order1 = new TrainOrder(1, null, false, false);
@@ -103,7 +104,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
         Status status = move.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(status.succeeds());
+        assertTrue(status.isSuccess());
 
         TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         TrainMotion motion = trainAccessor.findCurrentMotion(0);
@@ -119,7 +120,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
         Status status = move.doMove(world, Player.AUTHORITATIVE);
-        assertTrue(status.succeeds());
+        assertTrue(status.isSuccess());
         ActivityIterator ai = world.getActivities(player, 0);
         TrainMotion tm = (TrainMotion) ai.getActivity();
         assertEquals(0.0d, tm.duration());
@@ -145,7 +146,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
                 TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Vec2D from = new Vec2D(5, 5);
         Status status = producer.buildTrack(from, trackPath);
-        if (!status.succeeds())
+        if (!status.isSuccess())
             throw new IllegalStateException(status.getMessage());
 
         TrainOrder[] orders = {};
@@ -153,7 +154,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
         Move move = addTrain.generate(world);
         status = move.doMove(world, player);
-        if (!status.succeeds())
+        if (!status.isSuccess())
             throw new IllegalStateException(status.getMessage());
 
         assertNotNull(TrainUtils.getTargetLocation(world, player, 0));

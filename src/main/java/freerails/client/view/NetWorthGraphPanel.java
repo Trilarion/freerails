@@ -25,13 +25,13 @@ import freerails.client.model.PlayerColors;
 import freerails.client.model.CompanyDetails;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.finances.NetWorthCalculator;
+import freerails.model.finance.transaction.aggregator.NetWorthAggregator;
+import freerails.model.game.Clock;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.finances.TransactionAggregator;
-import freerails.model.finances.Money;
-import freerails.model.game.Calendar;
-import freerails.model.game.Time;
+import freerails.model.finance.transaction.aggregator.TransactionAggregator;
+import freerails.model.finance.Money;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -307,11 +307,10 @@ public class NetWorthGraphPanel extends JPanel implements View {
         submitButtonCallBack = closeAction;
         UnmodifiableWorld world = modelRoot.getWorld();
         companies = new ArrayList<>();
-        Calendar calender = world.getCalendar();
-        int startYear = calender.getYear(0);
+        Clock clock = world.getClock();
+        int startYear = clock.getStartYear();
         int endYear = startYear + 100;
-        Time currentTime = world.currentTime();
-        int currentYear = calender.getYear(currentTime.getTicks());
+        int currentYear = clock.getCurrentYear();
         xAxisLabel1.setText(String.valueOf(startYear));
         xAxisLabel2.setText(String.valueOf(startYear + 50));
         xAxisLabel3.setText(String.valueOf(endYear));
@@ -327,12 +326,11 @@ public class NetWorthGraphPanel extends JPanel implements View {
             CompanyDetails companyDetails = new CompanyDetails(name, c);
             Time[] times = new Time[101];
             for (int year = 0; year < 101; year++) {
-                int ticks = calender.getTicks(startYear + year - 1);
-                times[year] = new Time(ticks);
+                times[year] = clock.getTimeAtStartOfYear(startYear + year);
             }
-            TransactionAggregator aggregator = new NetWorthCalculator(world, player);
-            aggregator.setTimes(times);
-            Money[] values = aggregator.calculateValues();
+            TransactionAggregator aggregator = new NetWorthAggregator(world, player, times);
+            aggregator.aggregate();
+            Money[] values = aggregator.getValues();
             int stopYear = currentYear - startYear + 1;
             for (int year = 0; year < stopYear; year++) {
                 companyDetails.value[year] = values[year].amount;

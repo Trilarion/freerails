@@ -24,6 +24,7 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.model.activity.ActivityIterator;
+import freerails.model.game.Time;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
@@ -31,11 +32,11 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 
+import freerails.nove.Status;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.*;
 import freerails.model.cargo.*;
-import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.station.StationDemand;
 import freerails.model.station.Station;
@@ -64,8 +65,10 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
             activityIterator.nextActivity();
 
         double finishTime = activityIterator.getStartTime() + activityIterator.getActivity().duration();
-        Time newTime = new Time((int) Math.floor(finishTime));
-        world.setTime(newTime);
+        Time fTime = new Time((int) Math.floor(finishTime));
+        while (world.getClock().getCurrentTime().compareTo(fTime) < 0) {
+            world.getClock().advanceTime();
+        }
     }
 
 
@@ -99,17 +102,17 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Vec2D station0Location = new Vec2D(10, 10);
 
         Status status1 = trackBuilder.buildTrack(station0Location, track);
-        assertTrue(status1.succeeds());
+        assertTrue(status1.isSuccess());
 
         // Build 2 stations.
         Status ms1 = stationBuilder.buildStation(station0Location);
-        assertTrue(ms1.succeeds());
+        assertTrue(ms1.isSuccess());
         station1Location = new Vec2D(20, 10);
         Status ms2 = stationBuilder.buildStation(station1Location);
-        assertTrue(ms2.succeeds());
+        assertTrue(ms2.isSuccess());
         station2Location = new Vec2D(28, 10);
         Status ms3 = stationBuilder.buildStation(station2Location);
-        assertTrue(ms3.succeeds());
+        assertTrue(ms3.isSuccess());
 
         TrainOrder order0 = new TrainOrder(2, null, false, false);
         TrainOrder order1 = new TrainOrder(0, null, false, false);
@@ -122,7 +125,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
                 start, player, schedule);
         Move move = preMove.generate(world);
         Status status = move.doMove(world, player);
-        assertTrue(status.succeeds());
+        assertTrue(status.isSuccess());
     }
 
     /**
@@ -172,7 +175,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
                 new OccupiedTracks(player, world));
         Move move = preMove.generate(world);
         Status ms = move.doMove(world, player);
-        assertTrue(ms.getMessage(), ms.succeeds());
+        assertTrue(ms.getMessage(), ms.isSuccess());
         TrainAccessor ta = new TrainAccessor(world, player, 0);
         return ta.findCurrentMotion(Integer.MAX_VALUE);
     }
@@ -460,7 +463,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         assertTrue(preMove.isUpdateDue(world));
         Move move = preMove.generate(world);
         Status status = move.doMove(world, player);
-        assertTrue(status.getMessage(), status.succeeds());
+        assertTrue(status.getMessage(), status.isSuccess());
         assertFalse(preMove.isUpdateDue(world));
     }
 

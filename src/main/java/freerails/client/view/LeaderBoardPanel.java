@@ -23,10 +23,11 @@ package freerails.client.view;
 
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.finances.NetWorthCalculator;
-import freerails.model.finances.Money;
-import freerails.model.finances.PlayerDetails;
-import freerails.model.finances.TransactionAggregator;
+import freerails.model.finance.transaction.aggregator.NetWorthAggregator;
+import freerails.model.finance.Money;
+import freerails.model.finance.PlayerDetails;
+import freerails.model.finance.transaction.aggregator.TransactionAggregator;
+import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
 
@@ -112,12 +113,14 @@ public class LeaderBoardPanel extends JPanel implements View {
         UnmodifiableWorld world = modelRoot.getWorld();
         values.clear();
         submitButtonCallBack = closeAction;
+        Time[] times = {Time.ZERO, world.getClock().getCurrentTime()};
         for (Player player: world.getPlayers()) {
             PlayerDetails details = new PlayerDetails();
             details.setName(player.getName());
             details.setStations(world.getStations(player).size());
-            TransactionAggregator networth = new NetWorthCalculator(world, player);
-            details.setNetworth(networth.calculateValue());
+            TransactionAggregator networth = new NetWorthAggregator(world, player, times);
+            networth.aggregate();
+            details.setNetworth(networth.getValues()[0]);
             values.add(details);
         }
         Collections.sort(values);

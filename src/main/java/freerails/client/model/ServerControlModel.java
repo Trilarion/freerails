@@ -18,8 +18,9 @@
 
 package freerails.client.model;
 
+import freerails.model.game.Speed;
 import freerails.network.command.NewGameCommandToServer;
-import freerails.savegames.MapCreator;
+import freerails.scenario.MapCreator;
 import freerails.util.ui.ActionAdapter;
 import freerails.client.ModelRootImpl;
 import freerails.client.ModelRootListener;
@@ -28,7 +29,7 @@ import freerails.client.ModelRootProperty;
 import freerails.move.ChangeGameSpeedMove;
 import freerails.network.command.CommandToServer;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.Speed;
+
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -125,7 +126,7 @@ public class ServerControlModel implements ModelRootListener {
      */
     private int getTargetTicksPerSecond() {
         UnmodifiableWorld world = modelRoot.getWorld();
-        return world.getSpeed().getSpeed();
+        return world.getSpeed().getTicksPerSecond();
     }
 
     /**
@@ -273,7 +274,7 @@ public class ServerControlModel implements ModelRootListener {
                 // TODO this is not nice, do the conversion of values for the display not like this
                 speed2set = -1 * getTargetTicksPerSecond();
             }
-            modelRoot.doMove(new ChangeGameSpeedMove(modelRoot.getWorld().getSpeed(), new Speed(speed2set)));
+            modelRoot.doMove(new ChangeGameSpeedMove(modelRoot.getWorld().getSpeed(), Speed.MODERATE));
         }
     }
 

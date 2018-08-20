@@ -18,9 +18,9 @@
 
 package freerails.model.track;
 
+import freerails.model.game.Time;
 import freerails.model.train.Train;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.train.TrainAccessor;
 
@@ -45,7 +45,7 @@ public class OccupiedTracks {
 
         for (Train train: world.getTrains(player)) {
             TrainAccessor trainAccessor = new TrainAccessor(world, player, train.getId());
-            Time time = world.currentTime();
+            Time time = world.getClock().getCurrentTime();
 
             if (trainAccessor.isMoving(time.getTicks())) {
 

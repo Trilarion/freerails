@@ -16,9 +16,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- *
- */
 package freerails.model.game;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,31 +23,50 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 
 /**
- * Represents a specific instant in time during a game.
+ *
  */
-public class Time implements Serializable, Comparable<Time> {
-    /**
-     * The first possible time.
-     */
-    // TODO BIG_BAND AND DOOMSDAY really used?
-    public static final Time BIG_BANG = new Time(Integer.MIN_VALUE);
-    /**
-     * The last possible time.
-     */
-    public static final Time DOOMSDAY = new Time(Integer.MAX_VALUE);
-    private static final long serialVersionUID = 3691035461301055541L;
+public class Time implements Comparable<Time>, Serializable {
+
+    public static final Time ZERO = new Time(0);
+
     private final int ticks;
 
-    /**
-     * @param ticks
-     */
     public Time(int ticks) {
+        if (ticks < 0) {
+            throw new IllegalArgumentException();
+        }
         this.ticks = ticks;
     }
 
+    public Time(@NotNull Time time, int deltaTicks) {
+        int ticks = time.getTicks() + deltaTicks;
+        if (ticks < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.ticks = ticks;
+    }
+
+    public int getTicks() {
+        return ticks;
+    }
+
+    /**
+     * Convenience function.
+     *
+     * @return
+     */
+    public Time advance() {
+        return new Time(this, 1);
+    }
+
+    /**
+     *
+     * @param o
+     * @return  less than 0 if this time is earlier, 0 if this time is equal and larger than 0 if this time is later than o
+     */
     @Override
-    public String toString() {
-        return "GameTime:" + String.valueOf(ticks);
+    public int compareTo(@NotNull Time o) {
+        return Integer.compare(ticks, o.ticks);
     }
 
     @Override
@@ -58,39 +74,17 @@ public class Time implements Serializable, Comparable<Time> {
         return ticks;
     }
 
-    /**
-     * @return
-     */
-    public Time advancedTime() {
-        return new Time(ticks + 1);
-    }
-
-    /**
-     * @return
-     */
-    public int getTicks() {
-        return ticks;
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Time)) {
+            return false;
+        }
+        Time o = (Time) obj;
+        return compareTo(o) == 0;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Time) {
-            Time test = (Time) obj;
-
-            return ticks == test.ticks;
-        }
-        return false;
+    public String toString() {
+        return String.valueOf(ticks);
     }
-
-    /**
-     * Compares two GameTimes for ordering.
-     *
-     * @return 0 if t is equal to this GameTime; a value less than 0 if this
-     * GameTime is before t; and a value greater than 0 if this GameTime
-     * is after t.
-     */
-    public int compareTo(@NotNull Time o) {
-        return ticks - o.ticks;
-    }
-
 }

@@ -19,23 +19,19 @@
 package freerails.model.world;
 
 import freerails.model.cargo.Cargo;
-import freerails.model.finances.EconomicClimate;
-import freerails.model.finances.transactions.Transaction;
-import freerails.model.game.Calendar;
-import freerails.model.game.Rules;
-import freerails.model.game.Speed;
+import freerails.model.game.*;
+import freerails.model.finance.transaction.Transaction;
 import freerails.model.station.Station;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.train.Engine;
 import freerails.model.train.Train;
-import freerails.util.Pair;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
-import freerails.model.finances.Money;
-import freerails.model.game.Time;
+import freerails.model.finance.Money;
 import freerails.model.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -51,7 +47,7 @@ import java.util.Collection;
  * <li>A series of lists that are accessible using the keys defined in {@link SharedKey}</li>
  * <li>Another series of lists indexed by player and accessible using the keys defined in {@link PlayerKey}</li>
  * <li>A collection items accessible using the keys defined in {@link WorldItem}</li>
- * <li>A list of financial transactions for each of the players</li>
+ * <li>A list of financial transaction for each of the players</li>
  * </ul>
  *
  * Example: the following code gets player1's train #5.
@@ -96,13 +92,9 @@ public interface UnmodifiableWorld extends Serializable {
 
     Station getStation(Player player, int id);
 
-    Calendar getCalendar();
-
-    EconomicClimate getEconomicClimate();
+    Sentiment getSentiment();
 
     Rules getRules();
-
-    Speed getSpeed();
 
     /**
      * @return
@@ -130,12 +122,6 @@ public interface UnmodifiableWorld extends Serializable {
     Vec2D getMapSize();
 
     /**
-     * @param player
-     * @return
-     */
-    int getNumberOfTransactions(Player player);
-
-    /**
      * @param i
      * @return
      */
@@ -155,22 +141,16 @@ public interface UnmodifiableWorld extends Serializable {
      */
     Transaction getTransaction(Player player, int i);
 
-    Time currentTime();
+    Collection<Transaction> getTransactions(Player player);
 
-    /**
-     * @param player
-     * @param i
-     * @return
-     */
-    Time getTransactionTimeStamp(Player player, int i);
+    Clock getClock();
 
-    /**
-     * @param player
-     * @param i
-     * @return
-     */
-    Pair<Transaction, Time> getTransactionAndTimeStamp(Player player, int i);
+    Speed getSpeed();
 
+    void setSpeed(@NotNull Speed speed);
+
+
+    // TODO this can go if activities are stored with trains
     /**
      * Returns number of active entities belonging to the specified player.
      */

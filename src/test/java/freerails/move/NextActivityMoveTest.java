@@ -76,7 +76,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
         assertDoMoveIsOk(move);
 
         Time currentTime = new Time(0);
-        assertEquals(currentTime, world.currentTime());
+        assertEquals(currentTime, world.getClock().getCurrentTime());
         ActivityIterator activityIterator = world.getActivities(player, 0);
 
         assertEquals(activityIterator.getActivity(), act);

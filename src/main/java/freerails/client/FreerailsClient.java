@@ -22,7 +22,7 @@ import freerails.client.launcher.LauncherFrame;
 import freerails.model.player.Player;
 import freerails.move.Move;
 import freerails.move.MovePrecommitter;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;

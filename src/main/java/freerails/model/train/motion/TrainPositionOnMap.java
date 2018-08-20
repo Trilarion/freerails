@@ -429,9 +429,9 @@ public class TrainPositionOnMap implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("TrainPosition {");
 
-        for (int i = 0; i < points.size(); i++) {
+        for (Vec2D point : points) {
             sb.append('(');
-            sb.append(points.get(i));
+            sb.append(point);
             sb.append("), ");
         }
 

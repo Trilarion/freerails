@@ -20,12 +20,12 @@ package freerails.client.view;
 
 import freerails.model.cargo.CargoCategory;
 import freerails.model.cargo.Cargo;
-import freerails.model.finances.IncomeStatementGenerator;
+import freerails.model.finance.IncomeStatementGenerator;
 import freerails.util.Vec2D;
 import freerails.model.world.World;
 import freerails.model.cargo.CargoBatch;
-import freerails.model.finances.transactions.CargoDeliveryTransaction;
-import freerails.model.finances.Money;
+import freerails.model.finance.transaction.CargoDeliveryTransaction;
+import freerails.model.finance.Money;
 import freerails.util.WorldGenerator;
 import junit.framework.TestCase;
 
@@ -64,7 +64,7 @@ public class IncomeStatementGeneratorTest extends TestCase {
             if (ct.getCategory() == category) {
                 CargoBatch cb = new CargoBatch(i, Vec2D.ZERO, 0, 0);
                 world.addTransaction(WorldGenerator.TEST_PLAYER,
-                        new CargoDeliveryTransaction(amount, 10, 0, 1, cb));
+                        new CargoDeliveryTransaction(amount, world.getClock().getCurrentTime(), 10, 0, 1, cb));
                 return;
             }
         }

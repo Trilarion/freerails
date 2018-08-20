@@ -25,7 +25,7 @@ import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.TrackPathFinder;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.MoveExecutor;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
@@ -87,7 +87,7 @@ public class TrackBuildingTest extends TestCase {
                 assertEquals(TileTransition.EAST, path[i]);
             }
             Status status = producer.buildTrack(from, path);
-            assertTrue(status.getMessage(), status.succeeds());
+            assertTrue(status.getMessage(), status.isSuccess());
             // Check track has been built.
             for (int x = 5; x <= 10; x++) {
                 TrackPiece tp = world.getTile(new Vec2D(x, 5)).getTrackPiece();
@@ -123,7 +123,7 @@ public class TrackBuildingTest extends TestCase {
             assertEquals(TileTransition.EAST, path[0]);
 
             Status status = producer.buildTrack(from, path);
-            assertTrue(status.getMessage(), status.succeeds());
+            assertTrue(status.getMessage(), status.isSuccess());
             // Check track has been built.
             tp1 = world.getTile(new Vec2D(5, 5)).getTrackPiece();
             assertEquals(0, tp1.getTrackType().getId());
@@ -145,11 +145,11 @@ public class TrackBuildingTest extends TestCase {
             Vec2D from = new Vec2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.EAST, TileTransition.EAST};
             Status status = producer.buildTrack(from, path);
-            assertTrue(status.succeeds());
+            assertTrue(status.isSuccess());
             int terminalStationType = stationBuilder.getTrackTypeID("terminal");
             stationBuilder.setStationType(terminalStationType);
             status = stationBuilder.buildStation(new Vec2D(8, 5));
-            assertTrue(status.succeeds());
+            assertTrue(status.isSuccess());
             pathFinder.setupSearch(new Vec2D(7, 5), new Vec2D(9, 5), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();
@@ -183,7 +183,7 @@ public class TrackBuildingTest extends TestCase {
             TileTransition[] expectedPath = {TileTransition.EAST};
             assertTrue(Arrays.equals(expectedPath, path));
             Status status = producer.buildTrack(a, path);
-            assertTrue(status.succeeds());
+            assertTrue(status.isSuccess());
 
             TrackPiece tp = world.getTile(b).getTrackPiece();
             assertEquals("We just build double track here.", trackTypeID, tp.getTrackType().getId());
@@ -209,7 +209,7 @@ public class TrackBuildingTest extends TestCase {
             Vec2D from = new Vec2D(5, 5);
             TileTransition[] path = {TileTransition.EAST, TileTransition.SOUTH};
             Status status = producer.buildTrack(from, path);
-            assertTrue(status.succeeds());
+            assertTrue(status.isSuccess());
             pathFinder.setupSearch(new Vec2D(6, 5), new Vec2D(6, 7), bts);
             pathFinder.search(-1);
             path = pathFinder.pathAsVectors();

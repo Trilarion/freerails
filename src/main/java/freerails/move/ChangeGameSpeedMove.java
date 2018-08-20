@@ -18,9 +18,10 @@
 
 package freerails.move;
 
-import freerails.model.world.World;
 import freerails.model.game.Speed;
+import freerails.model.world.World;
 import freerails.model.player.Player;
+import freerails.nove.Status;
 
 // TODO old speed not really needed here (only for undo)
 /**
@@ -44,8 +45,8 @@ public class ChangeGameSpeedMove implements Move {
         if (actualSpeed.equals(oldSpeed)) {
             return Status.OK;
         }
-        String string = "oldSpeed = " + oldSpeed.getSpeed() + " <=> " + "currentSpeed " + actualSpeed.getSpeed();
-        return Status.moveFailed(string);
+        String string = "oldSpeed = " + oldSpeed + " <=> " + "currentSpeed " + actualSpeed;
+        return Status.fail(string);
     }
 
     public Status tryUndoMove(World world, Player player) {
@@ -54,14 +55,14 @@ public class ChangeGameSpeedMove implements Move {
         if (actualSpeed.equals(newSpeed)) {
             return Status.OK;
         }
-        return Status.moveFailed("Expected " + newSpeed + ", found " + actualSpeed);
+        return Status.fail("Expected " + newSpeed + ", found " + actualSpeed);
     }
 
     public Status doMove(World world, Player player) {
         // TODO is this the convention to try exactly before?
         Status status = tryDoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             world.setSpeed(newSpeed);
         }
 
@@ -72,7 +73,7 @@ public class ChangeGameSpeedMove implements Move {
         // TODO is this the convention to try exactly before
         Status status = tryUndoMove(world, player);
 
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             world.setSpeed(oldSpeed);
         }
 
@@ -101,8 +102,8 @@ public class ChangeGameSpeedMove implements Move {
     /**
      * @return
      */
-    public int getNewSpeed() {
-        return newSpeed.getSpeed();
+    public Speed getNewSpeed() {
+        return newSpeed;
     }
 
     @Override

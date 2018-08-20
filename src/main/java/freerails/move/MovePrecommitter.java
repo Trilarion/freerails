@@ -24,12 +24,14 @@ package freerails.move;
 import freerails.model.player.Player;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
+import freerails.nove.Status;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.LinkedList;
 
 // TODO Not sure what this is good for. can it be removed?
+// TODO is important because of the undo mechanism, can be abolished at some point
 /**
  * The class pre-commits moves we intend to send to the server and either fully
  * commits or undoes them depending on the server's response. Note, this class
@@ -65,7 +67,7 @@ public class MovePrecommitter {
     public void fromServer(Move move) {
         rollBackPrecommittedMoves();
         Status status = move.doMove(world, Player.AUTHORITATIVE);
-        if (!status.succeeds()) {
+        if (!status.isSuccess()) {
             throw new IllegalStateException(status.getMessage());
         }
     }
@@ -79,19 +81,19 @@ public class MovePrecommitter {
         if (!precomitted.isEmpty()) {
             Move move = (Move) precomitted.removeFirst();
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 logger.info("Move rejected by server: " + status.getMessage());
 
                 Status undoStatus = move.undoMove(world, Player.AUTHORITATIVE);
 
-                if (!undoStatus.succeeds()) {
+                if (!undoStatus.isSuccess()) {
                     throw new IllegalStateException();
                 }
             } else {
                 logger.debug("Move accepted by server: " + move.toString());
             }
         } else {
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 logger.debug("Clear the blockage " + status.getMessage());
 
                 uncomitted.removeFirst();
@@ -114,13 +116,13 @@ public class MovePrecommitter {
 
         MoveGenerator moveGenerator = (MoveGenerator) uncomitted.removeFirst();
 
-        if (tryMoveStatus.status.succeeds()) {
+        if (tryMoveStatus.status.isSuccess()) {
             logger.debug("PreMove accepted by server: " + tryMoveStatus.toString());
 
             Move move = moveGenerator.generate(world);
             Status status = move.doMove(world, Player.AUTHORITATIVE);
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 throw new IllegalStateException();
             }
         } else {
@@ -140,7 +142,7 @@ public class MovePrecommitter {
                 Move move = (Move) first;
                 Status status = move.doMove(world, Player.AUTHORITATIVE);
 
-                if (status.succeeds()) {
+                if (status.isSuccess()) {
                     uncomitted.removeFirst();
                     precomitted.addLast(move);
                 } else {
@@ -151,7 +153,7 @@ public class MovePrecommitter {
                 Move move = moveGenerator.generate(world);
                 Status status = move.doMove(world, Player.AUTHORITATIVE);
 
-                if (status.succeeds()) {
+                if (status.isSuccess()) {
                     uncomitted.removeFirst();
 
                     Serializable pmam = new MoveGeneratorAndMove(moveGenerator, move);
@@ -186,7 +188,7 @@ public class MovePrecommitter {
 
             Status status = move2undo.undoMove(world, Player.AUTHORITATIVE);
 
-            if (!status.succeeds()) {
+            if (!status.isSuccess()) {
                 throw new IllegalStateException(status.getMessage());
             }
 

@@ -20,6 +20,7 @@ package freerails.move;
 
 import freerails.model.track.TrackType;
 import freerails.move.generator.AddStationMoveGenerator;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
@@ -74,7 +75,7 @@ public class StationBuilder {
     public Status buildStation(Vec2D location) {
         // Only build a station if there is track at the specified point.
         Status status = tryBuildingStation(location);
-        if (status.succeeds()) {
+        if (status.isSuccess()) {
             Player player = executor.getPlayer();
             AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, player);
             return executor.doPreMove(preMove);

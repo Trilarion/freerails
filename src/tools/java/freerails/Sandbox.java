@@ -18,12 +18,9 @@
 
 package freerails;
 
-import freerails.io.GsonManager;
-import freerails.model.game.Rules;
-
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.*;
 
 public class Sandbox {
 
@@ -33,9 +30,6 @@ public class Sandbox {
      */
     public static void main(String[] args) throws URISyntaxException, IOException {
 
-        // save default rules
-        //Rules rules = Rules.DEFAULT_RULES;
-        //File file = new File("/rules.without_restrictions.json");
-        //GsonManager.save(file, rules);
+        System.out.println(Objects.hash(true));
     }
 }

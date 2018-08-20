@@ -24,14 +24,15 @@ package freerails.client.view;
 import freerails.client.ModelRootProperty;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.ModelRoot;
-import freerails.model.finances.transactions.Transaction;
+import freerails.model.finance.transaction.Transaction;
 import freerails.model.terrain.Terrain;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
+import freerails.nove.Status;
 import freerails.util.Vec2D;
-import freerails.model.finances.transactions.ItemTransaction;
-import freerails.model.finances.Money;
-import freerails.model.finances.transactions.TransactionCategory;
+import freerails.model.finance.transaction.ItemTransaction;
+import freerails.model.finance.Money;
+import freerails.model.finance.transaction.TransactionCategory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -73,12 +74,12 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
 
                     public void actionPerformed(ActionEvent e) {
                         Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainId);
-                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, Money.opposite(price), 1, terrainId);
+                        Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, Money.opposite(price), modelRoot.getWorld().getClock().getCurrentTime(), 1, terrainId);
                         Move m2 = new AddTransactionMove(modelRoot.getPlayer(), transaction);
                         Move m3 = new CompositeMove(Arrays.asList(move, m2));
                         Status status = modelRoot.doMove(m3);
 
-                        if (!status.succeeds()) {
+                        if (!status.isSuccess()) {
                             modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, status.getMessage());
                         }
                     }

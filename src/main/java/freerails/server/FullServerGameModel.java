@@ -24,6 +24,7 @@ package freerails.server;
 import freerails.model.cargo.CargoBatch;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.game.Clock;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.station.StationSupply;
@@ -34,8 +35,6 @@ import freerails.move.*;
 import freerails.move.generator.BondInterestMoveGenerator;
 import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.move.receiver.MoveReceiver;
-import freerails.model.game.Calendar;
-import freerails.model.game.Time;
 
 // TODO why does it have to be saved and not only the world during loading and saveing? Is there some internal state that should be part of the world?
 /**
@@ -91,16 +90,15 @@ public class FullServerGameModel implements ServerGameModel {
                     int amountSupplied = supply.getSupply(i);
 
                     if (amountSupplied > 0) {
-                        CargoBatch cb = new CargoBatch(i, station.getLocation(), 0, stationId);
-                        int amountAlready = after.getAmount(cb);
+                        CargoBatch cargoBatch = new CargoBatch(i, station.getLocation(), 0, stationId);
+                        int amountAlready = after.getAmount(cargoBatch);
 
                         // Obtain the month
-                        Time time = world.currentTime();
-                        Calendar calendar = world.getCalendar();
-                        int month = calendar.getMonth(time.getTicks());
+                        Clock clock = world.getClock();
+                        int month = clock.getCurrentMonth();
 
                         int amountAfter = calculateAmountToAddPerMonth(amountSupplied, month) + amountAlready;
-                        after.setAmount(cb, amountAfter);
+                        after.setAmount(cargoBatch, amountAfter);
                     }
                 }
 
@@ -135,7 +133,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             trainUpdater.buildTrains(world);
 
-            int gameSpeed = world.getSpeed().getSpeed();
+            int gameSpeed = world.getSpeed().getTicksPerSecond();
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
@@ -145,20 +143,14 @@ public class FullServerGameModel implements ServerGameModel {
                 trainUpdater.moveTrains(world);
 
                 // Check whether we are about to start a new year..
-                Time time = world.currentTime();
-                Calendar calendar = world.getCalendar();
-                int yearNextTick = calendar.getYear(time.getTicks() + 1);
-                int yearThisTick = calendar.getYear(time.getTicks());
+                Clock clock = world.getClock();
 
-                if (yearThisTick != yearNextTick) {
+                if (clock.isLastTickOfYear()) {
                     yearEnd();
                 }
 
                 // And a new month..
-                int monthThisTick = calendar.getMonth(time.getTicks());
-                int monthNextTick = calendar.getMonth(time.getTicks() + 1);
-
-                if (monthNextTick != monthThisTick) {
+                if (clock.isLastTickOfMonth()) {
                     monthEnd();
                 }
 
@@ -239,7 +231,7 @@ public class FullServerGameModel implements ServerGameModel {
     public static void supplyAtStationsUpdate(World world, MoveReceiver moveReceiver) {
         for (Player player: world.getPlayers()) {
             for (Station station: world.getStations(player)) {
-                TerrainTile tile = (TerrainTile) world.getTile(station.getLocation());
+                TerrainTile tile = world.getTile(station.getLocation());
                 int trackRuleId = tile.getTrackPiece().getTrackType().getId();
                 Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, trackRuleId, station);
 

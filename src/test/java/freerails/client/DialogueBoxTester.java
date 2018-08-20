@@ -20,12 +20,9 @@ package freerails.client;
 
 import freerails.client.model.ServerControlModel;
 import freerails.client.renderer.RendererRootImpl;
-import freerails.io.GsonManager;
-import freerails.model.train.Engine;
 import freerails.model.train.Train;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.receiver.TestMoveReceiver;
-import freerails.savegames.MapCreator;
 import freerails.util.WorldGenerator;
 import freerails.util.ui.JFrameMinimumSizeEnforcer;
 import freerails.util.ui.MyGlassPanel;
@@ -45,12 +42,8 @@ import freerails.model.world.World;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.SortedSet;
 
 /**
  * Lets you test dialogue boxes without running the whole game.

@@ -20,7 +20,7 @@ package freerails.move.receiver;
 
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 
 // TODO what is this good for? why is it named Untried?
 /**

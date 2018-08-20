@@ -20,13 +20,13 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
 import freerails.network.command.*;
-import freerails.savegames.MapCreator;
-import freerails.savegames.SaveGamesManager;
+import freerails.scenario.MapCreator;
+import freerails.scenario.SaveGamesManager;
 import freerails.move.receiver.MoveReceiver;
 
 import freerails.model.world.World;
@@ -278,7 +278,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
             Move addPlayerMove = AddPlayerMove.generateMove(world, player);
             Status status = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
-            if (!status.succeeds()) throw new IllegalStateException();
+            if (!status.isSuccess()) throw new IllegalStateException();
             passwords[i] = players.get(i).getPassword();
         }
 
@@ -382,7 +382,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         MoveReceiver moveReceiver = move -> {
             Status status = move.doMove(this.serverGameModel.getWorld(), Player.AUTHORITATIVE);
 
-            if (status.succeeds()) {
+            if (status.isSuccess()) {
                 sendToAll(move);
             } else {
                 logger.warn(status.getMessage());
@@ -430,7 +430,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
 
                             Status mStatus = move.tryDoMove(serverGameModel.getWorld(), player);
 
-                            if (mStatus.succeeds()) {
+                            if (mStatus.isSuccess()) {
                                 move.doMove(serverGameModel.getWorld(), player);
 
                                 /*

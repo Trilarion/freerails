@@ -20,7 +20,6 @@ package freerails.model.game;
 
 import java.io.Serializable;
 
-// TODO serialize to json and load/define default, no restriction rules through files, better naming
 /**
  * Stores rules governing what players are allowed to do, for example whether
  * they can connect their track to the track of other players.
@@ -31,9 +30,9 @@ public class Rules implements Serializable {
     private final boolean canConnectToOtherPlayersTracks;
     private final boolean mustStayConnectedToExistingTrack;
 
-    public Rules(boolean mustConnect, boolean canConnectToOthers) {
-        canConnectToOtherPlayersTracks = canConnectToOthers;
-        mustStayConnectedToExistingTrack = mustConnect;
+    public Rules(boolean canConnectToOtherPlayersTracks, boolean mustStayConnectedToExistingTrack) {
+        this.canConnectToOtherPlayersTracks = canConnectToOtherPlayersTracks;
+        this.mustStayConnectedToExistingTrack = mustStayConnectedToExistingTrack;
     }
 
     @Override
@@ -48,14 +47,14 @@ public class Rules implements Serializable {
     /**
      * @return
      */
-    public synchronized boolean canConnectToOtherRRTrack() {
+    public boolean canConnectToOtherPlayersTracks() {
         return canConnectToOtherPlayersTracks;
     }
 
     /**
      * @return
      */
-    public synchronized boolean mustConnectToExistingTrack() {
+    public boolean mustStayConnectedToExistingTrack() {
         return mustStayConnectedToExistingTrack;
     }
 

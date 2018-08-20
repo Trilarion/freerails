@@ -33,6 +33,7 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 
+import freerails.nove.Status;
 import freerails.util.Segment;
 import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
@@ -74,7 +75,7 @@ class TrainMotionExperiment extends JComponent {
         TileTransition[] trackPath = {TileTransition.EAST, TileTransition.SOUTH_EAST, TileTransition.SOUTH, TileTransition.SOUTH_WEST, TileTransition.WEST, TileTransition.NORTH_WEST, TileTransition.NORTH, TileTransition.NORTH_EAST};
         Vec2D from = new Vec2D(5, 5);
         Status status = producer.buildTrack(from, trackPath);
-        if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
+        if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
 
         TrainOrder[] orders = {};
         UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
@@ -82,7 +83,7 @@ class TrainMotionExperiment extends JComponent {
 
         Move move = addTrain.generate(world);
         status = move.doMove(world, player);
-        if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
+        if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
 
         startTime = System.currentTimeMillis();
     }
@@ -194,7 +195,7 @@ class TrainMotionExperiment extends JComponent {
             move = moveTrain.generate(world);
         }
         Status status = move.doMove(world, player);
-        if (!status.succeeds()) throw new IllegalStateException(status.getMessage());
+        if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
 
         ActivityIterator ai = world.getActivities(player, 0);
 

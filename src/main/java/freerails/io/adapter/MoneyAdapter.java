@@ -22,7 +22,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import freerails.model.finances.Money;
+import freerails.model.finance.Money;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;

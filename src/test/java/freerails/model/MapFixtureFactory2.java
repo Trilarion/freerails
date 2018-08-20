@@ -21,10 +21,9 @@ package freerails.model;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.move.AddPlayerMove;
-import freerails.move.Status;
+import freerails.nove.Status;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
-import freerails.model.game.Time;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.world.World;
 import freerails.util.WorldGenerator;
@@ -53,10 +52,8 @@ public class MapFixtureFactory2 {
                 Player player = new Player(i, name);
                 AddPlayerMove move = AddPlayerMove.generateMove(world, player);
                 Status status = move.doMove(world, Player.AUTHORITATIVE);
-                assert (status.succeeds());
+                assert (status.isSuccess());
             }
-            // TODO this should be done in the builder build method
-            world.setTime(new Time(0));
 
             int clearTypeID = 0;
             // Fill the world with clear terrain.

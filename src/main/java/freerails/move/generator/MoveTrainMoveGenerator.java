@@ -21,6 +21,7 @@
  */
 package freerails.move.generator;
 
+import freerails.model.game.Time;
 import freerails.model.station.StationUtils;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.track.explorer.GraphExplorer;
@@ -34,7 +35,6 @@ import freerails.util.Vec2D;
 import freerails.model.activity.ActivityIterator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
-import freerails.model.game.Time;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.terrain.TerrainTile;
@@ -133,7 +133,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * Returns true if an updated is due.
      */
     public boolean isUpdateDue(UnmodifiableWorld world) {
-        Time currentTime = world.currentTime();
+        Time currentTime = world.getClock().getCurrentTime();
         TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         ActivityIterator ai = world.getActivities(player, trainId);
         ai.gotoLastActivity();
