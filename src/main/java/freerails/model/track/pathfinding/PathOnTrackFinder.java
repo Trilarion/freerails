@@ -52,6 +52,18 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
     }
 
     /**
+     * @param pos
+     * @return
+     */
+    private static int[] toInts(PositionOnTrack[] pos) {
+        int[] returnValue = new int[pos.length];
+        for (int i = 0; i < pos.length; i++) {
+            returnValue[i] = pos[i].toInt();
+        }
+        return returnValue;
+    }
+
+    /**
      *
      */
     public void abandonSearch() {
@@ -122,7 +134,7 @@ public class PathOnTrackFinder implements IncrementalPathFinder {
         } catch (NoTrackException e) {
             throw new PathNotFoundException(e);
         }
-        pathFinder.setupSearch(PositionOnTrack.toInts(startPoints), PositionOnTrack.toInts(targetPoints), explorer);
+        pathFinder.setupSearch(toInts(startPoints), toInts(targetPoints), explorer);
     }
 
 }

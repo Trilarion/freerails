@@ -92,7 +92,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
 
             for (int i = 0; i < targetInts.length; i++) {
                 TileTransition direction = possibleDirections.get(i);
-                PositionOnTrack targetPot = PositionOnTrack.createFacing(targetPoint, direction);
+                PositionOnTrack targetPot = new PositionOnTrack(targetPoint, direction.getOpposite());
                 targetInts[i] = targetPot.toInt();
             }
         } else {
@@ -100,7 +100,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
             targetInts = new int[8];
 
             for (int i = 0; i < 8; i++) {
-                PositionOnTrack targetPot = PositionOnTrack.createComingFrom(targetPoint, TileTransition.getInstance(i));
+                PositionOnTrack targetPot = new PositionOnTrack(targetPoint, TileTransition.getInstance(i));
                 targetInts[i] = targetPot.toInt();
             }
         }

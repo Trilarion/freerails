@@ -28,6 +28,7 @@ import java.io.Serializable;
 public class Time implements Comparable<Time>, Serializable {
 
     public static final Time ZERO = new Time(0);
+    public static final Time INFINITY = new Time(Integer.MAX_VALUE);
 
     private final int ticks;
 

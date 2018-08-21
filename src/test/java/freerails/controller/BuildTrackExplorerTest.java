@@ -80,7 +80,7 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         // Test starting in the middle of the map.
-        start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.NORTH);
+        start = new PositionOnTrack(new Vec2D(10, 10), TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
@@ -94,7 +94,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         // Test starting in the top left of the map.
-        start = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.SOUTH_EAST);
+        start = new PositionOnTrack(Vec2D.ZERO, TileTransition.SOUTH_EAST);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.EAST, 1, 0, explorer);
         assertNextVertexIs(TileTransition.SOUTH_EAST, 1, 1, explorer);
@@ -102,7 +102,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         // Test starting in the bottom right of the map.
-        start = PositionOnTrack.createComingFrom(new Vec2D(19, 19), TileTransition.NORTH_WEST);
+        start = new PositionOnTrack(new Vec2D(19, 19), TileTransition.NORTH_WEST);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 19, 18, explorer);
         assertNextVertexIs(TileTransition.WEST, 18, 19, explorer);
@@ -132,7 +132,7 @@ public class BuildTrackExplorerTest extends TestCase {
         PositionOnTrack start;
 
         // Test starting in the middle of the map.
-        start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.NORTH);
+        start = new PositionOnTrack(new Vec2D(10, 10), TileTransition.NORTH);
 
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
@@ -159,7 +159,7 @@ public class BuildTrackExplorerTest extends TestCase {
         }
 
         // If we enter 10, 10 from the south, we should be able to build track S & SW.
-        PositionOnTrack start = PositionOnTrack.createComingFrom(new Vec2D(10, 10), TileTransition.SOUTH);
+        PositionOnTrack start = new PositionOnTrack(new Vec2D(10, 10), TileTransition.SOUTH);
         BuildTrackExplorer explorer = new BuildTrackExplorer(world, player);
         explorer.setPosition(start.toInt());
 
@@ -174,7 +174,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertFalse(explorer.hasNextEdge());
 
         // If we enter 10, 11 from the north, we should be able to build track N, E, W, & NW.
-        start = PositionOnTrack.createComingFrom(new Vec2D(10, 11), TileTransition.NORTH);
+        start = new PositionOnTrack(new Vec2D(10, 11), TileTransition.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 10, explorer);
         assertNextVertexIs(TileTransition.EAST, 11, 11, explorer);
@@ -184,7 +184,7 @@ public class BuildTrackExplorerTest extends TestCase {
 
         // If we enter 10, 12 from the north, we also should be able to build
         // track N, E, W, & NW.
-        start = PositionOnTrack.createComingFrom(new Vec2D(10, 12), TileTransition.NORTH);
+        start = new PositionOnTrack(new Vec2D(10, 12), TileTransition.NORTH);
         explorer.setPosition(start.toInt());
         assertNextVertexIs(TileTransition.NORTH, 10, 11, explorer);
         assertNextVertexIs(TileTransition.EAST, 11, 12, explorer);
@@ -197,7 +197,7 @@ public class BuildTrackExplorerTest extends TestCase {
         assertTrue(explorer.hasNextEdge());
         explorer.nextEdge();
         PositionOnTrack pos = new PositionOnTrack(explorer.getVertexConnectedByEdge());
-        PositionOnTrack pos2 = PositionOnTrack.createComingFrom(new Vec2D(x, y), oneTileMoveVector);
+        PositionOnTrack pos2 = new PositionOnTrack(new Vec2D(x, y), oneTileMoveVector);
         assertEquals(pos2, pos);
     }
 

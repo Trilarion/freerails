@@ -107,8 +107,8 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         Status status = move.doMove(world, Player.AUTHORITATIVE);
         assertTrue(status.isSuccess());
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
-        TrainMotion motion = trainAccessor.findCurrentMotion(0);
+        Train train = world.getTrain(player, 0);
+        TrainMotion motion = train.findCurrentMotion(0);
         assertNotNull(motion);
         PathOnTiles path = motion.getTiles(motion.getDuration());
         assertTrackHere(path);
@@ -129,7 +129,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         assertEquals(0.0d, tm.getDistance(0));
         PositionOnTrack positionOnTrack = tm.getFinalPosition();
         assertNotNull(positionOnTrack);
-        assertEquals(TileTransition.EAST, positionOnTrack.facing());
+        assertEquals(TileTransition.EAST, positionOnTrack.getFacingTo());
         assertEquals(13, positionOnTrack.getLocation().x);
         assertEquals(10, positionOnTrack.getLocation().y);
     }

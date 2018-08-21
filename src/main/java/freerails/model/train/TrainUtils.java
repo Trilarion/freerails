@@ -19,7 +19,6 @@
 package freerails.model.train;
 
 import freerails.model.ModelConstants;
-import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
@@ -28,7 +27,6 @@ import freerails.model.track.NoTrackException;
 import freerails.model.track.explorer.FlatTrackExplorer;
 import freerails.model.train.motion.ConstantAccelerationMotion;
 import freerails.model.train.motion.TrainMotion;
-import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.UnmodifiableWorld;
@@ -126,7 +124,7 @@ public final class TrainUtils {
             fte.nextEdge();
             fte.moveForward();
             p.setValuesFromInt(fte.getPosition());
-            TileTransition v = p.cameFrom();
+            TileTransition v = p.getComingFrom();
             distanceTravelled += v.getLength();
             tileTransitions.add(v);
         }
@@ -147,7 +145,7 @@ public final class TrainUtils {
         List<TileTransition> tileTransitions = new ArrayList<>();
         Vec2D start = path.getStart();
         TileTransition firstTileTransition = path.getStep(0);
-        PositionOnTrack nextPositionOnTrack = PositionOnTrack.createComingFrom(start, firstTileTransition);
+        PositionOnTrack nextPositionOnTrack = new PositionOnTrack(start, firstTileTransition);
 
         while (extraDistanceNeeded > 0) {
 
@@ -159,7 +157,7 @@ public final class TrainUtils {
             }
             flatTrackExplorer.nextEdge();
             nextPositionOnTrack.setValuesFromInt(flatTrackExplorer.getVertexConnectedByEdge());
-            TileTransition cameFrom = nextPositionOnTrack.facing();
+            TileTransition cameFrom = nextPositionOnTrack.getFacingTo();
             tileTransitions.add(0, cameFrom);
             extraDistanceNeeded -= cameFrom.getLength();
         }

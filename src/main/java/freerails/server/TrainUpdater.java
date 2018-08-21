@@ -18,6 +18,7 @@
 
 package freerails.server;
 
+import freerails.model.game.Time;
 import freerails.model.track.OccupiedTracks;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.move.*;
@@ -102,9 +103,9 @@ public class TrainUpdater implements Serializable {
                 List<TrainTemplate> production = station.getProduction();
                 if (production.size() > 0) {
 
-                    for (TrainTemplate aProduction : production) {
-                        int engineId = aProduction.getEngineId();
-                        List<Integer> wagonTypes = aProduction.getWagonTypes();
+                    for (TrainTemplate trainTemplate : production) {
+                        int engineId = trainTemplate.getEngineId();
+                        List<Integer> wagonTypes = trainTemplate.getWagonTypes();
                         buildTrain(engineId, wagonTypes, station.getLocation(), player, world);
                     }
 
@@ -116,26 +117,19 @@ public class TrainUpdater implements Serializable {
     }
 
     public void moveTrains(UnmodifiableWorld world) {
-        int time = world.getClock().getCurrentTime().getTicks();
+        Time currentTime = world.getClock().getCurrentTime();
 
         for (Player player: world.getPlayers()) {
             OccupiedTracks occupiedTracks = new OccupiedTracks(player, world);
             // If a train is moving, we want it to keep moving rather than stop
             // to allow an already stationary train to start moving. To achieve
-            // this
-            // we process moving trains first.
+            // this we process moving trains first.
             Collection<MoveTrainMoveGenerator> movingTrains = new ArrayList<>();
             Collection<MoveTrainMoveGenerator> stoppedTrains = new ArrayList<>();
-            for (int i = 0; i < world.getTrains(player).size(); i++) {
-
-                Train train = world.getTrain(player, i);
-                // TODO this should never happen, we should not check here
-                if (null == train) continue;
-
-                MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(i, player, occupiedTracks);
+            for (Train train: world.getTrains(player)) {
+                MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(train.getId(), player, occupiedTracks);
                 if (moveTrain.isUpdateDue(world)) {
-                    TrainAccessor ta = new TrainAccessor(world, player, i);
-                    if (ta.isMoving(time)) {
+                    if (train.isMoving(currentTime)) {
                         movingTrains.add(moveTrain);
                     } else {
                         stoppedTrains.add(moveTrain);

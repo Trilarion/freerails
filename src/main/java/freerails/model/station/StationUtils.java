@@ -311,18 +311,16 @@ public final class StationUtils {
     }
 
     /**
-     * @return the number of the station the train is currently at, or NOT_AT_STATION if no
-     * current station.
+     * @return the id of the station at the location or null if there is none
      */
-    public static int getStationId(UnmodifiableWorld world, Player player, Vec2D location) {
-        // loop through the station list to check if train is at the same Point2D as a station
+    public static Integer getStationId(@NotNull UnmodifiableWorld world, @NotNull Player player, @NotNull Vec2D location) {
+        // loop through all stations of a player to check if there is a station at the location
         for (Station station: world.getStations(player)) {
             if (location.equals(station.getLocation())) {
-                return station.getId(); // train is at the station at location tempPoint
+                return station.getId();
             }
         }
-        return -1;
-        // there are no stations that exist where the train is currently
+        return null;
     }
 
     /**

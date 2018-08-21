@@ -43,7 +43,6 @@ import java.util.*;
 public class DropOffAndPickupCargoMoveGenerator {
 
     private final UnmodifiableWorld world;
-    private final TrainAccessor trainAccessor;
     private final int trainId;
     private final int stationId;
     private final Player player;
@@ -70,7 +69,6 @@ public class DropOffAndPickupCargoMoveGenerator {
         this.world = world;
         this.autoConsist = autoConsist;
         waitingForFullLoad = waiting;
-        trainAccessor = new TrainAccessor(this.world, this.player, trainId);
         consist = world.getTrain(player, trainId).getConsist();
         setupBundles();
 
@@ -80,7 +78,6 @@ public class DropOffAndPickupCargoMoveGenerator {
         if (autoConsist) {
             List<WagonLoad> wagonsAvailable = new ArrayList<>();
 
-            assert trainAccessor.equals(world.getTrain(player, this.trainId));
             Train train = world.getTrain(player, this.trainId);
             UnmodifiableSchedule schedule = train.getSchedule();
             TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
@@ -161,23 +158,13 @@ public class DropOffAndPickupCargoMoveGenerator {
     public Move generate() {
         // The methods that calculate the before and after bundles could be called from here.
         Move changeAtStation = new ChangeCargoAtStationMove(player, stationId, stationAfter);
-        // TODO a train change instead would be good
-        Move changeOnTrain = new ChangeCargoAtTrainMove(player, trainId, trainAfter);
+        Move changeOnTrain = new ChangeTrainCargoMove(player, trainId, trainAfter);
 
         moves.add(changeAtStation);
         moves.add(changeOnTrain);
 
         if (autoConsist) {
-            Train before = this.world.getTrain(this.player, this.trainId);
-            int engine = before.getEngine();
-            Train after = new Train(before.getId(), engine);
-            after.setConsist(consist);
-            after.setCargoBatchBundle(before.getCargoBatchBundle());
-            after.setSchedule(before.getSchedule());
-            after.setActivities(before.getActivities());
-            // TODO we need a dedicated ChangeTrainMove
-            // Move move = new ChangeItemInListMove(PlayerKey.Trains, trainId, before, after, player);
-            Move move = new ChangeTrainMove(player, after);
+            Move move = new ChangeTrainConsistMove(player, trainId, consist);
             moves.add(move);
         } else if (waitingForFullLoad) {
             // Only generate a move if there is some cargo to add..

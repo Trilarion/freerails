@@ -21,6 +21,7 @@
  */
 package freerails.move;
 
+import freerails.model.game.Time;
 import freerails.model.station.StationUtils;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.TrainOrder;
@@ -82,9 +83,9 @@ public class TrainStopsHandler implements Serializable {
             scheduledStop();
         } else {
             // not a scheduled stop but still a city
-            int stationNumber = StationUtils.getStationId(world, player, location);
-            if (-1 != stationNumber) {
-                loadAndUnloadCargo(stationNumber, false, false);
+            Integer stationId = StationUtils.getStationId(world, player, location);
+            if (stationId != null) {
+                loadAndUnloadCargo(stationId, false, false);
             }
         }
     }
@@ -128,12 +129,10 @@ public class TrainStopsHandler implements Serializable {
      */
     public boolean refreshWaitingForFullLoad() {
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, trainId);
         Train train = world.getTrain(player, trainId);
         UnmodifiableSchedule schedule = train.getSchedule();
-
-        int stationId = trainAccessor.getStationId(Double.MAX_VALUE);
-        if (stationId < 0) throw new IllegalStateException();
+        Integer stationId = StationUtils.getStationId(world, player, train.getLocation(Time.INFINITY));
+        if (stationId == null) throw new IllegalStateException();
 
         // The train's orders may have changed...
         TrainOrder order = schedule.getOrder(schedule.getCurrentOrderIndex());
@@ -154,7 +153,7 @@ public class TrainStopsHandler implements Serializable {
             int newLength = train.getLength();
             // has the trains length increased?
             if (newLength > oldLength) {
-                TrainMotion trainMotion = trainAccessor.findCurrentMotion(Double.MAX_VALUE);
+                TrainMotion trainMotion = train.findCurrentMotion(Double.MAX_VALUE);
                 PathOnTiles path = trainMotion.getPath();
                 path = TrainUtils.lengthenPath(world, path, oldLength);
                 TrainState status = TrainUtils.isWaitingForFullLoad(world, player, trainId) ? TrainState.WAITING_FOR_FULL_LOAD : TrainState.STOPPED_AT_STATION;

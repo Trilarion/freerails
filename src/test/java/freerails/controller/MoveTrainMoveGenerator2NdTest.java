@@ -175,8 +175,8 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         Move move = preMove.generate(world);
         Status status = move.doMove(world, player);
         assertTrue(status.getMessage(), status.isSuccess());
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
-        return trainAccessor.findCurrentMotion(Integer.MAX_VALUE);
+        Train train = world.getTrain(player, 0);
+        return train.findCurrentMotion(Integer.MAX_VALUE);
     }
 
     /**
@@ -185,7 +185,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
      */
     public void testStops2() {
         // Check that there two stations on the schedule: station0 and station2;
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         Train train = world.getTrain(player, 0);
         UnmodifiableSchedule schedule = train.getSchedule();
         assertEquals(2, schedule.getNumberOfOrders());
@@ -367,7 +366,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Now change the train's orders.
         List<Integer> newConsist = Arrays.asList(0, 0);
         TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         Train train = world.getTrain(player, 0);
         Schedule schedule = new Schedule(train.getSchedule());
         schedule.setOrder(0, order0);
@@ -390,7 +388,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
 
         // TODO this test fails, disable temporarily
         if (1 == 1) return;
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
 
         // Remove all wagons from the train.
         Train train = world.getTrain(player, 0);
@@ -472,7 +469,6 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         // Set the train to add wagons at station2.
         List<Integer> newConsist = Arrays.asList(0, 0, 0, 0, 0, 0);
         TrainOrder order0 = new TrainOrder(2, newConsist,false,false);
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
         Train train = world.getTrain(player, 0);
         Schedule schedule = new Schedule(train.getSchedule());
         schedule.setOrder(0, order0);

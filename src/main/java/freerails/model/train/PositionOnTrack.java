@@ -22,7 +22,7 @@ import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 
 /**
- * A <b>mutable</b> class that stores the coordinates of the tile on entity is
+ * A <b>mutable</b> class that stores the coordinates of the tile an entity is
  * standing on and the direction in which the entity is facing (usually the
  * direction the entity as just been moving - the opposite to the direction it
  * came from), it provides methods to encode and decode its field values to and
@@ -38,7 +38,7 @@ public class PositionOnTrack {
     /**
      * The direction from which we entered the tile.
      */
-    private TileTransition cameFrom = TileTransition.NORTH;
+    private TileTransition comingFrom = TileTransition.NORTH;
     private Vec2D location = Vec2D.ZERO;
 
     /**
@@ -53,7 +53,7 @@ public class PositionOnTrack {
         setValuesFromInt(i);
     }
 
-    private PositionOnTrack(Vec2D location, TileTransition direction) {
+    public PositionOnTrack(Vec2D location, TileTransition comingFrom) {
         if (location.x > MAX_COORDINATE || location.x < 0) {
             throw new IllegalArgumentException("x=" + location.x);
         }
@@ -63,52 +63,14 @@ public class PositionOnTrack {
         }
 
         this.location = location;
-        cameFrom = direction;
-    }
-
-    /**
-     * @param p
-     * @param direction
-     * @return
-     */
-    public static PositionOnTrack createComingFrom(Vec2D p, TileTransition direction) {
-        return new PositionOnTrack(p, direction);
-    }
-
-    /**
-     * @param p
-     * @param direction
-     * @return
-     */
-    public static PositionOnTrack createFacing(Vec2D p, TileTransition direction) {
-        return new PositionOnTrack(p, direction.getOpposite());
-    }
-
-    /**
-     * @param pos
-     * @return
-     */
-    public static int[] toInts(PositionOnTrack[] pos) {
-        int[] returnValue = new int[pos.length];
-        for (int i = 0; i < pos.length; i++) {
-            returnValue[i] = pos[i].toInt();
-        }
-        return returnValue;
-    }
-
-    /**
-     * @param p
-     * @return
-     */
-    public static int toInt(Vec2D p) {
-        return p.x | (p.y << BITS_FOR_COORDINATE);
+        this.comingFrom = comingFrom;
     }
 
     /**
      * @return The direction the entity came from.
      */
-    public TileTransition cameFrom() {
-        return cameFrom;
+    public TileTransition getComingFrom() {
+        return comingFrom;
     }
 
     @Override
@@ -120,7 +82,7 @@ public class PositionOnTrack {
         if (obj instanceof PositionOnTrack) {
             PositionOnTrack other = (PositionOnTrack) obj;
 
-            return other.cameFrom() == cameFrom() && location.equals(other.location);
+            return other.getComingFrom() == getComingFrom() && location.equals(other.location);
         }
         return false;
     }
@@ -128,19 +90,8 @@ public class PositionOnTrack {
     /**
      * @return The direction the entity is facing.
      */
-    public TileTransition facing() {
-        return cameFrom.getOpposite();
-    }
-
-    /**
-     * @return the position on the track which is in the opposite direction.
-     */
-    public PositionOnTrack getOpposite() {
-        int newX = location.x - cameFrom.deltaX;
-        int newY = location.y - cameFrom.deltaY;
-        TileTransition newDirection = cameFrom.getOpposite();
-
-        return createComingFrom(new Vec2D(newX, newY), newDirection);
+    public TileTransition getFacingTo() {
+        return comingFrom.getOpposite();
     }
 
     public void setLocation(Vec2D location) {
@@ -155,7 +106,7 @@ public class PositionOnTrack {
     public int hashCode() {
         int result;
         result = location.hashCode();
-        result = 29 * result + cameFrom.hashCode();
+        result = 29 * result + comingFrom.hashCode();
 
         return result;
     }
@@ -163,8 +114,8 @@ public class PositionOnTrack {
     /**
      * @param v
      */
-    public void setCameFrom(TileTransition v) {
-        cameFrom = v;
+    public void setComingFrom(TileTransition v) {
+        comingFrom = v;
     }
 
     /**
@@ -179,7 +130,7 @@ public class PositionOnTrack {
 
         int shiftedDirection = i & (MAX_DIRECTION << (2 * BITS_FOR_COORDINATE));
         int directionAsInt = shiftedDirection >> (2 * BITS_FOR_COORDINATE);
-        cameFrom = TileTransition.getInstance(directionAsInt);
+        comingFrom = TileTransition.getInstance(directionAsInt);
     }
 
     /**
@@ -187,7 +138,7 @@ public class PositionOnTrack {
      */
     public void move(TileTransition tileTransition) {
         location = new Vec2D(location.x + tileTransition.deltaX, location.y + tileTransition.deltaY);
-        cameFrom = tileTransition.getOpposite();
+        comingFrom = tileTransition.getOpposite();
     }
 
     /**
@@ -196,7 +147,7 @@ public class PositionOnTrack {
     public int toInt() {
         int i = location.x | (location.y << BITS_FOR_COORDINATE);
 
-        int directionAsInt = cameFrom.getID();
+        int directionAsInt = comingFrom.getID();
         int shiftedDirection = (directionAsInt << (2 * BITS_FOR_COORDINATE));
         i = i | shiftedDirection;
 
@@ -205,6 +156,6 @@ public class PositionOnTrack {
 
     @Override
     public String toString() {
-        return "PositionOnTrack: " + location + " facing " + cameFrom.getOpposite().toString();
+        return "PositionOnTrack: " + location + " facing " + comingFrom.getOpposite().toString();
     }
 }

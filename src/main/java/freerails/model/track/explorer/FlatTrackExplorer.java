@@ -37,7 +37,7 @@ import java.util.NoSuchElementException;
 public class FlatTrackExplorer implements GraphExplorer, Serializable {
 
     private static final long serialVersionUID = 3834311713465185081L;
-    public final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
+    public final PositionOnTrack currentBranch = new PositionOnTrack(Vec2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
     private PositionOnTrack currentPosition;
     private boolean beforeFirst = true;
@@ -54,7 +54,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             throw new NoTrackException(positionOnTrack.toString());
         }
 
-        currentPosition = PositionOnTrack.createComingFrom(positionOnTrack.getLocation(), positionOnTrack.cameFrom());
+        currentPosition = new PositionOnTrack(positionOnTrack.getLocation(), positionOnTrack.getComingFrom());
     }
 
     /**
@@ -81,7 +81,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         n = 0;
         for (TileTransition vector : vectors) {
             if (conf.contains(vector.get9bitTemplate())) {
-                possiblePositions[n] = PositionOnTrack.createComingFrom(location, vector.getOpposite());
+                possiblePositions[n] = new PositionOnTrack(location, vector.getOpposite());
                 n++;
             }
         }
@@ -135,7 +135,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         }
 
         TileTransition branchDirection = TileTransition.getInstance(i);
-        currentBranch.setCameFrom(branchDirection);
+        currentBranch.setComingFrom(branchDirection);
         currentBranch.setLocation(Vec2D.add(currentPosition.getLocation(), branchDirection.getD()));
 
         beforeFirst = false;
@@ -146,7 +146,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     }
 
     public int getEdgeCost() {
-        return (int) Math.round(currentBranch.cameFrom().getLength());
+        return (int) Math.round(currentBranch.getComingFrom().getLength());
     }
 
     /**
@@ -162,8 +162,8 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         // Since we can always go back the way we have come, if the direction of
         // current branch is not equal to the opposite of the current direction,
         // there must be another branch.
-        TileTransition currentBranchDirection = currentBranch.cameFrom();
-        TileTransition oppositeToCurrentDirection = currentPosition.cameFrom().getOpposite();
+        TileTransition currentBranchDirection = currentBranch.getComingFrom();
+        TileTransition oppositeToCurrentDirection = currentPosition.getComingFrom().getOpposite();
 
         return oppositeToCurrentDirection.getID() != currentBranchDirection.getID();
     }
@@ -172,7 +172,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         if (beforeFirst) {
             // Return the vector that is 45 degrees clockwise from the opposite
             // of the current position.
-            TileTransition v = currentPosition.cameFrom();
+            TileTransition v = currentPosition.getComingFrom();
             v = v.getOpposite();
 
             int i = v.getID();
@@ -184,7 +184,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         }
         // Return the vector that is 45 degrees clockwise from the direction
         // of the current branch.
-        TileTransition v = currentBranch.cameFrom();
+        TileTransition v = currentBranch.getComingFrom();
         int i = v.getID();
         i++;
         i = i % 8;

@@ -25,7 +25,7 @@ import freerails.model.cargo.Cargo;
 import freerails.model.station.Station;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.*;
-import freerails.move.ChangeTrainMove;
+import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.Move;
 
 import freerails.model.player.Player;
@@ -62,7 +62,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private JPopupMenu selectStationJPopupMenu;
     private TrainOrderPanel trainOrderPanel1;
     private JMenu waitJMenu;
-    private int trainNumber = -1;
+    private int trainId = -1;
     private TrainOrdersListModel listModel;
     private ModelRoot modelRoot;
     private RendererRoot vl;
@@ -415,7 +415,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     public void display(int newTrainNumber) {
-        trainNumber = newTrainNumber;
+        trainId = newTrainNumber;
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
         Train train = world.getTrain(player, newTrainNumber);
@@ -437,7 +437,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     private Schedule getSchedule() {
         Player player = modelRoot.getPlayer();
         UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = world.getTrain(player, trainNumber);
+        Train train = world.getTrain(player, trainId);
         UnmodifiableSchedule unmodifiableSchedule = train.getSchedule();
         // TODO really want to copy the Schedule here?
         return new Schedule(unmodifiableSchedule);
@@ -567,11 +567,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void sendUpdateMove(Schedule schedule) {
-        Player player = modelRoot.getPlayer();
-        UnmodifiableWorld world = modelRoot.getWorld();
-        Train train = world.getTrain(player, trainNumber);
-        train.setSchedule(schedule);
-        Move move = new ChangeTrainMove(player, train);
+        Move move = new ChangeTrainScheduleMove(modelRoot.getPlayer(), trainId, schedule);
         modelRoot.doMove(move);
     }
 

@@ -22,10 +22,10 @@ import freerails.model.game.Time;
 import freerails.model.train.Train;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.model.train.TrainAccessor;
 
 import java.util.*;
 
+// TODO convert to static code
 /**
  *
  */
@@ -44,12 +44,11 @@ public class OccupiedTracks {
         trainToTrackList = new HashMap<>();
 
         for (Train train: world.getTrains(player)) {
-            TrainAccessor trainAccessor = new TrainAccessor(world, player, train.getId());
-            Time time = world.getClock().getCurrentTime();
+            Time currentTime = world.getClock().getCurrentTime();
 
-            if (trainAccessor.isMoving(time.getTicks())) {
+            if (train.isMoving(currentTime)) {
 
-                HashSet<TrackSection> sections = trainAccessor.occupiedTrackSection(time.getTicks());
+                HashSet<TrackSection> sections = train.occupiedTrackSection(currentTime);
                 List<TrackSection> trackList = new ArrayList<>(sections);
                 trainToTrackList.put(train.getId(), trackList);
                 for (TrackSection section : sections) {

@@ -174,7 +174,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                         Schedule schedule1 = new Schedule(schedule);
                         schedule1.removeAllStopsAtStation(stationIndex);
                         train.setSchedule(schedule1);
-                        Move changeScheduleMove = new ChangeTrainMove(player, train);
+                        Move changeScheduleMove = new ChangeTrainScheduleMove(player, train.getId(), schedule1);
                         moves.add(changeScheduleMove);
                     }
                 }

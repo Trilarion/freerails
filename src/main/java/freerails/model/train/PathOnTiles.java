@@ -227,7 +227,7 @@ public strictfp class PathOnTiles implements Serializable {
         }
         int i = vectors.size() - 1;
         TileTransition finalTileTransition = vectors.get(i);
-        return PositionOnTrack.createFacing(new Vec2D(x, y), finalTileTransition);
+        return new PositionOnTrack(new Vec2D(x, y), finalTileTransition.getOpposite());
     }
 
     /**

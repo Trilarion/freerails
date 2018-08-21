@@ -134,8 +134,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Move move;
         setupLoopOfTrack();
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
-        TrainMotion trainMotion = trainAccessor.findCurrentMotion(3);
+        Train train = world.getTrain(player, 0);
+        TrainMotion trainMotion = train.findCurrentMotion(3);
 
         assertEquals(0.0d, trainMotion.getDuration());
 
@@ -146,7 +146,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertEquals(4, x);
         int y = positionOnTrack.getLocation().y;
         assertEquals(6, y);
-        assertEquals(TileTransition.SOUTH_WEST, positionOnTrack.facing());
+        assertEquals(TileTransition.SOUTH_WEST, positionOnTrack.getFacingTo());
 
         MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, player,  new OccupiedTracks(player, world));
 
@@ -156,7 +156,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         status = move.doMove(world, player);
         assertTrue(status.isSuccess());
 
-        TrainMotion tm2 = trainAccessor.findCurrentMotion(3);
+        TrainMotion tm2 = train.findCurrentMotion(3);
         assertFalse(trainMotion.equals(tm2));
 
         expected = new PathOnTiles(new Vec2D(5, 5), TileTransition.SOUTH_WEST, TileTransition.NORTH_EAST);
@@ -181,7 +181,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         status = move.doMove(world, player);
         assertTrue(status.isSuccess());
 
-        TrainMotion tm3 = trainAccessor.findCurrentMotion(100);
+        TrainMotion tm3 = train.findCurrentMotion(100);
         assertFalse(tm3.equals(tm2));
         expected = new PathOnTiles(new Vec2D(4, 6), TileTransition.NORTH_EAST, TileTransition.EAST);
         assertEquals(expected, tm3.getPath());
@@ -219,8 +219,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Move move = addTrain.generate(world);
         status = move.doMove(world, player);
         assertTrue(status.isSuccess());
-        TrainAccessor ta = new TrainAccessor(world, player, 0);
-        TrainMotion motion = ta.findCurrentMotion(0);
+        Train train = world.getTrain(player, 0);
+        TrainMotion motion = train.findCurrentMotion(0);
         assertNotNull(motion);
 
         PathOnTiles expected = new PathOnTiles(from, TileTransition.SOUTH_WEST);
@@ -249,8 +249,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Move move = moveTrain.generate(world);
         assertTrue(move.doMove(world, player).isSuccess());
 
-        TrainAccessor trainAccessor = new TrainAccessor(world, player, 0);
-        TrainMotion motion = trainAccessor.findCurrentMotion(1);
+        Train train = world.getTrain(player, 0);
+        TrainMotion motion = train.findCurrentMotion(1);
         double duration = motion.getDuration();
         assertTrue(duration > 1);
         int trainLength = motion.getTrainLength();
@@ -268,7 +268,7 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
      */
     public void testFindNextVector() {
         setupLoopOfTrack();
-        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vec2D(4, 6), TileTransition.SOUTH_WEST);
+        PositionOnTrack positionOnTrack = new PositionOnTrack(new Vec2D(4, 6), TileTransition.SOUTH_WEST.getOpposite());
 
         Vec2D target = new Vec2D();
         TileTransition expected = TileTransition.NORTH_EAST;

@@ -21,13 +21,16 @@ package freerails.client.renderer.map.detail;
 import freerails.client.ClientConstants;
 import freerails.model.ModelConstants;
 import freerails.model.train.Train;
+import freerails.model.train.activity.Activity;
+import freerails.model.train.motion.TrainMotion;
+import freerails.util.BidirectionalIterator;
+import freerails.util.Vec2D;
 import freerails.util.ui.Painter;
 import freerails.util.ui.SoundManager;
 import freerails.client.renderer.RendererRoot;
 import freerails.client.renderer.TrainRenderer;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootProperty;
-import freerails.model.train.TrainAccessor;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
 import freerails.model.train.motion.TrainPositionOnMap;
@@ -65,20 +68,14 @@ public class OverHeadTrainView implements Painter {
 
         Double time = (Double) modelRoot.getProperty(ModelRootProperty.TIME);
 
-        for (Player player: world.getPlayers()) {
-
-            for (int i = 0; i < world.getTrains(player).size(); i++) {
-                Train train = world.getTrain(player, i);
-
-                // TrainPositionOnMap pos = (TrainPositionOnMap) world.get(
-                // player, KEY.TRAIN_POSITIONS, i);
-                TrainAccessor ta = new TrainAccessor(world, player, i);
-                TrainPositionOnMap pos = ta.findPosition(time, newVisibleRectangle);
+        for (Player player : world.getPlayers()) {
+            for (Train train: world.getTrains(player)) {
+                TrainPositionOnMap pos = findPosition(time, newVisibleRectangle, world, player, train.getId());
                 if (pos == null) continue;
                 if (TrainPositionOnMap.isCrashSite() && (TrainPositionOnMap.getFrameCt() <= ModelConstants.TRAIN_CRASH_FRAMES_COUNT)) {
                     // TODO reimplement trainPainter.paintTrainCrash(g, pos);
                     if (TrainPositionOnMap.getFrameCt() == 1) {
-                            soundManager.playSound(ClientConstants.SOUND_TRAIN_CRASH, 1);
+                        soundManager.playSound(ClientConstants.SOUND_TRAIN_CRASH, 1);
                     }
                 } else {
                     trainPainter.paintTrain(g, train, pos);
@@ -86,4 +83,39 @@ public class OverHeadTrainView implements Painter {
             }
         }
     }
+
+
+    /**
+     * @param time
+     * @param view
+     * @return
+     */
+    public static TrainPositionOnMap findPosition(double time, Rectangle view, UnmodifiableWorld world, Player player, int trainId) {
+        BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, trainId).getActivities();
+
+        // TODO why starting at the end and going backwards?
+        // goto last
+        bidirectionalIterator.gotoLast();
+        // search backwards
+        while (bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() >= time && bidirectionalIterator.hasPrevious()) {
+            bidirectionalIterator.previous();
+        }
+        boolean afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
+        while (afterFinish && bidirectionalIterator.hasNext()) {
+            bidirectionalIterator.next();
+            afterFinish = bidirectionalIterator.get().getStartTime() + bidirectionalIterator.get().getDuration() < time;
+        }
+        double dt = time - bidirectionalIterator.get().getStartTime();
+        dt = Math.min(dt, bidirectionalIterator.get().getDuration());
+        TrainMotion trainMotion = (TrainMotion) bidirectionalIterator.get();
+
+        Vec2D start = trainMotion.getPath().getStart();
+        int trainLength = trainMotion.getTrainLength();
+        Rectangle trainBox = new Rectangle(start.x * ModelConstants.TILE_SIZE - trainLength * 2, start.y * ModelConstants.TILE_SIZE - trainLength * 2, trainLength * 4, trainLength * 4);
+        if (!view.intersects(trainBox)) {
+            return null; // TODO doesn't work
+        }
+        return trainMotion.getStateAtTime(dt);
+    }
+
 }

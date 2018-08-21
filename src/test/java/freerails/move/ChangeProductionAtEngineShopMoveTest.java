@@ -92,10 +92,8 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
      *
      */
     public void testProductionAtEngineShopEquals() {
-        TrainTemplate b;
-        TrainTemplate c;
-        b = new TrainTemplate(engineType, wagons);
-        c = new TrainTemplate(engineType, wagons);
+        TrainTemplate b = new TrainTemplate(engineType, wagons);
+        TrainTemplate c = new TrainTemplate(engineType, wagons);
         assertEquals(c, b);
         assertEquals(b, c);
     }

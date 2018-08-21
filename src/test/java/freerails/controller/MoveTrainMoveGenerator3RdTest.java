@@ -84,7 +84,7 @@ public class MoveTrainMoveGenerator3RdTest extends TestCase {
     private void findPath2Target(Vec2D target1, TileTransition[] expectedPath) {
         TerrainTile tile = world.getTile(target1);
         assertTrue(tile.hasTrack());
-        PositionOnTrack positionOnTrack = PositionOnTrack.createFacing(new Vec2D(10, 10), TileTransition.EAST);
+        PositionOnTrack positionOnTrack = new PositionOnTrack(new Vec2D(10, 10), TileTransition.EAST.getOpposite());
         for (int i = 0; i < expectedPath.length; i++) {
             TileTransition expected = expectedPath[i];
             TileTransition actual = MoveTrainMoveGenerator.findNextStep(world, positionOnTrack, target1);

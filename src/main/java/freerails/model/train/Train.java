@@ -21,22 +21,28 @@ package freerails.model.train;
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
 import freerails.model.game.Clock;
+import freerails.model.game.Time;
+import freerails.model.terrain.TileTransition;
+import freerails.model.track.TrackSection;
 import freerails.model.train.activity.Activity;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.cargo.UnmodifiableCargoBatchBundle;
+import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.util.BidirectionalIterator;
+import freerails.util.Vec2D;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
 // TODO add position on map to train
 // TODO delete Activities when they are finished
 // TODO naming of wagonTypes/consist clarify
-// TODO set default values for schedule, cargobatchbundle, consist and allow minimal constructor
+// TODO if all activities are TrainMotions, make it a list of Motions instead
 /**
  * Represents a train.
  */
@@ -159,6 +165,58 @@ public class Train extends Identifiable {
     // TODO defensive copy?
     public void setConsist(@NotNull List<Integer> wagonTypes) {
         this.wagonTypes = wagonTypes;
+    }
+
+    /**
+     * @param time
+     * @return
+     */
+    public TrainMotion findCurrentMotion(double time) {
+        Activity activity = activities.get(0);
+        boolean afterFinish = activity.getStartTime() + activity.getDuration() < time;
+        if (afterFinish) {
+            activity = activities.get(activities.size() - 1);
+        }
+        return (TrainMotion) activity;
+    }
+
+    /**
+     * Convenience function.
+     *
+     * @param time
+     * @return
+     */
+    public boolean isMoving(@NotNull Time time) {
+        TrainMotion trainMotion = findCurrentMotion(time.getTicks());
+        double speed = trainMotion.getSpeedAtEnd();
+        return speed != 0;
+    }
+
+    /**
+     * @param time
+     * @return
+     */
+    public HashSet<TrackSection> occupiedTrackSection(@NotNull Time time) {
+        TrainMotion trainMotion = findCurrentMotion(time.getTicks());
+        PathOnTiles path = trainMotion.getPath();
+        HashSet<TrackSection> sections = new HashSet<>();
+        Vec2D start = path.getStart();
+        int x = start.x;
+        int y = start.y;
+        for (int i = 0; i < path.steps(); i++) {
+            TileTransition s = path.getStep(i);
+            Vec2D tile = new Vec2D(x, y);
+            x += s.deltaX;
+            y += s.deltaY;
+            sections.add(new TrackSection(s, tile));
+        }
+        return sections;
+    }
+
+    public @NotNull Vec2D getLocation(@NotNull Time time) {
+        TrainMotion trainMotion = findCurrentMotion(time.getTicks());
+        PositionOnTrack positionOnTrack = trainMotion.getFinalPosition();
+        return positionOnTrack.getLocation();
     }
 
     @Override

@@ -40,8 +40,8 @@ import java.util.NoSuchElementException;
 public class BuildTrackExplorer implements GraphExplorer {
 
     private static final TrackConfiguration TILE_CENTER = TrackConfiguration.getFlatInstance("000010000");
-    private final PositionOnTrack currentBranch = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
-    private final PositionOnTrack currentPosition = PositionOnTrack.createComingFrom(Vec2D.ZERO, TileTransition.NORTH);
+    private final PositionOnTrack currentBranch = new PositionOnTrack(Vec2D.ZERO, TileTransition.NORTH);
+    private final PositionOnTrack currentPosition = new PositionOnTrack(Vec2D.ZERO, TileTransition.NORTH);
     private final UnmodifiableWorld world;
     private final Player player;
     private boolean beforeFirst = true;
@@ -70,7 +70,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         if (null == start) {
             pos = new PositionOnTrack();
         } else {
-            pos = PositionOnTrack.createComingFrom(start, TileTransition.NORTH);
+            pos = new PositionOnTrack(start, TileTransition.NORTH);
         }
 
         currentPosition.setValuesFromInt(pos.toInt());
@@ -91,7 +91,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      */
     private boolean canBuildTrack() {
         // Check that we are not doubling back on ourselves.
-        TileTransition opposite2current = currentPosition.cameFrom().getOpposite();
+        TileTransition opposite2current = currentPosition.getComingFrom().getOpposite();
         Vec2D currentP = currentPosition.getLocation();
         int directionWeCameFrom = opposite2current.getID();
         int directionWeCameFromPlus = (directionWeCameFrom + 1) % 8;
@@ -314,7 +314,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         // The direction we are moving relative to the current position.
         TileTransition direction = TileTransition.getInstance(directionInt);
 
-        currentBranch.setCameFrom(direction);
+        currentBranch.setComingFrom(direction);
         currentBranch.setLocation(Vec2D.add(currentPosition.getLocation(), direction.getD()));
 
         directionInt++;

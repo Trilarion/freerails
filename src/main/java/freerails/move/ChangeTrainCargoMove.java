@@ -28,13 +28,13 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public class ChangeCargoAtTrainMove implements Move {
+public class ChangeTrainCargoMove implements Move {
 
     private final Player player;
     private final int trainId;
     private final CargoBatchBundle cargoBatchBundle;
 
-    public ChangeCargoAtTrainMove(@NotNull Player player, int trainId, @NotNull CargoBatchBundle cargoBatchBundle) {
+    public ChangeTrainCargoMove(@NotNull Player player, int trainId, @NotNull CargoBatchBundle cargoBatchBundle) {
         this.player = player;
         this.trainId = trainId;
         this.cargoBatchBundle = cargoBatchBundle;
