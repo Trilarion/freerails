@@ -393,10 +393,11 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         orders.setSelectedIndex(i - 1);
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         trainOrderPanel1.setup(modelRoot, rendererRoot, null);
         this.modelRoot = modelRoot;
-        this.vl = rendererRoot;
+        vl = rendererRoot;
 
         // This actionListener is fired by the select station popup when a
         // station is selected.
@@ -404,6 +405,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
             private static final long serialVersionUID = -2096909872676721636L;
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 sendUpdateMove(selectStationPanel1.generateNewSchedule());
                 selectStationJPopupMenu.setVisible(false);
@@ -568,9 +570,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
 
     private void sendUpdateMove(Schedule schedule) {
         Move move = new ChangeTrainScheduleMove(modelRoot.getPlayer(), trainId, schedule);
-        modelRoot.doMove(move);
+        modelRoot.applyMove(move);
     }
 
+    @Override
     public void listUpdated(int index, Player player) {
         // TODO this is out of order with the removal of ChangeInListMoves, need to listen differently to changes
         //if (PlayerKey.TrainSchedules == key) {
@@ -579,8 +582,10 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
         //}
     }
 
+    @Override
     public void itemAdded(int index, Player player) {}
 
+    @Override
     public void itemRemoved(int index, Player player) {}
 
     /**

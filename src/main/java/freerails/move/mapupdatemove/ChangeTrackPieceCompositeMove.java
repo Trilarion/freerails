@@ -30,7 +30,6 @@ import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.MoveTrainMoveGenerator;
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
 import freerails.model.player.Player;
@@ -196,6 +195,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     /**
      * @return
      */
+    @Override
     public Rectangle getUpdatedTiles() {
         return new Rectangle(x, y, w, h);
     }
@@ -226,14 +226,8 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
     }
 
     @Override
-    public Status doMove(World world, Player player) {
+    public void apply(World world) {
         MoveTrainMoveGenerator.clearCache();
-        return super.doMove(world, player);
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        MoveTrainMoveGenerator.clearCache();
-        return super.undoMove(world, player);
+        super.apply(world);
     }
 }

@@ -36,6 +36,7 @@ class BuildTrainDialogAction extends AbstractAction {
         putValue(SHORT_DESCRIPTION, "Build a new train");
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (actionRoot.getDialogueBoxController() != null) {
             actionRoot.getDialogueBoxController().showSelectEngine();

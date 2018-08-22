@@ -25,7 +25,7 @@ import freerails.model.track.pathfinding.PathNotFoundException;
 import freerails.model.track.pathfinding.TrackPathFinder;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.MoveExecutor;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;

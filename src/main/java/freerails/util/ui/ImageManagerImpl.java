@@ -77,6 +77,7 @@ public class ImageManagerImpl implements ImageManager {
      * @return
      * @throws IOException
      */
+    @Override
     public Image getImage(String relativeFilename) throws IOException {
         String hashKey = relativeFilename;
         Image compatibleImage = imageHashMap.get(hashKey);
@@ -113,6 +114,7 @@ public class ImageManagerImpl implements ImageManager {
      * Returns the specified image scaled so that its height is equal to the
      * specified height.
      */
+    @Override
     public Image getScaledImage(String relativeFilename, int height) throws IOException {
         String hashKey = relativeFilename + height;
         Image compatibleImage = scaledImagesHashMap.get(hashKey);
@@ -143,6 +145,7 @@ public class ImageManagerImpl implements ImageManager {
      * @param width
      * @return
      */
+    @Override
     public Image newBlankImage(int height, int width) {
         return defaultConfiguration.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
     }
@@ -151,6 +154,7 @@ public class ImageManagerImpl implements ImageManager {
      * @param relativeFilename
      * @param i
      */
+    @Override
     public void setImage(String relativeFilename, Image i) {
         relativeFilename = relativeFilename.replace(' ', '_');
 

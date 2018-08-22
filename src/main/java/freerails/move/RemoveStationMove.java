@@ -19,8 +19,8 @@
 package freerails.move;
 
 import freerails.model.player.Player;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 // TODO hashcode, equals, unto, trydo...
@@ -38,23 +38,12 @@ public class RemoveStationMove implements Move {
     }
 
     @Override
-    public Status tryDoMove(World world, Player player) {
+    public Status applicable(UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public Status tryUndoMove(World world, Player player) {
-        return Status.OK;
-    }
-
-    @Override
-    public Status doMove(World world, Player player) {
-        world.removeStation(this.player, stationId);
-        return Status.OK;
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        return Status.OK;
+    public void apply(World world) {
+        world.removeStation(player, stationId);
     }
 }

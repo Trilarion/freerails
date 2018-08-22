@@ -67,20 +67,16 @@ public class ChangeProductionAtEngineShopMoveTest extends AbstractMoveTestCase {
 
         // Should fail because current production at station 0 is null;
         m = new ChangeProductionAtEngineShopMove(after, before, 0, WorldGenerator.TEST_PLAYER);
-        assertTryMoveFails(m);
-        assertDoMoveFails(m);
+        assertMoveNotApplicable(m);
+        assertMoveApplyFails(m);
 
         // Should fail because station 6 does not exist.
         m = new ChangeProductionAtEngineShopMove(before, after, 6, WorldGenerator.TEST_PLAYER);
-        assertTryMoveFails(m);
-        assertDoMoveFails(m);
+        assertMoveNotApplicable(m);
+        assertMoveApplyFails(m);
 
         // Should go through
         m = new ChangeProductionAtEngineShopMove(before, after, 0, WorldGenerator.TEST_PLAYER);
-        assertTryMoveIsOk(m);
-        assertDoMoveIsOk(m);
-        assertTryUndoMoveIsOk(m);
-        assertUndoMoveIsOk(m);
 
         // It should not be repeatable.
         assertOkButNotRepeatable(m);

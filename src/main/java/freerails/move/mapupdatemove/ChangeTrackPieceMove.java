@@ -22,11 +22,10 @@ import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
 import freerails.model.track.TrackUtils;
 import freerails.model.world.*;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
-import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.track.TrackPiece;
 
@@ -85,12 +84,9 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return trackPieceAfter;
     }
 
-    public Status tryDoMove(World world, Player player) {
-        return tryMove(world, trackPieceBefore, trackPieceAfter);
-    }
-
-    // TODO put part of it in model
-    private Status tryMove(World world, TrackPiece oldTrackPiece, TrackPiece newTrackPiece) {
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
+        // TODO put part of it in model
         // Check that location is on the map.
         if (!world.boundsContain(location)) {
             return Status.fail("Tried to build track outside the map.");
@@ -100,9 +96,9 @@ public final class ChangeTrackPieceMove implements TrackMove {
         Rules rules = ((UnmodifiableWorld) world).getRules();
         if (!rules.canConnectToOtherPlayersTracks()) {
             // TODO what about removing track of someone else
-            if (oldTrackPiece != null && newTrackPiece != null) {
-                int oldOwner = oldTrackPiece.getOwnerID();
-                int newOwner = newTrackPiece.getOwnerID();
+            if (trackPieceBefore != null && trackPieceAfter != null) {
+                int oldOwner = trackPieceBefore.getOwnerID();
+                int newOwner = trackPieceAfter.getOwnerID();
 
                 if (oldOwner != newOwner) {
                     return Status.fail("Not allowed to connect to other RR");
@@ -113,16 +109,16 @@ public final class ChangeTrackPieceMove implements TrackMove {
         // Check that the current track piece at this.location is the same as this.oldTrackPiece.
         TrackPiece currentTrackPieceAtLocation = world.getTile(location).getTrackPiece();
 
-        if (!Objects.equals(currentTrackPieceAtLocation, oldTrackPiece)) {
+        if (!Objects.equals(currentTrackPieceAtLocation, trackPieceBefore)) {
             return Status.fail("Unexpected track piece found at location: " + location.x + " ," + location.y);
         }
 
-        if (Objects.equals(oldTrackPiece, newTrackPiece)) {
+        if (Objects.equals(trackPieceBefore, trackPieceAfter)) {
             return Status.fail("Already the same track here!");
         }
 
-        if (oldTrackPiece != null) {
-            TrackType expectedTrackRule = oldTrackPiece.getTrackType();
+        if (trackPieceBefore != null) {
+            TrackType expectedTrackRule = trackPieceBefore.getTrackType();
             TrackType actualTrackRule = currentTrackPieceAtLocation.getTrackType();
 
             if (!expectedTrackRule.equals(actualTrackRule)) {
@@ -131,41 +127,41 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
             // Check that oldTrackPiece is not the same as newTrackPiece
             // TODO equals instead of ==
-            if (newTrackPiece != null && (oldTrackPiece.getTrackConfiguration() == newTrackPiece.getTrackConfiguration()) && (oldTrackPiece.getTrackType().equals(newTrackPiece.getTrackType()))) {
+            if (trackPieceAfter != null && (trackPieceBefore.getTrackConfiguration() == trackPieceAfter.getTrackConfiguration()) && (trackPieceBefore.getTrackType().equals(trackPieceAfter.getTrackType()))) {
                 return Status.fail("Already track here!");
             }
 
             // Check for illegal track configurations.
-            if (!(oldTrackPiece.getTrackType().trackPieceIsLegal(oldTrackPiece.getTrackConfiguration()))) {
+            if (!(trackPieceBefore.getTrackType().trackPieceIsLegal(trackPieceBefore.getTrackConfiguration()))) {
                 return Status.fail("Illegal track configuration.");
             }
 
             // Check for diagonal conflicts.
-            if (newTrackPiece != null && !(TrackUtils.noDiagonalTrackConflicts(location, oldTrackPiece.getTrackGraphicID(), world) && TrackUtils.noDiagonalTrackConflicts(location, newTrackPiece.getTrackGraphicID(), world))) {
+            if (trackPieceAfter != null && !(TrackUtils.noDiagonalTrackConflicts(location, trackPieceBefore.getTrackGraphicID(), world) && TrackUtils.noDiagonalTrackConflicts(location, trackPieceAfter.getTrackGraphicID(), world))) {
                 return Status.fail("Illegal track configuration - diagonal conflict");
             }
         }
 
-        if (newTrackPiece != null) {
+        if (trackPieceAfter != null) {
 
             int terrainType = world.getTile(location).getTerrainTypeId();
             Terrain terrain = world.getTerrain(terrainType);
 
             // Check for illegal track configurations.
-            if (!(newTrackPiece.getTrackType().trackPieceIsLegal(newTrackPiece.getTrackConfiguration()))) {
+            if (!(trackPieceAfter.getTrackType().trackPieceIsLegal(trackPieceAfter.getTrackConfiguration()))) {
                 return Status.fail("Illegal track configuration.");
             }
 
-            if (!newTrackPiece.getTrackType().canBuildOnThisTerrainType(terrain.getCategory())) {
-                String thisTrackType = newTrackPiece.getTrackType().getName();
+            if (!trackPieceAfter.getTrackType().canBuildOnThisTerrainType(terrain.getCategory())) {
+                String thisTrackType = trackPieceAfter.getTrackType().getName();
                 String terrainCategory = terrain.getCategory().toString().toLowerCase();
 
                 return Status.fail("Can't build " + thisTrackType + " on " + terrainCategory);
             }
 
             // Check for overlapping stations.
-            if (newTrackPiece.getTrackType().isStation()) {
-                Status status = TrackUtils.checkForOverlap(world, location, newTrackPiece);
+            if (trackPieceAfter.getTrackType().isStation()) {
+                Status status = TrackUtils.checkForOverlap(world, location, trackPieceAfter);
                 if (!status.isSuccess()) return status;
             }
 
@@ -174,45 +170,24 @@ public final class ChangeTrackPieceMove implements TrackMove {
         return Status.OK;
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        return tryMove(world, trackPieceAfter, trackPieceBefore);
-    }
-
-    public Status doMove(World world, Player player) {
+    @Override
+    public void apply(World world) {
         MoveTrainMoveGenerator.clearCache();
-        Status status = tryDoMove(world, player);
-
+        Status status = applicable(world);
         if (!status.isSuccess()) {
-            return status;
+            throw new RuntimeException(status.getMessage());
         }
-        move(world, trackPieceAfter);
-
-        return status;
-    }
-
-    private void move(World world, TrackPiece newTrackPiece) {
-        // FIXME why is oldTrackPiece not used???
+        // TODO why is oldTrackPiece not used???
         TerrainTile oldTile = world.getTile(location);
         int terrain = oldTile.getTerrainTypeId();
-        TerrainTile newTile = new TerrainTile(terrain, newTrackPiece);
+        TerrainTile newTile = new TerrainTile(terrain, trackPieceAfter);
         world.setTile(location, newTile);
-    }
-
-    public Status undoMove(World world, Player player) {
-        MoveTrainMoveGenerator.clearCache();
-        Status status = tryUndoMove(world, player);
-
-        if (!status.isSuccess()) {
-            return status;
-        }
-        move(world, trackPieceBefore);
-
-        return status;
     }
 
     /**
      * @return
      */
+    @Override
     public Rectangle getUpdatedTiles() {
         // If we are building or removing a station, we need to repaint/remove the station radius that appears on the map.
         int radius = 1;

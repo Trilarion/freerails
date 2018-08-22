@@ -53,9 +53,10 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
         private static final long serialVersionUID = 440368637080877578L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.repayBond(5, modelRoot.getWorld().getClock().getCurrentTime()));
-            modelRoot.doMove(bondTransaction);
+            modelRoot.applyMove(bondTransaction);
         }
     };
     private FinancialDataAggregator financialDataAggregator;
@@ -63,11 +64,12 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
         private static final long serialVersionUID = -8074364543650188583L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             if (financialDataAggregator.canIssueBond()) {
                 Move bondTransaction = new AddTransactionMove(modelRoot.getPlayer(), TransactionUtils.issueBond(financialDataAggregator.nextBondInterestRate(), modelRoot.getWorld().getClock().getCurrentTime()));
-                modelRoot.doMove(bondTransaction);
+                modelRoot.applyMove(bondTransaction);
             }
         }
     };
@@ -94,7 +96,7 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
     public void setup(final ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
         super.setup(m, rendererRoot, closeAction);
         financialDataAggregator = new FinancialDataAggregator(m.getWorld(), m.getPlayer());
-        this.modelRoot = m;
+        modelRoot = m;
 
         setupStockMenu();
         updateHtml();
@@ -122,12 +124,13 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
                 private static final long serialVersionUID = -6360550478693971570L;
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasuryBuyPrice : stockPrice.buyPrice;
                     ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice, modelRoot.getWorld().getClock().getCurrentTime());
                     Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
-                    modelRoot.doMove(move);
+                    modelRoot.applyMove(move);
                     updateHtml();
                 }
             };
@@ -136,12 +139,13 @@ public class BrokerScreenHtmlFrame extends BrokerFrame implements View {
 
                 private static final long serialVersionUID = 3993755349229011031L;
 
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     StockPrice stockPrice = new StockPriceCalculator(modelRoot.getWorld()).calculate()[otherPlayerId];
                     Money sharePrice = isThisPlayer ? stockPrice.treasurySellPrice : stockPrice.sellPrice;
                     ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(otherPlayerId, -ModelConstants.STOCK_BUNDLE_SIZE, sharePrice, modelRoot.getWorld().getClock().getCurrentTime());
                     Move move = new AddTransactionMove(modelRoot.getPlayer(), stockItemTransaction);
-                    modelRoot.doMove(move);
+                    modelRoot.applyMove(move);
                     updateHtml();
                 }
             };

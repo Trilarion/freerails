@@ -254,6 +254,7 @@ public class BuildTrackPanel extends JPanel implements ActiveView {
      * @param modelRoot
      * @param actionRoot
      */
+    @Override
     public void setup(ModelRoot modelRoot, ActionRoot actionRoot) {
 
         this.modelRoot = modelRoot;

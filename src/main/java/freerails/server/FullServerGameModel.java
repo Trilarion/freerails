@@ -33,7 +33,6 @@ import freerails.model.terrain.TerrainTile;
 import freerails.model.world.*;
 import freerails.move.*;
 import freerails.move.generator.BondInterestMoveGenerator;
-import freerails.move.generator.TimeTickMoveGenerator;
 import freerails.move.receiver.MoveReceiver;
 
 // TODO why does it have to be saved and not only the world during loading and saveing? Is there some internal state that should be part of the world?
@@ -125,6 +124,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * Update of some kind.
      */
+    @Override
     public synchronized void update() {
         long frameStartTime = System.currentTimeMillis();
 
@@ -137,7 +137,7 @@ public class FullServerGameModel implements ServerGameModel {
 
             if (gameSpeed > 0) {
                 // update the time first, since other updates might need to know the current time.
-                moveReceiver.process(TimeTickMoveGenerator.INSTANCE.generate(world));
+                moveReceiver.process(new AdvanceClockMove(Player.AUTHORITATIVE));
 
                 // now do the other updates like moving the trains
                 trainUpdater.moveTrains(world);
@@ -167,6 +167,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * @param moveReceiver
      */
+    @Override
     public void initialize(MoveReceiver moveReceiver) {
         this.moveReceiver = moveReceiver;
         trainUpdater = new TrainUpdater(moveReceiver);
@@ -176,6 +177,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * @return
      */
+    @Override
     public World getWorld() {
         return world;
     }
@@ -184,6 +186,7 @@ public class FullServerGameModel implements ServerGameModel {
      * @param world
      * @param passwords
      */
+    @Override
     public void setWorld(World world, String[] passwords) {
         this.world = world;
         this.passwords = passwords.clone();
@@ -192,6 +195,7 @@ public class FullServerGameModel implements ServerGameModel {
     /**
      * @return
      */
+    @Override
     public String[] getPasswords() {
         return passwords.clone();
     }

@@ -27,11 +27,15 @@ import java.awt.*;
  *
  */
 public class TestMapLayerRenderer implements MapLayerRenderer {
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {}
 
+    @Override
     public void refreshTile(Vec2D tileLocation) {}
 
+    @Override
     public void refreshAll() {}
 
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {}
 }

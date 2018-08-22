@@ -22,10 +22,9 @@
 package freerails.move;
 
 import freerails.model.train.activity.Activity;
-import freerails.util.BidirectionalIterator;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
-import freerails.nove.Status;
 
 /**
  *
@@ -71,7 +70,8 @@ public class NextActivityMove implements Move {
         return result;
     }
 
-    public Status tryDoMove(World world, Player player) {
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
         // Check that active entity exists.
         // TODO we change activities anyway, therefore that gets commented out
         // if (world.size(this.player) <= index)
@@ -80,25 +80,9 @@ public class NextActivityMove implements Move {
         return Status.OK;
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        BidirectionalIterator<Activity> activityIterator = world.getTrain(this.player, trainId).getActivities();
-        activityIterator.gotoLast();
-
-        Activity activity = activityIterator.get();
-        if (activity.equals(this.activity)) return Status.OK;
-
-        return Status.fail("Expected " + this.activity + " but found " + activity);
-    }
-
-    public Status doMove(World world, Player player) {
-        Status status = tryDoMove(world, player);
-        if (status.isSuccess()) world.addActivity(this.player, trainId, activity);
-        return status;
-    }
-
-    public Status undoMove(World world, Player player) {
-        Status status = tryUndoMove(world, player);
-        if (status.isSuccess()) world.getTrain(this.player, trainId).removeLastActivity();
-        return status;
+    @Override
+    public void apply(World world) {
+        Status status = applicable(world);
+        if (status.isSuccess()) world.addActivity(player, trainId, activity);
     }
 }

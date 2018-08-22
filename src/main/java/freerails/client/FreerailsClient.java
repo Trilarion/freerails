@@ -19,10 +19,9 @@
 package freerails.client;
 
 import freerails.client.launcher.LauncherFrame;
-import freerails.model.player.Player;
 import freerails.move.Move;
 import freerails.move.MovePrecommitter;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
@@ -113,6 +112,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
         connectionToServer.close();
     }
 
+    @Override
     public final void setGameModel(World world) {
         this.world = world;
         movePrecommitter = new MovePrecommitter(this.world);
@@ -125,6 +125,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
      */
     protected void newWorld(World world) {}
 
+    @Override
     public void setProperty(ClientProperty property, Serializable value) {
         properties.put(property, value);
     }
@@ -152,6 +153,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Reads and deals with all outstanding messages from the server.
      */
+    @Override
     public final void update() {
         try {
             List<Serializable> messages = connectionToServer.getReceivedObjects();
@@ -213,6 +215,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Sends move to the server.
      */
+    @Override
     public final void process(Move move) {
         movePrecommitter.toServer(move);
         moveChainFork.process(move);
@@ -222,13 +225,15 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * Tests a move before sending it to the server.
      */
-    public final Status tryDoMove(Move move) {
-        return move.tryDoMove(world, Player.AUTHORITATIVE);
+    @Override
+    public final Status applicable(Move move) {
+        return move.applicable(world);
     }
 
     /**
      * @param message
      */
+    @Override
     public void sendCommand(CommandToServer message) {
         write(message);
     }
@@ -236,6 +241,7 @@ public class FreerailsClient implements ClientControlInterface, GameModel, Untri
     /**
      * @param moveGenerator
      */
+    @Override
     public void processMoveGenerator(MoveGenerator moveGenerator) {
         Move move = movePrecommitter.toServer(moveGenerator);
         moveChainFork.process(move);

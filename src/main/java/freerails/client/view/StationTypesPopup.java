@@ -74,14 +74,17 @@ public class StationTypesPopup extends JPopupMenu {
         removeAll();
         removePopupMenuListener(popupMenuListener);
         popupMenuListener = new PopupMenuListener() {
+            @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
             }
 
+            @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 stationRadiusRenderer.hide();
                 stationBuildModel.getStationCancelAction().actionPerformed(new ActionEvent(StationTypesPopup.this, ActionEvent.ACTION_PERFORMED, ""));
             }
 
+            @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 stationRadiusRenderer.setPosition(tileToBuildStationOn.x, tileToBuildStationOn.y);
                 stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, tileToBuildStationOn);
@@ -149,6 +152,7 @@ public class StationTypesPopup extends JPopupMenu {
             armed = false;
         }
 
+        @Override
         public void stateChanged(ChangeEvent e) {
             if (rbMenuItem.isArmed() && (rbMenuItem.isArmed() != armed)) {
                 stationChooseActions[index].actionPerformed(new ActionEvent(rbMenuItem, ActionEvent.ACTION_PERFORMED, ""));

@@ -107,6 +107,7 @@ public class StationRadiusRenderer implements Painter {
      * @param g
      * @param newVisibleRectangle
      */
+    @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         if (modelRoot.getProperty(ModelRootProperty.CURSOR_MODE).equals(ModelRootValue.PLACE_STATION_CURSOR_MODE)) {
             g.setStroke(new BasicStroke(2.0f));

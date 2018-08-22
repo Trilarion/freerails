@@ -20,8 +20,8 @@ package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.station.Station;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 // TODO hashcode, equals, try, undo ...
@@ -63,36 +63,18 @@ public class AddStationMove implements Move {
     }
 
     @Override
-    public Status tryDoMove(World world, Player player) {
-        if (World.contains(this.station.getId(), world.getStations(this.player))) {
+    public Status applicable(UnmodifiableWorld world) {
+        if (World.contains(station.getId(), world.getStations(player))) {
             return Status.fail("Station with id already existing");
         }
         return Status.OK;
     }
 
     @Override
-    public Status tryUndoMove(World world, Player player) {
-        if (!World.contains(this.station.getId(), world.getStations(this.player))) {
-            return Status.fail("Station with id not existing");
+    public void apply(World world) {
+        if (World.contains(station.getId(), world.getStations(player))) {
+            throw new RuntimeException("Station with id already existing");
         }
-        return Status.OK;
-    }
-
-    @Override
-    public Status doMove(World world, Player player) {
-        if (World.contains(this.station.getId(), world.getStations(this.player))) {
-            return Status.fail("Station with id already existing");
-        }
-        world.addStation(this.player, station);
-        return Status.OK;
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        if (!World.contains(this.station.getId(), world.getStations(this.player))) {
-            return Status.fail("Station with id not existing");
-        }
-        world.removeStation(this.player, station.getId());
-        return Status.OK;
+        world.addStation(player, station);
     }
 }

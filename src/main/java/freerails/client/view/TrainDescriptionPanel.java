@@ -99,6 +99,7 @@ public class TrainDescriptionPanel extends javax.swing.JPanel implements View {
     }
 
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
 
         trainViewJPanel1.setup(modelRoot, rendererRoot, closeAction);

@@ -78,6 +78,7 @@ public class FinancialDataAggregator extends TransactionAggregator {
         }
     }
 
+    @Override
     protected void clearState() {
         super.clearState();
         bonds = 0;

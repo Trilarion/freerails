@@ -122,6 +122,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     /**
      * @param g
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         throw new UnsupportedOperationException();
     }
@@ -129,6 +130,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     /**
      *
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {
         throw new UnsupportedOperationException();
     }
@@ -136,6 +138,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
     /**
      *
      */
+    @Override
     public void refreshAll() {
         getMapRenderer().refreshAll();
     }
@@ -144,6 +147,7 @@ public class DetailMapViewComponentConcrete extends DetailMapViewComponent imple
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         throw new UnsupportedOperationException();
     }

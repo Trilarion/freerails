@@ -22,7 +22,7 @@
 package freerails.move;
 
 import freerails.model.finance.transaction.Transaction;
-import freerails.nove.Status;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
 import freerails.model.world.World;
 import freerails.model.player.Player;
@@ -80,10 +80,11 @@ public class AddTransactionMove implements Move {
         return result;
     }
 
-    public Status tryDoMove(World world, Player player) {
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
         if (cashConstrained) {
             // TODO Money arithmetic
-            long bankBalance = world.getCurrentBalance(this.player).amount;
+            long bankBalance = world.getCurrentBalance(player).amount;
             long transactionAmount = transaction.getAmount().amount;
             long balanceAfter = bankBalance + transactionAmount;
 
@@ -95,39 +96,13 @@ public class AddTransactionMove implements Move {
         return Status.OK;
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        int size = world.getTransactions(this.player).size();
-
-        if (0 == size) {
-            return Status.fail("No transaction to remove!");
-        }
-
-        Transaction lastTransaction = world.getTransaction(this.player, size - 1);
-
-        if (lastTransaction.equals(transaction)) {
-            return Status.OK;
-        }
-        return Status.fail("Expected " + transaction + "but found " + lastTransaction);
-    }
-
-    public Status doMove(World world, Player player) {
-        Status status = tryDoMove(world, player);
+    @Override
+    public void apply(World world) {
+        Status status = applicable(world);
 
         if (status.isSuccess()) {
-            world.addTransaction(this.player, transaction);
+            world.addTransaction(player, transaction);
         }
-
-        return status;
-    }
-
-    public Status undoMove(World world, Player player) {
-        Status status = tryUndoMove(world, player);
-
-        if (status.isSuccess()) {
-            world.removeLastTransaction(this.player);
-        }
-
-        return status;
     }
 
     @Override

@@ -54,6 +54,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
      * @param mapLocation
      * @param world
      */
+    @Override
     public void render(Graphics g, Vec2D renderLocation, Vec2D mapLocation, UnmodifiableWorld world) {
         Image icon = getIcon(mapLocation, world);
 
@@ -65,6 +66,7 @@ public abstract class AbstractTileRenderer implements TileRenderer {
     /**
      * @return
      */
+    @Override
     public Image getDefaultIcon() {
         return tileIcons[0];
     }

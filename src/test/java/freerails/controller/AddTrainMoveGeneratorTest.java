@@ -31,7 +31,6 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.BidirectionalIterator;
 import freerails.model.terrain.TileTransition;
@@ -92,8 +91,7 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     public void testMove() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
-        assertDoMoveIsOk(move);
-        assertUndoMoveIsOk(move);
+        assertMoveApplyIsOk(move);
         assertSurvivesSerialisation(move);
     }
 
@@ -104,8 +102,9 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     public void testPathOnTiles() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
-        Status status = move.doMove(world, Player.AUTHORITATIVE);
+        Status status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
 
         Train train = world.getTrain(player, 0);
         TrainMotion motion = train.findCurrentMotion(0);
@@ -120,8 +119,9 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
     public void testMove2() {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), stationA, player, defaultSchedule);
         Move move = preMove.generate(world);
-        Status status = move.doMove(world, Player.AUTHORITATIVE);
+        Status status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
         BidirectionalIterator<Activity> activities = world.getTrain(player, 0).getActivities();
         TrainMotion tm = (TrainMotion) activities.get();
         assertEquals(0.0d, tm.getDuration());
@@ -154,9 +154,10 @@ public class AddTrainMoveGeneratorTest extends AbstractMoveTestCase {
         UnmodifiableSchedule schedule = new Schedule(orders, -1, false);
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
         Move move = addTrain.generate(world);
-        status = move.doMove(world, player);
+        status = move.applicable(world);
         if (!status.isSuccess())
             throw new IllegalStateException(status.getMessage());
+        move.apply(world);
 
         assertNotNull(TrainUtils.getTargetLocation(world, player, 0));
     }

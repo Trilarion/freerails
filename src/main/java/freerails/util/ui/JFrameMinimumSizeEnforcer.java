@@ -40,6 +40,7 @@ public class JFrameMinimumSizeEnforcer implements ComponentListener {
         minWidth = w;
     }
 
+    @Override
     public void componentResized(ComponentEvent e) {
         Component c = e.getComponent();
 
@@ -65,12 +66,15 @@ public class JFrameMinimumSizeEnforcer implements ComponentListener {
         }
     }
 
+    @Override
     public void componentMoved(ComponentEvent e) {
     }
 
+    @Override
     public void componentShown(ComponentEvent e) {
     }
 
+    @Override
     public void componentHidden(ComponentEvent e) {
     }
 }

@@ -29,13 +29,11 @@ import freerails.model.train.motion.TrainPositionOnMap;
 import freerails.model.train.schedule.UnmodifiableSchedule;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.TrainOrder;
-import freerails.model.world.UnmodifiableWorld;
 import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.move.generator.MoveGenerator;
 
-import freerails.nove.Status;
 import freerails.util.Segment;
 import freerails.util.Vec2D;
 import freerails.util.BidirectionalIterator;
@@ -84,8 +82,9 @@ class TrainMotionExperiment extends JComponent {
         MoveGenerator addTrain = new AddTrainMoveGenerator(0, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);
-        status = move.doMove(world, player);
+        status = move.applicable(world);
         if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
+        move.apply(world);
 
         startTime = System.currentTimeMillis();
     }
@@ -196,8 +195,9 @@ class TrainMotionExperiment extends JComponent {
         } else {
             move = moveTrain.generate(world);
         }
-        Status status = move.doMove(world, player);
+        Status status = move.applicable(world);
         if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
+        move.apply(world);
 
         BidirectionalIterator<Activity> bidirectionalIterator = world.getTrain(player, 0).getActivities();
 

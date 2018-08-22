@@ -92,6 +92,7 @@ public class CargoBatch implements Serializable, Comparable<CargoBatch> {
         return result;
     }
 
+    @Override
     public int compareTo(@NotNull CargoBatch o) {
         if (creationTime != o.creationTime) return (int) (creationTime - o.creationTime);
         if (cargoTypeId != o.cargoTypeId) return cargoTypeId - o.cargoTypeId;

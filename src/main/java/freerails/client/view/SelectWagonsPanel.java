@@ -234,6 +234,7 @@ public class SelectWagonsPanel extends JPanel implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         ListModel<Cargo> listModel = new StaticListModel<>(modelRoot.getWorld().getCargos());
         wagonTypesJList.setModel(listModel);

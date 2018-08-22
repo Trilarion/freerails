@@ -51,6 +51,7 @@ public class CashLabel extends JLabel implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
         player = modelRoot.getPlayer();

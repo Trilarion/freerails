@@ -137,6 +137,7 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         */
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         newTrainSchedulePanel1.setup(modelRoot, rendererRoot, closeAction);
         trainDetailsJPanel1.setup(modelRoot, rendererRoot, closeAction);
@@ -167,13 +168,16 @@ public class TrainDialoguePanel extends JPanel implements View, WorldListListene
         trainDetailsJPanel1.displayTrain(trainNumber);
     }
 
+    @Override
     public void listUpdated(int index, Player player) {
         newTrainSchedulePanel1.listUpdated(index, player);
     }
 
+    @Override
     public void itemAdded(int index, Player player) {
     }
 
+    @Override
     public void itemRemoved(int index, Player player) {
     }
 

@@ -225,6 +225,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * Calculates a cost figure incorporating the distance and the cost of any
      * new track.
      */
+    @Override
     public int getEdgeCost() {
         if (beforeFirst) {
             throw new IllegalStateException();
@@ -265,6 +266,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         return cost;
     }
 
+    @Override
     public int getPosition() {
         return currentPosition.toInt();
     }
@@ -272,11 +274,13 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * @param vertex
      */
+    @Override
     public void setPosition(int vertex) {
         currentPosition.setValuesFromInt(vertex);
         directionInt = 0;
     }
 
+    @Override
     public int getVertexConnectedByEdge() {
         if (beforeFirst) {
             throw new IllegalStateException();
@@ -288,6 +292,7 @@ public class BuildTrackExplorer implements GraphExplorer {
     /**
      * @return
      */
+    @Override
     public boolean hasNextEdge() {
         while (directionInt < 8) {
             if (canBuildTrack()) {
@@ -300,6 +305,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         return false;
     }
 
+    @Override
     public void moveForward() {
         if (beforeFirst) {
             throw new IllegalStateException();
@@ -307,6 +313,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         setPosition(getVertexConnectedByEdge());
     }
 
+    @Override
     public void nextEdge() {
         if (!hasNextEdge()) {
             throw new NoSuchElementException();

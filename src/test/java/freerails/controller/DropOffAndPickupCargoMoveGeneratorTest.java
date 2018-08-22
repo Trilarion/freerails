@@ -21,12 +21,10 @@
  */
 package freerails.controller;
 
-import freerails.model.player.Player;
 import freerails.model.train.Train;
-import freerails.model.train.schedule.Schedule;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 
 import freerails.util.Vec2D;
 import freerails.model.world.World;
@@ -110,18 +108,18 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      * for the train to carry.
      */
     public void testPickUpCargo2() {
-        setCargoAtStation(this.cargoType0FromStation2, 200);
+        setCargoAtStation(cargoType0FromStation2, 200);
 
         stopAtStation();
 
         // The train has 3 wagons, each wagon carries 40 units of cargo, so
         // the train should pickup 120 units of cargo.
         CargoBatchBundle expectedOnTrain = new CargoBatchBundle();
-        expectedOnTrain.setAmount(this.cargoType0FromStation2, 120);
+        expectedOnTrain.setAmount(cargoType0FromStation2, 120);
 
         // The remaining 80 units of cargo should be left at the station.
         CargoBatchBundle expectedAtStation = new CargoBatchBundle();
-        expectedAtStation.setAmount(this.cargoType0FromStation2, 80);
+        expectedAtStation.setAmount(cargoType0FromStation2, 80);
 
         // Test the expected values against the actual values.
         assertEquals(expectedOnTrain, getCargoOnTrain());
@@ -139,10 +137,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         setWagons(wagons);
 
         // Set cargo on train.
-        setCargoOnTrain(this.cargoType0FromStation2, 30);
+        setCargoOnTrain(cargoType0FromStation2, 30);
 
         // Set cargo at station.
-        setCargoAtStation(this.cargoType0FromStation0, 110);
+        setCargoAtStation(cargoType0FromStation0, 110);
 
         // Check that station does not demand cargo type 0.
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
@@ -159,8 +157,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         expectedAtStation.setAmount(cargoType0FromStation0, 60);
 
         CargoBatchBundle expectedOnTrain = new CargoBatchBundle();
-        expectedOnTrain.setAmount(this.cargoType0FromStation2, 30);
-        expectedOnTrain.setAmount(this.cargoType0FromStation0, 50);
+        expectedOnTrain.setAmount(cargoType0FromStation2, 30);
+        expectedOnTrain.setAmount(cargoType0FromStation0, 50);
 
         assertEquals(expectedAtStation, getCargoAtStation());
         assertEquals(expectedOnTrain, getCargoOnTrain());
@@ -189,8 +187,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         setWagons(wagons);
 
         // Add quantities of cargo type 0 and 2 to the train.
-        setCargoOnTrain(this.cargoType0FromStation2, 50);
-        setCargoOnTrain(this.cargoType1FromStation2, 40);
+        setCargoOnTrain(cargoType0FromStation2, 50);
+        setCargoOnTrain(cargoType1FromStation2, 40);
 
         stopAtStation();
 
@@ -200,7 +198,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
          * does not demand.
          */
         CargoBatchBundle expectedOnTrain = new CargoBatchBundle();
-        expectedOnTrain.setAmount(this.cargoType1FromStation2, 40);
+        expectedOnTrain.setAmount(cargoType1FromStation2, 40);
 
         assertEquals(expectedOnTrain, getCargoOnTrain());
         assertEquals(CargoBatchBundle.EMPTY, getCargoAtStation());
@@ -216,7 +214,7 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
          * station.
          */
         CargoBatchBundle expectedAtStation = new CargoBatchBundle();
-        expectedAtStation.setAmount(this.cargoType1FromStation2, 40);
+        expectedAtStation.setAmount(cargoType1FromStation2, 40);
 
         assertEquals(expectedAtStation, getCargoAtStation());
         assertEquals(CargoBatchBundle.EMPTY, getCargoOnTrain());
@@ -264,8 +262,8 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
      */
     public void testPickUpAndDropOffSameCargoType() {
         // Set cargo at station and on train.
-        setCargoOnTrain(this.cargoType0FromStation2, 120);
-        setCargoAtStation(this.cargoType0FromStation0, 200);
+        setCargoOnTrain(cargoType0FromStation2, 120);
+        setCargoAtStation(cargoType0FromStation0, 200);
 
         // Set station to demand cargo 0.
         Station station = world.getStation(WorldGenerator.TEST_PLAYER, 0);
@@ -280,10 +278,10 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
         stopAtStation();
 
         CargoBatchBundle expectedOnTrain = new CargoBatchBundle();
-        expectedOnTrain.setAmount(this.cargoType0FromStation0, 120);
+        expectedOnTrain.setAmount(cargoType0FromStation0, 120);
 
         CargoBatchBundle expectedAtStation = new CargoBatchBundle();
-        expectedAtStation.setAmount(this.cargoType0FromStation0, 80);
+        expectedAtStation.setAmount(cargoType0FromStation0, 80);
 
         assertEquals(expectedOnTrain, getCargoOnTrain());
         assertEquals(expectedAtStation, getCargoAtStation());
@@ -303,8 +301,9 @@ public class DropOffAndPickupCargoMoveGeneratorTest extends TestCase {
                 0, 0, world, WorldGenerator.TEST_PLAYER, false, false);
         Move move = moveGenerator.generate();
         if (null != move) {
-            Status status = move.doMove(world, Player.AUTHORITATIVE);
+            Status status = move.applicable(world);
             assertEquals(Status.OK, status);
+            move.apply(world);
         }
     }
 

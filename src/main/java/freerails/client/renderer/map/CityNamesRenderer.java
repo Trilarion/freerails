@@ -49,6 +49,7 @@ public class CityNamesRenderer implements Painter {
      * @param g
      * @param newVisibleRectangle
      */
+    @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.PLAIN, 20));

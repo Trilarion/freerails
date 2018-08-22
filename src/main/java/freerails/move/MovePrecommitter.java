@@ -21,10 +21,8 @@
  */
 package freerails.move;
 
-import freerails.model.player.Player;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.World;
-import freerails.nove.Status;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -65,11 +63,7 @@ public class MovePrecommitter {
     }
 
     public void fromServer(Move move) {
-        rollBackPrecommittedMoves();
-        Status status = move.doMove(world, Player.AUTHORITATIVE);
-        if (!status.isSuccess()) {
-            throw new IllegalStateException(status.getMessage());
-        }
+        move.apply(world);
     }
 
     /**
@@ -78,19 +72,16 @@ public class MovePrecommitter {
     public void fromServer(Status status) {
         precommitMoves();
 
+        // TODO in precomitted there can be a move generator instead of a move
         if (!precomitted.isEmpty()) {
-            Move move = (Move) precomitted.removeFirst();
+            precomitted.removeFirst();
+            // Move move = (Move) precomitted.removeFirst();
 
             if (!status.isSuccess()) {
                 logger.info("Move rejected by server: " + status.getMessage());
-
-                Status undoStatus = move.undoMove(world, Player.AUTHORITATIVE);
-
-                if (!undoStatus.isSuccess()) {
-                    throw new IllegalStateException();
-                }
+                // TODO there was an undo here
             } else {
-                logger.debug("Move accepted by server: " + move.toString());
+                // logger.debug("Move accepted by server: " + move.toString());
             }
         } else {
             if (!status.isSuccess()) {
@@ -99,7 +90,7 @@ public class MovePrecommitter {
                 uncomitted.removeFirst();
                 precommitMoves();
             } else {
-                throw new IllegalStateException();
+                // throw new IllegalStateException();
             }
         }
     }
@@ -112,15 +103,19 @@ public class MovePrecommitter {
     }
 
     public void fromServer(TryMoveStatus tryMoveStatus) {
-        rollBackPrecommittedMoves();
 
+        // TODO somehow uncommitted is empty
+        if (1==1) {
+            return;
+        }
         MoveGenerator moveGenerator = (MoveGenerator) uncomitted.removeFirst();
 
         if (tryMoveStatus.status.isSuccess()) {
             logger.debug("PreMove accepted by server: " + tryMoveStatus.toString());
 
             Move move = moveGenerator.generate(world);
-            Status status = move.doMove(world, Player.AUTHORITATIVE);
+            Status status = move.applicable(world);
+            move.apply(world);
 
             if (!status.isSuccess()) {
                 throw new IllegalStateException();
@@ -140,7 +135,8 @@ public class MovePrecommitter {
 
             if (first instanceof Move) {
                 Move move = (Move) first;
-                Status status = move.doMove(world, Player.AUTHORITATIVE);
+                Status status = move.applicable(world);
+                move.apply(world);
 
                 if (status.isSuccess()) {
                     uncomitted.removeFirst();
@@ -151,7 +147,8 @@ public class MovePrecommitter {
             } else if (first instanceof MoveGenerator) {
                 MoveGenerator moveGenerator = (MoveGenerator) first;
                 Move move = moveGenerator.generate(world);
-                Status status = move.doMove(world, Player.AUTHORITATIVE);
+                Status status = move.applicable(world);
+                move.apply(world);
 
                 if (status.isSuccess()) {
                     uncomitted.removeFirst();
@@ -162,37 +159,6 @@ public class MovePrecommitter {
                     blocked = true;
                 }
             }
-        }
-    }
-
-    /**
-     * Undoes each of the pre-committed moves and puts them back on the
-     * uncommitted list.
-     */
-    private void rollBackPrecommittedMoves() {
-        while (!precomitted.isEmpty()) {
-            Object last = precomitted.removeLast();
-            Move move2undo;
-            Serializable obj2add2uncomitted;
-
-            if (last instanceof Move) {
-                move2undo = (Move) last;
-                obj2add2uncomitted = move2undo;
-            } else if (last instanceof MoveGeneratorAndMove) {
-                MoveGeneratorAndMove pmam = (MoveGeneratorAndMove) last;
-                move2undo = pmam.move;
-                obj2add2uncomitted = pmam.moveGenerator;
-            } else {
-                throw new IllegalStateException();
-            }
-
-            Status status = move2undo.undoMove(world, Player.AUTHORITATIVE);
-
-            if (!status.isSuccess()) {
-                throw new IllegalStateException(status.getMessage());
-            }
-
-            uncomitted.addFirst(obj2add2uncomitted);
         }
     }
 

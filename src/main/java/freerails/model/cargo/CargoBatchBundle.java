@@ -60,6 +60,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
      *
      * @return
      */
+    @Override
     public Collection<CargoBatch> getCargoBatches() {
         return Collections.unmodifiableCollection(new ArrayList<>(cargoMap.keySet()));
     }
@@ -68,6 +69,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
      * @param cargoBatch
      * @return
      */
+    @Override
     public boolean contains(CargoBatch cargoBatch) {
         return cargoMap.containsKey(cargoBatch);
     }
@@ -93,6 +95,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
      * @param cargoType
      * @return
      */
+    @Override
     public int getAmountOfType(int cargoType) {
         int amount = 0;
         for (CargoBatch cargoBatch : cargoMap.keySet()) {
@@ -108,6 +111,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         return cargoMap.size();
     }
 
+    @Override
     public int getAmount(CargoBatch cargoBatch) {
         if (contains(cargoBatch)) {
             return cargoMap.get(cargoBatch);
@@ -127,6 +131,7 @@ public class CargoBatchBundle implements UnmodifiableCargoBatchBundle {
         }
     }
 
+    @Override
     public int size() {
         return cargoMap.size();
     }

@@ -35,6 +35,7 @@ public class TrainCellRenderer implements ListCellRenderer<Engine> {
         savesJLabels = new HashMap<>();
     }
 
+    @Override
     public Component getListCellRendererComponent(JList<? extends Engine> list, Engine engine, // value to display
                                                   int index, // cell index
                                                   boolean isSelected, // is the cell selected

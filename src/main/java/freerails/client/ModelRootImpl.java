@@ -22,7 +22,7 @@ import freerails.controller.BuildMode;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.network.command.CommandToServer;
 import freerails.network.command.ServerCommandReceiver;
 import freerails.move.receiver.MoveChainFork;
@@ -114,8 +114,9 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param move
      * @return
      */
-    public Status doMove(Move move) {
-        Status status = moveReceiver.tryDoMove(move);
+    @Override
+    public Status applyMove(Move move) {
+        Status status = moveReceiver.applicable(move);
         moveReceiver.process(move);
 
         return status;
@@ -125,9 +126,10 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param moveGenerator
      * @return
      */
+    @Override
     public Status doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
-        Status status = moveReceiver.tryDoMove(move);
+        Status status = moveReceiver.applicable(move);
         moveReceiver.processMoveGenerator(moveGenerator);
 
         return status;
@@ -136,6 +138,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @return
      */
+    @Override
     public Player getPlayer() {
         return Utils.verifyNotNull(playerPlayer);
     }
@@ -144,6 +147,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param property
      * @return
      */
+    @Override
     public Object getProperty(ModelRootProperty property) {
         return properties.get(property);
     }
@@ -151,6 +155,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @return
      */
+    @Override
     public UnmodifiableWorld getWorld() {
         return world;
     }
@@ -158,6 +163,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
     /**
      * @param message
      */
+    @Override
     public void sendCommand(CommandToServer message) {
         if (null != serverCommandReceiver) {
             serverCommandReceiver.sendCommand(message);
@@ -184,6 +190,7 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param property
      * @param value
      */
+    @Override
     public void setProperty(ModelRootProperty property, Object value) {
         Object oldValue = properties.get(property);
         properties.put(property, value);
@@ -216,7 +223,8 @@ public class ModelRootImpl implements ModelRoot, ServerCommandReceiver {
      * @param move
      * @return
      */
-    public Status tryDoMove(Move move) {
-        return moveReceiver.tryDoMove(move);
+    @Override
+    public Status tryMove(Move move) {
+        return moveReceiver.applicable(move);
     }
 }

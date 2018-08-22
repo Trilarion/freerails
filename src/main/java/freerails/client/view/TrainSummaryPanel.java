@@ -112,6 +112,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         add(trainIncomeLabel, gridBagConstraints);
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         player = modelRoot.getPlayer();
         world = modelRoot.getWorld();
@@ -129,6 +130,7 @@ public class TrainSummaryPanel extends JPanel implements ListCellRenderer, View 
         return '$' + m.toString();
     }
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
         // TODO find a different way of relating row number to train id

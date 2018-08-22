@@ -151,6 +151,7 @@ public strictfp class TrainMotion extends Activity<TrainPositionOnMap> {
     /**
      * @return
      */
+    @Override
     public double getDuration() {
         return duration;
     }
@@ -203,6 +204,7 @@ public strictfp class TrainMotion extends Activity<TrainPositionOnMap> {
      * @return the train's position.
      * @throws IllegalArgumentException if t is outside the interval
      */
+    @Override
     public TrainPositionOnMap getStateAtTime(double time) {
         time = Math.min(time, speeds.getTotalTime());
         double offset = calcOffSet(time);

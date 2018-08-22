@@ -20,7 +20,6 @@ package freerails.move;
 
 import freerails.model.track.TrackType;
 import freerails.move.generator.AddStationMoveGenerator;
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
@@ -65,7 +64,7 @@ public class StationBuilder {
         AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, player);
         Move move = preMove.generate(world);
 
-        return executor.tryDoMove(move);
+        return executor.tryMove(move);
     }
 
     /**

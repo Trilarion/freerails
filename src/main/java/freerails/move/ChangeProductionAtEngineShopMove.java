@@ -22,11 +22,11 @@
 package freerails.move;
 
 
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
 import freerails.model.train.TrainTemplate;
-import freerails.nove.Status;
 
 import java.util.List;
 
@@ -80,11 +80,8 @@ public class ChangeProductionAtEngineShopMove implements Move {
         return result;
     }
 
-    public Status tryDoMove(World world, Player player) {
-        return tryMove(world, before);
-    }
-
-    private Status tryMove(World world, List<TrainTemplate> stateA) {
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
         // Check that the specified station exists.
         // TODO check that station is existing, do we need a dedicated function for that
         /*
@@ -103,38 +100,25 @@ public class ChangeProductionAtEngineShopMove implements Move {
 
         // Check that the station is building what we expect.
         if (null == station.getProduction()) {
-            if (null == stateA) {
+            if (null == before) {
                 return Status.OK;
             }
             return Status.fail(stationNumber + " " + player);
         }
-        if (station.getProduction().equals(stateA)) {
+        if (station.getProduction().equals(before)) {
             return Status.OK;
         }
         return Status.fail(stationNumber + " " + player);
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        return tryMove(world, after);
-    }
-
-    public Status doMove(World world, Player player) {
-        Status status = tryDoMove(world, player);
-
-        if (status.isSuccess()) {
-            Station station = world.getStation(this.player, stationNumber);
-            station.setProduction(after);
+    @Override
+    public void apply(World world) {
+        Status status = applicable(world);
+        if (!status.isSuccess()) {
+            throw new RuntimeException(status.getMessage());
         }
-        return status;
-    }
 
-    public Status undoMove(World world, Player player) {
-        Status status = tryUndoMove(world, player);
-
-        if (status.isSuccess()) {
-            Station station = world.getStation(this.player, stationNumber);
-            station.setProduction(before);
-        }
-        return status;
+        Station station = world.getStation(player, stationNumber);
+        station.setProduction(after);
     }
 }

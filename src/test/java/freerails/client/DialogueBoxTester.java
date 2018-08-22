@@ -57,6 +57,7 @@ class DialogueBoxTester extends JFrame {
     private final Action closeCurrentDialogue = new AbstractAction("Close") {
         private static final long serialVersionUID = -7379893226410558610L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             dialogueBoxController.closeContent();
         }

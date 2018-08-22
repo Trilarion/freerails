@@ -22,11 +22,10 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.terrain.Terrain;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.player.Player;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.TerrainCategory;
 
@@ -75,7 +74,8 @@ public class ChangeTileMove implements MapUpdateMove {
         return result;
     }
 
-    public Status tryDoMove(World world, Player player) {
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
         TerrainTile actual = world.getTile(location);
         Terrain type = world.getTerrain(actual.getTerrainTypeId());
 
@@ -89,37 +89,19 @@ public class ChangeTileMove implements MapUpdateMove {
         return Status.fail("Expected " + before + " but found " + actual);
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        TerrainTile actual = world.getTile(location);
-        if (actual.equals(after)) {
-            return Status.OK;
+    @Override
+    public void apply(World world) {
+        Status status = applicable(world);
+        if (!status.isSuccess()) {
+            throw new RuntimeException(status.getMessage());
         }
-        return Status.fail("Expected " + after + " but found " + actual);
-    }
-
-    public Status doMove(World world, Player player) {
-        Status status = tryDoMove(world, player);
-
-        if (status.isSuccess()) {
-            world.setTile(location, after);
-        }
-
-        return status;
-    }
-
-    public Status undoMove(World world, Player player) {
-        Status status = tryUndoMove(world, player);
-
-        if (status.isSuccess()) {
-            world.setTile(location, before);
-        }
-
-        return status;
+        world.setTile(location, after);
     }
 
     /**
      * @return
      */
+    @Override
     public Rectangle getUpdatedTiles() {
 
         return new Rectangle(location.x, location.y, 1, 1);

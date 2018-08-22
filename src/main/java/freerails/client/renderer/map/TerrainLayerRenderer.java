@@ -46,13 +46,14 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     TerrainLayerRenderer(UnmodifiableWorld world, TileRendererList tiles) {
         this.world = world;
         this.tiles = tiles;
-        this.mapSize = world.getMapSize();
+        mapSize = world.getMapSize();
     }
 
     /**
      * @param g
      * @param tileLocation
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         Vec2D screenLocation = Vec2D.multiply(ClientConstants.TILE_SIZE, tileLocation);
 
@@ -79,7 +80,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     private void paintRectangleOfTiles(Graphics g, Rectangle tilesToPaint) {
         for (int tileX = tilesToPaint.x; tileX < (tilesToPaint.x + tilesToPaint.width); tileX++) {
             for (int tileY = tilesToPaint.y; tileY < (tilesToPaint.y + tilesToPaint.height); tileY++) {
-                this.paintTile(g, new Vec2D(tileX, tileY));
+                paintTile(g, new Vec2D(tileX, tileY));
             }
         }
     }
@@ -88,6 +89,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
@@ -99,10 +101,12 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
     /**
      * @param tileLocation
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
      *
      */
+    @Override
     public void refreshAll() {}
 }

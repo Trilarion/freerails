@@ -22,6 +22,7 @@ import freerails.model.cargo.Cargo;
 import freerails.model.game.*;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.station.Station;
+import freerails.model.terrain.TerrainTile;
 import freerails.model.terrain.city.City;
 import freerails.model.terrain.Terrain;
 import freerails.model.track.TrackType;
@@ -124,7 +125,7 @@ public interface UnmodifiableWorld extends Serializable {
     /**
      * Returns the tile at the specified position on the map.
      */
-    Serializable getTile(Vec2D location);
+    TerrainTile getTile(Vec2D location);
 
     /**
      * @param player

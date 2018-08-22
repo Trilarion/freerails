@@ -90,6 +90,7 @@ public class AddStationMoveGenerator implements MoveGenerator {
      * @param world
      * @return
      */
+    @Override
     public Move generate(UnmodifiableWorld world) {
         TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
 

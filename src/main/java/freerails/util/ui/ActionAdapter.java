@@ -167,6 +167,7 @@ public class ActionAdapter extends DefaultComboBoxModel {
             }
         }
 
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             setEnabled(((Action) evt.getSource()).isEnabled());
         }

@@ -89,6 +89,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         return possiblePositions;
     }
 
+    @Override
     public int getPosition() {
         return currentPosition.toInt();
     }
@@ -96,11 +97,13 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     /**
      * @param vertex
      */
+    @Override
     public void setPosition(int vertex) {
         beforeFirst = true;
         currentPosition.setValuesFromInt(vertex);
     }
 
+    @Override
     public void moveForward() {
         if (beforeFirst) {
             throw new IllegalStateException();
@@ -108,6 +111,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         setPosition(getVertexConnectedByEdge());
     }
 
+    @Override
     public void nextEdge() {
         if (!hasNextEdge()) {
             throw new NoSuchElementException();
@@ -141,10 +145,12 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
         beforeFirst = false;
     }
 
+    @Override
     public int getVertexConnectedByEdge() {
         return currentBranch.toInt();
     }
 
+    @Override
     public int getEdgeCost() {
         return (int) Math.round(currentBranch.getComingFrom().getLength());
     }
@@ -152,6 +158,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
     /**
      * @return
      */
+    @Override
     public boolean hasNextEdge() {
         if (beforeFirst) {
             // We can always go back the way we have come, so if we are before

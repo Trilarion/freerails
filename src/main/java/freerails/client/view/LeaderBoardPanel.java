@@ -109,6 +109,7 @@ public class LeaderBoardPanel extends JPanel implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         UnmodifiableWorld world = modelRoot.getWorld();
         values.clear();

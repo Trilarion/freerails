@@ -52,6 +52,7 @@ public class SaveGameCommandToServer implements CommandToServer {
      * @param server
      * @return
      */
+    @Override
     public CommandStatus execute(ServerControlInterface server) {
         try {
             server.saveGame(filename);

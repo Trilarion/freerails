@@ -46,6 +46,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     /**
      * @return
      */
+    @Override
     public PathFinderStatus getStatus() {
         return status;
     }
@@ -90,6 +91,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
      * @param maxDuration
      * @throws PathNotFoundException
      */
+    @Override
     public void search(long maxDuration) throws PathNotFoundException {
         long iterationStartTime = 0;
         boolean check4timeout = false;
@@ -232,6 +234,7 @@ public class SimpleAStarPathFinder implements Serializable, IncrementalPathFinde
     /**
      *
      */
+    @Override
     public void abandonSearch() {
         path.clear();
         searchStartTime = 0;

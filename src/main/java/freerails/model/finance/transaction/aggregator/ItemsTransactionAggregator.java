@@ -70,6 +70,7 @@ public class ItemsTransactionAggregator extends TransactionAggregator {
         return quantities[0];
     }
 
+    @Override
     protected void clearState() {
         super.clearState();
         // initialize output

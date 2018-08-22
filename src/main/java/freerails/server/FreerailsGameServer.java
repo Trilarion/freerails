@@ -20,7 +20,7 @@ package freerails.server;
 
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.move.TryMoveStatus;
 import freerails.move.generator.MoveGenerator;
 import freerails.network.*;
@@ -89,6 +89,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     /**
      * @param connection
      */
+    @Override
     public synchronized void addConnection(Connection connection) {
         String[] before = getPlayerNames();
         logger.debug("Adding connection..");
@@ -148,6 +149,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     /**
      * @return
      */
+    @Override
     public synchronized int getNumberOpenConnections() {
         Iterator<LogOnCredentials> it = acceptedConnections.keySet().iterator();
         int numberOpenConnections = 0;
@@ -193,6 +195,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * @param saveGameName
      * @throws IOException
      */
+    @Override
     public void loadGame(String saveGameName) throws IOException {
         logger.info("load game " + saveGameName);
         newPlayersAllowed = false;
@@ -259,6 +262,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     /**
      * @param mapName
      */
+    @Override
     public void newGame(String mapName) {
         newPlayersAllowed = false;
 
@@ -277,8 +281,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
             Player player = new Player(i, name);
 
             Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-            Status status = addPlayerMove.doMove(world, Player.AUTHORITATIVE);
-            if (!status.isSuccess()) throw new IllegalStateException();
+            addPlayerMove.apply(world);
             passwords[i] = players.get(i).getPassword();
         }
 
@@ -308,6 +311,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         propertyChangeSupport.firePropertyChange("CONNECTED_PLAYERS", before, after);
     }
 
+    @Override
     public void run() {
         status.countDown();
     }
@@ -315,6 +319,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     /**
      * @param saveGameName
      */
+    @Override
     public void saveGame(String saveGameName) {
         logger.info("save game as " + saveGameName);
 
@@ -380,9 +385,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
         this.serverGameModel = serverGameModel;
 
         MoveReceiver moveReceiver = move -> {
-            Status status = move.doMove(this.serverGameModel.getWorld(), Player.AUTHORITATIVE);
+            Status status = move.applicable(this.serverGameModel.getWorld());
 
             if (status.isSuccess()) {
+                move.apply(this.serverGameModel.getWorld());
                 sendToAll(move);
             } else {
                 logger.warn(status.getMessage());
@@ -397,6 +403,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
      * messages from each of the connected clients. This method is synchronized
      * to prevent moves being sent out while addConnection(.) is executing.
      */
+    @Override
     public synchronized void update() {
         if (null != serverGameModel) {
             serverGameModel.update();
@@ -428,10 +435,10 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
                                 move = moveGenerator.generate(serverGameModel.getWorld());
                             }
 
-                            Status mStatus = move.tryDoMove(serverGameModel.getWorld(), player);
+                            Status mStatus = move.applicable(serverGameModel.getWorld());
 
                             if (mStatus.isSuccess()) {
-                                move.doMove(serverGameModel.getWorld(), player);
+                                move.apply(serverGameModel.getWorld());
 
                                 /*
                                  * We don't send the move to the client that
@@ -461,6 +468,7 @@ public class FreerailsGameServer implements ServerControlInterface, GameServer, 
     /**
      *
      */
+    @Override
     public void refreshSavedGames() {
         Serializable setMaps = new SetPropertyCommandToClient(ClientProperty.MAPS_AVAILABLE, new ArrayList<>(Arrays.asList(MapCreator.getAvailableMapNames())));
         Serializable setSaveGames = new SetPropertyCommandToClient(ClientProperty.SAVED_GAMES, new ArrayList<>(Arrays.asList(saveGamesManager.getSaveGameNames())));

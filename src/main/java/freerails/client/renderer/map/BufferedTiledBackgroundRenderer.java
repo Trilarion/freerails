@@ -70,6 +70,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
      * @param visibleRect The region of the map that the back buffer must be updated to
      *                    display.
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         boolean contentsLost;
         do {
@@ -120,6 +121,7 @@ public abstract class BufferedTiledBackgroundRenderer implements MapLayerRendere
     /**
      * Called when the map has changed.
      */
+    @Override
     public void refreshAll() {
         refreshBackground();
     }

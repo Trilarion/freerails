@@ -115,6 +115,7 @@ public class NewsPaperPanel extends JPanel implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         callBack = closeAction;
     }

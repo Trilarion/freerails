@@ -119,6 +119,7 @@ public class SaveGamePanel extends JPanel implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         close = closeAction;
         this.modelRoot = modelRoot;

@@ -74,25 +74,31 @@ public class DisplayModesComboBoxModels implements ComboBoxModel {
         }
     }
 
+    @Override
     public Object getSelectedItem() {
         return selection;
     }
 
+    @Override
     public void setSelectedItem(Object anItem) {
         selection = (Vec2D) anItem;
     }
 
+    @Override
     public void addListDataListener(ListDataListener l) {
     }
 
+    @Override
     public Vec2D getElementAt(int index) {
         return modes.get(index);
     }
 
+    @Override
     public int getSize() {
         return modes.size();
     }
 
+    @Override
     public void removeListDataListener(ListDataListener l) {
     }
 }

@@ -218,6 +218,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
      * @param world
      * @return
      */
+    @Override
     public Move generate(UnmodifiableWorld world) {
 
         // Check that we can generate a move.

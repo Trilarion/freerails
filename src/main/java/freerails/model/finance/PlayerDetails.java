@@ -35,6 +35,7 @@ public class PlayerDetails implements Comparable<PlayerDetails> {
         return name + ", " + networth.toString() + " net worth, " + stations + "  stations.";
     }
 
+    @Override
     public int compareTo(@NotNull PlayerDetails o) {
         return networth.compareTo(o.networth);
     }

@@ -20,8 +20,8 @@ package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.train.motion.TrainMotion;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 // TODO undo not implemented
@@ -42,23 +42,12 @@ public class MoveTrainActivityMove implements Move {
     }
 
     @Override
-    public Status tryDoMove(World world, Player player) {
+    public Status applicable(UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public Status tryUndoMove(World world, Player player) {
-        return Status.OK;
-    }
-
-    @Override
-    public Status doMove(World world, Player player) {
-        world.addActivity(this.player, trainId, trainMotion);
-        return Status.OK;
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        return Status.OK;
+    public void apply(World world) {
+        world.addActivity(player, trainId, trainMotion);
     }
 }

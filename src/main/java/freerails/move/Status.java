@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.nove;
+package freerails.move;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,8 +60,8 @@ public class Status implements Serializable {
 
         final Status other = (Status) obj;
 
-        if (this.success != other.success) return false;
-        return Objects.equals(this.message, other.message);
+        if (success != other.success) return false;
+        return Objects.equals(message, other.message);
     }
 
     @Override

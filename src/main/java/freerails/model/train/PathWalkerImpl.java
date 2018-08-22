@@ -53,6 +53,7 @@ public class PathWalkerImpl implements PathWalker {
      * @return true if we still have more of the current segment, or more
      * segments left.
      */
+    @Override
     public boolean canStepForward() {
         if (currentSegment.getLength() > distanceAlongCurrentSegment) {
             return true;
@@ -63,6 +64,7 @@ public class PathWalkerImpl implements PathWalker {
      * Specify the distance this PathWalker is to progress along the current
      * step.
      */
+    @Override
     public void stepForward(double distance) {
         distanceOfThisStepRemaining += distance;
     }
@@ -70,6 +72,7 @@ public class PathWalkerImpl implements PathWalker {
     /**
      * @return true if there is still some distance to go along this path
      */
+    @Override
     public boolean hasNext() {
         if (0 == distanceOfThisStepRemaining) {
             return false;
@@ -78,6 +81,7 @@ public class PathWalkerImpl implements PathWalker {
         } else return it.hasNext();
     }
 
+    @Override
     public Segment nextSegment() {
         if (!hasNext()) {
             throw new NoSuchElementException();

@@ -21,10 +21,9 @@
  */
 package freerails.move;
 
-import freerails.nove.Status;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
 import freerails.model.world.World;
-import freerails.model.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,88 +82,23 @@ public class CompositeMove implements Move {
         return moves;
     }
 
-    public Status tryDoMove(World world, Player player) {
-        // Since whether a move later in the list goes through could
-        // depend on whether an earlier move has been executed, we need
-        // actually execute moves, then undo them to test whether the
-        // array of moves can be executed successfully.
-        Status status = doMove(world, player);
-
-        if (status.isSuccess()) {
-            // We just wanted to see if we could do them so we undo them again.
-            undoMoves(world, moves.size() - 1, player);
-        }
-
-        // If its not success, then doMove would have undone the moves so we don't
-        // need to undo them.
-        return status;
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
+        // TODO need to implement in a less general way
+        // return Status.fail("currently not implemented");
+        return Status.OK;
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        Status status = undoMove(world, player);
-
-        if (status.isSuccess()) {
-            redoMoves(world, 0, player);
-        }
-
-        return status;
-    }
-
-    public Status doMove(World world, Player player) {
+    @Override
+    public void apply(World world) {
         Status status = compositeTest(world);
 
         if (!status.isSuccess()) {
-            return status;
+            throw new RuntimeException(status.getMessage());
         }
 
         for (int i = 0; i < moves.size(); i++) {
-            status = moves.get(i).doMove(world, player);
-
-            if (!status.isSuccess()) {
-                // Undo any moves we have already done.
-                undoMoves(world, i - 1, player);
-
-                return status;
-            }
-        }
-
-        return status;
-    }
-
-    public Status undoMove(World world, Player player) {
-        Status status = Status.OK;
-
-        for (int i = moves.size() - 1; i >= 0; i--) {
-            status = moves.get(i).undoMove(world, player);
-
-            if (!status.isSuccess()) {
-                // Redo any moves we have already undone.
-                redoMoves(world, i + 1, player);
-
-                return status;
-            }
-        }
-
-        return status;
-    }
-
-    private void undoMoves(World world, int number, Player player) {
-        for (int i = number; i >= 0; i--) {
-            Status status = moves.get(i).undoMove(world, player);
-
-            if (!status.isSuccess()) {
-                throw new IllegalStateException(status.getMessage());
-            }
-        }
-    }
-
-    private void redoMoves(World world, int number, Player player) {
-        for (int i = number; i < moves.size(); i++) {
-            Status status = moves.get(i).doMove(world, player);
-
-            if (!status.isSuccess()) {
-                throw new IllegalStateException(status.getMessage());
-            }
+            moves.get(i).apply(world);
         }
     }
 

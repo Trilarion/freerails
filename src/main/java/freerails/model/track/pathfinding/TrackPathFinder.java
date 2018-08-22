@@ -57,6 +57,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      *
      */
+    @Override
     public void abandonSearch() {
         pathFinder.abandonSearch();
     }
@@ -127,6 +128,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     /**
      * @return
      */
+    @Override
     public PathFinderStatus getStatus() {
         return pathFinder.getStatus();
     }
@@ -162,6 +164,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
      * @param maxDuration
      * @throws PathNotFoundException
      */
+    @Override
     public void search(long maxDuration) throws PathNotFoundException {
         pathFinder.search(maxDuration);
     }

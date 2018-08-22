@@ -68,7 +68,7 @@ public class Identifiable implements Comparable<Identifiable>, Serializable {
             return false;
         }
         Identifiable o = (Identifiable) obj;
-        return this.compareTo(o) == 0;
+        return compareTo(o) == 0;
     }
 
     /**

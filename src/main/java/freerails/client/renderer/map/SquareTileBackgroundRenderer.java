@@ -69,6 +69,7 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
      * @param g
      * @param tileLocation
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         mapLayerRenderer.paintTile(g, tileLocation);
     }
@@ -76,6 +77,7 @@ public class SquareTileBackgroundRenderer extends BufferedTiledBackgroundRendere
     /**
      * @param tileLocation
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {
         // The backgroundBuffer gets created on the first call to
         // backgroundBuffer.paintRect(..)

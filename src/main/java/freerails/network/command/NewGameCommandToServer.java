@@ -38,6 +38,7 @@ public class NewGameCommandToServer implements CommandToServer {
      * @param server
      * @return
      */
+    @Override
     public CommandStatus execute(ServerControlInterface server) {
         try {
             server.newGame(mapName);

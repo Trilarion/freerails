@@ -48,6 +48,7 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     /**
      * @return
      */
+    @Override
     public float getScale() {
         return mapRenderer.getScale();
     }
@@ -59,14 +60,17 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
         mapRenderer.paintRect(g2, r);
     }
 
+    @Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
         return (int) mapRenderer.getScale();
     }
 
+    @Override
     public boolean getScrollableTracksViewportWidth() {
         return false;
     }
 
+    @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
         if (SwingConstants.VERTICAL == orientation) {
             int best = (int) (((visibleRect.height / mapRenderer.getScale()) - 2) * mapRenderer.getScale());
@@ -91,6 +95,7 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
      *
      * @return The scrollableTracksViewportHeight value
      */
+    @Override
     public boolean getScrollableTracksViewportHeight() {
         return false;
     }
@@ -101,6 +106,7 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
      *
      * @return The preferredScrollableViewportSize value
      */
+    @Override
     public Dimension getPreferredScrollableViewportSize() {
         return getPreferredSize();
     }
@@ -119,6 +125,7 @@ public abstract class DetailMapViewComponent extends JPanel implements Scrollabl
     /**
      * @return
      */
+    @Override
     public Vec2D getMapSizeInPixels() {
         return mapRenderer.getMapSizeInPixels();
     }

@@ -52,6 +52,7 @@ public class LoadGameCommandToServer implements CommandToServer {
      * @param server
      * @return
      */
+    @Override
     public CommandStatus execute(ServerControlInterface server) {
         try {
             server.loadGame(filename);

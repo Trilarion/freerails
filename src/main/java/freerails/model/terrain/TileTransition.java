@@ -326,6 +326,7 @@ public class TileTransition implements TrackConfigurations {
         return ftt.get9bitTemplate() == flatTrackTemplate;
     }
 
+    @Override
     public int get9bitTemplate() {
         return flatTrackTemplate;
     }

@@ -22,7 +22,6 @@ import freerails.move.generator.MoveGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
-import freerails.nove.Status;
 
 /**
  * A MoveExecutor that executes moves on the world object passed to its
@@ -47,30 +46,42 @@ public class SimpleMoveExecutor implements MoveExecutor {
      * @param move
      * @return
      */
-    public Status doMove(Move move) {
-        return move.doMove(world, player);
+    @Override
+    public Status applyMove(Move move) {
+        Status status = move.applicable(world);
+        if (status.isSuccess()) {
+            move.apply(world);
+        }
+        return status;
     }
 
     /**
      * @param moveGenerator
      * @return
      */
+    @Override
     public Status doPreMove(MoveGenerator moveGenerator) {
         Move move = moveGenerator.generate(world);
-        return move.doMove(world, player);
+        Status status = move.applicable(world);
+        if (status.isSuccess()) {
+            move.apply(world);
+        }
+        return status;
     }
 
     /**
      * @param move
      * @return
      */
-    public Status tryDoMove(Move move) {
-        return move.tryDoMove(world, player);
+    @Override
+    public Status tryMove(Move move) {
+        return move.applicable(world);
     }
 
     /**
      * @return
      */
+    @Override
     public UnmodifiableWorld getWorld() {
         return world;
     }
@@ -78,6 +89,7 @@ public class SimpleMoveExecutor implements MoveExecutor {
     /**
      * @return
      */
+    @Override
     public Player getPlayer() {
         return player;
     }

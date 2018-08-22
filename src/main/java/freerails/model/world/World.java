@@ -168,7 +168,7 @@ public class World implements UnmodifiableWorld {
         clock = builder.clock;
 
         // setup map
-        this.mapSize = builder.mapSize;
+        mapSize = builder.mapSize;
         map = new TerrainTile[builder.mapSize.x * builder.mapSize.y];
 
         // TODO what is a good default initializer here or should we stay with null?
@@ -181,55 +181,67 @@ public class World implements UnmodifiableWorld {
     // TODO getNumberXXX
 
     // TODO unmodifiable collection?
+    @Override
     public Collection<Engine> getEngines() {
         return engines;
     }
 
+    @Override
     public Engine getEngine(int id) {
         return get(id, engines);
     }
 
     // TODO unmodifiable collection
+    @Override
     public Collection<City> getCities() {
         return cities;
     }
 
+    @Override
     public City getCity(int id) {
         return get(id, cities);
     }
 
     // TODO unmodifiable collection?
+    @Override
     public Collection<Cargo> getCargos() {
         return cargos;
     }
 
+    @Override
     public Cargo getCargo(int id) {
         return get(id, cargos);
     }
 
     // TODO unmodifiable collection?
+    @Override
     public Collection<Terrain> getTerrains() {
         return terrainTypes;
     }
 
+    @Override
     public Terrain getTerrain(int id) {
         return get(id, terrainTypes);
     }
 
     // TODO unmodifiable collection?
+    @Override
     public Collection<TrackType> getTrackTypes() {
         return trackTypes;
     }
 
+    @Override
     public TrackType getTrackType(int id) {
         return get(id, trackTypes);
     }
 
     // TODO unmodifiable collection?
+    @Override
     public Collection<Train> getTrains(Player player) {
         return trains.get(player);
     }
 
+    @Override
     public Train getTrain(Player player, int id) {
         return get(id, trains.get(player));
     }
@@ -246,10 +258,12 @@ public class World implements UnmodifiableWorld {
     }
 
     // TODO unmodifiable collection?
+    @Override
     public Collection<Station> getStations(Player player) {
         return stations.get(player);
     }
 
+    @Override
     public Station getStation(Player player, int id) {
         return get(id, stations.get(player));
     }
@@ -297,10 +311,12 @@ public class World implements UnmodifiableWorld {
         return false;
     }
 
+    @Override
     public Sentiment getSentiment() {
         return get(currentSentimentId, sentiments);
     }
 
+    @Override
     public Rules getRules() {
         return rules;
     }
@@ -366,12 +382,14 @@ public class World implements UnmodifiableWorld {
      * @param location
      * @return
      */
+    @Override
     public boolean boundsContain(Vec2D location) {
         // TODO use compareTo instead
         Vec2D mapSize = getMapSize();
         return location.x >= 0 && location.x < mapSize.x && location.y >= 0 && location.y < mapSize.y;
     }
 
+    @Override
     public Clock getClock() {
         return clock;
     }
@@ -423,15 +441,18 @@ public class World implements UnmodifiableWorld {
      * @param player
      * @return
      */
+    @Override
     public Money getCurrentBalance(Player player) {
         int playerIndex = player.getId();
         return currentBalance.get(playerIndex);
     }
 
+    @Override
     public Vec2D getMapSize() {
         return mapSize;
     }
 
+    @Override
     public Collection<Player> getPlayers() {
         return Collections.unmodifiableCollection(players);
     }
@@ -440,6 +461,7 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
+    @Override
     public Player getPlayer(int i) {
         return players.get(i);
     }
@@ -451,6 +473,7 @@ public class World implements UnmodifiableWorld {
         return location.x * mapSize.y + location.y;
     }
 
+    @Override
     public TerrainTile getTile(Vec2D location) {
         return map[getMapIndex(location)];
     }
@@ -460,11 +483,13 @@ public class World implements UnmodifiableWorld {
      * @param i
      * @return
      */
+    @Override
     public Transaction getTransaction(Player player, int i) {
         return transactions.get(player).get(i);
     }
 
     // TODO wrap in unmodifiable list
+    @Override
     public Collection<Transaction> getTransactions(Player player) {
         return transactions.get(player);
     }

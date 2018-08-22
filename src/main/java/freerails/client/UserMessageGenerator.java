@@ -59,6 +59,7 @@ public class UserMessageGenerator implements MoveReceiver {
     /**
      * @param move
      */
+    @Override
     public void process(Move move) {
         // TODO then it could also be a splitMoveReceiver in MoveChainFork
         if (move instanceof CompositeMove) {

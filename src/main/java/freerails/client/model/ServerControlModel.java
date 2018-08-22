@@ -134,6 +134,7 @@ public class ServerControlModel implements ModelRootListener {
      * @param oldValue
      * @param newValue
      */
+    @Override
     public void propertyChange(ModelRootProperty modelRootProperty, Object oldValue, Object newValue) {
         // switch (p) {
         // case SAVED_GAMES_LIST:
@@ -151,7 +152,7 @@ public class ServerControlModel implements ModelRootListener {
      */
     public void setup(ModelRootImpl modelRoot, DialogueBoxController dbc) {
         this.modelRoot = modelRoot;
-        this.dialogueBoxController = dbc;
+        dialogueBoxController = dbc;
         modelRoot.addPropertyChangeListener(this);
     }
 
@@ -189,6 +190,7 @@ public class ServerControlModel implements ModelRootListener {
             putValue(MNEMONIC_KEY, 76);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             dialogueBoxController.showSelectSavedGame2Load();
         }
@@ -206,6 +208,7 @@ public class ServerControlModel implements ModelRootListener {
             }
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             String mapName = e.getActionCommand();
@@ -225,6 +228,7 @@ public class ServerControlModel implements ModelRootListener {
             putValue(MNEMONIC_KEY, 83);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             dialogueBoxController.showSaveGame();
             /*
@@ -267,6 +271,7 @@ public class ServerControlModel implements ModelRootListener {
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(keyEvent, 0));
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             int speed2set = speed;
             if (speed == 0) { // pausing/unpausing
@@ -274,7 +279,7 @@ public class ServerControlModel implements ModelRootListener {
                 // TODO this is not nice, do the conversion of values for the display not like this
                 speed2set = -1 * getTargetTicksPerSecond();
             }
-            modelRoot.doMove(new ChangeGameSpeedMove(modelRoot.getWorld().getSpeed(), Speed.MODERATE));
+            modelRoot.applyMove(new ChangeGameSpeedMove(Speed.MODERATE));
         }
     }
 

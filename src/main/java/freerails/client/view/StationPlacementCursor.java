@@ -55,6 +55,7 @@ public class StationPlacementCursor extends MouseInputAdapter {
     private final StationRadiusRenderer stationRadiusRenderer;
     private boolean buildEnabled;
     private final PropertyChangeListener buildActionListener = new PropertyChangeListener() {
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(StationBuildModel.StationBuildAction.STATION_POSITION_KEY)) {
                 // update the renderer pos

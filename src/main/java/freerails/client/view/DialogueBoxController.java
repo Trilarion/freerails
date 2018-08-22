@@ -88,6 +88,7 @@ public class DialogueBoxController implements WorldListListener {
 
         private static final long serialVersionUID = 673348332616193928L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             closeContent();
         }
@@ -97,6 +98,7 @@ public class DialogueBoxController implements WorldListListener {
 
         private static final long serialVersionUID = -5932587740749235632L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             showSelectWagons();
         }
@@ -108,6 +110,7 @@ public class DialogueBoxController implements WorldListListener {
 
         private static final long serialVersionUID = -1672545312581874156L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             for (Station station: world.getStations(modelRoot.getPlayer())) {
                 List<TrainTemplate> before = station.getProduction();
@@ -116,7 +119,7 @@ public class DialogueBoxController implements WorldListListener {
                 List<TrainTemplate> after = Arrays.asList(new TrainTemplate(engineId, wagonTypes));
 
                 Move move = new ChangeProductionAtEngineShopMove(before, after, station.getId(), modelRoot.getPlayer());
-                modelRoot.doMove(move);
+                modelRoot.applyMove(move);
             }
             closeContent();
         }
@@ -508,6 +511,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param player
      */
+    @Override
     public void listUpdated(int index, Player player) {
     }
 
@@ -515,6 +519,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param player
      */
+    @Override
     public void itemAdded(int index, Player player) {
         /*
          * Fix for: 910138 After building a train display train orders 910143
@@ -537,6 +542,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param index
      * @param player
      */
+    @Override
     public void itemRemoved(int index, Player player) {
     }
 }

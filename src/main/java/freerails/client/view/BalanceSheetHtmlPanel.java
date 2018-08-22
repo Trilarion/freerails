@@ -56,7 +56,7 @@ public class BalanceSheetHtmlPanel extends HtmlPanel implements View {
     @Override
     public void setup(ModelRoot m, RendererRoot rendererRoot, Action closeAction) {
         super.setup(m, rendererRoot, closeAction);
-        this.modelRoot = m;
+        modelRoot = m;
         updateHtml();
     }
 

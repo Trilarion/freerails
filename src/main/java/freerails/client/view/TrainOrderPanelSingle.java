@@ -94,6 +94,7 @@ public class TrainOrderPanelSingle extends JPanel implements View {
     }
 
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         trainOrderPanel.world = modelRoot.getWorld();
         TrainListCellRenderer trainViewJPanel = (TrainListCellRenderer) consistChangeJPanel;

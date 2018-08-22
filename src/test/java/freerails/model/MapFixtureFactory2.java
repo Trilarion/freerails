@@ -21,7 +21,7 @@ package freerails.model;
 import freerails.model.player.Player;
 import freerails.model.terrain.Terrain;
 import freerails.move.AddPlayerMove;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TerrainTile;
@@ -51,8 +51,9 @@ public class MapFixtureFactory2 {
                 String name = "player" + i;
                 Player player = new Player(i, name);
                 AddPlayerMove move = AddPlayerMove.generateMove(world, player);
-                Status status = move.doMove(world, Player.AUTHORITATIVE);
+                Status status = move.applicable(world);
                 assert (status.isSuccess());
+                move.apply(world);
             }
 
             int clearTypeID = 0;

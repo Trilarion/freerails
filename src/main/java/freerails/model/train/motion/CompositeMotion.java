@@ -76,6 +76,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
     /**
      * @return
      */
+    @Override
     public double getDuration() {
         return totalTime;
     }
@@ -84,6 +85,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
      * @param time
      * @return
      */
+    @Override
     public SpeedTimeAndStatus getStateAtTime(final double time) {
         checkTime(time);
         double acceleration;
@@ -99,6 +101,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return new SpeedTimeAndStatus(speed, acceleration, distance, time, TrainState.READY);
     }
 
+    @Override
     public double calculateDistanceAtTime(double time) {
         checkTime(time);
         if (time == totalTime) return totalDistance;
@@ -115,6 +118,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return distance;
     }
 
+    @Override
     public double calculateTimeAtDistance(double distance) {
         if (distance == totalDistance) return totalTime;
         // TODO checkDistance
@@ -142,6 +146,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return timeSoFar;
     }
 
+    @Override
     public double calculateSpeedAtTime(double time) {
         checkTime(time);
         SubTime subTime = getIndex(time);
@@ -149,6 +154,7 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return motion.calculateSpeedAtTime(subTime.time);
     }
 
+    @Override
     public double calculateAccelerationAtTime(double time) {
         checkTime(time);
         SubTime subTime = getIndex(time);
@@ -156,10 +162,12 @@ public class CompositeMotion extends Activity<SpeedTimeAndStatus> implements Mot
         return motion.calculateAccelerationAtTime(subTime.time);
     }
 
+    @Override
     public double getTotalTime() {
         return totalTime;
     }
 
+    @Override
     public double getTotalDistance() {
         return totalDistance;
     }

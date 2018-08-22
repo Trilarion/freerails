@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package freerails.nove;
+package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.world.UnmodifiableWorld;
@@ -24,21 +24,39 @@ import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
 
 /**
- *
+ * Advances the time within the world object.
  */
-public abstract class Nove {
+public class AdvanceClockMove implements Move {
 
+    private static final long serialVersionUID = 3257290240212153393L;
     private final Player player;
 
-    public Nove(@NotNull Player player) {
+    public AdvanceClockMove(@NotNull Player player) {
         this.player = player;
     }
 
-    protected Player getPlayer() {
-        return player;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof AdvanceClockMove)) return false;
+        return true;
     }
 
-    public abstract Status applicable(UnmodifiableWorld world);
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 
-    public abstract void apply(World world);
+    @Override
+    public Status applicable(@NotNull UnmodifiableWorld world) {
+        if (!player.equals(Player.AUTHORITATIVE)) {
+            return Status.fail("Only authoritative player shall advance the clock.");
+        }
+        return Status.OK;
+    }
+
+    @Override
+    public void apply(World world) {
+        world.getClock().advanceTime();
+    }
 }

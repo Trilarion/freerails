@@ -53,6 +53,7 @@ public class WagonCellRenderer implements ListCellRenderer<Cargo> {
      * @param cellHasFocus the list and the cell have the focus
      * @return
      */
+    @Override
     public Component getListCellRendererComponent(JList<? extends Cargo> list, Cargo value,
                                                   int index,
                                                   boolean isSelected,

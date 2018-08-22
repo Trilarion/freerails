@@ -19,65 +19,29 @@
 package freerails.move;
 
 import freerails.model.game.Speed;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.player.Player;
-import freerails.nove.Status;
 
-// TODO old speed not really needed here (only for undo)
 /**
  * Changes the game speed item on the world object.
  */
 public class ChangeGameSpeedMove implements Move {
 
     private static final long serialVersionUID = 3545794368956086071L;
-    private final Speed oldSpeed;
-    private final Speed newSpeed;
+    private final Speed speed;
 
-    public ChangeGameSpeedMove(Speed oldSpeed, Speed newSpeed) {
-        this.oldSpeed = oldSpeed;
-        this.newSpeed = newSpeed;
+    public ChangeGameSpeedMove(Speed speed) {
+        this.speed = speed;
     }
 
-    public Status tryDoMove(World world, Player player) {
-        Speed actualSpeed = world.getSpeed();
-
-        // check that old speed and actual speed are consistent
-        if (actualSpeed.equals(oldSpeed)) {
-            return Status.OK;
-        }
-        String string = "oldSpeed = " + oldSpeed + " <=> " + "currentSpeed " + actualSpeed;
-        return Status.fail(string);
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
+        return Status.OK;
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        Speed actualSpeed = world.getSpeed();
-
-        if (actualSpeed.equals(newSpeed)) {
-            return Status.OK;
-        }
-        return Status.fail("Expected " + newSpeed + ", found " + actualSpeed);
-    }
-
-    public Status doMove(World world, Player player) {
-        // TODO is this the convention to try exactly before?
-        Status status = tryDoMove(world, player);
-
-        if (status.isSuccess()) {
-            world.setSpeed(newSpeed);
-        }
-
-        return status;
-    }
-
-    public Status undoMove(World world, Player player) {
-        // TODO is this the convention to try exactly before
-        Status status = tryUndoMove(world, player);
-
-        if (status.isSuccess()) {
-            world.setSpeed(oldSpeed);
-        }
-
-        return status;
+    @Override
+    public void apply(World world) {
+        world.setSpeed(speed);
     }
 
     @Override
@@ -85,29 +49,25 @@ public class ChangeGameSpeedMove implements Move {
         if (this == obj) return true;
         if (!(obj instanceof ChangeGameSpeedMove)) return false;
 
-        final ChangeGameSpeedMove changeGameSpeedMove = (ChangeGameSpeedMove) obj;
+        final ChangeGameSpeedMove other = (ChangeGameSpeedMove) obj;
 
-        if (!newSpeed.equals(changeGameSpeedMove.newSpeed)) return false;
-        return oldSpeed.equals(changeGameSpeedMove.oldSpeed);
+        return speed.equals(other.speed);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        result = oldSpeed.hashCode();
-        result = 29 * result + newSpeed.hashCode();
-        return result;
+        return speed.hashCode();
     }
 
     /**
      * @return
      */
-    public Speed getNewSpeed() {
-        return newSpeed;
+    public Speed getSpeed() {
+        return speed;
     }
 
     @Override
     public String toString() {
-        return "ChangeGameSpeedMove: " + oldSpeed + "=>" + newSpeed;
+        return "ChangeGameSpeedMove: => " + speed;
     }
 }

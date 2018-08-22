@@ -23,8 +23,6 @@
 package freerails.model.train.schedule;
 
 
-import freerails.model.cargo.UnmodifiableCargoBatchBundle;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -174,6 +172,7 @@ public class Schedule implements UnmodifiableSchedule {
      * @param index
      * @return
      */
+    @Override
     public TrainOrder getOrder(int index) {
         return orders.get(index);
     }
@@ -181,6 +180,7 @@ public class Schedule implements UnmodifiableSchedule {
     /**
      * Returns the number of the order the train is currently carry out.
      */
+    @Override
     public int getCurrentOrderIndex() {
         return hasPriorityOrders ? 0 : nextScheduledOrder;
     }
@@ -200,6 +200,7 @@ public class Schedule implements UnmodifiableSchedule {
      * Returns the station number of the next station the train is scheduled to
      * stop at.
      */
+    @Override
     public int getNextStationId() {
         int orderToGoto = getCurrentOrderIndex();
 
@@ -213,6 +214,7 @@ public class Schedule implements UnmodifiableSchedule {
     /**
      * Returns the wagons to add at the next scheduled stop.
      */
+    @Override
     public List<Integer> getWagonsToAdd() {
         TrainOrder order = orders.get(getCurrentOrderIndex());
         return order.getConsist();
@@ -243,6 +245,7 @@ public class Schedule implements UnmodifiableSchedule {
     /**
      * @return
      */
+    @Override
     public boolean hasPriorityOrders() {
         return hasPriorityOrders;
     }
@@ -252,6 +255,7 @@ public class Schedule implements UnmodifiableSchedule {
      *
      * @return Number of orders.
      */
+    @Override
     public int getNumberOfOrders() {
         return orders.size();
     }
@@ -334,6 +338,7 @@ public class Schedule implements UnmodifiableSchedule {
     /**
      * @return
      */
+    @Override
     public int getNextScheduledOrder() {
         return nextScheduledOrder;
     }
@@ -342,6 +347,7 @@ public class Schedule implements UnmodifiableSchedule {
      * @param stationId
      * @return
      */
+    @Override
     public boolean stopsAtStation(int stationId) {
         for (int i = 0; i < getNumberOfOrders(); i++) {
             TrainOrder order = getOrder(i);
@@ -371,6 +377,7 @@ public class Schedule implements UnmodifiableSchedule {
         }
     }
 
+    @Override
     public boolean autoConsist() {
         TrainOrder order = orders.get(getCurrentOrderIndex());
         return order.isAutoConsist();

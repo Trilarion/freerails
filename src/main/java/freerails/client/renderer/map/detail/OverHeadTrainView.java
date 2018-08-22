@@ -62,6 +62,7 @@ public class OverHeadTrainView implements Painter {
      * @param g
      * @param newVisibleRectangle
      */
+    @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         g.setColor(Color.BLUE);
         g.setStroke(new BasicStroke(10));

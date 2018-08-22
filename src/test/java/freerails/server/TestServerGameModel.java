@@ -38,6 +38,7 @@ public class TestServerGameModel implements ServerGameModel {
      * @param world
      * @param passwords
      */
+    @Override
     public void setWorld(World world, String[] passwords) {
         this.world = world;
         this.passwords = passwords.clone();
@@ -46,6 +47,7 @@ public class TestServerGameModel implements ServerGameModel {
     /**
      * @return
      */
+    @Override
     public World getWorld() {
         return world;
     }
@@ -53,16 +55,19 @@ public class TestServerGameModel implements ServerGameModel {
     /**
      * @param moveReceiver
      */
+    @Override
     public void initialize(MoveReceiver moveReceiver) {}
 
     /**
      *
      */
+    @Override
     public void update() {}
 
     /**
      * @return
      */
+    @Override
     public String[] getPasswords() {
         return passwords.clone();
     }

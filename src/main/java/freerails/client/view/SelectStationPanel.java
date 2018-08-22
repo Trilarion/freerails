@@ -291,6 +291,7 @@ public class SelectStationPanel extends JPanel implements View {
         }
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         cargoWaitingAndDemandedPanel1.setup(modelRoot, rendererRoot, null);
         world = modelRoot.getWorld();

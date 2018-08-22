@@ -42,8 +42,8 @@ public class SpeedTimeAndStatus implements Serializable {
     public SpeedTimeAndStatus(double speed, double acceleration, double distance, double time, TrainState activity) {
         if (time < 0) throw new IllegalArgumentException(String.valueOf(time));
         this.acceleration = acceleration;
-        this.dt = time;
-        this.s = distance;
+        dt = time;
+        s = distance;
         this.speed = speed;
         this.activity = Utils.verifyNotNull(activity);
     }

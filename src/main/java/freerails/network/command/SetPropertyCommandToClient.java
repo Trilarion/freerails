@@ -52,6 +52,7 @@ public class SetPropertyCommandToClient implements CommandToClient {
         return value.equals(setPropertyMessageToClient.value);
     }
 
+    @Override
     public CommandStatus execute(ClientControlInterface client) {
         client.setProperty(key, value);
 

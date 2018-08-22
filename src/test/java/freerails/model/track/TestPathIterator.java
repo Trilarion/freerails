@@ -62,6 +62,7 @@ public class TestPathIterator implements PathIterator {
         return new TestPathIterator(l, true);
     }
 
+    @Override
     public boolean hasNext() {
         if (forwards) {
             return (position + 1) < points.size();
@@ -69,6 +70,7 @@ public class TestPathIterator implements PathIterator {
         return (position - 1) >= 0;
     }
 
+    @Override
     public Segment nextSegment() {
         if (!hasNext()) {
             throw new NoSuchElementException();

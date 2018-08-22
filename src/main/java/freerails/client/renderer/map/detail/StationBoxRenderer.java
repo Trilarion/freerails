@@ -75,6 +75,7 @@ public class StationBoxRenderer implements Painter {
      * @param g
      * @param newVisibleRectangle
      */
+    @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
         Boolean showCargoWaiting = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_CARGO_AT_STATIONS);
 

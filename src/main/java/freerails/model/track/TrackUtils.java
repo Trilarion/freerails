@@ -24,8 +24,7 @@ import freerails.model.terrain.Terrain;
 import freerails.model.terrain.TerrainTile;
 import freerails.model.train.PositionOnTrack;
 import freerails.model.world.UnmodifiableWorld;
-import freerails.model.world.World;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public final class TrackUtils {
      * is getting built, (2) when a station is getting upgraded, (3) when a
      * station is getting removed.
      */
-    public static Status checkForOverlap(World world, Vec2D location, TrackPiece trackPiece) {
+    public static Status checkForOverlap(UnmodifiableWorld world, Vec2D location, TrackPiece trackPiece) {
         /*
          * Fix for 915945 (Stations should not overlap) Check that there is not
          * another station whose radius overlaps with the one we are building.
@@ -90,7 +89,7 @@ public final class TrackUtils {
         return Status.OK;
     }
 
-    public static boolean noDiagonalTrackConflicts(Vec2D point, int trackTemplate, World world) {
+    public static boolean noDiagonalTrackConflicts(Vec2D point, int trackTemplate, UnmodifiableWorld world) {
         /*
          * This method is needs replacing. It only deals with flat track pieces, and is rather hard to make sense of. LL
          */

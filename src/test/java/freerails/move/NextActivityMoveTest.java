@@ -51,20 +51,6 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
     /**
      *
      */
-    public void testMove2() {
-        World world = getWorld();
-        Player player = getPlayer();
-        Activity activity = new TestActivity(50);
-        world.addActivity(player, 0, activity);
-
-        Activity activity1 = new TestActivity(60);
-        Move move = new NextActivityMove(activity1, 0, player);
-        assertDoThenUndoLeavesWorldUnchanged(move);
-    }
-
-    /**
-     *
-     */
     public void testStackingOfActivities() {
         World world = getWorld();
         Player player = getPlayer();
@@ -73,7 +59,7 @@ public class NextActivityMoveTest extends AbstractMoveTestCase {
 
         Activity act2 = new TestActivity(60);
         Move move = new NextActivityMove(act2, 0, player);
-        assertDoMoveIsOk(move);
+        assertMoveApplyIsOk(move);
 
         Time currentTime = new Time(0);
         assertEquals(currentTime, world.getClock().getCurrentTime());

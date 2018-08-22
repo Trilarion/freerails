@@ -26,7 +26,7 @@ import freerails.model.finance.transaction.ItemTransaction;
 import freerails.move.AddPlayerMove;
 import freerails.move.AddTransactionMove;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.model.*;
 import freerails.model.player.Player;
 import freerails.model.world.World;
@@ -53,9 +53,10 @@ public class BrokerScreenGeneratorTest extends TestCase {
         // Set the time..
         Player player = WorldGenerator.TEST_PLAYER;
 
-        AddPlayerMove apm = AddPlayerMove.generateMove(world, player);
-        Status status = apm.doMove(world, Player.AUTHORITATIVE);
+        AddPlayerMove move = AddPlayerMove.generateMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
         playerID = world.getPlayers().size() - 1;
         this.player = world.getPlayer(playerID);
     }
@@ -71,8 +72,9 @@ public class BrokerScreenGeneratorTest extends TestCase {
             Money sharePrice = stockPrice.treasuryBuyPrice;
             ItemTransaction stockItemTransaction = TransactionUtils.buyOrSellStock(playerID, ModelConstants.STOCK_BUNDLE_SIZE, sharePrice, world.getClock().getCurrentTime());
             Move move = new AddTransactionMove(player, stockItemTransaction);
-            Status status = move.doMove(world, Player.AUTHORITATIVE);
+            Status status = move.applicable(world);
             assertTrue(status.isSuccess());
+            move.apply(world);
             // The line below threw an exception that caused bug 1341365.
             BrokerScreenGenerator brokerScreenGenerator = new BrokerScreenGenerator(world, player);
             assertNotNull(brokerScreenGenerator);

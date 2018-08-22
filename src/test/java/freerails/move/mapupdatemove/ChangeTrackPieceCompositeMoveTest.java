@@ -24,10 +24,9 @@
 package freerails.move.mapupdatemove;
 
 import freerails.model.finance.TransactionUtils;
-import freerails.model.player.Player;
 import freerails.move.AbstractMoveTestCase;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.util.Vec2D;
 import freerails.model.game.Rules;
@@ -175,27 +174,29 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
 
     private void assertBuildTrackFails(Vec2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
-        Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+        Status status = move.applicable(getWorld());
         assertFalse(status.isSuccess());
+        move.apply(getWorld());
     }
 
     private void assertBuildTrackSucceeds(Vec2D p, TileTransition v, TrackType type) {
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(p, v, type, type, getWorld(), WorldGenerator.TEST_PLAYER);
 
-        Move moveAndTransaction = transactionsGenerator.addTransactions(move);
-        Status status = moveAndTransaction.doMove(getWorld(), Player.AUTHORITATIVE);
+        Move move1 = transactionsGenerator.addTransactions(move);
+        Status status = move1.applicable(getWorld());
         assertEquals(true, status.isSuccess());
+        move1.apply(getWorld());
     }
 
     private void assertRemoveTrackSucceeds(Vec2D p, TileTransition v) {
         try {
             ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove
                     .generateRemoveTrackMove(p, v, getWorld(), WorldGenerator.TEST_PLAYER);
-            Status status = move.doMove(getWorld(), Player.AUTHORITATIVE);
+            Status status = move.applicable(getWorld());
             assertEquals(true, status.isSuccess());
+            move.apply(getWorld());
         } catch (Exception e) {
-            e.printStackTrace();
-            fail();
+            throw new RuntimeException(e);
         }
     }
 
@@ -207,12 +208,7 @@ public class ChangeTrackPieceCompositeMoveTest extends AbstractMoveTestCase {
         TrackType trackType = getWorld().getTrackType(0);
 
         ChangeTrackPieceCompositeMove move = ChangeTrackPieceCompositeMove.generateBuildTrackMove(pointA, TileTransition.SOUTH_EAST, trackType, trackType, getWorld(), WorldGenerator.TEST_PLAYER);
-
         assertSurvivesSerialisation(move);
         assertOkButNotRepeatable(move);
-
-        // TODO do we really need to call setUp again here?
-        setUp();
-        assertDoThenUndoLeavesWorldUnchanged(move);
     }
 }

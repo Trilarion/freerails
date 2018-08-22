@@ -269,6 +269,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
         }
     }
 
+    @Override
     public void setNextEnabled(boolean enabled) {
         nextButton.setEnabled(enabled);
         if (nextIsStart) {
@@ -599,6 +600,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
      * @param status
      */
 
+    @Override
     public void setInfoText(String text, InfoMessageType status) {
         infoLabel.setText(text);
         switch (status) {
@@ -622,6 +624,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      *
      */
+    @Override
     public void hideAllMessages() {
         infoLabel.setText(null);
         infoLabel.setIcon(null);
@@ -639,6 +642,7 @@ public class LauncherFrame extends JFrame implements LauncherInterface {
     /**
      *
      */
+    @Override
     public void hideErrorMessages() {
         if (infoLabel.getIcon() == errorIcon) {
             infoLabel.setText(null);

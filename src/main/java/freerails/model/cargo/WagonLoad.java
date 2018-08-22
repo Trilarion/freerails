@@ -35,6 +35,7 @@ public class WagonLoad implements Comparable<WagonLoad> {
         this.cargoType = cargoType;
     }
 
+    @Override
     public int compareTo(@NotNull WagonLoad o) {
         return quantity - o.quantity;
     }

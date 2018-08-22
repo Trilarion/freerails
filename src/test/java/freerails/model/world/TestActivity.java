@@ -58,6 +58,7 @@ public class TestActivity extends Activity {
     /**
      * @return
      */
+    @Override
     public double getDuration() {
         return duration;
     }
@@ -66,6 +67,7 @@ public class TestActivity extends Activity {
      * @param time
      * @return
      */
+    @Override
     public Serializable getStateAtTime(double time) {
         return new TestState((int) time);
     }

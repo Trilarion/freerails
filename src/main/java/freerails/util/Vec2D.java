@@ -185,6 +185,7 @@ public final class Vec2D implements Serializable, Comparable<Vec2D> {
      * @param o
      * @return
      */
+    @Override
     public int compareTo(Vec2D o) {
         if (o.y != y) return y - o.y;
         else return x - o.x;

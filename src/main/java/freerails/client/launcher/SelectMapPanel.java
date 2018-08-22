@@ -153,14 +153,17 @@ class SelectMapPanel extends JPanel {
 
         // Listen for changes in the server port text box.
         serverPort.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) {
                 validateInput();
             }
 
+            @Override
             public void removeUpdate(DocumentEvent e) {
                 validateInput();
             }
 
+            @Override
             public void changedUpdate(DocumentEvent e) {
                 validateInput();
             }

@@ -29,7 +29,7 @@ import freerails.model.track.pathfinding.*;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -242,7 +242,11 @@ public class BuildTrackController implements GameModel {
         m = (ChangeTrackPieceMove) move.getMove(1);
         proposedTrack.put(m.location, m.trackPieceAfter);
 
-        return move.doMove(world, player);
+        Status status = move.applicable(world);
+        if (status.isSuccess()) {
+            move.apply(world);
+        }
+        return status;
     }
 
     /**
@@ -358,6 +362,7 @@ public class BuildTrackController implements GameModel {
     /**
      *
      */
+    @Override
     public void update() {
         // update search for path if necessary.
         if (searchStatus() == PathFinderStatus.SEARCH_PAUSED) {
@@ -461,8 +466,9 @@ public class BuildTrackController implements GameModel {
                                 throw new IllegalStateException(mode.toString());
                         }
 
-                        Status status = move.doMove(world, fp);
+                        Status status = move.applicable(world);
                         okSoFar = status.isSuccess() && okSoFar;
+                        move.apply(world);
                     }// end of attemptMove
                     location = Vec2D.add(location, v.getD());
                 }

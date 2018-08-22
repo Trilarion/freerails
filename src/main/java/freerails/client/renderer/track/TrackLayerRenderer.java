@@ -44,7 +44,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
     public TrackLayerRenderer(UnmodifiableWorld world, RendererRoot trackPieceViewList) {
         rendererRoot = trackPieceViewList;
         this.world = world;
-        this.mapSize = world.getMapSize();
+        mapSize = world.getMapSize();
     }
 
     /**
@@ -82,6 +82,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
      * @param g
      * @param tileLocation
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         /*
          * Since track tiles overlap the adjacent terrain tiles, we create a
@@ -98,12 +99,14 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
     /**
      * @param tileLocation
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         throw new UnsupportedOperationException("Method not yet implemented.");
     }
@@ -111,6 +114,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
     /**
      *
      */
+    @Override
     public void refreshAll() {
     }
 }

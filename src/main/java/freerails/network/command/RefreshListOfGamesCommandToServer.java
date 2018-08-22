@@ -39,6 +39,7 @@ public class RefreshListOfGamesCommandToServer implements CommandToServer {
      * @param server
      * @return
      */
+    @Override
     public CommandStatus execute(ServerControlInterface server) {
         server.refreshSavedGames();
         return new CommandStatus(true);

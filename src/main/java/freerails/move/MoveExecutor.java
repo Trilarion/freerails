@@ -21,7 +21,6 @@ package freerails.move;
 import freerails.move.generator.MoveGenerator;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.player.Player;
-import freerails.nove.Status;
 
 /**
  * Lets the caller try and execute Moves.
@@ -32,7 +31,7 @@ public interface MoveExecutor {
      * @param move
      * @return
      */
-    Status doMove(Move move);
+    Status applyMove(Move move);
 
     /**
      * @param moveGenerator
@@ -44,7 +43,7 @@ public interface MoveExecutor {
      * @param move
      * @return
      */
-    Status tryDoMove(Move move);
+    Status tryMove(Move move);
 
     /**
      * @return

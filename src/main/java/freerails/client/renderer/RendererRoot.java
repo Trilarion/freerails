@@ -49,6 +49,7 @@ public interface RendererRoot extends TileRendererList {
      */
     TrainImages getEngineImages(int type);
 
+    @Override
     boolean validate(UnmodifiableWorld world);
 
     /**

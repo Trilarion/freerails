@@ -101,6 +101,7 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
         return speed * time + acceleration * time * time / 2;
     }
 
+    @Override
     public double calculateDistanceAtTime(double time) {
         checkValidTime(time);
 
@@ -109,9 +110,10 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
         }
 
         double distance = calculateDistance(initialSpeed, acceleration, time);
-        return Math.min(this.totalDistance, distance);
+        return Math.min(totalDistance, distance);
     }
 
+    @Override
     public double calculateTimeAtDistance(double distance) {
         checkValidDistance(distance);
 
@@ -120,9 +122,10 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
         }
 
         double time = calculateTime(initialSpeed, acceleration, distance);
-        return Math.min(this.totalTime, time);
+        return Math.min(totalTime, time);
     }
 
+    @Override
     public double calculateSpeedAtTime(double time) {
         checkValidTime(time);
         return initialSpeed + acceleration * time;
@@ -136,15 +139,18 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
         return initialSpeed == other.initialSpeed && acceleration == other.acceleration && totalDistance == other.totalDistance && totalTime == other.totalTime;
     }
 
+    @Override
     public double calculateAccelerationAtTime(double time) {
         checkValidTime(time);
         return acceleration;
     }
 
+    @Override
     public double getTotalTime() {
         return totalTime;
     }
 
+    @Override
     public double getTotalDistance() {
         return totalDistance;
     }
@@ -159,14 +165,14 @@ public strictfp class ConstantAccelerationMotion implements Serializable, Motion
     }
 
     private void checkValidDistance(double distance) {
-        if (distance < 0 || distance > this.totalDistance) {
-            throw new IllegalArgumentException(distance + " < 0 || " + distance + " > " + this.totalDistance);
+        if (distance < 0 || distance > totalDistance) {
+            throw new IllegalArgumentException(distance + " < 0 || " + distance + " > " + totalDistance);
         }
     }
 
     private void checkValidTime(double time) {
-        if (time < 0 || time > this.totalTime) {
-            throw new IllegalArgumentException("(" + time + " < 0 || " + time + " > " + this.totalTime + ')');
+        if (time < 0 || time > totalTime) {
+            throw new IllegalArgumentException("(" + time + " < 0 || " + time + " > " + totalTime + ')');
         }
     }
 

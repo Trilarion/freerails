@@ -33,7 +33,6 @@ import freerails.move.*;
 import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 
-import freerails.nove.Status;
 import freerails.util.Utils;
 import freerails.util.Vec2D;
 import freerails.model.*;
@@ -83,6 +82,7 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
       changing consist</li>
       </ol>
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         world = MapFixtureFactory2.getCopy();
@@ -125,8 +125,9 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0),
                 start, player, schedule);
         Move move = preMove.generate(world);
-        Status status = move.doMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
     }
 
     /**
@@ -173,8 +174,9 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         incrementTime(world, player);
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         Move move = preMove.generate(world);
-        Status status = move.doMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.getMessage(), status.isSuccess());
+        move.apply(world);
         Train train = world.getTrain(player, 0);
         return train.findCurrentMotion(Integer.MAX_VALUE);
     }
@@ -456,8 +458,9 @@ public class MoveTrainMoveGenerator2NdTest extends AbstractMoveTestCase {
         MoveTrainMoveGenerator preMove = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         assertTrue(preMove.isUpdateDue(world));
         Move move = preMove.generate(world);
-        Status status = move.doMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.getMessage(), status.isSuccess());
+        move.apply(world);
         assertFalse(preMove.isUpdateDue(world));
     }
 

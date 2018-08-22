@@ -52,6 +52,7 @@ public class BuildTrackRenderer implements Painter {
      * Paints the proposed track and dots to distinguish the proposed track from
      * any existing track.
      */
+    @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
         if (modelRoot == null) {

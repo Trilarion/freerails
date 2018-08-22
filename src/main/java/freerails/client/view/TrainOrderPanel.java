@@ -68,14 +68,16 @@ public class TrainOrderPanel implements View, ListCellRenderer {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         this.modelRoot = modelRoot;
-        this.vl = rendererRoot;
+        vl = rendererRoot;
         this.closeAction = closeAction;
         world = modelRoot.getWorld();
         player = modelRoot.getPlayer();
     }
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         TrainOrdersListModel.TrainOrdersListElement trainOrders = (TrainOrdersListModel.TrainOrdersListElement) value;
 

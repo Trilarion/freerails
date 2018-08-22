@@ -28,7 +28,6 @@ import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.World;
 import freerails.move.generator.DropOffAndPickupCargoMoveGenerator;
 
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -65,7 +64,7 @@ public class TrainStopsHandler implements Serializable {
     public TrainStopsHandler(int id, Player player, UnmodifiableWorld unmodifiableWorld) {
         trainId = id;
         this.player = player;
-        this.world =  (World) Utils.cloneBySerialisation(unmodifiableWorld);
+        world =  (World) Utils.cloneBySerialisation(unmodifiableWorld);
         this.unmodifiableWorld = unmodifiableWorld;
     }
 
@@ -116,8 +115,9 @@ public class TrainStopsHandler implements Serializable {
         Move move = transfer.generate();
         if (null != move) {
             moves.add(move);
-            Status status = move.doMove(world, player);
+            Status status = move.applicable(world);
             if (!status.isSuccess()) throw new IllegalStateException(status.getMessage());
+            move.apply(world);
         }
     }
 
@@ -148,7 +148,7 @@ public class TrainStopsHandler implements Serializable {
             // ..if so, we should change the consist.
             int oldLength = train.getLength();
             Move move = new ChangeTrainConsistMove(player, trainId, order.getConsist());
-            move.doMove(world, player);
+            move.apply(world);
             moves.add(move);
             int newLength = train.getLength();
             // has the trains length increased?
@@ -162,8 +162,9 @@ public class TrainStopsHandler implements Serializable {
                 // Create a new Move object.
                 Move trainMove = new NextActivityMove(nextMotion, trainId, player);
                 moves.add(trainMove);
-                Status moveStatus = trainMove.doMove(world, Player.AUTHORITATIVE);
+                Status moveStatus = trainMove.applicable(world);
                 if (!moveStatus.isSuccess()) throw new IllegalStateException(moveStatus.getMessage());
+                trainMove.apply(world);
             }
         }
 
@@ -195,7 +196,7 @@ public class TrainStopsHandler implements Serializable {
             int engineType = train.getEngine();
             Move move = new ChangeTrainConsistMove(player, trainId, wagonsToAdd);
             moves.add(move);
-            move.doMove(world, player);
+            move.apply(world);
         }
         updateSchedule();
         int stationToGoto = schedule.getNextStationId();
@@ -212,7 +213,7 @@ public class TrainStopsHandler implements Serializable {
         if (!waitingForFullLoad) {
             schedule.gotoNextStation();
             Move move = new ChangeTrainScheduleMove(player, trainId, schedule);
-            move.doMove(world, player);
+            move.apply(world);
             moves.add(move);
 
             int stationNumber = schedule.getNextStationId();

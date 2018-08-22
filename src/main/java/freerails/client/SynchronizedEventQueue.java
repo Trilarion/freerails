@@ -66,6 +66,7 @@ public class SynchronizedEventQueue extends EventQueue {
         return instance;
     }
 
+    @Override
     public void postEvent(AWTEvent theEvent) {
         synchronized (list) {
             count++;

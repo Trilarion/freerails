@@ -39,6 +39,7 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      * @return
      */
+    @Override
     public float getScale() {
         return scale;
     }
@@ -46,6 +47,7 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      * @return
      */
+    @Override
     public Vec2D getMapSizeInPixels() {
         int height = (int) (400 * scale);
         int width = (int) (400 * scale);
@@ -57,6 +59,7 @@ public class BlankMapRenderer implements MapRenderer {
      * @param g
      * @param tileLocation
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         paintRect(g, null);
     }
@@ -64,12 +67,14 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      * @param tileLocation
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         g.setColor(Color.darkGray);
         g.fillRect(0, 0, (int) (scale * 400), (int) (scale * 400));
@@ -86,5 +91,6 @@ public class BlankMapRenderer implements MapRenderer {
     /**
      *
      */
+    @Override
     public void refreshAll() {}
 }

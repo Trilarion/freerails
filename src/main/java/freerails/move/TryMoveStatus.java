@@ -18,8 +18,6 @@
 
 package freerails.move;
 
-import freerails.nove.Status;
-
 import java.io.Serializable;
 
 // TODO not much difference to MoveStatus, maybe merge the two

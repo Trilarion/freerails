@@ -151,6 +151,7 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
         player = modelRoot.getPlayer();
@@ -206,14 +207,17 @@ public class CargoWaitingAndDemandedPanel extends JPanel implements View {
             this.quantityWaiting = quantityWaiting;
         }
 
+        @Override
         public int getRowCount() {
             return typeWaiting.size();
         }
 
+        @Override
         public int getColumnCount() {
             return 2;
         }
 
+        @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (0 == columnIndex) {
                 return typeWaiting.get(rowIndex);

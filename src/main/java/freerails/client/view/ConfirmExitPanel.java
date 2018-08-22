@@ -78,6 +78,7 @@ public class ConfirmExitPanel extends JPanel implements View {
         add(jPanel2, gridBagConstraints);
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         closeJButton.setAction(closeAction);
     }

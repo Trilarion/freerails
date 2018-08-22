@@ -21,8 +21,8 @@ package freerails.move;
 import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
 import freerails.model.station.Station;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -41,24 +41,13 @@ public class ChangeCargoAtStationMove implements Move {
     }
 
     @Override
-    public Status tryDoMove(World world, Player player) {
+    public Status applicable(UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public Status tryUndoMove(World world, Player player) {
-        return Status.OK;
-    }
-
-    @Override
-    public Status doMove(World world, Player player) {
-        Station station = world.getStation(this.player, stationId);
+    public void apply(World world) {
+        Station station = world.getStation(player, stationId);
         station.setCargoBatchBundle(cargoBatchBundle);
-        return Status.OK;
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        return Status.OK;
     }
 }

@@ -20,8 +20,8 @@ package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.train.Train;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.nove.Status;
 import org.jetbrains.annotations.NotNull;
 
 // TODO hashcode, equals
@@ -55,24 +55,12 @@ public class AddTrainMove implements Move {
     }
 
     @Override
-    public Status tryDoMove(World world, Player player) {
+    public Status applicable(UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public Status tryUndoMove(World world, Player player) {
-        return Status.OK;
-    }
-
-    @Override
-    public Status doMove(World world, Player player) {
-        world.addTrain(this.player, train);
-        return Status.OK;
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        world.removeTrain(this.player, train.getId());
-        return Status.OK;
+    public void apply(World world) {
+        world.addTrain(player, train);
     }
 }

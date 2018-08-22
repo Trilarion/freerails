@@ -26,7 +26,7 @@ import freerails.client.view.*;
 import freerails.controller.BuildMode;
 import freerails.model.track.BuildTrackStrategy;
 import freerails.controller.TrackMoveProducer;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -89,7 +89,7 @@ public class UserInputOnMapController extends KeyAdapter {
         dialogueBoxController = dbc;
         mapView = mv;
         stationTypesPopup = stPopup;
-        this.trackMoveProducer = trackBuilder;
+        trackMoveProducer = trackBuilder;
         this.buildTrackController = buildTrackController;
         buildIndustryPopupMenu.setup(modelRoot, null, null);
 

@@ -24,7 +24,6 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import freerails.model.player.Player;
 import freerails.model.world.WorldUtils;
-import freerails.nove.Status;
 
 // TODO what about a remove of a player?
 /**
@@ -33,10 +32,10 @@ import freerails.nove.Status;
 public class AddPlayerMove implements Move {
 
     private static final long serialVersionUID = 3977580277537322804L;
-    private final Player playerToAdd;
+    private final Player player;
 
     private AddPlayerMove(Player player) {
-        playerToAdd = player;
+        this.player = player;
     }
 
     /**
@@ -46,6 +45,7 @@ public class AddPlayerMove implements Move {
      */
     public static AddPlayerMove generateMove(UnmodifiableWorld world, Player player) {
         // create a new player with a corresponding Player
+        // TODO why is there a player already, just take a name, preferably in the constructor
         Player player2add = new Player(world.getPlayers().size(), player.getName());
 
         return new AddPlayerMove(player2add);
@@ -58,54 +58,33 @@ public class AddPlayerMove implements Move {
 
         final AddPlayerMove addPlayerMove = (AddPlayerMove) o;
 
-        return playerToAdd.equals(addPlayerMove.playerToAdd);
+        return player.equals(addPlayerMove.player);
     }
 
     @Override
     public int hashCode() {
-        return playerToAdd.hashCode();
+        return player.hashCode();
     }
 
-    public Status tryDoMove(World world, Player player) {
-        if (WorldUtils.isAlreadyASimilarPlayer(world, playerToAdd))
+    @Override
+    public Status applicable(UnmodifiableWorld world) {
+        if (WorldUtils.isAlreadyASimilarPlayer(world, player))
             return Status.fail("There is already a player with the same name.");
 
         return Status.OK;
     }
 
-    public Status tryUndoMove(World world, Player player) {
-        int numPlayers = world.getPlayers().size();
-        Player pp = world.getPlayer(numPlayers - 1);
-        if (pp.equals(playerToAdd)) {
-            return Status.OK;
-        }
-        return Status.fail("The last player is " + pp.getName() + "not " + playerToAdd.getName());
-    }
-
-    public Status doMove(World world, Player player) {
-        Status status = tryDoMove(world, player);
-        if (!status.isSuccess()) return status;
-        int playerId = world.addPlayer(playerToAdd);
+    @Override
+    public void apply(World world) {
+        Status status = applicable(world);
+        if (!status.isSuccess()) throw new RuntimeException(status.getMessage());
+        int playerId = world.addPlayer(player);
         // Sell the player 2 $500,000 bonds at 5% interest.
-        Player player2 = playerToAdd;
+        Player player2 = player;
         world.addTransaction(player2, TransactionUtils.issueBond(5, world.getClock().getCurrentTime()));
         // Issue stock
         Money initialStockPrice = new Money(5);
         Transaction transaction = TransactionUtils.issueStock(playerId, 100000, initialStockPrice, world.getClock().getCurrentTime());
         world.addTransaction(player2, transaction);
-        return status;
     }
-
-    public Status undoMove(World world, Player player) {
-        Status status = tryUndoMove(world, player);
-        if (!status.isSuccess()) return status;
-
-        world.removeLastTransaction(playerToAdd);
-        world.removeLastTransaction(playerToAdd);
-        // TODO remove player instead
-        world.removeLastPlayer();
-
-        return status;
-    }
-
 }

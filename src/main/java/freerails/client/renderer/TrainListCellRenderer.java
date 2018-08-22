@@ -163,12 +163,14 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         world = modelRoot.getWorld();
-        this.vl = rendererRoot;
+        vl = rendererRoot;
         player = modelRoot.getPlayer();
     }
 
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int trainId, boolean isSelected, boolean cellHasFocus) {
 
         // TODO this is probably supposed to be the index.th entry of a list
@@ -219,6 +221,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param index
      * @param player
      */
+    @Override
     public void listUpdated(int index, Player player) {
         if (showingOrder) {
             // TODO since Schedule is part of train, this is not right anymore, fix it
@@ -237,6 +240,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param index
      * @param player
      */
+    @Override
     public void itemAdded(int index, Player player) {
     }
 
@@ -244,6 +248,7 @@ public class TrainListCellRenderer extends JPanel implements View, ListCellRende
      * @param index
      * @param player
      */
+    @Override
     public void itemRemoved(int index, Player player) {
     }
 }

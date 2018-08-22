@@ -68,7 +68,7 @@ public class OverviewMapRenderer implements MapRenderer {
 
     private OverviewMapRenderer(UnmodifiableWorld world, Vec2D imageSize) {
         this.world = world;
-        this.mapSize = world.getMapSize();
+        mapSize = world.getMapSize();
         this.imageSize = imageSize;
 
         // TODO this should probably be loaded by the client at some point before (should they be model or client specific)
@@ -113,6 +113,7 @@ public class OverviewMapRenderer implements MapRenderer {
     /**
      * @return
      */
+    @Override
     public float getScale() {
         return (float) imageSize.y / (float) mapSize.y;
     }
@@ -121,6 +122,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         renderOffScreenImage();
 
@@ -140,6 +142,7 @@ public class OverviewMapRenderer implements MapRenderer {
         }
     }
 
+    @Override
     public void refreshTile(Vec2D tileLocation) {
         TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
 
@@ -194,6 +197,7 @@ public class OverviewMapRenderer implements MapRenderer {
     /**
      * @return
      */
+    @Override
     public Vec2D getMapSizeInPixels() {
         return imageSize;
     }
@@ -202,6 +206,7 @@ public class OverviewMapRenderer implements MapRenderer {
      * @param g
      * @param tileLocation
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         g.drawImage(mapImage, 0, 0, null);
     }
@@ -209,6 +214,7 @@ public class OverviewMapRenderer implements MapRenderer {
     /**
      *
      */
+    @Override
     public void refreshAll() {
         refresh();
     }

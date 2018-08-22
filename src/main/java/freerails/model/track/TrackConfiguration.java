@@ -154,6 +154,7 @@ public class TrackConfiguration implements TrackConfigurations {
     /**
      * @return an int representing this track configuration.
      */
+    @Override
     public int get9bitTemplate() {
         return configuration;
     }

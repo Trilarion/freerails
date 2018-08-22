@@ -150,6 +150,7 @@ public class HtmlPanel extends JPanel implements View {
         }
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         done.setAction(closeAction);
     }

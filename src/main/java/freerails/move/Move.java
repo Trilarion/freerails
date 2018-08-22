@@ -18,10 +18,9 @@
 
 package freerails.move;
 
-import freerails.move.generator.MoveGenerator;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.model.player.Player;
-import freerails.nove.Status;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
@@ -33,54 +32,36 @@ import java.io.Serializable;
  * (2) They should override {@code Object.equals()} to test for logical
  * equality.
  *
- * (3) They should store 'before' and 'after' values for all properties of the
- * world object that they change.
- *
  * (4) The changes they encapsulate should be stored in an address space
  * independent way, so that a move generated on a client can be serialised, sent
  * over a network, and then deserialized and executed on a server. To achieve
  * this, they should refer to items in the game world via either their
  * coordinates, e.g. tile 10,50, or their position in a list, e.g. train #4.
  *
- * (5) They should be undoable. To achieve this, they need to store the
- * information necessary to undo the change. E.g. a change-terrain-type move
- * might store the tile coordinates, the terrain type before the change and the
- * terrain type after the change.
- *
- * (6) The tryDoMove and tryUndoMove methods should test whether the move is
+ * (6) The applicable method should test whether the move is
  * valid but leave the game world unchanged.
  *
  * @see Status
  * @see World
- * @see MoveGenerator
  */
 public interface Move extends Serializable {
 
-    // TODO when are we trying it, in the beginning of doMove itself or also before
     /**
-     * Tests whether this Move can be executed on the specified world object.
+     * Tests whether this move can be applied on the specified world object.
+     * The test must leave the world object unchanged.
      *
-     * This method must leave the world object unchanged.
+     * @param world
+     * @return
      */
-    Status tryDoMove(World world, Player player);
+    @NotNull Status applicable(@NotNull UnmodifiableWorld world);
 
     /**
-     * Tests whether this Move can be undone on the specified world object.
+     * Applies the move on the specified world object.
+     * It should not check if the move is applicable.
      *
-     * This method must leave the world object unchanged.
+     * @param world
+     * @return
      */
-    Status tryUndoMove(World world, Player player);
+    @NotNull void apply(@NotNull World world);
 
-    // TODO does this method also has to tryDoMove at the beginning
-    /**
-     * Executes this move on the specified world object.
-     */
-    Status doMove(World world, Player player);
-
-    /**
-     * If {@code doMove} has just been executed on the specified world
-     * object, calling this method changes the state of the world object back to
-     * how it was before {@code doMove} was called.
-     */
-    Status undoMove(World world, Player player);
 }

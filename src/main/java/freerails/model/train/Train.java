@@ -20,7 +20,6 @@ package freerails.model.train;
 
 import freerails.model.Identifiable;
 import freerails.model.ModelConstants;
-import freerails.model.game.Clock;
 import freerails.model.game.Time;
 import freerails.model.terrain.TileTransition;
 import freerails.model.track.TrackSection;

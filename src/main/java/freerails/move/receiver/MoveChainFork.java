@@ -78,6 +78,7 @@ public class MoveChainFork implements MoveReceiver {
     /**
      * @param move
      */
+    @Override
     public void process(Move move) {
         // all move receivers process the move
         for (MoveReceiver moveReceiver : moveReceivers) {
@@ -115,7 +116,7 @@ public class MoveChainFork implements MoveReceiver {
                         listener.tilesChanged(rectangle);
                     }
                 }
-            } else if (move instanceof TimeTickMove) {
+            } else if (move instanceof AdvanceClockMove) {
                 lastTickTime = System.currentTimeMillis();
             }
         }

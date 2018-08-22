@@ -85,6 +85,7 @@ public class ConnectedPlayersPanel extends JPanel implements PropertyChangeListe
     /**
      * Called by the server when a player is added or removed.
      */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(FreerailsGameServer.CONNECTED_PLAYERS)) {
             if (EventQueue.isDispatchThread()) {

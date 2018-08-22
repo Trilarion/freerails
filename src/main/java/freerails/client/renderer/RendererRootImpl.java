@@ -177,6 +177,7 @@ public class RendererRootImpl implements RendererRoot {
         return new StandardTileRendererList(tileRenderers);
     }
 
+    @Override
     public boolean validate(UnmodifiableWorld world) {
         return tileRendererList.validate(world) && trackPieceViewList.validate(world);
     }
@@ -186,6 +187,7 @@ public class RendererRootImpl implements RendererRoot {
      * @return
      * @throws IOException
      */
+    @Override
     public Image getImage(String relativeFilename) throws IOException {
         return imageManager.getImage(relativeFilename);
     }
@@ -194,6 +196,7 @@ public class RendererRootImpl implements RendererRoot {
      * @param index
      * @return
      */
+    @Override
     public TileRenderer getTileRendererByIndex(int index) {
         return tileRendererList.getTileRendererByIndex(index);
     }
@@ -202,6 +205,7 @@ public class RendererRootImpl implements RendererRoot {
      * @param i
      * @return
      */
+    @Override
     public TrackPieceRenderer getTrackPieceView(int i) {
         return trackPieceViewList.getTrackPieceView(i);
     }
@@ -210,6 +214,7 @@ public class RendererRootImpl implements RendererRoot {
      * @param cargoTypeId
      * @return
      */
+    @Override
     public TrainImages getWagonImages(int cargoTypeId) {
         return wagonImages.get(cargoTypeId);
     }
@@ -218,6 +223,7 @@ public class RendererRootImpl implements RendererRoot {
      * @param type
      * @return
      */
+    @Override
     public TrainImages getEngineImages(int type) {
         return engineImages.get(type);
     }
@@ -228,6 +234,7 @@ public class RendererRootImpl implements RendererRoot {
      * @return
      * @throws IOException
      */
+    @Override
     public Image getScaledImage(String relativeFilename, int height) throws IOException {
         return imageManager.getScaledImage(relativeFilename, height);
     }

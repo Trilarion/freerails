@@ -25,7 +25,7 @@ import freerails.model.finance.transaction.Transaction;
 import freerails.model.finance.transaction.aggregator.FinancialDataAggregator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.model.finance.*;
 import freerails.model.ModelConstants;
 import freerails.model.world.World;
@@ -50,9 +50,10 @@ public class FinancialDataAggregatorTest extends TestCase {
         world = WorldGenerator.minimalWorld();
 
         player = new Player(0, "Player X");
-        Move addPlayer = AddPlayerMove.generateMove(world, player);
-        Status status = addPlayer.doMove(world, Player.AUTHORITATIVE);
+        Move move = AddPlayerMove.generateMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
     }
 
     /**
@@ -120,9 +121,10 @@ public class FinancialDataAggregatorTest extends TestCase {
         Player[] players = new Player[2];
         for (int i = 0; i < players.length; i++) {
             players[i] = new Player(i, "Player " + i);
-            Move addPlayer = AddPlayerMove.generateMove(world, players[i]);
-            Status status = addPlayer.doMove(world, Player.AUTHORITATIVE);
+            Move move = AddPlayerMove.generateMove(world, players[i]);
+            Status status = move.applicable(world);
             assertTrue(status.isSuccess());
+            move.apply(world);
         }
 
         // Make player #0 buy stock in player #1

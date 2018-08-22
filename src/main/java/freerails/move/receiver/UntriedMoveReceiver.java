@@ -20,7 +20,7 @@ package freerails.move.receiver;
 
 import freerails.move.generator.MoveGenerator;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 
 // TODO what is this good for? why is it named Untried?
 /**
@@ -32,7 +32,7 @@ public interface UntriedMoveReceiver extends MoveReceiver {
      * @param move
      * @return
      */
-    Status tryDoMove(Move move);
+    Status applicable(Move move);
 
     // TODO why is this method needed?
     /**

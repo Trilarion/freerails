@@ -20,8 +20,8 @@ package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.train.Train;
+import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
-import freerails.nove.Status;
 
 import java.util.List;
 
@@ -41,24 +41,13 @@ public class ChangeTrainConsistMove implements Move {
     }
 
     @Override
-    public Status tryDoMove(World world, Player player) {
+    public Status applicable(UnmodifiableWorld world) {
         return Status.OK;
     }
 
     @Override
-    public Status tryUndoMove(World world, Player player) {
-        return Status.OK;
-    }
-
-    @Override
-    public Status doMove(World world, Player player) {
-        Train train = world.getTrain(this.player, trainId);
+    public void apply(World world) {
+        Train train = world.getTrain(player, trainId);
         train.setConsist(consist);
-        return Status.OK;
-    }
-
-    @Override
-    public Status undoMove(World world, Player player) {
-        return Status.OK;
     }
 }

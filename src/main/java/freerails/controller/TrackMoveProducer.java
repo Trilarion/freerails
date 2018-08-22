@@ -28,7 +28,6 @@ import freerails.move.*;
 import freerails.move.generator.TrackMoveTransactionsGenerator;
 import freerails.move.mapupdatemove.ChangeTrackPieceCompositeMove;
 import freerails.move.mapupdatemove.ChangeTrackPieceMove;
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.util.Utils;
 import freerails.model.world.UnmodifiableWorld;
@@ -244,7 +243,7 @@ public class TrackMoveProducer {
     }
 
     private Status sendMove(Move move) {
-        Status status = executor.doMove(move);
+        Status status = executor.applyMove(move);
 
         if (status.isSuccess()) {
             clearStackIfStale();

@@ -164,6 +164,7 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         }
     }
 
+    @Override
     public void setup(ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         worldIterator = modelRoot.getWorld().getStations(modelRoot.getPlayer()).iterator();
         addComponentListener(componentListener);
@@ -303,14 +304,17 @@ public class StationInfoPanel extends JPanel implements View, WorldListListener 
         */
     }
 
+    @Override
     public void listUpdated(int index, Player player) {
         if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, false);
     }
 
+    @Override
     public void itemAdded(int index, Player player) {
         if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, true);
     }
 
+    @Override
     public void itemRemoved(int index, Player player) {
         if (modelRoot.getPlayer().equals(player)) reactToUpdate(index, false);
     }

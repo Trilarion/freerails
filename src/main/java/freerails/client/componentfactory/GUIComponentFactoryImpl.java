@@ -113,7 +113,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
                 for (Action action: speedActions.getActions()) {
                     String actionName = (String) action.getValue(Action.NAME);
 
-                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.getNewSpeed().getTicksPerSecond()))) {
+                    if (actionName.equals(this.actionRoot.getServerControls().getGameSpeedDesc(speedMove.getSpeed().getTicksPerSecond()))) {
                         speedActions.setSelectedItem(actionName);
                     }
 
@@ -145,6 +145,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JMenu createBuildMenu() {
         return buildMenu;
     }
@@ -152,6 +153,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JLabel createCashJLabel() {
         return cashlabel;
     }
@@ -169,6 +171,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JLabel createDateJLabel() {
         return datelabel;
     }
@@ -176,6 +179,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JMenu createBrokerMenu() {
         JMenu brokerMenu = new JMenu("Broker");
 
@@ -190,6 +194,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JMenu createDisplayMenu() {
         JMenu displayMenu = new JMenu("Display");
         displayMenu.setMnemonic(68);
@@ -242,6 +247,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JMenu createGameMenu() {
         ServerControlModel serverControlModel = actionRoot.getServerControls();
 
@@ -256,12 +262,15 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
         final JMenu newGameJMenu = new JMenu(serverControlModel.getNewGameAction());
         newGameJMenu.addMenuListener(new MenuListener() {
 
+            @Override
             public void menuCanceled(MenuEvent e) {
             }
 
+            @Override
             public void menuDeselected(MenuEvent e) {
             }
 
+            @Override
             public void menuSelected(MenuEvent e) {
                 newGameJMenu.removeAll();
 
@@ -309,6 +318,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JMenu createHelpMenu() {
         JMenu helpMenu = new JMenu("Help");
 
@@ -331,6 +341,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JScrollPane createMainMap() {
         return mainMapScrollPane1;
     }
@@ -338,6 +349,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JPanel createOverviewMap() {
         return overviewMapContainer;
     }
@@ -345,6 +357,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JMenu createReportsMenu() {
         JMenu reportsMenu = new JMenu("Reports");
 
@@ -370,6 +383,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
     /**
      * @return
      */
+    @Override
     public JTabbedPane createTrainsJTabPane() {
         return trainsJTabPane;
     }
@@ -385,6 +399,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param index
      * @param player
      */
+    @Override
     public void itemAdded(int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
@@ -398,6 +413,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param index
      * @param player
      */
+    @Override
     public void itemRemoved(int index, Player player) {
     }
 
@@ -405,6 +421,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * @param index
      * @param player
      */
+    @Override
     public void listUpdated(int index, Player player) {
         boolean rightPlayer = player.equals(modelRoot.getPlayer());
 
@@ -510,6 +527,7 @@ public class GUIComponentFactoryImpl implements GUIComponentFactory, WorldMapLis
      * Listens for changes on the map, for instance when track is built, and
      * refreshes the map views.
      */
+    @Override
     public void tilesChanged(Rectangle tilesChanged) {
         logger.debug("TilesChanged = " + tilesChanged);
 

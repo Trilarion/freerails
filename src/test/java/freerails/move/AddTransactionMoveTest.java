@@ -40,9 +40,8 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
 
         Transaction transaction = new Transaction(TransactionCategory.MISC_INCOME, new Money(100), world.getClock().getCurrentTime());
         Move move1 = new AddTransactionMove(WorldGenerator.TEST_PLAYER, transaction);
-        assertTryMoveIsOk(move1);
-        assertTryUndoMoveFails(move1);
-        assertDoMoveIsOk(move1);
+        assertMoveApplicable(move1);
+        assertMoveApplyIsOk(move1);
         currentBalance = getWorld().getCurrentBalance(WorldGenerator.TEST_PLAYER);
         assertEquals(new Money(100), currentBalance);
         assertSurvivesSerialisation(move1);
@@ -59,6 +58,6 @@ public class AddTransactionMoveTest extends AbstractMoveTestCase {
         Move move = new AddTransactionMove(WorldGenerator.TEST_PLAYER, transaction, true);
 
         // This move should fail since there is no money in the account and it is constrained is set to true.
-        assertTryMoveFails(move);
+        assertMoveNotApplicable(move);
     }
 }

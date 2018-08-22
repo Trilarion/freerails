@@ -41,6 +41,7 @@ public class RemoveStationCompositeMove extends CompositeMove implements TrackMo
     /**
      * @return
      */
+    @Override
     public Rectangle getUpdatedTiles() {
 
         MapUpdateMove mapUpdateMove = (MapUpdateMove) getMove(0);

@@ -25,7 +25,7 @@ import freerails.model.player.Player;
 import freerails.model.finance.BalanceSheetGenerator;
 import freerails.move.AddPlayerMove;
 import freerails.move.Move;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.model.*;
 import freerails.model.finance.Money;
 import freerails.model.world.World;
@@ -66,9 +66,10 @@ public class BalanceSheetGeneratorTest extends TestCase {
 
         world = WorldGenerator.minimalWorld();
         player = new Player(world.getPlayers().size(), "Player X");
-        Move addPlayerMove = AddPlayerMove.generateMove(world, player);
-        Status status = addPlayerMove.doMove(world, player);
+        Move move = AddPlayerMove.generateMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.getMessage(), status.isSuccess());
+        move.apply(world);
 
         // world.setTime(new Clock.Time(100));
     }

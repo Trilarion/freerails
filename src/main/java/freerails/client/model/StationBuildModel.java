@@ -27,7 +27,7 @@ import freerails.client.renderer.track.TrackPieceRenderer;
 import freerails.client.ModelRoot;
 import freerails.model.track.TrackType;
 import freerails.move.StationBuilder;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.util.Vec2D;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.finance.Money;
@@ -164,6 +164,7 @@ public class StationBuildModel {
             this.actionId = actionId;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             stationBuilder.setStationType(actionId);
 
@@ -178,6 +179,7 @@ public class StationBuildModel {
     private class StationCancelAction extends AbstractAction {
         private static final long serialVersionUID = 3256441421581203252L;
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             stationBuildAction.setEnabled(false);
@@ -204,6 +206,7 @@ public class StationBuildModel {
             setEnabled(false);
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             java.awt.Point value = (java.awt.Point) stationBuildAction.getValue(StationBuildAction.STATION_POSITION_KEY);
             Status status = stationBuilder.buildStation(new Vec2D(value.x, value.y));

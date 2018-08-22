@@ -338,10 +338,12 @@ public strictfp class PathOnTiles implements Serializable {
 
             private Vec2D next = start;
 
+            @Override
             public boolean hasNext() {
                 return next != null;
             }
 
+            @Override
             public Vec2D next() {
                 if (next == null) throw new NoSuchElementException();
 
@@ -361,6 +363,7 @@ public strictfp class PathOnTiles implements Serializable {
                 return returnValue;
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
@@ -393,10 +396,12 @@ public strictfp class PathOnTiles implements Serializable {
             index = 0;
         }
 
+        @Override
         public boolean hasNext() {
             return (index + 1) < points.size();
         }
 
+        @Override
         public Segment nextSegment() {
             if (!hasNext()) {
                 throw new NoSuchElementException();

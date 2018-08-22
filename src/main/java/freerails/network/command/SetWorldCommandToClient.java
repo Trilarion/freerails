@@ -43,6 +43,7 @@ public class SetWorldCommandToClient implements CommandToClient {
         // this.world = world;
     }
 
+    @Override
     public CommandStatus execute(ClientControlInterface client) {
         /**
          * Returns a copy of this world object - making changes to this copy will

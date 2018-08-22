@@ -60,6 +60,7 @@ public class StationNamesRenderer implements Painter {
      * @param g
      * @param newVisibleRectangle
      */
+    @Override
     public void paint(Graphics2D g, Rectangle newVisibleRectangle) {
 
         Boolean showStationNames = (Boolean) modelRoot.getProperty(ModelRootProperty.SHOW_STATION_NAMES);

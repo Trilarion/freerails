@@ -42,7 +42,7 @@ public class GameLoop implements Runnable {
      */
     public GameLoop(ScreenHandler screenHandler) {
         this.screenHandler = screenHandler;
-        this.gameModel = null;
+        gameModel = null;
     }
 
     /**
@@ -54,6 +54,7 @@ public class GameLoop implements Runnable {
         this.gameModel = Utils.verifyNotNull(gameModel);
     }
 
+    @Override
     public void run() {
         try {
 

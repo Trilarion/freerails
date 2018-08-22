@@ -28,7 +28,6 @@ import freerails.model.finance.transaction.Transaction;
 import freerails.model.terrain.Terrain;
 import freerails.move.*;
 import freerails.move.mapupdatemove.ChangeTileMove;
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.finance.transaction.ItemTransaction;
 import freerails.model.finance.Money;
@@ -61,6 +60,7 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
      * @param rendererRoot
      * @param closeAction
      */
+    @Override
     public void setup(final ModelRoot modelRoot, RendererRoot rendererRoot, Action closeAction) {
         removeAll();
 
@@ -72,12 +72,13 @@ public class BuildIndustryPopupMenu extends JPopupMenu implements View {
                 item.addActionListener(new ActionListener() {
                     private final int terrainId = terrain.getId();
 
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         Move move = new ChangeTileMove(modelRoot.getWorld(), cursorLocation, terrainId);
                         Transaction transaction = new ItemTransaction(TransactionCategory.INDUSTRIES, Money.opposite(price), modelRoot.getWorld().getClock().getCurrentTime(), 1, terrainId);
                         Move m2 = new AddTransactionMove(modelRoot.getPlayer(), transaction);
                         Move m3 = new CompositeMove(Arrays.asList(move, m2));
-                        Status status = modelRoot.doMove(m3);
+                        Status status = modelRoot.applyMove(m3);
 
                         if (!status.isSuccess()) {
                             modelRoot.setProperty(ModelRootProperty.CURSOR_MESSAGE, status.getMessage());

@@ -33,6 +33,7 @@ public class OpenListEntry implements Comparable<OpenListEntry>, Serializable {
         this.node = node;
     }
 
+    @Override
     public int compareTo(@NotNull OpenListEntry o) {
         if (f == o.f) {
             return node - o.node;

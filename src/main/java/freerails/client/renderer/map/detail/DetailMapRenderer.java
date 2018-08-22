@@ -71,6 +71,7 @@ public class DetailMapRenderer implements MapRenderer {
     /**
      * @return
      */
+    @Override
     public float getScale() {
         return ModelConstants.TILE_SIZE;
     }
@@ -78,6 +79,7 @@ public class DetailMapRenderer implements MapRenderer {
     /**
      * @return
      */
+    @Override
     public Vec2D getMapSizeInPixels() {
         return mapSizeInPixels;
     }
@@ -85,6 +87,7 @@ public class DetailMapRenderer implements MapRenderer {
     /**
      * @param g
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         background.paintTile(g, tileLocation);
         trainsview.paint((Graphics2D) g, null);
@@ -96,6 +99,7 @@ public class DetailMapRenderer implements MapRenderer {
 
     /**
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {
         background.refreshTile(tileLocation);
     }
@@ -104,6 +108,7 @@ public class DetailMapRenderer implements MapRenderer {
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         background.paintRect(g, visibleRect);
         trainsview.paint((Graphics2D) g, visibleRect);
@@ -115,6 +120,7 @@ public class DetailMapRenderer implements MapRenderer {
     /**
      *
      */
+    @Override
     public void refreshAll() {
         background.refreshAll();
     }

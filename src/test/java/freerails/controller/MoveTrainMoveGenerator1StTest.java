@@ -32,7 +32,6 @@ import freerails.move.generator.AddTrainMoveGenerator;
 import freerails.move.generator.MoveTrainMoveGenerator;
 import freerails.model.MapFixtureFactory2;
 
-import freerails.nove.Status;
 import freerails.util.Vec2D;
 import freerails.model.terrain.TileTransition;
 import freerails.model.player.Player;
@@ -87,8 +86,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         Vec2D start = new Vec2D(10, 10);
         AddTrainMoveGenerator preMove = new AddTrainMoveGenerator(validEngineId, Arrays.asList(0, 0), start, player, schedule);
         Move move = preMove.generate(world);
-        Status status = move.doMove(world, player);
+        Status status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
     }
 
     /**
@@ -153,8 +153,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         assertEquals(TileTransition.NORTH_EAST, moveTrain.nextStep(world));
 
         move = moveTrain.generate(world);
-        status = move.doMove(world, player);
+        status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
 
         TrainMotion tm2 = train.findCurrentMotion(3);
         assertFalse(trainMotion.equals(tm2));
@@ -178,8 +179,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         MoveTrainMoveGenerator2NdTest.incrementTime(world, player);
         move = moveTrain.generate(world);
-        status = move.doMove(world, player);
+        status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
 
         TrainMotion tm3 = train.findCurrentMotion(100);
         assertFalse(tm3.equals(tm2));
@@ -196,8 +198,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         MoveTrainMoveGenerator2NdTest.incrementTime(world, player);
         move = moveTrain.generate(world);
 
-        status = move.doMove(world, player);
+        status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
     }
 
     private void setupLoopOfTrack() {
@@ -217,8 +220,9 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
         AddTrainMoveGenerator addTrain = new AddTrainMoveGenerator(validEngineId, new ArrayList<>(), from, player, schedule);
 
         Move move = addTrain.generate(world);
-        status = move.doMove(world, player);
+        status = move.applicable(world);
         assertTrue(status.isSuccess());
+        move.apply(world);
         Train train = world.getTrain(player, 0);
         TrainMotion motion = train.findCurrentMotion(0);
         assertNotNull(motion);
@@ -236,7 +240,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         Move move = moveTrain.generate(world);
-        assertTrue(move.doMove(world, player).isSuccess());
+        assertTrue(move.applicable(world).isSuccess());
+        move.apply(world);
     }
 
     /**
@@ -247,7 +252,8 @@ public class MoveTrainMoveGenerator1StTest extends AbstractMoveTestCase {
 
         MoveTrainMoveGenerator moveTrain = new MoveTrainMoveGenerator(0, player, new OccupiedTracks(player, world));
         Move move = moveTrain.generate(world);
-        assertTrue(move.doMove(world, player).isSuccess());
+        assertTrue(move.applicable(world).isSuccess());
+        move.apply(world);
 
         Train train = world.getTrain(player, 0);
         TrainMotion motion = train.findCurrentMotion(1);

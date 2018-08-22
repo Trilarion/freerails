@@ -21,7 +21,6 @@
  */
 package freerails.move.generator;
 
-import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.finance.transaction.Transaction;
 import freerails.model.train.motion.TrainMotion;
 import freerails.model.train.schedule.UnmodifiableSchedule;
@@ -99,6 +98,7 @@ public class AddTrainMoveGenerator implements MoveGenerator {
      * <li>Init. the trains position and motion</li>
      * </ol>
      */
+    @Override
     public Move generate(UnmodifiableWorld world) {
         // Add train to train list.
         // TODO need a way to get a new id for trains, this is not the best way

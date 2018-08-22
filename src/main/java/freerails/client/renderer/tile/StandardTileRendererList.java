@@ -45,10 +45,12 @@ public class StandardTileRendererList implements TileRendererList {
      * @param index
      * @return
      */
+    @Override
     public TileRenderer getTileRendererByIndex(int index) {
         return tileRenderer.get(index);
     }
 
+    @Override
     public boolean validate(UnmodifiableWorld world) {
         // There should a TileRenderer for each terrain type.
         return world.getTerrains().size() == tileRenderer.size();

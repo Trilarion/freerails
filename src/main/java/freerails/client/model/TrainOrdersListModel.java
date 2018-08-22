@@ -58,6 +58,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         assert (null != getSchedule());
     }
 
+    @Override
     public Object getElementAt(int index) {
         UnmodifiableSchedule schedule = getSchedule();
         int gotoStatus;
@@ -83,6 +84,7 @@ public class TrainOrdersListModel extends AbstractListModel {
         return new TrainOrdersListElement(isPriorityOrders, gotoStatus, order, trainNumber);
     }
 
+    @Override
     public int getSize() {
         UnmodifiableSchedule schedule = getSchedule();
         int size = 0;

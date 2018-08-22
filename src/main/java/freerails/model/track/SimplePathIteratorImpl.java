@@ -41,6 +41,7 @@ public class SimplePathIteratorImpl implements PathIterator {
         this.points = points;
     }
 
+    @Override
     public Segment nextSegment() {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -51,6 +52,7 @@ public class SimplePathIteratorImpl implements PathIterator {
         return line;
     }
 
+    @Override
     public boolean hasNext() {
         return (position + 1) < points.size();
     }

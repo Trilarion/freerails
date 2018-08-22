@@ -78,6 +78,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param g
      * @param tileLocation
      */
+    @Override
     public void paintTile(Graphics g, Vec2D tileLocation) {
         terrainLayer.paintTile(g, tileLocation);
         trackLayer.paintTile(g, tileLocation);
@@ -91,6 +92,7 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
      * @param g
      * @param visibleRect
      */
+    @Override
     public void paintRect(Graphics g, Rectangle visibleRect) {
         int tileWidth = ModelConstants.TILE_SIZE;
         int tileHeight = ModelConstants.TILE_SIZE;
@@ -112,11 +114,13 @@ public class MapBackgroundRenderer implements MapLayerRenderer {
     /**
      * @param tileLocation
      */
+    @Override
     public void refreshTile(Vec2D tileLocation) {}
 
     /**
      *
      */
+    @Override
     public void refreshAll() {}
 
 }

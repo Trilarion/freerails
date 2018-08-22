@@ -24,7 +24,7 @@ package freerails.controller;
 import freerails.client.ModelRoot;
 import freerails.client.ModelRootImpl;
 import freerails.move.MoveExecutor;
-import freerails.nove.Status;
+import freerails.move.Status;
 import freerails.model.MapFixtureFactory2;
 import freerails.move.SimpleMoveExecutor;
 import freerails.move.StationBuilder;
@@ -69,8 +69,7 @@ public class StationBuilderTest extends TestCase {
         status = stationBuilder.buildStation(new Vec2D(10, 10));
         assertTrue(status.isSuccess());
 
-        status = stationBuilder.buildStation(new Vec2D(13, 10));
-        assertFalse(status.isSuccess());
+        assertFalse(stationBuilder.tryBuildingStation(new Vec2D(13, 10)).isSuccess());
     }
 
 }

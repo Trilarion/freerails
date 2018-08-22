@@ -36,6 +36,7 @@ public class TestSaveGamesManager implements SaveGamesManager {
     /**
      * @return
      */
+    @Override
     public String[] getSaveGameNames() {
         return savedGames.keySet().toArray(new String[0]);
     }
@@ -45,6 +46,7 @@ public class TestSaveGamesManager implements SaveGamesManager {
      * @param serializable
      * @throws IOException
      */
+    @Override
     public void saveGame(String path, Serializable serializable) {
         // Make a copy so that the saved version's state cannot be changed.
         Serializable copy = Utils.cloneBySerialisation(serializable);
@@ -56,6 +58,7 @@ public class TestSaveGamesManager implements SaveGamesManager {
      * @return
      * @throws IOException
      */
+    @Override
     public ServerGameModel loadGame(String path) {
         Serializable o = savedGames.get(path);
         return (ServerGameModel) Utils.cloneBySerialisation(o);
