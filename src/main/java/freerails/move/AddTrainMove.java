@@ -22,11 +22,13 @@ import freerails.model.player.Player;
 import freerails.model.train.Train;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
-// TODO hashcode, equals
+import java.util.Objects;
+
 /**
- *
+ * Adds a new train to the world.
  */
 public class AddTrainMove implements Move {
 
@@ -39,23 +41,27 @@ public class AddTrainMove implements Move {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AddTrainMove)) return false;
-        final AddTrainMove other = (AddTrainMove) o;
-
-        return player.equals(other.player) && train.equals(other.train);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof AddTrainMove)) {
+            return false;
+        }
+        final AddTrainMove o = (AddTrainMove) obj;
+        return Objects.equals(player, o.player) && Objects.equals(train, o.train);
     }
 
     @Override
     public int hashCode() {
-        int result = player.hashCode();
-        result = 29 * result + train.hashCode();
-        return result;
+        return Objects.hash(player, train);
     }
 
     @Override
     public Status applicable(UnmodifiableWorld world) {
+        if (Utils.containsId(train.getId(), world.getTrains(player))) {
+            return Status.fail("Train with id already existing.");
+        }
         return Status.OK;
     }
 

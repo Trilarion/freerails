@@ -174,7 +174,7 @@ public class BuildTrackController implements GameModel {
             TileTransition vector = TileTransition.getInstance(Vec2D.subtract(point, oldPosition));
 
             // If there is already track between the two tiles, do nothing
-            TerrainTile tile = (TerrainTile) unmodifiableWorld.getTile(oldPosition);
+            TerrainTile tile = unmodifiableWorld.getTile(oldPosition);
             TrackPiece trackPiece = tile.getTrackPiece();
             if (trackPiece != null && trackPiece.getTrackConfiguration().contains(vector)) {
                 oldPosition = point;

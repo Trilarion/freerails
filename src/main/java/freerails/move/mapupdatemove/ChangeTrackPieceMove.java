@@ -93,7 +93,7 @@ public final class ChangeTrackPieceMove implements TrackMove {
         }
 
         // Check that we would not change another players track if this is not allowed.
-        Rules rules = ((UnmodifiableWorld) world).getRules();
+        Rules rules = world.getRules();
         if (!rules.canConnectToOtherPlayersTracks()) {
             // TODO what about removing track of someone else
             if (trackPieceBefore != null && trackPieceAfter != null) {
@@ -172,7 +172,6 @@ public final class ChangeTrackPieceMove implements TrackMove {
 
     @Override
     public void apply(World world) {
-        MoveTrainMoveGenerator.clearCache();
         Status status = applicable(world);
         if (!status.isSuccess()) {
             throw new RuntimeException(status.getMessage());

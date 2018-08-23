@@ -81,8 +81,10 @@ public class UserMessageGenerator implements MoveReceiver {
     /**
      * Generates a message giving details of any cargo delivered and plays a
      * cash register sound to indicate that revenue is coming in.
+     * @param moves
      */
-    private void trainArrives(CompositeMove moves) {
+    private void trainArrives(Move mov) {
+        CompositeMove moves = (CompositeMove) mov;
         // TODO does this work anymore, was a WorldDiffMove before
         List<CargoDeliveryTransaction> cargoDelivered = new ArrayList<>();
         for (int i = 0; i < moves.size(); i++) {

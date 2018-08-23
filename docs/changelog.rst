@@ -2,8 +2,9 @@
 Changelog
 ************************
 
-The change logs for the years 2000 to 2006 are more like commit messages and are kept here for historical reasons.
-From 2017 on this change log describes the publication date and changes of every released version.
+.. note::
+   The change logs for the years 2000 to 2006 are more like commit messages and are kept here for historical reasons.
+   From 2017 on this change log describes the publication date and changes of every released version.
 
 FreeRails continuation (2017-)
 ------------------------------

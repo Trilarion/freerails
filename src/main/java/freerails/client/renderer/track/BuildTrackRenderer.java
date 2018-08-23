@@ -84,7 +84,7 @@ public class BuildTrackRenderer implements Painter {
          */
         for (Vec2D p : proposedTrack.keySet()) {
             Vec2D location = Vec2D.add(Vec2D.multiply(p, ClientConstants.TILE_SIZE), Vec2D.divide(Vec2D.subtract(ClientConstants.TILE_SIZE, ClientConstants.SMALL_DOT_WIDTH), 2));
-            TerrainTile before = (TerrainTile) world.getTile(p);
+            TerrainTile before = world.getTile(p);
             TrackPiece trackPieceBefore = before.getTrackPiece();
             TrackPiece trackPiece = proposedTrack.get(p);
 

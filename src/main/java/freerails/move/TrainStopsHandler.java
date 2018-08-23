@@ -147,7 +147,7 @@ public class TrainStopsHandler implements Serializable {
         if (!consist.equals(order.getConsist())) {
             // ..if so, we should change the consist.
             int oldLength = train.getLength();
-            Move move = new ChangeTrainConsistMove(player, trainId, order.getConsist());
+            Move move = new UpdateTrainMove(player, trainId, null, order.getConsist(), null);
             move.apply(world);
             moves.add(move);
             int newLength = train.getLength();
@@ -160,7 +160,7 @@ public class TrainStopsHandler implements Serializable {
                 TrainMotion nextMotion = new TrainMotion(path, newLength, 0, status);
 
                 // Create a new Move object.
-                Move trainMove = new NextActivityMove(nextMotion, trainId, player);
+                Move trainMove = new AddActivityMove(player, trainId, nextMotion);
                 moves.add(trainMove);
                 Status moveStatus = trainMove.applicable(world);
                 if (!moveStatus.isSuccess()) throw new IllegalStateException(moveStatus.getMessage());
@@ -194,7 +194,7 @@ public class TrainStopsHandler implements Serializable {
 
         if (null != wagonsToAdd) {
             int engineType = train.getEngine();
-            Move move = new ChangeTrainConsistMove(player, trainId, wagonsToAdd);
+            Move move = new UpdateTrainMove(player, trainId, null, wagonsToAdd, null);
             moves.add(move);
             move.apply(world);
         }
@@ -212,7 +212,7 @@ public class TrainStopsHandler implements Serializable {
 
         if (!waitingForFullLoad) {
             schedule.gotoNextStation();
-            Move move = new ChangeTrainScheduleMove(player, trainId, schedule);
+            Move move = new UpdateTrainMove(player, trainId, null, null, schedule);
             move.apply(world);
             moves.add(move);
 

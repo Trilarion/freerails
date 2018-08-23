@@ -25,13 +25,13 @@ import freerails.model.cargo.Cargo;
 import freerails.model.station.Station;
 import freerails.model.train.schedule.TrainOrder;
 import freerails.model.world.*;
-import freerails.move.ChangeTrainScheduleMove;
 import freerails.move.Move;
 
 import freerails.model.player.Player;
 import freerails.model.train.*;
 import freerails.model.train.schedule.Schedule;
 import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.move.UpdateTrainMove;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -569,7 +569,7 @@ public class TrainSchedulePanel extends JPanel implements View, WorldListListene
     }
 
     private void sendUpdateMove(Schedule schedule) {
-        Move move = new ChangeTrainScheduleMove(modelRoot.getPlayer(), trainId, schedule);
+        Move move = new UpdateTrainMove(modelRoot.getPlayer(), trainId, null, null, schedule);
         modelRoot.applyMove(move);
     }
 

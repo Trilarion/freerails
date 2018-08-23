@@ -231,7 +231,7 @@ public class SelectStationPanel extends JPanel implements View {
         Vec2D mapSize = world.getMapSize();
         for (int x = Math.max(0, visableMapTiles.x); x < Math.min(visableMapTiles.width + visableMapTiles.x, mapSize.x); x++) {
             for (int y = Math.max(0, visableMapTiles.y); y < Math.min(visableMapTiles.height + visableMapTiles.y, mapSize.y); y++) {
-                TerrainTile terrainTile = (TerrainTile) world.getTile(new Vec2D(x, y));
+                TerrainTile terrainTile = world.getTile(new Vec2D(x, y));
                 if (terrainTile.getTrackPiece() != null) {
                     double xDouble = x - visableMapTiles.x;
                     xDouble = xDouble * scale;

@@ -336,7 +336,7 @@ public class DialogueBoxController implements WorldListListener {
      * @param p
      */
     private void showTerrainInfo(Vec2D p) {
-        TerrainTile tile = (TerrainTile) world.getTile(p);
+        TerrainTile tile = world.getTile(p);
         int terrainType = tile.getTerrainTypeId();
         showTerrainInfo(terrainType);
     }

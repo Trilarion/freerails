@@ -106,28 +106,19 @@ public class AddTrainMoveGenerator implements MoveGenerator {
         Train train = new Train(id, engineId);
         train.setConsist(wagons);
         train.setSchedule(schedule);
-        // TODO this is a quite good idea and ensures unique ids (should be done on the server side only)
-        int trainId = world.getTrains(player).size();
-        // TODO we need an AddTrainMove
-        // AddItemToListMove addTrain = new AddItemToListMove(PlayerKey.Trains, trainId, train, player);
+        // add train position.
+        PathOnTiles path = TrainUtils.initPositionTrainGetPath(world, point, engineId, wagons);
+        TrainMotion motion = TrainUtils.initPositionTrainGetMotion(path, engineId, wagons);
+        train.addActivity(motion);
         AddTrainMove addTrain = new AddTrainMove(player, train);
 
         // Pay for the train.
         // Determine the price of the train.
-        Engine engine = world.getEngine(engineId);
-        Money price = engine.getPrice();
+        Money price = world.getEngine(engineId).getPrice();
         Transaction transaction = new ItemTransaction(TransactionCategory.TRAIN, Money.opposite(price), world.getClock().getCurrentTime(), 1, engineId);
         AddTransactionMove transactionMove = new AddTransactionMove(player, transaction);
 
-        // Setup and add train position.
-        PathOnTiles path = TrainUtils.initPositionTrainGetPath(world, point, engineId, wagons);
-        TrainMotion motion = TrainUtils.initPositionTrainGetMotion(path, engineId, wagons);
-
-        // TODO replace with AddActivityMove
-        // Move addPosition = new AddActiveEntityMove(motion, trainId, player);
-        Move addPosition = new NextActivityMove(motion, trainId, player);
-
-        return new CompositeMove(Arrays.asList(addTrain, transactionMove, addPosition));
+        return new CompostMove(Arrays.asList(addTrain, transactionMove));
     }
 
 }

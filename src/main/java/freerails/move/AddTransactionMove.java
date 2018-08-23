@@ -26,6 +26,7 @@ import freerails.model.world.UnmodifiableWorld;
 import freerails.util.Utils;
 import freerails.model.world.World;
 import freerails.model.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This {@link Move} adds a {@link Transaction} to a players bank account on the
@@ -43,11 +44,11 @@ public class AddTransactionMove implements Move {
     private final boolean cashConstrained;
 
     /**
-     * @param account
+     * @param player
      * @param transaction
      */
-    public AddTransactionMove(Player account, Transaction transaction) {
-        player = account;
+    public AddTransactionMove(@NotNull Player player, @NotNull Transaction transaction) {
+        this.player = player;
         this.transaction = Utils.verifyNotNull(transaction);
         cashConstrained = false;
     }
@@ -82,6 +83,7 @@ public class AddTransactionMove implements Move {
 
     @Override
     public Status applicable(UnmodifiableWorld world) {
+        // TODO should we check the time of the transaction here? actually it could have already been forwarded
         if (cashConstrained) {
             // TODO Money arithmetic
             long bankBalance = world.getCurrentBalance(player).amount;

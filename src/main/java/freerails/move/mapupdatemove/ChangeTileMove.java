@@ -49,7 +49,7 @@ public class ChangeTileMove implements MapUpdateMove {
      */
     public ChangeTileMove(UnmodifiableWorld world, Vec2D location, int terrainTypeAfter) {
         this.location = location;
-        before = (TerrainTile) world.getTile(this.location);
+        before = world.getTile(this.location);
         after = new TerrainTile(terrainTypeAfter, before.getTrackPiece());
     }
 

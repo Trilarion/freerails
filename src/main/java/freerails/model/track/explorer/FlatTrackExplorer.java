@@ -49,7 +49,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      */
     public FlatTrackExplorer(UnmodifiableWorld world, PositionOnTrack positionOnTrack) throws NoTrackException {
         this.world = world;
-        TerrainTile tile = (TerrainTile) world.getTile(positionOnTrack.getLocation());
+        TerrainTile tile = world.getTile(positionOnTrack.getLocation());
         if (tile.getTrackPiece() == null) {
             throw new NoTrackException(positionOnTrack.toString());
         }
@@ -64,7 +64,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
      * center of the tile)
      */
     public static PositionOnTrack[] getPossiblePositions(UnmodifiableWorld world, Vec2D location) {
-        TrackPiece trackPiece = ((TerrainTile) world.getTile(location)).getTrackPiece();
+        TrackPiece trackPiece = world.getTile(location).getTrackPiece();
         TrackConfiguration conf = trackPiece.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();
 
@@ -117,7 +117,7 @@ public class FlatTrackExplorer implements GraphExplorer, Serializable {
             throw new NoSuchElementException();
         }
         TileTransition v = getFirstVectorToTry();
-        TerrainTile ft = (TerrainTile) world.getTile(currentPosition.getLocation());
+        TerrainTile ft = world.getTile(currentPosition.getLocation());
         TrackPiece tp = ft.getTrackPiece();
         TrackConfiguration conf = tp.getTrackConfiguration();
         TileTransition[] vectors = TileTransition.getTransitions();

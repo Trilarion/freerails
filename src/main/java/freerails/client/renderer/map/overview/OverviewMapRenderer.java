@@ -144,7 +144,7 @@ public class OverviewMapRenderer implements MapRenderer {
 
     @Override
     public void refreshTile(Vec2D tileLocation) {
-        TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
+        TerrainTile terrainTile = world.getTile(tileLocation);
 
         if (terrainTile.getTrackPiece() == null) {
             int terrainTypeId = terrainTile.getTerrainTypeId();
@@ -179,7 +179,7 @@ public class OverviewMapRenderer implements MapRenderer {
 
         for (int tileX = mapLocation.x; tileX < mapSize.x + mapLocation.x; tileX++) {
             for (int tileY = mapLocation.y; tileY < mapSize.y + mapLocation.y; tileY++) {
-                TerrainTile terrainTile = (TerrainTile) world.getTile(new Vec2D(tileX, tileY));
+                TerrainTile terrainTile = world.getTile(new Vec2D(tileX, tileY));
 
                 if (terrainTile.getTrackPiece() == null) {
                     int terrainTypeId = terrainTile.getTerrainTypeId();

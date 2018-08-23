@@ -144,7 +144,7 @@ public class TrackMoveProducer {
         for (int i = 0; i < ruleIDs.length; i++) {
             int x = xs[i];
             int y = ys[i];
-            TerrainTile tile = (TerrainTile) world.getTile(new Vec2D(x, y));
+            TerrainTile tile = world.getTile(new Vec2D(x, y));
             int terrainTypeId = tile.getTerrainTypeId();
             ruleIDs[i] = getBuildTrackStrategy().getRule(terrainTypeId);
 
@@ -159,7 +159,7 @@ public class TrackMoveProducer {
         switch (getBuildMode()) {
             case UPGRADE_TRACK: {
                 // upgrade the from tile if necessary.
-                TerrainTile tileA = (TerrainTile) world.getTile(from);
+                TerrainTile tileA = world.getTile(from);
                 if (tileA.getTrackPiece().getTrackType().getId() != ruleIDs[0] && !StationUtils.isStationHere(executor.getWorld(), from)) {
                     Status status = upgradeTrack(from, ruleIDs[0]);
                     if (!status.isSuccess()) {
@@ -167,7 +167,7 @@ public class TrackMoveProducer {
                     }
                 }
                 Vec2D point = Vec2D.add(from, trackVector.getD());
-                TerrainTile tileB = (TerrainTile) world.getTile(point);
+                TerrainTile tileB = world.getTile(point);
                 if (tileB.getTrackPiece().getTrackType().getId() != ruleIDs[1] && !StationUtils.isStationHere(executor.getWorld(), point)) {
                     Status status = upgradeTrack(point, ruleIDs[1]);
                     if (!status.isSuccess()) {
@@ -190,7 +190,7 @@ public class TrackMoveProducer {
 
     private Status upgradeTrack(Vec2D point, int trackRuleID) {
         UnmodifiableWorld world = executor.getWorld();
-        TrackPiece before = ((TerrainTile) world.getTile(point)).getTrackPiece();
+        TrackPiece before = world.getTile(point).getTrackPiece();
         // Check whether there is track here.
         if (before == null) {
             return Status.fail("No track to upgrade.");

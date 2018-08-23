@@ -247,7 +247,7 @@ public class World implements UnmodifiableWorld {
     }
 
     public void addTrain(Player player, Train train) {
-        if (contains(train.getId(), trains.get(player))) {
+        if (Utils.containsId(train.getId(), trains.get(player))) {
             throw new IllegalArgumentException("Train with id already existing. Cannot add.");
         }
         trains.get(player).add(train);
@@ -269,7 +269,7 @@ public class World implements UnmodifiableWorld {
     }
 
     public void addStation(Player player, Station station) {
-        if (contains(station.getId(), stations.get(player))) {
+        if (Utils.containsId(station.getId(), stations.get(player))) {
             throw new IllegalArgumentException("Station with id already existing. Cannot add.");
         }
         stations.get(player).add(station);
@@ -293,22 +293,6 @@ public class World implements UnmodifiableWorld {
             }
         }
         throw new IllegalArgumentException(String.format("Element with Id=%d not existing in collection.", id));
-    }
-
-    /**
-     *
-     * @param id
-     * @param c
-     * @param <E>
-     * @return
-     */
-    public static <E extends Identifiable> boolean contains(final int id, @NotNull final Collection<E> c) {
-        for (E e: c) {
-            if (e.getId() == id) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

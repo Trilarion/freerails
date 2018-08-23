@@ -47,16 +47,12 @@ import java.util.Arrays;
 public final class ChangeTrackPieceCompositeMove extends CompositeMove implements TrackMove {
 
     private static final long serialVersionUID = 3616443518780978743L;
-    private final int x, y, w, h;
+    private final Rectangle rectangle;
     private final Player player;
 
     private ChangeTrackPieceCompositeMove(TrackMove a, TrackMove b, Player player) {
         super(Arrays.asList(a, b));
-        Rectangle r = a.getUpdatedTiles().union(b.getUpdatedTiles());
-        x = r.x;
-        y = r.y;
-        w = r.width;
-        h = r.height;
+        rectangle = a.getUpdatedTiles().union(b.getUpdatedTiles());
         this.player = player;
     }
 
@@ -98,7 +94,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         int owner = player.getId();
 
         if (world.boundsContain(p)) {
-            oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
+            oldTrackPiece = world.getTile(p).getTrackPiece();
 
             if (oldTrackPiece != null) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.add(oldTrackPiece.getTrackConfiguration(), direction);
@@ -121,7 +117,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
         TrackPiece newTrackPiece;
 
         if (world.boundsContain(p)) {
-            oldTrackPiece = ((TerrainTile) world.getTile(p)).getTrackPiece();
+            oldTrackPiece = world.getTile(p).getTrackPiece();
 
             if (oldTrackPiece != null) {
                 TrackConfiguration trackConfiguration = TrackConfiguration.subtract(oldTrackPiece.getTrackConfiguration(), direction);
@@ -173,7 +169,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
                         Schedule schedule1 = new Schedule(schedule);
                         schedule1.removeAllStopsAtStation(stationIndex);
                         train.setSchedule(schedule1);
-                        Move changeScheduleMove = new ChangeTrainScheduleMove(player, train.getId(), schedule1);
+                        Move changeScheduleMove = new UpdateTrainMove(player, train.getId(), null, null, schedule1);
                         moves.add(changeScheduleMove);
                     }
                 }
@@ -197,7 +193,7 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
      */
     @Override
     public Rectangle getUpdatedTiles() {
-        return new Rectangle(x, y, w, h);
+        return rectangle;
     }
 
     @Override
@@ -227,7 +223,6 @@ public final class ChangeTrackPieceCompositeMove extends CompositeMove implement
 
     @Override
     public void apply(World world) {
-        MoveTrainMoveGenerator.clearCache();
         super.apply(world);
     }
 }

@@ -63,7 +63,7 @@ public class TrackPathFinder implements IncrementalPathFinder {
     }
 
     private int[] findTargets(Vec2D targetPoint) {
-        TerrainTile tile = (TerrainTile) world.getTile(targetPoint);
+        TerrainTile tile = world.getTile(targetPoint);
         TrackPiece trackPiece = tile.getTrackPiece();
         int[] targetInts;
 

@@ -154,7 +154,7 @@ public class RHSTabPane extends JTabbedPane implements ModelRootListener {
                 setSelectedIndex(stationInfoIndex);
             } else {
                 //terrainInfoPanel.showTerrainInfo(x, y);
-                terrainInfoPanel.setTerrainType(((TerrainTile) world.getTile(location)).getTerrainTypeId());
+                terrainInfoPanel.setTerrainType(world.getTile(location).getTerrainTypeId());
                 setSelectedIndex(terrainInfoIndex);
             }
         }

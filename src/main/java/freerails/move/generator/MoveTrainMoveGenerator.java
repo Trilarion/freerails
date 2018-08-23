@@ -48,10 +48,7 @@ import freerails.model.track.TrackSection;
 import freerails.model.train.*;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Generates moves for changes in train position and stops at stations.
@@ -60,11 +57,6 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
 
     private static final long serialVersionUID = 3545516188269491250L;
     private static final Logger logger = Logger.getLogger(MoveTrainMoveGenerator.class.getName());
-    // TODO Performance cache must be cleared if track on map is build ! make a change listener!
-    private static final Map<Integer, HashMap<Integer, TileTransition>> pathCache = new HashMap<>();
-    private static int cacheCleared = 0;
-    private static int cacheHit = 0;
-    private static int cacheMiss = 0;
     private final Player player;
     private final int trainId;
     private final OccupiedTracks occupiedTracks;
@@ -88,19 +80,9 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
     public static TileTransition findNextStep(UnmodifiableWorld world, PositionOnTrack currentPosition, Vec2D target) {
         int startPos = toInt(currentPosition.getLocation());
         int endPos = toInt(target);
-        HashMap<Integer, TileTransition> destPaths = pathCache.get(endPos);
+        HashMap<Integer, TileTransition> destPaths;
         TileTransition nextTileTransition;
-        if (destPaths != null) {
-            nextTileTransition = destPaths.get(startPos);
-            if (nextTileTransition != null) {
-                cacheHit++;
-                return nextTileTransition;
-            }
-        } else {
-            destPaths = new HashMap<>();
-            pathCache.put(endPos, destPaths);
-        }
-        cacheMiss++;
+        destPaths = new HashMap<>();
         PathOnTrackFinder pathFinder = new PathOnTrackFinder(world);
 
         try {
@@ -122,14 +104,6 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
             PositionOnTrack nextPosition = new PositionOnTrack(next);
             return nextPosition.getComingFrom();
         }
-    }
-
-    /**
-     *
-     */
-    public static void clearCache() {
-        pathCache.clear();
-        cacheCleared++;
     }
 
     /**
@@ -264,7 +238,7 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                     // TODO needed dedicated move for train moves
                     // Move trainMove = new NextActivityMove(nextMotion, trainId, player);
                     List<Move> moves = new LinkedList<>();
-                    moves.add(new MoveTrainActivityMove(player, trainId, nextMotion));
+                    moves.add(new AddActivityMove(player, trainId, nextMotion));
                     moves.addAll(stopsHandler.getMoves());
                     return new CompositeMove(moves);
                 }
@@ -278,7 +252,10 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
                 if (!waitingForfullLoad) {
                     Move trainMove = moveTrain(world, occupiedTracks);
                     if (null != trainMove) {
-                        return new CompositeMove(trainMove, cargoMoves);
+                        List<Move> moves = new ArrayList<>();
+                        moves.add(trainMove);
+                        moves.addAll(cargoMoves);
+                        return new CompositeMove(moves);
                     } else {
                         return new CompositeMove(cargoMoves);
                     }
@@ -311,8 +288,8 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         // Check whether the desired track section is single or double track.
         Vec2D tileA = desiredTrackSection.tileA();
         Vec2D tileB = desiredTrackSection.tileB();
-        TerrainTile fta = (TerrainTile) world.getTile(tileA);
-        TerrainTile ftb = (TerrainTile) world.getTile(tileB);
+        TerrainTile fta = world.getTile(tileA);
+        TerrainTile ftb = world.getTile(tileB);
         TrackPiece tpa = fta.getTrackPiece();
         TrackPiece tpb = ftb.getTrackPiece();
         int tracks = 1;
@@ -324,12 +301,21 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
             if (trains >= tracks) {
                 // We need to wait for the track ahead to clear.
                 occupiedTracks.stopTrain(trainId);
-                return stopTrain(world);
+                // stop train
+                TrainMotion motion1 = MotionUtils.lastMotion(world, player, trainId);
+                Motion stopped = ConstantAccelerationMotion.STOPPED;
+                double duration = motion1.getDuration();
+
+                int trainLength = motion1.getTrainLength();
+                PathOnTiles tiles = motion1.getTiles(duration);
+                int engineDist = tiles.steps();
+                TrainMotion nextMotion = new TrainMotion(tiles, engineDist, trainLength, stopped);
+                return new AddActivityMove(player, trainId, nextMotion);
             }
         }
         // Create a new train motion object.
         TrainMotion nextMotion = nextMotion(world, nextVector);
-        return new NextActivityMove(nextMotion, trainId, player);
+        return new AddActivityMove(player, trainId, nextMotion);
     }
 
     private TrainMotion nextMotion(UnmodifiableWorld world, TileTransition tileTransition) {
@@ -377,19 +363,4 @@ public class MoveTrainMoveGenerator implements MoveGenerator {
         return findNextStep(world, currentPosition, targetPoint);
     }
 
-    /**
-     * @param world
-     * @return
-     */
-    public Move stopTrain(UnmodifiableWorld world) {
-        TrainMotion motion = MotionUtils.lastMotion(world, player, trainId);
-        Motion stopped = ConstantAccelerationMotion.STOPPED;
-        double duration = motion.getDuration();
-
-        int trainLength = motion.getTrainLength();
-        PathOnTiles tiles = motion.getTiles(duration);
-        int engineDist = tiles.steps();
-        TrainMotion nextMotion = new TrainMotion(tiles, engineDist, trainLength, stopped);
-        return new NextActivityMove(nextMotion, trainId, player);
-    }
 }

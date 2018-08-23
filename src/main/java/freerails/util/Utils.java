@@ -18,6 +18,9 @@
 
 package freerails.util;
 
+import freerails.model.Identifiable;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -283,5 +286,21 @@ public final class Utils {
             map.put(key, value);
         }
         return map;
+    }
+
+    /**
+     *
+     * @param id
+     * @param c
+     * @param <E>
+     * @return
+     */
+    public static <E extends Identifiable> boolean containsId(final int id, @NotNull final Collection<E> c) {
+        for (E e: c) {
+            if (e.getId() == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }

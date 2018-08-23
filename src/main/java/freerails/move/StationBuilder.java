@@ -58,11 +58,12 @@ public class StationBuilder {
      * @return
      */
     public Status tryBuildingStation(Vec2D location) {
+        // TODO under which circumstances would build a station fail (not enough funds, station already existing)
         UnmodifiableWorld world = executor.getWorld();
 
         Player player = executor.getPlayer();
-        AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, player);
-        Move move = preMove.generate(world);
+        AddStationMoveGenerator generator = new AddStationMoveGenerator(location, ruleNumber, player);
+        Move move = generator.generate(world);
 
         return executor.tryMove(move);
     }
@@ -76,7 +77,7 @@ public class StationBuilder {
         Status status = tryBuildingStation(location);
         if (status.isSuccess()) {
             Player player = executor.getPlayer();
-            AddStationMoveGenerator preMove = AddStationMoveGenerator.newStation(location, ruleNumber, player);
+            AddStationMoveGenerator preMove = new AddStationMoveGenerator(location, ruleNumber, player);
             return executor.doPreMove(preMove);
         }
 

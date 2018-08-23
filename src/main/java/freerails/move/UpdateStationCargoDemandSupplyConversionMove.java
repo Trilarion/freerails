@@ -18,9 +18,8 @@
 
 package freerails.move;
 
-import freerails.model.cargo.CargoBatchBundle;
 import freerails.model.player.Player;
-import freerails.model.train.Train;
+import freerails.model.station.Station;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -28,16 +27,14 @@ import org.jetbrains.annotations.NotNull;
 /**
  *
  */
-public class ChangeTrainCargoMove implements Move {
+public class UpdateStationCargoDemandSupplyConversionMove implements Move {
 
     private final Player player;
-    private final int trainId;
-    private final CargoBatchBundle cargoBatchBundle;
+    private final Station station;
 
-    public ChangeTrainCargoMove(@NotNull Player player, int trainId, @NotNull CargoBatchBundle cargoBatchBundle) {
+    public UpdateStationCargoDemandSupplyConversionMove(@NotNull Player player, @NotNull Station station) {
         this.player = player;
-        this.trainId = trainId;
-        this.cargoBatchBundle = cargoBatchBundle;
+        this.station = station;
     }
 
     @Override
@@ -47,7 +44,9 @@ public class ChangeTrainCargoMove implements Move {
 
     @Override
     public void apply(World world) {
-        Train train = world.getTrain(player, trainId);
-        train.setCargoBatchBundle(cargoBatchBundle);
+        Station oldStation = world.getStation(player, station.getId());
+        oldStation.setSupply(station.getSupply());
+        oldStation.setCargoConversion(station.getCargoConversion());
+        oldStation.setDemandForCargo(station.getDemandForCargo());
     }
 }

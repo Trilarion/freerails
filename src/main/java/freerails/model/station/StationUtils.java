@@ -171,22 +171,6 @@ public final class StationUtils {
     }
 
     /**
-     * @return
-     */
-    public static StationDemand getStationDemand(@NotNull UnmodifiableWorld world, @NotNull int[] demand) {
-        final int n = world.getCargos().size();
-        boolean[] demandboolean = new boolean[n];
-
-        for (int i = 0; i < n; i++) {
-            if (demand[i] >= ModelConstants.PREREQUISITE_FOR_DEMAND) {
-                demandboolean[i] = true;
-            }
-        }
-
-        return new StationDemand(demandboolean);
-    }
-
-    /**
      *  Probes the tiles adjacent to a station for what cargo they supply,
      *  demand, and convert and then returns a vector of these rates.
      *
@@ -238,7 +222,7 @@ public final class StationUtils {
         for (int i1 = tiles2scan.x; i1 < (tiles2scan.x + tiles2scan.width); i1++) {
             for (int j = tiles2scan.y; j < (tiles2scan.y + tiles2scan.height); j++) {
                 // increment supply and demand
-                int tileTypeNumber = ((TerrainTile) world.getTile(new Vec2D(i1, j))).getTerrainTypeId();
+                int tileTypeNumber = world.getTile(new Vec2D(i1, j)).getTerrainTypeId();
 
                 Terrain terrainType = world.getTerrain(tileTypeNumber);
 
@@ -299,14 +283,25 @@ public final class StationUtils {
         // set the supply rates for the current station
         StationSupply stationSupply = new StationSupply(cargoSupplied);
         station.setSupply(stationSupply);
-        station.setDemandForCargo(StationUtils.getStationDemand(world, demand));
+
+
+        final int n = world.getCargos().size();
+        boolean[] demandboolean = new boolean[n];
+
+        for (int i = 0; i < n; i++) {
+            if (demand[i] >= ModelConstants.PREREQUISITE_FOR_DEMAND) {
+                demandboolean[i] = true;
+            }
+        }
+
+        station.setDemandForCargo(new StationDemand(demandboolean));
         station.setCargoConversion(new StationCargoConversion(converts));
 
         return station;
     }
 
     public static boolean isStationHere(UnmodifiableWorld world, Vec2D location) {
-        TerrainTile tile = (TerrainTile) world.getTile(location);
+        TerrainTile tile = world.getTile(location);
         return tile.getTrackPiece().getTrackType().isStation();
     }
 
@@ -327,7 +322,7 @@ public final class StationUtils {
      * Return Station number if station exists at location or -1
      */
     public static int getStationIdAtLocation(UnmodifiableWorld world, Player player, Vec2D location) {
-        TerrainTile tile = (TerrainTile) world.getTile(location);
+        TerrainTile tile = world.getTile(location);
         TrackPiece trackPiece = tile.getTrackPiece();
 
         if (trackPiece != null) {

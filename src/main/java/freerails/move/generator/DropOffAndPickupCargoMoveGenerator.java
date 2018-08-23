@@ -156,22 +156,22 @@ public class DropOffAndPickupCargoMoveGenerator {
      * @return
      */
     public Move generate() {
-        // The methods that calculate the before and after bundles could be called from here.
-        Move changeAtStation = new ChangeCargoAtStationMove(player, stationId, stationAfter);
-        Move changeOnTrain = new ChangeTrainCargoMove(player, trainId, trainAfter);
 
-        moves.add(changeAtStation);
-        moves.add(changeOnTrain);
-
-        if (autoConsist) {
-            Move move = new ChangeTrainConsistMove(player, trainId, consist);
-            moves.add(move);
-        } else if (waitingForFullLoad) {
-            // Only generate a move if there is some cargo to add..
-            if (trainAfter.equals(trainBefore)) return null;
+        // Only generate a move if there is some cargo to add..
+        if (!autoConsist && waitingForFullLoad && trainAfter.equals(trainBefore)) {
+            return null;
         }
 
-        return new CompositeMove(moves);
+        // The methods that calculate the before and after bundles could be called from here.
+        moves.add(new ChangeCargoAtStationMove(player, stationId, stationAfter));
+
+        if (autoConsist) {
+            moves.add(new UpdateTrainMove(player, trainId, trainAfter, consist, null));
+        } else {
+            moves.add(new UpdateTrainMove(player, trainId, trainAfter, null, null));
+        }
+
+        return new CompostMove(moves);
     }
 
     private void setupBundles() {

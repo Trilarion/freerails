@@ -58,7 +58,7 @@ public class StationTypesPopup extends JPopupMenu {
      */
     public boolean canBuiltStationHere(Vec2D p) {
         stationBuildModel.getStationBuildAction().putValue(StationBuildModel.StationBuildAction.STATION_POSITION_KEY, p);
-        TerrainTile tile = (TerrainTile) modelRoot.getWorld().getTile(p);
+        TerrainTile tile = modelRoot.getWorld().getTile(p);
         return tile.hasTrack();
     }
 

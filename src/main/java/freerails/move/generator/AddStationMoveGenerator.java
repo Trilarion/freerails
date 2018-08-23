@@ -49,20 +49,10 @@ public class AddStationMoveGenerator implements MoveGenerator {
     private final int ruleNumber;
     private final Player player;
 
-    private AddStationMoveGenerator(Vec2D location, int trackRule, Player player) {
+    public AddStationMoveGenerator(Vec2D location, int trackRule, Player player) {
         this.location = location;
         ruleNumber = trackRule;
         this.player = player;
-    }
-
-    /**
-     * @param p
-     * @param trackRule
-     * @param player
-     * @return
-     */
-    public static AddStationMoveGenerator newStation(Vec2D p, int trackRule, Player player) {
-        return new AddStationMoveGenerator(p, trackRule, player);
     }
 
     @Override
@@ -86,92 +76,55 @@ public class AddStationMoveGenerator implements MoveGenerator {
         return result;
     }
 
+    // TODO how often is this called (seems to be called every single time the mouse is over a tile)
     /**
      * @param world
      * @return
      */
     @Override
     public Move generate(UnmodifiableWorld world) {
-        TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
-
-        TerrainTile oldTile = (TerrainTile) world.getTile(location);
-        String cityName;
-        String stationName;
-
-        TerrainTile ft = (TerrainTile) world.getTile(location);
-        TrackPiece before = ft.getTrackPiece();
+        TerrainTile oldTile = world.getTile(location);
+        TrackPiece oldTrackPiece = oldTile.getTrackPiece();
+        if (oldTile.getTrackPiece() != null && oldTile.getTrackPiece().getTrackType().isStation()) {
+            throw new RuntimeException("Station already at location");
+        }
         TrackType trackType = world.getTrackType(ruleNumber);
 
-        int owner = player.getId();
-        TrackPiece after = new TrackPiece(before == null ? TrackConfiguration.from9bitTemplate(0) : before.getTrackConfiguration(), trackType, owner);
-        Move upgradeTrackMove = new ChangeTrackPieceMove(before, after, location);
+        TrackPiece newTrackPiece = new TrackPiece(oldTrackPiece == null ? TrackConfiguration.from9bitTemplate(0) : oldTrackPiece.getTrackConfiguration(), trackType, player.getId());
+        Move upgradeTrackMove = new ChangeTrackPieceMove(oldTrackPiece, newTrackPiece, location);
 
-        CompositeMove move;
-
-        if (oldTile.getTrackPiece() == null || !oldTile.getTrackPiece().getTrackType().isStation()) {
-            // There isn't already a station here, we need to pick a name and
-            // add an entry to the station list.
-            try {
-                cityName = CityUtils.findNearestCity(world, location);
-                stationName = StationUtils.createStationName(world, cityName);
-            } catch (NoSuchElementException e) {
-                // TODO can we do better here?
-                // there are no cities, this should never happen during a proper
-                // game. However, some of the unit tests create stations when there are no cities.
-                stationName = "Central Station #" + world.getStations(player).size();
-            }
-
-            // check the terrain to see if we can build a station on it...
-            move = generateMove(world, stationName, location, upgradeTrackMove, player);
-            move = addSupplyAndDemand(move, world);
-            move = transactionsGenerator.addTransactions(move);
-        } else {
-            // Upgrade an existing station.
-            move = new CompositeMove(Arrays.asList(upgradeTrackMove));
+        // There isn't already a station here, we need to pick a name and add an entry to the station list.
+        String stationName;
+        try {
+            String cityName = CityUtils.findNearestCity(world, location);
+            stationName = StationUtils.createStationName(world, cityName);
+        } catch (NoSuchElementException e) {
+            // TODO can we do better here?
+            // there are no cities, this should never happen during a proper
+            // game. However, some of the unit tests create stations when there are no cities.
+            stationName = "Central Station #" + world.getStations(player).size();
         }
+
+        // check the terrain to see if we can build a station on it...
+        /**
+         * This {@link CompositeMove}adds a station to the station list and adds a
+         * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
+         * list.
+         */
+        // TODO maybe a better way to get an id
+        int id = world.getStations(player).size();
+        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY);
+        station = StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
+
+        Move addStationMove = new AddStationMove(player, station);
+
+        CompositeMove move = new CompositeMove(Arrays.asList(upgradeTrackMove, addStationMove));
+
+        // add transactions
+        TrackMoveTransactionsGenerator transactionsGenerator = new TrackMoveTransactionsGenerator(world, player);
+        move = transactionsGenerator.addTransactions(move);
 
         return move;
     }
 
-    /**
-     * This {@link CompositeMove}adds a station to the station list and adds a
-     * cargo bundle (to store the cargo waiting at the station) to the cargo bundle
-     * list.
-     *
-     * @param world
-     * @param stationName
-     * @param location
-     * @param upgradeTrackMove
-     * @param player
-     * @return
-     */
-    private static CompositeMove generateMove(UnmodifiableWorld world, String stationName, Vec2D location, Move upgradeTrackMove, Player player) {
-        // TODO maybe a better way to get an id
-        int id = world.getStations(player).size();
-        Station station = new Station(id, location, stationName, world.getCargos().size(), CargoBatchBundle.EMPTY);
-        Move addStation = new AddStationMove(player, station);
-
-        return new CompositeMove(Arrays.asList(upgradeTrackMove, addStation));
-    }
-
-    // TODO frankly, this looks like a hack, moves are modified after their creation
-    private CompositeMove addSupplyAndDemand(CompositeMove compositeMove, UnmodifiableWorld world) {
-        List<Move> moves2 = compositeMove.getMoves();
-        Move[] moves = new Move[moves2.size()];
-        for (int i = 0; i < moves2.size(); i++) {
-            moves[i] = moves2.get(i);
-        }
-
-        for (int i = 0; i < moves.length; i++) {
-            if (moves[i] instanceof AddStationMove) {
-                AddStationMove move = (AddStationMove) moves[i];
-
-                Station station = move.getStation();
-                Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, ruleNumber, station);
-                moves[i] = new AddStationMove(move.getPlayer(), stationAfter);
-            }
-        }
-
-        return new CompositeMove(Arrays.asList(moves));
-    }
 }

@@ -19,24 +19,27 @@
 package freerails.move;
 
 import freerails.model.player.Player;
-import freerails.model.train.Train;
-import freerails.model.train.schedule.UnmodifiableSchedule;
+import freerails.model.train.activity.Activity;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  *
  */
-public class ChangeTrainScheduleMove implements Move {
+public class AddActivityMove implements Move {
 
     private final Player player;
     private final int trainId;
-    private final UnmodifiableSchedule schedule;
+    private final Activity activity;
 
-    public ChangeTrainScheduleMove(Player player, int trainId, UnmodifiableSchedule schedule) {
+
+    public AddActivityMove(@NotNull Player player, int trainId, @NotNull Activity activity) {
         this.player = player;
         this.trainId = trainId;
-        this.schedule = schedule;
+        this.activity = activity;
     }
 
     @Override
@@ -46,7 +49,23 @@ public class ChangeTrainScheduleMove implements Move {
 
     @Override
     public void apply(World world) {
-        Train train = world.getTrain(player, trainId);
-        train.setSchedule(schedule);
+        world.addActivity(player, trainId, activity);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof AddActivityMove)) {
+            return false;
+        }
+        AddActivityMove o = (AddActivityMove) obj;
+        return Objects.equals(player, o.player) && trainId == o.trainId && Objects.equals(activity, o.activity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(player, trainId, activity);
     }
 }

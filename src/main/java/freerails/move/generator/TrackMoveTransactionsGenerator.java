@@ -199,6 +199,7 @@ public class TrackMoveTransactionsGenerator {
                 trackRemoved[ruleBefore] += oldLength;
             }
         } else if (move instanceof CompositeMove) {
+            // TODO does this ever happen?
             CompositeMove cm = (CompositeMove) move;
             List<Move> moves = cm.getMoves();
 

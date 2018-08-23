@@ -46,12 +46,6 @@ public class CompositeMove implements Move {
         this.moves = Utils.immutableList(moves);
     }
 
-    public CompositeMove(Move move, List<Move> moreMoves) {
-        moves = new ArrayList<>();
-        moves.add(move);
-        moves.addAll(moreMoves);
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -240,7 +240,7 @@ public class FullServerGameModel implements ServerGameModel {
                 Station stationAfter = StationUtils.calculateCargoSupplyRateAtStation(world, trackRuleId, station);
 
                 if (!stationAfter.equals(station)) {
-                    Move move = new ChangeStationMove(player, stationAfter);
+                    Move move = new UpdateStationCargoDemandSupplyConversionMove(player, stationAfter);
                     moveReceiver.process(move);
                 }
             }

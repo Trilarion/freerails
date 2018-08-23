@@ -97,7 +97,7 @@ public class CityModel {
         // Count tile types.
         for (int x = cityArea.x; x < cityArea.x + cityArea.width; x++) {
             for (int y = cityArea.y; y < cityArea.y + cityArea.height; y++) {
-                TerrainTile tile = (TerrainTile) world.getTile(new Vec2D(x, y));
+                TerrainTile tile = world.getTile(new Vec2D(x, y));
 
                 // Count the number of stations at the city.
                 if (tile.getTrackPiece() != null && tile.getTrackPiece().getTrackType().isStation()) {

@@ -20,8 +20,10 @@ package freerails.move;
 
 import freerails.model.player.Player;
 import freerails.model.station.Station;
+import freerails.model.station.StationUtils;
 import freerails.model.world.UnmodifiableWorld;
 import freerails.model.world.World;
+import freerails.util.Utils;
 import org.jetbrains.annotations.NotNull;
 
 // TODO hashcode, equals, try, undo ...
@@ -64,7 +66,10 @@ public class AddStationMove implements Move {
 
     @Override
     public Status applicable(UnmodifiableWorld world) {
-        if (World.contains(station.getId(), world.getStations(player))) {
+        // need to check that there is not another station close by
+
+        // check if station with id is already existing
+        if (Utils.containsId(station.getId(), world.getStations(player))) {
             return Status.fail("Station with id already existing");
         }
         return Status.OK;
@@ -72,7 +77,7 @@ public class AddStationMove implements Move {
 
     @Override
     public void apply(World world) {
-        if (World.contains(station.getId(), world.getStations(player))) {
+        if (Utils.containsId(station.getId(), world.getStations(player))) {
             throw new RuntimeException("Station with id already existing");
         }
         world.addStation(player, station);

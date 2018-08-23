@@ -39,6 +39,7 @@ public class Transaction implements Serializable {
     private final Money amount;
     private final Time time;
 
+    // TODO some safety mechanisms that gives times are not completely off
     /**
      * @param category
      * @param amount

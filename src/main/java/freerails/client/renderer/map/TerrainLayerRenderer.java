@@ -58,7 +58,7 @@ public final class TerrainLayerRenderer implements MapLayerRenderer {
         Vec2D screenLocation = Vec2D.multiply(ClientConstants.TILE_SIZE, tileLocation);
 
         if ((tileLocation.x >= 0) && (tileLocation.x < mapSize.x) && (tileLocation.y >= 0) && (tileLocation.y < mapSize.y)) {
-            TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
+            TerrainTile terrainTile = world.getTile(tileLocation);
 
             int typeNumber = terrainTile.getTerrainTypeId();
             TileRenderer tileRenderer = tiles.getTileRendererByIndex(typeNumber);

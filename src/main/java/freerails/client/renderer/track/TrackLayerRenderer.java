@@ -65,7 +65,7 @@ public final class TrackLayerRenderer implements MapLayerRenderer {
             for (int tileY = tilesToPaint.y - 1; tileY < (tilesToPaint.y + tilesToPaint.height + 1); tileY++) {
                 if ((tileX >= 0) && (tileX < mapSize.x) && (tileY >= 0) && (tileY < mapSize.y)) {
                     Vec2D tileLocation = new Vec2D(tileX, tileY);
-                    TerrainTile terrainTile = (TerrainTile) world.getTile(tileLocation);
+                    TerrainTile terrainTile = world.getTile(tileLocation);
                     TrackPiece trackPiece = terrainTile.getTrackPiece();
                     if (trackPiece != null) {
                         int graphicsNumber = trackPiece.getTrackGraphicID();

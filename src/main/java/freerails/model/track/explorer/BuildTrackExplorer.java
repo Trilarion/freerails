@@ -113,7 +113,7 @@ public class BuildTrackExplorer implements GraphExplorer {
         TrackType ruleForLastTile;
 
         // Determine the track rule for the next tile.
-        final TerrainTile nextTile = (TerrainTile) world.getTile(newP);
+        final TerrainTile nextTile = world.getTile(newP);
 
         // Check there is not another players track at nextTile.
         if (nextTile.hasTrack()) {
@@ -134,7 +134,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             return false; // We can't build track on the tile.
         }
         // Determine the track rule for the current tile.
-        TerrainTile currentTile = (TerrainTile) world.getTile(currentP);
+        TerrainTile currentTile = world.getTile(currentP);
 
         // Check for illegal track configurations.
         TrackPiece currentTileTrackPiece = currentTile.getTrackPiece();
@@ -165,7 +165,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             // We did a bounds check above.
             assert (world.boundsContain(new Vec2D(currentP.x, y2check)));
 
-            TerrainTile tileToCheck = (TerrainTile) world.getTile(new Vec2D(currentP.x, y2check));
+            TerrainTile tileToCheck = world.getTile(new Vec2D(currentP.x, y2check));
             TrackPiece trackPiece = tileToCheck.getTrackPiece();
             if (trackPiece != null) {
                 TrackConfiguration configToCheck = tileToCheck.getTrackPiece().getTrackConfiguration();
@@ -205,7 +205,7 @@ public class BuildTrackExplorer implements GraphExplorer {
      * @return
      */
     private TrackType getAppropriateTrackType(Vec2D p) {
-        final TerrainTile tile = (TerrainTile) world.getTile(p);
+        final TerrainTile tile = world.getTile(p);
         TrackType type;
         if (!tile.hasTrack()) {
             int terrainTypeID = tile.getTerrainTypeId();
@@ -252,7 +252,7 @@ public class BuildTrackExplorer implements GraphExplorer {
             long priceB = ruleB.getPurchasingPrice().amount;
             cost += length * (priceA + priceB);
             // Add fixed cost if tile b does not have the desired track type.
-            TerrainTile a = (TerrainTile) world.getTile(new Vec2D(x[0], y[0]));
+            TerrainTile a = world.getTile(new Vec2D(x[0], y[0]));
             TrackPiece trackPiece = a.getTrackPiece();
             if (trackPiece != null) {
                 TrackType currentRuleA = a.getTrackPiece().getTrackType();
